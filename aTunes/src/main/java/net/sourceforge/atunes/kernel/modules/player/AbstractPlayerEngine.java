@@ -39,6 +39,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.TempFolder;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
@@ -60,17 +61,19 @@ public abstract class AbstractPlayerEngine {
     	
 		private final IAudioObject audioObject;
 		IAudioObject audioObjectToPlay = null;
+		private IFrame frame;
 		
-		private PlayAudioObjectRunnable(IAudioObject audioObject) {
+		private PlayAudioObjectRunnable(IAudioObject audioObject, IFrame frame) {
 			this.audioObject = audioObject;			
-			GuiHandler.getInstance().getFrame().getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+			this.frame = frame;
+			this.frame.getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		}
 				
 		@Override
 		public void run() {
 		    audioObjectToPlay = cacheAudioObject(audioObject);
 			// Set default cursor again
-			GuiHandler.getInstance().getFrame().getFrame().setCursor(Cursor.getDefaultCursor());
+			frame.getFrame().setCursor(Cursor.getDefaultCursor());
 			
 			playAudioObjectAfterCache(audioObjectToPlay, audioObject);
 			
@@ -172,6 +175,8 @@ public abstract class AbstractPlayerEngine {
     private Equalizer equalizer;
     
     private IState state;
+    
+    private IFrame frame;
     
     /**
      * A thread invoking play in engine
@@ -545,10 +550,11 @@ public abstract class AbstractPlayerEngine {
      * Instantiates a new player handler.
      * @param state
      */
-    protected AbstractPlayerEngine(IState state) {
+    protected AbstractPlayerEngine(IState state, IFrame frame) {
         // To properly init player must call method "initPlayerEngine"
         this.equalizer = new Equalizer(state);
         this.state = state;
+        this.frame = frame;
     }
 
     /**
@@ -665,7 +671,7 @@ public abstract class AbstractPlayerEngine {
 
         if (state.isCacheFilesBeforePlaying()) {
 
-        	PlayAudioObjectRunnable r = new PlayAudioObjectRunnable(audioObject);
+        	PlayAudioObjectRunnable r = new PlayAudioObjectRunnable(audioObject, frame);
         	
         	// NOTE: This thread was initially a SwingWorker but as number of concurrent SwingWorkers is limited if context panel SwingWorker were working
         	// this one was blocked so use a Thread to avoid blocking no matters if a SwingWorker is active or not

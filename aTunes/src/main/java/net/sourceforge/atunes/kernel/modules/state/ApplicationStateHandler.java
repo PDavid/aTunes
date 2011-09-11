@@ -38,7 +38,6 @@ import net.sourceforge.atunes.gui.views.dialogs.editPreferences.EditPreferencesD
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.OsManager;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.ListOfPlayLists;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
@@ -609,7 +608,7 @@ public final class ApplicationStateHandler extends AbstractHandler {
      * NOTE: This method is called from MacOSXAdapter using reflection. Refactoring will break code!
      */
     public void editPreferences() {
-    	EditPreferencesDialog dialog = new EditPreferencesDialog(GuiHandler.getInstance().getFrame().getFrame());
+    	EditPreferencesDialog dialog = new EditPreferencesDialog(getFrame().getFrame());
     	new EditPreferencesDialogController(dialog, getState()).start();
     }
 

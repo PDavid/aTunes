@@ -25,11 +25,13 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.device.TransferToRepositoryProcess;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -72,7 +74,7 @@ public class CopyToRepositoryAction extends AbstractActionOverSelectedObjects<IL
 
     @Override
     protected void performAction(List<ILocalAudioObject> objects) {
-        final TransferToRepositoryProcess importer = new TransferToRepositoryProcess(objects, getState());
+        final TransferToRepositoryProcess importer = new TransferToRepositoryProcess(objects, getState(), Context.getBean(IFrame.class));
         importer.addProcessListener(new ImportProcessListener());
         importer.execute();
     }

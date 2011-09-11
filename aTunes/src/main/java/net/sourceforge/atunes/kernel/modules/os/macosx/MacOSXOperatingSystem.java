@@ -24,7 +24,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sourceforge.atunes.gui.frame.Frame;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.macos.MacOSXLookAndFeel;
@@ -39,6 +39,7 @@ import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class MacOSXOperatingSystem extends OperatingSystemAdapter {
@@ -64,7 +65,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 		return new File(StringUtils.getString("./", COMMAND_MACOSX)).getAbsolutePath();
 	}
 	
-	public void setUpFrame(Frame frame) {
+	public void setUpFrame(IFrame frame) {
 		// Generate and register the OSXAdapter, passing it a hash of all the methods we wish to
 		// use as delegates for various com.apple.eawt.ApplicationListener methods
 		try {
@@ -135,7 +136,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 	
 	@Override
 	public void manageNoPlayerEngine() {
-		MacOSXPlayerEngineDialog dialog = new MacOSXPlayerEngineDialog(GuiHandler.getInstance().getFrame().getFrame());
+		MacOSXPlayerEngineDialog dialog = new MacOSXPlayerEngineDialog(Context.getBean(IFrame.class).getFrame());
 		dialog.setVisible(true);
 	}
 	

@@ -28,33 +28,35 @@ import java.util.Map;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.model.IFrame;
+
 public final class Frames {
 
     private Frames() {
     }
 
-    private static final List<Class<? extends Frame>> CLASSES;
+    private static final List<Class<? extends IFrame>> CLASSES;
 
-    private static Map<Class<? extends Frame>, String> images = new HashMap<Class<? extends Frame>, String>();
+    private static Map<Class<? extends IFrame>, String> images = new HashMap<Class<? extends IFrame>, String>();
 
     static {
-        CLASSES = new ArrayList<Class<? extends Frame>>();
+        CLASSES = new ArrayList<Class<? extends IFrame>>();
 
         add(DefaultSingleFrame.class, "1.png");
         add(EnhancedSingleFrame.class, "2.png");
         add(NavigatorTopPlayListBottomSingleFrame.class, "3.png");
     }
 
-    private static void add(Class<? extends Frame> clazz, String image) {
+    private static void add(Class<? extends IFrame> clazz, String image) {
         CLASSES.add(clazz);
         images.put(clazz, image);
     }
 
-    public static List<Class<? extends Frame>> getClasses() {
-        return new ArrayList<Class<? extends Frame>>(CLASSES);
+    public static List<Class<? extends IFrame>> getClasses() {
+        return new ArrayList<Class<? extends IFrame>>(CLASSES);
     }
 
-    public static ImageIcon getImage(Class<? extends Frame> clazz) {
+    public static ImageIcon getImage(Class<? extends IFrame> clazz) {
         if (clazz == null) {
             return null;
         }

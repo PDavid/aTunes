@@ -28,19 +28,24 @@ import java.util.Map.Entry;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IFrame;
 
 /**
  * Checks if podcasts are downloaded.
  */
 public class PodcastFeedEntryDownloadChecker implements Runnable {
 
+	private IFrame frame;
+	
     private static final class SetDownloadedRunnable implements Runnable {
+    	
         private final Map<PodcastFeedEntry, Boolean> downloaded;
+        private IFrame frame;
 
-        private SetDownloadedRunnable(Map<PodcastFeedEntry, Boolean> downloaded) {
+        private SetDownloadedRunnable(Map<PodcastFeedEntry, Boolean> downloaded, IFrame frame) {
             this.downloaded = downloaded;
+            this.frame = frame;
         }
 
         @Override
@@ -48,7 +53,7 @@ public class PodcastFeedEntryDownloadChecker implements Runnable {
             for (Entry<PodcastFeedEntry, Boolean> entry : downloaded.entrySet()) {
                 entry.getKey().setDownloaded(entry.getValue());
             }
-            GuiHandler.getInstance().getNavigationTablePanel().getNavigationTable().repaint();
+            frame.getNavigationTablePanel().getNavigationTable().repaint();
         }
     }
 
@@ -68,6 +73,10 @@ public class PodcastFeedEntryDownloadChecker implements Runnable {
         }
     }
 
+    public PodcastFeedEntryDownloadChecker(IFrame frame) {
+    	this.frame = frame;
+	}
+    
     @Override
     public void run() {
         final Map<PodcastFeedEntry, File> files = new HashMap<PodcastFeedEntry, File>();
@@ -82,6 +91,6 @@ public class PodcastFeedEntryDownloadChecker implements Runnable {
         for (Entry<PodcastFeedEntry, File> entry : files.entrySet()) {
             downloaded.put(entry.getKey(), entry.getValue().exists() && !PodcastFeedHandler.getInstance().isDownloading(entry.getKey()));
         }
-        SwingUtilities.invokeLater(new SetDownloadedRunnable(downloaded));
+        SwingUtilities.invokeLater(new SetDownloadedRunnable(downloaded, frame));
     }
 }

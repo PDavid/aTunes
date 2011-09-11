@@ -29,13 +29,14 @@ import javax.swing.JFileChooser;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanel;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeResultEntry;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeVideoDownloader;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
@@ -115,7 +116,7 @@ public class YoutubeResultsTableCellRendererCode extends ContextTableRowPanel<Yo
 	            // for some reason dialog fails with files with [ or ] chars
 	            File defaultFileName = new File(FileNameUtils.getValidFileName(entry.getName().replace("\\", "\\\\").replace("$", "\\$").replace('[', ' ').replace(']', ' ')));
 	            dialog.setSelectedFile(defaultFileName);
-	            int returnValue = dialog.showSaveDialog(GuiHandler.getInstance().getFrame().getFrame());
+	            int returnValue = dialog.showSaveDialog(Context.getBean(IFrame.class).getFrame());
 	            File selectedFile = dialog.getSelectedFile();
 	            if (selectedFile != null && JFileChooser.APPROVE_OPTION == returnValue) {
 	                final YoutubeVideoDownloader downloader = new YoutubeVideoDownloader(entry, selectedFile, state.getProxy(), youtubeService);

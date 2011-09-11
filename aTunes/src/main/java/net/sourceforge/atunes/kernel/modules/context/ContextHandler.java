@@ -25,7 +25,6 @@ import java.util.List;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -255,7 +254,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     
     private ContextController getController() {
     	if (controller == null) {
-    		controller = new ContextController(GuiHandler.getInstance().getContextPanel(), getState());
+    		controller = new ContextController(getFrame().getContextPanel(), getState());
     	}
     	return controller;
     }

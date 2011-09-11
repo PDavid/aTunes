@@ -53,6 +53,7 @@ import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -105,10 +106,12 @@ public final class PodcastFeedHandler extends AbstractHandler {
 	private static final class DeleteDownloadedPodcastFeedEntryWorker extends SwingWorker<Boolean, Void> {
         private final File f;
         private final PodcastFeedEntry podcastFeedEntry;
+        private IFrame frame;
 
-        private DeleteDownloadedPodcastFeedEntryWorker(File f, PodcastFeedEntry podcastFeedEntry) {
+        private DeleteDownloadedPodcastFeedEntryWorker(File f, PodcastFeedEntry podcastFeedEntry, IFrame frame) {
             this.f = f;
             this.podcastFeedEntry = podcastFeedEntry;
+            this.frame = frame;
         }
 
         @Override
@@ -121,7 +124,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
             try {
                 if (get()) {
                     podcastFeedEntry.setDownloaded(false);
-                    GuiHandler.getInstance().getNavigationTablePanel().getNavigationTable().repaint();
+                    frame.getNavigationTablePanel().getNavigationTable().repaint();
                 }
             } catch (InterruptedException e) {
                 Logger.error(e);
@@ -299,7 +302,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
      * Start podcast feed entry download checker.
      */
     public void startPodcastFeedEntryDownloadChecker() {
-        getPodcastFeedEntryDownloadCheckerExecutorService().scheduleWithFixedDelay(new PodcastFeedEntryDownloadChecker(), 0, 10000, TimeUnit.MILLISECONDS);
+        getPodcastFeedEntryDownloadCheckerExecutorService().scheduleWithFixedDelay(new PodcastFeedEntryDownloadChecker(getFrame()), 0, 10000, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -325,7 +328,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
         if (scheduledPodcastFeedEntryRetrieverFuture != null) {
             scheduledPodcastFeedEntryRetrieverFuture.cancel(true);
         }
-        scheduledPodcastFeedEntryRetrieverFuture = getPodcastFeedEntryRetrieverExecutorService().scheduleWithFixedDelay(new PodcastFeedEntryRetriever(getPodcastFeeds(), getState()), INITIAL_RETRIEVER_DELAY,
+        scheduledPodcastFeedEntryRetrieverFuture = getPodcastFeedEntryRetrieverExecutorService().scheduleWithFixedDelay(new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame()), INITIAL_RETRIEVER_DELAY,
                 newRetrievalInterval, TimeUnit.MILLISECONDS);
     }
 
@@ -335,7 +338,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
      * @see net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntryRetriever#retrievePodcastFeedEntries()
      */
     public void retrievePodcastFeedEntries() {
-    	getPodcastFeedEntryRetrieverExecutorService().execute(new PodcastFeedEntryRetriever(getPodcastFeeds(), getState()));
+    	getPodcastFeedEntryRetrieverExecutorService().execute(new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame()));
     }
 
     /**
@@ -350,7 +353,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
         }
         final TransferProgressDialog d = GuiHandler.getInstance().getNewTransferProgressDialog(I18nUtils.getString("PODCAST_FEED_ENTRY_DOWNLOAD"), null);
         d.setIcon(RssImageIcon.getIcon());
-        final PodcastFeedEntryDownloader downloadPodcastFeedEntry = new PodcastFeedEntryDownloader(podcastFeedEntry, getState().getProxy());
+        final PodcastFeedEntryDownloader downloadPodcastFeedEntry = new PodcastFeedEntryDownloader(podcastFeedEntry, getState().getProxy(), getFrame());
         synchronized (runningDownloads) {
             runningDownloads.add(downloadPodcastFeedEntry);
         }
@@ -487,7 +490,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
      */
     public void deleteDownloadedPodcastFeedEntry(final PodcastFeedEntry podcastFeedEntry) {
         File f = new File(getDownloadPath(podcastFeedEntry));
-        new DeleteDownloadedPodcastFeedEntryWorker(f, podcastFeedEntry).execute();
+        new DeleteDownloadedPodcastFeedEntryWorker(f, podcastFeedEntry, getFrame()).execute();
     }
 
     /**

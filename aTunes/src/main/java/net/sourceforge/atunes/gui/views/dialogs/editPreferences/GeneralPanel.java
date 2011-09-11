@@ -44,7 +44,6 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.gui.frame.Frames;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelBean;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
@@ -55,6 +54,7 @@ import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.state.beans.ColorBean;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -92,7 +92,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
     private JComboBox lookAndFeel;
     private JLabel skinLabel;
     private JComboBox skin;    
-    private ByImageChoosingPanel<Class<? extends Frame>> windowTypeChoosingPanel;
+    private ByImageChoosingPanel<Class<? extends IFrame>> windowTypeChoosingPanel;
     private JButton trayPlayerColorSelector;
     
     private transient ActionListener applySkinActionListener;
@@ -190,11 +190,11 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
             }
         });
         skin = new JComboBox();
-        List<ImageEntry<Class<? extends Frame>>> data = new ArrayList<ImageEntry<Class<? extends Frame>>>();
-        for (Class<? extends Frame> clazz : Frames.getClasses()) {
-            data.add(new ImageEntry<Class<? extends Frame>>(clazz, Frames.getImage(clazz)));
+        List<ImageEntry<Class<? extends IFrame>>> data = new ArrayList<ImageEntry<Class<? extends IFrame>>>();
+        for (Class<? extends IFrame> clazz : Frames.getClasses()) {
+            data.add(new ImageEntry<Class<? extends IFrame>>(clazz, Frames.getImage(clazz)));
         }
-        windowTypeChoosingPanel = new ByImageChoosingPanel<Class<? extends Frame>>(data);
+        windowTypeChoosingPanel = new ByImageChoosingPanel<Class<? extends IFrame>>(data);
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridy = 0;
@@ -266,8 +266,8 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
     public boolean applyPreferences(IState state) {
         boolean needRestart = false;
 
-        Class<? extends Frame> oldFrameClass = state.getFrameClass();
-        Class<? extends Frame> newFrameClass = windowTypeChoosingPanel.getSelectedItem();
+        Class<? extends IFrame> oldFrameClass = state.getFrameClass();
+        Class<? extends IFrame> newFrameClass = windowTypeChoosingPanel.getSelectedItem();
         state.setFrameClass(newFrameClass);
         if (!oldFrameClass.equals(newFrameClass)) {
             needRestart = true;
@@ -354,7 +354,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
      * @param type
      *            the new window type
      */
-    private void setWindowType(Class<? extends Frame> type) {
+    private void setWindowType(Class<? extends IFrame> type) {
         windowTypeChoosingPanel.setSelectedItem(type);
     }
 

@@ -22,7 +22,8 @@ package net.sourceforge.atunes.api;
 
 import javax.swing.JMenu;
 
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.model.IFrame;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -39,6 +40,6 @@ public final class MenuBarApi {
      * @param newMenu
      */
     public static void addMenu(JMenu newMenu) {
-        GuiHandler.getInstance().getMenuBar().addMenu(newMenu);
+        Context.getBean(IFrame.class).getAppMenuBar().addMenu(newMenu);
     }
 }

@@ -35,6 +35,7 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -54,8 +55,8 @@ public class XineEngine extends AbstractPlayerEngine {
     private Timer durationUpdater;
     private final Object xineLock = new Object();
 
-    public XineEngine(IState state) {
-    	super(state);
+    public XineEngine(IState state, IFrame frame) {
+    	super(state, frame);
 	}
     
     @Override

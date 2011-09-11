@@ -32,10 +32,10 @@ import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.NetworkUtils;
 
@@ -54,6 +54,8 @@ public class PodcastFeedEntryDownloader extends SwingWorker<Boolean, Void> {
     private volatile boolean failed;
     
     private ProxyBean proxy;
+    
+    private IFrame frame;
 
     /**
      * Instantiates a new podcast feed entry downloader.
@@ -61,9 +63,10 @@ public class PodcastFeedEntryDownloader extends SwingWorker<Boolean, Void> {
      * @param podcastFeedEntry
      *            the podcast feed entry
      */
-    public PodcastFeedEntryDownloader(PodcastFeedEntry podcastFeedEntry, ProxyBean proxy) {
+    public PodcastFeedEntryDownloader(PodcastFeedEntry podcastFeedEntry, ProxyBean proxy, IFrame frame) {
         this.podcastFeedEntry = podcastFeedEntry;
         this.proxy = proxy;
+        this.frame = frame;
     }
 
     @Override
@@ -183,7 +186,7 @@ public class PodcastFeedEntryDownloader extends SwingWorker<Boolean, Void> {
             if (!isCancelled() && get()) {
                 Logger.info("Download of " + podcastFeedEntry.getUrl() + " finished.");
                 podcastFeedEntry.setDownloaded(true);
-                GuiHandler.getInstance().getNavigationTablePanel().getNavigationTable().repaint();
+                frame.getNavigationTablePanel().getNavigationTable().repaint();
             }
         } catch (InterruptedException e) {
             Logger.error(e);

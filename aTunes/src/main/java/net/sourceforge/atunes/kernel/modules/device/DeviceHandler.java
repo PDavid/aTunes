@@ -221,7 +221,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
             return;
         }
 
-        final TransferToDeviceProcess process = new TransferToDeviceProcess(collection, deviceRepository.getRepositoryFolders().get(0).getAbsolutePath(), getState());
+        final TransferToDeviceProcess process = new TransferToDeviceProcess(collection, deviceRepository.getRepositoryFolders().get(0).getAbsolutePath(), getState(), getFrame());
         process.addProcessListener(new ProcessListener() {
             @Override
             public void processCanceled() {
@@ -383,9 +383,10 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
 
     	// Update status bar info
     	if (loader != null) {
-    		GuiHandler.getInstance().showDeviceInfoOnStatusBar(getDeviceData());
+            getFrame().setStatusBarDeviceLabelText(getDeviceData());
+            getFrame().showDeviceInfo(true);
     	} else {
-    		GuiHandler.getInstance().hideDeviceInfoOnStatusBar();
+    		getFrame().showDeviceInfo(false);
     	}
 
     	if (loader != null) {

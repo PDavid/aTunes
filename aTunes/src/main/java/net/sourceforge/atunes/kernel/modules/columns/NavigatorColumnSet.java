@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.gui.model.NavigationTableColumnModel;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 
 /**
  * This class defines all columns than can be viewed in Navigator
@@ -50,6 +49,6 @@ public final class NavigatorColumnSet extends AbstractColumnSet {
 
     @Override
     protected void refreshColumns() {
-        ((NavigationTableColumnModel) GuiHandler.getInstance().getNavigationTablePanel().getNavigationTable().getColumnModel()).arrangeColumns(false);
+        ((NavigationTableColumnModel) frame.getNavigationTablePanel().getNavigationTable().getColumnModel()).arrangeColumns(false);
     }
 }

@@ -26,11 +26,12 @@ import java.util.List;
 
 import javax.swing.KeyStroke;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class PlayAction extends CustomAbstractAction {
@@ -46,12 +47,12 @@ public class PlayAction extends CustomAbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         // disable enter key when focus is on filter text field (so event is not fired from PLAY/PAUSE button)
-        if (GuiHandler.getInstance().getPlayerControls().getFilterPanel().getFilterTextField().isFocusOwner()
+        if (Context.getBean(IFrame.class).getPlayerControls().getFilterPanel().getFilterTextField().isFocusOwner()
                 && e != null && !(e.getSource().getClass().equals(PlayPauseButton.class))) {
             return;
         }
         
-        int selAudioObject = GuiHandler.getInstance().getPlayListTable().getSelectedRow();
+        int selAudioObject = Context.getBean(IFrame.class).getPlayListTable().getSelectedRow();
         int currPlayingAudioObject = PlayListHandler.getInstance().getIndexOfAudioObject(PlayerHandler.getInstance().getAudioObject());
 
         if (selAudioObject != currPlayingAudioObject) {

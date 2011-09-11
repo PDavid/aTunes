@@ -26,7 +26,6 @@ import java.util.Map;
 import net.sourceforge.atunes.gui.model.NavigationTableColumnModel;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnBean;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 
 /**
  * Custom column set to be used by navigation views that use custom columns
@@ -40,7 +39,7 @@ public abstract class AbstractCustomNavigatorColumnSet extends AbstractColumnSet
      * Name of column set. Used to store and retrieve settings
      */
     private String columnSetName;
-
+    
     /**
      * Default constructor
      */
@@ -70,7 +69,6 @@ public abstract class AbstractCustomNavigatorColumnSet extends AbstractColumnSet
 
     @Override
     protected void refreshColumns() {
-        ((NavigationTableColumnModel) GuiHandler.getInstance().getNavigationTablePanel().getNavigationTable().getColumnModel()).arrangeColumns(false);
-    }
-
+        ((NavigationTableColumnModel) frame.getNavigationTablePanel().getNavigationTable().getColumnModel()).arrangeColumns(false);
+    }    
 }

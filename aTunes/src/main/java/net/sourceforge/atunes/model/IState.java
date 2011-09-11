@@ -23,8 +23,6 @@ package net.sourceforge.atunes.model;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.gui.frame.Frame;
-import net.sourceforge.atunes.gui.frame.FrameState;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelBean;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnBean;
@@ -114,9 +112,9 @@ public interface IState {
 	public void setSelectedContextTab(String selectedContextTab);
 
 
-	public Class<? extends Frame> getFrameClass();
+	public Class<? extends IFrame> getFrameClass();
 
-	public void setFrameClass(Class<? extends Frame> frameClass);
+	public void setFrameClass(Class<? extends IFrame> frameClass);
 
 	public ProxyBean getProxy();
 
@@ -284,9 +282,9 @@ public interface IState {
 	public void setSearchResultsColumns(
 			Map<String, ColumnBean> searchResultsColumns);
 
-	public FrameState getFrameState(Class<? extends Frame> frame);
+	public IFrameState getFrameState(Class<? extends IFrame> frame);
 
-	public void setFrameState(Class<? extends Frame> frame, FrameState fs);
+	public void setFrameState(Class<? extends IFrame> frame, IFrameState fs);
 
 	public String getDefaultDeviceLocation();
 

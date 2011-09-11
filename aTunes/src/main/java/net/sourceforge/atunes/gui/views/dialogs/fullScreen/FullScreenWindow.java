@@ -75,6 +75,7 @@ import net.sourceforge.atunes.kernel.modules.player.ProgressBarSeekListener;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -205,6 +206,8 @@ public final class FullScreenWindow extends AbstractCustomWindow {
     private List<IAudioObject> objects;
     
     private IState state;
+    
+    private IFrame frame;
 
     /**
      * Instantiates a new full screen dialog.
@@ -212,9 +215,10 @@ public final class FullScreenWindow extends AbstractCustomWindow {
      * @param owner
      * @param state
      */
-    public FullScreenWindow(JFrame owner, IState state) {
+    public FullScreenWindow(JFrame owner, IState state, IFrame frame) {
         super(owner, 0, 0);
         this.state = state;
+        this.frame = frame;
         setLocation(0, 0);
         setAlwaysOnTop(true);
         setContent();
@@ -455,12 +459,11 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 
     /**
      * Sets the full screen.
-     * 
      * @param fullscreen
-     *            if fullscreen mode should be set
+     * @param frame
      */
-    private void setFullScreen(boolean fullscreen) {
-    	OsManager.setFullScreen(this, fullscreen);
+    private void setFullScreen(boolean fullscreen, IFrame frame) {
+    	OsManager.setFullScreen(this, fullscreen, frame);
     }
 
     /**
@@ -518,7 +521,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
             updateWindow();
             activateTimer();
         }
-        setFullScreen(visible);
+        setFullScreen(visible, frame);
     }
 
     public void setVolume(int volume) {

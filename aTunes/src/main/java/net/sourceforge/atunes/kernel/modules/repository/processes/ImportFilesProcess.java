@@ -34,6 +34,7 @@ import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
 import net.sourceforge.atunes.kernel.modules.tags.TagAttributesReviewed;
 import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
 import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
@@ -69,9 +70,10 @@ public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
      * @param tagAttributesReviewed
      *            Set of changes to be made on tags
      * @param state
+     * @param frame
      */
-    public ImportFilesProcess(List<ILocalAudioObject> filesToImport, List<File> folders, String path, TagAttributesReviewed tagAttributesReviewed, IState state) {
-        super(filesToImport, state);
+    public ImportFilesProcess(List<ILocalAudioObject> filesToImport, List<File> folders, String path, TagAttributesReviewed tagAttributesReviewed, IState state, IFrame frame) {
+        super(filesToImport, state, frame);
         this.folders = folders;
         this.path = path;
         this.filesToChangeTag = new HashSet<ILocalAudioObject>();

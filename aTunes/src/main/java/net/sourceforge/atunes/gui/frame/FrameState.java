@@ -25,14 +25,13 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.sourceforge.atunes.model.IFrameState;
+
 /**
  * State of aTunes main frame.
  */
-public final class FrameState implements Serializable {
+public final class FrameState implements Serializable, IFrameState {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 455297656338188247L;
 	
 	private Map<String, Integer> splitPaneDividerPositions;
@@ -51,13 +50,13 @@ public final class FrameState implements Serializable {
         this(new HashMap<String, Integer>());
     }
 
-    public FrameState(FrameState frameState) {
-        this(frameState.splitPaneDividerPositions);
-        this.xPosition = frameState.xPosition;
-        this.yPosition = frameState.yPosition;
-        this.maximized = frameState.maximized;
-        this.windowWidth = frameState.windowWidth;
-        this.windowHeight = frameState.windowHeight;
+    public FrameState(IFrameState frameState) {
+        this(frameState.getSplitPaneDividerPositions());
+        this.xPosition = frameState.getXPosition();
+        this.yPosition = frameState.getYPosition();
+        this.maximized = frameState.isMaximized();
+        this.windowWidth = frameState.getWindowWidth();
+        this.windowHeight = frameState.getWindowHeight();
     }
 
     @ConstructorProperties("splitPaneDividerPositions")
@@ -65,14 +64,16 @@ public final class FrameState implements Serializable {
         this.splitPaneDividerPositions = new HashMap<String, Integer>(splitPaneDividerPositions);
     }
 
-    public void putSplitPaneDividerPos(String s, int pos) {
+    @Override
+	public void putSplitPaneDividerPos(String s, int pos) {
     	// Don't save pos == 0, as it's due to a component being not visible
     	if (pos > 0) {
     		splitPaneDividerPositions.put(s, pos);
     	}
     }
 
-    public int getSplitPaneDividerPos(String s) {
+    @Override
+	public int getSplitPaneDividerPos(String s) {
         Integer value = splitPaneDividerPositions.get(s);
         if (value == null) {
             value = 0;
@@ -80,46 +81,57 @@ public final class FrameState implements Serializable {
         return value;
     }
 
-    public Map<String, Integer> getSplitPaneDividerPositions() {
+    @Override
+	public Map<String, Integer> getSplitPaneDividerPositions() {
         return splitPaneDividerPositions;
     }
     
-    public int getXPosition() {
+    @Override
+	public int getXPosition() {
 		return xPosition;
 	}
 
+	@Override
 	public void setXPosition(int xPosition) {
 		this.xPosition = xPosition;
 	}
 
+	@Override
 	public int getYPosition() {
 		return yPosition;
 	}
 
+	@Override
 	public void setYPosition(int yPosition) {
 		this.yPosition = yPosition;
 	}
 
+	@Override
 	public boolean isMaximized() {
 		return maximized;
 	}
 
+	@Override
 	public void setMaximized(boolean maximized) {
 		this.maximized = maximized;
 	}
 
+	@Override
 	public int getWindowWidth() {
 		return windowWidth;
 	}
 
+	@Override
 	public void setWindowWidth(int windowWidth) {
 		this.windowWidth = windowWidth;
 	}
 
+	@Override
 	public int getWindowHeight() {
 		return windowHeight;
 	}
 
+	@Override
 	public void setWindowHeight(int windowHeight) {
 		this.windowHeight = windowHeight;
 	}

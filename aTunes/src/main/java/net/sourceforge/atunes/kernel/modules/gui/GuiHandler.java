@@ -22,10 +22,8 @@ package net.sourceforge.atunes.kernel.modules.gui;
 
 import java.awt.Component;
 import java.awt.ComponentOrientation;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -42,11 +40,8 @@ import javax.swing.filechooser.FileFilter;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.frame.DefaultSingleFrame;
-import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.gui.frame.FrameState;
 import net.sourceforge.atunes.gui.popup.FadingPopupFactory;
-import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable.PlayState;
 import net.sourceforge.atunes.gui.views.dialogs.AboutDialog;
 import net.sourceforge.atunes.gui.views.dialogs.AddArtistDragDialog;
@@ -65,14 +60,7 @@ import net.sourceforge.atunes.gui.views.dialogs.ReviewImportDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RipperProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.SearchDialog;
 import net.sourceforge.atunes.gui.views.dialogs.TransferProgressDialog;
-import net.sourceforge.atunes.gui.views.dialogs.UpdateDialog;
 import net.sourceforge.atunes.gui.views.dialogs.properties.PropertiesDialog;
-import net.sourceforge.atunes.gui.views.menus.ApplicationMenuBar;
-import net.sourceforge.atunes.gui.views.panels.ContextPanel;
-import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
-import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
-import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
-import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.OsManager;
@@ -91,11 +79,11 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
-import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
@@ -118,7 +106,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
 
     private static GuiHandler instance = new GuiHandler();
 
-    private Frame frame;
     private ExportOptionsDialog exportDialog;
     private SearchDialog searchDialog;
     private RipperProgressDialog ripperProgressDialog;
@@ -148,17 +135,17 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
 
     @Override
     public void applicationStarted(List<IAudioObject> playList) {
-        GuiHandler.getInstance().setFullFrameVisible(true);
+        getFrame().setVisible(true);
     	
     	IState state = getState();
-    	FrameState frameState = state.getFrameState(getFrame().getClass());
+    	IFrameState frameState = state.getFrameState(getFrame().getClass());
     	getFrame().applicationStarted(frameState);
     	
         showStatusBar(state.isShowStatusBar(), false);
         showContextPanel(state.isUseContext());
         
         if (!getState().isShowSystemTray() && OsManager.isClosingMainWindowClosesApplication()) {
-            GuiHandler.getInstance().setFrameDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        	getFrame().setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         }        
     }
 
@@ -174,22 +161,13 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     }
 
     /**
-     * Gets the context information panel.
-     * 
-     * @return the context information panel
-     */
-    public ContextPanel getContextPanel() {
-        return frame.getContextPanel();
-    }
-
-    /**
      * Gets the equalizer dialog.
      * 
      * @return the equalizer dialog
      */
     public EqualizerDialog getEqualizerDialog() {
         if (equalizerDialog == null) {
-            equalizerDialog = new EqualizerDialog(frame.getFrame());
+            equalizerDialog = new EqualizerDialog(getFrame().getFrame());
         }
         return equalizerDialog;
     }
@@ -201,7 +179,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      */
     public ExportOptionsDialog getExportDialog() {
         if (exportDialog == null) {
-            exportDialog = new ExportOptionsDialog(frame.getFrame());
+            exportDialog = new ExportOptionsDialog(getFrame().getFrame());
         }
         return exportDialog;
     }
@@ -215,37 +193,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      * @return the file selection dialog
      */
     public FileSelectionDialog getFileSelectionDialog(boolean dirOnly) {
-        return new FileSelectionDialog(frame.getFrame(), dirOnly);
-    }
-
-    /**
-     * Gets the frame.
-     * 
-     * @return the frame
-     */
-    public Frame getFrame() {
-        if (frame == null) {
-            Class<? extends Frame> clazz = getState().getFrameClass();
-            if (clazz != null) {
-                try {
-                    frame = clazz.newInstance();
-                } catch (InstantiationException e) {
-                    Logger.error(e);
-                    constructDefaultFrame();
-                } catch (IllegalAccessException e) {
-                    Logger.error(e);
-                    constructDefaultFrame();
-                }
-            } else {
-                constructDefaultFrame();
-            }
-        }
-        return frame;
-    }
-
-    private void constructDefaultFrame() {
-        frame = new DefaultSingleFrame();
-        getState().setFrameClass(frame.getClass());
+        return new FileSelectionDialog(getFrame().getFrame(), dirOnly);
     }
 
     /**
@@ -254,7 +202,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      * @return the indeterminate progress dialog
      */
     private IndeterminateProgressDialog getNewIndeterminateProgressDialog(Window parent) {
-        indeterminateProgressDialog = new IndeterminateProgressDialog(parent != null ? parent : frame.getFrame());
+        indeterminateProgressDialog = new IndeterminateProgressDialog(parent != null ? parent : getFrame().getFrame());
         return indeterminateProgressDialog;
     }
 
@@ -268,39 +216,12 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     }
 
     /**
-     * Gets the menu bar.
-     * 
-     * @return the menu bar
-     */
-    public ApplicationMenuBar getMenuBar() {
-        return frame.getAppMenuBar();
-    }
-
-    /**
      * Gets the multi folder selection dialog.
      * 
      * @return the multi folder selection dialog
      */
     public MultiFolderSelectionDialog getMultiFolderSelectionDialog() {
-        return new MultiFolderSelectionDialog(frame.getFrame());
-    }
-
-    /**
-     * Gets the navigation tree panel.
-     * 
-     * @return the navigation tree panel
-     */
-    public NavigationTreePanel getNavigationTreePanel() {
-        return frame.getNavigationTreePanel();
-    }
-
-    /**
-     * Gets the navigation table panel.
-     * 
-     * @return the navigation table panel
-     */
-    public NavigationTablePanel getNavigationTablePanel() {
-        return frame.getNavigationTablePanel();
+        return new MultiFolderSelectionDialog(getFrame().getFrame());
     }
 
     /**
@@ -311,7 +232,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      * @return
      */
     public ProgressDialog getNewProgressDialog(String title, Window owner) {
-        return new ProgressDialog(title, owner == null ? frame.getFrame() : owner);
+        return new ProgressDialog(title, owner == null ? getFrame().getFrame() : owner);
     }
 
     /**
@@ -322,16 +243,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      * @return
      */
     public TransferProgressDialog getNewTransferProgressDialog(String title, Window owner) {
-        return new TransferProgressDialog(title, owner == null ? frame.getFrame() : owner);
-    }
-
-    /**
-     * Gets the player controls.
-     * 
-     * @return the player controls
-     */
-    public PlayerControlsPanel getPlayerControls() {
-        return frame.getPlayerControls();
+        return new TransferProgressDialog(title, owner == null ? getFrame().getFrame() : owner);
     }
 
     /**
@@ -340,25 +252,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      * @return the play list column selector
      */
     public ColumnSetSelectorDialog getColumnSelector() {
-        return new ColumnSetSelectorDialog(frame.getFrame());
-    }
-
-    /**
-     * Gets the play list panel.
-     * 
-     * @return the play list panel
-     */
-    public PlayListPanel getPlayListPanel() {
-        return frame.getPlayListPanel();
-    }
-
-    /**
-     * Gets the play list table.
-     * 
-     * @return the play list table
-     */
-    public PlayListTable getPlayListTable() {
-        return frame.getPlayListTable();
+        return new ColumnSetSelectorDialog(getFrame().getFrame());
     }
 
     /**
@@ -367,7 +261,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      * @return the progress dialog
      */
     public RepositoryProgressDialog getProgressDialog() {
-        return new RepositoryProgressDialog(frame.getFrame());
+        return new RepositoryProgressDialog(getFrame().getFrame());
     }
 
     /**
@@ -377,7 +271,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      */
     public ReviewImportDialog getReviewImportDialog() {
         if (reviewImportDialog == null) {
-            reviewImportDialog = new ReviewImportDialog(frame.getFrame(), getState());
+            reviewImportDialog = new ReviewImportDialog(getFrame().getFrame(), getState());
         }
         return reviewImportDialog;
     }
@@ -389,7 +283,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      */
     public RipperProgressDialog getRipperProgressDialog() {
         if (ripperProgressDialog == null) {
-            ripperProgressDialog = new RipperProgressDialog(frame.getFrame());
+            ripperProgressDialog = new RipperProgressDialog(getFrame().getFrame());
             ripperProgressDialog.addCancelAction(new RipperCancelAction());
         }
         return ripperProgressDialog;
@@ -402,27 +296,9 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      */
     public SearchDialog getSearchDialog() {
         if (searchDialog == null) {
-            searchDialog = new SearchDialog(frame.getFrame());
+            searchDialog = new SearchDialog(getFrame().getFrame());
         }
         return searchDialog;
-    }
-
-    /**
-     * Gets the window location.
-     * 
-     * @return the window location
-     */
-    public Point getWindowLocation() {
-        return frame.getLocation();
-    }
-
-    /**
-     * Gets the window size.
-     * 
-     * @return the window size
-     */
-    public Dimension getWindowSize() {
-        return frame.getSize();
     }
 
     /**
@@ -443,102 +319,19 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     }
 
     /**
-     * Checks if is maximized.
-     * 
-     * @return true, if is maximized
-     */
-    public boolean isMaximized() {
-        return frame.getExtendedState() == java.awt.Frame.MAXIMIZED_BOTH;
-    }
-
-    /**
      * Repaint.
      */
     private void repaint() {
-        frame.getFrame().invalidate();
-        frame.getFrame().validate();
-        frame.getFrame().repaint();
+        getFrame().getFrame().invalidate();
+        getFrame().getFrame().validate();
+        getFrame().getFrame().repaint();
     }
 
-    /**
-     * Sets the center status bar text.
-     * 
-     * @param text
-     *            the text
-     * @param toolTip
-     *            the tool tip
-     */
-    public void setCenterStatusBarText(String text, String toolTip) {
-        frame.setCenterStatusBarText(text, toolTip);
-    }
-
-    /**
-     * Sets the frame default close operation.
-     * 
-     * @param op
-     *            the new frame default close operation
-     */
-    public void setFrameDefaultCloseOperation(int op) {
-        frame.setDefaultCloseOperation(op);
-    }
-
-    /**
-     * Sets the full frame extended state.
-     * 
-     * @param state
-     *            the new full frame extended state
-     */
-    public void setFullFrameExtendedState(int state) {
-        frame.setExtendedState(state);
-    }
-
-    /**
-     * Sets the full frame location.
-     * 
-     * @param location
-     *            the new full frame location
-     */
-    public void setFullFrameLocation(Point location) {
-        frame.setLocation(location);
-    }
-
-    /**
-     * Sets the full frame location relative to.
-     * 
-     * @param c
-     *            the new full frame location relative to
-     */
-    public void setFullFrameLocationRelativeTo(Component c) {
-        frame.setLocationRelativeTo(c);
-    }
-
-    /**
-     * Sets the full frame visible.
-     * 
-     * @param visible
-     *            the new full frame visible
-     */
-    public void setFullFrameVisible(boolean visible) {
-        frame.setVisible(visible);
-    }
-    
     /**
      * Convenience method, called from MacOSXAdapter
      */
     public void showFullFrame() {
-    	setFullFrameVisible(true);
-    }
-
-    /**
-     * Sets the left status bar text.
-     * 
-     * @param text
-     *            the text
-     * @param toolTip
-     *            the tool tip
-     */
-    public void setLeftStatusBarText(String text, String toolTip) {
-        frame.setLeftStatusBarText(text, toolTip);
+    	getFrame().setVisible(true);
     }
 
     /**
@@ -551,18 +344,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
         PlayerHandler.getInstance().setPlaying(playing);
         Context.getBean(IFullScreenHandler.class).setPlaying(playing);
         Context.getBean(ISystemTrayHandler.class).setPlaying(playing);
-    }
-
-    /**
-     * Sets the right status bar text.
-     * 
-     * @param text
-     *            the text
-     * @param toolTip
-     *            the tool tip
-     */
-    public void setRightStatusBarText(String text, String toolTip) {
-        frame.setRightStatusBarText(text, toolTip);
     }
 
     /**
@@ -583,7 +364,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
 
         String result = strBuilder.toString();
 
-        frame.setTitle(result);
+        getFrame().setTitle(result);
         Context.getBean(ISystemTrayHandler.class).setTrayToolTip(result);
     }
 
@@ -594,7 +375,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      */
     public void showAboutDialog() {
         if (aboutDialog == null) {
-            aboutDialog = new AboutDialog(frame.getFrame());
+            aboutDialog = new AboutDialog(getFrame().getFrame());
         }
         aboutDialog.setVisible(true);
     }
@@ -605,13 +386,13 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      * @return the podcast feed
      */
     public PodcastFeed showAddPodcastFeedDialog() {
-        AddPodcastFeedDialog dialog = new AddPodcastFeedDialog(frame.getFrame());
+        AddPodcastFeedDialog dialog = new AddPodcastFeedDialog(getFrame().getFrame());
         dialog.setVisible(true);
         return dialog.getPodcastFeed();
     }
     
     public void showAddArtistDragDialog(Artist currentArtist){
-    	AddArtistDragDialog dialog = new AddArtistDragDialog(frame.getFrame(),currentArtist);
+    	AddArtistDragDialog dialog = new AddArtistDragDialog(getFrame().getFrame(),currentArtist);
     	dialog.setVisible(true);
     	
     }
@@ -622,7 +403,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      * @return the radio
      */
     public Radio showAddRadioDialog() {
-        RadioDialog dialog = new RadioDialog(frame.getFrame());
+        RadioDialog dialog = new RadioDialog(getFrame().getFrame());
         dialog.setVisible(true);
         return dialog.getRadio();
     }
@@ -635,7 +416,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      * @return the radio
      */
     public Radio showEditRadioDialog(Radio radio) {
-        RadioDialog dialog = new RadioDialog(frame.getFrame(), radio);
+        RadioDialog dialog = new RadioDialog(getFrame().getFrame(), radio);
         dialog.setVisible(true);
         return dialog.getRadio();
     }
@@ -648,7 +429,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      */
     public void showContextPanel(boolean show) {
         getState().setUseContext(show);
-        frame.showContextPanel(show);
+        getFrame().showContextPanel(show);
         if (show) {
             ContextHandler.getInstance().retrieveInfoAndShowInPanel(PlayListHandler.getInstance().getCurrentAudioObjectFromVisiblePlayList());
         }
@@ -665,7 +446,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      * @return the int
      */
     public int showConfirmationDialog(String message, String title) {
-        return JOptionPane.showConfirmDialog(frame.getFrame(), message, title, JOptionPane.YES_NO_OPTION);
+        return JOptionPane.showConfirmDialog(getFrame().getFrame(), message, title, JOptionPane.YES_NO_OPTION);
     }
 
     /**
@@ -687,12 +468,12 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      */
     public void showErrorDialog(final String message) {
     	if (SwingUtilities.isEventDispatchThread()) {
-    		JOptionPane.showMessageDialog(frame.getFrame(), message, I18nUtils.getString("ERROR"), JOptionPane.ERROR_MESSAGE);
+    		JOptionPane.showMessageDialog(getFrame().getFrame(), message, I18nUtils.getString("ERROR"), JOptionPane.ERROR_MESSAGE);
     	} else {
     		SwingUtilities.invokeLater(new Runnable() {
     			@Override
     			public void run() {
-    				JOptionPane.showMessageDialog(frame.getFrame(), message, I18nUtils.getString("ERROR"), JOptionPane.ERROR_MESSAGE);
+    				JOptionPane.showMessageDialog(getFrame().getFrame(), message, I18nUtils.getString("ERROR"), JOptionPane.ERROR_MESSAGE);
     			}
     		});
     	}
@@ -742,39 +523,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
         pane.setErrorInfo(new ErrorInfo(title, message, sb.toString(), null, t, Level.SEVERE, null));
         JXErrorPane.showDialog(null, pane);
 
-    }
-
-    /**
-     * Show icon on status bar.
-     * 
-     * @param img
-     *            the img
-     * @param text
-     *            the text
-     */
-    public void showDeviceInfoOnStatusBar(String text) {
-        frame.setStatusBarDeviceLabelText(text);
-        frame.showDeviceInfo(true);
-    }
-
-    public void hideDeviceInfoOnStatusBar() {
-        frame.showDeviceInfo(false);
-    }
-
-    public void showNewPodcastFeedEntriesInfo() {
-        if (!getState().isShowStatusBar()) {
-            showMessage(I18nUtils.getString("NEW_PODCAST_ENTRIES"));
-        } else {
-            frame.showNewPodcastFeedEntriesInfo(true);
-        }
-    }
-
-    public void showNewVersionInfo(ApplicationVersion version, boolean alwaysInDialog) {
-        if (alwaysInDialog || !getState().isShowStatusBar()) {
-            new UpdateDialog(version, frame.getFrame()).setVisible(true);
-        } else {
-            frame.showNewVersionInfo(true, version);
-        }
     }
 
     /**
@@ -837,7 +585,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      * @return the string
      */
     public String showInputDialog(String title, String text, Image icon) {
-        InputDialog id = new InputDialog(frame.getFrame(), title, icon);
+        InputDialog id = new InputDialog(getFrame().getFrame(), title, icon);
         id.show(text);
         return id.getResult();
     }
@@ -849,7 +597,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      *            the message
      */
     public void showMessage(String message) {
-        showMessage(message,frame.getFrame());
+        showMessage(message, getFrame().getFrame());
     }
     
     /**
@@ -877,8 +625,8 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      */
     public Object showMessage(String message, String title, int messageType, Object[] options) {
         JOptionPane pane = new JOptionPane(message, messageType, JOptionPane.OK_CANCEL_OPTION, null, options);
-        JDialog dialog = pane.createDialog(frame.getFrame(), title);
-        dialog.setLocationRelativeTo(frame.getFrame());
+        JDialog dialog = pane.createDialog(getFrame().getFrame(), title);
+        dialog.setLocationRelativeTo(getFrame().getFrame());
         dialog.setVisible(true);
         return pane.getValue();
     }
@@ -895,7 +643,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      */
     public int showOpenDialog(JFileChooser fileChooser, FileFilter filter) {
         fileChooser.setFileFilter(filter);
-        return fileChooser.showOpenDialog(frame.getFrame());
+        return fileChooser.showOpenDialog(getFrame().getFrame());
     }
 
     /**
@@ -950,16 +698,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
 
         String toolTip = StringUtils.getString(strs);
         String text = StringUtils.getString(strs2);
-        setRightStatusBarText(text, toolTip);
-    }
-
-    /**
-     * Returns progress bar
-     * 
-     * @return
-     */
-    public JProgressBar getProgressBar() {
-        return frame.getProgressBar();
+        getFrame().setRightStatusBarText(text, toolTip);
     }
 
     /**
@@ -969,7 +708,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      *            the audio object
      */
     public void showPropertiesDialog(IAudioObject audioObject) {
-        PropertiesDialog dialog = PropertiesDialog.newInstance(audioObject, frame.getFrame(), getState());
+        PropertiesDialog dialog = PropertiesDialog.newInstance(audioObject, getFrame().getFrame(), getState(), getFrame());
         if (dialog.isVisible()) {
             dialog.toFront();
         } else {
@@ -995,12 +734,12 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
             String text = StringUtils.getString(I18nUtils.getString("REPOSITORY"), ": ", size, " ", I18nUtils.getString("SONGS"));
             String toolTip = StringUtils.getString(I18nUtils.getString("REPOSITORY"), ": ", size, " ", I18nUtils.getString("SONGS"), " - ", StringUtils
                     .fromByteToMegaOrGiga(sizeInBytes), " - ", StringUtils.fromSecondsToHoursAndDays(duration));
-            setCenterStatusBarText(text, toolTip);
+            getFrame().setCenterStatusBarText(text, toolTip);
         } else {
             String text = StringUtils.getString(I18nUtils.getString("REPOSITORY"), ": ", size, " ", I18nUtils.getString("SONGS_IN_REPOSITORY"));
             String toolTip = StringUtils.getString(I18nUtils.getString("REPOSITORY"), ": ", size, " ", I18nUtils.getString("SONGS_IN_REPOSITORY"), " - ", StringUtils
                     .fromByteToMegaOrGiga(sizeInBytes), " - ", StringUtils.fromSecondsToHoursAndDays(duration));
-            setCenterStatusBarText(text, toolTip);
+            getFrame().setCenterStatusBarText(text, toolTip);
         }
     }
 
@@ -1016,7 +755,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      */
     public int showSaveDialog(JFileChooser fileChooser, FileFilter filter) {
         fileChooser.setFileFilter(filter);
-        return fileChooser.showSaveDialog(frame.getFrame());
+        return fileChooser.showSaveDialog(getFrame().getFrame());
     }
 
     /**
@@ -1029,7 +768,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     	if (save) {
     		getState().setShowStatusBar(show);
     	}
-        frame.showStatusBar(show);
+        getFrame().showStatusBar(show);
         repaint();
     }
 
@@ -1040,14 +779,14 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      * @param text
      */
     public void showProgressBar(boolean indeterminate, String text) {
-        if (frame.getProgressBar() != null) {
-            frame.getProgressBar().setVisible(true);
-            frame.getProgressBar().setIndeterminate(indeterminate);
+        if (getFrame().getProgressBar() != null) {
+            getFrame().getProgressBar().setVisible(true);
+            getFrame().getProgressBar().setIndeterminate(indeterminate);
             if (!indeterminate) {
-                frame.getProgressBar().setMinimum(0);
-                frame.getProgressBar().setValue(0);
+                getFrame().getProgressBar().setMinimum(0);
+                getFrame().getProgressBar().setValue(0);
             }
-            frame.getProgressBar().setToolTipText(text);
+            getFrame().getProgressBar().setToolTipText(text);
         }
     }
 
@@ -1055,8 +794,8 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      * Hides progress bar
      */
     public void hideProgressBar() {
-        if (frame.getProgressBar() != null) {
-            frame.getProgressBar().setVisible(false);
+        if (getFrame().getProgressBar() != null) {
+            getFrame().getProgressBar().setVisible(false);
         }
     }
 
@@ -1070,7 +809,9 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
             FadingPopupFactory.install();
         }
 
-        FrameState frameState = getState().getFrameState(getFrame().getClass());
+		getFrame().setState(getState());
+        
+        IFrameState frameState = getState().getFrameState(getFrame().getClass());
         LocaleBean locale = getState().getLocale();
         LocaleBean oldLocale = getState().getOldLocale();
         // Reset fame state if no frame state in state or if component orientation of locale has changed
@@ -1079,15 +820,14 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
             frameState = new FrameState();
             getState().setFrameState(getFrame().getClass(), frameState);
         }
-        getFrame().setState(getState());
         getFrame().create(frameState);
 
-        JProgressBar progressBar = getProgressBar();
+        JProgressBar progressBar = getFrame().getProgressBar();
         if (progressBar != null) {
             progressBar.setVisible(false);
         }
 
-        hideDeviceInfoOnStatusBar();
+        getFrame().showDeviceInfo(false);
 
         Logger.debug("Start visualization done");
     }
@@ -1127,7 +867,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
                     }
                     text = StringUtils.getString(text, "(", StringUtils.seconds2String(song.getDuration()), ")");
                 }
-                setLeftStatusBarText(text, text);
+                getFrame().setLeftStatusBarText(text, text);
             } else {
                 String text = "";
                 if (song instanceof Radio || song instanceof PodcastFeedEntry || ((AudioFile) song).getTag() == null) {
@@ -1146,7 +886,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
                     }
                 }
                 text = StringUtils.getString(text, " :", I18nUtils.getString("PLAYING"));
-                setLeftStatusBarText(text, text);
+                getFrame().setLeftStatusBarText(text, text);
             }
         } else {
         	if (song instanceof PodcastFeedEntry && ((PodcastFeedEntry)song).isDownloaded()) {
@@ -1164,7 +904,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      *            the text
      */
     private void updateStatusBar(String text) {
-        setLeftStatusBarText(text, text);
+    	getFrame().setLeftStatusBarText(text, text);
     }
 
     /**
@@ -1224,28 +964,28 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
             setPlaying(false);
             updateStatusBar(I18nUtils.getString("PAUSED"));
             setTitleBar("");
-            getPlayListTable().setPlayState(PlayState.PAUSED);
+            getFrame().getPlayListTable().setPlayState(PlayState.PAUSED);
 
         } else if (newState == PlaybackState.RESUMING) {
             // Resume
             setPlaying(true);
             updateStatusBar(PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList());
             updateTitleBar(PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList());
-            getPlayListTable().setPlayState(PlayState.PLAYING);
+            getFrame().getPlayListTable().setPlayState(PlayState.PLAYING);
 
         } else if (newState == PlaybackState.PLAYING) {
             // Playing
             updateStatusBar(currentAudioObject);
             updateTitleBar(currentAudioObject);
             setPlaying(true);
-            getPlayListTable().setPlayState(PlayState.PLAYING);
+            getFrame().getPlayListTable().setPlayState(PlayState.PLAYING);
 
         } else if (newState == PlaybackState.STOPPED) {
             // Stop
             setPlaying(false);
             updateStatusBar(I18nUtils.getString("STOPPED"));
             setTitleBar("");
-            getPlayListTable().setPlayState(PlayState.STOPPED);
+            getFrame().getPlayListTable().setPlayState(PlayState.STOPPED);
         }
     }
 
@@ -1269,7 +1009,7 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-		        hideDeviceInfoOnStatusBar();
+				getFrame().showDeviceInfo(false);
 		        showMessage(I18nUtils.getString("DEVICE_DISCONNECTION_DETECTED"));		        
 			}
 		});

@@ -61,7 +61,7 @@ public class FullScreenHandler extends AbstractHandler implements IFullScreenHan
 	 * Creates full screen controller, to be called only when needed
 	 */
 	private void createFullScreenController() {
-        controller = new FullScreenController(getState());
+        controller = new FullScreenController(getState(), getFrame());
 	}
 	
 	private void updateAudioObjectsToShow(IAudioObject audioObject) {

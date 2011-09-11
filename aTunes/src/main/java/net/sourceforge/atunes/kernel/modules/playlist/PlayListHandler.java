@@ -175,7 +175,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
     @Override
     public void allHandlersInitialized() {
         // Create drag and drop listener
-        PlayListTableTransferHandler playListTransferHandler = new PlayListTableTransferHandler();
+        PlayListTableTransferHandler playListTransferHandler = new PlayListTableTransferHandler(getFrame());
         getPlayListController().getMainPlayListTable().setTransferHandler(playListTransferHandler);
         getPlayListController().getMainPlayListScrollPane().setTransferHandler(playListTransferHandler);
         new PlayListToDeviceDragAndDropListener();
@@ -391,11 +391,11 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         PlayList newSelectedPlayList = playLists.get(index);
 
         // Set selection interval to none
-        GuiHandler.getInstance().getPlayListTable().getSelectionModel().clearSelection();
+        getFrame().getPlayListTable().getSelectionModel().clearSelection();
 
         setPlayList(newSelectedPlayList);
         // Update table model
-        ((PlayListTableModel) GuiHandler.getInstance().getPlayListTable().getModel()).setVisiblePlayList(getCurrentPlayList(true));
+        ((PlayListTableModel) getFrame().getPlayListTable().getModel()).setVisiblePlayList(getCurrentPlayList(true));
         getPlayListController().refreshPlayList();
 
         // If playlist is active then perform an auto scroll
@@ -555,7 +555,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         setFilter(null);
 
         // Set selection interval to none
-        GuiHandler.getInstance().getPlayListTable().getSelectionModel().clearSelection();
+        getFrame().getPlayListTable().getSelectionModel().clearSelection();
 
         PlayList playList = getCurrentPlayList(true);
         if (!playList.isEmpty()) {
@@ -579,11 +579,11 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
 
             // hide the ticks and labels
             if (!getState().isStopPlayerOnPlayListClear()) {
-                GuiHandler.getInstance().getPlayerControls().getProgressSlider().setEnabled(false);
+            	getFrame().getPlayerControls().getProgressSlider().setEnabled(false);
             } else {
-                GuiHandler.getInstance().getPlayerControls().setShowTicksAndLabels(false);
+            	getFrame().getPlayerControls().setShowTicksAndLabels(false);
             }
-            GuiHandler.getInstance().getPlayListPanel().repaint();
+            getFrame().getPlayListPanel().repaint();
 
             // Refresh play list
             getPlayListController().refreshPlayList();
@@ -672,7 +672,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         }
 
         // Update table model
-        ((PlayListTableModel) GuiHandler.getInstance().getPlayListTable().getModel()).setVisiblePlayList(getCurrentPlayList(true));
+        ((PlayListTableModel) getFrame().getPlayListTable().getModel()).setVisiblePlayList(getCurrentPlayList(true));
 
         // Refresh play list
         // For some strange reason, this is needed even if play list is empty
@@ -887,7 +887,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         if (currentPlayList.isEmpty()) {
             Actions.getAction(SavePlayListAction.class).setEnabled(false);
             Actions.getAction(ShufflePlayListAction.class).setEnabled(false);
-            GuiHandler.getInstance().getPlayerControls().setShowTicksAndLabels(false);
+            getFrame().getPlayerControls().setShowTicksAndLabels(false);
         }
         GuiHandler.getInstance().showPlayListInformation(currentPlayList);
         Logger.info(StringUtils.getString(rows.length, " objects removed from play list"));
@@ -1003,12 +1003,12 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         playLists.add(visiblePlayListIndex, playList);
 
         // Set selection interval to none
-        GuiHandler.getInstance().getPlayListTable().getSelectionModel().clearSelection();
+        getFrame().getPlayListTable().getSelectionModel().clearSelection();
 
         setPlayList(playList);
 
         // Update table model
-        ((PlayListTableModel) GuiHandler.getInstance().getPlayListTable().getModel()).setVisiblePlayList(playList);
+        ((PlayListTableModel) getFrame().getPlayListTable().getModel()).setVisiblePlayList(playList);
         getPlayListController().refreshPlayList();
 
         getPlayListController().scrollPlayList(false);
@@ -1081,7 +1081,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      *            The index to move to
      */
     public void changeSelectedAudioObjectToIndex(int index) {
-        GuiHandler.getInstance().getPlayListTable().changeSelection(index, 0, false, false);
+        getFrame().getPlayListTable().changeSelection(index, 0, false, false);
     }
 
     /**
@@ -1091,7 +1091,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      */
     public List<IAudioObject> getSelectedAudioObjects() {
         List<IAudioObject> audioObjects = new ArrayList<IAudioObject>();
-        int[] selectedRows = GuiHandler.getInstance().getPlayListTable().getSelectedRows();
+        int[] selectedRows = getFrame().getPlayListTable().getSelectedRows();
         if (selectedRows.length > 0) {
             for (int element : selectedRows) {
                 IAudioObject file = PlayListHandler.getInstance().getCurrentPlayList(true).get(element);
@@ -1204,7 +1204,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      */
     private PlayListTabController getPlayListTabController() {
         if (playListTabController == null) {
-            playListTabController = new PlayListTabController(GuiHandler.getInstance().getPlayListPanel().getPlayListTabPanel(), getState());
+            playListTabController = new PlayListTabController(getFrame().getPlayListPanel().getPlayListTabPanel(), getState());
         }
         return playListTabController;
     }
@@ -1249,8 +1249,8 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
     public PlayListController getPlayListController() {
         if (playListController == null) {
             PlayListPanel panel = null;
-            panel = GuiHandler.getInstance().getPlayListPanel();
-            playListController = new PlayListController(panel, getState());
+            panel = getFrame().getPlayListPanel();
+            playListController = new PlayListController(panel, getState(), getFrame());
         }
         return playListController;
     }
@@ -1333,7 +1333,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         }
 
         if (indexes.length > 0) {
-            GuiHandler.getInstance().getPlayListPanel().getPlayListTable().getSelectionModel().clearSelection();
+            getFrame().getPlayListPanel().getPlayListTable().getSelectionModel().clearSelection();
             removeAudioObjects(indexes);
         }
 	}

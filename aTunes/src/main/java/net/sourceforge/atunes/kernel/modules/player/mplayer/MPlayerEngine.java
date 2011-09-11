@@ -39,6 +39,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -75,8 +76,8 @@ public class MPlayerEngine extends AbstractPlayerEngine {
     /** The current fade away process running */
     private FadeAwayRunnable currentFadeAwayRunnable = null;
 
-    public MPlayerEngine(IState state) {
-    	super(state);
+    public MPlayerEngine(IState state, IFrame frame) {
+    	super(state, frame);
         commandWriter = MPlayerCommandWriter.newCommandWriter(null);
     }
 

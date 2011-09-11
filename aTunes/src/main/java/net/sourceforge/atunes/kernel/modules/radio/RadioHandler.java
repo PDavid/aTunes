@@ -380,7 +380,7 @@ public final class RadioHandler extends AbstractHandler {
 	 * Shows radio browser
 	 */
 	public void showRadioBrowser() {
-		new RadioBrowserDialogController(new RadioBrowserDialog(GuiHandler.getInstance().getFrame().getFrame()), getState()).showRadioBrowser();
+		new RadioBrowserDialogController(new RadioBrowserDialog(getFrame().getFrame()), getState()).showRadioBrowser();
 	}
 
 	@Override

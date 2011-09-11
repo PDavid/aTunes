@@ -18,28 +18,17 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.api;
+package net.sourceforge.atunes.gui.views.menus;
 
-import javax.swing.Action;
+import javax.swing.JMenu;
 
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.model.IFrame;
+public interface IMenuBar {
 
-import org.commonjukebox.plugins.model.PluginApi;
+	/**
+	 * Adds a menu
+	 * 
+	 * @param newMenu
+	 */
+	public void addMenu(JMenu newMenu);
 
-@PluginApi
-public final class PlayerControlsApi {
-
-    private PlayerControlsApi() {
-
-    }
-
-    /**
-     * Adds a secondary toggle button in player controls
-     * 
-     * @param button
-     */
-    public static void addSecondaryControl(Action action) {
-        Context.getBean(IFrame.class).getPlayerControls().addSecondaryControl(action);
-    }
 }

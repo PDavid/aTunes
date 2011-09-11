@@ -32,8 +32,10 @@ import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.DateUtils;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.NetworkUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.XMLUtils;
@@ -61,10 +63,13 @@ public class PodcastFeedEntryRetriever implements Runnable {
     private List<PodcastFeed> podcastFeeds;
     
     private IState state;
+    
+    private IFrame frame;
 
-    public PodcastFeedEntryRetriever(List<PodcastFeed> podcastFeeds, IState state) {
+    public PodcastFeedEntryRetriever(List<PodcastFeed> podcastFeeds, IState state, IFrame frame) {
         this.podcastFeeds = podcastFeeds;
         this.state = state;
+        this.frame = frame;
     }
 
     /**
@@ -209,7 +214,11 @@ public class PodcastFeedEntryRetriever implements Runnable {
                             for (PodcastFeed podcastFeed : podcastFeeds) {
                                 podcastFeed.markEntriesAsNotNew();
                             }
-                            GuiHandler.getInstance().showNewPodcastFeedEntriesInfo();
+                            if (!state.isShowStatusBar()) {
+                                GuiHandler.getInstance().showMessage(I18nUtils.getString("NEW_PODCAST_ENTRIES"));
+                            } else {
+                                frame.showNewPodcastFeedEntriesInfo(true);
+                            }
                             break;
                         }
                     }

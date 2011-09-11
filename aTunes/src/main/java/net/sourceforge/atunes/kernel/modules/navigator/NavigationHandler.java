@@ -38,7 +38,6 @@ import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.draganddrop.TreeNavigationTransferHandler;
 import net.sourceforge.atunes.kernel.modules.filter.AbstractFilter;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -260,8 +259,8 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
      */
     private NavigationController getNavigationController() {
         if (navigationController == null) {
-            NavigationTreePanel treePanel = GuiHandler.getInstance().getNavigationTreePanel();
-            NavigationTablePanel tablePanel = GuiHandler.getInstance().getNavigationTablePanel();
+            NavigationTreePanel treePanel = getFrame().getNavigationTreePanel();
+            NavigationTablePanel tablePanel = getFrame().getNavigationTablePanel();
             navigationController = new NavigationController(treePanel, tablePanel, getState());
         }
         return navigationController;
@@ -341,7 +340,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
         	navigationView.getActionToShowView().setEnabled(show);
         }
     	
-        GuiHandler.getInstance().getFrame().showNavigationTree(show);
+        getFrame().showNavigationTree(show);
         // Depending if is visible or not filtering is allowed or not
         FilterHandler.getInstance().setFilterEnabled(NavigationHandler.getInstance().getTreeFilter(), show);
         
@@ -364,7 +363,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
      * @param show
      */
     private void applyNavigationTableVisibility(boolean show) {
-    	GuiHandler.getInstance().getFrame().showNavigationTable(show);
+    	getFrame().showNavigationTable(show);
         // Depending if is visible or not filtering is allowed or not
         FilterHandler.getInstance().setFilterEnabled(NavigationHandler.getInstance().getTableFilter(), show);
         

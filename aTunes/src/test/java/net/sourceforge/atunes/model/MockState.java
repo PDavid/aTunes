@@ -23,7 +23,6 @@ package net.sourceforge.atunes.model;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.gui.frame.Frame;
 import net.sourceforge.atunes.gui.frame.FrameState;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelBean;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
@@ -231,13 +230,13 @@ public class MockState implements IState {
 	}
 
 	@Override
-	public Class<? extends Frame> getFrameClass() {
+	public Class<? extends IFrame> getFrameClass() {
 
 		return null;
 	}
 
 	@Override
-	public void setFrameClass(Class<? extends Frame> frameClass) {
+	public void setFrameClass(Class<? extends IFrame> frameClass) {
 
 		
 	}
@@ -725,13 +724,13 @@ public class MockState implements IState {
 	}
 
 	@Override
-	public FrameState getFrameState(Class<? extends Frame> frame) {
+	public FrameState getFrameState(Class<? extends IFrame> frame) {
 
 		return null;
 	}
 
 	@Override
-	public void setFrameState(Class<? extends Frame> frame, FrameState fs) {
+	public void setFrameState(Class<? extends IFrame> frame, IFrameState fs) {
 
 		
 	}

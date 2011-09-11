@@ -37,6 +37,7 @@ import net.sourceforge.atunes.gui.views.dialogs.ProgressDialog;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.FileNameUtils;
@@ -68,11 +69,11 @@ public abstract class AbstractAudioFileTransferProcess extends AbstractProcess {
      */
     private String userSelectionWhenErrors = null;
 
-    protected AbstractAudioFileTransferProcess(Collection<ILocalAudioObject> collection, IState state) {
+    protected AbstractAudioFileTransferProcess(Collection<ILocalAudioObject> collection, IState state, IFrame frame) {
     	super(state);
         this.filesToTransfer = collection;
         this.filesTransferred = new ArrayList<File>();
-        setOwner(GuiHandler.getInstance().getFrame().getFrame());
+        setOwner(frame.getFrame());
     }
 
     @Override
