@@ -41,7 +41,8 @@ public class Context {
 				"/settings/spring/context.xml",
 				"/settings/spring/treegenerators.xml",
 				"/settings/spring/handlers.xml",
-				"/settings/spring/frame.xml"
+				"/settings/spring/frame.xml",
+				"/settings/spring/dialogs.xml"
 				);
 	}
 	

@@ -48,7 +48,6 @@ import net.sourceforge.atunes.gui.views.dialogs.AddArtistDragDialog;
 import net.sourceforge.atunes.gui.views.dialogs.AddPodcastFeedDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ColumnSetSelectorDialog;
 import net.sourceforge.atunes.gui.views.dialogs.EqualizerDialog;
-import net.sourceforge.atunes.gui.views.dialogs.ExportOptionsDialog;
 import net.sourceforge.atunes.gui.views.dialogs.FileSelectionDialog;
 import net.sourceforge.atunes.gui.views.dialogs.IndeterminateProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.InputDialog;
@@ -106,7 +105,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
 
     private static GuiHandler instance = new GuiHandler();
 
-    private ExportOptionsDialog exportDialog;
     private SearchDialog searchDialog;
     private RipperProgressDialog ripperProgressDialog;
     private IndeterminateProgressDialog indeterminateProgressDialog;
@@ -170,18 +168,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
             equalizerDialog = new EqualizerDialog(getFrame().getFrame());
         }
         return equalizerDialog;
-    }
-
-    /**
-     * Gets the export dialog.
-     * 
-     * @return the export dialog
-     */
-    public ExportOptionsDialog getExportDialog() {
-        if (exportDialog == null) {
-            exportDialog = new ExportOptionsDialog(getFrame().getFrame());
-        }
-        return exportDialog;
     }
 
     /**

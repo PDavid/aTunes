@@ -28,13 +28,13 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.views.dialogs.ExportOptionsDialog;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.processes.ExportFilesProcess;
+import net.sourceforge.atunes.model.IExportOptionsDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -83,13 +83,13 @@ public class ExportAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        ExportOptionsDialog dialog = GuiHandler.getInstance().getExportDialog();
+        IExportOptionsDialog dialog = Context.getBean(IExportOptionsDialog.class);
         dialog.startDialog();
 
         // If user didn't cancel dialog...
         if (!dialog.isCancel()) {
             String path = dialog.getExportLocation();
-            boolean exportNavigator = dialog.exportNavigatorSelection();
+            boolean exportNavigator = dialog.isExportNavigatorSelection();
             if (path != null && !path.trim().equals("")) {
                 boolean pathExists = new File(path).exists();
                 boolean userWantsToCreate = false;

@@ -28,6 +28,7 @@ import javax.swing.JDialog;
 import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 public abstract class AbstractCustomDialog extends JDialog {
@@ -70,6 +71,7 @@ public abstract class AbstractCustomDialog extends JDialog {
      * @param modal
      * @param disposeOnClose
      */
+    @Deprecated
     public AbstractCustomDialog(Window owner, int width, int height, boolean modal, CloseAction closeAction) {
         super(owner);
         setSize(width, height);
@@ -83,7 +85,30 @@ public abstract class AbstractCustomDialog extends JDialog {
         	enableCloseActionWithEscapeKey();
         }
     }
-
+    
+    /**
+     * Instantiates a new custom modal dialog.
+     * 
+     * @param owner
+     * @param width
+     * @param height
+     * @param modal
+     * @param disposeOnClose
+     */
+    public AbstractCustomDialog(IFrame frame, int width, int height, boolean modal, CloseAction closeAction) {
+        super(frame.getFrame());
+        setSize(width, height);
+        setUndecorated(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isDialogUndecorated());
+        setModalityType(modal ? ModalityType.APPLICATION_MODAL : ModalityType.MODELESS);
+        setLocationRelativeTo(frame.getFrame().getWidth() == 0 ? null : frame.getFrame());
+        setDefaultCloseOperation(closeAction.getConstant());
+        if (closeAction == CloseAction.DISPOSE) {
+        	enableDisposeActionWithEscapeKey();
+        } else if (closeAction == CloseAction.HIDE) {
+        	enableCloseActionWithEscapeKey();
+        }
+    }
+    
     /**
      * Enable close action with escape key.
      */
