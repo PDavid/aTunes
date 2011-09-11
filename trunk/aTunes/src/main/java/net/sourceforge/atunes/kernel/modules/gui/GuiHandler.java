@@ -47,24 +47,18 @@ import net.sourceforge.atunes.gui.views.dialogs.AboutDialog;
 import net.sourceforge.atunes.gui.views.dialogs.AddArtistDragDialog;
 import net.sourceforge.atunes.gui.views.dialogs.AddPodcastFeedDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ColumnSetSelectorDialog;
-import net.sourceforge.atunes.gui.views.dialogs.EqualizerDialog;
-import net.sourceforge.atunes.gui.views.dialogs.FileSelectionDialog;
 import net.sourceforge.atunes.gui.views.dialogs.IndeterminateProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.InputDialog;
-import net.sourceforge.atunes.gui.views.dialogs.MultiFolderSelectionDialog;
-import net.sourceforge.atunes.gui.views.dialogs.ProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RadioDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RepositoryProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ReviewImportDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RipperProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.SearchDialog;
-import net.sourceforge.atunes.gui.views.dialogs.TransferProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.properties.PropertiesDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.PlaybackState;
-import net.sourceforge.atunes.kernel.PlaybackStateListener;
 import net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
@@ -94,7 +88,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 import org.jdesktop.swingx.JXErrorPane;
 import org.jdesktop.swingx.error.ErrorInfo;
 
-public final class GuiHandler extends AbstractHandler implements PlaybackStateListener {
+public final class GuiHandler extends AbstractHandler {
 
     private static class RipperCancelAction implements ActionListener {
         @Override
@@ -108,7 +102,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     private SearchDialog searchDialog;
     private RipperProgressDialog ripperProgressDialog;
     private IndeterminateProgressDialog indeterminateProgressDialog;
-    private EqualizerDialog equalizerDialog;
     private AboutDialog aboutDialog;
     private ReviewImportDialog reviewImportDialog;
 
@@ -159,30 +152,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
     }
 
     /**
-     * Gets the equalizer dialog.
-     * 
-     * @return the equalizer dialog
-     */
-    public EqualizerDialog getEqualizerDialog() {
-        if (equalizerDialog == null) {
-            equalizerDialog = new EqualizerDialog(getFrame().getFrame());
-        }
-        return equalizerDialog;
-    }
-
-    /**
-     * Gets the file selection dialog.
-     * 
-     * @param dirOnly
-     *            the dir only
-     * 
-     * @return the file selection dialog
-     */
-    public FileSelectionDialog getFileSelectionDialog(boolean dirOnly) {
-        return new FileSelectionDialog(getFrame().getFrame(), dirOnly);
-    }
-
-    /**
      * Creates a new indeterminate dialog
      * 
      * @return the indeterminate progress dialog
@@ -199,37 +168,6 @@ public final class GuiHandler extends AbstractHandler implements PlaybackStateLi
      */
     private IndeterminateProgressDialog getIndeterminateProgressDialog() {
         return indeterminateProgressDialog;
-    }
-
-    /**
-     * Gets the multi folder selection dialog.
-     * 
-     * @return the multi folder selection dialog
-     */
-    public MultiFolderSelectionDialog getMultiFolderSelectionDialog() {
-        return new MultiFolderSelectionDialog(getFrame().getFrame());
-    }
-
-    /**
-     * Gets a new progress dialog
-     * 
-     * @param title
-     * @param owner
-     * @return
-     */
-    public ProgressDialog getNewProgressDialog(String title, Window owner) {
-        return new ProgressDialog(title, owner == null ? getFrame().getFrame() : owner);
-    }
-
-    /**
-     * Gets a new transfer progress dialog
-     * 
-     * @param title
-     * @param owner
-     * @return
-     */
-    public TransferProgressDialog getNewTransferProgressDialog(String title, Window owner) {
-        return new TransferProgressDialog(title, owner == null ? getFrame().getFrame() : owner);
     }
 
     /**

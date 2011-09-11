@@ -28,7 +28,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
@@ -37,6 +36,8 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
+import net.sourceforge.atunes.model.IEqualizerDialog;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -46,7 +47,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  * @author sylvain
  */
-public final class EqualizerDialog extends AbstractCustomDialog {
+public final class EqualizerDialog extends AbstractCustomDialog implements IEqualizerDialog {
 
     private static final long serialVersionUID = 7295438534550341824L;
 
@@ -59,12 +60,11 @@ public final class EqualizerDialog extends AbstractCustomDialog {
     /**
      * Draws the equalizer dialog.
      * 
-     * @param owner
-     *            the owner
+     * @param frame
      */
-    public EqualizerDialog(JFrame owner) {
+    public EqualizerDialog(IFrame frame) {
         // Width required by german translation
-        super(owner, 510, 300, true, CloseAction.HIDE);
+        super(frame, 510, 300, true, CloseAction.DISPOSE);
         setTitle(StringUtils.getString(I18nUtils.getString("EQUALIZER"), " - ", Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
         add(getContent());
         setResizable(false);
@@ -220,13 +220,14 @@ public final class EqualizerDialog extends AbstractCustomDialog {
         return panel;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * net.sourceforge.atunes.gui.views.controls.CustomModalFrame#setVisible
-     * (boolean)
-     */
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IEqualizerDialog#showDialog()
+	 */
+    @Override
+	public void showDialog() {
+    	setVisible(true);
+    }
+    
     @Override
     public void setVisible(boolean b) {
         if (b) {

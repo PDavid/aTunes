@@ -27,9 +27,10 @@ import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.EqualizerImageIcon;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.model.IEqualizerDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -49,7 +50,7 @@ public class ShowEqualizerAction extends ActionWithColorMutableIcon {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        GuiHandler.getInstance().getEqualizerDialog().setVisible(true);
+        Context.getBean(IEqualizerDialog.class).showDialog();
     }
     
     @Override

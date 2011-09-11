@@ -20,14 +20,14 @@
 
 package net.sourceforge.atunes.gui.views.dialogs;
 
-import java.awt.Window;
-
+import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * The Class TransferProgressDialog.
  */
-public final class TransferProgressDialog extends ProgressDialog {
+public final class TransferProgressDialog extends ProgressDialog implements IProgressDialog {
 
     /**
 	 * 
@@ -37,11 +37,10 @@ public final class TransferProgressDialog extends ProgressDialog {
     /**
      * Instantiates a new transfer progress dialog.
      * 
-     * @param title
-     *            the title
+     * @param frame
      */
-    public TransferProgressDialog(String title, Window owner) {
-        super(title, owner);
+    public TransferProgressDialog(IFrame frame) {
+        super(frame);
     }
 
     @Override

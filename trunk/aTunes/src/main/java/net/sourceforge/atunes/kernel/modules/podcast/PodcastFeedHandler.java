@@ -42,8 +42,8 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
-import net.sourceforge.atunes.gui.views.dialogs.TransferProgressDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.OsManager;
@@ -54,6 +54,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -72,11 +73,11 @@ public final class PodcastFeedHandler extends AbstractHandler {
     private final class DownloadPodcastFeedEntryPropertyChangeListener
 			implements PropertyChangeListener {
 		private final PodcastFeedEntry podcastFeedEntry;
-		private final TransferProgressDialog d;
+		private final IProgressDialog d;
 		private final PodcastFeedEntryDownloader downloadPodcastFeedEntry;
 
 		private DownloadPodcastFeedEntryPropertyChangeListener(
-				PodcastFeedEntry podcastFeedEntry, TransferProgressDialog d,
+				PodcastFeedEntry podcastFeedEntry, IProgressDialog d,
 				PodcastFeedEntryDownloader downloadPodcastFeedEntry) {
 			this.podcastFeedEntry = podcastFeedEntry;
 			this.d = d;
@@ -88,7 +89,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
 		    if (evt.getPropertyName().equals("progress")) {
 		        d.setProgressBarValue((Integer) evt.getNewValue());
 		        if ((Integer) evt.getNewValue() == 100) {
-		            d.dispose();
+		            d.hideDialog();
 		            synchronized (runningDownloads) {
 		                runningDownloads.remove(downloadPodcastFeedEntry);
 		            }
@@ -351,7 +352,8 @@ public final class PodcastFeedHandler extends AbstractHandler {
         if (isDownloading(podcastFeedEntry)) {
             return;
         }
-        final TransferProgressDialog d = GuiHandler.getInstance().getNewTransferProgressDialog(I18nUtils.getString("PODCAST_FEED_ENTRY_DOWNLOAD"), null);
+        final IProgressDialog d = (IProgressDialog) Context.getBean("transferDialog");
+        d.setTitle(I18nUtils.getString("PODCAST_FEED_ENTRY_DOWNLOAD"));
         d.setIcon(RssImageIcon.getIcon());
         final PodcastFeedEntryDownloader downloadPodcastFeedEntry = new PodcastFeedEntryDownloader(podcastFeedEntry, getState().getProxy(), getFrame());
         synchronized (runningDownloads) {
@@ -367,7 +369,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
         });
         d.setInfoText(podcastFeedEntry.getTitle());
         getPodcastFeedEntryDownloaderExecutorService().execute(downloadPodcastFeedEntry);
-        d.setVisible(true);
+        d.showDialog();
     }
 
     /**
@@ -380,13 +382,13 @@ public final class PodcastFeedHandler extends AbstractHandler {
      * @param downloadPodcastFeedEntry
      *            the download podcast feed entry
      */
-    void cancelDownloading(final PodcastFeedEntry podcastFeedEntry, final TransferProgressDialog d, final PodcastFeedEntryDownloader downloadPodcastFeedEntry) {
+    void cancelDownloading(final PodcastFeedEntry podcastFeedEntry, final IProgressDialog d, final PodcastFeedEntryDownloader downloadPodcastFeedEntry) {
         try {
             downloadPodcastFeedEntry.cancel(false);
         } catch (CancellationException ex) {
             // Nothing to do
         }
-        d.dispose();
+        d.hideDialog();
 
         final File f = new File(getDownloadPath(podcastFeedEntry));
         Runnable r = new Runnable() {

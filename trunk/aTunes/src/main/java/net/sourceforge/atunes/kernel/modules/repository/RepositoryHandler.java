@@ -42,8 +42,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.views.dialogs.MultiFolderSelectionDialog;
-import net.sourceforge.atunes.gui.views.dialogs.ProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RepositoryProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RepositorySelectionInfoDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ReviewImportDialog;
@@ -76,6 +74,8 @@ import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
+import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.IWebServicesHandler;
@@ -169,7 +169,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 
 			@Override
 			public void notifyFinishRead(RepositoryLoader loader) {
-			    progressDialog.setVisible(false);
+			    progressDialog.hideDialog();
 			}
 
 			@Override
@@ -202,10 +202,10 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 
 		private final List<File> folders;
 		private final String path;
-		private final ProgressDialog progressDialog;
+		private final IProgressDialog progressDialog;
 
 		private ImportFoldersSwingWorker(List<File> folders, String path,
-				ProgressDialog progressDialog) {
+				IProgressDialog progressDialog) {
 			this.folders = folders;
 			this.path = path;
 			this.progressDialog = progressDialog;
@@ -1126,10 +1126,10 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      * @return true, if successful
      */
     private boolean selectRepository(boolean repositoryNotFound) {
-        MultiFolderSelectionDialog dialog = GuiHandler.getInstance().getMultiFolderSelectionDialog();
+    	IMultiFolderSelectionDialog dialog = Context.getBean(IMultiFolderSelectionDialog.class);
         dialog.setTitle(I18nUtils.getString("SELECT_REPOSITORY"));
         dialog.setText(I18nUtils.getString("SELECT_REPOSITORY_FOLDERS"));
-        dialog.startDialog((repository != null && !repositoryNotFound) ? repository.getRepositoryFolders() : null);
+        dialog.showDialog((repository != null && !repositoryNotFound) ? repository.getRepositoryFolders() : null);
         if (!dialog.isCancelled()) {
             List<File> folders = dialog.getSelectedFolders();
             if (!folders.isEmpty()) {
@@ -1153,10 +1153,10 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      * @param path
      */
     public void importFolders(final List<File> folders, final String path) {
-        final ProgressDialog progressDialog = GuiHandler.getInstance().getNewProgressDialog(StringUtils.getString(I18nUtils.getString("READING_FILES_TO_IMPORT"), "..."),
-                getFrame().getFrame());
+    	IProgressDialog progressDialog = (IProgressDialog) Context.getBean("progressDialog");
+    	progressDialog.setTitle(StringUtils.getString(I18nUtils.getString("READING_FILES_TO_IMPORT"), "..."));
         progressDialog.disableCancelButton();
-        progressDialog.setVisible(true);
+        progressDialog.showDialog();
         SwingWorker<List<ILocalAudioObject>, Void> worker = new ImportFoldersSwingWorker(folders, path, progressDialog);
         worker.execute();
     }

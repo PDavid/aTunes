@@ -32,7 +32,6 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -54,13 +53,14 @@ import net.sourceforge.atunes.gui.lookandfeel.AbstractListCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class FileSelectionDialog.
  */
-public final class FileSelectionDialog extends AbstractCustomDialog {
+public final class FileSelectionDialog extends AbstractCustomDialog implements IFileSelectionDialog {
 
     private final class FileSystemListMouseAdapter extends MouseAdapter {
 		@Override
@@ -144,7 +144,7 @@ public final class FileSelectionDialog extends AbstractCustomDialog {
 		public void actionPerformed(ActionEvent e) {
 		    selectedDir = null;
 		    selectedFiles = null;
-		    if (dirOnly) {
+		    if (directoryOnly) {
 		        if (fileSystemList.getSelectedValue() != null) {
 		            selectedDir = new File(((File) fileSystemList.getSelectedValue()).getAbsolutePath());
 		        } else {
@@ -254,7 +254,7 @@ public final class FileSelectionDialog extends AbstractCustomDialog {
     private JButton cancelButton;
 
     /** The dir only. */
-    boolean dirOnly;
+    boolean directoryOnly;
 
     /** The canceled. */
     boolean canceled = true;
@@ -267,18 +267,18 @@ public final class FileSelectionDialog extends AbstractCustomDialog {
 
     /**
      * Instantiates a new file selection dialog.
-     * 
-     * @param owner
-     *            the owner
-     * @param dirOnly
-     *            the dir only
+     * @param frame
      */
-    public FileSelectionDialog(JFrame owner, boolean dirOnly) {
-        super(owner, 660, 430, true, CloseAction.DISPOSE);
-        this.dirOnly = dirOnly;
+    public FileSelectionDialog(IFrame frame) {
+        super(frame, 660, 430, true, CloseAction.DISPOSE);
         add(getContent());
         setResizable(false);
     }
+    
+    @Override
+    public void setDirectoryOnly(boolean dirOnly) {
+		this.directoryOnly = dirOnly;
+	}
 
     /**
      * Gets the content.
@@ -342,7 +342,7 @@ public final class FileSelectionDialog extends AbstractCustomDialog {
         File[] files = fsView.getFiles(f, true);
         List<File> list = new ArrayList<File>();
         for (File element : files) {
-            if (!dirOnly) {
+            if (!directoryOnly) {
                 list.add(element);
             } else if (element.isDirectory()) {
                 list.add(element);
@@ -352,30 +352,27 @@ public final class FileSelectionDialog extends AbstractCustomDialog {
         return list.toArray(new File[list.size()]);
     }
 
-    /**
-     * Gets the selected dir.
-     * 
-     * @return the selected dir
-     */
-    public File getSelectedDir() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IFileSelectionDialog#getSelectedDir()
+	 */
+    @Override
+	public File getSelectedDir() {
         return selectedDir;
     }
 
-    /**
-     * Gets the selected files.
-     * 
-     * @return the selected files
-     */
-    public File[] getSelectedFiles() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IFileSelectionDialog#getSelectedFiles()
+	 */
+    @Override
+	public File[] getSelectedFiles() {
         return Arrays.copyOf(selectedFiles, selectedFiles.length);
     }
 
-    /**
-     * Checks if is canceled.
-     * 
-     * @return true, if is canceled
-     */
-    public boolean isCanceled() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IFileSelectionDialog#isCanceled()
+	 */
+    @Override
+	public boolean isCanceled() {
         return canceled;
     }
 
@@ -445,10 +442,11 @@ public final class FileSelectionDialog extends AbstractCustomDialog {
         fileSystemTree.setCellRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTreeCellRenderer(new FileSystemTreeCellRendererCode()));
     }
 
-    /**
-     * Start dialog.
-     */
-    public void startDialog() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IFileSelectionDialog#showDialog()
+	 */
+    @Override
+	public void showDialog() {
         canceled = true;
         setTree();
         setVisible(true);

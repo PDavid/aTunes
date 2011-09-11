@@ -23,16 +23,14 @@ package net.sourceforge.atunes.kernel.modules.process;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.gui.views.dialogs.ProgressDialog;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -98,7 +96,7 @@ public abstract class AbstractProcess {
     /**
      * The dialog used to show the progress of this process
      */
-    private ProgressDialog progressDialog;
+    private IProgressDialog progressDialog;
 
     /**
      * The Swing component owner of this process. Needed to set owner of
@@ -169,14 +167,6 @@ public abstract class AbstractProcess {
         // Get size of this process
         this.processSize = getProcessSize();
 
-        // Add window listener to progress dialog to run cancel
-        getProgressDialog().addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                cancelProcess();
-            }
-        });
-
         // Create new thread to run process
         Thread t = new Thread(new ProcessRunnable());
 
@@ -216,9 +206,10 @@ public abstract class AbstractProcess {
      * 
      * @return
      */
-    protected ProgressDialog getProgressDialog() {
+    protected IProgressDialog getProgressDialog() {
         if (progressDialog == null) {
-            progressDialog = GuiHandler.getInstance().getNewProgressDialog(getProgressDialogTitle(), owner);
+            progressDialog = (IProgressDialog) Context.getBean("progressDialog");
+            progressDialog.setTitle(getProgressDialogTitle());
             progressDialog.setInfoText(getProgressDialogInformation());
             progressDialog.setCurrentProgress(0);
             progressDialog.setProgressBarValue(0);
@@ -246,7 +237,7 @@ public abstract class AbstractProcess {
                     getProgressDialog().setTotalProgress(processSize);
 
                     // Show dialog
-                    getProgressDialog().setVisible(true);
+                    getProgressDialog().showDialog();
                 }
             });
         } catch (Exception e) {
@@ -261,7 +252,7 @@ public abstract class AbstractProcess {
         try {
             SwingUtilities.invokeAndWait(new Runnable() {
                 public void run() {
-                    getProgressDialog().setVisible(false);
+                    getProgressDialog().hideDialog();
                 }
             });
         } catch (Exception e) {

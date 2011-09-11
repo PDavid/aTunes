@@ -39,7 +39,6 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -61,6 +60,8 @@ import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -68,7 +69,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * The Class MultiFolderSelectionDialog. Allows the selection of the repository
  * folders.
  */
-public final class MultiFolderSelectionDialog extends AbstractCustomDialog {
+public final class MultiFolderSelectionDialog extends AbstractCustomDialog implements IMultiFolderSelectionDialog {
 
     /**
      * Width of a check box. This is used to calculate if user pressed mouse
@@ -507,11 +508,10 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog {
     /**
      * Instantiates a new multi folder selection dialog.
      * 
-     * @param owner
-     *            the owner
+     * @param frame
      */
-    public MultiFolderSelectionDialog(JFrame owner) {
-        super(owner, 460, 530, true);
+    public MultiFolderSelectionDialog(IFrame frame) {
+        super(frame, 460, 530, true, CloseAction.DISPOSE);
         add(getContent());
         setResizable(false);
     }
@@ -565,21 +565,19 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog {
         return panel;
     }
 
-    /**
-     * Gets the selected folders.
-     * 
-     * @return the selected folders
-     */
-    public List<File> getSelectedFolders() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IMultiFolderSelectionDialog#getSelectedFolders()
+	 */
+    @Override
+	public List<File> getSelectedFolders() {
         return selectedFolders;
     }
 
-    /**
-     * Checks if is cancelled.
-     * 
-     * @return true, if is cancelled
-     */
-    public boolean isCancelled() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IMultiFolderSelectionDialog#isCancelled()
+	 */
+    @Override
+	public boolean isCancelled() {
         return cancelled;
     }
 
@@ -601,13 +599,11 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog {
         return false;
     }
 
-    /**
-     * Sets the text.
-     * 
-     * @param text
-     *            the new text
-     */
-    public void setText(String text) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IMultiFolderSelectionDialog#setText(java.lang.String)
+	 */
+    @Override
+	public void setText(String text) {
         this.text.setText(text);
     }
 
@@ -645,13 +641,11 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog {
         return false;
     }
 
-    /**
-     * Start dialog.
-     * 
-     * @param selectedFolders
-     *            the selected folders
-     */
-    public void startDialog(List<File> selectedFolders) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IMultiFolderSelectionDialog#showDialog(java.util.List)
+	 */
+    @Override
+	public void showDialog(List<File> selectedFolders) {
         this.cancelled = true;
         if (selectedFolders == null) {
             this.selectedFolders = new ArrayList<File>();

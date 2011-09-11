@@ -33,12 +33,13 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.gui.views.dialogs.ProgressDialog;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -62,7 +63,7 @@ public abstract class AbstractAudioFileTransferProcess extends AbstractProcess {
     /**
      * The dialog used to show the progress of this process
      */
-    private ProgressDialog progressDialog;
+    private IProgressDialog progressDialog;
 
     /**
      * User selection if an error occurs while transferring
@@ -87,10 +88,10 @@ public abstract class AbstractAudioFileTransferProcess extends AbstractProcess {
     }
 
     @Override
-    protected ProgressDialog getProgressDialog() {
+    protected IProgressDialog getProgressDialog() {
         if (progressDialog == null) {
-            // Use a TransferProgressDialog
-            progressDialog = GuiHandler.getInstance().getNewTransferProgressDialog(getProgressDialogTitle(), getOwner());
+            progressDialog = (IProgressDialog) Context.getBean("transferDialog");
+            progressDialog.setTitle(getProgressDialogTitle());
             progressDialog.setInfoText(getProgressDialogInformation());
             progressDialog.setCurrentProgress(0);
             progressDialog.setProgressBarValue(0);

@@ -30,11 +30,11 @@ import java.util.List;
 
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.gui.views.dialogs.TransferProgressDialog;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.NetworkUtils;
@@ -76,7 +76,7 @@ public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
     /**
      * Progress dialog to show download
      */
-    private TransferProgressDialog progressDialog;
+    private IProgressDialog progressDialog;
 
     /**
      * Flag indicating whether download must be aborted
@@ -103,7 +103,8 @@ public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
             f = new File(StringUtils.getString(file.getAbsolutePath(), ".mp4"));
         }
         this.file = f;
-        this.progressDialog = GuiHandler.getInstance().getNewTransferProgressDialog(entry.getName(), null);
+        this.progressDialog = (IProgressDialog) Context.getBean("transferDialog");
+        this.progressDialog.setTitle(entry.getName());
         this.progressDialog.setIcon(entry.getImage());
         this.progressDialog.setInfoText(I18nUtils.getString("DOWNLOADING"));
         this.progressDialog.addCancelButtonActionListener(new ActionListener() {
@@ -113,7 +114,7 @@ public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
             }
         });
         this.proxy = proxy;
-        this.progressDialog.setVisible(true);
+        this.progressDialog.showDialog();
     }
 
     @Override
@@ -172,7 +173,7 @@ public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
     @Override
     protected void done() {
         super.done();
-        progressDialog.setVisible(false);
+        progressDialog.hideDialog();
     }
 
 }

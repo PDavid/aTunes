@@ -23,7 +23,6 @@ package net.sourceforge.atunes.gui.views.dialogs;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Window;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
@@ -35,9 +34,11 @@ import javax.swing.JProgressBar;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class ProgressDialog extends AbstractCustomDialog {
+public class ProgressDialog extends AbstractCustomDialog implements IProgressDialog {
 
     private static final long serialVersionUID = 5792663290880992661L;
 
@@ -65,12 +66,10 @@ public class ProgressDialog extends AbstractCustomDialog {
     /**
      * Instantiates a new transfer progress dialog.
      * 
-     * @param title
-     *            the title
+     * @param frame
      */
-    public ProgressDialog(String title, Window owner) {
-        super(owner, 450, 150, false, CloseAction.DISPOSE);
-        setTitle(title);
+    public ProgressDialog(IFrame frame) {
+        super(frame, 450, 150, false, CloseAction.NOTHING);
         add(getContent());
         setResizable(false);
     }
@@ -134,69 +133,59 @@ public class ProgressDialog extends AbstractCustomDialog {
         return panel;
     }
 
-    /**
-     * Sets the info text.
-     * 
-     * @param s
-     *            the new info text
-     */
-    public void setInfoText(String s) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IProgressDialog#setInfoText(java.lang.String)
+	 */
+    @Override
+	public void setInfoText(String s) {
         infoLabel.setText(s);
     }
 
-    /**
-     * Sets the progress bar value
-     * 
-     * @param value
-     *            the new progress
-     */
-    public void setProgressBarValue(int value) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IProgressDialog#setProgressBarValue(int)
+	 */
+    @Override
+	public void setProgressBarValue(int value) {
         progressBar.setValue(value);
     }
 
-    /**
-     * Sets the byte progress.
-     * 
-     * @param value
-     *            the new byte progress
-     */
-    public void setCurrentProgress(long value) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IProgressDialog#setCurrentProgress(long)
+	 */
+    @Override
+	public void setCurrentProgress(long value) {
         currentLabel.setText(Long.toString(value));
     }
 
-    /**
-     * Sets the total bytes.
-     * 
-     * @param value
-     *            the new total bytes
-     */
-    public void setTotalProgress(long value) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IProgressDialog#setTotalProgress(long)
+	 */
+    @Override
+	public void setTotalProgress(long value) {
         totalLabel.setText(Long.toString(value));
     }
 
-    /**
-     * Adds the cancel button action listener.
-     * 
-     * @param a
-     *            the a
-     */
-    public void addCancelButtonActionListener(ActionListener a) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IProgressDialog#addCancelButtonActionListener(java.awt.event.ActionListener)
+	 */
+    @Override
+	public void addCancelButtonActionListener(ActionListener a) {
         cancelButton.addActionListener(a);
     }
 
-    /**
-     * Disables cancel button
-     */
-    public void disableCancelButton() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IProgressDialog#disableCancelButton()
+	 */
+    @Override
+	public void disableCancelButton() {
         cancelButton.setEnabled(false);
     }
 
-    /**
-     * Overrides default icon
-     * 
-     * @param icon
-     */
-    public void setIcon(ImageIcon icon) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IProgressDialog#setIcon(javax.swing.ImageIcon)
+	 */
+    @Override
+	public void setIcon(ImageIcon icon) {
         imagelabel.setIcon(icon);
     }
 
@@ -212,5 +201,15 @@ public class ProgressDialog extends AbstractCustomDialog {
      */
     protected JLabel getTotalLabel() {
         return totalLabel;
+    }
+    
+    @Override
+    public void hideDialog() {
+    	setVisible(false);
+    }
+    
+    @Override
+    public void showDialog() {
+    	setVisible(true);
     }
 }
