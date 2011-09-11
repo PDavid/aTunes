@@ -21,4 +21,6 @@
 	<bean id="systemTrayHandler" class="net.sourceforge.atunes.kernel.modules.tray.SystemTrayHandler"/>
 	
 	<bean id="statisticsHandler" class="net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler"/>
+	
+	<bean id="smartPlayListHandler" class="net.sourceforge.atunes.kernel.modules.playlist.SmartPlayListHandler"/>
 </beans>

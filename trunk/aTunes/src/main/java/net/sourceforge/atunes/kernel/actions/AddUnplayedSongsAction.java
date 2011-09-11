@@ -24,8 +24,9 @@ import java.awt.event.ActionEvent;
 import java.util.List;
 import java.util.Properties;
 
-import net.sourceforge.atunes.kernel.modules.playlist.SmartPlayListHandler;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ISmartPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -65,7 +66,7 @@ public class AddUnplayedSongsAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        SmartPlayListHandler.getInstance().addUnplayedSongs((Integer) this.getProperties().get(PARAMETER));
+    	Context.getBean(ISmartPlayListHandler.class).addUnplayedSongs((Integer) this.getProperties().get(PARAMETER));
     }
 
     @Override
