@@ -17,4 +17,6 @@
 	<bean id="webServicesHandler" class="net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler"/>
 
 	<bean id="generalPurposePluginsHandler" class="net.sourceforge.atunes.kernel.modules.plugins.GeneralPurposePluginsHandler"/>
+	
+	<bean id="systemTrayHandler" class="net.sourceforge.atunes.kernel.modules.tray.SystemTrayHandler"/>
 </beans>
