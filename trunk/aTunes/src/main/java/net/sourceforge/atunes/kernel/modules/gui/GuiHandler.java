@@ -46,7 +46,6 @@ import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable.PlayStat
 import net.sourceforge.atunes.gui.views.dialogs.AboutDialog;
 import net.sourceforge.atunes.gui.views.dialogs.AddArtistDragDialog;
 import net.sourceforge.atunes.gui.views.dialogs.AddPodcastFeedDialog;
-import net.sourceforge.atunes.gui.views.dialogs.ColumnSetSelectorDialog;
 import net.sourceforge.atunes.gui.views.dialogs.IndeterminateProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.InputDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RadioDialog;
@@ -168,15 +167,6 @@ public final class GuiHandler extends AbstractHandler {
      */
     private IndeterminateProgressDialog getIndeterminateProgressDialog() {
         return indeterminateProgressDialog;
-    }
-
-    /**
-     * Gets the dialog to select columns
-     * 
-     * @return the play list column selector
-     */
-    public ColumnSetSelectorDialog getColumnSelector() {
-        return new ColumnSetSelectorDialog(getFrame().getFrame());
     }
 
     /**

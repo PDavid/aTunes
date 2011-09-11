@@ -32,7 +32,6 @@ import java.util.List;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -46,13 +45,15 @@ import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
+import net.sourceforge.atunes.model.IColumnSelectorDialog;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Dialog to select column set
  */
-public final class ColumnSetSelectorDialog extends AbstractCustomDialog {
+public final class ColumnSetSelectorDialog extends AbstractCustomDialog implements IColumnSelectorDialog  {
 
     private class ColumnsTableModel implements TableModel {
 
@@ -199,16 +200,15 @@ public final class ColumnSetSelectorDialog extends AbstractCustomDialog {
     /**
      * Instantiates a new play list column selector.
      * 
-     * @param owner
-     *            the owner
+     * @param frame
      */
-    public ColumnSetSelectorDialog(JFrame owner) {
-        super(owner, 250, 300, true, CloseAction.DISPOSE);
+    public ColumnSetSelectorDialog(IFrame frame) {
+        super(frame, 250, 300, true, CloseAction.DISPOSE);
         add(getContent());
         setTitle(I18nUtils.getString("ARRANGE_COLUMNS"));
+        setResizable(false);
         // TODO: Add pack to all dialogs
         pack();
-        setLocationRelativeTo(owner);
     }
 
     /**
@@ -236,7 +236,7 @@ public final class ColumnSetSelectorDialog extends AbstractCustomDialog {
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ColumnSetSelectorDialog.this.dispose();
+                hideDialog();
             }
         });
 
@@ -302,16 +302,28 @@ public final class ColumnSetSelectorDialog extends AbstractCustomDialog {
         return panel;
     }
 
-    /**
-     * Sets the columns set to be changed
-     * 
-     * @param column
-     *            set
-     * 
-     */
-    public void setColumnSet(AbstractColumnSet columnSet) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IColumnSelectorDialog#setColumnSetToSelect(net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet)
+	 */
+    @Override
+	public void setColumnSetToSelect(AbstractColumnSet columnSet) {
         model.setColumns(columnSet.getColumnsForSelection());
-        
+    }
+    
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IColumnSelectorDialog#showDialog()
+	 */
+    @Override
+	public void showDialog() {
+    	setVisible(true);
+    }
+    
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IColumnSelectorDialog#hideDialog()
+	 */
+    @Override
+	public void hideDialog() {
+    	setVisible(false);
     }
 
 }

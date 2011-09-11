@@ -29,4 +29,8 @@
 		<constructor-arg ref="frame"/>
 	</bean>
 
+	<bean id="columnSelectorDialog" class="net.sourceforge.atunes.gui.views.dialogs.ColumnSetSelectorDialog" scope="prototype">
+		<constructor-arg ref="frame"/>
+	</bean>
+
 </beans>
