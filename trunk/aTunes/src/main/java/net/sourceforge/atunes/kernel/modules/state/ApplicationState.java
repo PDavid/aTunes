@@ -42,6 +42,7 @@ import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
 import net.sourceforge.atunes.kernel.modules.tags.TagAttribute;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsEngineInfo;
+import net.sourceforge.atunes.model.ILyricsEngineInfo;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateStore;
 import net.sourceforge.atunes.model.ViewMode;
@@ -936,15 +937,15 @@ public class ApplicationState implements IState {
 	 */
     @Override
 	@SuppressWarnings("unchecked")
-	public List<LyricsEngineInfo> getLyricsEnginesInfo() {
-    	return (List<LyricsEngineInfo>) this.stateStore.retrievePreference(Preferences.LYRICS_ENGINES_INFO, null);
+	public List<ILyricsEngineInfo> getLyricsEnginesInfo() {
+    	return (List<ILyricsEngineInfo>) this.stateStore.retrievePreference(Preferences.LYRICS_ENGINES_INFO, null);
     }
 
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setLyricsEnginesInfo(java.util.List)
 	 */
     @Override
-	public void setLyricsEnginesInfo(List<LyricsEngineInfo> lyricsEnginesInfo) {
+	public void setLyricsEnginesInfo(List<ILyricsEngineInfo> lyricsEnginesInfo) {
     	this.stateStore.storePreference(Preferences.LYRICS_ENGINES_INFO, lyricsEnginesInfo);
     }
     

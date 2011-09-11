@@ -21,16 +21,14 @@
 package net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines;
 
 import java.beans.ConstructorProperties;
-import java.io.Serializable;
+
+import net.sourceforge.atunes.model.ILyricsEngineInfo;
 
 /**
  * Class with info about lyrics engines.
  */
-public class LyricsEngineInfo implements Serializable {
+public class LyricsEngineInfo implements ILyricsEngineInfo {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = -8014747196952195246L;
 	
 	private String name;
@@ -44,32 +42,23 @@ public class LyricsEngineInfo implements Serializable {
         this.name = name;
     }
 
-    /**
-     * @return the lyricsEngine
-     */
-    public String getName() {
+    @Override
+	public String getName() {
         return name;
     }
 
-    /**
-     * @return the class
-     */
-    public String getClazz() {
+    @Override
+	public String getClazz() {
         return clazz;
     }
 
-    /**
-     * @return the enabled
-     */
-    public boolean isEnabled() {
+    @Override
+	public boolean isEnabled() {
         return enabled;
     }
 
-    /**
-     * @param enabled
-     *            the enabled to set
-     */
-    public void setEnabled(boolean enabled) {
+    @Override
+	public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
@@ -102,5 +91,9 @@ public class LyricsEngineInfo implements Serializable {
         }
         return true;
     }
-
+    
+    @Override
+    public ILyricsEngineInfo copy() {
+    	return new LyricsEngineInfo(getName(), getClazz(), isEnabled());
+    }
 }

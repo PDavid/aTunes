@@ -54,7 +54,7 @@ import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ClearCachesAction;
-import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsEngineInfo;
+import net.sourceforge.atunes.model.ILyricsEngineInfo;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -72,7 +72,7 @@ public final class ContextPanel extends AbstractPreferencesPanel {
     private class LyricsEnginesTableModel implements TableModel {
 
         /** The lyrics engines info. */
-        private List<LyricsEngineInfo> lyricsEnginesInfo = new ArrayList<LyricsEngineInfo>();;
+        private List<ILyricsEngineInfo> lyricsEnginesInfo;
 
         /** The listeners. */
         private List<TableModelListener> listeners = new ArrayList<TableModelListener>();
@@ -157,12 +157,12 @@ public final class ContextPanel extends AbstractPreferencesPanel {
             listeners.remove(l);
         }
 
-        public void setLyricsEnginesInfo(List<LyricsEngineInfo> lyricsEnginesInfo) {
-            this.lyricsEnginesInfo = new ArrayList<LyricsEngineInfo>(lyricsEnginesInfo);
+        public void setLyricsEnginesInfo(List<ILyricsEngineInfo> lyricsEnginesInfo) {
+            this.lyricsEnginesInfo = new ArrayList<ILyricsEngineInfo>(lyricsEnginesInfo);
         }
 
-        public List<LyricsEngineInfo> getLyricsEnginesInfo() {
-            return new ArrayList<LyricsEngineInfo>(lyricsEnginesInfo);
+        public List<ILyricsEngineInfo> getLyricsEnginesInfo() {
+            return lyricsEnginesInfo;
         }
 
         @Override
@@ -379,10 +379,10 @@ public final class ContextPanel extends AbstractPreferencesPanel {
      * @param list
      *            list with lyrics engines info
      */
-    private void setLyricsEnginesInfo(List<LyricsEngineInfo> list) {
-        List<LyricsEngineInfo> copy = new ArrayList<LyricsEngineInfo>();
-        for (LyricsEngineInfo lyricsEngineInfo : list) {
-            copy.add(new LyricsEngineInfo(lyricsEngineInfo.getName(), lyricsEngineInfo.getClazz(), lyricsEngineInfo.isEnabled()));
+    private void setLyricsEnginesInfo(List<ILyricsEngineInfo> list) {
+        List<ILyricsEngineInfo> copy = new ArrayList<ILyricsEngineInfo>();
+        for (ILyricsEngineInfo lyricsEngineInfo : list) {
+            copy.add(lyricsEngineInfo.copy());
         }
         ((LyricsEnginesTableModel) enginesTable.getModel()).setLyricsEnginesInfo(copy);
     }

@@ -14,7 +14,35 @@
 		class="net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService">
 		<constructor-arg ref="state" />
 		
-		
+		<property name="defaultLyricsEngines">
+			<list>
+				<bean class="net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsEngineInfo">
+					<constructor-arg value="LyrDB"/>
+					<constructor-arg value="net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyrDBEngine"/>
+					<constructor-arg value="true"/>
+				</bean>
+				<bean class="net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsEngineInfo">
+					<constructor-arg value="LyricWiki"/>
+					<constructor-arg value="net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricWikiEngine"/>
+					<constructor-arg value="true"/>
+				</bean>
+				<bean class="net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsEngineInfo">
+					<constructor-arg value="LyricsDirectory"/>
+					<constructor-arg value="net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsDirectoryEngine"/>
+					<constructor-arg value="false"/>
+				</bean>
+				<bean class="net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsEngineInfo">
+					<constructor-arg value="LyrcEngine"/>
+					<constructor-arg value="net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyrcEngine"/>
+					<constructor-arg value="false"/>
+				</bean>
+				<bean class="net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsEngineInfo">
+					<constructor-arg value="Winampcn"/>
+					<constructor-arg value="net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.WinampcnEngine"/>
+					<constructor-arg value="false"/>
+				</bean>
+			</list>
+		</property>
 	</bean>
 
 	<bean id="youtubeService"

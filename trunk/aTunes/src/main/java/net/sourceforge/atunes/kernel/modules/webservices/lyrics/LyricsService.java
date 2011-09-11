@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.webservices.lyrics;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,22 +33,14 @@ import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.AbstractLyricsEngine;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsEngineInfo;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.ILyricsEngineInfo;
 import net.sourceforge.atunes.model.ILyricsService;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public final class LyricsService implements ApplicationStateChangeListener, ILyricsService {
 
-    private static final List<LyricsEngineInfo> DEFAULT_LYRICS_ENGINES;
-    static {
-        List<LyricsEngineInfo> list = new ArrayList<LyricsEngineInfo>();
-        list.add(new LyricsEngineInfo("LyrDB", "net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyrDBEngine", true));
-        list.add(new LyricsEngineInfo("LyricWiki", "net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricWikiEngine", true));
-        list.add(new LyricsEngineInfo("LyricsDirectory", "net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsDirectoryEngine", false));
-        list.add(new LyricsEngineInfo("LyrcEngine", "net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyrcEngine", false));
-        list.add(new LyricsEngineInfo("Winampcn", "net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.WinampcnEngine", false));
-        DEFAULT_LYRICS_ENGINES = Collections.unmodifiableList(list);
-    }
+    private List<LyricsEngineInfo> defaultLyricsEngines;
 
     /** Cache */
     private static LyricsCache lyricsCache = new LyricsCache();
@@ -64,7 +55,6 @@ public final class LyricsService implements ApplicationStateChangeListener, ILyr
 	 */
 	public LyricsService(IState state) {
 		this.state = state;
-    	updateService();
     }
 
     @Override
@@ -150,7 +140,7 @@ public final class LyricsService implements ApplicationStateChangeListener, ILyr
      * @return the lyrics engines
      */
     private List<AbstractLyricsEngine> loadEngines(ProxyBean proxy) {
-        List<LyricsEngineInfo> lyricsEnginesInfo = state.getLyricsEnginesInfo();
+        List<ILyricsEngineInfo> lyricsEnginesInfo = state.getLyricsEnginesInfo();
         boolean enginesModified = false;
 
         ExtendedProxy p = null;
@@ -164,7 +154,7 @@ public final class LyricsService implements ApplicationStateChangeListener, ILyr
 
         boolean loadDefault = false;
         if (lyricsEnginesInfo != null) {
-            for (LyricsEngineInfo lyricsEngineInfo : lyricsEnginesInfo) {
+            for (ILyricsEngineInfo lyricsEngineInfo : lyricsEnginesInfo) {
                 if (lyricsEngineInfo == null) {
                     loadDefault = true;
                     break;
@@ -176,10 +166,10 @@ public final class LyricsService implements ApplicationStateChangeListener, ILyr
         }
 
         if (loadDefault) {
-            lyricsEnginesInfo = new ArrayList<LyricsEngineInfo>(DEFAULT_LYRICS_ENGINES);
+            lyricsEnginesInfo = new ArrayList<ILyricsEngineInfo>(defaultLyricsEngines);
         } else {
-            lyricsEnginesInfo = new ArrayList<LyricsEngineInfo>(lyricsEnginesInfo);
-            for (LyricsEngineInfo defaultLyricsEngine : DEFAULT_LYRICS_ENGINES) {
+            lyricsEnginesInfo = new ArrayList<ILyricsEngineInfo>(lyricsEnginesInfo);
+            for (ILyricsEngineInfo defaultLyricsEngine : defaultLyricsEngines) {
                 if (!lyricsEnginesInfo.contains(defaultLyricsEngine)) {
                 	enginesModified = true;
                     lyricsEnginesInfo.add(defaultLyricsEngine);
@@ -189,8 +179,8 @@ public final class LyricsService implements ApplicationStateChangeListener, ILyr
         List<AbstractLyricsEngine> result = new ArrayList<AbstractLyricsEngine>();
         // Get engines
         // If some engine can't be loaded will be removed from settings
-        List<LyricsEngineInfo> enginesToUnload = new ArrayList<LyricsEngineInfo>();
-        for (LyricsEngineInfo lyricsEngineInfo : lyricsEnginesInfo) {
+        List<ILyricsEngineInfo> enginesToUnload = new ArrayList<ILyricsEngineInfo>();
+        for (ILyricsEngineInfo lyricsEngineInfo : lyricsEnginesInfo) {
             if (lyricsEngineInfo.isEnabled()) {
                 try {
                     Class<?> clazz = Class.forName(lyricsEngineInfo.getClazz());
@@ -221,7 +211,7 @@ public final class LyricsService implements ApplicationStateChangeListener, ILyr
             }
         }
 
-        for (LyricsEngineInfo engineToUnload : enginesToUnload) {
+        for (ILyricsEngineInfo engineToUnload : enginesToUnload) {
         	enginesModified = true;
         	lyricsEnginesInfo.remove(engineToUnload);
         }
@@ -249,11 +239,11 @@ public final class LyricsService implements ApplicationStateChangeListener, ILyr
      * @param lyricsEnginesInfo
      *            the lyrics engines info
      */
-    private void setLyricsEngines(ProxyBean p, List<LyricsEngineInfo> lyricsEnginesInfo) {
+    private void setLyricsEngines(ProxyBean p, List<ILyricsEngineInfo> lyricsEnginesInfo) {
         List<AbstractLyricsEngine> result = new ArrayList<AbstractLyricsEngine>();
 
         // Get engines
-        for (LyricsEngineInfo lyricsEngineInfo : lyricsEnginesInfo) {
+        for (ILyricsEngineInfo lyricsEngineInfo : lyricsEnginesInfo) {
             if (lyricsEngineInfo.isEnabled()) {
                 try {
                     Class<?> clazz = Class.forName(lyricsEngineInfo.getClazz());
@@ -293,5 +283,9 @@ public final class LyricsService implements ApplicationStateChangeListener, ILyr
 	public void finishService() {
         lyricsCache.shutdown();
     }
+    
+    public void setDefaultLyricsEngines(List<LyricsEngineInfo> defaultLyricsEngines) {
+		this.defaultLyricsEngines = defaultLyricsEngines;
+	}
 
 }
