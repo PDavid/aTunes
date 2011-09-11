@@ -26,39 +26,18 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IGeneralPurposePluginsHandler;
 
 import org.commonjukebox.plugins.exceptions.PluginSystemException;
 import org.commonjukebox.plugins.model.Plugin;
 import org.commonjukebox.plugins.model.PluginInfo;
-import org.commonjukebox.plugins.model.PluginListener;
 
-public class GeneralPurposePluginsHandler extends AbstractHandler implements PluginListener {
-
-    /** Singleton instance */
-    private static GeneralPurposePluginsHandler instance;
+public class GeneralPurposePluginsHandler extends AbstractHandler implements IGeneralPurposePluginsHandler {
 
     /**
      * List of plugins created
      */
     private List<AbstractGeneralPurposePlugin> plugins;
-
-    /**
-     * Getter of singleton instance
-     * 
-     * @return
-     */
-    public static GeneralPurposePluginsHandler getInstance() {
-        if (instance == null) {
-            instance = new GeneralPurposePluginsHandler();
-        }
-        return instance;
-    }
-
-    @Override
-    public void applicationStarted(List<IAudioObject> playList) {
-    }
 
     @Override
     public void applicationFinish() {
@@ -68,14 +47,6 @@ public class GeneralPurposePluginsHandler extends AbstractHandler implements Plu
                 plugin.deactivate();
             }
         }
-    }
-
-    @Override
-    public void applicationStateChanged(IState newState) {
-    }
-
-    @Override
-    protected void initHandler() {
     }
 
     @Override
@@ -103,10 +74,4 @@ public class GeneralPurposePluginsHandler extends AbstractHandler implements Plu
             }
         }
     }
-
-	@Override
-	public void playListCleared() {}
-
-	@Override
-	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
 }
