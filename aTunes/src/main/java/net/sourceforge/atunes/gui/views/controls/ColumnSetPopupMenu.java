@@ -29,9 +29,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
-import net.sourceforge.atunes.gui.views.dialogs.ColumnSetSelectorDialog;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.model.IColumnSelectorDialog;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -92,9 +92,9 @@ public class ColumnSetPopupMenu {
      */
     public static void selectColumns(AbstractCommonColumnModel model) {
         // Show column selector
-        ColumnSetSelectorDialog selector = GuiHandler.getInstance().getColumnSelector();
-        selector.setColumnSet(model.getColumnSet());
-        selector.setVisible(true);
+    	IColumnSelectorDialog selector = Context.getBean(IColumnSelectorDialog.class);
+        selector.setColumnSetToSelect(model.getColumnSet());
+        selector.showDialog();
 
         // Apply changes
         model.arrangeColumns(true);
