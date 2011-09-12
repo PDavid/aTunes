@@ -25,8 +25,6 @@ import java.awt.ComponentOrientation;
 import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.Window;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -51,14 +49,12 @@ import net.sourceforge.atunes.gui.views.dialogs.InputDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RadioDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RepositoryProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ReviewImportDialog;
-import net.sourceforge.atunes.gui.views.dialogs.RipperProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.SearchDialog;
 import net.sourceforge.atunes.gui.views.dialogs.properties.PropertiesDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.PlaybackState;
-import net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayList;
@@ -89,17 +85,10 @@ import org.jdesktop.swingx.error.ErrorInfo;
 
 public final class GuiHandler extends AbstractHandler {
 
-    private static class RipperCancelAction implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            RipperHandler.getInstance().cancelProcess();
-        }
-    }
-
+ 
     private static GuiHandler instance = new GuiHandler();
 
     private SearchDialog searchDialog;
-    private RipperProgressDialog ripperProgressDialog;
     private IndeterminateProgressDialog indeterminateProgressDialog;
     private AboutDialog aboutDialog;
     private ReviewImportDialog reviewImportDialog;
@@ -188,19 +177,6 @@ public final class GuiHandler extends AbstractHandler {
             reviewImportDialog = new ReviewImportDialog(getFrame().getFrame(), getState());
         }
         return reviewImportDialog;
-    }
-
-    /**
-     * Gets the ripper progress dialog.
-     * 
-     * @return the ripper progress dialog
-     */
-    public RipperProgressDialog getRipperProgressDialog() {
-        if (ripperProgressDialog == null) {
-            ripperProgressDialog = new RipperProgressDialog(getFrame().getFrame());
-            ripperProgressDialog.addCancelAction(new RipperCancelAction());
-        }
-        return ripperProgressDialog;
     }
 
     /**
