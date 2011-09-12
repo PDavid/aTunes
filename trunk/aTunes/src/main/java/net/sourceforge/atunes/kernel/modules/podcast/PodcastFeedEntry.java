@@ -409,4 +409,8 @@ public final class PodcastFeedEntry implements IAudioObject, Serializable, Compa
         }
     }
 
+	@Override
+	public String getAudioObjectDescription() {
+		return getTitle();
+	}
 }

@@ -541,4 +541,9 @@ public final class Radio implements IAudioObject, Serializable, TreeObject<Radio
 	public int size() {
 		return 1;
 	}
+	
+	@Override
+	public String getAudioObjectDescription() {
+		return getTitle();
+	}
 }

@@ -47,6 +47,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
+import net.sourceforge.atunes.utils.StringUtils;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -708,5 +709,9 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 	public void setFrequency(int frequency) {
 		this.frequency = frequency;
 	}
-
+	
+	@Override
+	public String getAudioObjectDescription() {
+		return StringUtils.getString(getTitle(), " - ", getArtist(), " (", StringUtils.seconds2String(getDuration()), ")");
+	}
 }
