@@ -286,6 +286,8 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
     	        Actions.getAction(DisconnectDeviceAction.class).setEnabled(false);
     	        Actions.getAction(SynchronizeDeviceWithPlayListAction.class).setEnabled(false);
     	        Actions.getAction(CopyPlayListToDeviceAction.class).setEnabled(false);
+    	        getFrame().showDeviceInfo(false);
+		        GuiHandler.getInstance().showMessage(I18nUtils.getString("DEVICE_DISCONNECTION_DETECTED"));		    
     		}
     	});
 

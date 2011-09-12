@@ -887,22 +887,4 @@ public final class GuiHandler extends AbstractHandler {
         // Once done graphic changes, repaint the window
         repaint();
     }
-    
-	@Override
-	public void playListCleared() {}
-
-	@Override
-	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
-
-	@Override
-	public void deviceDisconnected(String location) {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				getFrame().showDeviceInfo(false);
-		        showMessage(I18nUtils.getString("DEVICE_DISCONNECTION_DETECTED"));		        
-			}
-		});
-	}
-	
 }
