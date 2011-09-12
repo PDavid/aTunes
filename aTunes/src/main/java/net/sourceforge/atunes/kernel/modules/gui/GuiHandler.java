@@ -76,7 +76,6 @@ import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ISystemTrayHandler;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -734,62 +733,6 @@ public final class GuiHandler extends AbstractHandler {
     /**
      * Update status bar.
      * 
-     * @param song
-     *            the song
-     */
-    public void updateStatusBar(IAudioObject song) {
-    	// TODO: Refactor this method
-        if (!(song instanceof Radio || song instanceof PodcastFeedEntry)) {
-            if (GuiUtils.getComponentOrientation().isLeftToRight()) {
-                String text = StringUtils.getString(I18nUtils.getString("PLAYING"), ": ");
-                if (song instanceof Radio || song instanceof PodcastFeedEntry || ((AudioFile) song).getTag() == null) {
-                    text = StringUtils.getString(text, song.getTitleOrFileName());
-                } else {
-                    if (((AudioFile) song).getTag().getTitle() == null || ((AudioFile) song).getTag().getTitle().equals("")) {
-                        text = StringUtils.getString(text, ((AudioFile) song).getFile().getName(), " - ");
-                    } else {
-                        text = StringUtils.getString(text, ((AudioFile) song).getTag().getTitle(), " - ");
-                    }
-                    if (((AudioFile) song).getTag().getArtist() == null || ((AudioFile) song).getTag().getArtist().equals("")) {
-                        text = StringUtils.getString(text, Artist.getUnknownArtist(), " ");
-                    } else {
-                        text = StringUtils.getString(text, ((AudioFile) song).getTag().getArtist(), " ");
-                    }
-                    text = StringUtils.getString(text, "(", StringUtils.seconds2String(song.getDuration()), ")");
-                }
-                getFrame().setLeftStatusBarText(text, text);
-            } else {
-                String text = "";
-                if (song instanceof Radio || song instanceof PodcastFeedEntry || ((AudioFile) song).getTag() == null) {
-                    text = StringUtils.getString(song.getTitleOrFileName());
-                } else {
-                    text = StringUtils.getString("(", StringUtils.seconds2String(song.getDuration()), ") ");
-                    if (((AudioFile) song).getTag().getArtist() == null || ((AudioFile) song).getTag().getArtist().equals("")) {
-                        text = StringUtils.getString(text, Artist.getUnknownArtist(), " ");
-                    } else {
-                        text = StringUtils.getString(text, ((AudioFile) song).getTag().getArtist(), " ");
-                    }
-                    if (((AudioFile) song).getTag().getTitle() == null || ((AudioFile) song).getTag().getTitle().equals("")) {
-                        text = StringUtils.getString(text, " - ", ((AudioFile) song).getFile().getName());
-                    } else {
-                        text = StringUtils.getString(text, " - ", ((AudioFile) song).getTag().getTitle());
-                    }
-                }
-                text = StringUtils.getString(text, " :", I18nUtils.getString("PLAYING"));
-                getFrame().setLeftStatusBarText(text, text);
-            }
-        } else {
-        	if (song instanceof PodcastFeedEntry && ((PodcastFeedEntry)song).isDownloaded()) {
-        		updateStatusBar(StringUtils.getString(I18nUtils.getString("PLAYING"), ": ", song.getTitle()));
-        	} else {
-        		updateStatusBar(StringUtils.getString(I18nUtils.getString("BUFFERING"), " ", song.getTitle(), "..."));
-        	}
-        }
-    }
-
-    /**
-     * Update status bar.
-     * 
      * @param text
      *            the text
      */
@@ -859,13 +802,13 @@ public final class GuiHandler extends AbstractHandler {
         } else if (newState == PlaybackState.RESUMING) {
             // Resume
             setPlaying(true);
-            updateStatusBar(PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList());
+            getFrame().updateStatusBarWithObjectBeingPlayed(PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList());
             updateTitleBar(PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList());
             getFrame().getPlayListTable().setPlayState(PlayState.PLAYING);
 
         } else if (newState == PlaybackState.PLAYING) {
             // Playing
-            updateStatusBar(currentAudioObject);
+        	getFrame().updateStatusBarWithObjectBeingPlayed(currentAudioObject);
             updateTitleBar(currentAudioObject);
             setPlaying(true);
             getFrame().getPlayListTable().setPlayState(PlayState.PLAYING);

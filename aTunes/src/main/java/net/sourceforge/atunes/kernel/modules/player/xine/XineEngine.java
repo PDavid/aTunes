@@ -309,7 +309,7 @@ public class XineEngine extends AbstractPlayerEngine {
 		            setTime(prevPosition);
 		            //if ((audioObjectToPlay instanceof PodcastFeedEntry || audioObjectToPlay instanceof Radio) && s < 1000) {
 		            if (s < 1000) {
-		                GuiHandler.getInstance().updateStatusBar(audioObjectToPlay);
+		            	getFrame().updateStatusBarWithObjectBeingPlayed(audioObjectToPlay);
 		                GuiHandler.getInstance().updateTitleBar(audioObjectToPlay);
 		            }
 		        }

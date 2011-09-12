@@ -240,4 +240,9 @@ public class LocalAudioObjectFake implements ILocalAudioObject {
 		return true;
 	}
 	
+	@Override
+	public String getAudioObjectDescription() {
+		return "fake";
+	}
+	
 }

@@ -67,10 +67,12 @@ import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jdesktop.swingx.JXStatusBar;
 
@@ -645,6 +647,19 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
         setWindowSize();
     	setupSplitPaneDividerPosition(frameState);
     }
+    
+    @Override
+    public void updateStatusBarWithObjectBeingPlayed(IAudioObject audioObject) {
+    	// TODO: Playing / Buffering for radios and podcasts
+    	String text = null;
+    	if (audioObject != null) {
+    		text = StringUtils.getString(I18nUtils.getString("PLAYING"), ": ", audioObject.getAudioObjectDescription());
+    	}
+    	setLeftStatusBarText(text != null ? text : "", text != null ? text : "");    	
+    }
+    
+    
+    
     
     /**
      * Returns minimum size of context panel

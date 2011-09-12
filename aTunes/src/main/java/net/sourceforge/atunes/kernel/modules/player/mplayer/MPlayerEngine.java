@@ -78,7 +78,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 
     public MPlayerEngine(IState state, IFrame frame) {
     	super(state, frame);
-        commandWriter = MPlayerCommandWriter.newCommandWriter(null);
+    	commandWriter = MPlayerCommandWriter.newCommandWriter(null);
     }
 
     @Override
@@ -147,7 +147,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
             commandWriter = MPlayerCommandWriter.newCommandWriter(process);
             // Output reader needs original audio object, specially when cacheFilesBeforePlaying is true, as
             // statistics must be applied over original audio object, not the cached one
-            mPlayerOutputReader = AbstractMPlayerOutputReader.newInstance(this, process, audioObject, getState());
+            mPlayerOutputReader = AbstractMPlayerOutputReader.newInstance(this, process, audioObject, getState(), getFrame());
             mPlayerErrorReader = new MPlayerErrorReader(this, process, mPlayerOutputReader, audioObjectToPlay);
             mPlayerOutputReader.start();
             mPlayerErrorReader.start();

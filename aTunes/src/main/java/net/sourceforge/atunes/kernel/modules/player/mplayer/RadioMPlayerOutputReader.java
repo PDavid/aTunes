@@ -23,10 +23,10 @@ package net.sourceforge.atunes.kernel.modules.player.mplayer;
 import java.util.regex.Pattern;
 
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IState;
 
 class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
@@ -39,21 +39,22 @@ class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
     private String lastTitle = "";
     private boolean started;
     private IState state;
+    private IFrame frame;
 
     /**
      * Instantiates a new radio m player output reader.
      * 
      * @param engine
-     *            the engine
      * @param process
-     *            the process
      * @param radio
-     *            the radio
+     * @param state
+     * @param frame
      */
-    RadioMPlayerOutputReader(MPlayerEngine engine, Process process, Radio radio, IState state) {
+    RadioMPlayerOutputReader(MPlayerEngine engine, Process process, Radio radio, IState state, IFrame frame) {
         super(engine, process);
         this.radio = radio;
         this.state = state;
+        this.frame = frame;
     }
 
     @Override
@@ -69,7 +70,7 @@ class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
 
         // When starting playback, update status bar
         if (line.startsWith("Starting playback")) {
-            GuiHandler.getInstance().updateStatusBar(radio);
+        	frame.updateStatusBarWithObjectBeingPlayed(radio);
             if (!started) {
                 getEngine().notifyRadioOrPodcastFeedEntry();
                 started = true;

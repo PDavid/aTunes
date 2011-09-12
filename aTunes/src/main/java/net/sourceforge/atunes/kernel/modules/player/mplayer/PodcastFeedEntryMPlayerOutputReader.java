@@ -20,8 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.player.mplayer;
 
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
+import net.sourceforge.atunes.model.IFrame;
 
 class PodcastFeedEntryMPlayerOutputReader extends AbstractMPlayerOutputReader {
 
@@ -29,6 +29,8 @@ class PodcastFeedEntryMPlayerOutputReader extends AbstractMPlayerOutputReader {
     private PodcastFeedEntry podcastFeedEntry;
 
     private boolean started;
+    
+    private IFrame frame;
 
     /**
      * Instantiates a new podcast feed entry mplayer output reader.
@@ -40,9 +42,10 @@ class PodcastFeedEntryMPlayerOutputReader extends AbstractMPlayerOutputReader {
      * @param podcastFeedEntry
      *            the podcast feed entry
      */
-    PodcastFeedEntryMPlayerOutputReader(MPlayerEngine engine, Process process, PodcastFeedEntry podcastFeedEntry) {
+    PodcastFeedEntryMPlayerOutputReader(MPlayerEngine engine, Process process, IFrame frame, PodcastFeedEntry podcastFeedEntry) {
         super(engine, process);
         this.podcastFeedEntry = podcastFeedEntry;
+        this.frame = frame;
     }
 
     @Override
@@ -53,7 +56,7 @@ class PodcastFeedEntryMPlayerOutputReader extends AbstractMPlayerOutputReader {
 
         // When starting playback, update status bar
         if (line.startsWith("Starting playback")) {
-            GuiHandler.getInstance().updateStatusBar(podcastFeedEntry);
+        	frame.updateStatusBarWithObjectBeingPlayed(podcastFeedEntry);
             if (!started) {
                 getEngine().notifyRadioOrPodcastFeedEntry();
                 started = true;

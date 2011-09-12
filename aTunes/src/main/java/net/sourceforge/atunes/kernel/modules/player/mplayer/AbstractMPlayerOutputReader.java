@@ -31,6 +31,7 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.ClosingUtils;
 
@@ -66,15 +67,16 @@ abstract class AbstractMPlayerOutputReader extends Thread {
      * @param process
      * @param ao
      * @param state
+     * @param frame
      * @return the mplayer output reader
      */
-    static AbstractMPlayerOutputReader newInstance(MPlayerEngine engine, Process process, IAudioObject ao, IState state) {
+    static AbstractMPlayerOutputReader newInstance(MPlayerEngine engine, Process process, IAudioObject ao, IState state, IFrame frame) {
         if (ao instanceof AudioFile) {
             return new AudioFileMPlayerOutputReader(engine, process, (AudioFile) ao);
         } else if (ao instanceof Radio) {
-            return new RadioMPlayerOutputReader(engine, process, (Radio) ao, state);
+            return new RadioMPlayerOutputReader(engine, process, (Radio) ao, state, frame);
         } else if (ao instanceof PodcastFeedEntry) {
-            return new PodcastFeedEntryMPlayerOutputReader(engine, process, (PodcastFeedEntry) ao);
+            return new PodcastFeedEntryMPlayerOutputReader(engine, process, frame, (PodcastFeedEntry) ao);
         } else {
             throw new IllegalArgumentException("audio object is not from type AudioFile, Radio or PodcastFeedEntry");
         }

@@ -863,5 +863,9 @@ public abstract class AbstractPlayerEngine {
 	protected IState getState() {
 		return state;
 	}
+	
+	protected IFrame getFrame() {
+		return frame;
+	}
 
 }

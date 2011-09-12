@@ -200,4 +200,10 @@ public interface IAudioObject {
      * @return the image or <code>null</code> if no such image is available
      */
     public ImageIcon getImage(ImageSize imageSize);
+    
+    /**
+     * A human-readable text describing this object
+     * @return
+     */
+    public String getAudioObjectDescription();
 }

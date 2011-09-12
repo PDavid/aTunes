@@ -308,4 +308,9 @@ public interface IFrame {
 	 */
 	public void setState(IState state);
 
+	/**
+	 * Updates status bar with information about given audio object
+	 * @param audioObject
+	 */
+	public void updateStatusBarWithObjectBeingPlayed(IAudioObject audioObject);
 }
