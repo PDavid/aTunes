@@ -72,8 +72,9 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
     private int frequency;
     private long readTime;
     private int stars;
+    
     /** The file on disk. */
-    private File file;
+    private String filePath;
 
     /**
      * Instantiates a new audio file. File is read
@@ -82,7 +83,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
      *            the file
      */
     public AudioFile(File file) {
-        readFile(file);
+    	setFile(file);
     }
 
     /**
@@ -92,7 +93,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
      *            the file name
      */
     public AudioFile(String fileName) {
-    	this.file = new File(fileName); 
+    	this.filePath = fileName;
     }
 
     /**
@@ -101,10 +102,9 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
      * @param file
      *            the file
      */
-    private void readFile(File file) {
-        this.file = file;
+    private void readFile() {
         // Don't read from formats not supported by Jaudiotagger
-        if (!isValidAudioFile(file, Format.APE, Format.MPC)) {
+        if (!isValidAudioFile(filePath, Format.APE, Format.MPC)) {
             readInformation(true);
         }
         this.readTime = System.currentTimeMillis();
@@ -155,7 +155,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
      */
     public static boolean isValidAudioFile(File file) {
         return !file.isDirectory()
-                && isValidAudioFile(file, Format.MP3, Format.OGG, Format.MP4_1, Format.MP4_2, Format.WAV, Format.WMA, Format.FLAC, Format.REAL_1, Format.REAL_2, Format.APE,
+                && isValidAudioFile(file.getName(), Format.MP3, Format.OGG, Format.MP4_1, Format.MP4_2, Format.WAV, Format.WMA, Format.FLAC, Format.REAL_1, Format.REAL_2, Format.APE,
                         Format.MPC);
     }
     
@@ -170,16 +170,14 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
     }
 
     /**
-     * Checks if a file is a valid audio file
+     * Checks if a file is a valid audio file given its name
      * 
-     * @param file
-     *            the file to check
+     * @param fileName
      * @param formats
-     *            the allowed formats
      * @return if the file is a valid audio file
      */
-    public static boolean isValidAudioFile(File file, Format... formats) {
-        String path = file.getName().toLowerCase();
+    public static boolean isValidAudioFile(String fileName, Format... formats) {
+        String path = fileName.toLowerCase();
         for (Format format : formats) {
             if (path.endsWith(format.getExtension())) {
                 return true;
@@ -315,7 +313,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
      */
     @Override
     public File getFile() {
-        return file;
+    	return filePath != null ? new File(filePath) : null;
     }
 
     @Override
@@ -362,13 +360,13 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
      */
     @Override
     public String getNameWithoutExtension() {
-        if (file == null) {
+        if (filePath == null) {
             return null;
         }
-        if (file.getName().indexOf('.') != -1) {
-            return file.getName().substring(0, file.getName().lastIndexOf('.'));
+        if (filePath.indexOf('.') != -1) {
+            return filePath.substring(0, filePath.lastIndexOf('.'));
         }
-        return file.getName();
+        return getFile().getName();
     }
 
     /**
@@ -425,10 +423,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 
     @Override
     public String getUrl() {
-        if (file == null) {
-            return null;
-        }
-        return file.getAbsolutePath();
+    	return filePath;
     }
 
     @Override
@@ -470,7 +465,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
      */
     @Override
     public final boolean supportsInternalPicture() {
-        return isValidAudioFile(getFile(), Format.FLAC, Format.MP3, Format.MP4_1, Format.MP4_2, Format.OGG, Format.WMA);
+        return isValidAudioFile(filePath, Format.FLAC, Format.MP3, Format.MP4_1, Format.MP4_2, Format.OGG, Format.WMA);
     }
 
     /**
@@ -486,10 +481,10 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
      * @return true, if is up to date
      */
     public boolean isUpToDate() {
-        if (file == null) {
+        if (filePath == null) {
             return false;
         }
-        return readTime > file.lastModified();
+        return readTime > getFile().lastModified();
     }
 
     /**
@@ -522,9 +517,10 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
         if (file == null) {
             throw new IllegalArgumentException();
         }
-        readFile(file);
+        this.filePath = file.getAbsolutePath();
+        readFile();
     }
-
+    
     /**
      * Sets the stars.
      * 
@@ -548,7 +544,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 
     @Override
     public String toString() {
-        return file.getName();
+        return filePath;
     }
 
     @Override
@@ -558,10 +554,10 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 
     @Override
     public int compareTo(ILocalAudioObject o) {
-        if (file == null || o.getFile() == null) {
+        if (getFile() == null || o.getFile() == null) {
             return 0;
         }
-        return file.compareTo(o.getFile());
+        return getFile().compareTo(o.getFile());
     }
 
     @Override
