@@ -22,6 +22,8 @@ package net.sourceforge.atunes.kernel.modules.cdripper;
 
 import java.awt.Cursor;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -54,6 +56,7 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IRipperProgressDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -184,10 +187,10 @@ public final class RipperHandler extends AbstractHandler {
     }
 
     private static final class TotalProgressListener implements ProgressListener {
-        private final RipperProgressDialog dialog;
+        private final IRipperProgressDialog dialog;
         private final List<File> filesImported;
 
-        private TotalProgressListener(RipperProgressDialog dialog, List<File> filesImported) {
+        private TotalProgressListener(IRipperProgressDialog dialog, List<File> filesImported) {
             this.dialog = dialog;
             this.filesImported = filesImported;
         }
@@ -208,9 +211,9 @@ public final class RipperHandler extends AbstractHandler {
     }
 
     private static final class EncoderProgressListener implements ProgressListener {
-        private final RipperProgressDialog dialog;
+        private final IRipperProgressDialog dialog;
 
-        private EncoderProgressListener(RipperProgressDialog dialog) {
+        private EncoderProgressListener(IRipperProgressDialog dialog) {
             this.dialog = dialog;
         }
 
@@ -229,9 +232,9 @@ public final class RipperHandler extends AbstractHandler {
     }
 
     private static final class DecoderProgressListener implements ProgressListener {
-        private final RipperProgressDialog dialog;
+        private final IRipperProgressDialog dialog;
 
-        private DecoderProgressListener(RipperProgressDialog dialog) {
+        private DecoderProgressListener(IRipperProgressDialog dialog) {
             this.dialog = dialog;
         }
 
@@ -535,8 +538,15 @@ public final class RipperHandler extends AbstractHandler {
         ripper.setGenre(genre);
         ripper.setFileNamePattern(getFileNamePattern());
 
-        final RipperProgressDialog dialog = GuiHandler.getInstance().getRipperProgressDialog();
-
+        final IRipperProgressDialog dialog = Context.getBean(IRipperProgressDialog.class);
+        dialog.addCancelAction(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cancelProcess();
+			}
+		});
+        
         // Get image from amazon if necessary
         if (albumInfo != null) {
             Image cover = Context.getBean(IWebServicesHandler.class).getAlbumImage(albumInfo);
@@ -565,13 +575,14 @@ public final class RipperHandler extends AbstractHandler {
 
             @Override
             protected void done() {
+            	dialog.hideDialog();
                 notifyFinishImport(filesImported, folderFile);
                 // Enable import cd option in menu
                 Actions.getAction(RipCDAction.class).setEnabled(true);
             }
         }.execute();
 
-        dialog.setVisible(true);
+        dialog.showDialog();
     }
 
     /**
@@ -583,7 +594,6 @@ public final class RipperHandler extends AbstractHandler {
      *            the folder
      */
     void notifyFinishImport(final List<File> filesImported, final File folder) {
-        GuiHandler.getInstance().getRipperProgressDialog().setVisible(false);
         if (interrupted) { // If process is interrupted delete all imported files
             Runnable deleter = new Runnable() {
                 @Override

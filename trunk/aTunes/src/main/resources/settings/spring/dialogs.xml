@@ -33,4 +33,8 @@
 		<constructor-arg ref="frame"/>
 	</bean>
 
+	<bean id="ripperProgressDialog" class="net.sourceforge.atunes.gui.views.dialogs.RipperProgressDialog" scope="prototype">
+		<constructor-arg ref="frame"/>
+	</bean>
+
 </beans>

@@ -25,7 +25,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -38,11 +37,13 @@ import javax.swing.JProgressBar;
 
 import net.sourceforge.atunes.gui.images.AlbumImageIcon;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IRipperProgressDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public final class RipperProgressDialog extends AbstractCustomDialog {
+public final class RipperProgressDialog extends AbstractCustomDialog implements IRipperProgressDialog {
 
     private static final long serialVersionUID = -3891515847607545757L;
 
@@ -58,32 +59,26 @@ public final class RipperProgressDialog extends AbstractCustomDialog {
     /**
      * Instantiates a new ripper progress dialog.
      */
-    public RipperProgressDialog(Window owner) {
-        super(owner, 420, 200, true, CloseAction.HIDE);
+    public RipperProgressDialog(IFrame frame) {
+        super(frame, 420, 200, true, CloseAction.NOTHING);
         setTitle(I18nUtils.getString("RIPPING_CD"));
         setResizable(false);
         setContent();
     }
 
-    /**
-     * Adds a cancel action to the cancel button.
-     * 
-     * @param action
-     *            The action that should be added
-     */
-    public void addCancelAction(ActionListener action) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IRipperProgressDialog#addCancelAction(java.awt.event.ActionListener)
+	 */
+    @Override
+	public void addCancelAction(ActionListener action) {
         cancelButton.addActionListener(action);
     }
 
-    /**
-     * Sets the artist and album.
-     * 
-     * @param artist
-     *            the artist
-     * @param album
-     *            the album
-     */
-    public void setArtistAndAlbum(String artist, String album) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IRipperProgressDialog#setArtistAndAlbum(java.lang.String, java.lang.String)
+	 */
+    @Override
+	public void setArtistAndAlbum(String artist, String album) {
         setTitle(StringUtils.getString(I18nUtils.getString("RIPPING_CD"), " ", artist, " - ", album));
     }
 
@@ -196,13 +191,11 @@ public final class RipperProgressDialog extends AbstractCustomDialog {
         add(panel);
     }
 
-    /**
-     * Sets the cover.
-     * 
-     * @param img
-     *            the new cover
-     */
-    public void setCover(Image img) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IRipperProgressDialog#setCover(java.awt.Image)
+	 */
+    @Override
+	public void setCover(Image img) {
         cover.setIcon(ImageUtils.resize(new ImageIcon(img), 90, 90));
     }
 
@@ -218,13 +211,11 @@ public final class RipperProgressDialog extends AbstractCustomDialog {
         setLimits(decodeProgressBar, min, max);
     }
 
-    /**
-     * Sets the decode progress value.
-     * 
-     * @param value
-     *            the new decode progress value
-     */
-    public void setDecodeProgressValue(int value) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IRipperProgressDialog#setDecodeProgressValue(int)
+	 */
+    @Override
+	public void setDecodeProgressValue(int value) {
         if (value < 0) {
             decodeProgressBar.setIndeterminate(true);
         } else {
@@ -234,13 +225,11 @@ public final class RipperProgressDialog extends AbstractCustomDialog {
 
     }
 
-    /**
-     * Sets the decode progress value.
-     * 
-     * @param value
-     *            the new decode progress value
-     */
-    public void setDecodeProgressValue(String value) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IRipperProgressDialog#setDecodeProgressValue(java.lang.String)
+	 */
+    @Override
+	public void setDecodeProgressValue(String value) {
         decodeProgressValueLabel.setText(value);
     }
 
@@ -256,13 +245,11 @@ public final class RipperProgressDialog extends AbstractCustomDialog {
         setLimits(encodeProgressBar, min, max);
     }
 
-    /**
-     * Sets the encode progress value.
-     * 
-     * @param value
-     *            the new encode progress value
-     */
-    public void setEncodeProgressValue(int value) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IRipperProgressDialog#setEncodeProgressValue(int)
+	 */
+    @Override
+	public void setEncodeProgressValue(int value) {
         if (value < 0) {
             encodeProgressBar.setIndeterminate(true);
         } else {
@@ -271,13 +258,11 @@ public final class RipperProgressDialog extends AbstractCustomDialog {
         }
     }
 
-    /**
-     * Sets the encode progress value.
-     * 
-     * @param value
-     *            the new encode progress value
-     */
-    public void setEncodeProgressValue(String value) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IRipperProgressDialog#setEncodeProgressValue(java.lang.String)
+	 */
+    @Override
+	public void setEncodeProgressValue(String value) {
         encodeProgressValueLabel.setText(value);
     }
 
@@ -296,27 +281,32 @@ public final class RipperProgressDialog extends AbstractCustomDialog {
         progressBar.setMaximum(max);
     }
 
-    /**
-     * Sets the total progress bar limits.
-     * 
-     * @param min
-     *            the min
-     * @param max
-     *            the max
-     */
-    public void setTotalProgressBarLimits(int min, int max) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IRipperProgressDialog#setTotalProgressBarLimits(int, int)
+	 */
+    @Override
+	public void setTotalProgressBarLimits(int min, int max) {
         setLimits(totalProgressBar, min, max);
     }
 
-    /**
-     * Sets the total progress value.
-     * 
-     * @param value
-     *            the new total progress value
-     */
-    public void setTotalProgressValue(int value) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IRipperProgressDialog#setTotalProgressValue(int)
+	 */
+    @Override
+	public void setTotalProgressValue(int value) {
         totalProgressBar.setValue(value);
         totalProgressValueLabel.setText(StringUtils.getString(value, " / ", totalProgressBar.getMaximum()));
+    }
+    
+    @Override
+    public void showDialog() {
+    	setVisible(true);
+    }
+    
+    @Override
+    public void hideDialog() {
+    	setVisible(false);
+    	dispose();
     }
 
 }
