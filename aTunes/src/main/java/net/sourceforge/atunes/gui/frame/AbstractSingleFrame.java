@@ -657,9 +657,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     	}
     	setLeftStatusBarText(text != null ? text : "", text != null ? text : "");    	
     }
-    
-    
-    
+   
     
     /**
      * Returns minimum size of context panel
