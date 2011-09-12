@@ -313,4 +313,5 @@ public interface IFrame {
 	 * @param audioObject
 	 */
 	public void updateStatusBarWithObjectBeingPlayed(IAudioObject audioObject);
+	
 }

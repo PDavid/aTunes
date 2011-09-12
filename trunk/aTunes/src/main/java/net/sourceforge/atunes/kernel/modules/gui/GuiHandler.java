@@ -63,9 +63,7 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListLocalAudioObjectFi
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListPodcastFeedEntryFilter;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListRadioFilter;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -73,7 +71,6 @@ import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.IFullScreenHandler;
-import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ISystemTrayHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -747,34 +744,7 @@ public final class GuiHandler extends AbstractHandler {
      *            the song
      */
     public void updateTitleBar(IAudioObject song) {
-        if (song != null) {
-            if (song instanceof Radio) {
-                setTitleBar(StringUtils.getString(((Radio) song).getName(), " (", ((Radio) song).getUrl(), ")"));
-                return;
-            }
-
-            if (song instanceof PodcastFeedEntry) {
-                setTitleBar(StringUtils.getString(((PodcastFeedEntry) song).getTitle(), " (", ((PodcastFeedEntry) song).getUrl(), ")"));
-                return;
-            }
-
-            StringBuilder strBuilder = new StringBuilder();
-            if (song instanceof ILocalAudioObject && ((AudioFile) song).getTag() == null) {
-                strBuilder.append(((AudioFile) song).getFile().getName());
-            } else {
-                strBuilder.append(song.getTitleOrFileName());
-                strBuilder.append(" - ");
-                strBuilder.append(song.getArtist());
-                strBuilder.append(" - ");
-                strBuilder.append(song.getAlbum());
-            }
-            strBuilder.append(" (");
-            strBuilder.append(StringUtils.seconds2String(song.getDuration()));
-            strBuilder.append(")");
-            setTitleBar(strBuilder.toString());
-        } else {
-            setTitleBar("");
-        }
+    	setTitleBar(song != null ? song.getAudioObjectDescription() : "");
     }
 
     @Override
