@@ -20,8 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.tags;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import net.sourceforge.atunes.utils.DateUtils;
@@ -34,9 +33,6 @@ import org.jaudiotagger.tag.FieldKey;
 public class DefaultTag extends AbstractTag {
 
     private static final long serialVersionUID = 6200185803652819029L;
-
-    /** Date format without time information. */
-    private static transient final SimpleDateFormat dateOnlyFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     /**
      * Instantiates a new default tag.
@@ -105,23 +101,6 @@ public class DefaultTag extends AbstractTag {
                 }
             }
         }
-    }
-    
-    /**
-     * Sets date from tag
-     * @param tag
-     */
-    private void setDate(org.jaudiotagger.tag.Tag tag) {
-        String result = getTagDateField(tag);
-        Date date = DateUtils.parseRFC3339Date(result);
-        if (date == null) {
-            try {
-                date = dateOnlyFormat.parse(result);
-            } catch (ParseException e) {
-                date = null;
-            }
-        }
-        setDate(date);
     }
     
     /**
@@ -281,28 +260,37 @@ public class DefaultTag extends AbstractTag {
         return defaultTag;
     }
 
-    private String getTagDateField(org.jaudiotagger.tag.Tag tag) {
+    /**
+     * Sets date from tag
+     * @param tag
+     */
+    private void setDate(org.jaudiotagger.tag.Tag tag) {
         if (tag instanceof org.jaudiotagger.tag.vorbiscomment.VorbisCommentTag || tag instanceof org.jaudiotagger.tag.flac.FlacTag) {
-            return tag.getFirst("DATE");
+        	setDate(DateUtils.parseRFC3339Date(tag.getFirst("DATE")));
         } else if (tag instanceof org.jaudiotagger.tag.id3.ID3v24Tag) {
-            return tag.getFirst("TDRC");
+        	setDate(DateUtils.parseRFC3339Date(tag.getFirst("TDRC")));
         } else if (tag instanceof org.jaudiotagger.tag.id3.ID3v23Tag) {
-            // assembles year tag TYER and date/month tag TDAT into some ISO-like date string
-            StringBuilder buffer = new StringBuilder();
+        	Calendar c = null;
+        	// Set date from fields tag TYER and date/month tag TDAT
             String yearPart = tag.getFirst("TYER");
             if (!yearPart.isEmpty()) {
-                buffer.append(yearPart);
-                String dateMonthPart = tag.getFirst("TDAT");
-                if (dateMonthPart.length() >= 4) {
-                    buffer.append('-');
-                    buffer.append(dateMonthPart.substring(2, 4));
-                    buffer.append('-');
-                    buffer.append(dateMonthPart.substring(0, 2));
-                }
+            	c = Calendar.getInstance();
+            	try {
+            		c.set(Calendar.YEAR, Integer.parseInt(yearPart));
+                    String dateMonthPart = tag.getFirst("TDAT");
+                    if (dateMonthPart.length() >= 4) {
+                    	c.set(Calendar.MONTH, Integer.parseInt(dateMonthPart.substring(2, 4)));
+                    	c.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dateMonthPart.substring(0, 2)));
+                    }
+            	} catch (NumberFormatException e) {
+            	}
             }
-            return buffer.toString();
+            
+            if (c != null) {
+            	setDate(c.getTime());
+            }
         } else {
-            return "";
+            setDate((Date)null);
         }
     }
 }

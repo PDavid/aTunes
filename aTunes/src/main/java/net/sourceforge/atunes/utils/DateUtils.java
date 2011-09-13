@@ -1029,6 +1029,16 @@ public final class DateUtils {
         return getCalendar().get(Calendar.YEAR);
     }
 
+    
+    private static final SimpleDateFormat RFC3339_format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");//spec for RFC3339					
+    private static final SimpleDateFormat RFC3339_format_2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");//spec for RFC3339
+    private static final SimpleDateFormat RFC3339_format_FRACTIONAL_SECONDS = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");//spec for RFC3339 (with fractional seconds)
+    private static final SimpleDateFormat RFC3339_format_FRACTIONAL_SECONDS_2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ");//spec for RFC3339 (with fractional seconds)
+    static {
+    	RFC3339_format_FRACTIONAL_SECONDS.setLenient(true);
+    	RFC3339_format_FRACTIONAL_SECONDS_2.setLenient(true);
+    }
+    
     /*
      * -> http://hatori42.com/RFC3339Date.txt
      * 
@@ -1042,6 +1052,11 @@ public final class DateUtils {
      * 
      * Copyright 2007, Chad Okere (ceothrow1 at gmail dotcom) OMG NO WARRENTY
      * EXPRESSED OR IMPLIED!!!
+     * 
+     * 
+     * 
+     * 
+     * 2011/09/13: Alex Aranda: Code refactored
      */
     /**
      * Parses a RFC 3339 date string.
@@ -1053,49 +1068,44 @@ public final class DateUtils {
      *         date couldn't be parsed
      */
     public static Date parseRFC3339Date(String dateStr) {
+        Date d = null;
         try {
-            Date d = new Date();
-
+            
             //if there is no time zone, we don't need to do any special parsing.
             if (dateStr.endsWith("Z")) {
                 try {
-                    SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");//spec for RFC3339					
-                    d = s.parse(dateStr);
-                } catch (ParseException pe) {//try again with optional decimals
-                    SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'");//spec for RFC3339 (with fractional seconds)
-                    s.setLenient(true);
+                    d = RFC3339_format.parse(dateStr);
+                } catch (ParseException pe) { //try again with optional decimals
                     try {
-                        d = s.parse(dateStr);
+                        d = RFC3339_format_FRACTIONAL_SECONDS.parse(dateStr);
                     } catch (ParseException e) {
-                        return null;
                     }
                 }
                 return d;
             }
 
-            //step one, split off the timezone. 
-            String firstpart = dateStr.substring(0, dateStr.lastIndexOf('-'));
-            String secondpart = dateStr.substring(dateStr.lastIndexOf('-'));
+            if (dateStr.indexOf('-') != -1) {
+            	//step one, split off the timezone. 
+            	String firstpart = dateStr.substring(0, dateStr.lastIndexOf('-'));
+            	String secondpart = dateStr.substring(dateStr.lastIndexOf('-'));
 
-            //step two, remove the colon from the timezone offset
-            secondpart = StringUtils.getString(secondpart.substring(0, secondpart.indexOf(':')), secondpart.substring(secondpart.indexOf(':') + 1));
-            String dateString = StringUtils.getString(firstpart, secondpart);
-            SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");//spec for RFC3339		
-            try {
-                d = s.parse(dateString);
-            } catch (java.text.ParseException pe) {//try again with optional decimals
-                s = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ");//spec for RFC3339 (with fractional seconds)
-                s.setLenient(true);
-                try {
-                    d = s.parse(dateString);
-                } catch (ParseException e) {
-                    return null;
-                }
+            	//step two, remove the colon from the timezone offset
+            	secondpart = StringUtils.getString(secondpart.substring(0, secondpart.indexOf(':')), secondpart.substring(secondpart.indexOf(':') + 1));
+            	String dateString = StringUtils.getString(firstpart, secondpart);
+            			
+            	try {
+            		d = RFC3339_format_2.parse(dateString);
+            	} catch (java.text.ParseException pe) {//try again with optional decimals
+            		try {
+            			d = RFC3339_format_FRACTIONAL_SECONDS_2.parse(dateString);
+            		} catch (ParseException e) {
+            		}
+            	}
             }
-            return d;
         } catch (Exception e) {
-            return null;
         }
+        
+        return d;
     }
 
     /**
