@@ -48,20 +48,19 @@ public final class Main {
      */
     private static void logProgramProperties(List<String> arguments) {
         // First line: version number
-        String firstLine = StringUtils.getString("Starting ", Constants.APP_NAME, " ", Constants.VERSION);
-        Logger.info(firstLine);
+        Logger.info("Starting ", Constants.APP_NAME, " ", Constants.VERSION);
 
         // Second line: Java Virtual Machine Version
-        Logger.info(StringUtils.getString("Running in Java Virtual Machine ", System.getProperty("java.version")));
+        Logger.info("Running in Java Virtual Machine ", System.getProperty("java.version"));
 
         // Third line: Application Arguments
-        Logger.info(StringUtils.getString("Arguments = ", arguments));
+        Logger.info("Arguments = ", arguments);
 
         // Fourth line: DEBUG mode
-        Logger.info(StringUtils.getString("Debug mode = ", Kernel.isDebug()));
+        Logger.info("Debug mode = ", Kernel.isDebug());
 
         // Fifth line: Execution path
-        Logger.info(StringUtils.getString("Execution path = ", OsManager.getWorkingDirectory()));
+        Logger.info("Execution path = ", OsManager.getWorkingDirectory());
     }
 
     /**
@@ -78,20 +77,21 @@ public final class Main {
         // Set debug flag in kernel
         Kernel.setDebug(arguments.contains(ApplicationArguments.DEBUG));
 
+        // Set log4j properties
+        Log4jPropertiesLoader.loadProperties(Kernel.isDebug());
+
         // Save arguments, if application is restarted they will be necessary
         ApplicationArguments.saveArguments(arguments);
 
+    	Context.initialize();
+    	
         // First, look up for other instances running
         if (!arguments.contains(ApplicationArguments.ALLOW_MULTIPLE_INSTANCE) && !MultipleInstancesHandler.getInstance().isFirstInstance()) {
             // Is not first aTunes instance running, so send parameters and finalize
             MultipleInstancesHandler.getInstance().sendArgumentsToFirstInstance(arguments);
         } else {
             // NORMAL APPLICATION STARTUP
-            // Set log4j properties
-            Log4jPropertiesLoader.loadProperties(Kernel.isDebug());
 
-        	Context.initialize();
-        	
             // Set ignore look and feel flag in kernel
             Kernel.setIgnoreLookAndFeel(arguments.contains(ApplicationArguments.IGNORE_LOOK_AND_FEEL));
 
