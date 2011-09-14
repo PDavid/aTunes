@@ -227,6 +227,14 @@ public class OsManager {
     }
     
     /**
+     * Returns launch parameters
+     * @return
+     */
+    public static String getLaunchParameters() {
+    	return adapter.getLaunchParameters();
+    }
+    
+    /**
      * Setup specific properties for frame
      * @param frame
      */

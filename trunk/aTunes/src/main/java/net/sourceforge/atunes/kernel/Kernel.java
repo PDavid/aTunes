@@ -196,7 +196,14 @@ public class Kernel {
         	ApplicationLifeCycleListeners.applicationFinish();
 
             // Build a process builder with OS-specific command and saved arguments
-            ProcessBuilder pb = new ProcessBuilder(OsManager.getLaunchCommand(), ApplicationArguments.getSavedArguments());
+        	String parameters = OsManager.getLaunchParameters();
+            ProcessBuilder pb = null;
+            if (parameters != null && !parameters.trim().isEmpty()) {
+            	pb = new ProcessBuilder(OsManager.getLaunchCommand(), parameters, ApplicationArguments.getSavedArguments());
+            } else {
+            	pb = new ProcessBuilder(OsManager.getLaunchCommand(), ApplicationArguments.getSavedArguments());
+
+            }
 
             System.out.println(pb.command().toString());
 

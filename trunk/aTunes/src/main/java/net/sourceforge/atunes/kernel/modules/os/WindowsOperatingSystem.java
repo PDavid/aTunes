@@ -71,6 +71,11 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter {
 	public String getLaunchCommand() {
 		return new File(StringUtils.getString("./", COMMAND_WINDOWS)).getAbsolutePath();
 	}
+	
+	@Override
+	public String getLaunchParameters() {
+		return null;
+	}
 
 	@Override
 	public boolean areShadowBordersForToolTipsSupported() {
