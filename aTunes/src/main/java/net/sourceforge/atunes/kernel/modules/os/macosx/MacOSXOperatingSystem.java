@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.os.macosx;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,7 +46,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 	/**
      * Name of the MacOsX command
      */
-    private static final String COMMAND_MACOSX = "aTunes.command";
+    private static final String COMMAND_MACOSX = "/usr/bin/open";
     
     protected static final String MPLAYER_COMMAND = "mplayer.command";
     
@@ -62,8 +61,13 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 
 	@Override
 	public String getLaunchCommand() {
-		return new File(StringUtils.getString("./", COMMAND_MACOSX)).getAbsolutePath();
+		return COMMAND_MACOSX;
 	}
+	
+	@Override
+	public String getLaunchParameters() {
+		return System.getProperty("atunes.package"); // This property is set in Info.plist
+	}	
 	
 	public void setUpFrame(IFrame frame) {
 		// Generate and register the OSXAdapter, passing it a hash of all the methods we wish to

@@ -67,6 +67,11 @@ public class SolarisOperatingSystem extends OperatingSystemAdapter {
 	}
 	
 	@Override
+	public String getLaunchParameters() {
+		return null;
+	}
+	
+	@Override
 	public boolean isPlayerEngineSupported(AbstractPlayerEngine engine) {
 		return true; // all supported
 	}

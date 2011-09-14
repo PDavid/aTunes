@@ -70,7 +70,7 @@ public final class Main {
      *            the args
      */
     public static void main(String[] args) {
-
+    	
         // Fetch arguments into a list
         List<String> arguments = StringUtils.fromStringArrayToList(args);
 

@@ -34,6 +34,8 @@
       <string>$JAVAROOT/../splash.gif</string>
       <key>Properties</key>
             <dict>
+            	<key>atunes.package</key>
+            	<string>$APP_PACKAGE</string>
                 <key>apple.laf.useScreenMenuBar</key>
                 <string>true</string>
                 <key>apple.awt.showGrowBox</key>

@@ -60,6 +60,11 @@ public class LinuxOperatingSystem extends OperatingSystemAdapter {
 	}
 	
 	@Override
+	public String getLaunchParameters() {
+		return null;
+	}
+	
+	@Override
 	public Class<? extends AbstractHotkeys> getHotkeysListener() {
 		return X11Hotkeys.class;
 	}

@@ -108,6 +108,12 @@ public abstract class OperatingSystemAdapter {
 	 * @return
 	 */
 	public abstract String getLaunchCommand();
+	
+	/**
+	 * Returns command parameters used to launch app
+	 * @return
+	 */
+	public abstract String getLaunchParameters();
 
 	/**
 	 * Setups specific configuration for a frame
