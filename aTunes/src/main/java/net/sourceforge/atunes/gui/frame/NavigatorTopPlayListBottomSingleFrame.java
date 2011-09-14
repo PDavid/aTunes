@@ -131,7 +131,7 @@ public final class NavigatorTopPlayListBottomSingleFrame extends MainSplitPaneRi
 	public Map<String, Double> getDefaultSplitPaneRelativePositions() {
 		Map<String, Double> values = new HashMap<String, Double>();
 		values.put(LEFT_SPLIT_PANE, 0.5);
-		values.put(RIGHT_SPLIT_PANE, 0.8);
+		values.put(RIGHT_SPLIT_PANE, 0.7);
 		values.put(NAVIGATOR_SPLIT_PANE, 0.5);
 		return values;
 	}
