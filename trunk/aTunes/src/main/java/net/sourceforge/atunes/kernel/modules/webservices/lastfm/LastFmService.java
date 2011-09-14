@@ -194,8 +194,6 @@ public final class LastFmService {
         this.user = state.getLastFmUser();
         this.password = state.getLastFmPassword();
         
-        Logger.debug("User: ", user);
-        Logger.debug("Password: ", password != null ? password.hashCode() : null);
         Caller.getInstance().setCache(null);
         Caller.getInstance().setProxy(proxy);
         Caller.getInstance().setUserAgent(CLIENT_ID);    	
