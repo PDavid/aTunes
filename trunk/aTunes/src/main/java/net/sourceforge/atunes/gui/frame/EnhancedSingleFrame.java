@@ -130,9 +130,9 @@ public final class EnhancedSingleFrame extends MainSplitPaneLeftSingleFrame impl
 	@Override
 	public Map<String, Double> getDefaultSplitPaneRelativePositions() {
 		Map<String, Double> values = new HashMap<String, Double>();
-		values.put(LEFT_SPLIT_PANE, 0.15);
-		values.put(RIGHT_SPLIT_PANE, 0.85);
-		values.put(PLAYLIST_SPLIT_PANE, 0.5);
+		values.put(LEFT_SPLIT_PANE, 0.3);
+		values.put(RIGHT_SPLIT_PANE, 0.6);
+		values.put(PLAYLIST_SPLIT_PANE, 0.4);
 		return values;
 	}
 

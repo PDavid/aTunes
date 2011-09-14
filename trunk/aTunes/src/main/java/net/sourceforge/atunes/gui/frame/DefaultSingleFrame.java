@@ -133,8 +133,8 @@ public final class DefaultSingleFrame extends MainSplitPaneLeftSingleFrame imple
 	@Override
 	public Map<String, Double> getDefaultSplitPaneRelativePositions() {
 		Map<String, Double> values = new HashMap<String, Double>();
-		values.put(LEFT_SPLIT_PANE, 0.15);
-		values.put(RIGHT_SPLIT_PANE, 0.85);
+		values.put(LEFT_SPLIT_PANE, 0.3);
+		values.put(RIGHT_SPLIT_PANE, 0.6);
 		values.put(NAVIGATOR_SPLIT_PANE, 0.5);
 		return values;
 	}

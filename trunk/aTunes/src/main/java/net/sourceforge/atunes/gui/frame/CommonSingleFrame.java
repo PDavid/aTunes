@@ -38,7 +38,7 @@ import net.sourceforge.atunes.gui.views.controls.CustomSplitPane;
 import net.sourceforge.atunes.model.IFrameState;
 
 /**
- * Common code for single frames. Right now all single frames have two vertical split panes, a tool bar and a status bar
+ * Common code for single frames. Right now all single frames have two split panes, a tool bar and a status bar
  * 
  * Components are named from left to right:  A | B | C where "|" is a split pane divider
  */
