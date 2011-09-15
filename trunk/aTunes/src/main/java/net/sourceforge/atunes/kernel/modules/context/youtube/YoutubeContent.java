@@ -37,6 +37,7 @@ import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeResultEntry;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -57,6 +58,8 @@ public class YoutubeContent extends AbstractContextPanelContent {
     private JMenuItem openYoutube;
     
     private YoutubeService youtubeService;
+    
+    private IOSManager osManager;
 
     public YoutubeContent() {
         moreResults = new JMenuItem(I18nUtils.getString("SEE_MORE_RESULTS"));
@@ -111,7 +114,7 @@ public class YoutubeContent extends AbstractContextPanelContent {
     protected Component getComponent() {
         // Create components
         youtubeResultTable = new ContextTable();
-        youtubeResultTable.addContextRowPanel(new YoutubeResultsTableCellRendererCode(getState(), youtubeService));
+        youtubeResultTable.addContextRowPanel(new YoutubeResultsTableCellRendererCode(getState(), youtubeService, osManager));
         return youtubeResultTable;
     }
 
@@ -146,6 +149,10 @@ public class YoutubeContent extends AbstractContextPanelContent {
     
     public void setYoutubeService(YoutubeService youtubeService) {
 		this.youtubeService = youtubeService;
+	}
+    
+    public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
 	}
 
 }

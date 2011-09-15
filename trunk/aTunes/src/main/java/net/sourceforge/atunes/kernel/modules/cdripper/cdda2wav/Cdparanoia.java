@@ -30,10 +30,9 @@ import java.util.StringTokenizer;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.OperatingSystem;
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -53,9 +52,9 @@ public class Cdparanoia extends AbstractCdToWavConverter {
      * 
      * @return true if cdparanoia was found, false otherwise.
      */
-    public static boolean pTestTool() {
+    public static boolean pTestTool(IOSManager osManager) {
         // Cdparanoia doesn't work for windows yet.
-        if (OsManager.osType != OperatingSystem.WINDOWS) {
+        if (!osManager.isWindows()) {
             BufferedReader stdInput = null;
             try {
                 ProcessBuilder pb = new ProcessBuilder(CDPARANOIA_COMMAND_STRING, VERSION);

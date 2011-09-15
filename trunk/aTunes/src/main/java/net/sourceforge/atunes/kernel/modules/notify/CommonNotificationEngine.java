@@ -28,6 +28,7 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.misc.TempFolder;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.ImageUtils;
 
@@ -50,10 +51,11 @@ public abstract class CommonNotificationEngine implements NotificationEngine {
 	/**
 	 * Stores audio object in a temporal folder so it can be used from third-party notification engines
 	 * @param audioObject
-	 * @return Full path to image
+	 * @param osManager
+	 * @return
 	 */
-	protected final String getTemporalImage(IAudioObject audioObject) {
-		ImageIcon imageForAudioObject = audioObject.getImage(ImageSize.SIZE_200);
+	protected final String getTemporalImage(IAudioObject audioObject, IOSManager osManager) {
+		ImageIcon imageForAudioObject = audioObject.getImage(ImageSize.SIZE_200, osManager);
 		if (imageForAudioObject == null) {
 			imageForAudioObject = audioObject.getGenericImage(GenericImageSize.MEDIUM).getIcon(null);
 		}

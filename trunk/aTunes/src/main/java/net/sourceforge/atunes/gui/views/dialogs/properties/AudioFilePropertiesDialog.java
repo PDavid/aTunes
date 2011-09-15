@@ -45,6 +45,7 @@ import net.sourceforge.atunes.kernel.modules.tags.EditTagDialogController;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -59,7 +60,7 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
     private final class FillPictureSwingWorker extends SwingWorker<ImageIcon, Void> {
         @Override
         protected ImageIcon doInBackground() throws Exception {
-            return file.getImage(Constants.DIALOG_IMAGE_SIZE);
+            return file.getImage(Constants.DIALOG_IMAGE_SIZE, osManager);
         }
 
         @Override
@@ -100,17 +101,20 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
     
     private IFrame frame;
     
+    private IOSManager osManager;
+    
     /**
      * Instantiates a new audio file properties dialog.
      * 
      * @param file
      *            the file
      */
-    AudioFilePropertiesDialog(AudioFile file, JFrame owner, IState state, IFrame frame) {
+    AudioFilePropertiesDialog(AudioFile file, JFrame owner, IState state, IFrame frame, IOSManager osManager) {
         super(getTitleText(file), owner);
         this.file = file;
         this.state = state;
         this.frame = frame;
+        this.osManager = osManager;
         setAudioObject(file);
         addContent();
 
@@ -228,7 +232,7 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
         editTagsButton.setText(I18nUtils.getString("EDIT_TAG"));
         editTagsButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                EditTagDialogController ctl = new EditTagDialogController(new EditTagDialog(frame.getFrame(), false), state);
+                EditTagDialogController ctl = new EditTagDialogController(new EditTagDialog(frame.getFrame(), false), state, osManager);
                 ctl.editFiles(java.util.Collections.singletonList(file));
             }
         });

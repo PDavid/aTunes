@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.player;
 
-import net.sourceforge.atunes.kernel.OsManager;
+import net.sourceforge.atunes.model.IOSManager;
 
 /**
  * Manages several issues related to player engines
@@ -31,10 +31,11 @@ public class PlayerEngineManager {
 
 	/**
 	 * Called when no player engine is available
+	 * @param osManager
 	 */
-	static void manageNoPlayerEngine() {
+	static void manageNoPlayerEngine(IOSManager osManager) {
 		// Delegate to specific OS code
-		OsManager.manageNoPlayerEngine();
+		osManager.manageNoPlayerEngine();
 	}
 	
 	/**

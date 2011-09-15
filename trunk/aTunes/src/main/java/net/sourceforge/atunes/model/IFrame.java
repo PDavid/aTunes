@@ -313,5 +313,11 @@ public interface IFrame {
 	 * @param audioObject
 	 */
 	public void updateStatusBarWithObjectBeingPlayed(IAudioObject audioObject);
+
+	/**
+	 * Sets OS manager
+	 * @param osManager
+	 */
+	void setOsManager(IOSManager osManager);
 	
 }

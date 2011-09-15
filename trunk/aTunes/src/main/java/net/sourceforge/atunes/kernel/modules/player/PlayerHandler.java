@@ -28,7 +28,6 @@ import java.util.List;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.PlaybackState;
 import net.sourceforge.atunes.kernel.PlaybackStateListener;
 import net.sourceforge.atunes.kernel.PlaybackStateListeners;
@@ -68,7 +67,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     /**
      * Names of all engines
      */
-    private static String[] engineNames;
+    private String[] engineNames;
 
     /**
      * The player engine
@@ -292,8 +291,8 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
      */
     private List<AbstractPlayerEngine> getEngines() {
         List<AbstractPlayerEngine> result = new ArrayList<AbstractPlayerEngine>(2);
-        result.add(new MPlayerEngine(getState(), getFrame()));
-        result.add(new XineEngine(getState(), getFrame()));
+        result.add(new MPlayerEngine(getState(), getFrame(), getOsManager()));
+        result.add(new XineEngine(getState(), getFrame(), getOsManager()));
         //result.add(new VlcPlayerEngine());
         //result.add(new GStreamerEngine());
         return result;
@@ -328,7 +327,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
         while (it.hasNext()) {
         	AbstractPlayerEngine engine = it.next();
         	// Engines must be supported for given OS and available
-            if (!OsManager.isPlayerEngineSupported(engine) || !engine.isEngineAvailable()) {
+            if (!getOsManager().isPlayerEngineSupported(engine) || !engine.isEngineAvailable()) {
                 it.remove();
             }
         }
@@ -382,7 +381,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     @Override
     public void doUserInteraction() {
         if (playerEngine == null) {
-            PlayerEngineManager.manageNoPlayerEngine();
+            PlayerEngineManager.manageNoPlayerEngine(getOsManager());
         }
     }
     

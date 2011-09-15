@@ -46,7 +46,7 @@ public final class NotificationsHandler extends AbstractHandler implements Playb
 
     private static Map<String, NotificationEngine> engines = new HashMap<String, NotificationEngine>();
     
-    public static NotificationEngine defaultEngine;
+    private NotificationEngine defaultEngine;
     
     /**
      * Adds a new notification engine
@@ -91,11 +91,11 @@ public final class NotificationsHandler extends AbstractHandler implements Playb
     
     @Override
     protected void initHandler() {
-    	defaultEngine = new DefaultNotifications(getState());
+    	defaultEngine = new DefaultNotifications(getState(), getOsManager());
     	// Add here any new notification engine
     	addNotificationEngine(defaultEngine);
-    	addNotificationEngine(new LibnotifyNotificationEngine());
-    	addNotificationEngine(new GrowlNotificationEngine());
+    	addNotificationEngine(new LibnotifyNotificationEngine(getOsManager()));
+    	addNotificationEngine(new GrowlNotificationEngine(getOsManager()));
 
     	// Load available engines
     	for (NotificationEngine engine : engines.values()) {
@@ -167,5 +167,9 @@ public final class NotificationsHandler extends AbstractHandler implements Playb
 	 */
 	public NotificationEngine getNotificationEngine(String name) {
 		return engines.get(name);
+	}
+	
+	public NotificationEngine getDefaultEngine() {
+		return defaultEngine;
 	}
 }

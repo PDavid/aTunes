@@ -257,7 +257,7 @@ public final class OSDPanel extends AbstractPreferencesPanel {
      * @param engine
      */
     private void setNotificationEngine(String engine) {
-    	notificationEngines.setSelectedItem(engine != null ? engine : NotificationsHandler.defaultEngine.getName());
+    	notificationEngines.setSelectedItem(engine != null ? engine : NotificationsHandler.getInstance().getDefaultEngine().getName());
     	updatePanel((String)notificationEngines.getSelectedItem());
     }
     
@@ -272,7 +272,7 @@ public final class OSDPanel extends AbstractPreferencesPanel {
 			engineDescription.setText(engine.getDescription());
 			engineMoreInformation.setText(engine.getUrl(), engine.getUrl());
 			// Show settings for default engine
-			osdSettings.setVisible(engine.getName().equals(NotificationsHandler.defaultEngine.getName()));
+			osdSettings.setVisible(engine.getName().equals(NotificationsHandler.getInstance().getDefaultEngine().getName()));
 		}
     }
     

@@ -42,7 +42,6 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.RipCdDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.RipCDAction;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
@@ -119,7 +118,7 @@ public final class RipperHandler extends AbstractHandler {
 		    if (!testTools()) {
 		        return null;
 		    }
-		    ripper = new CdRipper();
+		    ripper = new CdRipper(getOsManager());
 		    ripper.setNoCdListener(new NoCdListener() {
 		        @Override
 		        public void noCd() {
@@ -635,7 +634,7 @@ public final class RipperHandler extends AbstractHandler {
      *            the album
      */
     private void savePicture(Image image, File path, String artist, String album) {
-        String imageFileName = StringUtils.getString(path.getAbsolutePath(), OsManager.getFileSeparator(), artist, "_", album, "_Cover.png");
+        String imageFileName = StringUtils.getString(path.getAbsolutePath(), getOsManager().getFileSeparator(), artist, "_", album, "_Cover.png");
         try {
             ImageUtils.writeImageToFile(image, imageFileName);
         } catch (IOException e) {
@@ -717,7 +716,7 @@ public final class RipperHandler extends AbstractHandler {
      */
     RipCdDialogController getRipCdDialogController() {
         if (ripCdDialogController == null) {
-            ripCdDialogController = new RipCdDialogController(new RipCdDialog(getFrame().getFrame()), getState());
+            ripCdDialogController = new RipCdDialogController(new RipCdDialog(getFrame().getFrame()), getState(), getOsManager());
         }
         return ripCdDialogController;
     }
@@ -733,7 +732,7 @@ public final class RipperHandler extends AbstractHandler {
 	 * @return
 	 */
 	public boolean isRipSupported() {
-		return OsManager.isRipSupported();
+		return getOsManager().isRipSupported();
 	}
 
 }

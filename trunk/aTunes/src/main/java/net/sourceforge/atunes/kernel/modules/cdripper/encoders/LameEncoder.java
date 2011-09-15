@@ -29,8 +29,6 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.OperatingSystem;
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.cdripper.ProgressListener;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
@@ -38,6 +36,7 @@ import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
 import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -67,19 +66,22 @@ public class LameEncoder implements Encoder {
     private String genre;
     private String quality;
 
+    private IOSManager osManager;
+    
     /**
      * Test the presence of the mp3 encoder lame.
      * 
+     * @param osManager
      * @return Returns true if lame was found, false otherwise.
      */
-    public static boolean testTool() {
-        if (OsManager.osType == OperatingSystem.WINDOWS) {
+    public static boolean testTool(IOSManager osManager) {
+        if (osManager.isWindows()) {
             return true;
         }
 
         BufferedReader stdInput = null;
         try {
-            Process p = new ProcessBuilder(StringUtils.getString(OsManager.getExternalToolsPath(), LAME), VERSION).start();
+            Process p = new ProcessBuilder(StringUtils.getString(osManager.getExternalToolsPath(), LAME), VERSION).start();
             stdInput = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
             String line = null;
@@ -101,6 +103,10 @@ public class LameEncoder implements Encoder {
         }
     }
 
+    public LameEncoder(IOSManager osManager) {
+    	this.osManager = osManager;
+	}
+    
     /**
      * Encode the wav file and tags it using entagged.
      * 
@@ -126,7 +132,7 @@ public class LameEncoder implements Encoder {
         try {
             // Prepare and execute the lame command
             List<String> command = new ArrayList<String>();
-            command.add(StringUtils.getString(OsManager.getExternalToolsPath(), LAME));
+            command.add(StringUtils.getString(osManager.getExternalToolsPath(), LAME));
             // Presets don't need the -b option, but --preset, so check if preset is used
             if (quality.contains("insane") || quality.contains("extreme") || quality.contains("medium") || quality.contains("standard")) {
                 command.add(PRESET);

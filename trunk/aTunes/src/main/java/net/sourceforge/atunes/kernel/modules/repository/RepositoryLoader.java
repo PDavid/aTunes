@@ -32,7 +32,6 @@ import java.util.StringTokenizer;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
@@ -44,6 +43,7 @@ import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
@@ -652,8 +652,9 @@ public class RepositoryLoader extends Thread {
 	 * 
 	 * @param file
 	 *            File to be removed permanently
+	 * @param osManager
 	 */
-	static void deleteFile(ILocalAudioObject file) {
+	static void deleteFile(ILocalAudioObject file, IOSManager osManager) {
 		String albumArtist = file.getAlbumArtist();
 		String artist = file.getArtist();
 		String album = file.getAlbum();
@@ -661,9 +662,9 @@ public class RepositoryLoader extends Thread {
 		String year = file.getYear();
 
 		// Only do this if file is in repository
-		if (getFolderForFile(file) != null) {
+		if (getFolderForFile(file, osManager) != null) {
 			// Remove from file structure
-			Folder f = getFolderForFile(file);
+			Folder f = getFolderForFile(file, osManager);
 			if (f != null) {
 				f.removeAudioFile(file);
 				// If folder is empty, remove too
@@ -725,9 +726,10 @@ public class RepositoryLoader extends Thread {
 	 * @param file
 	 *            Audio file for which the folder is wanted
 	 * 
+	 * @param osManager
 	 * @return Either folder or null if file is not in repository
 	 */
-	private static Folder getFolderForFile(ILocalAudioObject file) {
+	private static Folder getFolderForFile(ILocalAudioObject file, IOSManager osManager) {
 		// Get repository folder where file is
 		File repositoryFolder = RepositoryHandler.getInstance()
 				.getRepositoryFolderContainingFile(file);
@@ -744,7 +746,7 @@ public class RepositoryLoader extends Thread {
 		path = path.replace(repositoryFolder.getAbsolutePath(), "");
 
 		Folder f = rootFolder;
-		StringTokenizer st = new StringTokenizer(path, OsManager.getFileSeparator());
+		StringTokenizer st = new StringTokenizer(path, osManager.getFileSeparator());
 		while (st.hasMoreTokens()) {
 			String folderName = st.nextToken();
 			f = f.getFolder(folderName);
@@ -757,8 +759,9 @@ public class RepositoryLoader extends Thread {
 	 * @param repository
 	 * @param folders
 	 * @param statisticsHandler
+	 * @param osManager
 	 */
-	public static void refreshFolders(Repository repository, List<Folder> folders, IStatisticsHandler statisticsHandler) {
+	public static void refreshFolders(Repository repository, List<Folder> folders, IStatisticsHandler statisticsHandler, IOSManager osManager) {
 		RepositoryHandler.getInstance().startTransaction();
 		
 		for (Folder folder : folders) {
@@ -775,7 +778,7 @@ public class RepositoryLoader extends Thread {
 			}
 
 			// Add new files
-			List<ILocalAudioObject> allObjects = getSongsForFolder(folder.getFolderPath(), null);
+			List<ILocalAudioObject> allObjects = getSongsForFolder(folder.getFolderPath(osManager), null);
 			for (ILocalAudioObject ao : allObjects) {
 				if (repository.getFile(ao.getFile().getAbsolutePath()) == null) {
 					Logger.debug("Adding file: ", ao.getFile().getAbsolutePath());

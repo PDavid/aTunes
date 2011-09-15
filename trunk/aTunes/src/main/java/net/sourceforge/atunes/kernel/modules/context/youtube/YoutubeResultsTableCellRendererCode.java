@@ -37,6 +37,7 @@ import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeResultEn
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeVideoDownloader;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
@@ -51,9 +52,12 @@ public class YoutubeResultsTableCellRendererCode extends ContextTableRowPanel<Yo
 	
 	private YoutubeService youtubeService;
 	
-	public YoutubeResultsTableCellRendererCode(IState state, YoutubeService youtubeService) {
+	private IOSManager osManager;
+	
+	public YoutubeResultsTableCellRendererCode(IState state, YoutubeService youtubeService, IOSManager osManager) {
 		this.state = state;
 		this.youtubeService = youtubeService;
+		this.osManager = osManager;
 	}
 	
 	@Override
@@ -114,7 +118,7 @@ public class YoutubeResultsTableCellRendererCode extends ContextTableRowPanel<Yo
 	            dialog.setFileFilter(new ExtensionFileFilter("MP4", "MP4"));
 	            // Set default file name
 	            // for some reason dialog fails with files with [ or ] chars
-	            File defaultFileName = new File(FileNameUtils.getValidFileName(entry.getName().replace("\\", "\\\\").replace("$", "\\$").replace('[', ' ').replace(']', ' ')));
+	            File defaultFileName = new File(FileNameUtils.getValidFileName(entry.getName().replace("\\", "\\\\").replace("$", "\\$").replace('[', ' ').replace(']', ' '), osManager));
 	            dialog.setSelectedFile(defaultFileName);
 	            int returnValue = dialog.showSaveDialog(Context.getBean(IFrame.class).getFrame());
 	            File selectedFile = dialog.getSelectedFile();

@@ -51,10 +51,10 @@ import net.sourceforge.atunes.gui.views.controls.ByImageChoosingPanel;
 import net.sourceforge.atunes.gui.views.controls.ByImageChoosingPanel.ImageEntry;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.state.beans.ColorBean;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -100,12 +100,15 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
     private FontSettings currentFontSettings;
     
     private Color currentTrayIconColor;
+    
+    private IOSManager osManager;
 
     /**
      * Instantiates a new general panel.
      */
-    public GeneralPanel() {
+    public GeneralPanel(final IOSManager osManager) {
         super(I18nUtils.getString("GENERAL"));
+        this.osManager = osManager;
         JLabel windowTypeLabel = new JLabel(I18nUtils.getString("WINDOW_TYPE"));
         JLabel languageLabel = new JLabel(I18nUtils.getString("LANGUAGE"));
         language = new JComboBox();
@@ -134,7 +137,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 		});
         
         // Hide tray icons controls if not supported by opertating system
-        if (!OsManager.areTrayIconsSupported()) {
+        if (!osManager.areTrayIconsSupported()) {
         	showIconTray.setVisible(false);
         	showTrayPlayer.setVisible(false);
         	trayPlayerColorSelector.setVisible(false);
@@ -181,7 +184,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
                     if (currentSkin == null) {
                     	currentSkin = LookAndFeelSelector.getInstance().getDefaultSkin(getState().getLookAndFeel().getName());
                     }
-            		LookAndFeelSelector.getInstance().applySkin(currentSkin, getState());
+            		LookAndFeelSelector.getInstance().applySkin(currentSkin, getState(), osManager);
             		
             		
             		
@@ -387,7 +390,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
     @Override
     public void resetImmediateChanges(IState state) {
         if (state.getLookAndFeel().getSkin() == null || !state.getLookAndFeel().getSkin().equals(skin.getSelectedItem())) {
-            LookAndFeelSelector.getInstance().applySkin(state.getLookAndFeel().getSkin(), getState());
+            LookAndFeelSelector.getInstance().applySkin(state.getLookAndFeel().getSkin(), getState(), osManager);
         }
     }
 
@@ -433,7 +436,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
     		String selectedSkin = (String) skin.getSelectedItem();
     		boolean isCurrentLookAndFeel = LookAndFeelSelector.getInstance().getCurrentLookAndFeelName().equals(lookAndFeel.getSelectedItem());
     		if (isCurrentLookAndFeel) {
-    			LookAndFeelSelector.getInstance().applySkin(selectedSkin, getState());
+    			LookAndFeelSelector.getInstance().applySkin(selectedSkin, getState(), osManager);
     		}
     	}
     }

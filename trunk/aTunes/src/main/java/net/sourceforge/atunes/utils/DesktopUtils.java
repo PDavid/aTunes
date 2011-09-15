@@ -31,9 +31,9 @@ import java.net.URL;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IOSManager;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -140,17 +140,17 @@ public final class DesktopUtils {
      * Opens a file with the associated program.
      * 
      * @param file
-     *            The file that should be opened
+     * @param osManager
      */
-    public static void openFile(File file) {
+    public static void openFile(File file, IOSManager osManager) {
         if (isDesktopSupported) {
             final File fileToOpen;
             /*
              * Needed for UNC filenames with spaces ->
              * http://bugs.sun.com/view_bug.do?bug_id=6550588
              */
-            if (OsManager.usesShortPathNames()) {
-                fileToOpen = new File(FileNameUtils.getShortPathNameW(file.getAbsolutePath()));
+            if (osManager.usesShortPathNames()) {
+                fileToOpen = new File(FileNameUtils.getShortPathNameW(file.getAbsolutePath(), osManager));
             } else {
                 fileToOpen = file;
             }

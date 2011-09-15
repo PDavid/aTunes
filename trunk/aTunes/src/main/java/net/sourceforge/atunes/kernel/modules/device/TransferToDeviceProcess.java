@@ -25,10 +25,10 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.process.AbstractAudioFileTransferProcess;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -47,9 +47,10 @@ public class TransferToDeviceProcess extends AbstractAudioFileTransferProcess {
      * @param path
      * @param state
      * @param frame
+     * @param osManager
      */
-    public TransferToDeviceProcess(Collection<ILocalAudioObject> collection, String path, IState state, IFrame frame) {
-        super(collection, state, frame);
+    public TransferToDeviceProcess(Collection<ILocalAudioObject> collection, String path, IState state, IFrame frame, IOSManager osManager) {
+        super(collection, state, frame, osManager);
         this.path = path;
     }
 
@@ -67,7 +68,7 @@ public class TransferToDeviceProcess extends AbstractAudioFileTransferProcess {
     protected File transferAudioFile(File destination, ILocalAudioObject file, List<Exception> thrownExceptions) {
         String destDir = getDirectory(file, destination, true);
         String newName = getName(file, true);
-        File destFile = new File(StringUtils.getString(destDir, OsManager.getFileSeparator(), newName));
+        File destFile = new File(StringUtils.getString(destDir, getOsManager().getFileSeparator(), newName));
 
         try {
             // Now that we (supposedly) have a valid filename write file

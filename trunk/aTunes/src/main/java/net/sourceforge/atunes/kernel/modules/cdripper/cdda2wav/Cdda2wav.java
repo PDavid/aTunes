@@ -31,10 +31,9 @@ import java.util.StringTokenizer;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.OperatingSystem;
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -254,6 +253,8 @@ public class Cdda2wav extends AbstractCdToWavConverter {
     private List<String> devices = new ArrayList<String>();
     /** Variable used to count number of checked drives */
     private int devCounter = 1;
+    
+    private IOSManager osManager;
 
     /**
      * <p>
@@ -265,7 +266,8 @@ public class Cdda2wav extends AbstractCdToWavConverter {
      * assigns the first CD device in the list to the variable device.
      * </p>
      */
-    public Cdda2wav() {
+    public Cdda2wav(IOSManager osManager) {
+    	this.osManager = osManager;
         device = doScanBus().get(0);
     }
 
@@ -273,16 +275,17 @@ public class Cdda2wav extends AbstractCdToWavConverter {
      * Tests if cdda2wav or icedax is present On Windows system cdda2wav is
      * assumed present.
      * 
+     * @param osManager
      * @return true if either cdda2wav or icedax was found, false else.
      */
-    public static boolean pTestTool() {
+    public static boolean pTestTool(IOSManager osManager) {
 
         BufferedReader stdInput = null;
         BufferedReader stdInput2 = null;
         try {
             // If user adds cdda2wav while aTunes is running it will be detected even if icedax was used. 
             converterCommand = CDDA2WAV_COMMAND_STRING;
-            Process p = new ProcessBuilder(StringUtils.getString(OsManager.getExternalToolsPath(), converterCommand), VERSION).start();
+            Process p = new ProcessBuilder(StringUtils.getString(osManager.getExternalToolsPath(), converterCommand), VERSION).start();
             stdInput = new BufferedReader(new InputStreamReader(p.getErrorStream()));
             String line = null;
             while ((line = stdInput.readLine()) != null) {
@@ -300,7 +303,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
             // cdda2wav is not present. Maybe we have more luck with icedax.
             try {
                 converterCommand = ICEDAX_COMMAND_STRING;
-                Process icedaxCheck = new ProcessBuilder(StringUtils.getString(OsManager.getExternalToolsPath(), converterCommand), VERSION).start();
+                Process icedaxCheck = new ProcessBuilder(StringUtils.getString(osManager.getExternalToolsPath(), converterCommand), VERSION).start();
                 stdInput2 = new BufferedReader(new InputStreamReader(icedaxCheck.getInputStream()));
 
                 String line = null;
@@ -346,7 +349,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
         BufferedReader stdInput = null;
         try {
             List<String> command = new ArrayList<String>();
-            command.add(StringUtils.getString(OsManager.getExternalToolsPath(), converterCommand));
+            command.add(StringUtils.getString(osManager.getExternalToolsPath(), converterCommand));
             if (device != null) {
                 // When -scanbus dev=ATA is used we use another syntax
                 if (ata) {
@@ -438,7 +441,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
             BufferedReader stdInput = null;
             try {
                 List<String> command = new ArrayList<String>();
-                command.add(StringUtils.getString(OsManager.getExternalToolsPath(), converterCommand));
+                command.add(StringUtils.getString(osManager.getExternalToolsPath(), converterCommand));
                 command.add(SCANDEVICES);
                 command.add(NO_INFO_FILE);
 
@@ -487,7 +490,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
             BufferedReader stdInput = null;
             try {
                 List<String> command = new ArrayList<String>();
-                command.add(StringUtils.getString(OsManager.getExternalToolsPath(), converterCommand));
+                command.add(StringUtils.getString(osManager.getExternalToolsPath(), converterCommand));
                 command.add(SCAN_BUS);
                 command.add(NO_INFO_FILE);
 
@@ -495,7 +498,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
 
                 setProcess(new ProcessBuilder(command).start());
                 // Icedax and cdda2wav seem to behave differently
-                if ((OsManager.osType == OperatingSystem.LINUX && !converterCommand.equals(ICEDAX_COMMAND_STRING)) || OsManager.osType == OperatingSystem.WINDOWS) {
+                if ((osManager.isLinux() && !converterCommand.equals(ICEDAX_COMMAND_STRING)) || osManager.isWindows()) {
                     stdInput = new BufferedReader(new InputStreamReader(getProcess().getErrorStream()));
                 } else {
                     stdInput = new BufferedReader(new InputStreamReader(getProcess().getInputStream()));
@@ -509,7 +512,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
                         String line = s.trim();
                         String id = null;
                         // Icedax and cdda2wav seem to behave differently
-                        if ((OsManager.osType == OperatingSystem.LINUX && !converterCommand.equals(ICEDAX_COMMAND_STRING)) || OsManager.osType == OperatingSystem.WINDOWS) {
+                        if ((osManager.isLinux() && !converterCommand.equals(ICEDAX_COMMAND_STRING)) || osManager.isWindows()) {
                             // Workaround: Neither of this solutions work on all machines, but first one usually throws an exception
                             // so we know we should try the second one.
                             try {
@@ -525,9 +528,8 @@ public class Cdda2wav extends AbstractCdToWavConverter {
                         }
                         devNumber = devNumber + 1;
 
-                        if (OsManager.osType == OperatingSystem.SOLARIS) {
+                        if (osManager.isSolaris()) {
                             /* we need to munge the BTL notation into cXtYdZ */
-                            Logger.info("Operating System is " + OsManager.osType.toString() + ", adjusting device path");
                             String devPath = null;
                             Scanner munge = new Scanner(id).useDelimiter(",");
                             devPath = "/dev/rdsk/c" + munge.nextInt();
@@ -565,7 +567,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
             BufferedReader stdInput = null;
             try {
                 List<String> command = new ArrayList<String>();
-                command.add(StringUtils.getString(OsManager.getExternalToolsPath(), converterCommand));
+                command.add(StringUtils.getString(osManager.getExternalToolsPath(), converterCommand));
                 command.add(SCAN_BUS);
                 command.add(ATA);
                 command.add(NO_INFO_FILE);
@@ -574,7 +576,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
 
                 setProcess(new ProcessBuilder(command).start());
                 // Icedax and cdda2wav seem to behave differently
-                if ((OsManager.osType == OperatingSystem.LINUX && !converterCommand.equals(ICEDAX_COMMAND_STRING)) || OsManager.osType == OperatingSystem.WINDOWS) {
+                if ((osManager.isLinux() && !converterCommand.equals(ICEDAX_COMMAND_STRING)) || osManager.isWindows()) {
                     stdInput = new BufferedReader(new InputStreamReader(getProcess().getErrorStream()));
                 } else {
                     stdInput = new BufferedReader(new InputStreamReader(getProcess().getInputStream()));
@@ -588,7 +590,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
                         String line = s.trim();
                         String id = null;
                         // Icedax and cdda2wav seem to behave differently
-                        if (OsManager.osType == OperatingSystem.LINUX && !converterCommand.equals(ICEDAX_COMMAND_STRING)) {
+                        if (osManager.isLinux() && !converterCommand.equals(ICEDAX_COMMAND_STRING)) {
                             // Workaround: Neither of this solutions work on all machines, but first one usually throws an exception
                             // so we know we should try the second one.
                             try {
@@ -668,7 +670,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
         try {
             // Prepare cdda2wav commands and execute
             List<String> command = new ArrayList<String>();
-            command.add(StringUtils.getString(OsManager.getExternalToolsPath(), converterCommand));
+            command.add(StringUtils.getString(osManager.getExternalToolsPath(), converterCommand));
 
             if (device != null) {
                 // If -scanbus dev=ATA method finds something, we need to use a different syntax

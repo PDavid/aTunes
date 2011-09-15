@@ -22,9 +22,10 @@ package net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav;
 
 import java.io.File;
 
-import net.sourceforge.atunes.kernel.OsManager;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.cdripper.ProgressListener;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
+import net.sourceforge.atunes.model.IOSManager;
 
 /**
  * Abstract class for Cdda2wav and Cdparanoia
@@ -44,13 +45,15 @@ public abstract class AbstractCdToWavConverter {
     /**
      * creates a new CdToWavConverter-object. The implementation depends on the
      * users OS.
+     * @param osManager
+     * @return
      */
-    public static AbstractCdToWavConverter createNewConverterForOS() {
-    	AbstractCdToWavConverter osConverter = OsManager.getCdToWavConverter();
+    public static AbstractCdToWavConverter createNewConverterForOS(IOSManager osManager) {
+    	AbstractCdToWavConverter osConverter = Context.getBean(IOSManager.class).getCdToWavConverter();
     	if (osConverter != null) {
     		return osConverter;
-    	} else if (Cdda2wav.pTestTool()) {
-            return new Cdda2wav();
+    	} else if (Cdda2wav.pTestTool(osManager)) {
+            return new Cdda2wav(osManager);
         } else {
             return new Cdparanoia();
         }
@@ -78,7 +81,7 @@ public abstract class AbstractCdToWavConverter {
      * @return true if either cdda2wav or icedax was found, false else.
      */
     public static boolean testTool() {
-    	return OsManager.testCdToWavConverter();
+    	return Context.getBean(IOSManager.class).testCdToWavConverter();
     }
 
     /*

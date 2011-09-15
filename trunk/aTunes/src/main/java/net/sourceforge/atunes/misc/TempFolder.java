@@ -26,8 +26,9 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import net.sourceforge.atunes.kernel.OsManager;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.commons.io.FileUtils;
@@ -41,7 +42,10 @@ public class TempFolder {
 
     private static final TempFolder instance = new TempFolder();
 
+    private IOSManager osManager;
+    
     private TempFolder() {
+    	this.osManager = Context.getBean(IOSManager.class);
     }
 
     /**
@@ -62,7 +66,7 @@ public class TempFolder {
      * @return File object to copied file in temp folder
      */
     public File copyToTempFolder(File srcFile) {
-        File destFile = new File(StringUtils.getString(OsManager.getTempFolder(), OsManager.getFileSeparator(), srcFile.getName()));
+        File destFile = new File(StringUtils.getString(osManager.getTempFolder(), osManager.getFileSeparator(), srcFile.getName()));
         try {
             FileUtils.copyFile(srcFile, destFile);
         } catch (IOException e) {
@@ -73,7 +77,7 @@ public class TempFolder {
 
     public File writeImageToTempFolder(RenderedImage image, String fileName) {
         try {
-            File file = new File(OsManager.getTempFolder(), fileName);
+            File file = new File(osManager.getTempFolder(), fileName);
             ImageIO.write(image, "png", file);
             return file;
         } catch (IOException e) {
@@ -98,7 +102,7 @@ public class TempFolder {
      * Removes all files from temp folder.
      */
     public void removeAllFiles() {
-        File tempFolder = new File(OsManager.getTempFolder());
+        File tempFolder = new File(osManager.getTempFolder());
         File[] files = tempFolder.listFiles();
         for (File f : files) {
             if (f.delete()) {

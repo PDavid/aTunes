@@ -49,7 +49,7 @@ public class FolderTest {
 		Assert.assertTrue(f1.getName().equals(FOLDER_1_NAME));
 		Assert.assertTrue(f1.getAudioObjects().isEmpty());
 		Assert.assertNull(f1.getFolder(FOLDER_2_NAME));
-		Assert.assertTrue(f1.getFolderPath().equals(new File(FOLDER_1_NAME)));
+		Assert.assertTrue(f1.getFolderPath(new MockOSManager()).equals(new File(FOLDER_1_NAME)));
 		Assert.assertTrue(f1.getFolders().isEmpty());
 		Assert.assertNull(f1.getParentFolder());
 	}
@@ -74,6 +74,11 @@ public class FolderTest {
 		Assert.assertEquals(2, f1.getAudioObjects().size());
 		Assert.assertTrue(f1.getFolders().containsValue(f2));
 		Assert.assertEquals(f1, f2.getParentFolder());
-		Assert.assertEquals(new File(FOLDER_1_NAME + System.getProperty("file.separator") + FOLDER_2_NAME), f2.getFolderPath());
+		Assert.assertEquals(new File(FOLDER_1_NAME + System.getProperty("file.separator") + FOLDER_2_NAME), f2.getFolderPath(new MockOSManager() {
+			@Override
+			public String getFileSeparator() {
+				return System.getProperty("file.separator");
+			}
+		}));
 	}	
 }

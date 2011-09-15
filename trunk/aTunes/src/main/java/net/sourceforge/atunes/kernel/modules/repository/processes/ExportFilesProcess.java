@@ -25,6 +25,7 @@ import java.util.List;
 import net.sourceforge.atunes.kernel.modules.process.AbstractAudioFileTransferProcess;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -46,9 +47,10 @@ public class ExportFilesProcess extends AbstractAudioFileTransferProcess {
      *            Path to where the files should be exported
      * @param state
      * @param frame
+     * @param osManager
      */
-    public ExportFilesProcess(List<ILocalAudioObject> songs, String path, IState state, IFrame frame) {
-        super(songs, state, frame);
+    public ExportFilesProcess(List<ILocalAudioObject> songs, String path, IState state, IFrame frame, IOSManager osManager) {
+        super(songs, state, frame, osManager);
         this.path = path;
     }
 

@@ -43,6 +43,7 @@ import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -123,11 +124,12 @@ public final class DevicePanel extends AbstractPreferencesPanel {
 
     /**
      * Instantiates a new device panel.
+     * @param osManager
      */
-    public DevicePanel() {
+    public DevicePanel(IOSManager osManager) {
         super(I18nUtils.getString("DEVICE"));
         JLabel label = new JLabel(I18nUtils.getString("DEVICE_DEFAULT_LOCATION"));
-        locationFileChooser = new CustomJFileChooser(this, 20, JFileChooser.DIRECTORIES_ONLY);
+        locationFileChooser = new CustomJFileChooser(this, 20, JFileChooser.DIRECTORIES_ONLY, osManager);
 
         JPanel fileNamePanel = new JPanel(new GridBagLayout());
         fileNamePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0,0,10,0), I18nUtils.getString("FILE_NAME")));

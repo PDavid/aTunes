@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.os;
 
 import java.io.File;
 
-import net.sourceforge.atunes.kernel.OperatingSystem;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.Cdda2wav;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.Cdparanoia;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
@@ -30,6 +29,8 @@ import net.sourceforge.atunes.kernel.modules.hotkeys.X11Hotkeys;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.OperatingSystem;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class LinuxOperatingSystem extends OperatingSystemAdapter {
@@ -44,9 +45,9 @@ public class LinuxOperatingSystem extends OperatingSystemAdapter {
      * be in $PATH
      */
     private static String MPLAYER_LINUX_COMMAND = "mplayer";
-
-    public LinuxOperatingSystem(OperatingSystem systemType) {
-		super(systemType);
+    
+    public LinuxOperatingSystem(OperatingSystem systemType, IOSManager osManager) {
+		super(systemType, osManager);
 	}
 
 	@Override
@@ -86,10 +87,10 @@ public class LinuxOperatingSystem extends OperatingSystemAdapter {
 	
 	@Override
 	public boolean testCdToWavConverter() {
-		if (Cdda2wav.pTestTool()) {
+		if (Cdda2wav.pTestTool(osManager)) {
 			return true;
 		}
-		return Cdparanoia.pTestTool();
+		return Cdparanoia.pTestTool(osManager);
 	}
 
 	@Override

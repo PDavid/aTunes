@@ -20,10 +20,10 @@
 
 package net.sourceforge.atunes.utils;
 
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 
 import com.sun.jna.Library;
 import com.sun.jna.Memory;
@@ -111,8 +111,8 @@ public final class FileNameUtils {
      * 
      * @return Returns the filename with known illegal characters substituted.
      */
-    public static String getValidFileName(String fileName) {
-        return getValidFileName(fileName, false);
+    public static String getValidFileName(String fileName, IOSManager osManager) {
+        return getValidFileName(fileName, false, osManager);
     }
 
     /**
@@ -130,9 +130,9 @@ public final class FileNameUtils {
      * 
      * @return Returns the filename with known illegal characters substituted.
      */
-    public static String getValidFileName(String fileNameStr, boolean isMp3Device) {
+    public static String getValidFileName(String fileNameStr, boolean isMp3Device, IOSManager osManager) {
         // First call generic function
-        String fileName = getValidName(fileNameStr, isMp3Device);
+        String fileName = getValidName(fileNameStr, isMp3Device, osManager);
 
         // Most OS do not like a slash, so replace it by default.
         fileName = fileName.replaceAll("/", "-");
@@ -146,7 +146,7 @@ public final class FileNameUtils {
         fileName = fileName.replaceAll(":", "");
 
         // This list is probably incomplete. Windows is quite picky.
-        if (OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS || isMp3Device) {
+        if (osManager.isWindows() || isMp3Device) {
             fileName = fileName.replace("\\", "-");
         }
         return fileName;
@@ -163,8 +163,8 @@ public final class FileNameUtils {
      * 
      * @return Returns the path name with known illegal characters substituted.
      */
-    public static String getValidFolderName(String folderName) {
-        return getValidFolderName(folderName, false);
+    public static String getValidFolderName(String folderName, IOSManager osManager) {
+        return getValidFolderName(folderName, false, osManager);
     }
 
     /**
@@ -180,18 +180,18 @@ public final class FileNameUtils {
      * 
      * @return Returns the path name with known illegal characters substituted.
      */
-    public static String getValidFolderName(String folderNameStr, boolean isMp3Device) {
+    public static String getValidFolderName(String folderNameStr, boolean isMp3Device, IOSManager osManager) {
         // First call generic function
-        String folderName = getValidName(folderNameStr, isMp3Device);
+        String folderName = getValidName(folderNameStr, isMp3Device, osManager);
 
         // This list is probably incomplete. Windows is quite picky.
-        if (OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS || isMp3Device) {
+        if (osManager.isWindows() || isMp3Device) {
             folderName = folderName.replace("\\.", "\\_");
-            if (OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS) {
+            if (osManager.isWindows()) {
                 folderName = folderName + "\\";
             }
             folderName = folderName.replace(".\\", "_\\");
-            if (OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS) {
+            if (osManager.isWindows()) {
                 folderName = folderName.replace("/", "-");
             }
         }
@@ -214,13 +214,13 @@ public final class FileNameUtils {
      * 
      * @return the valid name
      */
-    private static String getValidName(String fileNameStr, boolean isMp3Device) {
+    private static String getValidName(String fileNameStr, boolean isMp3Device, IOSManager osManager) {
         /*
          * This list is probably incomplete. Windows is quite picky. We do not
          * check for maximum length.
          */
         String fileName = fileNameStr;
-        if (OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS || isMp3Device) {
+        if (osManager.isWindows() || isMp3Device) {
             fileName = fileName.replace("\"", "'");
             fileName = fileName.replace("?", "_");
             // Replace all ":" except at the drive letter
@@ -234,7 +234,7 @@ public final class FileNameUtils {
         }
 
         // Unconfirmed, as no Mac available for testing.
-        if (OsManager.osType == net.sourceforge.atunes.kernel.OperatingSystem.MACOSX) {
+        if (osManager.isMacOsX()) {
             fileName = fileName.replace("|", "-");
         }
         return fileName;
@@ -250,12 +250,12 @@ public final class FileNameUtils {
      * 
      * @return Returns a (hopefully) valid filename
      */
-    public static String getNewFileName(String pattern, ILocalAudioObject song) {
+    public static String getNewFileName(String pattern, ILocalAudioObject song, IOSManager osManager) {
         String result = AbstractPattern.applyPatternTransformations(pattern, song);
         // We need to place \\ before escape sequences otherwise the ripper hangs. We can not do this later.
         result = result.replace("\\", "\\\\").replace("$", "\\$");
         result = StringUtils.getString(result, song.getFile().getName().substring(song.getFile().getName().lastIndexOf('.')));
-        result = getValidFileName(result);
+        result = getValidFileName(result, osManager);
         return result;
     }
 
@@ -269,11 +269,11 @@ public final class FileNameUtils {
      * 
      * @return Returns a (hopefully) valid filename
      */
-    public static String getNewFolderPath(String pattern, ILocalAudioObject song) {
+    public static String getNewFolderPath(String pattern, ILocalAudioObject song, IOSManager osManager) {
         String result = AbstractPattern.applyPatternTransformations(pattern, song);
         // We need to place \\ before escape sequences otherwise the ripper hangs. We can not do this later.
         result = result.replace("\\", "\\\\").replace("$", "\\$");
-        result = getValidName(result, false);
+        result = getValidName(result, false, osManager);
         return result;
     }
 
@@ -293,8 +293,8 @@ public final class FileNameUtils {
      * 
      * @return File/Path in 8.3 format
      */
-    public static String getShortPathNameW(String longPathName) {
-        if (!OsManager.usesShortPathNames()) {
+    public static String getShortPathNameW(String longPathName, IOSManager osManager) {
+        if (!osManager.usesShortPathNames()) {
             return longPathName;
         }
         WString pathname = new WString(longPathName);

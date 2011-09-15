@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.player.mplayer;
 
 import java.io.PrintStream;
 
-import net.sourceforge.atunes.kernel.OsManager;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -39,10 +39,11 @@ class MPlayerCommandWriter {
     /**
      * Returns new command writer for mplayer instance
      * @param process
+     * @param osManager
      * @return
      */
-    static MPlayerCommandWriter newCommandWriter(Process process) {
-    	if (OsManager.osType.isMacOsX()) {
+    static MPlayerCommandWriter newCommandWriter(Process process, IOSManager osManager) {
+    	if (osManager.isMacOsX()) {
     		return new MPlayerXCommandWriter(process);
     	}
     	return new MPlayerCommandWriter(process);

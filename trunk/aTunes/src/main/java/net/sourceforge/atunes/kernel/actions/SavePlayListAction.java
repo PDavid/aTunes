@@ -30,10 +30,12 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -73,7 +75,7 @@ public class SavePlayListAction extends CustomAbstractAction {
             // If file does not exist, or exist and overwrite is confirmed, then write file
             if (!file.exists()
                     || (file.exists() && GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("OVERWRITE_FILE"), I18nUtils.getString("INFO")) == JOptionPane.OK_OPTION)) {
-                PlayListIO.write(PlayListHandler.getInstance().getCurrentPlayList(true), file);
+                PlayListIO.write(PlayListHandler.getInstance().getCurrentPlayList(true), file, Context.getBean(IOSManager.class));
             }
         }
     }

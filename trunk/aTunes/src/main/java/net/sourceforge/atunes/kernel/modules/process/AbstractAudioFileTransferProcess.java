@@ -34,11 +34,11 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.FileNameUtils;
@@ -70,10 +70,13 @@ public abstract class AbstractAudioFileTransferProcess extends AbstractProcess {
      */
     private String userSelectionWhenErrors = null;
 
-    protected AbstractAudioFileTransferProcess(Collection<ILocalAudioObject> collection, IState state, IFrame frame) {
+    private IOSManager osManager;
+    
+    protected AbstractAudioFileTransferProcess(Collection<ILocalAudioObject> collection, IState state, IFrame frame, IOSManager osManager) {
     	super(state);
         this.filesToTransfer = collection;
         this.filesTransferred = new ArrayList<File>();
+        this.osManager = osManager;
         setOwner(frame.getFrame());
     }
 
@@ -192,7 +195,7 @@ public abstract class AbstractAudioFileTransferProcess extends AbstractProcess {
     protected File transferAudioFile(File destination, ILocalAudioObject file, List<Exception> thrownExceptions) {
         String destDir = getDirectory(file, destination, false);
         String newName = getName(file, false);
-        File destFile = new File(StringUtils.getString(destDir, OsManager.getFileSeparator(), newName));
+        File destFile = new File(StringUtils.getString(destDir, Context.getBean(IOSManager.class).getFileSeparator(), newName));
 
         try {
             // Now that we (supposedly) have a valid filename write file
@@ -216,6 +219,7 @@ public abstract class AbstractAudioFileTransferProcess extends AbstractProcess {
      * @param song
      * @param destination
      * @param isMp3Device
+     * @param osManager
      * @return
      */
     public String getDirectory(ILocalAudioObject song, File destination, boolean isMp3Device) {
@@ -226,22 +230,18 @@ public abstract class AbstractAudioFileTransferProcess extends AbstractProcess {
      * Prepares the directory structure in which the song will be written.
      * 
      * @param song
-     *            Song to be written
      * @param destination
-     *            Destination path
      * @param isMp3Device
-     * 
      * @param pattern
-     * 
      * @return Returns the directory structure with full path where the file
      *         will be written
      */
     protected String getDirectory(ILocalAudioObject song, File destination, boolean isMp3Device, String pattern) {
         String songRelativePath = "";
         if (pattern != null) {
-            songRelativePath = FileNameUtils.getValidFolderName(FileNameUtils.getNewFolderPath(pattern, song), isMp3Device);
+            songRelativePath = FileNameUtils.getValidFolderName(FileNameUtils.getNewFolderPath(pattern, song, osManager), isMp3Device, osManager);
         }
-        return StringUtils.getString(destination.getAbsolutePath(), OsManager.getFileSeparator(), songRelativePath);
+        return StringUtils.getString(destination.getAbsolutePath(), Context.getBean(IOSManager.class).getFileSeparator(), songRelativePath);
     }
 
     /**
@@ -268,11 +268,15 @@ public abstract class AbstractAudioFileTransferProcess extends AbstractProcess {
     protected String getName(ILocalAudioObject file, boolean isMp3Device, String pattern) {
         String newName;
         if (pattern != null) {
-            newName = FileNameUtils.getNewFileName(pattern, file);
+            newName = FileNameUtils.getNewFileName(pattern, file, osManager);
         } else {
-            newName = FileNameUtils.getValidFileName(file.getFile().getName().replace("\\", "\\\\").replace("$", "\\$"), isMp3Device);
+            newName = FileNameUtils.getValidFileName(file.getFile().getName().replace("\\", "\\\\").replace("$", "\\$"), isMp3Device, osManager);
         }
         return newName;
     }
 
+    
+    protected IOSManager getOsManager() {
+		return osManager;
+	}
 }

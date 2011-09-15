@@ -46,7 +46,6 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
@@ -424,7 +423,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
     public String getDownloadPath(PodcastFeedEntry podcastFeedEntry) {
         String path = getState().getPodcastFeedEntryDownloadPath();
         if (path == null || path.isEmpty()) {
-            path = StringUtils.getString(OsManager.getUserConfigFolder(Kernel.isDebug()), "/", Constants.DEFAULT_PODCAST_FEED_ENTRY_DOWNLOAD_DIR);
+            path = StringUtils.getString(getOsManager().getUserConfigFolder(Kernel.isDebug()), "/", Constants.DEFAULT_PODCAST_FEED_ENTRY_DOWNLOAD_DIR);
         }
         File podcastFeedsDownloadFolder = new File(path);
 
@@ -443,7 +442,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
 
         // Check if subfolder exists and otherwise create
         File podcastFeedDownloadFolder = new File(podcastFeedsDownloadFolder, FileNameUtils
-                .getValidFileName(String.valueOf(podcastFeedEntry.getPodcastFeed().getName().hashCode())));
+                .getValidFileName(String.valueOf(podcastFeedEntry.getPodcastFeed().getName().hashCode()), getOsManager()));
         if (!podcastFeedDownloadFolder.exists()) {
             boolean check = podcastFeedDownloadFolder.mkdir();
             if (!check) {
@@ -463,7 +462,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
                 } else {
                     filename = String.valueOf(filename.hashCode());
                 }
-                return podcastFeedDownloadFolder.toString() + "/" + FileNameUtils.getValidFileName(filename);
+                return podcastFeedDownloadFolder.toString() + "/" + FileNameUtils.getValidFileName(filename, getOsManager());
             }
         } catch (URISyntaxException e) {
             Logger.error(e);

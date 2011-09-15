@@ -43,6 +43,7 @@ import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 
@@ -52,11 +53,13 @@ public final class CoverFlow extends JPanel {
 		private final Cover3D cover;
 		private final IAudioObject audioObject;
 		private final int index;
+		private IOSManager osManager;
 
-		private PaintCoversSwingWorker(Cover3D cover, IAudioObject audioObject, int index) {
+		private PaintCoversSwingWorker(Cover3D cover, IAudioObject audioObject, int index, IOSManager osManager) {
 			this.cover = cover;
 			this.audioObject = audioObject;
 			this.index = index;
+			this.osManager = osManager;
 		}
 
 		@Override
@@ -67,7 +70,7 @@ public final class CoverFlow extends JPanel {
 		    } else if (audioObject instanceof PodcastFeedEntry) {
 		        image = RssImageIcon.getBigIcon(Color.WHITE).getImage();
 		    } else {
-	    		image = getPicture((AudioFile) audioObject);
+	    		image = getPicture((AudioFile) audioObject, osManager);
 		    }
 		    
 	        if (cover != null) {
@@ -135,39 +138,38 @@ public final class CoverFlow extends JPanel {
     /**
      * Paint.
      * 
-     * @param audioObject
-     *            the song
-     * @param updateCover
-     *            the update cover
+     * @param objects
+     * @param osManager
      */
-    void paint(final List<IAudioObject> objects) {
+    void paint(final List<IAudioObject> objects, IOSManager osManager) {
         int i = 0;
         for (IAudioObject ao : objects) {
-            paint(ao, i < covers.size() ? covers.get(i) : null, i == 2, i);
+            paint(ao, i < covers.size() ? covers.get(i) : null, i == 2, i, osManager);
             i++;
         }
     }
 
-    private void paint(final IAudioObject audioObject, final Cover3D cover, boolean current, int index) {
+    private void paint(final IAudioObject audioObject, final Cover3D cover, boolean current, int index, IOSManager osManager) {
         // No object
         if (audioObject == null) {
             return;
         }
 
         // Fetch cover
-        new PaintCoversSwingWorker(cover, audioObject, index).execute();
+        new PaintCoversSwingWorker(cover, audioObject, index, osManager).execute();
     }
 
     /**
      * Returns picture for audio file
      * 
      * @param audioFile
+     * @param osManager
      * @return
      */
-    protected Image getPicture(AudioFile audioFile) {
+    protected Image getPicture(AudioFile audioFile, IOSManager osManager) {
     	Image result = Context.getBean(IWebServicesHandler.class).getAlbumImage(audioFile.getArtist(), audioFile.getAlbum());
         if (result == null) {
-            ImageIcon[] pictures = AudioFilePictureUtils.getPicturesForFile(audioFile, -1, -1);
+            ImageIcon[] pictures = AudioFilePictureUtils.getPicturesForFile(audioFile, -1, -1, osManager);
             if (pictures != null && pictures.length > 0) {
                 result = pictures[0].getImage();
             }

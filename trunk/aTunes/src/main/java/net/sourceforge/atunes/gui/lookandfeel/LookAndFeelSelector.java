@@ -30,12 +30,13 @@ import java.util.Map;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.Kernel;
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.kernel.modules.state.beans.FontBean;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 
 import org.commonjukebox.plugins.exceptions.PluginSystemException;
@@ -77,8 +78,9 @@ public final class LookAndFeelSelector implements PluginListener {
      * Default constructor
      */
     private LookAndFeelSelector() {
-        lookAndFeels = OsManager.getLookAndFeels();
-        defaultLookAndFeelClass = OsManager.getDefaultLookAndFeel();
+    	IOSManager osManager = Context.getBean(IOSManager.class);
+        lookAndFeels = osManager.getLookAndFeels();
+        defaultLookAndFeelClass = osManager.getDefaultLookAndFeel();
     }
 
     /**
@@ -116,7 +118,7 @@ public final class LookAndFeelSelector implements PluginListener {
      * @param lookAndFeelBean
      * @param state
      */
-    public void setLookAndFeel(LookAndFeelBean lookAndFeelBean, IState state) {
+    public void setLookAndFeel(LookAndFeelBean lookAndFeelBean, IState state, IOSManager osManager) {
         if (Kernel.isIgnoreLookAndFeel()) {
             return;
         }
@@ -145,6 +147,7 @@ public final class LookAndFeelSelector implements PluginListener {
 
         try {
 			currentLookAndFeel = currentLookAndFeelClass.newInstance();
+			currentLookAndFeel.setOsManager(osManager);
 		} catch (InstantiationException e) {
 			Logger.error(e);
 		} catch (IllegalAccessException e) {
@@ -240,12 +243,13 @@ public final class LookAndFeelSelector implements PluginListener {
      * 
      * @param selectedSkin
      * @param state
+     * @param osManager
      */
-    public void applySkin(String selectedSkin, IState state) {
+    public void applySkin(String selectedSkin, IState state, IOSManager osManager) {
         LookAndFeelBean bean = new LookAndFeelBean();
         bean.setName(currentLookAndFeel.getName());
         bean.setSkin(selectedSkin);
-        setLookAndFeel(bean, state);
+        setLookAndFeel(bean, state, osManager);
         for (Window window : Window.getWindows()) {
             SwingUtilities.updateComponentTreeUI(window);
         }

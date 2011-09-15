@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.hotkeys;
 
-import net.sourceforge.atunes.kernel.OsManager;
+import net.sourceforge.atunes.model.IOSManager;
 
 import com.melloware.jintellitype.IntellitypeListener;
 import com.melloware.jintellitype.JIntellitype;
@@ -102,8 +102,8 @@ public class WindowsHotkeys extends AbstractHotkeys implements com.melloware.jin
         }
     }
 
-    public static boolean isSupported() {
-    	if(OsManager.is64Bit()) {
+    public static boolean isSupported(IOSManager osManager) {
+    	if(osManager.is64Bit()) {
     		JIntellitype.setLibraryLocation("JIntellitype64.dll");
     	}
         return JIntellitype.isJIntellitypeSupported();

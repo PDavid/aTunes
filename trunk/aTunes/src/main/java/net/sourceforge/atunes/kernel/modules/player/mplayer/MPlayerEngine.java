@@ -28,7 +28,6 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
@@ -41,6 +40,7 @@ import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
@@ -76,16 +76,16 @@ public class MPlayerEngine extends AbstractPlayerEngine {
     /** The current fade away process running */
     private FadeAwayRunnable currentFadeAwayRunnable = null;
 
-    public MPlayerEngine(IState state, IFrame frame) {
-    	super(state, frame);
-    	commandWriter = MPlayerCommandWriter.newCommandWriter(null);
+    public MPlayerEngine(IState state, IFrame frame, IOSManager osManager) {
+    	super(state, frame, osManager);
+    	commandWriter = MPlayerCommandWriter.newCommandWriter(null, osManager);
     }
 
     @Override
     public boolean isEngineAvailable() {
     	InputStream in = null;
     	try {
-        	String command = OsManager.getPlayerEngineCommand(this);
+        	String command = getOsManager().getPlayerEngineCommand(this);
         	if (command != null) {
         		Process p = new ProcessBuilder(command).start();
         		in = p.getInputStream();
@@ -144,7 +144,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 
             // Start the play process
             process = getProcess(audioObjectToPlay);
-            commandWriter = MPlayerCommandWriter.newCommandWriter(process);
+            commandWriter = MPlayerCommandWriter.newCommandWriter(process, getOsManager());
             // Output reader needs original audio object, specially when cacheFilesBeforePlaying is true, as
             // statistics must be applied over original audio object, not the cached one
             mPlayerOutputReader = AbstractMPlayerOutputReader.newInstance(this, process, audioObject, getState(), getFrame());
@@ -176,7 +176,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
                 return;
             }
             mPlayerErrorReader.interrupt();
-            currentFadeAwayRunnable = new FadeAwayRunnable(process, getState().getVolume(), this);
+            currentFadeAwayRunnable = new FadeAwayRunnable(process, getState().getVolume(), this, getOsManager());
             Thread t = new Thread(currentFadeAwayRunnable);
             // Start fade away process
             t.start();
@@ -283,8 +283,8 @@ public class MPlayerEngine extends AbstractPlayerEngine {
         boolean isRemoteAudio = !(audioObject instanceof ILocalAudioObject || (audioObject instanceof PodcastFeedEntry
                 && getState().isUseDownloadedPodcastFeedEntries() && ((PodcastFeedEntry) audioObject).isDownloaded()));
 
-        command.add(OsManager.getPlayerEngineCommand(this));
-        command.addAll(OsManager.getPlayerEngineParameters(this));
+        command.add(getOsManager().getPlayerEngineCommand(this));
+        command.addAll(getOsManager().getPlayerEngineParameters(this));
         command.add(QUIET);
         command.add(SLAVE);
 
@@ -299,18 +299,18 @@ public class MPlayerEngine extends AbstractPlayerEngine {
         }
 
         // url
-        boolean shortPathName = getState().isUseShortPathNames() && OsManager.usesShortPathNames() && audioObject instanceof AudioFile;
+        boolean shortPathName = getState().isUseShortPathNames() && getOsManager().usesShortPathNames() && audioObject instanceof AudioFile;
         String url;
         if (audioObject instanceof PodcastFeedEntry && !isRemoteAudio) {
             url = PodcastFeedHandler.getInstance().getDownloadPath((PodcastFeedEntry) audioObject);
-            if (getState().isUseShortPathNames() && OsManager.usesShortPathNames()) {
+            if (getState().isUseShortPathNames() && getOsManager().usesShortPathNames()) {
                 shortPathName = true;
             }
         } else {
             url = audioObject.getUrl();
         }
         if (shortPathName) {
-            String shortPath = FileNameUtils.getShortPathNameW(url);
+            String shortPath = FileNameUtils.getShortPathNameW(url, getOsManager());
             command.add(shortPath != null && !shortPath.isEmpty() ? shortPath : url);
         } else {
             if (url.startsWith("http")) {

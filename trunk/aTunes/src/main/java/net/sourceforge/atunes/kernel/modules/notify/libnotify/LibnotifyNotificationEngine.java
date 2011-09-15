@@ -20,16 +20,18 @@
 
 package net.sourceforge.atunes.kernel.modules.notify.libnotify;
 
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.notify.CommonNotificationEngine;
 import net.sourceforge.atunes.kernel.modules.notify.libnotify.Notify.NotifyNotification;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class LibnotifyNotificationEngine extends CommonNotificationEngine {
 
+	private IOSManager osManager;
+	
     private final class ShowNotificationRunnable implements Runnable {
 		private final IAudioObject audioObject;
 
@@ -39,7 +41,7 @@ public class LibnotifyNotificationEngine extends CommonNotificationEngine {
 
 		@Override
 		public void run() {
-			String image = getTemporalImage(audioObject);
+			String image = getTemporalImage(audioObject, osManager);
 			NotifyNotification n = Notify.newNotification(audioObject.getTitle(), audioObject.getArtist(), image);
 			if (!Notify.show(n)) {
 				Logger.error("could not show notification - libnotify");
@@ -49,12 +51,13 @@ public class LibnotifyNotificationEngine extends CommonNotificationEngine {
 		}
 	}
 
-    public LibnotifyNotificationEngine() {
+    public LibnotifyNotificationEngine(IOSManager osManager) {
+    	this.osManager = osManager;
     }
 
     @Override
     public boolean testEngineAvailable() {
-    	if (OsManager.osType.isLinux() || OsManager.osType.isSolaris()) {
+    	if (osManager.isLinux() || osManager.isSolaris()) {
     		if (!Notify.isNotifyPresent()) {
     			Logger.error("libnotify is not available");
     			return false;

@@ -43,6 +43,7 @@ import net.sourceforge.atunes.misc.Timer;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -108,7 +109,7 @@ public class Kernel {
             SwingUtilities.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
-                    LookAndFeelSelector.getInstance().setLookAndFeel(state.getLookAndFeel(), state);
+                    LookAndFeelSelector.getInstance().setLookAndFeel(state.getLookAndFeel(), state, Context.getBean(IOSManager.class));
                     
                     IFrame frame = Context.getBean(IFrame.class);
                     AbstractHandler.setFrame(frame);
@@ -131,7 +132,7 @@ public class Kernel {
             if (AudioFile.isValidAudioFile(arg)) {
                 songs.add(arg);
             } else if (PlayListIO.isValidPlayList(arg)) {
-                songs.addAll(PlayListIO.read(new File(arg)));
+                songs.addAll(PlayListIO.read(new File(arg), Context.getBean(IOSManager.class)));
             }
         }
 
@@ -195,13 +196,15 @@ public class Kernel {
             // Store all configuration and finish all active modules
         	ApplicationLifeCycleListeners.applicationFinish();
 
+        	IOSManager osManager = Context.getBean(IOSManager.class);
+        	
             // Build a process builder with OS-specific command and saved arguments
-        	String parameters = OsManager.getLaunchParameters();
+        	String parameters = osManager.getLaunchParameters();
             ProcessBuilder pb = null;
             if (parameters != null && !parameters.trim().isEmpty()) {
-            	pb = new ProcessBuilder(OsManager.getLaunchCommand(), parameters, ApplicationArguments.getSavedArguments());
+            	pb = new ProcessBuilder(osManager.getLaunchCommand(), parameters, ApplicationArguments.getSavedArguments());
             } else {
-            	pb = new ProcessBuilder(OsManager.getLaunchCommand(), ApplicationArguments.getSavedArguments());
+            	pb = new ProcessBuilder(osManager.getLaunchCommand(), ApplicationArguments.getSavedArguments());
 
             }
 

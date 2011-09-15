@@ -38,7 +38,7 @@ import javax.swing.event.DocumentListener;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
 import net.sourceforge.atunes.gui.views.controls.SimpleTextPane;
-import net.sourceforge.atunes.kernel.OsManager;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -57,9 +57,12 @@ class MacOSXPlayerEngineEnterPathDialog extends AbstractCustomDialog {
 		
 	private JButton finishButton;
 	
-	public MacOSXPlayerEngineEnterPathDialog(JDialog previousDialog) {
+	private IOSManager osManager;
+	
+	public MacOSXPlayerEngineEnterPathDialog(JDialog previousDialog, IOSManager osManager) {
 		super((JFrame)previousDialog.getParent(), 450, 250, true, CloseAction.DISPOSE);
 		this.previousDialog = previousDialog;
+		this.osManager = osManager;
 		setResizable(false);
 		setTitle(I18nUtils.getString("PLAYER_ENGINE_SELECTION"));
         addContent();
@@ -68,7 +71,7 @@ class MacOSXPlayerEngineEnterPathDialog extends AbstractCustomDialog {
 	private void addContent() {
 		SimpleTextPane instructions = new SimpleTextPane(I18nUtils.getString("MAC_PLAYER_ENGINE_ENTER_PATH"));
 
-		final CustomJFileChooser locationFileChooser = new CustomJFileChooser(this, 0, JFileChooser.FILES_ONLY);
+		final CustomJFileChooser locationFileChooser = new CustomJFileChooser(this, 0, JFileChooser.FILES_ONLY, osManager);
 		locationFileChooser.addDocumentListener(new DocumentListener() {
 			
 			@Override
@@ -110,10 +113,10 @@ class MacOSXPlayerEngineEnterPathDialog extends AbstractCustomDialog {
 		finishButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				OsManager.setOSProperty(MacOSXOperatingSystem.MPLAYER_COMMAND, locationFileChooser.getResult());
+				osManager.setOSProperty(MacOSXOperatingSystem.MPLAYER_COMMAND, locationFileChooser.getResult());
 				previousDialog.dispose();
 				MacOSXPlayerEngineEnterPathDialog.this.setVisible(false);
-				OsManager.playerEngineFound();
+				osManager.playerEngineFound();
 			}
 		});
 		JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));

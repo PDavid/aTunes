@@ -38,6 +38,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectStatistics;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.DateUtils;
@@ -84,6 +85,8 @@ public class AudioObjectBasicInfoDataSource implements ContextInformationDataSou
     public static final String OUTPUT_LASTPLAYDATE = "LAST_PLAY_DATE";
     
     private IWebServicesHandler webServicesHandler;
+    
+    private IOSManager osManager;
 
     @Override
     public Map<String, ?> getData(Map<String, ?> parameters) {
@@ -114,7 +117,7 @@ public class AudioObjectBasicInfoDataSource implements ContextInformationDataSou
      */
     private ImageIcon getImage(IAudioObject audioObject) {
         if (audioObject instanceof AudioFile) {
-            ImageIcon localImage = audioObject.getImage(Constants.ALBUM_IMAGE_SIZE);
+            ImageIcon localImage = audioObject.getImage(Constants.ALBUM_IMAGE_SIZE, osManager);
             if (localImage == null) {
                 Image image = webServicesHandler.getAlbumImage(audioObject.getArtist(), audioObject.getAlbum());
                 if (image != null) {
@@ -154,5 +157,9 @@ public class AudioObjectBasicInfoDataSource implements ContextInformationDataSou
     
     public final void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
+	}
+    
+    public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
 	}
 }

@@ -49,6 +49,7 @@ import net.sourceforge.atunes.model.IArtistInfo;
 import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ISimilarArtistsInfo;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.CryptoUtils;
@@ -161,7 +162,7 @@ public final class LastFmService {
     private ExtendedProxy proxy;
     private String user;
     private String password;
-    private static LastFmCache lastFmCache = new LastFmCache();
+    private LastFmCache lastFmCache;
     /** Submissions need single threaded executor */
     private ExecutorService scrobblerExecutorService = Executors.newSingleThreadExecutor();
     
@@ -171,9 +172,11 @@ public final class LastFmService {
      * Instantiates a new Last.fm service
      * 
      * @param state
+     * @param osManager
      */
-    public LastFmService(IState state) {
+    public LastFmService(IState state, IOSManager osManager) {
     	this.state = state;
+    	lastFmCache = new LastFmCache(osManager);
     	updateService();
     }
     

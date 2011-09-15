@@ -20,9 +20,11 @@
 
 package net.sourceforge.atunes.model;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 
@@ -34,6 +36,11 @@ public class ArtistTest {
 	private static final String AUDIO_FILE_2 = "dhjadasd";
 	
 	private static Artist artist = new Artist(ARTIST_NAME);
+	
+	@Before
+	public void init() {
+		Context.initialize("/spring/os.xml");
+	}
 	
 	@Test
 	public void createArtist() {		

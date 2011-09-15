@@ -39,12 +39,12 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.autocomplete.AutoCompleteDecorator;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 
@@ -119,15 +119,18 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
     private List<ILocalAudioObject> audioFilesEditing;
     private byte[] newCover;
     private boolean coverEdited;
+    
+    private IOSManager osManager;
 
     /**
      * Instantiates a new edits the tag dialog controller.
-     * 
      * @param dialog
      * @param state
+     * @param osManager
      */
-    public EditTagDialogController(EditTagDialog dialog, IState state) {
+    public EditTagDialogController(EditTagDialog dialog, IState state, IOSManager osManager) {
         super(dialog, state);
+        this.osManager = osManager;
         addBindings();
         addStateBindings();
     }
@@ -438,7 +441,7 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
         if (!getComponentControlled().getLyricsCheckBox().isEnabled() || getComponentControlled().getLyricsCheckBox().isSelected()) {
             // Text area line breaks are \n so in some OS (Windows) is not a correct line break -> Replace with OS line terminator
             String lyrics = getComponentControlled().getLyricsTextArea().getText();
-            if (OsManager.osType.equals(net.sourceforge.atunes.kernel.OperatingSystem.WINDOWS)) {
+            if (osManager.isWindows()) {
                 lyrics = lyrics.replaceAll("^[\r]\n", "\r\n");
             }
             editTagInfo.put("LYRICS", lyrics);

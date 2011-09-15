@@ -37,7 +37,6 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.EditPreferencesDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.playlist.ListOfPlayLists;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
@@ -315,7 +314,7 @@ public final class ApplicationStateHandler extends AbstractHandler {
         ObjectOutputStream oos = null;
         try {
             FileOutputStream fout = new FileOutputStream(StringUtils
-                    .getString(getUserConfigFolder(), OsManager.getFileSeparator(), Constants.DEVICE_CACHE_FILE_PREFIX, deviceId));
+                    .getString(getUserConfigFolder(), getOsManager().getFileSeparator(), Constants.DEVICE_CACHE_FILE_PREFIX, deviceId));
             oos = new ObjectOutputStream(fout);
             Logger.info("Serialize device information...");
             long t0 = System.currentTimeMillis();
@@ -578,7 +577,7 @@ public final class ApplicationStateHandler extends AbstractHandler {
     public Repository retrieveDeviceCache(String deviceId) {
         ObjectInputStream ois = null;
         try {
-            FileInputStream fis = new FileInputStream(StringUtils.getString(getUserConfigFolder(), OsManager.getFileSeparator(), Constants.DEVICE_CACHE_FILE_PREFIX, deviceId));
+            FileInputStream fis = new FileInputStream(StringUtils.getString(getUserConfigFolder(), getOsManager().getFileSeparator(), Constants.DEVICE_CACHE_FILE_PREFIX, deviceId));
             ois = new ObjectInputStream(fis);
             Logger.info("Reading serialized device cache");
             long t0 = System.currentTimeMillis();
@@ -599,7 +598,7 @@ public final class ApplicationStateHandler extends AbstractHandler {
     }
 
     private String getUserConfigFolder() {
-        return OsManager.getUserConfigFolder(Kernel.isDebug());
+        return getOsManager().getUserConfigFolder(Kernel.isDebug());
     }
     
     /**
@@ -609,7 +608,7 @@ public final class ApplicationStateHandler extends AbstractHandler {
      */
     public void editPreferences() {
     	EditPreferencesDialog dialog = new EditPreferencesDialog(getFrame().getFrame());
-    	new EditPreferencesDialogController(dialog, getState()).start();
+    	new EditPreferencesDialogController(dialog, getState(), getOsManager()).start();
     }
 
 	@Override

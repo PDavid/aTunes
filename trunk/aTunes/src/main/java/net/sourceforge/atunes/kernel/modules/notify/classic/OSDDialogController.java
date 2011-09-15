@@ -35,6 +35,7 @@ import net.sourceforge.atunes.gui.views.dialogs.OSDDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -44,16 +45,19 @@ final class OSDDialogController extends AbstractSimpleController<OSDDialog> {
     private WindowFader windowFader;
     private Point location;
     private Timer timer;
+    private IOSManager osManager;
 
     /**
      * Instantiates a new oSD dialog controller.
      * 
      * @param dialogControlled
      * @param state
+     * @param osManager
      */
-    OSDDialogController(OSDDialog dialogControlled, IState state) {
+    OSDDialogController(OSDDialog dialogControlled, IState state, IOSManager osManager) {
         super(dialogControlled, state);
         addBindings();
+        this.osManager = osManager;
         windowFader = new WindowFader(dialogControlled, 50);
     }
 
@@ -114,7 +118,7 @@ final class OSDDialogController extends AbstractSimpleController<OSDDialog> {
         // By default OSD image has shadow, unless it's a generic image
         getComponentControlled().setShadowBorder(true);
 
-        ImageIcon i = audioObject.getImage(ImageSize.SIZE_MAX);
+        ImageIcon i = audioObject.getImage(ImageSize.SIZE_MAX, osManager);
         if (i == null) {
             i = audioObject.getGenericImage(GenericImageSize.MEDIUM).getIcon(null);
             getComponentControlled().setShadowBorder(false);

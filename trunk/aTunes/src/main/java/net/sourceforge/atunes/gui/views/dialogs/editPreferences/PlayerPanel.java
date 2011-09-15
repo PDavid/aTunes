@@ -49,11 +49,11 @@ import javax.swing.table.AbstractTableModel;
 import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.hotkeys.Hotkey;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeyHandler;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeysConfig;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -175,12 +175,15 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
     private JCheckBox cacheFilesBeforePlaying;
 
     private JComboBox engineCombo;
+    
+    private IOSManager osManager;
 
     /**
      * Instantiates a new player panel.
      */
-    public PlayerPanel() {
+    public PlayerPanel(IOSManager osManager) {
         super(I18nUtils.getString("PLAYER"));
+        this.osManager = osManager;
         Box engineBox = Box.createHorizontalBox();
         engineBox.setAlignmentX(Component.LEFT_ALIGNMENT);
         engineBox.add(new JLabel(I18nUtils.getString("PLAYER_ENGINE")));
@@ -427,7 +430,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         HotkeysConfig hotkeysConfig = state.getHotkeysConfig();
         setHotkeysConfig(hotkeysConfig != null ? hotkeysConfig : HotkeyHandler.getInstance().getHotkeysConfig());
         setUseShortPathNames(state.isUseShortPathNames());
-        getUseShortPathNames().setEnabled(OsManager.usesShortPathNames());
+        getUseShortPathNames().setEnabled(osManager.usesShortPathNames());
         
         boolean hotKeysSupported = HotkeyHandler.getInstance().areHotkeysSupported();
         getEnableGlobalHotkeys().setVisible(hotKeysSupported);

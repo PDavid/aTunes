@@ -38,54 +38,48 @@ import net.sourceforge.atunes.kernel.modules.os.WindowsOperatingSystem;
 import net.sourceforge.atunes.kernel.modules.os.macosx.MacOSXOperatingSystem;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.OperatingSystem;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.commons.io.FileUtils;
 
-public class OsManager {
+public class OsManager implements IOSManager {
 
 	/**
 	 * Current OS
 	 */
-	public static OperatingSystem osType;
+	private OperatingSystem osType;
 	
-	private static OperatingSystemAdapter adapter;
+	private OperatingSystemAdapter adapter;
 	
     /** Path to config folder as passed as argument to app. */
-    private static String customConfigFolder = null;
+    private String customConfigFolder = null;
     
     /** Path to repository config folder as passed as argument to app. */
-    private static String customRepositoryConfigFolder = null;
+    private String customRepositoryConfigFolder = null;
 	
-    static {
+    /**
+     *  Constructor 
+     */
+    public OsManager() {
     	 osType = detectOperatingSystem();
     	 if (osType.isLinux()) {
-    		 adapter = new LinuxOperatingSystem(osType);
+    		 adapter = new LinuxOperatingSystem(osType, this);
     	 } else if (osType.isMacOsX()) {
-    		 adapter = new MacOSXOperatingSystem(osType);
+    		 adapter = new MacOSXOperatingSystem(osType, this);
     	 } else if (osType.isSolaris()) {
-    		 adapter = new SolarisOperatingSystem(osType);
+    		 adapter = new SolarisOperatingSystem(osType, this);
     	 } else {
-    		 adapter = new WindowsOperatingSystem(osType);
+    		 adapter = new WindowsOperatingSystem(osType, this);
     	 }
     }
     
-    /**
-     * Private constructor 
-     */
-    private OsManager() {
-    	
-    }
-    
-	/**
-     * Gets folder where state is stored. If not exists, it's created
-     * 
-     * @param useWorkDir
-     *            If the current working directory should be used
-     * 
-     * @return The folder where the state is stored
-     */
-	public static String getUserConfigFolder(boolean useWorkDir) {
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#getUserConfigFolder(boolean)
+	 */
+	@Override
+	public String getUserConfigFolder(boolean useWorkDir) {
 		if (useWorkDir) {
 			return "./debug";
 		}
@@ -130,17 +124,11 @@ public class OsManager {
         return newAppDataFolder;
 	}
 	
-    /**
-     * Returns file from the user config folder.
-     * 
-     * @param name
-     *            The name of the file (Example: aTunes.log or folder/file.abc)
-     * @param useWorkDir
-     *            If the current working directory should be used
-     * 
-     * @return The file from the user config folder
-     */
-    public static File getFileFromUserConfigFolder(String name, boolean useWorkDir) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#getFileFromUserConfigFolder(java.lang.String, boolean)
+	 */
+    @Override
+	public File getFileFromUserConfigFolder(String name, boolean useWorkDir) {
         String userConfigFolder = getUserConfigFolder(useWorkDir);
         if (userConfigFolder.equals(".")) {
             return new File(name);
@@ -148,22 +136,19 @@ public class OsManager {
         return new File(StringUtils.getString(userConfigFolder, "/", name));
     }
 
-    /**
-     * Sets the custom config folder.
-     * 
-     * @param customConfigFolder
-     *            the customConfigFolder to set
-     */
-    public static void setCustomConfigFolder(String folder) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#setCustomConfigFolder(java.lang.String)
+	 */
+    @Override
+	public void setCustomConfigFolder(String folder) {
         customConfigFolder = folder;
     }
 
-    /**
-     * Return path to temporal folder, which is inside user's configuration folder.
-     * 
-     * @return the temporal folder
-     */
-    public static String getTempFolder() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#getTempFolder()
+	 */
+    @Override
+	public String getTempFolder() {
         String userConfigFolder = getUserConfigFolder(Kernel.isDebug());
         String tempFolder = StringUtils.getString(userConfigFolder, adapter.getFileSeparator(), Constants.TEMP_DIR);
         File tempFile = new File(tempFolder);
@@ -180,7 +165,7 @@ public class OsManager {
      * 
      * @return The detected OS
      */
-    private static OperatingSystem detectOperatingSystem() {
+    private OperatingSystem detectOperatingSystem() {
         String osName = System.getProperty("os.name").toLowerCase();
         if (osName.contains("windows")) {
             return OperatingSystem.WINDOWS;
@@ -192,253 +177,301 @@ public class OsManager {
         return OperatingSystem.LINUX;
     }
     
-    /**
-     * Returns the current working directory
-     * 
-     * @return
-     */
-    public static String getWorkingDirectory() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#getWorkingDirectory()
+	 */
+    @Override
+	public String getWorkingDirectory() {
         return System.getProperty("user.dir");
     }
 
-    /**
-     * @return the customRepositoryConfigFolder
-     */
-    public static String getCustomRepositoryConfigFolder() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#getCustomRepositoryConfigFolder()
+	 */
+    @Override
+	public String getCustomRepositoryConfigFolder() {
         return customRepositoryConfigFolder;
     }
 
-	/**
-	 * Sets custom repository folder
-	 * @param folder
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#setCustomRepositoryConfigFolder(java.lang.String)
 	 */
-	public static void setCustomRepositoryConfigFolder(String folder) {
+	@Override
+	public void setCustomRepositoryConfigFolder(String folder) {
 		customRepositoryConfigFolder = folder;
 	}
 	
-    /**
-     * Returns a string with command to launch application This method is
-     * used when restarting app
-     * 
-     * @return
-     */
-    public static String getLaunchCommand() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#getLaunchCommand()
+	 */
+    @Override
+	public String getLaunchCommand() {
     	return adapter.getLaunchCommand();
     }
     
-    /**
-     * Returns launch parameters
-     * @return
-     */
-    public static String getLaunchParameters() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#getLaunchParameters()
+	 */
+    @Override
+	public String getLaunchParameters() {
     	return adapter.getLaunchParameters();
     }
     
-    /**
-     * Setup specific properties for frame
-     * @param frame
-     */
-    public static void setupFrame(IFrame frame) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#setupFrame(net.sourceforge.atunes.model.IFrame)
+	 */
+    @Override
+	public void setupFrame(IFrame frame) {
     	adapter.setUpFrame(frame);
     }
 
-	/**
-	 * Returns if shadow borders are supported
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#areShadowBordersForToolTipsSupported()
 	 */
-	public static boolean areShadowBordersForToolTipsSupported() {
+	@Override
+	public boolean areShadowBordersForToolTipsSupported() {
 		return adapter.areShadowBordersForToolTipsSupported();
 	}
 
-	/**
-	 * Returns user home
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#getUserHome()
 	 */
-	public static String getUserHome() {
+	@Override
+	public String getUserHome() {
 		return adapter.getUserHome();
 	}
 
-	/**
-	 * Returns path file separator
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#getFileSeparator()
 	 */
-	public static String getFileSeparator() {
+	@Override
+	public String getFileSeparator() {
 		return adapter.getFileSeparator();
 	}
 	
-	/**
-	 * Returns if OS uses short path names
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#usesShortPathNames()
 	 */
-	public static boolean usesShortPathNames() {
+	@Override
+	public boolean usesShortPathNames() {
 		return adapter.usesShortPathNames();
 	}
 
-	/**
-	 * Sets window in full screen
-	 * @param window
-	 * @param fullscreen
-	 * @param frame
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#setFullScreen(java.awt.Window, boolean, net.sourceforge.atunes.model.IFrame)
 	 */
-	public static void setFullScreen(Window window, boolean fullscreen, IFrame frame) {
+	@Override
+	public void setFullScreen(Window window, boolean fullscreen, IFrame frame) {
 		adapter.setFullScreen(window, fullscreen, frame);
 	}
 
-	/**
-	 * Return OS-dependent converter
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#getCdToWavConverter()
 	 */
-	public static AbstractCdToWavConverter getCdToWavConverter() {
+	@Override
+	public AbstractCdToWavConverter getCdToWavConverter() {
 		return adapter.getCdToWavConverter();
 	}
 
-	/**
-	 * Test OS-dependent converter
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#testCdToWavConverter()
 	 */
-	public static boolean testCdToWavConverter() {
+	@Override
+	public boolean testCdToWavConverter() {
 		return adapter.testCdToWavConverter();
 	}
 
-	/**
-	 * Returns OS hotkey listener
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#getHotkeysListener()
 	 */
-	public static Class<? extends AbstractHotkeys> getHotkeysListener() {
+	@Override
+	public Class<? extends AbstractHotkeys> getHotkeysListener() {
 		return adapter.getHotkeysListener();
 	}
 
-	public static Object getLineTerminator() {
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#getLineTerminator()
+	 */
+	@Override
+	public Object getLineTerminator() {
 		return adapter.getSystemLineTerminator();
 	}
 
-    /**
-     * Returns <code>true</code> if the current operating system (actually
-     * the VM) is 64 bit.
-     * 
-     * @return If the current operating system is 64 bit
-     */
-	public static boolean is64Bit() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#is64Bit()
+	 */
+	@Override
+	public boolean is64Bit() {
 		return adapter.is64Bit();
 	}
 	
-	/**
-	 * Returns if player engine is supported for current OS
-	 * @param engine
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#isPlayerEngineSupported(net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine)
 	 */
-	public static boolean isPlayerEngineSupported(AbstractPlayerEngine engine) {
+	@Override
+	public boolean isPlayerEngineSupported(AbstractPlayerEngine engine) {
 		return adapter.isPlayerEngineSupported(engine); 
 	}
 
-	/**
-	 * Returns command used (if any) to execute player engine
-	 * @param engine
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#getPlayerEngineCommand(net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine)
 	 */
-	public static String getPlayerEngineCommand(AbstractPlayerEngine engine) {
+	@Override
+	public String getPlayerEngineCommand(AbstractPlayerEngine engine) {
 		return adapter.getPlayerEngineCommand(engine);
 	}
 
-	/**
-	 * Returns specific player engine parameters
-	 * @param engine
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#getPlayerEngineParameters(net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine)
 	 */
-	public static Collection<String> getPlayerEngineParameters(AbstractPlayerEngine engine) {
+	@Override
+	public Collection<String> getPlayerEngineParameters(AbstractPlayerEngine engine) {
 		return adapter.getPlayerEngineParameters(engine);
 	}
 
-	/**
-	 * Returns path where external tools are (cdda2wav, mencoder, etc.)
-	 * Leave "" when tools are in path
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#getExternalToolsPath()
 	 */
-	public static Object getExternalToolsPath() {
+	@Override
+	public Object getExternalToolsPath() {
 		return adapter.getExternalToolsPath();
 	}
 
-	/**
-	 * Returns supported look and feels
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#getLookAndFeels()
 	 */
-	public static Map<String, Class<? extends AbstractLookAndFeel>> getLookAndFeels() {
+	@Override
+	public Map<String, Class<? extends AbstractLookAndFeel>> getLookAndFeels() {
 		return adapter.getSupportedLookAndFeels();
 	}
 
-	/**
-	 * Returns default look and feel class
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#getDefaultLookAndFeel()
 	 */
-	public static Class<? extends AbstractLookAndFeel> getDefaultLookAndFeel() {
+	@Override
+	public Class<? extends AbstractLookAndFeel> getDefaultLookAndFeel() {
 		return adapter.getDefaultLookAndFeel();
 	}
 
-	/**
-	 * Manages when no player engine is available
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#manageNoPlayerEngine()
 	 */
-	public static void manageNoPlayerEngine() {
+	@Override
+	public void manageNoPlayerEngine() {
 		adapter.manageNoPlayerEngine();
 	}
 	
-	/**
-	 * Called when player engine is found (after searching or entering manually)
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#playerEngineFound()
 	 */
-	public static void playerEngineFound() {
+	@Override
+	public void playerEngineFound() {
 		adapter.playerEngineFound();
 	}
 	
-	/**
-	 * Returns os property
-	 * @param key
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#getOSProperty(java.lang.String)
 	 */
-	public static String getOSProperty(String key) {
+	@Override
+	public String getOSProperty(String key) {
 		return adapter.getOsProperties().getProperty(key);
 	}
 	
-	/**
-	 * @param key
-	 * @param value
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#setOSProperty(java.lang.String, java.lang.String)
 	 */
-	public static void setOSProperty(String key, String value) {
+	@Override
+	public void setOSProperty(String key, String value) {
 		Properties p = adapter.getOsProperties();
 		p.setProperty(key, value);
 		adapter.setOsProperties(p);
 	}
 
-	/**
-	 * Returns if OS supports tray icons
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#areTrayIconsSupported()
 	 */
-	public static boolean areTrayIconsSupported() {
+	@Override
+	public boolean areTrayIconsSupported() {
 		return adapter.areTrayIconsSupported();
 	}
 	
-	/**
-	 * Returns if some menu entries (preferences, about) are delegated to OS
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#areMenuEntriesDelegated()
 	 */
-	public static boolean areMenuEntriesDelegated() {
+	@Override
+	public boolean areMenuEntriesDelegated() {
 		return adapter.areMenuEntriesDelegated();
 	}
 	
-	/**
-	 * Returns if closing main window will terminate application
-	 * 
-	 * If not, OS will have to provide some method to make window visible again
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#isClosingMainWindowClosesApplication()
 	 */
-	public static boolean isClosingMainWindowClosesApplication() {
+	@Override
+	public boolean isClosingMainWindowClosesApplication() {
 		return adapter.isClosingMainWindowClosesApplication();
 	}
 
-	/**
-	 * Returns true if rip CDs is supported in current system
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#isRipSupported()
 	 */
-	public static boolean isRipSupported() {
+	@Override
+	public boolean isRipSupported() {
 		return adapter.isRipSupported();
+	}
+
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#isWindowsVista()
+	 */
+	@Override
+	public boolean isWindowsVista() {
+		return osType.isWindowsVista();
+	}
+
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#isWindows7()
+	 */
+	@Override
+	public boolean isWindows7() {
+		return osType.isWindows7();
+	}
+
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#isOldWindows()
+	 */
+	@Override
+	public boolean isOldWindows() {
+		return osType.isOldWindows();
+	}
+	
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#isLinux()
+	 */
+	@Override
+	public boolean isLinux() {
+		return osType.isLinux();
+	}
+
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#isMacOsX()
+	 */
+	@Override
+	public boolean isMacOsX() {
+		return osType.isMacOsX();
+	}
+
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#isSolaris()
+	 */
+	@Override
+	public boolean isSolaris() {
+		return osType.isSolaris();
+	}
+
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.IOSManager#isWindows()
+	 */
+	@Override
+	public boolean isWindows() {
+		return osType.isWindows();
 	}
 }

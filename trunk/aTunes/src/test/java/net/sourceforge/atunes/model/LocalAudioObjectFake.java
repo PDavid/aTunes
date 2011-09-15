@@ -143,7 +143,7 @@ public class LocalAudioObjectFake implements ILocalAudioObject {
 	}
 
 	@Override
-	public ImageIcon getImage(ImageSize imageSize) {
+	public ImageIcon getImage(ImageSize imageSize, IOSManager osManager) {
 		return null;
 	}
 

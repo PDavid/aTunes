@@ -35,6 +35,7 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.ImageUtils;
 
@@ -181,9 +182,9 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
      * @return
      */
     @SuppressWarnings("unchecked")
-	public static ImageIcon getImage(Object obj) {
+	public static ImageIcon getImage(Object obj, IOSManager osManager) {
         if (obj instanceof TreeObject) {
-            return ((TreeObject<? extends IAudioObject>) obj).getExtendedToolTipImage();
+            return ((TreeObject<? extends IAudioObject>) obj).getExtendedToolTipImage(osManager);
         }
         return null;
     }

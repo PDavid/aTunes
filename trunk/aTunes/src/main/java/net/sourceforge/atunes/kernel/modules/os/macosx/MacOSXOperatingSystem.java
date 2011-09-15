@@ -28,8 +28,6 @@ import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.macos.MacOSXLookAndFeel;
 import net.sourceforge.atunes.kernel.Kernel;
-import net.sourceforge.atunes.kernel.OperatingSystem;
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.Cdparanoia;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
@@ -39,6 +37,8 @@ import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.OperatingSystem;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class MacOSXOperatingSystem extends OperatingSystemAdapter {
@@ -50,8 +50,8 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
     
     protected static final String MPLAYER_COMMAND = "mplayer.command";
     
-    public MacOSXOperatingSystem(OperatingSystem systemType) {
-		super(systemType);
+    public MacOSXOperatingSystem(OperatingSystem systemType, IOSManager osManager) {
+		super(systemType, osManager);
 	}
 
 	@Override
@@ -106,7 +106,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 	
 	@Override
 	public boolean testCdToWavConverter() {
-		return Cdparanoia.pTestTool();
+		return Cdparanoia.pTestTool(osManager);
 	}
 
 	@Override
@@ -116,7 +116,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 	
 	@Override
 	public String getPlayerEngineCommand(AbstractPlayerEngine engine) {
-		return engine instanceof MPlayerEngine ? OsManager.getOSProperty(MPLAYER_COMMAND) : null;
+		return engine instanceof MPlayerEngine ? osManager.getOSProperty(MPLAYER_COMMAND) : null;
 	}
 
 	/**
@@ -140,7 +140,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 	
 	@Override
 	public void manageNoPlayerEngine() {
-		MacOSXPlayerEngineDialog dialog = new MacOSXPlayerEngineDialog(Context.getBean(IFrame.class).getFrame());
+		MacOSXPlayerEngineDialog dialog = new MacOSXPlayerEngineDialog(Context.getBean(IFrame.class).getFrame(), osManager);
 		dialog.setVisible(true);
 	}
 	

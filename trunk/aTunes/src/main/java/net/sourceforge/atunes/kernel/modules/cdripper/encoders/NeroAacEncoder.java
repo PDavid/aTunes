@@ -29,7 +29,6 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.cdripper.ProgressListener;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
@@ -37,6 +36,7 @@ import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
 import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -65,16 +65,19 @@ public class NeroAacEncoder implements Encoder {
     private String genre;
     private String quality;
 
+    private IOSManager osManager;
+    
     /**
      * Test the presence of the ogg encoder oggenc.
      * 
+     * @param osManager
      * @return Returns true if oggenc was found, false otherwise.
      */
-    public static boolean testTool() {
+    public static boolean testTool(IOSManager osManager) {
         // Test for Nero Aac encoder
         BufferedReader stdInput = null;
         try {
-            Process p = new ProcessBuilder(StringUtils.getString(OsManager.getExternalToolsPath(), NERO_AAC), VERSION).start();
+            Process p = new ProcessBuilder(StringUtils.getString(osManager.getExternalToolsPath(), NERO_AAC), VERSION).start();
             stdInput = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
             String line = null;
@@ -97,6 +100,10 @@ public class NeroAacEncoder implements Encoder {
             ClosingUtils.close(stdInput);
         }
     }
+    
+    public NeroAacEncoder(IOSManager osManager) {
+    	this.osManager = osManager;
+	}
 
     /**
      * Encode the wav file and tags it using entagged.
@@ -122,7 +129,7 @@ public class NeroAacEncoder implements Encoder {
         BufferedReader stdInput = null;
         try {
             List<String> command = new ArrayList<String>();
-            command.add(StringUtils.getString(OsManager.getExternalToolsPath(), NERO_AAC));
+            command.add(StringUtils.getString(osManager.getExternalToolsPath(), NERO_AAC));
             command.add(QUALITY);
             command.add(quality);
             //command.add(IGNORE_LENGTH);

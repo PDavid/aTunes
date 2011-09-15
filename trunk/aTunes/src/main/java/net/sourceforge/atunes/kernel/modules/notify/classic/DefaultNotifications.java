@@ -26,6 +26,7 @@ import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.dialogs.OSDDialog;
 import net.sourceforge.atunes.kernel.modules.notify.CommonNotificationEngine;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -46,12 +47,16 @@ public class DefaultNotifications extends CommonNotificationEngine {
 	 */
 	private IState state;
 	
+	private IOSManager osManager;
+	
 	/**
 	 * 
 	 * @param state
+	 * @param osManager
 	 */
-	public DefaultNotifications(IState state) {
+	public DefaultNotifications(IState state, IOSManager osManager) {
 		this.state = state;
+		this.osManager = osManager;
 	}
 	
     /**
@@ -64,7 +69,7 @@ public class DefaultNotifications extends CommonNotificationEngine {
             JDialog.setDefaultLookAndFeelDecorated(false);
             osdDialog = new OSDDialog(state.getOsdWidth());
             JDialog.setDefaultLookAndFeelDecorated(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isDialogUndecorated());
-            osdDialogController = new OSDDialogController(osdDialog, state);
+            osdDialogController = new OSDDialogController(osdDialog, state, osManager);
         }
         return osdDialogController;
     }
