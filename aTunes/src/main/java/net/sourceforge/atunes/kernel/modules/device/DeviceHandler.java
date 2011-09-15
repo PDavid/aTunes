@@ -43,7 +43,6 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.IFileSelectionDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ConnectDeviceAction;
 import net.sourceforge.atunes.kernel.actions.CopyPlayListToDeviceAction;
@@ -222,7 +221,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
             return;
         }
 
-        final TransferToDeviceProcess process = new TransferToDeviceProcess(collection, deviceRepository.getRepositoryFolders().get(0).getAbsolutePath(), getState(), getFrame());
+        final TransferToDeviceProcess process = new TransferToDeviceProcess(collection, deviceRepository.getRepositoryFolders().get(0).getAbsolutePath(), getState(), getFrame(), getOsManager());
         process.addProcessListener(new ProcessListener() {
             @Override
             public void processCanceled() {
@@ -510,7 +509,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
         BufferedReader br = null;
         BufferedWriter bw = null;
         try {
-            File f = new File(StringUtils.getString(devicePath, OsManager.getFileSeparator(), Constants.DEVICE_ID_FILE));
+            File f = new File(StringUtils.getString(devicePath, getOsManager().getFileSeparator(), Constants.DEVICE_ID_FILE));
             if (f.exists()) {
                 br = new BufferedReader(new FileReader(f));
                 id = br.readLine();

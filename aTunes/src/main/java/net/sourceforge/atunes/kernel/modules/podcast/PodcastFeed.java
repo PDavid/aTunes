@@ -28,6 +28,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -286,7 +287,7 @@ public class PodcastFeed implements TreeObject<PodcastFeedEntry>, Serializable {
     }
 
     @Override
-    public ImageIcon getExtendedToolTipImage() {
+    public ImageIcon getExtendedToolTipImage(IOSManager osManager) {
         return null;
     }
 

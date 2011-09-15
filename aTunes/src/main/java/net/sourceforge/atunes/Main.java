@@ -26,10 +26,10 @@ import javax.swing.RepaintManager;
 
 import net.sourceforge.atunes.gui.debug.CheckThreadViolationRepaintManager;
 import net.sourceforge.atunes.kernel.Kernel;
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.instances.MultipleInstancesHandler;
 import net.sourceforge.atunes.misc.log.Log4jPropertiesLoader;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -44,9 +44,9 @@ public final class Main {
      * Log some properties at start.
      * 
      * @param arguments
-     *            the arguments
+     * @param osManager
      */
-    private static void logProgramProperties(List<String> arguments) {
+    private static void logProgramProperties(List<String> arguments, IOSManager osManager) {
         // First line: version number
         Logger.info("Starting ", Constants.APP_NAME, " ", Constants.VERSION);
 
@@ -60,7 +60,7 @@ public final class Main {
         Logger.info("Debug mode = ", Kernel.isDebug());
 
         // Fifth line: Execution path
-        Logger.info("Execution path = ", OsManager.getWorkingDirectory());
+        Logger.info("Execution path = ", osManager.getWorkingDirectory());
     }
 
     /**
@@ -71,20 +71,32 @@ public final class Main {
      */
     public static void main(String[] args) {
     	
+    	Context.initialize("/settings/spring/state.xml", 
+    			"/settings/spring/columnsets.xml", 
+    			"/settings/spring/webservices.xml", 
+    			"/settings/spring/navigationviews.xml", 
+    			"/settings/spring/treecelldecorators.xml",
+    			"/settings/spring/context.xml",
+    			"/settings/spring/treegenerators.xml",
+    			"/settings/spring/handlers.xml",
+    			"/settings/spring/frame.xml",
+    			"/settings/spring/dialogs.xml",
+    			"/settings/spring/os.xml");
+    	
         // Fetch arguments into a list
         List<String> arguments = StringUtils.fromStringArrayToList(args);
 
         // Set debug flag in kernel
         Kernel.setDebug(arguments.contains(ApplicationArguments.DEBUG));
 
+        IOSManager osManager = Context.getBean(IOSManager.class);
+        
         // Set log4j properties
-        Log4jPropertiesLoader.loadProperties(Kernel.isDebug());
+        Log4jPropertiesLoader.loadProperties(Kernel.isDebug(), osManager);
 
         // Save arguments, if application is restarted they will be necessary
         ApplicationArguments.saveArguments(arguments);
 
-    	Context.initialize();
-    	
         // First, look up for other instances running
         if (!arguments.contains(ApplicationArguments.ALLOW_MULTIPLE_INSTANCE) && !MultipleInstancesHandler.getInstance().isFirstInstance()) {
             // Is not first aTunes instance running, so send parameters and finalize
@@ -101,10 +113,10 @@ public final class Main {
             Kernel.setEnablePlugins(arguments.contains(ApplicationArguments.ENABLE_PLUGINS));
 
             // Set custom config folder if passed as argument
-            OsManager.setCustomConfigFolder(ApplicationArguments.getUserConfigFolder(arguments));
+            osManager.setCustomConfigFolder(ApplicationArguments.getUserConfigFolder(arguments));
 
             // Set custom repository config folder if passed as argument
-            OsManager.setCustomRepositoryConfigFolder(ApplicationArguments.getRepositoryConfigFolder(arguments));
+            osManager.setCustomRepositoryConfigFolder(ApplicationArguments.getRepositoryConfigFolder(arguments));
 
             // Enable uncaught exception catching
             try {
@@ -129,7 +141,7 @@ public final class Main {
             }
 
             // Log program properties
-            logProgramProperties(arguments);
+            logProgramProperties(arguments, osManager);
 
             // Start the Kernel, which really starts application
             Kernel.startKernel(arguments);

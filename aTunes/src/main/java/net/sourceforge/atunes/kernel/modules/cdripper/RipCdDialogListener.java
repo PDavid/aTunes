@@ -31,8 +31,8 @@ import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.dialogs.RipCdDialog;
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -47,18 +47,20 @@ final class RipCdDialogListener extends KeyAdapter implements ActionListener {
 
     /** The rip cd dialog controller. */
     private RipCdDialogController ripCdDialogController;
+    
+    private IOSManager osManager;
 
     /**
      * Instantiates a new rip cd dialog listener.
      * 
      * @param ripCdDialog
-     *            the rip cd dialog
      * @param ripCdDialogController
-     *            the rip cd dialog controller
+     * @param osManager
      */
-    public RipCdDialogListener(RipCdDialog ripCdDialog, RipCdDialogController ripCdDialogController) {
+    public RipCdDialogListener(RipCdDialog ripCdDialog, RipCdDialogController ripCdDialogController, IOSManager osManager) {
         this.ripCdDialog = ripCdDialog;
         this.ripCdDialogController = ripCdDialogController;
+        this.osManager = osManager;
     }
 
     @Override
@@ -116,11 +118,11 @@ final class RipCdDialogListener extends KeyAdapter implements ActionListener {
                     if (!ripCdDialogController.isFolderNameEdited()) {
                         if (enabled) {
                             ripCdDialog.getFolderName().setText(
-                                    StringUtils.getString(repositoryPath, OsManager.getFileSeparator(), artist, OsManager.getFileSeparator(), album));
+                                    StringUtils.getString(repositoryPath, osManager.getFileSeparator(), artist, osManager.getFileSeparator(), album));
                         } else if (artist.equals("")) {
-                            ripCdDialog.getFolderName().setText(StringUtils.getString(repositoryPath, OsManager.getFileSeparator(), album));
+                            ripCdDialog.getFolderName().setText(StringUtils.getString(repositoryPath, osManager.getFileSeparator(), album));
                         } else {
-                            ripCdDialog.getFolderName().setText(StringUtils.getString(repositoryPath, OsManager.getFileSeparator(), artist));
+                            ripCdDialog.getFolderName().setText(StringUtils.getString(repositoryPath, osManager.getFileSeparator(), artist));
                         }
                     }
                 }

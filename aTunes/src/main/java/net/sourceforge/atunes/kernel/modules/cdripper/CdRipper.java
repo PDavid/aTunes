@@ -36,6 +36,7 @@ import net.sourceforge.atunes.kernel.modules.cdripper.encoders.Encoder;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -117,12 +118,15 @@ class CdRipper {
     private int year;
     private String genre;
     private String fileNamePattern;
+    private IOSManager osManager;
 
     /**
      * Instantiates a new cd ripper.
+     * @param osManager
      */
-    CdRipper() {
-        cdToWavConverter = AbstractCdToWavConverter.createNewConverterForOS();
+    CdRipper(IOSManager osManager) {
+    	this.osManager = osManager;
+        cdToWavConverter = AbstractCdToWavConverter.createNewConverterForOS(osManager);
     }
 
     /**
@@ -174,7 +178,7 @@ class CdRipper {
             result = result.replaceAll(TITLE_PATTERN, StringUtils.getString("track", trackNumber));
         }
         // Replace known illegal characters. 
-        result = FileNameUtils.getValidFileName(result);
+        result = FileNameUtils.getValidFileName(result, osManager);
         return result;
     }
 

@@ -50,6 +50,7 @@ import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -62,22 +63,23 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
      * Instantiates a new edits the preferences dialog controller.
      * @param dialog
      * @param state
+     * @param osManager
      */
-    EditPreferencesDialogController(EditPreferencesDialog dialog, IState state) {
+    EditPreferencesDialogController(EditPreferencesDialog dialog, IState state, IOSManager osManager) {
         super(dialog, state);
         panels = new ArrayList<AbstractPreferencesPanel>();
-        panels.add(new GeneralPanel());
+        panels.add(new GeneralPanel(osManager));
         panels.add(new RepositoryPanel()); 
-        panels.add(new PlayerPanel()); 
+        panels.add(new PlayerPanel(osManager)); 
         panels.add(new NavigatorPanel()); 
         panels.add(new PlayListPrefPanel());
         panels.add(new OSDPanel()); 
         panels.add(new ContextPanel()); 
         panels.add(new InternetPanel()); 
         panels.add(new LastFmPanel()); 
-        panels.add(new DevicePanel()); 
+        panels.add(new DevicePanel(osManager)); 
         panels.add(new RadioPanel()); 
-        panels.add(new PodcastFeedPanel()); 
+        panels.add(new PodcastFeedPanel(osManager)); 
         panels.add(new ImportExportPanel());
         
         for (AbstractPreferencesPanel panel : panels) {

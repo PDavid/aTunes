@@ -44,7 +44,6 @@ import net.sourceforge.atunes.gui.views.controls.ActionTrayIcon;
 import net.sourceforge.atunes.gui.views.controls.JTrayIcon;
 import net.sourceforge.atunes.gui.views.controls.JTrayIconPopupMenu;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ExitAction;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
@@ -85,7 +84,7 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
 
     @Override
     public void allHandlersInitialized() {
-    	if (OsManager.areTrayIconsSupported()) {
+    	if (getOsManager().areTrayIconsSupported()) {
     		// System tray player
     		if (getState().isShowTrayPlayer()) {
     			initTrayPlayerIcons();
@@ -260,7 +259,7 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
      */
     private void trayIconAdvice() {
         // For some reason, in Linux systems display message causes Swing freeze
-        if (OsManager.osType != net.sourceforge.atunes.kernel.OperatingSystem.LINUX && isTrayInitialized()) {
+        if (!getOsManager().isLinux() && isTrayInitialized()) {
             getTrayIcon().displayMessage(Constants.APP_NAME, I18nUtils.getString("TRAY_ICON_MESSAGE"), TrayIcon.MessageType.INFO);
         }
     }
@@ -394,7 +393,7 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
         if (trayIcon == null) {
         	Dimension iconSize = tray.getTrayIconSize();
         	Image icon = ImageUtils.scaleImageBicubic(Images.getImage(Images.APP_LOGO_32).getImage(), iconSize.width, iconSize.height).getImage();
-            trayIcon = new JTrayIcon(icon, OsManager.osType.isLinux(), Actions.getAction(ToggleWindowVisibilityAction.class));
+            trayIcon = new JTrayIcon(icon, getOsManager().isLinux(), Actions.getAction(ToggleWindowVisibilityAction.class));
             trayIcon.setToolTip(StringUtils.getString(Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
             JPopupMenu popupmenu = fillMenu(new JTrayIconPopupMenu(trayIcon));
             trayIcon.setJTrayIconJPopupMenu(popupmenu);

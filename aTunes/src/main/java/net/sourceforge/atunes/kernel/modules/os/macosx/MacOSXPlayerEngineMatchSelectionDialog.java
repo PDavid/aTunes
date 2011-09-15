@@ -39,7 +39,7 @@ import javax.swing.event.ListSelectionListener;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.SimpleTextPane;
-import net.sourceforge.atunes.kernel.OsManager;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -62,10 +62,13 @@ class MacOSXPlayerEngineMatchSelectionDialog extends AbstractCustomDialog {
 	
 	private List<String> matches;
 	
-	public MacOSXPlayerEngineMatchSelectionDialog(JDialog previousDialog, List<String> matches) {
+	private IOSManager osManager;
+	
+	public MacOSXPlayerEngineMatchSelectionDialog(JDialog previousDialog, List<String> matches, IOSManager osManager) {
 		super((JFrame)previousDialog.getParent(), 450, 250, true, CloseAction.DISPOSE);
 		this.previousDialog = previousDialog;
 		this.matches = matches;
+		this.osManager = osManager;
 		setResizable(false);
 		setTitle(I18nUtils.getString("PLAYER_ENGINE_SELECTION"));
         addContent();
@@ -98,10 +101,10 @@ class MacOSXPlayerEngineMatchSelectionDialog extends AbstractCustomDialog {
 		finishButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				OsManager.setOSProperty(MacOSXOperatingSystem.MPLAYER_COMMAND, (String)matchesList.getSelectedValue());
+				osManager.setOSProperty(MacOSXOperatingSystem.MPLAYER_COMMAND, (String)matchesList.getSelectedValue());
 				previousDialog.dispose();
 				MacOSXPlayerEngineMatchSelectionDialog.this.setVisible(false);
-				OsManager.playerEngineFound();
+				osManager.playerEngineFound();
 			}
 		});
 		JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));

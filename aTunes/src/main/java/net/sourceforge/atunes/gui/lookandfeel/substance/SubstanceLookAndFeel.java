@@ -60,7 +60,6 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.PreviousButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.SecondaryControl;
 import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.GuiUtils;
 
@@ -80,7 +79,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
     public static final String SUBSTANCE = "Substance";
 
     private Object menuBarUI;
-        
+    
 	private static final class CustomFontPolicy implements FontPolicy {
         private final class CustomFontSet implements FontSet {
 			private FontUIResource windowTitleFont = new FontUIResource(baseFont.deriveFont(Font.BOLD, baseFont.getSize() + 1f));
@@ -275,7 +274,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
         AnimationConfigurationManager.getInstance().setTimelineDuration(0);
         UIManager.put(org.pushingpixels.substance.api.SubstanceLookAndFeel.TABBED_PANE_CONTENT_BORDER_KIND, SubstanceConstants.TabContentPaneBorderKind.SINGLE_FULL);
 
-        if (!OsManager.osType.isMacOsX()) {
+        if (!osManager.isMacOsX()) {
         	// Avoid custom window decoration in mac os to draw window controls at left
         	JFrame.setDefaultLookAndFeelDecorated(true);
             JDialog.setDefaultLookAndFeelDecorated(true);
@@ -296,7 +295,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
                 UIManager.setLookAndFeel(skins.get(DEFAULT_SKIN));
             }
 
-            if (OsManager.osType.isMacOsX()) {
+            if (osManager.isMacOsX()) {
             	UIManager.put("MenuBarUI", menuBarUI);
             }
             
@@ -362,7 +361,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 
     @Override
     public boolean isDialogUndecorated() {
-    	  return OsManager.osType.isMacOsX() ? false: true;
+    	  return osManager.isMacOsX() ? false: true;
     }
 
     @Override

@@ -36,8 +36,6 @@ import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.SystemLookAndFeel;
 import net.sourceforge.atunes.kernel.Kernel;
-import net.sourceforge.atunes.kernel.OperatingSystem;
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
@@ -45,6 +43,8 @@ import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineManager;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.OperatingSystem;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -53,9 +53,12 @@ import net.sourceforge.atunes.utils.StringUtils;
 public abstract class OperatingSystemAdapter {
 
 	protected OperatingSystem systemType;
+	
+	protected IOSManager osManager;
 
-	public OperatingSystemAdapter(OperatingSystem systemType) {
+	public OperatingSystemAdapter(OperatingSystem systemType, IOSManager osManager) {
 		this.systemType = systemType;
+		this.osManager = osManager;
 	}
 
 	/**
@@ -291,7 +294,7 @@ public abstract class OperatingSystemAdapter {
 	 * @return
 	 */
 	private final String getOsPropertiesFileName() {
-		return StringUtils.getString(OsManager.getUserConfigFolder(Kernel.isDebug()), getFileSeparator(), "os.properties");
+		return StringUtils.getString(osManager.getUserConfigFolder(Kernel.isDebug()), getFileSeparator(), "os.properties");
 	}
 
 	/**

@@ -60,7 +60,6 @@ import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
@@ -69,6 +68,7 @@ import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrameState;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -108,6 +108,8 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
 
     protected IState state;
     
+    protected IOSManager osManager;
+    
     /**
      * Instantiates a new standard frame.
      */
@@ -119,6 +121,11 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     public void setState(IState state) {
     	this.state = state;
     }
+    
+    @Override
+    public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
     
     @Override
     public void create(IFrameState frameState) {
@@ -141,7 +148,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
         }
 
         // Set OS-dependent frame configuration
-        OsManager.setupFrame(this);
+        osManager.setupFrame(this);
 
         // Set window state listener
         addWindowStateListener(getWindowStateListener());
@@ -242,7 +249,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     @Override
     public IMenuBar getAppMenuBar() {
         if (appMenuBar == null) {
-            appMenuBar = new ApplicationMenuBar();
+            appMenuBar = new ApplicationMenuBar(osManager);
         }
         return appMenuBar;
     }

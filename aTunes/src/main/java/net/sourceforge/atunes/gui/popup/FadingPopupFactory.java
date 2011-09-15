@@ -26,7 +26,7 @@ import javax.swing.JToolTip;
 import javax.swing.Popup;
 import javax.swing.PopupFactory;
 
-import net.sourceforge.atunes.kernel.OsManager;
+import net.sourceforge.atunes.model.IOSManager;
 
 /**
  * A factory for creating FadingPopup objects.
@@ -35,24 +35,28 @@ public final class FadingPopupFactory extends PopupFactory {
 
     /** The popup factory. */
     private static PopupFactory popupFactory;
+    
+    private IOSManager osManager;
 
     /**
      * Instantiates a new fading popup factory.
+     * @param osManager
      */
-    FadingPopupFactory() {
+    FadingPopupFactory(IOSManager osManager) {
         super();
+        this.osManager = osManager;
     }
 
     /**
      * Install.
      */
-    public static void install() {
+    public static void install(IOSManager osManager) {
         PopupFactory pf = PopupFactory.getSharedInstance();
         if (pf instanceof FadingPopupFactory) {
             return;
         }
         popupFactory = pf;
-        PopupFactory.setSharedInstance(new FadingPopupFactory());
+        PopupFactory.setSharedInstance(new FadingPopupFactory(osManager));
     }
 
     /*
@@ -64,7 +68,7 @@ public final class FadingPopupFactory extends PopupFactory {
     @Override
     public Popup getPopup(Component owner, Component contents, int x, int y) throws IllegalArgumentException {
         if (contents instanceof JToolTip) {
-            return new FadingPopup(owner, contents, x, y, OsManager.areShadowBordersForToolTipsSupported());
+            return new FadingPopup(owner, contents, x, y, osManager.areShadowBordersForToolTipsSupported());
         }
         return popupFactory.getPopup(owner, contents, x, y);
     }

@@ -166,15 +166,12 @@ public class Album implements Serializable, TreeObject<ILocalAudioObject>, Compa
     /**
      * Returns a picture of this album, with a given size.
      * 
-     * @param width
-     *            the width
-     * @param heigth
-     *            the heigth
-     * 
-     * @return the picture
+     * @param imageSize
+     * @param osManager
+     * @return
      */
-    public ImageIcon getPicture(ImageSize imageSize) {
-        return getAudioFiles().first().getImage(imageSize);
+    public ImageIcon getPicture(ImageSize imageSize, IOSManager osManager) {
+        return getAudioFiles().first().getImage(imageSize, osManager);
     }
 
     
@@ -218,8 +215,8 @@ public class Album implements Serializable, TreeObject<ILocalAudioObject>, Compa
     }
 
     @Override
-    public ImageIcon getExtendedToolTipImage() {
-        return getPicture(ImageSize.SIZE_MAX);
+    public ImageIcon getExtendedToolTipImage(IOSManager osManager) {
+        return getPicture(ImageSize.SIZE_MAX, osManager);
     }
 
     @Override

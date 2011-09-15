@@ -70,12 +70,12 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.ProgressSlider;
 import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.player.ProgressBarSeekListener;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -208,17 +208,22 @@ public final class FullScreenWindow extends AbstractCustomWindow {
     private IState state;
     
     private IFrame frame;
+    
+    private IOSManager osManager;
 
     /**
      * Instantiates a new full screen dialog.
      * 
      * @param owner
      * @param state
+     * @param frame
+     * @param osManager
      */
-    public FullScreenWindow(JFrame owner, IState state, IFrame frame) {
+    public FullScreenWindow(JFrame owner, IState state, IFrame frame, IOSManager osManager) {
         super(owner, 0, 0);
         this.state = state;
         this.frame = frame;
+        this.osManager = osManager;
         setLocation(0, 0);
         setAlwaysOnTop(true);
         setContent();
@@ -463,7 +468,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
      * @param frame
      */
     private void setFullScreen(boolean fullscreen, IFrame frame) {
-    	OsManager.setFullScreen(this, fullscreen, frame);
+    	osManager.setFullScreen(this, fullscreen, frame);
     }
 
     /**
@@ -533,6 +538,6 @@ public final class FullScreenWindow extends AbstractCustomWindow {
      */
     private void updateWindow() {
         setText(objects.get(2));
-        covers.paint(objects);
+        covers.paint(objects, osManager);
     }    
 }

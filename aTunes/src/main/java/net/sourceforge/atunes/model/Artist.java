@@ -189,7 +189,7 @@ public class Artist implements Serializable, TreeObject<ILocalAudioObject>, Comp
     }
 
     @Override
-    public ImageIcon getExtendedToolTipImage() {
+    public ImageIcon getExtendedToolTipImage(IOSManager osManager) {
         Image img = Context.getBean(IWebServicesHandler.class).getArtistImage(name);
         if (img != null) {
             return new ImageIcon(img);

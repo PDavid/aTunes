@@ -22,8 +22,9 @@ package net.sourceforge.atunes.kernel.modules.hotkeys;
 
 import java.lang.reflect.Constructor;
 
-import net.sourceforge.atunes.kernel.OsManager;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IOSManager;
 
 public abstract class AbstractHotkeys {
 
@@ -52,7 +53,7 @@ public abstract class AbstractHotkeys {
 
     public static AbstractHotkeys createInstance(HotkeyListener hotkeyListener) {
         try {
-        	Class<?> clazz = OsManager.getHotkeysListener();
+        	Class<?> clazz = Context.getBean(IOSManager.class).getHotkeysListener();
         	if (clazz != null) {
                 Constructor<?> constructor = clazz.getConstructor(HotkeyListener.class);
                 return (AbstractHotkeys) constructor.newInstance(hotkeyListener);

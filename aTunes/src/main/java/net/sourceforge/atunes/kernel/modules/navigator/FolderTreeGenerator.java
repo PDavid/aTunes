@@ -30,10 +30,11 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.kernel.OsManager;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITreeGenerator;
 import net.sourceforge.atunes.model.TreeObject;
@@ -105,7 +106,7 @@ public class FolderTreeGenerator implements ITreeGenerator {
     			Folder currentFolder = (Folder) currentFolderNode.getUserObject();
     			if (filePath.startsWith(currentFolder.getName())){
     				String searchPath = filePath.substring(currentFolder.getName().length()+1);
-    				String[] paths = searchPath.split(OsManager.getFileSeparator());
+    				String[] paths = searchPath.split(Context.getBean(IOSManager.class).getFileSeparator());
     				treePath = getTreePathForLevel(paths,0,currentFolderNode.children());
     				break;
     			}

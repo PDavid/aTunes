@@ -58,10 +58,10 @@ import javax.swing.tree.TreeSelectionModel;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -504,14 +504,18 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
 
     /** The cancelled. */
     private boolean cancelled = true;
+    
+    private IOSManager osManager;
 
     /**
      * Instantiates a new multi folder selection dialog.
      * 
      * @param frame
+     * @param osManager
      */
-    public MultiFolderSelectionDialog(IFrame frame) {
+    public MultiFolderSelectionDialog(IFrame frame, IOSManager osManager) {
         super(frame, 460, 530, true, CloseAction.DISPOSE);
+        this.osManager = osManager;
         add(getContent());
         setResizable(false);
     }
@@ -590,7 +594,7 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
      * @return true, if is in path of selected folders
      */
     boolean isInPathOfSelectedFolders(File dir) {
-        String dirPath = dir.getAbsolutePath().concat(OsManager.getFileSeparator());
+        String dirPath = dir.getAbsolutePath().concat(osManager.getFileSeparator());
         for (File folder : selectedFolders) {
             if (folder.getAbsolutePath().startsWith(dirPath)) {
                 return true;

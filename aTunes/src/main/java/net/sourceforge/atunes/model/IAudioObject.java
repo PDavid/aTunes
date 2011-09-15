@@ -196,10 +196,10 @@ public interface IAudioObject {
      * Returns a image for this audio object.
      * 
      * @param imageSize
-     *            the size of the image
+     * @param osManager
      * @return the image or <code>null</code> if no such image is available
      */
-    public ImageIcon getImage(ImageSize imageSize);
+    public ImageIcon getImage(ImageSize imageSize, IOSManager osManager);
     
     /**
      * A human-readable text describing this object

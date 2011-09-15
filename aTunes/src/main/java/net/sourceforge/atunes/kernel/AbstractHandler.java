@@ -52,6 +52,7 @@ import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.IGeneralPurposePluginsHandler;
 import net.sourceforge.atunes.model.IHandler;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ISmartPlayListHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStatisticsHandler;
@@ -66,6 +67,8 @@ public abstract class AbstractHandler implements IHandler {
 	
 	private IFrame frame;
 	
+	private IOSManager osManager;
+	
 	private static List<AbstractHandler> handlers;
 	
 	/**
@@ -78,6 +81,14 @@ public abstract class AbstractHandler implements IHandler {
 	
 	public void setState(IState state) {
 		this.state = state;
+	}
+	
+	public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
+	
+	protected IOSManager getOsManager() {
+		return osManager;
 	}
 	
 	protected IFrame getFrame() {
@@ -121,7 +132,7 @@ public abstract class AbstractHandler implements IHandler {
         PlayListEventListeners.addPlayListEventListener(handler);
     }
 
-    private static List<AbstractHandler> getHandlers() {
+    private static synchronized List<AbstractHandler> getHandlers() {
     	if (handlers == null) {
             // Instance handlers
         	// TODO: Add here every new Handler
@@ -167,6 +178,7 @@ public abstract class AbstractHandler implements IHandler {
         // Register handlers
         for (AbstractHandler handler : getHandlers()) {
         	handler.setState(state);
+        	handler.setOsManager(Context.getBean(IOSManager.class));
             registerHandler(handler);
             Runnable task = handler.getPreviousInitializationTask();
             if (task != null) {

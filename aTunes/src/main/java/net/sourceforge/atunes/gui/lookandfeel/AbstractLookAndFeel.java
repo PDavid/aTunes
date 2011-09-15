@@ -45,6 +45,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
 import net.sourceforge.atunes.gui.views.controls.CustomSplitPane;
+import net.sourceforge.atunes.model.IOSManager;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -55,6 +56,8 @@ public abstract class AbstractLookAndFeel {
 	 * Base font
 	 */
 	protected Font baseFont;
+	
+	protected IOSManager osManager;
 	
     private static final class LookAndFeelListCellRenderer extends DefaultListCellRenderer {
         private final AbstractListCellRendererCode code;
@@ -467,5 +470,12 @@ public abstract class AbstractLookAndFeel {
      * @return
      */
     public abstract JScrollPane getScrollPane(Component component);
+
+	/**
+	 * @param osManager the osManager to set
+	 */
+	protected void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
     
 }

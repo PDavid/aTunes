@@ -29,6 +29,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 
 import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -57,12 +58,12 @@ public final class PodcastFeedPanel extends AbstractPreferencesPanel {
     /**
      * Instantiates a new podcast feed panel.
      */
-    public PodcastFeedPanel() {
+    public PodcastFeedPanel(IOSManager osManager) {
         super(I18nUtils.getString("PODCAST_FEEDS"));
         retrievalIntervalLabel = new JLabel(I18nUtils.getString("PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL"));
         retrievalInterval = new JComboBox(new Long[] { 1l, 3l, 5l, 10l, 15l, 30l, 60l });
         downloadFolderLabel = new JLabel(I18nUtils.getString("PODCAST_FEED_ENTRIES_DOWNLOAD_FOLDER"));
-        downloadFolderFileChooser = new CustomJFileChooser(this, 20, JFileChooser.DIRECTORIES_ONLY);
+        downloadFolderFileChooser = new CustomJFileChooser(this, 20, JFileChooser.DIRECTORIES_ONLY, osManager);
         useDownloadedPodcastFeedEntries = new JCheckBox(I18nUtils.getString("USE_DOWNLOADED_PODCAST_FEED_ENTRIES"));
         removePodcastFeedEntriesRemovedFromPodcastFeed = new JCheckBox(I18nUtils.getString("REMOVE_PODCAST_FEED_ENTRIES_REMOVED_FROM_PODCAST_FEED"));
         GridBagConstraints c = new GridBagConstraints();

@@ -18,12 +18,22 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel;
+package net.sourceforge.atunes.model;
 
 
 public enum OperatingSystem {
 	
     WINDOWS, LINUX, MACOSX, SOLARIS;
+
+    /**
+     * Returns <code>true</code> if Windows (any version) is the current operating
+     * system.
+     * 
+     * @return If Windows is the current operating system
+     */
+    public boolean isWindows() {
+        return (this.equals(OperatingSystem.WINDOWS));
+    }
 
     /**
      * Returns <code>true</code> if Windows Vista is the current operating

@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.player.mplayer;
 
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IOSManager;
 
 /**
  * The Class FadeAwayRunnable.
@@ -48,17 +49,15 @@ class FadeAwayRunnable implements Runnable {
      * Instantiates a new fade away runnable.
      * 
      * @param process
-     *            the process
      * @param initialVolume
-     *            the initial volume
      * @param handler
-     *            the mplayer handler
+     * @param osManager
      */
-    FadeAwayRunnable(Process process, int initialVolume, MPlayerEngine handler) {
+    FadeAwayRunnable(Process process, int initialVolume, MPlayerEngine handler, IOSManager osManager) {
         this.process = process;
         this.initialVolume = initialVolume;
         this.handler = handler;
-        commandWriter = MPlayerCommandWriter.newCommandWriter(process);
+        commandWriter = MPlayerCommandWriter.newCommandWriter(process, osManager);
     }
 
     @Override

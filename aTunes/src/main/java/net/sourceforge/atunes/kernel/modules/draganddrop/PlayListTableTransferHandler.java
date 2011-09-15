@@ -50,6 +50,7 @@ import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 
 /**
  * Some methods of this class about how to drag and drop from Gnome/KDE file
@@ -78,6 +79,8 @@ public class PlayListTableTransferHandler extends TransferHandler {
     private static DataFlavor uriListFlavor;
 
     private IFrame frame;
+    
+    private IOSManager osManager;
     
     static {
         try {
@@ -153,8 +156,9 @@ public class PlayListTableTransferHandler extends TransferHandler {
         return false;
     }
 
-    public PlayListTableTransferHandler(IFrame frame) {
+    public PlayListTableTransferHandler(IFrame frame, IOSManager osManager) {
     	this.frame = frame;
+    	this.osManager = osManager;
 	}
     
     @Override
@@ -167,7 +171,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
             return processInternalImport(support, frame);
         }
 
-        return processExternalImport(support, frame);
+        return processExternalImport(support, frame, osManager);
     }
 
     /**
@@ -316,7 +320,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
     }
 
     @SuppressWarnings("unchecked")
-    private static boolean processExternalImport(TransferSupport support, IFrame frame) {
+    private static boolean processExternalImport(TransferSupport support, IFrame frame, IOSManager osManager) {
         List<File> files = null;
         try {
             // External drag and drop for Windows
@@ -344,7 +348,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
                 	ILocalAudioObject song = new AudioFile(f);
                     filesToAdd.add(song);
                 } else if (f.getName().toLowerCase().endsWith("m3u")) {
-                    filesToAdd.addAll(PlayListIO.getFilesFromList(f));
+                    filesToAdd.addAll(PlayListIO.getFilesFromList(f, osManager));
                 }
             }
             int dropRow = frame.getPlayListTable().rowAtPoint(support.getDropLocation().getDropPoint());

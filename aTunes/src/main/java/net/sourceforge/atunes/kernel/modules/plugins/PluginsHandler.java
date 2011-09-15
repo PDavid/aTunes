@@ -39,7 +39,6 @@ import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.PlaybackStateListener;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnSets;
@@ -224,9 +223,9 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
      * 
      * @return the plugins folder
      */
-    private static String getUserPluginsFolder() {
-        String userConfigFolder = OsManager.getUserConfigFolder(Kernel.isDebug());
-        String pluginsFolder = StringUtils.getString(userConfigFolder, OsManager.getFileSeparator(), Constants.PLUGINS_DIR);
+    private String getUserPluginsFolder() {
+        String userConfigFolder = getOsManager().getUserConfigFolder(Kernel.isDebug());
+        String pluginsFolder = StringUtils.getString(userConfigFolder, getOsManager().getFileSeparator(), Constants.PLUGINS_DIR);
         File pluginFile = new File(pluginsFolder);
         if (!pluginFile.exists() && !pluginFile.mkdir()) {
             return userConfigFolder;
@@ -239,8 +238,8 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
      * @return path to temporal plugins folder
      * @throws IOException
      */
-    private static String getTemporalPluginsFolder() throws IOException {
-    	String temporalPluginsFolder = StringUtils.getString(OsManager.getTempFolder(), OsManager.getFileSeparator(), Constants.PLUGINS_DIR);
+    private String getTemporalPluginsFolder() throws IOException {
+    	String temporalPluginsFolder = StringUtils.getString(getOsManager().getTempFolder(), getOsManager().getFileSeparator(), Constants.PLUGINS_DIR);
     	File temporalPluginsFile = new File(temporalPluginsFolder);
     	if (!temporalPluginsFile.exists() && !temporalPluginsFile.mkdirs()) {
     		throw new IOException(StringUtils.getString("Can't create temporal plugins folder: ", temporalPluginsFolder));

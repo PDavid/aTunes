@@ -34,6 +34,7 @@ import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -152,7 +153,7 @@ public class Genre implements Serializable, TreeObject<ILocalAudioObject> {
     }
 
     @Override
-    public ImageIcon getExtendedToolTipImage() {
+    public ImageIcon getExtendedToolTipImage(IOSManager osManager) {
         return null;
     }
 

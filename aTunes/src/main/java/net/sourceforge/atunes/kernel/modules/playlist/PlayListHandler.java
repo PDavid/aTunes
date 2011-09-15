@@ -175,7 +175,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
     @Override
     public void allHandlersInitialized() {
         // Create drag and drop listener
-        PlayListTableTransferHandler playListTransferHandler = new PlayListTableTransferHandler(getFrame());
+        PlayListTableTransferHandler playListTransferHandler = new PlayListTableTransferHandler(getFrame(), getOsManager());
         getPlayListController().getMainPlayListTable().setTransferHandler(playListTransferHandler);
         getPlayListController().getMainPlayListScrollPane().setTransferHandler(playListTransferHandler);
         new PlayListToDeviceDragAndDropListener();
@@ -696,7 +696,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
             if (file.exists()) {
                 getState().setLoadPlaylistPath(file.getParentFile().getAbsolutePath());
                 // Read file names
-                List<String> filesToLoad = PlayListIO.read(file);
+                List<String> filesToLoad = PlayListIO.read(file, getOsManager());
                 // Background loading - but only when returned array is not null (Progress dialog hangs otherwise)
                 if (filesToLoad != null) {
                     LoadPlayListProcess process = new LoadPlayListProcess(filesToLoad, getState());

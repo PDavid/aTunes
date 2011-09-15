@@ -44,6 +44,7 @@ import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.model.IExportOptionsDialog;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -72,11 +73,14 @@ public final class ExportOptionsDialog extends AbstractCustomDialog implements I
      */
     private boolean cancel;
     
+    private IOSManager osManager;
+    
     /**
      * Instantiates a new export options dialog.
      */
-    public ExportOptionsDialog(IFrame frame) {
+    public ExportOptionsDialog(IFrame frame, IOSManager osManager) {
         super(frame, 400, 220, true, CloseAction.DISPOSE);
+        this.osManager = osManager;
         setResizable(false);
         setTitle(I18nUtils.getString("EXPORT"));
         add(getContent());
@@ -120,7 +124,7 @@ public final class ExportOptionsDialog extends AbstractCustomDialog implements I
         JPanel exportLocationPanel = new JPanel(new BorderLayout());
         JLabel locationLabel = new JLabel(I18nUtils.getString("LOCATION"));
         exportLocationPanel.add(locationLabel, BorderLayout.WEST);
-        exportLocationFileChooser = new CustomJFileChooser(this, 20, JFileChooser.DIRECTORIES_ONLY);
+        exportLocationFileChooser = new CustomJFileChooser(this, 20, JFileChooser.DIRECTORIES_ONLY, osManager);
         exportLocationPanel.add(exportLocationFileChooser, BorderLayout.CENTER);
 
         // Buttons

@@ -103,7 +103,7 @@ public final class MultipleInstancesHandler extends AbstractHandler {
                     	File fileStr = new File(str);
                         Logger.info(StringUtils.getString("Received connection with content: \"", str, "\""));
                         if (PlayListIO.isValidPlayList(fileStr)) {
-                            List<String> songs = PlayListIO.read(fileStr);
+                            List<String> songs = PlayListIO.read(fileStr, getOsManager());
                             List<IAudioObject> files = PlayListIO.getAudioObjectsFromFileNamesList(songs);
                             for (IAudioObject file : files) {
                                 queue.addSong(file);

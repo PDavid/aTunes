@@ -35,13 +35,13 @@ import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.Kernel;
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.misc.AbstractCache;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.model.IArtistInfo;
 import net.sourceforge.atunes.model.IArtistTopTracks;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ISimilarArtistsInfo;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.XMLUtils;
@@ -59,10 +59,11 @@ public class LastFmCache extends AbstractCache {
     private static final String ALBUM_INFO = "albumInfo";
     private static final String ALBUM_COVER = "albumCover";
 
-    private static File submissionCacheDir = new File(StringUtils.getString(OsManager.getUserConfigFolder(Kernel.isDebug()), OsManager.getFileSeparator(),
-            Constants.CACHE_DIR, OsManager.getFileSeparator(), Constants.LAST_FM_CACHE_DIR, OsManager.getFileSeparator(), Constants.LAST_FM_SUBMISSION_CACHE_DIR));
+    private File submissionCacheDir;
+    
+    private IOSManager osManager;
 
-    public LastFmCache() {
+    public LastFmCache(IOSManager osManager) {
         super(LastFmCache.class.getResource("/settings/ehcache-lastfm.xml"));
     }
 
@@ -120,6 +121,10 @@ public class LastFmCache extends AbstractCache {
     }
 
     private synchronized File getSubmissionDataDir() throws IOException {
+    	if (submissionCacheDir == null) {
+    		submissionCacheDir = new File(StringUtils.getString(osManager.getUserConfigFolder(Kernel.isDebug()), osManager.getFileSeparator(),
+    		            Constants.CACHE_DIR, osManager.getFileSeparator(), Constants.LAST_FM_CACHE_DIR, osManager.getFileSeparator(), Constants.LAST_FM_SUBMISSION_CACHE_DIR));
+    	}
         if (!submissionCacheDir.exists()) {
             FileUtils.forceMkdir(submissionCacheDir);
         }
@@ -133,7 +138,7 @@ public class LastFmCache extends AbstractCache {
             return null;
         }
 
-        return StringUtils.getString(submissionDataDirFile.getAbsolutePath(), OsManager.getFileSeparator(), "submissionDataCache.xml");
+        return StringUtils.getString(submissionDataDirFile.getAbsolutePath(), osManager.getFileSeparator(), "submissionDataCache.xml");
     }
 
     /**

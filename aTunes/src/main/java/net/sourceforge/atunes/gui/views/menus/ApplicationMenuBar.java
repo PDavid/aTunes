@@ -31,7 +31,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddPodcastFeedAction;
 import net.sourceforge.atunes.kernel.actions.AddRadioAction;
@@ -74,6 +73,7 @@ import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -90,12 +90,16 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
     private JMenu tools;
     private JMenu device;
     private JMenu help;
+    
+    private IOSManager osManager;
 
     /**
      * Instantiates a new application menu bar.
+     * @param osManager
      */
-    public ApplicationMenuBar() {
+    public ApplicationMenuBar(IOSManager osManager) {
         super();
+        this.osManager = osManager;
         addMenus();
     }
 
@@ -112,7 +116,7 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
             file.add(new JSeparator());
             file.add(Actions.getAction(ImportToRepositoryAction.class));
             file.add(Actions.getAction(ExportAction.class));
-            if (!OsManager.areMenuEntriesDelegated()) {
+            if (!osManager.areMenuEntriesDelegated()) {
             	file.add(new JSeparator());
             	file.add(Actions.getAction(ExitAction.class));
             }
@@ -142,7 +146,7 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
             repair.add(Actions.getAction(RepairGenresAction.class));
             repair.add(Actions.getAction(RepairAlbumNamesAction.class));
             edit.add(player);
-            if (!OsManager.areMenuEntriesDelegated()) {
+            if (!osManager.areMenuEntriesDelegated()) {
             	edit.add(Actions.getAction(EditPreferencesAction.class));
             }
             edit.add(new JSeparator());
@@ -249,7 +253,7 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
             help.add(new JSeparator());
             help.add(Actions.getAction(ShowLogAction.class));
             help.add(Actions.getAction(CheckUpdatesAction.class));
-            if (!OsManager.areMenuEntriesDelegated()) {
+            if (!osManager.areMenuEntriesDelegated()) {
             	help.add(new JSeparator());
             	help.add(Actions.getAction(ShowAboutAction.class));
             }

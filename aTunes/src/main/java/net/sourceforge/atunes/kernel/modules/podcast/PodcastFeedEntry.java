@@ -34,6 +34,7 @@ import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.DateUtils;
 
@@ -372,7 +373,7 @@ public final class PodcastFeedEntry implements IAudioObject, Serializable, Compa
     }
 
     @Override
-    public ImageIcon getImage(ImageSize imageSize) {
+    public ImageIcon getImage(ImageSize imageSize, IOSManager osManager) {
         return null;
     }
 

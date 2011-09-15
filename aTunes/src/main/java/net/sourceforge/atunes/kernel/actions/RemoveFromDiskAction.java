@@ -32,6 +32,7 @@ import javax.swing.SwingWorker;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
@@ -46,6 +47,7 @@ import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -136,7 +138,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
             protected Void doInBackground() {
                 for (Folder folder : foldersToRemove) {
                     try {
-                        FileUtils.deleteDirectory(folder.getFolderPath());
+                        FileUtils.deleteDirectory(folder.getFolderPath(Context.getBean(IOSManager.class)));
                         Logger.info(StringUtils.getString("Removed folder ", folder));
                     } catch (IOException e) {
                         Logger.info(StringUtils.getString("Could not remove folder ", folder, e.getMessage()));

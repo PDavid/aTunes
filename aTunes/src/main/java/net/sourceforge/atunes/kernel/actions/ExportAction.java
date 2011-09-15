@@ -37,6 +37,7 @@ import net.sourceforge.atunes.kernel.modules.repository.processes.ExportFilesPro
 import net.sourceforge.atunes.model.IExportOptionsDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -113,7 +114,7 @@ public class ExportAction extends CustomAbstractAction {
                         songs = AudioFile.getAudioFiles(PlayListHandler.getInstance().getSelectedAudioObjects());
                     }
 
-                    ExportFilesProcess process = new ExportFilesProcess(songs, path, getState(), Context.getBean(IFrame.class));
+                    ExportFilesProcess process = new ExportFilesProcess(songs, path, getState(), Context.getBean(IFrame.class), Context.getBean(IOSManager.class));
                     process.addProcessListener(new ExportProcessListener());
                     process.execute();
                 } else if (userWantsToCreate) {

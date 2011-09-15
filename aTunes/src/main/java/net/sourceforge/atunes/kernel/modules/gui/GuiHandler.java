@@ -53,7 +53,6 @@ import net.sourceforge.atunes.gui.views.dialogs.SearchDialog;
 import net.sourceforge.atunes.gui.views.dialogs.properties.PropertiesDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.PlaybackState;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
@@ -119,7 +118,7 @@ public final class GuiHandler extends AbstractHandler {
         showStatusBar(state.isShowStatusBar(), false);
         showContextPanel(state.isUseContext());
         
-        if (!getState().isShowSystemTray() && OsManager.isClosingMainWindowClosesApplication()) {
+        if (!getState().isShowSystemTray() && getOsManager().isClosingMainWindowClosesApplication()) {
         	getFrame().setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         }        
     }
@@ -130,7 +129,7 @@ public final class GuiHandler extends AbstractHandler {
      * NOTE: This method is called using reflection from MACOSXAdapter. Refactoring will break code!
      */
     public void finish() {
-        if (!getState().isShowSystemTray() && OsManager.isClosingMainWindowClosesApplication()) {
+        if (!getState().isShowSystemTray() && getOsManager().isClosingMainWindowClosesApplication()) {
             Kernel.finish();
         }
     }
@@ -594,7 +593,7 @@ public final class GuiHandler extends AbstractHandler {
      *            the audio object
      */
     public void showPropertiesDialog(IAudioObject audioObject) {
-        PropertiesDialog dialog = PropertiesDialog.newInstance(audioObject, getFrame().getFrame(), getState(), getFrame());
+        PropertiesDialog dialog = PropertiesDialog.newInstance(audioObject, getFrame().getFrame(), getState(), getFrame(), getOsManager());
         if (dialog.isVisible()) {
             dialog.toFront();
         } else {
@@ -692,10 +691,11 @@ public final class GuiHandler extends AbstractHandler {
         Logger.debug("Starting visualization");
 
         if (SystemProperties.IS_JAVA_6_UPDATE_10_OR_LATER) {
-            FadingPopupFactory.install();
+            FadingPopupFactory.install(getOsManager());
         }
 
 		getFrame().setState(getState());
+		getFrame().setOsManager(getOsManager());
         
         IFrameState frameState = getState().getFrameState(getFrame().getClass());
         LocaleBean locale = getState().getLocale();

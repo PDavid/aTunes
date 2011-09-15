@@ -25,10 +25,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.notify.CommonNotificationEngine;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -40,6 +40,12 @@ public class GrowlNotificationEngine extends CommonNotificationEngine {
 	private static final String TITLE_ARG = "-t";
 	private static final String GROWLNOTIFY = "/usr/local/bin/growlnotify";
 
+	private IOSManager osManager;
+
+	public GrowlNotificationEngine(IOSManager osManager) {
+		this.osManager = osManager;
+	}
+	
 	@Override
 	public String getName() {
 		return "Growl";
@@ -47,7 +53,7 @@ public class GrowlNotificationEngine extends CommonNotificationEngine {
 
 	@Override
 	public void showNotification(IAudioObject audioObject) {
-		String image = getTemporalImage(audioObject);
+		String image = getTemporalImage(audioObject, osManager);
 		List<String> command = getCommand(audioObject, image);
 		ProcessBuilder pb = new ProcessBuilder(command);
 		try {
@@ -74,7 +80,7 @@ public class GrowlNotificationEngine extends CommonNotificationEngine {
 
 	@Override
 	public boolean testEngineAvailable() {
-		if (!OsManager.osType.isMacOsX()) {
+		if (!osManager.isMacOsX()) {
 			return false;
 		}
 		

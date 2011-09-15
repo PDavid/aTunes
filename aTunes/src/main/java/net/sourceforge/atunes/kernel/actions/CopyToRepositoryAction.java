@@ -33,6 +33,7 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class CopyToRepositoryAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
@@ -74,7 +75,7 @@ public class CopyToRepositoryAction extends AbstractActionOverSelectedObjects<IL
 
     @Override
     protected void performAction(List<ILocalAudioObject> objects) {
-        final TransferToRepositoryProcess importer = new TransferToRepositoryProcess(objects, getState(), Context.getBean(IFrame.class));
+        final TransferToRepositoryProcess importer = new TransferToRepositoryProcess(objects, getState(), Context.getBean(IFrame.class), Context.getBean(IOSManager.class));
         importer.addProcessListener(new ImportProcessListener());
         importer.execute();
     }

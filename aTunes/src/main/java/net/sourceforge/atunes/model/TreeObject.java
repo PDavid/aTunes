@@ -74,9 +74,10 @@ public interface TreeObject<T extends IAudioObject> {
     /**
      * Returns image to be shown in extended tool tip
      * 
+     * @param osManager
      * @return
      */
-    public ImageIcon getExtendedToolTipImage();
+    public ImageIcon getExtendedToolTipImage(IOSManager osManager);
     
 	/**
 	 * Returns number of audio objects

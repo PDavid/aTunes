@@ -26,7 +26,6 @@ import java.util.HashSet;
 import java.util.List;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.process.AbstractAudioFileTransferProcess;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
@@ -36,6 +35,7 @@ import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
 import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.FileNameUtils;
@@ -72,8 +72,8 @@ public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
      * @param state
      * @param frame
      */
-    public ImportFilesProcess(List<ILocalAudioObject> filesToImport, List<File> folders, String path, TagAttributesReviewed tagAttributesReviewed, IState state, IFrame frame) {
-        super(filesToImport, state, frame);
+    public ImportFilesProcess(List<ILocalAudioObject> filesToImport, List<File> folders, String path, TagAttributesReviewed tagAttributesReviewed, IState state, IFrame frame, IOSManager osManager) {
+        super(filesToImport, state, frame, osManager);
         this.folders = folders;
         this.path = path;
         this.filesToChangeTag = new HashSet<ILocalAudioObject>();
@@ -117,9 +117,9 @@ public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
         String songPath = song.getFile().getParentFile().getAbsolutePath();
         String songRelativePath = songPath.replaceFirst(baseFolder.getAbsolutePath().replace("\\", "\\\\").replace("$", "\\$"), "");
         if (getState().getImportExportFolderPathPattern() != null) {
-            songRelativePath = FileNameUtils.getValidFolderName(FileNameUtils.getNewFolderPath(getState().getImportExportFolderPathPattern(), song));
+            songRelativePath = FileNameUtils.getValidFolderName(FileNameUtils.getNewFolderPath(getState().getImportExportFolderPathPattern(), song, getOsManager()), getOsManager());
         }
-        return new File(StringUtils.getString(destinationBaseFolder.getAbsolutePath(), OsManager.getFileSeparator(), songRelativePath));
+        return new File(StringUtils.getString(destinationBaseFolder.getAbsolutePath(), getOsManager().getFileSeparator(), songRelativePath));
     }
 
     @Override
@@ -163,12 +163,12 @@ public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
         File destDir = getDirectory(file, destination);
         String newName;
         if (getState().getImportExportFileNamePattern() != null) {
-            newName = FileNameUtils.getNewFileName(getState().getImportExportFileNamePattern(), file);
+            newName = FileNameUtils.getNewFileName(getState().getImportExportFileNamePattern(), file, getOsManager());
         } else {
-            newName = FileNameUtils.getValidFileName(file.getFile().getName().replace("\\", "\\\\").replace("$", "\\$"), false);
+            newName = FileNameUtils.getValidFileName(file.getFile().getName().replace("\\", "\\\\").replace("$", "\\$"), false, getOsManager());
         }
 
-        File destFile = new File(StringUtils.getString(destDir.getAbsolutePath(), OsManager.getFileSeparator(), newName));
+        File destFile = new File(StringUtils.getString(destDir.getAbsolutePath(), getOsManager().getFileSeparator(), newName));
 
         try {
             // Now that we (supposedly) have a valid filename write file

@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.OperatingSystem;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.Cdda2wav;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
@@ -35,6 +34,8 @@ import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.xine.XineEngine;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.OperatingSystem;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -58,8 +59,8 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter {
     
     private static final String WINOPTPRIORITY_DEFAULT = "abovenormal";
 
-    public WindowsOperatingSystem(OperatingSystem systemType) {
-		super(systemType);
+    public WindowsOperatingSystem(OperatingSystem systemType, IOSManager osManager) {
+		super(systemType, osManager);
 	}
 
 	@Override
@@ -98,17 +99,17 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter {
 	
 	@Override
 	public AbstractCdToWavConverter getCdToWavConverter() {
-		return new Cdda2wav();
+		return new Cdda2wav(osManager);
 	}
 	
 	@Override
 	public boolean testCdToWavConverter() {
-		return Cdda2wav.pTestTool();
+		return Cdda2wav.pTestTool(osManager);
 	}
 	
 	@Override
 	public Class<? extends AbstractHotkeys> getHotkeysListener() {
-		return WindowsHotkeys.isSupported() ? WindowsHotkeys.class : null;
+		return WindowsHotkeys.isSupported(osManager) ? WindowsHotkeys.class : null;
 	}
 	
 	@Override

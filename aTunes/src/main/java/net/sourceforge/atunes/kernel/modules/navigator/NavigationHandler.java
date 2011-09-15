@@ -261,7 +261,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
         if (navigationController == null) {
             NavigationTreePanel treePanel = getFrame().getNavigationTreePanel();
             NavigationTablePanel tablePanel = getFrame().getNavigationTablePanel();
-            navigationController = new NavigationController(treePanel, tablePanel, getState());
+            navigationController = new NavigationController(treePanel, tablePanel, getState(), getOsManager());
         }
         return navigationController;
     }

@@ -24,6 +24,7 @@ import java.util.List;
 
 import junit.framework.Assert;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLovedTrack;
+import net.sourceforge.atunes.model.MockOSManager;
 import net.sourceforge.atunes.model.MockState;
 
 import org.junit.Test;
@@ -38,7 +39,7 @@ public class LastFmServiceTest {
     		public String getLastFmUser() {
     			return "alexaranda";
     		}
-    	});
+    	}, new MockOSManager());
     	
         List<LastFmLovedTrack> lovedTracks = service.getLovedTracks();
         Assert.assertFalse(lovedTracks.isEmpty());

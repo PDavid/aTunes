@@ -45,6 +45,7 @@ import net.sourceforge.atunes.gui.views.controls.SimpleTextPane;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -64,9 +65,12 @@ class MacOSXPlayerEngineDialog extends AbstractCustomDialog {
 	 */
 	static final String MPLAYER_APP_STORE_URL = "http://itunes.apple.com/en/app/mplayerx/id421131143?mt=12";
 	
+	private IOSManager osManager;
 	
-	public MacOSXPlayerEngineDialog(JFrame parent) {
+	
+	public MacOSXPlayerEngineDialog(JFrame parent, IOSManager osManager) {
 		super(parent, 450, 250, true, CloseAction.DISPOSE);
+		this.osManager = osManager;
 		setResizable(false);
 		setTitle(I18nUtils.getString("PLAYER_ENGINE_SELECTION"));
         addContent();
@@ -158,7 +162,7 @@ class MacOSXPlayerEngineDialog extends AbstractCustomDialog {
 			protected void done() {
 				GuiHandler.getInstance().hideIndeterminateProgressDialog();
 				try {
-					new MacOSXPlayerEngineMatchSelectionDialog(MacOSXPlayerEngineDialog.this, get()).setVisible(true);
+					new MacOSXPlayerEngineMatchSelectionDialog(MacOSXPlayerEngineDialog.this, get(), osManager).setVisible(true);
 				} catch (InterruptedException e) {
 					Logger.error(e);
 				} catch (ExecutionException e) {
@@ -204,7 +208,7 @@ class MacOSXPlayerEngineDialog extends AbstractCustomDialog {
 	 * Shows dialog when user can enter player engine location manually
 	 */
 	private void enterPlayerEngine() {
-		new MacOSXPlayerEngineEnterPathDialog(MacOSXPlayerEngineDialog.this).setVisible(true);
+		new MacOSXPlayerEngineEnterPathDialog(MacOSXPlayerEngineDialog.this, osManager).setVisible(true);
 	}
 
 }

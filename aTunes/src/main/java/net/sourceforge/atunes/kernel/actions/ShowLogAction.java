@@ -24,8 +24,9 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.Kernel;
-import net.sourceforge.atunes.kernel.OsManager;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -46,8 +47,8 @@ public class ShowLogAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        final File file = OsManager.getFileFromUserConfigFolder(Constants.LOG_FILE, Kernel.isDebug());
-        DesktopUtils.openFile(file);
+        final File file = Context.getBean(IOSManager.class).getFileFromUserConfigFolder(Constants.LOG_FILE, Kernel.isDebug());
+        DesktopUtils.openFile(file, Context.getBean(IOSManager.class));
     }
 
 }

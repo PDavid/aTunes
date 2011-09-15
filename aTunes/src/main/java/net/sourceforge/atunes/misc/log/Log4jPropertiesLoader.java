@@ -27,7 +27,7 @@ import java.util.Properties;
 import java.util.PropertyResourceBundle;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.OsManager;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.log4j.PropertyConfigurator;
@@ -47,7 +47,7 @@ public final class Log4jPropertiesLoader {
      * @param debug
      *            the debug
      */
-    public static void loadProperties(boolean debug) {
+    public static void loadProperties(boolean debug, IOSManager osManager) {
     	PropertyResourceBundle bundle = null;
     	InputStream log4jProperties = Log4jPropertiesLoader.class.getResourceAsStream(Constants.LOG4J_FILE);
     	Properties props = new Properties();
@@ -68,7 +68,7 @@ public final class Log4jPropertiesLoader {
     				if (key.equals("log4j.rootLogger") && debug) {
     					value = value.replace("INFO", "DEBUG");
     				} else if (key.equals("log4j.appender.A2.file")) {
-    					value = StringUtils.getString(OsManager.getUserConfigFolder(debug), OsManager.getFileSeparator(), "aTunes.log");
+    					value = StringUtils.getString(osManager.getUserConfigFolder(debug), osManager.getFileSeparator(), "aTunes.log");
     				}
 
     				props.setProperty(key, value);

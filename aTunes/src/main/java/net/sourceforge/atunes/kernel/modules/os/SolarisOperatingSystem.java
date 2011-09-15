@@ -25,12 +25,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.OperatingSystem;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.Cdda2wav;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.Cdparanoia;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.OperatingSystem;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class SolarisOperatingSystem extends OperatingSystemAdapter {
@@ -51,9 +52,8 @@ public class SolarisOperatingSystem extends OperatingSystemAdapter {
     
     private static final String MPLAYER_SOLARISOPTTYPE = "sun"; 
 
-    public SolarisOperatingSystem(OperatingSystem systemType) {
-		super(systemType);
-		// TODO Auto-generated constructor stub
+    public SolarisOperatingSystem(OperatingSystem systemType, IOSManager osManager) {
+		super(systemType, osManager);
 	}
 
 	@Override
@@ -100,10 +100,10 @@ public class SolarisOperatingSystem extends OperatingSystemAdapter {
 
 	@Override
 	public boolean testCdToWavConverter() {
-		if (Cdda2wav.pTestTool()) {
+		if (Cdda2wav.pTestTool(osManager)) {
 			return true;
 		}
-		return Cdparanoia.pTestTool();
+		return Cdparanoia.pTestTool(osManager);
 	}
 
 	@Override

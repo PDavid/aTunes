@@ -47,6 +47,7 @@ import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.GetCoversProcess;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 
@@ -56,13 +57,18 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
 
     private static final int COVER_PANEL_WIDTH = Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize() + 20;
     private static final int COVER_PANEL_HEIGHT = Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize() + 40;
+    
+    private IOSManager osManager;
 
-    private final class GenerateAndShowAlbumPanelsSwingWorker extends
-			SwingWorker<Void, IntermediateResult> {
+    private final class GenerateAndShowAlbumPanelsSwingWorker extends SwingWorker<Void, IntermediateResult> {
+    	
 		private final Artist artistSelected;
+		
+		private IOSManager osManager;
 
-		private GenerateAndShowAlbumPanelsSwingWorker(Artist artistSelected) {
+		private GenerateAndShowAlbumPanelsSwingWorker(Artist artistSelected, IOSManager osManager) {
 			this.artistSelected = artistSelected;
+			this.osManager = osManager;
 		}
 
 		@Override
@@ -73,7 +79,7 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
 
 		    int coversAdded = 0;
 		    for (Album album : albums) {
-		        ImageIcon cover = album.getPicture(Constants.COVER_NAVIGATOR_IMAGE_SIZE);
+		        ImageIcon cover = album.getPicture(Constants.COVER_NAVIGATOR_IMAGE_SIZE, osManager);
 		        publish(new IntermediateResult(album, cover));
 		        coversAdded++;
 		    }
@@ -134,7 +140,7 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
 		public void actionPerformed(ActionEvent e) {
 		    Artist selectedArtist = (Artist) frame.getList().getSelectedValue();
 		    if (selectedArtist != null) {
-		        GetCoversProcess process = new GetCoversProcess(selectedArtist, getComponentControlled(), getState());
+		        GetCoversProcess process = new GetCoversProcess(selectedArtist, getComponentControlled(), getState(), osManager);
 		        process.addProcessListener(new GetCoversProcessListener());
 		        process.execute();
 		    }
@@ -166,9 +172,11 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
      * 
      * @param frame
      * @param state
+     * @param osManager
      */
-    public CoverNavigatorController(CoverNavigatorFrame frame, IState state) {
+    public CoverNavigatorController(CoverNavigatorFrame frame, IState state, IOSManager osManager) {
         super(frame, state);
+        this.osManager = osManager;
         addBindings();
     }
 
@@ -238,7 +246,7 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
         getComponentControlled().getCoversButton().setEnabled(false);
         getComponentControlled().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-        SwingWorker<Void, IntermediateResult> generateAndShowAlbumPanels = new GenerateAndShowAlbumPanelsSwingWorker(artistSelected);
+        SwingWorker<Void, IntermediateResult> generateAndShowAlbumPanels = new GenerateAndShowAlbumPanelsSwingWorker(artistSelected, osManager);
         generateAndShowAlbumPanels.execute();
     }
 

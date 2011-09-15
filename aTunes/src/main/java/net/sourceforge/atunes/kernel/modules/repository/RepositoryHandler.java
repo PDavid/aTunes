@@ -47,7 +47,6 @@ import net.sourceforge.atunes.gui.views.dialogs.RepositorySelectionInfoDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ReviewImportDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ConnectDeviceAction;
 import net.sourceforge.atunes.kernel.actions.ExitAction;
@@ -75,6 +74,7 @@ import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStatisticsHandler;
@@ -235,7 +235,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 		            tagAttributesReviewed = reviewImportDialog.getResult();
 		        }
 
-		        final ImportFilesProcess process = new ImportFilesProcess(filesToLoad, folders, path, tagAttributesReviewed, RepositoryHandler.this.getState(), RepositoryHandler.this.getFrame());
+		        final ImportFilesProcess process = new ImportFilesProcess(filesToLoad, folders, path, tagAttributesReviewed, RepositoryHandler.this.getState(), RepositoryHandler.this.getFrame(), getOsManager());
 		        process.addProcessListener(new ImportFilesProcessListener(process));
 		        process.execute();
 
@@ -255,16 +255,19 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     	
     	private IStatisticsHandler statisticsHandler;
     	
-    	public RefreshFoldersSwingWorker(Repository repository, List<Folder> folders, IStatisticsHandler statisticsHandler) {
+    	private IOSManager osManager;
+    	
+    	public RefreshFoldersSwingWorker(Repository repository, List<Folder> folders, IStatisticsHandler statisticsHandler, IOSManager osManager) {
     		this.repository = repository;
     		this.folders = folders;
     		this.statisticsHandler = statisticsHandler;
+    		this.osManager = osManager;
 		}
     	
     	@Override
     	protected Void doInBackground() throws Exception {
     		getInstance().startTransaction();
-            RepositoryLoader.refreshFolders(repository, folders, statisticsHandler);
+            RepositoryLoader.refreshFolders(repository, folders, statisticsHandler, osManager);
             getInstance().endTransaction();
     		return null;
     	}
@@ -564,7 +567,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      * @return the path for new audio files ripped
      */
     public String getPathForNewAudioFilesRipped() {
-        return StringUtils.getString(RepositoryHandler.getInstance().getRepositoryPath(), OsManager.getFileSeparator(), Album.getUnknownAlbum(), " - ", DateUtils
+        return StringUtils.getString(RepositoryHandler.getInstance().getRepositoryPath(), getOsManager().getFileSeparator(), Album.getUnknownAlbum(), " - ", DateUtils
                 .toPathString(new Date()));
     }
 
@@ -977,7 +980,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     public void refreshFolders(List<Folder> folders) {
         GuiHandler.getInstance().showProgressBar(true, StringUtils.getString(I18nUtils.getString("REFRESHING"), "..."));
         enableRepositoryActions(false);
-    	new RefreshFoldersSwingWorker(repository, folders, statisticsHandler).execute();
+    	new RefreshFoldersSwingWorker(repository, folders, statisticsHandler, getOsManager()).execute();
     }
 
     /**
@@ -1025,7 +1028,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         }
 
         for (ILocalAudioObject fileToRemove : filesToRemove) {
-            RepositoryLoader.deleteFile(fileToRemove);
+            RepositoryLoader.deleteFile(fileToRemove, getOsManager());
         }
 
         // Notify listeners
@@ -1045,7 +1048,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     public void rename(ILocalAudioObject audioFile, String name) {
         File file = audioFile.getFile();
         String extension = FilenameUtils.getExtension(file.getAbsolutePath());
-        File newFile = new File(StringUtils.getString(file.getParentFile().getAbsolutePath() + "/" + FileNameUtils.getValidFileName(name) + "." + extension));
+        File newFile = new File(StringUtils.getString(file.getParentFile().getAbsolutePath() + "/" + FileNameUtils.getValidFileName(name, getOsManager()) + "." + extension));
         boolean succeeded = file.renameTo(newFile);
         if (succeeded) {
         	renameFile(audioFile, file, newFile);
@@ -1221,8 +1224,8 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      * @return
      */
     public String getRepositoryConfigurationFolder() {
-        String customRepositoryConfigFolder = OsManager.getCustomRepositoryConfigFolder();
-        return customRepositoryConfigFolder != null ? customRepositoryConfigFolder : OsManager.getUserConfigFolder(Kernel.isDebug());
+        String customRepositoryConfigFolder = getOsManager().getCustomRepositoryConfigFolder();
+        return customRepositoryConfigFolder != null ? customRepositoryConfigFolder : getOsManager().getUserConfigFolder(Kernel.isDebug());
     }
     
 	@Override

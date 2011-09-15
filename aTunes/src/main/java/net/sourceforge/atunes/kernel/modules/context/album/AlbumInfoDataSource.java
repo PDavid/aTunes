@@ -35,6 +35,7 @@ import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.model.ImageSize;
@@ -79,6 +80,8 @@ public class AlbumInfoDataSource implements ContextInformationDataSource {
     private IState state;
     
     private IWebServicesHandler webServicesHandler;
+    
+    private IOSManager osManager;
     
     @Override
     public Map<String, ?> getData(Map<String, ?> parameters) {
@@ -190,7 +193,7 @@ public class AlbumInfoDataSource implements ContextInformationDataSource {
                 savePicture(image, (ILocalAudioObject) audioObject);
             }
         } else {
-            image = audioObject.getImage(ImageSize.SIZE_MAX).getImage();
+            image = audioObject.getImage(ImageSize.SIZE_MAX, osManager).getImage();
         }
         return image;
     }
@@ -204,7 +207,7 @@ public class AlbumInfoDataSource implements ContextInformationDataSource {
      */
     private void savePicture(Image img, ILocalAudioObject file) {
         if (img != null && state.isSaveContextPicture()) { // save image in folder of file
-            String imageFileName = AudioFilePictureUtils.getFileNameForCover(file);
+            String imageFileName = AudioFilePictureUtils.getFileNameForCover(file, osManager);
 
             File imageFile = new File(imageFileName);
             if (!imageFile.exists()) {
@@ -247,6 +250,10 @@ public class AlbumInfoDataSource implements ContextInformationDataSource {
     
     public final void setState(IState state) {
 		this.state = state;
+	}
+    
+    public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
 	}
     
     public final void setWebServicesHandler(IWebServicesHandler webServicesHandler) {

@@ -33,10 +33,10 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
-import net.sourceforge.atunes.kernel.OsManager;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.tag.datatype.Artwork;
@@ -94,35 +94,28 @@ public final class AudioFilePictureUtils {
      * Gets the external picture.
      * 
      * @param file
-     *            the file
      * @param width
-     *            the width
      * @param height
-     *            the height
-     * 
-     * @return the external picture
+     * @param osManager
+     * @return
      */
-    public static ImageIcon getExternalPicture(AudioFile file, int width, int height) {
-        return getExternalPicture(file, 0, width, height);
+    public static ImageIcon getExternalPicture(AudioFile file, int width, int height, IOSManager osManager) {
+        return getExternalPicture(file, 0, width, height, osManager);
     }
 
     /**
      * Gets the external picture.
      * 
      * @param file
-     *            the file
      * @param index
-     *            the index
      * @param width
-     *            the width
      * @param height
-     *            the height
-     * 
-     * @return the external picture
+     * @param osManager
+     * @return
      */
-    private static ImageIcon getExternalPicture(AudioFile file, int index, int width, int height) {
+    private static ImageIcon getExternalPicture(AudioFile file, int index, int width, int height, IOSManager osManager) {
         // Try first to get picture with file name "ARTIST_ALBUM_COVER" pattern
-        String coverFileName = getFileNameForCover(file);
+        String coverFileName = getFileNameForCover(file, osManager);
         ImageIcon image = null;
         if (new File(coverFileName).exists()) {
             image = new ImageIcon(coverFileName);
@@ -147,16 +140,14 @@ public final class AudioFilePictureUtils {
      * file.
      * 
      * @param file
-     *            the file
-     * 
-     * @return the file name for cover
+     * @param osManager
+     * @return
      */
-
-    public static String getFileNameForCover(ILocalAudioObject file) {
+    public static String getFileNameForCover(ILocalAudioObject file, IOSManager osManager) {
         if (file == null) {
             return null;
         }
-        return StringUtils.getString(file.getFile().getParentFile().getAbsolutePath(), OsManager.getFileSeparator(), file.getArtist(), '_', file.getAlbum(), "_Cover.",
+        return StringUtils.getString(file.getFile().getParentFile().getAbsolutePath(), osManager.getFileSeparator(), file.getArtist(), '_', file.getAlbum(), "_Cover.",
                 ImageUtils.FILES_EXTENSION);
     }
 
@@ -213,15 +204,12 @@ public final class AudioFilePictureUtils {
      * Returns all pictures associated to an audio file.
      * 
      * @param file
-     *            the file
      * @param width
-     *            Width in pixels or -1 to keep original width
      * @param height
-     *            Height in pixels or -1 to keep original height
-     * 
-     * @return the pictures for file
+     * @param osManager
+     * @return
      */
-    public static ImageIcon[] getPicturesForFile(AudioFile file, int width, int height) {
+    public static ImageIcon[] getPicturesForFile(AudioFile file, int width, int height, IOSManager osManager) {
         int size = 0;
         ImageIcon image = getInsidePicture(file, width, height);
         if (image != null) {
@@ -236,7 +224,7 @@ public final class AudioFilePictureUtils {
             firstExternalIndex++;
         }
         for (int i = firstExternalIndex; i < size; i++) {
-            result[i] = getExternalPicture(file, i, width, height);
+            result[i] = getExternalPicture(file, i, width, height, osManager);
         }
 
         return result;

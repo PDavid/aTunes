@@ -42,6 +42,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -177,6 +178,8 @@ public abstract class AbstractPlayerEngine {
     private IState state;
     
     private IFrame frame;
+    
+    private IOSManager osManager;
     
     /**
      * A thread invoking play in engine
@@ -550,11 +553,12 @@ public abstract class AbstractPlayerEngine {
      * Instantiates a new player handler.
      * @param state
      */
-    protected AbstractPlayerEngine(IState state, IFrame frame) {
+    protected AbstractPlayerEngine(IState state, IFrame frame, IOSManager osManager) {
         // To properly init player must call method "initPlayerEngine"
         this.equalizer = new Equalizer(state);
         this.state = state;
         this.frame = frame;
+        this.osManager = osManager;
     }
 
     /**
@@ -866,6 +870,13 @@ public abstract class AbstractPlayerEngine {
 	
 	protected IFrame getFrame() {
 		return frame;
+	}
+
+	/**
+	 * @return the osManager
+	 */
+	protected IOSManager getOsManager() {
+		return osManager;
 	}
 
 }

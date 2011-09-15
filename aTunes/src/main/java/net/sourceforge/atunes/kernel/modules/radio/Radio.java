@@ -37,6 +37,7 @@ import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.NetworkUtils;
@@ -434,7 +435,7 @@ public final class Radio implements IAudioObject, Serializable, TreeObject<Radio
     }
 
     @Override
-    public ImageIcon getExtendedToolTipImage() {
+    public ImageIcon getExtendedToolTipImage(IOSManager osManager) {
         return null;
     }
 
@@ -444,7 +445,7 @@ public final class Radio implements IAudioObject, Serializable, TreeObject<Radio
     }
 
     @Override
-    public ImageIcon getImage(ImageSize imageSize) {
+    public ImageIcon getImage(ImageSize imageSize, IOSManager osManager) {
         return null;
     }
 

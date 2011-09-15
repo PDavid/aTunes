@@ -77,6 +77,7 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.TreeObject;
 
@@ -87,14 +88,17 @@ final class NavigationController implements AudioFilesRemovedListener, IControll
 				SwingWorker<ImageIcon, Void> {
 			private final Object currentObject;
 
-			private GetAndSetImageSwingWorker(Object currentObject) {
+			private IOSManager osManager;
+			
+			private GetAndSetImageSwingWorker(Object currentObject, IOSManager osManager) {
 				this.currentObject = currentObject;
+				this.osManager = osManager;
 			}
 
 			@Override
 			protected ImageIcon doInBackground() throws Exception {
 			    // Get image for albums
-			    return ExtendedToolTip.getImage(currentObject);
+			    return ExtendedToolTip.getImage(currentObject, osManager);
 			}
 
 			@Override
@@ -117,7 +121,7 @@ final class NavigationController implements AudioFilesRemovedListener, IControll
             getExtendedToolTip().setVisible(true);
 
             final Object currentObject = currentExtendedToolTipContent;
-            SwingWorker<ImageIcon, Void> getAndSetImage = new GetAndSetImageSwingWorker(currentObject);
+            SwingWorker<ImageIcon, Void> getAndSetImage = new GetAndSetImageSwingWorker(currentObject, osManager);
             getAndSetImage.execute();
 
         }
@@ -150,6 +154,8 @@ final class NavigationController implements AudioFilesRemovedListener, IControll
     
     private AbstractColumnSet navigatorColumnSet;
     
+    private IOSManager osManager;
+    
     /**
      * Instantiates a new navigation controller.
      * 
@@ -157,10 +163,11 @@ final class NavigationController implements AudioFilesRemovedListener, IControll
      * @param tablePanel
      * @param state
      */
-    NavigationController(NavigationTreePanel treePanel, NavigationTablePanel tablePanel, IState state) {
+    NavigationController(NavigationTreePanel treePanel, NavigationTablePanel tablePanel, IState state, IOSManager osManager) {
         this.navigationTreePanel = treePanel;
         this.navigationTablePanel = tablePanel;
         this.state = state;
+        this.osManager = osManager;
         addBindings();
         RepositoryHandler.getInstance().addAudioFilesRemovedListener(this);
         this.navigatorColumnSet = (AbstractColumnSet) Context.getBean("navigatorColumnSet");

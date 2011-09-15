@@ -45,6 +45,7 @@ import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -613,20 +614,11 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
         return result;
     }
 
-    /**
-     * Returns an image associated to an audio file, with following order: - If
-     * not, find an internal image - If not, find an external image - If not,
-     * return null
-     * 
-     * @param width
-     *            Width in pixels or -1 to keep original width
-     * @param height
-     *            Height in pixels or -1 to keep original height
-     * 
-     * @return the image for audio file
+    /* (non-Javadoc)
+     * @see net.sourceforge.atunes.model.IAudioObject#getImage(net.sourceforge.atunes.model.ImageSize, net.sourceforge.atunes.model.IOSManager)
      */
     @Override
-    public ImageIcon getImage(ImageSize imageSize) {
+    public ImageIcon getImage(ImageSize imageSize, IOSManager osManager) {
         ImageIcon result = null;
 
         result = imageCache.retrieveImage(this, imageSize);
@@ -634,7 +626,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
         if (result == null) {
             result = AudioFilePictureUtils.getInsidePicture(this, imageSize.getSize(), imageSize.getSize());
             if (result == null) {
-                result = AudioFilePictureUtils.getExternalPicture(this, imageSize.getSize(), imageSize.getSize());
+                result = AudioFilePictureUtils.getExternalPicture(this, imageSize.getSize(), imageSize.getSize(), osManager);
             }
         } else {
             return result;

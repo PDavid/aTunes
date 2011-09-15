@@ -30,20 +30,8 @@ public class Context {
 	private Context() {
 	}
 	
-	protected static void initialize() {
-		
-		context = new ClassPathXmlApplicationContext(
-				"/settings/spring/state.xml", 
-				"/settings/spring/columnsets.xml", 
-				"/settings/spring/webservices.xml", 
-				"/settings/spring/navigationviews.xml", 
-				"/settings/spring/treecelldecorators.xml",
-				"/settings/spring/context.xml",
-				"/settings/spring/treegenerators.xml",
-				"/settings/spring/handlers.xml",
-				"/settings/spring/frame.xml",
-				"/settings/spring/dialogs.xml"
-				);
+	public static void initialize(String... paths) {
+		context = new ClassPathXmlApplicationContext(paths);
 	}
 	
 	public static <T> T getBean(Class<T> beanType) {

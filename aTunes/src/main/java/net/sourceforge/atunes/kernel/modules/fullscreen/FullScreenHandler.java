@@ -62,7 +62,7 @@ public class FullScreenHandler extends AbstractHandler implements IFullScreenHan
 	 */
 	private void createFullScreenController() {
 		if (controller == null) {
-			controller = new FullScreenController(getState(), getFrame());
+			controller = new FullScreenController(getState(), getFrame(), getOsManager());
 		}
 	}
 	
