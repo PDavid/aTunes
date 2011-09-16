@@ -54,8 +54,8 @@ public class Logger {
         }
 
         StringBuilder sb = new StringBuilder();
-        for (Object object : objects) {
-            sb.append(object);
+        for (Object o : objects) {
+        	sb.append(o != null ? o.toString() : "null");
         }
         logger.debug(sb.toString());
     }
@@ -153,7 +153,7 @@ public class Logger {
     public static void info(Object... objs) {
         StringBuilder sb = new StringBuilder();
         for (Object o : objs) {
-        	sb.append(o.toString());
+       		sb.append(o != null ? o.toString() : "null");
         }
         logger.info(sb.toString());
     }
