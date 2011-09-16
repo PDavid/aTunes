@@ -346,19 +346,19 @@ public final class GuiUtils {
                 setWindowShapeMethod.invoke(null, window, mask);
                 // any exception will disable call to method
             } catch (SecurityException e) {
-                Logger.error(e);
+                Logger.info("shaped windows not supported: ", e.getMessage());
                 setWindowShapeMethod = null;
             } catch (IllegalArgumentException e) {
-                Logger.info("shaped windows not supported");
+                Logger.info("shaped windows not supported: ", e.getMessage());
                 setWindowShapeMethod = null;
             } catch (IllegalAccessException e) {
-                Logger.error(e);
+                Logger.info("shaped windows not supported: ", e.getMessage());
                 setWindowShapeMethod = null;
             } catch (InvocationTargetException e) {
-                Logger.error(e);
+                Logger.info("shaped windows not supported: ", e.getMessage());
                 setWindowShapeMethod = null;
             } catch (UnsupportedOperationException e) {
-                Logger.error(e);
+                Logger.info("shaped windows not supported: ", e.getMessage());
                 setWindowShapeMethod = null;
             }
         }
@@ -379,19 +379,19 @@ public final class GuiUtils {
                 setWindowOpacityMethod.invoke(null, window, opacity);
                 // any exception will disable call to method
             } catch (SecurityException e) {
-                Logger.error(e);
+                Logger.info("opaque windows not supported: ", e.getMessage());
                 setWindowOpacityMethod = null;
             } catch (IllegalArgumentException e) {
-                Logger.info("opaque windows not supported");
+                Logger.info("opaque windows not supported: ", e.getMessage());
                 setWindowOpacityMethod = null;
             } catch (IllegalAccessException e) {
-                Logger.error(e);
+                Logger.info("opaque windows not supported: ", e.getMessage());
                 setWindowOpacityMethod = null;
             } catch (InvocationTargetException e) {
-                Logger.info("opaque windows not supported");
+                Logger.info("opaque windows not supported: ", e.getMessage());
                 setWindowOpacityMethod = null;
             } catch (UnsupportedOperationException e) {
-                Logger.error(e);
+                Logger.info("opaque windows not supported: ", e.getMessage());
                 setWindowOpacityMethod = null;
             }
         }
