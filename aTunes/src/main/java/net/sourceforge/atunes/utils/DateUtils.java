@@ -131,19 +131,21 @@ public final class DateUtils {
     		String firstpart = dateStr.substring(0, dateStr.lastIndexOf('-'));
     		String secondpart = dateStr.substring(dateStr.lastIndexOf('-'));
 
-    		//step two, remove the colon from the timezone offset
-    		secondpart = StringUtils.getString(secondpart.substring(0, secondpart.indexOf(':')), secondpart.substring(secondpart.indexOf(':') + 1));
-    		String dateString = StringUtils.getString(firstpart, secondpart);
+    		if (secondpart.indexOf(':') != -1) {
+    			//step two, remove the colon from the timezone offset
+    			secondpart = StringUtils.getString(secondpart.substring(0, secondpart.indexOf(':')), secondpart.substring(secondpart.indexOf(':') + 1));
+    			String dateString = StringUtils.getString(firstpart, secondpart);
 
-    		try {
-    			return RFC3339_3.parseDateTime(dateString);
-    		} catch (IllegalArgumentException e) {
     			try {
-    				return RFC3339_4.parseDateTime(dateString);
-    			} catch (IllegalArgumentException e2) {
-    				return null;
-    			}
-    		}            	
+    				return RFC3339_3.parseDateTime(dateString);
+    			} catch (IllegalArgumentException e) {
+    				try {
+    					return RFC3339_4.parseDateTime(dateString);
+    				} catch (IllegalArgumentException e2) {
+    					return null;
+    				}
+    			}            	
+    		}
 
     	}
     	return null;
