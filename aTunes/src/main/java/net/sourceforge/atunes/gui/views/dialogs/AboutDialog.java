@@ -32,7 +32,6 @@ import java.lang.management.MemoryUsage;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -48,11 +47,13 @@ import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
+import net.sourceforge.atunes.model.IAboutDialog;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public final class AboutDialog extends AbstractCustomDialog {
+public final class AboutDialog extends AbstractCustomDialog implements IAboutDialog {
 
     /*
      * Static attributes with immutable data to be shown in properties table
@@ -219,11 +220,10 @@ public final class AboutDialog extends AbstractCustomDialog {
     /**
      * Instantiates a new about dialog.
      * 
-     * @param owner
-     *            the owner
+     * @param frame
      */
-    public AboutDialog(JFrame owner) {
-        super(owner, 600, 550, true, CloseAction.DISPOSE);
+    public AboutDialog(IFrame frame) {
+        super(frame, 600, 550, true, CloseAction.DISPOSE);
         add(getContent());
         setResizable(false);
     }
@@ -331,5 +331,10 @@ public final class AboutDialog extends AbstractCustomDialog {
             timer.stop();
         }
         super.setVisible(visible);
+    }
+    
+    @Override
+    public void showDialog() {
+    	setVisible(true);
     }
 }
