@@ -216,7 +216,7 @@ public interface IOSManager {
 	/**
 	 * Manages when no player engine is available
 	 */
-	public void manageNoPlayerEngine();
+	public void manageNoPlayerEngine(IFrame frame);
 
 	/**
 	 * Called when player engine is found (after searching or entering manually)

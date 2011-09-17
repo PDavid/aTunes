@@ -375,20 +375,20 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     
     @Override
     public int requestUserInteraction() {
-    	return 2;
+    	return 1;
     }
     
     @Override
     public void doUserInteraction() {
         if (playerEngine == null) {
-            PlayerEngineManager.manageNoPlayerEngine(getOsManager());
+            PlayerEngineManager.manageNoPlayerEngine(getOsManager(), getFrame());
         }
     }
     
     /**
      * Initializes all related to player engine
      */
-    protected void initialize() {
+    private void initialize() {
     	initPlayerEngine();
     	
         // Set volume on visual components
@@ -429,7 +429,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
                 Logger.debug("Closing player ...");
             }
 
-        }));
+        }));        
     }
 
     /**
@@ -541,5 +541,15 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 
 	@Override
 	protected void initHandler() {
+	}
+
+	/**
+	 * Initializes after user have selected player engine
+	 */
+	public void initializeAndCheck() {
+		initialize();
+        if (playerEngine == null) {
+        	PlayerEngineManager.manageNoPlayerEngine(getOsManager(), getFrame());
+        }
 	}
 }

@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.player;
 
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
 
 /**
@@ -32,16 +33,17 @@ public class PlayerEngineManager {
 	/**
 	 * Called when no player engine is available
 	 * @param osManager
+	 * @param frame
 	 */
-	static void manageNoPlayerEngine(IOSManager osManager) {
+	static void manageNoPlayerEngine(IOSManager osManager, IFrame frame) {
 		// Delegate to specific OS code
-		osManager.manageNoPlayerEngine();
+		osManager.manageNoPlayerEngine(frame);
 	}
 	
 	/**
 	 * Called when player engine is found (after searching or entering manually)
 	 */
 	public static void playerEngineFound() {
-		PlayerHandler.getInstance().initialize();
+		PlayerHandler.getInstance().initializeAndCheck();
 	}
 }

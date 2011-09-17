@@ -55,7 +55,7 @@ public abstract class OperatingSystemAdapter {
 	protected OperatingSystem systemType;
 	
 	protected IOSManager osManager;
-
+	
 	public OperatingSystemAdapter(OperatingSystem systemType, IOSManager osManager) {
 		this.systemType = systemType;
 		this.osManager = osManager;
@@ -246,7 +246,7 @@ public abstract class OperatingSystemAdapter {
 	/**
 	 * Manages when no player engine is available
 	 */
-	public void manageNoPlayerEngine() {
+	public void manageNoPlayerEngine(IFrame frame) {
 		// By default no management is done, only an error message
         GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("NO_PLAYER_ENGINE"));
 	}

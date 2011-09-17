@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.os.macosx;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.macos.MacOSXLookAndFeel;
@@ -139,8 +138,8 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 	}
 	
 	@Override
-	public void manageNoPlayerEngine() {
-		MacOSXPlayerEngineDialog dialog = new MacOSXPlayerEngineDialog(Context.getBean(IFrame.class).getFrame(), osManager);
+	public void manageNoPlayerEngine(IFrame frame) {
+		MacOSXPlayerSelectionDialog dialog = new MacOSXPlayerSelectionDialog(frame, osManager);
 		dialog.setVisible(true);
 	}
 	
