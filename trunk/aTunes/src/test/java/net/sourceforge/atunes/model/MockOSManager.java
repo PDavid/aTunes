@@ -189,7 +189,7 @@ public class MockOSManager implements IOSManager {
 	}
 
 	@Override
-	public void manageNoPlayerEngine() {
+	public void manageNoPlayerEngine(IFrame frame) {
 		// TODO Auto-generated method stub
 		
 	}

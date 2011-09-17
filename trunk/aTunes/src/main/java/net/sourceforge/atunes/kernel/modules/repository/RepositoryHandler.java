@@ -357,7 +357,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     
     @Override
     public int requestUserInteraction() {
-    	return 1;
+    	return 2;
     }
     
     @Override

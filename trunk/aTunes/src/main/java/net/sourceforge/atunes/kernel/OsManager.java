@@ -63,16 +63,16 @@ public class OsManager implements IOSManager {
      *  Constructor 
      */
     public OsManager() {
-    	 osType = detectOperatingSystem();
-    	 if (osType.isLinux()) {
-    		 adapter = new LinuxOperatingSystem(osType, this);
-    	 } else if (osType.isMacOsX()) {
-    		 adapter = new MacOSXOperatingSystem(osType, this);
-    	 } else if (osType.isSolaris()) {
-    		 adapter = new SolarisOperatingSystem(osType, this);
-    	 } else {
-    		 adapter = new WindowsOperatingSystem(osType, this);
-    	 }
+    	osType = detectOperatingSystem();
+    	if (osType.isLinux()) {
+    		adapter = new LinuxOperatingSystem(osType, this);
+    	} else if (osType.isMacOsX()) {
+    		adapter = new MacOSXOperatingSystem(osType, this);
+    	} else if (osType.isSolaris()) {
+    		adapter = new SolarisOperatingSystem(osType, this);
+    	} else {
+    		adapter = new WindowsOperatingSystem(osType, this);
+    	}    	
     }
     
 	/* (non-Javadoc)
@@ -357,8 +357,8 @@ public class OsManager implements IOSManager {
 	 * @see net.sourceforge.atunes.kernel.IOSManager#manageNoPlayerEngine()
 	 */
 	@Override
-	public void manageNoPlayerEngine() {
-		adapter.manageNoPlayerEngine();
+	public void manageNoPlayerEngine(IFrame frame) {
+		adapter.manageNoPlayerEngine(frame);
 	}
 	
 	/* (non-Javadoc)
