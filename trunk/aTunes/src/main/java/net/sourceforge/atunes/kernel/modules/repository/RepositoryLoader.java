@@ -403,7 +403,9 @@ public class RepositoryLoader extends Thread {
 			}
 			fastFirstChar = fastRepositoryPath.length() + 1;
 
-			navigateDir(folder, folder);
+			if (folder.exists()) {
+				navigateDir(folder, folder);
+			}
 		}
 
 	}
