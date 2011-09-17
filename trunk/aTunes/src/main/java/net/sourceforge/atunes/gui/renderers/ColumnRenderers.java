@@ -35,8 +35,9 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectStatistics;
 import net.sourceforge.atunes.model.IStatisticsHandler;
-import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
+
+import org.joda.time.format.DateTimeFormat;
 
 /**
  * Common renderers for columns
@@ -120,7 +121,7 @@ public final class ColumnRenderers {
             } else {
                 sb.append(I18nUtils.getString("LAST_DATE_PLAYED"));
                 sb.append(": ");
-                sb.append(DateUtils.toString(stats.getLastPlayed()));
+                sb.append(DateTimeFormat.shortDateTime().print(stats.getLastPlayed()));
                 sb.append(" - ");
                 sb.append(I18nUtils.getString("TIMES_PLAYED"));
                 sb.append(": ");

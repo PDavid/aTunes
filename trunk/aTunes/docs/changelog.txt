@@ -46,6 +46,7 @@ aTunes 2.1.0
 - Drag artists or play list items to tree to locate in navigator [ patch by Laurent Cathala ]
 - Added option to show case sensitive elements in navigator tree [ patch by Jan-Martin Ziem ]
 - Started migration to use Spring IoC
+- Avoid using java.util.Date and java.util.Calendar
 
 
 - FIX: Dialogs opened from preferences dialog use wrong parent [ patch by Laurent Cathala ]

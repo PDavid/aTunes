@@ -26,7 +26,6 @@ import java.io.Serializable;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -43,6 +42,7 @@ import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.NetworkUtils;
 
 import org.commonjukebox.plugins.model.PluginApi;
+import org.joda.time.base.BaseDateTime;
 
 /**
  * A radio station.
@@ -227,7 +227,7 @@ public final class Radio implements IAudioObject, Serializable, TreeObject<Radio
     }
 
     @Override
-    public Date getDate() {
+    public BaseDateTime getDate() {
         return null;
     }
 

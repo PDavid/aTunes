@@ -21,10 +21,8 @@
 package net.sourceforge.atunes.kernel.modules.tags;
 
 import java.io.Serializable;
-import java.util.Calendar;
-import java.util.Date;
 
-import net.sourceforge.atunes.utils.DateUtils;
+import org.joda.time.base.BaseDateTime;
 
 /**
  * The abstract class for tags.
@@ -61,7 +59,7 @@ public abstract class AbstractTag implements Serializable {
     private int year;
 
     /** The date. */
-    private Date date;
+    private BaseDateTime date;
 
     /** The comment. */
     private String comment;
@@ -220,9 +218,7 @@ public abstract class AbstractTag implements Serializable {
      */
     public int getYear() {
         if (date != null) {
-            Calendar calendar = DateUtils.getCalendar();
-            calendar.setTime(date);
-            return calendar.get(Calendar.YEAR);
+        	return date.getYear();
         } else if (year >= 0) {
             return year;
         } else {
@@ -235,7 +231,7 @@ public abstract class AbstractTag implements Serializable {
      * 
      * @return the date
      */
-    public Date getDate() {
+    public BaseDateTime getDate() {
         return date;
     }
 
@@ -358,8 +354,8 @@ public abstract class AbstractTag implements Serializable {
      * @param date
      *            the new date
      */
-    public void setDate(Date date) {
-        this.date = date != null ? new Date(date.getTime()) : null;
+    public void setDate(BaseDateTime date) {
+        this.date = date;
     }
 
     /**

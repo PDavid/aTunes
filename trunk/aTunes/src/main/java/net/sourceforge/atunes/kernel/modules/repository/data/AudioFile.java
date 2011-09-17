@@ -26,7 +26,6 @@ import java.io.FileFilter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -51,6 +50,7 @@ import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.commonjukebox.plugins.model.PluginApi;
+import org.joda.time.base.BaseDateTime;
 
 /**
  * AudioFile class initializes audio files so that tags and audio information
@@ -433,7 +433,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
     }
 
     @Override
-    public Date getDate() {
+    public BaseDateTime getDate() {
         if (tag != null) {
             return tag.getDate();
         } else {

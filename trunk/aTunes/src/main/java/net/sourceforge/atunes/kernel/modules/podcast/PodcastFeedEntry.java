@@ -23,9 +23,7 @@ package net.sourceforge.atunes.kernel.modules.podcast;
 import java.awt.Paint;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -36,7 +34,9 @@ import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ImageSize;
-import net.sourceforge.atunes.utils.DateUtils;
+
+import org.joda.time.DateTime;
+import org.joda.time.base.BaseDateTime;
 
 /**
  * Represents a entry of a podcast feed.
@@ -57,7 +57,7 @@ public final class PodcastFeedEntry implements IAudioObject, Serializable, Compa
     private String url;
     private String description;
     private int duration;
-    private Date date;
+    private BaseDateTime date;
     private PodcastFeed podcastFeed;
     private boolean listened;
     private boolean downloaded;
@@ -81,12 +81,12 @@ public final class PodcastFeedEntry implements IAudioObject, Serializable, Compa
      * @param podcastFeed
      *            the corresponding podcast feed of the podcast feed entry
      */
-    public PodcastFeedEntry(String title, String author, String url, String description, Date date, int duration, PodcastFeed podcastFeed) {
+    public PodcastFeedEntry(String title, String author, String url, String description, BaseDateTime date, int duration, PodcastFeed podcastFeed) {
         this.title = title;
         this.author = author;
         this.url = url;
         this.description = description;
-        this.date = date == null ? null : new Date(date.getTime());
+        this.date = date;
         this.podcastFeed = podcastFeed;
         this.duration = duration;
         listened = false;
@@ -163,8 +163,8 @@ public final class PodcastFeedEntry implements IAudioObject, Serializable, Compa
      * @return the date
      */
     @Override
-    public Date getDate() {
-        return date == null ? null : new Date(date.getTime());
+    public BaseDateTime getDate() {
+        return date;
     }
 
     /**
@@ -243,9 +243,7 @@ public final class PodcastFeedEntry implements IAudioObject, Serializable, Compa
     @Override
     public String getYear() {
         if (date != null) {
-            Calendar calendar = DateUtils.getCalendar();
-            calendar.setTime(date);
-            return String.valueOf(calendar.get(Calendar.YEAR));
+        	date.getYear();
         }
         return "";
     }
@@ -293,8 +291,8 @@ public final class PodcastFeedEntry implements IAudioObject, Serializable, Compa
      * @param date
      *            the date to set
      */
-    public void setDate(Date date) {
-        this.date = date == null ? null : new Date(date.getTime());
+    public void setDate(DateTime date) {
+        this.date = date;
     }
 
     /**

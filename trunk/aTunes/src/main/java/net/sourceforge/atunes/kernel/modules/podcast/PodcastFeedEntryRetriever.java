@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.podcast;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.swing.SwingUtilities;
@@ -40,6 +39,7 @@ import net.sourceforge.atunes.utils.NetworkUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.XMLUtils;
 
+import org.joda.time.DateTime;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -109,7 +109,7 @@ public class PodcastFeedEntryRetriever implements Runnable {
                         String url = "";
                         String author = "";
                         String description = "";
-                        Date date = null;
+                        DateTime date = null;
                         int duration = 0;
 
                         // Check if audio podcast feed entry

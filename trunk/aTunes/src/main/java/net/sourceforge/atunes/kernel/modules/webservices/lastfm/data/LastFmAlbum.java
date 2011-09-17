@@ -20,11 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.webservices.lastfm.data;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -33,6 +29,10 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.utils.StringUtils;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+
 import de.umass.lastfm.Album;
 import de.umass.lastfm.ImageSize;
 import de.umass.lastfm.Playlist;
@@ -41,13 +41,6 @@ import de.umass.lastfm.Track;
 public class LastFmAlbum implements IAlbumInfo {
 
     private static final long serialVersionUID = -8021357529697065642L;
-
-    private static final ThreadLocal<SimpleDateFormat> df = new ThreadLocal<SimpleDateFormat>() {
-        @Override
-        protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat("d MMM yyyy, HH:mm", Locale.US);
-        }
-    };
 
     private String artist;
     private String title;
@@ -198,10 +191,10 @@ public class LastFmAlbum implements IAlbumInfo {
      * @return the release date
      */
     @Override
-    public Date getReleaseDate() {
+    public DateTime getReleaseDate() {
         try {
-            return df.get().parse(releaseDateString);
-        } catch (ParseException e) {
+            return DateTimeFormat.forPattern("EEE MMM dd HH:mm:ss 'CEST' yyyy").withLocale(Locale.US).parseDateTime(releaseDateString);
+        } catch (IllegalArgumentException e) {
             return null;
         }
     }
@@ -263,13 +256,11 @@ public class LastFmAlbum implements IAlbumInfo {
      */
     @Override
     public String getYear() {
-        Date releaseDate = getReleaseDate();
+        DateTime releaseDate = getReleaseDate();
         if (releaseDate == null) {
             return "";
         }
-        Calendar c = Calendar.getInstance();
-        c.setTime(releaseDate);
-        return Integer.toString(c.get(Calendar.YEAR));
+        return Integer.toString(releaseDate.getYear());
     }
 
     /**

@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.kernel.modules.statistics;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import net.sourceforge.atunes.gui.views.dialogs.StatsDialog;
@@ -35,6 +34,8 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectStatistics;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IStatisticsHandler;
+
+import org.joda.time.DateTime;
 
 public final class StatisticsHandler extends AbstractHandler implements IStatisticsHandler {
 
@@ -67,7 +68,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
 
             AudioObjectStats stats = statistics.getAudioFilesStats().get(songPath);
             if (stats != null) {
-                stats.setLastPlayed(new Date());
+                stats.setLastPlayed(new DateTime());
                 stats.increaseTimesPlayed();
             } else {
                 stats = new AudioObjectStats();
