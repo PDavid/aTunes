@@ -23,14 +23,21 @@ package net.sourceforge.atunes.kernel.modules.webservices.lastfm;
 import java.util.List;
 
 import junit.framework.Assert;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLovedTrack;
 import net.sourceforge.atunes.model.MockOSManager;
 import net.sourceforge.atunes.model.MockState;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class LastFmServiceTest {
 
+	@Before
+	public void init() {
+		Context.initialize("/spring/os.xml");
+	}
+	
     @Test
     public void testLovedTracks() {
     	
