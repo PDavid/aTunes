@@ -7,6 +7,7 @@
 	
 	<bean id="exportOptionsDialog" class="net.sourceforge.atunes.gui.views.dialogs.ExportOptionsDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="osManager"/>
 	</bean>
 	
 	<bean id="equalizerDialog" class="net.sourceforge.atunes.gui.views.dialogs.EqualizerDialog" scope="prototype">
@@ -19,6 +20,7 @@
 
 	<bean id="multiFolderSelectionDialog" class="net.sourceforge.atunes.gui.views.dialogs.MultiFolderSelectionDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
+		<constructor-arg ref="osManager"/>
 	</bean>
 
 	<bean id="progressDialog" class="net.sourceforge.atunes.gui.views.dialogs.ProgressDialog" scope="prototype">
