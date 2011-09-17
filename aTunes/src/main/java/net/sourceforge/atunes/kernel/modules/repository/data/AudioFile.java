@@ -364,9 +364,6 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
         if (filePath == null) {
             return null;
         }
-        if (filePath.indexOf('.') != -1) {
-            return filePath.substring(0, filePath.lastIndexOf('.'));
-        }
         return getFile().getName();
     }
 
