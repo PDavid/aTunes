@@ -25,7 +25,6 @@ import java.util.Locale;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -55,7 +54,6 @@ final class LanguageSelector {
             state.setLocale(new LocaleBean(I18nUtils.getSelectedLocale()));
         }
         Locale locale = state.getLocale().getLocale();
-        DateUtils.setLocale(locale);
         Locale.setDefault(locale);
     }
 }

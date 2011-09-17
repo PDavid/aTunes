@@ -20,12 +20,11 @@
 
 package net.sourceforge.atunes.kernel.modules.repository;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.StringUtils;
+
+import org.joda.time.DateTime;
 
 class RepositoryAutoRefresher extends Thread {
 
@@ -55,7 +54,7 @@ class RepositoryAutoRefresher extends Thread {
             while (true) {
                 Thread.sleep(state.getAutoRepositoryRefreshTime() * 60000L);
                 if (!handler.repositoryIsNull() && !handler.isLoaderWorking()) {
-                    Logger.info(StringUtils.getString("Checking for repository changes... (", new SimpleDateFormat("HH:mm:ss").format(new Date()), ')'));
+                    Logger.info(StringUtils.getString("Checking for repository changes... (", new DateTime().toString(), ')'));
                     int filesLoaded = handler.getAudioFilesList().size();
                     int newFilesCount = RepositoryLoader.countFilesInRepository(handler.getRepository());
                     if (filesLoaded != newFilesCount) {

@@ -20,12 +20,11 @@
 
 package net.sourceforge.atunes.kernel.modules.tags;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import net.sourceforge.atunes.utils.DateUtils;
 
 import org.jaudiotagger.tag.FieldKey;
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
 
 /**
  * The default tag. Can read tags from JAudiotagger and from properties.
@@ -270,27 +269,29 @@ public class DefaultTag extends AbstractTag {
         } else if (tag instanceof org.jaudiotagger.tag.id3.ID3v24Tag) {
         	setDate(DateUtils.parseRFC3339Date(tag.getFirst("TDRC")));
         } else if (tag instanceof org.jaudiotagger.tag.id3.ID3v23Tag) {
-        	Calendar c = null;
         	// Set date from fields tag TYER and date/month tag TDAT
+        	DateMidnight c = null;
             String yearPart = tag.getFirst("TYER");
             if (!yearPart.isEmpty()) {
-            	c = Calendar.getInstance();
             	try {
-            		c.set(Calendar.YEAR, Integer.parseInt(yearPart));
+            		c = new DateMidnight().withYear(Integer.parseInt(yearPart)).withMonthOfYear(1).withDayOfMonth(1);
                     String dateMonthPart = tag.getFirst("TDAT");
                     if (dateMonthPart.length() >= 4) {
-                    	c.set(Calendar.MONTH, Integer.parseInt(dateMonthPart.substring(2, 4)));
-                    	c.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dateMonthPart.substring(0, 2)));
+                    	c = c.withMonthOfYear(Integer.parseInt(dateMonthPart.substring(2, 4)))
+                    		 .withDayOfMonth(Integer.parseInt(dateMonthPart.substring(0, 2)));
                     }
             	} catch (NumberFormatException e) {
+            		// Skip this date
+            	} catch (IllegalArgumentException e) {
+            		// Skip this date
             	}
             }
             
             if (c != null) {
-            	setDate(c.getTime());
+            	setDate(c);
             }
         } else {
-            setDate((Date)null);
+            setDate((DateTime)null);
         }
     }
 }

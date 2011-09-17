@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -136,7 +135,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
         Map<Integer, ILocalAudioObject> songsSelected = new HashMap<Integer, ILocalAudioObject>();
 
         // Initialize random generator
-        Random r = new Random(new Date().getTime());
+        Random r = new Random(System.currentTimeMillis());
 
         // Get free space in device
         long deviceFreeSpace = deviceRepository.getRepositoryFolders().get(0).getFreeSpace();

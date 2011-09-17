@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.kernel.modules.context.audioobject;
 
 import java.awt.Image;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,10 +40,12 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.IWebServicesHandler;
-import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 
 /**
  * Data Source for basic audio object information
@@ -145,12 +146,12 @@ public class AudioObjectBasicInfoDataSource implements ContextInformationDataSou
         if (stats == null) {
             return I18nUtils.getString("SONG_NEVER_PLAYED");
         } else {
-            Date date = stats.getLastPlayed();
+            DateTime date = stats.getLastPlayed();
             // If date is null -> never played
             if (date == null) {
                 return I18nUtils.getString("SONG_NEVER_PLAYED");
             } else {
-                return StringUtils.getString("<html>", I18nUtils.getString("LAST_DATE_PLAYED"), ":<br/><center> ", DateUtils.toString(date), "<center></html>");
+                return StringUtils.getString("<html>", I18nUtils.getString("LAST_DATE_PLAYED"), ":<br/><center> ", DateTimeFormat.shortDateTime().print(date), "<center></html>");
             }
         }
     }

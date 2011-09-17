@@ -21,7 +21,8 @@
 package net.sourceforge.atunes.model;
 
 import java.io.Serializable;
-import java.util.Date;
+
+import org.joda.time.DateTime;
 
 /**
  * Represents statistics about an audio object
@@ -35,7 +36,7 @@ public interface IAudioObjectStatistics extends Serializable {
 	 * 
 	 * @return the last played
 	 */
-	public Date getLastPlayed();
+	public DateTime getLastPlayed();
 
 	/**
 	 * Gets the times played.
@@ -60,6 +61,6 @@ public interface IAudioObjectStatistics extends Serializable {
 	 * @param lastPlayed
 	 *            the new last played
 	 */
-	public void setLastPlayed(Date lastPlayed);
+	public void setLastPlayed(DateTime lastPlayed);
 
 }

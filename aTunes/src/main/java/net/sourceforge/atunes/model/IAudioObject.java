@@ -20,13 +20,12 @@
 
 package net.sourceforge.atunes.model;
 
-import java.util.Date;
-
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 
 import org.commonjukebox.plugins.model.PluginApi;
+import org.joda.time.base.BaseDateTime;
 
 /**
  * Interface for all audio objects (e.g. AudioFile, Radio, PodcastFeedEntry)
@@ -151,7 +150,7 @@ public interface IAudioObject {
      * 
      * @return the date
      */
-    public Date getDate();
+    public BaseDateTime getDate();
 
     /**
      * Gets the comment

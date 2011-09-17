@@ -21,13 +21,14 @@
 package net.sourceforge.atunes.model;
 
 import java.io.File;
-import java.util.Date;
 import java.util.List;
 
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
+
+import org.joda.time.base.BaseDateTime;
 
 public class LocalAudioObjectFake implements ILocalAudioObject {
 
@@ -114,7 +115,7 @@ public class LocalAudioObjectFake implements ILocalAudioObject {
 	}
 
 	@Override
-	public Date getDate() {
+	public BaseDateTime getDate() {
 		return null;
 	}
 

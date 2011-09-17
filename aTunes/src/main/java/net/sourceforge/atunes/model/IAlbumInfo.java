@@ -21,12 +21,13 @@
 package net.sourceforge.atunes.model;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
+
+import org.joda.time.DateTime;
 
 /**
  * Information about an album, usually retrieved from a web service
@@ -75,7 +76,7 @@ public interface IAlbumInfo extends Serializable {
      * 
      * @return the release date
      */
-    public Date getReleaseDate();
+    public DateTime getReleaseDate();
 
     /**
      * Gets the release date string.

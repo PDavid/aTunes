@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -95,7 +94,7 @@ public final class SmartPlayListHandler extends AbstractHandler implements ISmar
         List<IAudioObject> songsSelected = new ArrayList<IAudioObject>();
 
         // Initialize random generator
-        Random r = new Random(new Date().getTime());
+        Random r = new Random(System.currentTimeMillis());
 
         // Get n songs
         for (int i = 0; i < n; i++) {

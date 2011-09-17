@@ -20,16 +20,17 @@
 
 package net.sourceforge.atunes.kernel.modules.columns;
 
-import java.text.DateFormat;
-
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.model.IAudioObject;
 
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 public class DateColumn extends AbstractColumn {
 
     private static final long serialVersionUID = 6832826017182272636L;
-    private final DateFormat dateFormat = DateFormat.getDateInstance();
+    private static final DateTimeFormatter dateFormat = DateTimeFormat.mediumDateTime();
 
     public DateColumn() {
         super("DATE", String.class);
@@ -50,14 +51,19 @@ public class DateColumn extends AbstractColumn {
 
     @Override
     public Object getValueFor(IAudioObject audioObject) {
-        if (audioObject.getDate() != null)
-            return dateFormat.format(audioObject.getDate());
-        else
+        if (audioObject.getDate() != null) {
+            return dateFormat.print(audioObject.getDate());
+        } else {
             return "";
+        }
     }
 
     @Override
     public String getValueForFilter(IAudioObject audioObject) {
-        return dateFormat.format(audioObject.getDate());
+    	if (audioObject != null) {
+    		return dateFormat.print(audioObject.getDate());
+    	} else {
+    		return "";
+    	}
     }
 }

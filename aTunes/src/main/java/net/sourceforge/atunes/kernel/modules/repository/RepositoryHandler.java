@@ -29,7 +29,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -88,6 +87,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.commons.io.FilenameUtils;
+import org.joda.time.DateTime;
 
 /**
  * The repository handler.
@@ -567,8 +567,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      * @return the path for new audio files ripped
      */
     public String getPathForNewAudioFilesRipped() {
-        return StringUtils.getString(RepositoryHandler.getInstance().getRepositoryPath(), getOsManager().getFileSeparator(), Album.getUnknownAlbum(), " - ", DateUtils
-                .toPathString(new Date()));
+        return StringUtils.getString(getRepositoryPath(), getOsManager().getFileSeparator(), Album.getUnknownAlbum(), " - ", DateUtils.toPathString(new DateTime()));
     }
 
     /**

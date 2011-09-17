@@ -24,7 +24,6 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +32,8 @@ import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.kernel.modules.repository.exception.InconsistentRepositoryException;
 import net.sourceforge.atunes.misc.log.Logger;
+
+import org.joda.time.DateTime;
 
 public class Repository implements Serializable {
 
@@ -255,7 +256,7 @@ public class Repository implements Serializable {
 			this.repository = repository;
 			this.listener = listener;
 			this.pending = true;
-			Logger.debug("Creating new repository transaction: ", new Date().toString());
+			Logger.debug("Creating new repository transaction: ", new DateTime().toString());
 		}
 		
 		public void finishTransaction() {
@@ -263,7 +264,7 @@ public class Repository implements Serializable {
 				listener.repositoryChanged(this.repository);
 			}
 			this.pending = false;
-			Logger.debug("Finished repository transaction: ", new Date().toString());
+			Logger.debug("Finished repository transaction: ", new DateTime().toString());
 		}
 		
 		public boolean isPending() {
