@@ -20,31 +20,23 @@
 
 package net.sourceforge.atunes.kernel.modules.context.youtube;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComponent;
-import javax.swing.JFileChooser;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanel;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeResultEntry;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
-import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeVideoDownloader;
-import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.DesktopUtils;
-import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
-
-import org.jfree.ui.ExtensionFileFilter;
 
 public class YoutubeResultsTableCellRendererCode extends ContextTableRowPanel<YoutubeResultEntry> {
 	
@@ -102,42 +94,44 @@ public class YoutubeResultsTableCellRendererCode extends ContextTableRowPanel<Yo
 			}
 		});
 		
-		actions.add(new ContextTableAction<YoutubeResultEntry>(I18nUtils.getString("DOWNLOAD_VIDEO"), table) {
-			
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = -4803916885071056150L;
-
-			@Override
-			protected void execute(YoutubeResultEntry entry) {
-				// Open save dialog to select file
-	            JFileChooser dialog = new JFileChooser();
-	            dialog.setDialogType(JFileChooser.SAVE_DIALOG);
-	            dialog.setDialogTitle(I18nUtils.getString("SAVE_YOUTUBE_VIDEO"));
-	            dialog.setFileFilter(new ExtensionFileFilter("MP4", "MP4"));
-	            // Set default file name
-	            // for some reason dialog fails with files with [ or ] chars
-	            File defaultFileName = new File(FileNameUtils.getValidFileName(entry.getName().replace("\\", "\\\\").replace("$", "\\$").replace('[', ' ').replace(']', ' '), osManager));
-	            dialog.setSelectedFile(defaultFileName);
-	            int returnValue = dialog.showSaveDialog(Context.getBean(IFrame.class).getFrame());
-	            File selectedFile = dialog.getSelectedFile();
-	            if (selectedFile != null && JFileChooser.APPROVE_OPTION == returnValue) {
-	                final YoutubeVideoDownloader downloader = new YoutubeVideoDownloader(entry, selectedFile, state.getProxy(), youtubeService);
-	                downloader.execute();
-	            }
-			}
-			
-			@Override
-			protected YoutubeResultEntry getSelectedObject(int row) {
-				return ((YoutubeResultTableModel) table.getModel()).getEntry(row);
-			}
-			
-			@Override
-			protected boolean isEnabledForObject(YoutubeResultEntry object) {
-				return true;
-			}
-		});
+		// DOWNLOAD NOT WORKING AS API HAS CHANGED AND MP4 FILES ARE NOT AVAILABLE
+		// SEE BUG 3405858
+//		actions.add(new ContextTableAction<YoutubeResultEntry>(I18nUtils.getString("DOWNLOAD_VIDEO"), table) {
+//			
+//			/**
+//			 * 
+//			 */
+//			private static final long serialVersionUID = -4803916885071056150L;
+//
+//			@Override
+//			protected void execute(YoutubeResultEntry entry) {
+//				// Open save dialog to select file
+//	            JFileChooser dialog = new JFileChooser();
+//	            dialog.setDialogType(JFileChooser.SAVE_DIALOG);
+//	            dialog.setDialogTitle(I18nUtils.getString("SAVE_YOUTUBE_VIDEO"));
+//	            dialog.setFileFilter(new ExtensionFileFilter("MP4", "MP4"));
+//	            // Set default file name
+//	            // for some reason dialog fails with files with [ or ] chars
+//	            File defaultFileName = new File(FileNameUtils.getValidFileName(entry.getName().replace("\\", "\\\\").replace("$", "\\$").replace('[', ' ').replace(']', ' '), osManager));
+//	            dialog.setSelectedFile(defaultFileName);
+//	            int returnValue = dialog.showSaveDialog(Context.getBean(IFrame.class).getFrame());
+//	            File selectedFile = dialog.getSelectedFile();
+//	            if (selectedFile != null && JFileChooser.APPROVE_OPTION == returnValue) {
+//	                final YoutubeVideoDownloader downloader = new YoutubeVideoDownloader(entry, selectedFile, state.getProxy(), youtubeService);
+//	                downloader.execute();
+//	            }
+//			}
+//			
+//			@Override
+//			protected YoutubeResultEntry getSelectedObject(int row) {
+//				return ((YoutubeResultTableModel) table.getModel()).getEntry(row);
+//			}
+//			
+//			@Override
+//			protected boolean isEnabledForObject(YoutubeResultEntry object) {
+//				return true;
+//			}
+//		});
 		return actions;
 	}
 }
