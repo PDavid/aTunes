@@ -257,7 +257,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
             removePlayList(index);
         }
         
-        playListsChanged();
+        playListsChanged(true, true);
     }
 
     /**
@@ -342,7 +342,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         playLists.add(newPlayList);
         getPlayListTabController().newPlayList(nameOfNewPlayList);
         
-        playListsChanged();
+        playListsChanged(true, true);
     }
 
     /**
@@ -610,26 +610,28 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
     /**
      * Called when play lists needs to be persisted
      */
-    private void playListsChanged() {
-    	// Wait 5 seconds and persist play list
-    	if (persistPlayListTimer != null) {
-    		persistPlayListTimer.cancel();
-    	}
-    	
-    	persistPlayListTimer = new Timer();
-    	persistPlayListTimer.schedule(new TimerTask() {
-
-    		@Override
-    		public void run() {
-    			// all information must be saved, as task can be fired after different kind of operations
-    			// some of them may need persist all information, others not
-    			
-    			// Store play list definition
-    			ApplicationStateHandler.getInstance().persistPlayListsDefinition(getListOfPlayLists());
-    			// Store play list contents
-    			ApplicationStateHandler.getInstance().persistPlayListsContents(getPlayListsContents());
+    private void playListsChanged(boolean definition, boolean contents) {
+    	// If content must be saved then do in a TimerTask, otherwise persist definition inmediately
+    	if (definition && !contents) {
+    		ApplicationStateHandler.getInstance().persistPlayListsDefinition(getListOfPlayLists());
+    	} else {
+    		// Wait 5 seconds and persist play list 
+    		if (persistPlayListTimer != null) {
+    			persistPlayListTimer.cancel();
     		}
-    	}, 5000);
+
+    		persistPlayListTimer = new Timer();
+    		persistPlayListTimer.schedule(new TimerTask() {
+
+    			@Override
+    			public void run() {
+    				// Store play list definition
+    				ApplicationStateHandler.getInstance().persistPlayListsDefinition(getListOfPlayLists());
+    				// Store play list contents
+    				ApplicationStateHandler.getInstance().persistPlayListsContents(getPlayListsContents());
+    			}
+    		}, 5000);
+    	}
     }
 
     @Override
@@ -1298,12 +1300,12 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
 
 	@Override
 	public void audioObjectsAdded(List<PlayListAudioObject> audioObjectsAdded) {
-		playListsChanged();
+		playListsChanged(true, true);
 	}
 	
 	@Override
 	public void audioObjectsRemoved(List<PlayListAudioObject> audioObjectsRemoved) {		
-		playListsChanged();
+		playListsChanged(true, true);
 	}
 	
 	public void reapplyFilter() {
@@ -1316,14 +1318,14 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
 	
 	@Override
 	public void playListCleared() {
-		playListsChanged();
+		playListsChanged(true, true);
 	}
 	
 	@Override
 	public void selectedAudioObjectChanged(IAudioObject audioObject) {
         getPlayListController().refreshPlayList();
         getPlayListController().scrollPlayList(false);
-        playListsChanged();
+        playListsChanged(true, false);
 	};
 
 	@Override
