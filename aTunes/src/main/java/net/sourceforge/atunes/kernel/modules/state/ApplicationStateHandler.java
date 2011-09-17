@@ -341,36 +341,38 @@ public final class ApplicationStateHandler extends AbstractHandler {
             Logger.info("Reading serialized favorites cache");
             return (Favorites) stream.readObject();
         } catch (InvalidClassException e) {
-            //TODO remove in next version
-            Logger.error(e);
-            return new Favorites();
+            Logger.info("No serialized favorites info found");
+            Favorites xml = retrieveFavoritesCacheFromXML();
+            return xml != null ? xml : new Favorites();
         } catch (IOException e) {
             Logger.info("No serialized favorites info found");
-            if (getState().isSaveRepositoryAsXml()) {
-                try {
-                    Logger.info("Reading xml favorites cache");
-                    return (Favorites) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_FAVORITES_NAME));
-                } catch (IOException e1) {
-                    Logger.info("No xml favorites info found");
-                    return new Favorites();
-                }
-            }
-            return new Favorites();
+            Favorites xml = retrieveFavoritesCacheFromXML();
+            return xml != null ? xml : new Favorites();
         } catch (ClassNotFoundException e) {
             Logger.info("No serialized favorites info found");
-            if (getState().isSaveRepositoryAsXml()) {
-                try {
-                    Logger.info("Reading xml favorites cache");
-                    return (Favorites) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_FAVORITES_NAME));
-                } catch (IOException e1) {
-                    Logger.info("No xml favorites info found");
-                    return new Favorites();
-                }
-            }
-            return new Favorites();
+            Favorites xml = retrieveFavoritesCacheFromXML();
+            return xml != null ? xml : new Favorites();
+        } catch (ClassCastException e) {
+            Logger.info("No serialized favorites info found");
+            Favorites xml = retrieveFavoritesCacheFromXML();
+            return xml != null ? xml : new Favorites();        	
         } finally {
             ClosingUtils.close(stream);
         }
+    }
+    
+    private Favorites retrieveFavoritesCacheFromXML() {
+        if (getState().isSaveRepositoryAsXml()) {
+            try {
+                Logger.info("Reading xml favorites cache");
+                return (Favorites) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_FAVORITES_NAME));
+            } catch (IOException e1) {
+                Logger.info("No xml favorites info found");
+            } catch (InstantiationError e) {
+                Logger.info("No xml favorites info found");
+            }
+        }
+        return null;
     }
 
     /**
@@ -443,6 +445,9 @@ public final class ApplicationStateHandler extends AbstractHandler {
             Logger.error(e);
             return ListOfPlayLists.getEmptyPlayList(getState());
         } catch (ClassNotFoundException e) {
+            Logger.error(e);
+            return ListOfPlayLists.getEmptyPlayList(getState());
+        } catch (ClassCastException e) {
             Logger.error(e);
             return ListOfPlayLists.getEmptyPlayList(getState());
         } finally {
@@ -573,7 +578,6 @@ public final class ApplicationStateHandler extends AbstractHandler {
      * 
      * @return The retrieved device
      */
-
     public Repository retrieveDeviceCache(String deviceId) {
         ObjectInputStream ois = null;
         try {
@@ -592,6 +596,10 @@ public final class ApplicationStateHandler extends AbstractHandler {
         } catch (ClassNotFoundException e) {
             Logger.info(StringUtils.getString("No serialized device info found for deviceId: ", deviceId));
             return null;
+        } catch (ClassCastException e) {
+        	Logger.error(e);
+            Logger.info(StringUtils.getString("No serialized device info found for deviceId: ", deviceId));
+            return null;        	
         } finally {
             ClosingUtils.close(ois);
         }
