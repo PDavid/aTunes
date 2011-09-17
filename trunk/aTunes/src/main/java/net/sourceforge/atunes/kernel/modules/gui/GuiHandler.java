@@ -41,7 +41,6 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.frame.FrameState;
 import net.sourceforge.atunes.gui.popup.FadingPopupFactory;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable.PlayState;
-import net.sourceforge.atunes.gui.views.dialogs.AboutDialog;
 import net.sourceforge.atunes.gui.views.dialogs.AddArtistDragDialog;
 import net.sourceforge.atunes.gui.views.dialogs.AddPodcastFeedDialog;
 import net.sourceforge.atunes.gui.views.dialogs.IndeterminateProgressDialog;
@@ -67,6 +66,7 @@ import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IAboutDialog;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.IFullScreenHandler;
@@ -85,7 +85,6 @@ public final class GuiHandler extends AbstractHandler {
 
     private SearchDialog searchDialog;
     private IndeterminateProgressDialog indeterminateProgressDialog;
-    private AboutDialog aboutDialog;
     private ReviewImportDialog reviewImportDialog;
 
     /**
@@ -259,10 +258,7 @@ public final class GuiHandler extends AbstractHandler {
      * NOTE: This method is called using reflection from MACOSXAdapter. Refactoring will break code!
      */
     public void showAboutDialog() {
-        if (aboutDialog == null) {
-            aboutDialog = new AboutDialog(getFrame().getFrame());
-        }
-        aboutDialog.setVisible(true);
+    	Context.getBean(IAboutDialog.class).showDialog();
     }
 
     /**
