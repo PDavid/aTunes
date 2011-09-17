@@ -82,6 +82,7 @@ aTunes 2.1.0
 - FIX: MultiFolderSelectionDialog showing files
 - FIX: Problem with ID3v1.0 trying to get internal image 
 - FIX: After playing all playlist and playing again, moving to next song doesn't work
+- FIX: Better control over repository load when repository folders are moved (patch by Dave Badia)
 
 aTunes 2.0.1
 -------------
