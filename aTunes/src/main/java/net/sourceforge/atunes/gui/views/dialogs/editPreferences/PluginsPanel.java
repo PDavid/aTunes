@@ -50,13 +50,15 @@ import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.gui.views.dialogs.PluginEditorDialog;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IErrorDialog;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -98,7 +100,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
     /**
      * Instantiates a new plugins panel.
      */
-    public PluginsPanel(EditPreferencesDialog dialog) {
+    public PluginsPanel(EditPreferencesDialog dialog, final IFrame frame) {
         super(I18nUtils.getString("PLUGINS"));
         this.dialog = dialog;
         pluginsTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
@@ -199,7 +201,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
                     	PluginsHandler.getInstance().validateConfiguration(plugin, configuration);
                         pluginsModified.put(plugin, configuration);
                     } catch (InvalidPluginConfigurationException ex) {
-                        GuiHandler.getInstance().showErrorDialog(StringUtils.getString(I18nUtils.getString("PLUGIN_CONFIGURATION_INVALID"), ex.getMessage()));
+                    	Context.getBean(IErrorDialog.class).showErrorDialog(frame, StringUtils.getString(I18nUtils.getString("PLUGIN_CONFIGURATION_INVALID"), ex.getMessage()));
                     }
                 }
             }
@@ -225,14 +227,14 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		            Map<PluginFolder, PluginSystemException> problemsFound = PluginsHandler.getInstance().uninstallPlugin(plugin);
 		            if (problemsFound != null) {
 		            	for (Map.Entry<PluginFolder, PluginSystemException> pluginFolderEntry : problemsFound.entrySet()) {
-		            		GuiHandler.getInstance().showExceptionDialog(I18nUtils.getString("PLUGIN_UNINSTALLATION_ERROR"), pluginFolderEntry.getValue());
+		            		Context.getBean(IErrorDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_UNINSTALLATION_ERROR"), pluginFolderEntry.getValue());
 		            	}
 		            }
                     
                     // Update panel after uninstalling a plugin
                     updatePanel(null);
                 } catch (Exception e1) {
-                    GuiHandler.getInstance().showErrorDialog(e1.getMessage());
+                    Context.getBean(IErrorDialog.class).showErrorDialog(frame, e1.getMessage());
                     Logger.error(e1);
                 }
             }
@@ -255,7 +257,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
                     sb.append(I18nUtils.getString("PLUGIN_CONFIGURATION_ERROR"));
                     sb.append(" ");
                     sb.append(plugin.getName());
-                    GuiHandler.getInstance().showExceptionDialog(sb.toString(), t);
+                    Context.getBean(IErrorDialog.class).showExceptionDialog(sb.toString(), t);
                 }
 
                 restartNeeded = restartNeeded || PluginsHandler.getInstance().pluginNeedsRestart(plugin);
@@ -330,14 +332,14 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		            Map<PluginFolder, PluginSystemException> problemsFound = PluginsHandler.getInstance().installPlugin(zipFile);
 		            if (problemsFound != null) {
 		            	for (Entry<PluginFolder, PluginSystemException> pluginFolderEntry : problemsFound.entrySet()) {
-		            		GuiHandler.getInstance().showExceptionDialog(I18nUtils.getString("PLUGIN_INSTALLATION_ERROR"), pluginFolderEntry.getValue());
+		            		Context.getBean(IErrorDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_INSTALLATION_ERROR"), pluginFolderEntry.getValue());
 		            	}
 		            }
 		            
 		            // Update panel after installing a new plugin
 		            updatePanel(null);
 		        } catch (Exception e1) {
-		            GuiHandler.getInstance().showExceptionDialog(I18nUtils.getString("PLUGIN_INSTALLATION_ERROR"), e1);
+		            Context.getBean(IErrorDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_INSTALLATION_ERROR"), e1);
 		        }
 		    }
 		}

@@ -30,7 +30,6 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.PlaybackState;
 import net.sourceforge.atunes.kernel.PlaybackStateListeners;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
@@ -38,6 +37,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.TempFolder;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -549,7 +549,7 @@ public abstract class AbstractPlayerEngine {
     public final void handlePlayerEngineError(final Exception e) {
         Logger.error(StringUtils.getString("Player Error: ", e));
         Logger.error(e);
-        GuiHandler.getInstance().showExceptionDialog(I18nUtils.getString("ERROR"), e);
+        Context.getBean(IErrorDialog.class).showExceptionDialog(I18nUtils.getString("ERROR"), e);
     }
 
     /**

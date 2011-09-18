@@ -54,6 +54,8 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IErrorDialog;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IRipperProgressDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
@@ -128,7 +130,7 @@ public final class RipperHandler extends AbstractHandler {
 		                @Override
 		                public void run() {
 		                    GuiHandler.getInstance().hideIndeterminateProgressDialog();
-		                    GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("NO_CD_INSERTED"));
+		                    Context.getBean(IErrorDialog.class).showErrorDialog(getFrame(), I18nUtils.getString("NO_CD_INSERTED"));
 		                }
 		            });
 		        }
@@ -178,9 +180,16 @@ public final class RipperHandler extends AbstractHandler {
 	}
 
 	private static class ShowErrorDialogRunnable implements Runnable {
+		
+		private IFrame frame;
+		
+		public ShowErrorDialogRunnable(IFrame frame) {
+			this.frame = frame;
+		}
+		
         @Override
         public void run() {
-            GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("CDDA2WAV_NOT_FOUND"));
+        	Context.getBean(IErrorDialog.class).showErrorDialog(frame, I18nUtils.getString("CDDA2WAV_NOT_FOUND"));
         }
     }
 
@@ -703,7 +712,7 @@ public final class RipperHandler extends AbstractHandler {
     boolean testTools() {
         if (!AbstractCdToWavConverter.testTool()) {
             Logger.error("Error testing \"cdda2wav\" or \"cdparanoia\". Check program is installed");
-            SwingUtilities.invokeLater(new ShowErrorDialogRunnable());
+            SwingUtilities.invokeLater(new ShowErrorDialogRunnable(getFrame()));
             return false;
         }
         return true;

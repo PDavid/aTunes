@@ -34,8 +34,8 @@ import java.util.concurrent.RejectedExecutionException;
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmAlbum;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmAlbumList;
@@ -48,6 +48,8 @@ import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.model.IArtistInfo;
 import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IErrorDialog;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ISimilarArtistsInfo;
@@ -99,7 +101,7 @@ public final class LastFmService {
 
 		                @Override
 		                public void run() {
-		                    GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("LASTFM_USER_ERROR"));
+		                	Context.getBean(IErrorDialog.class).showErrorDialog(frame, I18nUtils.getString("LASTFM_USER_ERROR"));
 		                    // Disable service by deleting password
 		                    state.setLastFmEnabled(false);
 		                }
@@ -132,7 +134,7 @@ public final class LastFmService {
 
 		                @Override
 		                public void run() {
-		                    GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("LASTFM_USER_ERROR"));
+		                	Context.getBean(IErrorDialog.class).showErrorDialog(frame, I18nUtils.getString("LASTFM_USER_ERROR"));
 		                    // Disable service by deleting password
 		                    state.setLastFmEnabled(false);
 		                }
@@ -167,15 +169,19 @@ public final class LastFmService {
     private ExecutorService scrobblerExecutorService = Executors.newSingleThreadExecutor();
     
     private IState state;
+    
+    private IFrame frame;
 
     /**
      * Instantiates a new Last.fm service
      * 
      * @param state
      * @param osManager
+     * @param frame
      */
-    public LastFmService(IState state, IOSManager osManager) {
+    public LastFmService(IState state, IOSManager osManager, IFrame frame) {
     	this.state = state;
+    	this.frame = frame;
     	lastFmCache = new LastFmCache(osManager);
     	updateService();
     }

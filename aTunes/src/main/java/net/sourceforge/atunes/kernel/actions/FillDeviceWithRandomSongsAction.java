@@ -27,7 +27,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.model.IErrorDialog;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IInputDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -52,7 +53,7 @@ public class FillDeviceWithRandomSongsAction extends CustomAbstractAction {
             DeviceHandler.getInstance().fillWithRandomSongs(Long.parseLong(freeMemory.trim()));
         } catch (Exception e2) {
             // User did not enter numerical value. Show error dialog
-            GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("ERROR_NO_NUMERICAL_VALUE"));
+        	Context.getBean(IErrorDialog.class).showErrorDialog(Context.getBean(IFrame.class), I18nUtils.getString("ERROR_NO_NUMERICAL_VALUE"));
         }
     }
 

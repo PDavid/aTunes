@@ -59,6 +59,7 @@ import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IInputDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
@@ -725,7 +726,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
                     process.execute();
                 }
             } else {
-                GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("FILE_NOT_FOUND"));
+            	Context.getBean(IErrorDialog.class).showErrorDialog(getFrame(), I18nUtils.getString("FILE_NOT_FOUND"));
             }
         }
     }

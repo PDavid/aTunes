@@ -32,16 +32,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.SystemLookAndFeel;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineManager;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.OperatingSystem;
@@ -248,7 +249,7 @@ public abstract class OperatingSystemAdapter {
 	 */
 	public void manageNoPlayerEngine(IFrame frame) {
 		// By default no management is done, only an error message
-        GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("NO_PLAYER_ENGINE"));
+		Context.getBean(IErrorDialog.class).showErrorDialog(frame, I18nUtils.getString("NO_PLAYER_ENGINE"));
 	}
 
 	/**

@@ -50,6 +50,7 @@ import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -64,8 +65,9 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
      * @param dialog
      * @param state
      * @param osManager
+     * @param frame
      */
-    EditPreferencesDialogController(EditPreferencesDialog dialog, IState state, IOSManager osManager) {
+    EditPreferencesDialogController(EditPreferencesDialog dialog, IState state, IOSManager osManager, IFrame frame) {
         super(dialog, state);
         panels = new ArrayList<AbstractPreferencesPanel>();
         panels.add(new GeneralPanel(osManager));
@@ -87,7 +89,7 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
         }
         
         if (Kernel.isEnablePlugins()) {
-        	panels.add(new PluginsPanel(dialog));
+        	panels.add(new PluginsPanel(dialog, frame));
         }
         getComponentControlled().setPanels(panels);
         buildList();
