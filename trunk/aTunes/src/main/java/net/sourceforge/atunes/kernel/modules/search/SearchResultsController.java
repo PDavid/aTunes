@@ -36,10 +36,10 @@ import net.sourceforge.atunes.gui.views.dialogs.SearchResultsDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IAudioObjectPropertiesDialogFactory;
 import net.sourceforge.atunes.model.IState;
 
 /**
@@ -115,7 +115,7 @@ final class SearchResultsController extends AbstractSimpleController<SearchResul
         if (selectedResults == null) {
             return;
         }
-        GuiHandler.getInstance().showPropertiesDialog(selectedResults.get(0));
+        Context.getBean(IAudioObjectPropertiesDialogFactory.class).newInstance(selectedResults.get(0)).showDialog();
     }
 
     /**

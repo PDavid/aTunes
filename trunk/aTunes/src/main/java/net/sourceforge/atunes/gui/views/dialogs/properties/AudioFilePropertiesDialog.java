@@ -30,7 +30,6 @@ import java.util.concurrent.ExecutionException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -55,7 +54,7 @@ import org.jdesktop.swingx.border.DropShadowBorder;
 /**
  * The properties dialog for audio files
  */
-final class AudioFilePropertiesDialog extends PropertiesDialog {
+final class AudioFilePropertiesDialog extends AudioObjectPropertiesDialog {
 
     private final class FillPictureSwingWorker extends SwingWorker<ImageIcon, Void> {
         @Override
@@ -109,8 +108,8 @@ final class AudioFilePropertiesDialog extends PropertiesDialog {
      * @param file
      *            the file
      */
-    AudioFilePropertiesDialog(AudioFile file, JFrame owner, IState state, IFrame frame, IOSManager osManager) {
-        super(getTitleText(file), owner);
+    AudioFilePropertiesDialog(AudioFile file, IState state, IFrame frame, IOSManager osManager) {
+        super(getTitleText(file), frame);
         this.file = file;
         this.state = state;
         this.frame = frame;

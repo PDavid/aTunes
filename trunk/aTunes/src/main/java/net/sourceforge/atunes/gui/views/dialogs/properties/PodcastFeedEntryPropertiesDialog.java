@@ -28,7 +28,6 @@ import java.text.DateFormat;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -38,6 +37,7 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -47,7 +47,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The properties dialog for podcast feed entries.
  */
-final class PodcastFeedEntryPropertiesDialog extends PropertiesDialog {
+final class PodcastFeedEntryPropertiesDialog extends AudioObjectPropertiesDialog {
 
     private static final long serialVersionUID = -2472573171771586037L;
 
@@ -72,8 +72,8 @@ final class PodcastFeedEntryPropertiesDialog extends PropertiesDialog {
      * @param entry
      *            the entry
      */
-    PodcastFeedEntryPropertiesDialog(IPodcastFeedEntry entry, JFrame owner, IState state) {
-        super(getTitleText(entry), owner);
+    PodcastFeedEntryPropertiesDialog(IPodcastFeedEntry entry, IFrame frame, IState state) {
+        super(getTitleText(entry), frame);
         this.entry = entry;
         this.state = state;
         setAudioObject(entry);
