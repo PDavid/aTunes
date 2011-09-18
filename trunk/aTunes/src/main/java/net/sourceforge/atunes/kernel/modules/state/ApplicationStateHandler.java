@@ -616,7 +616,7 @@ public final class ApplicationStateHandler extends AbstractHandler {
      */
     public void editPreferences() {
     	EditPreferencesDialog dialog = new EditPreferencesDialog(getFrame().getFrame());
-    	new EditPreferencesDialogController(dialog, getState(), getOsManager()).start();
+    	new EditPreferencesDialogController(dialog, getState(), getOsManager(), getFrame()).start();
     }
 
 	@Override

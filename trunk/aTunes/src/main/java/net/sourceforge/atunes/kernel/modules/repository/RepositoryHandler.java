@@ -68,6 +68,7 @@ import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
@@ -127,7 +128,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 					SwingUtilities.invokeAndWait(new Runnable() {
 						@Override
 						public void run() {
-							GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("ERRORS_IN_IMPORT_PROCESS"));
+							Context.getBean(IErrorDialog.class).showErrorDialog(getFrame(), I18nUtils.getString("ERRORS_IN_IMPORT_PROCESS"));
 						}
 					});
 				} catch (InterruptedException e) {

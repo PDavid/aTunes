@@ -35,9 +35,9 @@ import javax.swing.tree.DefaultTreeModel;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.CustomSearchDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler.LogicalOperator;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.IState;
@@ -381,10 +381,10 @@ final class CustomSearchController extends AbstractSimpleController<CustomSearch
                 }
             } catch (SearchIndexNotAvailableException e) {
                 // Thrown when an attribute does not exist on index
-                GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("INVALID_SEARCH_RULE"));
+            	Context.getBean(IErrorDialog.class).showErrorDialog(frame, I18nUtils.getString("INVALID_SEARCH_RULE"));
             } catch (SearchQuerySyntaxException e) {
                 // Thrown when query has invalid syntax
-                GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("INVALID_SEARCH_RULE"));
+            	Context.getBean(IErrorDialog.class).showErrorDialog(frame, I18nUtils.getString("INVALID_SEARCH_RULE"));
             }
         } else {
         	Context.getBean(IMessageDialog.class).showMessage(I18nUtils.getString("NO_MATCHES_FOUND"), frame);

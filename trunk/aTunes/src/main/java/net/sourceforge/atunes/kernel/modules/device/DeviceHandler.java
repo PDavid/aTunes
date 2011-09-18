@@ -60,6 +60,7 @@ import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IConfirmationDialog;
+import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFileSelectionDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IMessageDialog;
@@ -149,7 +150,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
         // Not enough space avaible
         if (leaveFree > deviceFreeSpace) {
             Logger.debug(I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
-            GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
+            Context.getBean(IErrorDialog.class).showErrorDialog(getFrame(), I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
             return;
         }
 
@@ -217,7 +218,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
 
         // Check if there is enough free space on device
         if (size > deviceFreeSpace) {
-            GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
+        	Context.getBean(IErrorDialog.class).showErrorDialog(getFrame(), I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
             return;
         }
 
@@ -236,7 +237,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
                         refreshDevice();
                         filesCopiedToDevice = process.getFilesTransferred().size();
                         if (!ok) {
-                            GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("ERRORS_IN_EXPORT_PROCESS"));
+                        	Context.getBean(IErrorDialog.class).showErrorDialog(getFrame(), I18nUtils.getString("ERRORS_IN_EXPORT_PROCESS"));
                         }
                     }
                 });

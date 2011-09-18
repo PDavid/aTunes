@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.hotkeys;
 import java.awt.event.InputEvent;
 import java.util.List;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
@@ -32,6 +33,7 @@ import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -199,7 +201,7 @@ public final class HotkeyHandler extends AbstractHandler implements HotkeyListen
                 getState().setEnableHotkeys(false);
 
                 // Show an error message
-                GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("HOTKEYS_ACTIVATION_ERROR_MESSAGE"));
+                Context.getBean(IErrorDialog.class).showErrorDialog(getFrame(), I18nUtils.getString("HOTKEYS_ACTIVATION_ERROR_MESSAGE"));
                 Logger.error("Hotkeys were not activated successfully");
             }
         }

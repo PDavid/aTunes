@@ -46,7 +46,7 @@ public class LastFmServiceTest {
     		public String getLastFmUser() {
     			return "alexaranda";
     		}
-    	}, new MockOSManager());
+    	}, new MockOSManager(), null);
     	
         List<LastFmLovedTrack> lovedTracks = service.getLovedTracks();
         Assert.assertFalse(lovedTracks.isEmpty());

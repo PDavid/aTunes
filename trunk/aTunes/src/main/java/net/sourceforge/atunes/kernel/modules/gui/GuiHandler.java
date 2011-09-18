@@ -20,15 +20,12 @@
 
 package net.sourceforge.atunes.kernel.modules.gui;
 
-import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.EventQueue;
 import java.awt.Window;
 import java.util.List;
-import java.util.logging.Level;
 
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
@@ -57,9 +54,6 @@ import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ISystemTrayHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
-
-import org.jdesktop.swingx.JXErrorPane;
-import org.jdesktop.swingx.error.ErrorInfo;
 
 public final class GuiHandler extends AbstractHandler {
 
@@ -216,71 +210,6 @@ public final class GuiHandler extends AbstractHandler {
         if (show) {
             ContextHandler.getInstance().retrieveInfoAndShowInPanel(PlayListHandler.getInstance().getCurrentAudioObjectFromVisiblePlayList());
         }
-    }
-
-    /**
-     * Show error dialog.
-     * 
-     * @param message
-     *            the message
-     */
-    public void showErrorDialog(final String message) {
-    	if (SwingUtilities.isEventDispatchThread()) {
-    		JOptionPane.showMessageDialog(getFrame().getFrame(), message, I18nUtils.getString("ERROR"), JOptionPane.ERROR_MESSAGE);
-    	} else {
-    		SwingUtilities.invokeLater(new Runnable() {
-    			@Override
-    			public void run() {
-    				JOptionPane.showMessageDialog(getFrame().getFrame(), message, I18nUtils.getString("ERROR"), JOptionPane.ERROR_MESSAGE);
-    			}
-    		});
-    	}
-    }
-
-    /**
-     * Show error dialog.
-     * 
-     * @param message
-     *            the message
-     * @param parent
-     *            the parent
-     */
-    public void showErrorDialog(String message, Component parent) {
-        JOptionPane.showMessageDialog(parent, message, I18nUtils.getString("ERROR"), JOptionPane.ERROR_MESSAGE);
-    }
-
-    /**
-     * Shows a exception report dialog
-     * 
-     * @param message
-     * @param t
-     */
-    public void showExceptionDialog(String message, Exception t) {
-        showExceptionDialog(I18nUtils.getString("ERROR"), message, t);
-    }
-
-    /**
-     * Shows a exception report dialog
-     * 
-     * @param title
-     * @param message
-     * @param t
-     */
-    private void showExceptionDialog(String title, String message, Exception t) {
-        JXErrorPane pane = new JXErrorPane();
-        StringBuilder sb = new StringBuilder();
-        sb.append(t.getClass().getName());
-        sb.append(": ");
-        sb.append(t.getMessage());
-        sb.append("<br/>");
-        sb.append("<br/>");
-        for (StackTraceElement s : t.getStackTrace()) {
-            sb.append(s.toString());
-            sb.append("<br/>");
-        }
-        pane.setErrorInfo(new ErrorInfo(title, message, sb.toString(), null, t, Level.SEVERE, null));
-        JXErrorPane.showDialog(null, pane);
-
     }
 
     /**

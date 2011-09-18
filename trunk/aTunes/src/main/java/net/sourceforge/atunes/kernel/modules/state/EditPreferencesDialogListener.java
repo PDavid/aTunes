@@ -30,8 +30,8 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.EditPreferencesDialog;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PreferencesValidationException;
 import net.sourceforge.atunes.kernel.Kernel;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.model.IConfirmationDialog;
+import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -70,7 +70,7 @@ public final class EditPreferencesDialogListener implements ListSelectionListene
 	        		}
 	        	}
 			} catch (PreferencesValidationException e1) {
-				GuiHandler.getInstance().showErrorDialog(e1.getMessage(), editPreferencesDialog);
+				Context.getBean(IErrorDialog.class).showErrorDialog(e1.getMessage(), editPreferencesDialog);
 			}
         } else if (e.getSource() == editPreferencesDialog.getCancel()) {
             editPreferencesDialogController.resetImmediateChanges();
