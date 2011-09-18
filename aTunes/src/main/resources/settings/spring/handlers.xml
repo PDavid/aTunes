@@ -23,4 +23,6 @@
 	<bean id="statisticsHandler" class="net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler"/>
 	
 	<bean id="smartPlayListHandler" class="net.sourceforge.atunes.kernel.modules.playlist.SmartPlayListHandler"/>
+	
+	<bean id="uiHandler" class="net.sourceforge.atunes.kernel.modules.ui.UIHandler"/>
 </beans>

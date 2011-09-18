@@ -32,7 +32,6 @@ import net.sourceforge.atunes.kernel.modules.command.CommandHandler;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeyHandler;
 import net.sourceforge.atunes.kernel.modules.instances.MultipleInstancesHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
@@ -58,6 +57,7 @@ import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.ISystemTrayHandler;
 import net.sourceforge.atunes.model.ITagHandler;
+import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.model.IUpdateHandler;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 
@@ -156,7 +156,7 @@ public abstract class AbstractHandler implements IHandler {
             handlers.add(RepositoryHandler.getInstance());
             handlers.add(SearchHandler.getInstance());
             handlers.add((AbstractHandler)Context.getBean(IUpdateHandler.class));
-            handlers.add(GuiHandler.getInstance());
+            handlers.add((AbstractHandler) Context.getBean(IUIHandler.class));
             handlers.add((AbstractHandler) Context.getBean(ISmartPlayListHandler.class));
             handlers.add((AbstractHandler) Context.getBean(IStatisticsHandler.class));
             handlers.add((AbstractHandler) Context.getBean(ISystemTrayHandler.class));

@@ -46,6 +46,7 @@ import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.DeviceImageIcon;
 import net.sourceforge.atunes.gui.images.NewImageIcon;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
@@ -60,7 +61,6 @@ import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
@@ -70,6 +70,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -235,7 +236,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
 
     @Override
     public void dispose() {
-        GuiHandler.getInstance().finish();
+        Context.getBean(IUIHandler.class).finish();
         super.dispose();
     }
 
@@ -243,7 +244,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
      * This method is called from the OSXAdapter
      */
     public void about() {
-        GuiHandler.getInstance().showAboutDialog();
+        Context.getBean(IUIHandler.class).showAboutDialog();
     }
 
     @Override

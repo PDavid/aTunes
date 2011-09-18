@@ -22,7 +22,8 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.model.IUIHandler;
 
 public class ToggleWindowVisibilityAction extends CustomAbstractAction {
 
@@ -33,6 +34,6 @@ public class ToggleWindowVisibilityAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        GuiHandler.getInstance().toggleWindowVisibility();
+        Context.getBean(IUIHandler.class).toggleWindowVisibility();
     }
 }

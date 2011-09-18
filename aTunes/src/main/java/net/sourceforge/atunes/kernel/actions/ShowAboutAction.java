@@ -22,7 +22,8 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -42,7 +43,7 @@ public class ShowAboutAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        GuiHandler.getInstance().showAboutDialog();
+        Context.getBean(IUIHandler.class).showAboutDialog();
     }
 
 }

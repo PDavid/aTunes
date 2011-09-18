@@ -26,7 +26,7 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
@@ -34,6 +34,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Format;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jaudiotagger.audio.exceptions.CannotReadException;
@@ -81,7 +82,7 @@ public final class TagModifier {
 		            PlayListHandler.getInstance().selectedAudioObjectHasChanged(audioFilesEditing.get(i));
 
 		            if (PlayerHandler.getInstance().isEnginePlaying()) {
-		                GuiHandler.getInstance().updateTitleBar(audioFilesEditing.get(i));
+		                Context.getBean(IUIHandler.class).updateTitleBar(audioFilesEditing.get(i));
 		            }
 		        }
 		    }
