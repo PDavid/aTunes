@@ -93,7 +93,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         // Show confirmation
-        if (GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("REMOVE_CONFIRMATION"), I18nUtils.getString("CONFIRMATION")) == JOptionPane.OK_OPTION) {
+        if (GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("REMOVE_CONFIRMATION")) == JOptionPane.OK_OPTION) {
 
             // Podcast view
             if (NavigationHandler.getInstance().getCurrentView() instanceof PodcastNavigationView) {
