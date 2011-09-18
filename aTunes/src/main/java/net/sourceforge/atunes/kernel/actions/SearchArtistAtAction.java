@@ -26,11 +26,11 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.gui.views.dialogs.SearchDialog;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
-import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.ISearch;
+import net.sourceforge.atunes.model.ISearchDialog;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -49,8 +49,8 @@ public class SearchArtistAtAction extends CustomAbstractAction {
         TreePath path = NavigationHandler.getInstance().getCurrentView().getTree().getSelectionPath();
         if (((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject() instanceof Artist) {
             Artist a = (Artist) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-            SearchDialog dialog = GuiHandler.getInstance().getSearchDialog();
-            Search search = NavigationHandler.getInstance().openSearchDialog(dialog, true);
+            ISearchDialog dialog = Context.getBean(ISearchDialog.class);
+            ISearch search = NavigationHandler.getInstance().openSearchDialog(dialog, true);
             if (dialog.isSetAsDefault() && search != null) {
                 getState().setDefaultSearch(search.toString());
             }

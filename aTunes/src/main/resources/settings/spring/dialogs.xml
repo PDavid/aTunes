@@ -46,5 +46,9 @@
 	<bean id="repositoryProgressDialog" class="net.sourceforge.atunes.gui.views.dialogs.RepositoryProgressDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean>
+	
+	<bean id="searchDialog" class="net.sourceforge.atunes.gui.views.dialogs.SearchDialog" scope="prototype">
+		<constructor-arg ref="frame"/>	
+	</bean>
 
 </beans>

@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.internetsearch;
+package net.sourceforge.atunes.model;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -26,7 +26,7 @@ import java.net.URL;
 /**
  * The Interface Search.
  */
-public interface Search {
+public interface ISearch {
 
     /**
      * Returns an URL for a given search query.

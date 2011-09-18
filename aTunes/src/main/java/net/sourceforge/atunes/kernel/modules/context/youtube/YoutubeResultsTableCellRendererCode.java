@@ -31,26 +31,11 @@ import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanel;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeResultEntry;
-import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
-import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class YoutubeResultsTableCellRendererCode extends ContextTableRowPanel<YoutubeResultEntry> {
-	
-	private IState state;
-	
-	private YoutubeService youtubeService;
-	
-	private IOSManager osManager;
-	
-	public YoutubeResultsTableCellRendererCode(IState state, YoutubeService youtubeService, IOSManager osManager) {
-		this.state = state;
-		this.youtubeService = youtubeService;
-		this.osManager = osManager;
-	}
 	
 	@Override
     public JComponent getComponent(JComponent superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

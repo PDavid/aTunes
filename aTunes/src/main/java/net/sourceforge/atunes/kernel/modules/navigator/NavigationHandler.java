@@ -31,18 +31,18 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.views.dialogs.SearchDialog;
 import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.draganddrop.TreeNavigationTransferHandler;
 import net.sourceforge.atunes.kernel.modules.filter.AbstractFilter;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
-import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ISearch;
+import net.sourceforge.atunes.model.ISearchDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -290,7 +290,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 		return getNavigationController().getPopupMenuCaller();
 	}
 
-	public Search openSearchDialog(SearchDialog dialog, boolean b) {
+	public ISearch openSearchDialog(ISearchDialog dialog, boolean b) {
 		return getNavigationController().openSearchDialog(dialog, b);
 	}
 

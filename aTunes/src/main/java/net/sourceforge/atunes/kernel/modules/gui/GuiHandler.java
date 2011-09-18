@@ -47,7 +47,6 @@ import net.sourceforge.atunes.gui.views.dialogs.IndeterminateProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.InputDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RadioDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ReviewImportDialog;
-import net.sourceforge.atunes.gui.views.dialogs.SearchDialog;
 import net.sourceforge.atunes.gui.views.dialogs.properties.PropertiesDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
@@ -82,7 +81,6 @@ public final class GuiHandler extends AbstractHandler {
  
     private static GuiHandler instance = new GuiHandler();
 
-    private SearchDialog searchDialog;
     private IndeterminateProgressDialog indeterminateProgressDialog;
     private ReviewImportDialog reviewImportDialog;
 
@@ -161,18 +159,6 @@ public final class GuiHandler extends AbstractHandler {
             reviewImportDialog = new ReviewImportDialog(getFrame().getFrame(), getState());
         }
         return reviewImportDialog;
-    }
-
-    /**
-     * Gets the search dialog.
-     * 
-     * @return the search dialog
-     */
-    public SearchDialog getSearchDialog() {
-        if (searchDialog == null) {
-            searchDialog = new SearchDialog(getFrame().getFrame());
-        }
-        return searchDialog;
     }
 
     /**
