@@ -25,7 +25,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -38,9 +37,10 @@ import net.sourceforge.atunes.gui.renderers.ColumnRenderers;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -48,27 +48,22 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author encestre
  *
  */
-public final class AddArtistDragDialog extends AbstractCustomDialog {
+public final class ArtistAlbumSelectorDialog extends AbstractCustomDialog implements IArtistAlbumSelectorDialog {
 
     private static final long serialVersionUID = 8991547440913162267L;
 
 	private Artist artist;
    
+	private Album album;
 
     /**
      * Instantiates a new  dialog.
      * @param jFrame 
      */
-    public AddArtistDragDialog(JFrame jFrame, final Artist artist) {
-        super(jFrame, 600, 500, true, CloseAction.DISPOSE);
-      	String text = I18nUtils.getString("ADD_ARTIST_DIALOG_TITLE");
-        text = text.replace("(%ARTIST%)", artist.getName());
-        setTitle(text);
+    public ArtistAlbumSelectorDialog(IFrame frame) {
+        super(frame, 600, 500, true, CloseAction.DISPOSE);
         setResizable(false);
-        this.artist = artist;
-        add(getContent());
     }
-
     
     /**
      * Gets the content.
@@ -79,7 +74,7 @@ public final class AddArtistDragDialog extends AbstractCustomDialog {
         JPanel panel = new JPanel(new BorderLayout());
         
         final JTable albumTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
-        albumTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);        
+        albumTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);        
         // Disable autoresize, as we will control it
         albumTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         
@@ -104,8 +99,7 @@ public final class AddArtistDragDialog extends AbstractCustomDialog {
         ColumnRenderers.addRenderers(albumTable, columnModel);
         
         // Bind column set popup menu to select columns to display
-        @SuppressWarnings("unused")
-		ColumnSetPopupMenu columnSetPopupMenu = new ColumnSetPopupMenu(albumTable, columnModel);
+		new ColumnSetPopupMenu(albumTable, columnModel);
         
         model.setAlbums(albumList);
         
@@ -114,13 +108,26 @@ public final class AddArtistDragDialog extends AbstractCustomDialog {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int row = albumTable.getSelectedRow();
-				Album album = (Album) model.getAlbumAt(row);
-				PlayListHandler.getInstance().addToPlayList(album.getAudioObjects());
+				album = (Album) model.getAlbumAt(row);
 				setVisible(false);
 			}
 		});
         
         return panel;
+    }
+    
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IArtistAlbumSelectorDialog#showDialog(net.sourceforge.atunes.model.Artist)
+	 */
+    @Override
+	public Album showDialog(Artist artist) {
+        this.artist = artist;
+      	String text = I18nUtils.getString("ADD_ARTIST_DIALOG_TITLE");
+        text = text.replace("(%ARTIST%)", artist.getName());
+        setTitle(text);
+        add(getContent());
+    	setVisible(true);
+    	return album;
     }
 
 }

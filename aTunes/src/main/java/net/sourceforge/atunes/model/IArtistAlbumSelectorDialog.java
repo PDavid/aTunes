@@ -18,40 +18,21 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.dialogs;
+package net.sourceforge.atunes.model;
 
-import java.io.File;
-import java.util.List;
-
-import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ITagAttributesReviewed;
 
 /**
- * A dialog to review tags of a set of files before importing them
+ * Dialog to select an album of an artist
  * @author alex
  *
  */
-public interface IReviewImportDialog {
+public interface IArtistAlbumSelectorDialog {
 
 	/**
-	 * @return the dialogCancelled
-	 */
-	public boolean isDialogCancelled();
-
-	/**
-	 * Shows dialog with given data
-	 * 
-	 * @param folders
-	 * @param files
-	 */
-	public void showDialog(List<File> folders,
-			List<ILocalAudioObject> filesToLoad);
-
-	/**
-	 * Returns result of reviewing tags
-	 * 
+	 * Shows dialog and returns album selected
+	 * @param artist
 	 * @return
 	 */
-	public ITagAttributesReviewed getResult();
+	public Album showDialog(Artist artist);
 
 }

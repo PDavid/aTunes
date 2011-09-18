@@ -41,7 +41,6 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.frame.FrameState;
 import net.sourceforge.atunes.gui.popup.FadingPopupFactory;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable.PlayState;
-import net.sourceforge.atunes.gui.views.dialogs.AddArtistDragDialog;
 import net.sourceforge.atunes.gui.views.dialogs.IndeterminateProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.InputDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RadioDialog;
@@ -60,7 +59,6 @@ import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.Logger;
-import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAboutDialog;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrameState;
@@ -219,12 +217,6 @@ public final class GuiHandler extends AbstractHandler {
      */
     public void showAboutDialog() {
     	Context.getBean(IAboutDialog.class).showDialog();
-    }
-
-    public void showAddArtistDragDialog(Artist currentArtist){
-    	AddArtistDragDialog dialog = new AddArtistDragDialog(getFrame().getFrame(),currentArtist);
-    	dialog.setVisible(true);
-    	
     }
 
     /**
