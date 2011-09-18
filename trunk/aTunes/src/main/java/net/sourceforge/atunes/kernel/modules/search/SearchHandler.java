@@ -188,7 +188,7 @@ public final class SearchHandler extends AbstractHandler {
      */
     private CustomSearchController getSearchController() {
         if (customSearchController == null) {
-            customSearchController = new CustomSearchController(new CustomSearchDialog(getFrame().getFrame()), getState());
+            customSearchController = new CustomSearchController(new CustomSearchDialog(getFrame().getFrame()), getState(), getFrame());
         }
         return customSearchController;
     }

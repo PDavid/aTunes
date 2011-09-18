@@ -34,10 +34,10 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IState;
@@ -72,11 +72,14 @@ public abstract class AbstractAudioFileTransferProcess extends AbstractProcess {
 
     private IOSManager osManager;
     
+    private IFrame frame;
+    
     protected AbstractAudioFileTransferProcess(Collection<ILocalAudioObject> collection, IState state, IFrame frame, IOSManager osManager) {
     	super(state);
         this.filesToTransfer = collection;
         this.filesTransferred = new ArrayList<File>();
         this.osManager = osManager;
+        this.frame = frame;
         setOwner(frame.getFrame());
     }
 
@@ -130,8 +133,8 @@ public abstract class AbstractAudioFileTransferProcess extends AbstractProcess {
                         SwingUtilities.invokeAndWait(new Runnable() {
                             @Override
                             public void run() {
-                                userSelectionWhenErrors = (String) GuiHandler.getInstance()
-                                        .showMessage(StringUtils.getString(I18nUtils.getString("ERROR"), ": ", thrownExceptions.get(0).getMessage()), I18nUtils.getString("ERROR"),
+                                userSelectionWhenErrors = (String) Context.getBean(IMessageDialog.class)
+                                        .showMessage(frame, StringUtils.getString(I18nUtils.getString("ERROR"), ": ", thrownExceptions.get(0).getMessage()), I18nUtils.getString("ERROR"),
                                                 JOptionPane.ERROR_MESSAGE,
                                                 new String[] { I18nUtils.getString("IGNORE"), I18nUtils.getString("IGNORE_ALL"), I18nUtils.getString("CANCEL") });
                             }
