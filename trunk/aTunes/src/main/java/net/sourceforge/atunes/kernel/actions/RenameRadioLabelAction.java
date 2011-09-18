@@ -26,11 +26,12 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationView;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
+import net.sourceforge.atunes.model.IInputDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class RenameRadioLabelAction extends CustomAbstractAction {
@@ -46,9 +47,14 @@ public class RenameRadioLabelAction extends CustomAbstractAction {
     public void actionPerformed(ActionEvent e) {
         TreePath path = NavigationHandler.getInstance().getView(RadioNavigationView.class).getTree().getSelectionPath();
         Object o = ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
+        
+        IInputDialog dialog = Context.getBean(IInputDialog.class);
+        dialog.setTitle(I18nUtils.getString("RENAME_LABEL"));
+
         if (o instanceof String) {
             String label = (String) o;
-            String result = GuiHandler.getInstance().showInputDialog(I18nUtils.getString("RENAME_LABEL"), label);
+            dialog.showDialog(label);
+            String result = dialog.getResult();
             if (result != null) {
                 List<Radio> radios = RadioHandler.getInstance().getRadios(label);
                 RadioHandler.getInstance().setLabel(radios, result);
@@ -56,7 +62,8 @@ public class RenameRadioLabelAction extends CustomAbstractAction {
             }
         } else if (o instanceof Radio) {
             Radio radio = (Radio) o;
-            String result = GuiHandler.getInstance().showInputDialog(I18nUtils.getString("RENAME_LABEL"), radio.getLabel());
+            dialog.showDialog(radio.getLabel());
+            String result = dialog.getResult();
             if (result != null) {
                 radio.setLabel(result);
                 NavigationHandler.getInstance().refreshView(RadioNavigationView.class);

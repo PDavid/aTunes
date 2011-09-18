@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.gui;
 import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.EventQueue;
-import java.awt.Image;
 import java.awt.Window;
 import java.util.List;
 import java.util.logging.Level;
@@ -42,7 +41,6 @@ import net.sourceforge.atunes.gui.frame.FrameState;
 import net.sourceforge.atunes.gui.popup.FadingPopupFactory;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable.PlayState;
 import net.sourceforge.atunes.gui.views.dialogs.IndeterminateProgressDialog;
-import net.sourceforge.atunes.gui.views.dialogs.InputDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RadioDialog;
 import net.sourceforge.atunes.gui.views.dialogs.properties.PropertiesDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
@@ -368,38 +366,6 @@ public final class GuiHandler extends AbstractHandler {
     	getNewIndeterminateProgressDialog(parent);
     	getIndeterminateProgressDialog().setTitle(text);
     	getIndeterminateProgressDialog().setVisible(true);
-    }
-
-    /**
-     * Show input dialog.
-     * 
-     * @param title
-     *            the title
-     * @param text
-     *            the text
-     * 
-     * @return the string
-     */
-    public String showInputDialog(String title, String text) {
-        return showInputDialog(title, text, null);
-    }
-
-    /**
-     * Show input dialog.
-     * 
-     * @param title
-     *            the title
-     * @param text
-     *            the text
-     * @param icon
-     *            the icon
-     * 
-     * @return the string
-     */
-    private String showInputDialog(String title, String text, Image icon) {
-        InputDialog id = new InputDialog(getFrame().getFrame(), title, icon);
-        id.show(text);
-        return id.getResult();
     }
 
     /**

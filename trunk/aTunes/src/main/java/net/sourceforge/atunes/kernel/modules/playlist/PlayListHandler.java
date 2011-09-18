@@ -60,6 +60,7 @@ import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IInputDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IState;
@@ -354,7 +355,10 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
     public void renamePlayList() {
         int selectedPlaylist = getPlayListTabController().getSelectedPlayListIndex();
         String currentName = getPlayListTabController().getPlayListName(selectedPlaylist);
-        String newName = GuiHandler.getInstance().showInputDialog(I18nUtils.getString("RENAME_PLAYLIST"), currentName);
+        IInputDialog dialog = Context.getBean(IInputDialog.class);
+        dialog.setTitle(I18nUtils.getString("RENAME_PLAYLIST"));
+        dialog.showDialog(currentName);
+        String newName = dialog.getResult();
         if (newName != null) {
             renamePlayList(selectedPlaylist, newName);
         }

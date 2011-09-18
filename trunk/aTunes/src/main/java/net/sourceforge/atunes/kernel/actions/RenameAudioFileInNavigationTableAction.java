@@ -23,10 +23,11 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IInputDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -45,8 +46,10 @@ public class RenameAudioFileInNavigationTableAction extends CustomAbstractAction
     public void actionPerformed(ActionEvent e) {
         List<IAudioObject> audioFiles = NavigationHandler.getInstance().getFilesSelectedInNavigator();
         if (audioFiles.size() == 1 && audioFiles.get(0) instanceof ILocalAudioObject) {
-            String name = GuiHandler.getInstance().showInputDialog(I18nUtils.getString("RENAME_AUDIO_FILE_NAME"),
-                    FilenameUtils.getBaseName(((ILocalAudioObject)audioFiles.get(0)).getFile().getAbsolutePath()));
+            IInputDialog dialog = Context.getBean(IInputDialog.class);
+            dialog.setTitle(I18nUtils.getString("RENAME_AUDIO_FILE_NAME"));
+            dialog.showDialog(FilenameUtils.getBaseName(((ILocalAudioObject)audioFiles.get(0)).getFile().getAbsolutePath()));
+            String name = dialog.getResult();
             if (name != null && !name.isEmpty()) {
                 RepositoryHandler.getInstance().rename(((ILocalAudioObject)audioFiles.get(0)), name);
             }
