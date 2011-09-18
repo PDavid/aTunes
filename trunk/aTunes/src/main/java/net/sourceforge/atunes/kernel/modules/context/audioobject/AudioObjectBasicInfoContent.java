@@ -39,6 +39,7 @@ import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -80,6 +81,8 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
     private JMenuItem bannedSong;
     
     private IWebServicesHandler webServicesHandler;
+    
+    private IContextHandler contextHandler;
     
     /**
      * Default constructor
@@ -187,8 +190,15 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
     
     public final void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
-        this.lovedSong.addActionListener(new AddLovedSongActionListener(this.webServicesHandler));
-        this.bannedSong.addActionListener(new AddBannedSongActionListener(this.webServicesHandler));
+    }
+    
+    public void setContextHandler(IContextHandler contextHandler) {
+		this.contextHandler = contextHandler;
+	}
+    
+    public void initialize() {
+        this.lovedSong.addActionListener(new AddLovedSongActionListener(webServicesHandler, contextHandler));
+        this.bannedSong.addActionListener(new AddBannedSongActionListener(webServicesHandler, contextHandler));
 	}
 
 }

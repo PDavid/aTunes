@@ -22,10 +22,11 @@ package net.sourceforge.atunes.kernel.modules.player.mplayer;
 
 import java.util.regex.Pattern;
 
-import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IState;
 
@@ -111,7 +112,7 @@ class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
                 radio.setSongInfoAvailable(true);
                 PlayListHandler.getInstance().refreshPlayList();
                 if ((!title.equals(lastTitle) || !artist.equals(lastArtist)) && radio.equals(PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList())) {
-                    ContextHandler.getInstance().retrieveInfoAndShowInPanel(radio);
+                    Context.getBean(IContextHandler.class).retrieveInfoAndShowInPanel(radio);
                 }
                 lastArtist = artist;
                 lastTitle = title;

@@ -41,6 +41,7 @@ import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IState;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -71,6 +72,8 @@ public abstract class AbstractContextPanel {
     private IState state;
     
     private List<AbstractContextPanelContent> contents;
+    
+    private IContextHandler contextHandler;
     
     
     // BEGIN OF METHODS TO BE IMPLEMENTED BY CONCRETE CONTEXT PANELS
@@ -235,7 +238,7 @@ public abstract class AbstractContextPanel {
      * @return
      */
     public final String getTitle() {
-        return getContextPanelTitle(ContextHandler.getInstance().getCurrentAudioObject());
+        return getContextPanelTitle(contextHandler.getCurrentAudioObject());
     }
 
     /**
@@ -244,7 +247,7 @@ public abstract class AbstractContextPanel {
      * @return
      */
     public final ColorMutableImageIcon getIcon() {
-        return getContextPanelIcon(ContextHandler.getInstance().getCurrentAudioObject());
+        return getContextPanelIcon(contextHandler.getCurrentAudioObject());
     }
 
     /**
@@ -254,7 +257,7 @@ public abstract class AbstractContextPanel {
      * @return
      */
     public final boolean isEnabled() {
-        if (ContextHandler.getInstance().getCurrentAudioObject() == null) {
+        if (contextHandler.getCurrentAudioObject() == null) {
             return false;
         }
         return true;
@@ -265,10 +268,10 @@ public abstract class AbstractContextPanel {
      * @return
      */
     public final boolean isVisible() {
-        if (ContextHandler.getInstance().getCurrentAudioObject() == null) {
+        if (contextHandler.getCurrentAudioObject() == null) {
             return true;
         }
-        return isPanelVisibleForAudioObject(ContextHandler.getInstance().getCurrentAudioObject());
+        return isPanelVisibleForAudioObject(contextHandler.getCurrentAudioObject());
     }
 
 	/**
@@ -346,5 +349,9 @@ public abstract class AbstractContextPanel {
      */
     public final void setContents(List<AbstractContextPanelContent> contents) {
 		this.contents = contents;
+	}
+    
+    public void setContextHandler(IContextHandler contextHandler) {
+		this.contextHandler = contextHandler;
 	}
 }

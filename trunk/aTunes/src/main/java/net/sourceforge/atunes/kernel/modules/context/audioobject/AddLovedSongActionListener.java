@@ -23,19 +23,22 @@ package net.sourceforge.atunes.kernel.modules.context.audioobject;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
+import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 
 class AddLovedSongActionListener implements ActionListener {
 	
 	private IWebServicesHandler webServicesHandler;
 	
-    public AddLovedSongActionListener(IWebServicesHandler webServicesHandler2) {
+	private IContextHandler contextHandler;
+	
+    public AddLovedSongActionListener(IWebServicesHandler webServicesHandler2, IContextHandler contextHandler) {
 		this.webServicesHandler = webServicesHandler2;
+    	this.contextHandler = contextHandler;
 	}
 
     @Override
     public void actionPerformed(ActionEvent e) {
-    	webServicesHandler.addLovedSong(ContextHandler.getInstance().getCurrentAudioObject());
+    	webServicesHandler.addLovedSong(contextHandler.getCurrentAudioObject());
     }
 }

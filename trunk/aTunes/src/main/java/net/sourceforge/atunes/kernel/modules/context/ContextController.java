@@ -33,12 +33,16 @@ import net.sourceforge.atunes.gui.lookandfeel.AbstractListCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.panels.ContextPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
+import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IState;
 
 class ContextController extends AbstractSimpleController<ContextPanel> {
 
-	ContextController(ContextPanel componentControlled, IState state) {
+	private IContextHandler contextHandler;
+	
+	ContextController(ContextPanel componentControlled, IState state, IContextHandler contextHandler) {
 		super(componentControlled, state);
+		this.contextHandler = contextHandler;
 		addBindings();
 	}
 
@@ -63,7 +67,7 @@ class ContextController extends AbstractSimpleController<ContextPanel> {
 	 */
 	void setContextTab(String selectedContextTab) {
 		getComponentControlled().setSelectedContextTab(selectedContextTab);
-		ContextHandler.getInstance().contextPanelChanged();
+		contextHandler.contextPanelChanged();
 	}
 	
 	/**
@@ -106,7 +110,7 @@ class ContextController extends AbstractSimpleController<ContextPanel> {
 					public void itemStateChanged(ItemEvent e) {
 						if (e.getStateChange() == ItemEvent.SELECTED) {
 							getComponentControlled().showContextPanel((AbstractContextPanel)e.getItem());
-							ContextHandler.getInstance().contextPanelChanged();
+							contextHandler.contextPanelChanged();
 						}
 		            }
 		        });

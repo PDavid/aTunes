@@ -31,12 +31,12 @@ import java.util.Map;
 import javax.swing.JMenuItem;
 
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
-import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.context.ContextTable;
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeResultEntry;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -57,6 +57,8 @@ public class YoutubeContent extends AbstractContextPanelContent {
     private JMenuItem openYoutube;
     
     private YoutubeService youtubeService;
+    
+    private IContextHandler contextHandler;
     
     public YoutubeContent() {
         moreResults = new JMenuItem(I18nUtils.getString("SEE_MORE_RESULTS"));
@@ -129,7 +131,7 @@ public class YoutubeContent extends AbstractContextPanelContent {
      * @return
      */
     protected void searchMoreResultsInYoutube() {
-        String searchString = youtubeService.getSearchForAudioObject(ContextHandler.getInstance().getCurrentAudioObject());
+        String searchString = youtubeService.getSearchForAudioObject(contextHandler.getCurrentAudioObject());
         if (searchString.length() > 0) {
             final List<YoutubeResultEntry> result = youtubeService.searchInYoutube(searchString, youtubeResultTable.getRowCount() + 1);
             ((YoutubeResultTableModel) youtubeResultTable.getModel()).addEntries(result);
@@ -141,10 +143,14 @@ public class YoutubeContent extends AbstractContextPanelContent {
      */
     protected void openYoutube() {
         DesktopUtils.openSearch(SearchFactory.getSearchForName("YouTube"), youtubeService.getSearchForAudioObject(
-                ContextHandler.getInstance().getCurrentAudioObject()));
+        		contextHandler.getCurrentAudioObject()));
     }
     
     public void setYoutubeService(YoutubeService youtubeService) {
 		this.youtubeService = youtubeService;
+	}
+    
+    public void setContextHandler(IContextHandler contextHandler) {
+		this.contextHandler = contextHandler;
 	}
 }
