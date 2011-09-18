@@ -31,9 +31,9 @@ import java.net.URL;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.ISearch;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -64,7 +64,7 @@ public final class DesktopUtils {
      * @param query
      *            query
      */
-    public static void openSearch(Search search, String query) {
+    public static void openSearch(ISearch search, String query) {
         if (search != null && isDesktopSupported) {
             try {
                 browse(search.getURL(query).toURI());

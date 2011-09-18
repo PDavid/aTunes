@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -34,10 +35,10 @@ import net.sourceforge.atunes.utils.StringUtils;
 public final class SearchFactory {
 
     /** The searches. */
-    private static HashMap<String, Search> searches;
+    private static HashMap<String, ISearch> searches;
 
     /** The you tube search. */
-    private static Search youTubeSearch = new Search() {
+    private static ISearch youTubeSearch = new ISearch() {
         @Override
         public URL getURL(String query) throws MalformedURLException {
             String auxQuery = query.replaceAll(" +", "+");
@@ -51,7 +52,7 @@ public final class SearchFactory {
     };
 
     /** The wikipedia en search. */
-    private static Search wikipediaENSearch = new Search() {
+    private static ISearch wikipediaENSearch = new ISearch() {
         @Override
         public URL getURL(String query) throws MalformedURLException {
             String auxQuery = query.replaceAll(" +", "_");
@@ -65,7 +66,7 @@ public final class SearchFactory {
     };
 
     /** The free db search. */
-    private static Search freeDBSearch = new Search() {
+    private static ISearch freeDBSearch = new ISearch() {
         @Override
         public URL getURL(String query) throws MalformedURLException {
             String auxQuery = query.replaceAll(" +", "+");
@@ -79,7 +80,7 @@ public final class SearchFactory {
     };
 
     /** The music brainz search. */
-    private static Search musicBrainzSearch = new Search() {
+    private static ISearch musicBrainzSearch = new ISearch() {
         @Override
         public URL getURL(String query) throws MalformedURLException {
             String auxQuery = query.replaceAll(" +", "+");
@@ -94,7 +95,7 @@ public final class SearchFactory {
     };
 
     /** The google video search. */
-    private static Search googleVideoSearch = new Search() {
+    private static ISearch googleVideoSearch = new ISearch() {
         @Override
         public URL getURL(String query) throws MalformedURLException {
             String auxQuery = query.replaceAll(" +", "+");
@@ -108,7 +109,7 @@ public final class SearchFactory {
     };
 
     static {
-        searches = new HashMap<String, Search>();
+        searches = new HashMap<String, ISearch>();
         searches.put(freeDBSearch.toString(), freeDBSearch);
         searches.put(googleVideoSearch.toString(), googleVideoSearch);
         searches.put(musicBrainzSearch.toString(), musicBrainzSearch);
@@ -125,8 +126,8 @@ public final class SearchFactory {
      * 
      * @return the searches
      */
-    public static List<Search> getSearches() {
-        return new ArrayList<Search>(searches.values());
+    public static List<ISearch> getSearches() {
+        return new ArrayList<ISearch>(searches.values());
     }
 
     /**
@@ -137,7 +138,7 @@ public final class SearchFactory {
      * 
      * @return the search for name
      */
-    public static Search getSearchForName(String searchName) {
+    public static ISearch getSearchForName(String searchName) {
         if (searches == null) {
         	return null;
         }

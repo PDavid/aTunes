@@ -29,7 +29,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -38,20 +37,22 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.kernel.modules.internetsearch.Search;
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
+import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ISearch;
+import net.sourceforge.atunes.model.ISearchDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * The Class SearchDialog.
  */
-public final class SearchDialog extends AbstractCustomDialog {
+public final class SearchDialog extends AbstractCustomDialog implements ISearchDialog {
 
     private static final long serialVersionUID = 89888215541058798L;
 
     /** The result. */
-    private Search result;
+    private ISearch result;
 
     /** The set as default. */
     private boolean setAsDefault;
@@ -65,26 +66,25 @@ public final class SearchDialog extends AbstractCustomDialog {
      * @param owner
      *            the owner
      */
-    public SearchDialog(JFrame owner) {
-        super(owner, 300, 300, true, CloseAction.HIDE);
+    public SearchDialog(IFrame frame) {
+        super(frame, 300, 300, true, CloseAction.NOTHING);
+        setResizable(false);
         setContent();
     }
 
-    /**
-     * Gets the result.
-     * 
-     * @return the result
-     */
-    public Search getResult() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.ISearchDialog#getResult()
+	 */
+    @Override
+	public ISearch getResult() {
         return result;
     }
 
-    /**
-     * Checks if is sets the as default.
-     * 
-     * @return true, if is sets the as default
-     */
-    public boolean isSetAsDefault() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.ISearchDialog#isSetAsDefault()
+	 */
+    @Override
+	public boolean isSetAsDefault() {
         return setAsDefault;
     }
 
@@ -110,9 +110,9 @@ public final class SearchDialog extends AbstractCustomDialog {
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                result = (Search) list.getSelectedValue();
+                result = (ISearch) list.getSelectedValue();
                 setAsDefault = setAsDefaultCheckBox.isSelected();
-                setVisible(false);
+                hideDialog();
             }
         });
         JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
@@ -120,7 +120,7 @@ public final class SearchDialog extends AbstractCustomDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 result = null;
-                setVisible(false);
+                hideDialog();
             }
         });
 
@@ -153,13 +153,11 @@ public final class SearchDialog extends AbstractCustomDialog {
         add(panel);
     }
 
-    /**
-     * Sets the sets the as default visible.
-     * 
-     * @param setAsDefaultVisible
-     *            the new sets the as default visible
-     */
-    public void setSetAsDefaultVisible(boolean setAsDefaultVisible) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.ISearchDialog#setSetAsDefaultVisible(boolean)
+	 */
+    @Override
+	public void setSetAsDefaultVisible(boolean setAsDefaultVisible) {
         setAsDefaultCheckBox.setVisible(setAsDefaultVisible);
     }
 
@@ -172,5 +170,22 @@ public final class SearchDialog extends AbstractCustomDialog {
     public void setVisible(boolean b) {
         setAsDefaultCheckBox.setSelected(false);
         super.setVisible(b);
+    }
+    
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.ISearchDialog#showDialog()
+	 */
+    @Override
+	public void showDialog() {
+    	setVisible(true);
+    }
+    
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.ISearchDialog#hideDialog()
+	 */
+    @Override
+	public void hideDialog() {
+    	setVisible(false);
+    	dispose();
     }
 }

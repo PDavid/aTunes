@@ -59,8 +59,6 @@ public class YoutubeContent extends AbstractContextPanelContent {
     
     private YoutubeService youtubeService;
     
-    private IOSManager osManager;
-
     public YoutubeContent() {
         moreResults = new JMenuItem(I18nUtils.getString("SEE_MORE_RESULTS"));
         moreResults.addActionListener(new ActionListener() {
@@ -114,7 +112,7 @@ public class YoutubeContent extends AbstractContextPanelContent {
     protected Component getComponent() {
         // Create components
         youtubeResultTable = new ContextTable();
-        youtubeResultTable.addContextRowPanel(new YoutubeResultsTableCellRendererCode(getState(), youtubeService, osManager));
+        youtubeResultTable.addContextRowPanel(new YoutubeResultsTableCellRendererCode());
         return youtubeResultTable;
     }
 
@@ -150,9 +148,4 @@ public class YoutubeContent extends AbstractContextPanelContent {
     public void setYoutubeService(YoutubeService youtubeService) {
 		this.youtubeService = youtubeService;
 	}
-    
-    public void setOsManager(IOSManager osManager) {
-		this.osManager = osManager;
-	}
-
 }
