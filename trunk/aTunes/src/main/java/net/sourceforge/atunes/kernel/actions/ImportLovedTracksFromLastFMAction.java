@@ -25,15 +25,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLovedTrack;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
+import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.IWebServicesHandler;
@@ -42,7 +44,9 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
 
-    private static class ImportLovedTracksWorker extends SwingWorker<List<ILocalAudioObject>, Void> {
+	private IIndeterminateProgressDialog dialog;
+	
+    private class ImportLovedTracksWorker extends SwingWorker<List<ILocalAudioObject>, Void> {
         @Override
         protected List<ILocalAudioObject> doInBackground() throws Exception {
             // Get loved tracks
@@ -66,7 +70,7 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
 
         @Override
         protected void done() {
-            GuiHandler.getInstance().hideIndeterminateProgressDialog();
+            dialog.hideDialog();
             List<ILocalAudioObject> lovedTracks = null;
             try {
                 // Get loved tracks
@@ -94,7 +98,14 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         SwingWorker<List<ILocalAudioObject>, Void> worker = new ImportLovedTracksWorker();
-        GuiHandler.getInstance().showIndeterminateProgressDialog(I18nUtils.getString("GETTING_LOVED_TRACKS_FROM_LASTFM"));
+        SwingUtilities.invokeLater(new Runnable() {
+        	@Override
+        	public void run() {
+        		dialog = Context.getBean(IIndeterminateProgressDialogFactory.class).newDialog(Context.getBean(IFrame.class));
+        		dialog.setTitle(I18nUtils.getString("GETTING_LOVED_TRACKS_FROM_LASTFM"));
+        		dialog.showDialog();
+        	}
+        });
         worker.execute();
     }
 }

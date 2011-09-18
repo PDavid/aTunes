@@ -27,13 +27,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
@@ -46,6 +46,9 @@ import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IConfirmationDialog;
+import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
+import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
@@ -57,7 +60,9 @@ import org.apache.commons.io.FileUtils;
 
 public class RemoveFromDiskAction extends CustomAbstractAction {
 
-    private static final class DeleteFilesWorker extends SwingWorker<Void, Void> {
+	private IIndeterminateProgressDialog dialog;
+	
+    private final class DeleteFilesWorker extends SwingWorker<Void, Void> {
         private final List<ILocalAudioObject> files;
 
         private DeleteFilesWorker(List<ILocalAudioObject> files) {
@@ -79,7 +84,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
 
         @Override
         protected void done() {
-            GuiHandler.getInstance().hideIndeterminateProgressDialog();
+            dialog.hideDialog();
         }
     }
 
@@ -115,7 +120,14 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
         RepositoryHandler.getInstance().startTransaction();
         RepositoryHandler.getInstance().remove(AudioFile.getAudioFiles(files));
         RepositoryHandler.getInstance().endTransaction();
-        GuiHandler.getInstance().showIndeterminateProgressDialog(I18nUtils.getString("PLEASE_WAIT"));
+        SwingUtilities.invokeLater(new Runnable() {
+        	@Override
+        	public void run() {
+        		dialog = Context.getBean(IIndeterminateProgressDialogFactory.class).newDialog(Context.getBean(IFrame.class));
+        		dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
+        		dialog.showDialog();
+        	}
+        });
         new DeleteFilesWorker(AudioFile.getAudioFiles(files)).execute();
     }
 
@@ -133,7 +145,14 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
         RepositoryHandler.getInstance().startTransaction();
         RepositoryHandler.getInstance().removeFolders(foldersToRemove);
         RepositoryHandler.getInstance().endTransaction();
-        GuiHandler.getInstance().showIndeterminateProgressDialog(I18nUtils.getString("PLEASE_WAIT"));
+        SwingUtilities.invokeLater(new Runnable() {
+        	@Override
+        	public void run() {
+        		dialog = Context.getBean(IIndeterminateProgressDialogFactory.class).newDialog(Context.getBean(IFrame.class));
+        		dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
+        		dialog.showDialog();
+        	}
+        });
         new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() {
@@ -150,7 +169,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
 
             @Override
             protected void done() {
-                GuiHandler.getInstance().hideIndeterminateProgressDialog();
+                dialog.hideDialog();
             }
         }.execute();
     }

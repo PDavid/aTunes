@@ -53,7 +53,6 @@ import net.sourceforge.atunes.kernel.actions.RefreshFolderFromNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.RefreshRepositoryAction;
 import net.sourceforge.atunes.kernel.actions.RipCDAction;
 import net.sourceforge.atunes.kernel.actions.SelectRepositoryAction;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
@@ -221,7 +220,6 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 		@Override
 		protected void done() {
 		    super.done();
-		    GuiHandler.getInstance().hideIndeterminateProgressDialog();
 
 		    try {
 		        final List<ILocalAudioObject> filesToLoad = get();

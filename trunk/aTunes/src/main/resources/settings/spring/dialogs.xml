@@ -78,4 +78,6 @@
 	
 	<bean id="audioObjectPropertiesDialogFactory" class="net.sourceforge.atunes.gui.views.dialogs.properties.AudioObjectPropertiesDialogFactory" scope="singleton"/>
 	
+	<bean id="indeterminateProgressDialogFactory" class="net.sourceforge.atunes.gui.views.dialogs.IndeterminateProgressDialogFactory" scope="singleton"/>
+	
 </beans>

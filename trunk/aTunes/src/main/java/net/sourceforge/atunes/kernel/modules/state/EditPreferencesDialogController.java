@@ -29,6 +29,7 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.DefaultListModel;
 import javax.swing.SwingWorker;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.AbstractPreferencesPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.ContextPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.DevicePanel;
@@ -48,9 +49,10 @@ import net.sourceforge.atunes.gui.views.dialogs.editPreferences.RadioPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.RepositoryPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.Kernel;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
+import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -140,6 +142,8 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
      * @return
      */
     void validatePreferences() throws PreferencesValidationException {
+		final IIndeterminateProgressDialog dialog = Context.getBean(IIndeterminateProgressDialogFactory.class).newDialog(getComponentControlled());
+
     	final SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
     		
     		@Override
@@ -153,13 +157,14 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
     		@Override
     		protected void done() {
     			super.done();
-    			GuiHandler.getInstance().hideIndeterminateProgressDialog();
+    			dialog.hideDialog();
     		}
     	};
 
     	try {
     		worker.execute();
-	    	GuiHandler.getInstance().showIndeterminateProgressDialog(getComponentControlled(), I18nUtils.getString("VALIDATING_PREFERENCES"));
+    		dialog.setTitle(I18nUtils.getString("VALIDATING_PREFERENCES"));
+	    	dialog.showDialog();
 			worker.get();
 		} catch (InterruptedException e) {
 			Logger.error(e);
@@ -168,7 +173,7 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
 				throw (PreferencesValidationException) e.getCause();
 			}
 		} finally {
-			GuiHandler.getInstance().hideIndeterminateProgressDialog();
+			dialog.hideDialog();
 		}
     }
 

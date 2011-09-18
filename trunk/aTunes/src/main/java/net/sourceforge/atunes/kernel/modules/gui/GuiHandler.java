@@ -34,7 +34,6 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.frame.FrameState;
 import net.sourceforge.atunes.gui.popup.FadingPopupFactory;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable.PlayState;
-import net.sourceforge.atunes.gui.views.dialogs.IndeterminateProgressDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.PlaybackState;
@@ -55,8 +54,6 @@ public final class GuiHandler extends AbstractHandler {
 
  
     private static GuiHandler instance = new GuiHandler();
-
-    private IndeterminateProgressDialog indeterminateProgressDialog;
 
     /**
      * Instantiates a new gui handler.
@@ -97,34 +94,6 @@ public final class GuiHandler extends AbstractHandler {
         if (!getState().isShowSystemTray() && getOsManager().isClosingMainWindowClosesApplication()) {
             Kernel.finish();
         }
-    }
-
-    /**
-     * Creates a new indeterminate dialog
-     * 
-     * @return the indeterminate progress dialog
-     */
-    private IndeterminateProgressDialog getNewIndeterminateProgressDialog(Window parent) {
-        indeterminateProgressDialog = new IndeterminateProgressDialog(parent != null ? parent : getFrame().getFrame());
-        return indeterminateProgressDialog;
-    }
-
-    /**
-     * Gets indeterminate dialog
-     * 
-     * @return the indeterminate progress dialog
-     */
-    private IndeterminateProgressDialog getIndeterminateProgressDialog() {
-        return indeterminateProgressDialog;
-    }
-
-    /**
-     * Hide indeterminate progress dialog.
-     */
-    public void hideIndeterminateProgressDialog() {
-    	if (getIndeterminateProgressDialog() != null) {
-    		getIndeterminateProgressDialog().setVisible(false);
-    	}
     }
 
     @Override
@@ -191,39 +160,6 @@ public final class GuiHandler extends AbstractHandler {
      */
     public void showAboutDialog() {
     	Context.getBean(IAboutDialog.class).showDialog();
-    }
-
-    /**
-     * Show indeterminate progress dialog.
-     * 
-     * @param text
-     *            the text
-     */
-    public void showIndeterminateProgressDialog(final String text) {
-        try {
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                	getNewIndeterminateProgressDialog(null);
-                    getIndeterminateProgressDialog().setTitle(text);
-                    getIndeterminateProgressDialog().setVisible(true);
-                }
-            });
-        } catch (Exception e) {
-            Logger.error(e);
-        }
-    }
-
-    /**
-     * Show indeterminate progress dialog.
-     * 
-     * @param text
-     *            the text
-     */
-    public void showIndeterminateProgressDialog(final Window parent, final String text) {
-    	getNewIndeterminateProgressDialog(parent);
-    	getIndeterminateProgressDialog().setTitle(text);
-    	getIndeterminateProgressDialog().setVisible(true);
     }
 
     /**
