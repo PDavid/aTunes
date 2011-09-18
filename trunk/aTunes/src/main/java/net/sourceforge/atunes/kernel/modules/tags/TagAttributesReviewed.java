@@ -33,6 +33,7 @@ import javax.swing.table.TableCellEditor;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ITagAttributesReviewed;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
@@ -43,7 +44,7 @@ import org.jdesktop.swingx.combobox.ListComboBoxModel;
  * @author fleax
  * 
  */
-public class TagAttributesReviewed {
+public class TagAttributesReviewed implements ITagAttributesReviewed {
 
     /**
      * List of tag attributes to be reviewed
@@ -70,51 +71,41 @@ public class TagAttributesReviewed {
         return tagAttributes;
     }
 
-    /**
-     * Returns the number of tags attributes used
-     * 
-     * @return
-     */
-    public int getTagAttributesCount() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITagAttributesReviewed#getTagAttributesCount()
+	 */
+    @Override
+	public int getTagAttributesCount() {
         return getTagAttributes().size();
     }
 
-    /**
-     * Returns the name of the tag attribute at given index
-     * 
-     * @param index
-     * @return
-     */
-    public String getTagAttributeName(int index) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITagAttributesReviewed#getTagAttributeName(int)
+	 */
+    @Override
+	public String getTagAttributeName(int index) {
         if (getTagAttributes().size() <= index) {
             return null;
         }
         return getTagAttributes().get(index).getName();
     }
 
-    /**
-     * Returns the value of the tag attribute at given index
-     * 
-     * @param index
-     * @param audioFile
-     * @return
-     */
-    public String getValueForTagAttribute(int index, ILocalAudioObject audioFile) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITagAttributesReviewed#getValueForTagAttribute(int, net.sourceforge.atunes.model.ILocalAudioObject)
+	 */
+    @Override
+	public String getValueForTagAttribute(int index, ILocalAudioObject audioFile) {
         if (getTagAttributes().size() <= index) {
             return null;
         }
         return getTagAttributes().get(index).getValue(audioFile);
     }
 
-    /**
-     * Returns the value of the tag attribute at given index for the given
-     * folder if it has been changed or null
-     * 
-     * @param index
-     * @param folder
-     * @return
-     */
-    public String getChangeForAttributeAndFolder(int index, File folder) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITagAttributesReviewed#getChangeForAttributeAndFolder(int, java.io.File)
+	 */
+    @Override
+	public String getChangeForAttributeAndFolder(int index, File folder) {
         if (getTagAttributes().size() <= index) {
             return null;
         }
@@ -124,28 +115,22 @@ public class TagAttributesReviewed {
         return null;
     }
 
-    /**
-     * Stores a tag attribute change at given index and folder
-     * 
-     * @param index
-     * @param folder
-     * @param value
-     */
-    public void setTagAttributeForFolder(int index, File folder, String value) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITagAttributesReviewed#setTagAttributeForFolder(int, java.io.File, java.lang.String)
+	 */
+    @Override
+	public void setTagAttributeForFolder(int index, File folder, String value) {
         if (getTagAttributes().size() <= index) {
             return;
         }
         getTagAttributes().get(index).getChangesMade().put(folder, value);
     }
 
-    /**
-     * Returns a tag for given LocalAudioObject with tag attributes changed according
-     * to information stored in this object
-     * 
-     * @param file
-     * @return
-     */
-    public AbstractTag getTagForAudioFile(ILocalAudioObject file) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITagAttributesReviewed#getTagForAudioFile(net.sourceforge.atunes.model.ILocalAudioObject)
+	 */
+    @Override
+	public AbstractTag getTagForAudioFile(ILocalAudioObject file) {
         File parentFolder = file.getFile().getParentFile();
         AbstractTag tag = null;
         for (AbstractTagAttributeReviewed tagAttribute : getTagAttributes()) {
@@ -159,20 +144,22 @@ public class TagAttributesReviewed {
         return tag;
     }
 
-    public TableCellEditor getCellEditorForTagAttribute(int index) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITagAttributesReviewed#getCellEditorForTagAttribute(int)
+	 */
+    @Override
+	public TableCellEditor getCellEditorForTagAttribute(int index) {
         if (getTagAttributes().size() <= index) {
             return null;
         }
         return getTagAttributes().get(index).getCellEditor();
     }
 
-    /**
-     * Returns index of given tag attribute
-     * 
-     * @param tagAttributeName
-     * @return
-     */
-    public int getTagAttributeIndex(String tagAttributeName) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITagAttributesReviewed#getTagAttributeIndex(java.lang.String)
+	 */
+    @Override
+	public int getTagAttributeIndex(String tagAttributeName) {
         for (int i = 0; i < tagAttributes.size(); i++) {
             if (tagAttributes.get(i).getName().equals(tagAttributeName)) {
                 return i;

@@ -30,6 +30,7 @@ import javax.swing.table.TableCellEditor;
 
 import net.sourceforge.atunes.kernel.modules.tags.TagAttributesReviewed;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ITagAttributesReviewed;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jdesktop.swingx.JXTreeTable;
@@ -62,7 +63,7 @@ public final class ReviewImportTreeTableModel extends AbstractTreeTableModel {
      * Object that contains all changes that must be applied to tags when
      * importing
      */
-    private TagAttributesReviewed tagAttributesReviewed;
+    private ITagAttributesReviewed tagAttributesReviewed;
 
     /**
      * Constructor
@@ -264,7 +265,7 @@ public final class ReviewImportTreeTableModel extends AbstractTreeTableModel {
     /**
      * @return the tagAttributesReviewed
      */
-    public TagAttributesReviewed getTagAttributesReviewed() {
+    public ITagAttributesReviewed getTagAttributesReviewed() {
         return tagAttributesReviewed;
     }
 }

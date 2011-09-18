@@ -46,7 +46,6 @@ import net.sourceforge.atunes.gui.views.dialogs.AddPodcastFeedDialog;
 import net.sourceforge.atunes.gui.views.dialogs.IndeterminateProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.InputDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RadioDialog;
-import net.sourceforge.atunes.gui.views.dialogs.ReviewImportDialog;
 import net.sourceforge.atunes.gui.views.dialogs.properties.PropertiesDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
@@ -82,7 +81,6 @@ public final class GuiHandler extends AbstractHandler {
     private static GuiHandler instance = new GuiHandler();
 
     private IndeterminateProgressDialog indeterminateProgressDialog;
-    private ReviewImportDialog reviewImportDialog;
 
     /**
      * Instantiates a new gui handler.
@@ -147,18 +145,6 @@ public final class GuiHandler extends AbstractHandler {
      */
     private IndeterminateProgressDialog getIndeterminateProgressDialog() {
         return indeterminateProgressDialog;
-    }
-
-    /**
-     * Gets the review import dialog.
-     * 
-     * @return the review import dialog
-     */
-    public ReviewImportDialog getReviewImportDialog() {
-        if (reviewImportDialog == null) {
-            reviewImportDialog = new ReviewImportDialog(getFrame().getFrame(), getState());
-        }
-        return reviewImportDialog;
     }
 
     /**

@@ -35,7 +35,6 @@ import java.util.Map.Entry;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -49,9 +48,10 @@ import net.sourceforge.atunes.gui.model.ReviewImportTreeTableModel;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
-import net.sourceforge.atunes.kernel.modules.tags.TagAttributesReviewed;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITagAttributesReviewed;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -59,7 +59,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 import org.jdesktop.swingx.JXTreeTable;
 import org.jdesktop.swingx.treetable.DefaultMutableTreeTableNode;
 
-public final class ReviewImportDialog extends AbstractCustomDialog {
+public final class ReviewImportDialog extends AbstractCustomDialog implements IReviewImportDialog {
 
     private static final long serialVersionUID = 8523236886848649698L;
 
@@ -81,9 +81,11 @@ public final class ReviewImportDialog extends AbstractCustomDialog {
     
     /**
      * Instantiates a new ReviewImportDialog
+     * @param frame
+     * @param state
      */
-    public ReviewImportDialog(JFrame owner, IState state) {
-        super(owner, GuiUtils.getComponentWidthForResolution(0.80f), GuiUtils.getComponentHeightForResolution(0.75f), true, CloseAction.HIDE);
+    public ReviewImportDialog(IFrame frame, IState state) {
+        super(frame, GuiUtils.getComponentWidthForResolution(0.80f), GuiUtils.getComponentHeightForResolution(0.75f), true, CloseAction.NOTHING);
         this.state = state;
         setTitle(I18nUtils.getString("REVIEW_TAGS"));
         setContent();
@@ -188,10 +190,11 @@ public final class ReviewImportDialog extends AbstractCustomDialog {
         });
     }
 
-    /**
-     * @return the dialogCancelled
-     */
-    public boolean isDialogCancelled() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IReviewImportDialog#isDialogCancelled()
+	 */
+    @Override
+	public boolean isDialogCancelled() {
         return dialogCancelled;
     }
 
@@ -202,15 +205,16 @@ public final class ReviewImportDialog extends AbstractCustomDialog {
             dialogCancelled = true;
         }
         super.setVisible(b);
+        if (!b) {
+        	dispose();
+        }
     }
-
-    /**
-     * Shows dialog with given data
-     * 
-     * @param folders
-     * @param files
-     */
-    public void show(List<File> folders, List<ILocalAudioObject> filesToLoad) {
+    
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IReviewImportDialog#showDialog(java.util.List, java.util.List)
+	 */
+    @Override
+	public void showDialog(List<File> folders, List<ILocalAudioObject> filesToLoad) {
         treeTable.setTreeTableModel(new ReviewImportTreeTableModel(folders, filesToLoad, treeTable));
         treeTable.getColumnExt(0).setPreferredWidth(300);
         ((ReviewImportTreeTableModel) treeTable.getTreeTableModel()).setCellEditors();
@@ -218,12 +222,11 @@ public final class ReviewImportDialog extends AbstractCustomDialog {
         setVisible(true);
     }
 
-    /**
-     * Returns result of reviewing tags
-     * 
-     * @return
-     */
-    public TagAttributesReviewed getResult() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IReviewImportDialog#getResult()
+	 */
+    @Override
+	public ITagAttributesReviewed getResult() {
         return ((ReviewImportTreeTableModel) treeTable.getTreeTableModel()).getTagAttributesReviewed();
     }
 }
