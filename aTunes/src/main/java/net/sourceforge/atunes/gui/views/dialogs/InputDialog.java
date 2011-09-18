@@ -23,9 +23,7 @@ package net.sourceforge.atunes.gui.views.dialogs;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.Insets;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -35,12 +33,14 @@ import javax.swing.JTextField;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
+import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IInputDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class InputDialog.
  */
-public final class InputDialog extends AbstractCustomDialog {
+public final class InputDialog extends AbstractCustomDialog implements IInputDialog {
 
     private static final long serialVersionUID = -5789081662254435503L;
 
@@ -60,13 +60,9 @@ public final class InputDialog extends AbstractCustomDialog {
      * @param image
      *            the image
      */
-    public InputDialog(Window owner, String title, Image image) {
-        super(owner, 400, 130, true, CloseAction.DISPOSE);
+    public InputDialog(IFrame frame) {
+        super(frame, 400, 130, true, CloseAction.DISPOSE);
         setResizable(false);
-        if (image != null) {
-            setIconImage(image);
-        }
-        setTitle(title);
         JPanel panel = new JPanel(new GridBagLayout());
         textField = new CustomTextField();
         JButton okButton = new JButton(I18nUtils.getString("OK"));
@@ -106,22 +102,19 @@ public final class InputDialog extends AbstractCustomDialog {
         getRootPane().setDefaultButton(okButton);
     }
 
-    /**
-     * Gets the result.
-     * 
-     * @return the result
-     */
-    public String getResult() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IInputDialog#getResult()
+	 */
+    @Override
+	public String getResult() {
         return result;
     }
 
-    /**
-     * Show.
-     * 
-     * @param text
-     *            the text
-     */
-    public void show(String text) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IInputDialog#showDialog(java.lang.String)
+	 */
+    @Override
+	public void showDialog(String text) {
         textField.setText(text);
         textField.setSelectionStart(0);
         textField.setSelectionEnd(text != null ? text.length() : 0);

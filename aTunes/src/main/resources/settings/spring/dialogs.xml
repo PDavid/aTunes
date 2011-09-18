@@ -63,5 +63,9 @@
 	<bean id="artistAlbumSelectorDialog" class="net.sourceforge.atunes.gui.views.dialogs.ArtistAlbumSelectorDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean>
+	
+	<bean id="inputDialog" class="net.sourceforge.atunes.gui.views.dialogs.InputDialog" scope="prototype">
+		<constructor-arg ref="frame"/>
+	</bean>
 
 </beans>
