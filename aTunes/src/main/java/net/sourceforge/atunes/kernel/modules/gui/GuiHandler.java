@@ -25,11 +25,9 @@ import java.awt.EventQueue;
 import java.awt.Window;
 import java.util.List;
 
-import javax.swing.JFileChooser;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
-import javax.swing.filechooser.FileFilter;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
@@ -243,21 +241,6 @@ public final class GuiHandler extends AbstractHandler {
     	getNewIndeterminateProgressDialog(parent);
     	getIndeterminateProgressDialog().setTitle(text);
     	getIndeterminateProgressDialog().setVisible(true);
-    }
-
-    /**
-     * Show open dialog.
-     * 
-     * @param fileChooser
-     *            the file chooser
-     * @param filter
-     *            the filter
-     * 
-     * @return the int
-     */
-    public int showOpenDialog(JFileChooser fileChooser, FileFilter filter) {
-        fileChooser.setFileFilter(filter);
-        return fileChooser.showOpenDialog(getFrame().getFrame());
     }
 
     /**

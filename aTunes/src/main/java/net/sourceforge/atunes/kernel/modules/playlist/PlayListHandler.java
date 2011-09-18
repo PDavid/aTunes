@@ -48,7 +48,6 @@ import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListTableTransferHandler;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListToDeviceDragAndDropListener;
 import net.sourceforge.atunes.kernel.modules.filter.AbstractFilter;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.repository.AudioFilesRemovedListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
@@ -711,7 +710,8 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         JFileChooser fileChooser = new JFileChooser(getState().getLoadPlaylistPath());
         FileFilter filter = PlayListIO.getPlaylistFileFilter();
         // Open file chooser
-        if (GuiHandler.getInstance().showOpenDialog(fileChooser, filter) == JFileChooser.APPROVE_OPTION) {
+        fileChooser.setFileFilter(filter);
+        if (fileChooser.showOpenDialog(getFrame().getFrame()) == JFileChooser.APPROVE_OPTION) {
             // Get selected file
             File file = fileChooser.getSelectedFile();
 
