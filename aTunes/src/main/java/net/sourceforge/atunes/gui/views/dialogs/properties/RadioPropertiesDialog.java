@@ -26,13 +26,13 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import net.sourceforge.atunes.gui.images.RadioImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -41,7 +41,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The properties dialog for radios.
  */
-final class RadioPropertiesDialog extends PropertiesDialog {
+final class RadioPropertiesDialog extends AudioObjectPropertiesDialog {
 
     private static final long serialVersionUID = -73744354419152730L;
     private JLabel pictureLabel;
@@ -56,10 +56,10 @@ final class RadioPropertiesDialog extends PropertiesDialog {
      * Instantiates a new radio properties dialog.
      * 
      * @param radio
-     *            the radio
+     * @param frame
      */
-    RadioPropertiesDialog(Radio radio, JFrame owner) {
-        super(getTitleText(radio), owner);
+    RadioPropertiesDialog(Radio radio, IFrame frame) {
+        super(getTitleText(radio), frame);
         this.radio = radio;
         setAudioObject(radio);
         addContent();

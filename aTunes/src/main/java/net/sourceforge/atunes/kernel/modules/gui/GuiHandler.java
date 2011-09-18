@@ -35,7 +35,6 @@ import net.sourceforge.atunes.gui.frame.FrameState;
 import net.sourceforge.atunes.gui.popup.FadingPopupFactory;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable.PlayState;
 import net.sourceforge.atunes.gui.views.dialogs.IndeterminateProgressDialog;
-import net.sourceforge.atunes.gui.views.dialogs.properties.PropertiesDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.PlaybackState;
@@ -225,21 +224,6 @@ public final class GuiHandler extends AbstractHandler {
     	getNewIndeterminateProgressDialog(parent);
     	getIndeterminateProgressDialog().setTitle(text);
     	getIndeterminateProgressDialog().setVisible(true);
-    }
-
-    /**
-     * Show properties dialog.
-     * 
-     * @param audioObject
-     *            the audio object
-     */
-    public void showPropertiesDialog(IAudioObject audioObject) {
-        PropertiesDialog dialog = PropertiesDialog.newInstance(audioObject, getFrame().getFrame(), getState(), getFrame(), getOsManager());
-        if (dialog.isVisible()) {
-            dialog.toFront();
-        } else {
-            dialog.setVisible(true);
-        }
     }
 
     /**

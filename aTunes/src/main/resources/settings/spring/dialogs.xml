@@ -75,4 +75,7 @@
 	<bean id="radioDialog" class="net.sourceforge.atunes.gui.views.dialogs.RadioDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean>
+	
+	<bean id="audioObjectPropertiesDialogFactory" class="net.sourceforge.atunes.gui.views.dialogs.properties.AudioObjectPropertiesDialogFactory" scope="singleton"/>
+	
 </beans>
