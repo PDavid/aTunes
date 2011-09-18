@@ -41,8 +41,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.gui.views.dialogs.IReviewImportDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RepositorySelectionInfoDialog;
-import net.sourceforge.atunes.gui.views.dialogs.ReviewImportDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.actions.Actions;
@@ -64,7 +64,6 @@ import net.sourceforge.atunes.kernel.modules.repository.processes.ImportFilesPro
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.kernel.modules.search.searchableobjects.RepositorySearchableObject;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
-import net.sourceforge.atunes.kernel.modules.tags.TagAttributesReviewed;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
@@ -77,6 +76,7 @@ import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IRepositoryProgressDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStatisticsHandler;
+import net.sourceforge.atunes.model.ITagAttributesReviewed;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.model.RepositoryListener;
@@ -224,11 +224,11 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 		    try {
 		        final List<ILocalAudioObject> filesToLoad = get();
 
-		        TagAttributesReviewed tagAttributesReviewed = null;
+		        ITagAttributesReviewed tagAttributesReviewed = null;
 		        // Review tags if selected in settings
 		        if (RepositoryHandler.this.getState().isReviewTagsBeforeImport()) {
-		            ReviewImportDialog reviewImportDialog = GuiHandler.getInstance().getReviewImportDialog();
-		            reviewImportDialog.show(folders, filesToLoad);
+		            IReviewImportDialog reviewImportDialog = Context.getBean(IReviewImportDialog.class);
+		            reviewImportDialog.showDialog(folders, filesToLoad);
 		            if (reviewImportDialog.isDialogCancelled()) {
 		                return;
 		            }

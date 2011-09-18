@@ -30,13 +30,13 @@ import net.sourceforge.atunes.kernel.modules.process.AbstractAudioFileTransferPr
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
 import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
-import net.sourceforge.atunes.kernel.modules.tags.TagAttributesReviewed;
 import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
 import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITagAttributesReviewed;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -72,7 +72,7 @@ public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
      * @param state
      * @param frame
      */
-    public ImportFilesProcess(List<ILocalAudioObject> filesToImport, List<File> folders, String path, TagAttributesReviewed tagAttributesReviewed, IState state, IFrame frame, IOSManager osManager) {
+    public ImportFilesProcess(List<ILocalAudioObject> filesToImport, List<File> folders, String path, ITagAttributesReviewed tagAttributesReviewed, IState state, IFrame frame, IOSManager osManager) {
         super(filesToImport, state, frame, osManager);
         this.folders = folders;
         this.path = path;
@@ -201,7 +201,7 @@ public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
      * @param fileToImport
      * @param tagAttributesReviewed
      */
-    private void replaceTag(ILocalAudioObject fileToImport, TagAttributesReviewed tagAttributesReviewed) {
+    private void replaceTag(ILocalAudioObject fileToImport, ITagAttributesReviewed tagAttributesReviewed) {
         if (tagAttributesReviewed != null) {
             AbstractTag modifiedTag = tagAttributesReviewed.getTagForAudioFile(fileToImport);
             // This file must be changed
