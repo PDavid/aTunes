@@ -84,6 +84,11 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
         showContextPanel(getState().isUseContext());
     }
     
+    @Override
+    public void allHandlersInitialized() {
+    	retrieveInfoAndShowInPanel(PlayListHandler.getInstance().getCurrentAudioObjectFromVisiblePlayList());
+    }
+    
     
     /**
      * Gets the single instance of ContextHandler.
