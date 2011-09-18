@@ -9,42 +9,42 @@
 		diskPersistent="true" diskExpiryThreadIntervalSeconds="1"
 		memoryStoreEvictionPolicy="LFU" />
 
-	<cache name="albumCover" maxElementsInMemory="10"
+	<cache name="albumCover" maxElementsInMemory="1"
 		maxElementsOnDisk="10000" eternal="true" overflowToDisk="true"
 		diskSpoolBufferSizeMB="5" diskPersistent="true"
 		memoryStoreEvictionPolicy="LFU" />
 
-	<cache name="albumInfo" maxElementsInMemory="10"
+	<cache name="albumInfo" maxElementsInMemory="1"
 		maxElementsOnDisk="10000" eternal="true" overflowToDisk="true"
 		diskSpoolBufferSizeMB="5" diskPersistent="true"
 		memoryStoreEvictionPolicy="LFU" />
 
-	<cache name="artistImage" maxElementsInMemory="10"
+	<cache name="artistImage" maxElementsInMemory="1"
 		maxElementsOnDisk="10000" eternal="true" overflowToDisk="true"
 		diskSpoolBufferSizeMB="5" diskPersistent="true"
 		memoryStoreEvictionPolicy="LFU" />
 
-	<cache name="albumList" maxElementsInMemory="10"
+	<cache name="albumList" maxElementsInMemory="1"
 		maxElementsOnDisk="10000" eternal="true" overflowToDisk="true"
 		diskSpoolBufferSizeMB="5" diskPersistent="true"
 		memoryStoreEvictionPolicy="LFU" />
 
-	<cache name="artistSimilar" maxElementsInMemory="10"
+	<cache name="artistSimilar" maxElementsInMemory="1"
 		maxElementsOnDisk="10000" eternal="true" overflowToDisk="true"
 		diskSpoolBufferSizeMB="5" diskPersistent="true"
 		memoryStoreEvictionPolicy="LFU" />
 
-	<cache name="artistThumb" maxElementsInMemory="10"
+	<cache name="artistThumb" maxElementsInMemory="1"
 		maxElementsOnDisk="10000" eternal="true" overflowToDisk="true"
 		diskSpoolBufferSizeMB="5" diskPersistent="true"
 		memoryStoreEvictionPolicy="LFU" />
 
-	<cache name="artistWiki" maxElementsInMemory="10"
+	<cache name="artistWiki" maxElementsInMemory="1"
 		maxElementsOnDisk="10000" eternal="true" overflowToDisk="true"
 		diskSpoolBufferSizeMB="5" diskPersistent="true"
 		memoryStoreEvictionPolicy="LFU" />
 
-	<cache name="artistTopTracks" maxElementsInMemory="10"
+	<cache name="artistTopTracks" maxElementsInMemory="1"
 		maxElementsOnDisk="10000" eternal="true" overflowToDisk="true"
 		diskSpoolBufferSizeMB="5" diskPersistent="true"
 		memoryStoreEvictionPolicy="LFU" />
