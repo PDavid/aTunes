@@ -246,31 +246,6 @@ public final class GuiHandler extends AbstractHandler {
     }
 
     /**
-     * Show confirmation dialog.
-     * 
-     * @param message
-     *            the message
-     * @param title
-     *            the title
-     * 
-     * @return the int
-     */
-    private int showConfirmationDialog(String message, String title) {
-        return JOptionPane.showConfirmDialog(getFrame().getFrame(), message, title, JOptionPane.YES_NO_OPTION);
-    }
-
-    /**
-     * Show confirmation dialog.
-     * 
-     * @param message
-     *            the message
-     * @return the int
-     */
-    public int showConfirmationDialog(String message) {
-        return showConfirmationDialog(message, I18nUtils.getString("CONFIRMATION"));
-    }
-
-    /**
      * Show error dialog.
      * 
      * @param message

@@ -67,5 +67,7 @@
 	<bean id="inputDialog" class="net.sourceforge.atunes.gui.views.dialogs.InputDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean>
+	
+	<bean id="confirmationDialog" class="net.sourceforge.atunes.gui.views.dialogs.ConfirmationDialog" scope="prototype"/>
 
 </beans>

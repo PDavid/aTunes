@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.SwingWorker;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -46,6 +45,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
@@ -93,7 +93,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         // Show confirmation
-        if (GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("REMOVE_CONFIRMATION")) == JOptionPane.OK_OPTION) {
+        if (Context.getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("REMOVE_CONFIRMATION"))) {
 
             // Podcast view
             if (NavigationHandler.getInstance().getCurrentView() instanceof PodcastNavigationView) {

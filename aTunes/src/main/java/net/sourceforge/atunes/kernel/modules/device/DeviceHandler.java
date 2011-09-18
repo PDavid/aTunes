@@ -35,7 +35,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Constants;
@@ -61,6 +60,7 @@ import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.Repository;
@@ -256,7 +256,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
      */
     @Override
     public void deviceConnected(String location) {
-        if (GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("DEVICE_CONNECT_CONFIRMATION")) == JOptionPane.OK_OPTION) {
+        if (Context.getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("DEVICE_CONNECT_CONFIRMATION"))) {
             GuiHandler.getInstance().showProgressBar(true, null);
             this.retrieveDevice(new File(location));
         }
