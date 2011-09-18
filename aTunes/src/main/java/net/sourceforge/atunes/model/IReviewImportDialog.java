@@ -20,25 +20,36 @@
 
 package net.sourceforge.atunes.model;
 
+import java.io.File;
+import java.util.List;
+
 
 /**
- * A dialog to ask confirmation
+ * A dialog to review tags of a set of files before importing them
  * @author alex
  *
  */
-public interface IConfirmationDialog {
+public interface IReviewImportDialog {
 
 	/**
-	 * Sets parent frame
-	 * @param frame
+	 * @return the dialogCancelled
 	 */
-	public void setFrame(IFrame frame);
+	public boolean isDialogCancelled();
 
 	/**
-	 * Shows confirmation dialog
-	 * @param message
-	 * @return true if user pressed Yes, false if pressed No
+	 * Shows dialog with given data
+	 * 
+	 * @param folders
+	 * @param files
 	 */
-	public boolean showDialog(String message);
+	public void showDialog(List<File> folders,
+			List<ILocalAudioObject> filesToLoad);
+
+	/**
+	 * Returns result of reviewing tags
+	 * 
+	 * @return
+	 */
+	public ITagAttributesReviewed getResult();
 
 }

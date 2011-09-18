@@ -18,40 +18,44 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.dialogs;
+package net.sourceforge.atunes.model;
 
-import java.io.File;
-import java.util.List;
+import java.awt.Component;
 
-import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ITagAttributesReviewed;
 
 /**
- * A dialog to review tags of a set of files before importing them
+ * A dialog to show messages
  * @author alex
  *
  */
-public interface IReviewImportDialog {
+public interface IMessageDialog {
 
 	/**
-	 * @return the dialogCancelled
+	 * Show message for principal frame
+	 * @param message
+	 * @param frame
 	 */
-	public boolean isDialogCancelled();
+	public void showMessage(String message, IFrame frame);
 
 	/**
-	 * Shows dialog with given data
+	 * Show message
 	 * 
-	 * @param folders
-	 * @param files
+	 * @param message
+	 *            the message
 	 */
-	public void showDialog(List<File> folders,
-			List<ILocalAudioObject> filesToLoad);
+	public void showMessage(String message, Component owner);
 
 	/**
-	 * Returns result of reviewing tags
+	 * Shows a custom message dialog.
 	 * 
-	 * @return
+	 * @param frame
+	 * @param message
+	 * @param title
+	 * @param messageType the JOptionPane integer constant which determines type of message
+	 * @param options array of objects to be shown on buttons
+	 * @return Selected object
 	 */
-	public ITagAttributesReviewed getResult();
+	public Object showMessage(IFrame frame, String message, String title,
+			int messageType, Object[] options);
 
 }

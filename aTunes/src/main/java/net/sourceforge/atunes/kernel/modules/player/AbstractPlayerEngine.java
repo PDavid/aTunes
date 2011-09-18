@@ -41,6 +41,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IState;
@@ -106,9 +107,11 @@ public abstract class AbstractPlayerEngine {
     private static final class ShowPlaybackErrorRunnable implements Runnable {
         private final String[] errorMessages;
         private boolean ignore;
+        private IFrame frame;
 
-        private ShowPlaybackErrorRunnable(String[] errorMessages) {
+        private ShowPlaybackErrorRunnable(String[] errorMessages, IFrame frame) {
             this.errorMessages = errorMessages;
+            this.frame = frame;
         }
 
         @Override
@@ -117,7 +120,7 @@ public abstract class AbstractPlayerEngine {
         	for (String errorMessage : errorMessages) {
         		sb.append(errorMessage).append(" ");
         	}
-            String selection = (String) GuiHandler.getInstance().showMessage(StringUtils.getString(sb.toString()), I18nUtils.getString("ERROR"),
+            String selection = (String) Context.getBean(IMessageDialog.class).showMessage(frame, StringUtils.getString(sb.toString()), I18nUtils.getString("ERROR"),
                     JOptionPane.ERROR_MESSAGE, new String[] { I18nUtils.getString("IGNORE"), I18nUtils.getString("CANCEL") });
             ignore = selection.equals(I18nUtils.getString("IGNORE"));
         }
@@ -473,7 +476,7 @@ public abstract class AbstractPlayerEngine {
      * @return
      */
     private boolean showPlaybackError(String... errorMessages) {
-        ShowPlaybackErrorRunnable r = new ShowPlaybackErrorRunnable(errorMessages);
+        ShowPlaybackErrorRunnable r = new ShowPlaybackErrorRunnable(errorMessages, frame);
         if (SwingUtilities.isEventDispatchThread()) {
             r.run();
         } else {

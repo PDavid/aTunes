@@ -27,7 +27,6 @@ import java.awt.Window;
 import java.util.List;
 import java.util.logging.Level;
 
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
@@ -341,47 +340,6 @@ public final class GuiHandler extends AbstractHandler {
     	getNewIndeterminateProgressDialog(parent);
     	getIndeterminateProgressDialog().setTitle(text);
     	getIndeterminateProgressDialog().setVisible(true);
-    }
-
-    /**
-     * Show message for principal frame
-     * 
-     * @param message
-     *            the message
-     */
-    public void showMessage(String message) {
-        showMessage(message, getFrame().getFrame());
-    }
-    
-    /**
-     * Show message
-     * 
-     * @param message
-     *            the message
-     */
-    public void showMessage(String message, Component owner) {
-        JOptionPane.showMessageDialog(owner, message);
-    }
-    
-    /**
-     * Shows a custom message dialog.
-     * 
-     * @param message
-     *            the message
-     * @param title
-     *            the title
-     * @param messageType
-     *            the JOptionPane integer constant which determines type of
-     *            message
-     * @param options
-     *            array of objects to be shown on buttons
-     */
-    public Object showMessage(String message, String title, int messageType, Object[] options) {
-        JOptionPane pane = new JOptionPane(message, messageType, JOptionPane.OK_CANCEL_OPTION, null, options);
-        JDialog dialog = pane.createDialog(getFrame().getFrame(), title);
-        dialog.setLocationRelativeTo(getFrame().getFrame());
-        dialog.setVisible(true);
-        return pane.getValue();
     }
 
     /**

@@ -32,11 +32,14 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.CustomSearchDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler.LogicalOperator;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -50,15 +53,19 @@ final class CustomSearchController extends AbstractSimpleController<CustomSearch
 
     /** Translated attributes */
     private Map<String, String> translatedAttributes = new HashMap<String, String>();
+    
+    private IFrame frame;
 
     /**
      * Constructor.
      * 
      * @param dialog
      * @param state
+     * @param frame
      */
-    CustomSearchController(CustomSearchDialog dialog, IState state) {
+    CustomSearchController(CustomSearchDialog dialog, IState state, IFrame frame) {
         super(dialog, state);
+        this.frame = frame;
         addBindings();
     }
 
@@ -365,7 +372,7 @@ final class CustomSearchController extends AbstractSimpleController<CustomSearch
 
                 // If no matches found show a message
                 if (result.isEmpty()) {
-                    GuiHandler.getInstance().showMessage(I18nUtils.getString("NO_MATCHES_FOUND"));
+                	Context.getBean(IMessageDialog.class).showMessage(I18nUtils.getString("NO_MATCHES_FOUND"), frame);
                 } else {
                     // Hide search dialog
                     getComponentControlled().setVisible(false);
@@ -380,7 +387,7 @@ final class CustomSearchController extends AbstractSimpleController<CustomSearch
                 GuiHandler.getInstance().showErrorDialog(I18nUtils.getString("INVALID_SEARCH_RULE"));
             }
         } else {
-            GuiHandler.getInstance().showMessage(I18nUtils.getString("NO_MATCHES_FOUND"));
+        	Context.getBean(IMessageDialog.class).showMessage(I18nUtils.getString("NO_MATCHES_FOUND"), frame);
         }
     }
 

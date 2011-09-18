@@ -39,7 +39,6 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.views.dialogs.IFileSelectionDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ConnectDeviceAction;
@@ -61,7 +60,9 @@ import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IConfirmationDialog;
+import net.sourceforge.atunes.model.IFileSelectionDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.model.ViewMode;
@@ -285,7 +286,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
     	        Actions.getAction(SynchronizeDeviceWithPlayListAction.class).setEnabled(false);
     	        Actions.getAction(CopyPlayListToDeviceAction.class).setEnabled(false);
     	        getFrame().showDeviceInfo(false);
-		        GuiHandler.getInstance().showMessage(I18nUtils.getString("DEVICE_DISCONNECTION_DETECTED"));		    
+    	        Context.getBean(IMessageDialog.class).showMessage(I18nUtils.getString("DEVICE_DISCONNECTION_DETECTED"), getFrame());		    
     		}
     	});
 

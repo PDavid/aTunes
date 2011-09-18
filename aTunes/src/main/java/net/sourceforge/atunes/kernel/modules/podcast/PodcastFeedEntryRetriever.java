@@ -26,12 +26,13 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.DateUtils;
@@ -216,7 +217,7 @@ public class PodcastFeedEntryRetriever implements Runnable {
                                 podcastFeed.markEntriesAsNotNew();
                             }
                             if (!state.isShowStatusBar()) {
-                                GuiHandler.getInstance().showMessage(I18nUtils.getString("NEW_PODCAST_ENTRIES"));
+                            	Context.getBean(IMessageDialog.class).showMessage(I18nUtils.getString("NEW_PODCAST_ENTRIES"), frame);
                             } else {
                                 frame.showNewPodcastFeedEntriesInfo(true);
                             }
