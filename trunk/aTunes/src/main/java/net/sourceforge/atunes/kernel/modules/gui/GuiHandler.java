@@ -538,33 +538,6 @@ public final class GuiHandler extends AbstractHandler {
         }
     }
 
-    //TODO RTL component orientation
-    /**
-     * Show repository song number.
-     * 
-     * @param size
-     *            the size
-     * @param sizeInBytes
-     *            the size in bytes
-     * @param duration
-     *            the duration
-     */
-
-    public void showRepositoryAudioFileNumber(long size, long sizeInBytes, long duration) {
-        // Check if differenciation is required (needed by some slavic languages)
-        if (I18nUtils.getString("SONGS_IN_REPOSITORY").isEmpty()) {
-            String text = StringUtils.getString(I18nUtils.getString("REPOSITORY"), ": ", size, " ", I18nUtils.getString("SONGS"));
-            String toolTip = StringUtils.getString(I18nUtils.getString("REPOSITORY"), ": ", size, " ", I18nUtils.getString("SONGS"), " - ", StringUtils
-                    .fromByteToMegaOrGiga(sizeInBytes), " - ", StringUtils.fromSecondsToHoursAndDays(duration));
-            getFrame().setCenterStatusBarText(text, toolTip);
-        } else {
-            String text = StringUtils.getString(I18nUtils.getString("REPOSITORY"), ": ", size, " ", I18nUtils.getString("SONGS_IN_REPOSITORY"));
-            String toolTip = StringUtils.getString(I18nUtils.getString("REPOSITORY"), ": ", size, " ", I18nUtils.getString("SONGS_IN_REPOSITORY"), " - ", StringUtils
-                    .fromByteToMegaOrGiga(sizeInBytes), " - ", StringUtils.fromSecondsToHoursAndDays(duration));
-            getFrame().setCenterStatusBarText(text, toolTip);
-        }
-    }
-
     /**
      * Show save dialog.
      * 

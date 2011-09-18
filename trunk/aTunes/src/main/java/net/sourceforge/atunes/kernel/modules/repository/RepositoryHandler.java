@@ -397,7 +397,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
             @Override
             protected void done() {
                 GuiHandler.getInstance().hideProgressBar();
-                GuiHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
+                showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
                 NavigationHandler.getInstance().notifyReload();
                 Logger.info("Repository refresh done");
             }
@@ -770,7 +770,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         enableRepositoryActions(true);
 
         GuiHandler.getInstance().hideProgressBar();
-        GuiHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
+        showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
         NavigationHandler.getInstance().notifyReload();
         Logger.info("Repository refresh done");
 
@@ -787,7 +787,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
             progressDialog = null;
         }
         NavigationHandler.getInstance().notifyReload();
-        GuiHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository != null ? repository.getTotalDurationInSeconds() : 0);
+        showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository != null ? repository.getTotalDurationInSeconds() : 0);
 
         currentLoader = null;
     }
@@ -812,7 +812,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 			    @Override
 			    public void run() {
 			    	NavigationHandler.getInstance().notifyReload();
-			        GuiHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
+			        showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
 			    }
 			});
 		} catch (InterruptedException e) {
@@ -1170,7 +1170,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     @Override
     public void audioFilesRemoved(List<ILocalAudioObject> audioFiles) {
         // Update status bar
-        GuiHandler.getInstance().showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
+        showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
     }
 
     public void doInBackground() {
@@ -1351,4 +1351,32 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 		}
 		return null;
 	}
+	
+    //TODO RTL component orientation
+    /**
+     * Show repository song number.
+     * 
+     * @param size
+     *            the size
+     * @param sizeInBytes
+     *            the size in bytes
+     * @param duration
+     *            the duration
+     */
+    private void showRepositoryAudioFileNumber(long size, long sizeInBytes, long duration) {
+        // Check if differenciation is required (needed by some slavic languages)
+        if (I18nUtils.getString("SONGS_IN_REPOSITORY").isEmpty()) {
+            String text = StringUtils.getString(I18nUtils.getString("REPOSITORY"), ": ", size, " ", I18nUtils.getString("SONGS"));
+            String toolTip = StringUtils.getString(I18nUtils.getString("REPOSITORY"), ": ", size, " ", I18nUtils.getString("SONGS"), " - ", StringUtils
+                    .fromByteToMegaOrGiga(sizeInBytes), " - ", StringUtils.fromSecondsToHoursAndDays(duration));
+            getFrame().setCenterStatusBarText(text, toolTip);
+        } else {
+            String text = StringUtils.getString(I18nUtils.getString("REPOSITORY"), ": ", size, " ", I18nUtils.getString("SONGS_IN_REPOSITORY"));
+            String toolTip = StringUtils.getString(I18nUtils.getString("REPOSITORY"), ": ", size, " ", I18nUtils.getString("SONGS_IN_REPOSITORY"), " - ", StringUtils
+                    .fromByteToMegaOrGiga(sizeInBytes), " - ", StringUtils.fromSecondsToHoursAndDays(duration));
+            getFrame().setCenterStatusBarText(text, toolTip);
+        }
+    }
+
+
 }
