@@ -39,7 +39,6 @@ import net.sourceforge.atunes.gui.views.dialogs.properties.PropertiesDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.PlaybackState;
-import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
@@ -84,7 +83,6 @@ public final class GuiHandler extends AbstractHandler {
     	getFrame().applicationStarted(frameState);
     	
         showStatusBar(state.isShowStatusBar(), false);
-        showContextPanel(state.isUseContext());
         
         if (!getState().isShowSystemTray() && getOsManager().isClosingMainWindowClosesApplication()) {
         	getFrame().setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -194,20 +192,6 @@ public final class GuiHandler extends AbstractHandler {
      */
     public void showAboutDialog() {
     	Context.getBean(IAboutDialog.class).showDialog();
-    }
-
-    /**
-     * Show context information panel.
-     * 
-     * @param show
-     *            the show
-     */
-    public void showContextPanel(boolean show) {
-        getState().setUseContext(show);
-        getFrame().showContextPanel(show);
-        if (show) {
-            ContextHandler.getInstance().retrieveInfoAndShowInPanel(PlayListHandler.getInstance().getCurrentAudioObjectFromVisiblePlayList());
-        }
     }
 
     /**
@@ -383,9 +367,6 @@ public final class GuiHandler extends AbstractHandler {
 
     @Override
     public void applicationStateChanged(IState newState) {
-        // Show or hide context panel
-        showContextPanel(newState.isUseContext());
-
         // Once done graphic changes, repaint the window
         repaint();
     }

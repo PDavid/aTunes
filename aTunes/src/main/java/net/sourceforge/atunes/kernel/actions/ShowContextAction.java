@@ -26,7 +26,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class ShowContextAction extends CustomAbstractAction {
@@ -46,6 +46,6 @@ public class ShowContextAction extends CustomAbstractAction {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        GuiHandler.getInstance().showContextPanel((Boolean) getValue(SELECTED_KEY));
+        ContextHandler.getInstance().showContextPanel((Boolean) getValue(SELECTED_KEY));
     }
 }
