@@ -36,12 +36,4 @@ public interface ISystemTrayHandler extends IHandler {
 	 */
 	public void setPlaying(boolean playing);
 
-	/**
-	 * Sets the tray tool tip.
-	 * 
-	 * @param msg
-	 *            the new tray tool tip
-	 */
-	public void setTrayToolTip(String msg);
-
 }

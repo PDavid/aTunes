@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.tray;
 import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
@@ -31,6 +32,7 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.Constants;
@@ -44,6 +46,7 @@ import net.sourceforge.atunes.gui.views.controls.ActionTrayIcon;
 import net.sourceforge.atunes.gui.views.controls.JTrayIcon;
 import net.sourceforge.atunes.gui.views.controls.JTrayIconPopupMenu;
 import net.sourceforge.atunes.kernel.AbstractHandler;
+import net.sourceforge.atunes.kernel.PlaybackState;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ExitAction;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
@@ -57,6 +60,7 @@ import net.sourceforge.atunes.kernel.actions.ShuffleModeAction;
 import net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.ToggleWindowVisibilityAction;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ISystemTrayHandler;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -247,8 +251,7 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
         }
     }
 
-    @Override
-	public void setTrayToolTip(String msg) {
+	private void setTrayToolTip(String msg) {
     	if (isTrayInitialized()) {
     		getTrayIcon().setToolTip(msg);
     	}
@@ -463,4 +466,31 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
 	protected boolean isTrayInitialized() {
 		return trayInitialized;
 	}
+	
+	@Override
+	public void playbackStateChanged(final PlaybackState newState, final IAudioObject currentAudioObject) {
+        if (!EventQueue.isDispatchThread()) {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    playbackStateChangedEDT(newState, currentAudioObject);
+                }
+            });
+        } else {
+            playbackStateChangedEDT(newState, currentAudioObject);
+        }
+	}
+	
+    private void playbackStateChangedEDT(PlaybackState newState, IAudioObject currentAudioObject) {
+    	String text = currentAudioObject != null ? currentAudioObject.getAudioObjectDescription() : "";
+        StringBuilder strBuilder = new StringBuilder();
+        if (!text.equals("")) {
+            strBuilder.append(text);
+            strBuilder.append(" - ");
+        }
+        strBuilder.append(Constants.APP_NAME);
+        strBuilder.append(" ");
+        strBuilder.append(Constants.VERSION.toShortString());
+        setTrayToolTip(strBuilder.toString());
+    }
 }
