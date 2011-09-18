@@ -22,10 +22,10 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class SizeColumn extends AbstractColumn {
@@ -58,7 +58,7 @@ public class SizeColumn extends AbstractColumn {
         if (audioObject instanceof Radio) {
             return "";
         }
-        if (audioObject instanceof PodcastFeedEntry) {
+        if (audioObject instanceof IPodcastFeedEntry) {
             return "";
         }
         return StringUtils.fromByteToMegaOrGiga(((AudioFile) audioObject).getFile().length());

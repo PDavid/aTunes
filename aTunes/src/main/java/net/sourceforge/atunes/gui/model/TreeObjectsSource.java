@@ -23,7 +23,7 @@ package net.sourceforge.atunes.gui.model;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.TreeObject;
+import net.sourceforge.atunes.model.ITreeObject;
 
 public interface TreeObjectsSource {
 
@@ -32,5 +32,5 @@ public interface TreeObjectsSource {
      * 
      * @return
      */
-    public List<TreeObject<? extends IAudioObject>> getSelectedTreeObjects();
+    public List<ITreeObject<? extends IAudioObject>> getSelectedTreeObjects();
 }

@@ -23,11 +23,11 @@ package net.sourceforge.atunes.kernel.modules.columns;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectStatistics;
+import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 
 public class TimesPlayedColumn extends AbstractColumn {
@@ -62,7 +62,7 @@ public class TimesPlayedColumn extends AbstractColumn {
         if (audioObject instanceof Radio) {
             return "";
         }
-        if (audioObject instanceof PodcastFeedEntry) {
+        if (audioObject instanceof IPodcastFeedEntry) {
             return "";
         }
         // Return times played

@@ -36,6 +36,7 @@ import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.NetworkUtils;
 
@@ -45,7 +46,7 @@ import net.sourceforge.atunes.utils.NetworkUtils;
  */
 public class PodcastFeedEntryDownloader extends SwingWorker<Boolean, Void> {
 
-    private PodcastFeedEntry podcastFeedEntry;
+    private IPodcastFeedEntry podcastFeedEntry;
     /*
      * Additional Bean properties
      */
@@ -63,7 +64,7 @@ public class PodcastFeedEntryDownloader extends SwingWorker<Boolean, Void> {
      * @param podcastFeedEntry
      *            the podcast feed entry
      */
-    public PodcastFeedEntryDownloader(PodcastFeedEntry podcastFeedEntry, ProxyBean proxy, IFrame frame) {
+    public PodcastFeedEntryDownloader(IPodcastFeedEntry podcastFeedEntry, ProxyBean proxy, IFrame frame) {
         this.podcastFeedEntry = podcastFeedEntry;
         this.proxy = proxy;
         this.frame = frame;
@@ -200,7 +201,7 @@ public class PodcastFeedEntryDownloader extends SwingWorker<Boolean, Void> {
      * 
      * @return the podcast feed entry
      */
-    public PodcastFeedEntry getPodcastFeedEntry() {
+    public IPodcastFeedEntry getPodcastFeedEntry() {
         return podcastFeedEntry;
     }
 }

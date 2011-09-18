@@ -21,10 +21,10 @@
 package net.sourceforge.atunes.kernel.modules.columns;
 
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPodcastFeedEntry;
 
 public class FavoriteColumn extends AbstractColumn {
 
@@ -56,7 +56,7 @@ public class FavoriteColumn extends AbstractColumn {
         if (audioObject instanceof Radio) {
             return null;
         }
-        if (audioObject instanceof PodcastFeedEntry) {
+        if (audioObject instanceof IPodcastFeedEntry) {
             return null;
         }
         return FavoritesHandler.getInstance().getFavoriteSongsInfo().containsValue(audioObject) ? Property.FAVORITE : null;

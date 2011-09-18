@@ -38,7 +38,7 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
+import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -62,7 +62,7 @@ final class PodcastFeedEntryPropertiesDialog extends PropertiesDialog {
     private JLabel descriptionLabel;
     private JScrollPane descriptionScrollPane;
     private JTextArea descriptionTextArea;
-    private PodcastFeedEntry entry;
+    private IPodcastFeedEntry entry;
     
     private IState state;
 
@@ -72,7 +72,7 @@ final class PodcastFeedEntryPropertiesDialog extends PropertiesDialog {
      * @param entry
      *            the entry
      */
-    PodcastFeedEntryPropertiesDialog(PodcastFeedEntry entry, JFrame owner, IState state) {
+    PodcastFeedEntryPropertiesDialog(IPodcastFeedEntry entry, JFrame owner, IState state) {
         super(getTitleText(entry), owner);
         this.entry = entry;
         this.state = state;
@@ -92,7 +92,7 @@ final class PodcastFeedEntryPropertiesDialog extends PropertiesDialog {
      * 
      * @return title for dialog
      */
-    private static String getTitleText(PodcastFeedEntry entry) {
+    private static String getTitleText(IPodcastFeedEntry entry) {
         return StringUtils.getString(I18nUtils.getString("INFO_OF_PODCAST_FEED"), " ", entry.getTitle());
     }
 

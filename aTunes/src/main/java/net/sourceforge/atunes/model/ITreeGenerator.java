@@ -55,8 +55,8 @@ public interface ITreeGenerator {
 						  String currentFilter, 
 						  DefaultMutableTreeNode root, 
 						  DefaultTreeModel treeModel, 
-						  List<TreeObject<? extends IAudioObject>> objectsSelected, 
-						  List<TreeObject<? extends IAudioObject>> objectsExpanded);
+						  List<ITreeObject<? extends IAudioObject>> objectsSelected, 
+						  List<ITreeObject<? extends IAudioObject>> objectsExpanded);
 	
 	public void selectAudioObject(JTree tree, IAudioObject audioObject);
 

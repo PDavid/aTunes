@@ -22,24 +22,24 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class DownloadPodcastEntryAction extends AbstractActionOverSelectedObjects<PodcastFeedEntry> {
+public class DownloadPodcastEntryAction extends AbstractActionOverSelectedObjects<IPodcastFeedEntry> {
 
     private static final long serialVersionUID = 1081237259786604605L;
 
     DownloadPodcastEntryAction() {
-        super(I18nUtils.getString("DOWNLOAD_PODCAST_ENTRY"), PodcastFeedEntry.class);
+        super(I18nUtils.getString("DOWNLOAD_PODCAST_ENTRY"), IPodcastFeedEntry.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("DOWNLOAD_PODCAST_ENTRY"));
         setEnabled(false);
     }
 
     @Override
-    protected void performAction(List<PodcastFeedEntry> objects) {
-        for (PodcastFeedEntry pfe : objects) {
+    protected void performAction(List<IPodcastFeedEntry> objects) {
+        for (IPodcastFeedEntry pfe : objects) {
             PodcastFeedHandler.getInstance().downloadPodcastFeedEntry(pfe);
         }
     }
@@ -47,7 +47,7 @@ public class DownloadPodcastEntryAction extends AbstractActionOverSelectedObject
     @Override
     public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
         for (IAudioObject ao : selection) {
-            if (!(ao instanceof PodcastFeedEntry) || ((PodcastFeedEntry) ao).isDownloaded() || PodcastFeedHandler.getInstance().isDownloading((PodcastFeedEntry) ao)) {
+            if (!(ao instanceof IPodcastFeedEntry) || ((IPodcastFeedEntry) ao).isDownloaded() || PodcastFeedHandler.getInstance().isDownloading((IPodcastFeedEntry) ao)) {
                 return false;
             }
         }

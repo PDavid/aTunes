@@ -27,7 +27,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -36,12 +35,15 @@ import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
+import net.sourceforge.atunes.model.IAddPodcastFeedDialog;
+import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class AddPodcastFeedDialog.
  */
-public final class AddPodcastFeedDialog extends AbstractCustomDialog {
+public final class AddPodcastFeedDialog extends AbstractCustomDialog implements IAddPodcastFeedDialog {
 
     private static final long serialVersionUID = 7295438534550341824L;
 
@@ -57,11 +59,10 @@ public final class AddPodcastFeedDialog extends AbstractCustomDialog {
     /**
      * Instantiates a new adds the podcast feed dialog.
      * 
-     * @param owner
-     *            the owner
+     * @param frame
      */
-    public AddPodcastFeedDialog(JFrame owner) {
-        super(owner, 500, 170, true, CloseAction.DISPOSE);
+    public AddPodcastFeedDialog(IFrame frame) {
+        super(frame, 500, 170, true, CloseAction.DISPOSE);
         setTitle(I18nUtils.getString("ADD_PODCAST_FEED"));
         setResizable(false);
         add(getContent());
@@ -137,13 +138,20 @@ public final class AddPodcastFeedDialog extends AbstractCustomDialog {
         return panel;
     }
 
-    /**
-     * Gets the podcast feed.
-     * 
-     * @return the podcast feed
-     */
-    public PodcastFeed getPodcastFeed() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IAddPodcastFeedDialog#getPodcastFeed()
+	 */
+    @Override
+	public IPodcastFeed getPodcastFeed() {
         return podcastFeed;
+    }
+    
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IAddPodcastFeedDialog#showDialog()
+	 */
+    @Override
+	public void showDialog() {
+    	setVisible(true);
     }
 
 }

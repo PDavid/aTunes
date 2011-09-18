@@ -61,7 +61,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.TreeObject;
+import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -187,9 +187,9 @@ public class RepositoryNavigationView extends AbstractNavigationView {
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
 
         // Get objects selected before refreshing tree
-        List<TreeObject<? extends IAudioObject>> objectsSelected = getTreeObjectsSelected(tree);
+        List<ITreeObject<? extends IAudioObject>> objectsSelected = getTreeObjectsSelected(tree);
         // Get objects expanded before refreshing tree
-        List<TreeObject<? extends IAudioObject>> objectsExpanded = getTreeObjectsExpanded(tree, root);
+        List<ITreeObject<? extends IAudioObject>> objectsExpanded = getTreeObjectsExpanded(tree, root);
         
         // Build treeN
         getTreeGeneratorFactory().getTreeGenerator(viewMode).buildTree(getState(), "REPOSITORY", this, (Map<String, Year>) getViewData(viewMode), treeFilter, root, treeModel, objectsSelected, objectsExpanded);
@@ -206,13 +206,13 @@ public class RepositoryNavigationView extends AbstractNavigationView {
             } else {
                 for (int i = 0; i < node.getChildCount(); i++) {
                     @SuppressWarnings("unchecked")
-					TreeObject<ILocalAudioObject> obj = (TreeObject<ILocalAudioObject>) ((DefaultMutableTreeNode) node.getChildAt(i)).getUserObject();
+					ITreeObject<ILocalAudioObject> obj = (ITreeObject<ILocalAudioObject>) ((DefaultMutableTreeNode) node.getChildAt(i)).getUserObject();
                     songs.addAll(obj.getAudioObjects());
                 }
             }
         } else {
             @SuppressWarnings("unchecked")
-			TreeObject<ILocalAudioObject> obj = (TreeObject<ILocalAudioObject>) node.getUserObject();
+			ITreeObject<ILocalAudioObject> obj = (ITreeObject<ILocalAudioObject>) node.getUserObject();
             songs = obj.getAudioObjects();
         }
         return songs;

@@ -35,14 +35,14 @@ import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.TreeObject;
+import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * This class represents a year, with a set of artist of this year.
  */
-public class Year implements Serializable, TreeObject<ILocalAudioObject> {
+public class Year implements Serializable, ITreeObject<ILocalAudioObject> {
 
     private static final long serialVersionUID = -8560986690062265343L;
 

@@ -54,8 +54,9 @@ import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
+import net.sourceforge.atunes.model.IPodcastFeed;
+import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -149,7 +150,7 @@ public final class PodcastNavigationView extends AbstractNavigationView {
 
     @Override
     protected Map<String, ?> getViewData(ViewMode viewMode) {
-        Map<String, List<PodcastFeed>> data = new HashMap<String, List<PodcastFeed>>();
+        Map<String, List<IPodcastFeed>> data = new HashMap<String, List<IPodcastFeed>>();
         data.put("PODCASTS", PodcastFeedHandler.getInstance().getPodcastFeeds());
         return data;
     }
@@ -188,12 +189,12 @@ public final class PodcastNavigationView extends AbstractNavigationView {
     }
 
     @Override
-    public List<PodcastFeedEntry> getAudioObjectForTreeNode(DefaultMutableTreeNode node, ViewMode viewMode, String treeFilter) {
-        List<PodcastFeedEntry> songs = new ArrayList<PodcastFeedEntry>();
+    public List<IPodcastFeedEntry> getAudioObjectForTreeNode(DefaultMutableTreeNode node, ViewMode viewMode, String treeFilter) {
+        List<IPodcastFeedEntry> songs = new ArrayList<IPodcastFeedEntry>();
         if (node.isRoot()) {
             if (treeFilter == null) {
-                List<PodcastFeed> podcastFeeds = PodcastFeedHandler.getInstance().getPodcastFeeds();
-                for (PodcastFeed pf : podcastFeeds) {
+                List<IPodcastFeed> podcastFeeds = PodcastFeedHandler.getInstance().getPodcastFeeds();
+                for (IPodcastFeed pf : podcastFeeds) {
                     songs.addAll(pf.getAudioObjects());
                 }
             } else {
@@ -224,7 +225,7 @@ public final class PodcastNavigationView extends AbstractNavigationView {
             return;
         }
 
-        for (PodcastFeed pf : podcastFeeds) {
+        for (IPodcastFeed pf : podcastFeeds) {
             if (currentFilter == null || pf.getName().toUpperCase().contains(currentFilter.toUpperCase())) {
                 DefaultMutableTreeNode child = new DefaultMutableTreeNode(pf);
                 root.add(child);

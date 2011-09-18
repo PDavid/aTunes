@@ -24,13 +24,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import junit.framework.Assert;
+import net.sourceforge.atunes.model.IPodcastFeed;
 
 import org.junit.Before;
 import org.junit.Test;
 
 public class PodcastFeedEntryRetrieverTest {
 
-    private PodcastFeed testedObject;
+    private IPodcastFeed testedObject;
 
     @Before
     public void init() {
@@ -42,7 +43,7 @@ public class PodcastFeedEntryRetrieverTest {
     public void testRetrievePodcastFeedEntries() {
 
         PodcastFeedEntryRetriever podcastFeedEntryRetriever = new PodcastFeedEntryRetriever(Arrays.asList(testedObject), null, null);
-        List<PodcastFeed> podcastFeedsWithNewEntries = podcastFeedEntryRetriever.retrievePodcastFeedEntries(true, null);
+        List<IPodcastFeed> podcastFeedsWithNewEntries = podcastFeedEntryRetriever.retrievePodcastFeedEntries(true, null);
 
         Assert.assertEquals("RadioTux GNU/Linux", testedObject.getName());
         Assert.assertEquals(1, podcastFeedsWithNewEntries.size());

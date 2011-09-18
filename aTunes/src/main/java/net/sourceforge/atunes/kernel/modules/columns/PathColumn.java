@@ -24,6 +24,7 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPodcastFeedEntry;
 
 public class PathColumn extends AbstractColumn {
 
@@ -54,7 +55,7 @@ public class PathColumn extends AbstractColumn {
         if (audioObject instanceof Radio) {
             return ((Radio) audioObject).getUrl();
         }
-        if (audioObject instanceof PodcastFeedEntry) {
+        if (audioObject instanceof IPodcastFeedEntry) {
             return ((PodcastFeedEntry) audioObject).getUrl();
         }
         return ((AudioFile) audioObject).getFile().getParentFile().getAbsolutePath();

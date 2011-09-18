@@ -28,8 +28,8 @@ import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
+import net.sourceforge.atunes.model.IPodcastFeed;
+import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class MarkPodcastListenedAction extends CustomAbstractAction {
@@ -44,7 +44,7 @@ public class MarkPodcastListenedAction extends CustomAbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         TreePath path = NavigationHandler.getInstance().getView(PodcastNavigationView.class).getTree().getSelectionPath();
-        PodcastFeed podcastFeedToMarkAsListened = (PodcastFeed) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
+        IPodcastFeed podcastFeedToMarkAsListened = (IPodcastFeed) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
         podcastFeedToMarkAsListened.markEntriesAsListened();
         NavigationHandler.getInstance().refreshView(PodcastNavigationView.class);
     }
@@ -57,8 +57,8 @@ public class MarkPodcastListenedAction extends CustomAbstractAction {
 
         boolean nonListenedEntries = false;
         for (DefaultMutableTreeNode node : selection) {
-            List<PodcastFeedEntry> podcastFeedEntries = ((PodcastFeed) node.getUserObject()).getPodcastFeedEntries();
-            for (PodcastFeedEntry entry : podcastFeedEntries) {
+            List<IPodcastFeedEntry> podcastFeedEntries = ((IPodcastFeed) node.getUserObject()).getPodcastFeedEntries();
+            for (IPodcastFeedEntry entry : podcastFeedEntries) {
                 if (!entry.isListened()) {
                     nonListenedEntries = true;
                 }

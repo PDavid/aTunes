@@ -76,6 +76,7 @@ import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -303,10 +304,10 @@ public final class FullScreenWindow extends AbstractCustomWindow {
             progressSlider.setEnabled(false);
             textLabel.setText(((Radio) audioObject).getName());
             textLabel2.setText(((Radio) audioObject).getUrl());
-        } else if (audioObject instanceof PodcastFeedEntry) {
+        } else if (audioObject instanceof IPodcastFeedEntry) {
         	progressSlider.setEnabled(false);
             textLabel.setText(((PodcastFeedEntry) audioObject).getTitle());
-            textLabel2.setText(((PodcastFeedEntry) audioObject).getPodcastFeed().getName());
+            textLabel2.setText(((IPodcastFeedEntry) audioObject).getPodcastFeed().getName());
         } else {
             textLabel.setText(audioObject.getTitleOrFileName());
             textLabel2.setText(audioObject.getArtist());

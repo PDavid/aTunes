@@ -26,6 +26,7 @@ import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class RemoveOldPodcastEntryAction extends AbstractActionOverSelectedObjects<PodcastFeedEntry> {
@@ -39,7 +40,7 @@ public class RemoveOldPodcastEntryAction extends AbstractActionOverSelectedObjec
 
     @Override
     protected void performAction(List<PodcastFeedEntry> objects) {
-        for (PodcastFeedEntry pfe : objects) {
+        for (IPodcastFeedEntry pfe : objects) {
             pfe.getPodcastFeed().removeEntry(pfe);
         }
         NavigationHandler.getInstance().refreshView(PodcastNavigationView.class);
@@ -48,7 +49,7 @@ public class RemoveOldPodcastEntryAction extends AbstractActionOverSelectedObjec
     @Override
     public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
         for (IAudioObject ao : selection) {
-            if (!(ao instanceof PodcastFeedEntry) || !((PodcastFeedEntry) ao).isOld()) {
+            if (!(ao instanceof IPodcastFeedEntry) || !((IPodcastFeedEntry) ao).isOld()) {
                 return false;
             }
         }

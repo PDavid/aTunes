@@ -35,7 +35,7 @@ import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.TreeObject;
+import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -43,7 +43,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * This class represents a genre, with a name, and a set of artist of this
  * genre.
  */
-public class Genre implements Serializable, TreeObject<ILocalAudioObject> {
+public class Genre implements Serializable, ITreeObject<ILocalAudioObject> {
 
     private static final long serialVersionUID = -6552057266561177152L;
 

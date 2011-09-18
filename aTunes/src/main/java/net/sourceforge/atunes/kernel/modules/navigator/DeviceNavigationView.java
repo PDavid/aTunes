@@ -56,7 +56,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.TreeObject;
+import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -169,9 +169,9 @@ public final class DeviceNavigationView extends AbstractNavigationView {
         List<DefaultMutableTreeNode> nodesToExpand = new ArrayList<DefaultMutableTreeNode>();
 
         // Get objects selected before refreshing tree
-        List<TreeObject<? extends IAudioObject>> objectsSelected = getTreeObjectsSelected(getTree());
+        List<ITreeObject<? extends IAudioObject>> objectsSelected = getTreeObjectsSelected(getTree());
         // Get objects expanded before refreshing tree
-        List<TreeObject<? extends IAudioObject>> objectsExpanded = getTreeObjectsExpanded(getTree(), root);
+        List<ITreeObject<? extends IAudioObject>> objectsExpanded = getTreeObjectsExpanded(getTree(), root);
 
         root.removeAllChildren();
 
@@ -195,13 +195,13 @@ public final class DeviceNavigationView extends AbstractNavigationView {
             } else {
                 for (int i = 0; i < node.getChildCount(); i++) {
                     @SuppressWarnings("unchecked")
-					TreeObject<ILocalAudioObject> obj = (TreeObject<ILocalAudioObject>) ((DefaultMutableTreeNode) node.getChildAt(i)).getUserObject();
+					ITreeObject<ILocalAudioObject> obj = (ITreeObject<ILocalAudioObject>) ((DefaultMutableTreeNode) node.getChildAt(i)).getUserObject();
                     songs.addAll(obj.getAudioObjects());
                 }
             }
         } else {
             @SuppressWarnings("unchecked")
-			TreeObject<ILocalAudioObject> obj = (TreeObject<ILocalAudioObject>) node.getUserObject();
+			ITreeObject<ILocalAudioObject> obj = (ITreeObject<ILocalAudioObject>) node.getUserObject();
             songs = obj.getAudioObjects();
         }
         return songs;

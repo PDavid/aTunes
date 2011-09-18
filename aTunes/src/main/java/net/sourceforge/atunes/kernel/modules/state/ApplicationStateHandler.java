@@ -38,7 +38,6 @@ import net.sourceforge.atunes.gui.views.dialogs.editPreferences.EditPreferencesD
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.playlist.ListOfPlayLists;
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.exception.InconsistentRepositoryException;
@@ -47,6 +46,7 @@ import net.sourceforge.atunes.kernel.modules.statistics.Statistics;
 import net.sourceforge.atunes.misc.Timer;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -231,7 +231,7 @@ public final class ApplicationStateHandler extends AbstractHandler {
      * @param podcastFeeds
      *            Podcast feeds that should be persist
      */
-    public void persistPodcastFeedCache(List<PodcastFeed> podcastFeeds) {
+    public void persistPodcastFeedCache(List<IPodcastFeed> podcastFeeds) {
         try {
             XMLUtils.writeObjectToFile(podcastFeeds, StringUtils.getString(getUserConfigFolder(), "/", Constants.PODCAST_FEED_CACHE));
         } catch (IOException e) {
@@ -461,15 +461,15 @@ public final class ApplicationStateHandler extends AbstractHandler {
      * @return The retrieved podcast feeds
      */
     @SuppressWarnings("unchecked")
-    public List<PodcastFeed> retrievePodcastFeedCache() {
+    public List<IPodcastFeed> retrievePodcastFeedCache() {
         try {
-            return (List<PodcastFeed>) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.PODCAST_FEED_CACHE));
+            return (List<IPodcastFeed>) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.PODCAST_FEED_CACHE));
         } catch (IOException e) {
             /*
              * java.util.concurrent.CopyOnWriteArrayList instead of e.g.
              * java.util.ArrayList to avoid ConcurrentModificationException
              */
-            return new CopyOnWriteArrayList<PodcastFeed>();
+            return new CopyOnWriteArrayList<IPodcastFeed>();
         }
     }
 

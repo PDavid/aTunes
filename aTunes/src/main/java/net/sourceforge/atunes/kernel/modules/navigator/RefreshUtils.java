@@ -30,7 +30,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.TreeObject;
+import net.sourceforge.atunes.model.ITreeObject;
 
 /**
  * The Class RefreshUtils.
@@ -75,7 +75,7 @@ public final class RefreshUtils {
      * @param userObjects
      * @return list of nodes
      */
-    static List<DefaultMutableTreeNode> getNodes(DefaultMutableTreeNode rootNode, List<TreeObject<? extends IAudioObject>> userObjects) {
+    static List<DefaultMutableTreeNode> getNodes(DefaultMutableTreeNode rootNode, List<ITreeObject<? extends IAudioObject>> userObjects) {
         List<DefaultMutableTreeNode> result = new ArrayList<DefaultMutableTreeNode>();
 
         if (userObjects.contains(rootNode.getUserObject())) {

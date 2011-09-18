@@ -42,7 +42,6 @@ import net.sourceforge.atunes.gui.frame.FrameState;
 import net.sourceforge.atunes.gui.popup.FadingPopupFactory;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable.PlayState;
 import net.sourceforge.atunes.gui.views.dialogs.AddArtistDragDialog;
-import net.sourceforge.atunes.gui.views.dialogs.AddPodcastFeedDialog;
 import net.sourceforge.atunes.gui.views.dialogs.IndeterminateProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.InputDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RadioDialog;
@@ -57,7 +56,6 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListLocalAudioObjectFilter;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListPodcastFeedEntryFilter;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListRadioFilter;
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.misc.SystemProperties;
@@ -223,17 +221,6 @@ public final class GuiHandler extends AbstractHandler {
     	Context.getBean(IAboutDialog.class).showDialog();
     }
 
-    /**
-     * Show add podcast feed dialog.
-     * 
-     * @return the podcast feed
-     */
-    public PodcastFeed showAddPodcastFeedDialog() {
-        AddPodcastFeedDialog dialog = new AddPodcastFeedDialog(getFrame().getFrame());
-        dialog.setVisible(true);
-        return dialog.getPodcastFeed();
-    }
-    
     public void showAddArtistDragDialog(Artist currentArtist){
     	AddArtistDragDialog dialog = new AddArtistDragDialog(getFrame().getFrame(),currentArtist);
     	dialog.setVisible(true);

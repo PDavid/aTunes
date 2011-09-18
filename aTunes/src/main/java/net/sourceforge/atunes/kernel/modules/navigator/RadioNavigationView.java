@@ -54,7 +54,7 @@ import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.TreeObject;
+import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -164,9 +164,9 @@ public final class RadioNavigationView extends AbstractNavigationView {
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
 
         // Get objects selected before refreshing tree
-        List<TreeObject<? extends IAudioObject>> objectsSelected = getTreeObjectsSelected(getTree());
+        List<ITreeObject<? extends IAudioObject>> objectsSelected = getTreeObjectsSelected(getTree());
         // Get objects expanded before refreshing tree
-        List<TreeObject<? extends IAudioObject>> objectsExpanded = getTreeObjectsExpanded(getTree(), root);
+        List<ITreeObject<? extends IAudioObject>> objectsExpanded = getTreeObjectsExpanded(getTree(), root);
 
         // Nodes to be selected after refresh
         List<DefaultMutableTreeNode> nodesToSelect = new ArrayList<DefaultMutableTreeNode>();
@@ -227,7 +227,7 @@ public final class RadioNavigationView extends AbstractNavigationView {
      * @param showAllStations
      *            the show all stations
      */
-    private static void addRadioNodes(List<Radio> radios, List<Radio> presetRadios, DefaultMutableTreeNode root, String currentFilter, boolean showAllStations, List<TreeObject<? extends IAudioObject>> objectsExpanded, List<TreeObject<? extends IAudioObject>> objectsSelected, List<DefaultMutableTreeNode> nodesToExpand, List<DefaultMutableTreeNode> nodesToSelect) {
+    private static void addRadioNodes(List<Radio> radios, List<Radio> presetRadios, DefaultMutableTreeNode root, String currentFilter, boolean showAllStations, List<ITreeObject<? extends IAudioObject>> objectsExpanded, List<ITreeObject<? extends IAudioObject>> objectsSelected, List<DefaultMutableTreeNode> nodesToExpand, List<DefaultMutableTreeNode> nodesToSelect) {
         if (radios == null) {
             return;
         }

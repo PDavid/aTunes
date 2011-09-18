@@ -25,6 +25,7 @@ import java.util.List;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class MarkPodcastEntryListenedAction extends AbstractActionOverSelectedObjects<PodcastFeedEntry> {
@@ -38,7 +39,7 @@ public class MarkPodcastEntryListenedAction extends AbstractActionOverSelectedOb
 
     @Override
     protected void performAction(List<PodcastFeedEntry> objects) {
-        for (PodcastFeedEntry pfe : objects) {
+        for (IPodcastFeedEntry pfe : objects) {
             pfe.setListened(true);
         }
         NavigationHandler.getInstance().refreshNavigationTable();
@@ -47,7 +48,7 @@ public class MarkPodcastEntryListenedAction extends AbstractActionOverSelectedOb
     @Override
     public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
         for (IAudioObject ao : selection) {
-            if (!(ao instanceof PodcastFeedEntry) || ((PodcastFeedEntry) ao).isListened()) {
+            if (!(ao instanceof IPodcastFeedEntry) || ((IPodcastFeedEntry) ao).isListened()) {
                 return false;
             }
         }

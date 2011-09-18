@@ -46,13 +46,15 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IAddPodcastFeedDialog;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IPodcastFeed;
+import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.FileNameUtils;
@@ -69,14 +71,22 @@ public final class PodcastFeedHandler extends AbstractHandler {
 	 */
 	private static final int INITIAL_RETRIEVER_DELAY = 5000; // 5 seconds
 	
+    private static final Comparator<IPodcastFeed> COMPARATOR = new Comparator<IPodcastFeed>() {
+        @Override
+        public int compare(IPodcastFeed o1, IPodcastFeed o2) {
+            return o1.getName().compareToIgnoreCase(o2.getName());
+        }
+    };
+
+	
     private final class DownloadPodcastFeedEntryPropertyChangeListener
 			implements PropertyChangeListener {
-		private final PodcastFeedEntry podcastFeedEntry;
+		private final IPodcastFeedEntry podcastFeedEntry;
 		private final IProgressDialog d;
 		private final PodcastFeedEntryDownloader downloadPodcastFeedEntry;
 
 		private DownloadPodcastFeedEntryPropertyChangeListener(
-				PodcastFeedEntry podcastFeedEntry, IProgressDialog d,
+				IPodcastFeedEntry podcastFeedEntry, IProgressDialog d,
 				PodcastFeedEntryDownloader downloadPodcastFeedEntry) {
 			this.podcastFeedEntry = podcastFeedEntry;
 			this.d = d;
@@ -105,10 +115,10 @@ public final class PodcastFeedHandler extends AbstractHandler {
 
 	private static final class DeleteDownloadedPodcastFeedEntryWorker extends SwingWorker<Boolean, Void> {
         private final File f;
-        private final PodcastFeedEntry podcastFeedEntry;
+        private final IPodcastFeedEntry podcastFeedEntry;
         private IFrame frame;
 
-        private DeleteDownloadedPodcastFeedEntryWorker(File f, PodcastFeedEntry podcastFeedEntry, IFrame frame) {
+        private DeleteDownloadedPodcastFeedEntryWorker(File f, IPodcastFeedEntry podcastFeedEntry, IFrame frame) {
             this.f = f;
             this.podcastFeedEntry = podcastFeedEntry;
             this.frame = frame;
@@ -138,7 +148,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
 
     public static final long DEFAULT_PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL = 180000;
 
-    private List<PodcastFeed> podcastFeeds;
+    private List<IPodcastFeed> podcastFeeds;
 
     /**
      * Flag indicating if podcast list needs to be written to disk
@@ -189,7 +199,9 @@ public final class PodcastFeedHandler extends AbstractHandler {
      * Adds a Podcast Feed.
      */
     public void addPodcastFeed() {
-        PodcastFeed podcastFeed = GuiHandler.getInstance().showAddPodcastFeedDialog();
+    	IAddPodcastFeedDialog dialog = Context.getBean(IAddPodcastFeedDialog.class);
+    	dialog.showDialog();    	
+        IPodcastFeed podcastFeed = dialog.getPodcastFeed(); 
         if (podcastFeed != null) {
             addPodcastFeed(podcastFeed);
             NavigationHandler.getInstance().refreshView(PodcastNavigationView.class);
@@ -203,13 +215,12 @@ public final class PodcastFeedHandler extends AbstractHandler {
      * @param podcastFeed
      *            A Podcast Feed that should be added
      */
-    private void addPodcastFeed(PodcastFeed podcastFeed) {
+    private void addPodcastFeed(IPodcastFeed podcastFeed) {
         Logger.info("Adding podcast feed");
         // Note: Do not use Collection.sort(...);
         boolean added = false;
-        Comparator<PodcastFeed> comparator = PodcastFeed.getComparator();
         for (int i = 0; i < getPodcastFeeds().size(); i++) {
-            if (comparator.compare(podcastFeed, getPodcastFeeds().get(i)) < 0) {
+            if (COMPARATOR.compare(podcastFeed, getPodcastFeeds().get(i)) < 0) {
                 getPodcastFeeds().add(i, podcastFeed);
                 added = true;
                 break;
@@ -257,7 +268,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
      * 
      * @return The podcast feeds
      */
-    public List<PodcastFeed> getPodcastFeeds() {
+    public List<IPodcastFeed> getPodcastFeeds() {
         return podcastFeeds;
     }
 
@@ -266,9 +277,9 @@ public final class PodcastFeedHandler extends AbstractHandler {
      * 
      * @return A list with all Podcast Feed Entries
      */
-    public List<PodcastFeedEntry> getPodcastFeedEntries() {
-        List<PodcastFeedEntry> podcastFeedEntries = new ArrayList<PodcastFeedEntry>();
-        for (PodcastFeed podcastFeed : getPodcastFeeds()) {
+    public List<IPodcastFeedEntry> getPodcastFeedEntries() {
+        List<IPodcastFeedEntry> podcastFeedEntries = new ArrayList<IPodcastFeedEntry>();
+        for (IPodcastFeed podcastFeed : getPodcastFeeds()) {
             podcastFeedEntries.addAll(podcastFeed.getPodcastFeedEntries());
         }
         return podcastFeedEntries;
@@ -280,7 +291,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
      * @param podcastFeed
      *            A Podcast Feed that should be removed
      */
-    public void removePodcastFeed(PodcastFeed podcastFeed) {
+    public void removePodcastFeed(IPodcastFeed podcastFeed) {
         Logger.info("Removing podcast feed");
         getPodcastFeeds().remove(podcastFeed);
         podcastFeedsDirty = true;
@@ -347,7 +358,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
      * @param podcastFeedEntry
      *            the podcast feed entry
      */
-    public void downloadPodcastFeedEntry(final PodcastFeedEntry podcastFeedEntry) {
+    public void downloadPodcastFeedEntry(final IPodcastFeedEntry podcastFeedEntry) {
         if (isDownloading(podcastFeedEntry)) {
             return;
         }
@@ -381,7 +392,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
      * @param downloadPodcastFeedEntry
      *            the download podcast feed entry
      */
-    void cancelDownloading(final PodcastFeedEntry podcastFeedEntry, final IProgressDialog d, final PodcastFeedEntryDownloader downloadPodcastFeedEntry) {
+    void cancelDownloading(final IPodcastFeedEntry podcastFeedEntry, final IProgressDialog d, final PodcastFeedEntryDownloader downloadPodcastFeedEntry) {
         try {
             downloadPodcastFeedEntry.cancel(false);
         } catch (CancellationException ex) {
@@ -420,7 +431,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
      * 
      * @return the download path
      */
-    public String getDownloadPath(PodcastFeedEntry podcastFeedEntry) {
+    public String getDownloadPath(IPodcastFeedEntry podcastFeedEntry) {
         String path = getState().getPodcastFeedEntryDownloadPath();
         if (path == null || path.isEmpty()) {
             path = StringUtils.getString(getOsManager().getUserConfigFolder(Kernel.isDebug()), "/", Constants.DEFAULT_PODCAST_FEED_ENTRY_DOWNLOAD_DIR);
@@ -502,7 +513,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
      * 
      * @return true, if is downloading
      */
-    public boolean isDownloading(PodcastFeedEntry podcastFeedEntry) {
+    public boolean isDownloading(IPodcastFeedEntry podcastFeedEntry) {
         synchronized (runningDownloads) {
             for (int i = 0; i < runningDownloads.size(); i++) {
                 if (runningDownloads.get(i).getPodcastFeedEntry().equals(podcastFeedEntry)) {

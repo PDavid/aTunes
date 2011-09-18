@@ -42,7 +42,7 @@ import org.commonjukebox.plugins.model.PluginApi;
  * @author fleax
  */
 @PluginApi
-public class Artist implements Serializable, TreeObject<ILocalAudioObject>, Comparable<Artist> {
+public class Artist implements Serializable, ITreeObject<ILocalAudioObject>, Comparable<Artist> {
 
     /**
 	 * 
