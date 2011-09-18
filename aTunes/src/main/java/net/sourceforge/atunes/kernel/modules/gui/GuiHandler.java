@@ -257,7 +257,7 @@ public final class GuiHandler extends AbstractHandler {
      * 
      * @return the int
      */
-    public int showConfirmationDialog(String message, String title) {
+    private int showConfirmationDialog(String message, String title) {
         return JOptionPane.showConfirmDialog(getFrame().getFrame(), message, title, JOptionPane.YES_NO_OPTION);
     }
 
@@ -320,7 +320,7 @@ public final class GuiHandler extends AbstractHandler {
      * @param message
      * @param t
      */
-    public void showExceptionDialog(String title, String message, Exception t) {
+    private void showExceptionDialog(String title, String message, Exception t) {
         JXErrorPane pane = new JXErrorPane();
         StringBuilder sb = new StringBuilder();
         sb.append(t.getClass().getName());
@@ -396,7 +396,7 @@ public final class GuiHandler extends AbstractHandler {
      * 
      * @return the string
      */
-    public String showInputDialog(String title, String text, Image icon) {
+    private String showInputDialog(String title, String text, Image icon) {
         InputDialog id = new InputDialog(getFrame().getFrame(), title, icon);
         id.show(text);
         return id.getResult();

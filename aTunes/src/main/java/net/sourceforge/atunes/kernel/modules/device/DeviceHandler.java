@@ -256,7 +256,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
      */
     @Override
     public void deviceConnected(String location) {
-        if (GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("DEVICE_CONNECT_CONFIRMATION"), I18nUtils.getString("DEVICE_DETECTED")) == JOptionPane.OK_OPTION) {
+        if (GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("DEVICE_CONNECT_CONFIRMATION")) == JOptionPane.OK_OPTION) {
             GuiHandler.getInstance().showProgressBar(true, null);
             this.retrieveDevice(new File(location));
         }

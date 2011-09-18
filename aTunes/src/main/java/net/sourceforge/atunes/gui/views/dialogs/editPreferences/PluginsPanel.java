@@ -225,7 +225,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		            Map<PluginFolder, PluginSystemException> problemsFound = PluginsHandler.getInstance().uninstallPlugin(plugin);
 		            if (problemsFound != null) {
 		            	for (Map.Entry<PluginFolder, PluginSystemException> pluginFolderEntry : problemsFound.entrySet()) {
-		            		GuiHandler.getInstance().showExceptionDialog(pluginFolderEntry.getKey().getName(), I18nUtils.getString("PLUGIN_UNINSTALLATION_ERROR"), pluginFolderEntry.getValue());
+		            		GuiHandler.getInstance().showExceptionDialog(I18nUtils.getString("PLUGIN_UNINSTALLATION_ERROR"), pluginFolderEntry.getValue());
 		            	}
 		            }
                     
@@ -330,7 +330,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		            Map<PluginFolder, PluginSystemException> problemsFound = PluginsHandler.getInstance().installPlugin(zipFile);
 		            if (problemsFound != null) {
 		            	for (Entry<PluginFolder, PluginSystemException> pluginFolderEntry : problemsFound.entrySet()) {
-		            		GuiHandler.getInstance().showExceptionDialog(pluginFolderEntry.getKey().getName(), I18nUtils.getString("PLUGIN_INSTALLATION_ERROR"), pluginFolderEntry.getValue());
+		            		GuiHandler.getInstance().showExceptionDialog(I18nUtils.getString("PLUGIN_INSTALLATION_ERROR"), pluginFolderEntry.getValue());
 		            	}
 		            }
 		            

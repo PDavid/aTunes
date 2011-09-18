@@ -75,7 +75,7 @@ public class SavePlayListAction extends CustomAbstractAction {
 
             // If file does not exist, or exist and overwrite is confirmed, then write file
             if (!file.exists()
-                    || (file.exists() && GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("OVERWRITE_FILE"), I18nUtils.getString("INFO")) == JOptionPane.OK_OPTION)) {
+                    || (file.exists() && GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("OVERWRITE_FILE")) == JOptionPane.OK_OPTION)) {
                 PlayListIO.write(PlayListHandler.getInstance().getCurrentPlayList(true), file, Context.getBean(IOSManager.class));
             }
         }
