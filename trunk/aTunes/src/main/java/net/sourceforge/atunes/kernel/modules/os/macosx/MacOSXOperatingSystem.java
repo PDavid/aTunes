@@ -23,13 +23,13 @@ package net.sourceforge.atunes.kernel.modules.os.macosx;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.macos.MacOSXLookAndFeel;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.Cdparanoia;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.os.OperatingSystemAdapter;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
@@ -37,6 +37,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.model.OperatingSystem;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -77,8 +78,10 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 			Logger.error(e.getMessage());
 		}
 		
+		IUIHandler uiHandler = Context.getBean(IUIHandler.class);
+		
 		try {
-			MacOSXAdapter.setAboutHandler(GuiHandler.getInstance(), GuiHandler.class.getDeclaredMethod("showAboutDialog", (Class[]) null));
+			MacOSXAdapter.setAboutHandler(uiHandler, uiHandler.getClass().getDeclaredMethod("showAboutDialog", (Class[]) null));
 		} catch (Exception e) {
 			Logger.error(e.getMessage());
 		}
@@ -90,7 +93,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 		}
 		
 		try {
-			MacOSXAdapter.setListener(GuiHandler.getInstance(), GuiHandler.class.getDeclaredMethod("showFullFrame", (Class[]) null));
+			MacOSXAdapter.setListener(uiHandler, uiHandler.getClass().getDeclaredMethod("showFullFrame", (Class[]) null));
 		} catch (Exception e) {
 			Logger.error(e.getMessage());
 		}

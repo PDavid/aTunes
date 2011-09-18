@@ -5,7 +5,7 @@
 	default-autowire="byName" default-lazy-init="true">
 
 
-	<bean id="frameFactory" class="net.sourceforge.atunes.kernel.modules.gui.FrameFactory">
+	<bean id="frameFactory" class="net.sourceforge.atunes.kernel.modules.ui.FrameFactory">
 		<property name="defaultFrameClass" value="net.sourceforge.atunes.gui.frame.DefaultSingleFrame"/>
 	</bean>
 	

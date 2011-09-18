@@ -34,7 +34,6 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
@@ -45,6 +44,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -184,7 +184,7 @@ public class Kernel {
      */
     static void startCreation() {
         Logger.debug("Starting components");
-        GuiHandler.getInstance().startVisualization();
+        Context.getBean(IUIHandler.class).startVisualization();
     }
 
     /**

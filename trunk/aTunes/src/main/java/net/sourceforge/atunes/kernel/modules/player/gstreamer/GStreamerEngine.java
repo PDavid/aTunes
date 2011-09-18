@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
@@ -38,6 +38,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IUIHandler;
 
 import org.gstreamer.Bus;
 import org.gstreamer.ElementFactory;
@@ -180,7 +181,7 @@ public class GStreamerEngine extends AbstractPlayerEngine {
         scheduledFuture = scheduledExecutorService.scheduleWithFixedDelay(remainingTimeRunnable, 0, 100, TimeUnit.MILLISECONDS);
 
         getFrame().updateStatusBarWithObjectBeingPlayed(audioObjectToPlay);
-        GuiHandler.getInstance().updateTitleBar(audioObjectToPlay);
+        Context.getBean(IUIHandler.class).updateTitleBar(audioObjectToPlay);
     }
 
     @Override

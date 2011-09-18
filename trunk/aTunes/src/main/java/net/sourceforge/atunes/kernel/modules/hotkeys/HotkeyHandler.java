@@ -27,7 +27,6 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.notify.NotificationsHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
@@ -35,6 +34,7 @@ import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -258,7 +258,7 @@ public final class HotkeyHandler extends AbstractHandler implements HotkeyListen
             break;
         }
         case HOTKEY_TOGGLE_WINDOW_VISIBILITY: {
-            GuiHandler.getInstance().toggleWindowVisibility();
+            Context.getBean(IUIHandler.class).toggleWindowVisibility();
             break;
         }
         case HOTKEY_MUTE: {

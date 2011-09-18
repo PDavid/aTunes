@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.gui;
+package net.sourceforge.atunes.kernel.modules.ui;
 
 import java.awt.ComponentOrientation;
 import java.awt.EventQueue;
@@ -48,28 +48,12 @@ import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ISystemTrayHandler;
+import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public final class GuiHandler extends AbstractHandler {
+public final class UIHandler extends AbstractHandler implements IUIHandler {
 
  
-    private static GuiHandler instance = new GuiHandler();
-
-    /**
-     * Instantiates a new gui handler.
-     */
-    private GuiHandler() {
-    }
-
-    /**
-     * Gets the single instance of this class.
-     * 
-     * @return single instance of this class
-     */
-    public static GuiHandler getInstance() {
-        return instance;
-    }
-
     @Override
     public void applicationStarted(List<IAudioObject> playList) {
         getFrame().setVisible(true);
@@ -85,12 +69,11 @@ public final class GuiHandler extends AbstractHandler {
         }        
     }
 
-    /**
-     * Finish.
-     * 
-     * NOTE: This method is called using reflection from MACOSXAdapter. Refactoring will break code!
-     */
-    public void finish() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.ui.IUIHandler#finish()
+	 */
+    @Override
+	public void finish() {
         if (!getState().isShowSystemTray() && getOsManager().isClosingMainWindowClosesApplication()) {
             Kernel.finish();
         }
@@ -113,10 +96,11 @@ public final class GuiHandler extends AbstractHandler {
         getFrame().getFrame().repaint();
     }
 
-    /**
-     * Convenience method, called from MacOSXAdapter
-     */
-    public void showFullFrame() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.ui.IUIHandler#showFullFrame()
+	 */
+    @Override
+	public void showFullFrame() {
     	getFrame().setVisible(true);
     }
 
@@ -153,22 +137,19 @@ public final class GuiHandler extends AbstractHandler {
         getFrame().setTitle(result);
     }
 
-    /**
-     * Show about dialog.
-     * 
-     * NOTE: This method is called using reflection from MACOSXAdapter. Refactoring will break code!
-     */
-    public void showAboutDialog() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.ui.IUIHandler#showAboutDialog()
+	 */
+    @Override
+	public void showAboutDialog() {
     	Context.getBean(IAboutDialog.class).showDialog();
     }
 
-    /**
-     * Show status bar.
-     * 
-     * @param show
-     * @param save
-     */
-    public void showStatusBar(boolean show, boolean save) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.ui.IUIHandler#showStatusBar(boolean, boolean)
+	 */
+    @Override
+	public void showStatusBar(boolean show, boolean save) {
     	if (save) {
     		getState().setShowStatusBar(show);
     	}
@@ -176,10 +157,11 @@ public final class GuiHandler extends AbstractHandler {
         repaint();
     }
 
-    /**
-     * Start visualization.
-     */
-    public void startVisualization() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.ui.IUIHandler#startVisualization()
+	 */
+    @Override
+	public void startVisualization() {
         Logger.debug("Starting visualization");
 
         if (SystemProperties.IS_JAVA_6_UPDATE_10_OR_LATER) {
@@ -211,10 +193,11 @@ public final class GuiHandler extends AbstractHandler {
         Logger.debug("Start visualization done");
     }
 
-    /**
-     * Toggle window visibility.
-     */
-    public void toggleWindowVisibility() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.ui.IUIHandler#toggleWindowVisibility()
+	 */
+    @Override
+	public void toggleWindowVisibility() {
         getFrame().setVisible(!getFrame().isVisible());
         getFrame().getFrame().toFront();
         getFrame().getFrame().setState(java.awt.Frame.NORMAL);
@@ -230,13 +213,11 @@ public final class GuiHandler extends AbstractHandler {
     	getFrame().setLeftStatusBarText(text, text);
     }
 
-    /**
-     * Update title bar.
-     * 
-     * @param song
-     *            the song
-     */
-    public void updateTitleBar(IAudioObject song) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.ui.IUIHandler#updateTitleBar(net.sourceforge.atunes.model.IAudioObject)
+	 */
+    @Override
+	public void updateTitleBar(IAudioObject song) {
     	setTitleBar(song != null ? song.getAudioObjectDescription() : "");
     }
 
