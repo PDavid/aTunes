@@ -59,5 +59,9 @@
 	<bean id="addPodcastFeedDialog" class="net.sourceforge.atunes.gui.views.dialogs.AddPodcastFeedDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean>
+	
+	<bean id="artistAlbumSelectorDialog" class="net.sourceforge.atunes.gui.views.dialogs.ArtistAlbumSelectorDialog" scope="prototype">
+		<constructor-arg ref="frame"/>
+	</bean>
 
 </beans>

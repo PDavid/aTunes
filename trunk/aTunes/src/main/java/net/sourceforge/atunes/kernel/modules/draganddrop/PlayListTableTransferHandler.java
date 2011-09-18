@@ -38,7 +38,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.api.RepositoryApi;
 import net.sourceforge.atunes.gui.model.TransferableList;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
@@ -240,7 +239,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
     	
     	DragableArtist dragabreArtist = listOfObjectsDragged.get(0);
     	Artist currentArtist = RepositoryApi.getArtist(dragabreArtist.getArtistInfo().getName());
-    	GuiHandler.getInstance().showAddArtistDragDialog(currentArtist);
+    	PlayListHandler.getInstance().showAddArtistDragDialog(currentArtist);
     	
     	return true;
     	

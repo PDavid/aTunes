@@ -56,6 +56,9 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.Album;
+import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
@@ -167,10 +170,10 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
 
     @Override
     public void applicationStarted(List<IAudioObject> playList) {
-        PlayListHandler.getInstance().setPlayLists();
+        setPlayLists();
 
         if (!playList.isEmpty()) {
-            PlayListHandler.getInstance().addToPlayListAndPlay(playList);
+            addToPlayListAndPlay(playList);
             getPlayListController().refreshPlayList();
         }
         
@@ -1109,7 +1112,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         int[] selectedRows = getFrame().getPlayListTable().getSelectedRows();
         if (selectedRows.length > 0) {
             for (int element : selectedRows) {
-                IAudioObject file = PlayListHandler.getInstance().getCurrentPlayList(true).get(element);
+                IAudioObject file = getCurrentPlayList(true).get(element);
                 if (file != null) {
                     audioObjects.add(file);
                 }
@@ -1249,9 +1252,9 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
                 removePlayList(0);
             }
             // Now current play list is at index 0, so delete from play list size down to 1
-            while (PlayListHandler.getInstance().getPlayListCount() > 1) {
+            while (getPlayListCount() > 1) {
             	// As this action is not called when pressing close button in tab set removeTab argument to true
-                removePlayList(PlayListHandler.getInstance().getPlayListCount() - 1);
+                removePlayList(getPlayListCount() - 1);
             }
         }
     }
@@ -1362,7 +1365,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         for (int i = 0; i < playlists.size(); i++) {
             final int index = i;
             JMenuItem plMenuItem;
-            if (PlayListHandler.getInstance().isVisiblePlayList(index)) {
+            if (isVisiblePlayList(index)) {
                 plMenuItem = new JMenuItem(StringUtils.getString("<html><b>", playlists.get(i), "</b></html>"));
             } else {
                 plMenuItem = new JMenuItem(playlists.get(i));
@@ -1388,5 +1391,18 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
             controller.forceSwitchTo(index);
         }
     }
+
+    /**
+     * Shows a dialog to select an album of given artist and add to current play list
+     * @param currentArtist
+     */
+    public void showAddArtistDragDialog(Artist currentArtist) {
+    	IArtistAlbumSelectorDialog dialog = Context.getBean(IArtistAlbumSelectorDialog.class);
+    	Album album = dialog.showDialog(currentArtist);
+    	if (album != null) {
+    		addToPlayList(album.getAudioObjects());
+    	}
+    }
+
 
 }

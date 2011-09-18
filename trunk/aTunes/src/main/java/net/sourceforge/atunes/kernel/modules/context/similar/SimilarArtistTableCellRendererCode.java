@@ -30,7 +30,7 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.modules.context.ContextTable;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanel;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.IArtistInfo;
 import net.sourceforge.atunes.utils.DesktopUtils;
@@ -85,7 +85,7 @@ class SimilarArtistTableCellRendererCode extends ContextTableRowPanel<IArtistInf
 
 			@Override
 			protected void execute(IArtistInfo object) {
-				GuiHandler.getInstance().showAddArtistDragDialog(RepositoryHandler.getInstance().getArtist(object.getName()));
+				PlayListHandler.getInstance().showAddArtistDragDialog(RepositoryHandler.getInstance().getArtist(object.getName()));
 			}
 			
 			@Override
