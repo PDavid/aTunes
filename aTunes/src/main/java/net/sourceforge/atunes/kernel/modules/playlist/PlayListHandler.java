@@ -417,10 +417,10 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
      * @param playList
      *            the new play list
      */
-    private static void setPlayList(PlayList playList) {
+    private void setPlayList(PlayList playList) {
         Actions.getAction(SavePlayListAction.class).setEnabled(!instance.getCurrentPlayList(true).isEmpty());
         Actions.getAction(ShufflePlayListAction.class).setEnabled(!instance.getCurrentPlayList(true).isEmpty());
-        GuiHandler.getInstance().showPlayListInformation(playList);
+        showPlayListInformation(playList);
         if (getInstance().isActivePlayListVisible()) {
             getInstance().selectedAudioObjectHasChanged(playList.getCurrentAudioObject());
         }
@@ -541,7 +541,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         Actions.getAction(ShufflePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
 
         // Update play list number in status bar
-        GuiHandler.getInstance().showPlayListInformation(playList);
+        showPlayListInformation(playList);
 
         // Update play list table
         getPlayListController().refreshPlayList();
@@ -582,7 +582,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
             Actions.getAction(ShufflePlayListAction.class).setEnabled(false);
 
             // Update audio object number
-            GuiHandler.getInstance().showPlayListInformation(playList);
+            showPlayListInformation(playList);
 
             // hide the ticks and labels
             if (!getState().isStopPlayerOnPlayListClear()) {
@@ -907,7 +907,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
             Actions.getAction(ShufflePlayListAction.class).setEnabled(false);
             getFrame().getPlayerControls().setShowTicksAndLabels(false);
         }
-        GuiHandler.getInstance().showPlayListInformation(currentPlayList);
+        showPlayListInformation(currentPlayList);
         Logger.info(StringUtils.getString(rows.length, " objects removed from play list"));
     }
 
@@ -1147,7 +1147,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
             pl.remove(audioFiles);
         }
         // Update status bar
-        GuiHandler.getInstance().showPlayListInformation(getCurrentPlayList(true));
+        showPlayListInformation(getCurrentPlayList(true));
     }
 
     @Override
@@ -1404,5 +1404,59 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
     	}
     }
 
+    /**
+     * Show play list information.
+     * 
+     * @param playList
+     *            the play list
+     */
+    private void showPlayListInformation(PlayList playList) {
+        int audioFiles = new PlayListLocalAudioObjectFilter().getObjects(playList).size();
+        int radios = new PlayListRadioFilter().getObjects(playList).size();
+        int podcastFeedEntries = new PlayListPodcastFeedEntryFilter().getObjects(playList).size();
+        int audioObjects = playList.size();
+
+        Object[] strs = new Object[20];
+        strs[0] = I18nUtils.getString("PLAYLIST");
+        strs[1] = ": ";
+        strs[2] = audioObjects;
+        strs[3] = " ";
+        strs[4] = I18nUtils.getString("SONGS");
+        strs[5] = " (";
+        strs[6] = playList.getLength();
+        strs[7] = ") ";
+        strs[8] = " - ";
+        strs[9] = audioFiles;
+        strs[10] = " ";
+        strs[11] = I18nUtils.getString("SONGS");
+        strs[12] = " / ";
+        strs[13] = radios;
+        strs[14] = " ";
+        strs[15] = I18nUtils.getString("RADIOS");
+        strs[16] = " / ";
+        strs[17] = podcastFeedEntries;
+        strs[18] = " ";
+        // Check if differenciation is required (needed by some slavic languages)
+        if (I18nUtils.getString("PODCAST_ENTRIES_COUNTER").isEmpty()) {
+            strs[19] = I18nUtils.getString("PODCAST_ENTRIES");
+        } else {
+            strs[19] = I18nUtils.getString("PODCAST_ENTRIES_COUNTER");
+        }
+
+        Object[] strs2 = new Object[9];
+        strs2[0] = I18nUtils.getString("PLAYLIST");
+        strs2[1] = ": ";
+        strs2[2] = audioObjects;
+        strs2[3] = " - ";
+        strs2[4] = audioFiles;
+        strs2[5] = " / ";
+        strs2[6] = radios;
+        strs2[7] = " / ";
+        strs2[8] = podcastFeedEntries;
+
+        String toolTip = StringUtils.getString(strs);
+        String text = StringUtils.getString(strs2);
+        getFrame().setRightStatusBarText(text, toolTip);
+    }
 
 }

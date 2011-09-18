@@ -50,11 +50,7 @@ import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.PlaybackState;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayList;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListLocalAudioObjectFilter;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListPodcastFeedEntryFilter;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListRadioFilter;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.misc.SystemProperties;
@@ -66,7 +62,6 @@ import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ISystemTrayHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jdesktop.swingx.JXErrorPane;
 import org.jdesktop.swingx.error.ErrorInfo;
@@ -466,61 +461,6 @@ public final class GuiHandler extends AbstractHandler {
     public int showOpenDialog(JFileChooser fileChooser, FileFilter filter) {
         fileChooser.setFileFilter(filter);
         return fileChooser.showOpenDialog(getFrame().getFrame());
-    }
-
-    /**
-     * Show play list information.
-     * 
-     * @param playList
-     *            the play list
-     */
-    public void showPlayListInformation(PlayList playList) {
-        int audioFiles = new PlayListLocalAudioObjectFilter().getObjects(playList).size();
-        int radios = new PlayListRadioFilter().getObjects(playList).size();
-        int podcastFeedEntries = new PlayListPodcastFeedEntryFilter().getObjects(playList).size();
-        int audioObjects = playList.size();
-
-        Object[] strs = new Object[20];
-        strs[0] = I18nUtils.getString("PLAYLIST");
-        strs[1] = ": ";
-        strs[2] = audioObjects;
-        strs[3] = " ";
-        strs[4] = I18nUtils.getString("SONGS");
-        strs[5] = " (";
-        strs[6] = playList.getLength();
-        strs[7] = ") ";
-        strs[8] = " - ";
-        strs[9] = audioFiles;
-        strs[10] = " ";
-        strs[11] = I18nUtils.getString("SONGS");
-        strs[12] = " / ";
-        strs[13] = radios;
-        strs[14] = " ";
-        strs[15] = I18nUtils.getString("RADIOS");
-        strs[16] = " / ";
-        strs[17] = podcastFeedEntries;
-        strs[18] = " ";
-        // Check if differenciation is required (needed by some slavic languages)
-        if (I18nUtils.getString("PODCAST_ENTRIES_COUNTER").isEmpty()) {
-            strs[19] = I18nUtils.getString("PODCAST_ENTRIES");
-        } else {
-            strs[19] = I18nUtils.getString("PODCAST_ENTRIES_COUNTER");
-        }
-
-        Object[] strs2 = new Object[9];
-        strs2[0] = I18nUtils.getString("PLAYLIST");
-        strs2[1] = ": ";
-        strs2[2] = audioObjects;
-        strs2[3] = " - ";
-        strs2[4] = audioFiles;
-        strs2[5] = " / ";
-        strs2[6] = radios;
-        strs2[7] = " / ";
-        strs2[8] = podcastFeedEntries;
-
-        String toolTip = StringUtils.getString(strs);
-        String text = StringUtils.getString(strs2);
-        getFrame().setRightStatusBarText(text, toolTip);
     }
 
     /**
