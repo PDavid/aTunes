@@ -46,7 +46,6 @@ import net.sourceforge.atunes.gui.views.dialogs.AddPodcastFeedDialog;
 import net.sourceforge.atunes.gui.views.dialogs.IndeterminateProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.InputDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RadioDialog;
-import net.sourceforge.atunes.gui.views.dialogs.RepositoryProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ReviewImportDialog;
 import net.sourceforge.atunes.gui.views.dialogs.SearchDialog;
 import net.sourceforge.atunes.gui.views.dialogs.properties.PropertiesDialog;
@@ -150,15 +149,6 @@ public final class GuiHandler extends AbstractHandler {
      */
     private IndeterminateProgressDialog getIndeterminateProgressDialog() {
         return indeterminateProgressDialog;
-    }
-
-    /**
-     * Gets a progress dialog for repository load
-     * 
-     * @return the progress dialog
-     */
-    public RepositoryProgressDialog getProgressDialog() {
-        return new RepositoryProgressDialog(getFrame().getFrame());
     }
 
     /**
