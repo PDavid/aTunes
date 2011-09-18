@@ -9,6 +9,7 @@
 		class="net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService">
 		<constructor-arg ref="state" />
 		<constructor-arg ref="osManager" />
+		<constructor-arg ref="frame"/>
 	</bean>
 
 	<bean id="lyricsService"

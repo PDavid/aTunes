@@ -46,7 +46,6 @@ import net.sourceforge.atunes.kernel.actions.CopyPlayListToDeviceAction;
 import net.sourceforge.atunes.kernel.actions.DisconnectDeviceAction;
 import net.sourceforge.atunes.kernel.actions.RefreshDeviceAction;
 import net.sourceforge.atunes.kernel.actions.SynchronizeDeviceWithPlayListAction;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
@@ -180,7 +179,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
         dialog.showDialog();
         if (!dialog.isCanceled()) {
             File dir = dialog.getSelectedDir();
-            GuiHandler.getInstance().showProgressBar(true, null);
+            getFrame().showProgressBar(true, null);
             retrieveDevice(dir);
         }
     }
@@ -259,7 +258,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
     @Override
     public void deviceConnected(String location) {
         if (Context.getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("DEVICE_CONNECT_CONFIRMATION"))) {
-            GuiHandler.getInstance().showProgressBar(true, null);
+        	getFrame().showProgressBar(true, null);
             this.retrieveDevice(new File(location));
         }
     }
@@ -377,7 +376,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
      *            the loader
      */
     private void notifyDeviceReload(RepositoryLoader loader) {
-    	GuiHandler.getInstance().hideProgressBar();
+    	getFrame().hideProgressBar();
     	NavigationHandler.getInstance().notifyDeviceReload();
 
     	Actions.getAction(ConnectDeviceAction.class).setEnabled(loader == null);
@@ -437,7 +436,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
      * Refresh device.
      */
     public void refreshDevice() {
-        GuiHandler.getInstance().showProgressBar(true, null);
+    	getFrame().showProgressBar(true, null);
         Logger.info("Refreshing device");
         Repository oldDeviceRepository = deviceRepository;
         deviceRepository = new Repository(oldDeviceRepository.getRepositoryFolders(), null, getState());

@@ -664,6 +664,27 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     	}
     	setLeftStatusBarText(text != null ? text : "", text != null ? text : "");    	
     }
+    
+    @Override
+    public final void showProgressBar(boolean indeterminate, String text) {
+        if (getProgressBar() != null) {
+            getProgressBar().setVisible(true);
+            getProgressBar().setIndeterminate(indeterminate);
+            if (!indeterminate) {
+                getProgressBar().setMinimum(0);
+                getProgressBar().setValue(0);
+            }
+            getProgressBar().setToolTipText(text);
+        }
+    }
+
+    @Override
+    public final void hideProgressBar() {
+        if (getProgressBar() != null) {
+            getProgressBar().setVisible(false);
+        }
+    }
+
    
     
     /**
