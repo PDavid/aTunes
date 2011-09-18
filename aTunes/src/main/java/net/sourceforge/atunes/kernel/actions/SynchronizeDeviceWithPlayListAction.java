@@ -31,7 +31,6 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListLocalAudioObjectFilter;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
@@ -39,6 +38,8 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
+import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -51,6 +52,8 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 
+	private IIndeterminateProgressDialog dialog;
+	
     private final class SynchronizeDeviceWithPlayListSwingWorker extends
 			SwingWorker<Map<String, List<ILocalAudioObject>>, Void> {
 		private int filesRemoved = 0;
@@ -108,7 +111,7 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 		    try {
 		        Map<String, List<ILocalAudioObject>> files = get();
 
-		        GuiHandler.getInstance().hideIndeterminateProgressDialog();
+		        dialog.hideDialog();
 
 		        // Remove elements from device
 		        final List<ILocalAudioObject> filesToRemove = files.get("REMOVE");
@@ -162,6 +165,14 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 
         SwingWorker<Map<String, List<ILocalAudioObject>>, Void> worker = new SynchronizeDeviceWithPlayListSwingWorker();
         worker.execute();
-        GuiHandler.getInstance().showIndeterminateProgressDialog(I18nUtils.getString("PLEASE_WAIT"));
+        
+        SwingUtilities.invokeLater(new Runnable() {
+        	@Override
+        	public void run() {
+        		dialog = Context.getBean(IIndeterminateProgressDialogFactory.class).newDialog(Context.getBean(IFrame.class));
+        		dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
+        		dialog.showDialog();
+        	}
+        });
     }
 }

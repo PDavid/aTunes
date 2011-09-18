@@ -49,13 +49,14 @@ import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.NoCdListener;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
 import net.sourceforge.atunes.kernel.modules.cdripper.encoders.Encoder;
 import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
+import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.IRipperProgressDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
@@ -129,7 +130,7 @@ public final class RipperHandler extends AbstractHandler {
 		            SwingUtilities.invokeLater(new Runnable() {
 		                @Override
 		                public void run() {
-		                    GuiHandler.getInstance().hideIndeterminateProgressDialog();
+		                	indeterminateProgressDialog.hideDialog();
 		                    Context.getBean(IErrorDialog.class).showErrorDialog(getFrame(), I18nUtils.getString("NO_CD_INSERTED"));
 		                }
 		            });
@@ -140,7 +141,7 @@ public final class RipperHandler extends AbstractHandler {
 
 		@Override
 		protected void done() {
-		    GuiHandler.getInstance().hideIndeterminateProgressDialog();
+			indeterminateProgressDialog.hideDialog();
 		    CDInfo cdInfo;
 		    try {
 		        cdInfo = get();
@@ -268,6 +269,8 @@ public final class RipperHandler extends AbstractHandler {
     private boolean folderCreated;
     private IAlbumInfo albumInfo;
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
+    
+    private IIndeterminateProgressDialog indeterminateProgressDialog;
 
     /**
      * Map of available encoders in the system: key is format name, value is
@@ -697,7 +700,14 @@ public final class RipperHandler extends AbstractHandler {
     public void startCdRipper() {
         interrupted = false;
         final RipCdDialog dialog = getRipCdDialogController().getComponentControlled();
-        GuiHandler.getInstance().showIndeterminateProgressDialog(I18nUtils.getString("RIP_CD"));
+        SwingUtilities.invokeLater(new Runnable() {
+        	@Override
+        	public void run() {
+                indeterminateProgressDialog = Context.getBean(IIndeterminateProgressDialogFactory.class).newDialog(getFrame());
+                indeterminateProgressDialog.setTitle(I18nUtils.getString("RIP_CD"));
+                indeterminateProgressDialog.showDialog();
+        	}
+        });
 
         SwingWorker<CDInfo, Void> getCdInfoAndStartRipping = new GetCdInfoAndStartRippingSwingWorker(dialog);
         getCdInfoAndStartRipping.execute();

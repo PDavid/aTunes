@@ -33,6 +33,8 @@ import javax.swing.JProgressBar;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -41,7 +43,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  * @author fleax
  */
-public final class IndeterminateProgressDialog extends AbstractCustomDialog {
+public final class IndeterminateProgressDialog extends AbstractCustomDialog implements IIndeterminateProgressDialog {
 
     private static final long serialVersionUID = -3071934230042256578L;
 
@@ -61,11 +63,23 @@ public final class IndeterminateProgressDialog extends AbstractCustomDialog {
      *            the parent
      */
     public IndeterminateProgressDialog(Window parent) {
-        super(parent, 400, 130, true, CloseAction.HIDE);
+        super(parent, 400, 130, true, CloseAction.DISPOSE);
         add(getContent());
         setResizable(false);
     }
-        
+
+    /**
+     * Instantiates a new indeterminate progress dialog.
+     * 
+     * @param parent
+     *            the parent
+     */
+    public IndeterminateProgressDialog(IFrame parent) {
+        super(parent, 400, 130, true, CloseAction.DISPOSE);
+        add(getContent());
+        setResizable(false);
+    }
+
 
     /**
      * Gets the content.
@@ -105,5 +119,21 @@ public final class IndeterminateProgressDialog extends AbstractCustomDialog {
         c.anchor = GridBagConstraints.NORTH;
         panel.add(progressBar, c);
         return panel;
+    }
+    
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IIndeterminateProgressDialog#showDialog()
+	 */
+    @Override
+	public void showDialog() {
+    	setVisible(true);
+    }
+    
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IIndeterminateProgressDialog#hideDialog()
+	 */
+    @Override
+	public void hideDialog() {
+    	setVisible(false);
     }
 }
