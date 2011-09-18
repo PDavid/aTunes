@@ -25,6 +25,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractHandler;
+import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -79,7 +80,10 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     	
     	// Enable listener for user selections
     	getController().enableContextComboListener();
+    	
+        showContextPanel(getState().isUseContext());
     }
+    
     
     /**
      * Gets the single instance of ContextHandler.
@@ -207,6 +211,8 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 
     @Override
     public void applicationStateChanged(IState newState) {
+        // Show or hide context panel
+        showContextPanel(newState.isUseContext());
     }
 
     /**
@@ -247,11 +253,25 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
             retrieveInfoAndShowInPanel(null);
             
             if (getState().isStopPlayerOnPlayListClear()) {
-            	ContextHandler.getInstance().clearContextPanels();
+            	clearContextPanels();
             }
         }
     }
     
+    /**
+     * Show context information panel.
+     * 
+     * @param show
+     *            the show
+     */
+    public void showContextPanel(boolean show) {
+        getState().setUseContext(show);
+        getFrame().showContextPanel(show);
+        if (show) {
+            retrieveInfoAndShowInPanel(PlayListHandler.getInstance().getCurrentAudioObjectFromVisiblePlayList());
+        }
+    }
+
     private ContextController getController() {
     	if (controller == null) {
     		controller = new ContextController(getFrame().getContextPanel(), getState());
