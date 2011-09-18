@@ -27,11 +27,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import javax.swing.JOptionPane;
-
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
@@ -152,7 +150,7 @@ public final class TagEditionOperations {
      */
     public static void repairAlbumNames(IState state) {
         // Show confirmation dialog
-        if (GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("REPAIR_ALBUM_NAMES_MESSAGE")) == JOptionPane.OK_OPTION) {
+        if (Context.getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("REPAIR_ALBUM_NAMES_MESSAGE"))) {
 
             // Get all repository audio files
             Collection<ILocalAudioObject> repositoryAudioFiles = RepositoryHandler.getInstance().getAudioFilesList();
@@ -176,7 +174,7 @@ public final class TagEditionOperations {
      */
     public static void repairGenres(IState state) {
         // Show confirmation dialog
-        if (GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("REPAIR_GENRES_MESSAGE")) == JOptionPane.OK_OPTION) {
+        if (Context.getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("REPAIR_GENRES_MESSAGE"))) {
 
             // Get all repository audio files
         	Collection<ILocalAudioObject> repositoryAudioFiles = RepositoryHandler.getInstance().getAudioFilesList();
@@ -200,7 +198,7 @@ public final class TagEditionOperations {
      */
     public static void repairTrackNumbers(IState state) {
         // Show confirmation dialog
-        if (GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("REPAIR_TRACK_NUMBERS_MESSAGE")) == JOptionPane.OK_OPTION) {
+        if (Context.getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("REPAIR_TRACK_NUMBERS_MESSAGE"))) {
 
             // Get all repository audio files
         	Collection<ILocalAudioObject> repositoryAudioFiles = RepositoryHandler.getInstance().getAudioFilesList();

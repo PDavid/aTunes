@@ -23,14 +23,15 @@ package net.sourceforge.atunes.kernel.modules.state;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.EditPreferencesDialog;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PreferencesValidationException;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
+import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -64,8 +65,7 @@ public final class EditPreferencesDialogListener implements ListSelectionListene
 	        	ApplicationStateHandler.getInstance().notifyApplicationStateChanged();
 	        	if (needRestart) {
 	        		// Let user decide if want to restart
-	        		int result = GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("APPLICATION_NEEDS_RESTART"));
-	        		if (result == JOptionPane.OK_OPTION) {
+	        		if (Context.getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("APPLICATION_NEEDS_RESTART"))) {
 	        			Kernel.restart();
 	        		}
 	        	}

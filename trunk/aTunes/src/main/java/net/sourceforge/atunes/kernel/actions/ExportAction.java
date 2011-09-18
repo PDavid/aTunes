@@ -24,7 +24,6 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.List;
 
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
@@ -34,6 +33,7 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.processes.ExportFilesProcess;
+import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.IExportOptionsDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -96,8 +96,7 @@ public class ExportAction extends CustomAbstractAction {
                 boolean userWantsToCreate = false;
 
                 // If path does not exist, then ask user to create it
-                if (!pathExists &&
-                		GuiHandler.getInstance().showConfirmationDialog(I18nUtils.getString("DIR_NO_EXISTS")) == JOptionPane.OK_OPTION) {
+                if (!pathExists && Context.getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("DIR_NO_EXISTS"))) {
                 	pathExists = new File(path).mkdir();
                 	userWantsToCreate = true;
                 }
