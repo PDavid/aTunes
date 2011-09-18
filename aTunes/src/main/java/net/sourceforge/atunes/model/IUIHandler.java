@@ -26,7 +26,7 @@ package net.sourceforge.atunes.model;
  * @author alex
  *
  */
-public interface IUIHandler {
+public interface IUIHandler extends IHandler {
 
 	/**
 	 * Finish.

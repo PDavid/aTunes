@@ -18,27 +18,40 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.context.audioobject;
+package net.sourceforge.atunes.model;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import net.sourceforge.atunes.model.IContextHandler;
-import net.sourceforge.atunes.model.IWebServicesHandler;
+/**
+ * Responsible of show context information
+ * @author alex
+ *
+ */
+public interface IContextHandler extends IHandler {
 
-class AddLovedSongActionListener implements ActionListener {
+	/**
+	 * Updates panel with audio object information.
+	 * 
+	 * @param ao
+	 *            the audio object
+	 */
+	public void retrieveInfoAndShowInPanel(IAudioObject ao);
+
+	/**
+	 * @return the lastAudioObject
+	 */
+	public IAudioObject getCurrentAudioObject();
+
+	/**
+	 * Show context information panel.
+	 * 
+	 * @param show
+	 *            the show
+	 */
+	public void showContextPanel(boolean show);
 	
-	private IWebServicesHandler webServicesHandler;
-	
-	private IContextHandler contextHandler;
-	
-    public AddLovedSongActionListener(IWebServicesHandler webServicesHandler2, IContextHandler contextHandler) {
-		this.webServicesHandler = webServicesHandler2;
-    	this.contextHandler = contextHandler;
-	}
+    /**
+     * Called when user changes context tab
+     */
+    public void contextPanelChanged();
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-    	webServicesHandler.addLovedSong(contextHandler.getCurrentAudioObject());
-    }
 }

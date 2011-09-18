@@ -29,6 +29,7 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IState;
@@ -38,12 +39,7 @@ import org.commonjukebox.plugins.model.Plugin;
 import org.commonjukebox.plugins.model.PluginInfo;
 import org.commonjukebox.plugins.model.PluginListener;
 
-public final class ContextHandler extends AbstractHandler implements PluginListener {
-
-    /**
-     * Singleton instance of handler
-     */
-    private static ContextHandler instance;
+public final class ContextHandler extends AbstractHandler implements PluginListener, IContextHandler {
 
     private ContextController controller;
     
@@ -62,10 +58,6 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
      * Context panels defined
      */
     private List<AbstractContextPanel> contextPanels;
-
-    @Override
-    protected void initHandler() {
-    }
 
     @SuppressWarnings("unchecked")
 	@Override
@@ -89,23 +81,10 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     	retrieveInfoAndShowInPanel(PlayListHandler.getInstance().getCurrentAudioObjectFromVisiblePlayList());
     }
     
-    
-    /**
-     * Gets the single instance of ContextHandler.
-     * 
-     * @return single instance of ContextHandler
-     */
-    public static ContextHandler getInstance() {
-        if (instance == null) {
-            instance = new ContextHandler();
-        }
-        return instance;
-    }
-
     /**
      * Called when user changes context tab
      */
-    void contextPanelChanged() {
+    public void contextPanelChanged() {
         // Update selected tab
         getState().setSelectedContextTab(getController().getContextTab() != null ? getController().getContextTab().getContextPanelName() : null);
         // Call to fill information: Don't force update since audio object can be the same
@@ -135,13 +114,11 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
         }
     }
 
-    /**
-     * Updates panel with audio object information.
-     * 
-     * @param ao
-     *            the audio object
-     */
-    public void retrieveInfoAndShowInPanel(IAudioObject ao) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextHandler#retrieveInfoAndShowInPanel(net.sourceforge.atunes.model.IAudioObject)
+	 */
+    @Override
+	public void retrieveInfoAndShowInPanel(IAudioObject ao) {
         boolean audioObjectModified = false;
         // Avoid retrieve information about the same audio object twice except if is an LocalAudioObject and has been recently changed
         if (currentAudioObject != null && currentAudioObject.equals(ao)) {
@@ -208,22 +185,17 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
         }
     }
 
-    /**
-     * Finish context information
-     */
-    public void applicationFinish() {
-    }
-
     @Override
     public void applicationStateChanged(IState newState) {
         // Show or hide context panel
         showContextPanel(newState.isUseContext());
     }
 
-    /**
-     * @return the lastAudioObject
-     */
-    public IAudioObject getCurrentAudioObject() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextHandler#getCurrentAudioObject()
+	 */
+    @Override
+	public IAudioObject getCurrentAudioObject() {
         return currentAudioObject;
     }
 
@@ -263,13 +235,11 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
         }
     }
     
-    /**
-     * Show context information panel.
-     * 
-     * @param show
-     *            the show
-     */
-    public void showContextPanel(boolean show) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextHandler#showContextPanel(boolean)
+	 */
+    @Override
+	public void showContextPanel(boolean show) {
         getState().setUseContext(show);
         getFrame().showContextPanel(show);
         if (show) {
@@ -279,7 +249,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 
     private ContextController getController() {
     	if (controller == null) {
-    		controller = new ContextController(getFrame().getContextPanel(), getState());
+    		controller = new ContextController(getFrame().getContextPanel(), getState(), this);
     	}
     	return controller;
     }
