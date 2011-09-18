@@ -35,6 +35,7 @@ import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -59,8 +60,8 @@ public class SavePlayListAction extends CustomAbstractAction {
     public void actionPerformed(ActionEvent e) {
         JFileChooser fileChooser = new JFileChooser(getState().getSavePlaylistPath());
         FileFilter filter = PlayListIO.getPlaylistFileFilter();
-        // Open file chooser
-        if (GuiHandler.getInstance().showSaveDialog(fileChooser, filter) == JFileChooser.APPROVE_OPTION) {
+        fileChooser.setFileFilter(filter);
+        if (fileChooser.showSaveDialog(Context.getBean(IFrame.class).getFrame()) == JFileChooser.APPROVE_OPTION) {
 
             // Get selected file
             File file = fileChooser.getSelectedFile();

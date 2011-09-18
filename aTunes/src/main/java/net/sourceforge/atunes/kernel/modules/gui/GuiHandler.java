@@ -474,21 +474,6 @@ public final class GuiHandler extends AbstractHandler {
     }
 
     /**
-     * Show save dialog.
-     * 
-     * @param fileChooser
-     *            the file chooser
-     * @param filter
-     *            the filter
-     * 
-     * @return the int
-     */
-    public int showSaveDialog(JFileChooser fileChooser, FileFilter filter) {
-        fileChooser.setFileFilter(filter);
-        return fileChooser.showSaveDialog(getFrame().getFrame());
-    }
-
-    /**
      * Show status bar.
      * 
      * @param show
