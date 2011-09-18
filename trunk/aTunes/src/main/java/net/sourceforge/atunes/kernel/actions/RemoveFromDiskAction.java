@@ -48,6 +48,7 @@ import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -178,7 +179,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
     public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
         if (NavigationHandler.getInstance().getCurrentView().equals(NavigationHandler.getInstance().getView(PodcastNavigationView.class))) {
             for (IAudioObject ao : selection) {
-                if (!((PodcastFeedEntry) ao).isDownloaded()) {
+                if (!((IPodcastFeedEntry) ao).isDownloaded()) {
                     return false;
                 }
             }

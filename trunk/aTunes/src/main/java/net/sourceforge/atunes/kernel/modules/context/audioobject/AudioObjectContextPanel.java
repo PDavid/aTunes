@@ -27,11 +27,11 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -69,7 +69,7 @@ public class AudioObjectContextPanel extends AbstractContextPanel {
             return I18nUtils.getString("SONG");
         } else if (audioObject instanceof Radio) {
             return I18nUtils.getString("RADIO");
-        } else if (audioObject instanceof PodcastFeedEntry) {
+        } else if (audioObject instanceof IPodcastFeedEntry) {
             return I18nUtils.getString("PODCAST_FEED");
         }
 

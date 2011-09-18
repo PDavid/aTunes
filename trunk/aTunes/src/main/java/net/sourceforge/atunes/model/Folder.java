@@ -39,7 +39,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  * @author fleax
  */
-public class Folder implements Serializable, TreeObject<ILocalAudioObject> {
+public class Folder implements Serializable, ITreeObject<ILocalAudioObject> {
 
     /**
 	 * 

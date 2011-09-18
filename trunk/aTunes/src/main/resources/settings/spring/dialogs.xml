@@ -55,5 +55,9 @@
 		<constructor-arg ref="frame"/>
 		<constructor-arg ref="state"/>
 	</bean>
+	
+	<bean id="addPodcastFeedDialog" class="net.sourceforge.atunes.gui.views.dialogs.AddPodcastFeedDialog" scope="prototype">
+		<constructor-arg ref="frame"/>
+	</bean>
 
 </beans>

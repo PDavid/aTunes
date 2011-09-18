@@ -36,7 +36,7 @@ import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.TreeObject;
+import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.ImageUtils;
 
 /**
@@ -154,8 +154,8 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
      */
     @SuppressWarnings("unchecked")
 	public static boolean canObjectBeShownInExtendedToolTip(Object object) {
-        if (object instanceof TreeObject) {
-            return ((TreeObject<? extends IAudioObject>) object).isExtendedToolTipSupported();
+        if (object instanceof ITreeObject) {
+            return ((ITreeObject<? extends IAudioObject>) object).isExtendedToolTipSupported();
         }
         return false;
     }
@@ -170,8 +170,8 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
 	public void setToolTipContent(Object obj) {
         // Picture is set asynchronously 
         setImage(null);
-        if (obj instanceof TreeObject) {
-            ((TreeObject<? extends IAudioObject>) obj).setExtendedToolTip(this);
+        if (obj instanceof ITreeObject) {
+            ((ITreeObject<? extends IAudioObject>) obj).setExtendedToolTip(this);
         }
     }
 
@@ -183,8 +183,8 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
      */
     @SuppressWarnings("unchecked")
 	public static ImageIcon getImage(Object obj, IOSManager osManager) {
-        if (obj instanceof TreeObject) {
-            return ((TreeObject<? extends IAudioObject>) obj).getExtendedToolTipImage(osManager);
+        if (obj instanceof ITreeObject) {
+            return ((ITreeObject<? extends IAudioObject>) obj).getExtendedToolTipImage(osManager);
         }
         return null;
     }

@@ -32,6 +32,7 @@ import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
+import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class RemovePodcastFeedAction extends CustomAbstractAction {
@@ -51,7 +52,7 @@ public class RemovePodcastFeedAction extends CustomAbstractAction {
         	PodcastFeed podcastFeed = (PodcastFeed) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
             podcastsToRemove.add(podcastFeed);
         }        	
-        for (PodcastFeed pf : podcastsToRemove) {
+        for (IPodcastFeed pf : podcastsToRemove) {
             PodcastFeedHandler.getInstance().removePodcastFeed(pf);
         }
     }

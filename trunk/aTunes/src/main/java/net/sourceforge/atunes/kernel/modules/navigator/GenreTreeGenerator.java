@@ -37,7 +37,7 @@ import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITreeGenerator;
-import net.sourceforge.atunes.model.TreeObject;
+import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -59,7 +59,7 @@ public class GenreTreeGenerator implements ITreeGenerator {
 	 * @param objectsSelected
 	 * @param objectsExpanded
 	 */
-    public void buildTree(IState state, String rootTextKey, AbstractNavigationView view, Map<String, ?> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<TreeObject<? extends IAudioObject>> objectsSelected, List<TreeObject<? extends IAudioObject>> objectsExpanded) {
+    public void buildTree(IState state, String rootTextKey, AbstractNavigationView view, Map<String, ?> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<ITreeObject<? extends IAudioObject>> objectsSelected, List<ITreeObject<? extends IAudioObject>> objectsExpanded) {
         // Nodes to be selected after refresh
         List<DefaultMutableTreeNode> nodesToSelect = new ArrayList<DefaultMutableTreeNode>();
         // Nodes to be expanded after refresh

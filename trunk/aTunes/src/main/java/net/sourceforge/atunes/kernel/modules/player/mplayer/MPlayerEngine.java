@@ -41,6 +41,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
@@ -280,8 +281,8 @@ public class MPlayerEngine extends AbstractPlayerEngine {
         ProcessBuilder pb = new ProcessBuilder();
         List<String> command = new ArrayList<String>();
 
-        boolean isRemoteAudio = !(audioObject instanceof ILocalAudioObject || (audioObject instanceof PodcastFeedEntry
-                && getState().isUseDownloadedPodcastFeedEntries() && ((PodcastFeedEntry) audioObject).isDownloaded()));
+        boolean isRemoteAudio = !(audioObject instanceof ILocalAudioObject || (audioObject instanceof IPodcastFeedEntry
+                && getState().isUseDownloadedPodcastFeedEntries() && ((IPodcastFeedEntry) audioObject).isDownloaded()));
 
         command.add(getOsManager().getPlayerEngineCommand(this));
         command.addAll(getOsManager().getPlayerEngineParameters(this));
@@ -301,7 +302,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
         // url
         boolean shortPathName = getState().isUseShortPathNames() && getOsManager().usesShortPathNames() && audioObject instanceof AudioFile;
         String url;
-        if (audioObject instanceof PodcastFeedEntry && !isRemoteAudio) {
+        if (audioObject instanceof IPodcastFeedEntry && !isRemoteAudio) {
             url = PodcastFeedHandler.getInstance().getDownloadPath((PodcastFeedEntry) audioObject);
             if (getState().isUseShortPathNames() && getOsManager().usesShortPathNames()) {
                 shortPathName = true;

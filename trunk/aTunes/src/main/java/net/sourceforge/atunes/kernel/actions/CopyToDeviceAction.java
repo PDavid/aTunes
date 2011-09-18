@@ -32,6 +32,7 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class CopyToDeviceAction extends AbstractActionOverSelectedObjects<IAudioObject> {
@@ -47,7 +48,7 @@ public class CopyToDeviceAction extends AbstractActionOverSelectedObjects<IAudio
     protected IAudioObject preprocessObject(IAudioObject audioObject) {
         if (audioObject instanceof AudioFile) {
             return audioObject;
-        } else if (audioObject instanceof PodcastFeedEntry && ((PodcastFeedEntry) audioObject).isDownloaded()) {
+        } else if (audioObject instanceof IPodcastFeedEntry && ((IPodcastFeedEntry) audioObject).isDownloaded()) {
             String downloadPath = PodcastFeedHandler.getInstance().getDownloadPath((PodcastFeedEntry) audioObject);
             return new AudioFile(new File(downloadPath));
         }
@@ -73,7 +74,7 @@ public class CopyToDeviceAction extends AbstractActionOverSelectedObjects<IAudio
 
         if (NavigationHandler.getInstance().getCurrentView().equals(NavigationHandler.getInstance().getView(PodcastNavigationView.class))) {
             for (IAudioObject ao : selection) {
-                if (!((PodcastFeedEntry) ao).isDownloaded()) {
+                if (!((IPodcastFeedEntry) ao).isDownloaded()) {
                     return false;
                 }
             }

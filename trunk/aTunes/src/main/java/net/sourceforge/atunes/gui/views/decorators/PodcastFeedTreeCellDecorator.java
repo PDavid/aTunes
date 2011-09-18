@@ -27,14 +27,14 @@ import javax.swing.JLabel;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
+import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IState;
 
 public class PodcastFeedTreeCellDecorator extends AbstractTreeCellDecorator {
 
     @Override
     public Component decorateTreeCellComponent(IState state, Component component, Object userObject, boolean isSelected) {
-        if (userObject instanceof PodcastFeed) {
+        if (userObject instanceof IPodcastFeed) {
             ((JLabel) component).setIcon(RssImageIcon.getSmallIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
         }
         return component;

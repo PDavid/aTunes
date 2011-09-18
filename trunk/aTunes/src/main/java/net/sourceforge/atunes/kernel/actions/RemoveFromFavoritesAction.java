@@ -35,7 +35,7 @@ import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandl
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.TreeObject;
+import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class RemoveFromFavoritesAction extends CustomAbstractAction {
@@ -53,9 +53,9 @@ public class RemoveFromFavoritesAction extends CustomAbstractAction {
         if (NavigationHandler.getInstance().getPopupMenuCaller() == NavigationHandler.getInstance().getView(FavoritesNavigationView.class).getTree()) {
             TreePath[] paths = NavigationHandler.getInstance().getView(FavoritesNavigationView.class).getTree().getSelectionPaths();
             if (paths != null) {
-                List<TreeObject<? extends IAudioObject>> objects = new ArrayList<TreeObject<? extends IAudioObject>>();
+                List<ITreeObject<? extends IAudioObject>> objects = new ArrayList<ITreeObject<? extends IAudioObject>>();
                 for (TreePath element : paths) {
-                    objects.add((TreeObject<? extends IAudioObject>) ((DefaultMutableTreeNode) element.getLastPathComponent()).getUserObject());
+                    objects.add((ITreeObject<? extends IAudioObject>) ((DefaultMutableTreeNode) element.getLastPathComponent()).getUserObject());
                 }
                 FavoritesHandler.getInstance().removeFromFavorites(objects);
             }

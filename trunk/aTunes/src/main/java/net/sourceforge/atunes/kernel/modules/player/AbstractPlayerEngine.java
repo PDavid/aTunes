@@ -34,7 +34,6 @@ import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.TempFolder;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -43,6 +42,7 @@ import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -731,8 +731,8 @@ public abstract class AbstractPlayerEngine {
 		submissionState = SubmissionState.NOT_SUBMITTED;
 
 		// If we are playing a podcast, mark entry as listened
-		if (audioObject instanceof PodcastFeedEntry) {
-			((PodcastFeedEntry) audioObject).setListened(true);
+		if (audioObject instanceof IPodcastFeedEntry) {
+			((IPodcastFeedEntry) audioObject).setListened(true);
 			// Update pod cast navigator
 			NavigationHandler.getInstance().refreshView(PodcastNavigationView.class);
 		}

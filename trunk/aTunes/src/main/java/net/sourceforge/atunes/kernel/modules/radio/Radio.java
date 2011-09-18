@@ -37,8 +37,8 @@ import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.ImageSize;
-import net.sourceforge.atunes.model.TreeObject;
 import net.sourceforge.atunes.utils.NetworkUtils;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -48,7 +48,7 @@ import org.joda.time.base.BaseDateTime;
  * A radio station.
  */
 @PluginApi
-public final class Radio implements IAudioObject, Serializable, TreeObject<Radio>, Comparable<Radio> {
+public final class Radio implements IAudioObject, Serializable, ITreeObject<Radio>, Comparable<Radio> {
 
     private static final long serialVersionUID = 3295941106814718559L;
 

@@ -20,13 +20,13 @@
 
 package net.sourceforge.atunes.kernel.modules.player.mplayer;
 
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IPodcastFeedEntry;
 
 class PodcastFeedEntryMPlayerOutputReader extends AbstractMPlayerOutputReader {
 
     /** The podcast feed entry. */
-    private PodcastFeedEntry podcastFeedEntry;
+    private IPodcastFeedEntry podcastFeedEntry;
 
     private boolean started;
     
@@ -42,7 +42,7 @@ class PodcastFeedEntryMPlayerOutputReader extends AbstractMPlayerOutputReader {
      * @param podcastFeedEntry
      *            the podcast feed entry
      */
-    PodcastFeedEntryMPlayerOutputReader(MPlayerEngine engine, Process process, IFrame frame, PodcastFeedEntry podcastFeedEntry) {
+    PodcastFeedEntryMPlayerOutputReader(MPlayerEngine engine, Process process, IFrame frame, IPodcastFeedEntry podcastFeedEntry) {
         super(engine, process);
         this.podcastFeedEntry = podcastFeedEntry;
         this.frame = frame;

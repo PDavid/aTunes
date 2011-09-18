@@ -30,9 +30,9 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -240,7 +240,7 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
     void updatePlayerControls(IAudioObject audioObject) {
         // Disable slider if audio object is a radio or podcast feed entry
         boolean b = audioObject.isSeekable();
-        if (b && audioObject instanceof PodcastFeedEntry) {
+        if (b && audioObject instanceof IPodcastFeedEntry) {
             b = getState().isUseDownloadedPodcastFeedEntries();
         }
         setSlidable(b);

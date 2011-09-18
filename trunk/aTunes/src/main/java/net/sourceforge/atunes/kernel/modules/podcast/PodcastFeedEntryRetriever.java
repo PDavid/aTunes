@@ -32,6 +32,7 @@ import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -60,13 +61,13 @@ public class PodcastFeedEntryRetriever implements Runnable {
         }
     }
 
-    private List<PodcastFeed> podcastFeeds;
+    private List<IPodcastFeed> podcastFeeds;
     
     private IState state;
     
     private IFrame frame;
 
-    public PodcastFeedEntryRetriever(List<PodcastFeed> podcastFeeds, IState state, IFrame frame) {
+    public PodcastFeedEntryRetriever(List<IPodcastFeed> podcastFeeds, IState state, IFrame frame) {
         this.podcastFeeds = podcastFeeds;
         this.state = state;
         this.frame = frame;
@@ -75,11 +76,11 @@ public class PodcastFeedEntryRetriever implements Runnable {
     /**
      * Retrieves Podcast Feed Entries and refreshes view
      */
-    public List<PodcastFeed> retrievePodcastFeedEntries(final boolean removePodcastFeedEntriesRemovedFromPodcastFeed, ExtendedProxy proxy) {
+    public List<IPodcastFeed> retrievePodcastFeedEntries(final boolean removePodcastFeedEntriesRemovedFromPodcastFeed, ExtendedProxy proxy) {
 
-        final List<PodcastFeed> podcastFeedsWithNewEntries = new ArrayList<PodcastFeed>();
+        final List<IPodcastFeed> podcastFeedsWithNewEntries = new ArrayList<IPodcastFeed>();
 
-        for (final PodcastFeed podcastFeed : podcastFeeds) {
+        for (final IPodcastFeed podcastFeed : podcastFeeds) {
             try {
                 Document feedXml = XMLUtils.getXMLDocument(NetworkUtils.readURL(NetworkUtils.getConnection(podcastFeed.getUrl(), proxy)));
 
@@ -202,16 +203,16 @@ public class PodcastFeedEntryRetriever implements Runnable {
         SwingUtilities.invokeLater(new RefreshViewRunnable());
     }
 
-    private void showMessage(final List<PodcastFeed> podcastFeedsWithNewEntries) {
+    private void showMessage(final List<IPodcastFeed> podcastFeedsWithNewEntries) {
         synchronized (podcastFeeds) {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    for (PodcastFeed podcastFeedWithNewEntries : podcastFeedsWithNewEntries) {
+                    for (IPodcastFeed podcastFeedWithNewEntries : podcastFeedsWithNewEntries) {
                         // Check if podcast feed wasn't removed during retrieval
                         if (podcastFeeds.contains(podcastFeedWithNewEntries)) {
                             // Remove "new" flag from podcasts
-                            for (PodcastFeed podcastFeed : podcastFeeds) {
+                            for (IPodcastFeed podcastFeed : podcastFeeds) {
                                 podcastFeed.markEntriesAsNotNew();
                             }
                             if (!state.isShowStatusBar()) {
@@ -239,7 +240,7 @@ public class PodcastFeedEntryRetriever implements Runnable {
         }
     }
 
-    private void retrieveNameFromFeed(final PodcastFeed podcastFeed, Document feed) {
+    private void retrieveNameFromFeed(final IPodcastFeed podcastFeed, Document feed) {
         Node node = XMLUtils.evaluateXPathExpressionAndReturnNode(podcastFeed.getFeedType().getNameXPath(), feed);
         if (node != null) {
             String name = node.getTextContent();
@@ -252,7 +253,7 @@ public class PodcastFeedEntryRetriever implements Runnable {
         try {
             boolean removePodcastFeedEntriesRemovedFromPodcastFeed = state.isRemovePodcastFeedEntriesRemovedFromPodcastFeed();
             ExtendedProxy proxy = ExtendedProxy.getProxy(state.getProxy());
-            List<PodcastFeed> podcastFeedsWithNewEntries = retrievePodcastFeedEntries(removePodcastFeedEntriesRemovedFromPodcastFeed, proxy);
+            List<IPodcastFeed> podcastFeedsWithNewEntries = retrievePodcastFeedEntries(removePodcastFeedEntriesRemovedFromPodcastFeed, proxy);
             // If there are new entries show a message and refresh view
             showMessage(podcastFeedsWithNewEntries);
             refreshView();

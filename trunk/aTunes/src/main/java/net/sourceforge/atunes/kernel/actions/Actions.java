@@ -36,7 +36,7 @@ import net.sourceforge.atunes.gui.model.TreeObjectsSource;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.TreeObject;
+import net.sourceforge.atunes.model.ITreeObject;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -112,7 +112,7 @@ public final class Actions {
      * @param selectedObjectsSource
      * @return
      */
-    public static <T extends AbstractActionOverSelectedTreeObjects<? extends TreeObject<? extends IAudioObject>>> CustomAbstractAction getTreeActionAndBind(Class<T> clazz, Component actionSource, TreeObjectsSource selectedObjectsSource) {
+    public static <T extends AbstractActionOverSelectedTreeObjects<? extends ITreeObject<? extends IAudioObject>>> CustomAbstractAction getTreeActionAndBind(Class<T> clazz, Component actionSource, TreeObjectsSource selectedObjectsSource) {
         AbstractActionOverSelectedTreeObjects.addRegisteredComponent(actionSource, selectedObjectsSource);
         return getAction(clazz, null);
     }
@@ -155,7 +155,7 @@ public final class Actions {
      * @param audioObjectsSource
      * @return
      */
-    public static JMenuItem getMenuItemForTreeAction(Class<? extends AbstractActionOverSelectedTreeObjects<? extends TreeObject<? extends IAudioObject>>> clazz, TreeObjectsSource audioObjectsSource) {
+    public static JMenuItem getMenuItemForTreeAction(Class<? extends AbstractActionOverSelectedTreeObjects<? extends ITreeObject<? extends IAudioObject>>> clazz, TreeObjectsSource audioObjectsSource) {
         JMenuItem menuItem = new JMenuItem();
         menuItem.setAction(Actions.getTreeActionAndBind(clazz, menuItem, audioObjectsSource));
         return menuItem;

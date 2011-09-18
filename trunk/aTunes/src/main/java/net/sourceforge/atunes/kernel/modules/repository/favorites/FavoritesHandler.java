@@ -40,7 +40,7 @@ import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.TreeObject;
+import net.sourceforge.atunes.model.ITreeObject;
 
 /**
  * The Class FavoritesHandler.
@@ -90,7 +90,7 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
     		return;
     	}
     	
-    	List<TreeObject<?>> toRemove = new ArrayList<TreeObject<?>>();
+    	List<ITreeObject<?>> toRemove = new ArrayList<ITreeObject<?>>();
         Map<String, Album> favAlbums = getFavorites().getFavoriteAlbums();
         for (int i = 0; i < songs.size(); i++) {
         	ILocalAudioObject f = songs.get(i);
@@ -121,7 +121,7 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
     		return;
     	}
 
-    	List<TreeObject<?>> toRemove = new ArrayList<TreeObject<?>>();    	
+    	List<ITreeObject<?>> toRemove = new ArrayList<ITreeObject<?>>();    	
         Map<String, Artist> favArtists = getFavorites().getFavoriteArtists();
         for (int i = 0; i < songs.size(); i++) {
         	ILocalAudioObject f = songs.get(i);
@@ -248,8 +248,8 @@ public final class FavoritesHandler extends AbstractHandler implements AudioFile
      * @param objects
      *            list of objects of type TreeObject
      */
-    public void removeFromFavorites(List<TreeObject<?>> objects) {
-        for (TreeObject<? extends IAudioObject> obj : objects) {
+    public void removeFromFavorites(List<ITreeObject<?>> objects) {
+        for (ITreeObject<? extends IAudioObject> obj : objects) {
             if (obj instanceof Artist) {
                 getFavorites().getFavoriteArtists().remove(obj.toString());
             } else {

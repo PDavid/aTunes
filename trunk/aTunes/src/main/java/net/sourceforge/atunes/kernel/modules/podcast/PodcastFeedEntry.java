@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.kernel.modules.podcast;
 
 import java.awt.Paint;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -33,6 +32,8 @@ import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPodcastFeed;
+import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.ImageSize;
 
 import org.joda.time.DateTime;
@@ -41,7 +42,7 @@ import org.joda.time.base.BaseDateTime;
 /**
  * Represents a entry of a podcast feed.
  */
-public final class PodcastFeedEntry implements IAudioObject, Serializable, Comparable<PodcastFeedEntry> {
+public final class PodcastFeedEntry implements IPodcastFeedEntry {
 
     private static final long serialVersionUID = 4185336290582212484L;
 
@@ -58,7 +59,7 @@ public final class PodcastFeedEntry implements IAudioObject, Serializable, Compa
     private String description;
     private int duration;
     private BaseDateTime date;
-    private PodcastFeed podcastFeed;
+    private IPodcastFeed podcastFeed;
     private boolean listened;
     private boolean downloaded;
     private boolean old;
@@ -81,7 +82,7 @@ public final class PodcastFeedEntry implements IAudioObject, Serializable, Compa
      * @param podcastFeed
      *            the corresponding podcast feed of the podcast feed entry
      */
-    public PodcastFeedEntry(String title, String author, String url, String description, BaseDateTime date, int duration, PodcastFeed podcastFeed) {
+    public PodcastFeedEntry(String title, String author, String url, String description, BaseDateTime date, int duration, IPodcastFeed podcastFeed) {
         this.title = title;
         this.author = author;
         this.url = url;
@@ -167,12 +168,11 @@ public final class PodcastFeedEntry implements IAudioObject, Serializable, Compa
         return date;
     }
 
-    /**
-     * Gets the description.
-     * 
-     * @return the description
-     */
-    public String getDescription() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#getDescription()
+	 */
+    @Override
+	public String getDescription() {
         return description;
     }
 
@@ -196,22 +196,19 @@ public final class PodcastFeedEntry implements IAudioObject, Serializable, Compa
         return "";
     }
 
-    /**
-     * Sets the old.
-     * 
-     * @param old
-     *            the new old
-     */
-    public void setOld(boolean old) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#setOld(boolean)
+	 */
+    @Override
+	public void setOld(boolean old) {
         this.old = old;
     }
 
-    /**
-     * Gets the podcast feed.
-     * 
-     * @return The corresponding podcast feed
-     */
-    public PodcastFeed getPodcastFeed() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#getPodcastFeed()
+	 */
+    @Override
+	public IPodcastFeed getPodcastFeed() {
         return podcastFeed;
     }
 
@@ -258,80 +255,67 @@ public final class PodcastFeedEntry implements IAudioObject, Serializable, Compa
         return getUrl().hashCode();
     }
 
-    /**
-     * Checks if is listened.
-     * 
-     * @return if the podcast feed entry was already listened
-     */
-    public boolean isListened() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#isListened()
+	 */
+    @Override
+	public boolean isListened() {
         return listened;
     }
 
-    /**
-     * Checks if is downloaded.
-     * 
-     * @return true, if is downloaded
-     */
-    public boolean isDownloaded() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#isDownloaded()
+	 */
+    @Override
+	public boolean isDownloaded() {
         return downloaded;
     }
 
-    /**
-     * Checks if is old.
-     * 
-     * @return true, if is old
-     */
-    public boolean isOld() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#isOld()
+	 */
+    @Override
+	public boolean isOld() {
         return old;
     }
 
-    /**
-     * Sets the date.
-     * 
-     * @param date
-     *            the date to set
-     */
-    public void setDate(DateTime date) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#setDate(org.joda.time.DateTime)
+	 */
+    @Override
+	public void setDate(DateTime date) {
         this.date = date;
     }
 
-    /**
-     * Sets the description.
-     * 
-     * @param description
-     *            the description to set
-     */
-    public void setDescription(String description) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#setDescription(java.lang.String)
+	 */
+    @Override
+	public void setDescription(String description) {
         this.description = description;
     }
 
-    /**
-     * Sets the downloaded.
-     * 
-     * @param downloaded
-     *            the new downloaded
-     */
-    public void setDownloaded(boolean downloaded) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#setDownloaded(boolean)
+	 */
+    @Override
+	public void setDownloaded(boolean downloaded) {
         this.downloaded = downloaded;
     }
 
-    /**
-     * Sets the listened.
-     * 
-     * @param listened
-     *            if the podcast feed entry was already listened
-     */
-    public void setListened(boolean listened) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#setListened(boolean)
+	 */
+    @Override
+	public void setListened(boolean listened) {
         this.listened = listened;
     }
 
-    /**
-     * Sets the podcast feed.
-     * 
-     * @param podcastFeed
-     *            the corresponding podcast feed to set
-     */
-    public void setPodcastFeed(PodcastFeed podcastFeed) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#setPodcastFeed(net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed)
+	 */
+    @Override
+	public void setPodcastFeed(IPodcastFeed podcastFeed) {
         this.podcastFeed = podcastFeed;
     }
 
@@ -340,13 +324,11 @@ public final class PodcastFeedEntry implements IAudioObject, Serializable, Compa
         // Nothing to do
     }
 
-    /**
-     * Sets the url.
-     * 
-     * @param url
-     *            the url to set
-     */
-    public void setUrl(String url) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedEntry#setUrl(java.lang.String)
+	 */
+    @Override
+	public void setUrl(String url) {
         this.url = url;
     }
 

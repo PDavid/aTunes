@@ -79,7 +79,7 @@ import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.TreeObject;
+import net.sourceforge.atunes.model.ITreeObject;
 
 final class NavigationController implements AudioFilesRemovedListener, IController {
 
@@ -278,7 +278,7 @@ final class NavigationController implements AudioFilesRemovedListener, IControll
             TreePath[] paths = NavigationHandler.getInstance().getCurrentView().getTree().getSelectionPaths();
             for (TreePath path : paths) {
                 DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) path.getLastPathComponent();
-                if (treeNode.getUserObject() instanceof TreeObject) {
+                if (treeNode.getUserObject() instanceof ITreeObject) {
                     files.addAll(getAudioObjectsForTreeNode(NavigationHandler.getInstance().getCurrentView().getClass(),
                             treeNode));
                 }
@@ -377,7 +377,7 @@ final class NavigationController implements AudioFilesRemovedListener, IControll
     @SuppressWarnings("unchecked")
 	public void setCurrentExtendedToolTipContent(Object currentAlbumToolTipContent) {
         this.currentExtendedToolTipContent = currentAlbumToolTipContent;
-        getExtendedToolTip().setSizeToFitImage(currentAlbumToolTipContent instanceof TreeObject && ((TreeObject<? extends IAudioObject>) currentAlbumToolTipContent).isExtendedToolTipImageSupported());
+        getExtendedToolTip().setSizeToFitImage(currentAlbumToolTipContent instanceof ITreeObject && ((ITreeObject<? extends IAudioObject>) currentAlbumToolTipContent).isExtendedToolTipImageSupported());
     }
 
     /**

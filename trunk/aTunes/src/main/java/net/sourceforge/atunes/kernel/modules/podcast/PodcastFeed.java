@@ -20,37 +20,29 @@
 
 package net.sourceforge.atunes.kernel.modules.podcast;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.TreeObject;
+import net.sourceforge.atunes.model.IPodcastFeed;
+import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * Represents a rss or atom podcast feed.
  */
-public class PodcastFeed implements TreeObject<PodcastFeedEntry>, Serializable {
+public class PodcastFeed implements IPodcastFeed {
 
     private static final long serialVersionUID = 1416452911272034086L;
-
-    private static Comparator<PodcastFeed> comparator = new Comparator<PodcastFeed>() {
-        @Override
-        public int compare(PodcastFeed o1, PodcastFeed o2) {
-            return o1.name.compareToIgnoreCase(o2.name);
-        }
-    };
 
     private String name;
     private String url;
     private FeedType feedType;
-    private List<PodcastFeedEntry> podcastFeedEntries;
+    private List<IPodcastFeedEntry> podcastFeedEntries;
     private boolean hasNewEntries;
     /** If the name should be retrieved from the feed */
     private boolean retrieveNameFromFeed;
@@ -66,16 +58,7 @@ public class PodcastFeed implements TreeObject<PodcastFeedEntry>, Serializable {
     public PodcastFeed(String name, String url) {
         this.name = name;
         this.url = url;
-        podcastFeedEntries = new ArrayList<PodcastFeedEntry>();
-    }
-
-    /**
-     * Gets the comparator.
-     * 
-     * @return the comparator
-     */
-    public static Comparator<PodcastFeed> getComparator() {
-        return comparator;
+        podcastFeedEntries = new ArrayList<IPodcastFeedEntry>();
     }
 
     @Override
@@ -83,48 +66,44 @@ public class PodcastFeed implements TreeObject<PodcastFeedEntry>, Serializable {
         if (!(o instanceof PodcastFeed)) {
             return false;
         }
-        return (name + url).equals(((PodcastFeed) o).getName() + ((PodcastFeed) o).getUrl());
+        return (name + url).equals(((IPodcastFeed) o).getName() + ((IPodcastFeed) o).getUrl());
 
     }
 
     @Override
-    public synchronized List<PodcastFeedEntry> getAudioObjects() {
-        return new ArrayList<PodcastFeedEntry>(podcastFeedEntries);
+    public synchronized List<IPodcastFeedEntry> getAudioObjects() {
+        return new ArrayList<IPodcastFeedEntry>(podcastFeedEntries);
     }
 
-    /**
-     * Gets the feed type.
-     * 
-     * @return the feedType of the podcast feed
-     */
-    public FeedType getFeedType() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeed#getFeedType()
+	 */
+    @Override
+	public FeedType getFeedType() {
         return feedType;
     }
 
-    /**
-     * Gets the name.
-     * 
-     * @return the name of the podcast feed
-     */
-    public synchronized String getName() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeed#getName()
+	 */
+    @Override
+	public synchronized String getName() {
         return name;
     }
 
-    /**
-     * Gets the podcast feed entries.
-     * 
-     * @return the podcast feed entries
-     */
-    public synchronized List<PodcastFeedEntry> getPodcastFeedEntries() {
-        return new ArrayList<PodcastFeedEntry>(podcastFeedEntries);
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeed#getPodcastFeedEntries()
+	 */
+    @Override
+	public synchronized List<IPodcastFeedEntry> getPodcastFeedEntries() {
+        return new ArrayList<IPodcastFeedEntry>(podcastFeedEntries);
     }
 
-    /**
-     * Gets the url.
-     * 
-     * @return the url of the podcast feed
-     */
-    public String getUrl() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeed#getUrl()
+	 */
+    @Override
+	public String getUrl() {
         return url;
     }
 
@@ -133,59 +112,53 @@ public class PodcastFeed implements TreeObject<PodcastFeedEntry>, Serializable {
         return (name + url).hashCode();
     }
 
-    /**
-     * Checks for new entries.
-     * 
-     * @return if the podcast feed has new entries
-     */
-    public boolean hasNewEntries() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeed#hasNewEntries()
+	 */
+    @Override
+	public boolean hasNewEntries() {
         return hasNewEntries;
     }
 
-    /**
-     * Returns if the name should be retrieved from the feed
-     * 
-     * @return retrieveNameFromFeed if the name should be retrieved from the
-     *         feed
-     */
-    public boolean isRetrieveNameFromFeed() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeed#isRetrieveNameFromFeed()
+	 */
+    @Override
+	public boolean isRetrieveNameFromFeed() {
         return retrieveNameFromFeed;
     }
 
-    /**
-     * Marks the entries of this podcast feed as listened.
-     */
-    public synchronized void markEntriesAsListened() {
-        for (PodcastFeedEntry entry : podcastFeedEntries) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeed#markEntriesAsListened()
+	 */
+    @Override
+	public synchronized void markEntriesAsListened() {
+        for (IPodcastFeedEntry entry : podcastFeedEntries) {
             entry.setListened(true);
         }
     }
 
-    /**
-     * Marks the entries of this podcastfeed as not new.
-     */
-    public void markEntriesAsNotNew() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeed#markEntriesAsNotNew()
+	 */
+    @Override
+	public void markEntriesAsNotNew() {
         hasNewEntries = false;
     }
 
-    /**
-     * Sets the entries of this podcast feed and removes old entries if
-     * specified.
-     * 
-     * @param entries
-     *            The entries of this podcast feed
-     * @param removeOld
-     *            If old entries should be removed
-     */
-    public synchronized void addEntries(List<? extends PodcastFeedEntry> entries, boolean removeOld) {
-        List<? extends PodcastFeedEntry> newEntries = new ArrayList<PodcastFeedEntry>(entries);
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeed#addEntries(java.util.List, boolean)
+	 */
+    @Override
+	public synchronized void addEntries(List<? extends IPodcastFeedEntry> entries, boolean removeOld) {
+        List<? extends IPodcastFeedEntry> newEntries = new ArrayList<IPodcastFeedEntry>(entries);
 
-        List<PodcastFeedEntry> oldEntries = new ArrayList<PodcastFeedEntry>(podcastFeedEntries);
+        List<IPodcastFeedEntry> oldEntries = new ArrayList<IPodcastFeedEntry>(podcastFeedEntries);
         oldEntries.removeAll(newEntries);
         if (removeOld) {
             podcastFeedEntries.removeAll(oldEntries);
         }
-        for (PodcastFeedEntry oldPodcastFeedEntry : oldEntries) {
+        for (IPodcastFeedEntry oldPodcastFeedEntry : oldEntries) {
             oldPodcastFeedEntry.setOld(true);
         }
 
@@ -193,70 +166,59 @@ public class PodcastFeed implements TreeObject<PodcastFeedEntry>, Serializable {
         if (!newEntries.isEmpty()) {
             hasNewEntries = true;
         }
-        for (PodcastFeedEntry newPodcastFeedEntry : newEntries) {
+        for (IPodcastFeedEntry newPodcastFeedEntry : newEntries) {
             newPodcastFeedEntry.setOld(false);
         }
         podcastFeedEntries.addAll(0, newEntries);
     }
 
-    /**
-     * Removed Podcast feed entry from this Podcast feed.
-     * 
-     * @param podcastFeedEntry
-     *            The Podcast feed entr that should be removed
-     */
-    public synchronized void removeEntry(PodcastFeedEntry podcastFeedEntry) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeed#removeEntry(net.sourceforge.atunes.model.IPodcastFeedEntry)
+	 */
+    @Override
+	public synchronized void removeEntry(IPodcastFeedEntry podcastFeedEntry) {
         podcastFeedEntries.remove(podcastFeedEntry);
     }
 
-    /**
-     * Sets the feed type.
-     * 
-     * @param feedType
-     *            the feedType of the podcast feed to set
-     */
-    public void setFeedType(FeedType feedType) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeed#setFeedType(net.sourceforge.atunes.kernel.modules.podcast.FeedType)
+	 */
+    @Override
+	public void setFeedType(FeedType feedType) {
         this.feedType = feedType;
     }
 
-    /**
-     * Sets the name.
-     * 
-     * @param name
-     *            the name of the podcast feed to set
-     */
-    public synchronized void setName(String name) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeed#setName(java.lang.String)
+	 */
+    @Override
+	public synchronized void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * Sets the url.
-     * 
-     * @param url
-     *            the url of the podcast feed to set
-     */
-    public void setUrl(String url) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeed#setUrl(java.lang.String)
+	 */
+    @Override
+	public void setUrl(String url) {
         this.url = url;
     }
 
-    /**
-     * Sets if the name should be retrieved from the feed
-     * 
-     * @param retrieveNameFromFeed
-     *            if the name should be retrieved from the feed
-     */
-    public void setRetrieveNameFromFeed(boolean retrieveNameFromFeed) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeed#setRetrieveNameFromFeed(boolean)
+	 */
+    @Override
+	public void setRetrieveNameFromFeed(boolean retrieveNameFromFeed) {
         this.retrieveNameFromFeed = retrieveNameFromFeed;
     }
 
-    /**
-     * Returns number of new entries of this podcast
-     * 
-     * @return
-     */
-    public synchronized int getNewEntriesCount() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeed#getNewEntriesCount()
+	 */
+    @Override
+	public synchronized int getNewEntriesCount() {
         int newEntries = 0;
-        for (PodcastFeedEntry entry : podcastFeedEntries) {
+        for (IPodcastFeedEntry entry : podcastFeedEntries) {
             if (!entry.isListened()) {
                 newEntries++;
             }
