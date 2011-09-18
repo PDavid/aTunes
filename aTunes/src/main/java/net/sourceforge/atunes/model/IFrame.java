@@ -320,4 +320,15 @@ public interface IFrame {
 	 */
 	void setOsManager(IOSManager osManager);
 	
+	/**
+	 * Shows progress bar with given text and determinate or indeterminate
+	 * @param indeterminate
+	 * @param text
+	 */
+	public void showProgressBar(boolean indeterminate, String text);
+	
+	/**
+	 * Hides progress bar
+	 */
+	public void hideProgressBar();
 }

@@ -273,33 +273,6 @@ public final class GuiHandler extends AbstractHandler {
     }
 
     /**
-     * Sets progress bar visible and with given tooltip
-     * 
-     * @param indeterminate
-     * @param text
-     */
-    public void showProgressBar(boolean indeterminate, String text) {
-        if (getFrame().getProgressBar() != null) {
-            getFrame().getProgressBar().setVisible(true);
-            getFrame().getProgressBar().setIndeterminate(indeterminate);
-            if (!indeterminate) {
-                getFrame().getProgressBar().setMinimum(0);
-                getFrame().getProgressBar().setValue(0);
-            }
-            getFrame().getProgressBar().setToolTipText(text);
-        }
-    }
-
-    /**
-     * Hides progress bar
-     */
-    public void hideProgressBar() {
-        if (getFrame().getProgressBar() != null) {
-            getFrame().getProgressBar().setVisible(false);
-        }
-    }
-
-    /**
      * Start visualization.
      */
     public void startVisualization() {

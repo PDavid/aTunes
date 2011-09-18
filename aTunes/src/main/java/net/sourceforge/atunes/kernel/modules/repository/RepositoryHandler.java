@@ -281,13 +281,6 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     	}
     }
 
-	private static class ShowProgressBarRunnable implements Runnable {
-        @Override
-        public void run() {
-            GuiHandler.getInstance().showProgressBar(true, StringUtils.getString(I18nUtils.getString("REFRESHING"), "..."));
-        }
-    }
-
     private static class ExitRunnable implements Runnable {
         @Override
         public void run() {
@@ -313,7 +306,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         public void mouseClicked(MouseEvent e) {
             backgroundLoad = false;
             currentLoader.setPriority(Thread.MAX_PRIORITY);
-            GuiHandler.getInstance().hideProgressBar();
+            getFrame().hideProgressBar();
             if (progressDialog != null) {
                 progressDialog.showProgressDialog();
             }
@@ -386,7 +379,12 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      *            the files
      */
     public void addFilesAndRefresh(final List<File> files) {
-        SwingUtilities.invokeLater(new ShowProgressBarRunnable());
+    	SwingUtilities.invokeLater(new Runnable() {
+    		@Override
+    		public void run() {
+    			getFrame().showProgressBar(true, StringUtils.getString(I18nUtils.getString("REFRESHING"), "..."));
+    		}
+    	});
         SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() {
@@ -398,7 +396,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 
             @Override
             protected void done() {
-                GuiHandler.getInstance().hideProgressBar();
+            	getFrame().hideProgressBar();
                 showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
                 NavigationHandler.getInstance().notifyReload();
                 Logger.info("Repository refresh done");
@@ -761,7 +759,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         getState().setLastRepositoryFolders(repositoryFolders);
 
         if (backgroundLoad) {
-            GuiHandler.getInstance().hideProgressBar();
+        	getFrame().hideProgressBar();
         }
 
         notifyFinishRepositoryRead();
@@ -771,7 +769,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     public void notifyFinishRefresh(RepositoryLoader loader) {
         enableRepositoryActions(true);
 
-        GuiHandler.getInstance().hideProgressBar();
+        getFrame().hideProgressBar();
         showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
         NavigationHandler.getInstance().notifyReload();
         Logger.info("Repository refresh done");
@@ -974,7 +972,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      *            the file
      */
     public void refreshFolders(List<Folder> folders) {
-        GuiHandler.getInstance().showProgressBar(true, StringUtils.getString(I18nUtils.getString("REFRESHING"), "..."));
+    	getFrame().showProgressBar(true, StringUtils.getString(I18nUtils.getString("REFRESHING"), "..."));
         enableRepositoryActions(false);
     	new RefreshFoldersSwingWorker(repository, folders, statisticsHandler, getOsManager()).execute();
     }
@@ -985,7 +983,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     public void refreshRepository() {
         if (!repositoryIsNull()) {
             String text = StringUtils.getString(I18nUtils.getString("REFRESHING"), "...");
-            GuiHandler.getInstance().showProgressBar(true, text);
+            getFrame().showProgressBar(true, text);
             enableRepositoryActions(false);
             refresh();
         }
@@ -1182,7 +1180,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
             if (progressDialog != null) {
                 progressDialog.hideProgressDialog();
             }
-            GuiHandler.getInstance().showProgressBar(false, StringUtils.getString(I18nUtils.getString("LOADING"), "..."));
+            getFrame().showProgressBar(false, StringUtils.getString(I18nUtils.getString("LOADING"), "..."));
             getFrame().getProgressBar().addMouseListener(progressBarMouseAdapter);
         }
 
