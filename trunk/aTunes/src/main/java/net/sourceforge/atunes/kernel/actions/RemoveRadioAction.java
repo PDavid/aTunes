@@ -24,22 +24,22 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class RemoveRadioAction extends AbstractActionOverSelectedObjects<Radio> {
+public class RemoveRadioAction extends AbstractActionOverSelectedObjects<IRadio> {
 
     private static final long serialVersionUID = 8755385947718573969L;
 
     RemoveRadioAction() {
-        super(I18nUtils.getString("REMOVE_RADIO"), Radio.class);
+        super(I18nUtils.getString("REMOVE_RADIO"), IRadio.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_RADIO"));
     }
 
     @Override
-    protected void performAction(List<Radio> objects) {
+    protected void performAction(List<IRadio> objects) {
         RadioHandler.getInstance().removeRadios(objects);
     }
 
@@ -50,7 +50,7 @@ public class RemoveRadioAction extends AbstractActionOverSelectedObjects<Radio> 
         }
 
         for (DefaultMutableTreeNode node : selection) {
-            if (!(node.getUserObject() instanceof Radio)) {
+            if (!(node.getUserObject() instanceof IRadio)) {
                 return false;
             }
         }

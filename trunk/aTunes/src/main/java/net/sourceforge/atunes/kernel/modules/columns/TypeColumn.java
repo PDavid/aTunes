@@ -29,10 +29,10 @@ import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.RadioImageIcon;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
-import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
+import net.sourceforge.atunes.model.IRadio;
 
 public class TypeColumn extends AbstractColumn {
 
@@ -68,7 +68,7 @@ public class TypeColumn extends AbstractColumn {
             		return AudioFileImageIcon.getSmallImageIcon(paint);
             	}
             };
-        } else if (audioObject instanceof Radio) {
+        } else if (audioObject instanceof IRadio) {
             return new ColorMutableImageIcon() {
             	@Override
             	public ImageIcon getIcon(Paint paint) {

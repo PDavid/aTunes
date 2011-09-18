@@ -29,9 +29,9 @@ import javax.swing.tree.TreePath;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationView;
-import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.model.IInputDialog;
+import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class RenameRadioLabelAction extends CustomAbstractAction {
@@ -56,12 +56,12 @@ public class RenameRadioLabelAction extends CustomAbstractAction {
             dialog.showDialog(label);
             String result = dialog.getResult();
             if (result != null) {
-                List<Radio> radios = RadioHandler.getInstance().getRadios(label);
+                List<IRadio> radios = RadioHandler.getInstance().getRadios(label);
                 RadioHandler.getInstance().setLabel(radios, result);
                 NavigationHandler.getInstance().refreshView(RadioNavigationView.class);
             }
-        } else if (o instanceof Radio) {
-            Radio radio = (Radio) o;
+        } else if (o instanceof IRadio) {
+            IRadio radio = (IRadio) o;
             dialog.showDialog(radio.getLabel());
             String result = dialog.getResult();
             if (result != null) {

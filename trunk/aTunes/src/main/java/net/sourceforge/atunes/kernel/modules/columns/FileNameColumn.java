@@ -20,10 +20,10 @@
 
 package net.sourceforge.atunes.kernel.modules.columns;
 
-import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
+import net.sourceforge.atunes.model.IRadio;
 
 public class FileNameColumn extends AbstractColumn {
 
@@ -44,7 +44,7 @@ public class FileNameColumn extends AbstractColumn {
 
     @Override
     public Object getValueFor(IAudioObject audioObject) {
-        if (audioObject instanceof Radio) {
+        if (audioObject instanceof IRadio) {
             return "";
         }
         if (audioObject instanceof IPodcastFeedEntry) {

@@ -22,10 +22,8 @@ package net.sourceforge.atunes.kernel.modules.radio;
 
 import java.awt.Paint;
 import java.io.IOException;
-import java.io.Serializable;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -37,7 +35,7 @@ import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.ITreeObject;
+import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.NetworkUtils;
 
@@ -48,18 +46,11 @@ import org.joda.time.base.BaseDateTime;
  * A radio station.
  */
 @PluginApi
-public final class Radio implements IAudioObject, Serializable, ITreeObject<Radio>, Comparable<Radio> {
+public final class Radio implements IRadio {
 
     private static final long serialVersionUID = 3295941106814718559L;
 
     private static final String[] PLAYLISTS = { "m3u", "pls", "asx", "wax", "b4s", "kpl", "wvx", "ram", "rm", "smil" };
-
-    private static Comparator<Radio> comparator = new Comparator<Radio>() {
-        @Override
-        public int compare(Radio o1, Radio o2) {
-            return o1.getName().compareToIgnoreCase(o2.getName());
-        }
-    };
 
     private String name;
     private String url;
@@ -90,15 +81,6 @@ public final class Radio implements IAudioObject, Serializable, ITreeObject<Radi
     }
 
     /**
-     * Gets the comparator.
-     * 
-     * @return the comparator
-     */
-    public static Comparator<Radio> getComparator() {
-        return comparator;
-    }
-
-    /**
      * Gets the radios.
      * 
      * @param audioObjects
@@ -116,10 +98,11 @@ public final class Radio implements IAudioObject, Serializable, ITreeObject<Radi
         return result;
     }
 
-    /**
-     * Delete song info.
-     */
-    public void deleteSongInfo() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#deleteSongInfo()
+	 */
+    @Override
+	public void deleteSongInfo() {
         artist = null;
         title = null;
         songInfoAvailable = false;
@@ -187,12 +170,11 @@ public final class Radio implements IAudioObject, Serializable, ITreeObject<Radi
         return "";
     }
 
-    /**
-     * Gets the name.
-     * 
-     * @return Radio station name
-     */
-    public String getName() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#getName()
+	 */
+    @Override
+	public String getName() {
         return name;
     }
 
@@ -231,12 +213,11 @@ public final class Radio implements IAudioObject, Serializable, ITreeObject<Radi
         return null;
     }
 
-    /**
-     * Checks for playlist url.
-     * 
-     * @return true, if successful
-     */
-    public boolean hasPlaylistUrl(ExtendedProxy proxy) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#hasPlaylistUrl(net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy)
+	 */
+    @Override
+	public boolean hasPlaylistUrl(ExtendedProxy proxy) {
         // First check based on URL end (extension)
         for (String pl : PLAYLISTS) {
             if (url.trim().toLowerCase().endsWith(pl)) {
@@ -263,91 +244,75 @@ public final class Radio implements IAudioObject, Serializable, ITreeObject<Radi
         return false;
     }
 
-    /**
-     * Checks if is removed.
-     * 
-     * @return true, if is removed
-     */
-    public boolean isRemoved() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#isRemoved()
+	 */
+    @Override
+	public boolean isRemoved() {
         return isRemoved;
     }
 
-    /**
-     * Checks if is song info available.
-     * 
-     * @return true, if is song info available
-     */
-    public boolean isSongInfoAvailable() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#isSongInfoAvailable()
+	 */
+    @Override
+	public boolean isSongInfoAvailable() {
         return songInfoAvailable;
     }
 
-    /**
-     * Sets the artist.
-     * 
-     * @param artist
-     *            the new artist
-     */
-    public void setArtist(String artist) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#setArtist(java.lang.String)
+	 */
+    @Override
+	public void setArtist(String artist) {
         this.artist = artist;
     }
 
-    /**
-     * Sets the bitrate.
-     * 
-     * @param bitrate
-     *            the new bitrate
-     */
-    public void setBitrate(long bitrate) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#setBitrate(long)
+	 */
+    @Override
+	public void setBitrate(long bitrate) {
         this.bitrate = bitrate;
     }
 
-    /**
-     * Sets the frequency.
-     * 
-     * @param frequency
-     *            the new frequency
-     */
-    public void setFrequency(int frequency) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#setFrequency(int)
+	 */
+    @Override
+	public void setFrequency(int frequency) {
         this.frequency = frequency;
     }
 
-    /**
-     * Sets the genre.
-     * 
-     * @param genre
-     *            the new genre
-     */
-    public void setGenre(String genre) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#setGenre(java.lang.String)
+	 */
+    @Override
+	public void setGenre(String genre) {
         this.genre = genre;
     }
 
-    /**
-     * Sets the name.
-     * 
-     * @param name
-     *            the new name
-     */
-    public void setName(String name) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#setName(java.lang.String)
+	 */
+    @Override
+	public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * Set a preset station as removed. Set true for removing.
-     * 
-     * @param isRemoved
-     *            the is removed
-     */
-    public void setRemoved(boolean isRemoved) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#setRemoved(boolean)
+	 */
+    @Override
+	public void setRemoved(boolean isRemoved) {
         this.isRemoved = isRemoved;
     }
 
-    /**
-     * Sets the song info available.
-     * 
-     * @param songInfoAvailable
-     *            the new song info available
-     */
-    public void setSongInfoAvailable(boolean songInfoAvailable) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#setSongInfoAvailable(boolean)
+	 */
+    @Override
+	public void setSongInfoAvailable(boolean songInfoAvailable) {
         this.songInfoAvailable = songInfoAvailable;
     }
 
@@ -356,23 +321,19 @@ public final class Radio implements IAudioObject, Serializable, ITreeObject<Radi
         // Nothing to do
     }
 
-    /**
-     * Sets the title.
-     * 
-     * @param title
-     *            the new title
-     */
-    public void setTitle(String title) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#setTitle(java.lang.String)
+	 */
+    @Override
+	public void setTitle(String title) {
         this.title = title;
     }
 
-    /**
-     * Sets the url.
-     * 
-     * @param url
-     *            the new url
-     */
-    public void setUrl(String url) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#setUrl(java.lang.String)
+	 */
+    @Override
+	public void setUrl(String url) {
         this.url = url;
     }
 
@@ -381,22 +342,19 @@ public final class Radio implements IAudioObject, Serializable, ITreeObject<Radi
         return name;
     }
 
-    /**
-     * Gets the label.
-     * 
-     * @return the label
-     */
-    public String getLabel() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#getLabel()
+	 */
+    @Override
+	public String getLabel() {
         return label;
     }
 
-    /**
-     * Sets the label.
-     * 
-     * @param label
-     *            the label to set
-     */
-    public void setLabel(String label) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#setLabel(java.lang.String)
+	 */
+    @Override
+	public void setLabel(String label) {
         this.label = label;
     }
 
@@ -406,7 +364,7 @@ public final class Radio implements IAudioObject, Serializable, ITreeObject<Radi
     }
 
     @Override
-    public int compareTo(Radio o) {
+    public int compareTo(IRadio o) {
         return name.compareTo(o.getName());
     }
 

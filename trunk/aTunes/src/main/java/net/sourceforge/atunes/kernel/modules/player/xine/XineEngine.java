@@ -31,12 +31,12 @@ import javax.swing.Timer;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
-import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
+import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -113,7 +113,7 @@ public class XineEngine extends AbstractPlayerEngine {
 
         String errorMessage = null;
         int streamLength = xineController.getStreamLength();
-        if (audioObjectToPlay instanceof IPodcastFeedEntry || audioObjectToPlay instanceof Radio) {
+        if (audioObjectToPlay instanceof IPodcastFeedEntry || audioObjectToPlay instanceof IRadio) {
             if (!xineController.hasAudio()) {
                 info("No audio found, go to next track");
                 valid = false;

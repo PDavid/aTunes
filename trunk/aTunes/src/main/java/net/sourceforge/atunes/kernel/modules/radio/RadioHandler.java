@@ -23,15 +23,16 @@ package net.sourceforge.atunes.kernel.modules.radio;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.RadioBrowserDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationView;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
@@ -39,6 +40,8 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IRadio;
+import net.sourceforge.atunes.model.IRadioDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.NetworkUtils;
 import net.sourceforge.atunes.utils.XMLUtils;
@@ -75,12 +78,20 @@ public final class RadioHandler extends AbstractHandler {
 
         }
     }
+    
+    private static final Comparator<IRadio> COMPARATOR = new Comparator<IRadio>() {
+        @Override
+        public int compare(IRadio o1, IRadio o2) {
+            return o1.getName().compareToIgnoreCase(o2.getName());
+        }
+    };
+
 
     private static RadioHandler instance = new RadioHandler();
 
-    private List<Radio> radios;
-    private List<Radio> presetRadios;
-    private List<Radio> retrievedPresetRadios = new ArrayList<Radio>();
+    private List<IRadio> radios;
+    private List<IRadio> presetRadios;
+    private List<IRadio> retrievedPresetRadios = new ArrayList<IRadio>();
     private boolean noNewStations = true;
 
     /**
@@ -119,7 +130,9 @@ public final class RadioHandler extends AbstractHandler {
      * Add the radio station from the add radio dialog.
      */
     public void addRadio() {
-        Radio radio = GuiHandler.getInstance().showAddRadioDialog();
+        IRadioDialog dialog = Context.getBean(IRadioDialog.class);
+        dialog.showDialog();
+        IRadio radio = dialog.getRadio();
         if (radio != null) {
             addRadio(radio);
         }
@@ -131,13 +144,13 @@ public final class RadioHandler extends AbstractHandler {
      * @param radio
      *            Station
      */
-    public void addRadio(Radio radio) {
+    public void addRadio(IRadio radio) {
         Logger.info("Adding radio");
         if (radio != null && !getRadios().contains(radio)) {
             getRadios().add(radio);
             radioListDirty = true;
         }
-        Collections.sort(getRadios(), Radio.getComparator());
+        Collections.sort(getRadios(), COMPARATOR);
         NavigationHandler.getInstance().refreshView(RadioNavigationView.class);
     }
 
@@ -179,7 +192,7 @@ public final class RadioHandler extends AbstractHandler {
      * 
      * @return the radios
      */
-    public List<Radio> getRadios() {
+    public List<IRadio> getRadios() {
         return radios;
     }
 
@@ -188,7 +201,7 @@ public final class RadioHandler extends AbstractHandler {
      * 
      * @return the preset radios, minus user maintained radio stations.
      */
-    public List<Radio> getRadioPresets() {
+    public List<IRadio> getRadioPresets() {
         // Check if new stations were added and set false if yes
         if (noNewStations == true) {
             noNewStations = presetRadios.containsAll(retrievedPresetRadios);
@@ -199,7 +212,7 @@ public final class RadioHandler extends AbstractHandler {
         }
         presetRadios.addAll(retrievedPresetRadios);
         presetRadios.removeAll(getRadios());
-        return new ArrayList<Radio>(presetRadios);
+        return new ArrayList<IRadio>(presetRadios);
     }
 
     /**
@@ -210,8 +223,8 @@ public final class RadioHandler extends AbstractHandler {
      * 
      * @return the radios
      */
-    public List<Radio> getRadios(String label) {
-        return new ArrayList<Radio>(getRadios());
+    public List<IRadio> getRadios(String label) {
+        return new ArrayList<IRadio>(getRadios());
     }
 
     /**
@@ -223,14 +236,14 @@ public final class RadioHandler extends AbstractHandler {
         List<String> result = new ArrayList<String>();
         List<String> newResult = new ArrayList<String>();
         // Read labels from user radios
-        for (Radio radio : getRadios()) {
+        for (IRadio radio : getRadios()) {
             String label = radio.getLabel();
             if (!result.contains(label)) {
                 result.add(label);
             }
         }
         // Read labels from preset radios
-        for (Radio radio : presetRadios) {
+        for (IRadio radio : presetRadios) {
             String label = radio.getLabel();
             if (!result.contains(label)) {
                 result.add(label);
@@ -266,9 +279,9 @@ public final class RadioHandler extends AbstractHandler {
      * @param radio
      *            Radio to be removed
      */
-    public void removeRadios(List<Radio> radios) {
+    public void removeRadios(List<IRadio> radios) {
         Logger.info("Removing radios");
-        for (Radio radio : radios) {
+        for (IRadio radio : radios) {
             if (!presetRadios.contains(radio)) {
                 getRadios().remove(radio);
             }
@@ -289,7 +302,7 @@ public final class RadioHandler extends AbstractHandler {
      * 
      * @param radio
      */
-    public void removeRadio(Radio radio) {
+    public void removeRadio(IRadio radio) {
         removeRadios(Collections.singletonList(radio));
     }
 
@@ -330,8 +343,8 @@ public final class RadioHandler extends AbstractHandler {
      * @param label
      *            New label
      */
-    public void setLabel(List<Radio> radioList, String label) {
-        for (Radio r : radioList) {
+    public void setLabel(List<IRadio> radioList, String label) {
+        for (IRadio r : radioList) {
             // Write preset stations to user list in order to modify label
             if (presetRadios.contains(r)) {
                 addRadio(r);
@@ -347,7 +360,7 @@ public final class RadioHandler extends AbstractHandler {
      * @param radio
      * @param newRadio
      */
-    public void replace(Radio radio, Radio newRadio) {
+    public void replace(IRadio radio, IRadio newRadio) {
         removeRadio(radio);
         addRadio(newRadio);
         radioListDirty = true;
@@ -360,15 +373,15 @@ public final class RadioHandler extends AbstractHandler {
      * @param url
      * @return
      */
-    public Radio getRadioIfLoaded(String url) {
+    public IRadio getRadioIfLoaded(String url) {
         // Check in user radios
-        for (Radio radio : getRadios()) {
+        for (IRadio radio : getRadios()) {
             if (radio.getUrl().equalsIgnoreCase(url)) {
                 return radio;
             }
         }
         // Check in preset radios
-        for (Radio radio : presetRadios) {
+        for (IRadio radio : presetRadios) {
             if (radio.getUrl().equalsIgnoreCase(url)) {
                 return radio;
             }
@@ -389,8 +402,11 @@ public final class RadioHandler extends AbstractHandler {
 	@Override
 	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
 
-	public Radio editRadio(Radio radio) {
-		return GuiHandler.getInstance().showEditRadioDialog(radio);
+	public IRadio editRadio(IRadio radio) {
+		IRadioDialog dialog = Context.getBean(IRadioDialog.class);
+		dialog.setRadio(radio);
+		dialog.showDialog();
+		return dialog.getRadio();
 	}
 
 }

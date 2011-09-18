@@ -72,4 +72,7 @@
 	
 	<bean id="messageDialog" class="net.sourceforge.atunes.gui.views.dialogs.MessageDialog" scope="prototype"/>
 
+	<bean id="radioDialog" class="net.sourceforge.atunes.gui.views.dialogs.RadioDialog" scope="prototype">
+		<constructor-arg ref="frame"/>
+	</bean>
 </beans>

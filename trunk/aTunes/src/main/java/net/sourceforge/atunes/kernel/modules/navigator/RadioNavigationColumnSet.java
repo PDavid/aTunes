@@ -25,8 +25,8 @@ import java.util.List;
 
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
-import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IRadio;
 
 public final class RadioNavigationColumnSet extends AbstractCustomNavigatorColumnSet {
 
@@ -63,12 +63,12 @@ public final class RadioNavigationColumnSet extends AbstractCustomNavigatorColum
 
         @Override
         public Object getValueFor(IAudioObject audioObject) {
-            return ((Radio) audioObject).getName();
+            return ((IRadio) audioObject).getName();
         }
 
         @Override
         protected int ascendingCompare(IAudioObject o1, IAudioObject o2) {
-            return ((Radio) o1).getName().compareTo(((Radio) o2).getName());
+            return ((IRadio) o1).getName().compareTo(((IRadio) o2).getName());
         }
     }
 
