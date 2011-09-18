@@ -185,7 +185,6 @@ public class Kernel {
     static void startCreation() {
         Logger.debug("Starting components");
         GuiHandler.getInstance().startVisualization();
-        GuiHandler.getInstance().setTitleBar("");
     }
 
     /**

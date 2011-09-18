@@ -79,10 +79,6 @@ public final class GuiHandler extends AbstractHandler {
     private GuiHandler() {
     }
 
-    @Override
-    protected void initHandler() {
-    }
-
     /**
      * Gets the single instance of this class.
      * 
@@ -189,7 +185,7 @@ public final class GuiHandler extends AbstractHandler {
      * @param text
      *            the text
      */
-    public void setTitleBar(String text) {
+    private void setTitleBar(String text) {
         StringBuilder strBuilder = new StringBuilder();
         if (!text.equals("")) {
             strBuilder.append(text);
@@ -202,7 +198,6 @@ public final class GuiHandler extends AbstractHandler {
         String result = strBuilder.toString();
 
         getFrame().setTitle(result);
-        Context.getBean(ISystemTrayHandler.class).setTrayToolTip(result);
     }
 
     /**
@@ -564,7 +559,8 @@ public final class GuiHandler extends AbstractHandler {
         }
 
         getFrame().showDeviceInfo(false);
-
+        setTitleBar("");
+        
         Logger.debug("Start visualization done");
     }
 
