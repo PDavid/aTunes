@@ -25,7 +25,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.event.MouseEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
@@ -41,6 +41,8 @@ import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.RepositoryLoadCancelAction;
 import net.sourceforge.atunes.kernel.actions.RepositoryLoadInBackgroundAction;
+import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IRepositoryProgressDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -50,34 +52,9 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  * @author fleax
  */
-public final class RepositoryProgressDialog extends AbstractCustomDialog {
+public final class RepositoryProgressDialog extends AbstractCustomDialog implements IRepositoryProgressDialog {
 
-    private static class GlassPaneMouseListener implements MouseListener {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            // Nothing to do
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-            // Nothing to do
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-            // Nothing to do
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-            // Nothing to do
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            // Nothing to do
-        }
-    }
+    private static class GlassPaneMouseListener extends MouseAdapter {}
 
     private static final long serialVersionUID = -3071934230042256578L;
 
@@ -85,7 +62,7 @@ public final class RepositoryProgressDialog extends AbstractCustomDialog {
 	private static final int LOGO_SIZE = 150;
 
     private JLabel pictureLabel;
-    private JLabel label;
+    private JLabel taskLabel;
     private JLabel progressLabel;
     private JLabel separatorLabel;
 	private JLabel totalFilesLabel;
@@ -99,11 +76,10 @@ public final class RepositoryProgressDialog extends AbstractCustomDialog {
     /**
      * Instantiates a new repository progress dialog.
      * 
-     * @param parent
-     *            the parent
+     * @param frame
      */
-    public RepositoryProgressDialog(JFrame parent) {
-        super(parent, 500, 250, false, CloseAction.NOTHING);
+    public RepositoryProgressDialog(IFrame frame) {
+        super(frame, 500, 250, false, CloseAction.NOTHING);
         add(getContent());
         backgroundButton.setVisible(false);
         cancelButton.setVisible(false);
@@ -113,7 +89,7 @@ public final class RepositoryProgressDialog extends AbstractCustomDialog {
     /**
      * Activate glass pane.
      */
-    public void activateGlassPane() {
+    private void activateGlassPane() {
         ((JFrame) getParent()).getGlassPane().setVisible(true);
         ((JFrame) getParent()).getGlassPane().addMouseListener(listener);
     }
@@ -121,7 +97,7 @@ public final class RepositoryProgressDialog extends AbstractCustomDialog {
     /**
      * Deactivate glass pane.
      */
-    public void deactivateGlassPane() {
+    private void deactivateGlassPane() {
         ((JFrame) getParent()).getGlassPane().removeMouseListener(listener);
     }
 
@@ -136,7 +112,7 @@ public final class RepositoryProgressDialog extends AbstractCustomDialog {
     	JPanel panel = new JPanel(new GridBagLayout());
         pictureLabel = new JLabel(LOGO);
         pictureLabel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 10));
-        label = new JLabel(StringUtils.getString(I18nUtils.getString("LOADING"), "..."));
+        taskLabel = new JLabel(StringUtils.getString(I18nUtils.getString("LOADING"), "..."));
         progressLabel = new JLabel();
         separatorLabel = new JLabel(" / ");
         separatorLabel.setVisible(false);
@@ -161,7 +137,7 @@ public final class RepositoryProgressDialog extends AbstractCustomDialog {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(5, 20, 0, 20);
         c.anchor = GridBagConstraints.WEST;
-        panel.add(label, c);
+        panel.add(taskLabel, c);
         c.gridx = 1;
         c.weightx = 0;
         c.fill = GridBagConstraints.NONE;
@@ -200,78 +176,78 @@ public final class RepositoryProgressDialog extends AbstractCustomDialog {
         return container;
     }
 
-    /**
-     * Gets the folder label.
-     * 
-     * @return the folder label
-     */
-    public JLabel getFolderLabel() {
-        return folderLabel;
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IRepositoryProgressDialog#setCurrentTask(java.lang.String)
+	 */
+    @Override
+	public void setCurrentTask(String task) {
+    	taskLabel.setText(task);
     }
-
-    /**
-     * Gets the label.
-     * 
-     * @return the label
-     */
-    public JLabel getLabel() {
-        return label;
+    
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IRepositoryProgressDialog#setCurrentFolder(java.lang.String)
+	 */
+    @Override
+	public void setCurrentFolder(String folder) {
+    	folderLabel.setText(folder);
     }
-
-    /**
-     * Gets the progress bar.
-     * 
-     * @return the progress bar
-     */
-    public JProgressBar getProgressBar() {
-        return progressBar;
+    
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IRepositoryProgressDialog#setProgressBarIndeterminate(boolean)
+	 */
+    @Override
+	public void setProgressBarIndeterminate(boolean indeterminate) {
+    	progressBar.setIndeterminate(indeterminate);
     }
-
-    /**
-     * Gets the progress label.
-     * 
-     * @return the progress label
-     */
-    public JLabel getProgressLabel() {
-        return progressLabel;
+    
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IRepositoryProgressDialog#setProgressBarValue(int)
+	 */
+    @Override
+	public void setProgressBarValue(int value) {
+    	progressBar.setValue(value);
     }
-
-    /**
-     * Gets the remaining time label.
-     * 
-     * @return the remaining time label
-     */
-    public JLabel getRemainingTimeLabel() {
-        return remainingTimeLabel;
+    
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IRepositoryProgressDialog#setTotalFiles(int)
+	 */
+    @Override
+	public void setTotalFiles(int max) {
+    	progressBar.setMaximum(max);
+    	totalFilesLabel.setText(Integer.toString(max));
     }
-
-    /**
-     * Gets the total files label.
-     * 
-     * @return the total files label
-     */
-    public JLabel getTotalFilesLabel() {
-        return totalFilesLabel;
+    
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IRepositoryProgressDialog#setProgressText(java.lang.String)
+	 */
+    @Override
+	public void setProgressText(String text) {
+    	progressLabel.setText(text);
+    	separatorLabel.setVisible(text != null && !text.equals(""));
     }
-
-    /**
-     * Enable buttons
-     * 
-     * @param enabled
-     * 
-     */
-    public void setButtonsEnabled(boolean enabled) {
+    
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IRepositoryProgressDialog#setRemainingTime(java.lang.String)
+	 */
+    @Override
+	public void setRemainingTime(String text) {
+    	remainingTimeLabel.setText(text);
+    }
+    
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IRepositoryProgressDialog#setButtonsEnabled(boolean)
+	 */
+    @Override
+	public void setButtonsEnabled(boolean enabled) {
         cancelButton.setEnabled(enabled);
         backgroundButton.setEnabled(enabled);
     }
 
-    /**
-     * Show buttons
-     * 
-     * @param visible
-     * 
-     */
-    public void setButtonsVisible(boolean visible) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IRepositoryProgressDialog#setButtonsVisible(boolean)
+	 */
+    @Override
+	public void setButtonsVisible(boolean visible) {
         cancelButton.setVisible(visible);
         backgroundButton.setVisible(visible);
     }
@@ -282,7 +258,11 @@ public final class RepositoryProgressDialog extends AbstractCustomDialog {
         super.setVisible(b);
     }
 
-    public void showProgressDialog() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IRepositoryProgressDialog#showProgressDialog()
+	 */
+    @Override
+	public void showProgressDialog() {
         setTitle(I18nUtils.getString("PLEASE_WAIT"));
         setVisible(true);
         activateGlassPane();
@@ -290,19 +270,24 @@ public final class RepositoryProgressDialog extends AbstractCustomDialog {
         setButtonsEnabled(true);
     }
 
-    public void hideProgressDialog() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IRepositoryProgressDialog#hideProgressDialog()
+	 */
+    @Override
+	public void hideProgressDialog() {
         setVisible(false);
         deactivateGlassPane();
+        dispose();
         //setButtonsVisible(false);
         //setButtonsEnabled(true);
     }
     
-    public void setImage(Image image) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IRepositoryProgressDialog#setImage(java.awt.Image)
+	 */
+    @Override
+	public void setImage(Image image) {
     	pictureLabel.setIcon(image != null ? ImageUtils.scaleImageBicubic(image, LOGO_SIZE, LOGO_SIZE) : LOGO);
     }
     
-    public JLabel getSeparatorLabel() {
-		return separatorLabel;
-	}
-
 }

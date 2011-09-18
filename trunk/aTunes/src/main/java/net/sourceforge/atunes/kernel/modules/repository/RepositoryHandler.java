@@ -41,7 +41,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.views.dialogs.RepositoryProgressDialog;
 import net.sourceforge.atunes.gui.views.dialogs.RepositorySelectionInfoDialog;
 import net.sourceforge.atunes.gui.views.dialogs.ReviewImportDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
@@ -75,6 +74,7 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IProgressDialog;
+import net.sourceforge.atunes.model.IRepositoryProgressDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.IWebServicesHandler;
@@ -304,7 +304,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     /** Listeners notified when an audio file is removed */
     private List<AudioFilesRemovedListener> audioFilesRemovedListeners = new ArrayList<AudioFilesRemovedListener>();
 
-    private RepositoryProgressDialog progressDialog;
+    private IRepositoryProgressDialog progressDialog;
 
     private MouseListener progressBarMouseAdapter = new MouseAdapter() {
         @Override
@@ -707,7 +707,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    progressDialog.getFolderLabel().setText(dir);
+                    progressDialog.setCurrentFolder(dir);
                 }
             });
         }
@@ -722,9 +722,8 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
                 @Override
                 public void run() {
                     if (progressDialog != null) {
-                        progressDialog.getProgressLabel().setText(Integer.toString(filesLoaded));
-                        progressDialog.getSeparatorLabel().setVisible(true);
-                        progressDialog.getProgressBar().setValue(filesLoaded);
+                        progressDialog.setProgressText(Integer.toString(filesLoaded));
+                        progressDialog.setProgressBarValue(filesLoaded);
                     }
                     getFrame().getProgressBar().setValue(filesLoaded);
                 }
@@ -736,9 +735,8 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     public void notifyFilesInRepository(int totalFiles) {
         // When total files has been calculated change to determinate progress bar
         if (progressDialog != null) {
-            progressDialog.getProgressBar().setIndeterminate(false);
-            progressDialog.getTotalFilesLabel().setText(StringUtils.getString(totalFiles));
-            progressDialog.getProgressBar().setMaximum(totalFiles);
+            progressDialog.setProgressBarIndeterminate(false);
+            progressDialog.setTotalFiles(totalFiles);
         }
         getFrame().getProgressBar().setIndeterminate(false);
         getFrame().getProgressBar().setMaximum(totalFiles);
@@ -748,11 +746,9 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     public void notifyFinishRead(RepositoryLoader loader) {
         if (progressDialog != null) {
             progressDialog.setButtonsEnabled(false);
-            progressDialog.getLabel().setText(I18nUtils.getString("STORING_REPOSITORY_INFORMATION"));
-            progressDialog.getProgressLabel().setText("");
-            progressDialog.getSeparatorLabel().setVisible(false);
-            progressDialog.getTotalFilesLabel().setText("");
-            progressDialog.getFolderLabel().setText(" ");
+            progressDialog.setCurrentTask(I18nUtils.getString("STORING_REPOSITORY_INFORMATION"));
+            progressDialog.setProgressText("");
+            progressDialog.setCurrentFolder("");
         }
 
         // Save folders: if repository config is lost application can reload data without asking user to select folders again
@@ -788,7 +784,6 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         enableRepositoryActions(true);
         if (progressDialog != null) {
             progressDialog.hideProgressDialog();
-            progressDialog.dispose();
             progressDialog = null;
         }
         NavigationHandler.getInstance().notifyReload();
@@ -803,7 +798,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    progressDialog.getRemainingTimeLabel().setText(StringUtils.getString(I18nUtils.getString("REMAINING_TIME"), ":   ", StringUtils.milliseconds2String(millis)));
+                    progressDialog.setRemainingTime(StringUtils.getString(I18nUtils.getString("REMAINING_TIME"), ":   ", StringUtils.milliseconds2String(millis)));
                 }
             });
         }
@@ -1090,10 +1085,10 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      */
     public boolean retrieve(List<File> folders) {
         enableRepositoryActions(false);
-        progressDialog = GuiHandler.getInstance().getProgressDialog();
+        progressDialog = Context.getBean(IRepositoryProgressDialog.class);
         // Start with indeterminate dialog
         progressDialog.showProgressDialog();
-        progressDialog.getProgressBar().setIndeterminate(true);
+        progressDialog.setProgressBarIndeterminate(true);
         getFrame().getProgressBar().setIndeterminate(true);
         filesLoaded = 0;
         try {
