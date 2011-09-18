@@ -21,10 +21,10 @@
 package net.sourceforge.atunes.kernel.modules.columns;
 
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
-import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
+import net.sourceforge.atunes.model.IRadio;
 
 public class FavoriteColumn extends AbstractColumn {
 
@@ -53,7 +53,7 @@ public class FavoriteColumn extends AbstractColumn {
     @Override
     public Object getValueFor(IAudioObject audioObject) {
         // Return image
-        if (audioObject instanceof Radio) {
+        if (audioObject instanceof IRadio) {
             return null;
         }
         if (audioObject instanceof IPodcastFeedEntry) {

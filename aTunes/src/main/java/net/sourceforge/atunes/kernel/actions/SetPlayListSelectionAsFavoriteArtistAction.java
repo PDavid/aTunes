@@ -27,11 +27,11 @@ import java.util.List;
 import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
-import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
+import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -62,7 +62,7 @@ public class SetPlayListSelectionAsFavoriteArtistAction extends CustomAbstractAc
         }
 
         for (IAudioObject ao : selection) {
-            if (ao instanceof Radio || ao instanceof IPodcastFeedEntry) {
+            if (ao instanceof IRadio || ao instanceof IPodcastFeedEntry) {
                 return false;
             }
         }

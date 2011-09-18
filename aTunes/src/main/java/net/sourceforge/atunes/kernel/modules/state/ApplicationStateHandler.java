@@ -38,7 +38,6 @@ import net.sourceforge.atunes.gui.views.dialogs.editPreferences.EditPreferencesD
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.playlist.ListOfPlayLists;
-import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.exception.InconsistentRepositoryException;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites;
@@ -47,6 +46,7 @@ import net.sourceforge.atunes.misc.Timer;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeed;
+import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -246,7 +246,7 @@ public final class ApplicationStateHandler extends AbstractHandler {
      * @param radios
      *            Radios that should be persisted
      */
-    public void persistRadioCache(List<Radio> radios) {
+    public void persistRadioCache(List<IRadio> radios) {
         try {
             XMLUtils.writeObjectToFile(radios, StringUtils.getString(getUserConfigFolder(), "/", Constants.RADIO_CACHE));
         } catch (IOException e) {
@@ -261,7 +261,7 @@ public final class ApplicationStateHandler extends AbstractHandler {
      * @param radios
      *            the radios
      */
-    public void persistPresetRadioCache(List<Radio> radios) {
+    public void persistPresetRadioCache(List<IRadio> radios) {
         try {
             XMLUtils.writeObjectToFile(radios, StringUtils.getString(getUserConfigFolder(), "/", Constants.PRESET_RADIO_CACHE));
         } catch (IOException e) {
@@ -479,11 +479,11 @@ public final class ApplicationStateHandler extends AbstractHandler {
      * @return The retrieved radios
      */
     @SuppressWarnings("unchecked")
-    public List<Radio> retrieveRadioCache() {
+    public List<IRadio> retrieveRadioCache() {
         try {
-            return (List<Radio>) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.RADIO_CACHE));
+            return (List<IRadio>) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.RADIO_CACHE));
         } catch (IOException e) {
-            return new ArrayList<Radio>();
+            return new ArrayList<IRadio>();
         }
 
     }
@@ -494,16 +494,16 @@ public final class ApplicationStateHandler extends AbstractHandler {
      * @return The retrieved radios
      */
     @SuppressWarnings("unchecked")
-    public List<Radio> retrieveRadioPreset() {
+    public List<IRadio> retrieveRadioPreset() {
         try {
             // First try user settings folder
-            return (List<Radio>) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.PRESET_RADIO_CACHE));
+            return (List<IRadio>) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.PRESET_RADIO_CACHE));
         } catch (IOException e) {
             try {
                 // Otherwise use list in application folder
-                return (List<Radio>) XMLUtils.readObjectFromFile(ApplicationStateHandler.class.getResourceAsStream("/settings/" + Constants.PRESET_RADIO_CACHE));
+                return (List<IRadio>) XMLUtils.readObjectFromFile(ApplicationStateHandler.class.getResourceAsStream("/settings/" + Constants.PRESET_RADIO_CACHE));
             } catch (IOException e2) {
-                return new ArrayList<Radio>();
+                return new ArrayList<IRadio>();
             }
         }
     }

@@ -39,6 +39,7 @@ import net.sourceforge.atunes.model.IAudioObjectStatistics;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
+import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -101,8 +102,8 @@ public class AudioObjectBasicInfoDataSource implements ContextInformationDataSou
                 result.put(OUTPUT_TITLE, audioObject.getTitleOrFileName());
                 result.put(OUTPUT_ARTIST, audioObject.getArtist());
                 result.put(OUTPUT_LASTPLAYDATE, getLastPlayDate(audioObject));
-            } else if (audioObject instanceof Radio) {
-                result.put(OUTPUT_TITLE, ((Radio) audioObject).getName());
+            } else if (audioObject instanceof IRadio) {
+                result.put(OUTPUT_TITLE, ((IRadio) audioObject).getName());
                 result.put(OUTPUT_ARTIST, ((Radio) audioObject).getUrl());
             } else if (audioObject instanceof IPodcastFeedEntry) {
                 result.put(OUTPUT_TITLE, ((PodcastFeedEntry) audioObject).getTitle());
@@ -127,7 +128,7 @@ public class AudioObjectBasicInfoDataSource implements ContextInformationDataSou
                 }
             }
             return localImage;
-        } else if (audioObject instanceof Radio) {
+        } else if (audioObject instanceof IRadio) {
             return RadioImageIcon.getIcon();
         } else if (audioObject instanceof IPodcastFeedEntry) {
             return RssImageIcon.getIcon();

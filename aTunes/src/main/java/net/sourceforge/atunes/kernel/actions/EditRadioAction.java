@@ -24,24 +24,24 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class EditRadioAction extends AbstractActionOverSelectedObjects<Radio> {
+public class EditRadioAction extends AbstractActionOverSelectedObjects<IRadio> {
 
     private static final long serialVersionUID = -922076985505834816L;
 
     EditRadioAction() {
-        super(I18nUtils.getString("EDIT_RADIO"), Radio.class);
+        super(I18nUtils.getString("EDIT_RADIO"), IRadio.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("EDIT_RADIO"));
     }
 
     @Override
-    protected void performAction(List<Radio> objects) {
-        Radio radio = objects.get(0); // Guaranteed only one radio
-        Radio radioEdited = RadioHandler.getInstance().editRadio(radio);
+    protected void performAction(List<IRadio> objects) {
+        IRadio radio = objects.get(0); // Guaranteed only one radio
+        IRadio radioEdited = RadioHandler.getInstance().editRadio(radio);
         if (radioEdited != null) {
             RadioHandler.getInstance().replace(radio, radioEdited);
         }
@@ -49,7 +49,7 @@ public class EditRadioAction extends AbstractActionOverSelectedObjects<Radio> {
 
     @Override
     public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        if (rootSelected || selection.size() != 1 || !(selection.get(0).getUserObject() instanceof Radio)) {
+        if (rootSelected || selection.size() != 1 || !(selection.get(0).getUserObject() instanceof IRadio)) {
             return false;
         }
         return true;

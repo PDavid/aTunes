@@ -33,6 +33,7 @@ import javax.swing.JPanel;
 import net.sourceforge.atunes.gui.images.RadioImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
+import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -76,7 +77,7 @@ final class RadioPropertiesDialog extends PropertiesDialog {
      * 
      * @return title for dialog
      */
-    private static String getTitleText(Radio radio) {
+    private static String getTitleText(IRadio radio) {
         return StringUtils.getString(I18nUtils.getString("INFO_OF_RADIO"), " ", radio.getName());
     }
 

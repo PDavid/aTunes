@@ -27,7 +27,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -36,6 +35,9 @@ import net.sourceforge.atunes.gui.images.RadioImageIcon;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
+import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IRadio;
+import net.sourceforge.atunes.model.IRadioDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -43,9 +45,13 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  *
  */
-public final class RadioDialog extends AbstractCustomDialog {
+public final class RadioDialog extends AbstractCustomDialog implements IRadioDialog {
 
     private static final long serialVersionUID = 7295438534550341824L;
+
+    private JTextField nameTextField;
+    private JTextField urlTextField;
+    private JTextField labelTextField;
 
     /** The radio. */
     private Radio result;
@@ -53,40 +59,40 @@ public final class RadioDialog extends AbstractCustomDialog {
     /**
      * Instantiates a new radio dialog for adding a new radio
      * 
-     * @param owner
-     *            the owner
+     * @param frame
      */
-    public RadioDialog(JFrame owner) {
-    	this(owner, null);
-    }
-    
-    /**
-     * Instantiates a new radio dialog for edition
-     * 
-     * @param owner
-     * @param radio
-     */
-    public RadioDialog(JFrame owner, Radio radio) {
-        super(owner, 500, 200, true, CloseAction.DISPOSE);
-        setTitle(radio != null ? I18nUtils.getString("EDIT_RADIO") : I18nUtils.getString("ADD_RADIO"));
+    public RadioDialog(IFrame frame) {
+        super(frame, 500, 200, true, CloseAction.DISPOSE);
+        setTitle(I18nUtils.getString("ADD_RADIO"));
         setResizable(false);
-        add(getContent(radio));
+        add(getContent());
     }
 
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IRadioDialog#setRadio(net.sourceforge.atunes.kernel.modules.radio.Radio)
+	 */
+    @Override
+	public void setRadio(IRadio radio) {
+        setTitle(radio != null ? I18nUtils.getString("EDIT_RADIO") : I18nUtils.getString("ADD_RADIO"));
+        nameTextField.setText(radio != null ? radio.getName() : null);
+        urlTextField.setText(radio != null ? radio.getUrl() : null);
+        labelTextField.setText(radio != null ? radio.getLabel() : null);
+	}
+    
     /**
      * Gets the content.
      * 
      * @return the content
      */
-    private JPanel getContent(Radio radio) {
+    private JPanel getContent() {
         JPanel panel = new JPanel(new GridBagLayout());
 
         JLabel nameLabel = new JLabel(I18nUtils.getString("NAME"));
-        final JTextField nameTextField = new CustomTextField(radio != null ? radio.getName() : null);
+        nameTextField = new CustomTextField();
         JLabel urlLabel = new JLabel(I18nUtils.getString("URL"));
-        final JTextField urlTextField = new CustomTextField(radio != null ? radio.getUrl() : null);
+        urlTextField = new CustomTextField();
         JLabel labelLabel = new JLabel(I18nUtils.getString("LABEL"));
-        final JTextField labelTextField = new CustomTextField(radio != null ? radio.getLabel() : null);
+        labelTextField = new CustomTextField();
 
         JButton okButton = new JButton(I18nUtils.getString("OK"));
         okButton.addActionListener(new ActionListener() {
@@ -148,13 +154,17 @@ public final class RadioDialog extends AbstractCustomDialog {
         return panel;
     }
 
-    /**
-     * Gets the radio.
-     * 
-     * @return the radio
-     */
-    public Radio getRadio() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.dialogs.IRadioDialog#getRadio()
+	 */
+    @Override
+	public Radio getRadio() {
         return result;
+    }
+    
+    @Override
+    public void showDialog() {
+    	setVisible(true);
     }
 
 }

@@ -25,6 +25,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IRadio;
 
 public class PlayListRadioFilter implements PlayListObjectFilter<Radio> {
 	
@@ -32,7 +33,7 @@ public class PlayListRadioFilter implements PlayListObjectFilter<Radio> {
 	public List<Radio> getObjects(PlayList playList) {
         List<Radio> result = new ArrayList<Radio>();
         for (IAudioObject ao : playList.getAudioObjects()) {
-            if (ao instanceof Radio) {
+            if (ao instanceof IRadio) {
                 result.add((Radio)ao);
             }
         }

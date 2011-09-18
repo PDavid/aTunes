@@ -34,6 +34,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
+import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -107,7 +108,7 @@ public class PropertiesDialog extends AbstractCustomDialog {
             PropertiesDialog dialog = null;
             if (a instanceof IPodcastFeedEntry) {
                 dialog = new PodcastFeedEntryPropertiesDialog((PodcastFeedEntry) a, owner, state);
-            } else if (a instanceof Radio) {
+            } else if (a instanceof IRadio) {
                 dialog = new RadioPropertiesDialog((Radio) a, owner);
             } else if (a instanceof AudioFile) {
                 dialog = new AudioFilePropertiesDialog((AudioFile) a, owner, state, frame, osManager);

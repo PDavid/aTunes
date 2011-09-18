@@ -40,7 +40,6 @@ import net.sourceforge.atunes.gui.frame.FrameState;
 import net.sourceforge.atunes.gui.popup.FadingPopupFactory;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable.PlayState;
 import net.sourceforge.atunes.gui.views.dialogs.IndeterminateProgressDialog;
-import net.sourceforge.atunes.gui.views.dialogs.RadioDialog;
 import net.sourceforge.atunes.gui.views.dialogs.properties.PropertiesDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
@@ -48,7 +47,6 @@ import net.sourceforge.atunes.kernel.PlaybackState;
 import net.sourceforge.atunes.kernel.modules.context.ContextHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
-import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -204,30 +202,6 @@ public final class GuiHandler extends AbstractHandler {
      */
     public void showAboutDialog() {
     	Context.getBean(IAboutDialog.class).showDialog();
-    }
-
-    /**
-     * Show add radio dialog.
-     * 
-     * @return the radio
-     */
-    public Radio showAddRadioDialog() {
-        RadioDialog dialog = new RadioDialog(getFrame().getFrame());
-        dialog.setVisible(true);
-        return dialog.getRadio();
-    }
-
-    /**
-     * Show  radio dialog for edition
-     * 
-     * @param radio to edit
-     * 
-     * @return the radio
-     */
-    public Radio showEditRadioDialog(Radio radio) {
-        RadioDialog dialog = new RadioDialog(getFrame().getFrame(), radio);
-        dialog.setVisible(true);
-        return dialog.getRadio();
     }
 
     /**

@@ -50,7 +50,6 @@ import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListToDeviceDragAnd
 import net.sourceforge.atunes.kernel.modules.filter.AbstractFilter;
 import net.sourceforge.atunes.kernel.modules.gui.GuiHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
-import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.AudioFilesRemovedListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
@@ -63,6 +62,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IInputDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
+import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -677,7 +677,7 @@ public final class PlayListHandler extends AbstractHandler implements AudioFiles
         // If play list is not empty
         // TODO: Do this for all play lists
         // Check that at least first entry exists. This is to avoid loading a play list that contains audio object deleted or moved
-        if (lastPlayList.size() > 0 && (lastPlayList.get(0) instanceof Radio || lastPlayList.get(0) instanceof IPodcastFeedEntry || lastPlayList.get(0) instanceof AudioFile)) {
+        if (lastPlayList.size() > 0 && (lastPlayList.get(0) instanceof IRadio || lastPlayList.get(0) instanceof IPodcastFeedEntry || lastPlayList.get(0) instanceof AudioFile)) {
 
         	// When possible, take audio objects from Repository instead of from PlayList stored.
         	// This way we prevent to have duplicated objects in PlayList for same audio object, one of PlayList and one of Repository

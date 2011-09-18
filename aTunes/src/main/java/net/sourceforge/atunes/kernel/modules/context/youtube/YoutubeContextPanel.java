@@ -27,9 +27,9 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.VideoImageIcon;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
-import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IRadio;
 
 /**
  * Panel to show youtube videos
@@ -61,7 +61,7 @@ public class YoutubeContextPanel extends AbstractContextPanel {
 
     @Override
     protected boolean isPanelVisibleForAudioObject(IAudioObject audioObject) {
-        return (audioObject instanceof AudioFile) || (audioObject instanceof Radio && ((Radio) audioObject).isSongInfoAvailable());
+        return (audioObject instanceof AudioFile) || (audioObject instanceof IRadio && ((IRadio) audioObject).isSongInfoAvailable());
     }
 
 }

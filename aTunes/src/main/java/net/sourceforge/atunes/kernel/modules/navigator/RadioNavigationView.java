@@ -53,6 +53,7 @@ import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.ViewMode;
@@ -199,7 +200,7 @@ public final class RadioNavigationView extends AbstractNavigationView {
         } else {
             // A node in radio view can be a label or a radio
             Object obj = node.getUserObject();
-            if (obj instanceof Radio) {
+            if (obj instanceof IRadio) {
                 Radio r = (Radio) node.getUserObject();
                 songs.add(r);
             } else {

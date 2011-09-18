@@ -27,14 +27,14 @@ import javax.swing.JLabel;
 import net.sourceforge.atunes.gui.images.RadioImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.kernel.modules.radio.Radio;
+import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IState;
 
 public class RadioTreeCellDecorator extends AbstractTreeCellDecorator {
 
     @Override
     public Component decorateTreeCellComponent(IState state, Component component, Object userObject, boolean isSelected) {
-        if (userObject instanceof Radio && component instanceof JLabel) {
+        if (userObject instanceof IRadio && component instanceof JLabel) {
             ((JLabel) component).setIcon(RadioImageIcon.getSmallIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
         }
         return component;
