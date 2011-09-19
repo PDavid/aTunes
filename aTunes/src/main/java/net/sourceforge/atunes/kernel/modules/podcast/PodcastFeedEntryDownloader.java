@@ -37,6 +37,7 @@ import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
+import net.sourceforge.atunes.model.IPodcastFeedHandler;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.NetworkUtils;
 
@@ -57,17 +58,22 @@ public class PodcastFeedEntryDownloader extends SwingWorker<Boolean, Void> {
     private ProxyBean proxy;
     
     private IFrame frame;
+    
+    private IPodcastFeedHandler podcastFeedHandler;
 
     /**
      * Instantiates a new podcast feed entry downloader.
      * 
      * @param podcastFeedEntry
-     *            the podcast feed entry
+     * @param proxy
+     * @param frame
+     * @param podcastFeedHandler
      */
-    public PodcastFeedEntryDownloader(IPodcastFeedEntry podcastFeedEntry, ProxyBean proxy, IFrame frame) {
+    public PodcastFeedEntryDownloader(IPodcastFeedEntry podcastFeedEntry, ProxyBean proxy, IFrame frame, IPodcastFeedHandler podcastFeedHandler) {
         this.podcastFeedEntry = podcastFeedEntry;
         this.proxy = proxy;
         this.frame = frame;
+        this.podcastFeedHandler = podcastFeedHandler;
     }
 
     @Override
@@ -78,7 +84,7 @@ public class PodcastFeedEntryDownloader extends SwingWorker<Boolean, Void> {
         OutputStream out = null;
         InputStream in = null;
 
-        String podcastFeedEntryFileName = PodcastFeedHandler.getInstance().getDownloadPath(podcastFeedEntry);
+        String podcastFeedEntryFileName = podcastFeedHandler.getDownloadPath(podcastFeedEntry);
         Logger.info("Downloading to: " + podcastFeedEntryFileName);
         File localFile = new File(podcastFeedEntryFileName);
 

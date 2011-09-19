@@ -31,6 +31,7 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
+import net.sourceforge.atunes.model.IPodcastFeedHandler;
 
 /**
  * Checks if podcasts are downloaded.
@@ -38,6 +39,8 @@ import net.sourceforge.atunes.model.IPodcastFeedEntry;
 public class PodcastFeedEntryDownloadChecker implements Runnable {
 
 	private IFrame frame;
+	
+	private IPodcastFeedHandler podcastFeedHandler;
 	
     private static final class SetDownloadedRunnable implements Runnable {
     	
@@ -58,7 +61,7 @@ public class PodcastFeedEntryDownloadChecker implements Runnable {
         }
     }
 
-    private static final class GetPodcastFeedEntriesFilesRunnable implements Runnable {
+    private final class GetPodcastFeedEntriesFilesRunnable implements Runnable {
         private final Map<IPodcastFeedEntry, File> files;
 
         private GetPodcastFeedEntriesFilesRunnable(Map<IPodcastFeedEntry, File> files) {
@@ -67,15 +70,16 @@ public class PodcastFeedEntryDownloadChecker implements Runnable {
 
         @Override
         public void run() {
-            for (IPodcastFeedEntry podcastFeedEntry : PodcastFeedHandler.getInstance().getPodcastFeedEntries()) {
-                File f = new File(PodcastFeedHandler.getInstance().getDownloadPath(podcastFeedEntry));
+            for (IPodcastFeedEntry podcastFeedEntry : podcastFeedHandler.getPodcastFeedEntries()) {
+                File f = new File(podcastFeedHandler.getDownloadPath(podcastFeedEntry));
                 files.put(podcastFeedEntry, f);
             }
         }
     }
 
-    public PodcastFeedEntryDownloadChecker(IFrame frame) {
+    public PodcastFeedEntryDownloadChecker(IFrame frame, IPodcastFeedHandler podcastFeedHandler) {
     	this.frame = frame;
+    	this.podcastFeedHandler = podcastFeedHandler;
 	}
     
     @Override
@@ -90,7 +94,7 @@ public class PodcastFeedEntryDownloadChecker implements Runnable {
         }
         final Map<IPodcastFeedEntry, Boolean> downloaded = new HashMap<IPodcastFeedEntry, Boolean>();
         for (Entry<IPodcastFeedEntry, File> entry : files.entrySet()) {
-            downloaded.put(entry.getKey(), entry.getValue().exists() && !PodcastFeedHandler.getInstance().isDownloading(entry.getKey()));
+            downloaded.put(entry.getKey(), entry.getValue().exists() && !podcastFeedHandler.isDownloading(entry.getKey()));
         }
         SwingUtilities.invokeLater(new SetDownloadedRunnable(downloaded, frame));
     }

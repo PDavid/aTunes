@@ -54,10 +54,10 @@ import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
+import net.sourceforge.atunes.model.IPodcastFeedHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -73,10 +73,13 @@ public final class PodcastNavigationView extends AbstractNavigationView {
 
     /** The column set */
     private AbstractColumnSet columnSet;
+    
+    private IPodcastFeedHandler podcastFeedHandler;
 
-    public PodcastNavigationView(IState state, AbstractCustomNavigatorColumnSet columnSet, INavigationHandler navigationHandler, IFrame frame) {
+    public PodcastNavigationView(IState state, AbstractCustomNavigatorColumnSet columnSet, INavigationHandler navigationHandler, IFrame frame, IPodcastFeedHandler podcastFeedHandler) {
     	super(state, navigationHandler, frame);
     	this.columnSet = columnSet;
+    	this.podcastFeedHandler = podcastFeedHandler;
 	}
 
     
@@ -152,7 +155,7 @@ public final class PodcastNavigationView extends AbstractNavigationView {
     @Override
     protected Map<String, ?> getViewData(ViewMode viewMode) {
         Map<String, List<IPodcastFeed>> data = new HashMap<String, List<IPodcastFeed>>();
-        data.put("PODCASTS", PodcastFeedHandler.getInstance().getPodcastFeeds());
+        data.put("PODCASTS", podcastFeedHandler.getPodcastFeeds());
         return data;
     }
 
@@ -194,7 +197,7 @@ public final class PodcastNavigationView extends AbstractNavigationView {
         List<IPodcastFeedEntry> songs = new ArrayList<IPodcastFeedEntry>();
         if (node.isRoot()) {
             if (treeFilter == null) {
-                List<IPodcastFeed> podcastFeeds = PodcastFeedHandler.getInstance().getPodcastFeeds();
+                List<IPodcastFeed> podcastFeeds = podcastFeedHandler.getPodcastFeeds();
                 for (IPodcastFeed pf : podcastFeeds) {
                     songs.addAll(pf.getAudioObjects());
                 }
