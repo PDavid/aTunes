@@ -27,6 +27,7 @@ import java.util.Map;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
 
 /**
@@ -46,10 +47,12 @@ public class EditTagFromFolderNamePatternProcess extends AbstractChangeTagProces
      * Instantiates a new process
      * 
      * @param files
-     *            the files
+     * @param pattern
+     * @param state
+     * @param playListHandler
      */
-    public EditTagFromFolderNamePatternProcess(List<ILocalAudioObject> files, String pattern, IState state) {
-        super(files, state);
+    public EditTagFromFolderNamePatternProcess(List<ILocalAudioObject> files, String pattern, IState state, IPlayListHandler playListHandler) {
+        super(files, state, playListHandler);
         this.pattern = pattern;
     }
 

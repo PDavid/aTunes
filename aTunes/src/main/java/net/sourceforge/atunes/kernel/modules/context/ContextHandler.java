@@ -25,12 +25,12 @@ import java.util.List;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IState;
 
@@ -78,7 +78,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     
     @Override
     public void allHandlersInitialized() {
-    	retrieveInfoAndShowInPanel(PlayListHandler.getInstance().getCurrentAudioObjectFromVisiblePlayList());
+    	retrieveInfoAndShowInPanel(Context.getBean(IPlayListHandler.class).getCurrentAudioObjectFromVisiblePlayList());
     }
     
     /**
@@ -243,7 +243,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
         getState().setUseContext(show);
         getFrame().showContextPanel(show);
         if (show) {
-            retrieveInfoAndShowInPanel(PlayListHandler.getInstance().getCurrentAudioObjectFromVisiblePlayList());
+            retrieveInfoAndShowInPanel(Context.getBean(IPlayListHandler.class).getCurrentAudioObjectFromVisiblePlayList());
         }
     }
 

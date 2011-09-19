@@ -38,7 +38,6 @@ import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.PlaybackState;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.misc.SystemProperties;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -46,6 +45,7 @@ import net.sourceforge.atunes.model.IAboutDialog;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.IFullScreenHandler;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ISystemTrayHandler;
 import net.sourceforge.atunes.model.IUIHandler;
@@ -170,6 +170,7 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
 
 		getFrame().setState(getState());
 		getFrame().setOsManager(getOsManager());
+		getFrame().setPlayListHandler(Context.getBean(IPlayListHandler.class));
         
         IFrameState frameState = getState().getFrameState(getFrame().getClass());
         LocaleBean locale = getState().getLocale();
@@ -246,8 +247,8 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
         } else if (newState == PlaybackState.RESUMING) {
             // Resume
             setPlaying(true);
-            getFrame().updateStatusBarWithObjectBeingPlayed(PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList());
-            updateTitleBar(PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList());
+            getFrame().updateStatusBarWithObjectBeingPlayed(Context.getBean(IPlayListHandler.class).getCurrentAudioObjectFromCurrentPlayList());
+            updateTitleBar(Context.getBean(IPlayListHandler.class).getCurrentAudioObjectFromCurrentPlayList());
             getFrame().getPlayListTable().setPlayState(PlayState.PLAYING);
 
         } else if (newState == PlaybackState.PLAYING) {

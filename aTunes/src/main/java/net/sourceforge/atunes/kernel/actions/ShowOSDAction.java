@@ -22,8 +22,9 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.notify.NotificationsHandler;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
+import net.sourceforge.atunes.model.IPlayListHandler;
 
 public class ShowOSDAction extends CustomAbstractAction {
 
@@ -35,7 +36,7 @@ public class ShowOSDAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        NotificationsHandler.getInstance().showNotification(PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList());
+        NotificationsHandler.getInstance().showNotification(Context.getBean(IPlayListHandler.class).getCurrentAudioObjectFromCurrentPlayList());
     }
 
     @Override

@@ -24,11 +24,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -155,7 +156,7 @@ public final class FilterHandler extends AbstractHandler {
         addFilter(NavigationHandler.getInstance().getTableFilter());
         setFilterEnabled(NavigationHandler.getInstance().getTableFilter(), getState().isShowNavigationTable());
 
-        addFilter(PlayListHandler.getInstance().getPlayListFilter());
+        addFilter(Context.getBean(IPlayListHandler.class).getPlayListFilter());
 
         getToolBarFilterController().setSelectedFilter(allFilter.getName());
     }

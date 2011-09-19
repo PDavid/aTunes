@@ -31,6 +31,7 @@ import net.sourceforge.atunes.kernel.modules.tags.EditTagFromFileNamePatternProc
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -58,7 +59,7 @@ public class AutoSetTagFromFileNamePatternAction extends AbstractActionOverSelec
 
         // If user entered a pattern apply to files
         if (pattern != null) {
-            new EditTagFromFileNamePatternProcess(objects, pattern, getState()).execute();
+            new EditTagFromFileNamePatternProcess(objects, pattern, getState(), Context.getBean(IPlayListHandler.class)).execute();
         }
     }
 

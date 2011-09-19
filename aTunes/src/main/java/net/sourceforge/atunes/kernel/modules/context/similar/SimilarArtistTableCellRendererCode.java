@@ -27,12 +27,13 @@ import javax.swing.JComponent;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.context.ContextTable;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanel;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.IArtistInfo;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -85,7 +86,7 @@ class SimilarArtistTableCellRendererCode extends ContextTableRowPanel<IArtistInf
 
 			@Override
 			protected void execute(IArtistInfo object) {
-				PlayListHandler.getInstance().showAddArtistDragDialog(RepositoryHandler.getInstance().getArtist(object.getName()));
+				Context.getBean(IPlayListHandler.class).showAddArtistDragDialog(RepositoryHandler.getInstance().getArtist(object.getName()));
 			}
 			
 			@Override

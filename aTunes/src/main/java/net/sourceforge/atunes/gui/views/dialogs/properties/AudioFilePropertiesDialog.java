@@ -45,6 +45,7 @@ import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -102,18 +103,21 @@ final class AudioFilePropertiesDialog extends AudioObjectPropertiesDialog {
     
     private IOSManager osManager;
     
+    private IPlayListHandler playListHandler;
+    
     /**
      * Instantiates a new audio file properties dialog.
      * 
      * @param file
      *            the file
      */
-    AudioFilePropertiesDialog(AudioFile file, IState state, IFrame frame, IOSManager osManager) {
+    AudioFilePropertiesDialog(AudioFile file, IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler) {
         super(getTitleText(file), frame);
         this.file = file;
         this.state = state;
         this.frame = frame;
         this.osManager = osManager;
+        this.playListHandler = playListHandler;
         setAudioObject(file);
         addContent();
 
@@ -231,7 +235,7 @@ final class AudioFilePropertiesDialog extends AudioObjectPropertiesDialog {
         editTagsButton.setText(I18nUtils.getString("EDIT_TAG"));
         editTagsButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                EditTagDialogController ctl = new EditTagDialogController(new EditTagDialog(frame.getFrame(), false), state, osManager);
+                EditTagDialogController ctl = new EditTagDialogController(new EditTagDialog(frame.getFrame(), false), state, osManager, playListHandler);
                 ctl.editFiles(java.util.Collections.singletonList(file));
             }
         });

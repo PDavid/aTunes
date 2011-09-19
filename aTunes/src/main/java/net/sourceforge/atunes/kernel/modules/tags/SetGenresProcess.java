@@ -28,6 +28,7 @@ import java.util.Map;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 
@@ -42,10 +43,11 @@ public class SetGenresProcess extends AbstractChangeTagProcess {
      * Instantiates a new sets the genres process.
      * 
      * @param files
-     *            the files
+     * @param state
+     * @param playListHandler
      */
-    SetGenresProcess(List<ILocalAudioObject> files, IState state) {
-        super(files, state);
+    SetGenresProcess(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler) {
+        super(files, state, playListHandler);
     }
 
     @Override

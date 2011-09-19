@@ -23,10 +23,11 @@ package net.sourceforge.atunes.kernel.actions;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -67,7 +68,7 @@ public class AddAlbumWithSelectedArtistsAction extends AbstractActionOverSelecte
 
         // For every artist
         for (Artist artist : selectedArtists) {
-            PlayListHandler.getInstance().showAddArtistDragDialog(artist);
+        	Context.getBean(IPlayListHandler.class).showAddArtistDragDialog(artist);
         }
     }
 

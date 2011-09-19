@@ -29,6 +29,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddAlbumWithSelectedArtistsAction;
@@ -56,8 +57,8 @@ import net.sourceforge.atunes.kernel.actions.SetPlayListSelectionAsFavoriteArtis
 import net.sourceforge.atunes.kernel.actions.SetPlayListSelectionAsFavoriteSongAction;
 import net.sourceforge.atunes.kernel.actions.ShowPlayListItemInfoAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class PlayListMenu {
@@ -192,7 +193,7 @@ public final class PlayListMenu {
      * @param table
      */
     public static void updatePlayListMenuItems(PlayListTable table) {
-        updatePlayListPopupMenuItems(table.getMenu(), PlayListHandler.getInstance().getSelectedAudioObjects());
+        updatePlayListPopupMenuItems(table.getMenu(), Context.getBean(IPlayListHandler.class).getSelectedAudioObjects());
     }
 
     /**

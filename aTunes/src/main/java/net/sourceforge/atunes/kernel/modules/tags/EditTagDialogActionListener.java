@@ -37,11 +37,11 @@ import javax.swing.filechooser.FileFilter;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 
@@ -52,6 +52,8 @@ public final class EditTagDialogActionListener implements ActionListener {
 
     private EditTagDialogController controller;
     private EditTagDialog dialog;
+    private IPlayListHandler playListHandler;
+    
 
     /**
      * Instantiates a new edits the tag dialog action listener.
@@ -61,9 +63,10 @@ public final class EditTagDialogActionListener implements ActionListener {
      * @param dialog
      *            the dialog
      */
-    public EditTagDialogActionListener(EditTagDialogController controller, EditTagDialog dialog) {
+    public EditTagDialogActionListener(EditTagDialogController controller, EditTagDialog dialog, IPlayListHandler playListHandler) {
         this.controller = controller;
         this.dialog = dialog;
+        this.playListHandler = playListHandler;
     }
 
     @Override
@@ -76,25 +79,25 @@ public final class EditTagDialogActionListener implements ActionListener {
             controller.editTag();
             controller.clear();
             // get the index of the first selected song in the play list
-            List<IAudioObject> selectedFiles = PlayListHandler.getInstance().getSelectedAudioObjects();
+            List<IAudioObject> selectedFiles = playListHandler.getSelectedAudioObjects();
             IAudioObject currentSelectedSong = selectedFiles.get(0);
-            int currentSelectedSongIndex = PlayListHandler.getInstance().getIndexOfAudioObject(currentSelectedSong);
+            int currentSelectedSongIndex = playListHandler.getIndexOfAudioObject(currentSelectedSong);
 
             // get the LocalAudioObject of the next song in the play list after the first selection
-            //nextFile.add((AudioFile)PlayListHandler.getInstance().getAudioObjectAtIndexRelativeToCurrentlyPlaying(++currentSelectedSongIndex - PlayListHandler.getInstance().getCurrentAudioObjectIndexInVisiblePlayList()));
+            //nextFile.add((AudioFile)playListHandler.getAudioObjectAtIndexRelativeToCurrentlyPlaying(++currentSelectedSongIndex - playListHandler.getCurrentAudioObjectIndexInVisiblePlayList()));
 
             List<ILocalAudioObject> nextFile = new ArrayList<ILocalAudioObject>();
             boolean validAudioFile = false;
-            int length = PlayListHandler.getInstance().getCurrentPlayList(true).size();
+            int length = playListHandler.getCurrentPlayList(true).size();
             // Before moving down check if we need to jump an audio object like a radio stream
             while (validAudioFile == false) {
                 // Reaching the end of the playlist
                 if (length < currentSelectedSongIndex + 2) {
                     break;
                 }
-                PlayListHandler.getInstance().changeSelectedAudioObjectToIndex(++currentSelectedSongIndex);
+                playListHandler.changeSelectedAudioObjectToIndex(++currentSelectedSongIndex);
                 selectedFiles.clear();
-                selectedFiles.add(PlayListHandler.getInstance().getSelectedAudioObjects().get(0));
+                selectedFiles.add(playListHandler.getSelectedAudioObjects().get(0));
                 validAudioFile = AudioFile.isValidAudioFile(selectedFiles.get(0).getUrl());
             }
             if (validAudioFile) {
@@ -106,17 +109,17 @@ public final class EditTagDialogActionListener implements ActionListener {
             controller.clear();
 
             // get the index of the first selected song in the play list
-            List<IAudioObject> selectedFiles = PlayListHandler.getInstance().getSelectedAudioObjects();
+            List<IAudioObject> selectedFiles = playListHandler.getSelectedAudioObjects();
             IAudioObject currentSelectedSong = selectedFiles.get(0);
-            int currentSelectedSongIndex = PlayListHandler.getInstance().getIndexOfAudioObject(currentSelectedSong);
+            int currentSelectedSongIndex = playListHandler.getIndexOfAudioObject(currentSelectedSong);
 
             List<ILocalAudioObject> prevFile = new ArrayList<ILocalAudioObject>();
             boolean validAudioFile = false;
             // Before moving down check if we need to jump an audio object like a radio stream
             while (validAudioFile == false) {
-                PlayListHandler.getInstance().changeSelectedAudioObjectToIndex(--currentSelectedSongIndex);
+                playListHandler.changeSelectedAudioObjectToIndex(--currentSelectedSongIndex);
                 selectedFiles.clear();
-                selectedFiles.add(PlayListHandler.getInstance().getSelectedAudioObjects().get(0));
+                selectedFiles.add(playListHandler.getSelectedAudioObjects().get(0));
                 validAudioFile = AudioFile.isValidAudioFile(selectedFiles.get(0).getUrl());
                 // Reaching the begin of the playlist
                 if (currentSelectedSongIndex == -1) {

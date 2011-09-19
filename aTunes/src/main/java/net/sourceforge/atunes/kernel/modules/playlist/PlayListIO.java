@@ -38,6 +38,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -255,7 +256,7 @@ public final class PlayListIO {
      * @param osManager
      * @return
      */
-    public static boolean write(PlayList playlist, File file, IOSManager osManager) {
+    public static boolean write(IPlayList playlist, File file, IOSManager osManager) {
         FileWriter writer = null;
         try {
             if (file.exists()) {
@@ -265,7 +266,8 @@ public final class PlayListIO {
             }
             writer = new FileWriter(file);
             writer.append(StringUtils.getString(M3U_HEADER, osManager.getLineTerminator()));
-            for (IAudioObject f : playlist.getAudioObjects()) {
+            for (int i = 0; i < playlist.size(); i++) {
+            	IAudioObject f = playlist.get(i);
                 writer.append(StringUtils.getString(f.getUrl(), osManager.getLineTerminator()));
             }
             writer.flush();

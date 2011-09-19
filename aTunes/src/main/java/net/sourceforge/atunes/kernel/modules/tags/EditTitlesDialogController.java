@@ -29,6 +29,7 @@ import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
 
 final class EditTitlesDialogController extends AbstractSimpleController<EditTitlesDialog> {
@@ -36,6 +37,7 @@ final class EditTitlesDialogController extends AbstractSimpleController<EditTitl
     private List<ILocalAudioObject> filesToEdit;
     private Album album;
     private EditTitlesTableModel model;
+    private IPlayListHandler playListHandler;
 
     /**
      * Instantiates a new edits the titles dialog controller.
@@ -43,8 +45,9 @@ final class EditTitlesDialogController extends AbstractSimpleController<EditTitl
      * @param dialog
      * @param state
      */
-    EditTitlesDialogController(EditTitlesDialog dialog, IState state) {
+    EditTitlesDialogController(EditTitlesDialog dialog, IState state, IPlayListHandler playListHandler) {
         super(dialog, state);
+        this.playListHandler = playListHandler;
         addBindings();
     }
 
@@ -61,7 +64,7 @@ final class EditTitlesDialogController extends AbstractSimpleController<EditTitl
      */
     protected void editFiles() {
         Map<ILocalAudioObject, String> filesAndTitles = ((EditTitlesTableModel) getComponentControlled().getTable().getModel()).getNewValues();
-        EditTitlesProcess process = new EditTitlesProcess(new ArrayList<ILocalAudioObject>(filesAndTitles.keySet()), getState());
+        EditTitlesProcess process = new EditTitlesProcess(new ArrayList<ILocalAudioObject>(filesAndTitles.keySet()), getState(), playListHandler);
         process.setFilesAndTitles(filesAndTitles);
         process.execute();
     }

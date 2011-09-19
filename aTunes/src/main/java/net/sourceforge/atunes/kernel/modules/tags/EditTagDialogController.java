@@ -45,6 +45,7 @@ import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 
@@ -121,16 +122,20 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
     private boolean coverEdited;
     
     private IOSManager osManager;
+    
+    private IPlayListHandler playListHandler;
 
     /**
      * Instantiates a new edits the tag dialog controller.
      * @param dialog
      * @param state
      * @param osManager
+     * @param playListHandler
      */
-    public EditTagDialogController(EditTagDialog dialog, IState state, IOSManager osManager) {
+    public EditTagDialogController(EditTagDialog dialog, IState state, IOSManager osManager, IPlayListHandler playListHandler) {
         super(dialog, state);
         this.osManager = osManager;
+        this.playListHandler = playListHandler;
         addBindings();
         addStateBindings();
     }
@@ -144,7 +149,7 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
         // Add autocompletion
         AutoCompleteDecorator.decorate(getComponentControlled().getGenreComboBox());
 
-        EditTagDialogActionListener actionListener = new EditTagDialogActionListener(this, getComponentControlled());
+        EditTagDialogActionListener actionListener = new EditTagDialogActionListener(this, getComponentControlled(), playListHandler);
         getComponentControlled().getOkButton().addActionListener(actionListener);
         getComponentControlled().getCancelButton().addActionListener(actionListener);
 
@@ -462,7 +467,7 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
             editTagInfo.put("COVER", newCover);
         }
 
-        EditTagsProcess process = new EditTagsProcess(new ArrayList<ILocalAudioObject>(audioFilesEditing), editTagInfo, getState());
+        EditTagsProcess process = new EditTagsProcess(new ArrayList<ILocalAudioObject>(audioFilesEditing), editTagInfo, getState(), playListHandler);
         process.execute();
     }
 

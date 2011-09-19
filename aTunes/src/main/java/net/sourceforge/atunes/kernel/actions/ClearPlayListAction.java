@@ -28,9 +28,9 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -53,7 +53,7 @@ public class ClearPlayListAction extends CustomAbstractAction {
         int returnValue = JOptionPane.showConfirmDialog(Context.getBean(IFrame.class).getFrame(), I18nUtils.getString("CLEAR_PLAYLIST_WARNING"),
                 I18nUtils.getString("CLEAR"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (JOptionPane.YES_OPTION == returnValue) {
-            PlayListHandler.getInstance().clearPlayList();
+        	Context.getBean(IPlayListHandler.class).clearPlayList();
         }
     }
 

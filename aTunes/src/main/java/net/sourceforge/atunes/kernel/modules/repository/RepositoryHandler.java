@@ -66,6 +66,7 @@ import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.Folder;
+import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -93,7 +94,7 @@ import org.joda.time.DateTime;
 /**
  * The repository handler.
  */
-public final class RepositoryHandler extends AbstractHandler implements LoaderListener, AudioFilesRemovedListener, RepositoryListener {
+public final class RepositoryHandler extends AbstractHandler implements LoaderListener, IAudioFilesRemovedListener, RepositoryListener {
 
 	// Used to retrieve covers and show in progress dialog
 	private String lastArtistRead;
@@ -295,7 +296,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     private RepositoryAutoRefresher repositoryRefresher;
     private Repository repositoryRetrievedFromCache = null;
     /** Listeners notified when an audio file is removed */
-    private List<AudioFilesRemovedListener> audioFilesRemovedListeners = new ArrayList<AudioFilesRemovedListener>();
+    private List<IAudioFilesRemovedListener> audioFilesRemovedListeners = new ArrayList<IAudioFilesRemovedListener>();
 
     private IRepositoryProgressDialog progressDialog;
 
@@ -1024,7 +1025,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         }
 
         // Notify listeners
-        for (AudioFilesRemovedListener listener : audioFilesRemovedListeners) {
+        for (IAudioFilesRemovedListener listener : audioFilesRemovedListeners) {
             listener.audioFilesRemoved(filesToRemove);
         }
     }
@@ -1161,7 +1162,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      * 
      * @param listener
      */
-    public void addAudioFilesRemovedListener(AudioFilesRemovedListener listener) {
+    public void addAudioFilesRemovedListener(IAudioFilesRemovedListener listener) {
         audioFilesRemovedListeners.add(listener);
     }
 

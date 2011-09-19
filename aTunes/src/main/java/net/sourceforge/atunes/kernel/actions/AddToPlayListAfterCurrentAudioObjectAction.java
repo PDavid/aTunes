@@ -24,8 +24,9 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class AddToPlayListAfterCurrentAudioObjectAction extends AbstractActionOverSelectedObjects<IAudioObject> {
@@ -39,7 +40,7 @@ public class AddToPlayListAfterCurrentAudioObjectAction extends AbstractActionOv
     
     @Override
     protected void performAction(List<IAudioObject> objects) {
-        PlayListHandler.getInstance().addToActivePlayList(objects);
+    	Context.getBean(IPlayListHandler.class).addToActivePlayList(objects);
     }
 
     @Override

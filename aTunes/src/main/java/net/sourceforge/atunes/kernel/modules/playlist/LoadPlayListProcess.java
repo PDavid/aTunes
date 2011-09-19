@@ -25,8 +25,10 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.process.AbstractProcess;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -77,7 +79,7 @@ class LoadPlayListProcess extends AbstractProcess {
         @Override
         public void run() {
             if (songsLoaded.size() >= 1) {
-                PlayListHandler.getInstance().addToPlayList(songsLoaded);
+            	Context.getBean(IPlayListHandler.class).addToPlayList(songsLoaded);
             }
         }
 

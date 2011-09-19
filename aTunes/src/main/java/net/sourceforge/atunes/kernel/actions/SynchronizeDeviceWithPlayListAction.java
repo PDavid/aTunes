@@ -31,7 +31,6 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListLocalAudioObjectFilter;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
@@ -42,6 +41,7 @@ import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IMessageDialog;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -87,10 +87,10 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 		    List<ILocalAudioObject> playListObjects;
 		    if (SynchronizeDeviceWithPlayListAction.this.getState().isAllowRepeatedSongsInDevice()) {
 		        // Repeated songs allowed, filter only if have same artist and album
-		        playListObjects = AudioFile.filterRepeatedSongsAndAlbums(new PlayListLocalAudioObjectFilter().getObjects(PlayListHandler.getInstance().getCurrentPlayList(true)));
+		        playListObjects = AudioFile.filterRepeatedSongsAndAlbums(new PlayListLocalAudioObjectFilter().getObjects(Context.getBean(IPlayListHandler.class).getCurrentPlayList(true)));
 		    } else {
 		        // Repeated songs not allows, filter even if have different album
-		        playListObjects = AudioFile.filterRepeatedSongs(new PlayListLocalAudioObjectFilter().getObjects(PlayListHandler.getInstance().getCurrentPlayList(true)));
+		        playListObjects = AudioFile.filterRepeatedSongs(new PlayListLocalAudioObjectFilter().getObjects(Context.getBean(IPlayListHandler.class).getCurrentPlayList(true)));
 		    }
 
 		    // Get elements present in play list and not in device -> objects to be copied to device

@@ -25,14 +25,17 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPlayList;
+import net.sourceforge.atunes.model.IPlayListObjectFilter;
 import net.sourceforge.atunes.model.IRadio;
 
-public class PlayListRadioFilter implements PlayListObjectFilter<Radio> {
+public class PlayListRadioFilter implements IPlayListObjectFilter<Radio> {
 	
 	@Override
-	public List<Radio> getObjects(PlayList playList) {
+	public List<Radio> getObjects(IPlayList playList) {
         List<Radio> result = new ArrayList<Radio>();
-        for (IAudioObject ao : playList.getAudioObjects()) {
+        for (int i = 0; i < playList.size(); i++) {
+        	IAudioObject ao = playList.get(i);
             if (ao instanceof IRadio) {
                 result.add((Radio)ao);
             }

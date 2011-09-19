@@ -28,6 +28,7 @@ import net.sourceforge.atunes.model.IAudioObjectPropertiesDialog;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IState;
@@ -40,6 +41,8 @@ public class AudioObjectPropertiesDialogFactory implements IAudioObjectPropertie
 	
 	private IOSManager osManager;
 	
+	private IPlayListHandler playListHandler;
+	
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.gui.views.dialogs.properties.IAudioObjectPropertiesDialogFactory#newInstance(net.sourceforge.atunes.model.IAudioObject)
 	 */
@@ -51,7 +54,7 @@ public class AudioObjectPropertiesDialogFactory implements IAudioObjectPropertie
     	} else if (a instanceof IRadio) {
     		dialog = new RadioPropertiesDialog((Radio) a, frame);
     	} else if (a instanceof AudioFile) {
-    		dialog = new AudioFilePropertiesDialog((AudioFile) a, state, frame, osManager);
+    		dialog = new AudioFilePropertiesDialog((AudioFile) a, state, frame, osManager, playListHandler);
     	}
     	dialog.setAudioObject(a);
     	return dialog;
@@ -79,5 +82,10 @@ public class AudioObjectPropertiesDialogFactory implements IAudioObjectPropertie
 	@Override
 	public void setOsManager(IOSManager osManager) {
 		this.osManager = osManager;
+	}
+	
+	@Override
+	public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
 	}
 }

@@ -26,6 +26,7 @@ import net.sourceforge.atunes.gui.model.AbstractColumnSetTableModel;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPlayListHandler;
 
 /**
  * The playlist table model.
@@ -38,14 +39,18 @@ public class PlayListTableModel extends AbstractColumnSetTableModel {
      * Reference to the visible play list
      */
     private PlayList visiblePlayList = null;
+    
+    private IPlayListHandler playListHandler;
 
     /**
      * Constructor.
      * 
      * @param columnSet
+     * @param playListHandler
      */
-    public PlayListTableModel(AbstractColumnSet columnSet) {
+    public PlayListTableModel(AbstractColumnSet columnSet, IPlayListHandler playListHandler) {
         super(columnSet);
+        this.playListHandler = playListHandler;
     }
 
     /**
@@ -117,7 +122,7 @@ public class PlayListTableModel extends AbstractColumnSetTableModel {
         getColumn(columnIndex).setValueFor(audioObject, aValue);
 
         // After changing audio object refresh playlist, as the same object can be duplicated
-        PlayListHandler.getInstance().refreshPlayList();
+        playListHandler.refreshPlayList();
 
         // End repository transaction
         RepositoryHandler.getInstance().endTransaction();

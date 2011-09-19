@@ -24,13 +24,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -74,7 +75,7 @@ public class CreatePlayListWithSelectedAlbumsAction extends AbstractActionOverSe
             AudioObjectComparator.sort(audioObjects);
 
             // Create a new play list with album as name and audio objects
-            PlayListHandler.getInstance().newPlayList(album.getName(), audioObjects);
+            Context.getBean(IPlayListHandler.class).newPlayList(album.getName(), audioObjects);
         }
     }
 

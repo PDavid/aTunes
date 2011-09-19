@@ -331,4 +331,10 @@ public interface IFrame {
 	 * Hides progress bar
 	 */
 	public void hideProgressBar();
+	
+	/**
+	 * Sets play list handler
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(IPlayListHandler playListHandler);
 }

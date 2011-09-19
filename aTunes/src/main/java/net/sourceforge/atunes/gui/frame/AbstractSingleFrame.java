@@ -63,12 +63,12 @@ import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -111,6 +111,8 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     
     protected IOSManager osManager;
     
+    private IPlayListHandler playListHandler;
+    
     /**
      * Instantiates a new standard frame.
      */
@@ -126,6 +128,11 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     @Override
     public void setOsManager(IOSManager osManager) {
 		this.osManager = osManager;
+	}
+    
+    @Override
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
 	}
     
     @Override
@@ -226,7 +233,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
                         Logger.debug("Window Iconified");
                     } else if (e.getNewState() != Frame.ICONIFIED) {
                         Logger.debug("Window Deiconified");
-                        PlayListHandler.getInstance().scrollPlayList(false);
+                        Context.getBean(IPlayListHandler.class).scrollPlayList(false);
                     }
                 }
             };
@@ -338,7 +345,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     @Override
     public PlayListPanel getPlayListPanel() {
         if (playListPanel == null) {
-            playListPanel = new PlayListPanel();
+            playListPanel = new PlayListPanel(playListHandler);
             playListPanel.setMinimumSize(getPlayListPanelMinimumSize());
             playListPanel.setPreferredSize(getPlayListPanelPreferredSize());
             playListPanel.setMaximumSize(getPlayListPanelMaximumSize());

@@ -28,7 +28,6 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.processes.ExportFilesProcess;
@@ -38,6 +37,7 @@ import net.sourceforge.atunes.model.IExportOptionsDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -110,7 +110,7 @@ public class ExportAction extends CustomAbstractAction {
                         songs = AudioFile.getAudioFiles(NavigationHandler.getInstance().getCurrentView().getSelectedAudioObjects());
                     } else {
                         // Get only LocalAudioObject objects of current play list
-                        songs = AudioFile.getAudioFiles(PlayListHandler.getInstance().getSelectedAudioObjects());
+                        songs = AudioFile.getAudioFiles(Context.getBean(IPlayListHandler.class).getSelectedAudioObjects());
                     }
 
                     ExportFilesProcess process = new ExportFilesProcess(songs, path, getState(), Context.getBean(IFrame.class), Context.getBean(IOSManager.class));

@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
 
 /**
@@ -41,8 +42,8 @@ public class SetTrackNumberProcess extends AbstractChangeTagProcess {
      * @param filesAndTracks
      *            the files and tracks
      */
-    SetTrackNumberProcess(Map<ILocalAudioObject, Integer> filesAndTracks, IState state) {
-        super(new ArrayList<ILocalAudioObject>(filesAndTracks.keySet()), state);
+    SetTrackNumberProcess(Map<ILocalAudioObject, Integer> filesAndTracks, IState state, IPlayListHandler playListHandler) {
+        super(new ArrayList<ILocalAudioObject>(filesAndTracks.keySet()), state, playListHandler);
         this.filesAndTracks = filesAndTracks;
     }
 

@@ -29,9 +29,9 @@ import javax.swing.KeyStroke;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class PlayAction extends CustomAbstractAction {
@@ -53,7 +53,7 @@ public class PlayAction extends CustomAbstractAction {
         }
         
         int selAudioObject = Context.getBean(IFrame.class).getPlayListTable().getSelectedRow();
-        int currPlayingAudioObject = PlayListHandler.getInstance().getIndexOfAudioObject(PlayerHandler.getInstance().getAudioObject());
+        int currPlayingAudioObject = Context.getBean(IPlayListHandler.class).getIndexOfAudioObject(PlayerHandler.getInstance().getAudioObject());
 
         if (selAudioObject != currPlayingAudioObject) {
             // another song selected to play
@@ -62,7 +62,7 @@ public class PlayAction extends CustomAbstractAction {
                 PlayerHandler.getInstance().playCurrentAudioObject(true);
             } else {
                 // play another song
-                PlayListHandler.getInstance().setPositionToPlayInVisiblePlayList(selAudioObject);
+            	Context.getBean(IPlayListHandler.class).setPositionToPlayInVisiblePlayList(selAudioObject);
                 PlayerHandler.getInstance().playCurrentAudioObject(false);
             }
         } else

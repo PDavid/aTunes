@@ -23,9 +23,10 @@ package net.sourceforge.atunes.api;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.playlist.PlayList;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPlayList;
+import net.sourceforge.atunes.model.IPlayListHandler;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -42,7 +43,7 @@ public final class PlayListApi {
      * @return
      */
     public static int getNumberOfPlayLists() {
-        return PlayListHandler.getInstance().getPlayListCount();
+        return Context.getBean(IPlayListHandler.class).getPlayListCount();
     }
 
     /**
@@ -52,7 +53,7 @@ public final class PlayListApi {
      * @return
      */
     public static String getNameOfPlayList(int index) {
-        return PlayListHandler.getInstance().getPlayListNameAtIndex(index);
+        return Context.getBean(IPlayListHandler.class).getPlayListNameAtIndex(index);
     }
 
     /**
@@ -62,7 +63,7 @@ public final class PlayListApi {
      */
     public static List<IAudioObject> getCurrentPlayList() {
         List<IAudioObject> result = new ArrayList<IAudioObject>();
-        PlayList playlist = PlayListHandler.getInstance().getCurrentPlayList(false);
+        IPlayList playlist = Context.getBean(IPlayListHandler.class).getCurrentPlayList(false);
         for (int i = 0; i < playlist.size(); i++) {
             result.add(playlist.get(i));
         }
@@ -76,7 +77,7 @@ public final class PlayListApi {
      * @return
      */
     public static List<IAudioObject> getPlayList(int index) {
-        return PlayListHandler.getInstance().getPlayListContent(index);
+        return Context.getBean(IPlayListHandler.class).getPlayListContent(index);
     }
 
     /**
@@ -85,6 +86,6 @@ public final class PlayListApi {
      * @param objects
      */
     public static void add(List<IAudioObject> objects) {
-        PlayListHandler.getInstance().addToPlayList(objects);
+        Context.getBean(IPlayListHandler.class).addToPlayList(objects);
     }
 }

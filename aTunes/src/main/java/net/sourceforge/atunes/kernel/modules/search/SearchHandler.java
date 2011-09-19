@@ -31,6 +31,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.swing.SwingWorker;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.model.SearchResultColumnModel;
 import net.sourceforge.atunes.gui.views.dialogs.CustomSearchDialog;
 import net.sourceforge.atunes.gui.views.dialogs.SearchResultsDialog;
@@ -38,6 +39,7 @@ import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.search.searchableobjects.DeviceSearchableObject;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -200,7 +202,7 @@ public final class SearchHandler extends AbstractHandler {
      */
     private SearchResultsController getSearchResultsController() {
         if (searchResultsController == null) {
-            searchResultsController = new SearchResultsController(new SearchResultsDialog(getFrame().getFrame()), getState());
+            searchResultsController = new SearchResultsController(new SearchResultsDialog(getFrame().getFrame()), getState(), Context.getBean(IPlayListHandler.class));
         }
         return searchResultsController;
     }

@@ -30,10 +30,10 @@ import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.kernel.modules.columns.TextAndIcon;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectStatistics;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -84,11 +84,12 @@ public final class ColumnRenderers {
     /**
      * Sets font for given label and row
      * 
+     * @param playListHandler
      * @param label
      * @param row
      */
-    static void setFontForRow(JLabel label, int row) {
-    	if (PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row)) {
+    static void setFontForRow(IPlayListHandler playListHandler, JLabel label, int row) {
+    	if (playListHandler.isCurrentVisibleRowPlaying(row)) {
     		if (LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListSelectedItemFont() != null) {
     			label.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListSelectedItemFont());
     		} else if (LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListFont() != null) {

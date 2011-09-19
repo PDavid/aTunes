@@ -18,18 +18,17 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.playlist;
+package net.sourceforge.atunes.model;
 
 import java.util.List;
 
-import net.sourceforge.atunes.model.IAudioObject;
 
-public interface PlayListObjectFilter<T extends IAudioObject> {
+public interface IPlayListObjectFilter<T extends IAudioObject> {
 
 	/**
 	 * Returns only objects of a subtype
 	 * @param playList
 	 * @return
 	 */
-	public List<T> getObjects(PlayList playList);
+	public List<T> getObjects(IPlayList playList);
 }

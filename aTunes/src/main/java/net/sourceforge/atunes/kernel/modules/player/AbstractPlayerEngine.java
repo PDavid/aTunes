@@ -32,7 +32,6 @@ import net.sourceforge.atunes.kernel.PlaybackState;
 import net.sourceforge.atunes.kernel.PlaybackStateListeners;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.TempFolder;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -43,6 +42,7 @@ import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
@@ -183,6 +183,8 @@ public abstract class AbstractPlayerEngine {
     private IFrame frame;
     
     private IOSManager osManager;
+    
+    private IPlayListHandler playListHandler;
     
     /**
      * A thread invoking play in engine
@@ -359,22 +361,22 @@ public abstract class AbstractPlayerEngine {
             IAudioObject nextAudioObject = null;
             try {
                 if (paused && buttonPressed) { // Resume
-                    if (!PlayListHandler.getInstance().getCurrentPlayList(false).isEmpty()) {
+                    if (!playListHandler.getCurrentPlayList(false).isEmpty()) {
                         paused = false;
                         resumePlayback();
                         callPlaybackStateListeners(PlaybackState.RESUMING);
                         Logger.info("Resumed paused song");
                     }
                 } else {
-                    nextAudioObject = PlayListHandler.getInstance().getCurrentAudioObjectFromVisiblePlayList();
+                    nextAudioObject = playListHandler.getCurrentAudioObjectFromVisiblePlayList();
                     if (nextAudioObject != null) {
                         if (isEnginePlaying() || paused) {
                             stopCurrentAudioObject(false);
                         }
 
                         // We need to update current object and active playlist first
-                        PlayListHandler.setVisiblePlayListActive();
-                        PlayListHandler.getInstance().selectedAudioObjectHasChanged(nextAudioObject);
+                        playListHandler.setVisiblePlayListActive();
+                        playListHandler.selectedAudioObjectHasChanged(nextAudioObject);
 
                         playAudioObject(nextAudioObject);
                     }
@@ -417,7 +419,7 @@ public abstract class AbstractPlayerEngine {
         // Call listeners to notify playback was interrupted
         callPlaybackStateListeners(PlaybackState.PLAY_INTERRUPTED);
 
-        switchPlaybackTo(PlayListHandler.getInstance().getPreviousAudioObject(), false, false);
+        switchPlaybackTo(playListHandler.getPreviousAudioObject(), false, false);
     }
 
     /**
@@ -434,7 +436,7 @@ public abstract class AbstractPlayerEngine {
             // Call listeners to notify playback was interrupted
             callPlaybackStateListeners(PlaybackState.PLAY_INTERRUPTED);
         }
-        switchPlaybackTo(PlayListHandler.getInstance().getNextAudioObject(), true, audioObjectFinished);
+        switchPlaybackTo(playListHandler.getNextAudioObject(), true, audioObjectFinished);
     }
 
     /**
@@ -517,7 +519,7 @@ public abstract class AbstractPlayerEngine {
         // If paused first resume and then seek
         if (paused) {
             paused = false;
-            if (!PlayListHandler.getInstance().getCurrentPlayList(false).isEmpty()) {
+            if (!playListHandler.getCurrentPlayList(false).isEmpty()) {
                 callPlaybackStateListeners(PlaybackState.RESUMING);
                 Logger.info("Resumed paused song");
             }
@@ -556,12 +558,13 @@ public abstract class AbstractPlayerEngine {
      * Instantiates a new player handler.
      * @param state
      */
-    protected AbstractPlayerEngine(IState state, IFrame frame, IOSManager osManager) {
+    protected AbstractPlayerEngine(IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler) {
         // To properly init player must call method "initPlayerEngine"
         this.equalizer = new Equalizer(state);
         this.state = state;
         this.frame = frame;
         this.osManager = osManager;
+        this.playListHandler = playListHandler;
     }
 
     /**
@@ -748,7 +751,7 @@ public abstract class AbstractPlayerEngine {
 		AbstractPlayerEngine.this.audioObject = audioObject;
 
 		// Add audio object to playback history
-		PlayListHandler.getInstance().addToPlaybackHistory(audioObject);
+		playListHandler.addToPlaybackHistory(audioObject);
 
 		startPlayback(audioObjectToPlay, audioObject);
 
@@ -780,7 +783,7 @@ public abstract class AbstractPlayerEngine {
     private void switchPlaybackTo(IAudioObject audioObjectToSwitchTo, boolean resetIfNoObject, boolean autoNext) {
         if (audioObjectToSwitchTo != null) {
             try {
-                PlayListHandler.getInstance().selectedAudioObjectHasChanged(audioObjectToSwitchTo);
+                playListHandler.selectedAudioObjectHasChanged(audioObjectToSwitchTo);
                 if (isEnginePlaying() || isPaused() || autoNext) {
                     stopCurrentAudioObject(false);
                     if (!isPaused()) {
@@ -794,8 +797,8 @@ public abstract class AbstractPlayerEngine {
         } else {
             if (resetIfNoObject) {
                 stopCurrentAudioObject(false);
-                PlayListHandler.getInstance().resetCurrentPlayList();
-                PlayListHandler.getInstance().selectedAudioObjectHasChanged(PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList());
+                playListHandler.resetCurrentPlayList();
+                playListHandler.selectedAudioObjectHasChanged(playListHandler.getCurrentAudioObjectFromCurrentPlayList());
             }
         }
     }

@@ -24,6 +24,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
 
 /**
@@ -41,9 +42,11 @@ public class EditTagsProcess extends AbstractChangeTagProcess {
      *            Files that must be edited (tag)
      * @param editTagInfo
      *            Information to be written
+     * @param state
+     * @param playListHandler
      */
-    public EditTagsProcess(List<ILocalAudioObject> audioFilesToEdit, EditTagInfo editTagInfo, IState state) {
-        super(audioFilesToEdit, state);
+    public EditTagsProcess(List<ILocalAudioObject> audioFilesToEdit, EditTagInfo editTagInfo, IState state, IPlayListHandler playListHandler) {
+        super(audioFilesToEdit, state, playListHandler);
         this.editTagInfo = editTagInfo;
     }
 

@@ -22,7 +22,8 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
+import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class RenamePlaylistAction extends CustomAbstractAction {
@@ -39,7 +40,7 @@ public class RenamePlaylistAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        PlayListHandler.getInstance().renamePlayList();
+    	Context.getBean(IPlayListHandler.class).renamePlayList();
     }
 
 }

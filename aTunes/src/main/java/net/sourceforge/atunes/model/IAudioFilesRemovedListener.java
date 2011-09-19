@@ -18,13 +18,12 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.repository;
+package net.sourceforge.atunes.model;
 
 import java.util.List;
 
-import net.sourceforge.atunes.model.ILocalAudioObject;
 
-public interface AudioFilesRemovedListener {
+public interface IAudioFilesRemovedListener {
 
     /**
      * Called when audio files are removed physically

@@ -24,25 +24,29 @@ import java.util.List;
 
 import net.sourceforge.atunes.gui.views.panels.PlayListTabPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
 
 final class PlayListTabController extends AbstractSimpleController<PlayListTabPanel> {
 
+	private IPlayListHandler playListHandler;
+	
     /**
      * Instantiates a new play list tab controller.
      * 
      * @param panel
      * @param state
      */
-    PlayListTabController(PlayListTabPanel panel, IState state) {
+    PlayListTabController(PlayListTabPanel panel, IState state, IPlayListHandler playListHandler) {
         super(panel, state);
+        this.playListHandler = playListHandler;
         addBindings();
         addStateBindings();
     }
 
     @Override
 	public void addBindings() {
-    	PlayListTabListener l = new PlayListTabListener(getComponentControlled());
+    	PlayListTabListener l = new PlayListTabListener(getComponentControlled(), playListHandler);
     	getComponentControlled().getOptions().addActionListener(l);
         getComponentControlled().getPlayListCombo().addItemListener(l);
     	getComponentControlled().getPlayListCombo().setModel(PlayListComboModel.getNewComboModel());
