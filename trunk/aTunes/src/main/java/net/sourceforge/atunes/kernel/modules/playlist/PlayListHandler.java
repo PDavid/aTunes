@@ -35,7 +35,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.filechooser.FileFilter;
 
-import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.PlayListAudioObject;
@@ -1292,14 +1291,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 		getPlayListController().reapplyFilter();
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#getPlayListTable()
-	 */
-	@Override
-	public PlayListTable getPlayListTable() {
-		return getPlayListController().getMainPlayListTable();
-	}
-	
 	@Override
 	public void playListCleared() {
 		playListsChanged(true, true);

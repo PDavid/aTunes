@@ -72,9 +72,9 @@ import net.sourceforge.atunes.kernel.actions.VolumeUpAction;
 import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -195,7 +195,7 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
     private JMenu getPlayListMenu() {
         if (playList == null) {
             playList = new JMenu(I18nUtils.getString("PLAYLIST"));
-            PlayListMenu.fillMenu(playList, Context.getBean(IPlayListHandler.class).getPlayListTable());
+            PlayListMenu.fillMenu(playList, Context.getBean(IFrame.class).getPlayListTable());
         }
         return playList;
     }
