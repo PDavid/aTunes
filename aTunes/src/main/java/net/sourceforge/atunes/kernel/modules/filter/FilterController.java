@@ -37,6 +37,7 @@ import javax.swing.event.DocumentListener;
 
 import net.sourceforge.atunes.gui.views.panels.FilterPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
+import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -160,7 +161,7 @@ class FilterController extends AbstractSimpleController<FilterPanel> {
      * @param name
      * @param filterListener
      */
-    void addFilter(final AbstractFilter filter) {
+    void addFilter(final IFilter filter) {
         JRadioButtonMenuItem radioButton = new JRadioButtonMenuItem(filter.getDescription());
         radioButton.addActionListener(new ActionListener() {
             @Override

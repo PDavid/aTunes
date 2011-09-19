@@ -25,7 +25,6 @@ import java.util.List;
 import javax.swing.JMenuItem;
 
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
-import net.sourceforge.atunes.kernel.modules.filter.AbstractFilter;
 
 public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
 
@@ -327,7 +326,7 @@ public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
 	/**
 	 * @return the playListFilter
 	 */
-	public AbstractFilter getPlayListFilter();
+	public IFilter getPlayListFilter();
 
 	/**
 	 * Returns play list name at given index

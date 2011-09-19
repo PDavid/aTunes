@@ -35,11 +35,11 @@ import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.draganddrop.TreeNavigationTransferHandler;
-import net.sourceforge.atunes.kernel.modules.filter.AbstractFilter;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.ISearch;
@@ -65,7 +65,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 	/**
      * Filter for navigation table
      */
-    private AbstractFilter tableFilter = new AbstractFilter() {
+    private IFilter tableFilter = new IFilter() {
 
         @Override
         public String getName() {
@@ -86,7 +86,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
     /**
      * Filter for tree
      */
-    private AbstractFilter treeFilter = new AbstractFilter() {
+    private IFilter treeFilter = new IFilter() {
 
         @Override
         public String getName() {
@@ -242,14 +242,14 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
     /**
      * @return the tableFilter
      */
-    public AbstractFilter getTableFilter() {
+    public IFilter getTableFilter() {
         return tableFilter;
     }
 
     /**
      * @return the treeFilter
      */
-    public AbstractFilter getTreeFilter() {
+    public IFilter getTreeFilter() {
         return treeFilter;
     }
     

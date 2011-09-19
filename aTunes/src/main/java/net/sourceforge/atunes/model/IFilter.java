@@ -18,25 +18,32 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.filter;
+package net.sourceforge.atunes.model;
 
-public abstract class AbstractFilter {
+/**
+ * A filter to be applied over a set of audio objects
+ * @author alex
+ *
+ */
+public interface IFilter {
 
     /**
+     * Returns the name of the filter
      * @return the name
      */
-    public abstract String getName();
+    public String getName();
 
     /**
+     * Returns the description of the filter
      * @return the description
      */
-    public abstract String getDescription();
+    public String getDescription();
 
     /**
      * Called to apply a filter. If argument is null filter should be removed
      * 
      * @param filter
      */
-    public abstract void applyFilter(String filter);
+    public void applyFilter(String filter);
 
 }
