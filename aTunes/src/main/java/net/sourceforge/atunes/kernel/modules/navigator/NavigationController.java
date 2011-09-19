@@ -75,6 +75,7 @@ import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
@@ -195,7 +196,7 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
         columnSetPopupMenu = new ColumnSetPopupMenu(navigationTablePanel.getNavigationTable(), columnModel);
 
         // Add tree selection listeners to all views
-        for (AbstractNavigationView view : NavigationHandler.getInstance().getNavigationViews()) {
+        for (INavigationView view : NavigationHandler.getInstance().getNavigationViews()) {
             view.getTree().addTreeSelectionListener(new TreeSelectionListener() {
                 @Override
                 public void valueChanged(TreeSelectionEvent e) {
@@ -208,7 +209,7 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
         // Add tree tool tip listener to all views
         NavigationTreeMouseListener treeMouseListener = new NavigationTreeMouseListener(this, state);
         NavigationTreeToolTipListener tooltipListener = new NavigationTreeToolTipListener(this, state);
-        for (AbstractNavigationView view : NavigationHandler.getInstance().getNavigationViews()) {
+        for (INavigationView view : NavigationHandler.getInstance().getNavigationViews()) {
             view.getTree().addMouseListener(treeMouseListener);
             view.getTree().addMouseListener(tooltipListener);
             view.getTree().addMouseMotionListener(tooltipListener);
@@ -231,8 +232,8 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
 
         		@Override
         		public JComponent getComponent(JComponent superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        			((JLabel)superComponent).setIcon(((AbstractNavigationView)value).getIcon().getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(superComponent, isSelected)));
-        			((JLabel)superComponent).setText(((AbstractNavigationView)value).getTitle());
+        			((JLabel)superComponent).setIcon(((INavigationView)value).getIcon().getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(superComponent, isSelected)));
+        			((JLabel)superComponent).setText(((INavigationView)value).getTitle());
         			return superComponent;
         		}
         	}));
@@ -331,7 +332,7 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
      * @param node
      * @return
      */
-    public List<? extends IAudioObject> getAudioObjectsForTreeNode(Class<? extends AbstractNavigationView> navigationViewClass, DefaultMutableTreeNode node) {
+    public List<? extends IAudioObject> getAudioObjectsForTreeNode(Class<? extends INavigationView> navigationViewClass, DefaultMutableTreeNode node) {
         List<? extends IAudioObject> audioObjects = NavigationHandler.getInstance().getView(navigationViewClass).getAudioObjectForTreeNode(node, state.getViewMode(),
                 FilterHandler.getInstance().isFilterSelected(NavigationHandler.getInstance().getTreeFilter()) ? FilterHandler.getInstance().getFilter() : null);
 
@@ -389,7 +390,7 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
      * @param saveNavigationView
      */
     public void setNavigationView(String view, boolean saveNavigationView) {
-        Class<? extends AbstractNavigationView> navigationView = NavigationHandler.getInstance().getViewByName(view);
+        Class<? extends INavigationView> navigationView = NavigationHandler.getInstance().getViewByName(view);
         if (navigationView == null) {
             navigationView = RepositoryNavigationView.class;
         }

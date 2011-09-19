@@ -210,10 +210,10 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
         treeModel.reload();
 
         // Expand nodes
-        expandNodes(getTree(), nodesToExpand);
+        NavigationViewHelper.expandNodes(getTree(), nodesToExpand);
 
         // Once tree has been refreshed, select previously selected nodes
-        selectNodes(getTree(), nodesToSelect);
+        NavigationViewHelper.selectNodes(getTree(), nodesToSelect);
     }
 
     @SuppressWarnings("unchecked")

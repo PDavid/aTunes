@@ -29,8 +29,8 @@ import java.util.Map;
 
 import javax.swing.Icon;
 
-import net.sourceforge.atunes.gui.model.AudioObjectsSource;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IAudioObjectsSource;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -39,7 +39,7 @@ public abstract class AbstractActionOverSelectedObjects<T extends IAudioObject> 
 
     private static final long serialVersionUID = 1673432955671008277L;
 
-    private static Map<Component, AudioObjectsSource> registeredComponents = new HashMap<Component, AudioObjectsSource>();
+    private static Map<Component, IAudioObjectsSource> registeredComponents = new HashMap<Component, IAudioObjectsSource>();
 
     private Class<T> objectsClass;
 
@@ -58,7 +58,7 @@ public abstract class AbstractActionOverSelectedObjects<T extends IAudioObject> 
         this.objectsClass = objectsClass;
     }
 
-    static final void addRegisteredComponent(Component source, AudioObjectsSource objectsSource) {
+    static final void addRegisteredComponent(Component source, IAudioObjectsSource objectsSource) {
         registeredComponents.put(source, objectsSource);
     }
 
@@ -81,7 +81,7 @@ public abstract class AbstractActionOverSelectedObjects<T extends IAudioObject> 
     public final void actionPerformed(ActionEvent e) {
         // Get objects source from registered components
         Component eventSource = (Component) e.getSource();
-        AudioObjectsSource objectsSource = registeredComponents.get(eventSource);
+        IAudioObjectsSource objectsSource = registeredComponents.get(eventSource);
 
         if (objectsSource == null) {
             return;

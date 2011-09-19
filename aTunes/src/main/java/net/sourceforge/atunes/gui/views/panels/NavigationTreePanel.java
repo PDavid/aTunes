@@ -41,8 +41,8 @@ import net.sourceforge.atunes.kernel.actions.ShowFoldersInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowGenresInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigationTableAction;
 import net.sourceforge.atunes.kernel.actions.ShowYearsInNavigatorAction;
-import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 public final class NavigationTreePanel extends JPanel {
@@ -109,7 +109,7 @@ public final class NavigationTreePanel extends JPanel {
         add(treePanel, c);
 
         // Apply component orientation to all popup menus
-        for (AbstractNavigationView view : NavigationHandler.getInstance().getNavigationViews()) {
+        for (INavigationView view : NavigationHandler.getInstance().getNavigationViews()) {
             GuiUtils.applyComponentOrientation(view.getTreePopupMenu());
         }
     }
@@ -121,7 +121,7 @@ public final class NavigationTreePanel extends JPanel {
     	treeComboBox.removeAllItems();
     	treePanel.removeAll();
 
-        for (AbstractNavigationView view : NavigationHandler.getInstance().getNavigationViews()) {
+        for (INavigationView view : NavigationHandler.getInstance().getNavigationViews()) {
         	treeComboBox.addItem(view);
         	treePanel.add(view.getClass().getName(), view.getTreeScrollPane());
         }
@@ -138,7 +138,7 @@ public final class NavigationTreePanel extends JPanel {
 	 * Shows tree view
 	 * @param view
 	 */
-	public void showNavigationView(AbstractNavigationView view) {		
+	public void showNavigationView(INavigationView view) {		
 		((CardLayout)treePanel.getLayout()).show(treePanel, view.getClass().getName());
 		treeComboBox.setSelectedItem(view);
 	}

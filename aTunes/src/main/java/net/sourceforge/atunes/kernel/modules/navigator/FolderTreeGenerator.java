@@ -34,6 +34,7 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITreeGenerator;
@@ -60,7 +61,7 @@ public class FolderTreeGenerator implements ITreeGenerator {
 	 * @param objectsExpanded
 	 */
     @SuppressWarnings("unchecked")
-	public void buildTree(IState state, String rootTextKey, AbstractNavigationView view, Map<String, ?> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<ITreeObject<? extends IAudioObject>> objectsSelected, List<ITreeObject<? extends IAudioObject>> objectsExpanded) {
+	public void buildTree(IState state, String rootTextKey, INavigationView view, Map<String, ?> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<ITreeObject<? extends IAudioObject>> objectsSelected, List<ITreeObject<? extends IAudioObject>> objectsExpanded) {
 
         // Refresh nodes
         root.setUserObject(I18nUtils.getString(rootTextKey));
@@ -85,10 +86,10 @@ public class FolderTreeGenerator implements ITreeGenerator {
         List<DefaultMutableTreeNode> nodesToExpand = RefreshUtils.getNodes(root, objectsExpanded);
 
         // Expand nodes
-        AbstractNavigationView.expandNodes(view.getTree(), nodesToExpand);
+        NavigationViewHelper.expandNodes(view.getTree(), nodesToExpand);
 
         // Once tree has been refreshed, select previously selected nodes
-        AbstractNavigationView.selectNodes(view.getTree(), nodesToSelect);
+        NavigationViewHelper.selectNodes(view.getTree(), nodesToSelect);
     }
 
     @SuppressWarnings("unchecked")

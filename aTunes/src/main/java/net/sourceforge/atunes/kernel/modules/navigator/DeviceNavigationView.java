@@ -180,10 +180,10 @@ public final class DeviceNavigationView extends AbstractNavigationView {
 
         
         // Expand nodes
-        expandNodes(getTree(), nodesToExpand);
+        NavigationViewHelper.expandNodes(getTree(), nodesToExpand);
 
         // Once tree has been refreshed, select previously selected nodes
-        selectNodes(getTree(), nodesToSelect);
+        NavigationViewHelper.selectNodes(getTree(), nodesToSelect);
     }
 
     @Override

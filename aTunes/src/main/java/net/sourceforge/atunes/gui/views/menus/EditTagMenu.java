@@ -23,7 +23,6 @@ package net.sourceforge.atunes.gui.views.menus;
 import javax.swing.JMenu;
 import javax.swing.JSeparator;
 
-import net.sourceforge.atunes.gui.model.AudioObjectsSource;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AutoSetCoversAction;
 import net.sourceforge.atunes.kernel.actions.AutoSetGenresAction;
@@ -35,13 +34,14 @@ import net.sourceforge.atunes.kernel.actions.AutoSetTracksAction;
 import net.sourceforge.atunes.kernel.actions.ClearTagAction;
 import net.sourceforge.atunes.kernel.actions.EditTagAction;
 import net.sourceforge.atunes.model.EditTagSources;
+import net.sourceforge.atunes.model.IAudioObjectsSource;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class EditTagMenu extends JMenu {
 
     private static final long serialVersionUID = -8235925186759302907L;
 
-    public EditTagMenu(boolean playlistMenu, AudioObjectsSource audioObjectsSource) {
+    public EditTagMenu(boolean playlistMenu, IAudioObjectsSource audioObjectsSource) {
         super(I18nUtils.getString("TAGS"));
         add(Actions.getMenuItemForAction(EditTagAction.class, playlistMenu ? EditTagSources.PLAYLIST.toString() : EditTagSources.NAVIGATOR.toString(),
                 audioObjectsSource));

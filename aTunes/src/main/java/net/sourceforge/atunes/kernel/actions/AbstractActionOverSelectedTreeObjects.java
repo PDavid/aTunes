@@ -29,9 +29,9 @@ import java.util.Map;
 
 import javax.swing.Icon;
 
-import net.sourceforge.atunes.gui.model.TreeObjectsSource;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ITreeObject;
+import net.sourceforge.atunes.model.ITreeObjectsSource;
 
 public abstract class AbstractActionOverSelectedTreeObjects<T extends ITreeObject<? extends IAudioObject>> extends CustomAbstractAction {
 
@@ -40,7 +40,7 @@ public abstract class AbstractActionOverSelectedTreeObjects<T extends ITreeObjec
 	 */
 	private static final long serialVersionUID = -2396109319433549043L;
 
-	private static Map<Component, TreeObjectsSource> registeredComponents = new HashMap<Component, TreeObjectsSource>();
+	private static Map<Component, ITreeObjectsSource> registeredComponents = new HashMap<Component, ITreeObjectsSource>();
 
     private Class<T> objectsClass;
 
@@ -59,7 +59,7 @@ public abstract class AbstractActionOverSelectedTreeObjects<T extends ITreeObjec
         this.objectsClass = objectsClass;
     }
 
-    static final void addRegisteredComponent(Component source, TreeObjectsSource objectsSource) {
+    static final void addRegisteredComponent(Component source, ITreeObjectsSource objectsSource) {
         registeredComponents.put(source, objectsSource);
     }
 
@@ -82,7 +82,7 @@ public abstract class AbstractActionOverSelectedTreeObjects<T extends ITreeObjec
     public final void actionPerformed(ActionEvent e) {
         // Get objects source from registered components
         Component eventSource = (Component) e.getSource();
-        TreeObjectsSource objectsSource = registeredComponents.get(eventSource);
+        ITreeObjectsSource objectsSource = registeredComponents.get(eventSource);
 
         if (objectsSource == null) {
             return;

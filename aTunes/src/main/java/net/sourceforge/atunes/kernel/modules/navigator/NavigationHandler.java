@@ -41,6 +41,7 @@ import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
 import net.sourceforge.atunes.model.IState;
@@ -59,7 +60,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
      */
     private static NavigationHandler instance;
 
-    private List<AbstractNavigationView> navigationViews;
+    private List<INavigationView> navigationViews;
 
 	/**
      * Filter for navigation table
@@ -127,7 +128,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
     @SuppressWarnings("unchecked")
 	@Override
     protected void initHandler() {
-    	navigationViews = (List<AbstractNavigationView>) getBean("navigationViews");
+    	navigationViews = (List<INavigationView>) getBean("navigationViews");
     }
 
     @Override
@@ -143,7 +144,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
         getNavigationController().getNavigationTreePanel().setTransferHandler(treeNavigationTransferHandler);
     }
 
-    public List<AbstractNavigationView> getNavigationViews() {
+    public List<INavigationView> getNavigationViews() {
         return navigationViews;
     }
 
@@ -153,15 +154,15 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
      * 
      * @return
      */
-    private Map<Class<? extends AbstractNavigationView>, AbstractNavigationView> getNavigationViewsMap() {
-        Map<Class<? extends AbstractNavigationView>, AbstractNavigationView> navigationViewsMap = new HashMap<Class<? extends AbstractNavigationView>, AbstractNavigationView>();
-        for (AbstractNavigationView view : getNavigationViews()) {
+    private Map<Class<? extends INavigationView>, INavigationView> getNavigationViewsMap() {
+        Map<Class<? extends INavigationView>, INavigationView> navigationViewsMap = new HashMap<Class<? extends INavigationView>, INavigationView>();
+        for (INavigationView view : getNavigationViews()) {
             navigationViewsMap.put(view.getClass(), view);
         }
         return navigationViewsMap;
     }
 
-    public AbstractNavigationView getCurrentView() {
+    public INavigationView getCurrentView() {
         return getView(getViewByName(getState().getNavigationView()));
     }
 
@@ -169,7 +170,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
         return getCurrentView().getCurrentViewMode();
     }
 
-    public AbstractNavigationView getView(Class<? extends AbstractNavigationView> navigationViewClass) {
+    public INavigationView getView(Class<? extends INavigationView> navigationViewClass) {
         return getNavigationViewsMap().get(navigationViewClass);
     }
     
@@ -187,18 +188,18 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
      * 
      * @param navigationViewClass
      */
-    public void refreshView(Class<? extends AbstractNavigationView> navigationViewClass) {
+    public void refreshView(Class<? extends INavigationView> navigationViewClass) {
         if (getView(navigationViewClass).equals(getCurrentView())) {
             getView(navigationViewClass).refreshView(getState().getViewMode(),
                     FilterHandler.getInstance().isFilterSelected(getTreeFilter()) ? FilterHandler.getInstance().getFilter() : null);
         }
     }
 
-    public Class<? extends AbstractNavigationView> getViewByName(String className) {
+    public Class<? extends INavigationView> getViewByName(String className) {
         if (className == null) {
             return null;
         }
-        for (Class<? extends AbstractNavigationView> viewFromMap : getNavigationViewsMap().keySet()) {
+        for (Class<? extends INavigationView> viewFromMap : getNavigationViewsMap().keySet()) {
             if (viewFromMap.getName().equals(className)) {
                 return viewFromMap;
             }
@@ -208,14 +209,14 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
         return RepositoryNavigationView.class;
     }
 
-    public int indexOf(Class<? extends AbstractNavigationView> view) {
+    public int indexOf(Class<? extends INavigationView> view) {
         return getNavigationViews().indexOf(getNavigationViewsMap().get(view));
     }
 
     @Override
     public void pluginActivated(PluginInfo plugin) {
         try {
-            getNavigationViews().add((AbstractNavigationView) PluginsHandler.getInstance().getNewInstance(plugin));
+            getNavigationViews().add((INavigationView) PluginsHandler.getInstance().getNewInstance(plugin));
             // Set tress
             getNavigationController().getNavigationTreePanel().updateTrees();
         } catch (PluginSystemException e) {
@@ -302,7 +303,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 		getNavigationController().notifyDeviceReload();		
 	}
 
-	public List<? extends IAudioObject> getAudioObjectsForTreeNode(Class<? extends AbstractNavigationView> class1,DefaultMutableTreeNode objectDragged) {
+	public List<? extends IAudioObject> getAudioObjectsForTreeNode(Class<? extends INavigationView> class1, DefaultMutableTreeNode objectDragged) {
 		return getNavigationController().getAudioObjectsForTreeNode(class1, objectDragged);
 	}
 
@@ -356,7 +357,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
         getState().setShowNavigationTree(show);
 
     	// Disable or enable actions
-        for (AbstractNavigationView navigationView : NavigationHandler.getInstance().getNavigationViews()) {
+        for (INavigationView navigationView : NavigationHandler.getInstance().getNavigationViews()) {
         	navigationView.getActionToShowView().setEnabled(show);
         }
     	
