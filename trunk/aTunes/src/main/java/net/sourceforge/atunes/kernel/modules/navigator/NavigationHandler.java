@@ -289,10 +289,6 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 		getNavigationController().updateTableContent(tree);
 	}
 
-	public void notifyDeviceReload() {
-		getNavigationController().notifyDeviceReload();		
-	}
-
 	public List<? extends IAudioObject> getAudioObjectsForTreeNode(Class<? extends INavigationView> class1, DefaultMutableTreeNode objectDragged) {
 		return getNavigationController().getAudioObjectsForTreeNode(class1, objectDragged);
 	}
@@ -321,8 +317,12 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 		return getNavigationController().getAudioObjectInNavigationTable(row);
 	}
 	
-	public void notifyReload() {
-		getNavigationController().notifyReload();
+	/**
+	 * Called when repository has changed
+	 */
+	public void repositoryReloaded() {
+    	// Calling inside invokeLater will cause ConcurrentModificationException
+    	refreshCurrentView();
 	}
 
 	@Override

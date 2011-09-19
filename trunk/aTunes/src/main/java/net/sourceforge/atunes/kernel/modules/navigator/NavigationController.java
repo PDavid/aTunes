@@ -329,18 +329,8 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
         return audioObjects;
     }
 
-    /**
-     * Notify device reload.
-     */
-    public void notifyDeviceReload() {
-        NavigationHandler.getInstance().getView(DeviceNavigationView.class).refreshView(state.getViewMode(),
-                FilterHandler.getInstance().isFilterSelected(NavigationHandler.getInstance().getTreeFilter()) ? FilterHandler.getInstance().getFilter() : null);
-    }
-
     @Override
     public void notifyReload() {
-    	// Calling inside invokeLater will cause ConcurrentModificationException
-    	NavigationHandler.getInstance().refreshCurrentView();
     }
 
     /**
@@ -506,7 +496,7 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
 
     @Override
     public void audioFilesRemoved(List<ILocalAudioObject> audioFiles) {
-        notifyReload();
+    	NavigationHandler.getInstance().refreshCurrentView();
     }
 
 	/**

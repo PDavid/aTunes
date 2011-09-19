@@ -376,7 +376,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
      */
     private void notifyDeviceReload(RepositoryLoader loader) {
     	getFrame().hideProgressBar();
-    	NavigationHandler.getInstance().notifyDeviceReload();
+    	NavigationHandler.getInstance().refreshView(DeviceNavigationView.class);
 
     	Actions.getAction(ConnectDeviceAction.class).setEnabled(loader == null);
     	Actions.getAction(RefreshDeviceAction.class).setEnabled(loader != null);
