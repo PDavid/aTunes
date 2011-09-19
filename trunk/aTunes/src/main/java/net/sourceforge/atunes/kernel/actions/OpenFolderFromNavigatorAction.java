@@ -20,13 +20,18 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import java.io.File;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 
 /**
  * Opens OS file browser with folder of selected elements
@@ -41,11 +46,26 @@ public class OpenFolderFromNavigatorAction extends OpenFolderAction {
     @Override
     public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
         List<IAudioObject> filesSelectedInNavigator = NavigationHandler.getInstance().getFilesSelectedInNavigator();
-        return NavigationHandler.getInstance().sameParentFile(AudioFile.getAudioFiles(filesSelectedInNavigator));
+        return sameParentFile(AudioFile.getAudioFiles(filesSelectedInNavigator));
     }
 
     @Override
     public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
-        return NavigationHandler.getInstance().sameParentFile(AudioFile.getAudioFiles(selection));
+        return sameParentFile(AudioFile.getAudioFiles(selection));
+    }
+    
+    /**
+     * Checks if a collection of files have the same parent file.
+     * 
+     * @param c
+     *            collection of files
+     * @return if a collection of files have the same parent file
+     */
+    private boolean sameParentFile(Collection<? extends ILocalAudioObject> c) {
+        Set<File> set = new HashSet<File>();
+        for (ILocalAudioObject af : c) {
+            set.add(af.getFile().getParentFile());
+        }
+        return set.size() == 1;
     }
 }
