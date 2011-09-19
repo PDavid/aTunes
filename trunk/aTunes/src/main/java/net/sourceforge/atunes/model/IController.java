@@ -18,19 +18,23 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel;
+package net.sourceforge.atunes.model;
 
-import org.commonjukebox.plugins.model.PluginApi;
 
-/**
- * This enum defined all possible states of player
- * 
- * @author fleax
- * 
- */
-@PluginApi
-public enum PlaybackState {
+public interface IController {
 
-    PLAYING, RESUMING, PAUSED, STOPPED, PLAY_FINISHED, PLAY_INTERRUPTED
+    /**
+     * Adds the bindings.
+     */
+    public void addBindings();
 
+    /**
+     * Adds the state bindings.
+     */
+    public void addStateBindings();
+
+    /**
+     * Notify reload.
+     */
+    public void notifyReload();
 }

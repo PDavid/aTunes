@@ -18,11 +18,10 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel;
+package net.sourceforge.atunes.model;
 
 import java.util.List;
 
-import net.sourceforge.atunes.model.IAudioObject;
 
 /**
  * Interface for classes that must execute at different phases of application (start, end) (usually
@@ -31,7 +30,7 @@ import net.sourceforge.atunes.model.IAudioObject;
  * @author fleax
  * 
  */
-public interface ApplicationLifeCycleListener {
+public interface IApplicationLifeCycleListener {
 
     /**
      * Called after application start

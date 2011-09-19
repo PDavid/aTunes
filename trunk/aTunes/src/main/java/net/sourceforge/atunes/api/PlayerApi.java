@@ -21,10 +21,10 @@
 package net.sourceforge.atunes.api;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.PlaybackState;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.PlaybackState;
 
 import org.commonjukebox.plugins.model.PluginApi;
 

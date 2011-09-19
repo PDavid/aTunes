@@ -18,11 +18,11 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel;
+package net.sourceforge.atunes.model;
 
 import java.util.List;
 
-import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.kernel.modules.playlist.PlayListAudioObject;
 
 /**
  * The listener interface for receiving playListEvent events.
@@ -31,7 +31,7 @@ import net.sourceforge.atunes.model.IAudioObject;
  * @author alex
  *
  */
-public interface PlayListEventListener {
+public interface IPlayListEventListener {
 
     /**
      * Called when play list is cleared.

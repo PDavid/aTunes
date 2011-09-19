@@ -36,6 +36,7 @@ import net.sourceforge.atunes.kernel.modules.instances.MultipleInstancesHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.notify.NotificationsHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
+import net.sourceforge.atunes.kernel.modules.playlist.PlayListAudioObject;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
@@ -60,6 +61,7 @@ import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.model.IUpdateHandler;
 import net.sourceforge.atunes.model.IWebServicesHandler;
+import net.sourceforge.atunes.model.PlaybackState;
 
 public abstract class AbstractHandler implements IHandler {
 

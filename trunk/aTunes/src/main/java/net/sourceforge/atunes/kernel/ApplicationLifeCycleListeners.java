@@ -30,6 +30,7 @@ import java.util.Map;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.model.IApplicationLifeCycleListener;
 import net.sourceforge.atunes.model.IAudioObject;
 
 /**
@@ -39,7 +40,7 @@ import net.sourceforge.atunes.model.IAudioObject;
  */
 public class ApplicationLifeCycleListeners {
 
-	private static List<ApplicationLifeCycleListener> listeners = new ArrayList<ApplicationLifeCycleListener>();
+	private static List<IApplicationLifeCycleListener> listeners = new ArrayList<IApplicationLifeCycleListener>();
 	
     /**
      * Adds a life cycle listener to list of listeners. All classes that implements
@@ -48,7 +49,7 @@ public class ApplicationLifeCycleListeners {
      * 
      * @param listener
      */
-    static void addApplicationLifeCycleListener(ApplicationLifeCycleListener listener) {
+    static void addApplicationLifeCycleListener(IApplicationLifeCycleListener listener) {
     	if (listener != null) {
     		listeners.add(listener);
     	}
@@ -59,7 +60,7 @@ public class ApplicationLifeCycleListeners {
      * @param playList
      */
     static void applicationStarted(List<IAudioObject> playList) {
-        for (ApplicationLifeCycleListener listener : listeners) {
+        for (IApplicationLifeCycleListener listener : listeners) {
        		listener.applicationStarted(playList);
         }
     }
@@ -68,7 +69,7 @@ public class ApplicationLifeCycleListeners {
      * Called after all handlers initialized
      */
     static void allHandlersInitialized() {
-        for (ApplicationLifeCycleListener listener : listeners) {
+        for (IApplicationLifeCycleListener listener : listeners) {
        		listener.allHandlersInitialized();
         }
     }
@@ -78,7 +79,7 @@ public class ApplicationLifeCycleListeners {
      * necessary modules and writes configuration.
      */
     static void applicationFinish() {
-        for (ApplicationLifeCycleListener listener : listeners) {
+        for (IApplicationLifeCycleListener listener : listeners) {
        		listener.applicationFinish();
         }
     }
@@ -87,9 +88,9 @@ public class ApplicationLifeCycleListeners {
      * Calculates components that need user interaction
      * @return
      */
-    static Map<Integer, ApplicationLifeCycleListener> getUserInteractionRequests() {
-    	Map<Integer, ApplicationLifeCycleListener> requests = new HashMap<Integer, ApplicationLifeCycleListener>();
-    	for (ApplicationLifeCycleListener listener : listeners) {
+    static Map<Integer, IApplicationLifeCycleListener> getUserInteractionRequests() {
+    	Map<Integer, IApplicationLifeCycleListener> requests = new HashMap<Integer, IApplicationLifeCycleListener>();
+    	for (IApplicationLifeCycleListener listener : listeners) {
     		int request = listener.requestUserInteraction();
     		if (request != -1) {
     			if (requests.containsKey(request)) {
@@ -106,7 +107,7 @@ public class ApplicationLifeCycleListeners {
      * Calls user interaction in requested order
      * @param requests
      */
-    static void doUserInteraction(final Map<Integer, ApplicationLifeCycleListener> requests) {
+    static void doUserInteraction(final Map<Integer, IApplicationLifeCycleListener> requests) {
     	List<Integer> order = new ArrayList<Integer>(requests.keySet());
     	Collections.sort(order);
     	for (final Integer req: order) {

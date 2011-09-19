@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel;
 
 import java.awt.Component;
 
+import net.sourceforge.atunes.model.IController;
 import net.sourceforge.atunes.model.IState;
 
 public abstract class AbstractSimpleController<T extends Component> implements IController {

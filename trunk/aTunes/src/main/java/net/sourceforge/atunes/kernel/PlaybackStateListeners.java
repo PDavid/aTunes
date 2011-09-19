@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPlaybackStateListener;
+import net.sourceforge.atunes.model.PlaybackState;
 
 /**
  * Holds references to PlaybackStateListener instances
@@ -32,13 +34,13 @@ import net.sourceforge.atunes.model.IAudioObject;
  */
 public class PlaybackStateListeners {
 
-	private static List<PlaybackStateListener> listeners = new ArrayList<PlaybackStateListener>();
+	private static List<IPlaybackStateListener> listeners = new ArrayList<IPlaybackStateListener>();
 	
     /**
      * Adds a new listener
      * @param listener
      */
-    public static void addPlaybackStateListener(PlaybackStateListener listener) {
+    public static void addPlaybackStateListener(IPlaybackStateListener listener) {
     	if (listener != null) {
     		listeners.add(listener);
     	}
@@ -50,7 +52,7 @@ public class PlaybackStateListeners {
      * @param audioObject
      */
     public static void playbackStateChanged(PlaybackState newState, IAudioObject audioObject) {
-		for (PlaybackStateListener listener : listeners) {
+		for (IPlaybackStateListener listener : listeners) {
 			listener.playbackStateChanged(newState, audioObject);
 		}
     }
@@ -59,7 +61,7 @@ public class PlaybackStateListeners {
 	 * Removes a listener
 	 * @param createdInstance
 	 */
-	public static void removePlaybackStateListener(PlaybackStateListener createdInstance) {
+	public static void removePlaybackStateListener(IPlaybackStateListener createdInstance) {
 		if (createdInstance != null) {
 			listeners.remove(createdInstance);
 		}

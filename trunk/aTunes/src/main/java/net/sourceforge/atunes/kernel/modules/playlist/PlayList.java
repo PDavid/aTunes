@@ -27,7 +27,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
-import net.sourceforge.atunes.kernel.PlayListAudioObject;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.misc.PointedList;
 import net.sourceforge.atunes.model.IAudioObject;
