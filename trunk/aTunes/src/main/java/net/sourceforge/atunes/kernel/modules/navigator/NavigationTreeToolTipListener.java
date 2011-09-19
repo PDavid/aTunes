@@ -40,18 +40,20 @@ public final class NavigationTreeToolTipListener extends MouseAdapter implements
     private NavigationController controller;
     
     private IState state;
+    
+    private INavigationHandler navigationHandler;
 
     /**
      * Instantiates a new navigation tree tool tip listener.
      * 
      * @param controller
-     *            the controller
-     * @param panel
-     *            the panel
+     * @param state
+     * @param navigationHandler
      */
-    public NavigationTreeToolTipListener(NavigationController controller, IState state) {
+    public NavigationTreeToolTipListener(NavigationController controller, IState state, INavigationHandler navigationHandler) {
         this.controller = controller;
         this.state = state;
+        this.navigationHandler = navigationHandler;
     }
 
     @Override
@@ -70,7 +72,7 @@ public final class NavigationTreeToolTipListener extends MouseAdapter implements
             return;
         }
 
-        TreePath selectedPath = NavigationHandler.getInstance().getCurrentView().getTree().getPathForLocation(e.getX(), e.getY());
+        TreePath selectedPath = navigationHandler.getCurrentView().getTree().getPathForLocation(e.getX(), e.getY());
         if (selectedPath != null) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) selectedPath.getLastPathComponent();
             final Object content = node.getUserObject();
@@ -86,8 +88,8 @@ public final class NavigationTreeToolTipListener extends MouseAdapter implements
                     if (controller.getExtendedToolTip().isVisible()) {
                         controller.getExtendedToolTip().setVisible(false);
                     }
-                    controller.getExtendedToolTip().setLocation((int) NavigationHandler.getInstance().getCurrentView().getTree().getLocationOnScreen().getX() + e.getX(),
-                            (int) NavigationHandler.getInstance().getCurrentView().getTree().getLocationOnScreen().getY() + e.getY() + 20);
+                    controller.getExtendedToolTip().setLocation((int) navigationHandler.getCurrentView().getTree().getLocationOnScreen().getX() + e.getX(),
+                            (int) navigationHandler.getCurrentView().getTree().getLocationOnScreen().getY() + e.getY() + 20);
 
                     controller.getExtendedToolTip().setToolTipContent(content);
                     controller.setCurrentExtendedToolTipContent(content);

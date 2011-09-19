@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -41,7 +41,7 @@ public class PlayNowAction extends CustomAbstractAction {
     public void actionPerformed(ActionEvent e) {
         // Play now feature plays selected song immediately. If song is added to play list, then is automatically selected.
         // If not, it's added to play list    	
-        getBean(IPlayListHandler.class).playNow(NavigationHandler.getInstance().getSelectedAudioObjectInNavigationTable());
+        getBean(IPlayListHandler.class).playNow(getBean(INavigationHandler.class).getSelectedAudioObjectInNavigationTable());
     }
 
     @Override

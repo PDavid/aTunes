@@ -53,6 +53,7 @@ import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITreeObject;
@@ -73,8 +74,8 @@ public final class RadioNavigationView extends AbstractNavigationView {
     /** The column set */
     private AbstractColumnSet columnSet;
 
-    public RadioNavigationView(IState state, AbstractColumnSet columnSet) {
-    	super(state);
+    public RadioNavigationView(IState state, AbstractColumnSet columnSet, INavigationHandler navigationHandler, IFrame frame) {
+    	super(state, navigationHandler, frame);
     	this.columnSet = columnSet;
 	}
 

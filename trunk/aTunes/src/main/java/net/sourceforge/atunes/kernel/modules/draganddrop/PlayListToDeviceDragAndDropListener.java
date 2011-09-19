@@ -34,7 +34,7 @@ import java.util.List;
 import net.sourceforge.atunes.gui.model.TransferableList;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
@@ -46,10 +46,10 @@ public class PlayListToDeviceDragAndDropListener implements DropTargetListener {
     /**
      * Instantiates a new drag and drop listener.
      */
-    public PlayListToDeviceDragAndDropListener() {
+    public PlayListToDeviceDragAndDropListener(INavigationHandler navigationHandler) {
         // Drop targets for drag and drops operations from playlist to device tree
-        new DropTarget(NavigationHandler.getInstance().getView(DeviceNavigationView.class).getTreeScrollPane(), this);
-        new DropTarget(NavigationHandler.getInstance().getView(DeviceNavigationView.class).getTree(), this);
+        new DropTarget(navigationHandler.getView(DeviceNavigationView.class).getTreeScrollPane(), this);
+        new DropTarget(navigationHandler.getView(DeviceNavigationView.class).getTree(), this);
     }
 
     /*

@@ -26,7 +26,7 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationView;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.model.IInputDialog;
@@ -44,7 +44,8 @@ public class RenameRadioLabelAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        TreePath path = NavigationHandler.getInstance().getView(RadioNavigationView.class).getTree().getSelectionPath();
+    	INavigationHandler navigationHandler = getBean(INavigationHandler.class);
+        TreePath path = navigationHandler.getView(RadioNavigationView.class).getTree().getSelectionPath();
         Object o = ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
         
         IInputDialog dialog = getBean(IInputDialog.class);
@@ -57,7 +58,7 @@ public class RenameRadioLabelAction extends CustomAbstractAction {
             if (result != null) {
                 List<IRadio> radios = RadioHandler.getInstance().getRadios(label);
                 RadioHandler.getInstance().setLabel(radios, result);
-                NavigationHandler.getInstance().refreshView(RadioNavigationView.class);
+                navigationHandler.refreshView(RadioNavigationView.class);
             }
         } else if (o instanceof IRadio) {
             IRadio radio = (IRadio) o;
@@ -65,7 +66,7 @@ public class RenameRadioLabelAction extends CustomAbstractAction {
             String result = dialog.getResult();
             if (result != null) {
                 radio.setLabel(result);
-                NavigationHandler.getInstance().refreshView(RadioNavigationView.class);
+                navigationHandler.refreshView(RadioNavigationView.class);
             }
         }
     }

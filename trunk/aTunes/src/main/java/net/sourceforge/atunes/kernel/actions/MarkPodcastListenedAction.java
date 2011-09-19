@@ -26,7 +26,7 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
@@ -43,10 +43,10 @@ public class MarkPodcastListenedAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        TreePath path = NavigationHandler.getInstance().getView(PodcastNavigationView.class).getTree().getSelectionPath();
+        TreePath path = getBean(INavigationHandler.class).getView(PodcastNavigationView.class).getTree().getSelectionPath();
         IPodcastFeed podcastFeedToMarkAsListened = (IPodcastFeed) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
         podcastFeedToMarkAsListened.markEntriesAsListened();
-        NavigationHandler.getInstance().refreshView(PodcastNavigationView.class);
+        getBean(INavigationHandler.class).refreshView(PodcastNavigationView.class);
     }
 
     @Override

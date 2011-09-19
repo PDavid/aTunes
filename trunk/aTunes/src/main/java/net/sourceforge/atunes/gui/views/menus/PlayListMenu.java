@@ -192,7 +192,8 @@ public final class PlayListMenu {
      * 
      * @param table
      */
-    public static void updatePlayListMenuItems(PlayListTable table) {
+    @SuppressWarnings("unchecked")
+	public static void updatePlayListMenuItems(PlayListTable table) {
         updatePlayListPopupMenuItems(table.getMenu(), Context.getBean(IPlayListHandler.class).getSelectedAudioObjects());
     }
 

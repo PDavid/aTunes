@@ -30,6 +30,7 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
@@ -54,8 +55,8 @@ public class GStreamerEngine extends AbstractPlayerEngine {
     private Runnable remainingTimeRunnable;
     private ScheduledFuture<?> scheduledFuture;
 
-    public GStreamerEngine(IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler) {
-    	super(state, frame, osManager, playListHandler);
+    public GStreamerEngine(IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, INavigationHandler navigationHandler) {
+    	super(state, frame, osManager, playListHandler, navigationHandler);
     	try {
             Gst.init("AudioPlayer", new String[] {});
             playBin = new PlayBin("AudioPlayer");

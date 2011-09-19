@@ -52,7 +52,7 @@ import net.sourceforge.atunes.kernel.actions.RefreshFolderFromNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.RefreshRepositoryAction;
 import net.sourceforge.atunes.kernel.actions.RipCDAction;
 import net.sourceforge.atunes.kernel.actions.SelectRepositoryAction;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
@@ -107,6 +107,8 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 	private boolean caseSensitiveTrees;
 	
 	private IStatisticsHandler statisticsHandler;
+	
+	private INavigationHandler navigationHandler;
 	
 	private final class ImportFilesProcessListener implements ProcessListener {
 		private final ImportFilesProcess process;
@@ -332,6 +334,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
     	caseSensitiveTrees = getState().isKeyAlwaysCaseSensitiveInRepositoryStructure();
         addAudioFilesRemovedListener(this);
         statisticsHandler = getBean(IStatisticsHandler.class);
+        navigationHandler = getBean(INavigationHandler.class);
     }
 
     @Override
@@ -396,7 +399,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
             protected void done() {
             	getFrame().hideProgressBar();
                 showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
-                NavigationHandler.getInstance().repositoryReloaded();
+                navigationHandler.repositoryReloaded();
                 Logger.info("Repository refresh done");
             }
         };
@@ -769,7 +772,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 
         getFrame().hideProgressBar();
         showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
-        NavigationHandler.getInstance().repositoryReloaded();
+        navigationHandler.repositoryReloaded();
         Logger.info("Repository refresh done");
 
         currentLoader = null;
@@ -784,7 +787,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
             progressDialog.hideProgressDialog();
             progressDialog = null;
         }
-        NavigationHandler.getInstance().repositoryReloaded();
+        navigationHandler.repositoryReloaded();
         showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository != null ? repository.getTotalDurationInSeconds() : 0);
 
         currentLoader = null;
@@ -809,7 +812,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 			SwingUtilities.invokeAndWait(new Runnable() {
 			    @Override
 			    public void run() {
-			    	NavigationHandler.getInstance().repositoryReloaded();
+			    	navigationHandler.repositoryReloaded();
 			        showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
 			    }
 			});
@@ -1004,7 +1007,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
             }
 
             // Update navigator
-            NavigationHandler.getInstance().repositoryReloaded();
+            navigationHandler.repositoryReloaded();
         }
     }
 
@@ -1044,7 +1047,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         boolean succeeded = file.renameTo(newFile);
         if (succeeded) {
         	renameFile(audioFile, file, newFile);
-            NavigationHandler.getInstance().repositoryReloaded();
+            navigationHandler.repositoryReloaded();
             getBean(IStatisticsHandler.class).updateFileName(audioFile, file.getAbsolutePath(), newFile.getAbsolutePath());
         }
     }

@@ -59,6 +59,7 @@ import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITreeObject;
@@ -74,8 +75,8 @@ public class RepositoryNavigationView extends AbstractNavigationView {
 
     private JPopupMenu tablePopupMenu;
 
-    public RepositoryNavigationView(IState state) {
-    	super(state);
+    public RepositoryNavigationView(IState state, INavigationHandler navigationHandler, IFrame frame) {
+    	super(state, navigationHandler, frame);
 	}
     
     @Override

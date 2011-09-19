@@ -32,7 +32,7 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.dialogs.RadioBrowserDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationView;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
@@ -68,7 +68,7 @@ public final class RadioHandler extends AbstractHandler {
                 retrievedPresetRadios.clear();
                 retrievedPresetRadios.addAll(get());
                 getRadioPresets();
-                NavigationHandler.getInstance().refreshView(RadioNavigationView.class);
+                getBean(INavigationHandler.class).refreshView(RadioNavigationView.class);
             } catch (InterruptedException e) {
                 Logger.error(e);
             } catch (ExecutionException e) {
@@ -150,7 +150,7 @@ public final class RadioHandler extends AbstractHandler {
             radioListDirty = true;
         }
         Collections.sort(getRadios(), COMPARATOR);
-        NavigationHandler.getInstance().refreshView(RadioNavigationView.class);
+        getBean(INavigationHandler.class).refreshView(RadioNavigationView.class);
     }
 
     /**
@@ -293,7 +293,7 @@ public final class RadioHandler extends AbstractHandler {
             }
         }
         radioListDirty = true;
-        NavigationHandler.getInstance().refreshView(RadioNavigationView.class);
+        getBean(INavigationHandler.class).refreshView(RadioNavigationView.class);
     }
 
     /**

@@ -31,6 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.CollapseTreesAction;
@@ -41,7 +42,7 @@ import net.sourceforge.atunes.kernel.actions.ShowFoldersInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowGenresInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigationTableAction;
 import net.sourceforge.atunes.kernel.actions.ShowYearsInNavigatorAction;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.utils.GuiUtils;
 
@@ -109,7 +110,7 @@ public final class NavigationTreePanel extends JPanel {
         add(treePanel, c);
 
         // Apply component orientation to all popup menus
-        for (INavigationView view : NavigationHandler.getInstance().getNavigationViews()) {
+        for (INavigationView view : Context.getBean(INavigationHandler.class).getNavigationViews()) {
             GuiUtils.applyComponentOrientation(view.getTreePopupMenu());
         }
     }
@@ -121,7 +122,7 @@ public final class NavigationTreePanel extends JPanel {
     	treeComboBox.removeAllItems();
     	treePanel.removeAll();
 
-        for (INavigationView view : NavigationHandler.getInstance().getNavigationViews()) {
+        for (INavigationView view : Context.getBean(INavigationHandler.class).getNavigationViews()) {
         	treeComboBox.addItem(view);
         	treePanel.add(view.getClass().getName(), view.getTreeScrollPane());
         }

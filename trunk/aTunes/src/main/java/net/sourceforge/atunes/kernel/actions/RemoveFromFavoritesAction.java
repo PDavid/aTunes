@@ -28,7 +28,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.kernel.modules.navigator.FavoritesNavigationView;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.model.Album;
@@ -49,8 +49,9 @@ public class RemoveFromFavoritesAction extends CustomAbstractAction {
     @SuppressWarnings("unchecked")
 	@Override
     public void actionPerformed(ActionEvent e) {
-        if (NavigationHandler.getInstance().isActionOverTree() && NavigationHandler.getInstance().getCurrentView().equals(NavigationHandler.getInstance().getView(FavoritesNavigationView.class))) {
-            TreePath[] paths = NavigationHandler.getInstance().getView(FavoritesNavigationView.class).getTree().getSelectionPaths();
+    	INavigationHandler navigationHandler = getBean(INavigationHandler.class);
+        if (navigationHandler.isActionOverTree() && navigationHandler.getCurrentView().equals(navigationHandler.getView(FavoritesNavigationView.class))) {
+            TreePath[] paths = navigationHandler.getView(FavoritesNavigationView.class).getTree().getSelectionPaths();
             if (paths != null) {
                 List<ITreeObject<? extends IAudioObject>> objects = new ArrayList<ITreeObject<? extends IAudioObject>>();
                 for (TreePath element : paths) {
@@ -59,7 +60,7 @@ public class RemoveFromFavoritesAction extends CustomAbstractAction {
                 FavoritesHandler.getInstance().removeFromFavorites(objects);
             }
         } else {
-        	List<IAudioObject> audioObjects = NavigationHandler.getInstance().getSelectedAudioObjectsInNavigationTable();
+        	List<IAudioObject> audioObjects = navigationHandler.getSelectedAudioObjectsInNavigationTable();
             if (!audioObjects.isEmpty()) {
                 FavoritesHandler.getInstance().removeSongsFromFavorites(audioObjects);
             }

@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IInputDialog;
@@ -43,7 +43,7 @@ public class RenameAudioFileInNavigationTableAction extends CustomAbstractAction
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        List<IAudioObject> audioFiles = NavigationHandler.getInstance().getFilesSelectedInNavigator();
+        List<IAudioObject> audioFiles = getBean(INavigationHandler.class).getFilesSelectedInNavigator();
         if (audioFiles.size() == 1 && audioFiles.get(0) instanceof ILocalAudioObject) {
             IInputDialog dialog = getBean(IInputDialog.class);
             dialog.setTitle(I18nUtils.getString("RENAME_AUDIO_FILE_NAME"));

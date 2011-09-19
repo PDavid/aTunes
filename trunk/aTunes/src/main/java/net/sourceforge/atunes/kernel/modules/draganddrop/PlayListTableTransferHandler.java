@@ -38,7 +38,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.api.RepositoryApi;
 import net.sourceforge.atunes.gui.model.TransferableList;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
 import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader;
@@ -82,6 +82,8 @@ public class PlayListTableTransferHandler extends TransferHandler {
     private IOSManager osManager;
     
     private IPlayListHandler playListHandler;
+
+    private INavigationHandler navigationHandler;
     
     static {
         try {
@@ -157,10 +159,11 @@ public class PlayListTableTransferHandler extends TransferHandler {
         return false;
     }
 
-    public PlayListTableTransferHandler(IFrame frame, IOSManager osManager, IPlayListHandler playListHandler) {
+    public PlayListTableTransferHandler(IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, INavigationHandler navigationHandler) {
     	this.frame = frame;
     	this.osManager = osManager;
     	this.playListHandler = playListHandler;
+    	this.navigationHandler = navigationHandler;
 	}
     
     @Override
@@ -208,15 +211,15 @@ public class PlayListTableTransferHandler extends TransferHandler {
                 Object objectDragged = listOfObjectsDragged.get(i);
                 // DRAG AND DROP FROM TREE
                 if (objectDragged instanceof DefaultMutableTreeNode) {
-                    List<? extends IAudioObject> objectsToImport = NavigationHandler.getInstance().getAudioObjectsForTreeNode(
-                            NavigationHandler.getInstance().getCurrentView().getClass(), (DefaultMutableTreeNode) objectDragged);
+                    List<? extends IAudioObject> objectsToImport = navigationHandler.getAudioObjectsForTreeNode(
+                    		navigationHandler.getCurrentView().getClass(), (DefaultMutableTreeNode) objectDragged);
                     if (objectsToImport != null) {
                         audioObjectsToAdd.addAll(objectsToImport);
                     }
                 } else if (objectDragged instanceof Integer) {
                     // DRAG AND DROP FROM TABLE
                     Integer row = (Integer) objectDragged;
-                    audioObjectsToAdd.add(NavigationHandler.getInstance().getAudioObjectInNavigationTable(row));
+                    audioObjectsToAdd.add(navigationHandler.getAudioObjectInNavigationTable(row));
                 }
             }
 

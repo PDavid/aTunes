@@ -33,7 +33,7 @@ import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeyHandler;
 import net.sourceforge.atunes.kernel.modules.instances.MultipleInstancesHandler;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.notify.NotificationsHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
@@ -146,7 +146,7 @@ public abstract class AbstractHandler implements IHandler {
         	handlers.add(FavoritesHandler.getInstance());
         	handlers.add(HotkeyHandler.getInstance());
         	handlers.add(MultipleInstancesHandler.getInstance());
-        	handlers.add(NavigationHandler.getInstance());
+        	handlers.add((AbstractHandler)Context.getBean(INavigationHandler.class));
             handlers.add(NotificationsHandler.getInstance());
             handlers.add(PlayerHandler.getInstance());
             handlers.add(FilterHandler.getInstance());

@@ -45,7 +45,7 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -203,7 +203,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
         IPodcastFeed podcastFeed = dialog.getPodcastFeed(); 
         if (podcastFeed != null) {
             addPodcastFeed(podcastFeed);
-            NavigationHandler.getInstance().refreshView(PodcastNavigationView.class);
+            getBean(INavigationHandler.class).refreshView(PodcastNavigationView.class);
             retrievePodcastFeedEntries();
         }
     }
@@ -294,7 +294,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
         Logger.info("Removing podcast feed");
         getPodcastFeeds().remove(podcastFeed);
         podcastFeedsDirty = true;
-        NavigationHandler.getInstance().refreshView(PodcastNavigationView.class);
+        getBean(INavigationHandler.class).refreshView(PodcastNavigationView.class);
     }
 
     /**
@@ -338,7 +338,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
         if (scheduledPodcastFeedEntryRetrieverFuture != null) {
             scheduledPodcastFeedEntryRetrieverFuture.cancel(true);
         }
-        scheduledPodcastFeedEntryRetrieverFuture = getPodcastFeedEntryRetrieverExecutorService().scheduleWithFixedDelay(new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame()), INITIAL_RETRIEVER_DELAY,
+        scheduledPodcastFeedEntryRetrieverFuture = getPodcastFeedEntryRetrieverExecutorService().scheduleWithFixedDelay(new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame(), getBean(INavigationHandler.class)), INITIAL_RETRIEVER_DELAY,
                 newRetrievalInterval, TimeUnit.MILLISECONDS);
     }
 
@@ -348,7 +348,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
      * @see net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntryRetriever#retrievePodcastFeedEntries()
      */
     public void retrievePodcastFeedEntries() {
-    	getPodcastFeedEntryRetrieverExecutorService().execute(new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame()));
+    	getPodcastFeedEntryRetrieverExecutorService().execute(new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame(), getBean(INavigationHandler.class)));
     }
 
     /**

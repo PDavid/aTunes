@@ -27,7 +27,7 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.processes.ExportFilesProcess;
@@ -49,8 +49,8 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class ExportAction extends CustomAbstractAction {
 
-    private class ExportProcessListener implements ProcessListener {
-        private final class ShowErrorDialogRunnable implements Runnable {
+    private static class ExportProcessListener implements ProcessListener {
+        private static final class ShowErrorDialogRunnable implements Runnable {
             private final boolean ok;
 
             private ShowErrorDialogRunnable(boolean ok) {
@@ -107,7 +107,7 @@ public class ExportAction extends CustomAbstractAction {
 
                     // If user wants to export navigator ask current navigation view to return selected objects
                     if (exportNavigator) {
-                        songs = AudioFile.getAudioFiles(NavigationHandler.getInstance().getCurrentView().getSelectedAudioObjects());
+                        songs = AudioFile.getAudioFiles(getBean(INavigationHandler.class).getCurrentView().getSelectedAudioObjects());
                     } else {
                         // Get only LocalAudioObject objects of current play list
                         songs = AudioFile.getAudioFiles(Context.getBean(IPlayListHandler.class).getSelectedAudioObjects());

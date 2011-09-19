@@ -27,7 +27,7 @@ import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.AlbumImageIcon;
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -49,7 +49,7 @@ public class ShowAlbumsInNavigatorAction extends ActionWithColorMutableIcon {
     public void actionPerformed(ActionEvent e) {
         if (getState().getViewMode() != ViewMode.ALBUM) {
             getState().setViewMode(ViewMode.ALBUM);
-            NavigationHandler.getInstance().refreshCurrentView();
+            getBean(INavigationHandler.class).refreshCurrentView();
             Actions.getAction(CollapseTreesAction.class).setEnabled(true);
             Actions.getAction(ExpandTreesAction.class).setEnabled(true);
         }

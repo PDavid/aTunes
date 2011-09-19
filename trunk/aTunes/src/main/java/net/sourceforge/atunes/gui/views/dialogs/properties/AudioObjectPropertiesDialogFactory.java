@@ -56,7 +56,9 @@ public class AudioObjectPropertiesDialogFactory implements IAudioObjectPropertie
     	} else if (a instanceof AudioFile) {
     		dialog = new AudioFilePropertiesDialog((AudioFile) a, state, frame, osManager, playListHandler);
     	}
-    	dialog.setAudioObject(a);
+    	if (dialog != null) {
+    		dialog.setAudioObject(a);
+    	}
     	return dialog;
     }
 

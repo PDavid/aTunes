@@ -55,6 +55,7 @@ import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IState;
@@ -73,8 +74,8 @@ public final class PodcastNavigationView extends AbstractNavigationView {
     /** The column set */
     private AbstractColumnSet columnSet;
 
-    public PodcastNavigationView(IState state, AbstractCustomNavigatorColumnSet columnSet) {
-    	super(state);
+    public PodcastNavigationView(IState state, AbstractCustomNavigatorColumnSet columnSet, INavigationHandler navigationHandler, IFrame frame) {
+    	super(state, navigationHandler, frame);
     	this.columnSet = columnSet;
 	}
 

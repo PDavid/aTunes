@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFilter;
@@ -150,11 +150,11 @@ public final class FilterHandler extends AbstractHandler {
     public void allHandlersInitialized() {
         addFilter(allFilter);
 
-        addFilter(NavigationHandler.getInstance().getTreeFilter());
-        setFilterEnabled(NavigationHandler.getInstance().getTreeFilter(), getState().isShowNavigationTree());
+        addFilter(getBean(INavigationHandler.class).getTreeFilter());
+        setFilterEnabled(getBean(INavigationHandler.class).getTreeFilter(), getState().isShowNavigationTree());
 
-        addFilter(NavigationHandler.getInstance().getTableFilter());
-        setFilterEnabled(NavigationHandler.getInstance().getTableFilter(), getState().isShowNavigationTable());
+        addFilter(getBean(INavigationHandler.class).getTableFilter());
+        setFilterEnabled(getBean(INavigationHandler.class).getTableFilter(), getState().isShowNavigationTable());
 
         addFilter(getBean(IPlayListHandler.class).getPlayListFilter());
 

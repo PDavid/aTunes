@@ -26,7 +26,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -51,7 +51,7 @@ public class ShowNavigationTreeAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        NavigationHandler.getInstance().showNavigationTree((Boolean) getValue(SELECTED_KEY));
+    	getBean(INavigationHandler.class).showNavigationTree((Boolean) getValue(SELECTED_KEY));
     }
 
 }

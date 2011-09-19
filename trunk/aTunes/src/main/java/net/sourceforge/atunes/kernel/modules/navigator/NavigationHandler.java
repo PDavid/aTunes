@@ -51,12 +51,7 @@ import org.commonjukebox.plugins.model.Plugin;
 import org.commonjukebox.plugins.model.PluginInfo;
 import org.commonjukebox.plugins.model.PluginListener;
 
-public final class NavigationHandler extends AbstractHandler implements PluginListener {
-
-    /**
-     * Singleton instance
-     */
-    private static NavigationHandler instance;
+public final class NavigationHandler extends AbstractHandler implements PluginListener, INavigationHandler {
 
     private List<INavigationView> navigationViews;
 
@@ -104,31 +99,6 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 
 	private NavigationController navigationController;
 
-    /**
-     * Getter of singleton instance
-     * 
-     * @return
-     */
-    public static NavigationHandler getInstance() {
-        if (instance == null) {
-            instance = new NavigationHandler();
-        }
-        return instance;
-    }
-
-    private NavigationHandler() {
-    }
-
-    @Override
-    public void applicationFinish() {
-    }
-
-    @SuppressWarnings("unchecked")
-	@Override
-    protected void initHandler() {
-    	navigationViews = (List<INavigationView>) getBean("navigationViews");
-    }
-
     @Override
     public void applicationStarted(List<IAudioObject> playList) {
         showNavigationTree(getState().isShowNavigationTree());
@@ -142,7 +112,11 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
         getNavigationController().getNavigationTreePanel().setTransferHandler(treeNavigationTransferHandler);
     }
 
-    public List<INavigationView> getNavigationViews() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler#getNavigationViews()
+	 */
+    @Override
+	public List<INavigationView> getNavigationViews() {
         return navigationViews;
     }
 
@@ -160,40 +134,55 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
         return navigationViewsMap;
     }
 
-    public INavigationView getCurrentView() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler#getCurrentView()
+	 */
+    @Override
+	public INavigationView getCurrentView() {
         return getView(getViewByName(getState().getNavigationView()));
     }
 
-    public ViewMode getCurrentViewMode() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler#getCurrentViewMode()
+	 */
+    @Override
+	public ViewMode getCurrentViewMode() {
         return getCurrentView().getCurrentViewMode();
     }
 
-    public INavigationView getView(Class<? extends INavigationView> navigationViewClass) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler#getView(java.lang.Class)
+	 */
+    @Override
+	public INavigationView getView(Class<? extends INavigationView> navigationViewClass) {
         return getNavigationViewsMap().get(navigationViewClass);
     }
     
-    /**
-     * Refreshes current view to update data shown
-     */
-    public void refreshCurrentView() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler#refreshCurrentView()
+	 */
+    @Override
+	public void refreshCurrentView() {
         getCurrentView().refreshView(getState().getViewMode(),
                 FilterHandler.getInstance().isFilterSelected(getTreeFilter()) ? FilterHandler.getInstance().getFilter() : null);
     }
 
-    /**
-     * Refreshes given view. To avoid unnecessary actions, given view is only
-     * refreshed if it's the current view
-     * 
-     * @param navigationViewClass
-     */
-    public void refreshView(Class<? extends INavigationView> navigationViewClass) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler#refreshView(java.lang.Class)
+	 */
+    @Override
+	public void refreshView(Class<? extends INavigationView> navigationViewClass) {
         if (getView(navigationViewClass).equals(getCurrentView())) {
             getView(navigationViewClass).refreshView(getState().getViewMode(),
                     FilterHandler.getInstance().isFilterSelected(getTreeFilter()) ? FilterHandler.getInstance().getFilter() : null);
         }
     }
 
-    public Class<? extends INavigationView> getViewByName(String className) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler#getViewByName(java.lang.String)
+	 */
+    @Override
+	public Class<? extends INavigationView> getViewByName(String className) {
         if (className == null) {
             return null;
         }
@@ -233,17 +222,19 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
         refreshCurrentView();
     }
 
-    /**
-     * @return the tableFilter
-     */
-    public IFilter getTableFilter() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler#getTableFilter()
+	 */
+    @Override
+	public IFilter getTableFilter() {
         return tableFilter;
     }
 
-    /**
-     * @return the treeFilter
-     */
-    public IFilter getTreeFilter() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler#getTreeFilter()
+	 */
+    @Override
+	public IFilter getTreeFilter() {
         return treeFilter;
     }
     
@@ -256,19 +247,23 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
         if (navigationController == null) {
             NavigationTreePanel treePanel = getFrame().getNavigationTreePanel();
             NavigationTablePanel tablePanel = getFrame().getNavigationTablePanel();
-            navigationController = new NavigationController(treePanel, tablePanel, getState(), getOsManager());
+            navigationController = new NavigationController(treePanel, tablePanel, getState(), getOsManager(), this);
         }
         return navigationController;
     }
 
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler#refreshNavigationTable()
+	 */
+	@Override
 	public void refreshNavigationTable() {
 		getNavigationController().refreshTable();
 	}
 
-	/**
-	 * Returns files selected both from tree and table
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler#getFilesSelectedInNavigator()
 	 */
+	@Override
 	public List<IAudioObject> getFilesSelectedInNavigator() {
 		return getNavigationController().getFilesSelectedInNavigator();
 	}
@@ -277,10 +272,18 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 		return getNavigationController().getNavigationTablePanel().getNavigationTable();
 	}
 
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler#setNavigationView(java.lang.String)
+	 */
+	@Override
 	public void setNavigationView(String name) {
 		getNavigationController().setNavigationView(name);		
 	}
 
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler#openSearchDialog(net.sourceforge.atunes.model.ISearchDialog, boolean)
+	 */
+	@Override
 	public ISearch openSearchDialog(ISearchDialog dialog, boolean b) {
 		return getNavigationController().openSearchDialog(dialog, b);
 	}
@@ -289,29 +292,34 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 		getNavigationController().updateTableContent(tree);
 	}
 	
-	/**
-	 * Updates view table, usually after apply a filter
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler#updateViewTable()
 	 */
+	@Override
 	public void updateViewTable() {
 		updateTableContent(getCurrentView().getTree());
 	}
 
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler#getAudioObjectsForTreeNode(java.lang.Class, javax.swing.tree.DefaultMutableTreeNode)
+	 */
+	@Override
 	public List<? extends IAudioObject> getAudioObjectsForTreeNode(Class<? extends INavigationView> class1, DefaultMutableTreeNode objectDragged) {
 		return getNavigationController().getAudioObjectsForTreeNode(class1, objectDragged);
 	}
 
-	/**
-	 * Returns selected audio object in navigation table
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler#getSelectedAudioObjectInNavigationTable()
 	 */
+	@Override
 	public IAudioObject getSelectedAudioObjectInNavigationTable() {
 		return getNavigationController().getAudioObjectInNavigationTable(getNavigationTable().getSelectedRow());
 	}
 
-	/**
-	 * Returns selected audio objects in navigation table
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler#getSelectedAudioObjectsInNavigationTable()
 	 */
+	@Override
 	public List<IAudioObject> getSelectedAudioObjectsInNavigationTable() {
 		List<IAudioObject> result = new ArrayList<IAudioObject>();
 		for (int i = 0; i < getNavigationTable().getSelectedRows().length; i++) {
@@ -320,23 +328,22 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler#getAudioObjectInNavigationTable(int)
+	 */
+	@Override
 	public IAudioObject getAudioObjectInNavigationTable(int row) {
 		return getNavigationController().getAudioObjectInNavigationTable(row);
 	}
 	
-	/**
-	 * Called when repository has changed
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler#repositoryReloaded()
 	 */
+	@Override
 	public void repositoryReloaded() {
     	// Calling inside invokeLater will cause ConcurrentModificationException
     	refreshCurrentView();
 	}
-
-	@Override
-	public void playListCleared() {}
-
-	@Override
-	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
 
 	@Override
 	public void favoritesChanged() {
@@ -344,13 +351,11 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
         refreshCurrentView();
 	}
 	
-    /**
-     * Show navigation tree.
-     * 
-     * @param show
-     *            the show
-     */
-    public void showNavigationTree(boolean show) {    	
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler#showNavigationTree(boolean)
+	 */
+    @Override
+	public void showNavigationTree(boolean show) {    	
         getState().setShowNavigationTree(show);
 
     	// Disable or enable actions
@@ -365,13 +370,11 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
         applyNavigationTableVisibility(show && getState().isShowNavigationTable());
     }
     
-    /**
-     * Show navigation table.
-     * 
-     * @param show
-     *            the show
-     */
-    public void showNavigationTable(boolean show) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler#showNavigationTable(boolean)
+	 */
+    @Override
+	public void showNavigationTable(boolean show) {
         getState().setShowNavigationTable(show);
         applyNavigationTableVisibility(show);
     }
@@ -388,28 +391,35 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
         updateTableContent(getCurrentView().getTree());
     }
 
-	/**
-	 * Called to select given artist in navigator
-	 * @param artist
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler#selectArtist(java.lang.String)
 	 */
+	@Override
 	public void selectArtist(String artist) {
 		getCurrentView().selectArtist(getCurrentView().getCurrentViewMode(), artist);		
 	}
 	
-    /**
-     * Called to select given audio object in navigator
-     * @param audioObject
-     */
-    public void selectAudioObject(IAudioObject audioObject){
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler#selectAudioObject(net.sourceforge.atunes.model.IAudioObject)
+	 */
+    @Override
+	public void selectAudioObject(IAudioObject audioObject){
     	getCurrentView().selectAudioObject(getCurrentView().getCurrentViewMode(), audioObject);
     }
 
-	/**
-	 * Returns true if last action has been performed in tree
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler#isActionOverTree()
 	 */
+	@Override
 	public boolean isActionOverTree() {
 		return getNavigationController().isActionOverTree();
 	}
-
+	
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler#setNavigationViews(java.util.List)
+	 */
+	@Override
+	public void setNavigationViews(List<INavigationView> navigationViews) {
+		this.navigationViews = navigationViews;
+	}
 }

@@ -39,6 +39,7 @@ public final class NavigationTableMouseListener extends MouseAdapter {
 
     private NavigationController controller;
     private NavigationTablePanel panel;
+    private INavigationHandler navigationHandler;
 
     /**
      * Instantiates a new navigation table mouse listener.
@@ -48,14 +49,15 @@ public final class NavigationTableMouseListener extends MouseAdapter {
      * @param panel
      *            the panel
      */
-    public NavigationTableMouseListener(NavigationController controller, NavigationTablePanel panel) {
+    public NavigationTableMouseListener(NavigationController controller, NavigationTablePanel panel, INavigationHandler navigationHandler) {
         this.controller = controller;
         this.panel = panel;
+        this.navigationHandler = navigationHandler;
     }
 
     @Override
     public void mouseClicked(MouseEvent event) {
-        INavigationView currentView = NavigationHandler.getInstance().getCurrentView();
+        INavigationView currentView = navigationHandler.getCurrentView();
 
         if (GuiUtils.isSecondaryMouseButton(event)) {
             controller.setPopupMenuCaller(panel.getNavigationTable());
