@@ -18,18 +18,22 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.model;
+package net.sourceforge.atunes.model;
 
 import java.util.List;
 
-import net.sourceforge.atunes.model.IAudioObject;
 
-public interface AudioObjectsSource {
+/**
+ * A source of tree objects (elements that can be shown in navigator)
+ * @author alex
+ *
+ */
+public interface ITreeObjectsSource {
 
     /**
-     * Returns a list of selected AudioObject objects
+     * Returns a list of selected TreeObject objects
      * 
      * @return
      */
-    public List<IAudioObject> getSelectedAudioObjects();
+    public List<ITreeObject<? extends IAudioObject>> getSelectedTreeObjects();
 }

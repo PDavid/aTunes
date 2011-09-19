@@ -33,6 +33,7 @@ import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITreeGenerator;
 import net.sourceforge.atunes.model.ITreeObject;
@@ -70,7 +71,7 @@ public class AlbumTreeGenerator implements ITreeGenerator {
      * @param objectsSelected
      * @param objectsExpanded
      */
-    public void buildTree(IState state, String rootTextKey, AbstractNavigationView view, Map<String, ?> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<ITreeObject<? extends IAudioObject>> objectsSelected, List<ITreeObject<? extends IAudioObject>> objectsExpanded) {
+    public void buildTree(IState state, String rootTextKey, INavigationView view, Map<String, ?> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<ITreeObject<? extends IAudioObject>> objectsSelected, List<ITreeObject<? extends IAudioObject>> objectsExpanded) {
         // Set root
         root.setUserObject(I18nUtils.getString(rootTextKey));
         root.removeAllChildren();
@@ -104,7 +105,7 @@ public class AlbumTreeGenerator implements ITreeGenerator {
         treeModel.reload();
 
         // Once tree has been refreshed, select previously selected nodes
-        AbstractNavigationView.selectNodes(view.getTree(), nodesToSelect);
+        NavigationViewHelper.selectNodes(view.getTree(), nodesToSelect);
     }
 
     @Override

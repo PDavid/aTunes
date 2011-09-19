@@ -31,12 +31,12 @@ import javax.swing.AbstractAction;
 import javax.swing.JMenuItem;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.model.AudioObjectsSource;
-import net.sourceforge.atunes.gui.model.TreeObjectsSource;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IAudioObjectsSource;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITreeObject;
+import net.sourceforge.atunes.model.ITreeObjectsSource;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -98,7 +98,7 @@ public final class Actions {
      * @param selectedObjectsSource
      * @return
      */
-    public static <T extends AbstractActionOverSelectedObjects<? extends IAudioObject>> CustomAbstractAction getActionAndBind(Class<T> clazz, Component actionSource, AudioObjectsSource selectedObjectsSource) {
+    public static <T extends AbstractActionOverSelectedObjects<? extends IAudioObject>> CustomAbstractAction getActionAndBind(Class<T> clazz, Component actionSource, IAudioObjectsSource selectedObjectsSource) {
         AbstractActionOverSelectedObjects.addRegisteredComponent(actionSource, selectedObjectsSource);
         return getAction(clazz, null);
     }
@@ -112,7 +112,7 @@ public final class Actions {
      * @param selectedObjectsSource
      * @return
      */
-    public static <T extends AbstractActionOverSelectedTreeObjects<? extends ITreeObject<? extends IAudioObject>>> CustomAbstractAction getTreeActionAndBind(Class<T> clazz, Component actionSource, TreeObjectsSource selectedObjectsSource) {
+    public static <T extends AbstractActionOverSelectedTreeObjects<? extends ITreeObject<? extends IAudioObject>>> CustomAbstractAction getTreeActionAndBind(Class<T> clazz, Component actionSource, ITreeObjectsSource selectedObjectsSource) {
         AbstractActionOverSelectedTreeObjects.addRegisteredComponent(actionSource, selectedObjectsSource);
         return getAction(clazz, null);
     }
@@ -128,7 +128,7 @@ public final class Actions {
      * @param selectedObjectsSource
      * @return
      */
-    public static <T extends AbstractActionOverSelectedObjects<? extends IAudioObject>> CustomAbstractAction getActionAndBind(Class<T> clazz, String actionId, Component actionSource, AudioObjectsSource selectedObjectsSource) {
+    public static <T extends AbstractActionOverSelectedObjects<? extends IAudioObject>> CustomAbstractAction getActionAndBind(Class<T> clazz, String actionId, Component actionSource, IAudioObjectsSource selectedObjectsSource) {
         AbstractActionOverSelectedObjects.addRegisteredComponent(actionSource, selectedObjectsSource);
         return getAction(clazz, actionId);
     }
@@ -141,7 +141,7 @@ public final class Actions {
      * @param audioObjectsSource
      * @return
      */
-    public static JMenuItem getMenuItemForAction(Class<? extends AbstractActionOverSelectedObjects<? extends IAudioObject>> clazz, AudioObjectsSource audioObjectsSource) {
+    public static JMenuItem getMenuItemForAction(Class<? extends AbstractActionOverSelectedObjects<? extends IAudioObject>> clazz, IAudioObjectsSource audioObjectsSource) {
         JMenuItem menuItem = new JMenuItem();
         menuItem.setAction(Actions.getActionAndBind(clazz, menuItem, audioObjectsSource));
         return menuItem;
@@ -155,7 +155,7 @@ public final class Actions {
      * @param audioObjectsSource
      * @return
      */
-    public static JMenuItem getMenuItemForTreeAction(Class<? extends AbstractActionOverSelectedTreeObjects<? extends ITreeObject<? extends IAudioObject>>> clazz, TreeObjectsSource audioObjectsSource) {
+    public static JMenuItem getMenuItemForTreeAction(Class<? extends AbstractActionOverSelectedTreeObjects<? extends ITreeObject<? extends IAudioObject>>> clazz, ITreeObjectsSource audioObjectsSource) {
         JMenuItem menuItem = new JMenuItem();
         menuItem.setAction(Actions.getTreeActionAndBind(clazz, menuItem, audioObjectsSource));
         return menuItem;
@@ -169,7 +169,7 @@ public final class Actions {
      * @param audioObjectsSource
      * @return
      */
-    public static JMenuItem getMenuItemForAction(Class<? extends AbstractActionOverSelectedObjects<? extends IAudioObject>> clazz, String actionId, AudioObjectsSource audioObjectsSource) {
+    public static JMenuItem getMenuItemForAction(Class<? extends AbstractActionOverSelectedObjects<? extends IAudioObject>> clazz, String actionId, IAudioObjectsSource audioObjectsSource) {
         JMenuItem menuItem = new JMenuItem();
         menuItem.setAction(Actions.getActionAndBind(clazz, actionId, menuItem, audioObjectsSource));
         return menuItem;

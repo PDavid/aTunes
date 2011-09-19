@@ -27,8 +27,6 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
-import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
-
 /**
  * Interface for methods that generate a tree for a particular view mode
  * @author fleax
@@ -50,7 +48,7 @@ public interface ITreeGenerator {
 	 */
 	public void buildTree(IState state, 
 				          String rootTextKey, 
-						  AbstractNavigationView view, 
+						  INavigationView view, 
 						  Map<String, ?> structure, 
 						  String currentFilter, 
 						  DefaultMutableTreeNode root, 

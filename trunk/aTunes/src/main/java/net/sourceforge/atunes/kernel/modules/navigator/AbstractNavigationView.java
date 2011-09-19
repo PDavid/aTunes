@@ -52,9 +52,7 @@ import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.model.AudioObjectsSource;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
-import net.sourceforge.atunes.gui.model.TreeObjectsSource;
 import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedObjects;
 import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedTreeObjects;
 import net.sourceforge.atunes.kernel.actions.ActionWithColorMutableIcon;
@@ -64,12 +62,13 @@ import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITreeGeneratorFactory;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.ViewMode;
 
-public abstract class AbstractNavigationView implements AudioObjectsSource, TreeObjectsSource {
+public abstract class AbstractNavigationView implements INavigationView {
 
     private final class ArtistNamesComparator implements Comparator<String> {
 		private final Pattern PATTERN = Pattern.compile("(.*)\\s+(.*?)");
@@ -122,25 +121,29 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
     
     private ITreeGeneratorFactory treeGeneratorFactory;
 
-    /**
-     * @return the title of this view
-     */
-    public abstract String getTitle();
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#getTitle()
+	 */
+    @Override
+	public abstract String getTitle();
 
-    /**
-     * @return the icon of this view
-     */
-    public abstract ColorMutableImageIcon getIcon();
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#getIcon()
+	 */
+    @Override
+	public abstract ColorMutableImageIcon getIcon();
 
-    /**
-     * @return the tooltip of this view in tabbed pane
-     */
-    public abstract String getTooltip();
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#getTooltip()
+	 */
+    @Override
+	public abstract String getTooltip();
 
-    /**
-     * @return the JTree that contains this view
-     */
-    public abstract JTree getTree();
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#getTree()
+	 */
+    @Override
+	public abstract JTree getTree();
     
     /**
      * Return decorators to be used in view
@@ -151,26 +154,30 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
     	return decorators;
     }
     
-    /**
-     * Sets decorators
-     * @param decorators
-     */
-    public void setDecorators(List<AbstractTreeCellDecorator> decorators) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#setDecorators(java.util.List)
+	 */
+    @Override
+	public void setDecorators(List<AbstractTreeCellDecorator> decorators) {
 		this.decorators = decorators;
 	}
 
-    /**
-     * 
-     * @return the tree popup menu of this view
-     */
-    public abstract JPopupMenu getTreePopupMenu();
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#getTreePopupMenu()
+	 */
+    @Override
+	public abstract JPopupMenu getTreePopupMenu();
 
     public AbstractNavigationView(IState state) {
     	this.state = state;
     	this.treeGeneratorFactory = Context.getBean(ITreeGeneratorFactory.class);
     }
     
-    public ITreeGeneratorFactory getTreeGeneratorFactory() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#getTreeGeneratorFactory()
+	 */
+    @Override
+	public ITreeGeneratorFactory getTreeGeneratorFactory() {
 		return treeGeneratorFactory;
 	}
     
@@ -178,21 +185,20 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
     	return state;
     }
     
-    /**
-     * 
-     * @return the table popup menu of this view
-     */
-    public JPopupMenu getTablePopupMenu() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#getTablePopupMenu()
+	 */
+    @Override
+	public JPopupMenu getTablePopupMenu() {
         // By default table popup is the same of tree
         return getTreePopupMenu();
     }
 
-    /**
-     * Returns scroll pane of tree
-     * 
-     * @return
-     */
-    public final JScrollPane getTreeScrollPane() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#getTreeScrollPane()
+	 */
+    @Override
+	public final JScrollPane getTreeScrollPane() {
         if (scrollPane == null) {
             scrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTreeScrollPane(getTree());
             scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -209,13 +215,11 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
     protected abstract Map<String, ?> getViewData(ViewMode viewMode);
 
     
-    /**
-     * Refreshes view
-     * 
-     * @param viewMode
-     * @param treeFilter
-     */
-    public void refreshView(ViewMode viewMode, String treeFilter) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#refreshView(net.sourceforge.atunes.model.ViewMode, java.lang.String)
+	 */
+    @Override
+	public void refreshView(ViewMode viewMode, String treeFilter) {
         // Get selected rows before refresh
         List<IAudioObject> selectedObjects = ((NavigationTableModel) getNavigationTable().getModel()).getAudioObjectsAt(getNavigationTable().getSelectedRows());
 
@@ -239,46 +243,35 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
      */
     protected abstract void refreshTree(ViewMode viewMode, String treeFilter);
 
-    /**
-     * Returns a list of audio object associated to a tree node
-     * 
-     * @param node
-     * @param viewMode
-     * @param treeFilter
-     * @return
-     */
-    public abstract List<? extends IAudioObject> getAudioObjectForTreeNode(DefaultMutableTreeNode node, ViewMode viewMode, String treeFilter);
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#getAudioObjectForTreeNode(javax.swing.tree.DefaultMutableTreeNode, net.sourceforge.atunes.model.ViewMode, java.lang.String)
+	 */
+    @Override
+	public abstract List<? extends IAudioObject> getAudioObjectForTreeNode(DefaultMutableTreeNode node, ViewMode viewMode, String treeFilter);
 
-    /**
-     * Returns <code>true</code> if the view supports organize information in
-     * different view modes
-     * 
-     * @return
-     */
-    public abstract boolean isViewModeSupported();
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#isViewModeSupported()
+	 */
+    @Override
+	public abstract boolean isViewModeSupported();
 
-    /**
-     * Returns <code>true</code> if the view uses default navigator columns or
-     * <code>false</code> if defines its own column set
-     * 
-     * @return
-     */
-    public abstract boolean isUseDefaultNavigatorColumnSet();
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#isUseDefaultNavigatorColumnSet()
+	 */
+    @Override
+	public abstract boolean isUseDefaultNavigatorColumnSet();
 
-    /**
-     * If <code>isUseDefaultNavigatorColumns</code> returns <code>false</code>
-     * then this method must return a column set with columns
-     * 
-     * @return
-     */
-    public abstract AbstractColumnSet getCustomColumnSet();
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#getCustomColumnSet()
+	 */
+    @Override
+	public abstract AbstractColumnSet getCustomColumnSet();
 
-    /**
-     * Enables or disables tree popup menu items of this view
-     * 
-     * @param e
-     */
-    public final void updateTreePopupMenuWithTreeSelection(MouseEvent e) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#updateTreePopupMenuWithTreeSelection(java.awt.event.MouseEvent)
+	 */
+    @Override
+	public final void updateTreePopupMenuWithTreeSelection(MouseEvent e) {
         List<DefaultMutableTreeNode> nodesSelected = new ArrayList<DefaultMutableTreeNode>();
         TreePath[] paths = getTree().getSelectionPaths();
         if (paths != null && paths.length > 0) {
@@ -340,13 +333,11 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
         }
     }
 
-    /**
-     * Enables or disables table popup menu items of this view
-     * 
-     * @param table
-     * @param e
-     */
-    public final void updateTablePopupMenuWithTableSelection(JTable table, MouseEvent e) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#updateTablePopupMenuWithTableSelection(javax.swing.JTable, java.awt.event.MouseEvent)
+	 */
+    @Override
+	public final void updateTablePopupMenuWithTableSelection(JTable table, MouseEvent e) {
         updateTablePopupMenuItems(getTablePopupMenu(), ((NavigationTableModel) getNavigationTable().getModel()).getAudioObjectsAt(table.getSelectedRows()));
     }
 
@@ -417,12 +408,11 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
         return NavigationHandler.getInstance().getNavigationTable();
     }
 
-    /**
-     * Returns the default comparator
-     * 
-     * @return the default comparator
-     */
-    public Comparator<String> getDefaultComparator() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#getDefaultComparator()
+	 */
+    @Override
+	public Comparator<String> getDefaultComparator() {
         return new Comparator<String>() {
             @Override
             public int compare(String s1, String s2) {
@@ -431,12 +421,11 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
         };
     }
 
-    /**
-     * Returns the integer comparator
-     * 
-     * @return the default comparator
-     */
-    public Comparator<String> getIntegerComparator() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#getIntegerComparator()
+	 */
+    @Override
+	public Comparator<String> getIntegerComparator() {
         return new Comparator<String>() {
             @Override
             public int compare(String s1, String s2) {
@@ -454,12 +443,11 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
         };
     }
 
-    /**
-     * Return current view mode
-     * 
-     * @return
-     */
-    public ViewMode getCurrentViewMode() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#getCurrentViewMode()
+	 */
+    @Override
+	public ViewMode getCurrentViewMode() {
         return state.getViewMode();
     }
 
@@ -580,44 +568,11 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
         return objectsExpanded;
     }
 
-    /**
-     * Expands a list of nodes of a tree
-     * 
-     * @param tree
-     * @param nodesToExpand
-     */
-    protected static final void expandNodes(JTree tree, List<DefaultMutableTreeNode> nodesToExpand) {
-        for (DefaultMutableTreeNode node : nodesToExpand) {
-            tree.expandPath(new TreePath(node.getPath()));
-        }
-    }
-
-    
-    /**
-     * Selects a list of nodes of a tree
-     * 
-     * @param tree
-     * @param nodesToSelect
-     */
-    protected static final void selectNodes(JTree tree, List<DefaultMutableTreeNode> nodesToSelect) {
-        if (nodesToSelect.isEmpty()) {
-            tree.setSelectionRow(0);
-        } else {
-            TreePath[] pathsToSelect = new TreePath[nodesToSelect.size()];
-            int i = 0;
-            for (DefaultMutableTreeNode node : nodesToSelect) {
-                pathsToSelect[i++] = new TreePath(node.getPath());
-            }
-            tree.setSelectionPaths(pathsToSelect);
-        }
-    }
-
-    /**
-     * Returns an action to show this view
-     * 
-     * @return
-     */
-    public final ActionWithColorMutableIcon getActionToShowView() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#getActionToShowView()
+	 */
+    @Override
+	public final ActionWithColorMutableIcon getActionToShowView() {
     	if (action == null) {
     		action = new ActionWithColorMutableIcon(getTitle()) {
 
@@ -675,7 +630,8 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
      * 
      * @return the smartComparator
      */
-    protected Comparator<String> getSmartComparator() {
+    @Override
+    public Comparator<String> getSmartComparator() {
         return new Comparator<String>() {
             private String removeThe(String str) {
                 if (str.toLowerCase().startsWith("the ") && str.length() > 4) {
@@ -694,7 +650,8 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
     /**
      * @return the artistNamesComparator
      */
-    protected Comparator<String> getArtistNamesComparator() {
+    @Override
+    public Comparator<String> getArtistNamesComparator() {
         return new ArtistNamesComparator();
     }
     
@@ -703,20 +660,18 @@ public abstract class AbstractNavigationView implements AudioObjectsSource, Tree
     	return getTitle();
     }
 
-	/**
-	 * Requests view to select given audio object
-	 * @param currentViewMode
-	 * @param audioObject
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#selectAudioObject(net.sourceforge.atunes.model.ViewMode, net.sourceforge.atunes.model.IAudioObject)
 	 */
+	@Override
 	public void selectAudioObject(ViewMode currentViewMode, IAudioObject audioObject) {
 		
 	}
 
-	/**
-	 * Requests view to select given artist
-	 * @param currentViewMode
-	 * @param artist
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#selectArtist(net.sourceforge.atunes.model.ViewMode, java.lang.String)
 	 */
+	@Override
 	public void selectArtist(ViewMode currentViewMode, String artist) {
 		
 	}	

@@ -35,6 +35,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITreeGenerator;
 import net.sourceforge.atunes.model.ITreeObject;
@@ -59,7 +60,7 @@ public class YearTreeGenerator implements ITreeGenerator {
 	 * @param objectsSelected
 	 * @param objectsExpanded
 	 */
-    public void buildTree(IState state, String rootTextKey, AbstractNavigationView view, Map<String, ?> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<ITreeObject<? extends IAudioObject>> objectsSelected, List<ITreeObject<? extends IAudioObject>> objectsExpanded) {
+    public void buildTree(IState state, String rootTextKey, INavigationView view, Map<String, ?> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<ITreeObject<? extends IAudioObject>> objectsSelected, List<ITreeObject<? extends IAudioObject>> objectsExpanded) {
         // Nodes to be selected after refresh
         List<DefaultMutableTreeNode> nodesToSelect = new ArrayList<DefaultMutableTreeNode>();
         // Nodes to be expanded after refresh
@@ -118,10 +119,10 @@ public class YearTreeGenerator implements ITreeGenerator {
         treeModel.reload();
 
         // Expand nodes
-        AbstractNavigationView.expandNodes(view.getTree(), nodesToExpand);
+        NavigationViewHelper.expandNodes(view.getTree(), nodesToExpand);
 
         // Once tree has been refreshed, select previously selected nodes
-        AbstractNavigationView.selectNodes(view.getTree(), nodesToSelect);
+        NavigationViewHelper.selectNodes(view.getTree(), nodesToSelect);
     }
 
     @Override

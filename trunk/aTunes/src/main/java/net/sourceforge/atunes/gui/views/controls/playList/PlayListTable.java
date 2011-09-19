@@ -46,7 +46,6 @@ import javax.swing.ListSelectionModel;
 
 import net.sourceforge.atunes.gui.images.PlayListStateImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.gui.model.AudioObjectsSource;
 import net.sourceforge.atunes.gui.model.PlayListColumnModel;
 import net.sourceforge.atunes.gui.model.TransferableList;
 import net.sourceforge.atunes.gui.renderers.ColumnRenderers;
@@ -57,13 +56,14 @@ import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListDragableRow;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListTableModel;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IAudioObjectsSource;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
  * The play list table.
  */
-public final class PlayListTable extends JTable implements DragSourceListener, DragGestureListener, AudioObjectsSource {
+public final class PlayListTable extends JTable implements DragSourceListener, DragGestureListener, IAudioObjectsSource {
 
     /**
      * The play state of the playlist.
