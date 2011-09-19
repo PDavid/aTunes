@@ -28,8 +28,9 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 
@@ -104,7 +105,7 @@ public final class NavigationTreeMouseListener extends MouseAdapter {
             if (selRow != -1 && e.getClickCount() == 2) {
             	DefaultMutableTreeNode node = (DefaultMutableTreeNode) selPath.getLastPathComponent();
             	List<? extends IAudioObject> songs = controller.getAudioObjectsForTreeNode(currentView.getClass(), node);
-            	PlayListHandler.getInstance().addToPlayList(songs);
+            	Context.getBean(IPlayListHandler.class).addToPlayList(songs);
             }
         }
         

@@ -29,7 +29,6 @@ import net.sourceforge.atunes.kernel.FavoritesListeners;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.actions.UnlovesongInLastFmAction;
-import net.sourceforge.atunes.kernel.modules.repository.AudioFilesRemovedListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.kernel.modules.search.searchableobjects.FavoritesSearchableObject;
@@ -37,6 +36,7 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
@@ -45,7 +45,7 @@ import net.sourceforge.atunes.model.ITreeObject;
 /**
  * The Class FavoritesHandler.
  */
-public final class FavoritesHandler extends AbstractHandler implements AudioFilesRemovedListener {
+public final class FavoritesHandler extends AbstractHandler implements IAudioFilesRemovedListener {
 
     /** The instance. */
     private static FavoritesHandler instance = new FavoritesHandler();

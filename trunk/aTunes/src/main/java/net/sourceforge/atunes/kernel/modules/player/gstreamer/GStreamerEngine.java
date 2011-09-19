@@ -37,6 +37,7 @@ import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IUIHandler;
 
@@ -53,8 +54,8 @@ public class GStreamerEngine extends AbstractPlayerEngine {
     private Runnable remainingTimeRunnable;
     private ScheduledFuture<?> scheduledFuture;
 
-    public GStreamerEngine(IState state, IFrame frame, IOSManager osManager) {
-    	super(state, frame, osManager);
+    public GStreamerEngine(IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler) {
+    	super(state, frame, osManager, playListHandler);
     	try {
             Gst.init("AudioPlayer", new String[] {});
             playBin = new PlayBin("AudioPlayer");

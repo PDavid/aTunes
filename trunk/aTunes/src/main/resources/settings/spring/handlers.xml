@@ -9,22 +9,14 @@
 	<bean id="updateHandler" class="net.sourceforge.atunes.kernel.modules.updates.UpdateHandler">
 		<property name="updatesURL" value="http://www.atunes.org/latest.xml"></property>
 	</bean>
-	
 	<bean id="fullScreenHandler" class="net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenHandler"/>
-	
 	<bean id="tagHandler" class="net.sourceforge.atunes.kernel.modules.tags.TagHandler"/>
-
 	<bean id="webServicesHandler" class="net.sourceforge.atunes.kernel.modules.webservices.WebServicesHandler"/>
-
 	<bean id="generalPurposePluginsHandler" class="net.sourceforge.atunes.kernel.modules.plugins.GeneralPurposePluginsHandler"/>
-	
 	<bean id="systemTrayHandler" class="net.sourceforge.atunes.kernel.modules.tray.SystemTrayHandler"/>
-	
 	<bean id="statisticsHandler" class="net.sourceforge.atunes.kernel.modules.statistics.StatisticsHandler"/>
-	
 	<bean id="smartPlayListHandler" class="net.sourceforge.atunes.kernel.modules.playlist.SmartPlayListHandler"/>
-	
 	<bean id="uiHandler" class="net.sourceforge.atunes.kernel.modules.ui.UIHandler"/>
-	
 	<bean id="contextHandler" class="net.sourceforge.atunes.kernel.modules.context.ContextHandler"/>
+	<bean id="playListHandler" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler"/>
 </beans>

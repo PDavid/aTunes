@@ -25,14 +25,17 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPlayList;
+import net.sourceforge.atunes.model.IPlayListObjectFilter;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 
-public class PlayListPodcastFeedEntryFilter implements PlayListObjectFilter<PodcastFeedEntry> {
+public class PlayListPodcastFeedEntryFilter implements IPlayListObjectFilter<PodcastFeedEntry> {
 	
 	@Override
-	public List<PodcastFeedEntry> getObjects(PlayList playList) {
+	public List<PodcastFeedEntry> getObjects(IPlayList playList) {
         List<PodcastFeedEntry> result = new ArrayList<PodcastFeedEntry>();
-        for (IAudioObject ao : playList.getAudioObjects()) {
+        for (int i = 0; i < playList.size(); i++) {
+        	IAudioObject ao = playList.get(i);
             if (ao instanceof IPodcastFeedEntry) {
                 result.add((PodcastFeedEntry)ao);
             }

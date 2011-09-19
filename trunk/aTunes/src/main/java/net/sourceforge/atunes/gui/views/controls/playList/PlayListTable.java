@@ -55,9 +55,9 @@ import net.sourceforge.atunes.gui.views.controls.ColumnSetRowSorter;
 import net.sourceforge.atunes.gui.views.menus.PlayListMenu;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListDragableRow;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListTableModel;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
@@ -106,22 +106,25 @@ public final class PlayListTable extends JTable implements DragSourceListener, D
      * Drag source for this play list to drag songs to device
      */
     private DragSource dragSource;
+    
+    private IPlayListHandler playListHandler;
 
     /**
      * Instantiates a new play list table.
      */
-    public PlayListTable(AbstractColumnSet columnSet) {
+    public PlayListTable(AbstractColumnSet columnSet, IPlayListHandler playListHandler) {
         super();
+        this.playListHandler = playListHandler;
         LookAndFeelSelector.getInstance().getCurrentLookAndFeel().decorateTable(this);
         setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         setDropMode(DropMode.ON);
 
         // Set table model
-        PlayListTableModel model = new PlayListTableModel(columnSet);
+        PlayListTableModel model = new PlayListTableModel(columnSet, playListHandler);
         setModel(model);
 
         // Set column model
-        PlayListColumnModel columnModel = new PlayListColumnModel(this);
+        PlayListColumnModel columnModel = new PlayListColumnModel(this, playListHandler);
         setColumnModel(columnModel);
 
         // Set sorter
@@ -214,7 +217,7 @@ public final class PlayListTable extends JTable implements DragSourceListener, D
         // Get selected rows, add PlayListDragableRow objects to a list and start a drag event
         List<Object> itemsToDrag = new ArrayList<Object>();
         int[] selectedRows = getSelectedRows();
-        List<IAudioObject> selectedAudioObjects = PlayListHandler.getInstance().getSelectedAudioObjects();
+        List<IAudioObject> selectedAudioObjects = playListHandler.getSelectedAudioObjects();
         for (int i = 0; i < selectedAudioObjects.size(); i++) {
             itemsToDrag.add(new PlayListDragableRow(selectedAudioObjects.get(i), selectedRows[i]));
         }
@@ -232,6 +235,6 @@ public final class PlayListTable extends JTable implements DragSourceListener, D
 
     @Override
     public List<IAudioObject> getSelectedAudioObjects() {
-        return PlayListHandler.getInstance().getSelectedAudioObjects();
+        return playListHandler.getSelectedAudioObjects();
     }
 }

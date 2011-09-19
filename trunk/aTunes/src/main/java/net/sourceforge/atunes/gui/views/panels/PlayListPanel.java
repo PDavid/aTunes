@@ -29,6 +29,7 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
+import net.sourceforge.atunes.model.IPlayListHandler;
 
 /**
  * The playlist panel.
@@ -48,11 +49,14 @@ public final class PlayListPanel extends JPanel {
     /** The play list table scroll. */
     private JScrollPane playListTableScroll;
 
+    private IPlayListHandler playListHandler;
+    
     /**
      * Instantiates a new play list panel.
      */
-    public PlayListPanel() {
+    public PlayListPanel(IPlayListHandler playListHandler) {
         super(new BorderLayout());
+        this.playListHandler = playListHandler;
         addContent();
     }
 
@@ -61,7 +65,7 @@ public final class PlayListPanel extends JPanel {
      */
     private void addContent() {
         playListTabPanel = new PlayListTabPanel();
-        playListTable = new PlayListTable((AbstractColumnSet) Context.getBean("playlistColumnSet"));
+        playListTable = new PlayListTable((AbstractColumnSet) Context.getBean("playlistColumnSet"), playListHandler);
         playListTableScroll = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(playListTable);
 
         add(playListTabPanel, BorderLayout.NORTH);

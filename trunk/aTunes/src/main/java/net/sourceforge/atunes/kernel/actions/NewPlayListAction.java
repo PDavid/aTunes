@@ -22,7 +22,8 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
+import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -46,7 +47,7 @@ public class NewPlayListAction extends CustomAbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         // Create a new empty play list
-        PlayListHandler.getInstance().newPlayList(null);
+    	Context.getBean(IPlayListHandler.class).newPlayList(null);
     }
 
 }

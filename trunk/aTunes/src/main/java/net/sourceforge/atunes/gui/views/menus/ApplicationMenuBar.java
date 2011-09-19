@@ -31,6 +31,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddPodcastFeedAction;
 import net.sourceforge.atunes.kernel.actions.AddRadioAction;
@@ -72,8 +73,8 @@ import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -195,7 +196,7 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
     private JMenu getPlayListMenu() {
         if (playList == null) {
             playList = new JMenu(I18nUtils.getString("PLAYLIST"));
-            PlayListMenu.fillMenu(playList, PlayListHandler.getInstance().getPlayListTable());
+            PlayListMenu.fillMenu(playList, Context.getBean(IPlayListHandler.class).getPlayListTable());
         }
         return playList;
     }

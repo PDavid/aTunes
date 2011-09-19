@@ -29,6 +29,7 @@ import net.sourceforge.atunes.gui.views.panels.PlayListTabPanel;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.CloseOtherPlaylistsAction;
 import net.sourceforge.atunes.kernel.actions.ClosePlaylistAction;
+import net.sourceforge.atunes.model.IPlayListHandler;
 
 /**
  * The listener interface for receiving playListTab events.
@@ -36,6 +37,8 @@ import net.sourceforge.atunes.kernel.actions.ClosePlaylistAction;
 final class PlayListTabListener implements ActionListener, ItemListener {
 
     private PlayListTabPanel panel;
+    
+    private IPlayListHandler playListHandler;
 
     /**
      * Instantiates a new play list tab listener.
@@ -43,18 +46,19 @@ final class PlayListTabListener implements ActionListener, ItemListener {
      * @param panel
      *            the panel
      */
-    public PlayListTabListener(PlayListTabPanel panel) {
+    public PlayListTabListener(PlayListTabPanel panel, IPlayListHandler playListHandler) {
         this.panel = panel;
+        this.playListHandler = playListHandler;
     }
 
 	@Override
 	public void itemStateChanged(ItemEvent e) {
-        PlayListHandler.getInstance().switchToPlaylist(panel.getPlayListCombo().getSelectedIndex());
+		playListHandler.switchToPlaylist(panel.getPlayListCombo().getSelectedIndex());
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-        boolean moreThanOnePlayList = PlayListHandler.getInstance().getPlayListCount() > 1;
+        boolean moreThanOnePlayList = playListHandler.getPlayListCount() > 1;
         Actions.getAction(ClosePlaylistAction.class).setEnabled(moreThanOnePlayList);
         Actions.getAction(CloseOtherPlaylistsAction.class).setEnabled(moreThanOnePlayList);
 	}

@@ -34,14 +34,14 @@ import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable.PlayState;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.columns.TextAndIcon;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
+import net.sourceforge.atunes.model.IPlayListHandler;
 
 /**
  * The Class PlayListColumnModel.
  */
 public final class PlayListColumnModel extends AbstractCommonColumnModel {
 
-    private static final class PlayListTextAndIconTableCellRendererCode extends TextAndIconTableCellRendererCode {
+    private final class PlayListTextAndIconTableCellRendererCode extends TextAndIconTableCellRendererCode {
 
         private PlayListTextAndIconTableCellRendererCode(AbstractCommonColumnModel model) {
             super(model);
@@ -50,7 +50,7 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
         @Override
         public JComponent getComponent(JComponent superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         	JComponent c = super.getComponent(superComponent, table, value, isSelected, hasFocus, row, column);
-        	if (PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row)) {
+        	if (playListHandler.isCurrentVisibleRowPlaying(row)) {
         		if (LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListSelectedItemFont() != null) {
         			 ((JLabel) c).setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListSelectedItemFont());
         		} else if (LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListFont() != null) {
@@ -61,7 +61,7 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
         }
     }
 
-    private static final class PlayListStringTableCellRendererCode extends StringTableCellRendererCode {
+    private final class PlayListStringTableCellRendererCode extends StringTableCellRendererCode {
 
         private PlayListStringTableCellRendererCode(AbstractCommonColumnModel model) {
             super(model);
@@ -70,7 +70,7 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
         @Override
         public JComponent getComponent(JComponent superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         	JComponent c = super.getComponent(superComponent, t, value, isSelected, hasFocus, row, column);
-        	if (PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row)) {
+        	if (playListHandler.isCurrentVisibleRowPlaying(row)) {
         		if (LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListSelectedItemFont() != null) {
         			 ((JLabel) c).setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListSelectedItemFont());
         		} else if (LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListFont() != null) {
@@ -82,20 +82,23 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
     }
     private static final long serialVersionUID = -2211160302611944001L;
 
+    private IPlayListHandler playListHandler;
+    
     /**
      * Instantiates a new play list column model.
      * 
      * @param playList
      *            the play list
      */
-    public PlayListColumnModel(PlayListTable playList) {
+    public PlayListColumnModel(PlayListTable playList, IPlayListHandler playListHandler) {
         super(playList, (AbstractColumnSet) Context.getBean("playlistColumnSet"));
+        this.playListHandler = playListHandler;
         enableColumnChange(true);
     }
 
     @Override
     protected void reapplyFilter() {
-        PlayListHandler.getInstance().reapplyFilter();
+    	playListHandler.reapplyFilter();
     }
 
     @Override
@@ -117,7 +120,7 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
                     String name = t.getColumnName(column);
                     //Display Integer values if the column is nameless
                     if (!"".equals(name)) {
-                    	if (PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row)) {
+                    	if (playListHandler.isCurrentVisibleRowPlaying(row)) {
                     		if (LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListSelectedItemFont() != null) {
                     			 ((JLabel) c).setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListSelectedItemFont());
                     		} else if (LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListFont() != null) {
@@ -132,7 +135,7 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
 
                     //Display an icon if playing and cell is in a "special" column
                     ((JLabel) c).setText(null);
-                    if (PlayListHandler.getInstance().isCurrentVisibleRowPlaying(row)) {
+                    if (playListHandler.isCurrentVisibleRowPlaying(row)) {
                         ((JLabel) c).setIcon(PlayState.getPlayStateIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(c, isSelected), 
                         		((PlayListTable) getTable()).getPlayState()));
                     } else {

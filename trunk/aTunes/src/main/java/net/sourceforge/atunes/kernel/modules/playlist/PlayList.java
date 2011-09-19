@@ -31,6 +31,7 @@ import net.sourceforge.atunes.kernel.PlayListAudioObject;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.misc.PointedList;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -39,7 +40,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  * @author fleax
  */
-public class PlayList implements Serializable, Cloneable {
+public class PlayList implements IPlayList {
 
     private static final long serialVersionUID = 2756513776762920794L;
 
@@ -131,7 +132,11 @@ public class PlayList implements Serializable, Cloneable {
         this.mode = PlayListMode.getPlayListMode(this, state);
     }
 
-    public void setState(IState state) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayList#setState(net.sourceforge.atunes.model.IState)
+	 */
+    @Override
+	public void setState(IState state) {
 		this.state = state;
 		((PlayListPointedList)this.audioObjects).setState(state);
 	}
@@ -252,13 +257,11 @@ public class PlayList implements Serializable, Cloneable {
 
     /////////////////////////////////////////////////////////////// ROW MOVE OPERATIONS //////////////////////////////////////////////////////////
 
-    /**
-     * Moves one row in play list
-     * 
-     * @param sourceRow
-     * @param targetRow
-     */
-    public void moveRowTo(int sourceRow, int targetRow) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayList#moveRowTo(int, int)
+	 */
+    @Override
+	public void moveRowTo(int sourceRow, int targetRow) {
         // Check arguments
         if (sourceRow < 0 || sourceRow >= size()) {
             throw new IllegalArgumentException(StringUtils.getString("sourceRow = ", sourceRow, " playlist size = ", size()));
@@ -303,41 +306,35 @@ public class PlayList implements Serializable, Cloneable {
 
     //////////////////////////////////////////////////////////////// OTHER OPERATIONS /////////////////////////////////////////////////////////////
 
-    /**
-     * Returns first index position of given audio object
-     * 
-     * @param audioObject
-     * @return
-     */
-    public int indexOf(IAudioObject audioObject) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayList#indexOf(net.sourceforge.atunes.model.IAudioObject)
+	 */
+    @Override
+	public int indexOf(IAudioObject audioObject) {
         return this.audioObjects.indexOf(audioObject);
     }
 
-    /**
-     * Returns size of this play list
-     * 
-     * @return
-     */
-    public int size() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayList#size()
+	 */
+    @Override
+	public int size() {
         return this.audioObjects.size();
     }
 
-    /**
-     * Returns <code>true</code> if this play list is empty
-     * 
-     * @return
-     */
-    public boolean isEmpty() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayList#isEmpty()
+	 */
+    @Override
+	public boolean isEmpty() {
         return this.audioObjects.isEmpty();
     }
 
-    /**
-     * Returns AudioObject at given index
-     * 
-     * @param index
-     * @return
-     */
-    public IAudioObject get(int index) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayList#get(int)
+	 */
+    @Override
+	public IAudioObject get(int index) {
         if (index < 0 || index >= this.audioObjects.size()) {
             return null;
         }
@@ -373,13 +370,11 @@ public class PlayList implements Serializable, Cloneable {
         return this.audioObjects.getPointer() != null ? this.audioObjects.getPointer() : 0;
     }
 
-    /**
-     * Returns <code>true</code> if audio object is in play list
-     * 
-     * @param audioObject
-     * @return
-     */
-    public boolean contains(IAudioObject audioObject) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayList#contains(net.sourceforge.atunes.model.IAudioObject)
+	 */
+    @Override
+	public boolean contains(IAudioObject audioObject) {
         return this.audioObjects.contains(audioObject);
     }
 
@@ -437,20 +432,27 @@ public class PlayList implements Serializable, Cloneable {
         return previousObject;
     }
 
-    public IAudioObject getNextAudioObject(int index) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayList#getNextAudioObject(int)
+	 */
+    @Override
+	public IAudioObject getNextAudioObject(int index) {
         return getMode().getNextAudioObject(index);
     }
 
-    public IAudioObject getPreviousAudioObject(int index) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayList#getPreviousAudioObject(int)
+	 */
+    @Override
+	public IAudioObject getPreviousAudioObject(int index) {
         return getMode().getPreviousAudioObject(index);
     }
 
-    /**
-     * Returns play list length in string format.
-     * 
-     * @return the length
-     */
-    public String getLength() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayList#getLength()
+	 */
+    @Override
+	public String getLength() {
         long seconds = 0;
         for (IAudioObject song : this.audioObjects.getList()) {
             seconds += song.getDuration();
@@ -552,9 +554,10 @@ public class PlayList implements Serializable, Cloneable {
         // There is no need to call listeners here. Even it will cause wrong behaviour
     }
 
-	/**
-	 * Resets play list
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayList#reset()
 	 */
+	@Override
 	public void reset() {
 		setCurrentAudioObjectIndex(0);
 		getMode().reset();

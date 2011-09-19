@@ -23,14 +23,22 @@ package net.sourceforge.atunes.kernel.modules.fullscreen;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFullScreenHandler;
+import net.sourceforge.atunes.model.IPlayListHandler;
 
 public class FullScreenHandler extends AbstractHandler implements IFullScreenHandler {
 
 	private FullScreenController controller;
+	
+	private IPlayListHandler playListHandler;
+	
+	@Override
+	public void allHandlersInitialized() {
+		playListHandler = Context.getBean(IPlayListHandler.class);
+	}
 	
     @Override
     public void playListCleared() {
@@ -79,14 +87,14 @@ public class FullScreenHandler extends AbstractHandler implements IFullScreenHan
 	 */
 	private List<IAudioObject> getAudioObjectsToShow(IAudioObject current) {
         List<IAudioObject> objects = new ArrayList<IAudioObject>(6);
-        objects.add(PlayListHandler.getInstance().getCurrentPlayList(false).getPreviousAudioObject(2));
-        objects.add(PlayListHandler.getInstance().getCurrentPlayList(false).getPreviousAudioObject(1));
+        objects.add(playListHandler.getCurrentPlayList(false).getPreviousAudioObject(2));
+        objects.add(playListHandler.getCurrentPlayList(false).getPreviousAudioObject(1));
         objects.add(current);
-        objects.add(PlayListHandler.getInstance().getCurrentPlayList(false).getNextAudioObject(1));
-        objects.add(PlayListHandler.getInstance().getCurrentPlayList(false).getNextAudioObject(2));
+        objects.add(playListHandler.getCurrentPlayList(false).getNextAudioObject(1));
+        objects.add(playListHandler.getCurrentPlayList(false).getNextAudioObject(2));
         
         // This is not visible in full screen, but used to prepare next cover
-        objects.add(PlayListHandler.getInstance().getCurrentPlayList(false).getNextAudioObject(3)); 
+        objects.add(playListHandler.getCurrentPlayList(false).getNextAudioObject(3)); 
 		
         return objects;
 	}
@@ -98,7 +106,7 @@ public class FullScreenHandler extends AbstractHandler implements IFullScreenHan
 		
 		// Be sure to update audio objects before show window
 		if (!getFullScreenController().isVisible()) {
-			updateAudioObjectsToShow(PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList());
+			updateAudioObjectsToShow(playListHandler.getCurrentAudioObjectFromCurrentPlayList());
 		}
 		getFullScreenController().toggleVisibility();
 	}

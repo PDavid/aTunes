@@ -26,8 +26,9 @@ import java.util.List;
 
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -49,7 +50,7 @@ public class MoveToTopAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        PlayListHandler.getInstance().moveToTop();
+    	Context.getBean(IPlayListHandler.class).moveToTop();
     }
 
     @Override

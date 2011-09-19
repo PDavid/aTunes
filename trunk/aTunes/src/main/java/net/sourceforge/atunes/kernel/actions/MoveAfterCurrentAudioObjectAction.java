@@ -26,8 +26,9 @@ import java.util.List;
 
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -52,13 +53,13 @@ public class MoveAfterCurrentAudioObjectAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-    	PlayListHandler.getInstance().moveSelectionAfterCurrentAudioObject();
+    	Context.getBean(IPlayListHandler.class).moveSelectionAfterCurrentAudioObject();
     }
     
     @Override
     public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
         //Don't allow moving songs from other playlists into active playlist
-        if (!PlayListHandler.getInstance().isActivePlayListVisible() || PlayListHandler.getInstance().isFiltered()) {
+        if (!Context.getBean(IPlayListHandler.class).isActivePlayListVisible() || Context.getBean(IPlayListHandler.class).isFiltered()) {
             return false;
         }
 

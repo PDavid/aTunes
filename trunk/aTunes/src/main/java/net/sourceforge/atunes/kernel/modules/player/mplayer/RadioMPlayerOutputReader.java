@@ -23,11 +23,11 @@ package net.sourceforge.atunes.kernel.modules.player.mplayer;
 import java.util.regex.Pattern;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
 
 class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
@@ -41,6 +41,7 @@ class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
     private boolean started;
     private IState state;
     private IFrame frame;
+    private IPlayListHandler playListHandler;
 
     /**
      * Instantiates a new radio m player output reader.
@@ -50,12 +51,14 @@ class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
      * @param radio
      * @param state
      * @param frame
+     * @param playListHandler
      */
-    RadioMPlayerOutputReader(MPlayerEngine engine, Process process, Radio radio, IState state, IFrame frame) {
+    RadioMPlayerOutputReader(MPlayerEngine engine, Process process, Radio radio, IState state, IFrame frame, IPlayListHandler playListHandler) {
         super(engine, process);
         this.radio = radio;
         this.state = state;
         this.frame = frame;
+        this.playListHandler = playListHandler;
     }
 
     @Override
@@ -95,7 +98,7 @@ class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
                     Logger.info("Could not read radio bitrate");
                 }
             }
-            PlayListHandler.getInstance().refreshPlayList();
+            playListHandler.refreshPlayList();
         }
 
         // Read song info from radio stream
@@ -110,8 +113,8 @@ class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
                 String title = info.substring(k + 1, info.length()).trim();
                 radio.setTitle(title);
                 radio.setSongInfoAvailable(true);
-                PlayListHandler.getInstance().refreshPlayList();
-                if ((!title.equals(lastTitle) || !artist.equals(lastArtist)) && radio.equals(PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList())) {
+                playListHandler.refreshPlayList();
+                if ((!title.equals(lastTitle) || !artist.equals(lastArtist)) && radio.equals(playListHandler.getCurrentAudioObjectFromCurrentPlayList())) {
                     Context.getBean(IContextHandler.class).retrieveInfoAndShowInPanel(radio);
                 }
                 lastArtist = artist;
@@ -124,7 +127,7 @@ class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
         // End (Quit)
         if (END_PATTERN.matcher(line).matches()) {
             radio.deleteSongInfo();
-            PlayListHandler.getInstance().refreshPlayList();
+            playListHandler.refreshPlayList();
         }
     }
 

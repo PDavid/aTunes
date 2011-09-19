@@ -29,11 +29,11 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Format;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -61,10 +61,13 @@ import org.jaudiotagger.tag.reference.PictureTypes;
 public final class TagModifier {
 
     private static final class RefreshTagAfterModifyRunnable implements Runnable {
-		private final List<ILocalAudioObject> audioFilesEditing;
+    	
+		private List<ILocalAudioObject> audioFilesEditing;
+		private IPlayListHandler playListHandler;
 
-		private RefreshTagAfterModifyRunnable(List<ILocalAudioObject> audioFilesEditing) {
+		private RefreshTagAfterModifyRunnable(List<ILocalAudioObject> audioFilesEditing, IPlayListHandler playListHandler) {
 			this.audioFilesEditing = audioFilesEditing;
+			this.playListHandler = playListHandler;
 		}
 
 		@Override
@@ -72,14 +75,14 @@ public final class TagModifier {
 		    // update Swing components if necessary
 		    boolean playListContainsRefreshedFile = false;
 		    for (int i = 0; i < audioFilesEditing.size(); i++) {
-		        if (PlayListHandler.getInstance().getCurrentPlayList(true).contains(audioFilesEditing.get(i))) {
+		        if (playListHandler.getCurrentPlayList(true).contains(audioFilesEditing.get(i))) {
 		            playListContainsRefreshedFile = true;
 		        }
 
 		        // Changed current playing song
-		        if (PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList() != null
-		                && PlayListHandler.getInstance().getCurrentAudioObjectFromCurrentPlayList().equals(audioFilesEditing.get(i))) {
-		            PlayListHandler.getInstance().selectedAudioObjectHasChanged(audioFilesEditing.get(i));
+		        if (playListHandler.getCurrentAudioObjectFromCurrentPlayList() != null
+		                && playListHandler.getCurrentAudioObjectFromCurrentPlayList().equals(audioFilesEditing.get(i))) {
+		        	playListHandler.selectedAudioObjectHasChanged(audioFilesEditing.get(i));
 
 		            if (PlayerHandler.getInstance().isEnginePlaying()) {
 		                Context.getBean(IUIHandler.class).updateTitleBar(audioFilesEditing.get(i));
@@ -87,7 +90,7 @@ public final class TagModifier {
 		        }
 		    }
 		    if (playListContainsRefreshedFile) {
-		    	PlayListHandler.getInstance().refreshPlayList();
+		    	playListHandler.refreshPlayList();
 		    }
 		    NavigationHandler.getInstance().notifyReload();
 		}
@@ -131,10 +134,10 @@ public final class TagModifier {
      * Refresh after tag modify.
      * 
      * @param audioFilesEditing
-     *            the audio files editing
+     * @param playListHandler
      */
-    static void refreshAfterTagModify(final List<ILocalAudioObject> audioFilesEditing) {
-        SwingUtilities.invokeLater(new RefreshTagAfterModifyRunnable(audioFilesEditing));
+    static void refreshAfterTagModify(final List<ILocalAudioObject> audioFilesEditing, IPlayListHandler playListHandler) {
+        SwingUtilities.invokeLater(new RefreshTagAfterModifyRunnable(audioFilesEditing, playListHandler));
     }
 
     /**

@@ -40,6 +40,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IState;
@@ -77,8 +78,11 @@ public class MPlayerEngine extends AbstractPlayerEngine {
     /** The current fade away process running */
     private FadeAwayRunnable currentFadeAwayRunnable = null;
 
-    public MPlayerEngine(IState state, IFrame frame, IOSManager osManager) {
-    	super(state, frame, osManager);
+    private IPlayListHandler playListHandler;
+    
+    public MPlayerEngine(IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler) {
+    	super(state, frame, osManager, playListHandler);
+    	this.playListHandler = playListHandler;
     	commandWriter = MPlayerCommandWriter.newCommandWriter(null, osManager);
     }
 
@@ -148,7 +152,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
             commandWriter = MPlayerCommandWriter.newCommandWriter(process, getOsManager());
             // Output reader needs original audio object, specially when cacheFilesBeforePlaying is true, as
             // statistics must be applied over original audio object, not the cached one
-            mPlayerOutputReader = AbstractMPlayerOutputReader.newInstance(this, process, audioObject, getState(), getFrame());
+            mPlayerOutputReader = AbstractMPlayerOutputReader.newInstance(this, process, audioObject, getState(), getFrame(), playListHandler);
             mPlayerErrorReader = new MPlayerErrorReader(this, process, mPlayerOutputReader, audioObjectToPlay);
             mPlayerOutputReader.start();
             mPlayerErrorReader.start();

@@ -55,4 +55,8 @@ public interface IAudioObjectPropertiesDialogFactory {
 	 */
 	public void setOsManager(IOSManager osManager);
 
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(IPlayListHandler playListHandler);
 }

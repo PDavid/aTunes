@@ -33,16 +33,19 @@ import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.ISmartPlayListHandler;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 
 public final class SmartPlayListHandler extends AbstractHandler implements ISmartPlayListHandler {
 
     private IStatisticsHandler statisticsHandler;
+    private IPlayListHandler playListHandler;
     
     @Override
     protected void initHandler() {
     	statisticsHandler = Context.getBean(IStatisticsHandler.class);
+    	playListHandler = Context.getBean(IPlayListHandler.class);
     }
     
     @Override
@@ -62,7 +65,7 @@ public final class SmartPlayListHandler extends AbstractHandler implements ISmar
         AudioObjectComparator.sort(songsSelected);
 
         // Add to playlist
-        PlayListHandler.getInstance().addToPlayList(songsSelected);
+        playListHandler.addToPlayList(songsSelected);
     }
 
     @Override
@@ -82,7 +85,7 @@ public final class SmartPlayListHandler extends AbstractHandler implements ISmar
         AudioObjectComparator.sort(songsSelected);
 
         // Add to playlist
-        PlayListHandler.getInstance().addToPlayList(songsSelected);
+        playListHandler.addToPlayList(songsSelected);
     }
 
     @Override
@@ -109,7 +112,7 @@ public final class SmartPlayListHandler extends AbstractHandler implements ISmar
         AudioObjectComparator.sort(songsSelected);
 
         // Add to playlist
-        PlayListHandler.getInstance().addToPlayList(songsSelected);
+        playListHandler.addToPlayList(songsSelected);
     }
 
     @Override
@@ -121,7 +124,7 @@ public final class SmartPlayListHandler extends AbstractHandler implements ISmar
         AudioObjectComparator.sort(songsSelected);
 
         // Add to playlist
-        PlayListHandler.getInstance().addToPlayList(songsSelected);
+        playListHandler.addToPlayList(songsSelected);
     }
 
     @Override
@@ -135,7 +138,7 @@ public final class SmartPlayListHandler extends AbstractHandler implements ISmar
         if (count > 0) {
             List<IAudioObject> audioObjects = new ArrayList<IAudioObject>(unplayedSongs.subList(0, count));
             AudioObjectComparator.sort(audioObjects);
-            PlayListHandler.getInstance().addToPlayList(audioObjects);
+            playListHandler.addToPlayList(audioObjects);
         }
     }
 }

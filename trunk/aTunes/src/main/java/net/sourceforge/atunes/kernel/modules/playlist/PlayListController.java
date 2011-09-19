@@ -35,6 +35,7 @@ import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
 
 final class PlayListController extends AbstractSimpleController<PlayListPanel> {
@@ -43,6 +44,8 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
     private Rectangle visibleRect;
     
     private IFrame frame;
+    
+    private IPlayListHandler playListHandler;
 
     /**
      * Instantiates a new play list controller.
@@ -50,9 +53,10 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
      * @param panel
      * @param state
      */
-    PlayListController(PlayListPanel panel, IState state, IFrame frame) {
+    PlayListController(PlayListPanel panel, IState state, IFrame frame, IPlayListHandler playListHandler) {
         super(panel, state);
         this.frame = frame;
+        this.playListHandler = playListHandler;
         addBindings();
         addStateBindings();
     }
@@ -89,7 +93,7 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
         if (rows.length > 0) {
             javax.swing.JTable aTable = getComponentControlled().getPlayListTable();
             aTable.getSelectionModel().clearSelection();
-            PlayListHandler.getInstance().removeAudioObjects(rows);
+            playListHandler.removeAudioObjects(rows);
             
             int rowCount = aTable.getRowCount();
             if(rowCount > 0) {
@@ -127,7 +131,7 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
     void moveDown() {
         int[] rows = getComponentControlled().getPlayListTable().getSelectedRows();
         if (rows.length > 0 && rows[rows.length - 1] < getComponentControlled().getPlayListTable().getRowCount() - 1) {
-            PlayListHandler.getInstance().moveDown(rows);
+            playListHandler.moveDown(rows);
             refreshPlayList();
             getComponentControlled().getPlayListTable().getSelectionModel().setSelectionInterval(rows[0] + 1, rows[rows.length - 1] + 1);
         }
@@ -139,7 +143,7 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
     void moveToBottom() {
         int[] rows = getComponentControlled().getPlayListTable().getSelectedRows();
         if (rows.length > 0 && rows[rows.length - 1] < getComponentControlled().getPlayListTable().getRowCount() - 1) {
-            PlayListHandler.getInstance().moveToBottom(rows);
+            playListHandler.moveToBottom(rows);
             refreshPlayList();
             getComponentControlled().getPlayListTable().getSelectionModel().setSelectionInterval(getComponentControlled().getPlayListTable().getRowCount() - rows.length,
                     getComponentControlled().getPlayListTable().getRowCount() - 1);
@@ -152,7 +156,7 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
     void moveToTop() {
         int[] rows = getComponentControlled().getPlayListTable().getSelectedRows();
         if (rows.length > 0 && rows[0] > 0) {
-            PlayListHandler.getInstance().moveToTop(rows);
+            playListHandler.moveToTop(rows);
             refreshPlayList();
             getComponentControlled().getPlayListTable().getSelectionModel().setSelectionInterval(0, rows.length - 1);
         }
@@ -164,7 +168,7 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
     void moveUp() {
         int[] rows = getComponentControlled().getPlayListTable().getSelectedRows();
         if (rows.length > 0 && rows[0] > 0) {
-            PlayListHandler.getInstance().moveUp(rows);
+            playListHandler.moveUp(rows);
             refreshPlayList();
             getComponentControlled().getPlayListTable().getSelectionModel().setSelectionInterval(rows[0] - 1, rows[rows.length - 1] - 1);
         }
@@ -176,7 +180,7 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
      */
     void playSelectedAudioObject() {
         int audioObject = getComponentControlled().getPlayListTable().getSelectedRow();
-        PlayListHandler.getInstance().setPositionToPlayInVisiblePlayList(audioObject);
+        playListHandler.setPositionToPlayInVisiblePlayList(audioObject);
         PlayerHandler.getInstance().playCurrentAudioObject(false);
     }
 
@@ -187,8 +191,8 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
         // Sometimes scroll can be fired when application starts if window size is changed
         // In that cases call to scroll could thrown an exception is current play list is not yet initialized
         // So check first if the visible play list is initialized before scroll it
-        if (PlayListHandler.getInstance().getCurrentPlayList(true) != null) {
-            scrollPlayList(PlayListHandler.getInstance().getCurrentAudioObjectIndexInVisiblePlayList(), isUserAction);
+        if (playListHandler.getCurrentPlayList(true) != null) {
+            scrollPlayList(playListHandler.getCurrentAudioObjectIndexInVisiblePlayList(), isUserAction);
         }
     }
 
@@ -204,7 +208,7 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
         }
 
         // If visible playlist is not active then don't scroll
-        if (!PlayListHandler.getInstance().isActivePlayListVisible()) {
+        if (!playListHandler.isActivePlayListVisible()) {
             return;
         }
 
@@ -251,8 +255,8 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
     }
 
     void reapplyFilter() {
-        if (PlayListHandler.getInstance().isFiltered()) {
-            PlayListHandler.getInstance().setFilter(FilterHandler.getInstance().getFilter());
+        if (playListHandler.isFiltered()) {
+            playListHandler.setFilter(FilterHandler.getInstance().getFilter());
         }
     }
 

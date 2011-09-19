@@ -24,9 +24,11 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.tags.EditTitlesProcess;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -46,7 +48,7 @@ public class AutoSetTitlesAction extends AbstractActionOverSelectedObjects<ILoca
 
     @Override
     protected void performAction(List<ILocalAudioObject> objects) {
-        new EditTitlesProcess(objects, getState()).execute();
+        new EditTitlesProcess(objects, getState(), Context.getBean(IPlayListHandler.class)).execute();
     }
 
     @Override
