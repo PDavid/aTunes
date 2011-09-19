@@ -123,7 +123,7 @@ public final class NotificationsHandler extends AbstractHandler implements Playb
      */
     public void showNotification(IAudioObject audioObject) {
     	// only show notification if not in full screen
-    	if (!Context.getBean(IFullScreenHandler.class).isVisible()) {
+    	if (!getBean(IFullScreenHandler.class).isVisible()) {
     		getNotificationEngine().showNotification(audioObject);
     	}
     }

@@ -156,7 +156,7 @@ public final class FilterHandler extends AbstractHandler {
         addFilter(NavigationHandler.getInstance().getTableFilter());
         setFilterEnabled(NavigationHandler.getInstance().getTableFilter(), getState().isShowNavigationTable());
 
-        addFilter(Context.getBean(IPlayListHandler.class).getPlayListFilter());
+        addFilter(getBean(IPlayListHandler.class).getPlayListFilter());
 
         getToolBarFilterController().setSelectedFilter(allFilter.getName());
     }

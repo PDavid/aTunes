@@ -170,14 +170,14 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
     	if (problemsLoadingPlugins != null) {
     		for (PluginFolder pluginFolder : problemsLoadingPlugins.keySet()) {
     			// Show a message with detailed information about the error
-    			Context.getBean(IErrorDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_LOAD_ERROR"), problemsLoadingPlugins.get(pluginFolder));
+    			getBean(IErrorDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_LOAD_ERROR"), problemsLoadingPlugins.get(pluginFolder));
     			
     			// Ask user to remove plugin folder
-    			if (Context.getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("PLUGIN_LOAD_ERROR_REMOVE_CONFIRMATION"))) {
+    			if (getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("PLUGIN_LOAD_ERROR_REMOVE_CONFIRMATION"))) {
     				try {
 						FileUtils.deleteDirectory(pluginFolder);
 					} catch (IOException e) {
-						Context.getBean(IErrorDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_UNINSTALLATION_ERROR"), e);
+						getBean(IErrorDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_UNINSTALLATION_ERROR"), e);
 					}
     			}
     		}

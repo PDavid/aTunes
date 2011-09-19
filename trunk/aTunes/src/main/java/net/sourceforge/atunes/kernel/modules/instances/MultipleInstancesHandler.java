@@ -34,7 +34,6 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.command.CommandHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
@@ -149,11 +148,14 @@ public final class MultipleInstancesHandler extends AbstractHandler {
 
         /** The last song added. */
         private long lastSongAdded = 0;
+        
+        private IPlayListHandler playListHandler;
 
         /**
          * Instantiates a new songs queue.
          */
-        SongsQueue() {
+        SongsQueue(IPlayListHandler playListHandler) {
+        	this.playListHandler = playListHandler;
             songsQueue = new ArrayList<IAudioObject>();
         }
 
@@ -186,7 +188,7 @@ public final class MultipleInstancesHandler extends AbstractHandler {
                                 // Clear songs queue
                                 songsQueue.clear();
                                 // Add songs
-                                Context.getBean(IPlayListHandler.class).addToPlayListAndPlay(auxList);
+                                playListHandler.addToPlayListAndPlay(auxList);
                             }
                         });
                     }
@@ -260,7 +262,7 @@ public final class MultipleInstancesHandler extends AbstractHandler {
             System.out.println(StringUtils.getString("INFO: aTunes is listening for other instances on port ", Constants.MULTIPLE_INSTANCES_SOCKET));
 
             // Initialize songs queue
-            SongsQueue songsQueue = new SongsQueue();
+            SongsQueue songsQueue = new SongsQueue(getBean(IPlayListHandler.class));
 
             // Initialize socket listener
             SocketListener listener = new SocketListener(serverSocket, songsQueue);

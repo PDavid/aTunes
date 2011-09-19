@@ -44,8 +44,8 @@ public final class SmartPlayListHandler extends AbstractHandler implements ISmar
     
     @Override
     protected void initHandler() {
-    	statisticsHandler = Context.getBean(IStatisticsHandler.class);
-    	playListHandler = Context.getBean(IPlayListHandler.class);
+    	statisticsHandler = getBean(IStatisticsHandler.class);
+    	playListHandler = getBean(IPlayListHandler.class);
     }
     
     @Override

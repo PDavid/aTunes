@@ -149,7 +149,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
         // Not enough space avaible
         if (leaveFree > deviceFreeSpace) {
             Logger.debug(I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
-            Context.getBean(IErrorDialog.class).showErrorDialog(getFrame(), I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
+            getBean(IErrorDialog.class).showErrorDialog(getFrame(), I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
             return;
         }
 
@@ -173,7 +173,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
      * Connect device.
      */
     public void connectDevice() {
-    	IFileSelectionDialog dialog = Context.getBean(IFileSelectionDialog.class);
+    	IFileSelectionDialog dialog = getBean(IFileSelectionDialog.class);
     	dialog.setDirectoryOnly(true);
         dialog.setTitle(I18nUtils.getString("SELECT_DEVICE"));
         dialog.showDialog();
@@ -217,7 +217,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
 
         // Check if there is enough free space on device
         if (size > deviceFreeSpace) {
-        	Context.getBean(IErrorDialog.class).showErrorDialog(getFrame(), I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
+        	getBean(IErrorDialog.class).showErrorDialog(getFrame(), I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
             return;
         }
 
@@ -236,7 +236,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
                         refreshDevice();
                         filesCopiedToDevice = process.getFilesTransferred().size();
                         if (!ok) {
-                        	Context.getBean(IErrorDialog.class).showErrorDialog(getFrame(), I18nUtils.getString("ERRORS_IN_EXPORT_PROCESS"));
+                        	getBean(IErrorDialog.class).showErrorDialog(getFrame(), I18nUtils.getString("ERRORS_IN_EXPORT_PROCESS"));
                         }
                     }
                 });
@@ -257,7 +257,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
      */
     @Override
     public void deviceConnected(String location) {
-        if (Context.getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("DEVICE_CONNECT_CONFIRMATION"))) {
+        if (getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("DEVICE_CONNECT_CONFIRMATION"))) {
         	getFrame().showProgressBar(true, null);
             this.retrieveDevice(new File(location));
         }
@@ -286,7 +286,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
     	        Actions.getAction(SynchronizeDeviceWithPlayListAction.class).setEnabled(false);
     	        Actions.getAction(CopyPlayListToDeviceAction.class).setEnabled(false);
     	        getFrame().showDeviceInfo(false);
-    	        Context.getBean(IMessageDialog.class).showMessage(I18nUtils.getString("DEVICE_DISCONNECTION_DETECTED"), getFrame());		    
+    	        getBean(IMessageDialog.class).showMessage(I18nUtils.getString("DEVICE_DISCONNECTION_DETECTED"), getFrame());		    
     		}
     	});
 

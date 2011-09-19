@@ -202,7 +202,7 @@ public final class SearchHandler extends AbstractHandler {
      */
     private SearchResultsController getSearchResultsController() {
         if (searchResultsController == null) {
-            searchResultsController = new SearchResultsController(new SearchResultsDialog(getFrame().getFrame()), getState(), Context.getBean(IPlayListHandler.class));
+            searchResultsController = new SearchResultsController(new SearchResultsDialog(getFrame().getFrame()), getState(), getBean(IPlayListHandler.class));
         }
         return searchResultsController;
     }

@@ -127,7 +127,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
     @SuppressWarnings("unchecked")
 	@Override
     protected void initHandler() {
-    	navigationViews = (List<AbstractNavigationView>) Context.getBean("navigationViews");
+    	navigationViews = (List<AbstractNavigationView>) getBean("navigationViews");
     }
 
     @Override
