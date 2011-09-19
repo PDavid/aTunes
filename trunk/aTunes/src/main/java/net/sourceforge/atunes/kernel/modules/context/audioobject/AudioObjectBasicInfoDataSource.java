@@ -31,7 +31,6 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.RadioImageIcon;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.kernel.modules.context.ContextInformationDataSource;
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -106,7 +105,7 @@ public class AudioObjectBasicInfoDataSource implements ContextInformationDataSou
                 result.put(OUTPUT_TITLE, ((IRadio) audioObject).getName());
                 result.put(OUTPUT_ARTIST, ((Radio) audioObject).getUrl());
             } else if (audioObject instanceof IPodcastFeedEntry) {
-                result.put(OUTPUT_TITLE, ((PodcastFeedEntry) audioObject).getTitle());
+                result.put(OUTPUT_TITLE, ((IPodcastFeedEntry) audioObject).getTitle());
             }
         }
         return result;

@@ -23,22 +23,21 @@ package net.sourceforge.atunes.kernel.actions;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class MarkPodcastEntryListenedAction extends AbstractActionOverSelectedObjects<PodcastFeedEntry> {
+public class MarkPodcastEntryListenedAction extends AbstractActionOverSelectedObjects<IPodcastFeedEntry> {
 
     private static final long serialVersionUID = 1563803489549692850L;
 
     MarkPodcastEntryListenedAction() {
-        super(I18nUtils.getString("MARK_PODCAST_ENTRY_AS_LISTENED"), PodcastFeedEntry.class);
+        super(I18nUtils.getString("MARK_PODCAST_ENTRY_AS_LISTENED"), IPodcastFeedEntry.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("MARK_PODCAST_ENTRY_AS_LISTENED"));
     }
 
     @Override
-    protected void performAction(List<PodcastFeedEntry> objects) {
+    protected void performAction(List<IPodcastFeedEntry> objects) {
         for (IPodcastFeedEntry pfe : objects) {
             pfe.setListened(true);
         }

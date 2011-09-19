@@ -488,7 +488,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
      * 
      * @return true, if is downloaded
      */
-    public boolean isDownloaded(PodcastFeedEntry podcastFeedEntry) {
+    public boolean isDownloaded(IPodcastFeedEntry podcastFeedEntry) {
         File f = new File(getDownloadPath(podcastFeedEntry));
         return f.exists();
     }
@@ -499,7 +499,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
      * @param podcastFeedEntry
      *            the podcast feed entry
      */
-    public void deleteDownloadedPodcastFeedEntry(final PodcastFeedEntry podcastFeedEntry) {
+    public void deleteDownloadedPodcastFeedEntry(final IPodcastFeedEntry podcastFeedEntry) {
         File f = new File(getDownloadPath(podcastFeedEntry));
         new DeleteDownloadedPodcastFeedEntryWorker(f, podcastFeedEntry, getFrame()).execute();
     }

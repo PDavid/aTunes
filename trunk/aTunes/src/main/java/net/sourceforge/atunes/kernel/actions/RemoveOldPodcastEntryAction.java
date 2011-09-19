@@ -24,22 +24,21 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class RemoveOldPodcastEntryAction extends AbstractActionOverSelectedObjects<PodcastFeedEntry> {
+public class RemoveOldPodcastEntryAction extends AbstractActionOverSelectedObjects<IPodcastFeedEntry> {
 
     private static final long serialVersionUID = -1499729879534990802L;
 
     RemoveOldPodcastEntryAction() {
-        super(I18nUtils.getString("REMOVE_OLD_PODCAST_ENTRY"), PodcastFeedEntry.class);
+        super(I18nUtils.getString("REMOVE_OLD_PODCAST_ENTRY"), IPodcastFeedEntry.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_OLD_PODCAST_ENTRY"));
     }
 
     @Override
-    protected void performAction(List<PodcastFeedEntry> objects) {
+    protected void performAction(List<IPodcastFeedEntry> objects) {
         for (IPodcastFeedEntry pfe : objects) {
             pfe.getPodcastFeed().removeEntry(pfe);
         }
