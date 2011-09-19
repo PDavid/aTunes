@@ -353,7 +353,9 @@ public class Repository implements Serializable {
      * @return
      */
     public Artist getArtist(String artistName) {
-    	if (state.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+    	if (artistName == null) {
+    		return null;
+    	} else if (state.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
     		return artistsStructure.get(artistName);
     	} else {
     		return artistsStructure.get(artistName.toLowerCase());

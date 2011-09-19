@@ -290,8 +290,14 @@ public class RepositoryLoader extends Thread {
 			// Compare old tag with new tag
 			AbstractTag newTag = file.getTag();
 			if (newTag != null) {
-				boolean artistChanged = !oldTag.getArtist().equals(newTag.getArtist());
-				boolean albumChanged = !oldTag.getAlbum().equals(newTag.getAlbum());
+				boolean artistChanged = oldTag.getArtist() == null && newTag.getArtist() != null ||
+									    oldTag.getArtist() != null && newTag.getArtist() == null || 
+									    !oldTag.getArtist().equals(newTag.getArtist());
+				
+				boolean albumChanged = oldTag.getAlbum() == null && newTag.getAlbum() != null ||
+									   oldTag.getAlbum() != null && newTag.getAlbum() == null ||
+									   !oldTag.getAlbum().equals(newTag.getAlbum());
+				
 				boolean oldArtistRemoved = false;
 				
 				if (artistChanged) {
