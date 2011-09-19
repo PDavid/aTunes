@@ -292,8 +292,8 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
      */
     private List<AbstractPlayerEngine> getEngines() {
         List<AbstractPlayerEngine> result = new ArrayList<AbstractPlayerEngine>(2);
-        result.add(new MPlayerEngine(getState(), getFrame(), getOsManager(), Context.getBean(IPlayListHandler.class)));
-        result.add(new XineEngine(getState(), getFrame(), getOsManager(), Context.getBean(IPlayListHandler.class)));
+        result.add(new MPlayerEngine(getState(), getFrame(), getOsManager(), getBean(IPlayListHandler.class)));
+        result.add(new XineEngine(getState(), getFrame(), getOsManager(), getBean(IPlayListHandler.class)));
         //result.add(new VlcPlayerEngine());
         //result.add(new GStreamerEngine());
         return result;
@@ -470,8 +470,8 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 
     		if (newState == PlaybackState.PLAY_FINISHED || newState == PlaybackState.PLAY_INTERRUPTED || newState == PlaybackState.STOPPED) {
     			if (playerEngine != null && playerEngine.getSubmissionState() == SubmissionState.PENDING && currentAudioObject instanceof AudioFile) {
-    				Context.getBean(IWebServicesHandler.class).submit((AudioFile) currentAudioObject, getCurrentAudioObjectPlayedTime() / 1000);
-    				Context.getBean(IStatisticsHandler.class).updateAudioObjectStatistics(currentAudioObject);
+    				getBean(IWebServicesHandler.class).submit((AudioFile) currentAudioObject, getCurrentAudioObjectPlayedTime() / 1000);
+    				getBean(IStatisticsHandler.class).updateAudioObjectStatistics(currentAudioObject);
     				playerEngine.setSubmissionState(SubmissionState.SUBMITTED);
     			}
     		}

@@ -158,7 +158,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
      * Private constructor.
      */
     private PlayListHandler() {
-    	playListColumnSet = (AbstractColumnSet) Context.getBean("playlistColumnSet");
+    	playListColumnSet = (AbstractColumnSet) getBean("playlistColumnSet");
     }
 
     @Override
@@ -336,7 +336,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	public void renamePlayList() {
         int selectedPlaylist = getPlayListTabController().getSelectedPlayListIndex();
         String currentName = getPlayListTabController().getPlayListName(selectedPlaylist);
-        IInputDialog dialog = Context.getBean(IInputDialog.class);
+        IInputDialog dialog = getBean(IInputDialog.class);
         dialog.setTitle(I18nUtils.getString("RENAME_PLAYLIST"));
         dialog.showDialog(currentName);
         String newName = dialog.getResult();
@@ -694,7 +694,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
                     process.execute();
                 }
             } else {
-            	Context.getBean(IErrorDialog.class).showErrorDialog(getFrame(), I18nUtils.getString("FILE_NOT_FOUND"));
+            	getBean(IErrorDialog.class).showErrorDialog(getFrame(), I18nUtils.getString("FILE_NOT_FOUND"));
             }
         }
     }
@@ -1379,7 +1379,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	 */
     @Override
 	public void showAddArtistDragDialog(Artist currentArtist) {
-    	IArtistAlbumSelectorDialog dialog = Context.getBean(IArtistAlbumSelectorDialog.class);
+    	IArtistAlbumSelectorDialog dialog = getBean(IArtistAlbumSelectorDialog.class);
     	Album album = dialog.showDialog(currentArtist);
     	if (album != null) {
     		addToPlayList(album.getAudioObjects());

@@ -255,4 +255,24 @@ public abstract class AbstractHandler implements IHandler {
      */
     protected void initHandler() {
     }
+
+	/**
+	 * Delegate method to get beans
+	 * @param <T>
+	 * @param beanType
+	 * @return
+	 */
+	protected <T> T getBean(Class<T> beanType) {
+		return Context.getBean(beanType);
+	}
+	
+	/**
+	 * Delegate method to get beans
+	 * @param name
+	 * @return
+	 */
+	protected Object getBean(String name) {
+		return Context.getBean(name);
+	}
+
 }

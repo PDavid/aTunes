@@ -63,7 +63,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 	@Override
     public void applicationStarted(List<IAudioObject> playList) {
     	
-    	contextPanels = (List<AbstractContextPanel>) Context.getBean("contextPanels");
+    	contextPanels = (List<AbstractContextPanel>) getBean("contextPanels");
     	
     	getController().addContextPanels(contextPanels);
     	
@@ -78,7 +78,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     
     @Override
     public void allHandlersInitialized() {
-    	retrieveInfoAndShowInPanel(Context.getBean(IPlayListHandler.class).getCurrentAudioObjectFromVisiblePlayList());
+    	retrieveInfoAndShowInPanel(getBean(IPlayListHandler.class).getCurrentAudioObjectFromVisiblePlayList());
     }
     
     /**
@@ -243,7 +243,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
         getState().setUseContext(show);
         getFrame().showContextPanel(show);
         if (show) {
-            retrieveInfoAndShowInPanel(Context.getBean(IPlayListHandler.class).getCurrentAudioObjectFromVisiblePlayList());
+            retrieveInfoAndShowInPanel(getBean(IPlayListHandler.class).getCurrentAudioObjectFromVisiblePlayList());
         }
     }
 

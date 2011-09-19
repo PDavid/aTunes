@@ -128,7 +128,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 					SwingUtilities.invokeAndWait(new Runnable() {
 						@Override
 						public void run() {
-							Context.getBean(IErrorDialog.class).showErrorDialog(getFrame(), I18nUtils.getString("ERRORS_IN_IMPORT_PROCESS"));
+							getBean(IErrorDialog.class).showErrorDialog(getFrame(), I18nUtils.getString("ERRORS_IN_IMPORT_PROCESS"));
 						}
 					});
 				} catch (InterruptedException e) {
@@ -228,7 +228,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 		        ITagAttributesReviewed tagAttributesReviewed = null;
 		        // Review tags if selected in settings
 		        if (RepositoryHandler.this.getState().isReviewTagsBeforeImport()) {
-		            IReviewImportDialog reviewImportDialog = Context.getBean(IReviewImportDialog.class);
+		            IReviewImportDialog reviewImportDialog = getBean(IReviewImportDialog.class);
 		            reviewImportDialog.showDialog(folders, filesToLoad);
 		            if (reviewImportDialog.isDialogCancelled()) {
 		                return;
@@ -332,7 +332,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         // Add itself as listener
     	caseSensitiveTrees = getState().isKeyAlwaysCaseSensitiveInRepositoryStructure();
         addAudioFilesRemovedListener(this);
-        statisticsHandler = Context.getBean(IStatisticsHandler.class);
+        statisticsHandler = getBean(IStatisticsHandler.class);
     }
 
     @Override
@@ -889,7 +889,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         Object selection;
         do {
             String exitString = Actions.getAction(ExitAction.class).getValue(Action.NAME).toString();
-            selection = Context.getBean(IMessageDialog.class).showMessage(getFrame(), StringUtils.getString(I18nUtils.getString("REPOSITORY_NOT_FOUND"), ": ", rep.getRepositoryFolders().get(0)),
+            selection = getBean(IMessageDialog.class).showMessage(getFrame(), StringUtils.getString(I18nUtils.getString("REPOSITORY_NOT_FOUND"), ": ", rep.getRepositoryFolders().get(0)),
                     I18nUtils.getString("REPOSITORY_NOT_FOUND"), JOptionPane.WARNING_MESSAGE,
                     new String[] { I18nUtils.getString("RETRY"), I18nUtils.getString("SELECT_REPOSITORY"), exitString });
 
@@ -915,7 +915,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
             for (String f : lastRepositoryFolders) {
                 foldersToRead.add(new File(f));
             }
-            Context.getBean(IMessageDialog.class).showMessage(I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"), getFrame());
+            getBean(IMessageDialog.class).showMessage(I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"), getFrame());
             retrieve(foldersToRead);
         } else {
         	RepositorySelectionInfoDialog dialog = new RepositorySelectionInfoDialog(getFrame().getFrame());
@@ -1046,7 +1046,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         if (succeeded) {
         	renameFile(audioFile, file, newFile);
             NavigationHandler.getInstance().notifyReload();
-            Context.getBean(IStatisticsHandler.class).updateFileName(audioFile, file.getAbsolutePath(), newFile.getAbsolutePath());
+            getBean(IStatisticsHandler.class).updateFileName(audioFile, file.getAbsolutePath(), newFile.getAbsolutePath());
         }
     }
     
@@ -1084,7 +1084,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      */
     public boolean retrieve(List<File> folders) {
         enableRepositoryActions(false);
-        progressDialog = Context.getBean(IRepositoryProgressDialog.class);
+        progressDialog = getBean(IRepositoryProgressDialog.class);
         // Start with indeterminate dialog
         progressDialog.showProgressDialog();
         progressDialog.setProgressBarIndeterminate(true);
@@ -1122,7 +1122,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      * @return true, if successful
      */
     private boolean selectRepository(boolean repositoryNotFound) {
-    	IMultiFolderSelectionDialog dialog = Context.getBean(IMultiFolderSelectionDialog.class);
+    	IMultiFolderSelectionDialog dialog = getBean(IMultiFolderSelectionDialog.class);
         dialog.setTitle(I18nUtils.getString("SELECT_REPOSITORY"));
         dialog.setText(I18nUtils.getString("SELECT_REPOSITORY_FOLDERS"));
         dialog.showDialog((repository != null && !repositoryNotFound) ? repository.getRepositoryFolders() : null);
@@ -1149,7 +1149,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
      * @param path
      */
     public void importFolders(final List<File> folders, final String path) {
-    	IProgressDialog progressDialog = (IProgressDialog) Context.getBean("progressDialog");
+    	IProgressDialog progressDialog = (IProgressDialog) getBean("progressDialog");
     	progressDialog.setTitle(StringUtils.getString(I18nUtils.getString("READING_FILES_TO_IMPORT"), "..."));
         progressDialog.disableCancelButton();
         progressDialog.showDialog();
@@ -1238,7 +1238,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 					coverWorker = new SwingWorker<Image, Void>() {
 						@Override
 						protected Image doInBackground() throws Exception {
-							return Context.getBean(IWebServicesHandler.class).getAlbumImage(artist, album);
+							return getBean(IWebServicesHandler.class).getAlbumImage(artist, album);
 						}
 
 						@Override

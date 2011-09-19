@@ -37,7 +37,7 @@ public class FullScreenHandler extends AbstractHandler implements IFullScreenHan
 	
 	@Override
 	public void allHandlersInitialized() {
-		playListHandler = Context.getBean(IPlayListHandler.class);
+		playListHandler = getBean(IPlayListHandler.class);
 	}
 	
     @Override

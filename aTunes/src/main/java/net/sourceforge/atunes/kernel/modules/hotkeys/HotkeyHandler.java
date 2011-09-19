@@ -201,7 +201,7 @@ public final class HotkeyHandler extends AbstractHandler implements HotkeyListen
                 getState().setEnableHotkeys(false);
 
                 // Show an error message
-                Context.getBean(IErrorDialog.class).showErrorDialog(getFrame(), I18nUtils.getString("HOTKEYS_ACTIVATION_ERROR_MESSAGE"));
+                getBean(IErrorDialog.class).showErrorDialog(getFrame(), I18nUtils.getString("HOTKEYS_ACTIVATION_ERROR_MESSAGE"));
                 Logger.error("Hotkeys were not activated successfully");
             }
         }
@@ -258,7 +258,7 @@ public final class HotkeyHandler extends AbstractHandler implements HotkeyListen
             break;
         }
         case HOTKEY_TOGGLE_WINDOW_VISIBILITY: {
-            Context.getBean(IUIHandler.class).toggleWindowVisibility();
+            getBean(IUIHandler.class).toggleWindowVisibility();
             break;
         }
         case HOTKEY_MUTE: {
@@ -266,7 +266,7 @@ public final class HotkeyHandler extends AbstractHandler implements HotkeyListen
             break;
         }
         case HOTKEY_SHOW_OSD: {
-            NotificationsHandler.getInstance().showNotification(Context.getBean(IPlayListHandler.class).getCurrentAudioObjectFromCurrentPlayList());
+            NotificationsHandler.getInstance().showNotification(getBean(IPlayListHandler.class).getCurrentAudioObjectFromCurrentPlayList());
             break;
         }
         default: {

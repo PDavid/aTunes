@@ -83,7 +83,7 @@ public final class RipperHandler extends AbstractHandler {
 
 		@Override
 		protected IAlbumInfo doInBackground() throws Exception {
-		    return Context.getBean(IWebServicesHandler.class).getAlbum(artist, album);
+		    return getBean(IWebServicesHandler.class).getAlbum(artist, album);
 		}
 
 		@Override
@@ -131,7 +131,7 @@ public final class RipperHandler extends AbstractHandler {
 		                @Override
 		                public void run() {
 		                	indeterminateProgressDialog.hideDialog();
-		                    Context.getBean(IErrorDialog.class).showErrorDialog(getFrame(), I18nUtils.getString("NO_CD_INSERTED"));
+		                    getBean(IErrorDialog.class).showErrorDialog(getFrame(), I18nUtils.getString("NO_CD_INSERTED"));
 		                }
 		            });
 		        }
@@ -548,7 +548,7 @@ public final class RipperHandler extends AbstractHandler {
         ripper.setGenre(genre);
         ripper.setFileNamePattern(getFileNamePattern());
 
-        final IRipperProgressDialog dialog = Context.getBean(IRipperProgressDialog.class);
+        final IRipperProgressDialog dialog = getBean(IRipperProgressDialog.class);
         dialog.addCancelAction(new ActionListener() {
 			
 			@Override
@@ -559,7 +559,7 @@ public final class RipperHandler extends AbstractHandler {
         
         // Get image from amazon if necessary
         if (albumInfo != null) {
-            Image cover = Context.getBean(IWebServicesHandler.class).getAlbumImage(albumInfo);
+            Image cover = getBean(IWebServicesHandler.class).getAlbumImage(albumInfo);
             dialog.setCover(cover);
             savePicture(cover, folderFile, artist, album);
         }
@@ -703,7 +703,7 @@ public final class RipperHandler extends AbstractHandler {
         SwingUtilities.invokeLater(new Runnable() {
         	@Override
         	public void run() {
-                indeterminateProgressDialog = Context.getBean(IIndeterminateProgressDialogFactory.class).newDialog(getFrame());
+                indeterminateProgressDialog = getBean(IIndeterminateProgressDialogFactory.class).newDialog(getFrame());
                 indeterminateProgressDialog.setTitle(I18nUtils.getString("RIP_CD"));
                 indeterminateProgressDialog.showDialog();
         	}

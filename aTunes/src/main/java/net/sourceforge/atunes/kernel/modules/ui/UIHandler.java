@@ -112,8 +112,8 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
      */
     private void setPlaying(boolean playing) {
         PlayerHandler.getInstance().setPlaying(playing);
-        Context.getBean(IFullScreenHandler.class).setPlaying(playing);
-        Context.getBean(ISystemTrayHandler.class).setPlaying(playing);
+        getBean(IFullScreenHandler.class).setPlaying(playing);
+        getBean(ISystemTrayHandler.class).setPlaying(playing);
     }
 
     /**
@@ -142,7 +142,7 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
 	 */
     @Override
 	public void showAboutDialog() {
-    	Context.getBean(IAboutDialog.class).showDialog();
+    	getBean(IAboutDialog.class).showDialog();
     }
 
     /* (non-Javadoc)
@@ -170,7 +170,7 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
 
 		getFrame().setState(getState());
 		getFrame().setOsManager(getOsManager());
-		getFrame().setPlayListHandler(Context.getBean(IPlayListHandler.class));
+		getFrame().setPlayListHandler(getBean(IPlayListHandler.class));
         
         IFrameState frameState = getState().getFrameState(getFrame().getClass());
         LocaleBean locale = getState().getLocale();
@@ -247,8 +247,8 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
         } else if (newState == PlaybackState.RESUMING) {
             // Resume
             setPlaying(true);
-            getFrame().updateStatusBarWithObjectBeingPlayed(Context.getBean(IPlayListHandler.class).getCurrentAudioObjectFromCurrentPlayList());
-            updateTitleBar(Context.getBean(IPlayListHandler.class).getCurrentAudioObjectFromCurrentPlayList());
+            getFrame().updateStatusBarWithObjectBeingPlayed(getBean(IPlayListHandler.class).getCurrentAudioObjectFromCurrentPlayList());
+            updateTitleBar(getBean(IPlayListHandler.class).getCurrentAudioObjectFromCurrentPlayList());
             getFrame().getPlayListTable().setPlayState(PlayState.PLAYING);
 
         } else if (newState == PlaybackState.PLAYING) {

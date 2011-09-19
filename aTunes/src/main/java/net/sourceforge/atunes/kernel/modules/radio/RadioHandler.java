@@ -130,7 +130,7 @@ public final class RadioHandler extends AbstractHandler {
      * Add the radio station from the add radio dialog.
      */
     public void addRadio() {
-        IRadioDialog dialog = Context.getBean(IRadioDialog.class);
+        IRadioDialog dialog = getBean(IRadioDialog.class);
         dialog.showDialog();
         IRadio radio = dialog.getRadio();
         if (radio != null) {
@@ -403,7 +403,7 @@ public final class RadioHandler extends AbstractHandler {
 	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
 
 	public IRadio editRadio(IRadio radio) {
-		IRadioDialog dialog = Context.getBean(IRadioDialog.class);
+		IRadioDialog dialog = getBean(IRadioDialog.class);
 		dialog.setRadio(radio);
 		dialog.showDialog();
 		return dialog.getRadio();

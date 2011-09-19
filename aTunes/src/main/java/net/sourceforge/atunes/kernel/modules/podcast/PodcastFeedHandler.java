@@ -199,7 +199,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
      * Adds a Podcast Feed.
      */
     public void addPodcastFeed() {
-    	IAddPodcastFeedDialog dialog = Context.getBean(IAddPodcastFeedDialog.class);
+    	IAddPodcastFeedDialog dialog = getBean(IAddPodcastFeedDialog.class);
     	dialog.showDialog();    	
         IPodcastFeed podcastFeed = dialog.getPodcastFeed(); 
         if (podcastFeed != null) {
@@ -362,7 +362,7 @@ public final class PodcastFeedHandler extends AbstractHandler {
         if (isDownloading(podcastFeedEntry)) {
             return;
         }
-        final IProgressDialog d = (IProgressDialog) Context.getBean("transferDialog");
+        final IProgressDialog d = (IProgressDialog) getBean("transferDialog");
         d.setTitle(I18nUtils.getString("PODCAST_FEED_ENTRY_DOWNLOAD"));
         d.setIcon(RssImageIcon.getIcon());
         final PodcastFeedEntryDownloader downloadPodcastFeedEntry = new PodcastFeedEntryDownloader(podcastFeedEntry, getState().getProxy(), getFrame());
