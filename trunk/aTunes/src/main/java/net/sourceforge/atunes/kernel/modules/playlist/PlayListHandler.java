@@ -46,7 +46,6 @@ import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListTableTransferHandler;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListToDeviceDragAndDropListener;
-import net.sourceforge.atunes.kernel.modules.filter.AbstractFilter;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
@@ -57,6 +56,7 @@ import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IErrorDialog;
+import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IInputDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayList;
@@ -123,7 +123,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     /**
      * Filter for play list
      */
-    private AbstractFilter playListFilter = new AbstractFilter() {
+    private IFilter playListFilter = new IFilter() {
 
         @Override
         public String getName() {
@@ -1133,7 +1133,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#getPlayListFilter()
 	 */
     @Override
-	public AbstractFilter getPlayListFilter() {
+	public IFilter getPlayListFilter() {
         return playListFilter;
     }
 

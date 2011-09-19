@@ -28,13 +28,15 @@ import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class FilterHandler extends AbstractHandler {
 
-    private final class AllFilter extends AbstractFilter {
+    private final class AllFilter implements IFilter {
+    	
 		@Override
         public String getName() {
             return "ALL";
@@ -47,12 +49,11 @@ public final class FilterHandler extends AbstractHandler {
 
 		@Override
         public void applyFilter(String filterString) {
-            for (AbstractFilter filter : getFilters().values()) {
+            for (IFilter filter : getFilters().values()) {
                 if (!filter.equals(this)) {
                     filter.applyFilter(filterString);
                 }
             }
-
         }
 	}
 
@@ -69,12 +70,12 @@ public final class FilterHandler extends AbstractHandler {
     /**
      * Available filters
      */
-    private Map<String, AbstractFilter> filters;
+    private Map<String, IFilter> filters;
 
     /**
      * Filter for all current filters at the same time
      */
-    private AbstractFilter allFilter = new AllFilter();
+    private IFilter allFilter = new AllFilter();
 
     /**
      * Selected filter (by default all)
@@ -113,7 +114,7 @@ public final class FilterHandler extends AbstractHandler {
      * 
      * @param filter
      */
-    private void addFilter(AbstractFilter filter) {
+    private void addFilter(IFilter filter) {
     	getFilters().put(filter.getName(), filter);
         // Update UI to show new available filter
         getToolBarFilterController().addFilter(filter);
@@ -124,7 +125,7 @@ public final class FilterHandler extends AbstractHandler {
      * 
      * @param filter
      */
-    public void removeFilter(AbstractFilter filter) {
+    public void removeFilter(IFilter filter) {
     	getFilters().remove(filter.getName());
         // Update UI to hide filter
         getToolBarFilterController().removeFilter(filter.getName());
@@ -192,7 +193,7 @@ public final class FilterHandler extends AbstractHandler {
      * @param filter
      * @return
      */
-    public boolean isFilterSelected(AbstractFilter filter) {
+    public boolean isFilterSelected(IFilter filter) {
         return (this.selectedFilter.equals(allFilter.getName()) || this.selectedFilter.equals(filter.getName())) && getFilter() != null;
     }
 
@@ -202,7 +203,7 @@ public final class FilterHandler extends AbstractHandler {
      * @param filter
      * @param enabled
      */
-    public void setFilterEnabled(AbstractFilter filter, boolean enabled) {
+    public void setFilterEnabled(IFilter filter, boolean enabled) {
         // If filter is selected and must be disabled change to "all" and set filter null
         if (this.selectedFilter.equals(filter.getName()) && !enabled) {
             this.selectedFilter = allFilter.getName();
@@ -229,9 +230,9 @@ public final class FilterHandler extends AbstractHandler {
      * Return filters
      * @return
      */
-    private Map<String, AbstractFilter> getFilters() {
+    private Map<String, IFilter> getFilters() {
     	if (filters == null) {
-    		filters = new HashMap<String, AbstractFilter>();
+    		filters = new HashMap<String, IFilter>();
     	}
     	return filters;
     }
