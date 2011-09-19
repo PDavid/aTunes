@@ -50,10 +50,10 @@ import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAddPodcastFeedDialog;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
+import net.sourceforge.atunes.model.IPodcastFeedHandler;
 import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.FileNameUtils;
@@ -63,7 +63,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The handler for podcast feeds.
  */
-public final class PodcastFeedHandler extends AbstractHandler {
+public final class PodcastFeedHandler extends AbstractHandler implements IPodcastFeedHandler {
 
 	/**
 	 * Initial delay until start podcast retriever 
@@ -143,8 +143,6 @@ public final class PodcastFeedHandler extends AbstractHandler {
         }
     }
 
-    private static PodcastFeedHandler instance = new PodcastFeedHandler();
-
     public static final long DEFAULT_PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL = 180000;
 
     private List<IPodcastFeed> podcastFeeds;
@@ -172,32 +170,16 @@ public final class PodcastFeedHandler extends AbstractHandler {
     private ScheduledFuture<?> scheduledPodcastFeedEntryRetrieverFuture;
 
     @Override
-    protected void initHandler() {
-    }
-
-    @Override
-    public void applicationStarted(List<IAudioObject> playList) {
-    }
-
-    @Override
     public void allHandlersInitialized() {
         startPodcastFeedEntryDownloadChecker();
         startPodcastFeedEntryRetriever();
     }
     
-    /**
-     * Gets the single instance of PodcastFeedHandler.
-     * 
-     * @return single instance of PodcastFeedHandler
-     */
-    public static PodcastFeedHandler getInstance() {
-        return instance;
-    }
-
-    /**
-     * Adds a Podcast Feed.
-     */
-    public void addPodcastFeed() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#addPodcastFeed()
+	 */
+    @Override
+	public void addPodcastFeed() {
     	IAddPodcastFeedDialog dialog = getBean(IAddPodcastFeedDialog.class);
     	dialog.showDialog();    	
         IPodcastFeed podcastFeed = dialog.getPodcastFeed(); 
@@ -262,21 +244,19 @@ public final class PodcastFeedHandler extends AbstractHandler {
         };
     }
 
-    /**
-     * Returns a list with all Podcast Feeds.
-     * 
-     * @return The podcast feeds
-     */
-    public List<IPodcastFeed> getPodcastFeeds() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#getPodcastFeeds()
+	 */
+    @Override
+	public List<IPodcastFeed> getPodcastFeeds() {
         return podcastFeeds;
     }
 
-    /**
-     * Returns a list with all Podcast Feed Entries.
-     * 
-     * @return A list with all Podcast Feed Entries
-     */
-    public List<IPodcastFeedEntry> getPodcastFeedEntries() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#getPodcastFeedEntries()
+	 */
+    @Override
+	public List<IPodcastFeedEntry> getPodcastFeedEntries() {
         List<IPodcastFeedEntry> podcastFeedEntries = new ArrayList<IPodcastFeedEntry>();
         for (IPodcastFeed podcastFeed : getPodcastFeeds()) {
             podcastFeedEntries.addAll(podcastFeed.getPodcastFeedEntries());
@@ -284,23 +264,22 @@ public final class PodcastFeedHandler extends AbstractHandler {
         return podcastFeedEntries;
     }
 
-    /**
-     * Removes a Podcast Feed.
-     * 
-     * @param podcastFeed
-     *            A Podcast Feed that should be removed
-     */
-    public void removePodcastFeed(IPodcastFeed podcastFeed) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#removePodcastFeed(net.sourceforge.atunes.model.IPodcastFeed)
+	 */
+    @Override
+	public void removePodcastFeed(IPodcastFeed podcastFeed) {
         Logger.info("Removing podcast feed");
         getPodcastFeeds().remove(podcastFeed);
         podcastFeedsDirty = true;
         getBean(INavigationHandler.class).refreshView(PodcastNavigationView.class);
     }
 
-    /**
-     * Starts the Podcast Feed Entry Retriever.
-     */
-    public void startPodcastFeedEntryRetriever() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#startPodcastFeedEntryRetriever()
+	 */
+    @Override
+	public void startPodcastFeedEntryRetriever() {
         // When upgrading from a previous version, retrievel interval can be 0
         long retrieval = getState().getPodcastFeedEntriesRetrievalInterval();
         long retrievalInterval = retrieval > 0 ? retrieval : DEFAULT_PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL;
@@ -308,11 +287,12 @@ public final class PodcastFeedHandler extends AbstractHandler {
         schedulePodcastFeedEntryRetriever(retrievalInterval);
     }
 
-    /**
-     * Start podcast feed entry download checker.
-     */
-    public void startPodcastFeedEntryDownloadChecker() {
-        getPodcastFeedEntryDownloadCheckerExecutorService().scheduleWithFixedDelay(new PodcastFeedEntryDownloadChecker(getFrame()), 0, 10000, TimeUnit.MILLISECONDS);
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#startPodcastFeedEntryDownloadChecker()
+	 */
+    @Override
+	public void startPodcastFeedEntryDownloadChecker() {
+        getPodcastFeedEntryDownloadCheckerExecutorService().scheduleWithFixedDelay(new PodcastFeedEntryDownloadChecker(getFrame(), this), 0, 10000, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -342,29 +322,26 @@ public final class PodcastFeedHandler extends AbstractHandler {
                 newRetrievalInterval, TimeUnit.MILLISECONDS);
     }
 
-    /**
-     * Retrieves Podcast Feed Entries and refreshes view asynchronously.
-     * 
-     * @see net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntryRetriever#retrievePodcastFeedEntries()
-     */
-    public void retrievePodcastFeedEntries() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#retrievePodcastFeedEntries()
+	 */
+    @Override
+	public void retrievePodcastFeedEntries() {
     	getPodcastFeedEntryRetrieverExecutorService().execute(new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame(), getBean(INavigationHandler.class)));
     }
 
-    /**
-     * Download Podcast Feed Entry.
-     * 
-     * @param podcastFeedEntry
-     *            the podcast feed entry
-     */
-    public void downloadPodcastFeedEntry(final IPodcastFeedEntry podcastFeedEntry) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#downloadPodcastFeedEntry(net.sourceforge.atunes.model.IPodcastFeedEntry)
+	 */
+    @Override
+	public void downloadPodcastFeedEntry(final IPodcastFeedEntry podcastFeedEntry) {
         if (isDownloading(podcastFeedEntry)) {
             return;
         }
         final IProgressDialog d = (IProgressDialog) getBean("transferDialog");
         d.setTitle(I18nUtils.getString("PODCAST_FEED_ENTRY_DOWNLOAD"));
         d.setIcon(RssImageIcon.getIcon());
-        final PodcastFeedEntryDownloader downloadPodcastFeedEntry = new PodcastFeedEntryDownloader(podcastFeedEntry, getState().getProxy(), getFrame());
+        final PodcastFeedEntryDownloader downloadPodcastFeedEntry = new PodcastFeedEntryDownloader(podcastFeedEntry, getState().getProxy(), getFrame(), this);
         synchronized (runningDownloads) {
             runningDownloads.add(downloadPodcastFeedEntry);
         }
@@ -422,15 +399,11 @@ public final class PodcastFeedHandler extends AbstractHandler {
         new Thread(r).start();
     }
 
-    /**
-     * Gets the download path.
-     * 
-     * @param podcastFeedEntry
-     *            the podcast feed entry
-     * 
-     * @return the download path
-     */
-    public String getDownloadPath(IPodcastFeedEntry podcastFeedEntry) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#getDownloadPath(net.sourceforge.atunes.model.IPodcastFeedEntry)
+	 */
+    @Override
+	public String getDownloadPath(IPodcastFeedEntry podcastFeedEntry) {
         String path = getState().getPodcastFeedEntryDownloadPath();
         if (path == null || path.isEmpty()) {
             path = StringUtils.getString(getOsManager().getUserConfigFolder(Kernel.isDebug()), "/", Constants.DEFAULT_PODCAST_FEED_ENTRY_DOWNLOAD_DIR);
@@ -468,11 +441,11 @@ public final class PodcastFeedHandler extends AbstractHandler {
                 String filename = elements[elements.length - 1];
                 int index = filename.lastIndexOf('.');
                 if (index != -1) {
-                    filename = filename.hashCode() + "." + filename.substring(index, filename.length());
+                    filename = StringUtils.getString(filename.hashCode(), ".", filename.substring(index, filename.length()));
                 } else {
                     filename = String.valueOf(filename.hashCode());
                 }
-                return podcastFeedDownloadFolder.toString() + "/" + FileNameUtils.getValidFileName(filename, getOsManager());
+                return StringUtils.getString(podcastFeedDownloadFolder.toString(), "/", FileNameUtils.getValidFileName(filename, getOsManager()));
             }
         } catch (URISyntaxException e) {
             Logger.error(e);
@@ -480,39 +453,29 @@ public final class PodcastFeedHandler extends AbstractHandler {
         throw new IllegalArgumentException();
     }
 
-    /**
-     * Checks if is downloaded.
-     * 
-     * @param podcastFeedEntry
-     *            the podcast feed entry
-     * 
-     * @return true, if is downloaded
-     */
-    public boolean isDownloaded(IPodcastFeedEntry podcastFeedEntry) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#isDownloaded(net.sourceforge.atunes.model.IPodcastFeedEntry)
+	 */
+    @Override
+	public boolean isDownloaded(IPodcastFeedEntry podcastFeedEntry) {
         File f = new File(getDownloadPath(podcastFeedEntry));
         return f.exists();
     }
 
-    /**
-     * Delete downloaded podcast feed entry.
-     * 
-     * @param podcastFeedEntry
-     *            the podcast feed entry
-     */
-    public void deleteDownloadedPodcastFeedEntry(final IPodcastFeedEntry podcastFeedEntry) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#deleteDownloadedPodcastFeedEntry(net.sourceforge.atunes.model.IPodcastFeedEntry)
+	 */
+    @Override
+	public void deleteDownloadedPodcastFeedEntry(final IPodcastFeedEntry podcastFeedEntry) {
         File f = new File(getDownloadPath(podcastFeedEntry));
         new DeleteDownloadedPodcastFeedEntryWorker(f, podcastFeedEntry, getFrame()).execute();
     }
 
-    /**
-     * Checks if is downloading.
-     * 
-     * @param podcastFeedEntry
-     *            the podcast feed entry
-     * 
-     * @return true, if is downloading
-     */
-    public boolean isDownloading(IPodcastFeedEntry podcastFeedEntry) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#isDownloading(net.sourceforge.atunes.model.IPodcastFeedEntry)
+	 */
+    @Override
+	public boolean isDownloading(IPodcastFeedEntry podcastFeedEntry) {
         synchronized (runningDownloads) {
             for (int i = 0; i < runningDownloads.size(); i++) {
                 if (runningDownloads.get(i).getPodcastFeedEntry().equals(podcastFeedEntry)) {
@@ -528,12 +491,6 @@ public final class PodcastFeedHandler extends AbstractHandler {
         setPodcastFeedEntryRetrievalInterval(newState.getPodcastFeedEntriesRetrievalInterval());
     }
     
-	@Override
-	public void playListCleared() {}
-
-	@Override
-	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
-
 	/**
 	 * @return the podcastFeedEntryDownloaderExecutorService
 	 */

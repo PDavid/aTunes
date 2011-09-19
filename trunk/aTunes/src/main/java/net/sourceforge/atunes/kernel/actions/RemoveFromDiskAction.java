@@ -35,7 +35,6 @@ import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.RepositoryNavigationView;
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -48,6 +47,7 @@ import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
+import net.sourceforge.atunes.model.IPodcastFeedHandler;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -176,7 +176,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
     	List<IAudioObject> songsAudioObjects = navigationHandler.getSelectedAudioObjectsInNavigationTable();
         if (!songsAudioObjects.isEmpty()) {
             for (IAudioObject ao : songsAudioObjects) {
-                PodcastFeedHandler.getInstance().deleteDownloadedPodcastFeedEntry((IPodcastFeedEntry) ao);
+                getBean(IPodcastFeedHandler.class).deleteDownloadedPodcastFeedEntry((IPodcastFeedEntry) ao);
             }
         }
     }

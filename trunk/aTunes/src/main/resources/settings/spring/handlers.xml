@@ -22,4 +22,5 @@
 	<bean id="navigationHandler" class="net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler">
 		<property name="navigationViews" ref="navigationViews"/>
 	</bean>
+	<bean id="podcastFeedHandler" class="net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler"/>
 </beans>

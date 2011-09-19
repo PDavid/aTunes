@@ -26,12 +26,13 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFilter;
+import net.sourceforge.atunes.model.IHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
 import net.sourceforge.atunes.model.ViewMode;
 
-public interface INavigationHandler {
+public interface INavigationHandler extends IHandler {
 
 	public List<INavigationView> getNavigationViews();
 

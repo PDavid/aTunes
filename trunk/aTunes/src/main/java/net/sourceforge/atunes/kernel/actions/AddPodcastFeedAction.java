@@ -25,7 +25,7 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
+import net.sourceforge.atunes.model.IPodcastFeedHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -44,7 +44,7 @@ public class AddPodcastFeedAction extends CustomAbstractAction {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        PodcastFeedHandler.getInstance().addPodcastFeed();
+        getBean(IPodcastFeedHandler.class).addPodcastFeed();
     }
 
     @Override

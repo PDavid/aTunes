@@ -102,6 +102,7 @@
 		class="net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView"
 		parent="navigationView">
 		<constructor-arg ref="podcastNavigationColumnSet" />
+		<constructor-arg ref="podcastFeedHandler"/>
 
 		<property name="decorators">
 			<list>

@@ -31,8 +31,8 @@ import javax.swing.tree.TreePath;
 import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.model.IPodcastFeed;
+import net.sourceforge.atunes.model.IPodcastFeedHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class RemovePodcastFeedAction extends CustomAbstractAction {
@@ -53,7 +53,7 @@ public class RemovePodcastFeedAction extends CustomAbstractAction {
             podcastsToRemove.add(podcastFeed);
         }        	
         for (IPodcastFeed pf : podcastsToRemove) {
-            PodcastFeedHandler.getInstance().removePodcastFeed(pf);
+        	getBean(IPodcastFeedHandler.class).removePodcastFeed(pf);
         }
     }
     

@@ -22,9 +22,9 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
+import net.sourceforge.atunes.model.IPodcastFeedHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class DownloadPodcastEntryAction extends AbstractActionOverSelectedObjects<IPodcastFeedEntry> {
@@ -40,14 +40,14 @@ public class DownloadPodcastEntryAction extends AbstractActionOverSelectedObject
     @Override
     protected void performAction(List<IPodcastFeedEntry> objects) {
         for (IPodcastFeedEntry pfe : objects) {
-            PodcastFeedHandler.getInstance().downloadPodcastFeedEntry(pfe);
+        	getBean(IPodcastFeedHandler.class).downloadPodcastFeedEntry(pfe);
         }
     }
 
     @Override
     public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
         for (IAudioObject ao : selection) {
-            if (!(ao instanceof IPodcastFeedEntry) || ((IPodcastFeedEntry) ao).isDownloaded() || PodcastFeedHandler.getInstance().isDownloading((IPodcastFeedEntry) ao)) {
+            if (!(ao instanceof IPodcastFeedEntry) || ((IPodcastFeedEntry) ao).isDownloaded() || getBean(IPodcastFeedHandler.class).isDownloading((IPodcastFeedEntry) ao)) {
                 return false;
             }
         }
