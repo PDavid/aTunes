@@ -32,7 +32,6 @@ import javax.swing.SwingWorker;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
 import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
@@ -98,7 +97,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         // Show confirmation
-        if (Context.getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("REMOVE_CONFIRMATION"))) {
+        if (getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("REMOVE_CONFIRMATION"))) {
 
             // Podcast view
             if (NavigationHandler.getInstance().getCurrentView() instanceof PodcastNavigationView) {
@@ -123,7 +122,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
         SwingUtilities.invokeLater(new Runnable() {
         	@Override
         	public void run() {
-        		dialog = Context.getBean(IIndeterminateProgressDialogFactory.class).newDialog(Context.getBean(IFrame.class));
+        		dialog = getBean(IIndeterminateProgressDialogFactory.class).newDialog(getBean(IFrame.class));
         		dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
         		dialog.showDialog();
         	}
@@ -148,7 +147,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
         SwingUtilities.invokeLater(new Runnable() {
         	@Override
         	public void run() {
-        		dialog = Context.getBean(IIndeterminateProgressDialogFactory.class).newDialog(Context.getBean(IFrame.class));
+        		dialog = getBean(IIndeterminateProgressDialogFactory.class).newDialog(getBean(IFrame.class));
         		dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
         		dialog.showDialog();
         	}
@@ -158,7 +157,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
             protected Void doInBackground() {
                 for (Folder folder : foldersToRemove) {
                     try {
-                        FileUtils.deleteDirectory(folder.getFolderPath(Context.getBean(IOSManager.class)));
+                        FileUtils.deleteDirectory(folder.getFolderPath(getBean(IOSManager.class)));
                         Logger.info(StringUtils.getString("Removed folder ", folder));
                     } catch (IOException e) {
                         Logger.info(StringUtils.getString("Could not remove folder ", folder, e.getMessage()));

@@ -25,7 +25,6 @@ import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IWebServicesHandler;
@@ -53,7 +52,7 @@ public class AddLovedSongInLastFMAction extends CustomAbstractAction {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        loveSong(Context.getBean(IContextHandler.class).getCurrentAudioObject());
+        loveSong(getBean(IContextHandler.class).getCurrentAudioObject());
     }
 
     /**
@@ -67,7 +66,7 @@ public class AddLovedSongInLastFMAction extends CustomAbstractAction {
 
             @Override
             protected Void doInBackground() throws Exception {
-                Context.getBean(IWebServicesHandler.class).addLovedSong(song);
+                getBean(IWebServicesHandler.class).addLovedSong(song);
                 return null;
             }
 

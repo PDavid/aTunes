@@ -26,7 +26,6 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ISearch;
@@ -49,7 +48,7 @@ public class SearchArtistAtAction extends CustomAbstractAction {
         TreePath path = NavigationHandler.getInstance().getCurrentView().getTree().getSelectionPath();
         if (((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject() instanceof Artist) {
             Artist a = (Artist) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-            ISearchDialog dialog = Context.getBean(ISearchDialog.class);
+            ISearchDialog dialog = getBean(ISearchDialog.class);
             ISearch search = NavigationHandler.getInstance().openSearchDialog(dialog, true);
             if (dialog.isSetAsDefault() && search != null) {
                 getState().setDefaultSearch(search.toString());

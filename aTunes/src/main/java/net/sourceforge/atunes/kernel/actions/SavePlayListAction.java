@@ -29,7 +29,6 @@ import javax.swing.JFileChooser;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IConfirmationDialog;
@@ -60,7 +59,7 @@ public class SavePlayListAction extends CustomAbstractAction {
         JFileChooser fileChooser = new JFileChooser(getState().getSavePlaylistPath());
         FileFilter filter = PlayListIO.getPlaylistFileFilter();
         fileChooser.setFileFilter(filter);
-        if (fileChooser.showSaveDialog(Context.getBean(IFrame.class).getFrame()) == JFileChooser.APPROVE_OPTION) {
+        if (fileChooser.showSaveDialog(getBean(IFrame.class).getFrame()) == JFileChooser.APPROVE_OPTION) {
 
             // Get selected file
             File file = fileChooser.getSelectedFile();
@@ -74,15 +73,15 @@ public class SavePlayListAction extends CustomAbstractAction {
 
             // If file does not exist, or exist and overwrite is confirmed, then write file
             if (!file.exists()
-                    || (file.exists() && Context.getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("OVERWRITE_FILE")))) {
-                PlayListIO.write(Context.getBean(IPlayListHandler.class).getCurrentPlayList(true), file, Context.getBean(IOSManager.class));
+                    || (file.exists() && getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("OVERWRITE_FILE")))) {
+                PlayListIO.write(getBean(IPlayListHandler.class).getCurrentPlayList(true), file, getBean(IOSManager.class));
             }
         }
     }
 
     @Override
     public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
-        return !Context.getBean(IPlayListHandler.class).getCurrentPlayList(true).isEmpty();
+        return !getBean(IPlayListHandler.class).getCurrentPlayList(true).isEmpty();
     }
 
 }

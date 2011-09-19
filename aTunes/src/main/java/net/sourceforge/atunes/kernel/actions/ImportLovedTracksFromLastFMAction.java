@@ -28,7 +28,6 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLovedTrack;
@@ -50,7 +49,7 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
         @Override
         protected List<ILocalAudioObject> doInBackground() throws Exception {
             // Get loved tracks
-            List<LastFmLovedTrack> lovedTracks = Context.getBean(IWebServicesHandler.class).getLovedTracks();
+            List<LastFmLovedTrack> lovedTracks = getBean(IWebServicesHandler.class).getLovedTracks();
             if (!lovedTracks.isEmpty()) {
                 List<ILocalAudioObject> favoriteAudioFiles = new ArrayList<ILocalAudioObject>();
                 for (LastFmLovedTrack lovedTrack : lovedTracks) {
@@ -79,7 +78,7 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
                 FavoritesHandler.getInstance().toggleFavoriteSongs(lovedTracks);
             } catch (Exception e) {
             }
-            Context.getBean(IMessageDialog.class).showMessage(StringUtils.getString(I18nUtils.getString("LOVED_TRACKS_IMPORTED"), ": ", lovedTracks == null ? "0" : lovedTracks.size()), Context.getBean(IFrame.class));
+            getBean(IMessageDialog.class).showMessage(StringUtils.getString(I18nUtils.getString("LOVED_TRACKS_IMPORTED"), ": ", lovedTracks == null ? "0" : lovedTracks.size()), getBean(IFrame.class));
 
         }
     }
@@ -101,7 +100,7 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
         SwingUtilities.invokeLater(new Runnable() {
         	@Override
         	public void run() {
-        		dialog = Context.getBean(IIndeterminateProgressDialogFactory.class).newDialog(Context.getBean(IFrame.class));
+        		dialog = getBean(IIndeterminateProgressDialogFactory.class).newDialog(getBean(IFrame.class));
         		dialog.setTitle(I18nUtils.getString("GETTING_LOVED_TRACKS_FROM_LASTFM"));
         		dialog.showDialog();
         	}

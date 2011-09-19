@@ -24,7 +24,6 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.List;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.DesktopUtils;
@@ -58,7 +57,7 @@ public class OpenFolderAction extends AbstractActionOverSelectedObjects<AudioFil
 
         // ... then open
         for (File folder : foldersToOpen) {
-            DesktopUtils.openFile(folder, Context.getBean(IOSManager.class));
+            DesktopUtils.openFile(folder, getBean(IOSManager.class));
         }
     }
 }

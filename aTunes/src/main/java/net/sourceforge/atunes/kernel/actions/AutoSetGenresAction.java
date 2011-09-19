@@ -24,7 +24,6 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -48,7 +47,7 @@ public class AutoSetGenresAction extends AbstractActionOverSelectedObjects<ILoca
     
     @Override
     protected void performAction(List<ILocalAudioObject> objects) {
-        TagEditionOperations.editGenre(objects, getState(), Context.getBean(IPlayListHandler.class));
+        TagEditionOperations.editGenre(objects, getState(), getBean(IPlayListHandler.class));
     }
 
     @Override

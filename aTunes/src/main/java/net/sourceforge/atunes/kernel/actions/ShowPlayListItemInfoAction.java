@@ -26,7 +26,6 @@ import java.util.List;
 
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialogFactory;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -52,8 +51,8 @@ public class ShowPlayListItemInfoAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        IAudioObject audioObject = Context.getBean(IPlayListHandler.class).getSelectedAudioObjects().get(0);
-        Context.getBean(IAudioObjectPropertiesDialogFactory.class).newInstance(audioObject).showDialog();
+        IAudioObject audioObject = getBean(IPlayListHandler.class).getSelectedAudioObjects().get(0);
+        getBean(IAudioObjectPropertiesDialogFactory.class).newInstance(audioObject).showDialog();
     }
 
     @Override

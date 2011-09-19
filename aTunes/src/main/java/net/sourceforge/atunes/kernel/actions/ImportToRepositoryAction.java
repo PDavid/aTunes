@@ -24,7 +24,6 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.List;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.SelectorDialog;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.IErrorDialog;
@@ -52,12 +51,12 @@ public class ImportToRepositoryAction extends CustomAbstractAction {
     public void actionPerformed(ActionEvent e) {
         // First check if repository is selected. If not, display a message
         if (RepositoryHandler.getInstance().repositoryIsNull()) {
-        	Context.getBean(IErrorDialog.class).showErrorDialog(Context.getBean(IFrame.class), I18nUtils.getString("SELECT_REPOSITORY_BEFORE_IMPORT"));
+        	getBean(IErrorDialog.class).showErrorDialog(getBean(IFrame.class), I18nUtils.getString("SELECT_REPOSITORY_BEFORE_IMPORT"));
             return;
         }
 
         // Now show dialog to select folders
-        IMultiFolderSelectionDialog dialog = Context.getBean(IMultiFolderSelectionDialog.class);
+        IMultiFolderSelectionDialog dialog = getBean(IMultiFolderSelectionDialog.class);
         dialog.setTitle(I18nUtils.getString("IMPORT"));
         dialog.setText(I18nUtils.getString("SELECT_FOLDERS_TO_IMPORT"));
         dialog.showDialog(null);
@@ -72,7 +71,7 @@ public class ImportToRepositoryAction extends CustomAbstractAction {
                 }
                 // If repository folders are more than one then user must select where to import songs
                 if (foldersList.length > 1) {
-                    SelectorDialog selector = new SelectorDialog(Context.getBean(IFrame.class).getFrame(), I18nUtils.getString("SELECT_REPOSITORY_FOLDER_TO_IMPORT"),
+                    SelectorDialog selector = new SelectorDialog(getBean(IFrame.class).getFrame(), I18nUtils.getString("SELECT_REPOSITORY_FOLDER_TO_IMPORT"),
                             foldersList, null);
                     selector.setVisible(true);
                     path = selector.getSelection();

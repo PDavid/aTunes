@@ -25,7 +25,6 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.device.TransferToRepositoryProcess;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
@@ -38,8 +37,8 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 public class CopyToRepositoryAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
-    private static class ImportProcessListener implements ProcessListener {
-        private static final class ImportProcessFinishedRunnable implements Runnable {
+    private class ImportProcessListener implements ProcessListener {
+        private final class ImportProcessFinishedRunnable implements Runnable {
             private final boolean ok;
 
             private ImportProcessFinishedRunnable(boolean ok) {
@@ -49,7 +48,7 @@ public class CopyToRepositoryAction extends AbstractActionOverSelectedObjects<IL
             @Override
             public void run() {
                 if (!ok) {
-                	Context.getBean(IErrorDialog.class).showErrorDialog(Context.getBean(IFrame.class), I18nUtils.getString("ERRORS_IN_COPYING_PROCESS"));
+                	getBean(IErrorDialog.class).showErrorDialog(getBean(IFrame.class), I18nUtils.getString("ERRORS_IN_COPYING_PROCESS"));
                 }
                 // Force a refresh of repository to add new songs
                 RepositoryHandler.getInstance().refreshRepository();
@@ -75,7 +74,7 @@ public class CopyToRepositoryAction extends AbstractActionOverSelectedObjects<IL
 
     @Override
     protected void performAction(List<ILocalAudioObject> objects) {
-        final TransferToRepositoryProcess importer = new TransferToRepositoryProcess(objects, getState(), Context.getBean(IFrame.class), Context.getBean(IOSManager.class));
+        final TransferToRepositoryProcess importer = new TransferToRepositoryProcess(objects, getState(), getBean(IFrame.class), getBean(IOSManager.class));
         importer.addProcessListener(new ImportProcessListener());
         importer.execute();
     }

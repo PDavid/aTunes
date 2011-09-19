@@ -25,7 +25,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;

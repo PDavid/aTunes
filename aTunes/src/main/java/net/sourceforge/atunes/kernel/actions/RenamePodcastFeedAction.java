@@ -26,7 +26,6 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.model.IInputDialog;
@@ -46,7 +45,7 @@ public class RenamePodcastFeedAction extends CustomAbstractAction {
     public void actionPerformed(ActionEvent e) {
         TreePath path = NavigationHandler.getInstance().getView(PodcastNavigationView.class).getTree().getSelectionPath();
         IPodcastFeed podcastFeed = (IPodcastFeed) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-        IInputDialog dialog = Context.getBean(IInputDialog.class);
+        IInputDialog dialog = getBean(IInputDialog.class);
         dialog.setTitle(I18nUtils.getString("RENAME_PODCAST_FEED"));
         dialog.showDialog(podcastFeed.getName());
         String result = dialog.getResult();
