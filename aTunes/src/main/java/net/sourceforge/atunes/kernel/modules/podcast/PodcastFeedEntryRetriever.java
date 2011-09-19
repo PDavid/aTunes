@@ -34,6 +34,7 @@ import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.IPodcastFeed;
+import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -107,7 +108,7 @@ public class PodcastFeedEntryRetriever implements Runnable {
                     // Get entry nodes
                     NodeList entries = XMLUtils.evaluateXPathExpressionAndReturnNodeList(feedType.getEntryXPath(), feedXml);
 
-                    final List<PodcastFeedEntry> newEntries = new ArrayList<PodcastFeedEntry>();
+                    final List<IPodcastFeedEntry> newEntries = new ArrayList<IPodcastFeedEntry>();
                     for (int i = 0; i < entries.getLength(); i++) {
 
                         String title = "";

@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.podcast;
 
 import java.awt.Paint;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -45,13 +44,6 @@ import org.joda.time.base.BaseDateTime;
 public final class PodcastFeedEntry implements IPodcastFeedEntry {
 
     private static final long serialVersionUID = 4185336290582212484L;
-
-    private static Comparator<PodcastFeedEntry> comparator = new Comparator<PodcastFeedEntry>() {
-        @Override
-        public int compare(PodcastFeedEntry o1, PodcastFeedEntry o2) {
-            return o1.title.compareToIgnoreCase(o2.title);
-        }
-    };
 
     private String title;
     private String author;
@@ -94,15 +86,6 @@ public final class PodcastFeedEntry implements IPodcastFeedEntry {
     }
 
     /**
-     * Gets the comparator.
-     * 
-     * @return the comparator of the podcast feed entries
-     */
-    public static Comparator<PodcastFeedEntry> getComparator() {
-        return comparator;
-    }
-
-    /**
      * Gets the podcast feed entries.
      * 
      * @param audioObjects
@@ -110,11 +93,11 @@ public final class PodcastFeedEntry implements IPodcastFeedEntry {
      * 
      * @return the podcast feed entries
      */
-    public static List<PodcastFeedEntry> getPodcastFeedEntries(List<IAudioObject> audioObjects) {
-        List<PodcastFeedEntry> result = new ArrayList<PodcastFeedEntry>();
+    public static List<IPodcastFeedEntry> getPodcastFeedEntries(List<IAudioObject> audioObjects) {
+        List<IPodcastFeedEntry> result = new ArrayList<IPodcastFeedEntry>();
         for (IAudioObject audioObject : audioObjects) {
-            if (audioObject instanceof PodcastFeedEntry) {
-                result.add((PodcastFeedEntry) audioObject);
+            if (audioObject instanceof IPodcastFeedEntry) {
+                result.add((IPodcastFeedEntry) audioObject);
             }
         }
         return result;
@@ -122,10 +105,10 @@ public final class PodcastFeedEntry implements IPodcastFeedEntry {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof PodcastFeedEntry)) {
+        if (!(o instanceof IPodcastFeedEntry)) {
             return false;
         }
-        return getUrl().equals(((PodcastFeedEntry) o).getUrl());
+        return getUrl().equals(((IPodcastFeedEntry) o).getUrl());
     }
 
     @Override
@@ -343,8 +326,8 @@ public final class PodcastFeedEntry implements IPodcastFeedEntry {
     }
 
     @Override
-    public int compareTo(PodcastFeedEntry o1) {
-        return title.compareTo(o1.title);
+    public int compareTo(IPodcastFeedEntry o1) {
+        return title.compareTo(o1.getTitle());
     }
 
     @Override

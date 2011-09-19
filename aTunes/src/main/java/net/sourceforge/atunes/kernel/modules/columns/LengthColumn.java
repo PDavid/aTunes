@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
@@ -51,7 +50,7 @@ public class LengthColumn extends AbstractColumn {
         if (audioObject instanceof IRadio) {
             return "";
         }
-        if (audioObject instanceof IPodcastFeedEntry && ((PodcastFeedEntry) audioObject).getDuration() <= 0) {
+        if (audioObject instanceof IPodcastFeedEntry && ((IPodcastFeedEntry) audioObject).getDuration() <= 0) {
             return "-";
         }
         return StringUtils.seconds2String(audioObject.getDuration());

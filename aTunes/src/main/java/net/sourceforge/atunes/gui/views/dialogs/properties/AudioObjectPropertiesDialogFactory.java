@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.gui.views.dialogs.properties;
 
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -50,7 +49,7 @@ public class AudioObjectPropertiesDialogFactory implements IAudioObjectPropertie
 	public IAudioObjectPropertiesDialog newInstance(IAudioObject a) {
     	AudioObjectPropertiesDialog dialog = null;
     	if (a instanceof IPodcastFeedEntry) {
-    		dialog = new PodcastFeedEntryPropertiesDialog((PodcastFeedEntry) a, frame, state);
+    		dialog = new PodcastFeedEntryPropertiesDialog((IPodcastFeedEntry) a, frame, state);
     	} else if (a instanceof IRadio) {
     		dialog = new RadioPropertiesDialog((Radio) a, frame);
     	} else if (a instanceof AudioFile) {

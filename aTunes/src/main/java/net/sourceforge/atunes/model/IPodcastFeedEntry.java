@@ -22,8 +22,6 @@ package net.sourceforge.atunes.model;
 
 import java.io.Serializable;
 
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
-
 import org.joda.time.DateTime;
 
 /**
@@ -31,7 +29,7 @@ import org.joda.time.DateTime;
  * @author alex
  *
  */
-public interface IPodcastFeedEntry extends IAudioObject, Serializable, Comparable<PodcastFeedEntry> {
+public interface IPodcastFeedEntry extends IAudioObject, Serializable, Comparable<IPodcastFeedEntry> {
 
 	/**
 	 * Gets the description.

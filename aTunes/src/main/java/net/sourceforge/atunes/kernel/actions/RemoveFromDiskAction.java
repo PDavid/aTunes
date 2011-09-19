@@ -35,7 +35,6 @@ import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.RepositoryNavigationView;
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
@@ -177,7 +176,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
     	List<IAudioObject> songsAudioObjects = navigationHandler.getSelectedAudioObjectsInNavigationTable();
         if (!songsAudioObjects.isEmpty()) {
             for (IAudioObject ao : songsAudioObjects) {
-                PodcastFeedHandler.getInstance().deleteDownloadedPodcastFeedEntry((PodcastFeedEntry) ao);
+                PodcastFeedHandler.getInstance().deleteDownloadedPodcastFeedEntry((IPodcastFeedEntry) ao);
             }
         }
     }

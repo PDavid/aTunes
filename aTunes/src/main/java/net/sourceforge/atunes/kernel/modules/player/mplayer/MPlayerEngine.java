@@ -31,7 +31,6 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
@@ -308,7 +307,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
         boolean shortPathName = getState().isUseShortPathNames() && getOsManager().usesShortPathNames() && audioObject instanceof AudioFile;
         String url;
         if (audioObject instanceof IPodcastFeedEntry && !isRemoteAudio) {
-            url = PodcastFeedHandler.getInstance().getDownloadPath((PodcastFeedEntry) audioObject);
+            url = PodcastFeedHandler.getInstance().getDownloadPath((IPodcastFeedEntry) audioObject);
             if (getState().isUseShortPathNames() && getOsManager().usesShortPathNames()) {
                 shortPathName = true;
             }

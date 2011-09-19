@@ -71,7 +71,6 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.modules.player.ProgressBarSeekListener;
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
@@ -307,7 +306,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
             textLabel2.setText(((Radio) audioObject).getUrl());
         } else if (audioObject instanceof IPodcastFeedEntry) {
         	progressSlider.setEnabled(false);
-            textLabel.setText(((PodcastFeedEntry) audioObject).getTitle());
+            textLabel.setText(((IPodcastFeedEntry) audioObject).getTitle());
             textLabel2.setText(((IPodcastFeedEntry) audioObject).getPodcastFeed().getName());
         } else {
             textLabel.setText(audioObject.getTitleOrFileName());
