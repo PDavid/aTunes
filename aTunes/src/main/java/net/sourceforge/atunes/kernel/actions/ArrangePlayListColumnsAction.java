@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
-import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -46,7 +46,7 @@ public class ArrangePlayListColumnsAction extends CustomAbstractAction {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-    	ColumnSetPopupMenu.selectColumns((AbstractCommonColumnModel) getBean(IPlayListHandler.class).getPlayListTable().getColumnModel());
+    	ColumnSetPopupMenu.selectColumns((AbstractCommonColumnModel) getBean(IFrame.class).getPlayListTable().getColumnModel());
     }
 
 }
