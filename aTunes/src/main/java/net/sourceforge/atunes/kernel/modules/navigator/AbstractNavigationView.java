@@ -62,6 +62,7 @@ import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITreeGeneratorFactory;
@@ -113,6 +114,10 @@ public abstract class AbstractNavigationView implements INavigationView {
      * State of application
      */
     private IState state;
+    
+    private INavigationHandler navigationHandler;
+    
+    private IFrame frame;
     
     /**
      * Decorators used in view
@@ -168,8 +173,10 @@ public abstract class AbstractNavigationView implements INavigationView {
     @Override
 	public abstract JPopupMenu getTreePopupMenu();
 
-    public AbstractNavigationView(IState state) {
+    public AbstractNavigationView(IState state, INavigationHandler navigationHandler, IFrame frame) {
     	this.state = state;
+    	this.navigationHandler = navigationHandler;
+    	this.frame = frame;
     	this.treeGeneratorFactory = Context.getBean(ITreeGeneratorFactory.class);
     }
     
@@ -221,16 +228,16 @@ public abstract class AbstractNavigationView implements INavigationView {
     @Override
 	public void refreshView(ViewMode viewMode, String treeFilter) {
         // Get selected rows before refresh
-        List<IAudioObject> selectedObjects = ((NavigationTableModel) getNavigationTable().getModel()).getAudioObjectsAt(getNavigationTable().getSelectedRows());
+        List<IAudioObject> selectedObjects = ((NavigationTableModel) frame.getNavigationTable().getModel()).getAudioObjectsAt(frame.getNavigationTable().getSelectedRows());
 
         // Call to refresh tree
         refreshTree(viewMode, treeFilter);
 
         // Set the same selected audio objects as before refreshing
         for (IAudioObject audioObject : selectedObjects) {
-            int indexOfAudioObject = ((NavigationTableModel) getNavigationTable().getModel()).getAudioObjects().indexOf(audioObject);
+            int indexOfAudioObject = ((NavigationTableModel) frame.getNavigationTable().getModel()).getAudioObjects().indexOf(audioObject);
             if (indexOfAudioObject != -1) {
-                getNavigationTable().addRowSelectionInterval(indexOfAudioObject, indexOfAudioObject);
+            	frame.getNavigationTable().addRowSelectionInterval(indexOfAudioObject, indexOfAudioObject);
             }
         }
     }
@@ -338,7 +345,7 @@ public abstract class AbstractNavigationView implements INavigationView {
 	 */
     @Override
 	public final void updateTablePopupMenuWithTableSelection(JTable table, MouseEvent e) {
-        updateTablePopupMenuItems(getTablePopupMenu(), ((NavigationTableModel) getNavigationTable().getModel()).getAudioObjectsAt(table.getSelectedRows()));
+        updateTablePopupMenuItems(getTablePopupMenu(), ((NavigationTableModel) frame.getNavigationTable().getModel()).getAudioObjectsAt(table.getSelectedRows()));
     }
 
     /**
@@ -399,15 +406,6 @@ public abstract class AbstractNavigationView implements INavigationView {
         Logger.debug(objects);
     }
 
-    /**
-     * Give access to navigation table
-     * 
-     * @return
-     */
-    protected JTable getNavigationTable() {
-        return NavigationHandler.getInstance().getNavigationTable();
-    }
-
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#getDefaultComparator()
 	 */
@@ -457,14 +455,14 @@ public abstract class AbstractNavigationView implements INavigationView {
      * @return
      */
     public List<IAudioObject> getSelectedAudioObjects() {
-        List<IAudioObject> selectedInTable = ((NavigationTableModel) getNavigationTable().getModel()).getAudioObjectsAt(getNavigationTable().getSelectedRows());
+        List<IAudioObject> selectedInTable = ((NavigationTableModel) frame.getNavigationTable().getModel()).getAudioObjectsAt(frame.getNavigationTable().getSelectedRows());
         if (selectedInTable.isEmpty()) {
             TreePath[] paths = getTree().getSelectionPaths();
             List<IAudioObject> audioObjectsSelected = new ArrayList<IAudioObject>();
             if (paths != null) {
                 for (TreePath path : paths) {
                     audioObjectsSelected.addAll(getAudioObjectForTreeNode((DefaultMutableTreeNode) path.getLastPathComponent(), getCurrentViewMode(), FilterHandler.getInstance()
-                            .isFilterSelected(NavigationHandler.getInstance().getTreeFilter()) ? FilterHandler.getInstance().getFilter() : null));
+                            .isFilterSelected(navigationHandler.getTreeFilter()) ? FilterHandler.getInstance().getFilter() : null));
                     AudioObjectComparator.sort(audioObjectsSelected);
                 }
             }
@@ -580,7 +578,7 @@ public abstract class AbstractNavigationView implements INavigationView {
 
     			@Override
     			public void actionPerformed(ActionEvent e) {
-    				NavigationHandler.getInstance().setNavigationView(AbstractNavigationView.this.getClass().getName());
+    				navigationHandler.setNavigationView(AbstractNavigationView.this.getClass().getName());
     			}
     			
     			@Override

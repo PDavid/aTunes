@@ -31,10 +31,10 @@ import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.renderers.StringTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.TextAndIconTableCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
-import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable.PlayState;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.columns.TextAndIcon;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.PlayState;
 
 /**
  * The Class PlayListColumnModel.

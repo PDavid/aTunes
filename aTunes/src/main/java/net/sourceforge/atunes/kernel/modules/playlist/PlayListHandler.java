@@ -46,6 +46,7 @@ import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListTableTransferHandler;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListToDeviceDragAndDropListener;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
@@ -180,10 +181,10 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     @Override
     public void allHandlersInitialized() {
         // Create drag and drop listener
-        PlayListTableTransferHandler playListTransferHandler = new PlayListTableTransferHandler(getFrame(), getOsManager(), this);
+        PlayListTableTransferHandler playListTransferHandler = new PlayListTableTransferHandler(getFrame(), getOsManager(), this, getBean(INavigationHandler.class));
         getPlayListController().getMainPlayListTable().setTransferHandler(playListTransferHandler);
         getPlayListController().getMainPlayListScrollPane().setTransferHandler(playListTransferHandler);
-        new PlayListToDeviceDragAndDropListener();
+        new PlayListToDeviceDragAndDropListener(getBean(INavigationHandler.class));
     }
 
     /**

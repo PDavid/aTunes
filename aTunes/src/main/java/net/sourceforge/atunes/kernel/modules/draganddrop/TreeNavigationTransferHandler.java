@@ -26,8 +26,9 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.model.TransferableList;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 
 /**
@@ -119,7 +120,7 @@ public class TreeNavigationTransferHandler extends TransferHandler {
             	SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
-						NavigationHandler.getInstance().selectArtist(draggedArtist.getArtistInfo().getName());
+						Context.getBean(INavigationHandler.class).selectArtist(draggedArtist.getArtistInfo().getName());
 					}
 				});
             	
@@ -131,7 +132,7 @@ public class TreeNavigationTransferHandler extends TransferHandler {
             	SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
-						NavigationHandler.getInstance().selectAudioObject(playlistRow.getRowContent());
+						Context.getBean(INavigationHandler.class).selectAudioObject(playlistRow.getRowContent());
 					}
 				});
             	

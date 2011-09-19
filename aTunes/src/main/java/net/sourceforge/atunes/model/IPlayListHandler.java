@@ -26,6 +26,7 @@ import javax.swing.JMenuItem;
 
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 
+
 public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
 
 	/**

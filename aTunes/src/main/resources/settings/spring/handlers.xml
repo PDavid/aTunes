@@ -19,4 +19,7 @@
 	<bean id="uiHandler" class="net.sourceforge.atunes.kernel.modules.ui.UIHandler"/>
 	<bean id="contextHandler" class="net.sourceforge.atunes.kernel.modules.context.ContextHandler"/>
 	<bean id="playListHandler" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler"/>
+	<bean id="navigationHandler" class="net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler">
+		<property name="navigationViews" ref="navigationViews"/>
+	</bean>
 </beans>

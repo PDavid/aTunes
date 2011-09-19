@@ -27,7 +27,7 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -53,11 +53,11 @@ import org.w3c.dom.NodeList;
  */
 public class PodcastFeedEntryRetriever implements Runnable {
 
-    private static class RefreshViewRunnable implements Runnable {
+    private class RefreshViewRunnable implements Runnable {
         @Override
         public void run() {
             // refresh view
-            NavigationHandler.getInstance().refreshView(PodcastNavigationView.class);
+            navigationHandler.refreshView(PodcastNavigationView.class);
             Logger.info("Podcast feed entries retrieval done");
         }
     }
@@ -67,11 +67,14 @@ public class PodcastFeedEntryRetriever implements Runnable {
     private IState state;
     
     private IFrame frame;
+    
+    private INavigationHandler navigationHandler;
 
-    public PodcastFeedEntryRetriever(List<IPodcastFeed> podcastFeeds, IState state, IFrame frame) {
+    public PodcastFeedEntryRetriever(List<IPodcastFeed> podcastFeeds, IState state, IFrame frame, INavigationHandler navigationHandler) {
         this.podcastFeeds = podcastFeeds;
         this.state = state;
         this.frame = frame;
+        this.navigationHandler = navigationHandler;
     }
 
     /**

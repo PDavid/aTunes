@@ -28,6 +28,7 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
@@ -80,8 +81,8 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 
     private IPlayListHandler playListHandler;
     
-    public MPlayerEngine(IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler) {
-    	super(state, frame, osManager, playListHandler);
+    public MPlayerEngine(IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, INavigationHandler navigationHandler) {
+    	super(state, frame, osManager, playListHandler, navigationHandler);
     	this.playListHandler = playListHandler;
     	commandWriter = MPlayerCommandWriter.newCommandWriter(null, osManager);
     }

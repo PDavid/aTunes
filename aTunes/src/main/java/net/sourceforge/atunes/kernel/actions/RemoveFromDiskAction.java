@@ -32,7 +32,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.RepositoryNavigationView;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
@@ -58,6 +58,8 @@ import org.apache.commons.io.FileUtils;
 public class RemoveFromDiskAction extends CustomAbstractAction {
 
 	private IIndeterminateProgressDialog dialog;
+	
+	private INavigationHandler navigationHandler;
 	
     private final class DeleteFilesWorker extends SwingWorker<Void, Void> {
         private final List<ILocalAudioObject> files;
@@ -90,6 +92,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
     public RemoveFromDiskAction() {
         super(I18nUtils.getString("REMOVE_FROM_DISK"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_FROM_DISK"));
+        navigationHandler = getBean(INavigationHandler.class);
     }
 
     @Override
@@ -98,12 +101,12 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
         if (getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("REMOVE_CONFIRMATION"))) {
 
             // Podcast view
-            if (NavigationHandler.getInstance().getCurrentView() instanceof PodcastNavigationView) {
+            if (navigationHandler.getCurrentView() instanceof PodcastNavigationView) {
                 fromPodcastView();
                 // Repository or device view with folder view mode, folder selected: delete folders instead of content
-            } else if ((NavigationHandler.getInstance().getCurrentView() instanceof RepositoryNavigationView || NavigationHandler.getInstance().getCurrentView() instanceof DeviceNavigationView)
-                    && NavigationHandler.getInstance().getCurrentViewMode() == ViewMode.FOLDER
-                    && NavigationHandler.getInstance().isActionOverTree()) {
+            } else if ((navigationHandler.getCurrentView() instanceof RepositoryNavigationView || navigationHandler.getCurrentView() instanceof DeviceNavigationView)
+                    && navigationHandler.getCurrentViewMode() == ViewMode.FOLDER
+                    && navigationHandler.isActionOverTree()) {
                 fromRepositoryOrDeviceView();
             } else {
                 fromOtherViews();
@@ -112,7 +115,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
     }
 
     private void fromOtherViews() {
-        final List<IAudioObject> files = NavigationHandler.getInstance().getFilesSelectedInNavigator();
+        final List<IAudioObject> files = navigationHandler.getFilesSelectedInNavigator();
         RepositoryHandler.getInstance().startTransaction();
         RepositoryHandler.getInstance().remove(AudioFile.getAudioFiles(files));
         RepositoryHandler.getInstance().endTransaction();
@@ -128,7 +131,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
     }
 
     private void fromRepositoryOrDeviceView() {
-        TreePath[] paths = NavigationHandler.getInstance().getCurrentView().getTree().getSelectionPaths();
+        TreePath[] paths = navigationHandler.getCurrentView().getTree().getSelectionPaths();
         final List<Folder> foldersToRemove = new ArrayList<Folder>();
         if (paths != null) {
             for (TreePath path : paths) {
@@ -171,7 +174,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
     }
 
     private void fromPodcastView() {
-    	List<IAudioObject> songsAudioObjects = NavigationHandler.getInstance().getSelectedAudioObjectsInNavigationTable();
+    	List<IAudioObject> songsAudioObjects = navigationHandler.getSelectedAudioObjectsInNavigationTable();
         if (!songsAudioObjects.isEmpty()) {
             for (IAudioObject ao : songsAudioObjects) {
                 PodcastFeedHandler.getInstance().deleteDownloadedPodcastFeedEntry((PodcastFeedEntry) ao);
@@ -186,7 +189,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
 
     @Override
     public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
-        if (NavigationHandler.getInstance().getCurrentView().equals(NavigationHandler.getInstance().getView(PodcastNavigationView.class))) {
+        if (navigationHandler.getCurrentView().equals(navigationHandler.getView(PodcastNavigationView.class))) {
             for (IAudioObject ao : selection) {
                 if (!((IPodcastFeedEntry) ao).isDownloaded()) {
                     return false;

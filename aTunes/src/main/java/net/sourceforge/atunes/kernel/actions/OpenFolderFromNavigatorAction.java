@@ -28,7 +28,7 @@ import java.util.Set;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -45,7 +45,7 @@ public class OpenFolderFromNavigatorAction extends OpenFolderAction {
 
     @Override
     public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        List<IAudioObject> filesSelectedInNavigator = NavigationHandler.getInstance().getFilesSelectedInNavigator();
+        List<IAudioObject> filesSelectedInNavigator = getBean(INavigationHandler.class).getFilesSelectedInNavigator();
         return sameParentFile(AudioFile.getAudioFiles(filesSelectedInNavigator));
     }
 

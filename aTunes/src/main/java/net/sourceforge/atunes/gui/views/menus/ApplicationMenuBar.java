@@ -69,7 +69,7 @@ import net.sourceforge.atunes.kernel.actions.ShowStatsAction;
 import net.sourceforge.atunes.kernel.actions.ShowStatusBarAction;
 import net.sourceforge.atunes.kernel.actions.VolumeDownAction;
 import net.sourceforge.atunes.kernel.actions.VolumeUpAction;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.model.INavigationView;
@@ -93,8 +93,7 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
     private JMenu help;
     
     private IOSManager osManager;
-
-    /**
+        /**
      * Instantiates a new application menu bar.
      * @param osManager
      */
@@ -167,7 +166,7 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
 
             // Add dinamically actions to show each navigation view loaded
             int acceleratorIndex = 1;
-            for (INavigationView navigationView : NavigationHandler.getInstance().getNavigationViews()) {
+            for (INavigationView navigationView : Context.getBean(INavigationHandler.class).getNavigationViews()) {
             	CustomAbstractAction action = navigationView.getActionToShowView(); 
         		// The first 9 views will have an accelerator key ALT + index
         		if (acceleratorIndex < 10) {

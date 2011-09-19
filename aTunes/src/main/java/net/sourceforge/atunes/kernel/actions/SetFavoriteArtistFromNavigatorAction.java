@@ -24,7 +24,7 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -43,7 +43,7 @@ public class SetFavoriteArtistFromNavigatorAction extends AbstractActionOverSele
     @Override
     protected void performAction(List<ILocalAudioObject> objects) {
         FavoritesHandler.getInstance().toggleFavoriteArtists(objects);
-        NavigationHandler.getInstance().refreshNavigationTable();
+        getBean(INavigationHandler.class).refreshNavigationTable();
     }
 
     @Override

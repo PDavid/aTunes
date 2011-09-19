@@ -48,9 +48,9 @@ public final class PlayListPanel extends JPanel {
 
     /** The play list table scroll. */
     private JScrollPane playListTableScroll;
-
-    private IPlayListHandler playListHandler;
     
+    private IPlayListHandler playListHandler;
+
     /**
      * Instantiates a new play list panel.
      */

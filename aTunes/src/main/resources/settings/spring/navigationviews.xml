@@ -20,6 +20,8 @@
 
 	<bean id="navigationView" abstract="true" class="net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView">
 		<constructor-arg ref="state" />
+		<constructor-arg ref="navigationHandler"/>
+		<constructor-arg ref="frame"/>
 	</bean>
 
 	<bean id="repositoryNavigationView"

@@ -43,18 +43,19 @@ public final class NavigationTreeMouseListener extends MouseAdapter {
     private NavigationController controller;
     
     private IState state;
+    
+    private INavigationHandler navigationHandler;
 
     /**
      * Instantiates a new navigation tree mouse listener.
-     * 
      * @param controller
-     *            the controller
-     * @param panel
-     *            the panel
+     * @param state
+     * @param navigationHandler
      */
-    public NavigationTreeMouseListener(NavigationController controller, IState state) {
+    public NavigationTreeMouseListener(NavigationController controller, IState state, INavigationHandler navigationHandler) {
         this.controller = controller;
         this.state = state;
+        this.navigationHandler = navigationHandler;
     }
 
     /**
@@ -86,7 +87,7 @@ public final class NavigationTreeMouseListener extends MouseAdapter {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        INavigationView currentView = NavigationHandler.getInstance().getCurrentView();
+        INavigationView currentView = navigationHandler.getCurrentView();
         controller.setPopupMenuCaller(currentView.getTree());
 
         if (GuiUtils.isSecondaryMouseButton(e)) {

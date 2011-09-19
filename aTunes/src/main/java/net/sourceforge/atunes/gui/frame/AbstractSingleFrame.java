@@ -43,6 +43,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JProgressBar;
 import javax.swing.JSplitPane;
+import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
@@ -61,7 +62,7 @@ import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -113,6 +114,8 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     
     private IPlayListHandler playListHandler;
     
+    private INavigationHandler navigationHandler;
+    
     /**
      * Instantiates a new standard frame.
      */
@@ -133,6 +136,10 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     @Override
     public void setPlayListHandler(IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
+	}
+    
+    public void setNavigationHandler(INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
 	}
     
     @Override
@@ -357,6 +364,11 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     public PlayListTable getPlayListTable() {
         return getPlayListPanel().getPlayListTable();
     }
+    
+    @Override
+    public JTable getNavigationTable() {
+    	return getNavigationTablePanel().getNavigationTable();
+    }
 
     /**
      * Gets the progress bar.
@@ -424,7 +436,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     showNewPodcastFeedEntriesInfo(false);
-                    NavigationHandler.getInstance().setNavigationView(PodcastNavigationView.class.getName());
+                    navigationHandler.setNavigationView(PodcastNavigationView.class.getName());
                 }
             });
         }

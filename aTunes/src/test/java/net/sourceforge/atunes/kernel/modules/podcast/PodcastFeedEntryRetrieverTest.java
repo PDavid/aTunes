@@ -42,7 +42,7 @@ public class PodcastFeedEntryRetrieverTest {
     @Test
     public void testRetrievePodcastFeedEntries() {
 
-        PodcastFeedEntryRetriever podcastFeedEntryRetriever = new PodcastFeedEntryRetriever(Arrays.asList(testedObject), null, null);
+        PodcastFeedEntryRetriever podcastFeedEntryRetriever = new PodcastFeedEntryRetriever(Arrays.asList(testedObject), null, null, null);
         List<IPodcastFeed> podcastFeedsWithNewEntries = podcastFeedEntryRetriever.retrievePodcastFeedEntries(true, null);
 
         Assert.assertEquals("RadioTux GNU/Linux", testedObject.getName());

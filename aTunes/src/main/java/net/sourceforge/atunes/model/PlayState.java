@@ -18,29 +18,42 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.actions;
+package net.sourceforge.atunes.model;
 
-import java.awt.event.ActionEvent;
+import java.awt.Paint;
 
-import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
-import net.sourceforge.atunes.model.INavigationView;
-import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.I18nUtils;
+import javax.swing.ImageIcon;
 
-public class CollapseTreesAction extends CustomAbstractAction {
+import net.sourceforge.atunes.gui.images.PlayListStateImageIcon;
 
-    private static final long serialVersionUID = 4230335834253793622L;
+/**
+ * The play state of the playlist.
+ */
+public enum PlayState {
 
-    CollapseTreesAction() {
-        super(I18nUtils.getString("COLLAPSE"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("COLLAPSE"));
-    }
+    STOPPED,
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        for (INavigationView view : getBean(INavigationHandler.class).getNavigationViews()) {
-            GuiUtils.collapseTree(view.getTree());
+    PLAYING,
+
+    PAUSED,
+
+    /**
+     * When it's not the active play list
+     */
+    NONE;
+
+    public static ImageIcon getPlayStateIcon(Paint color, PlayState state) {
+        switch (state) {
+        case PLAYING:
+            return PlayListStateImageIcon.getPlayIcon(color);
+        case STOPPED:
+            return PlayListStateImageIcon.getStopIcon(color);
+        case PAUSED:
+            return PlayListStateImageIcon.getPauseIcon(color);
+        case NONE:
+            return null;
+        default:
+            return null;
         }
     }
-
 }

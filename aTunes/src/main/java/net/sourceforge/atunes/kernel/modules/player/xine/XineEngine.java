@@ -29,6 +29,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -58,8 +59,8 @@ public class XineEngine extends AbstractPlayerEngine {
     private Timer durationUpdater;
     private final Object xineLock = new Object();
 
-    public XineEngine(IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler) {
-    	super(state, frame, osManager, playListHandler);
+    public XineEngine(IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, INavigationHandler navigationHandler) {
+    	super(state, frame, osManager, playListHandler, navigationHandler);
 	}
     
     @Override

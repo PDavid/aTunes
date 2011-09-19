@@ -30,7 +30,7 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.PlaybackState;
 import net.sourceforge.atunes.kernel.PlaybackStateListeners;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.TempFolder;
@@ -185,6 +185,8 @@ public abstract class AbstractPlayerEngine {
     private IOSManager osManager;
     
     private IPlayListHandler playListHandler;
+    
+    private INavigationHandler navigationHandler;
     
     /**
      * A thread invoking play in engine
@@ -557,14 +559,19 @@ public abstract class AbstractPlayerEngine {
     /**
      * Instantiates a new player handler.
      * @param state
+     * @param frame
+     * @param osManager
+     * @param playListHandler
+     * @param navigationHandler
      */
-    protected AbstractPlayerEngine(IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler) {
+    protected AbstractPlayerEngine(IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, INavigationHandler navigationHandler) {
         // To properly init player must call method "initPlayerEngine"
         this.equalizer = new Equalizer(state);
         this.state = state;
         this.frame = frame;
         this.osManager = osManager;
         this.playListHandler = playListHandler;
+        this.navigationHandler = navigationHandler;
     }
 
     /**
@@ -740,7 +747,7 @@ public abstract class AbstractPlayerEngine {
 		if (audioObject instanceof IPodcastFeedEntry) {
 			((IPodcastFeedEntry) audioObject).setListened(true);
 			// Update pod cast navigator
-			NavigationHandler.getInstance().refreshView(PodcastNavigationView.class);
+			navigationHandler.refreshView(PodcastNavigationView.class);
 		}
 
 		// Send Now Playing info to Last.fm

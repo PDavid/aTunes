@@ -26,7 +26,7 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
@@ -72,7 +72,7 @@ public class CopyToDeviceAction extends AbstractActionOverSelectedObjects<IAudio
             return false;
         }
 
-        if (NavigationHandler.getInstance().getCurrentView().equals(NavigationHandler.getInstance().getView(PodcastNavigationView.class))) {
+        if (getBean(INavigationHandler.class).getCurrentView().equals(getBean(INavigationHandler.class).getView(PodcastNavigationView.class))) {
             for (IAudioObject ao : selection) {
                 if (!((IPodcastFeedEntry) ao).isDownloaded()) {
                     return false;

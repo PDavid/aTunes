@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.gui.views.controls.playList;
 
-import java.awt.Paint;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragGestureListener;
@@ -36,7 +35,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DropMode;
-import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
@@ -44,7 +42,6 @@ import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 
-import net.sourceforge.atunes.gui.images.PlayListStateImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.PlayListColumnModel;
 import net.sourceforge.atunes.gui.model.TransferableList;
@@ -58,44 +55,13 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListTableModel;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectsSource;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.PlayState;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
  * The play list table.
  */
 public final class PlayListTable extends JTable implements DragSourceListener, DragGestureListener, IAudioObjectsSource {
-
-    /**
-     * The play state of the playlist.
-     */
-    public enum PlayState {
-
-        STOPPED,
-
-        PLAYING,
-
-        PAUSED,
-
-        /**
-         * When it's not the active play list
-         */
-        NONE;
-
-        public static ImageIcon getPlayStateIcon(Paint color, PlayState state) {
-            switch (state) {
-            case PLAYING:
-                return PlayListStateImageIcon.getPlayIcon(color);
-            case STOPPED:
-                return PlayListStateImageIcon.getStopIcon(color);
-            case PAUSED:
-                return PlayListStateImageIcon.getPauseIcon(color);
-            case NONE:
-                return null;
-            default:
-                return null;
-            }
-        }
-    }
 
     private static final long serialVersionUID = 9209069236823917569L;
 
@@ -164,31 +130,15 @@ public final class PlayListTable extends JTable implements DragSourceListener, D
         setOpaque(false);
     }
 
-    /**
-     * Gets the menu.
-     * 
-     * @return the menu
-     */
-    public JPopupMenu getMenu() {
+	public JPopupMenu getMenu() {
         return menu;
     }
 
-    /**
-     * Gets the play state.
-     * 
-     * @return the play state
-     */
-    public PlayState getPlayState() {
+	public PlayState getPlayState() {
         return playState;
     }
 
-    /**
-     * Sets the play state.
-     * 
-     * @param playState
-     *            the new play state
-     */
-    public void setPlayState(PlayState playState) {
+	public void setPlayState(PlayState playState) {
         this.playState = playState;
         revalidate();
         repaint();
@@ -237,4 +187,5 @@ public final class PlayListTable extends JTable implements DragSourceListener, D
     public List<IAudioObject> getSelectedAudioObjects() {
         return playListHandler.getSelectedAudioObjects();
     }
+   
 }

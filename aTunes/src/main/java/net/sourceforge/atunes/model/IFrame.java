@@ -27,6 +27,7 @@ import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.swing.JProgressBar;
+import javax.swing.JTable;
 
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.menus.IMenuBar;
@@ -35,6 +36,7 @@ import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
 
 /**
@@ -337,4 +339,16 @@ public interface IFrame {
 	 * @param playListHandler
 	 */
 	public void setPlayListHandler(IPlayListHandler playListHandler);
+	
+	/**
+	 * Sets navigation handler
+	 * @param navigationHandler
+	 */
+	public void setNavigationHandler(INavigationHandler navigationHandler);
+
+	/**
+	 * Returns navigation table
+	 * @return
+	 */
+	public JTable getNavigationTable();
 }

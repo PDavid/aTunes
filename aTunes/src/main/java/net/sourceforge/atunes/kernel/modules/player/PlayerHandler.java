@@ -30,6 +30,7 @@ import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.PlaybackState;
 import net.sourceforge.atunes.kernel.PlaybackStateListener;
 import net.sourceforge.atunes.kernel.PlaybackStateListeners;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine.SubmissionState;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.xine.XineEngine;
@@ -291,8 +292,8 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
      */
     private List<AbstractPlayerEngine> getEngines() {
         List<AbstractPlayerEngine> result = new ArrayList<AbstractPlayerEngine>(2);
-        result.add(new MPlayerEngine(getState(), getFrame(), getOsManager(), getBean(IPlayListHandler.class)));
-        result.add(new XineEngine(getState(), getFrame(), getOsManager(), getBean(IPlayListHandler.class)));
+        result.add(new MPlayerEngine(getState(), getFrame(), getOsManager(), getBean(IPlayListHandler.class), getBean(INavigationHandler.class)));
+        result.add(new XineEngine(getState(), getFrame(), getOsManager(), getBean(IPlayListHandler.class), getBean(INavigationHandler.class)));
         //result.add(new VlcPlayerEngine());
         //result.add(new GStreamerEngine());
         return result;

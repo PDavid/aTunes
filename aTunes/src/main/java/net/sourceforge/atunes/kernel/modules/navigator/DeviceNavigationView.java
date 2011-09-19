@@ -54,6 +54,7 @@ import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITreeObject;
@@ -71,8 +72,8 @@ public final class DeviceNavigationView extends AbstractNavigationView {
     /** The device table menu. */
     private JPopupMenu deviceTableMenu;
 
-    public DeviceNavigationView(IState state) {
-    	super(state);
+    public DeviceNavigationView(IState state, INavigationHandler navigationHandler, IFrame frame) {
+    	super(state, navigationHandler, frame);
 	}
     
     @Override

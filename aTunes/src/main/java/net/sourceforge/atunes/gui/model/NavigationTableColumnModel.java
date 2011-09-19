@@ -31,7 +31,7 @@ import javax.swing.table.TableColumn;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
@@ -42,9 +42,12 @@ public final class NavigationTableColumnModel extends AbstractCommonColumnModel 
 
     private IState state;
     
-    public NavigationTableColumnModel(JTable table, IState state) {
+    private INavigationHandler navigationHandler;
+    
+    public NavigationTableColumnModel(JTable table, IState state, INavigationHandler navigationHandler) {
         super(table);
         this.state = state;
+        this.navigationHandler = navigationHandler;
         enableColumnChange(true);
     }
 
@@ -56,7 +59,7 @@ public final class NavigationTableColumnModel extends AbstractCommonColumnModel 
 
     @Override
     protected void reapplyFilter() {
-        NavigationHandler.getInstance().updateViewTable();
+    	navigationHandler.updateViewTable();
     }
 
     @Override
@@ -65,7 +68,7 @@ public final class NavigationTableColumnModel extends AbstractCommonColumnModel 
         return new NavigationTableCellRendererCode(renderer, state);
     }
 
-    private static class NavigationTableCellRendererCode extends AbstractTableCellRendererCode {
+    private class NavigationTableCellRendererCode extends AbstractTableCellRendererCode {
 
         private AbstractTableCellRendererCode renderer;
 
@@ -82,7 +85,7 @@ public final class NavigationTableColumnModel extends AbstractCommonColumnModel 
         	JComponent c = renderer.getComponent(superComponent, t, value, isSelected, hasFocus, row, column);
             // Check incomplete tags if necessary
             if (state.isHighlightIncompleteTagElements()) {
-                IAudioObject audioObject = NavigationHandler.getInstance().getAudioObjectInNavigationTable(row);
+                IAudioObject audioObject = navigationHandler.getAudioObjectInNavigationTable(row);
                 if (IncompleteTagsChecker.hasIncompleteTags(audioObject, state)) {
                     ((JLabel) c).setForeground(Color.red);
                 } else {

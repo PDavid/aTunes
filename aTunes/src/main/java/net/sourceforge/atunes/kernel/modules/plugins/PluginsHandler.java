@@ -42,7 +42,7 @@ import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnSets;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
 import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.misc.Timer;
 import net.sourceforge.atunes.misc.log.Logger;
@@ -82,7 +82,7 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
         pluginTypes = new HashSet<PluginType>();
         pluginTypes.add(new PluginType(PlaybackStateListener.class.getName(), PlayerHandler.getInstance(), false));
         pluginTypes.add(new PluginType(AbstractColumn.class.getName(), ColumnSets.getInstance(), false));
-        pluginTypes.add(new PluginType(AbstractNavigationView.class.getName(), NavigationHandler.getInstance(), false));
+        pluginTypes.add(new PluginType(AbstractNavigationView.class.getName(), (PluginListener) Context.getBean(INavigationHandler.class), false));
         pluginTypes.add(new PluginType(AbstractContextPanel.class.getName(), (PluginListener) Context.getBean(IContextHandler.class), false));
         pluginTypes.add(new PluginType(AbstractLookAndFeel.class.getName(), LookAndFeelSelector.getInstance(), false));
         pluginTypes.add(new PluginType(AbstractGeneralPurposePlugin.class.getName(), (PluginListener) Context.getBean(IGeneralPurposePluginsHandler.class), false));

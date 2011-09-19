@@ -46,7 +46,7 @@ import net.sourceforge.atunes.kernel.actions.DisconnectDeviceAction;
 import net.sourceforge.atunes.kernel.actions.RefreshDeviceAction;
 import net.sourceforge.atunes.kernel.actions.SynchronizeDeviceWithPlayListAction;
 import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
-import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
+import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.LoaderListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
@@ -376,7 +376,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
      */
     private void notifyDeviceReload(RepositoryLoader loader) {
     	getFrame().hideProgressBar();
-    	NavigationHandler.getInstance().refreshView(DeviceNavigationView.class);
+    	getBean(INavigationHandler.class).refreshView(DeviceNavigationView.class);
 
     	Actions.getAction(ConnectDeviceAction.class).setEnabled(loader == null);
     	Actions.getAction(RefreshDeviceAction.class).setEnabled(loader != null);
@@ -392,7 +392,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
 
     	if (loader != null) {
     		// Switch to device view in navigator
-    		NavigationHandler.getInstance().setNavigationView(DeviceNavigationView.class.getName());
+    		getBean(INavigationHandler.class).setNavigationView(DeviceNavigationView.class.getName());
     	}
     }
 
