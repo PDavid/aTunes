@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.fullscreen;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFullScreenHandler;

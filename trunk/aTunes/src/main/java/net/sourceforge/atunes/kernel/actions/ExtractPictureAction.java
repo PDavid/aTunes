@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -41,7 +40,7 @@ public class ExtractPictureAction extends AbstractActionOverSelectedObjects<ILoc
     @Override
     protected void performAction(List<ILocalAudioObject> objects) {
         // Export only first picture
-        AudioFilePictureUtils.exportPicture(objects.get(0), Context.getBean(IFrame.class).getFrame());
+        AudioFilePictureUtils.exportPicture(objects.get(0), getBean(IFrame.class).getFrame());
     }
 
     @Override

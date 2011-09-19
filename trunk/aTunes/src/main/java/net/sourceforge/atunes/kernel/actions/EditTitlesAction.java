@@ -26,7 +26,6 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.ITagHandler;
@@ -45,7 +44,7 @@ public class EditTitlesAction extends CustomAbstractAction {
     public void actionPerformed(ActionEvent e) {
         TreePath path = NavigationHandler.getInstance().getCurrentView().getTree().getSelectionPath();
         Album a = (Album) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-        Context.getBean(ITagHandler.class).editFiles(a);
+        getBean(ITagHandler.class).editFiles(a);
     }
 
     @Override

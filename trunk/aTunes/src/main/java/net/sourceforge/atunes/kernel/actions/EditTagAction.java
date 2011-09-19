@@ -26,7 +26,6 @@ import java.util.List;
 import javax.swing.KeyStroke;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.EditTagSources;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -61,7 +60,7 @@ public class EditTagAction extends AbstractActionOverSelectedObjects<ILocalAudio
         // Start edit by opening edit dialog
         try {
             EditTagSources editTagSource = EditTagSources.valueOf(getActionId());
-            Context.getBean(ITagHandler.class).editFiles(editTagSource, objects);
+            getBean(ITagHandler.class).editFiles(editTagSource, objects);
         } catch (IllegalArgumentException iae) {
             Logger.error(iae);
         } catch (NullPointerException npe) {

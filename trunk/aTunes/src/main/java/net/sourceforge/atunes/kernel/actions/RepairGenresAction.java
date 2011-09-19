@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -42,7 +41,7 @@ public class RepairGenresAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        TagEditionOperations.repairGenres(getState(), Context.getBean(IPlayListHandler.class));
+        TagEditionOperations.repairGenres(getState(), getBean(IPlayListHandler.class));
     }
 
 }

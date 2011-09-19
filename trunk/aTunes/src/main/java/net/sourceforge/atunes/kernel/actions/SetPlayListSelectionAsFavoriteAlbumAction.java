@@ -26,7 +26,6 @@ import java.util.List;
 
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -53,7 +52,7 @@ public class SetPlayListSelectionAsFavoriteAlbumAction extends CustomAbstractAct
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        FavoritesHandler.getInstance().toggleFavoriteAlbums(AudioFile.getAudioFiles(Context.getBean(IPlayListHandler.class).getSelectedAudioObjects()));
+        FavoritesHandler.getInstance().toggleFavoriteAlbums(AudioFile.getAudioFiles(getBean(IPlayListHandler.class).getSelectedAudioObjects()));
     }
 
     @Override

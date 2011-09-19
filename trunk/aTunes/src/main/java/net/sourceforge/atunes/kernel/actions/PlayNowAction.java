@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -45,7 +44,7 @@ public class PlayNowAction extends CustomAbstractAction {
         // If not, it's added to play list    	
         int selectedRow = NavigationHandler.getInstance().getNavigationTable().getSelectedRow();
         IAudioObject song = ((NavigationTableModel) NavigationHandler.getInstance().getNavigationTable().getModel()).getAudioObjectAt(selectedRow);
-        Context.getBean(IPlayListHandler.class).playNow(song);
+        getBean(IPlayListHandler.class).playNow(song);
     }
 
     @Override

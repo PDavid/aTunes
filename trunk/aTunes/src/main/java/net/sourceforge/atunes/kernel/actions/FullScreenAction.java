@@ -25,7 +25,6 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -47,7 +46,7 @@ public class FullScreenAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-    	Context.getBean(IFullScreenHandler.class).toggleFullScreenVisibility();
+    	getBean(IFullScreenHandler.class).toggleFullScreenVisibility();
     }
 
     @Override

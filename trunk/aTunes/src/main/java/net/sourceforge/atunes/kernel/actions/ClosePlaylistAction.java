@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -37,7 +36,7 @@ public class ClosePlaylistAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-    	Context.getBean(IPlayListHandler.class).closeCurrentPlaylist();
+    	getBean(IPlayListHandler.class).closeCurrentPlaylist();
     }
 
 }

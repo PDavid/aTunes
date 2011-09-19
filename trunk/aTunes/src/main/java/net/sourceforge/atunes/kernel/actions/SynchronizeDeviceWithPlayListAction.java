@@ -29,7 +29,6 @@ import java.util.Map;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListLocalAudioObjectFilter;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
@@ -74,9 +73,9 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 		    SwingUtilities.invokeLater(new Runnable() {
 		        @Override
 		        public void run() {
-		        	Context.getBean(IMessageDialog.class).showMessage(
+		        	getBean(IMessageDialog.class).showMessage(
 		                    StringUtils.getString(I18nUtils.getString("SYNCHRONIZATION_FINISHED"), " ", I18nUtils.getString("ADDED"), ": ", added ? DeviceHandler.getInstance()
-		                            .getFilesCopiedToDevice() : 0, " ", I18nUtils.getString("REMOVED"), ": ", filesRemoved), Context.getBean(IFrame.class));
+		                            .getFilesCopiedToDevice() : 0, " ", I18nUtils.getString("REMOVED"), ": ", filesRemoved), getBean(IFrame.class));
 		        }
 		    });
 		}
@@ -87,10 +86,10 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 		    List<ILocalAudioObject> playListObjects;
 		    if (SynchronizeDeviceWithPlayListAction.this.getState().isAllowRepeatedSongsInDevice()) {
 		        // Repeated songs allowed, filter only if have same artist and album
-		        playListObjects = AudioFile.filterRepeatedSongsAndAlbums(new PlayListLocalAudioObjectFilter().getObjects(Context.getBean(IPlayListHandler.class).getCurrentPlayList(true)));
+		        playListObjects = AudioFile.filterRepeatedSongsAndAlbums(new PlayListLocalAudioObjectFilter().getObjects(getBean(IPlayListHandler.class).getCurrentPlayList(true)));
 		    } else {
 		        // Repeated songs not allows, filter even if have different album
-		        playListObjects = AudioFile.filterRepeatedSongs(new PlayListLocalAudioObjectFilter().getObjects(Context.getBean(IPlayListHandler.class).getCurrentPlayList(true)));
+		        playListObjects = AudioFile.filterRepeatedSongs(new PlayListLocalAudioObjectFilter().getObjects(getBean(IPlayListHandler.class).getCurrentPlayList(true)));
 		    }
 
 		    // Get elements present in play list and not in device -> objects to be copied to device
@@ -169,7 +168,7 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
         SwingUtilities.invokeLater(new Runnable() {
         	@Override
         	public void run() {
-        		dialog = Context.getBean(IIndeterminateProgressDialogFactory.class).newDialog(Context.getBean(IFrame.class));
+        		dialog = getBean(IIndeterminateProgressDialogFactory.class).newDialog(getBean(IFrame.class));
         		dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
         		dialog.showDialog();
         	}

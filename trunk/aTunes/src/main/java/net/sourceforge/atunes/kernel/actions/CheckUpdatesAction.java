@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IUpdateHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -43,7 +42,7 @@ public class CheckUpdatesAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Context.getBean(IUpdateHandler.class).checkUpdates(true, true);
+        getBean(IUpdateHandler.class).checkUpdates(true, true);
     }
 
 }

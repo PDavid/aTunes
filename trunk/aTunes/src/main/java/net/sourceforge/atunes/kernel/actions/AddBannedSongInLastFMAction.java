@@ -25,7 +25,6 @@ import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextHandler;
@@ -49,7 +48,7 @@ public class AddBannedSongInLastFMAction extends CustomAbstractAction {
 
 		@Override
 		protected Void doInBackground() throws Exception {
-			Context.getBean(IWebServicesHandler.class).addBannedSong(song);
+			getBean(IWebServicesHandler.class).addBannedSong(song);
 		    return null;
 		}
 
@@ -81,7 +80,7 @@ public class AddBannedSongInLastFMAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        banSong(Context.getBean(IContextHandler.class).getCurrentAudioObject());
+        banSong(getBean(IContextHandler.class).getCurrentAudioObject());
     }
 
     /**

@@ -26,7 +26,6 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationView;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
@@ -48,7 +47,7 @@ public class RenameRadioLabelAction extends CustomAbstractAction {
         TreePath path = NavigationHandler.getInstance().getView(RadioNavigationView.class).getTree().getSelectionPath();
         Object o = ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
         
-        IInputDialog dialog = Context.getBean(IInputDialog.class);
+        IInputDialog dialog = getBean(IInputDialog.class);
         dialog.setTitle(I18nUtils.getString("RENAME_LABEL"));
 
         if (o instanceof String) {

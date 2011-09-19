@@ -25,7 +25,6 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFrame;
@@ -45,7 +44,7 @@ public class FillDeviceWithRandomSongsAction extends CustomAbstractAction {
     public void actionPerformed(ActionEvent e) {
         String freeMemory = "20";
         // Ask how much memory should be left free
-        IInputDialog dialog = Context.getBean(IInputDialog.class);
+        IInputDialog dialog = getBean(IInputDialog.class);
         dialog.setTitle(I18nUtils.getString("MEMORY_TO_LEAVE_FREE"));
         dialog.showDialog(freeMemory);
         freeMemory = dialog.getResult();
@@ -53,7 +52,7 @@ public class FillDeviceWithRandomSongsAction extends CustomAbstractAction {
             DeviceHandler.getInstance().fillWithRandomSongs(Long.parseLong(freeMemory.trim()));
         } catch (Exception e2) {
             // User did not enter numerical value. Show error dialog
-        	Context.getBean(IErrorDialog.class).showErrorDialog(Context.getBean(IFrame.class), I18nUtils.getString("ERROR_NO_NUMERICAL_VALUE"));
+        	getBean(IErrorDialog.class).showErrorDialog(getBean(IFrame.class), I18nUtils.getString("ERROR_NO_NUMERICAL_VALUE"));
         }
     }
 
