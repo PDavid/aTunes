@@ -396,7 +396,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
             protected void done() {
             	getFrame().hideProgressBar();
                 showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
-                NavigationHandler.getInstance().notifyReload();
+                NavigationHandler.getInstance().repositoryReloaded();
                 Logger.info("Repository refresh done");
             }
         };
@@ -769,7 +769,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 
         getFrame().hideProgressBar();
         showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
-        NavigationHandler.getInstance().notifyReload();
+        NavigationHandler.getInstance().repositoryReloaded();
         Logger.info("Repository refresh done");
 
         currentLoader = null;
@@ -784,7 +784,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
             progressDialog.hideProgressDialog();
             progressDialog = null;
         }
-        NavigationHandler.getInstance().notifyReload();
+        NavigationHandler.getInstance().repositoryReloaded();
         showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository != null ? repository.getTotalDurationInSeconds() : 0);
 
         currentLoader = null;
@@ -809,7 +809,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 			SwingUtilities.invokeAndWait(new Runnable() {
 			    @Override
 			    public void run() {
-			    	NavigationHandler.getInstance().notifyReload();
+			    	NavigationHandler.getInstance().repositoryReloaded();
 			        showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
 			    }
 			});
@@ -1004,7 +1004,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
             }
 
             // Update navigator
-            NavigationHandler.getInstance().notifyReload();
+            NavigationHandler.getInstance().repositoryReloaded();
         }
     }
 
@@ -1044,7 +1044,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         boolean succeeded = file.renameTo(newFile);
         if (succeeded) {
         	renameFile(audioFile, file, newFile);
-            NavigationHandler.getInstance().notifyReload();
+            NavigationHandler.getInstance().repositoryReloaded();
             getBean(IStatisticsHandler.class).updateFileName(audioFile, file.getAbsolutePath(), newFile.getAbsolutePath());
         }
     }

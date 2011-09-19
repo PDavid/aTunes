@@ -92,7 +92,7 @@ public final class TagModifier {
 		    if (playListContainsRefreshedFile) {
 		    	playListHandler.refreshPlayList();
 		    }
-		    NavigationHandler.getInstance().notifyReload();
+		    NavigationHandler.getInstance().repositoryReloaded();
 		}
 	}
 
