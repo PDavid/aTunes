@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -104,9 +103,8 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
                 // Repository or device view with folder view mode, folder selected: delete folders instead of content
             } else if ((NavigationHandler.getInstance().getCurrentView() instanceof RepositoryNavigationView || NavigationHandler.getInstance().getCurrentView() instanceof DeviceNavigationView)
                     && NavigationHandler.getInstance().getCurrentViewMode() == ViewMode.FOLDER
-                    && NavigationHandler.getInstance().getPopupMenuCaller() instanceof JTree) {
+                    && NavigationHandler.getInstance().isActionOverTree()) {
                 fromRepositoryOrDeviceView();
-
             } else {
                 fromOtherViews();
             }

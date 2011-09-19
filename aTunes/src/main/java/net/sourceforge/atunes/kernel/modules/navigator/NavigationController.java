@@ -24,13 +24,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.ImageIcon;
@@ -289,21 +285,6 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
     }
 
     /**
-     * Checks if a collection of files have the same parent file.
-     * 
-     * @param c
-     *            collection of files
-     * @return if a collection of files have the same parent file
-     */
-    public boolean sameParentFile(Collection<? extends ILocalAudioObject> c) {
-        Set<File> set = new HashSet<File>();
-        for (ILocalAudioObject af : c) {
-            set.add(af.getFile().getParentFile());
-        }
-        return set.size() == 1;
-    }
-
-    /**
      * Gets the last album tool tip content.
      * 
      * @return the last album tool tip content
@@ -511,10 +492,7 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
         return dialog.getResult();
     }
 
-    /**
-     * @return the popupMenuCaller
-     */
-    public JComponent getPopupMenuCaller() {
+    protected JComponent getPopupMenuCaller() {
         return popupMenuCaller;
     }
 
@@ -530,4 +508,12 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
     public void audioFilesRemoved(List<ILocalAudioObject> audioFiles) {
         notifyReload();
     }
+
+	/**
+	 * Returns true if last action has been performed in tree
+	 * @return
+	 */
+	public boolean isActionOverTree() {
+		return getPopupMenuCaller() instanceof JTree;
+	}
 }

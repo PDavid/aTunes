@@ -49,7 +49,7 @@ public class RemoveFromFavoritesAction extends CustomAbstractAction {
     @SuppressWarnings("unchecked")
 	@Override
     public void actionPerformed(ActionEvent e) {
-        if (NavigationHandler.getInstance().getPopupMenuCaller() == NavigationHandler.getInstance().getView(FavoritesNavigationView.class).getTree()) {
+        if (NavigationHandler.getInstance().isActionOverTree() && NavigationHandler.getInstance().getCurrentView().equals(NavigationHandler.getInstance().getView(FavoritesNavigationView.class))) {
             TreePath[] paths = NavigationHandler.getInstance().getView(FavoritesNavigationView.class).getTree().getSelectionPaths();
             if (paths != null) {
                 List<ITreeObject<? extends IAudioObject>> objects = new ArrayList<ITreeObject<? extends IAudioObject>>();

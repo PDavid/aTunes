@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -40,7 +39,6 @@ import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFilter;
-import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
@@ -209,10 +207,6 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
         return RepositoryNavigationView.class;
     }
 
-    public int indexOf(Class<? extends INavigationView> view) {
-        return getNavigationViews().indexOf(getNavigationViewsMap().get(view));
-    }
-
     @Override
     public void pluginActivated(PluginInfo plugin) {
         try {
@@ -271,12 +265,12 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 		getNavigationController().refreshTable();
 	}
 
+	/**
+	 * Returns files selected both from tree and table
+	 * @return
+	 */
 	public List<IAudioObject> getFilesSelectedInNavigator() {
 		return getNavigationController().getFilesSelectedInNavigator();
-	}
-
-	public boolean sameParentFile(List<ILocalAudioObject> audioFiles) {
-		return getNavigationController().sameParentFile(audioFiles);		
 	}
 
 	protected JTable getNavigationTable() {
@@ -285,10 +279,6 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 
 	public void setNavigationView(String name) {
 		getNavigationController().setNavigationView(name);		
-	}
-
-	public JComponent getPopupMenuCaller() {
-		return getNavigationController().getPopupMenuCaller();
 	}
 
 	public ISearch openSearchDialog(ISearchDialog dialog, boolean b) {
@@ -406,5 +396,13 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
     public void selectAudioObject(IAudioObject audioObject){
     	getCurrentView().selectAudioObject(getCurrentView().getCurrentViewMode(), audioObject);
     }
+
+	/**
+	 * Returns true if last action has been performed in tree
+	 * @return
+	 */
+	public boolean isActionOverTree() {
+		return getNavigationController().isActionOverTree();
+	}
 
 }
