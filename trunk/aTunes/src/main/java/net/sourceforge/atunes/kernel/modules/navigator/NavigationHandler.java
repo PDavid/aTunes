@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -277,7 +278,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 		return getNavigationController().sameParentFile(audioFiles);		
 	}
 
-	public JTable getNavigationTable() {
+	protected JTable getNavigationTable() {
 		return getNavigationController().getNavigationTablePanel().getNavigationTable();
 	}
 
@@ -305,10 +306,30 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 		return getNavigationController().getAudioObjectsForTreeNode(class1, objectDragged);
 	}
 
-	public IAudioObject getAudioObjectInNavigationTable(Integer row) {
-		return getNavigationController().getAudioObjectInNavigationTable(row);
+	/**
+	 * Returns selected audio object in navigation table
+	 * @return
+	 */
+	public IAudioObject getSelectedAudioObjectInNavigationTable() {
+		return getNavigationController().getAudioObjectInNavigationTable(getNavigationTable().getSelectedRow());
 	}
 
+	/**
+	 * Returns selected audio objects in navigation table
+	 * @return
+	 */
+	public List<IAudioObject> getSelectedAudioObjectsInNavigationTable() {
+		List<IAudioObject> result = new ArrayList<IAudioObject>();
+		for (int i = 0; i < getNavigationTable().getSelectedRows().length; i++) {
+			result.add(getNavigationController().getAudioObjectInNavigationTable(i));
+		}
+		return result;
+	}
+
+	public IAudioObject getAudioObjectInNavigationTable(int row) {
+		return getNavigationController().getAudioObjectInNavigationTable(row);
+	}
+	
 	public void notifyReload() {
 		getNavigationController().notifyReload();
 	}

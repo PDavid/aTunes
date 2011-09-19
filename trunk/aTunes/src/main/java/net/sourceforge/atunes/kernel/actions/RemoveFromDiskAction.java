@@ -32,7 +32,6 @@ import javax.swing.SwingWorker;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.gui.model.NavigationTableModel;
 import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
@@ -174,16 +173,10 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
     }
 
     private void fromPodcastView() {
-        int[] rows = NavigationHandler.getInstance().getNavigationTable().getSelectedRows();
-        if (rows.length > 0) {
-            List<IAudioObject> songs = new ArrayList<IAudioObject>();
-            for (int element : rows) {
-                songs.add(((NavigationTableModel) NavigationHandler.getInstance().getNavigationTable().getModel())
-                        .getAudioObjectAt(element));
-            }
-            for (int i = 0; i < songs.size(); i++) {
-                PodcastFeedEntry podcastFeedEntry = (PodcastFeedEntry) songs.get(i);
-                PodcastFeedHandler.getInstance().deleteDownloadedPodcastFeedEntry(podcastFeedEntry);
+    	List<IAudioObject> songsAudioObjects = NavigationHandler.getInstance().getSelectedAudioObjectsInNavigationTable();
+        if (!songsAudioObjects.isEmpty()) {
+            for (IAudioObject ao : songsAudioObjects) {
+                PodcastFeedHandler.getInstance().deleteDownloadedPodcastFeedEntry((PodcastFeedEntry) ao);
             }
         }
     }
