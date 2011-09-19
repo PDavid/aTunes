@@ -23,6 +23,8 @@ package net.sourceforge.atunes.kernel;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sourceforge.atunes.model.IDeviceListener;
+
 /**
  * Holds references to DeviceListener instances
  * @author fleax
@@ -30,13 +32,13 @@ import java.util.List;
  */
 public class DeviceListeners {
 
-	private static List<DeviceListener> listeners = new ArrayList<DeviceListener>();
+	private static List<IDeviceListener> listeners = new ArrayList<IDeviceListener>();
 	
     /**
      * Adds a device listener
      * @param listener
      */
-    static void addDeviceListener(DeviceListener listener) {
+    static void addDeviceListener(IDeviceListener listener) {
     	if (listener != null) {
     		listeners.add(listener);
     	}
@@ -47,7 +49,7 @@ public class DeviceListeners {
 	 * @param path
 	 */
 	public static void deviceConnected(String path) {
-        for (DeviceListener l : listeners) {
+        for (IDeviceListener l : listeners) {
         	l.deviceConnected(path);
         }
 	}
@@ -57,7 +59,7 @@ public class DeviceListeners {
 	 * @param path
 	 */
 	public static void deviceReady(String path) {
-        for (DeviceListener l : listeners) {
+        for (IDeviceListener l : listeners) {
         	l.deviceReady(path);
         }
 	}
@@ -67,7 +69,7 @@ public class DeviceListeners {
 	 * @param location
 	 */
 	public static void deviceDisconnected(String location) {
-        for (DeviceListener l : listeners) {
+        for (IDeviceListener l : listeners) {
         	l.deviceDisconnected(location);
         }
 	}

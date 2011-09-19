@@ -34,7 +34,6 @@ import net.sourceforge.atunes.gui.frame.FrameState;
 import net.sourceforge.atunes.gui.popup.FadingPopupFactory;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
-import net.sourceforge.atunes.kernel.PlaybackState;
 import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
@@ -49,6 +48,7 @@ import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ISystemTrayHandler;
 import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.model.PlayState;
+import net.sourceforge.atunes.model.PlaybackState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class UIHandler extends AbstractHandler implements IUIHandler {

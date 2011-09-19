@@ -18,28 +18,19 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel;
+package net.sourceforge.atunes.model;
+
+import org.commonjukebox.plugins.model.PluginApi;
 
 /**
- * The listener interface for receiving device events.
+ * This enum defined all possible states of player
+ * 
+ * @author fleax
+ * 
  */
-public interface DeviceListener {
+@PluginApi
+public enum PlaybackState {
 
-    /**
-     * Device connected.
-     * @param location
-     */
-    public void deviceConnected(String location);
-    
-    /**
-     * Device ready for use
-     * @param location
-     */
-    public void deviceReady(String location);
-    
-    /**
-     * Device disconnected.
-     * @param location
-     */
-    public void deviceDisconnected(String location);
+    PLAYING, RESUMING, PAUSED, STOPPED, PLAY_FINISHED, PLAY_INTERRUPTED
+
 }

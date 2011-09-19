@@ -30,16 +30,16 @@ import java.util.Map;
 import java.util.Set;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.PlaybackState;
-import net.sourceforge.atunes.kernel.PlaybackStateListener;
 import net.sourceforge.atunes.kernel.modules.notify.classic.DefaultNotifications;
 import net.sourceforge.atunes.kernel.modules.notify.growl.GrowlNotificationEngine;
 import net.sourceforge.atunes.kernel.modules.notify.libnotify.LibnotifyNotificationEngine;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFullScreenHandler;
+import net.sourceforge.atunes.model.IPlaybackStateListener;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.PlaybackState;
 
-public final class NotificationsHandler extends AbstractHandler implements PlaybackStateListener {
+public final class NotificationsHandler extends AbstractHandler implements IPlaybackStateListener {
 
     private static NotificationsHandler instance;
 

@@ -18,23 +18,28 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel;
+package net.sourceforge.atunes.model;
 
-
-public interface IController {
-
-    /**
-     * Adds the bindings.
-     */
-    public void addBindings();
+/**
+ * The listener interface for receiving device events.
+ */
+public interface IDeviceListener {
 
     /**
-     * Adds the state bindings.
+     * Device connected.
+     * @param location
      */
-    public void addStateBindings();
-
+    public void deviceConnected(String location);
+    
     /**
-     * Notify reload.
+     * Device ready for use
+     * @param location
      */
-    public void notifyReload();
+    public void deviceReady(String location);
+    
+    /**
+     * Device disconnected.
+     * @param location
+     */
+    public void deviceDisconnected(String location);
 }

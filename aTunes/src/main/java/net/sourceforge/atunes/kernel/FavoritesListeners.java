@@ -23,6 +23,8 @@ package net.sourceforge.atunes.kernel;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sourceforge.atunes.model.IFavoritesListener;
+
 /**
  * Holds references to FavoritesListener instances
  * @author fleax
@@ -30,13 +32,13 @@ import java.util.List;
  */
 public class FavoritesListeners {
 
-	private static List<FavoritesListener> listeners = new ArrayList<FavoritesListener>();
+	private static List<IFavoritesListener> listeners = new ArrayList<IFavoritesListener>();
 	
     /**
      * Adds a new listener
      * @param listener
      */
-    public static void addFavoritesListener(FavoritesListener listener) {
+    public static void addFavoritesListener(IFavoritesListener listener) {
     	if (listener != null) {
     		listeners.add(listener);
     	}
@@ -46,7 +48,7 @@ public class FavoritesListeners {
      * Called when favorites changed
      */
     public static void favoritesChanged() {
-    	for (FavoritesListener listener : listeners) {
+    	for (IFavoritesListener listener : listeners) {
     		listener.favoritesChanged();
     	}
     }

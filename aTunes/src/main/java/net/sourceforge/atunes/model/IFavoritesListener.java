@@ -18,9 +18,9 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel;
+package net.sourceforge.atunes.model;
 
-public interface FavoritesListener {
+public interface IFavoritesListener {
 
 	/**
 	 * Called after a favorites change

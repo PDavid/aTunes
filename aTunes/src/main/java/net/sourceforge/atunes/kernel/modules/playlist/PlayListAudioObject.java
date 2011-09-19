@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel;
+package net.sourceforge.atunes.kernel.modules.playlist;
 
 import java.util.ArrayList;
 import java.util.List;

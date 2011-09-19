@@ -27,8 +27,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.PlaybackState;
-import net.sourceforge.atunes.kernel.PlaybackStateListener;
 import net.sourceforge.atunes.kernel.PlaybackStateListeners;
 import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine.SubmissionState;
@@ -39,9 +37,11 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlaybackStateListener;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.IWebServicesHandler;
+import net.sourceforge.atunes.model.PlaybackState;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -447,7 +447,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     @Override
     public void pluginActivated(PluginInfo plugin) {
         try {
-            PlaybackStateListener listener = (PlaybackStateListener) PluginsHandler.getInstance().getNewInstance(plugin);
+            IPlaybackStateListener listener = (IPlaybackStateListener) PluginsHandler.getInstance().getNewInstance(plugin);
             PlaybackStateListeners.addPlaybackStateListener(listener);
         } catch (PluginSystemException e) {
             Logger.error(e);
@@ -458,7 +458,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     public void pluginDeactivated(PluginInfo plugin, Collection<Plugin> createdInstances) {
         Logger.info(StringUtils.getString("Plugin deactivated: ", plugin.getName(), " (", plugin.getClassName(), ")"));
         for (Plugin createdInstance : createdInstances) {
-        	PlaybackStateListeners.removePlaybackStateListener((PlaybackStateListener) createdInstance);
+        	PlaybackStateListeners.removePlaybackStateListener((IPlaybackStateListener) createdInstance);
         }
     }
 

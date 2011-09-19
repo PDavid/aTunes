@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.PlayListAudioObject;
 import net.sourceforge.atunes.misc.PointedList;
 import net.sourceforge.atunes.model.IState;
 

@@ -18,14 +18,13 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel;
+package net.sourceforge.atunes.model;
 
-import net.sourceforge.atunes.model.IAudioObject;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
 @PluginApi
-public interface PlaybackStateListener {
+public interface IPlaybackStateListener {
 
     /**
      * This method is called when playback changes

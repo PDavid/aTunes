@@ -23,7 +23,9 @@ package net.sourceforge.atunes.kernel;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sourceforge.atunes.kernel.modules.playlist.PlayListAudioObject;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPlayListEventListener;
 
 /**
  * Holds references to PlayListEventListener instances
@@ -32,13 +34,13 @@ import net.sourceforge.atunes.model.IAudioObject;
  */
 public class PlayListEventListeners {
 
-	private static List<PlayListEventListener> listeners = new ArrayList<PlayListEventListener>();
+	private static List<IPlayListEventListener> listeners = new ArrayList<IPlayListEventListener>();
 	
     /**
      * Adds a new play list event listener
      * @param listener
      */
-    public static void addPlayListEventListener(PlayListEventListener listener) {
+    public static void addPlayListEventListener(IPlayListEventListener listener) {
     	if (listener != null) {
     		listeners.add(listener);
     	}
@@ -49,7 +51,7 @@ public class PlayListEventListeners {
 	 * @param playListAudioObjects
 	 */
 	public static void audioObjectsAdded(List<PlayListAudioObject> playListAudioObjects) {
-		for (PlayListEventListener listener : listeners) {
+		for (IPlayListEventListener listener : listeners) {
 			listener.audioObjectsAdded(playListAudioObjects);
 		}
 	}
@@ -59,7 +61,7 @@ public class PlayListEventListeners {
 	 * @param audioObjectList
 	 */
 	public static void audioObjectsRemoved(List<PlayListAudioObject> audioObjectList) {
-		for (PlayListEventListener listener : listeners) {
+		for (IPlayListEventListener listener : listeners) {
 			listener.audioObjectsRemoved(audioObjectList);
 		}
 	}
@@ -68,7 +70,7 @@ public class PlayListEventListeners {
 	 * Play list has been cleared
 	 */
 	public static void playListCleared() {
-		for (PlayListEventListener listener : listeners) {
+		for (IPlayListEventListener listener : listeners) {
 			listener.playListCleared();
 		}
 	}
@@ -83,7 +85,7 @@ public class PlayListEventListeners {
         if (audioObject == null) {
             return;
         }
-    	for (PlayListEventListener listener : listeners) {
+    	for (IPlayListEventListener listener : listeners) {
     		listener.selectedAudioObjectChanged(audioObject);
     	}
     }
