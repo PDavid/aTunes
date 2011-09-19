@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import net.sourceforge.atunes.gui.model.NavigationTableModel;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialogFactory;
@@ -48,10 +47,7 @@ public class ShowNavigatorTableItemInfoAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        int selectedRow = NavigationHandler.getInstance().getNavigationTable().getSelectedRow();
-        IAudioObject audioObject = ((NavigationTableModel) NavigationHandler.getInstance().getNavigationTable().getModel())
-                .getAudioObjectAt(selectedRow);
-        getBean(IAudioObjectPropertiesDialogFactory.class).newInstance(audioObject).showDialog();
+        getBean(IAudioObjectPropertiesDialogFactory.class).newInstance(NavigationHandler.getInstance().getSelectedAudioObjectInNavigationTable()).showDialog();
     }
 
     @Override

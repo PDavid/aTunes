@@ -27,7 +27,6 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.gui.model.NavigationTableModel;
 import net.sourceforge.atunes.kernel.modules.navigator.FavoritesNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.NavigationHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
@@ -60,10 +59,8 @@ public class RemoveFromFavoritesAction extends CustomAbstractAction {
                 FavoritesHandler.getInstance().removeFromFavorites(objects);
             }
         } else {
-            int[] rows = NavigationHandler.getInstance().getNavigationTable().getSelectedRows();
-            if (rows.length > 0) {
-                List<IAudioObject> audioObjects = ((NavigationTableModel) NavigationHandler.getInstance().getNavigationTable()
-                        .getModel()).getAudioObjectsAt(rows);
+        	List<IAudioObject> audioObjects = NavigationHandler.getInstance().getSelectedAudioObjectsInNavigationTable();
+            if (!audioObjects.isEmpty()) {
                 FavoritesHandler.getInstance().removeSongsFromFavorites(audioObjects);
             }
         }
