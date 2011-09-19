@@ -697,6 +697,6 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 	
 	@Override
 	public String getAudioObjectDescription() {
-		return StringUtils.getString(getTitle(), " - ", getArtist(), " (", StringUtils.seconds2String(getDuration()), ")");
+		return StringUtils.getString(getTitleOrFileName(), " - ", getArtist(), " (", StringUtils.seconds2String(getDuration()), ")");
 	}
 }
