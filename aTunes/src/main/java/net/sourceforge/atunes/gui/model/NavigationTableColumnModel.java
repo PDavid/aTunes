@@ -56,7 +56,7 @@ public final class NavigationTableColumnModel extends AbstractCommonColumnModel 
 
     @Override
     protected void reapplyFilter() {
-        NavigationHandler.getInstance().updateTableContent(NavigationHandler.getInstance().getCurrentView().getTree());
+        NavigationHandler.getInstance().updateViewTable();
     }
 
     @Override

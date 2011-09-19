@@ -419,7 +419,7 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
      * @param tree
      *            the tree
      */
-    public void updateTableContent(JTree tree) {
+    protected void updateTableContent(JTree tree) {
         // If navigation table is not shown then don't update it
         if (!state.isShowNavigationTable()) {
             return;
