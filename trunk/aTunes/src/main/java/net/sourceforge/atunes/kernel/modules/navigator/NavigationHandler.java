@@ -285,8 +285,15 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 		return getNavigationController().openSearchDialog(dialog, b);
 	}
 
-	public void updateTableContent(JTree tree) {
+	private void updateTableContent(JTree tree) {
 		getNavigationController().updateTableContent(tree);
+	}
+	
+	/**
+	 * Updates view table, usually after apply a filter
+	 */
+	public void updateViewTable() {
+		updateTableContent(getCurrentView().getTree());
 	}
 
 	public List<? extends IAudioObject> getAudioObjectsForTreeNode(Class<? extends INavigationView> class1, DefaultMutableTreeNode objectDragged) {
@@ -347,13 +354,13 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
         getState().setShowNavigationTree(show);
 
     	// Disable or enable actions
-        for (INavigationView navigationView : NavigationHandler.getInstance().getNavigationViews()) {
+        for (INavigationView navigationView : getNavigationViews()) {
         	navigationView.getActionToShowView().setEnabled(show);
         }
     	
         getFrame().showNavigationTree(show);
         // Depending if is visible or not filtering is allowed or not
-        FilterHandler.getInstance().setFilterEnabled(NavigationHandler.getInstance().getTreeFilter(), show);
+        FilterHandler.getInstance().setFilterEnabled(getTreeFilter(), show);
         
         applyNavigationTableVisibility(show && getState().isShowNavigationTable());
     }
@@ -376,9 +383,9 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
     private void applyNavigationTableVisibility(boolean show) {
     	getFrame().showNavigationTable(show);
         // Depending if is visible or not filtering is allowed or not
-        FilterHandler.getInstance().setFilterEnabled(NavigationHandler.getInstance().getTableFilter(), show);
+        FilterHandler.getInstance().setFilterEnabled(getTableFilter(), show);
         
-        updateTableContent(NavigationHandler.getInstance().getCurrentView().getTree());
+        updateTableContent(getCurrentView().getTree());
     }
 
 	/**
