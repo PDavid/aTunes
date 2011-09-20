@@ -18,6 +18,7 @@
 		<config>src/main/resources/settings/spring/frame.xml</config>
 		<config>src/main/resources/settings/spring/dialogs.xml</config>
 		<config>src/main/resources/settings/spring/os.xml</config>
+		<config>src/main/resources/settings/spring/tasks.xml</config>
 	</configs>
 	<configSets>
 		<configSet>
@@ -36,6 +37,7 @@
 				<config>src/main/resources/settings/spring/frame.xml</config>
 				<config>src/main/resources/settings/spring/handlers.xml</config>
 				<config>src/main/resources/settings/spring/os.xml</config>
+				<config>src/main/resources/settings/spring/tasks.xml</config>
 			</configs>
 		</configSet>
 	</configSets>

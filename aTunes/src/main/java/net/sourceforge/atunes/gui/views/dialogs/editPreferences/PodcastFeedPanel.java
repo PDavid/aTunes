@@ -99,7 +99,7 @@ public final class PodcastFeedPanel extends AbstractPreferencesPanel {
 
     @Override
     public boolean applyPreferences(IState state) {
-        state.setPodcastFeedEntriesRetrievalInterval(((Long) retrievalInterval.getSelectedItem()) * 60 * 1000);
+        state.setPodcastFeedEntriesRetrievalInterval(((Long) retrievalInterval.getSelectedItem()) * 60);
         state.setPodcastFeedEntryDownloadPath(downloadFolderFileChooser.getResult());
         state.setUseDownloadedPodcastFeedEntries(useDownloadedPodcastFeedEntries.isSelected());
         state.setRemovePodcastFeedEntriesRemovedFromPodcastFeed(removePodcastFeedEntriesRemovedFromPodcastFeed.isSelected());
@@ -113,7 +113,7 @@ public final class PodcastFeedPanel extends AbstractPreferencesPanel {
      *            the new retrieval interval
      */
     private void setRetrievalInterval(long time) {
-        retrievalInterval.setSelectedItem(time / 1000 / 60);
+        retrievalInterval.setSelectedItem(time / 60);
     }
 
     /**

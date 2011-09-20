@@ -32,8 +32,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import javax.swing.Action;
 import javax.swing.JOptionPane;
@@ -54,7 +52,6 @@ import net.sourceforge.atunes.kernel.actions.RipCDAction;
 import net.sourceforge.atunes.kernel.actions.SelectRepositoryAction;
 import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.kernel.modules.repository.processes.ImportFilesProcess;
@@ -78,6 +75,7 @@ import net.sourceforge.atunes.model.IReviewImportDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.ITagAttributesReviewed;
+import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.model.RepositoryListener;
@@ -101,8 +99,6 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 	private String lastAlbumRead;
 	
 	private SwingWorker<Image, Void> coverWorker;
-	
-	private ExecutorService repositoryChangesService = Executors.newSingleThreadExecutor();
 	
 	private boolean caseSensitiveTrees;
 	
@@ -452,7 +448,6 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
             }
         }
         
-        repositoryChangesService.shutdown();
         ImageCache.shutdown();
     }
 
@@ -1265,7 +1260,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 
 	@Override
 	public void repositoryChanged(final Repository repository) {
-		repositoryChangesService.submit(new Runnable() {
+		getBean(ITaskService.class).submitOnce("Persist Repository Cache", new Runnable() {
 			@Override
 			public void run() {
 				ApplicationStateHandler.getInstance().persistRepositoryCache(repository, true);

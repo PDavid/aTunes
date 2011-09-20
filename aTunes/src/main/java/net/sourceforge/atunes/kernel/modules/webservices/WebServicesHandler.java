@@ -37,6 +37,7 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILyricsService;
 import net.sourceforge.atunes.model.ISimilarArtistsInfo;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 
 public class WebServicesHandler extends AbstractHandler implements IWebServicesHandler {
@@ -46,6 +47,8 @@ public class WebServicesHandler extends AbstractHandler implements IWebServicesH
 	private ILyricsService lyricsService;
 	
 	private YoutubeService youtubeService;
+	
+	private ITaskService taskService;
 	
 	public final void setLastFmService(LastFmService lastFmService) {
 		this.lastFmService = lastFmService;
@@ -58,10 +61,14 @@ public class WebServicesHandler extends AbstractHandler implements IWebServicesH
 	public final void setYoutubeService(YoutubeService youtubeService) {
 		this.youtubeService = youtubeService;
 	}
+	
+	public void setTaskService(ITaskService taskService) {
+		this.taskService = taskService;
+	}
 
 	@Override
 	public void allHandlersInitialized() {
-        lastFmService.submitCacheToLastFm();
+        lastFmService.submitCacheToLastFm(taskService);
 	}
 
 	@Override
@@ -92,7 +99,7 @@ public class WebServicesHandler extends AbstractHandler implements IWebServicesH
 	
 	@Override
 	public void submitNowPlayingInfo(IAudioObject audioObject) {
-		lastFmService.submitNowPlayingInfoToLastFm((ILocalAudioObject) audioObject);
+		lastFmService.submitNowPlayingInfoToLastFm((ILocalAudioObject) audioObject, taskService);
 	}
 	
 	@Override
@@ -162,7 +169,7 @@ public class WebServicesHandler extends AbstractHandler implements IWebServicesH
 	
 	@Override
 	public void submit(IAudioObject audioObject, long listened) {
-		lastFmService.submitToLastFm(audioObject, listened);
+		lastFmService.submitToLastFm(audioObject, listened, taskService);
 	}
 	
 	@Override

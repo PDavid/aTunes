@@ -56,6 +56,7 @@ import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
 import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -65,18 +66,12 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class PodcastFeedHandler extends AbstractHandler implements IPodcastFeedHandler {
 
-	/**
-	 * Initial delay until start podcast retriever 
-	 */
-	private static final int INITIAL_RETRIEVER_DELAY = 5000; // 5 seconds
-	
     private static final Comparator<IPodcastFeed> COMPARATOR = new Comparator<IPodcastFeed>() {
         @Override
         public int compare(IPodcastFeed o1, IPodcastFeed o2) {
             return o1.getName().compareToIgnoreCase(o2.getName());
         }
     };
-
 	
     private final class DownloadPodcastFeedEntryPropertyChangeListener
 			implements PropertyChangeListener {
@@ -143,7 +138,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
         }
     }
 
-    public static final long DEFAULT_PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL = 180000;
+    public static final long DEFAULT_PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL = 180;
 
     private List<IPodcastFeed> podcastFeeds;
 
@@ -164,8 +159,6 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
      * Podcast Feed Entry download checker
      */
     private ScheduledExecutorService podcastFeedEntryDownloadCheckerExecutorService;
-    
-    private ScheduledExecutorService podcastFeedEntryRetrieverExecutorService = Executors.newScheduledThreadPool(1);
     
     private ScheduledFuture<?> scheduledPodcastFeedEntryRetrieverFuture;
 
@@ -217,7 +210,6 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
      * Finish.
      */
     public void applicationFinish() {
-    	getPodcastFeedEntryRetrieverExecutorService().shutdownNow();
         synchronized (runningDownloads) {
             for (int i = 0; i < runningDownloads.size(); i++) {
                 PodcastFeedEntryDownloader podcastFeedEntryDownloader = runningDownloads.get(i);
@@ -318,8 +310,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
         if (scheduledPodcastFeedEntryRetrieverFuture != null) {
             scheduledPodcastFeedEntryRetrieverFuture.cancel(true);
         }
-        scheduledPodcastFeedEntryRetrieverFuture = getPodcastFeedEntryRetrieverExecutorService().scheduleWithFixedDelay(new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame(), getBean(INavigationHandler.class)), INITIAL_RETRIEVER_DELAY,
-                newRetrievalInterval, TimeUnit.MILLISECONDS);
+        scheduledPodcastFeedEntryRetrieverFuture = getBean(ITaskService.class).submitPeriodically("Periodically Retrieve Podcast Feed Entries", new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame(), getBean(INavigationHandler.class)), newRetrievalInterval);
     }
 
     /* (non-Javadoc)
@@ -327,7 +318,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
 	 */
     @Override
 	public void retrievePodcastFeedEntries() {
-    	getPodcastFeedEntryRetrieverExecutorService().execute(new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame(), getBean(INavigationHandler.class)));
+    	getBean(ITaskService.class).submitOnce("Retrieve Podcast Feed Entries", new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame(), getBean(INavigationHandler.class)));
     }
 
     /* (non-Javadoc)
@@ -509,16 +500,6 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
 			podcastFeedEntryDownloadCheckerExecutorService = Executors.newScheduledThreadPool(1);
 		}
 		return podcastFeedEntryDownloadCheckerExecutorService;
-	}
-
-	/**
-	 * @return the podcastFeedEntryRetrieverExecutorService
-	 */
-	private ScheduledExecutorService getPodcastFeedEntryRetrieverExecutorService() {
-		if (podcastFeedEntryRetrieverExecutorService == null) {
-			podcastFeedEntryRetrieverExecutorService = Executors.newScheduledThreadPool(1);
-		}
-		return podcastFeedEntryRetrieverExecutorService;
 	}
 
 }
