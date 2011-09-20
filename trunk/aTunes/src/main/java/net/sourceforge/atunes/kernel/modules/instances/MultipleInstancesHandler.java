@@ -34,6 +34,7 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.command.CommandHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
@@ -149,13 +150,10 @@ public final class MultipleInstancesHandler extends AbstractHandler {
         /** The last song added. */
         private long lastSongAdded = 0;
         
-        private IPlayListHandler playListHandler;
-
         /**
          * Instantiates a new songs queue.
          */
-        SongsQueue(IPlayListHandler playListHandler) {
-        	this.playListHandler = playListHandler;
+        SongsQueue() {
             songsQueue = new ArrayList<IAudioObject>();
         }
 
@@ -188,7 +186,7 @@ public final class MultipleInstancesHandler extends AbstractHandler {
                                 // Clear songs queue
                                 songsQueue.clear();
                                 // Add songs
-                                playListHandler.addToPlayListAndPlay(auxList);
+                                Context.getBean(IPlayListHandler.class).addToPlayListAndPlay(auxList);
                             }
                         });
                     }
@@ -262,7 +260,7 @@ public final class MultipleInstancesHandler extends AbstractHandler {
             System.out.println(StringUtils.getString("INFO: aTunes is listening for other instances on port ", Constants.MULTIPLE_INSTANCES_SOCKET));
 
             // Initialize songs queue
-            SongsQueue songsQueue = new SongsQueue(getBean(IPlayListHandler.class));
+            SongsQueue songsQueue = new SongsQueue();
 
             // Initialize socket listener
             SocketListener listener = new SocketListener(serverSocket, songsQueue);
@@ -273,7 +271,11 @@ public final class MultipleInstancesHandler extends AbstractHandler {
 
             // Server socket could be opened, so this instance is a "master"
             return true;
-        } catch (Exception e) {
+        } catch (IOException e) {
+            // Server socket could not be opened, so this instance is a "slave"
+            System.out.println("INFO: Another aTunes instance is running");
+            return false;
+        } catch (SecurityException e) {
             // Server socket could not be opened, so this instance is a "slave"
             System.out.println("INFO: Another aTunes instance is running");
             return false;
