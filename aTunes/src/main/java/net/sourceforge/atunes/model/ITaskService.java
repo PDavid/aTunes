@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.model;
 
-import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledFuture;
 
 /**
@@ -31,19 +30,31 @@ import java.util.concurrent.ScheduledFuture;
 public interface ITaskService {
 
 	/**
-	 * Submits a task to run once
+	 * Submits a task to run as soon as possible
 	 * @param name
 	 * @param task
+	 * @return
 	 */
-	public Future<?> submitOnce(String name, Runnable task);
+	public ScheduledFuture<?> submitNow(String name, Runnable task);
+
+	/**
+	 * Submits a task to run once after given delay in seconds
+	 * @param name
+	 * @param delay
+	 * @param task
+	 * @return
+	 */
+	public ScheduledFuture<?> submitOnce(String name, long delay, Runnable task);
 	
 	/**
-	 * Submits a task to run every given number of seconds
+	 * Submits a task to run periodically with a given delay between end and start and after an initial delay. All delays must be in seconds
 	 * @param name
 	 * @param task
-	 * @param seconds
+	 * @param initialDelay
+	 * @param delay
+	 * @return
 	 */
-	public ScheduledFuture<?> submitPeriodically(String name, Runnable task, long seconds);
+	public ScheduledFuture<?> submitPeriodically(String name, long initialDelay, long delay, Runnable task);
 	
 	/**
 	 * Called to finish tasks

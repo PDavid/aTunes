@@ -20,9 +20,7 @@
 
 package net.sourceforge.atunes.kernel;
 
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -34,44 +32,71 @@ import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
 
 public class TaskService implements ITaskService {
 
-	private ExecutorService singleService;
+	/**
+	 * Service used
+	 */
+	private ScheduledExecutorService service;
+
+	/**
+	 * Number of threads in pool
+	 */
+	private int poolSize;
 	
-	private ScheduledExecutorService periodicService;
+	/**
+	 * Suffix for thread names
+	 */
+	private String threadSuffix;
 	
-	private ExecutorService getSingleService() {
-		if (singleService == null) {
-			singleService = Executors.newSingleThreadScheduledExecutor(new CustomizableThreadFactory("SingleTaskService"));
-		}
-		return singleService;
+	public void setThreadSuffix(String threadSuffix) {
+		this.threadSuffix = threadSuffix;
 	}
 	
-	private ScheduledExecutorService getPeriodicService() {
-		if (periodicService == null) {
-			periodicService = Executors.newSingleThreadScheduledExecutor(new CustomizableThreadFactory("PeriodicTaskService"));
-		}
-		return periodicService;
+	public void setPoolSize(int poolSize) {
+		this.poolSize = poolSize;
 	}
 	
 	@Override
-	public Future<?> submitOnce(String name, Runnable task) {
-		Logger.debug("Submitted task to run once: ", name);
-		return getSingleService().submit(task);
+	public ScheduledFuture<?> submitNow(String name, Runnable task) {
+		Logger.debug("Submitted task: ", name);
+		return getService().schedule(createRunnable(name, task), 0, TimeUnit.SECONDS);
+	}
+	
+	@Override
+	public ScheduledFuture<?> submitOnce(String name, long delay, Runnable task) {
+		Logger.debug("Submitted task to run in ", delay, " seconds: ", name);
+		return getService().schedule(createRunnable(name, task), delay, TimeUnit.SECONDS);
 	}
 
 	@Override
-	public ScheduledFuture<?> submitPeriodically(String name, Runnable task, long seconds) {
-		Logger.debug("Submitted task to run every ", seconds, " seconds: ", name);
-		return getPeriodicService().schedule(task, seconds, TimeUnit.SECONDS);
+	public ScheduledFuture<?> submitPeriodically(String name, long initialDelay, long delay, Runnable task) {
+		Logger.debug("Submitted task to run every ", delay, " seconds after ", initialDelay, " seconds: ", name);
+		return getService().scheduleWithFixedDelay(createRunnable(name, task), initialDelay,  delay, TimeUnit.SECONDS);
 	}
 	
 	@Override
 	public void shutdownService() {
-		if (singleService != null) {
-			singleService.shutdown();
-		}
-		if (periodicService != null) {
-			periodicService.shutdown();
+		if (service != null) {
+			service.shutdown();
 		}
 	}
+
+	private ScheduledExecutorService getService() {
+		if (service == null) {
+			service = Executors.newScheduledThreadPool(poolSize, new CustomizableThreadFactory(threadSuffix));
+		}
+		return service;
+	}
+	
+	private Runnable createRunnable(final String name, final Runnable task) {
+		return new Runnable() {
+			@Override
+			public void run() {
+				Logger.debug("Started task: ", name);
+				task.run();
+				Logger.debug("Finished task: ", name);
+			}
+		};
+	}
+	
 
 }

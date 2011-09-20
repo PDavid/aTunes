@@ -1260,7 +1260,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 
 	@Override
 	public void repositoryChanged(final Repository repository) {
-		getBean(ITaskService.class).submitOnce("Persist Repository Cache", new Runnable() {
+		getBean(ITaskService.class).submitNow("Persist Repository Cache", new Runnable() {
 			@Override
 			public void run() {
 				ApplicationStateHandler.getInstance().persistRepositoryCache(repository, true);

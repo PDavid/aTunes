@@ -915,7 +915,7 @@ public final class LastFmService {
      */
     public void submitToLastFm(final IAudioObject audioFile, final long secondsPlayed, ITaskService taskService) {
         if (state.isLastFmEnabled()) {
-        	taskService.submitOnce("Submit to Last.fm", new SubmitToLastFmRunnable(secondsPlayed, audioFile));
+        	taskService.submitNow("Submit to Last.fm", new SubmitToLastFmRunnable(secondsPlayed, audioFile));
         }
     }
 
@@ -925,7 +925,7 @@ public final class LastFmService {
      */
     public void submitCacheToLastFm(ITaskService service) {
         if (state.isLastFmEnabled()) {
-        	service.submitOnce("Submit Cache to Last.fm", new Runnable() {
+        	service.submitNow("Submit Cache to Last.fm", new Runnable() {
 
                 @Override
                 public void run() {
@@ -951,7 +951,7 @@ public final class LastFmService {
      */
     public void submitNowPlayingInfoToLastFm(final ILocalAudioObject audioFile, ITaskService taskService) {
         if (state.isLastFmEnabled()) {
-        	taskService.submitOnce("Submit Now Playing to Last.fm", new SubmitNowPlayingInfoRunnable(audioFile));
+        	taskService.submitNow("Submit Now Playing to Last.fm", new SubmitNowPlayingInfoRunnable(audioFile));
         }
     }
 

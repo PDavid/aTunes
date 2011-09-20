@@ -35,13 +35,13 @@ final class DeviceMonitor {
      * Start monitor.
      */
     static void startMonitor(final IState state, ITaskService taskService) {
-    	taskService.submitPeriodically("Device Monitor", new Runnable() {
+    	taskService.submitPeriodically("Device Monitor", DELAY, DELAY, new Runnable() {
     		@Override
     		public void run() {
     			checkConnection(state);
     			checkDisconnection();
     		}
-    	}, DELAY);
+    	});
     }
 
     /**

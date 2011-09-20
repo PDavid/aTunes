@@ -36,6 +36,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.TimerTask;
+import java.util.concurrent.Future;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -71,6 +72,7 @@ import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -170,7 +172,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
         addWindowFocusListener(getWindowStateListener());
         addComponentListener(new ComponentAdapter() {
 			
-        	private java.util.Timer timer;
+        	private Future<?> future;
         	
 			@Override
 			public void componentResized(ComponentEvent event) {				
@@ -187,15 +189,14 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
 				final int height = AbstractSingleFrame.this.getSize().height;
 				
 				if (isVisible() && width != 0 && height != 0) {
-					if (timer != null) {
-						timer.cancel();
-						timer = null;
+					if (future != null) {
+						future.cancel(false);
 					}
-					timer = new java.util.Timer();
-					timer.schedule(new TimerTask() {
-						
+					
+					Context.getBean(ITaskService.class).submitOnce("Save Frame State", 1, new Runnable() {
 						@Override
 						public void run() {
+							System.out.println("Guardando");
 							IFrameState state = AbstractSingleFrame.this.state.getFrameState(AbstractSingleFrame.this.getClass());
 							state.setXPosition(event.getComponent().getX());
 							state.setYPosition(event.getComponent().getY());
@@ -204,7 +205,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
 							state.setWindowHeight(height);
 							AbstractSingleFrame.this.state.setFrameState(AbstractSingleFrame.this.getClass(), state);
 						}
-					}, 1000);
+					});
 				}
 			}
 		});
