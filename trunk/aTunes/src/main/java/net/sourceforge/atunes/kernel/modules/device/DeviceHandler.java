@@ -63,6 +63,7 @@ import net.sourceforge.atunes.model.IFileSelectionDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -107,7 +108,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
     @Override
     public void allHandlersInitialized() {
         // Start device monitor
-        DeviceMonitor.startMonitor(getState());
+        DeviceMonitor.startMonitor(getState(), getBean(ITaskService.class));
     }
 
     /**
@@ -296,7 +297,6 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
      * Called when closing application
      */
     public void applicationFinish() {
-    	DeviceMonitor.stopMonitor();
         if (isDeviceConnected()) {
             // Persist device metadata
             ApplicationStateHandler.getInstance().persistDeviceCache(deviceId, deviceRepository);

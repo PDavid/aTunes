@@ -21,40 +21,29 @@
 package net.sourceforge.atunes.kernel.modules.device;
 
 import java.io.File;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import net.sourceforge.atunes.kernel.DeviceListeners;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITaskService;
 
 final class DeviceMonitor {
 
-	private static ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
-	
     private static int DELAY = 5;
 
     /**
      * Start monitor.
      */
-    static void startMonitor(final IState state) {
-    	service.scheduleAtFixedRate(new Runnable() {
+    static void startMonitor(final IState state, ITaskService taskService) {
+    	taskService.submitPeriodically("Device Monitor", new Runnable() {
     		@Override
     		public void run() {
     			checkConnection(state);
     			checkDisconnection();
     		}
-    	}, DELAY, DELAY, TimeUnit.SECONDS);
+    	}, DELAY);
     }
 
-    /**
-     * Stop monitor.
-     */
-    static void stopMonitor() {
-    	service.shutdown();
-    }
-    
     /**
      * Checks if device has been disconnected, returning true if so, false otherwise
      * @return

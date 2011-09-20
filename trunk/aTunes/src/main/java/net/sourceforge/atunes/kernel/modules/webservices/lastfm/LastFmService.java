@@ -27,9 +27,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.RejectedExecutionException;
 
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
@@ -54,6 +51,7 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ISimilarArtistsInfo;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.CryptoUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.NetworkUtils;
@@ -165,8 +163,6 @@ public final class LastFmService {
     private String user;
     private String password;
     private LastFmCache lastFmCache;
-    /** Submissions need single threaded executor */
-    private ExecutorService scrobblerExecutorService = Executors.newSingleThreadExecutor();
     
     private IState state;
     
@@ -222,7 +218,6 @@ public final class LastFmService {
      * Finishes service
      */
     public void finishService() {
-        scrobblerExecutorService.shutdownNow();
         // Maybe it's not initialized if not used
         if (lastFmCache != null) {
         	Logger.debug("Finalizing LastFmCache");
@@ -915,27 +910,22 @@ public final class LastFmService {
      * Submit song to Last.fm
      * 
      * @param audioFile
-     *            the file
      * @param secondsPlayed
-     *            the seconds played
+     * @param taskService
      */
-    public void submitToLastFm(final IAudioObject audioFile, final long secondsPlayed) {
+    public void submitToLastFm(final IAudioObject audioFile, final long secondsPlayed, ITaskService taskService) {
         if (state.isLastFmEnabled()) {
-            Runnable r = new SubmitToLastFmRunnable(secondsPlayed, audioFile);
-            try {
-                scrobblerExecutorService.submit(r);
-            } catch (RejectedExecutionException e) {
-                Logger.info("execution of submission runnable rejected");
-            }
+        	taskService.submitOnce("Submit to Last.fm", new SubmitToLastFmRunnable(secondsPlayed, audioFile));
         }
     }
 
     /**
      * Submits Last.fm cache
+     * @param service
      */
-    public void submitCacheToLastFm() {
+    public void submitCacheToLastFm(ITaskService service) {
         if (state.isLastFmEnabled()) {
-            Runnable r = new Runnable() {
+        	service.submitOnce("Submit Cache to Last.fm", new Runnable() {
 
                 @Override
                 public void run() {
@@ -949,12 +939,7 @@ public final class LastFmService {
                         }
                     }
                 }
-            };
-            try {
-                scrobblerExecutorService.submit(r);
-            } catch (RejectedExecutionException e) {
-                Logger.info("execution of cache submission runnable rejected");
-            }
+            });
         }
     }
 
@@ -964,14 +949,9 @@ public final class LastFmService {
      * @param audioFile
      *            the file
      */
-    public void submitNowPlayingInfoToLastFm(final ILocalAudioObject audioFile) {
+    public void submitNowPlayingInfoToLastFm(final ILocalAudioObject audioFile, ITaskService taskService) {
         if (state.isLastFmEnabled()) {
-            Runnable r = new SubmitNowPlayingInfoRunnable(audioFile);
-            try {
-                scrobblerExecutorService.submit(r);
-            } catch (RejectedExecutionException e) {
-                Logger.info("execution of now playing runnable rejected");
-            }
+        	taskService.submitOnce("Submit Now Playing to Last.fm", new SubmitNowPlayingInfoRunnable(audioFile));
         }
     }
 

@@ -44,6 +44,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -163,6 +164,9 @@ public class Kernel {
             TempFolder.getInstance().removeAllFiles();
             
             ApplicationLifeCycleListeners.applicationFinish();
+            
+            Context.getBean(ITaskService.class).shutdownService();
+            
         } finally {
             Logger.info(StringUtils.getString("Application finished (", StringUtils.toString(timer.stop(), 3), " seconds)"));
             Logger.info("Goodbye!!");
