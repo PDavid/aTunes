@@ -21,8 +21,7 @@ package net.sourceforge.atunes.gui.model;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.Future;
 
 import javax.swing.ImageIcon;
 import javax.swing.JTable;
@@ -48,6 +47,7 @@ import net.sourceforge.atunes.gui.renderers.TextAndIconTableCellRendererCode;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.columns.TextAndIcon;
+import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel {
@@ -65,16 +65,18 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
     private int columnMovedTo = -1;
     private ColumnMoveListener columnMoveListener;
     private ColumnModelListener columnModelListener;
-    private Timer timer;
 
+    private ITaskService taskService;
+    
     /**
      * Instantiates a new column model
      * 
      * @param table
      * @param columnSet
+     * @param taskService
      */
-    public AbstractCommonColumnModel(JTable table, AbstractColumnSet columnSet) {
-        this(table);
+    public AbstractCommonColumnModel(JTable table, AbstractColumnSet columnSet, ITaskService taskService) {
+        this(table, taskService);
         this.columnSet = columnSet;
     }
 
@@ -82,10 +84,11 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
      * Instantiates a new column model.
      * 
      * @param table
-     *            the play list
+     * @param taskService
      */
-    public AbstractCommonColumnModel(JTable table) {
+    public AbstractCommonColumnModel(JTable table, ITaskService taskService) {
         super();
+        this.taskService = taskService;
         this.table = table;
         this.model = (AbstractCommonTableModel) this.table.getModel();
     }
@@ -236,21 +239,22 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
 
     private class ColumnModelListener implements TableColumnModelListener {
     	
+    	private Future<?> future;
+    	
     	private void saveColumnSet() {
-            if (timer != null) {
-            	timer.cancel();
-            	timer = null;
+            if (future != null) {
+            	future.cancel(false);
             }
-            timer = new Timer();
-            timer.schedule(new TimerTask() {
+            future = taskService.submitOnce("Save Column Model", 1, new Runnable() {
     			
     			@Override
     			public void run() {
     				// One second after last column width change save column set
     				// This is to avoid saving column set after each column change event
+    				System.out.println("Sassssss");
     		        columnSet.saveColumnSet();
     			}
-    		}, 1000);        
+    		});        
     	}
     	
         public void columnAdded(TableColumnModelEvent e) {

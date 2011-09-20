@@ -23,7 +23,9 @@ package net.sourceforge.atunes.gui.model;
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
+import net.sourceforge.atunes.model.ITaskService;
 
 public class SearchResultColumnModel extends AbstractCommonColumnModel {
 
@@ -36,7 +38,7 @@ public class SearchResultColumnModel extends AbstractCommonColumnModel {
      * @param columnSet
      */
     public SearchResultColumnModel(JTable table, AbstractColumnSet columnSet) {
-        super(table, columnSet);
+        super(table, columnSet, Context.getBean(ITaskService.class));
         enableColumnChange(true);
     }
 

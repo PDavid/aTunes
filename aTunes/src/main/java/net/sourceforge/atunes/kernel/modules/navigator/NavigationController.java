@@ -76,6 +76,7 @@ import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.ITreeObject;
 
 final class NavigationController implements IAudioFilesRemovedListener, IController {
@@ -155,19 +156,25 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
     
     private INavigationHandler navigationHandler;
     
+    private ITaskService taskService;
+    
     /**
      * Instantiates a new navigation controller.
      * 
      * @param treePanel
      * @param tablePanel
      * @param state
+     * @param osManager
+     * @param navigationHandler
+     * @param taskService
      */
-    NavigationController(NavigationTreePanel treePanel, NavigationTablePanel tablePanel, IState state, IOSManager osManager, INavigationHandler navigationHandler) {
+    NavigationController(NavigationTreePanel treePanel, NavigationTablePanel tablePanel, IState state, IOSManager osManager, INavigationHandler navigationHandler, ITaskService taskService) {
         this.navigationTreePanel = treePanel;
         this.navigationTablePanel = tablePanel;
         this.state = state;
         this.osManager = osManager;
         this.navigationHandler = navigationHandler;
+        this.taskService = taskService;
         addBindings();
         RepositoryHandler.getInstance().addAudioFilesRemovedListener(this);
         this.navigatorColumnSet = (AbstractColumnSet) Context.getBean("navigatorColumnSet");
@@ -185,7 +192,7 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
     public void addBindings() {
         NavigationTableModel model = new NavigationTableModel();
         navigationTablePanel.getNavigationTable().setModel(model);
-        columnModel = new NavigationTableColumnModel(navigationTablePanel.getNavigationTable(), state, navigationHandler);
+        columnModel = new NavigationTableColumnModel(navigationTablePanel.getNavigationTable(), state, navigationHandler, taskService);
         navigationTablePanel.getNavigationTable().setColumnModel(columnModel);
         ColumnRenderers.addRenderers(navigationTablePanel.getNavigationTable(), columnModel);
 

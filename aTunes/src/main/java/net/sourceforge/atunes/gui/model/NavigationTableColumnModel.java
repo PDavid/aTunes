@@ -35,6 +35,7 @@ import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITaskService;
 
 public final class NavigationTableColumnModel extends AbstractCommonColumnModel {
 
@@ -44,8 +45,8 @@ public final class NavigationTableColumnModel extends AbstractCommonColumnModel 
     
     private INavigationHandler navigationHandler;
     
-    public NavigationTableColumnModel(JTable table, IState state, INavigationHandler navigationHandler) {
-        super(table);
+    public NavigationTableColumnModel(JTable table, IState state, INavigationHandler navigationHandler, ITaskService taskService) {
+        super(table, taskService);
         this.state = state;
         this.navigationHandler = navigationHandler;
         enableColumnChange(true);

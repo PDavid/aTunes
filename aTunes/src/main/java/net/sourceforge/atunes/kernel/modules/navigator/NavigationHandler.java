@@ -43,6 +43,7 @@ import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -247,7 +248,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
         if (navigationController == null) {
             NavigationTreePanel treePanel = getFrame().getNavigationTreePanel();
             NavigationTablePanel tablePanel = getFrame().getNavigationTablePanel();
-            navigationController = new NavigationController(treePanel, tablePanel, getState(), getOsManager(), this);
+            navigationController = new NavigationController(treePanel, tablePanel, getState(), getOsManager(), this, getBean(ITaskService.class));
         }
         return navigationController;
     }
