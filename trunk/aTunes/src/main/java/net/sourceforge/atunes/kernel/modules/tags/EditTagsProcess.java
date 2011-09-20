@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.modules.tags;
 
 import java.util.List;
 
+import net.sourceforge.atunes.kernel.modules.repository.ImageCache;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -65,6 +66,6 @@ public class EditTagsProcess extends AbstractChangeTagProcess {
             newTag.setInternalImage((oldTag != null && oldTag.hasInternalImage() && !shouldEditCover) || (shouldEditCover && cover != null));
         }
         TagModifier.setInfo(audioFile, newTag, shouldEditCover, c);
-        AudioFile.getImageCache().clear(audioFile);
+        ImageCache.getImageCache().clear(audioFile);
     }
 }

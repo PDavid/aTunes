@@ -36,7 +36,16 @@ public class ImageCache extends AbstractCache {
 
     private static final String COVERS = "covers";
 
-    public ImageCache() {
+    private static ImageCache cache;
+    
+    public static ImageCache getImageCache() {
+    	if (cache == null) {
+    		cache = new ImageCache();
+    	}    		
+        return cache;
+    }
+    
+    private ImageCache() {
         super(LyricsCache.class.getResource("/settings/ehcache-covers.xml"));
     }
 
@@ -101,7 +110,10 @@ public class ImageCache extends AbstractCache {
         return getCache(COVERS);
     }
 
-    public void shutdown() {
-        getCache().dispose();
+    public static void shutdown() {
+    	if (cache != null) {
+    		cache.getCache().dispose();
+    	}
     }
+    
 }

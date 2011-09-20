@@ -453,7 +453,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         }
         
         repositoryChangesService.shutdown();
-        AudioFile.getImageCache().shutdown();
+        ImageCache.shutdown();
     }
 
     public List<File> getFolders() {

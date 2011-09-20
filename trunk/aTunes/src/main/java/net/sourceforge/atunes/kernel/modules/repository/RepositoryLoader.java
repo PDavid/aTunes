@@ -567,7 +567,7 @@ public class RepositoryLoader extends Thread {
 	private void notifyFinish() {
 		RepositoryHandler.getInstance().endTransaction();
 		
-		AudioFile.getImageCache().clearCache();
+		ImageCache.getImageCache().clearCache();
 
 		if (listener == null) {
 			return;
