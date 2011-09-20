@@ -310,7 +310,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
         if (scheduledPodcastFeedEntryRetrieverFuture != null) {
             scheduledPodcastFeedEntryRetrieverFuture.cancel(true);
         }
-        scheduledPodcastFeedEntryRetrieverFuture = getBean(ITaskService.class).submitPeriodically("Periodically Retrieve Podcast Feed Entries", new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame(), getBean(INavigationHandler.class)), newRetrievalInterval);
+        scheduledPodcastFeedEntryRetrieverFuture = getBean(ITaskService.class).submitPeriodically("Periodically Retrieve Podcast Feed Entries", newRetrievalInterval, newRetrievalInterval, new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame(), getBean(INavigationHandler.class)));
     }
 
     /* (non-Javadoc)
@@ -318,7 +318,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
 	 */
     @Override
 	public void retrievePodcastFeedEntries() {
-    	getBean(ITaskService.class).submitOnce("Retrieve Podcast Feed Entries", new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame(), getBean(INavigationHandler.class)));
+    	getBean(ITaskService.class).submitNow("Retrieve Podcast Feed Entries", new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame(), getBean(INavigationHandler.class)));
     }
 
     /* (non-Javadoc)
