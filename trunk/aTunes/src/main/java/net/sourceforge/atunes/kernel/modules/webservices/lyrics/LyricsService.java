@@ -43,7 +43,7 @@ public final class LyricsService implements ApplicationStateChangeListener, ILyr
     private List<LyricsEngineInfo> defaultLyricsEngines;
 
     /** Cache */
-    private static LyricsCache lyricsCache = new LyricsCache();
+    private static LyricsCache lyricsCache;
 
     /** Contains a list of LyricsEngine to get lyrics. */
     private List<AbstractLyricsEngine> lyricsEngines;
@@ -61,11 +61,19 @@ public final class LyricsService implements ApplicationStateChangeListener, ILyr
 	public void updateService() {
         this.lyricsEngines = loadEngines(state.getProxy());
     }
+    
+    private LyricsCache getLyricsCache() {
+    	if (lyricsCache == null) {
+    		Logger.debug("Initializing LyricsCache");
+    		lyricsCache = new LyricsCache();
+    	}
+    	return lyricsCache;
+    }
 
     @Override
 	public Lyrics getLyrics(String artist, String song) {
         // Try to get from cache
-        Lyrics lyric = lyricsCache.retrieveLyric(artist, song);
+        Lyrics lyric = getLyricsCache().retrieveLyric(artist, song);
         
         // Discard stored lyrics containing HTML
         if (lyric != null && lyric.getLyrics().contains("<") && lyric.getLyrics().contains(">")) {
@@ -93,7 +101,7 @@ public final class LyricsService implements ApplicationStateChangeListener, ILyr
             
             fixLyrics(lyric);
             
-            lyricsCache.storeLyric(artist, song, lyric);
+            getLyricsCache().storeLyric(artist, song, lyric);
         }
         // Return lyric
         return lyric;
@@ -271,7 +279,7 @@ public final class LyricsService implements ApplicationStateChangeListener, ILyr
 
     @Override
 	public boolean clearCache() {
-        return lyricsCache.clearCache();
+        return getLyricsCache().clearCache();
     }
 
     @Override
@@ -281,7 +289,10 @@ public final class LyricsService implements ApplicationStateChangeListener, ILyr
 
     @Override
 	public void finishService() {
-        lyricsCache.shutdown();
+    	if (lyricsCache != null) {
+    		Logger.debug("Finalizing LyricsCache");
+    		lyricsCache.shutdown();
+    	}
     }
     
     public void setDefaultLyricsEngines(List<LyricsEngineInfo> defaultLyricsEngines) {
