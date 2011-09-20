@@ -28,8 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.Future;
 
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
@@ -63,6 +62,7 @@ import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -117,7 +117,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     /** Play lists stored */
     private static ListOfPlayLists playListsRetrievedFromCache;
     
-    private Timer persistPlayListTimer;
+    private Future<?> persistPlayListFuture;
 
     /**
      * Filter for play list
@@ -583,18 +583,16 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
      * Called when play lists needs to be persisted
      */
     private void playListsChanged(boolean definition, boolean contents) {
-    	// If content must be saved then do in a TimerTask, otherwise persist definition inmediately
+    	// If content must be saved then do in a task service, otherwise persist definition inmediately
     	if (definition && !contents) {
     		ApplicationStateHandler.getInstance().persistPlayListsDefinition(getListOfPlayLists());
     	} else {
     		// Wait 5 seconds and persist play list 
-    		if (persistPlayListTimer != null) {
-    			persistPlayListTimer.cancel();
+    		if (persistPlayListFuture != null) {
+    			persistPlayListFuture.cancel(false);
     		}
 
-    		persistPlayListTimer = new Timer();
-    		persistPlayListTimer.schedule(new TimerTask() {
-
+    		persistPlayListFuture = getBean(ITaskService.class).submitOnce("Persist PlayList", 5, new Runnable() {
     			@Override
     			public void run() {
     				// Store play list definition
@@ -602,7 +600,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     				// Store play list contents
     				ApplicationStateHandler.getInstance().persistPlayListsContents(getPlayListsContents());
     			}
-    		}, 5000);
+    		});
     	}
     }
 

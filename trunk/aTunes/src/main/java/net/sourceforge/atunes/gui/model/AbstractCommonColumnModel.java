@@ -251,7 +251,6 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
     			public void run() {
     				// One second after last column width change save column set
     				// This is to avoid saving column set after each column change event
-    				System.out.println("Sassssss");
     		        columnSet.saveColumnSet();
     			}
     		});        
