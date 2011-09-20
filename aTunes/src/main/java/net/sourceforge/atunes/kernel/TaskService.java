@@ -57,19 +57,16 @@ public class TaskService implements ITaskService {
 	
 	@Override
 	public ScheduledFuture<?> submitNow(String name, Runnable task) {
-		Logger.debug("Submitted task: ", name);
 		return getService().schedule(createRunnable(name, task), 0, TimeUnit.SECONDS);
 	}
 	
 	@Override
 	public ScheduledFuture<?> submitOnce(String name, long delay, Runnable task) {
-		Logger.debug("Submitted task to run in ", delay, " seconds: ", name);
 		return getService().schedule(createRunnable(name, task), delay, TimeUnit.SECONDS);
 	}
 
 	@Override
 	public ScheduledFuture<?> submitPeriodically(String name, long initialDelay, long delay, Runnable task) {
-		Logger.debug("Submitted task to run every ", delay, " seconds after ", initialDelay, " seconds: ", name);
 		return getService().scheduleWithFixedDelay(createRunnable(name, task), initialDelay,  delay, TimeUnit.SECONDS);
 	}
 	
