@@ -35,7 +35,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Arrays;
-import java.util.TimerTask;
 import java.util.concurrent.Future;
 
 import javax.swing.BorderFactory;
@@ -189,14 +188,14 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
 				final int height = AbstractSingleFrame.this.getSize().height;
 				
 				if (isVisible() && width != 0 && height != 0) {
+					// Task submitted after canceling previous ones to avoid executing task after each call to component listener
 					if (future != null) {
 						future.cancel(false);
 					}
 					
-					Context.getBean(ITaskService.class).submitOnce("Save Frame State", 1, new Runnable() {
+					future = Context.getBean(ITaskService.class).submitOnce("Save Frame State", 1, new Runnable() {
 						@Override
 						public void run() {
-							System.out.println("Guardando");
 							IFrameState state = AbstractSingleFrame.this.state.getFrameState(AbstractSingleFrame.this.getClass());
 							state.setXPosition(event.getComponent().getX());
 							state.setYPosition(event.getComponent().getY());

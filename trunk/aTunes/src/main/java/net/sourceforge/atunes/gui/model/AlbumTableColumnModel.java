@@ -24,6 +24,7 @@ import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
+import net.sourceforge.atunes.model.ITaskService;
 
 /**
  * Column model used for table displaying album information
@@ -36,7 +37,7 @@ public final class AlbumTableColumnModel extends AbstractCommonColumnModel {
 
 
 	public AlbumTableColumnModel(JTable table) {
-        super(table, (AbstractColumnSet) Context.getBean("albumColumnSet"));
+        super(table, (AbstractColumnSet) Context.getBean("albumColumnSet"), Context.getBean(ITaskService.class));
         enableColumnChange(true);
     }
 
