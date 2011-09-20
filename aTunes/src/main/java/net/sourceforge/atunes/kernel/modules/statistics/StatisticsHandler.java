@@ -34,6 +34,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectStatistics;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IStatisticsHandler;
+import net.sourceforge.atunes.model.ITaskService;
 
 import org.joda.time.DateTime;
 
@@ -208,14 +209,13 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
      * 
      */
     private void storeStatistics() {
-        Thread t = new Thread() {
+    	getBean(ITaskService.class).submitNow("Persist statistics", new Runnable() {
+    		
             @Override
             public void run() {
                 ApplicationStateHandler.getInstance().persistStatisticsCache(statistics);
             };
-        };
-        t.setPriority(Thread.MIN_PRIORITY);
-        t.start();
+        });
     }
 
     @Override
