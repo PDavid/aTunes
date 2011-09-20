@@ -64,8 +64,6 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 
     private static final long serialVersionUID = -1139001443603556703L;
 
-    private static ImageCache imageCache = new ImageCache();
-
     private AbstractTag tag;
     private List<File> externalPictures;
     private int duration;
@@ -618,7 +616,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
     public ImageIcon getImage(ImageSize imageSize, IOSManager osManager) {
         ImageIcon result = null;
 
-        result = imageCache.retrieveImage(this, imageSize);
+        result = ImageCache.getImageCache().retrieveImage(this, imageSize);
 
         if (result == null) {
             result = AudioFilePictureUtils.getInsidePicture(this, imageSize.getSize(), imageSize.getSize());
@@ -630,7 +628,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
         }
 
         if (result != null) {
-            imageCache.storeImage(this, imageSize, result);
+        	ImageCache.getImageCache().storeImage(this, imageSize, result);
         }
 
         return result;
@@ -667,10 +665,6 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
             throw new IllegalArgumentException("unknown image size");
         }
         }
-    }
-
-    public static ImageCache getImageCache() {
-        return imageCache;
     }
 
     /**
