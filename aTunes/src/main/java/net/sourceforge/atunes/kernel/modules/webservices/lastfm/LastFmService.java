@@ -171,6 +171,8 @@ public final class LastFmService {
     private IState state;
     
     private IFrame frame;
+    
+    private IOSManager osManager;
 
     /**
      * Instantiates a new Last.fm service
@@ -182,8 +184,16 @@ public final class LastFmService {
     public LastFmService(IState state, IOSManager osManager, IFrame frame) {
     	this.state = state;
     	this.frame = frame;
-    	lastFmCache = new LastFmCache(osManager);
+    	this.osManager = osManager;
     	updateService();
+    }
+    
+    private LastFmCache getCache() {
+    	if (lastFmCache == null) {
+    		Logger.debug("Initializing LastFmCache");
+    		lastFmCache = new LastFmCache(osManager);
+    	}
+    	return lastFmCache;
     }
     
     /**
@@ -213,7 +223,11 @@ public final class LastFmService {
      */
     public void finishService() {
         scrobblerExecutorService.shutdownNow();
-        lastFmCache.shutdown();
+        // Maybe it's not initialized if not used
+        if (lastFmCache != null) {
+        	Logger.debug("Finalizing LastFmCache");
+        	lastFmCache.shutdown();
+        }
     }
 
     /**
@@ -229,13 +243,13 @@ public final class LastFmService {
     public IAlbumInfo getAlbum(String artist, String album) {
         try {
             // Try to get from cache
-            IAlbumInfo albumObject = lastFmCache.retrieveAlbumInfo(artist, album);
+            IAlbumInfo albumObject = getCache().retrieveAlbumInfo(artist, album);
             if (albumObject == null) {
                 Album a = Album.getInfo(artist, album, getApiKey());
                 if (a != null) {
                     Playlist pl = Playlist.fetchAlbumPlaylist(a.getId(), getApiKey());
                     albumObject = LastFmAlbum.getAlbum(a, pl);
-                    lastFmCache.storeAlbumInfo(artist, album, albumObject);
+                    getCache().storeAlbumInfo(artist, album, albumObject);
                 }
             }
             return albumObject;
@@ -279,7 +293,7 @@ public final class LastFmService {
     public IAlbumListInfo getAlbumList(String artist, boolean hideVariousArtists, int minimumSongNumber) {
         try {
             // Try to get from cache
-            IAlbumListInfo albumList = lastFmCache.retrieveAbumList(artist);
+            IAlbumListInfo albumList = getCache().retrieveAbumList(artist);
             if (albumList == null) {
                 Collection<Album> as = Artist.getTopAlbums(artist, getApiKey());
                 if (as != null) {
@@ -295,7 +309,7 @@ public final class LastFmService {
                     albumList = new LastFmAlbumList();
                     albumList.setArtist(artist);
                     albumList.setAlbums(result);
-                    lastFmCache.storeAlbumList(artist, albumList);
+                    getCache().storeAlbumList(artist, albumList);
                 }
             }
 
@@ -369,10 +383,10 @@ public final class LastFmService {
         try {
             Image img = null;
             // Try to retrieve from cache
-            img = lastFmCache.retrieveAlbumCover(album);
+            img = getCache().retrieveAlbumCover(album);
             if (img == null && album.getBigCoverURL() != null && !album.getBigCoverURL().isEmpty()) {
                 img = NetworkUtils.getImage(NetworkUtils.getConnection(album.getBigCoverURL(), proxy));
-                lastFmCache.storeAlbumCover(album, new ImageIcon(img));
+                getCache().storeAlbumCover(album, new ImageIcon(img));
             }
 
             return img;
@@ -395,7 +409,7 @@ public final class LastFmService {
     public Image getThumbImage(IArtistInfo artist) {
         try {
             // Try to retrieve from cache
-            Image img = lastFmCache.retrieveArtistThumbImage(artist);
+            Image img = getCache().retrieveArtistThumbImage(artist);
             if (img == null && artist.getImageUrl() != null && !artist.getImageUrl().isEmpty()) {
                 // Try to get from Artist.getImages() method 
                 img = getArtistImageFromLastFM(artist.getName(), ImageSize.LARGE);
@@ -405,7 +419,7 @@ public final class LastFmService {
                     img = NetworkUtils.getImage(NetworkUtils.getConnection(artist.getImageUrl(), proxy));
                 }
 
-                lastFmCache.storeArtistThumbImage(artist, new ImageIcon(img));
+                getCache().storeArtistThumbImage(artist, new ImageIcon(img));
             }
             return img;
         } catch (Exception e) {
@@ -425,7 +439,7 @@ public final class LastFmService {
     public Image getImage(String artistName) {
         try {
             // Try to retrieve from cache
-            Image img = lastFmCache.retrieveArtistImage(artistName);
+            Image img = getCache().retrieveArtistImage(artistName);
 
             if (img != null) {
                 return img;
@@ -443,7 +457,7 @@ public final class LastFmService {
             }
 
             if (img != null) {
-                lastFmCache.storeArtistImage(artistName, new ImageIcon(img));
+                getCache().storeArtistImage(artistName, new ImageIcon(img));
             }
 
             return img;
@@ -460,7 +474,7 @@ public final class LastFmService {
      */
     public IArtistTopTracks getTopTracks(String artistName) {
     	// Try to retrieve from cache
-    	IArtistTopTracks topTracks = lastFmCache.retrieveArtistTopTracks(artistName);
+    	IArtistTopTracks topTracks = getCache().retrieveArtistTopTracks(artistName);
     	
     	if (topTracks != null) {
     		return topTracks;
@@ -470,7 +484,7 @@ public final class LastFmService {
     	topTracks = LastFmArtistTopTracks.getTopTracks(artistName, Artist.getTopTracks(artistName, getApiKey()));
     	
     	if (topTracks != null) {
-    		lastFmCache.storeArtistTopTracks(artistName, topTracks);
+    		getCache().storeArtistTopTracks(artistName, topTracks);
     	}
     	
     	return topTracks;
@@ -512,7 +526,7 @@ public final class LastFmService {
     public ISimilarArtistsInfo getSimilarArtists(String artist) {
         try {
             // Try to get from cache
-            ISimilarArtistsInfo similar = lastFmCache.retrieveArtistSimilar(artist);
+            ISimilarArtistsInfo similar = getCache().retrieveArtistSimilar(artist);
             
             // Check cache content. Since "match" value changed in last.fm api can be entries in cache with old value.
             // For those entries match is equal or less than 1.0, so discard entries where maximum match is that value
@@ -540,7 +554,7 @@ public final class LastFmService {
                 Artist a = Artist.getInfo(artist, getApiKey());
                 if (a != null) {
                     similar = LastFmSimilarArtists.getSimilarArtists(as, a);
-                    lastFmCache.storeArtistSimilar(artist, similar);
+                    getCache().storeArtistSimilar(artist, similar);
                 }
             }
             return similar;
@@ -561,7 +575,7 @@ public final class LastFmService {
     public String getWikiText(String artist) {
         try {
             // Try to get from cache
-            String wikiText = lastFmCache.retrieveArtistWiki(artist);
+            String wikiText = getCache().retrieveArtistWiki(artist);
             if (wikiText == null) {
 
                 Artist a = Artist.getInfo(artist, state.getLocale().getLocale(), null, getApiKey());
@@ -569,7 +583,7 @@ public final class LastFmService {
                 wikiText = wikiText.replaceAll("<.*?>", "");
                 wikiText = StringUtils.unescapeHTML(wikiText, 0);
 
-                lastFmCache.storeArtistWiki(artist, wikiText);
+                getCache().storeArtistWiki(artist, wikiText);
             }
             return wikiText;
         } catch (Exception e) {
@@ -615,7 +629,7 @@ public final class LastFmService {
         if (result.isSuccessful() && !result.isIgnored()) {
         	Logger.info("Song submitted to Last.fm");
         } else {
-        	lastFmCache.addSubmissionData(new net.sourceforge.atunes.kernel.modules.webservices.lastfm.SubmissionData(file.getArtist(), file.getTitle(), (int) startedToPlay));
+        	getCache().addSubmissionData(new net.sourceforge.atunes.kernel.modules.webservices.lastfm.SubmissionData(file.getArtist(), file.getTitle(), (int) startedToPlay));
         	throw new ScrobblerException(result.getStatus().toString());
         }
     }
@@ -696,7 +710,7 @@ public final class LastFmService {
             return;
         }
 
-        List<net.sourceforge.atunes.kernel.modules.webservices.lastfm.SubmissionData> collectionWithSubmissionData = lastFmCache.getSubmissionData();
+        List<net.sourceforge.atunes.kernel.modules.webservices.lastfm.SubmissionData> collectionWithSubmissionData = getCache().getSubmissionData();
         if (!collectionWithSubmissionData.isEmpty()) {
             // More than MAX_SUBMISSIONS submissions at once are not allowed
             int size = collectionWithSubmissionData.size();
@@ -713,7 +727,7 @@ public final class LastFmService {
             }
 
             if (ok) {
-            	lastFmCache.removeSubmissionData();
+            	getCache().removeSubmissionData();
             	Logger.info("Cache submitted to Last.fm");
             } else {
             	throw new ScrobblerException(result.getStatus().toString());
@@ -848,7 +862,7 @@ public final class LastFmService {
      * @return
      */
     public boolean clearCache() {
-        return lastFmCache.clearCache();
+        return getCache().clearCache();
     }
 
     /**
