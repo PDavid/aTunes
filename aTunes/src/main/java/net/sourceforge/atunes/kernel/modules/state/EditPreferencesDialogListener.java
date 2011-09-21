@@ -32,6 +32,7 @@ import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PreferencesValid
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.IErrorDialog;
+import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**

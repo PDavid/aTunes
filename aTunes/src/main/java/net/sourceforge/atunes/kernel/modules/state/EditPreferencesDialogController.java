@@ -55,6 +55,7 @@ import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 final class EditPreferencesDialogController extends AbstractSimpleController<EditPreferencesDialog> {
