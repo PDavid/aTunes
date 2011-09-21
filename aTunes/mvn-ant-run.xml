@@ -234,6 +234,7 @@
 		    <fileset dir="${basedir}/target/">
 		      <include name="*installer.*"/>
 		      <include name="*.dmg"/>
+		      <include name="*.deb"/>
 		    </fileset>
 		  </scp>
 		
