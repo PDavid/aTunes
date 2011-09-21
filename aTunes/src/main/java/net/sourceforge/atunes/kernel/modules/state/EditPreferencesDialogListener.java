@@ -41,18 +41,21 @@ public final class EditPreferencesDialogListener implements ListSelectionListene
 
     private EditPreferencesDialog editPreferencesDialog;
     private EditPreferencesDialogController editPreferencesDialogController;
+    private IStateHandler stateHandler;
 
     /**
      * Instantiates a new edits the preferences dialog listener.
      * 
      * @param editPreferencesDialog
-     *            the edit preferences dialog
      * @param editPreferencesDialogController
-     *            the edit preferences dialog controller
+     * @param stateHandler
      */
-    public EditPreferencesDialogListener(EditPreferencesDialog editPreferencesDialog, EditPreferencesDialogController editPreferencesDialogController) {
+    public EditPreferencesDialogListener(EditPreferencesDialog editPreferencesDialog, 
+    								     EditPreferencesDialogController editPreferencesDialogController,
+    								     IStateHandler stateHandler) {
         this.editPreferencesDialog = editPreferencesDialog;
         this.editPreferencesDialogController = editPreferencesDialogController;
+        this.stateHandler = stateHandler;
     }
 
     @Override
@@ -62,7 +65,7 @@ public final class EditPreferencesDialogListener implements ListSelectionListene
             	editPreferencesDialogController.validatePreferences();
 	        	boolean needRestart = editPreferencesDialogController.processPreferences();
 	        	editPreferencesDialog.setVisible(false);
-	        	ApplicationStateHandler.getInstance().notifyApplicationStateChanged();
+	        	stateHandler.notifyApplicationStateChanged();
 	        	if (needRestart) {
 	        		// Let user decide if want to restart
 	        		if (Context.getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("APPLICATION_NEEDS_RESTART"))) {

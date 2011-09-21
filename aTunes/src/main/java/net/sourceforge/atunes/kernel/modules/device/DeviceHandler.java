@@ -38,6 +38,7 @@ import java.util.Random;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ConnectDeviceAction;
@@ -51,7 +52,7 @@ import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.LoaderListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
+import net.sourceforge.atunes.kernel.modules.state.IStateHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
@@ -272,7 +273,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
     @Override
     public void deviceDisconnected(String location) {
         // Persist device metadata
-        ApplicationStateHandler.getInstance().persistDeviceCache(deviceId, deviceRepository);
+    	getBean(IStateHandler.class).persistDeviceCache(deviceId, deviceRepository);
 
         deviceRepository = null;
 
@@ -299,7 +300,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
     public void applicationFinish() {
         if (isDeviceConnected()) {
             // Persist device metadata
-            ApplicationStateHandler.getInstance().persistDeviceCache(deviceId, deviceRepository);
+        	getBean(IStateHandler.class).persistDeviceCache(deviceId, deviceRepository);
         }
     }
 
@@ -460,7 +461,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
 
         // Device has been connected before, try to get data from cache
         if (deviceId != null) {
-            deviceRepository = ApplicationStateHandler.getInstance().retrieveDeviceCache(deviceId);
+            deviceRepository = Context.getBean(IStateHandler.class).retrieveDeviceCache(deviceId);
             if (deviceRepository != null) {
                 refreshDevice();
                 return;

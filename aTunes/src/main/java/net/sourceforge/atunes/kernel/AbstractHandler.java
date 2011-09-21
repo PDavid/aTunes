@@ -42,7 +42,7 @@ import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
+import net.sourceforge.atunes.kernel.modules.state.IStateHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextHandler;
@@ -128,7 +128,7 @@ public abstract class AbstractHandler implements IHandler {
     private static final void registerHandler(AbstractHandler handler) {
         ApplicationLifeCycleListeners.addApplicationLifeCycleListener(handler);
         FavoritesListeners.addFavoritesListener(handler);
-        ApplicationStateHandler.getInstance().addStateChangeListener(handler);
+        Context.getBean(IStateHandler.class).addStateChangeListener(handler);
         DeviceListeners.addDeviceListener(handler);
         PlaybackStateListeners.addPlaybackStateListener(handler);
         PlayListEventListeners.addPlayListEventListener(handler);
@@ -139,7 +139,7 @@ public abstract class AbstractHandler implements IHandler {
             // Instance handlers
         	// TODO: Add here every new Handler
         	handlers = new ArrayList<AbstractHandler>();
-        	handlers.add(ApplicationStateHandler.getInstance());
+        	handlers.add((AbstractHandler) Context.getBean(IStateHandler.class));
         	handlers.add((AbstractHandler) Context.getBean(IPodcastFeedHandler.class));
         	handlers.add((AbstractHandler) Context.getBean(IContextHandler.class));
         	handlers.add(RipperHandler.getInstance());

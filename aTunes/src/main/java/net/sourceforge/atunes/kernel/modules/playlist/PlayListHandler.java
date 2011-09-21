@@ -34,6 +34,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.filechooser.FileFilter;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
@@ -47,7 +48,7 @@ import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
+import net.sourceforge.atunes.kernel.modules.state.IStateHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
@@ -92,7 +93,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     private static class PreviousInitializationTaskRunnable implements Runnable {
         @Override
         public void run() {
-            playListsRetrievedFromCache = ApplicationStateHandler.getInstance().retrievePlayListsCache();
+            playListsRetrievedFromCache = Context.getBean(IStateHandler.class).retrievePlayListsCache();
         }
     }
 
@@ -585,7 +586,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     private void playListsChanged(boolean definition, boolean contents) {
     	// If content must be saved then do in a task service, otherwise persist definition inmediately
     	if (definition && !contents) {
-    		ApplicationStateHandler.getInstance().persistPlayListsDefinition(getListOfPlayLists());
+    		getBean(IStateHandler.class).persistPlayListsDefinition(getListOfPlayLists());
     	} else {
     		// Wait 5 seconds and persist play list 
     		if (persistPlayListFuture != null) {
@@ -596,9 +597,9 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     			@Override
     			public void run() {
     				// Store play list definition
-    				ApplicationStateHandler.getInstance().persistPlayListsDefinition(getListOfPlayLists());
+    				getBean(IStateHandler.class).persistPlayListsDefinition(getListOfPlayLists());
     				// Store play list contents
-    				ApplicationStateHandler.getInstance().persistPlayListsContents(getPlayListsContents());
+    				getBean(IStateHandler.class).persistPlayListsContents(getPlayListsContents());
     			}
     		});
     	}

@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
+import net.sourceforge.atunes.kernel.modules.state.IStateHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -43,7 +43,7 @@ public class EditPreferencesAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-    	ApplicationStateHandler.getInstance().editPreferences();
+    	getBean(IStateHandler.class).editPreferences();
     }
 
 }

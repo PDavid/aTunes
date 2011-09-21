@@ -32,7 +32,7 @@ import net.sourceforge.atunes.kernel.actions.UnlovesongInLastFmAction;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.kernel.modules.search.searchableobjects.FavoritesSearchableObject;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
+import net.sourceforge.atunes.kernel.modules.state.IStateHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
@@ -173,7 +173,7 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
     public void applicationFinish() {
         // Only store repository if it's dirty
         if (getFavorites().isDirty()) {
-            ApplicationStateHandler.getInstance().persistFavoritesCache(getFavorites());
+        	getBean(IStateHandler.class).persistFavoritesCache(getFavorites());
         } else {
             Logger.info("Favorites are clean");
         }
@@ -203,7 +203,7 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
 
             @Override
             public void run() {
-                favorites = ApplicationStateHandler.getInstance().retrieveFavoritesCache();
+                favorites = getBean(IStateHandler.class).retrieveFavoritesCache();
             }
         };
     }
