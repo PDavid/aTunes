@@ -61,6 +61,8 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
 
     /** The panels of the edit preferences dialog */
     private List<AbstractPreferencesPanel> panels;
+    
+    private IStateHandler stateHandler;
 
     /**
      * Instantiates a new edits the preferences dialog controller.
@@ -68,9 +70,11 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
      * @param state
      * @param osManager
      * @param frame
+     * @param stateHandler
      */
-    EditPreferencesDialogController(EditPreferencesDialog dialog, IState state, IOSManager osManager, IFrame frame) {
+    EditPreferencesDialogController(EditPreferencesDialog dialog, IState state, IOSManager osManager, IFrame frame, IStateHandler stateHandler) {
         super(dialog, state);
+        this.stateHandler = stateHandler;
         panels = new ArrayList<AbstractPreferencesPanel>();
         panels.add(new GeneralPanel(osManager));
         panels.add(new RepositoryPanel()); 
@@ -100,7 +104,7 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
 
     @Override
 	public void addBindings() {
-        EditPreferencesDialogListener listener = new EditPreferencesDialogListener(getComponentControlled(), this);
+        EditPreferencesDialogListener listener = new EditPreferencesDialogListener(getComponentControlled(), this, stateHandler);
         getComponentControlled().getList().addListSelectionListener(listener);
         getComponentControlled().getCancel().addActionListener(listener);
         getComponentControlled().getOk().addActionListener(listener);

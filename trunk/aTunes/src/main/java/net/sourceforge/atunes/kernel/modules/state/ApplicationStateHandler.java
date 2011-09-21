@@ -47,7 +47,6 @@ import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IRadio;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -57,68 +56,40 @@ import net.sourceforge.atunes.utils.XMLUtils;
  * This class is responsible of read, write and apply application state, and
  * caches.
  */
-public final class ApplicationStateHandler extends AbstractHandler {
-
-	/** The instance. */
-    private static ApplicationStateHandler instance = new ApplicationStateHandler();
+public final class ApplicationStateHandler extends AbstractHandler implements IStateHandler {
 
     /**
      * Listeners of the state of the application
      */
     private Set<ApplicationStateChangeListener> stateChangeListeners;
 
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#addStateChangeListener(net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListener)
+	 */
     @Override
-    protected void initHandler() {
-    }
-
-    /**
-     * Gets the single instance of ApplicationDataHandler.
-     * 
-     * @return single instance of ApplicationDataHandler
-     */
-    public static ApplicationStateHandler getInstance() {
-        return instance;
-    }
-
-    @Override
-    public void applicationStarted(List<IAudioObject> playList) {
-    }
-
-    /**
-     * Adds a new ApplicationStateChangeListener. This listener will be notified
-     * when application state is changed
-     * 
-     * @param listener
-     */
-    public void addStateChangeListener(ApplicationStateChangeListener listener) {
+	public void addStateChangeListener(ApplicationStateChangeListener listener) {
         if (stateChangeListeners == null) {
             stateChangeListeners = new HashSet<ApplicationStateChangeListener>();
         }
         stateChangeListeners.add(listener);
     }
 
-    /**
-     * Removes an ApplicationStateChangeListener. This listener will not be
-     * notified again when application state is changed
-     * 
-     * @param listener
-     */
-    public void removeStateChangeListener(ApplicationStateChangeListener listener) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#removeStateChangeListener(net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListener)
+	 */
+    @Override
+	public void removeStateChangeListener(ApplicationStateChangeListener listener) {
         if (stateChangeListeners == null) {
             return;
         }
         stateChangeListeners.remove(listener);
     }
 
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#notifyApplicationStateChanged()
+	 */
     @Override
-    public void applicationStateChanged(IState newState) {
-        // Nothing to do
-    }
-
-    /**
-     * Notifies all listeners of an application state change
-     */
-    public void notifyApplicationStateChanged() {
+	public void notifyApplicationStateChanged() {
         try {
             for (ApplicationStateChangeListener listener : stateChangeListeners) {
                 Logger.debug("Call to ApplicationStateChangeListener: ", listener.getClass().getName());
@@ -129,17 +100,11 @@ public final class ApplicationStateHandler extends AbstractHandler {
         }
     }
 
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#persistFavoritesCache(net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites)
+	 */
     @Override
-    public void applicationFinish() {
-    }
-
-    /**
-     * Stores favorites cache.
-     * 
-     * @param favorites
-     *            Favorites that should be persisted
-     */
-    public void persistFavoritesCache(Favorites favorites) {
+	public void persistFavoritesCache(Favorites favorites) {
         ObjectOutputStream stream = null;
         try {
             stream = new ObjectOutputStream(new FileOutputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.CACHE_FAVORITES_NAME)));
@@ -163,13 +128,11 @@ public final class ApplicationStateHandler extends AbstractHandler {
         }
     }
 
-    /**
-     * Stores statistics cache.
-     * 
-     * @param statistics
-     *            Statistics that should be persisted
-     */
-    public synchronized void persistStatisticsCache(Statistics statistics) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#persistStatisticsCache(net.sourceforge.atunes.kernel.modules.statistics.Statistics)
+	 */
+    @Override
+	public void persistStatisticsCache(Statistics statistics) {
         ObjectOutputStream stream = null;
         try {
             stream = new ObjectOutputStream(new FileOutputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.CACHE_STATISTICS_NAME)));
@@ -193,10 +156,11 @@ public final class ApplicationStateHandler extends AbstractHandler {
         }
     }
 
-    /**
-     * Stores play lists definition
-     */
-    public void persistPlayListsDefinition(ListOfPlayLists listOfPlayLists) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#persistPlayListsDefinition(net.sourceforge.atunes.kernel.modules.playlist.ListOfPlayLists)
+	 */
+    @Override
+	public void persistPlayListsDefinition(ListOfPlayLists listOfPlayLists) {
         try {
             XMLUtils.writeObjectToFile(listOfPlayLists, StringUtils.getString(getUserConfigFolder(), "/", Constants.PLAYLISTS_FILE));
             Logger.info("Playlists definition saved");
@@ -206,12 +170,11 @@ public final class ApplicationStateHandler extends AbstractHandler {
         }
     }
 
-    /**
-     * Stores play lists contents
-     * 
-     * @param playListsContents
-     */
-    public void persistPlayListsContents(List<List<IAudioObject>> playListsContents) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#persistPlayListsContents(java.util.List)
+	 */
+    @Override
+	public void persistPlayListsContents(List<List<IAudioObject>> playListsContents) {
         ObjectOutputStream stream = null;
         try {
             stream = new ObjectOutputStream(new FileOutputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.PLAYLISTS_CONTENTS_FILE)));
@@ -225,13 +188,11 @@ public final class ApplicationStateHandler extends AbstractHandler {
         }
     }
 
-    /**
-     * Stores podcast feeds.
-     * 
-     * @param podcastFeeds
-     *            Podcast feeds that should be persist
-     */
-    public void persistPodcastFeedCache(List<IPodcastFeed> podcastFeeds) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#persistPodcastFeedCache(java.util.List)
+	 */
+    @Override
+	public void persistPodcastFeedCache(List<IPodcastFeed> podcastFeeds) {
         try {
             XMLUtils.writeObjectToFile(podcastFeeds, StringUtils.getString(getUserConfigFolder(), "/", Constants.PODCAST_FEED_CACHE));
         } catch (IOException e) {
@@ -240,13 +201,11 @@ public final class ApplicationStateHandler extends AbstractHandler {
         }
     }
 
-    /**
-     * Stores radios.
-     * 
-     * @param radios
-     *            Radios that should be persisted
-     */
-    public void persistRadioCache(List<IRadio> radios) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#persistRadioCache(java.util.List)
+	 */
+    @Override
+	public void persistRadioCache(List<IRadio> radios) {
         try {
             XMLUtils.writeObjectToFile(radios, StringUtils.getString(getUserConfigFolder(), "/", Constants.RADIO_CACHE));
         } catch (IOException e) {
@@ -255,13 +214,11 @@ public final class ApplicationStateHandler extends AbstractHandler {
         }
     }
 
-    /**
-     * Persist preset radio cache.
-     * 
-     * @param radios
-     *            the radios
-     */
-    public void persistPresetRadioCache(List<IRadio> radios) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#persistPresetRadioCache(java.util.List)
+	 */
+    @Override
+	public void persistPresetRadioCache(List<IRadio> radios) {
         try {
             XMLUtils.writeObjectToFile(radios, StringUtils.getString(getUserConfigFolder(), "/", Constants.PRESET_RADIO_CACHE));
         } catch (IOException e) {
@@ -270,14 +227,12 @@ public final class ApplicationStateHandler extends AbstractHandler {
         }
     }
 
-    /**
-     * Stores repository cache.
-     * 
-     * @param repository
-     *            The retrieved repository
-     */
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#persistRepositoryCache(net.sourceforge.atunes.model.Repository, boolean)
+	 */
 
-    public void persistRepositoryCache(Repository repository, boolean asXmlIfEnabled) {
+    @Override
+	public void persistRepositoryCache(Repository repository, boolean asXmlIfEnabled) {
         String folder = RepositoryHandler.getInstance().getRepositoryConfigurationFolder();
 
         ObjectOutputStream oos = null;
@@ -310,7 +265,11 @@ public final class ApplicationStateHandler extends AbstractHandler {
         }        
     }
 
-    public void persistDeviceCache(String deviceId, Repository deviceRepository) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#persistDeviceCache(java.lang.String, net.sourceforge.atunes.model.Repository)
+	 */
+    @Override
+	public void persistDeviceCache(String deviceId, Repository deviceRepository) {
         ObjectOutputStream oos = null;
         try {
             FileOutputStream fout = new FileOutputStream(StringUtils
@@ -329,12 +288,11 @@ public final class ApplicationStateHandler extends AbstractHandler {
         }
     }
 
-    /**
-     * Reads favorites cache.
-     * 
-     * @return The retrieved favorites
-     */
-    public Favorites retrieveFavoritesCache() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#retrieveFavoritesCache()
+	 */
+    @Override
+	public Favorites retrieveFavoritesCache() {
         ObjectInputStream stream = null;
         try {
             stream = new ObjectInputStream(new FileInputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.CACHE_FAVORITES_NAME)));
@@ -375,12 +333,11 @@ public final class ApplicationStateHandler extends AbstractHandler {
         return null;
     }
 
-    /**
-     * Reads statistics cache.
-     * 
-     * @return The retrieved favorites
-     */
-    public Statistics retrieveStatisticsCache() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#retrieveStatisticsCache()
+	 */
+    @Override
+	public Statistics retrieveStatisticsCache() {
         ObjectInputStream stream = null;
         try {
             stream = new ObjectInputStream(new FileInputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.CACHE_STATISTICS_NAME)));
@@ -417,13 +374,12 @@ public final class ApplicationStateHandler extends AbstractHandler {
         return new Statistics();
     }
 
-    /**
-     * Reads playlists cache.
-     * 
-     * @return The retrieved playlists
-     */
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#retrievePlayListsCache()
+	 */
 
-    @SuppressWarnings("unchecked")
+    @Override
+	@SuppressWarnings("unchecked")
     public ListOfPlayLists retrievePlayListsCache() {
         ObjectInputStream stream = null;
         try {
@@ -455,12 +411,11 @@ public final class ApplicationStateHandler extends AbstractHandler {
         }
     }
 
-    /**
-     * Reads podcast feed cache.
-     * 
-     * @return The retrieved podcast feeds
-     */
-    @SuppressWarnings("unchecked")
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#retrievePodcastFeedCache()
+	 */
+    @Override
+	@SuppressWarnings("unchecked")
     public List<IPodcastFeed> retrievePodcastFeedCache() {
         try {
             return (List<IPodcastFeed>) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.PODCAST_FEED_CACHE));
@@ -473,12 +428,11 @@ public final class ApplicationStateHandler extends AbstractHandler {
         }
     }
 
-    /**
-     * Reads radio cache.
-     * 
-     * @return The retrieved radios
-     */
-    @SuppressWarnings("unchecked")
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#retrieveRadioCache()
+	 */
+    @Override
+	@SuppressWarnings("unchecked")
     public List<IRadio> retrieveRadioCache() {
         try {
             return (List<IRadio>) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.RADIO_CACHE));
@@ -488,12 +442,11 @@ public final class ApplicationStateHandler extends AbstractHandler {
 
     }
 
-    /**
-     * Reads radio cache. Preset stations. This file is not meant to be edited.
-     * 
-     * @return The retrieved radios
-     */
-    @SuppressWarnings("unchecked")
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#retrieveRadioPreset()
+	 */
+    @Override
+	@SuppressWarnings("unchecked")
     public List<IRadio> retrieveRadioPreset() {
         try {
             // First try user settings folder
@@ -508,12 +461,11 @@ public final class ApplicationStateHandler extends AbstractHandler {
         }
     }
 
-    /**
-     * Reads repository cache.
-     * 
-     * @return The retrieved repository
-     */
-    public Repository retrieveRepositoryCache() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#retrieveRepositoryCache()
+	 */
+    @Override
+	public Repository retrieveRepositoryCache() {
         String folder = RepositoryHandler.getInstance().getRepositoryConfigurationFolder();
 
         ObjectInputStream ois = null;
@@ -573,12 +525,11 @@ public final class ApplicationStateHandler extends AbstractHandler {
         return null;    	
     }
 
-    /**
-     * Reads device cache.
-     * 
-     * @return The retrieved device
-     */
-    public Repository retrieveDeviceCache(String deviceId) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#retrieveDeviceCache(java.lang.String)
+	 */
+    @Override
+	public Repository retrieveDeviceCache(String deviceId) {
         ObjectInputStream ois = null;
         try {
             FileInputStream fis = new FileInputStream(StringUtils.getString(getUserConfigFolder(), getOsManager().getFileSeparator(), Constants.DEVICE_CACHE_FILE_PREFIX, deviceId));
@@ -609,20 +560,12 @@ public final class ApplicationStateHandler extends AbstractHandler {
         return getOsManager().getUserConfigFolder(Kernel.isDebug());
     }
     
-    /**
-     * Opens preferences dialog
-     * 
-     * NOTE: This method is called from MacOSXAdapter using reflection. Refactoring will break code!
-     */
-    public void editPreferences() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#editPreferences()
+	 */
+    @Override
+	public void editPreferences() {
     	EditPreferencesDialog dialog = new EditPreferencesDialog(getFrame().getFrame());
-    	new EditPreferencesDialogController(dialog, getState(), getOsManager(), getFrame()).start();
+    	new EditPreferencesDialogController(dialog, getState(), getOsManager(), getFrame(), this).start();
     }
-
-	@Override
-	public void playListCleared() {}
-
-	@Override
-	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
-
 }

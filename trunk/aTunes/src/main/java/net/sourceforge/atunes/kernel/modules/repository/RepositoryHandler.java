@@ -57,7 +57,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.kernel.modules.repository.processes.ImportFilesProcess;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.kernel.modules.search.searchableobjects.RepositorySearchableObject;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
+import net.sourceforge.atunes.kernel.modules.state.IStateHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
@@ -428,7 +428,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
         if (repository != null) {
             // Only store repository if it's dirty
             if (repository.transactionPending()) {
-                ApplicationStateHandler.getInstance().persistRepositoryCache(repository, true);
+            	getBean(IStateHandler.class).persistRepositoryCache(repository, true);
             } else {
                 Logger.info("Repository is clean");
             }
@@ -836,7 +836,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
                         Logger.error(e);
                     }
                 }
-                repositoryRetrievedFromCache = ApplicationStateHandler.getInstance().retrieveRepositoryCache();
+                repositoryRetrievedFromCache = getBean(IStateHandler.class).retrieveRepositoryCache();
             }
         };
     }
@@ -1263,7 +1263,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 		getBean(ITaskService.class).submitNow("Persist Repository Cache", new Runnable() {
 			@Override
 			public void run() {
-				ApplicationStateHandler.getInstance().persistRepositoryCache(repository, true);
+				getBean(IStateHandler.class).persistRepositoryCache(repository, true);
 			}
 		});
 	}

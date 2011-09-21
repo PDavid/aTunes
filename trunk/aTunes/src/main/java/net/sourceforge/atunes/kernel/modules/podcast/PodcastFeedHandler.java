@@ -47,7 +47,7 @@ import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
+import net.sourceforge.atunes.kernel.modules.state.IStateHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAddPodcastFeedDialog;
 import net.sourceforge.atunes.model.IFrame;
@@ -219,7 +219,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
         }
         getPodcastFeedEntryDownloadCheckerExecutorService().shutdownNow();
         if (podcastFeedsDirty) {
-            ApplicationStateHandler.getInstance().persistPodcastFeedCache(getPodcastFeeds());
+        	getBean(IStateHandler.class).persistPodcastFeedCache(getPodcastFeeds());
         } else {
             Logger.info("Podcast list is clean");
         }
@@ -231,7 +231,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
         return new Runnable() {
             @Override
             public void run() {
-                podcastFeeds = ApplicationStateHandler.getInstance().retrievePodcastFeedCache();
+                podcastFeeds = getBean(IStateHandler.class).retrievePodcastFeedCache();
             }
         };
     }

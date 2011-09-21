@@ -33,7 +33,7 @@ import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.Cdparanoia;
 import net.sourceforge.atunes.kernel.modules.os.OperatingSystemAdapter;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
+import net.sourceforge.atunes.kernel.modules.state.IStateHandler;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
@@ -79,6 +79,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 		}
 		
 		IUIHandler uiHandler = Context.getBean(IUIHandler.class);
+		IStateHandler stateHandler = Context.getBean(IStateHandler.class);
 		
 		try {
 			MacOSXAdapter.setAboutHandler(uiHandler, uiHandler.getClass().getDeclaredMethod("showAboutDialog", (Class[]) null));
@@ -87,7 +88,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 		}
 		
 		try {
-			MacOSXAdapter.setPreferencesHandler(ApplicationStateHandler.getInstance(), ApplicationStateHandler.class.getDeclaredMethod("editPreferences", (Class[]) null));
+			MacOSXAdapter.setPreferencesHandler(stateHandler, stateHandler.getClass().getDeclaredMethod("editPreferences", (Class[]) null));
 		} catch (Exception e) {
 			Logger.error(e.getMessage());
 		}

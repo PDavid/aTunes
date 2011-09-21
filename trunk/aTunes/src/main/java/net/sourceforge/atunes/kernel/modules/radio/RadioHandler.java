@@ -35,7 +35,7 @@ import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationView;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
+import net.sourceforge.atunes.kernel.modules.state.IStateHandler;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -158,10 +158,10 @@ public final class RadioHandler extends AbstractHandler {
      */
     public void applicationFinish() {
         if (radioListDirty) {
-            ApplicationStateHandler.getInstance().persistRadioCache(getRadios());
+        	getBean(IStateHandler.class).persistRadioCache(getRadios());
             // Only write preset list if new stations were added
             if (!noNewStations) {
-                ApplicationStateHandler.getInstance().persistPresetRadioCache(presetRadios);
+            	getBean(IStateHandler.class).persistPresetRadioCache(presetRadios);
             }
         } else {
             Logger.info("Radio list is clean");
@@ -178,8 +178,8 @@ public final class RadioHandler extends AbstractHandler {
              */
             @Override
             public void run() {
-                radios = ApplicationStateHandler.getInstance().retrieveRadioCache();
-                presetRadios = ApplicationStateHandler.getInstance().retrieveRadioPreset();
+                radios = getBean(IStateHandler.class).retrieveRadioCache();
+                presetRadios = getBean(IStateHandler.class).retrieveRadioPreset();
             }
         };
     }

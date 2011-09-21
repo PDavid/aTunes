@@ -26,7 +26,7 @@ import java.util.List;
 import net.sourceforge.atunes.gui.views.dialogs.StatsDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler;
+import net.sourceforge.atunes.kernel.modules.state.IStateHandler;
 import net.sourceforge.atunes.misc.RankList;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
@@ -49,7 +49,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
         return new Runnable() {
             @Override
             public void run() {
-                statistics = ApplicationStateHandler.getInstance().retrieveStatisticsCache();
+                statistics = getBean(IStateHandler.class).retrieveStatisticsCache();
             }
         };
     }
@@ -213,7 +213,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
     		
             @Override
             public void run() {
-                ApplicationStateHandler.getInstance().persistStatisticsCache(statistics);
+            	getBean(IStateHandler.class).persistStatisticsCache(statistics);
             };
         });
     }
