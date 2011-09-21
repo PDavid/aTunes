@@ -62,7 +62,7 @@ public final class EditPreferencesDialog extends AbstractCustomDialog {
      *            the owner
      */
     public EditPreferencesDialog(JFrame owner) {
-        super(owner, GuiUtils.getComponentWidthForResolution(0.5f),GuiUtils.getComponentHeightForResolution(0.6f), true, CloseAction.DISPOSE);
+        super(owner, GuiUtils.getComponentWidthForResolution(0.5f, 800),GuiUtils.getComponentHeightForResolution(0.6f, 600), true, CloseAction.DISPOSE);
         setResizable(true);
         setTitle(I18nUtils.getString("PREFERENCES"));
         add(getContent());
@@ -88,8 +88,7 @@ public final class EditPreferencesDialog extends AbstractCustomDialog {
         list = new JList();
         list.setCellRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(new PreferencesListCellRendererCode()));
         JScrollPane scrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListScrollPane(list);
-        // Force minimum width of scroll pane to show items
-        scrollPane.setMinimumSize(new Dimension(100, 0));
+        scrollPane.setMinimumSize(new Dimension(130, 0));
         options = new JPanel();
         ok = new JButton(I18nUtils.getString("OK"));
         cancel = new JButton(I18nUtils.getString("CANCEL"));
@@ -101,16 +100,15 @@ public final class EditPreferencesDialog extends AbstractCustomDialog {
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 1;
-        c.weightx = 0;
+        c.weightx = 0.3;
         c.weighty = 1;
-        c.fill = GridBagConstraints.VERTICAL;
+        c.fill = GridBagConstraints.BOTH;
         c.insets = new Insets(5, 5, 0, 5);
         container.add(scrollPane, c);
         c.gridx = 1;
         c.gridy = 0;
-        c.weightx = 1;
+        c.weightx = 0.7;
         c.insets = new Insets(5, 5, 0, 5);
-        c.fill = GridBagConstraints.BOTH;
         container.add(options, c);
         c.gridx = 1;
         c.gridy = 1;

@@ -294,6 +294,17 @@ public final class GuiUtils {
     }
 
     /**
+     * Returns a proportional width according to given factor for the current screen resolution or the given minimum width if
+     * calculated value is lower
+     * @param screenWidthFactor
+     * @param minimumWidth
+     * @return
+     */
+    public static int getComponentWidthForResolution(float screenWidthFactor, int minimumWidth) {
+    	return Math.max(getComponentWidthForResolution(screenWidthFactor), minimumWidth);
+    }
+
+    /**
      * Returns a proportional height according to given screen height factor for the current screen resolution.
      * 
      * @param screenHeight
@@ -306,6 +317,18 @@ public final class GuiUtils {
     public static int getComponentHeightForResolution(float screenHeightFactor) {
         int currentScreenHeight = mainDeviceBounds.height;
         return (int) (currentScreenHeight * screenHeightFactor);
+    }
+
+    /**
+     * Returns a proportional height according to given screen height factor for the current screen resolution or the given minimum height
+     * if calculated value is lower
+     * 
+     * @param screenHeightFactor
+     * @param minimumHeight
+     * @return
+     */
+    public static int getComponentHeightForResolution(float screenHeightFactor, int minimumHeight) {
+    	return Math.max(getComponentHeightForResolution(screenHeightFactor), minimumHeight);
     }
 
     /**
