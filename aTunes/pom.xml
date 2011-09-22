@@ -467,6 +467,12 @@
 			<artifactId>joda-time</artifactId>
 			<version>2.0</version>
 		</dependency>
+		<dependency>
+ 			<groupId>org.mockito</groupId>
+  			<artifactId>mockito-all</artifactId>
+  			<version>1.9.0-rc1</version>
+  			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<reporting>
