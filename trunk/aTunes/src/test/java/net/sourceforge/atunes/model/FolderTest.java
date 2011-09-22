@@ -25,6 +25,7 @@ import java.io.File;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 
 public class FolderTest {
@@ -35,8 +36,8 @@ public class FolderTest {
 	private Folder f1;
 	private Folder f2;
 	
-	private ILocalAudioObject af1 = new LocalAudioObjectFake();
-	private ILocalAudioObject af2 = new LocalAudioObjectFake();
+	private ILocalAudioObject af1 = Mockito.mock(ILocalAudioObject.class);
+	private ILocalAudioObject af2 = Mockito.mock(ILocalAudioObject.class);
 	
 	@Before
 	public void init() {
@@ -49,7 +50,7 @@ public class FolderTest {
 		Assert.assertTrue(f1.getName().equals(FOLDER_1_NAME));
 		Assert.assertTrue(f1.getAudioObjects().isEmpty());
 		Assert.assertNull(f1.getFolder(FOLDER_2_NAME));
-		Assert.assertTrue(f1.getFolderPath(new MockOSManager()).equals(new File(FOLDER_1_NAME)));
+		Assert.assertTrue(f1.getFolderPath(Mockito.mock(IOSManager.class)).equals(new File(FOLDER_1_NAME)));
 		Assert.assertTrue(f1.getFolders().isEmpty());
 		Assert.assertNull(f1.getParentFolder());
 	}
@@ -66,6 +67,9 @@ public class FolderTest {
 	
 	@Test
 	public void folderWithFolders() {
+		IOSManager osManager = Mockito.mock(IOSManager.class);
+		Mockito.when(osManager.getFileSeparator()).thenReturn(System.getProperty("file.separator"));
+		
 		f1.addAudioFile(af1);
 		f2.addAudioFile(af2);
 		f1.addFolder(f2);
@@ -74,11 +78,6 @@ public class FolderTest {
 		Assert.assertEquals(2, f1.getAudioObjects().size());
 		Assert.assertTrue(f1.getFolders().containsValue(f2));
 		Assert.assertEquals(f1, f2.getParentFolder());
-		Assert.assertEquals(new File(FOLDER_1_NAME + System.getProperty("file.separator") + FOLDER_2_NAME), f2.getFolderPath(new MockOSManager() {
-			@Override
-			public String getFileSeparator() {
-				return System.getProperty("file.separator");
-			}
-		}));
+		Assert.assertEquals(new File(FOLDER_1_NAME + System.getProperty("file.separator") + FOLDER_2_NAME), f2.getFolderPath(osManager));
 	}	
 }
