@@ -20,8 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.player.mplayer;
 
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.utils.Logger;
 
 /**
  * The Class FadeAwayRunnable.

@@ -39,12 +39,12 @@ import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddBannedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.actions.ImportLovedTracksFromLastFMAction;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.Logger;
 
 /**
  * The preferences panel for Last.fm settings.

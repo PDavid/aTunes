@@ -30,7 +30,6 @@ import java.util.List;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.process.AbstractProcess;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IOSManager;
@@ -39,6 +38,7 @@ import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**

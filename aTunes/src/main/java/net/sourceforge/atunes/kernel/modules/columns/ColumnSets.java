@@ -25,7 +25,7 @@ import java.util.Collection;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
-import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.utils.Logger;
 
 import org.commonjukebox.plugins.exceptions.PluginSystemException;
 import org.commonjukebox.plugins.model.Plugin;

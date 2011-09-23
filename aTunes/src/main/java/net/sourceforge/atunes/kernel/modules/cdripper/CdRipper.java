@@ -33,11 +33,11 @@ import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavCo
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.NoCdListener;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
 import net.sourceforge.atunes.kernel.modules.cdripper.encoders.Encoder;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.FileNameUtils;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 class CdRipper {

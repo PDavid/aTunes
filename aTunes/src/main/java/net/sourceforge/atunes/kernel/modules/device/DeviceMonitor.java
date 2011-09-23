@@ -23,9 +23,9 @@ package net.sourceforge.atunes.kernel.modules.device;
 import java.io.File;
 
 import net.sourceforge.atunes.kernel.DeviceListeners;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITaskService;
+import net.sourceforge.atunes.utils.Logger;
 
 final class DeviceMonitor {
 

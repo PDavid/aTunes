@@ -47,7 +47,6 @@ import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAddPodcastFeedDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPodcastFeed;
@@ -59,6 +58,7 @@ import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**

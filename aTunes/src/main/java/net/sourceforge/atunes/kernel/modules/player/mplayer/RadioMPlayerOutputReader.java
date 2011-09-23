@@ -24,11 +24,11 @@ import java.util.regex.Pattern;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.utils.Logger;
 
 class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
 

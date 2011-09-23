@@ -25,11 +25,11 @@ import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.Logger;
 
 /**
  * Adds a song to banned tracks in Last.fm profile

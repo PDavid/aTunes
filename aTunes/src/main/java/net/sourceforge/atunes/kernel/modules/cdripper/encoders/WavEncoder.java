@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.modules.cdripper.encoders;
 import java.io.File;
 
 import net.sourceforge.atunes.kernel.modules.cdripper.ProgressListener;
-import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**

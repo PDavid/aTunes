@@ -29,10 +29,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.Logger;
 
 /**
  * A Process represents a task to be done in background. While task is being

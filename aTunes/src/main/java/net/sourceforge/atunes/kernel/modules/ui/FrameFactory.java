@@ -20,10 +20,10 @@
 
 package net.sourceforge.atunes.kernel.modules.ui;
 
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IFrameFactory;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.utils.Logger;
 
 public class FrameFactory implements IFrameFactory {
 

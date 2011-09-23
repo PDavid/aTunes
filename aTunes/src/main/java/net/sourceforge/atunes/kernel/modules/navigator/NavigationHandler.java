@@ -36,7 +36,6 @@ import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.draganddrop.TreeNavigationTransferHandler;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.INavigationView;
@@ -46,6 +45,7 @@ import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.Logger;
 
 import org.commonjukebox.plugins.exceptions.PluginSystemException;
 import org.commonjukebox.plugins.model.Plugin;

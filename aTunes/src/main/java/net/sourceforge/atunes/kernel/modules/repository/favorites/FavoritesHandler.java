@@ -32,7 +32,6 @@ import net.sourceforge.atunes.kernel.actions.UnlovesongInLastFmAction;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.kernel.modules.search.searchableobjects.FavoritesSearchableObject;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
@@ -41,6 +40,7 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.ITreeObject;
+import net.sourceforge.atunes.utils.Logger;
 
 /**
  * The Class FavoritesHandler.

@@ -41,7 +41,6 @@ import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavCo
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineManager;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
@@ -49,6 +48,7 @@ import net.sourceforge.atunes.model.OperatingSystem;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public abstract class OperatingSystemAdapter {

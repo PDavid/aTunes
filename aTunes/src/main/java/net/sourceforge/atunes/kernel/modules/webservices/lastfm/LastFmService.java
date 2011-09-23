@@ -39,7 +39,6 @@ import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmAlbum
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmArtistTopTracks;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLovedTrack;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmSimilarArtists;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.model.IArtistInfo;
@@ -54,6 +53,7 @@ import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.CryptoUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.NetworkUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 

@@ -18,12 +18,20 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.misc.log;
+package net.sourceforge.atunes.utils;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Enumeration;
+import java.util.Properties;
+import java.util.PropertyResourceBundle;
 
+import org.apache.log4j.PropertyConfigurator;
+
+import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.Kernel;
-import net.sourceforge.atunes.utils.StringUtils;
+import net.sourceforge.atunes.model.IOSManager;
 
 /**
  * A custom logger for aTunes, using log4j.
@@ -86,20 +94,14 @@ public class Logger {
         className = className.substring(className.lastIndexOf('.') + 1);
         String methodName = s[1].getMethodName();
 
-        long timer = LoggerTimer.getTimer();
-
-        // Build string
-        StringBuilder sb = new StringBuilder();
-        sb.append("--> ").append(className).append('.').append(methodName).append(" [").append(timer).append("] ").append(o);
-
-        logger.error(sb.toString());
+        logger.error(StringUtils.getString("--> ", className, ".", methodName, " [", "]\t ", o));
 
         if (o instanceof Throwable) {
         	Throwable throwable = (Throwable) o;
             StackTraceElement[] trace = throwable.getStackTrace();
 
             for (StackTraceElement element : trace) {
-                error(className, methodName, timer, element);
+                error(className, methodName, element);
             }
             
             if (throwable.getCause() != null) {
@@ -108,7 +110,7 @@ public class Logger {
                 StackTraceElement[] causeTrace = throwable.getCause().getStackTrace();
 
                 for (StackTraceElement element : causeTrace) {
-                    error( className, methodName, timer, element);
+                    error( className, methodName, element);
                 }
             }
             
@@ -119,7 +121,7 @@ public class Logger {
                 StackTraceElement[] causeTrace = target.getStackTrace();
 
                 for (StackTraceElement element : causeTrace) {
-                    error(className, methodName, timer, element);
+                    error(className, methodName, element);
                 }
             }
         }
@@ -129,19 +131,11 @@ public class Logger {
      * Logs an error event.
      * 
      * @param className
-     *            the class name
      * @param methodName
-     *            the method name
-     * @param timer
-     *            the timer
      * @param o
-     *            the o
      */
-    private static void error(String className, String methodName, long timer, StackTraceElement o) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("--> ").append(className).append('.').append(methodName).append(" [").append(timer).append("]\t ").append(o);
-
-        logger.error(sb.toString());
+    private static void error(String className, String methodName, StackTraceElement o) {
+    	logger.error(StringUtils.getString("--> ", className, ".", methodName, " [", "]\t ", o));
     }
 
     /**
@@ -156,5 +150,48 @@ public class Logger {
        		sb.append(o != null ? o.toString() : "null");
         }
         logger.info(sb.toString());
+    }
+    
+    /**
+     * Set log4j properties from file, and changes properties if debug mode.
+     * 
+     * @param debug
+     *            the debug
+     */
+    public static void loadProperties(boolean debug, IOSManager osManager) {
+    	PropertyResourceBundle bundle = null;
+    	InputStream log4jProperties = Logger.class.getResourceAsStream(Constants.LOG4J_FILE);
+    	Properties props = new Properties();
+    	if (log4jProperties != null) {
+    		try {
+    			bundle = new PropertyResourceBundle(log4jProperties);
+    		} catch (IOException e) {
+    			System.out.println("ERROR trying to read logger configuration: ");
+    			e.printStackTrace();
+    		}
+    		if (bundle != null) {
+    			Enumeration<String> keys = bundle.getKeys();
+    			while (keys.hasMoreElements()) {
+    				String key = keys.nextElement();
+    				String value = bundle.getString(key);
+
+    				// Change to DEBUG MODE if debug
+    				if (key.equals("log4j.rootLogger") && debug) {
+    					value = value.replace("INFO", "DEBUG");
+    				} else if (key.equals("log4j.appender.A2.file")) {
+    					value = StringUtils.getString(osManager.getUserConfigFolder(debug), osManager.getFileSeparator(), "aTunes.log");
+    				}
+
+    				props.setProperty(key, value);
+    			}
+    		}
+    	} else {
+    		// Load default debug log4j properties
+    		props.put("log4j.rootLogger", "DEBUG, A");
+    		props.put("log4j.appender.A", "org.apache.log4j.ConsoleAppender");
+    		props.put("log4j.appender.A.layout", "org.apache.log4j.PatternLayout");
+    		props.put("log4j.appender.A.layout.ConversionPattern", "%-7p %m%n");
+    	}
+		PropertyConfigurator.configure(props);
     }
 }

@@ -58,12 +58,12 @@ import javax.swing.tree.TreeSelectionModel;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.Logger;
 
 /**
  * The Class MultiFolderSelectionDialog. Allows the selection of the repository

@@ -26,12 +26,12 @@ import java.util.List;
 import javax.swing.KeyStroke;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.EditTagSources;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.Logger;
 
 /**
  * Opens edit tag dialog

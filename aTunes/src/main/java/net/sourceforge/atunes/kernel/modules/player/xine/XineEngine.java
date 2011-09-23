@@ -32,7 +32,6 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
@@ -43,6 +42,7 @@ import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITemporalDiskStorage;
 import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.libxinejna.Xine;

@@ -65,7 +65,6 @@ import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.IOSManager;
@@ -75,6 +74,7 @@ import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jdesktop.swingx.JXStatusBar;

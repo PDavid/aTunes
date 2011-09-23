@@ -33,7 +33,7 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
-import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.utils.Logger;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
 

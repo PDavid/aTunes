@@ -29,9 +29,9 @@ import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IApplicationLifeCycleListener;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.utils.Logger;
 
 /**
  * Holds references to ApplicationLifeCycleListener instances

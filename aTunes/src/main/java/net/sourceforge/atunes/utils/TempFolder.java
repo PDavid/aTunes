@@ -26,7 +26,6 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ITemporalDiskStorage;
 

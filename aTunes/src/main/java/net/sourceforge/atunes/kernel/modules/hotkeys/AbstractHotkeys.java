@@ -23,8 +23,8 @@ package net.sourceforge.atunes.kernel.modules.hotkeys;
 import java.lang.reflect.Constructor;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.utils.Logger;
 
 public abstract class AbstractHotkeys {
 

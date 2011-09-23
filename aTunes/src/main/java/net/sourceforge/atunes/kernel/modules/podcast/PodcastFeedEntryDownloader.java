@@ -34,11 +34,11 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
 import net.sourceforge.atunes.utils.ClosingUtils;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.NetworkUtils;
 
 /**
