@@ -34,7 +34,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
 
-import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.kernel.actions.Actions;
@@ -54,6 +53,7 @@ import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
+import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
@@ -84,8 +84,8 @@ public final class PodcastNavigationView extends AbstractNavigationView {
 
     
     @Override
-    public ColorMutableImageIcon getIcon() {
-        return new ColorMutableImageIcon() {
+    public IColorMutableImageIcon getIcon() {
+        return new IColorMutableImageIcon() {
 			
 			@Override
 			public ImageIcon getIcon(Paint paint) {

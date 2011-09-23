@@ -26,10 +26,10 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
@@ -341,10 +341,10 @@ public final class PodcastFeedEntry implements IPodcastFeedEntry {
     }
 
     @Override
-    public ColorMutableImageIcon getGenericImage(GenericImageSize imageSize) {
+    public IColorMutableImageIcon getGenericImage(GenericImageSize imageSize) {
         switch (imageSize) {
         case SMALL: {
-        	return new ColorMutableImageIcon() {				
+        	return new IColorMutableImageIcon() {				
 				@Override
 				public ImageIcon getIcon(Paint paint) {
 		            return RssImageIcon.getSmallIcon(paint);
@@ -352,7 +352,7 @@ public final class PodcastFeedEntry implements IPodcastFeedEntry {
 			};
         }
         case MEDIUM: {
-            return new ColorMutableImageIcon() {
+            return new IColorMutableImageIcon() {
             	@Override
             	public ImageIcon getIcon(Paint paint) {
             		return RssImageIcon.getIcon(paint);
@@ -360,7 +360,7 @@ public final class PodcastFeedEntry implements IPodcastFeedEntry {
             };
         }
         case BIG: {
-            return new ColorMutableImageIcon() {
+            return new IColorMutableImageIcon() {
             	@Override
             	public ImageIcon getIcon(Paint paint) {
             		return RssImageIcon.getBigIcon(paint);

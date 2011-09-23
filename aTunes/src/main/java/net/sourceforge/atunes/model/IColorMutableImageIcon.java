@@ -18,13 +18,18 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.images;
+package net.sourceforge.atunes.model;
 
 import java.awt.Paint;
 
 import javax.swing.ImageIcon;
 
-public interface ColorMutableImageIcon {
+/**
+ * An object that can return an image using given paint
+ * @author alex
+ *
+ */
+public interface IColorMutableImageIcon {
 
 	/**
 	 * Returns icon for given paint

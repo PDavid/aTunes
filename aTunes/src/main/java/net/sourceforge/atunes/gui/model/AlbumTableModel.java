@@ -29,10 +29,10 @@ import javax.swing.ImageIcon;
 import javax.swing.event.TableModelEvent;
 
 import net.sourceforge.atunes.gui.images.AlbumImageIcon;
-import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.kernel.modules.columns.TypeColumn;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColorMutableImageIcon;
 
 /**
  * The Class AlbumTableModel.
@@ -115,7 +115,7 @@ public final class AlbumTableModel extends AbstractColumnSetTableModel {
         if (album == null) {
             return null;
         } else if (getColumn(columnIndex) instanceof TypeColumn){
-        	return new ColorMutableImageIcon() {
+        	return new IColorMutableImageIcon() {
         	@Override
         	public ImageIcon getIcon(Paint paint) {
         		return AlbumImageIcon.getIcon(paint);

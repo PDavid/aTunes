@@ -33,7 +33,6 @@ import java.util.Set;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
-import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.kernel.modules.repository.ImageCache;
 import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
 import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
@@ -43,6 +42,7 @@ import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ImageSize;
@@ -635,10 +635,10 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
     }
 
     @Override
-    public ColorMutableImageIcon getGenericImage(GenericImageSize imageSize) {
+    public IColorMutableImageIcon getGenericImage(GenericImageSize imageSize) {
         switch (imageSize) {
         case SMALL: {
-        	return new ColorMutableImageIcon() {
+        	return new IColorMutableImageIcon() {
         		@Override
         		public ImageIcon getIcon(Paint paint) {
         			return AudioFileImageIcon.getSmallImageIcon(paint);
@@ -646,7 +646,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
         	};         
         }
         case MEDIUM: {
-        	return new ColorMutableImageIcon() {
+        	return new IColorMutableImageIcon() {
         		@Override
         		public ImageIcon getIcon(Paint paint) {
         			return AudioFileImageIcon.getMediumImage(paint);
@@ -654,7 +654,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
         	};         
         }
         case BIG: {
-        	return new ColorMutableImageIcon() {
+        	return new IColorMutableImageIcon() {
         		@Override
         		public ImageIcon getIcon(Paint paint) {
         			return AudioFileImageIcon.getMediumImage(paint);

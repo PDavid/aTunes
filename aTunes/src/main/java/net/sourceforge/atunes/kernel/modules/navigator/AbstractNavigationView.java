@@ -48,7 +48,6 @@ import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
@@ -61,6 +60,7 @@ import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IState;
@@ -136,7 +136,7 @@ public abstract class AbstractNavigationView implements INavigationView {
 	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#getIcon()
 	 */
     @Override
-	public abstract ColorMutableImageIcon getIcon();
+	public abstract IColorMutableImageIcon getIcon();
 
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#getTooltip()
@@ -582,8 +582,8 @@ public abstract class AbstractNavigationView implements INavigationView {
     			}
     			
     			@Override
-    			public ColorMutableImageIcon getIcon() {
-    				return new ColorMutableImageIcon() {
+    			public IColorMutableImageIcon getIcon() {
+    				return new IColorMutableImageIcon() {
 						
 						@Override
 						public ImageIcon getIcon(Paint paint) {

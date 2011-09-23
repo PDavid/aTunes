@@ -25,10 +25,10 @@ import java.awt.Paint;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.ArtistSimilarImageIcon;
-import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -42,8 +42,8 @@ import net.sourceforge.atunes.utils.I18nUtils;
 public class SimilarArtistsContextPanel extends AbstractContextPanel {
 
     @Override
-    protected ColorMutableImageIcon getContextPanelIcon(IAudioObject audioObject) {
-        return new ColorMutableImageIcon() {
+    protected IColorMutableImageIcon getContextPanelIcon(IAudioObject audioObject) {
+        return new IColorMutableImageIcon() {
         	@Override
         	public ImageIcon getIcon(Paint paint) {
                 return ArtistSimilarImageIcon.getIcon(paint);

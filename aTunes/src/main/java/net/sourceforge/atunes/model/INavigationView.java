@@ -30,7 +30,6 @@ import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.kernel.actions.ActionWithColorMutableIcon;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
@@ -45,7 +44,7 @@ public interface INavigationView extends IAudioObjectsSource, ITreeObjectsSource
 	/**
 	 * @return the icon of this view
 	 */
-	public ColorMutableImageIcon getIcon();
+	public IColorMutableImageIcon getIcon();
 
 	/**
 	 * @return the tooltip of this view in tabbed pane
