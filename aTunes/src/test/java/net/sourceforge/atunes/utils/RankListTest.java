@@ -18,12 +18,14 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.misc;
+package net.sourceforge.atunes.utils;
 
 import java.util.Arrays;
 import java.util.List;
 
 import junit.framework.Assert;
+
+import net.sourceforge.atunes.utils.RankList;
 
 import org.junit.Before;
 import org.junit.Test;
