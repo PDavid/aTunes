@@ -28,10 +28,10 @@ import java.util.List;
 import java.util.Random;
 
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
-import net.sourceforge.atunes.misc.PointedList;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.utils.PointedList;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**

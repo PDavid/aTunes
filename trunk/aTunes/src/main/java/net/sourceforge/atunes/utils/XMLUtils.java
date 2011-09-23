@@ -50,8 +50,6 @@ import net.sourceforge.atunes.kernel.modules.statistics.AudioObjectStats;
 import net.sourceforge.atunes.kernel.modules.statistics.Statistics;
 import net.sourceforge.atunes.kernel.modules.statistics.StatisticsAlbum;
 import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
-import net.sourceforge.atunes.misc.PointedList;
-import net.sourceforge.atunes.misc.RankList;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.Folder;

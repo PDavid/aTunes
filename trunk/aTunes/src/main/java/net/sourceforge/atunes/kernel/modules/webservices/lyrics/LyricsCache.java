@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.webservices.lyrics;
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
-import net.sourceforge.atunes.misc.AbstractCache;
+import net.sourceforge.atunes.utils.AbstractCache;
 import net.sourceforge.atunes.utils.Logger;
 
 public class LyricsCache extends AbstractCache {

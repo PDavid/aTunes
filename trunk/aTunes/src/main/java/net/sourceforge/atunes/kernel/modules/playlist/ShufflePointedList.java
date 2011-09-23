@@ -22,8 +22,8 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 
 import java.util.List;
 
-import net.sourceforge.atunes.misc.PointedList;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.utils.PointedList;
 
 class ShufflePointedList extends PointedList<Integer> {
 
