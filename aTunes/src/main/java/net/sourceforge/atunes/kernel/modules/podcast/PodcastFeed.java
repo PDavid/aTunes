@@ -26,6 +26,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
+import net.sourceforge.atunes.model.FeedType;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;

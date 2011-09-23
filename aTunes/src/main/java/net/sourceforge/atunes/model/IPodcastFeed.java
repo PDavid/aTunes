@@ -23,7 +23,6 @@ package net.sourceforge.atunes.model;
 import java.io.Serializable;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.podcast.FeedType;
 
 /**
  * A feed of podcast entries

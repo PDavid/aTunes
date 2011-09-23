@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.podcast;
+package net.sourceforge.atunes.model;
 
 /**
  * The type of a podcast feed.<br/>
