@@ -23,7 +23,6 @@ package net.sourceforge.atunes.model;
 import java.io.Serializable;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
 
 /**
  * Represents a list of best tracks of an artist
@@ -44,7 +43,7 @@ public interface IArtistTopTracks extends Serializable {
      * 
      * @return the tracks
      */
-    public List<TrackInfo> getTracks();
+    public List<ITrackInfo> getTracks();
 
 
 }

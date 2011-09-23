@@ -33,9 +33,9 @@ import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
-import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ITrackInfo;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -110,7 +110,7 @@ public class AlbumTracksContent extends AbstractContextPanelContent {
                 if (!e.getValueIsAdjusting()) {
                     int selectedTrack = tracksTable.getSelectedRow();
                     if (selectedTrack != -1) {
-                        TrackInfo track = ((ContextTracksTableModel) tracksTable.getModel()).getTrack(selectedTrack);
+                        ITrackInfo track = ((ContextTracksTableModel) tracksTable.getModel()).getTrack(selectedTrack);
                         DesktopUtils.openURL(track.getUrl());
                     }
                 }

@@ -25,7 +25,6 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
 
 import org.joda.time.DateTime;
 
@@ -104,7 +103,7 @@ public interface IAlbumInfo extends Serializable {
      * 
      * @return the tracks
      */
-    public List<TrackInfo> getTracks();
+    public List<ITrackInfo> getTracks();
 
     /**
      * Gets the url.
@@ -182,7 +181,7 @@ public interface IAlbumInfo extends Serializable {
      * @param tracks
      *            the tracks to set
      */
-    public void setTracks(List<? extends TrackInfo> tracks);
+    public void setTracks(List<? extends ITrackInfo> tracks);
 
     /**
      * Sets the url.

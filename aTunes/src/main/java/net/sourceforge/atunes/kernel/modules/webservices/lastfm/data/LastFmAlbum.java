@@ -26,8 +26,8 @@ import java.util.Locale;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
 import net.sourceforge.atunes.model.IAlbumInfo;
+import net.sourceforge.atunes.model.ITrackInfo;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.joda.time.DateTime;
@@ -49,7 +49,7 @@ public class LastFmAlbum implements IAlbumInfo {
     private String bigCoverURL;
     private String coverURL;
     private String smallCoverURL;
-    private List<TrackInfo> tracks;
+    private List<ITrackInfo> tracks;
     // Used by renderers   
     private ImageIcon cover;
 
@@ -70,7 +70,7 @@ public class LastFmAlbum implements IAlbumInfo {
         album.smallCoverURL = a.getImageURL(ImageSize.SMALL);
 
         if (pl != null) {
-            List<TrackInfo> ts = new ArrayList<TrackInfo>();
+            List<ITrackInfo> ts = new ArrayList<ITrackInfo>();
             for (Track t : pl.getTracks()) {
                 ts.add(LastFmTrack.getTrack(t));
             }
@@ -99,7 +99,7 @@ public class LastFmAlbum implements IAlbumInfo {
                 }
 
                 // Then remove common tokens from all titles
-                for (TrackInfo ti : ts) {
+                for (ITrackInfo ti : ts) {
                     for (String token : commonTokens) {
                         ti.setTitle(ti.getTitle().replace(token, ""));
                     }
@@ -235,7 +235,7 @@ public class LastFmAlbum implements IAlbumInfo {
      * @return the tracks
      */
     @Override
-    public List<TrackInfo> getTracks() {
+    public List<ITrackInfo> getTracks() {
         return tracks;
     }
 
@@ -347,8 +347,8 @@ public class LastFmAlbum implements IAlbumInfo {
      *            the tracks to set
      */
     @Override
-    public void setTracks(List<? extends TrackInfo> tracks) {
-        this.tracks = tracks != null ? new ArrayList<TrackInfo>(tracks) : null;
+    public void setTracks(List<? extends ITrackInfo> tracks) {
+        this.tracks = tracks != null ? new ArrayList<ITrackInfo>(tracks) : null;
     }
 
     /**

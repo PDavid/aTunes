@@ -48,7 +48,6 @@ import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavCo
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.NoCdListener;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
 import net.sourceforge.atunes.kernel.modules.cdripper.encoders.Encoder;
-import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -58,6 +57,7 @@ import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.IRipperProgressDialog;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITrackInfo;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -92,7 +92,7 @@ public final class RipperHandler extends AbstractHandler {
 		        if (get() != null) {
 		            albumInfo = get();
 		            List<String> trackNames = new ArrayList<String>();
-		            for (TrackInfo trackInfo : get().getTracks()) {
+		            for (ITrackInfo trackInfo : get().getTracks()) {
 		                trackNames.add(trackInfo.getTitle());
 		            }
 		            getRipCdDialogController().getComponentControlled().updateTrackNames(trackNames);

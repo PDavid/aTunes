@@ -27,8 +27,8 @@ import java.util.List;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
-import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
 import net.sourceforge.atunes.model.IAlbumInfo;
+import net.sourceforge.atunes.model.ITrackInfo;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 
 /**
@@ -67,7 +67,7 @@ public final class EditTitlesDialogActionListener implements ActionListener {
             IAlbumInfo albumInfo = Context.getBean(IWebServicesHandler.class).getAlbum(controller.getAlbum().getArtist().toString(), controller.getAlbum().getName());
             if (albumInfo != null) {
                 List<String> tracks = new ArrayList<String>();
-                for (TrackInfo trackInfo : albumInfo.getTracks()) {
+                for (ITrackInfo trackInfo : albumInfo.getTracks()) {
                     tracks.add(trackInfo.getTitle());
                 }
                 controller.setTitles(tracks);
