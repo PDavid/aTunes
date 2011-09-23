@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.misc;
+package net.sourceforge.atunes.model;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
