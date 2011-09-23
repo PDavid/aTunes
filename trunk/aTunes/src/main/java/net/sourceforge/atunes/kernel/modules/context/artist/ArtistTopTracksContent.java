@@ -40,13 +40,13 @@ import javax.swing.table.TableColumn;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
-import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.ITrackInfo;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -97,7 +97,7 @@ public class ArtistTopTracksContent extends AbstractContextPanelContent {
     				}
     			}
     			List<IAudioObject> playlist = new ArrayList<IAudioObject>();
-    			for (TrackInfo track : lastTopTracks.getTracks()) {
+    			for (ITrackInfo track : lastTopTracks.getTracks()) {
     				if (titles.containsKey(track.getTitle().toLowerCase())) {
     					playlist.add(titles.get(track.getTitle().toLowerCase()));
     				}
@@ -161,7 +161,7 @@ public class ArtistTopTracksContent extends AbstractContextPanelContent {
                 if (!e.getValueIsAdjusting()) {
                     int selectedTrack = tracksTable.getSelectedRow();
                     if (selectedTrack != -1) {
-                        TrackInfo track = ((ContextArtistTracksTableModel) tracksTable.getModel()).getTrack(selectedTrack);
+                        ITrackInfo track = ((ContextArtistTracksTableModel) tracksTable.getModel()).getTrack(selectedTrack);
                         DesktopUtils.openURL(track.getUrl());
                     }
                 }

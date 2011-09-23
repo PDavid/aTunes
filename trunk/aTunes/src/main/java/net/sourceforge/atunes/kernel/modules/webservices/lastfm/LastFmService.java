@@ -32,7 +32,6 @@ import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmAlbum;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmAlbumList;
@@ -51,6 +50,7 @@ import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ISimilarArtistsInfo;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITaskService;
+import net.sourceforge.atunes.model.ITrackInfo;
 import net.sourceforge.atunes.utils.CryptoUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -895,7 +895,7 @@ public final class LastFmService {
             if (albumRetrieved != null) {
                 // Try to match titles to get track
                 int trackIndex = 1;
-                for (TrackInfo track : albumRetrieved.getTracks()) {
+                for (ITrackInfo track : albumRetrieved.getTracks()) {
                     if (track.getTitle().equalsIgnoreCase(f.getTitle())) {
                         return trackIndex;
                     }

@@ -26,8 +26,8 @@ import java.util.List;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
 import net.sourceforge.atunes.model.IAlbumInfo;
+import net.sourceforge.atunes.model.ITrackInfo;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -80,7 +80,7 @@ class ContextTracksTableModel implements TableModel {
      * 
      * @return the track
      */
-    public TrackInfo getTrack(int index) {
+    public ITrackInfo getTrack(int index) {
         return album != null ? album.getTracks().get(index) : null;
     }
 

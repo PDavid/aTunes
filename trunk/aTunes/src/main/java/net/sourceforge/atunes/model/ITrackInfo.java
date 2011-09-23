@@ -18,11 +18,16 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.context;
+package net.sourceforge.atunes.model;
 
 import java.io.Serializable;
 
-public interface TrackInfo extends Serializable {
+/**
+ * Represents information about an albums' track, retrieved from a web service
+ * @author alex
+ *
+ */
+public interface ITrackInfo extends Serializable {
 
     /**
      * Gets the title.

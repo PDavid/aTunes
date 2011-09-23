@@ -20,10 +20,10 @@
 
 package net.sourceforge.atunes.kernel.modules.webservices.lastfm.data;
 
-import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
+import net.sourceforge.atunes.model.ITrackInfo;
 import de.umass.lastfm.Track;
 
-public class LastFmTrack implements TrackInfo {
+public class LastFmTrack implements ITrackInfo {
 
     private static final long serialVersionUID = -2692319576271311514L;
 

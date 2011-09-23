@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.context.TrackInfo;
 import net.sourceforge.atunes.model.IArtistTopTracks;
+import net.sourceforge.atunes.model.ITrackInfo;
 import de.umass.lastfm.Track;
 
 public class LastFmArtistTopTracks implements IArtistTopTracks {
@@ -37,7 +37,7 @@ public class LastFmArtistTopTracks implements IArtistTopTracks {
 
     private String artist;
     
-    private List<TrackInfo> tracks;
+    private List<ITrackInfo> tracks;
 
     /**
      * Returns an object containing information about artist top tracks
@@ -50,7 +50,7 @@ public class LastFmArtistTopTracks implements IArtistTopTracks {
         result.artist = artist;
 
         if (topTracks != null) {
-            List<TrackInfo> ts = new ArrayList<TrackInfo>();
+            List<ITrackInfo> ts = new ArrayList<ITrackInfo>();
             for (Track t : topTracks) {
                 ts.add(LastFmTrack.getTrack(t));
             }
@@ -66,7 +66,7 @@ public class LastFmArtistTopTracks implements IArtistTopTracks {
 	}
 
 	@Override
-	public List<TrackInfo> getTracks() {
+	public List<ITrackInfo> getTracks() {
 		return tracks;
 	}
 
