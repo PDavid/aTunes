@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.modules.columns;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.utils.Logger;
 
 /**
  * This class defines all columns than can be used by application

@@ -25,8 +25,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.ITaskService;
+import net.sourceforge.atunes.utils.Logger;
 
 import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
 

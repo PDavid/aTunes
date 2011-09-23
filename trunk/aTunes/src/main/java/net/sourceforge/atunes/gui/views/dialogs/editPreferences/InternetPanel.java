@@ -37,10 +37,10 @@ import javax.swing.JTextField;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.Logger;
 
 /**
  * The preferences panel for internet settings.

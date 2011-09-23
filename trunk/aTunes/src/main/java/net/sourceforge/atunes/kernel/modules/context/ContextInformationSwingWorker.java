@@ -26,7 +26,7 @@ import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.utils.Logger;
 
 /**
  * This class implements a special SwingWorker used to retrieve data from a

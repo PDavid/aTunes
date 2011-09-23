@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.utils;
 
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 

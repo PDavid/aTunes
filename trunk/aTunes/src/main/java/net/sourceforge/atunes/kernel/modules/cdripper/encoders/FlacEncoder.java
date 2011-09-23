@@ -34,10 +34,10 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
 import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
 import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.ClosingUtils;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**

@@ -52,7 +52,6 @@ import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.LoaderListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
@@ -69,6 +68,7 @@ import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public final class DeviceHandler extends AbstractHandler implements LoaderListener, IAudioFilesRemovedListener {

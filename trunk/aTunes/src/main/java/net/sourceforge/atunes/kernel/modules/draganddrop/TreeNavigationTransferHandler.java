@@ -29,7 +29,7 @@ import javax.swing.TransferHandler;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.model.TransferableList;
 import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
-import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.utils.Logger;
 
 /**
  * Some methods of this class about how to drag and drop from Gnome/KDE file

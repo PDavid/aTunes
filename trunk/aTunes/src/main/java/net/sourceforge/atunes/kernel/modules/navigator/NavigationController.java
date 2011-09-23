@@ -66,7 +66,6 @@ import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IController;
@@ -78,6 +77,7 @@ import net.sourceforge.atunes.model.ISearchDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.ITreeObject;
+import net.sourceforge.atunes.utils.Logger;
 
 final class NavigationController implements IAudioFilesRemovedListener, IController {
 

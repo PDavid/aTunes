@@ -23,8 +23,8 @@ package net.sourceforge.atunes.kernel.modules.state;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
 import net.sourceforge.atunes.misc.AbstractCache;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IStateStore;
+import net.sourceforge.atunes.utils.Logger;
 
 class PreferencesCache extends AbstractCache implements IStateStore {
 

@@ -39,10 +39,10 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.utils.Logger;
 
 import org.commonjukebox.plugins.model.PluginApi;
 

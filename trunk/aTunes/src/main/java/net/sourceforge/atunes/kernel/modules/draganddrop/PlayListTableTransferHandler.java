@@ -43,13 +43,13 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
 import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.utils.Logger;
 
 /**
  * Some methods of this class about how to drag and drop from Gnome/KDE file

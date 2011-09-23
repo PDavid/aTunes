@@ -34,7 +34,6 @@ import java.net.URLEncoder;
 import javax.imageio.ImageIO;
 
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
-import net.sourceforge.atunes.misc.log.Logger;
 
 import org.commonjukebox.plugins.model.PluginApi;
 

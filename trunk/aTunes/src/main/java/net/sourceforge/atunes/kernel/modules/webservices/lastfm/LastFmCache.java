@@ -36,13 +36,13 @@ import net.sf.ehcache.Element;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.misc.AbstractCache;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.model.IArtistInfo;
 import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ISimilarArtistsInfo;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.XMLUtils;
 

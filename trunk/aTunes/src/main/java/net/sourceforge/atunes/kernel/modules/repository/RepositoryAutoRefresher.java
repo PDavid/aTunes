@@ -20,8 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.repository;
 
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.joda.time.DateTime;

@@ -30,7 +30,6 @@ import java.util.StringTokenizer;
 
 import net.sourceforge.atunes.kernel.modules.context.ContextInformationDataSource;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -42,6 +41,7 @@ import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
+import net.sourceforge.atunes.utils.Logger;
 
 /**
  * Data Source for basic album object information Retrieves basic information

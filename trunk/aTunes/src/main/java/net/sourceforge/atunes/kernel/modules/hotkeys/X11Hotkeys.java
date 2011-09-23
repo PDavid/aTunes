@@ -24,7 +24,7 @@ import javax.swing.SwingUtilities;
 
 import jxgrabkey.HotkeyConflictException;
 import jxgrabkey.JXGrabKey;
-import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class X11Hotkeys extends AbstractHotkeys implements jxgrabkey.HotkeyListener {

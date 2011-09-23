@@ -39,13 +39,13 @@ import net.sourceforge.atunes.gui.images.RadioImageIcon;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.views.controls.Cover3D;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
+import net.sourceforge.atunes.utils.Logger;
 
 public final class CoverFlow extends JPanel {
 

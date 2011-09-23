@@ -31,7 +31,6 @@ import java.net.URL;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ISearch;
 

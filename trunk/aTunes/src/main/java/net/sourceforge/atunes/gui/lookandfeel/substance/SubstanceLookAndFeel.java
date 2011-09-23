@@ -60,8 +60,8 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.PreviousButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.SecondaryControl;
 import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.GuiUtils;
+import net.sourceforge.atunes.utils.Logger;
 
 import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
 import org.pushingpixels.lafwidget.utils.ShadowPopupBorder;

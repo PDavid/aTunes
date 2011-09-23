@@ -58,7 +58,6 @@ import net.sourceforge.atunes.kernel.actions.ShowAboutAction;
 import net.sourceforge.atunes.kernel.actions.ShuffleModeAction;
 import net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.ToggleWindowVisibilityAction;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ISystemTrayHandler;
@@ -66,6 +65,7 @@ import net.sourceforge.atunes.model.PlaybackState;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**

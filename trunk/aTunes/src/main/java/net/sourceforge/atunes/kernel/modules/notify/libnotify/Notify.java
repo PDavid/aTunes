@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.notify.libnotify;
 
-import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.utils.Logger;
 
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;

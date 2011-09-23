@@ -37,7 +37,6 @@ import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAboutDialog;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrameState;
@@ -50,6 +49,7 @@ import net.sourceforge.atunes.model.PlayState;
 import net.sourceforge.atunes.model.PlaybackState;
 import net.sourceforge.atunes.model.SystemProperties;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.Logger;
 
 public final class UIHandler extends AbstractHandler implements IUIHandler {
 

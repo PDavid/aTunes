@@ -35,9 +35,9 @@ import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.kernel.modules.state.beans.FontBean;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.utils.Logger;
 
 import org.commonjukebox.plugins.exceptions.PluginSystemException;
 import org.commonjukebox.plugins.model.Plugin;

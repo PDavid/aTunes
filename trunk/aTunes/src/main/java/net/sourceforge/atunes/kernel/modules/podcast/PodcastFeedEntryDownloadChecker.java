@@ -28,10 +28,10 @@ import java.util.Map.Entry;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
+import net.sourceforge.atunes.utils.Logger;
 
 /**
  * Checks if podcasts are downloaded.

@@ -32,10 +32,10 @@ import net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListene
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.AbstractLyricsEngine;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsEngineInfo;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.ILyricsEngineInfo;
 import net.sourceforge.atunes.model.ILyricsService;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public final class LyricsService implements ApplicationStateChangeListener, ILyricsService {

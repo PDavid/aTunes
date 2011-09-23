@@ -43,7 +43,6 @@ import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
 import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.IContextHandler;
@@ -52,6 +51,7 @@ import net.sourceforge.atunes.model.IGeneralPurposePluginsHandler;
 import net.sourceforge.atunes.model.IPlaybackStateListener;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.Timer;
 

@@ -26,11 +26,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.notify.CommonNotificationEngine;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.Logger;
 
 public class GrowlNotificationEngine extends CommonNotificationEngine {
 

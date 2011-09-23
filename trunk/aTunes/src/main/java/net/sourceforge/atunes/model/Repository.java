@@ -31,7 +31,7 @@ import java.util.Map;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.kernel.modules.repository.exception.InconsistentRepositoryException;
-import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.utils.Logger;
 
 import org.joda.time.DateTime;
 

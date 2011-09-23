@@ -36,11 +36,11 @@ import net.sourceforge.atunes.gui.views.dialogs.CustomSearchDialog;
 import net.sourceforge.atunes.gui.views.dialogs.SearchResultsDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.search.searchableobjects.DeviceSearchableObject;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.ClosingUtils;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.commons.io.FileUtils;

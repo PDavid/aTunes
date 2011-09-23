@@ -28,13 +28,13 @@ import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
 import net.sourceforge.atunes.kernel.modules.notify.NotificationsHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**

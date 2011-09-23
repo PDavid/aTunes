@@ -34,8 +34,8 @@ import java.util.StringTokenizer;
 import javax.swing.JSlider;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.utils.Logger;
 
 /**
  * The equalizer for player engines.

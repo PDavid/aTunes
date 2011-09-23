@@ -31,7 +31,7 @@ import net.sourceforge.atunes.kernel.actions.PlayAction;
 import net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectAction;
-import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 // TODO: Refactor

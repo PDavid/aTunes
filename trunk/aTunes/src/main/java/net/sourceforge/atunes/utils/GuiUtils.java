@@ -52,7 +52,6 @@ import javax.swing.text.StyleConstants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IState;
 
 import org.commonjukebox.plugins.model.PluginApi;

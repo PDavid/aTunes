@@ -49,7 +49,6 @@ import net.sourceforge.atunes.gui.views.dialogs.editPreferences.RadioPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.RepositoryPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.Kernel;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
@@ -57,6 +56,7 @@ import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.Logger;
 
 final class EditPreferencesDialogController extends AbstractSimpleController<EditPreferencesDialog> {
 

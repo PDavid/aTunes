@@ -23,9 +23,9 @@ package net.sourceforge.atunes.kernel;
 import java.util.Locale;
 
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**

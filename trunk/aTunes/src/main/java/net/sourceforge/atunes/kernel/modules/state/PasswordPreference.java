@@ -24,8 +24,8 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
 
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.utils.CryptoUtils;
+import net.sourceforge.atunes.utils.Logger;
 
 public class PasswordPreference extends Preference {
 

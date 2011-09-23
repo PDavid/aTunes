@@ -60,7 +60,6 @@ import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.INavigationView;
@@ -68,6 +67,7 @@ import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITreeGeneratorFactory;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.ViewMode;
+import net.sourceforge.atunes.utils.Logger;
 
 public abstract class AbstractNavigationView implements INavigationView {
 

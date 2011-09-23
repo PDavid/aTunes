@@ -25,13 +25,13 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.utils.Logger;
 
 import org.commonjukebox.plugins.exceptions.PluginSystemException;
 import org.commonjukebox.plugins.model.Plugin;

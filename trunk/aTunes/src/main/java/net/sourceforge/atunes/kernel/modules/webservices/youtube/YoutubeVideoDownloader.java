@@ -33,10 +33,10 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.NetworkUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 

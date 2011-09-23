@@ -33,7 +33,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
-import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.utils.Logger;
 
 public class SystemLookAndFeel extends AbstractLookAndFeel {
 

@@ -29,7 +29,7 @@ import java.util.StringTokenizer;
 
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
-import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**

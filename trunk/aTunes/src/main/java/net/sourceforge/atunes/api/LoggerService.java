@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.api;
 
-import net.sourceforge.atunes.misc.log.Logger;
+import net.sourceforge.atunes.utils.Logger;
 
 import org.commonjukebox.plugins.model.PluginApi;
 

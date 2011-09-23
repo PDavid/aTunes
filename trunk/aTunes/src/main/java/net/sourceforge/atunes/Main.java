@@ -27,9 +27,8 @@ import javax.swing.RepaintManager;
 import net.sourceforge.atunes.gui.debug.CheckThreadViolationRepaintManager;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.instances.MultipleInstancesHandler;
-import net.sourceforge.atunes.misc.log.Log4jPropertiesLoader;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -94,7 +93,7 @@ public final class Main {
         IOSManager osManager = Context.getBean(IOSManager.class);
         
         // Set log4j properties
-        Log4jPropertiesLoader.loadProperties(Kernel.isDebug(), osManager);
+        Logger.loadProperties(Kernel.isDebug(), osManager);
 
         // Save arguments, if application is restarted they will be necessary
         ApplicationArguments.saveArguments(arguments);

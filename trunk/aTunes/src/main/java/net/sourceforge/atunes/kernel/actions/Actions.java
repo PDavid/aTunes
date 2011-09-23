@@ -31,12 +31,12 @@ import javax.swing.AbstractAction;
 import javax.swing.JMenuItem;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectsSource;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.ITreeObjectsSource;
+import net.sourceforge.atunes.utils.Logger;
 
 import org.commonjukebox.plugins.model.PluginApi;
 

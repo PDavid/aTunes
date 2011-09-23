@@ -27,12 +27,12 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.UpdateDialog;
-import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IUpdateHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.Logger;
 
 final class CheckUpdatesSwingWorker extends
 		SwingWorker<ApplicationVersion, Void> {
