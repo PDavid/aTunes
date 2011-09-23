@@ -20,10 +20,9 @@
 
 package net.sourceforge.atunes.model;
 
-import net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListener;
 
 public interface IHandler extends IApplicationLifeCycleListener, 
-								  ApplicationStateChangeListener,
+								  IStateChangeListener,
 								  IPlayListEventListener,
 								  IFavoritesListener,
 								  IDeviceListener,

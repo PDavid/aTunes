@@ -28,17 +28,17 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListener;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.AbstractLyricsEngine;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsEngineInfo;
 import net.sourceforge.atunes.model.ILyricsEngineInfo;
 import net.sourceforge.atunes.model.ILyricsService;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateChangeListener;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public final class LyricsService implements ApplicationStateChangeListener, ILyricsService {
+public final class LyricsService implements IStateChangeListener, ILyricsService {
 
     private List<LyricsEngineInfo> defaultLyricsEngines;
 
