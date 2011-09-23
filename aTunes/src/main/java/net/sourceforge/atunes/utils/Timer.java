@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.misc;
+package net.sourceforge.atunes.utils;
 
 /**
  * This class is used to track times Just do:

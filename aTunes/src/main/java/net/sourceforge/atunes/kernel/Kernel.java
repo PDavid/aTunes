@@ -38,7 +38,6 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.misc.TempFolder;
-import net.sourceforge.atunes.misc.Timer;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
@@ -47,6 +46,7 @@ import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.utils.StringUtils;
+import net.sourceforge.atunes.utils.Timer;
 
 /**
  * The Kernel is the class responsible of create and interconnect all modules of
