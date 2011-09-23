@@ -18,11 +18,13 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.misc;
+package net.sourceforge.atunes.utils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+
+import net.sourceforge.atunes.utils.PointedList;
 
 import org.junit.Assert;
 import org.junit.Test;
