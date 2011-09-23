@@ -30,7 +30,8 @@ import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.text.JTextComponent;
 
-import net.sourceforge.atunes.misc.ClipboardFacade;
+import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.utils.ClipboardFacade;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -105,7 +106,7 @@ public class EditionPopUpMenu extends JPopupMenu {
                 copyAction.setEnabled(textSelected);
 
                 // Paste if clipboard contains text and component editable
-                pasteAction.setEnabled(ClipboardFacade.clipboardContainsText() && EditionPopUpMenu.this.textComponent.isEditable());
+                pasteAction.setEnabled(Context.getBean(ClipboardFacade.class).clipboardContainsText() && EditionPopUpMenu.this.textComponent.isEditable());
 
                 // Select all if text field contains text
                 selectAllAction.setEnabled(EditionPopUpMenu.this.textComponent.getText().length() > 0);
@@ -138,7 +139,7 @@ public class EditionPopUpMenu extends JPopupMenu {
             String text = this.textComponent.getText();
             String selectedText = text.substring(this.textComponent.getSelectionStart(), this.textComponent.getSelectionEnd());
             String nonSelectedText = StringUtils.getString(text.substring(0, this.textComponent.getSelectionStart()), text.substring(this.textComponent.getSelectionEnd()));
-            ClipboardFacade.copyToClipboard(selectedText);
+            Context.getBean(ClipboardFacade.class).copyToClipboard(selectedText);
             this.textComponent.setText(nonSelectedText);
         }
     }
@@ -162,7 +163,7 @@ public class EditionPopUpMenu extends JPopupMenu {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            ClipboardFacade.copyToClipboard(this.textComponent.getSelectedText());
+        	Context.getBean(ClipboardFacade.class).copyToClipboard(this.textComponent.getSelectedText());
         }
     }
 
@@ -186,7 +187,7 @@ public class EditionPopUpMenu extends JPopupMenu {
         @Override
         public void actionPerformed(ActionEvent e) {
             String text = this.textComponent.getText();
-            String copiedText = ClipboardFacade.getClipboardContent();
+            String copiedText = Context.getBean(ClipboardFacade.class).getClipboardContent();
             String newText = StringUtils.getString(text.substring(0, this.textComponent.getSelectionStart()), copiedText, text.substring(this.textComponent.getSelectionEnd()));
             this.textComponent.setText(newText);
         }

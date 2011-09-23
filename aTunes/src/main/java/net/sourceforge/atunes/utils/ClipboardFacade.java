@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.misc;
+package net.sourceforge.atunes.utils;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -27,23 +27,10 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 
-import org.commonjukebox.plugins.model.PluginApi;
-
 /**
  * The Class ClipboardFacade.
  */
-@PluginApi
 public final class ClipboardFacade implements ClipboardOwner {
-
-    /** Private singleton instance. */
-    private static ClipboardFacade instance = new ClipboardFacade();
-
-    /**
-     * Default constructor.
-     */
-    private ClipboardFacade() {
-        // Nothing to do
-    }
 
     /**
      * Puts text on clipboard.
@@ -51,13 +38,13 @@ public final class ClipboardFacade implements ClipboardOwner {
      * @param sText
      *            the s text
      */
-    public static void copyToClipboard(String sText) {
+    public void copyToClipboard(String sText) {
         // Get System Clipboard
         Clipboard objClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         // Wrap text into a transferable object
         StringSelection objStringSelection = new StringSelection(sText);
         // Put text on clipboard
-        objClipboard.setContents(objStringSelection, instance);
+        objClipboard.setContents(objStringSelection, this);
     }
 
     /**
@@ -65,7 +52,7 @@ public final class ClipboardFacade implements ClipboardOwner {
      * 
      * @return Text from clipboard
      */
-    public static String getClipboardContent() {
+    public String getClipboardContent() {
         // Get System Clipboard
         Clipboard objClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         String content = "";
@@ -86,7 +73,7 @@ public final class ClipboardFacade implements ClipboardOwner {
      * 
      * @return <code>true</code> if clipboard contains text
      */
-    public static boolean clipboardContainsText() {
+    public boolean clipboardContainsText() {
         return !getClipboardContent().equals("");
     }
 

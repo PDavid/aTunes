@@ -40,12 +40,12 @@ import net.sourceforge.atunes.gui.views.controls.CustomTextPane;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
-import net.sourceforge.atunes.misc.ClipboardFacade;
 import net.sourceforge.atunes.model.EditTagSources;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILyricsService;
 import net.sourceforge.atunes.model.ITagHandler;
+import net.sourceforge.atunes.utils.ClipboardFacade;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -85,6 +85,8 @@ public class LyricsContent extends AbstractContextPanelContent {
     private IAudioObject audioObject;
     
     private ILyricsService lyricsService;
+    
+    private ClipboardFacade clipboard;
 
     public LyricsContent() {
         copyLyrics = new JMenuItem(new AbstractAction(I18nUtils.getString("COPY_TO_CLIPBOARD")) {
@@ -97,7 +99,7 @@ public class LyricsContent extends AbstractContextPanelContent {
                 if (sLyric == null) {
                     sLyric = "";
                 }
-                ClipboardFacade.copyToClipboard(sLyric);
+                clipboard.copyToClipboard(sLyric);
             }
         });
         addLyrics = new JMenu(I18nUtils.getString("ADD_LYRICS"));
@@ -188,5 +190,9 @@ public class LyricsContent extends AbstractContextPanelContent {
 
     public void setLyricsService(ILyricsService lyricsService) {
 		this.lyricsService = lyricsService;
+	}
+    
+    public void setClipboard(ClipboardFacade clipboard) {
+		this.clipboard = clipboard;
 	}
 }
