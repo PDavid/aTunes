@@ -24,7 +24,6 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.playlist.ListOfPlayLists;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites;
-import net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListener;
 import net.sourceforge.atunes.kernel.modules.statistics.Statistics;
 
 /**
@@ -40,7 +39,7 @@ public interface IStateHandler extends IHandler {
 	 * 
 	 * @param listener
 	 */
-	public void addStateChangeListener(ApplicationStateChangeListener listener);
+	public void addStateChangeListener(IStateChangeListener listener);
 
 	/**
 	 * Removes an ApplicationStateChangeListener. This listener will not be
@@ -49,7 +48,7 @@ public interface IStateHandler extends IHandler {
 	 * @param listener
 	 */
 	public void removeStateChangeListener(
-			ApplicationStateChangeListener listener);
+			IStateChangeListener listener);
 
 	/**
 	 * Notifies all listeners of an application state change

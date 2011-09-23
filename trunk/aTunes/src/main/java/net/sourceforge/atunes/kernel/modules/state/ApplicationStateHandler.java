@@ -45,6 +45,7 @@ import net.sourceforge.atunes.kernel.modules.statistics.Statistics;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IRadio;
+import net.sourceforge.atunes.model.IStateChangeListener;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -62,15 +63,15 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
     /**
      * Listeners of the state of the application
      */
-    private Set<ApplicationStateChangeListener> stateChangeListeners;
+    private Set<IStateChangeListener> stateChangeListeners;
 
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#addStateChangeListener(net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListener)
 	 */
     @Override
-	public void addStateChangeListener(ApplicationStateChangeListener listener) {
+	public void addStateChangeListener(IStateChangeListener listener) {
         if (stateChangeListeners == null) {
-            stateChangeListeners = new HashSet<ApplicationStateChangeListener>();
+            stateChangeListeners = new HashSet<IStateChangeListener>();
         }
         stateChangeListeners.add(listener);
     }
@@ -79,7 +80,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#removeStateChangeListener(net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListener)
 	 */
     @Override
-	public void removeStateChangeListener(ApplicationStateChangeListener listener) {
+	public void removeStateChangeListener(IStateChangeListener listener) {
         if (stateChangeListeners == null) {
             return;
         }
@@ -92,7 +93,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
     @Override
 	public void notifyApplicationStateChanged() {
         try {
-            for (ApplicationStateChangeListener listener : stateChangeListeners) {
+            for (IStateChangeListener listener : stateChangeListeners) {
                 Logger.debug("Call to ApplicationStateChangeListener: ", listener.getClass().getName());
                 listener.applicationStateChanged(getState());
             }

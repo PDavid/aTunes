@@ -18,11 +18,10 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.state;
+package net.sourceforge.atunes.model;
 
-import net.sourceforge.atunes.model.IState;
 
-public interface ApplicationStateChangeListener {
+public interface IStateChangeListener {
 
     /**
      * Called when any application configuration is changed
