@@ -20,33 +20,25 @@
 
 package net.sourceforge.atunes.kernel.modules.columns;
 
-import java.io.Serializable;
 import java.util.Comparator;
 
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
+import net.sourceforge.atunes.model.ColumnBean;
+import net.sourceforge.atunes.model.ColumnSort;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.utils.GuiUtils;
-
-import org.commonjukebox.plugins.model.PluginApi;
 
 /**
  * This class represents a column
  * 
  * @author fleax
  */
-@PluginApi
-public abstract class AbstractColumn implements Comparable<AbstractColumn>, Serializable {
+public abstract class AbstractColumn implements IColumn {
 
     private static final long serialVersionUID = 7407756833207959017L;
-
-    /**
-     * Column sort: ascending or descending
-     */
-    public enum ColumnSort {
-        ASCENDING, DESCENDING
-    }
 
     /** Header text of column. */
     private String columnName;
@@ -95,66 +87,36 @@ public abstract class AbstractColumn implements Comparable<AbstractColumn>, Seri
         this.columnClass = columnClass;
     }
 
-    /**
-     * Apply column bean.
-     * 
-     * @param bean
-     *            the bean
-     */
-    public void applyColumnBean(ColumnBean bean) {
+    @Override
+	public void applyColumnBean(ColumnBean bean) {
         order = bean.getOrder();
         width = bean.getWidth();
         visible = bean.isVisible();
         columnSort = bean.getSort();
     }
 
-    /**
-     * Compare method.
-     * 
-     * @param o
-     *            the o
-     * 
-     * @return the int
-     */
-
     @Override
-    public int compareTo(AbstractColumn o) {
-        return Integer.valueOf(order).compareTo(o.order);
+    public int compareTo(IColumn o) {
+        return Integer.valueOf(order).compareTo(o.getOrder());
     }
 
-    /**
-     * Gets the alignment.
-     * 
-     * @return the alignment
-     */
-    public int getAlignment() {
+    @Override
+	public int getAlignment() {
         return alignment;
     }
 
-    /**
-     * Gets the cell editor.
-     * 
-     * @return the cellEditor
-     */
-    public TableCellEditor getCellEditor() {
+    @Override
+	public TableCellEditor getCellEditor() {
         return null;
     }
 
-    /**
-     * Gets the cell renderer.
-     * 
-     * @return the cellRenderer
-     */
-    public TableCellRenderer getCellRenderer() {
+    @Override
+	public TableCellRenderer getCellRenderer() {
         return null;
     }
 
-    /**
-     * Gets the column bean.
-     * 
-     * @return the column bean
-     */
-    public ColumnBean getColumnBean() {
+    @Override
+	public ColumnBean getColumnBean() {
         ColumnBean bean = new ColumnBean();
         bean.setOrder(order);
         bean.setWidth(width);
@@ -163,21 +125,13 @@ public abstract class AbstractColumn implements Comparable<AbstractColumn>, Seri
         return bean;
     }
 
-    /**
-     * Gets the column class.
-     * 
-     * @return the columnClass
-     */
-    public Class<?> getColumnClass() {
+    @Override
+	public Class<?> getColumnClass() {
         return columnClass;
     }
 
-    /**
-     * Gets the column name.
-     * 
-     * @return the column name
-     */
-    public String getColumnName() {
+    @Override
+	public String getColumnName() {
         return columnName;
     }
 
@@ -188,201 +142,98 @@ public abstract class AbstractColumn implements Comparable<AbstractColumn>, Seri
      */
     protected abstract int ascendingCompare(IAudioObject o1, IAudioObject o2);
 
-    /**
-     * Gets the header text.
-     * 
-     * @return the headerText
-     */
-    public String getHeaderText() {
+    @Override
+	public String getHeaderText() {
         return columnName;
     }
 
-    /**
-     * Gets the order.
-     * 
-     * @return the order
-     */
-    public int getOrder() {
+    @Override
+	public int getOrder() {
         return order;
     }
 
-    /**
-     * Returns value for a column of an audiofile.
-     * 
-     * @param audioObject
-     *            the audio object
-     * 
-     * @return the value for
-     */
-    public abstract Object getValueFor(IAudioObject audioObject);
-
-    /**
-     * Returns if this column can be shown only in play list. By default
-     * <code>false</code>
-     * 
-     * @return
-     */
-    public boolean isPlayListExclusive() {
+    @Override
+	public boolean isPlayListExclusive() {
         return false;
     }
 
-    /**
-     * Gets the width.
-     * 
-     * @return the width
-     */
-    public int getWidth() {
+    @Override
+	public int getWidth() {
         return width;
     }
 
-    /**
-     * Checks if is editable.
-     * 
-     * @return the editable
-     */
-    public boolean isEditable() {
+    @Override
+	public boolean isEditable() {
         return editable;
     }
 
-    /**
-     * Returns if this column can be sorted. All columns are sortable unless
-     * this method is overrided
-     * 
-     * @return
-     */
-    public boolean isSortable() {
+    @Override
+	public boolean isSortable() {
         return true;
     }
 
-    /**
-     * Checks if is resizable.
-     * 
-     * @return the resizable
-     */
-    public boolean isResizable() {
+    @Override
+	public boolean isResizable() {
         return resizable;
     }
 
-    /**
-     * Checks if is visible.
-     * 
-     * @return the visible
-     */
-    public boolean isVisible() {
+    @Override
+	public boolean isVisible() {
         return visible;
     }
 
-    /**
-     * Sets the alignment.
-     * 
-     * @param alignment
-     *            the alignment to set
-     */
-    public void setAlignment(int alignment) {
+    @Override
+	public void setAlignment(int alignment) {
         this.alignment = alignment;
     }
 
-    /**
-     * Sets the column class.
-     * 
-     * @param columnClass
-     *            the columnClass to set
-     */
-    public void setColumnClass(Class<?> columnClass) {
+    @Override
+	public void setColumnClass(Class<?> columnClass) {
         this.columnClass = columnClass;
     }
 
-    /**
-     * Sets the editable.
-     * 
-     * @param editable
-     *            the editable to set
-     */
-    public void setEditable(boolean editable) {
+    @Override
+	public void setEditable(boolean editable) {
         this.editable = editable;
     }
 
-    /**
-     * Sets the header text.
-     * 
-     * @param headerText
-     *            the headerText to set
-     */
-    public void setColumnName(String headerText) {
+    @Override
+	public void setColumnName(String headerText) {
         this.columnName = headerText;
     }
 
-    /**
-     * Sets the order.
-     * 
-     * @param order
-     *            the order to set
-     */
-    public void setOrder(int order) {
+    @Override
+	public void setOrder(int order) {
         this.order = order;
     }
 
-    /**
-     * Sets the resizable.
-     * 
-     * @param resizable
-     *            the resizable to set
-     */
-    public void setResizable(boolean resizable) {
+    @Override
+	public void setResizable(boolean resizable) {
         this.resizable = resizable;
     }
 
-    /**
-     * Sets value for a property of an audio object.
-     * 
-     * @param audioObject
-     *            the audio object
-     * @param value
-     *            the value
-     */
-    public void setValueFor(IAudioObject audioObject, Object value) {
+    @Override
+	public void setValueFor(IAudioObject audioObject, Object value) {
         // Does nothing, should be overrided
     }
 
-    /**
-     * Sets the visible.
-     * 
-     * @param visible
-     *            the visible to set
-     */
-    public void setVisible(boolean visible) {
+    @Override
+	public void setVisible(boolean visible) {
         this.visible = visible;
     }
 
-    /**
-     * Sets the width.
-     * 
-     * @param width
-     *            the width to set
-     */
-    public void setWidth(int width) {
+    @Override
+	public void setWidth(int width) {
         this.width = width;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString() {
         return columnName;
     }
 
-    /**
-     * Return a comparator to sort by this column. Comparator order is changed
-     * or not according to value of <code>changeSort</code> If not sort has been
-     * done before ascending comparator is returned
-     * 
-     * @param changeSort
-     * @return
-     */
-    public Comparator<IAudioObject> getComparator(boolean changeSort) {
+    @Override
+	public Comparator<IAudioObject> getComparator(boolean changeSort) {
         if (columnSort == null) {
             columnSort = ColumnSort.ASCENDING;
         } else if (columnSort == ColumnSort.ASCENDING && changeSort) {
@@ -399,45 +250,28 @@ public abstract class AbstractColumn implements Comparable<AbstractColumn>, Seri
         };
     }
 
-    /**
-     * @return the usedForFilter
-     */
-    public boolean isUsedForFilter() {
+    @Override
+	public boolean isUsedForFilter() {
         return usedForFilter;
     }
 
-    /**
-     * @param usedForFilter
-     *            the usedForFilter to set
-     */
-    public void setUsedForFilter(boolean usedForFilter) {
+    @Override
+	public void setUsedForFilter(boolean usedForFilter) {
         this.usedForFilter = usedForFilter;
     }
 
-    /**
-     * Returns string used to filter by this column. By default it performs a
-     * <code>toString</code> over object returned by <code>getValueFor</code>
-     * 
-     * @param audioObject
-     * @return
-     */
-    public String getValueForFilter(IAudioObject audioObject) {
+    @Override
+	public String getValueForFilter(IAudioObject audioObject) {
         return getValueFor(audioObject).toString();
     }
 
-    /**
-     * @param columnSort
-     *            the columnSort to set
-     */
-    public void setColumnSort(ColumnSort columnSort) {
+    @Override
+	public void setColumnSort(ColumnSort columnSort) {
         this.columnSort = columnSort;
     }
 
-    /**
-     * @return the columnSort
-     */
-    public ColumnSort getColumnSort() {
+    @Override
+	public ColumnSort getColumnSort() {
         return columnSort;
     }
-
 }

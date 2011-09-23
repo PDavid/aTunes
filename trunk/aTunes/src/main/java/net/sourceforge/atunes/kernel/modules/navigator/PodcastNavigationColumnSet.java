@@ -27,6 +27,7 @@ import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.kernel.modules.columns.DateColumn;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -142,8 +143,8 @@ public class PodcastNavigationColumnSet extends AbstractCustomNavigatorColumnSet
     }
 
     @Override
-    protected List<AbstractColumn> getAllowedColumns() {
-        List<AbstractColumn> columns = new ArrayList<AbstractColumn>();
+    protected List<IColumn> getAllowedColumns() {
+        List<IColumn> columns = new ArrayList<IColumn>();
 
         AbstractColumn property1 = new NotListenedPropertyColumn("", Property.class);
         property1.setVisible(true);

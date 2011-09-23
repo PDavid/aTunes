@@ -48,11 +48,11 @@ import net.sourceforge.atunes.kernel.actions.RemoveRadioAction;
 import net.sourceforge.atunes.kernel.actions.RenameRadioLabelAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
-import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IState;
@@ -72,9 +72,9 @@ public final class RadioNavigationView extends AbstractNavigationView {
     private JPopupMenu radioTableMenu;
 
     /** The column set */
-    private AbstractColumnSet columnSet;
+    private IColumnSet columnSet;
 
-    public RadioNavigationView(IState state, AbstractColumnSet columnSet, INavigationHandler navigationHandler, IFrame frame) {
+    public RadioNavigationView(IState state, IColumnSet columnSet, INavigationHandler navigationHandler, IFrame frame) {
     	super(state, navigationHandler, frame);
     	this.columnSet = columnSet;
 	}
@@ -352,7 +352,7 @@ public final class RadioNavigationView extends AbstractNavigationView {
     }
 
     @Override
-    public AbstractColumnSet getCustomColumnSet() {
+    public IColumnSet getCustomColumnSet() {
         return columnSet;
     }
 

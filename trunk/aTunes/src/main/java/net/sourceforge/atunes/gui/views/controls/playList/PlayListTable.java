@@ -49,11 +49,11 @@ import net.sourceforge.atunes.gui.renderers.ColumnRenderers;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetRowSorter;
 import net.sourceforge.atunes.gui.views.menus.PlayListMenu;
-import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListDragableRow;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListTableModel;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectsSource;
+import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.PlayState;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -78,7 +78,7 @@ public final class PlayListTable extends JTable implements DragSourceListener, D
     /**
      * Instantiates a new play list table.
      */
-    public PlayListTable(AbstractColumnSet columnSet, IPlayListHandler playListHandler) {
+    public PlayListTable(IColumnSet columnSet, IPlayListHandler playListHandler) {
         super();
         this.playListHandler = playListHandler;
         LookAndFeelSelector.getInstance().getCurrentLookAndFeel().decorateTable(this);

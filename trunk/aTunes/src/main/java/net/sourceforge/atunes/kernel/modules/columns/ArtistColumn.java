@@ -27,6 +27,7 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.images.ArtistFavoriteImageIcon;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
+import net.sourceforge.atunes.model.ColumnSort;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 

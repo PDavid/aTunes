@@ -51,9 +51,9 @@ import net.sourceforge.atunes.kernel.actions.RemovePodcastFeedAction;
 import net.sourceforge.atunes.kernel.actions.RenamePodcastFeedAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
-import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
@@ -72,7 +72,7 @@ public final class PodcastNavigationView extends AbstractNavigationView {
     private JPopupMenu podcastFeedTableMenu;
 
     /** The column set */
-    private AbstractColumnSet columnSet;
+    private IColumnSet columnSet;
     
     private IPodcastFeedHandler podcastFeedHandler;
 
@@ -243,7 +243,7 @@ public final class PodcastNavigationView extends AbstractNavigationView {
     }
 
     @Override
-    public AbstractColumnSet getCustomColumnSet() {
+    public IColumnSet getCustomColumnSet() {
     	return columnSet;
     }
 

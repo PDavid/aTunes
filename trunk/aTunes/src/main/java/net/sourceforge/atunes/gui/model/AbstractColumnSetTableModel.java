@@ -22,16 +22,16 @@ package net.sourceforge.atunes.gui.model;
 
 import java.util.Comparator;
 
-import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
-import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColumn;
+import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public abstract class AbstractColumnSetTableModel extends AbstractCommonTableModel {
 
-    private AbstractColumnSet columnSet;
+    private IColumnSet columnSet;
 
-    public AbstractColumnSetTableModel(AbstractColumnSet columnSet) {
+    public AbstractColumnSetTableModel(IColumnSet columnSet) {
         super();
         this.columnSet = columnSet;
     }
@@ -82,7 +82,7 @@ public abstract class AbstractColumnSetTableModel extends AbstractCommonTableMod
      * @param colIndex
      * @return
      */
-    protected AbstractColumn getColumn(int colIndex) {
+    protected IColumn getColumn(int colIndex) {
         return columnSet != null ? columnSet.getColumn(columnSet.getColumnId(colIndex)) : null;
     }
 
@@ -97,7 +97,7 @@ public abstract class AbstractColumnSetTableModel extends AbstractCommonTableMod
      * @param columnSet
      *            the columnSet to set
      */
-    public void setColumnSet(AbstractColumnSet columnSet) {
+    public void setColumnSet(IColumnSet columnSet) {
         this.columnSet = columnSet;
     }
 

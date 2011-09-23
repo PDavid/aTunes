@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.columns;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.utils.Logger;
 
 /**
@@ -82,8 +83,8 @@ public final class Columns {
      * 
      * @return the columns by default
      */
-    public static List<AbstractColumn> getColumns(boolean playListExclusive) {
-        List<AbstractColumn> result = new ArrayList<AbstractColumn>();
+    public static List<IColumn> getColumns(boolean playListExclusive) {
+        List<IColumn> result = new ArrayList<IColumn>();
 
         int order = 0;
         for (Class<? extends AbstractColumn> columnClass : classes) {
@@ -111,8 +112,8 @@ public final class Columns {
          * 
          * @return the columns by default
          */
-        public static List<AbstractColumn> getAlbumColumns() {
-            List<AbstractColumn> result = new ArrayList<AbstractColumn>();
+        public static List<IColumn> getAlbumColumns() {
+            List<IColumn> result = new ArrayList<IColumn>();
     
             int order = 0;
             for (Class<? extends AbstractColumn> columnClass : albumClasses) {

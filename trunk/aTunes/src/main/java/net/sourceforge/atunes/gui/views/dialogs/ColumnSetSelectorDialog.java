@@ -43,9 +43,9 @@ import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
-import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
+import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IColumnSelectorDialog;
+import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -59,7 +59,7 @@ public final class ColumnSetSelectorDialog extends AbstractCustomDialog implemen
 
         private static final long serialVersionUID = 5251001708812824836L;
 
-        private List<AbstractColumn> columns;
+        private List<IColumn> columns;
         private List<TableModelListener> listeners = new ArrayList<TableModelListener>();
 
         /**
@@ -118,8 +118,8 @@ public final class ColumnSetSelectorDialog extends AbstractCustomDialog implemen
          */
         public void moveDown(int columnPos) {
             // Get this column and previous
-            AbstractColumn columnSelected = columns.get(columnPos);
-            AbstractColumn nextColumn = columns.get(columnPos + 1);
+            IColumn columnSelected = columns.get(columnPos);
+            IColumn nextColumn = columns.get(columnPos + 1);
 
             // Swap order
             int aux = columnSelected.getOrder();
@@ -150,8 +150,8 @@ public final class ColumnSetSelectorDialog extends AbstractCustomDialog implemen
          */
         public void moveUp(int columnPos) {
             // Get this column and previous
-            AbstractColumn columnSelected = columns.get(columnPos);
-            AbstractColumn previousColumn = columns.get(columnPos - 1);
+            IColumn columnSelected = columns.get(columnPos);
+            IColumn previousColumn = columns.get(columnPos - 1);
 
             // Swap order
             int aux = columnSelected.getOrder();
@@ -179,7 +179,7 @@ public final class ColumnSetSelectorDialog extends AbstractCustomDialog implemen
             listeners.remove(l);
         }
 
-        public void setColumns(List<AbstractColumn> columns) {
+        public void setColumns(List<IColumn> columns) {
             this.columns = columns;
             Collections.sort(this.columns);
         }
@@ -306,7 +306,7 @@ public final class ColumnSetSelectorDialog extends AbstractCustomDialog implemen
 	 * @see net.sourceforge.atunes.gui.views.dialogs.IColumnSelectorDialog#setColumnSetToSelect(net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet)
 	 */
     @Override
-	public void setColumnSetToSelect(AbstractColumnSet columnSet) {
+	public void setColumnSetToSelect(IColumnSet columnSet) {
         model.setColumns(columnSet.getColumnsForSelection());
     }
     

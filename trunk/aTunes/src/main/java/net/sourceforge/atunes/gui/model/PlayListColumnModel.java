@@ -31,8 +31,8 @@ import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.renderers.StringTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.TextAndIconTableCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
-import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.columns.TextAndIcon;
+import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.PlayState;
@@ -92,7 +92,7 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
      *            the play list
      */
     public PlayListColumnModel(PlayListTable playList, IPlayListHandler playListHandler) {
-        super(playList, (AbstractColumnSet) Context.getBean("playlistColumnSet"), Context.getBean(ITaskService.class));
+        super(playList, (IColumnSet) Context.getBean("playlistColumnSet"), Context.getBean(ITaskService.class));
         this.playListHandler = playListHandler;
         enableColumnChange(true);
     }

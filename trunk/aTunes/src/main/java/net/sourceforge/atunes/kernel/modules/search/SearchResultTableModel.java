@@ -25,8 +25,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import net.sourceforge.atunes.gui.model.AbstractColumnSetTableModel;
-import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColumnSet;
 
 /**
  * The table model for search results.
@@ -40,7 +40,7 @@ public class SearchResultTableModel extends AbstractColumnSetTableModel {
      * 
      * @param columnSet
      */
-    public SearchResultTableModel(AbstractColumnSet columnSet) {
+    public SearchResultTableModel(IColumnSet columnSet) {
         super(columnSet);
     }
 

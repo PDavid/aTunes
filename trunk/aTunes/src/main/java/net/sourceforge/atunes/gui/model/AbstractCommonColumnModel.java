@@ -43,10 +43,10 @@ import net.sourceforge.atunes.gui.renderers.IntegerTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.PropertyTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.StringTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.TextAndIconTableCellRendererCode;
-import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
-import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.columns.TextAndIcon;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.IColumn;
+import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -56,7 +56,7 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
     /** The table. */
     private JTable table;
     /** Column set */
-    private AbstractColumnSet columnSet;
+    private IColumnSet columnSet;
     /** The model. */
     private AbstractCommonTableModel model;
     /** The column being moved. */
@@ -75,7 +75,7 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
      * @param columnSet
      * @param taskService
      */
-    public AbstractCommonColumnModel(JTable table, AbstractColumnSet columnSet, ITaskService taskService) {
+    public AbstractCommonColumnModel(JTable table, IColumnSet columnSet, ITaskService taskService) {
         this(table, taskService);
         this.columnSet = columnSet;
     }
@@ -122,7 +122,7 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
      */
     protected final void updateColumnWidth() {
         for (int i = 0; i < getColumnCount(); i++) {
-            Class<? extends AbstractColumn> col = getColumnId(i);
+            Class<? extends IColumn> col = getColumnId(i);
             int width = getColumn(i).getPreferredWidth();
             setWidthForColumn(col, width);
         }
@@ -136,7 +136,7 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
      * @param width
      *            the width
      */
-    private final void setWidthForColumn(Class<? extends AbstractColumn> c, int width) {
+    private final void setWidthForColumn(Class<? extends IColumn> c, int width) {
         getColumn(c).setWidth(width);
     }
 
@@ -162,7 +162,7 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
      * 
      * @return the column
      */
-    public final AbstractColumn getColumnObject(int column) {
+    public final IColumn getColumnObject(int column) {
         return getColumn(getColumnId(column));
     }
 
@@ -172,7 +172,7 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
      * @param index
      * @return
      */
-    private final Class<? extends AbstractColumn> getColumnId(int index) {
+    private final Class<? extends IColumn> getColumnId(int index) {
         return columnSet.getColumnId(index);
     }
 
@@ -182,7 +182,7 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
      * @param columnClass
      * @return
      */
-    private final AbstractColumn getColumn(Class<? extends AbstractColumn> columnClass) {
+    private final IColumn getColumn(Class<? extends IColumn> columnClass) {
         return columnSet.getColumn(columnClass);
     }
 
@@ -320,7 +320,7 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
      */
     protected void updateColumnSettings(TableColumn aColumn) {
         // Get column data
-        AbstractColumn column = getColumnObject(aColumn.getModelIndex());
+        IColumn column = getColumnObject(aColumn.getModelIndex());
 
         // Set width
         aColumn.setPreferredWidth(column.getWidth());
@@ -345,7 +345,7 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
     /**
      * @return the columnSet
      */
-    public AbstractColumnSet getColumnSet() {
+    public IColumnSet getColumnSet() {
         return columnSet;
     }
 
@@ -353,7 +353,7 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
      * @param columnSet
      *            the columnSet to set
      */
-    public void setColumnSet(AbstractColumnSet columnSet) {
+    public void setColumnSet(IColumnSet columnSet) {
         this.columnSet = columnSet;
     }
 
