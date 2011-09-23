@@ -26,7 +26,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.sourceforge.atunes.model.ColumnBean;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColumn;
+import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IState;
 
@@ -38,16 +41,16 @@ import org.commonjukebox.plugins.model.PluginApi;
  * @author fleax
  */
 @PluginApi
-public abstract class AbstractColumnSet {
+public abstract class AbstractColumnSet implements IColumnSet {
 
     /** Available columns */
-    private List<AbstractColumn> availableColumns;
+    private List<IColumn> availableColumns;
 
     /** Column map for direct access */
-    private Map<Class<? extends AbstractColumn>, AbstractColumn> columnMap;
+    private Map<Class<? extends IColumn>, IColumn> columnMap;
 
     /** The current visible columns. */
-    private List<Class<? extends AbstractColumn>> currentColumns;
+    private List<Class<? extends IColumn>> currentColumns;
 
 	/**
 	 * State of app
@@ -60,11 +63,13 @@ public abstract class AbstractColumnSet {
         ColumnSets.registerColumnSet(this);
     }
     
-    public final void setState(IState state) {
+    @Override
+	public final void setState(IState state) {
     	this.state = state;
     }
 
-    public final void setFrame(IFrame frame) {
+    @Override
+	public final void setFrame(IFrame frame) {
 		this.frame = frame;
 	}
 
@@ -75,20 +80,20 @@ public abstract class AbstractColumnSet {
      * 
      * @return the available columns
      */
-    private List<AbstractColumn> getAvailableColumns() {
+    private List<IColumn> getAvailableColumns() {
         if (availableColumns == null) {
             // Try to get configuration saved
             Map<String, ColumnBean> columnsBeans = getColumnsConfiguration();
 
             availableColumns = getAllowedColumns();
-            columnMap = new HashMap<Class<? extends AbstractColumn>, AbstractColumn>();
-            for (AbstractColumn c : availableColumns) {
+            columnMap = new HashMap<Class<? extends IColumn>, IColumn>();
+            for (IColumn c : availableColumns) {
                 columnMap.put(c.getClass(), c);
             }
 
             // Apply configuration
             if (columnsBeans != null) {
-                for (AbstractColumn column : availableColumns) {
+                for (IColumn column : availableColumns) {
                     ColumnBean bean = columnsBeans.get(column.getClass().getName());
                     if (bean != null) {
                         column.applyColumnBean(bean);
@@ -104,28 +109,22 @@ public abstract class AbstractColumnSet {
      * 
      * @return
      */
-    protected abstract List<AbstractColumn> getAllowedColumns();
+    protected abstract List<IColumn> getAllowedColumns();
 
-    /**
-     * Store current column settings.
-     */
-    public final void saveColumnSet() {
+    @Override
+	public final void saveColumnSet() {
         // Get ColumnsBean from default columns and store it
         HashMap<String, ColumnBean> newColumnsBeans = new HashMap<String, ColumnBean>();
-        for (AbstractColumn column : getAvailableColumns()) {
+        for (IColumn column : getAvailableColumns()) {
             newColumnsBeans.put(column.getClass().getName(), column.getColumnBean());
         }
         setColumnsConfiguration(newColumnsBeans);
     }
 
-    /**
-     * Returns the amount of columns visible in this set
-     * 
-     * @return
-     */
-    public final int getVisibleColumnCount() {
+    @Override
+	public final int getVisibleColumnCount() {
         int visibleColumns = 0;
-        for (AbstractColumn c : getAvailableColumns()) {
+        for (IColumn c : getAvailableColumns()) {
             if (c.isVisible()) {
                 visibleColumns++;
             }
@@ -133,29 +132,23 @@ public abstract class AbstractColumnSet {
         return visibleColumns;
     }
 
-    /**
-     * Returns columns in order.
-     * 
-     * @return the columns ordered
-     */
-    public final List<AbstractColumn> getColumnsOrdered() {
-        List<AbstractColumn> result = new ArrayList<AbstractColumn>(getAvailableColumns());
+    @Override
+	public final List<IColumn> getColumnsOrdered() {
+        List<IColumn> result = new ArrayList<IColumn>(getAvailableColumns());
         Collections.sort(result);
         return result;
     }
 
-    /**
-     * Sets columns
-     */
-    public final void setCurrentColumns() {
+    @Override
+	public final void setCurrentColumns() {
         int columnNumber = getVisibleColumnCount();
         if (columnNumber == 0) {
             return;
         }
 
-        currentColumns = new ArrayList<Class<? extends AbstractColumn>>();
+        currentColumns = new ArrayList<Class<? extends IColumn>>();
 
-        for (AbstractColumn c : getColumnsOrdered()) {
+        for (IColumn c : getColumnsOrdered()) {
             if (c.isVisible()) {
                 currentColumns.add(c.getClass());
             }
@@ -167,9 +160,9 @@ public abstract class AbstractColumnSet {
      * 
      * @return
      */
-    private List<AbstractColumn> getColumnsForFilter() {
-        List<AbstractColumn> columnsForFilter = new ArrayList<AbstractColumn>();
-        for (AbstractColumn c : getAvailableColumns()) {
+    private List<IColumn> getColumnsForFilter() {
+        List<IColumn> columnsForFilter = new ArrayList<IColumn>();
+        for (IColumn c : getAvailableColumns()) {
             if (c.isVisible() && c.isUsedForFilter()) {
                 columnsForFilter.add(c);
             }
@@ -177,51 +170,28 @@ public abstract class AbstractColumnSet {
         return columnsForFilter;
     }
 
-    /**
-     * Returns Column ID given a visible column number
-     * 
-     * @param colIndex
-     *            the col index
-     * 
-     * @return the column id
-     */
-    public final Class<? extends AbstractColumn> getColumnId(int colIndex) {
+    @Override
+	public final Class<? extends IColumn> getColumnId(int colIndex) {
         if (currentColumns == null) {
             setCurrentColumns();
         }
         return currentColumns.get(colIndex);
     }
 
-    /**
-     * Returns columns for selection
-     * 
-     * @return the columns for selection
-     */
-    public List<AbstractColumn> getColumnsForSelection() {
-        return new ArrayList<AbstractColumn>(getAvailableColumns());
+    @Override
+	public List<IColumn> getColumnsForSelection() {
+        return new ArrayList<IColumn>(getAvailableColumns());
     }
 
-    /**
-     * Returns a column object given its class name
-     * 
-     * @param columnClass
-     * @return
-     */
-    public AbstractColumn getColumn(Class<? extends AbstractColumn> columnClass) {
+    @Override
+	public IColumn getColumn(Class<? extends IColumn> columnClass) {
         return columnMap.get(columnClass);
     }
 
-    /**
-     * Filters audio objects with given filter and current visible columns of
-     * this column set
-     * 
-     * @param audioObjects
-     * @param filter
-     * @return
-     */
-    public List<IAudioObject> filterAudioObjects(List<IAudioObject> audioObjects, String filter) {
+    @Override
+	public List<IAudioObject> filterAudioObjects(List<IAudioObject> audioObjects, String filter) {
         List<IAudioObject> result = new ArrayList<IAudioObject>();
-        List<AbstractColumn> columnsForFilter = getColumnsForFilter();
+        List<IColumn> columnsForFilter = getColumnsForFilter();
         String lowerCaseFilter = filter.toLowerCase();
 
         for (IAudioObject audioObject : audioObjects) {
@@ -241,7 +211,7 @@ public abstract class AbstractColumnSet {
      * @param columns
      * @return
      */
-    private boolean filterAudioObject(IAudioObject audioObject, List<AbstractColumn> columns, String filter) {
+    private boolean filterAudioObject(IAudioObject audioObject, List<IColumn> columns, String filter) {
         boolean passed = false;
         int i = 0;
         while (!passed && i < columns.size()) {
@@ -258,7 +228,7 @@ public abstract class AbstractColumnSet {
      * 
      * @param column
      */
-    protected final void addNewColumn(AbstractColumn column) {
+    protected final void addNewColumn(IColumn column) {
         column.setOrder(getAvailableColumns().size());
         getAvailableColumns().add(column);
         columnMap.put(column.getClass(), column);
@@ -280,27 +250,19 @@ public abstract class AbstractColumnSet {
         }
     }
 
-    /**
-     * Called to remove an available column
-     * 
-     * @param columnClass
-     */
-    public void removeColumn(Class<?> columnClass) {
-        AbstractColumn column = columnMap.get(columnClass);
+    @Override
+	public void removeColumn(Class<?> columnClass) {
+        IColumn column = columnMap.get(columnClass);
         columnMap.remove(columnClass);
         getAvailableColumns().remove(column);
         refreshColumns();
     }
 
-    /**
-     * Returns the column sorted (if any)
-     * 
-     * @return
-     */
-    public AbstractColumn getSortedColumn() {
+    @Override
+	public IColumn getSortedColumn() {
         if (currentColumns != null) {
-            for (Class<? extends AbstractColumn> columnClass : currentColumns) {
-                AbstractColumn column = getColumn(columnClass);
+            for (Class<? extends IColumn> columnClass : currentColumns) {
+                IColumn column = getColumn(columnClass);
                 if (column.getColumnSort() != null) {
                     return column;
                 }

@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.gui.model.NavigationTableColumnModel;
+import net.sourceforge.atunes.model.ColumnBean;
+import net.sourceforge.atunes.model.IColumn;
 
 /**
  * This class defines all columns than can be viewed in Navigator
@@ -33,7 +35,7 @@ import net.sourceforge.atunes.gui.model.NavigationTableColumnModel;
 public final class NavigatorColumnSet extends AbstractColumnSet {
 
     @Override
-    protected List<AbstractColumn> getAllowedColumns() {
+    protected List<IColumn> getAllowedColumns() {
         return Columns.getColumns(false);
     }
 

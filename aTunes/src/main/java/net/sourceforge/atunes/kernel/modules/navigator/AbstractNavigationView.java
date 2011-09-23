@@ -56,11 +56,11 @@ import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedObjects;
 import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedTreeObjects;
 import net.sourceforge.atunes.kernel.actions.ActionWithColorMutableIcon;
 import net.sourceforge.atunes.kernel.actions.Actions;
-import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IState;
@@ -272,7 +272,7 @@ public abstract class AbstractNavigationView implements INavigationView {
 	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#getCustomColumnSet()
 	 */
     @Override
-	public abstract AbstractColumnSet getCustomColumnSet();
+	public abstract IColumnSet getCustomColumnSet();
 
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#updateTreePopupMenuWithTreeSelection(java.awt.event.MouseEvent)

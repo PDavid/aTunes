@@ -26,6 +26,7 @@ import java.util.List;
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IRadio;
 
 public final class RadioNavigationColumnSet extends AbstractCustomNavigatorColumnSet {
@@ -98,8 +99,8 @@ public final class RadioNavigationColumnSet extends AbstractCustomNavigatorColum
     }
 
     @Override
-    protected List<AbstractColumn> getAllowedColumns() {
-        List<AbstractColumn> columns = new ArrayList<AbstractColumn>();
+    protected List<IColumn> getAllowedColumns() {
+        List<IColumn> columns = new ArrayList<IColumn>();
 
         AbstractColumn property = new EmptyColumn("", Property.class);
         property.setVisible(true);

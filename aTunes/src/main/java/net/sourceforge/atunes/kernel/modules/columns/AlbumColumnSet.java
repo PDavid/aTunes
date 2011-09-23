@@ -23,6 +23,9 @@ package net.sourceforge.atunes.kernel.modules.columns;
 import java.util.List;
 import java.util.Map;
 
+import net.sourceforge.atunes.model.ColumnBean;
+import net.sourceforge.atunes.model.IColumn;
+
 /**
  * This class defines all columns than can be viewed in album list
  * 
@@ -31,7 +34,7 @@ import java.util.Map;
 public final class AlbumColumnSet extends AbstractColumnSet {
 	
     @Override
-    protected List<AbstractColumn> getAllowedColumns() {
+    protected List<IColumn> getAllowedColumns() {
         return Columns.getAlbumColumns();
     }
 

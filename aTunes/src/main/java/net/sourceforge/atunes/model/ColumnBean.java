@@ -18,11 +18,10 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.columns;
+package net.sourceforge.atunes.model;
 
 import java.io.Serializable;
 
-import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn.ColumnSort;
 
 /**
  * This class represents information about a column to be saved into application

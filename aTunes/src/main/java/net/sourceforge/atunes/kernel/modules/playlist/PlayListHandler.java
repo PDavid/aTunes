@@ -41,7 +41,6 @@ import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
-import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListTableTransferHandler;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListToDeviceDragAndDropListener;
 import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
@@ -52,6 +51,7 @@ import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IInputDialog;
@@ -151,13 +151,13 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	private PlayListController playListController;
 
 	
-	private AbstractColumnSet playListColumnSet;
+	private IColumnSet playListColumnSet;
 	
     /**
      * Private constructor.
      */
     private PlayListHandler() {
-    	playListColumnSet = (AbstractColumnSet) getBean("playlistColumnSet");
+    	playListColumnSet = (IColumnSet) getBean("playlistColumnSet");
     }
 
     @Override

@@ -36,10 +36,10 @@ import net.sourceforge.atunes.gui.model.AlbumTableModel;
 import net.sourceforge.atunes.gui.renderers.ColumnRenderers;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
-import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
+import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -90,7 +90,7 @@ public final class ArtistAlbumSelectorDialog extends AbstractCustomDialog implem
         albumTable.setColumnModel(columnModel);
         
         // why ??? don't work without
-        AbstractColumnSet columnSet = (AbstractColumnSet) Context.getBean("albumColumnSet");
+        IColumnSet columnSet = (IColumnSet) Context.getBean("albumColumnSet");
         model.setColumnSet(columnSet);
         columnModel.setColumnSet(columnSet);        
         // ???

@@ -34,11 +34,11 @@ import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetRowSorter;
 import net.sourceforge.atunes.gui.views.dialogs.SearchResultsDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
-import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
-import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialogFactory;
+import net.sourceforge.atunes.model.IColumn;
+import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
 
@@ -49,13 +49,13 @@ final class SearchResultsController extends AbstractSimpleController<SearchResul
 
     private List<IAudioObject> results;
     
-    private AbstractColumnSet columnSet;
+    private IColumnSet columnSet;
     
     private IPlayListHandler playListHandler;
 
     SearchResultsController(SearchResultsDialog dialog, IState state, IPlayListHandler playListHandler) {
         super(dialog, state);
-        this.columnSet = (AbstractColumnSet) Context.getBean("searchResultsColumnSet");
+        this.columnSet = (IColumnSet) Context.getBean("searchResultsColumnSet");
         this.playListHandler = playListHandler;
         addBindings();
     }
@@ -73,7 +73,7 @@ final class SearchResultsController extends AbstractSimpleController<SearchResul
 
         SearchResultTableModel tableModel = (SearchResultTableModel) getComponentControlled().getSearchResultsTable().getModel();
 
-        AbstractColumn sortedColumn = columnSet.getSortedColumn();
+        IColumn sortedColumn = columnSet.getSortedColumn();
         if (sortedColumn != null) {
             Collections.sort(resultsList, sortedColumn.getComparator(false));
         } else {

@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.model;
 
-import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 
 /**
  * A dialog to select which columns show in tables
@@ -36,7 +35,7 @@ public interface IColumnSelectorDialog {
 	 *            set
 	 * 
 	 */
-	public void setColumnSetToSelect(AbstractColumnSet columnSet);
+	public void setColumnSetToSelect(IColumnSet columnSet);
 
 	/**
 	 * Shows dialog

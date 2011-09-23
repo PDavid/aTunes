@@ -23,9 +23,9 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 import java.util.Comparator;
 
 import net.sourceforge.atunes.gui.model.AbstractColumnSetTableModel;
-import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IPlayListHandler;
 
 /**
@@ -48,7 +48,7 @@ public class PlayListTableModel extends AbstractColumnSetTableModel {
      * @param columnSet
      * @param playListHandler
      */
-    public PlayListTableModel(AbstractColumnSet columnSet, IPlayListHandler playListHandler) {
+    public PlayListTableModel(IColumnSet columnSet, IPlayListHandler playListHandler) {
         super(columnSet);
         this.playListHandler = playListHandler;
     }

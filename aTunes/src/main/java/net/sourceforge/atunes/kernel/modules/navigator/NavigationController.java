@@ -62,12 +62,12 @@ import net.sourceforge.atunes.kernel.actions.ShowArtistsInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowFoldersInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowGenresInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowYearsInNavigatorAction;
-import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
-import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColumn;
+import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IController;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationView;
@@ -150,7 +150,7 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
      */
     private IState state;
     
-    private AbstractColumnSet navigatorColumnSet;
+    private IColumnSet navigatorColumnSet;
     
     private IOSManager osManager;
     
@@ -177,7 +177,7 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
         this.taskService = taskService;
         addBindings();
         RepositoryHandler.getInstance().addAudioFilesRemovedListener(this);
-        this.navigatorColumnSet = (AbstractColumnSet) Context.getBean("navigatorColumnSet");
+        this.navigatorColumnSet = (IColumnSet) Context.getBean("navigatorColumnSet");
     }
 
     public NavigationTreePanel getNavigationTreePanel() {
@@ -327,12 +327,12 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
         List<? extends IAudioObject> audioObjects = navigationHandler.getView(navigationViewClass).getAudioObjectForTreeNode(node, state.getViewMode(),
                 FilterHandler.getInstance().isFilterSelected(navigationHandler.getTreeFilter()) ? FilterHandler.getInstance().getFilter() : null);
 
-        AbstractColumnSet columnSet = navigationHandler.getCurrentView().getCustomColumnSet();
+        IColumnSet columnSet = navigationHandler.getCurrentView().getCustomColumnSet();
         if (columnSet == null) {
             columnSet = navigatorColumnSet;
         }
 
-        AbstractColumn columnSorted = columnSet.getSortedColumn();
+        IColumn columnSorted = columnSet.getSortedColumn();
         if (columnSorted != null) {
             Collections.sort(audioObjects, columnSorted.getComparator(false));
         }
@@ -391,7 +391,7 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
 
         // Change column set
         boolean useDefaultNavigatorColumns = navigationHandler.getView(navigationView).isUseDefaultNavigatorColumnSet();
-        AbstractColumnSet columnSet = null;
+        IColumnSet columnSet = null;
         if (useDefaultNavigatorColumns) {
             columnSet = navigatorColumnSet;
         } else {

@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
+import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.utils.Logger;
 
 import org.commonjukebox.plugins.exceptions.PluginSystemException;
@@ -97,7 +98,7 @@ public class ColumnSets implements PluginListener {
             break;
         }
 
-        for (AbstractColumnSet columnSet : getColumnSets()) {
+        for (IColumnSet columnSet : getColumnSets()) {
             columnSet.removeColumn(columnClass);
         }
     }

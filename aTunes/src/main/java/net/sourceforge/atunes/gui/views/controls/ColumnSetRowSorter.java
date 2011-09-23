@@ -29,8 +29,8 @@ import javax.swing.event.TableModelEvent;
 
 import net.sourceforge.atunes.gui.model.AbstractColumnSetTableModel;
 import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
-import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 public class ColumnSetRowSorter {
@@ -54,8 +54,8 @@ public class ColumnSetRowSorter {
                     int columnClickedIndex = table.getTableHeader().getColumnModel().getColumnIndexAtX(e.getX());
                     if (columnClickedIndex != -1) {
                         // Get column
-                        AbstractColumn columnClicked = ColumnSetRowSorter.this.columnModel.getColumnObject(columnClickedIndex);
-                        AbstractColumn lastColumnSorted = getColumnSorted();
+                        IColumn columnClicked = ColumnSetRowSorter.this.columnModel.getColumnObject(columnClickedIndex);
+                        IColumn lastColumnSorted = getColumnSorted();
                         if (lastColumnSorted != null && !lastColumnSorted.equals(columnClicked)) {
                             lastColumnSorted.setColumnSort(null);
                         }
@@ -73,7 +73,7 @@ public class ColumnSetRowSorter {
      * 
      * @return
      */
-    private AbstractColumn getColumnSorted() {
+    private IColumn getColumnSorted() {
         for (int i = 0; i < this.columnModel.getColumnCount(); i++) {
             if (this.columnModel.getColumnObject(i).getColumnSort() != null) {
                 return this.columnModel.getColumnObject(i);

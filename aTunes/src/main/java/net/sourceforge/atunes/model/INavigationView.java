@@ -32,7 +32,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.kernel.actions.ActionWithColorMutableIcon;
-import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 
 public interface INavigationView extends IAudioObjectsSource, ITreeObjectsSource {
 
@@ -123,7 +122,7 @@ public interface INavigationView extends IAudioObjectsSource, ITreeObjectsSource
 	 * 
 	 * @return
 	 */
-	public AbstractColumnSet getCustomColumnSet();
+	public IColumnSet getCustomColumnSet();
 
 	/**
 	 * Enables or disables tree popup menu items of this view
