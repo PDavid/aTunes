@@ -20,9 +20,9 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelChangeListener;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.model.IColorMutableImageIcon;
 
 public abstract class ActionWithColorMutableIcon extends CustomAbstractAction  implements LookAndFeelChangeListener {
 
@@ -46,5 +46,5 @@ public abstract class ActionWithColorMutableIcon extends CustomAbstractAction  i
 	 * Returns color mutable icon
 	 * @return
 	 */
-	public abstract ColorMutableImageIcon getIcon();
+	public abstract IColorMutableImageIcon getIcon();
 }

@@ -20,17 +20,17 @@
 
 package net.sourceforge.atunes.kernel.modules.columns;
 
-import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
+import net.sourceforge.atunes.model.IColorMutableImageIcon;
 
 public class TextAndIcon {
 
 	private String text;
 	
-	private ColorMutableImageIcon icon;
+	private IColorMutableImageIcon icon;
 	
 	private int horizontalTextPosition;
 	
-	public TextAndIcon(String text, ColorMutableImageIcon icon, int horizontalAlignment) {
+	public TextAndIcon(String text, IColorMutableImageIcon icon, int horizontalAlignment) {
 		this.text = text;
 		this.icon = icon;
 		this.horizontalTextPosition = horizontalAlignment;
@@ -46,7 +46,7 @@ public class TextAndIcon {
 	/**
 	 * @return the icon
 	 */
-	public ColorMutableImageIcon getIcon() {
+	public IColorMutableImageIcon getIcon() {
 		return icon;
 	}
 

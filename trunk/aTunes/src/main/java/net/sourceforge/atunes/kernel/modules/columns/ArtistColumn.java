@@ -26,9 +26,9 @@ import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.images.ArtistFavoriteImageIcon;
-import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColorMutableImageIcon;
 
 public class ArtistColumn extends AbstractColumn {
 
@@ -60,7 +60,7 @@ public class ArtistColumn extends AbstractColumn {
     public Object getValueFor(IAudioObject audioObject) {
         // Return artist
         return new TextAndIcon(audioObject.getArtist(), 
-        		!FavoritesHandler.getInstance().getFavoriteArtistsInfo().containsKey(audioObject.getArtist()) ? null : new ColorMutableImageIcon() {
+        		!FavoritesHandler.getInstance().getFavoriteArtistsInfo().containsKey(audioObject.getArtist()) ? null : new IColorMutableImageIcon() {
 					
 					@Override
 					public ImageIcon getIcon(Paint paint) {

@@ -37,9 +37,9 @@ import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.Logger;
@@ -104,7 +104,7 @@ public abstract class AbstractContextPanel {
      *            <code>null</code> if no current audio object is selected
      * @return The icon of the context panel
      */
-    protected abstract ColorMutableImageIcon getContextPanelIcon(IAudioObject audioObject);
+    protected abstract IColorMutableImageIcon getContextPanelIcon(IAudioObject audioObject);
 
     /**
      * Indicates if panel must be visible for the given audio object
@@ -246,7 +246,7 @@ public abstract class AbstractContextPanel {
      * 
      * @return
      */
-    public final ColorMutableImageIcon getIcon() {
+    public final IColorMutableImageIcon getIcon() {
         return getContextPanelIcon(contextHandler.getCurrentAudioObject());
     }
 

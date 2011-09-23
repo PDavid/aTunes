@@ -35,7 +35,6 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
-import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.gui.renderers.ColorMutableTableCellRendererCode;
@@ -47,6 +46,7 @@ import net.sourceforge.atunes.gui.renderers.TextAndIconTableCellRendererCode;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.kernel.modules.columns.TextAndIcon;
+import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -374,7 +374,7 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
             return new TextAndIconTableCellRendererCode(this);
         } else if (clazz.equals(Property.class)) {
             return new PropertyTableCellRendererCode();
-        } else if (clazz.equals(ColorMutableImageIcon.class)) {
+        } else if (clazz.equals(IColorMutableImageIcon.class)) {
         	return new ColorMutableTableCellRendererCode(this);
         }
         throw new IllegalArgumentException(StringUtils.getString("No renderer found for class: ", clazz.getName()));

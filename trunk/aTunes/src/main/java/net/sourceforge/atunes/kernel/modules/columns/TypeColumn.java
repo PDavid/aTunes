@@ -26,11 +26,11 @@ import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
-import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.RadioImageIcon;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
 
@@ -42,7 +42,7 @@ public class TypeColumn extends AbstractColumn {
     private static final long serialVersionUID = -3060341777429113749L;
 
     public TypeColumn() {
-        super("TYPE", ColorMutableImageIcon.class);
+        super("TYPE", IColorMutableImageIcon.class);
         setResizable(false);
         setWidth(20);
         setVisible(true);
@@ -62,21 +62,21 @@ public class TypeColumn extends AbstractColumn {
     @Override
     public Object getValueFor(IAudioObject audioObject) {
         if (audioObject instanceof AudioFile) {
-            return new ColorMutableImageIcon() {
+            return new IColorMutableImageIcon() {
             	@Override
             	public ImageIcon getIcon(Paint paint) {
             		return AudioFileImageIcon.getSmallImageIcon(paint);
             	}
             };
         } else if (audioObject instanceof IRadio) {
-            return new ColorMutableImageIcon() {
+            return new IColorMutableImageIcon() {
             	@Override
             	public ImageIcon getIcon(Paint paint) {
             		return RadioImageIcon.getSmallIcon(paint);
             	}
             };
         } else if (audioObject instanceof IPodcastFeedEntry) {
-            return new ColorMutableImageIcon() {
+            return new IColorMutableImageIcon() {
 				
 				@Override
 				public ImageIcon getIcon(Paint paint) {

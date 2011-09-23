@@ -28,12 +28,12 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.RadioImageIcon;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.ImageSize;
@@ -408,10 +408,10 @@ public final class Radio implements IRadio {
     }
 
     @Override
-    public ColorMutableImageIcon getGenericImage(GenericImageSize imageSize) {
+    public IColorMutableImageIcon getGenericImage(GenericImageSize imageSize) {
         switch (imageSize) {
         case SMALL: {
-        	return new ColorMutableImageIcon() {
+        	return new IColorMutableImageIcon() {
 				@Override
 				public ImageIcon getIcon(Paint paint) {
 		            return RadioImageIcon.getSmallIcon(paint);
@@ -419,7 +419,7 @@ public final class Radio implements IRadio {
 			};
         }
         case MEDIUM: {
-        	return new ColorMutableImageIcon() {
+        	return new IColorMutableImageIcon() {
 				@Override
 				public ImageIcon getIcon(Paint paint) {
 		            return RadioImageIcon.getIcon(paint);
@@ -427,7 +427,7 @@ public final class Radio implements IRadio {
 			};
         }
         case BIG: {
-        	return new ColorMutableImageIcon() {
+        	return new IColorMutableImageIcon() {
 				@Override
 				public ImageIcon getIcon(Paint paint) {
 		            return RadioImageIcon.getBigIcon(paint);

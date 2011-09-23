@@ -34,7 +34,6 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
-import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.FavoriteImageIcon;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
@@ -59,6 +58,7 @@ import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandl
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
@@ -81,8 +81,8 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
 	}
     
     @Override
-    public ColorMutableImageIcon getIcon() {
-        return new ColorMutableImageIcon() {
+    public IColorMutableImageIcon getIcon() {
+        return new IColorMutableImageIcon() {
 			
 			@Override
 			public ImageIcon getIcon(Paint paint) {

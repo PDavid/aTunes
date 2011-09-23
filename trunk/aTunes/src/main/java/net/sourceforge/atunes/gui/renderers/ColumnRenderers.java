@@ -25,7 +25,6 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
@@ -33,6 +32,7 @@ import net.sourceforge.atunes.kernel.modules.columns.TextAndIcon;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectStatistics;
+import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -77,7 +77,7 @@ public final class ColumnRenderers {
         jtable.setDefaultRenderer(Property.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(model.getRendererCodeFor(Property.class)));
         
         // ColorMutableImageIcon
-        jtable.setDefaultRenderer(ColorMutableImageIcon.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(model.getRendererCodeFor(ColorMutableImageIcon.class)));
+        jtable.setDefaultRenderer(IColorMutableImageIcon.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(model.getRendererCodeFor(IColorMutableImageIcon.class)));
 
     }
 

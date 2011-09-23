@@ -25,10 +25,10 @@ import java.awt.Paint;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
-import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
@@ -45,11 +45,11 @@ public class AudioObjectContextPanel extends AbstractContextPanel {
     private static final long serialVersionUID = -7910261492394049289L;
 
     @Override
-    protected ColorMutableImageIcon getContextPanelIcon(final IAudioObject audioObject) {
+    protected IColorMutableImageIcon getContextPanelIcon(final IAudioObject audioObject) {
         if (audioObject != null) {
             return audioObject.getGenericImage(GenericImageSize.SMALL);
         } else {
-        	return new ColorMutableImageIcon() {
+        	return new IColorMutableImageIcon() {
         		@Override
         		public ImageIcon getIcon(Paint paint) {
         			return AudioFileImageIcon.getSmallImageIcon(paint);

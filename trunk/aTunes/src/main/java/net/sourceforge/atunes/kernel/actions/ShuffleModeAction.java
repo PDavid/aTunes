@@ -25,8 +25,8 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.ShuffleImageIcon;
+import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -55,8 +55,8 @@ public class ShuffleModeAction extends ActionWithColorMutableIcon {
     }
     
     @Override
-    public ColorMutableImageIcon getIcon() {
-    	return new ColorMutableImageIcon() {
+    public IColorMutableImageIcon getIcon() {
+    	return new IColorMutableImageIcon() {
 			
 			@Override
 			public ImageIcon getIcon(Paint paint) {

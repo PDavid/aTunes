@@ -26,9 +26,9 @@ import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.images.AlbumFavoriteImageIcon;
-import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColorMutableImageIcon;
 
 public class AlbumColumn extends AbstractColumn {
 
@@ -55,7 +55,7 @@ public class AlbumColumn extends AbstractColumn {
     public Object getValueFor(IAudioObject audioObject) {
         // Return album
         return new TextAndIcon(audioObject.getAlbum(), 
-        		!FavoritesHandler.getInstance().getFavoriteAlbumsInfo().containsKey(audioObject.getAlbum()) ? null : new ColorMutableImageIcon() {
+        		!FavoritesHandler.getInstance().getFavoriteAlbumsInfo().containsKey(audioObject.getAlbum()) ? null : new IColorMutableImageIcon() {
 					
 					@Override
 					public ImageIcon getIcon(Paint paint) {

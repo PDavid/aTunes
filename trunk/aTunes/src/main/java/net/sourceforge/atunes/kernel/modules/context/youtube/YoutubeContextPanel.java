@@ -24,11 +24,11 @@ import java.awt.Paint;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.images.ColorMutableImageIcon;
 import net.sourceforge.atunes.gui.images.VideoImageIcon;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IRadio;
 
 /**
@@ -40,8 +40,8 @@ import net.sourceforge.atunes.model.IRadio;
 public class YoutubeContextPanel extends AbstractContextPanel {
 
     @Override
-    protected ColorMutableImageIcon getContextPanelIcon(IAudioObject audioObject) {
-        return new ColorMutableImageIcon() {
+    protected IColorMutableImageIcon getContextPanelIcon(IAudioObject audioObject) {
+        return new IColorMutableImageIcon() {
         	@Override
         	public ImageIcon getIcon(Paint paint) {
                 return VideoImageIcon.getIcon(paint);
