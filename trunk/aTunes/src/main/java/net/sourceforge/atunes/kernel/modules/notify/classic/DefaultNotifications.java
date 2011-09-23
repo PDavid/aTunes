@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.notify.classic;
 
 import javax.swing.JDialog;
+import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.dialogs.OSDDialog;
@@ -85,8 +86,13 @@ public class DefaultNotifications extends CommonNotificationEngine {
     }
 
     @Override
-    public void showNotification(IAudioObject audioObject) {
-    	getOSDDialogController().showOSD(audioObject);
+    public void showNotification(final IAudioObject audioObject) {
+    	SwingUtilities.invokeLater(new Runnable() {
+    		@Override
+    		public void run() {
+    	    	getOSDDialogController().showOSD(audioObject);
+    		}
+    	});
     }
     
     @Override

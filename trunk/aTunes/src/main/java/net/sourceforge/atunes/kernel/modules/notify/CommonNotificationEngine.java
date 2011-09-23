@@ -25,10 +25,11 @@ import java.util.UUID;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.misc.TempFolder;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.ITemporalDiskStorage;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.ImageUtils;
 
@@ -59,7 +60,7 @@ public abstract class CommonNotificationEngine implements NotificationEngine {
 		if (imageForAudioObject == null) {
 			imageForAudioObject = audioObject.getGenericImage(GenericImageSize.MEDIUM).getIcon(null);
 		}
-		return TempFolder.getInstance().writeImageToTempFolder(ImageUtils.toBufferedImage(imageForAudioObject.getImage()), UUID.randomUUID().toString()).getAbsolutePath();
+		return Context.getBean(ITemporalDiskStorage.class).addImage(ImageUtils.toBufferedImage(imageForAudioObject.getImage()), UUID.randomUUID().toString()).getAbsolutePath();
 	}
 	
 	/**

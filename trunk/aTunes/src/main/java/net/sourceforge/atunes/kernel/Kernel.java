@@ -37,13 +37,13 @@ import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.misc.TempFolder;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITaskService;
+import net.sourceforge.atunes.model.ITemporalDiskStorage;
 import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.Timer;
@@ -161,7 +161,7 @@ public class Kernel {
         try {
             timer.start();
             Logger.info(StringUtils.getString("Closing ", Constants.APP_NAME, " ", Constants.VERSION.toString()));
-            TempFolder.getInstance().removeAllFiles();
+            Context.getBean(ITemporalDiskStorage.class).removeAll();
             
             ApplicationLifeCycleListeners.applicationFinish();
             

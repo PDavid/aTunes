@@ -40,6 +40,7 @@ import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlaybackStateListener;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStatisticsHandler;
+import net.sourceforge.atunes.model.ITemporalDiskStorage;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.model.PlaybackState;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -292,8 +293,8 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
      */
     private List<AbstractPlayerEngine> getEngines() {
         List<AbstractPlayerEngine> result = new ArrayList<AbstractPlayerEngine>(2);
-        result.add(new MPlayerEngine(getState(), getFrame(), getOsManager(), getBean(IPlayListHandler.class), getBean(INavigationHandler.class)));
-        result.add(new XineEngine(getState(), getFrame(), getOsManager(), getBean(IPlayListHandler.class), getBean(INavigationHandler.class)));
+        result.add(new MPlayerEngine(getState(), getFrame(), getOsManager(), getBean(IPlayListHandler.class), getBean(INavigationHandler.class), getBean(ITemporalDiskStorage.class)));
+        result.add(new XineEngine(getState(), getFrame(), getOsManager(), getBean(IPlayListHandler.class), getBean(INavigationHandler.class), getBean(ITemporalDiskStorage.class)));
         //result.add(new VlcPlayerEngine());
         //result.add(new GStreamerEngine());
         return result;

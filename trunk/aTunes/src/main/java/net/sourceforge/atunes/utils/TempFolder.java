@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.misc;
+package net.sourceforge.atunes.utils;
 
 import java.awt.image.RenderedImage;
 import java.io.File;
@@ -26,46 +26,18 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.misc.log.Logger;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.utils.StringUtils;
+import net.sourceforge.atunes.model.ITemporalDiskStorage;
 
 import org.apache.commons.io.FileUtils;
-import org.commonjukebox.plugins.model.PluginApi;
 
-/**
- * The Class TempFolder.
- */
-@PluginApi
-public class TempFolder {
-
-    private static final TempFolder instance = new TempFolder();
+public class TempFolder implements ITemporalDiskStorage {
 
     private IOSManager osManager;
     
-    private TempFolder() {
-    	this.osManager = Context.getBean(IOSManager.class);
-    }
-
-    /**
-     * Returns singleton instance
-     * 
-     * @return
-     */
-    public static TempFolder getInstance() {
-        return instance;
-    }
-
-    /**
-     * Copies a file to temp folder.
-     * 
-     * @param srcFile
-     *            the src file
-     * 
-     * @return File object to copied file in temp folder
-     */
-    public File copyToTempFolder(File srcFile) {
+    @Override
+	public File addFile(File srcFile) {
         File destFile = new File(StringUtils.getString(osManager.getTempFolder(), osManager.getFileSeparator(), srcFile.getName()));
         try {
             FileUtils.copyFile(srcFile, destFile);
@@ -75,7 +47,8 @@ public class TempFolder {
         return destFile;
     }
 
-    public File writeImageToTempFolder(RenderedImage image, String fileName) {
+    @Override
+	public File addImage(RenderedImage image, String fileName) {
         try {
             File file = new File(osManager.getTempFolder(), fileName);
             ImageIO.write(image, "png", file);
@@ -83,25 +56,15 @@ public class TempFolder {
         } catch (IOException e) {
             return null;
         }
-
     }
 
-    /**
-     * Removes a file from temp folder.
-     * 
-     * @param tempFile
-     *            the temp file
-     * 
-     * @return true, if removes the file
-     */
-    public boolean removeFile(File tempFile) {
+    @Override
+	public boolean removeFile(File tempFile) {
         return tempFile.delete();
     }
 
-    /**
-     * Removes all files from temp folder.
-     */
-    public void removeAllFiles() {
+    @Override
+	public void removeAll() {
         File tempFolder = new File(osManager.getTempFolder());
         File[] files = tempFolder.listFiles();
         for (File f : files) {
@@ -112,4 +75,8 @@ public class TempFolder {
             }
         }
     }
+    
+    public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
 }
