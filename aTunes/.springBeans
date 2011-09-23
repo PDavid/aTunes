@@ -19,6 +19,7 @@
 		<config>src/main/resources/settings/spring/dialogs.xml</config>
 		<config>src/main/resources/settings/spring/os.xml</config>
 		<config>src/main/resources/settings/spring/tasks.xml</config>
+		<config>src/main/resources/settings/spring/utils.xml</config>
 	</configs>
 	<configSets>
 		<configSet>
@@ -38,6 +39,7 @@
 				<config>src/main/resources/settings/spring/handlers.xml</config>
 				<config>src/main/resources/settings/spring/os.xml</config>
 				<config>src/main/resources/settings/spring/tasks.xml</config>
+				<config>src/main/resources/settings/spring/utils.xml</config>
 			</configs>
 		</configSet>
 	</configSets>

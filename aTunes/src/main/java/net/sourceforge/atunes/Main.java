@@ -82,7 +82,8 @@ public final class Main {
     			"/settings/spring/frame.xml",
     			"/settings/spring/dialogs.xml",
     			"/settings/spring/os.xml",
-    			"/settings/spring/tasks.xml");
+    			"/settings/spring/tasks.xml",
+    			"/settings/spring/utils.xml");
     	
         // Fetch arguments into a list
         List<String> arguments = StringUtils.fromStringArrayToList(args);
