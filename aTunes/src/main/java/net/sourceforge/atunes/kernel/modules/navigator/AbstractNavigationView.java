@@ -42,7 +42,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTree;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
@@ -208,7 +207,6 @@ public abstract class AbstractNavigationView implements INavigationView {
 	public final JScrollPane getTreeScrollPane() {
         if (scrollPane == null) {
             scrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTreeScrollPane(getTree());
-            scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         }
         return scrollPane;
     }
