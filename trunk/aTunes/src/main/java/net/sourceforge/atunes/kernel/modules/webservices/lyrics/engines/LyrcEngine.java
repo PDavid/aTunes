@@ -29,6 +29,7 @@ import java.util.StringTokenizer;
 
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
+import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -160,7 +161,7 @@ public class LyrcEngine extends AbstractLyricsEngine {
     }
 
     @Override
-    public Lyrics getLyricsFor(String artist, String title) {
+    public ILyrics getLyricsFor(String artist, String title) {
         // Build url
         String urlString = BASE_URL.replace(ARTIST_WILDCARD, encodeString(artist)).replace(SONG_WILDCARD, encodeString(title));
         // Call method to find lyrics

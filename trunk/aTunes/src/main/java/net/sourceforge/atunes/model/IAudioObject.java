@@ -22,7 +22,6 @@ package net.sourceforge.atunes.model;
 
 import javax.swing.ImageIcon;
 
-
 import org.commonjukebox.plugins.model.PluginApi;
 import org.joda.time.base.BaseDateTime;
 

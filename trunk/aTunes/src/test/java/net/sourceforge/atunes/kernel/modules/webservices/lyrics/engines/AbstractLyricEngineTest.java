@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines;
 
 import java.util.UUID;
 
-import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
+import net.sourceforge.atunes.model.ILyrics;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -37,7 +37,7 @@ public abstract class AbstractLyricEngineTest {
     
     @Test
     public void testGetLyricsFor() {
-        Lyrics lyrics = testedObject.getLyricsFor(artist, song);
+        ILyrics lyrics = testedObject.getLyricsFor(artist, song);
         Assert.assertNotNull(lyrics);
         Assert.assertTrue(lyrics.getUrl().contains(engineUrl));
         Assert.assertTrue(lyrics.getLyrics().toLowerCase().contains(lyricContent.toLowerCase()));
@@ -45,9 +45,9 @@ public abstract class AbstractLyricEngineTest {
 
     @Test
     public void testCaseInsensitivity() {
-        Lyrics lyrics1 = testedObject.getLyricsFor(artist, song);
-        Lyrics lyrics2 = testedObject.getLyricsFor(artist.toLowerCase(), song);
-        Lyrics lyrics3 = testedObject.getLyricsFor(artist, song.toUpperCase());
+        ILyrics lyrics1 = testedObject.getLyricsFor(artist, song);
+        ILyrics lyrics2 = testedObject.getLyricsFor(artist.toLowerCase(), song);
+        ILyrics lyrics3 = testedObject.getLyricsFor(artist, song.toUpperCase());
 
         Assert.assertEquals(lyrics1, lyrics2);
         Assert.assertEquals(lyrics2, lyrics3);
@@ -56,7 +56,7 @@ public abstract class AbstractLyricEngineTest {
 
     @Test
     public void testGetLyricsForWhereArtistAndTitleNotExist() {
-        Lyrics lyrics = testedObject.getLyricsFor(UUID.randomUUID().toString(), UUID.randomUUID().toString());
+        ILyrics lyrics = testedObject.getLyricsFor(UUID.randomUUID().toString(), UUID.randomUUID().toString());
         Assert.assertEquals(null, lyrics);
     }
     

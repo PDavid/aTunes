@@ -23,14 +23,6 @@ package net.sourceforge.atunes.model;
 import java.awt.Image;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLovedTrack;
-import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
-
-
-
-
-
-
 public interface IWebServicesHandler extends IHandler {
 
 	/**
@@ -143,7 +135,7 @@ public interface IWebServicesHandler extends IHandler {
 	 * Returns loved tracks from web services
 	 * @return
 	 */
-	public List<LastFmLovedTrack> getLovedTracks();
+	public List<ILovedTrack> getLovedTracks();
 
 	/**
 	 * Tests login in web services with given user and password
@@ -187,6 +179,6 @@ public interface IWebServicesHandler extends IHandler {
 	 * @param title
 	 * @return
 	 */
-	public Lyrics getLyrics(String artist, String title);
+	public ILyrics getLyrics(String artist, String title);
 
 }

@@ -24,7 +24,7 @@ package net.sourceforge.atunes.model;
 /**
  * The listener interface for receiving repository change events
  */
-public interface RepositoryListener {
+public interface IRepositoryListener {
 
     /**
      * Repository changed

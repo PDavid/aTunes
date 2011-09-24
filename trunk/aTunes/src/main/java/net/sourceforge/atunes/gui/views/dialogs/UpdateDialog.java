@@ -39,7 +39,7 @@ import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
-import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
+import net.sourceforge.atunes.model.ApplicationVersion;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class UpdateDialog extends AbstractCustomDialog {

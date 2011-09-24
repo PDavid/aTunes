@@ -20,11 +20,6 @@
 
 package net.sourceforge.atunes.model;
 
-import java.awt.Paint;
-
-import javax.swing.ImageIcon;
-
-import net.sourceforge.atunes.gui.images.PlayListStateImageIcon;
 
 /**
  * The play state of the playlist.
@@ -41,19 +36,4 @@ public enum PlayState {
      * When it's not the active play list
      */
     NONE;
-
-    public static ImageIcon getPlayStateIcon(Paint color, PlayState state) {
-        switch (state) {
-        case PLAYING:
-            return PlayListStateImageIcon.getPlayIcon(color);
-        case STOPPED:
-            return PlayListStateImageIcon.getStopIcon(color);
-        case PAUSED:
-            return PlayListStateImageIcon.getPauseIcon(color);
-        case NONE:
-            return null;
-        default:
-            return null;
-        }
-    }
 }

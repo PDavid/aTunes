@@ -22,7 +22,6 @@ package net.sourceforge.atunes.model;
 
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 
 /**
  * Represents a component used to retrieve (or add) lyrics
@@ -46,7 +45,7 @@ public interface ILyricsService {
 	 * 
 	 * @return the lyrics
 	 */
-	public Lyrics getLyrics(String artist, String song);
+	public ILyrics getLyrics(String artist, String song);
 
 	/**
 	 * Returns a map with lyric provider names and urls for adding new lyrics

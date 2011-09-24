@@ -25,8 +25,6 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
-import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLovedTrack;
-import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAlbumListInfo;
@@ -34,6 +32,8 @@ import net.sourceforge.atunes.model.IArtistInfo;
 import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILovedTrack;
+import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.model.ILyricsService;
 import net.sourceforge.atunes.model.ISimilarArtistsInfo;
 import net.sourceforge.atunes.model.IState;
@@ -158,7 +158,7 @@ public class WebServicesHandler extends AbstractHandler implements IWebServicesH
 	}
 	
 	@Override
-	public List<LastFmLovedTrack> getLovedTracks() {
+	public List<ILovedTrack> getLovedTracks() {
 		return lastFmService.getLovedTracks();
 	}
 	
@@ -198,7 +198,7 @@ public class WebServicesHandler extends AbstractHandler implements IWebServicesH
 	}
 	
 	@Override
-	public Lyrics getLyrics(String artist, String title) {
+	public ILyrics getLyrics(String artist, String title) {
 		return lyricsService.getLyrics(artist, title);
 	}
 }

@@ -25,7 +25,6 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-
 import org.joda.time.DateTime;
 
 /**

@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines;
 
 import java.util.UUID;
 
-import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
+import net.sourceforge.atunes.model.ILyrics;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -39,7 +39,7 @@ public class LyricWikiEngineTest {
 
     @Test
     public void testGetLyricsFor() {
-        Lyrics lyrics = testedObject.getLyricsFor("Louis Armstrong", "We Have All The Time In The World");
+        ILyrics lyrics = testedObject.getLyricsFor("Louis Armstrong", "We Have All The Time In The World");
         Assert.assertNotNull(lyrics);
         Assert.assertTrue(lyrics.getUrl().contains("lyrics.wikia.com"));
         Assert.assertTrue(lyrics.getLyrics().toLowerCase().contains("Time enough for life to unfold".toLowerCase()));
@@ -47,9 +47,9 @@ public class LyricWikiEngineTest {
 
     @Test
     public void testCaseInsensitivity() {
-        Lyrics lyrics1 = testedObject.getLyricsFor("Louis Armstrong", "We Have All The Time In The World");
-        Lyrics lyrics2 = testedObject.getLyricsFor("Louis armstrong", "We Have All The Time In The World");
-        Lyrics lyrics3 = testedObject.getLyricsFor("Louis Armstrong", "We Have All the Time In the world");
+        ILyrics lyrics1 = testedObject.getLyricsFor("Louis Armstrong", "We Have All The Time In The World");
+        ILyrics lyrics2 = testedObject.getLyricsFor("Louis armstrong", "We Have All The Time In The World");
+        ILyrics lyrics3 = testedObject.getLyricsFor("Louis Armstrong", "We Have All the Time In the world");
 
         Assert.assertEquals(lyrics1, lyrics2);
         Assert.assertEquals(lyrics2, lyrics3);
@@ -58,7 +58,7 @@ public class LyricWikiEngineTest {
 
     @Test
     public void testGetLyricsForWhereArtistAndTitleNotExist() {
-        Lyrics lyrics = testedObject.getLyricsFor(UUID.randomUUID().toString(), UUID.randomUUID().toString());
+        ILyrics lyrics = testedObject.getLyricsFor(UUID.randomUUID().toString(), UUID.randomUUID().toString());
         Assert.assertEquals(null, lyrics);
     }
 }

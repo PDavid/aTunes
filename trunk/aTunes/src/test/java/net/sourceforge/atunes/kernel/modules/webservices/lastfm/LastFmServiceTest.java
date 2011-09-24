@@ -24,7 +24,7 @@ import java.util.List;
 
 import junit.framework.Assert;
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLovedTrack;
+import net.sourceforge.atunes.model.ILovedTrack;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 
@@ -45,7 +45,7 @@ public class LastFmServiceTest {
     	Mockito.when(state.getLastFmUser()).thenReturn("alexaranda");
     	
     	LastFmService service = new LastFmService(state, Mockito.mock(IOSManager.class), null);
-        List<LastFmLovedTrack> lovedTracks = service.getLovedTracks();
+        List<ILovedTrack> lovedTracks = service.getLovedTracks();
         
         Assert.assertFalse(lovedTracks.isEmpty());
     }

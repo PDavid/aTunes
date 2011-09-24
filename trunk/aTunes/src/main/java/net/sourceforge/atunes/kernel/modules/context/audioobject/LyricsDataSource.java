@@ -26,6 +26,7 @@ import java.util.Map;
 import net.sourceforge.atunes.kernel.modules.context.ContextInformationDataSource;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.model.ILyricsService;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -65,8 +66,8 @@ public class LyricsDataSource implements ContextInformationDataSource {
      * @param audioObject
      * @return
      */
-    private Lyrics getLyrics(IAudioObject audioObject) {
-        Lyrics lyrics = null;
+    private ILyrics getLyrics(IAudioObject audioObject) {
+        ILyrics lyrics = null;
         // First check if tag contains the lyrics. Favour this over internet services.
         if (!audioObject.getLyrics().trim().isEmpty()) {
             lyrics = new Lyrics(audioObject.getLyrics(), null);
