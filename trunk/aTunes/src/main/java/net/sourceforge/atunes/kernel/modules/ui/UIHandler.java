@@ -47,7 +47,7 @@ import net.sourceforge.atunes.model.ISystemTrayHandler;
 import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.model.PlayState;
 import net.sourceforge.atunes.model.PlaybackState;
-import net.sourceforge.atunes.model.SystemProperties;
+import net.sourceforge.atunes.model.JVMProperties;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -164,7 +164,7 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
 	public void startVisualization() {
         Logger.debug("Starting visualization");
 
-        if (SystemProperties.IS_JAVA_6_UPDATE_10_OR_LATER) {
+        if (new JVMProperties().isJava6Update10OrLater()) {
             FadingPopupFactory.install(getOsManager());
         }
 
