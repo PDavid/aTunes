@@ -70,7 +70,11 @@
 	<target name="prepare">
 
 		<mkdir dir="${deploy_folder}" />
-		
+
+		<copy todir="${deploy_folder}">
+			<fileset dir="${target}" includes="aTunes.jar" />
+		</copy>
+
 		<copy todir="${deploy_folder}">
 			<fileset dir="${build_resources}" includes="*" />
 		</copy>
@@ -112,8 +116,6 @@
 		</copy>
 
 		<delete dir="${deploy_folder}/temp" />
-
-		<mkdir dir="${target}" />
 
 		<copy todir="${deploy_folder}" file="${build_tools}/shortcutSpec.xml" />
 		
