@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.player.mplayer;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -151,18 +152,20 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 
             // Start the play process
             process = getProcess(audioObjectToPlay);
-            commandWriter = MPlayerCommandWriter.newCommandWriter(process, getOsManager());
-            // Output reader needs original audio object, specially when cacheFilesBeforePlaying is true, as
-            // statistics must be applied over original audio object, not the cached one
-            mPlayerOutputReader = AbstractMPlayerOutputReader.newInstance(this, process, audioObject, getState(), getFrame(), playListHandler);
-            mPlayerErrorReader = new MPlayerErrorReader(this, process, mPlayerOutputReader, audioObjectToPlay);
-            mPlayerOutputReader.start();
-            mPlayerErrorReader.start();
-            mPlayerPositionThread = new MPlayerPositionThread(this);
-            mPlayerPositionThread.start();
-            commandWriter.sendGetDurationCommand();
-
-            setVolume(getState().getVolume());
+            
+            if (process != null) {
+            	commandWriter = MPlayerCommandWriter.newCommandWriter(process, getOsManager());
+            	// Output reader needs original audio object, specially when cacheFilesBeforePlaying is true, as
+            	// statistics must be applied over original audio object, not the cached one
+            	mPlayerOutputReader = AbstractMPlayerOutputReader.newInstance(this, process, audioObject, getState(), getFrame(), playListHandler);
+            	mPlayerErrorReader = new MPlayerErrorReader(this, process, mPlayerOutputReader, audioObjectToPlay);
+            	mPlayerOutputReader.start();
+            	mPlayerErrorReader.start();
+            	mPlayerPositionThread = new MPlayerPositionThread(this);
+            	mPlayerPositionThread.start();
+            	commandWriter.sendGetDurationCommand();
+            	setVolume(getState().getVolume());
+            }
 
         } catch (Exception e) {
             stopCurrentAudioObject(false);
@@ -316,66 +319,73 @@ public class MPlayerEngine extends AbstractPlayerEngine {
         } else {
             url = audioObject.getUrl();
         }
-        if (shortPathName) {
-            String shortPath = FileNameUtils.getShortPathNameW(url, getOsManager());
-            command.add(shortPath != null && !shortPath.isEmpty() ? shortPath : url);
+        
+        if (url == null) {
+        	handlePlayerEngineError(new FileNotFoundException(audioObject.getTitleOrFileName()));
+        	return null;
         } else {
-            if (url.startsWith("http")) {
 
-                // proxy
-                StringBuilder proxy = new StringBuilder();
-                ProxyBean proxyBean = getState().getProxy();
-                if (proxyBean != null && proxyBean.getType().equals(ProxyBean.HTTP_PROXY)) {
-                    //String user = proxyBean.getUser();
-                    //String password = proxyBean.getPassword();
-                    String proxyUrl = proxyBean.getUrl();
-                    int port = proxyBean.getPort();
+        	if (shortPathName) {
+        		String shortPath = FileNameUtils.getShortPathNameW(url, getOsManager());
+        		command.add(shortPath != null && !shortPath.isEmpty() ? shortPath : url);
+        	} else {
+        		if (url.startsWith("http")) {
 
-                    proxy.append("http_proxy://");
-                    //proxy.append(!user.isEmpty() ? user : "");
-                    //proxy.append(!user.isEmpty() && !password.isEmpty() ? ":" : "");
-                    //proxy.append(!user.isEmpty() && !password.isEmpty() ? password : "");
-                    //proxy.append(!user.isEmpty() ? "@" : "");
-                    proxy.append(proxyUrl);
-                    proxy.append(port != 0 ? ":" : "");
-                    proxy.append(port != 0 ? port : "");
-                    proxy.append("/");
-                }
-                proxy.append(url);
+        			// proxy
+        			StringBuilder proxy = new StringBuilder();
+        			ProxyBean proxyBean = getState().getProxy();
+        			if (proxyBean != null && proxyBean.getType().equals(ProxyBean.HTTP_PROXY)) {
+        				//String user = proxyBean.getUser();
+        				//String password = proxyBean.getPassword();
+        				String proxyUrl = proxyBean.getUrl();
+        				int port = proxyBean.getPort();
 
-                command.add(proxy.toString());
-            } else {
-                command.add(url);
-            }
+        				proxy.append("http_proxy://");
+        				//proxy.append(!user.isEmpty() ? user : "");
+        				//proxy.append(!user.isEmpty() && !password.isEmpty() ? ":" : "");
+        				//proxy.append(!user.isEmpty() && !password.isEmpty() ? password : "");
+        				//proxy.append(!user.isEmpty() ? "@" : "");
+        				proxy.append(proxyUrl);
+        				proxy.append(port != 0 ? ":" : "");
+        				proxy.append(port != 0 ? port : "");
+        				proxy.append("/");
+        			}
+        			proxy.append(url);
+
+        			command.add(proxy.toString());
+        		} else {
+        			command.add(url);
+        		}
+        	}
+
+        	// Cache for radios and podcast entries
+        	if (isRemoteAudio) {
+        		command.add(CACHE);
+        		command.add(CACHE_SIZE);
+        		command.add(CACHE_MIN);
+        		command.add(CACHE_FILL_SIZE_IN_PERCENT);
+        	}
+
+        	//float[] eualizer = getEqualizer();
+        	if ((audioObject instanceof ILocalAudioObject && getEqualizer().getEqualizerValues() != null) || isSoundNormalizationEnabled()) {
+        		command.add(AUDIO_FILTER);
+        	}
+
+        	// normalization
+        	if (isSoundNormalizationEnabled()) {
+        		command.add(VOLUME_NORM);
+        	}
+
+        	// Build equalizer command. Mplayer uses 10 bands
+        	if (audioObject instanceof ILocalAudioObject && getEqualizer().getEqualizerValues() != null) {
+        		float[] equalizer = getEqualizer().getEqualizerValues();
+        		command.add(EQUALIZER + equalizer[0] + ":" + equalizer[1] + ":" + equalizer[2] + ":" + equalizer[3] + ":" + equalizer[4] + ":" + equalizer[5] + ":" + equalizer[6]
+        		                                                                                                                                                                + ":" + equalizer[7] + ":" + equalizer[8] + ":" + equalizer[9]);
+        	}
+
+        	Logger.debug((Object[]) command.toArray(new String[command.size()]));
+        	return pb.command(command).start();
         }
-
-        // Cache for radios and podcast entries
-        if (isRemoteAudio) {
-            command.add(CACHE);
-            command.add(CACHE_SIZE);
-            command.add(CACHE_MIN);
-            command.add(CACHE_FILL_SIZE_IN_PERCENT);
-        }
-
-        //float[] eualizer = getEqualizer();
-        if ((audioObject instanceof ILocalAudioObject && getEqualizer().getEqualizerValues() != null) || isSoundNormalizationEnabled()) {
-            command.add(AUDIO_FILTER);
-        }
-
-        // normalization
-        if (isSoundNormalizationEnabled()) {
-            command.add(VOLUME_NORM);
-        }
-
-        // Build equalizer command. Mplayer uses 10 bands
-        if (audioObject instanceof ILocalAudioObject && getEqualizer().getEqualizerValues() != null) {
-            float[] equalizer = getEqualizer().getEqualizerValues();
-            command.add(EQUALIZER + equalizer[0] + ":" + equalizer[1] + ":" + equalizer[2] + ":" + equalizer[3] + ":" + equalizer[4] + ":" + equalizer[5] + ":" + equalizer[6]
-                    + ":" + equalizer[7] + ":" + equalizer[8] + ":" + equalizer[9]);
-        }
-
-        Logger.debug((Object[]) command.toArray(new String[command.size()]));
-        return pb.command(command).start();
     }
 
     /**
