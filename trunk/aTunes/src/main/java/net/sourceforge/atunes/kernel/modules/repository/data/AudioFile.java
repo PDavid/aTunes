@@ -34,7 +34,6 @@ import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
 import net.sourceforge.atunes.kernel.modules.repository.ImageCache;
-import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
 import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
 import net.sourceforge.atunes.kernel.modules.tags.EditTagInfo;
 import net.sourceforge.atunes.kernel.modules.tags.TagDetector;
@@ -45,6 +44,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -64,7 +64,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 
     private static final long serialVersionUID = -1139001443603556703L;
 
-    private AbstractTag tag;
+    private ITag tag;
     private List<File> externalPictures;
     private int duration;
 	private long bitrate;
@@ -140,7 +140,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
      * 
      * @return the new tag
      */
-    public static AbstractTag getNewTag(ILocalAudioObject file, EditTagInfo editTagInfo) {
+    public static ITag getNewTag(ILocalAudioObject file, EditTagInfo editTagInfo) {
         return new DefaultTag().getTagFromProperties(editTagInfo, file.getTag());
     }
 
@@ -380,7 +380,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
      * 
      * @return the tag
      */
-    public AbstractTag getTag() {
+    public ITag getTag() {
         return tag;
     }
 
@@ -534,7 +534,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
      * @param tag
      *            the new tag
      */
-    public void setTag(AbstractTag tag) {
+    public void setTag(ITag tag) {
         this.tag = tag;
     }
 

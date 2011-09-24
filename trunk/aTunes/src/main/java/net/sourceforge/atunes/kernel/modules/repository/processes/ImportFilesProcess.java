@@ -28,7 +28,6 @@ import java.util.List;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.process.AbstractAudioFileTransferProcess;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
 import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
 import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
 import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
@@ -36,6 +35,7 @@ import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.ITagAttributesReviewed;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.FileNameUtils;
@@ -203,7 +203,7 @@ public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
      */
     private void replaceTag(ILocalAudioObject fileToImport, ITagAttributesReviewed tagAttributesReviewed) {
         if (tagAttributesReviewed != null) {
-            AbstractTag modifiedTag = tagAttributesReviewed.getTagForAudioFile(fileToImport);
+            ITag modifiedTag = tagAttributesReviewed.getTagForAudioFile(fileToImport);
             // This file must be changed
             if (modifiedTag != null) {
                 fileToImport.setTag(modifiedTag);
