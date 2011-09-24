@@ -37,6 +37,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
+import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -76,7 +77,7 @@ public class WinampcnEngine extends AbstractLyricsEngine {
     }
 
     @Override
-    public Lyrics getLyricsFor(String artist, String title) {
+    public ILyrics getLyricsFor(String artist, String title) {
         String url = getUrl(artist, title);
         try {
             String xml = readURL(getConnection(url), "gbk");

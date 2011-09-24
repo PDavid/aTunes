@@ -25,7 +25,7 @@ import java.net.URLConnection;
 import java.net.UnknownHostException;
 
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
-import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
+import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.utils.NetworkUtils;
 
 /**
@@ -95,7 +95,7 @@ public abstract class AbstractLyricsEngine {
      * 
      * @return the lyrics for
      */
-    public abstract Lyrics getLyricsFor(String artist, String title);
+    public abstract ILyrics getLyricsFor(String artist, String title);
 
     /**
      * Returns the name of this lyrics provider

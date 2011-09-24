@@ -30,12 +30,12 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
-import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLovedTrack;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILovedTrack;
 import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -49,10 +49,10 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
         @Override
         protected List<ILocalAudioObject> doInBackground() throws Exception {
             // Get loved tracks
-            List<LastFmLovedTrack> lovedTracks = getBean(IWebServicesHandler.class).getLovedTracks();
+            List<ILovedTrack> lovedTracks = getBean(IWebServicesHandler.class).getLovedTracks();
             if (!lovedTracks.isEmpty()) {
                 List<ILocalAudioObject> favoriteAudioFiles = new ArrayList<ILocalAudioObject>();
-                for (LastFmLovedTrack lovedTrack : lovedTracks) {
+                for (ILovedTrack lovedTrack : lovedTracks) {
                     Artist artist = RepositoryHandler.getInstance().getArtist(lovedTrack.getArtist());
                     if (artist != null) {
                         for (ILocalAudioObject audioObject : artist.getAudioObjects()) {

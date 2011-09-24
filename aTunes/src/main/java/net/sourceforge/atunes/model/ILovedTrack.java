@@ -20,20 +20,21 @@
 
 package net.sourceforge.atunes.model;
 
-
 /**
- * The play state of the playlist.
+ * A track marked as loved in a web service
+ * @author alex
+ *
  */
-public enum PlayState {
+public interface ILovedTrack {
 
-    STOPPED,
+	/**
+	 * @return the artist
+	 */
+	public String getArtist();
 
-    PLAYING,
+	/**
+	 * @return the title
+	 */
+	public String getTitle();
 
-    PAUSED,
-
-    /**
-     * When it's not the active play list
-     */
-    NONE;
 }

@@ -27,6 +27,7 @@ import java.net.UnknownHostException;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
+import net.sourceforge.atunes.model.ApplicationVersion;
 import net.sourceforge.atunes.model.IUpdateHandler;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.NetworkUtils;

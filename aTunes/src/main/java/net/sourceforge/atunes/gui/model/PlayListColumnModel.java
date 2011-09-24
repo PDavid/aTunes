@@ -19,6 +19,9 @@
  */
 package net.sourceforge.atunes.gui.model;
 
+import java.awt.Paint;
+
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -26,6 +29,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.gui.images.PlayListStateImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.renderers.StringTableCellRendererCode;
@@ -137,7 +141,7 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
                     //Display an icon if playing and cell is in a "special" column
                     ((JLabel) c).setText(null);
                     if (playListHandler.isCurrentVisibleRowPlaying(row)) {
-                        ((JLabel) c).setIcon(PlayState.getPlayStateIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(c, isSelected), 
+                        ((JLabel) c).setIcon(getPlayStateIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(c, isSelected), 
                         		((PlayListTable) getTable()).getPlayState()));
                     } else {
                         ((JLabel) c).setIcon(null); // was using Images.getImage(Images.EMPTY) previously
@@ -156,4 +160,20 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
             return super.getRendererCodeFor(clazz);
         }
     }
+    
+    private ImageIcon getPlayStateIcon(Paint color, PlayState state) {
+        switch (state) {
+        case PLAYING:
+            return PlayListStateImageIcon.getPlayIcon(color);
+        case STOPPED:
+            return PlayListStateImageIcon.getStopIcon(color);
+        case PAUSED:
+            return PlayListStateImageIcon.getPauseIcon(color);
+        case NONE:
+            return null;
+        default:
+            return null;
+        }
+    }
+
 }

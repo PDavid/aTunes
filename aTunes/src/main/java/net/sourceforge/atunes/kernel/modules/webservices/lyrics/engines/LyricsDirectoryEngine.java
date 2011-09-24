@@ -28,6 +28,7 @@ import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
+import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -45,7 +46,7 @@ public class LyricsDirectoryEngine extends AbstractLyricsEngine {
     }
 
     @Override
-    public Lyrics getLyricsFor(String artist, String title) {
+    public ILyrics getLyricsFor(String artist, String title) {
         StringBuilder sb = new StringBuilder();
         sb.append(BASE_URL);
         sb.append(encodeString(getString(artist, title)));

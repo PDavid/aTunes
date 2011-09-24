@@ -27,6 +27,7 @@ import java.io.StringReader;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
+import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -54,8 +55,8 @@ public class LyrDBEngine extends AbstractLyricsEngine {
 	}
 
 	@Override
-	public Lyrics getLyricsFor(String artist, String title) {
-		Lyrics lyrics = null;
+	public ILyrics getLyricsFor(String artist, String title) {
+		ILyrics lyrics = null;
 		try { 
 			// Build url and search
 			String urlString = SEARCH_URL.replace(QUERY_WILDCARD, StringUtils.getString(encodeString(artist), "|", encodeString(title))); // "|" can't be encoded
@@ -81,7 +82,7 @@ public class LyrDBEngine extends AbstractLyricsEngine {
 	 * @return
 	 * @throws IOException
 	 */
-	private Lyrics retrieveSearchResult(String searchResult) throws IOException {
+	private ILyrics retrieveSearchResult(String searchResult) throws IOException {
 		int firstSlash = searchResult.indexOf('\\');
 		if (firstSlash != -1) {
 			String id = searchResult.substring(0, firstSlash);

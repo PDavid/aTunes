@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.model;
 
-import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
 
 public interface IUpdateHandler extends IHandler {
 

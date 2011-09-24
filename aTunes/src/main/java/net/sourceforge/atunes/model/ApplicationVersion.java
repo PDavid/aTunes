@@ -18,10 +18,11 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.updates;
+package net.sourceforge.atunes.model;
 
 import java.beans.ConstructorProperties;
 
+import net.sourceforge.atunes.kernel.modules.updates.VersionType;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**

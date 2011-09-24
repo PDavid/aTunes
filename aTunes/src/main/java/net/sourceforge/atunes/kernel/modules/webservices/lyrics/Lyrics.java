@@ -23,9 +23,10 @@ package net.sourceforge.atunes.kernel.modules.webservices.lyrics;
 import java.beans.ConstructorProperties;
 import java.io.Serializable;
 
+import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class Lyrics implements Serializable {
+public class Lyrics implements Serializable, ILyrics {
 
     private static final long serialVersionUID = 8228456817740963954L;
 
@@ -38,7 +39,8 @@ public class Lyrics implements Serializable {
         this.url = url;
     }
 
-    public void setLyrics(String lyrics) {
+    @Override
+	public void setLyrics(String lyrics) {
         if (lyrics == null) {
             throw new IllegalArgumentException();
         }
@@ -47,15 +49,18 @@ public class Lyrics implements Serializable {
         this.lyrics = lyrics != null ? lyrics : "";
     }
 
-    public void setUrl(String url) {
+    @Override
+	public void setUrl(String url) {
         this.url = url;
     }
 
-    public String getLyrics() {
+    @Override
+	public String getLyrics() {
         return lyrics;
     }
 
-    public String getUrl() {
+    @Override
+	public String getUrl() {
         return url;
     }
 

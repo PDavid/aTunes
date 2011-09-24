@@ -27,11 +27,11 @@ import java.util.Enumeration;
 import java.util.Properties;
 import java.util.PropertyResourceBundle;
 
-import org.apache.log4j.PropertyConfigurator;
-
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.model.IOSManager;
+
+import org.apache.log4j.PropertyConfigurator;
 
 /**
  * A custom logger for aTunes, using log4j.

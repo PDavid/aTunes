@@ -39,10 +39,10 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.CustomTextPane;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.model.EditTagSources;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.model.ILyricsService;
 import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.utils.ClipboardFacade;
@@ -131,7 +131,7 @@ public class LyricsContent extends AbstractContextPanelContent {
     @Override
     protected void updateContentWithDataSourceResult(Map<String, ?> result) {
         if (result.containsKey(LyricsDataSource.OUTPUT_LYRIC)) {
-            Lyrics lyrics = (Lyrics) result.get(LyricsDataSource.OUTPUT_LYRIC);
+            ILyrics lyrics = (ILyrics) result.get(LyricsDataSource.OUTPUT_LYRIC);
             lyricsContainer.setText(lyrics != null ? lyrics.getLyrics() : null);
             lyricsContainer.setCaretPosition(0);
 

@@ -20,20 +20,35 @@
 
 package net.sourceforge.atunes.model;
 
-
 /**
- * The play state of the playlist.
+ * Lyrics retrieved from a web service
+ * @author alex
+ *
  */
-public enum PlayState {
+public interface ILyrics {
 
-    STOPPED,
+	/**
+	 * Sets lyrics
+	 * @param lyrics
+	 */
+	public void setLyrics(String lyrics);
 
-    PLAYING,
+	/**
+	 * Sets url from which lyrics have been retrieved
+	 * @param url
+	 */
+	public void setUrl(String url);
 
-    PAUSED,
+	/**
+	 * Returns lyrics
+	 * @return
+	 */
+	public String getLyrics();
 
-    /**
-     * When it's not the active play list
-     */
-    NONE;
+	/**
+	 * Returns url from which lyrics have been retrieved
+	 * @return
+	 */
+	public String getUrl();
+
 }

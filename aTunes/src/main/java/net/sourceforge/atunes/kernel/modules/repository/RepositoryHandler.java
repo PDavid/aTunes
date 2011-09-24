@@ -68,6 +68,7 @@ import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IProgressDialog;
+import net.sourceforge.atunes.model.IRepositoryListener;
 import net.sourceforge.atunes.model.IRepositoryProgressDialog;
 import net.sourceforge.atunes.model.IReviewImportDialog;
 import net.sourceforge.atunes.model.IState;
@@ -77,7 +78,6 @@ import net.sourceforge.atunes.model.ITagAttributesReviewed;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.model.Repository;
-import net.sourceforge.atunes.model.RepositoryListener;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
@@ -91,7 +91,7 @@ import org.joda.time.DateTime;
 /**
  * The repository handler.
  */
-public final class RepositoryHandler extends AbstractHandler implements LoaderListener, IAudioFilesRemovedListener, RepositoryListener {
+public final class RepositoryHandler extends AbstractHandler implements LoaderListener, IAudioFilesRemovedListener, IRepositoryListener {
 
 	// Used to retrieve covers and show in progress dialog
 	private String lastArtistRead;

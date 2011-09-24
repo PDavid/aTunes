@@ -82,7 +82,7 @@ public class Repository implements Serializable {
     /**
      * Object to be notified when this repository becomes dirty
      */
-    private transient RepositoryListener listener;
+    private transient IRepositoryListener listener;
     
     /**
      * Current transaction
@@ -100,7 +100,7 @@ public class Repository implements Serializable {
      * @param folders
      *            the folders
      */
-    public Repository(List<File> folders, RepositoryListener listener, IState state) {
+    public Repository(List<File> folders, IRepositoryListener listener, IState state) {
         this.folders = folders;
         this.filesStructure = new RepositoryStructure<ILocalAudioObject>();
         this.artistsStructure = new RepositoryStructure<Artist>();
@@ -218,7 +218,7 @@ public class Repository implements Serializable {
         }
     }
 
-	public void setListener(RepositoryListener listener) {
+	public void setListener(IRepositoryListener listener) {
 		this.listener = listener;
 	}
 	
@@ -249,10 +249,10 @@ public class Repository implements Serializable {
 	public static final class RepositoryTransaction {
 		
 		private Repository repository;
-		private RepositoryListener listener;
+		private IRepositoryListener listener;
 		private volatile boolean pending;
 		
-		private RepositoryTransaction(Repository repository, RepositoryListener listener) {
+		private RepositoryTransaction(Repository repository, IRepositoryListener listener) {
 			this.repository = repository;
 			this.listener = listener;
 			this.pending = true;

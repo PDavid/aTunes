@@ -37,7 +37,6 @@ import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
-import net.sourceforge.atunes.kernel.modules.updates.ApplicationVersion;
 
 /**
  * The interface for all frames

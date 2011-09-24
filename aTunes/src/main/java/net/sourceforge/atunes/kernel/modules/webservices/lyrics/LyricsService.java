@@ -31,6 +31,7 @@ import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.AbstractLyricsEngine;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsEngineInfo;
+import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.model.ILyricsEngineInfo;
 import net.sourceforge.atunes.model.ILyricsService;
 import net.sourceforge.atunes.model.IState;
@@ -71,9 +72,9 @@ public final class LyricsService implements IStateChangeListener, ILyricsService
     }
 
     @Override
-	public Lyrics getLyrics(String artist, String song) {
+	public ILyrics getLyrics(String artist, String song) {
         // Try to get from cache
-        Lyrics lyric = getLyricsCache().retrieveLyric(artist, song);
+        ILyrics lyric = getLyricsCache().retrieveLyric(artist, song);
         
         // Discard stored lyrics containing HTML
         if (lyric != null && lyric.getLyrics().contains("<") && lyric.getLyrics().contains(">")) {
@@ -111,7 +112,7 @@ public final class LyricsService implements IStateChangeListener, ILyricsService
      * Applies several common string manipulation to improve lyrics
      * @param lyrics
      */
-    private void fixLyrics(Lyrics lyrics) {
+    private void fixLyrics(ILyrics lyrics) {
         if (lyrics != null) {
         	String lyricsString = lyrics.getLyrics()
             						.replaceAll("'", "\'")

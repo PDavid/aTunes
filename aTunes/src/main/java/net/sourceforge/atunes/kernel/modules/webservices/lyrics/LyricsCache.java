@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.modules.webservices.lyrics;
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
+import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.utils.AbstractCache;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -59,10 +60,10 @@ public class LyricsCache extends AbstractCache {
      * 
      * @return the string
      */
-    public synchronized Lyrics retrieveLyric(String artist, String title) {
+    public synchronized ILyrics retrieveLyric(String artist, String title) {
         Element element = getCache().get(id(artist, title));
         if (element != null) {
-            return (Lyrics) element.getValue();
+            return (ILyrics) element.getValue();
         } else {
             return null;
         }
@@ -78,7 +79,7 @@ public class LyricsCache extends AbstractCache {
      * @param lyric
      *            the lyric
      */
-    public synchronized void storeLyric(String artist, String title, Lyrics lyric) {
+    public synchronized void storeLyric(String artist, String title, ILyrics lyric) {
         if (artist == null || title == null || lyric == null) {
             return;
         }
