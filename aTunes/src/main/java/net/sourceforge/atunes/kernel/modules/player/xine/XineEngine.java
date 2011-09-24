@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.modules.player.xine;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.EnumSet;
 
@@ -96,55 +97,60 @@ public class XineEngine extends AbstractPlayerEngine {
     @Override
     protected void startPlayback(final IAudioObject audioObjectToPlay, final IAudioObject audioObject) {
 
-        boolean valid = true;
+    	if (audioObjectToPlay.getUrl() == null) {
+    		handlePlayerEngineError(new FileNotFoundException(audioObjectToPlay.getTitleOrFileName()));
+    	} else {
 
-        if (xineController == null) {
-            info("Creating xineController for playback");
-            xineController = Xine.getXine().createController();
-            xineController.registerXineEventListener(new XineListener());
-        } else {
-            info("Stopping before new playback");
-            internalStop();
-        }
-        info("Opening stream and setting xine params");
+    		boolean valid = true;
 
-        xineController.open(audioObjectToPlay.getUrl());
+    		if (xineController == null) {
+    			info("Creating xineController for playback");
+    			xineController = Xine.getXine().createController();
+    			xineController.registerXineEventListener(new XineListener());
+    		} else {
+    			info("Stopping before new playback");
+    			internalStop();
+    		}
+    		info("Opening stream and setting xine params");
 
-        xineController.setVolume(getState().getVolume());
+    		xineController.open(audioObjectToPlay.getUrl());
 
-        // Apply equalizer
-        applyEqualization(getEqualizer().getEqualizerValues());
+    		xineController.setVolume(getState().getVolume());
 
-        String errorMessage = null;
-        int streamLength = xineController.getStreamLength();
-        if (audioObjectToPlay instanceof IPodcastFeedEntry || audioObjectToPlay instanceof IRadio) {
-            if (!xineController.hasAudio()) {
-                info("No audio found, go to next track");
-                valid = false;
-                errorMessage = StringUtils.getString(I18nUtils.getString("FILE_NOT_FOUND"), ": ", audioObjectToPlay.getUrl());
-            } else {
-                // logic from init() of PodcastFeedEntryMPlayerOutputReader
-                long duration = audioObjectToPlay.getDuration() * 1000;
-                setCurrentAudioObjectLength(duration);
-                notifyRadioOrPodcastFeedEntryStarted();
-            }
-        } else {
-            // Check if stream length is 0 which may indicate a wrong audio object, and then skip
-            if (streamLength <= 0) {
-                valid = false;
-                errorMessage = StringUtils.getString(I18nUtils.getString("ERROR"), ": ", audioObjectToPlay.getUrl());
-            }
-            setCurrentAudioObjectLength(streamLength);
-        }
+    		// Apply equalizer
+    		applyEqualization(getEqualizer().getEqualizerValues());
 
-        if (valid) {
-            startPlayback(0);
-            info("Starting duration thread");
-            durationUpdater = new Timer(250, new DurationUpdaterActionListener(audioObjectToPlay));
-            durationUpdater.start();
-        } else {
-            currentAudioObjectFinished(false, errorMessage);
-        }
+    		String errorMessage = null;
+    		int streamLength = xineController.getStreamLength();
+    		if (audioObjectToPlay instanceof IPodcastFeedEntry || audioObjectToPlay instanceof IRadio) {
+    			if (!xineController.hasAudio()) {
+    				info("No audio found, go to next track");
+    				valid = false;
+    				errorMessage = StringUtils.getString(I18nUtils.getString("FILE_NOT_FOUND"), ": ", audioObjectToPlay.getUrl());
+    			} else {
+    				// logic from init() of PodcastFeedEntryMPlayerOutputReader
+    				long duration = audioObjectToPlay.getDuration() * 1000;
+    				setCurrentAudioObjectLength(duration);
+    				notifyRadioOrPodcastFeedEntryStarted();
+    			}
+    		} else {
+    			// Check if stream length is 0 which may indicate a wrong audio object, and then skip
+    			if (streamLength <= 0) {
+    				valid = false;
+    				errorMessage = StringUtils.getString(I18nUtils.getString("ERROR"), ": ", audioObjectToPlay.getUrl());
+    			}
+    			setCurrentAudioObjectLength(streamLength);
+    		}
+
+    		if (valid) {
+    			startPlayback(0);
+    			info("Starting duration thread");
+    			durationUpdater = new Timer(250, new DurationUpdaterActionListener(audioObjectToPlay));
+    			durationUpdater.start();
+    		} else {
+    			currentAudioObjectFinished(false, errorMessage);
+    		}
+    	}
     }
 
     protected void setTime(int time) {

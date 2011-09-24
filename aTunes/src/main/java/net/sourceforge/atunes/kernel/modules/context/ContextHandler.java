@@ -51,7 +51,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
      * Time stamp when audio object was modified. Used to decide if context info
      * must be updated
      */
-    private long lastAudioObjectModificationTime;
+    private long lastAudioObjectModificationTime = 0;
 
     /**
      * Context panels defined
@@ -135,7 +135,8 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 
         // Update modification time if necessary
         if (ao instanceof ILocalAudioObject) {
-            lastAudioObjectModificationTime = ((ILocalAudioObject) ao).getFile().lastModified();
+        	if ( ((ILocalAudioObject) ao).getFile() != null)
+            	lastAudioObjectModificationTime = ((ILocalAudioObject) ao).getFile().lastModified();
         } else {
             lastAudioObjectModificationTime = 0;
         }

@@ -116,7 +116,7 @@ public final class AudioFilePictureUtils {
         // Try first to get picture with file name "ARTIST_ALBUM_COVER" pattern
         String coverFileName = getFileNameForCover(file, osManager);
         ImageIcon image = null;
-        if (new File(coverFileName).exists()) {
+        if (coverFileName != null && new File(coverFileName).exists()) {
             image = new ImageIcon(coverFileName);
         } else if (file != null && file.getExternalPictures() != null && file.getExternalPictures().size() > index) {
             File firstPicture = file.getExternalPictures().get(index);
@@ -143,7 +143,7 @@ public final class AudioFilePictureUtils {
      * @return
      */
     public static String getFileNameForCover(ILocalAudioObject file, IOSManager osManager) {
-        if (file == null) {
+        if (file == null || file.getFile() == null) {
             return null;
         }
         return StringUtils.getString(file.getFile().getParentFile().getAbsolutePath(), osManager.getFileSeparator(), file.getArtist(), '_', file.getAlbum(), "_Cover.",
@@ -163,6 +163,9 @@ public final class AudioFilePictureUtils {
      * @return the inside picture
      */
     public static ImageIcon getInsidePicture(ILocalAudioObject file, int width, int height) {
+    	if (file.getFile() == null) {
+    		return null;
+    	}
         try {
             org.jaudiotagger.tag.Tag tag = AudioFileIO.read(file.getFile()).getTag();
             if (tag == null) {
