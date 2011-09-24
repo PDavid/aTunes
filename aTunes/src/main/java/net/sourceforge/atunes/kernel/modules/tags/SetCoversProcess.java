@@ -38,6 +38,7 @@ import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.ImageUtils;
 
@@ -68,7 +69,7 @@ public class SetCoversProcess extends AbstractChangeTagProcess {
     @Override
     protected void changeTag(ILocalAudioObject file) throws IOException {
         BufferedImage bufferedCover = ImageUtils.toBufferedImage(this.filesAndCovers.get(file));
-        AbstractTag newTag = AudioFile.getNewTag(file, new EditTagInfo());
+        ITag newTag = AudioFile.getNewTag(file, new EditTagInfo());
         newTag.setInternalImage(true);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ImageIO.write(bufferedCover, "PNG", byteArrayOutputStream);

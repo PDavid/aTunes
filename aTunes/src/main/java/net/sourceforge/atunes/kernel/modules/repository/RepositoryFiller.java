@@ -24,11 +24,11 @@ import java.io.File;
 
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
-import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.Repository;
 
 /**
@@ -81,7 +81,7 @@ final class RepositoryFiller {
      * Refreshes audio file already added to repository
      * @param audioFile
      */
-    void refreshAudioFile(ILocalAudioObject audioFile, AbstractTag oldTag) {
+    void refreshAudioFile(ILocalAudioObject audioFile, ITag oldTag) {
     	if (audioFile == null) {
     		throw new IllegalArgumentException("AudioFile is null");
     	}
@@ -208,7 +208,7 @@ final class RepositoryFiller {
      * Removes from artist structure if necessary
      * @param file
      */
-    private void updateArtistStructure(AbstractTag oldTag, ILocalAudioObject file) {
+    private void updateArtistStructure(ITag oldTag, ILocalAudioObject file) {
 		String albumArtist = null;
 		String artist = null;
 		String album = null;
@@ -271,7 +271,7 @@ final class RepositoryFiller {
      * @param oldTag
      * @param file
      */
-    private void updateGenreStructure(AbstractTag oldTag, ILocalAudioObject file) {
+    private void updateGenreStructure(ITag oldTag, ILocalAudioObject file) {
 		String genre = null;
 		if (oldTag != null) {
 			genre = oldTag.getGenre();
@@ -295,7 +295,7 @@ final class RepositoryFiller {
      * @param oldTag
      * @param file
      */
-    private void updateYearStructure(AbstractTag oldTag, ILocalAudioObject file) {
+    private void updateYearStructure(ITag oldTag, ILocalAudioObject file) {
 		String year = null;
 		if (oldTag != null) {
 			year = oldTag.getYear() > 0 ? Integer.toString(oldTag.getYear()) : "";

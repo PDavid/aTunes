@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.tags;
 
+import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.utils.DateUtils;
 
 import org.jaudiotagger.tag.FieldKey;
@@ -170,7 +171,7 @@ public class DefaultTag extends AbstractTag {
     }
 
     @Override
-    public AbstractTag getTagFromProperties(EditTagInfo editTagInfo, AbstractTag oldTag) {
+    public ITag getTagFromProperties(EditTagInfo editTagInfo, ITag oldTag) {
 
         DefaultTag defaultTag = new DefaultTag();
         if (editTagInfo.isTagEdited("TITLE")) {

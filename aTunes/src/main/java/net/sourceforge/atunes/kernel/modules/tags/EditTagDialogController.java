@@ -46,6 +46,7 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -274,7 +275,7 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
         Set<String> lyrics = new HashSet<String>();
         Set<String> albumArtists = new HashSet<String>();
         for (ILocalAudioObject audioFile : audioFiles) {
-            AbstractTag tag = audioFile.getTag();
+            ITag tag = audioFile.getTag();
             if (tag != null) {
                 titles.add(tag.getTitle());
                 trackNumbers.add(tag.getTrackNumber());

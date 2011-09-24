@@ -23,7 +23,6 @@ package net.sourceforge.atunes.model;
 import java.io.File;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
 
 public interface ILocalAudioObject extends IAudioObject, Comparable<ILocalAudioObject> {
 	
@@ -60,7 +59,7 @@ public interface ILocalAudioObject extends IAudioObject, Comparable<ILocalAudioO
      * 
      * @return the tag
      */
-    public AbstractTag getTag();
+    public ITag getTag();
     
     /**
      * Sets the tag.
@@ -68,7 +67,7 @@ public interface ILocalAudioObject extends IAudioObject, Comparable<ILocalAudioO
      * @param tag
      *            the new tag
      */
-    public void setTag(AbstractTag tag);
+    public void setTag(ITag tag);
     
     /**
      * Gets the name without extension.

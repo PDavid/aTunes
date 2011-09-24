@@ -33,6 +33,7 @@ import javax.swing.table.TableCellEditor;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.ITagAttributesReviewed;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
@@ -130,9 +131,9 @@ public class TagAttributesReviewed implements ITagAttributesReviewed {
 	 * @see net.sourceforge.atunes.kernel.modules.tags.ITagAttributesReviewed#getTagForAudioFile(net.sourceforge.atunes.model.ILocalAudioObject)
 	 */
     @Override
-	public AbstractTag getTagForAudioFile(ILocalAudioObject file) {
+	public ITag getTagForAudioFile(ILocalAudioObject file) {
         File parentFolder = file.getFile().getParentFile();
-        AbstractTag tag = null;
+        ITag tag = null;
         for (AbstractTagAttributeReviewed tagAttribute : getTagAttributes()) {
             if (tagAttribute.getChangesMade().containsKey(parentFolder)) {
                 if (tag == null) {
@@ -179,7 +180,7 @@ public class TagAttributesReviewed implements ITagAttributesReviewed {
         }
 
         @Override
-        AbstractTag changeTag(AbstractTag tag, String value) {
+        ITag changeTag(ITag tag, String value) {
             try {
                 tag.setDiscNumber(Integer.parseInt(value));
             } catch (NumberFormatException e) {
@@ -200,7 +201,7 @@ public class TagAttributesReviewed implements ITagAttributesReviewed {
         }
 
         @Override
-        AbstractTag changeTag(AbstractTag tag, String value) {
+        ITag changeTag(ITag tag, String value) {
             try {
                 tag.setYear(Integer.parseInt(value));
             } catch (NumberFormatException e) {
@@ -222,7 +223,7 @@ public class TagAttributesReviewed implements ITagAttributesReviewed {
         }
 
         @Override
-        AbstractTag changeTag(AbstractTag tag, String value) {
+        ITag changeTag(ITag tag, String value) {
             tag.setGenre(value);
             return tag;
         }
@@ -253,7 +254,7 @@ public class TagAttributesReviewed implements ITagAttributesReviewed {
         }
 
         @Override
-        AbstractTag changeTag(AbstractTag tag, String value) {
+        ITag changeTag(ITag tag, String value) {
             tag.setAlbum(value);
             return tag;
         }
@@ -270,7 +271,7 @@ public class TagAttributesReviewed implements ITagAttributesReviewed {
         }
 
         @Override
-        AbstractTag changeTag(AbstractTag tag, String value) {
+        ITag changeTag(ITag tag, String value) {
             tag.setComposer(value);
             return tag;
         }
@@ -287,7 +288,7 @@ public class TagAttributesReviewed implements ITagAttributesReviewed {
         }
 
         @Override
-        AbstractTag changeTag(AbstractTag tag, String value) {
+        ITag changeTag(ITag tag, String value) {
             tag.setAlbumArtist(value);
             return tag;
         }
@@ -305,7 +306,7 @@ public class TagAttributesReviewed implements ITagAttributesReviewed {
         }
 
         @Override
-        AbstractTag changeTag(AbstractTag tag, String value) {
+        ITag changeTag(ITag tag, String value) {
             tag.setArtist(value);
             return tag;
         }

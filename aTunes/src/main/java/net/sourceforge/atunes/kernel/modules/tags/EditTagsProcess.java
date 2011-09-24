@@ -27,6 +27,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITag;
 
 /**
  * The Class EditTagsProcess.
@@ -53,8 +54,8 @@ public class EditTagsProcess extends AbstractChangeTagProcess {
 
     @Override
     protected void changeTag(ILocalAudioObject audioFile) {
-        AbstractTag newTag = AudioFile.getNewTag(audioFile, editTagInfo);
-        AbstractTag oldTag = audioFile.getTag();
+        ITag newTag = AudioFile.getNewTag(audioFile, editTagInfo);
+        ITag oldTag = audioFile.getTag();
 
         byte[] c = null;
         boolean shouldEditCover = editTagInfo.isTagEdited("COVER");

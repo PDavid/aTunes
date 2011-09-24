@@ -33,6 +33,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Format;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -217,7 +218,7 @@ public final class TagModifier {
      * @param tag
      *            Tag to be written
      */
-    public static void setInfo(ILocalAudioObject file, AbstractTag tag) {
+    public static void setInfo(ILocalAudioObject file, ITag tag) {
         setInfo(file, tag, false, null);
     }
 
@@ -233,7 +234,7 @@ public final class TagModifier {
      * @param cover
      *            cover data as byte array
      */
-    static void setInfo(ILocalAudioObject file, AbstractTag tag, boolean shouldEditCover, byte[] cover) {
+    static void setInfo(ILocalAudioObject file, ITag tag, boolean shouldEditCover, byte[] cover) {
         // Be sure file is writable before setting info
         setWritable(file);
 

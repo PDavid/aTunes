@@ -36,13 +36,13 @@ import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
-import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStatisticsHandler;
+import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -279,7 +279,7 @@ public class RepositoryLoader extends Thread {
 	static void refreshFile(Repository repository, ILocalAudioObject file, IStatisticsHandler statisticsHandler) {
 		try {
 			// Get old tag
-			AbstractTag oldTag = file.getTag();
+			ITag oldTag = file.getTag();
 			
 			// Update tag
 			file.refreshTag();		
@@ -288,7 +288,7 @@ public class RepositoryLoader extends Thread {
 			new RepositoryFiller(repository).refreshAudioFile(file, oldTag);
 
 			// Compare old tag with new tag
-			AbstractTag newTag = file.getTag();
+			ITag newTag = file.getTag();
 			if (newTag != null) {
 				boolean artistChanged = oldTag.getArtist() == null && newTag.getArtist() != null ||
 									    oldTag.getArtist() != null && newTag.getArtist() == null || 

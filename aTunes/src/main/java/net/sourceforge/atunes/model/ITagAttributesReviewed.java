@@ -24,7 +24,6 @@ import java.io.File;
 
 import javax.swing.table.TableCellEditor;
 
-import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
 
 /**
  * Keeps information about a set of changes to be made on tags when importing a
@@ -84,7 +83,7 @@ public interface ITagAttributesReviewed {
 	 * @param file
 	 * @return
 	 */
-	public AbstractTag getTagForAudioFile(ILocalAudioObject file);
+	public ITag getTagForAudioFile(ILocalAudioObject file);
 
 	public TableCellEditor getCellEditorForTagAttribute(int index);
 

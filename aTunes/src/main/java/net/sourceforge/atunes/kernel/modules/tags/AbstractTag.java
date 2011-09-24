@@ -22,6 +22,8 @@ package net.sourceforge.atunes.kernel.modules.tags;
 
 import java.io.Serializable;
 
+import net.sourceforge.atunes.model.ITag;
+
 import org.joda.time.base.BaseDateTime;
 
 /**
@@ -29,7 +31,7 @@ import org.joda.time.base.BaseDateTime;
  * 
  * @author fleax
  */
-public abstract class AbstractTag implements Serializable {
+public abstract class AbstractTag implements Serializable, ITag {
 
     private static final long serialVersionUID = -4044670497563446883L;
 
@@ -120,103 +122,89 @@ public abstract class AbstractTag implements Serializable {
         return code >= 0 ? genres[code] : "";
     }
 
-    /**
-     * Gets the album.
-     * 
-     * @return the album
-     */
-    public String getAlbum() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#getAlbum()
+	 */
+    @Override
+	public String getAlbum() {
         return album;
     }
 
-    /**
-     * Gets the album artist.
-     * 
-     * @return the album artist
-     */
-    public String getAlbumArtist() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#getAlbumArtist()
+	 */
+    @Override
+	public String getAlbumArtist() {
         return albumArtist;
     }
 
-    /**
-     * Gets the artist.
-     * 
-     * @return the artist
-     */
-    public String getArtist() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#getArtist()
+	 */
+    @Override
+	public String getArtist() {
         return artist;
     }
 
-    /**
-     * Gets the comment.
-     * 
-     * @return the comment
-     */
-    public String getComment() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#getComment()
+	 */
+    @Override
+	public String getComment() {
         return comment;
     }
 
-    /**
-     * Gets the composer.
-     * 
-     * @return the composer
-     */
-    public String getComposer() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#getComposer()
+	 */
+    @Override
+	public String getComposer() {
         return composer;
     }
 
-    /**
-     * Gets the genre.
-     * 
-     * @return the genre
-     */
-    public String getGenre() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#getGenre()
+	 */
+    @Override
+	public String getGenre() {
         return genre;
     }
 
-    /**
-     * Gets the lyrics.
-     * 
-     * @return the lyrics
-     */
-    public String getLyrics() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#getLyrics()
+	 */
+    @Override
+	public String getLyrics() {
         return lyrics;
     }
 
-    /**
-     * Gets the tag from properties.
-     * 
-     * @param properties
-     *            the properties
-     * 
-     * @return the tag from properties
-     */
-    public abstract AbstractTag getTagFromProperties(EditTagInfo editTagInfo, AbstractTag oldTag);
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#getTagFromProperties(net.sourceforge.atunes.kernel.modules.tags.EditTagInfo, net.sourceforge.atunes.kernel.modules.tags.ITag)
+	 */
+    @Override
+	public abstract ITag getTagFromProperties(EditTagInfo editTagInfo, ITag oldTag);
 
-    /**
-     * Gets the title.
-     * 
-     * @return the title
-     */
-    public String getTitle() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#getTitle()
+	 */
+    @Override
+	public String getTitle() {
         return title;
     }
 
-    /**
-     * Gets the track number.
-     * 
-     * @return the track number
-     */
-    public int getTrackNumber() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#getTrackNumber()
+	 */
+    @Override
+	public int getTrackNumber() {
         return trackNumber >= 0 ? trackNumber : 0;
     }
 
-    /**
-     * Gets the year.
-     * 
-     * @return the year
-     */
-    public int getYear() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#getYear()
+	 */
+    @Override
+	public int getYear() {
         if (date != null) {
         	return date.getYear();
         } else if (year >= 0) {
@@ -226,169 +214,142 @@ public abstract class AbstractTag implements Serializable {
         }
     }
 
-    /**
-     * Gets the date.
-     * 
-     * @return the date
-     */
-    public BaseDateTime getDate() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#getDate()
+	 */
+    @Override
+	public BaseDateTime getDate() {
         return date;
     }
 
-    /**
-     * Sets the album.
-     * 
-     * @param album
-     *            the new album
-     */
-    public void setAlbum(String album) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#setAlbum(java.lang.String)
+	 */
+    @Override
+	public void setAlbum(String album) {
         this.album = album != null ? album.trim() : "";
     }
 
-    /**
-     * Sets the album artist.
-     * 
-     * @param albumArtist
-     *            the new album artist
-     */
-    public void setAlbumArtist(String albumArtist) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#setAlbumArtist(java.lang.String)
+	 */
+    @Override
+	public void setAlbumArtist(String albumArtist) {
         this.albumArtist = albumArtist != null ? albumArtist.trim() : "";
     }
 
-    /**
-     * Sets the artist.
-     * 
-     * @param artist
-     *            the new artist
-     */
-    public void setArtist(String artist) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#setArtist(java.lang.String)
+	 */
+    @Override
+	public void setArtist(String artist) {
         this.artist = artist != null ? artist.trim() : "";
     }
 
-    /**
-     * Sets the comment.
-     * 
-     * @param comment
-     *            the new comment
-     */
-    public void setComment(String comment) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#setComment(java.lang.String)
+	 */
+    @Override
+	public void setComment(String comment) {
         this.comment = comment != null ? comment.trim() : "";
     }
 
-    /**
-     * Sets the composer.
-     * 
-     * @param composer
-     *            the new composer
-     */
-    public void setComposer(String composer) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#setComposer(java.lang.String)
+	 */
+    @Override
+	public void setComposer(String composer) {
         this.composer = composer != null ? composer.trim() : "";
     }
 
-    /**
-     * Sets the genre.
-     * 
-     * @param genre
-     *            the new genre
-     */
-    public void setGenre(int genre) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#setGenre(int)
+	 */
+    @Override
+	public void setGenre(int genre) {
         this.genre = getGenreForCode(genre);
     }
 
-    /**
-     * Sets the genre.
-     * 
-     * @param genre
-     *            the new genre
-     */
-    public void setGenre(String genre) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#setGenre(java.lang.String)
+	 */
+    @Override
+	public void setGenre(String genre) {
         this.genre = genre != null ? genre.trim() : "";
     }
 
-    /**
-     * Sets the lyrics.
-     * 
-     * @param lyrics
-     *            the new lyrics
-     */
-    public void setLyrics(String lyrics) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#setLyrics(java.lang.String)
+	 */
+    @Override
+	public void setLyrics(String lyrics) {
         this.lyrics = lyrics != null ? lyrics : "";
     }
 
-    /**
-     * Sets the title.
-     * 
-     * @param title
-     *            the new title
-     */
-    public void setTitle(String title) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#setTitle(java.lang.String)
+	 */
+    @Override
+	public void setTitle(String title) {
         this.title = title != null ? title.trim() : "";
     }
 
-    /**
-     * Sets the track number.
-     * 
-     * @param tracknumber
-     *            the new track number
-     */
-    public void setTrackNumber(int tracknumber) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#setTrackNumber(int)
+	 */
+    @Override
+	public void setTrackNumber(int tracknumber) {
         this.trackNumber = tracknumber;
     }
 
-    /**
-     * Sets the year.
-     * 
-     * @param year
-     *            the new year
-     */
-    public void setYear(int year) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#setYear(int)
+	 */
+    @Override
+	public void setYear(int year) {
         // only update year if it is not derived from the date
         if (date == null) {
             this.year = year;
         }
     }
 
-    /**
-     * Sets the date.
-     * 
-     * @param date
-     *            the new date
-     */
-    public void setDate(BaseDateTime date) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#setDate(org.joda.time.base.BaseDateTime)
+	 */
+    @Override
+	public void setDate(BaseDateTime date) {
         this.date = date;
     }
 
-    /**
-     * Returns true if this tag has an internal image, false otherwise
-     * 
-     * @return true if this tag has an internal image, false otherwise
-     */
-    public boolean hasInternalImage() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#hasInternalImage()
+	 */
+    @Override
+	public boolean hasInternalImage() {
         return internalImage;
     }
 
-    /**
-     * Sets if this tag has an internal image
-     * 
-     * @param internalImage
-     *            if this tag has an internal image
-     */
-    public void setInternalImage(boolean internalImage) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#setInternalImage(boolean)
+	 */
+    @Override
+	public void setInternalImage(boolean internalImage) {
         this.internalImage = internalImage;
     }
 
-    /**
-     * @return the discNumber
-     */
-    public int getDiscNumber() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#getDiscNumber()
+	 */
+    @Override
+	public int getDiscNumber() {
         return discNumber >= 0 ? discNumber : 0;
     }
 
-    /**
-     * @param discNumber
-     *            the discNumber to set
-     */
-    public void setDiscNumber(int discNumber) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#setDiscNumber(int)
+	 */
+    @Override
+	public void setDiscNumber(int discNumber) {
         this.discNumber = discNumber;
     }
 
