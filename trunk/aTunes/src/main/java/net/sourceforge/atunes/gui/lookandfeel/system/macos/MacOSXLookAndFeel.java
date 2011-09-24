@@ -37,7 +37,6 @@ import javax.swing.JTree;
 import javax.swing.UIManager;
 import javax.swing.table.TableCellRenderer;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.lookandfeel.system.SystemLookAndFeel;
 
 public class MacOSXLookAndFeel extends SystemLookAndFeel {
@@ -165,7 +164,7 @@ public class MacOSXLookAndFeel extends SystemLookAndFeel {
     @Override
     public JList getList() {
     	JList list = new JList();
-        list.setCellRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(null));
+        list.setCellRenderer(getListCellRenderer(null));
     	return list;
     }
     
