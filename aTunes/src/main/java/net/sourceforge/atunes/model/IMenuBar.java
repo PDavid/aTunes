@@ -18,10 +18,15 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.menus;
+package net.sourceforge.atunes.model;
 
 import javax.swing.JMenu;
 
+/**
+ * A menu bar
+ * @author alex
+ *
+ */
 public interface IMenuBar {
 
 	/**

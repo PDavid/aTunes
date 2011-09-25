@@ -18,20 +18,18 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.navigator;
+package net.sourceforge.atunes.model;
 
 import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IFilter;
-import net.sourceforge.atunes.model.IHandler;
-import net.sourceforge.atunes.model.INavigationView;
-import net.sourceforge.atunes.model.ISearch;
-import net.sourceforge.atunes.model.ISearchDialog;
-import net.sourceforge.atunes.model.ViewMode;
 
+/**
+ * Responsible of navigate through repository, radios, favorites...
+ * @author alex
+ *
+ */
 public interface INavigationHandler extends IHandler {
 
 	public List<INavigationView> getNavigationViews();

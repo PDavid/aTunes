@@ -28,7 +28,7 @@ import javax.swing.TransferHandler;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.model.TransferableList;
-import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
+import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.utils.Logger;
 
 /**

@@ -26,8 +26,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.FolderImageIcon;
-import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
