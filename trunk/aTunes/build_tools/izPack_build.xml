@@ -51,6 +51,7 @@
 		<langpack iso3="tur" />
 		<langpack iso3="chn" />
 		<langpack iso3="jpn" />
+		<langpack iso3="dan" />
 	</locale>
 	<resources>
 		<res id="LicencePanel.licence" src="license.txt" />
@@ -64,6 +65,7 @@
 		<res id="packsLang.xml_ita" src="build_tools/PacksPanel_ita.xml" />
 		<res id="packsLang.xml_spa" src="build_tools/PacksPanel_spa.xml" />
 		<res id="packsLang.xml_hrv" src="build_tools/PacksPanel_hrv.xml" />
+		<res id="packsLang.xml_dan" src="build_tools/PacksPanel_dan.xml" />
 		<res id='installer.langsel.img' src="atunes.png" />
 		
 		<res id="AntActionsSpec.xml" src="AntActionsSpec.xml" />

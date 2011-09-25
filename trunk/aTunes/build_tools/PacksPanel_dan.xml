@@ -1,0 +1,12 @@
+<langpack>
+	<str id="core.package" txt="aTunes"/>
+	<str id="core.package.description" txt="Installerer lydafspiller og manager. Som et Java-program kører aTunes på flere platforme, herunder Windows, Linux og andre Unix-lignende systemer.
+	
+	Det kan afspille MP3, OGG, WMA, WAV, FLAC og MP4-filer. Det er også muligt med aTunes, at ændre tags til at organisere musiken eller læse lyd-cd'er"/>
+	<str id="source.package" txt="aTunes-Kildekode"/>
+	<str id="source.package.description" txt="Kildekode til aTunes"/> 
+	<str id="win_tools_base.package" txt="Nødvendige grundlæggende applikationer"/>
+	<str id="win_tools_base.package.description" txt="Nødvendige applikationer til Windows-operativsystemet"/> 
+	<str id="win_tools_encoders.package" txt="Ekstra enkodere"/>
+	<str id="win_tools_encoders.package.description" txt="Installerer ekstra enkodere til at konvertere musik fra lyd-cd'er til MP3 eller FLAC-format"/> 
+</langpack>
