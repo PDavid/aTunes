@@ -24,7 +24,7 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.model.ILookAndFeel;
 
 /**
  * <p>
@@ -38,13 +38,16 @@ public class ContextTable extends JTable {
 
     private static final long serialVersionUID = 339974237840854168L;
 
-    public ContextTable() {
+    /**
+     * @param lookAndFeel
+     */
+    public ContextTable(ILookAndFeel lookAndFeel) {
     	super();
     	setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         setColumnSelectionAllowed(false);
         setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
         getTableHeader().setReorderingAllowed(false);
-    	LookAndFeelSelector.getInstance().getCurrentLookAndFeel().decorateTable(this);
+        lookAndFeel.decorateTable(this);
     }
     
     @Override

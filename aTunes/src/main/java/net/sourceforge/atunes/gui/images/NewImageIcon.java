@@ -25,6 +25,8 @@ import java.awt.Shape;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.model.ILookAndFeel;
+
 import org.jdesktop.swingx.geom.Star2D;
 
 public class NewImageIcon {
@@ -32,12 +34,21 @@ public class NewImageIcon {
 	private static final int SIZE = 18;
 	private static final int STAR_SIZE = 16;
 	
-	public static ImageIcon getIcon() {
-		return getIcon(null);
+	/**
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getIcon(ILookAndFeel lookAndFeel) {
+		return getIcon(null, lookAndFeel);
 	}
 	
-	public static ImageIcon getIcon(Paint color) {
+	/**
+	 * @param color
+	 * @param lookAndFeel 
+	 * @return
+	 */
+	public static ImageIcon getIcon(Paint color, ILookAndFeel lookAndFeel) {
 		Shape star = new Star2D(SIZE / 2, SIZE / 2, STAR_SIZE - 12, STAR_SIZE - 8, 9);
-        return IconGenerator.generateIcon(color, SIZE, SIZE, star);
+        return IconGenerator.generateIcon(color, SIZE, SIZE, lookAndFeel, star);
 	}
 }

@@ -35,10 +35,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -62,14 +63,13 @@ public final class SearchDialog extends AbstractCustomDialog implements ISearchD
 
     /**
      * Instantiates a new search dialog.
-     * 
-     * @param owner
-     *            the owner
+     * @param frame
+     * @param lookAndFeelManager
      */
-    public SearchDialog(IFrame frame) {
-        super(frame, 300, 300, true, CloseAction.NOTHING);
+    public SearchDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
+        super(frame, 300, 300, true, CloseAction.NOTHING, lookAndFeelManager.getCurrentLookAndFeel());
         setResizable(false);
-        setContent();
+        setContent(lookAndFeelManager.getCurrentLookAndFeel());
     }
 
     /* (non-Javadoc)
@@ -90,12 +90,13 @@ public final class SearchDialog extends AbstractCustomDialog implements ISearchD
 
     /**
      * Sets the content.
+     * @param lookAndFeel
      */
-    private void setContent() {
+    private void setContent(ILookAndFeel lookAndFeel) {
         JPanel panel = new JPanel(new GridBagLayout());
         JLabel text = new JLabel(StringUtils.getString(I18nUtils.getString("SEARCH_AT"), "..."));
         text.setFont(text.getFont().deriveFont(Font.PLAIN));
-        final JList list = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getList();
+        final JList list = lookAndFeel.getList();
         list.setListData(SearchFactory.getSearches().toArray());
         list.setSelectedIndex(0);
         list.setOpaque(false);
@@ -105,7 +106,7 @@ public final class SearchDialog extends AbstractCustomDialog implements ISearchD
         setAsDefaultCheckBox.setFont(setAsDefaultCheckBox.getFont().deriveFont(Font.PLAIN));
         setAsDefaultCheckBox.setHorizontalAlignment(SwingConstants.CENTER);
 
-        JScrollPane scrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListScrollPane(list);
+        JScrollPane scrollPane = lookAndFeel.getListScrollPane(list);
         JButton okButton = new JButton(I18nUtils.getString("OK"));
         okButton.addActionListener(new ActionListener() {
             @Override

@@ -36,6 +36,7 @@ import net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationView;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioDialog;
@@ -392,7 +393,7 @@ public final class RadioHandler extends AbstractHandler {
 	 * Shows radio browser
 	 */
 	public void showRadioBrowser() {
-		new RadioBrowserDialogController(new RadioBrowserDialog(getFrame().getFrame()), getState()).showRadioBrowser();
+		new RadioBrowserDialogController(new RadioBrowserDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class)), getState()).showRadioBrowser();
 	}
 
 	@Override

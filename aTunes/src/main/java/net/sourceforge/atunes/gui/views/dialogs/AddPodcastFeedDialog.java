@@ -37,6 +37,7 @@ import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.model.IAddPodcastFeedDialog;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -60,9 +61,10 @@ public final class AddPodcastFeedDialog extends AbstractCustomDialog implements 
      * Instantiates a new adds the podcast feed dialog.
      * 
      * @param frame
+     * @param lookAndFeelManager
      */
-    public AddPodcastFeedDialog(IFrame frame) {
-        super(frame, 500, 170, true, CloseAction.DISPOSE);
+    public AddPodcastFeedDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
+        super(frame, 500, 170, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
         setTitle(I18nUtils.getString("ADD_PODCAST_FEED"));
         setResizable(false);
         add(getContent());
@@ -123,7 +125,7 @@ public final class AddPodcastFeedDialog extends AbstractCustomDialog implements 
         c.gridheight = 2;
         c.fill = GridBagConstraints.NONE;
         c.weightx = -1;
-        panel.add(new JLabel(RssImageIcon.getIcon()), c);
+        panel.add(new JLabel(RssImageIcon.getIcon(lookAndFeel)), c);
 
         JPanel auxPanel = new JPanel();
         auxPanel.add(okButton);

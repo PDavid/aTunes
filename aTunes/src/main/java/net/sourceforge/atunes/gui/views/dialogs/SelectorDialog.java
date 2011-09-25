@@ -38,7 +38,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
@@ -55,28 +55,15 @@ public final class SelectorDialog extends JDialog {
     private JList list;
 
     /**
-     * The main method.
-     * 
-     * @param args
-     *            the arguments
-     */
-    public static void main(String[] args) {
-        new SelectorDialog(null, "Test", new String[] { "Lang1", "Lang2", "Lang3", "Lang4", "Lang5", "Lang6", "Lang7", "Lang8", "Lang9", "Lang10", "Lang11", "Lang12" }, null);
-    }
-
-    /**
      * Instantiates a new selector dialog.
      * 
      * @param owner
-     *            the owner
      * @param title
-     *            the title
      * @param strings
-     *            the strings
      * @param cellRenderer
-     *            the cell renderer
+     * @param lookAndFeel
      */
-    public SelectorDialog(Window owner, String title, String[] strings, ListCellRenderer cellRenderer) {
+    public SelectorDialog(Window owner, String title, String[] strings, ListCellRenderer cellRenderer, ILookAndFeel lookAndFeel) {
         super(owner, title);
         setModal(true);
         setSize(250, 350);
@@ -85,13 +72,13 @@ public final class SelectorDialog extends JDialog {
 
         JPanel panel = new JPanel(new GridBagLayout());
 
-        list = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getList();
+        list = lookAndFeel.getList();
         list.setListData(strings);
         list.setSelectedIndex(0);
         list.setFont(list.getFont().deriveFont(Font.PLAIN));
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.setBorder(BorderFactory.createLineBorder(GuiUtils.getBorderColor()));
-        JScrollPane scrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListScrollPane(list);
+        JScrollPane scrollPane = lookAndFeel.getListScrollPane(list);
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;

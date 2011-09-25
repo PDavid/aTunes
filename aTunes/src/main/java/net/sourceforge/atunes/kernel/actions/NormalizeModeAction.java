@@ -29,9 +29,9 @@ import javax.swing.Timer;
 
 import net.sourceforge.atunes.gui.images.NormalizationImageIcon;
 import net.sourceforge.atunes.gui.images.WarningImageIcon;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class NormalizeModeAction extends ActionWithColorMutableIcon {
@@ -49,9 +49,9 @@ public class NormalizeModeAction extends ActionWithColorMutableIcon {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if (showWarning) {
-                    putValue(SMALL_ICON, NormalizationImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForSpecialControls()));
+                    putValue(SMALL_ICON, NormalizationImageIcon.getIcon(getBean(ILookAndFeelManager.class).getCurrentLookAndFeel().getPaintForSpecialControls(), getBean(ILookAndFeelManager.class).getCurrentLookAndFeel()));
                 } else {
-                    putValue(SMALL_ICON, WarningImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForSpecialControls()));
+                    putValue(SMALL_ICON, WarningImageIcon.getIcon(getBean(ILookAndFeelManager.class).getCurrentLookAndFeel().getPaintForSpecialControls(), getBean(ILookAndFeelManager.class).getCurrentLookAndFeel()));
                 }
                 showWarning = !showWarning;
             }
@@ -73,7 +73,7 @@ public class NormalizeModeAction extends ActionWithColorMutableIcon {
         PlayerHandler.getInstance().applyNormalization();
         if (timer.isRunning()) {
             timer.stop();
-            putValue(SMALL_ICON, NormalizationImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForSpecialControls()));
+            putValue(SMALL_ICON, NormalizationImageIcon.getIcon(getBean(ILookAndFeelManager.class).getCurrentLookAndFeel().getPaintForSpecialControls(), getBean(ILookAndFeelManager.class).getCurrentLookAndFeel()));
         } else {
             timer.start();
         }
@@ -85,7 +85,7 @@ public class NormalizeModeAction extends ActionWithColorMutableIcon {
 			
 			@Override
 			public ImageIcon getIcon(Paint paint) {
-				return  NormalizationImageIcon.getIcon(paint);
+				return  NormalizationImageIcon.getIcon(paint, getBean(ILookAndFeelManager.class).getCurrentLookAndFeel());
 			}
 		};
     }

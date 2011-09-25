@@ -25,10 +25,11 @@ import java.awt.Dimension;
 import javax.swing.JButton;
 
 import net.sourceforge.atunes.gui.images.StopImageIcon;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectAction;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 /**
  * The Class StopButton.
@@ -39,27 +40,31 @@ public final class StopButton extends JButton implements ILookAndFeelChangeListe
 
     private Dimension size;
     
+    private ILookAndFeel lookAndFeel;
+    
     /**
      * Instantiates a new stop button.
      * 
      * @param size
+     * @param lookAndFeelManager
      */
-    public StopButton(Dimension size) {
+    public StopButton(Dimension size, ILookAndFeelManager lookAndFeelManager) {
         super(Actions.getAction(StopCurrentAudioObjectAction.class));
         // Force size
         this.size = size;
+        this.lookAndFeel = lookAndFeelManager.getCurrentLookAndFeel();
         setPreferredSize(size);
         setMinimumSize(size);
         setMaximumSize(size);
         setFocusable(false);
         setText(null);
-        setIcon(StopImageIcon.getIcon(size));
-        LookAndFeelSelector.getInstance().getCurrentLookAndFeel().putClientProperties(this);
-        LookAndFeelSelector.getInstance().addLookAndFeelChangeListener(this);
+        setIcon(StopImageIcon.getIcon(size, lookAndFeel));
+        lookAndFeel.putClientProperties(this);
+        lookAndFeelManager.addLookAndFeelChangeListener(this);
     }
     
     @Override
     public void lookAndFeelChanged() {
-        setIcon(StopImageIcon.getIcon(size));
+        setIcon(StopImageIcon.getIcon(size, lookAndFeel));
     }
 }

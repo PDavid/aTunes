@@ -40,9 +40,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
 import net.sourceforge.atunes.kernel.modules.tags.TagAttribute;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -179,8 +179,9 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 
     /**
      * Instantiates a new navigator panel.
+     * @param lookAndFeel
      */
-    public NavigatorPanel() {
+    public NavigatorPanel(ILookAndFeel lookAndFeel) {
         super(I18nUtils.getString("NAVIGATOR"));
         showFavorites = new JCheckBox(I18nUtils.getString("SHOW_FAVORITES"));
         showExtendedToolTip = new JCheckBox(I18nUtils.getString("SHOW_EXTENDED_TOOLTIP"));
@@ -211,16 +212,16 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
         });
 
         tagAttributesTableModel = new TagAttributesTableModel();
-        highlighTagAttributesTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
+        highlighTagAttributesTable = lookAndFeel.getTable();
         highlighTagAttributesTable.setModel(tagAttributesTableModel);
         highlighTagAttributesTable.setTableHeader(null);
         highlighTagAttributesTable.getColumnModel().getColumn(0).setMaxWidth(20);
         highlighTagAttributesTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JCheckBox()));
         highlighTagAttributesTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        highlighTagAttributesTable.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(
-                GuiUtils.getComponentOrientationTableCellRendererCode()));
+        highlighTagAttributesTable.setDefaultRenderer(String.class, lookAndFeel.getTableCellRenderer(
+                GuiUtils.getComponentOrientationTableCellRendererCode(lookAndFeel)));
 
-        highlightTagAttributesScrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(highlighTagAttributesTable);
+        highlightTagAttributesScrollPane = lookAndFeel.getTableScrollPane(highlighTagAttributesTable);
         highlightTagAttributesScrollPane.setMinimumSize(new Dimension(300, 150));
 
         GridBagConstraints c = new GridBagConstraints();

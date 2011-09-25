@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -62,6 +63,6 @@ public class MuteAction extends CustomAbstractAction {
      * Updates icon of mute
      */
     private void updateIcon() {
-        putValue(SMALL_ICON, MuteButton.getVolumeIcon(getState()));
+        putValue(SMALL_ICON, MuteButton.getVolumeIcon(getState(), getBean(ILookAndFeelManager.class).getCurrentLookAndFeel()));
     }
 }

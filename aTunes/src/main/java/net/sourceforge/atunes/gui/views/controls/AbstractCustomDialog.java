@@ -27,12 +27,14 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.WindowConstants;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 public abstract class AbstractCustomDialog extends JDialog {
 
+	protected ILookAndFeel lookAndFeel;
+	
 	protected enum CloseAction {
 		
 		DISPOSE(WindowConstants.DISPOSE_ON_CLOSE), HIDE(WindowConstants.HIDE_ON_CLOSE), NOTHING(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -57,9 +59,10 @@ public abstract class AbstractCustomDialog extends JDialog {
      * @param width
      * @param height
      * @param modal
+     * @param lookAndFeel
      */
-    public AbstractCustomDialog(Window owner, int width, int height, boolean modal) {
-    	this(owner, width, height, modal, CloseAction.NOTHING);
+    public AbstractCustomDialog(Window owner, int width, int height, boolean modal, ILookAndFeel lookAndFeel) {
+    	this(owner, width, height, modal, CloseAction.NOTHING, lookAndFeel);
     }
     
     /**
@@ -69,13 +72,15 @@ public abstract class AbstractCustomDialog extends JDialog {
      * @param width
      * @param height
      * @param modal
-     * @param disposeOnClose
+     * @param closeAction
+     * @param lookAndFeel
      */
     @Deprecated
-    public AbstractCustomDialog(Window owner, int width, int height, boolean modal, CloseAction closeAction) {
+    public AbstractCustomDialog(Window owner, int width, int height, boolean modal, CloseAction closeAction, ILookAndFeel lookAndFeel) {
         super(owner);
         setSize(width, height);
-        setUndecorated(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isDialogUndecorated());
+        this.lookAndFeel = lookAndFeel;
+        setUndecorated(lookAndFeel.isDialogUndecorated());
         setModalityType(modal ? ModalityType.APPLICATION_MODAL : ModalityType.MODELESS);
         setLocationRelativeTo(owner.getWidth() == 0 ? null : owner);
         setDefaultCloseOperation(closeAction.getConstant());
@@ -89,16 +94,18 @@ public abstract class AbstractCustomDialog extends JDialog {
     /**
      * Instantiates a new custom modal dialog.
      * 
-     * @param owner
+     * @param frame
      * @param width
      * @param height
      * @param modal
-     * @param disposeOnClose
+     * @param closeAction
+     * @param lookAndFeel
      */
-    public AbstractCustomDialog(IFrame frame, int width, int height, boolean modal, CloseAction closeAction) {
+    public AbstractCustomDialog(IFrame frame, int width, int height, boolean modal, CloseAction closeAction, ILookAndFeel lookAndFeel) {
         super(frame.getFrame());
         setSize(width, height);
-        setUndecorated(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isDialogUndecorated());
+        this.lookAndFeel = lookAndFeel;
+        setUndecorated(lookAndFeel.isDialogUndecorated());
         setModalityType(modal ? ModalityType.APPLICATION_MODAL : ModalityType.MODELESS);
         setLocationRelativeTo(frame.getFrame().getWidth() == 0 ? null : frame.getFrame());
         setDefaultCloseOperation(closeAction.getConstant());

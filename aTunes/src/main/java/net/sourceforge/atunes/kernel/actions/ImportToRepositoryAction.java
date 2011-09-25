@@ -24,10 +24,12 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.List;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.SelectorDialog;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -72,7 +74,7 @@ public class ImportToRepositoryAction extends CustomAbstractAction {
                 // If repository folders are more than one then user must select where to import songs
                 if (foldersList.length > 1) {
                     SelectorDialog selector = new SelectorDialog(getBean(IFrame.class).getFrame(), I18nUtils.getString("SELECT_REPOSITORY_FOLDER_TO_IMPORT"),
-                            foldersList, null);
+                            foldersList, null, Context.getBean(ILookAndFeelManager.class).getCurrentLookAndFeel());
                     selector.setVisible(true);
                     path = selector.getSelection();
                     // If user closed dialog then select first entry

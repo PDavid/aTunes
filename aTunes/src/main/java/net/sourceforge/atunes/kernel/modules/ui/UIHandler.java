@@ -40,6 +40,7 @@ import net.sourceforge.atunes.model.IAboutDialog;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.IFullScreenHandler;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
@@ -165,7 +166,7 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
         Logger.debug("Starting visualization");
 
         if (new JVMProperties().isJava6Update10OrLater()) {
-            FadingPopupFactory.install(getOsManager());
+            FadingPopupFactory.install(getOsManager(), getBean(ILookAndFeelManager.class).getCurrentLookAndFeel());
         }
 
 		getFrame().setState(getState());

@@ -48,6 +48,7 @@ import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.model.IAddPodcastFeedDialog;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
@@ -331,7 +332,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
         }
         final IProgressDialog d = (IProgressDialog) getBean("transferDialog");
         d.setTitle(I18nUtils.getString("PODCAST_FEED_ENTRY_DOWNLOAD"));
-        d.setIcon(RssImageIcon.getIcon());
+        d.setIcon(RssImageIcon.getIcon(getBean(ILookAndFeelManager.class).getCurrentLookAndFeel()));
         final PodcastFeedEntryDownloader downloadPodcastFeedEntry = new PodcastFeedEntryDownloader(podcastFeedEntry, getState().getProxy(), getFrame(), this);
         synchronized (runningDownloads) {
             runningDownloads.add(downloadPodcastFeedEntry);

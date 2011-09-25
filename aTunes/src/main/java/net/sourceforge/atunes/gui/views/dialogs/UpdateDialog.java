@@ -40,14 +40,20 @@ import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.model.ApplicationVersion;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class UpdateDialog extends AbstractCustomDialog {
 
     private static final long serialVersionUID = -778226654176158965L;
 
-    public UpdateDialog(ApplicationVersion version, Window owner) {
-        super(owner, 400, 150, true, CloseAction.DISPOSE);
+    /**
+     * @param version
+     * @param owner
+     * @param lookAndFeelManager
+     */
+    public UpdateDialog(ApplicationVersion version, Window owner, ILookAndFeelManager lookAndFeelManager) {
+        super(owner, 400, 150, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
         setTitle(I18nUtils.getString("NEW_VERSION_AVAILABLE"));
         setResizable(false);
 

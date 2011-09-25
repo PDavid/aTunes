@@ -72,8 +72,8 @@ public class ArtistAlbumsContent extends AbstractContextPanelContent {
     @Override
     protected Component getComponent() {
         // Create components
-        albumsTable = new ContextTable();
-        albumsTable.addContextRowPanel(new AlbumsTableCellRendererCode());
+        albumsTable = new ContextTable(getLookAndFeelManager().getCurrentLookAndFeel());
+        albumsTable.addContextRowPanel(new AlbumsTableCellRendererCode(getLookAndFeelManager().getCurrentLookAndFeel()));
         return albumsTable;
     }
 

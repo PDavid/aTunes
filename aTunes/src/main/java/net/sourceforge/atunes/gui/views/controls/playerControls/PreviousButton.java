@@ -25,38 +25,43 @@ import java.awt.Dimension;
 import javax.swing.JButton;
 
 import net.sourceforge.atunes.gui.images.PreviousImageIcon;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectAction;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 public final class PreviousButton extends JButton implements ILookAndFeelChangeListener {
 
     private static final long serialVersionUID = -5415683019365261871L;
 
     private Dimension size;
+    
+    private ILookAndFeel lookAndFeel;
 
     /**
      * Instantiates a new previous button.
      * 
      * @param size
+     * @param lookAndFeelManager
      */
-    public PreviousButton(Dimension size) {
+    public PreviousButton(Dimension size, ILookAndFeelManager lookAndFeelManager) {
         super(Actions.getAction(PlayPreviousAudioObjectAction.class));
         // Force size
         this.size = size;
+        this.lookAndFeel = lookAndFeelManager.getCurrentLookAndFeel();
         setPreferredSize(size);
         setMinimumSize(size);
         setMaximumSize(size);
         setFocusable(false);
         setText(null);
-        setIcon(PreviousImageIcon.getIcon(size));
-        LookAndFeelSelector.getInstance().getCurrentLookAndFeel().putClientProperties(this);
-        LookAndFeelSelector.getInstance().addLookAndFeelChangeListener(this);
+        setIcon(PreviousImageIcon.getIcon(size, lookAndFeel));
+        lookAndFeel.putClientProperties(this);
+        lookAndFeelManager.addLookAndFeelChangeListener(this);
     }
 
     @Override
     public void lookAndFeelChanged() {
-        setIcon(PreviousImageIcon.getIcon(size));
+        setIcon(PreviousImageIcon.getIcon(size, lookAndFeel));
     }
 }

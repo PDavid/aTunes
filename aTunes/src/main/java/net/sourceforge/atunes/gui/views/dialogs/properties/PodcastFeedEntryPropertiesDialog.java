@@ -35,9 +35,10 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.images.RssImageIcon;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -70,14 +71,16 @@ final class PodcastFeedEntryPropertiesDialog extends AudioObjectPropertiesDialog
      * Instantiates a new podcast feed entry properties dialog.
      * 
      * @param entry
-     *            the entry
+     * @param frame
+     * @param state
+     * @param lookAndFeelManager
      */
-    PodcastFeedEntryPropertiesDialog(IPodcastFeedEntry entry, IFrame frame, IState state) {
-        super(getTitleText(entry), frame);
+    PodcastFeedEntryPropertiesDialog(IPodcastFeedEntry entry, IFrame frame, IState state, ILookAndFeelManager lookAndFeelManager) {
+        super(getTitleText(entry), frame, lookAndFeelManager);
         this.entry = entry;
         this.state = state;
         setAudioObject(entry);
-        addContent();
+        addContent(lookAndFeelManager.getCurrentLookAndFeel());
 
         setContent();
 
@@ -98,8 +101,9 @@ final class PodcastFeedEntryPropertiesDialog extends AudioObjectPropertiesDialog
 
     /**
      * Adds the content.
+     * @param iLookAndFeel 
      */
-    private void addContent() {
+    private void addContent(ILookAndFeel iLookAndFeel) {
         JPanel panel = new JPanel(new GridBagLayout());
         
         pictureLabel = new JLabel();
@@ -113,7 +117,7 @@ final class PodcastFeedEntryPropertiesDialog extends AudioObjectPropertiesDialog
         panel.add(pictureLabel, c);
 
         titleLabel = new JLabel();
-        titleLabel.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPropertiesDialogBigFont());
+        titleLabel.setFont(iLookAndFeel.getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 0;
         c.gridheight = 1;
@@ -122,13 +126,13 @@ final class PodcastFeedEntryPropertiesDialog extends AudioObjectPropertiesDialog
         panel.add(titleLabel, c);
 
         artistLabel = new JLabel();
-        artistLabel.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPropertiesDialogBigFont());
+        artistLabel.setFont(iLookAndFeel.getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 1;
         panel.add(artistLabel, c);
 
         urlLabel = new JLabel();
-        urlLabel.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPropertiesDialogBigFont());
+        urlLabel.setFont(iLookAndFeel.getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 2;
         panel.add(urlLabel, c);
@@ -159,7 +163,7 @@ final class PodcastFeedEntryPropertiesDialog extends AudioObjectPropertiesDialog
         c.insets = new Insets(5, 10, 0, 10);
         panel.add(descriptionLabel, c);
 
-        descriptionScrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getScrollPane(null);
+        descriptionScrollPane = iLookAndFeel.getScrollPane(null);
         descriptionScrollPane.setMinimumSize(new Dimension(400, 100));
         c.gridx = 1;
         c.gridy = 8;
@@ -182,7 +186,7 @@ final class PodcastFeedEntryPropertiesDialog extends AudioObjectPropertiesDialog
      * Fill picture.
      */
     private void fillPicture() {
-        ImageIcon picture = RssImageIcon.getIcon();
+        ImageIcon picture = RssImageIcon.getIcon(lookAndFeel);
         pictureLabel.setPreferredSize(new Dimension(picture.getIconWidth(), picture.getIconHeight()));
         pictureLabel.setIcon(picture);
         pictureLabel.setVisible(true);

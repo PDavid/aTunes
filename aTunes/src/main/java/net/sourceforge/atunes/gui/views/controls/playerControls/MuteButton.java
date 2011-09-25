@@ -30,10 +30,11 @@ import net.sourceforge.atunes.gui.images.VolumeMedImageIcon;
 import net.sourceforge.atunes.gui.images.VolumeMinImageIcon;
 import net.sourceforge.atunes.gui.images.VolumeMuteImageIcon;
 import net.sourceforge.atunes.gui.images.VolumeZeroImageIcon;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IState;
 
 public final class MuteButton extends JToggleButton implements ILookAndFeelChangeListener {
@@ -42,14 +43,19 @@ public final class MuteButton extends JToggleButton implements ILookAndFeelChang
 
     private IState state;
     
+    private ILookAndFeel lookAndFeel;
+    
     /**
      * Instantiates a new mute button.
      * 
      * @param size
+     * @param state
+     * @param lookAndFeelManager
      */
-    public MuteButton(Dimension size, IState state) {
+    public MuteButton(Dimension size, IState state, ILookAndFeelManager lookAndFeelManager) {
         super(Actions.getAction(MuteAction.class));
         this.state = state;
+        this.lookAndFeel = lookAndFeelManager.getCurrentLookAndFeel();
 
         // Force size
         setPreferredSize(size);
@@ -57,8 +63,8 @@ public final class MuteButton extends JToggleButton implements ILookAndFeelChang
         setMaximumSize(size);
         setFocusable(false);
 
-        LookAndFeelSelector.getInstance().getCurrentLookAndFeel().putClientProperties(this);
-        LookAndFeelSelector.getInstance().addLookAndFeelChangeListener(this);
+        lookAndFeel.putClientProperties(this);
+        lookAndFeelManager.addLookAndFeelChangeListener(this);
     }
     
     @Override
@@ -71,27 +77,28 @@ public final class MuteButton extends JToggleButton implements ILookAndFeelChang
      * @param state
      */
     public void updateIcon(IState state) {
-    	setIcon(getVolumeIcon(state));
+    	setIcon(getVolumeIcon(state, lookAndFeel));
     }
     
     /**
      * Returns icon to use depending on volume and mute state
      * @param state
+     * @param lookAndFeel
      * @return
      */
-    public static ImageIcon getVolumeIcon(IState state) {
+    public static ImageIcon getVolumeIcon(IState state, ILookAndFeel lookAndFeel) {
         if (state.isMuteEnabled()) {
-            return VolumeMuteImageIcon.getIcon();
+            return VolumeMuteImageIcon.getIcon(lookAndFeel);
         } else {
             int volume = state.getVolume();
             if (volume > 80) {
-                return VolumeMaxImageIcon.getIcon();
+                return VolumeMaxImageIcon.getIcon(lookAndFeel);
             } else if (volume > 40) {
-            	return VolumeMedImageIcon.getIcon();
+            	return VolumeMedImageIcon.getIcon(lookAndFeel);
             } else if (volume > 5) {
-            	return VolumeMinImageIcon.getIcon();
+            	return VolumeMinImageIcon.getIcon(lookAndFeel);
             } else {
-            	return VolumeZeroImageIcon.getIcon();
+            	return VolumeZeroImageIcon.getIcon(lookAndFeel);
             }
         }
     }

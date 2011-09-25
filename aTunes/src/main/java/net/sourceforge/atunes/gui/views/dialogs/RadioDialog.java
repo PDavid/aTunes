@@ -36,6 +36,7 @@ import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -60,9 +61,10 @@ public final class RadioDialog extends AbstractCustomDialog implements IRadioDia
      * Instantiates a new radio dialog for adding a new radio
      * 
      * @param frame
+     * @param lookAndFeelManager
      */
-    public RadioDialog(IFrame frame) {
-        super(frame, 500, 200, true, CloseAction.DISPOSE);
+    public RadioDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
+        super(frame, 500, 200, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
         setTitle(I18nUtils.getString("ADD_RADIO"));
         setResizable(false);
         add(getContent());
@@ -139,7 +141,7 @@ public final class RadioDialog extends AbstractCustomDialog implements IRadioDia
         c.gridheight = 2;
         c.fill = GridBagConstraints.NONE;
         c.weightx = -1;
-        panel.add(new JLabel(RadioImageIcon.getIcon()), c);
+        panel.add(new JLabel(RadioImageIcon.getIcon(lookAndFeel)), c);
 
         JPanel auxPanel = new JPanel();
         auxPanel.add(okButton);

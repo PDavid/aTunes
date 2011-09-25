@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.macos.MacOSXLookAndFeel;
 import net.sourceforge.atunes.kernel.Kernel;
@@ -34,6 +33,8 @@ import net.sourceforge.atunes.kernel.modules.os.OperatingSystemAdapter;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.IUIHandler;
@@ -50,6 +51,10 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
     
     protected static final String MPLAYER_COMMAND = "mplayer.command";
     
+    /**
+     * @param systemType
+     * @param osManager
+     */
     public MacOSXOperatingSystem(OperatingSystem systemType, IOSManager osManager) {
 		super(systemType, osManager);
 	}
@@ -126,8 +131,8 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 	 * Returns list of supported look and feels
 	 * @return
 	 */
-	public Map<String, Class<? extends AbstractLookAndFeel>> getSupportedLookAndFeels() {
-	    Map<String, Class<? extends AbstractLookAndFeel>> lookAndFeels = new HashMap<String, Class<? extends AbstractLookAndFeel>>();
+	public Map<String, Class<? extends ILookAndFeel>> getSupportedLookAndFeels() {
+	    Map<String, Class<? extends ILookAndFeel>> lookAndFeels = new HashMap<String, Class<? extends ILookAndFeel>>();
         lookAndFeels.put(SubstanceLookAndFeel.SUBSTANCE, SubstanceLookAndFeel.class);
         lookAndFeels.put(MacOSXLookAndFeel.SYSTEM, MacOSXLookAndFeel.class);
         return lookAndFeels;
@@ -137,13 +142,13 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 	 * Returns default look and feel class
 	 * @return
 	 */
-	public Class<? extends AbstractLookAndFeel> getDefaultLookAndFeel() {
+	public Class<? extends ILookAndFeel> getDefaultLookAndFeel() {
 		return SubstanceLookAndFeel.class;
 	}
 	
 	@Override
 	public void manageNoPlayerEngine(IFrame frame) {
-		MacOSXPlayerSelectionDialog dialog = new MacOSXPlayerSelectionDialog(frame, osManager);
+		MacOSXPlayerSelectionDialog dialog = new MacOSXPlayerSelectionDialog(frame, osManager, Context.getBean(ILookAndFeelManager.class));
 		dialog.setVisible(true);
 	}
 	

@@ -36,10 +36,11 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.ScrollableFlowPanel;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -55,12 +56,13 @@ public final class CoverNavigatorFrame extends AbstractCustomDialog {
      * Instantiates a new cover navigator frame.
      * 
      * @param artists
-     *            the artists
+     * @param owner
+     * @param lookAndFeelManager
      */
-    public CoverNavigatorFrame(List<Artist> artists, Window owner) {
-        super(owner, GuiUtils.getComponentWidthForResolution(0.75f), GuiUtils.getComponentHeightForResolution(0.75f), true, CloseAction.DISPOSE);
+    public CoverNavigatorFrame(List<Artist> artists, Window owner, ILookAndFeelManager lookAndFeelManager) {
+        super(owner, GuiUtils.getComponentWidthForResolution(0.75f), GuiUtils.getComponentHeightForResolution(0.75f), true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
         setTitle(I18nUtils.getString("COVER_NAVIGATOR"));
-        setContent(artists);
+        setContent(artists, lookAndFeelManager.getCurrentLookAndFeel());
     }
 
     /**
@@ -95,8 +97,9 @@ public final class CoverNavigatorFrame extends AbstractCustomDialog {
      * 
      * @param artists
      *            the new content
+     * @param iLookAndFeel 
      */
-    private void setContent(List<Artist> artists) {
+    private void setContent(List<Artist> artists, ILookAndFeel iLookAndFeel) {
         JPanel panel = new JPanel(new GridBagLayout());
 
         coversPanel = new ScrollableFlowPanel();
@@ -105,14 +108,14 @@ public final class CoverNavigatorFrame extends AbstractCustomDialog {
         flowLayout.setAlignment(FlowLayout.LEADING);
         coversPanel.setLayout(flowLayout);
 
-        list = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getList();
+        list = iLookAndFeel.getList();
         list.setListData(artists.toArray());
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        JScrollPane listScrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListScrollPane(list);
+        JScrollPane listScrollPane = iLookAndFeel.getListScrollPane(list);
         listScrollPane.setMinimumSize(new Dimension(200, 0));
 
-        JScrollPane coversScrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getScrollPane(coversPanel);
+        JScrollPane coversScrollPane = iLookAndFeel.getScrollPane(coversPanel);
         coversScrollPane.setBorder(BorderFactory.createLineBorder(GuiUtils.getBorderColor()));
         coversScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         coversScrollPane.getVerticalScrollBar().setUnitIncrement(20);

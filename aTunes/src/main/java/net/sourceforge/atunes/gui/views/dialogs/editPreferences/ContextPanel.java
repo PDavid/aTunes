@@ -50,10 +50,10 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ClearCachesAction;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILyricsEngineInfo;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.DesktopUtils;
@@ -209,9 +209,10 @@ public final class ContextPanel extends AbstractPreferencesPanel {
     private JTable enginesTable;
 
     /**
-     * Instantiates a new audio scrobbler panel.
+     * Instantiates a new context panel.
+     * @param lookAndFeel
      */
-    public ContextPanel() {
+    public ContextPanel(ILookAndFeel lookAndFeel) {
         super(I18nUtils.getString("CONTEXT_INFORMATION"));
         activateContext = new JCheckBox(I18nUtils.getString("ACTIVATE_CONTEXT_INFORMATION"));
         savePictures = new JCheckBox(I18nUtils.getString("SAVE_PICTURES_TO_AUDIO_FOLDERS"));
@@ -253,14 +254,14 @@ public final class ContextPanel extends AbstractPreferencesPanel {
         info.addMouseListener(new OpenLastFmMouseAdapter());
         JLabel enginesTableLabel = new JLabel(I18nUtils.getString("LYRICS_ENGINES_SELECTION"));
         final LyricsEnginesTableModel model = new LyricsEnginesTableModel();
-        enginesTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
+        enginesTable = lookAndFeel.getTable();
         enginesTable.setModel(model);
         enginesTable.setTableHeader(null);
         enginesTable.getColumnModel().getColumn(0).setMaxWidth(20);
         enginesTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JCheckBox()));
         enginesTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        enginesTable.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(
-                GuiUtils.getComponentOrientationTableCellRendererCode()));
+        enginesTable.setDefaultRenderer(String.class, lookAndFeel.getTableCellRenderer(
+                GuiUtils.getComponentOrientationTableCellRendererCode(lookAndFeel)));
         JButton upButton = new JButton(I18nUtils.getString("MOVE_UP"));
         upButton.addActionListener(new ActionListener() {
             @Override
@@ -281,7 +282,7 @@ public final class ContextPanel extends AbstractPreferencesPanel {
                 }
             }
         });
-        JScrollPane enginesScrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(enginesTable);
+        JScrollPane enginesScrollPane = lookAndFeel.getTableScrollPane(enginesTable);
         enginesScrollPane.setMinimumSize(new Dimension(200, 100));
 
         GridBagConstraints c = new GridBagConstraints();

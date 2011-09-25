@@ -46,7 +46,7 @@ public class SimilarArtistsContextPanel extends AbstractContextPanel {
         return new IColorMutableImageIcon() {
         	@Override
         	public ImageIcon getIcon(Paint paint) {
-                return ArtistSimilarImageIcon.getIcon(paint);
+                return ArtistSimilarImageIcon.getIcon(paint, getLookAndFeel());
         	}
         };
     }

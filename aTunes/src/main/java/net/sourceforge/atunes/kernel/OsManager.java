@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.kernel.modules.os.LinuxOperatingSystem;
@@ -38,6 +37,8 @@ import net.sourceforge.atunes.kernel.modules.os.WindowsOperatingSystem;
 import net.sourceforge.atunes.kernel.modules.os.macosx.MacOSXOperatingSystem;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.OperatingSystem;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -60,9 +61,9 @@ public class OsManager implements IOSManager {
     private String customRepositoryConfigFolder = null;
 	
     /**
-     *  Constructor 
+     *  Initializes os manager 
      */
-    public OsManager() {
+    public void initialize() {
     	osType = detectOperatingSystem();
     	if (osType.isLinux()) {
     		adapter = new LinuxOperatingSystem(osType, this);
@@ -341,7 +342,7 @@ public class OsManager implements IOSManager {
 	 * @see net.sourceforge.atunes.kernel.IOSManager#getLookAndFeels()
 	 */
 	@Override
-	public Map<String, Class<? extends AbstractLookAndFeel>> getLookAndFeels() {
+	public Map<String, Class<? extends ILookAndFeel>> getLookAndFeels() {
 		return adapter.getSupportedLookAndFeels();
 	}
 
@@ -349,7 +350,7 @@ public class OsManager implements IOSManager {
 	 * @see net.sourceforge.atunes.kernel.IOSManager#getDefaultLookAndFeel()
 	 */
 	@Override
-	public Class<? extends AbstractLookAndFeel> getDefaultLookAndFeel() {
+	public Class<? extends ILookAndFeel> getDefaultLookAndFeel() {
 		return adapter.getDefaultLookAndFeel();
 	}
 

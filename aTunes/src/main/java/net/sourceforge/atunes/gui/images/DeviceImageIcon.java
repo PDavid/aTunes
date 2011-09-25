@@ -31,7 +31,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.model.ILookAndFeel;
 
 public class DeviceImageIcon {
 
@@ -40,14 +40,23 @@ public class DeviceImageIcon {
 	
 	private static ImageIcon icon;
 	
-	public static ImageIcon getIcon() {
+	/**
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getIcon(ILookAndFeel lookAndFeel) {
 		if (icon == null) {
-			icon = getIcon(null);	
+			icon = getIcon(null, lookAndFeel);	
 		}
 		return icon;
 	}
 	
-	public static ImageIcon getIcon(Paint color) {
+	/**
+	 * @param color
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getIcon(Paint color, ILookAndFeel lookAndFeel) {
 		int marginX = 3;
 		int marginY = 1;
 		int arc = 4;
@@ -60,7 +69,7 @@ public class DeviceImageIcon {
 		BufferedImage bi = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D g = bi.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setPaint(color != null ? color : LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForSpecialControls());
+        g.setPaint(color != null ? color : lookAndFeel.getPaintForSpecialControls());
         
        	g.fill(new RoundRectangle2D.Float(marginX, marginY, WIDTH - 2 * marginX, HEIGHT - 2 * marginY, arc, arc));
        	g.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));

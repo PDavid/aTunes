@@ -35,7 +35,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -151,7 +150,7 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
         audioObjectImage = new JLabel();
         audioObjectTitle = new JLabel();
         audioObjectTitle.setHorizontalAlignment(SwingConstants.CENTER);
-        audioObjectTitle.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getContextInformationBigFont());
+        audioObjectTitle.setFont(getLookAndFeelManager().getCurrentLookAndFeel().getContextInformationBigFont());
         audioObjectArtist = new JLabel();
         audioObjectArtist.setHorizontalAlignment(SwingConstants.CENTER);
         audioObjectLastPlayDate = new JLabel();

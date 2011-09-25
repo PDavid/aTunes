@@ -34,6 +34,7 @@ import net.sourceforge.atunes.kernel.actions.CopyPlayListToDeviceAction;
 import net.sourceforge.atunes.kernel.actions.NewPlayListAction;
 import net.sourceforge.atunes.kernel.actions.RenamePlaylistAction;
 import net.sourceforge.atunes.kernel.actions.SynchronizeDeviceWithPlayListAction;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 public final class PlayListTabPanel extends JPanel {
 
@@ -45,17 +46,19 @@ public final class PlayListTabPanel extends JPanel {
     
     /**
      * Instantiates a new play list tab panel.
+     * @param lookAndFeelManager
      */
-    public PlayListTabPanel() {
+    public PlayListTabPanel(ILookAndFeelManager lookAndFeelManager) {
         super(new BorderLayout());
-        addContent();
+        addContent(lookAndFeelManager);
     }
 
     /**
      * Adds the content.
+     * @param lookAndFeelManager 
      */
-    private void addContent() {
-    	options = new PopUpButton(PopUpButton.BOTTOM_RIGHT);
+    private void addContent(ILookAndFeelManager lookAndFeelManager) {
+    	options = new PopUpButton(PopUpButton.BOTTOM_RIGHT, lookAndFeelManager);
     	playListCombo = new JComboBox();
 
     	add(options, BorderLayout.WEST);

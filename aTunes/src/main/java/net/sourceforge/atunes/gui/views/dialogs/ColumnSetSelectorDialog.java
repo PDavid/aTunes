@@ -41,12 +41,13 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IColumnSelectorDialog;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -201,10 +202,11 @@ public final class ColumnSetSelectorDialog extends AbstractCustomDialog implemen
      * Instantiates a new play list column selector.
      * 
      * @param frame
+     * @param lookAndFeelManager
      */
-    public ColumnSetSelectorDialog(IFrame frame) {
-        super(frame, 250, 300, true, CloseAction.DISPOSE);
-        add(getContent());
+    public ColumnSetSelectorDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
+        super(frame, 250, 300, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
+        add(getContent(lookAndFeelManager.getCurrentLookAndFeel()));
         setTitle(I18nUtils.getString("ARRANGE_COLUMNS"));
         setResizable(false);
         // TODO: Add pack to all dialogs
@@ -216,21 +218,21 @@ public final class ColumnSetSelectorDialog extends AbstractCustomDialog implemen
      * 
      * @return the content
      */
-    private JPanel getContent() {
+    private JPanel getContent(ILookAndFeel lookAndFeel) {
         JPanel panel = new JPanel(new GridBagLayout());
 
         model = new ColumnsTableModel();
 
-        columnsList = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
+        columnsList = lookAndFeel.getTable();
         columnsList.setModel(model);
         columnsList.setTableHeader(null);
         columnsList.getColumnModel().getColumn(0).setMaxWidth(20);
         columnsList.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JCheckBox()));
         columnsList.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        columnsList.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(
-                GuiUtils.getComponentOrientationTableCellRendererCode()));
+        columnsList.setDefaultRenderer(String.class, lookAndFeel.getTableCellRenderer(
+                GuiUtils.getComponentOrientationTableCellRendererCode(lookAndFeel)));
 
-        JScrollPane scrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(columnsList);
+        JScrollPane scrollPane = lookAndFeel.getTableScrollPane(columnsList);
         JLabel label = new JLabel(I18nUtils.getString("SELECT_COLUMNS"));
         JButton okButton = new JButton(I18nUtils.getString("OK"));
         okButton.addActionListener(new ActionListener() {

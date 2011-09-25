@@ -32,10 +32,10 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.gui.views.controls.LookAndFeelAwareButton;
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -52,18 +52,22 @@ public class FilterPanel extends JPanel {
 
     private IState state;
     
-    public FilterPanel(IState state) {
+    /**
+     * @param state
+     * @param lookAndFeelManager
+     */
+    public FilterPanel(IState state, ILookAndFeelManager lookAndFeelManager) {
         super(new BorderLayout());
         this.state = state;
-        addContent();
+        addContent(lookAndFeelManager);
     }
 
-    private void addContent() {
-        filterButton = new PopUpButton(state.isShowPlayerControlsOnTop() ? PopUpButton.BOTTOM_RIGHT : PopUpButton.TOP_RIGHT);
+    private void addContent(final ILookAndFeelManager lookAndFeelManager) {
+        filterButton = new PopUpButton(state.isShowPlayerControlsOnTop() ? PopUpButton.BOTTOM_RIGHT : PopUpButton.TOP_RIGHT, lookAndFeelManager);
         filterTextField = new CustomTextField(12);
         filterTextField.setText(StringUtils.getString(I18nUtils.getString("FILTER"), "..."));
         filterTextField.setToolTipText(I18nUtils.getString("FILTER_TEXTFIELD_TOOLTIP"));
-        clearButton = new LookAndFeelAwareButton() {
+        clearButton = new LookAndFeelAwareButton(lookAndFeelManager) {
         	/**
 			 * 
 			 */
@@ -105,7 +109,7 @@ public class FilterPanel extends JPanel {
 		        Graphics2D g2 = (Graphics2D) g;
 		        g2.translate(getBounds().width / 2, getBounds().height / 2);
 		        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		        g2.setPaint(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForSpecialControls());
+		        g2.setPaint(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls());
 		        Area a = new Area(e);
 		        a.subtract(new Area(p));
 		        g2.fill(a);

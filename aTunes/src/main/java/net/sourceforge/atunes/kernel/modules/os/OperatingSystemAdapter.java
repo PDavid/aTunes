@@ -33,7 +33,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.SystemLookAndFeel;
 import net.sourceforge.atunes.kernel.Kernel;
@@ -43,6 +42,7 @@ import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineManager;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.OperatingSystem;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -57,6 +57,11 @@ public abstract class OperatingSystemAdapter {
 	
 	protected IOSManager osManager;
 	
+	/**
+	 * @param systemType
+	 * @param osManager
+	 * @param lookAndFeelManager
+	 */
 	public OperatingSystemAdapter(OperatingSystem systemType, IOSManager osManager) {
 		this.systemType = systemType;
 		this.osManager = osManager;
@@ -227,10 +232,9 @@ public abstract class OperatingSystemAdapter {
 	 * 
 	 * @return
 	 */
-	public Map<String, Class<? extends AbstractLookAndFeel>> getSupportedLookAndFeels() {
-		Map<String, Class<? extends AbstractLookAndFeel>> lookAndFeels = new HashMap<String, Class<? extends AbstractLookAndFeel>>();
-		lookAndFeels.put(SubstanceLookAndFeel.SUBSTANCE,
-				SubstanceLookAndFeel.class);
+	public Map<String, Class<? extends ILookAndFeel>> getSupportedLookAndFeels() {
+		Map<String, Class<? extends ILookAndFeel>> lookAndFeels = new HashMap<String, Class<? extends ILookAndFeel>>();
+		lookAndFeels.put(SubstanceLookAndFeel.SUBSTANCE, SubstanceLookAndFeel.class);
 		lookAndFeels.put(SystemLookAndFeel.SYSTEM, SystemLookAndFeel.class);
 		return lookAndFeels;
 	}
@@ -240,7 +244,7 @@ public abstract class OperatingSystemAdapter {
 	 * 
 	 * @return
 	 */
-	public Class<? extends AbstractLookAndFeel> getDefaultLookAndFeel() {
+	public Class<? extends ILookAndFeel> getDefaultLookAndFeel() {
 		return SubstanceLookAndFeel.class;
 	}
 

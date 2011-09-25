@@ -45,12 +45,13 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
 import net.sourceforge.atunes.gui.views.controls.CustomSplitPane;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
 @PluginApi
-public abstract class AbstractLookAndFeel {
+public abstract class AbstractLookAndFeel implements ILookAndFeel {
 
 	/**
 	 * Base font
@@ -148,133 +149,119 @@ public abstract class AbstractLookAndFeel {
         }
     }
 
-    /**
-     * Returns name of the look and feel
-     */
-    public abstract String getName();
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getName()
+	 */
+    @Override
+	public abstract String getName();
 
-    /**
-     * Returns description to show to user
-     */
-    public abstract String getDescription();
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getDescription()
+	 */
+    @Override
+	public abstract String getDescription();
 
-    /**
-     * Steps needed to initialize look and feel
-     */
-    public abstract void initializeLookAndFeel();
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#initializeLookAndFeel()
+	 */
+    @Override
+	public abstract void initializeLookAndFeel();
 
-    /**
-     * Steps needed to set up look and feel
-     * 
-     * @param skin
-     */
-    public abstract void setLookAndFeel(String skin);
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#setLookAndFeel(java.lang.String)
+	 */
+    @Override
+	public abstract void setLookAndFeel(String skin);
 
-    /**
-     * Returns default skin (if supported)
-     * 
-     * @return
-     */
-    public abstract String getDefaultSkin();
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getDefaultSkin()
+	 */
+    @Override
+	public abstract String getDefaultSkin();
 
-    /**
-     * Returns list of available skins for this look and feel (if supported)
-     * 
-     * @return
-     */
-    public abstract List<String> getSkins();
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getSkins()
+	 */
+    @Override
+	public abstract List<String> getSkins();
 
-    /**
-     * Returns if dialogs must be undecorated
-     * 
-     * @return
-     */
-    public boolean isDialogUndecorated() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#isDialogUndecorated()
+	 */
+    @Override
+	public boolean isDialogUndecorated() {
         return false;
     }
 
-    /**
-     * Returns a new TreeCellRenderer executing given code (default
-     * implementation)
-     * 
-     * @param code
-     * @return
-     */
-    public TreeCellRenderer getTreeCellRenderer(final AbstractTreeCellRendererCode code) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getTreeCellRenderer(net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellRendererCode)
+	 */
+    @Override
+	public TreeCellRenderer getTreeCellRenderer(final AbstractTreeCellRendererCode code) {
         return new LookAndFeelTreeCellRenderer(code);
     }
 
-    /**
-     * Returns a new TableCellRenderer executing given code (default
-     * implementation)
-     * 
-     * @param code
-     * @return
-     */
-    public TableCellRenderer getTableCellRenderer(final AbstractTableCellRendererCode code) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getTableCellRenderer(net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode)
+	 */
+    @Override
+	public TableCellRenderer getTableCellRenderer(final AbstractTableCellRendererCode code) {
         return new LookAndFeelTableCellRenderer(code);
     }
 
-    /**
-     * Returns a new TableCellRenderer executing given code (default
-     * implementation)
-     * 
-     * @param code
-     * @return
-     */
-    public TableCellRenderer getTableHeaderCellRenderer(final AbstractTableCellRendererCode code) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getTableHeaderCellRenderer(net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode)
+	 */
+    @Override
+	public TableCellRenderer getTableHeaderCellRenderer(final AbstractTableCellRendererCode code) {
         return new LookAndFeelTableHeaderCellRenderer(code);
     }
 
-    /**
-     * Returns a new ListCellRendeder executing given code (default
-     * implementation)
-     * 
-     * @param code
-     * @return
-     */
-    public ListCellRenderer getListCellRenderer(final AbstractListCellRendererCode code) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getListCellRenderer(net.sourceforge.atunes.gui.lookandfeel.AbstractListCellRendererCode)
+	 */
+    @Override
+	public ListCellRenderer getListCellRenderer(final AbstractListCellRendererCode code) {
         return new LookAndFeelListCellRenderer(code);
     }
 
-    /**
-     * Returns if custom combo box renderers are supported
-     * @return
-     */
-    public boolean customComboBoxRenderersSupported() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#customComboBoxRenderersSupported()
+	 */
+    @Override
+	public boolean customComboBoxRenderersSupported() {
     	return true;
     }
     
-    /**
-     * Puts client properties in components
-     * 
-     * @param c
-     */
-    public void putClientProperties(JComponent c) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#putClientProperties(javax.swing.JComponent)
+	 */
+    @Override
+	public void putClientProperties(JComponent c) {
         // No properties by default
     }
 
-    /**
-     * Returns if look and feel supports custom player controls (not by default)
-     */
-    public boolean isCustomPlayerControlsSupported() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#isCustomPlayerControlsSupported()
+	 */
+    @Override
+	public boolean isCustomPlayerControlsSupported() {
         return false;
     }
 
-    /**
-     * Returns shadow border used by look and feel (none by default)
-     * 
-     * @return
-     */
-    public Border getShadowBorder() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getShadowBorder()
+	 */
+    @Override
+	public Border getShadowBorder() {
         return null;
     }
 
-    /**
-     * Initializes needed properties for fonts depending on given base font and
-     * look and feel (none by default)
-     */
-    public void initializeFonts(Font baseFont) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#initializeFonts(java.awt.Font)
+	 */
+    @Override
+	public void initializeFonts(Font baseFont) {
     	this.baseFont = baseFont;
     	setUIFont(new FontUIResource(baseFont));
     }
@@ -294,43 +281,42 @@ public abstract class AbstractLookAndFeel {
     	}
     }    
     
-    /**
-     * @return <code>true</code> if this look and feel implements skins or themes 
-     */
-    public boolean allowsSkins() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#allowsSkins()
+	 */
+    @Override
+	public boolean allowsSkins() {
     	return getSkins() != null && !getSkins().isEmpty();
     }
 
-	/**
-	 * Returns paint to be used with certain controls (player controls)
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getPaintForSpecialControls()
 	 */
+	@Override
 	public Paint getPaintForSpecialControls() {
 		return UIManager.getColor("Label.foreground"); 
 	}
 	
-	/**
-	 * Returns paint to be used with certain controls (player controls) when disabled
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getPaintForDisabledSpecialControls()
 	 */
+	@Override
 	public Paint getPaintForDisabledSpecialControls() {
 		return UIManager.getColor("Label.foreground"); 
 	}	
 
-	/**
-	 * Returns paint to be used to draw a color mutable icon in given component
-	 * @param c
-	 * @param isSelected
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getPaintForColorMutableIcon(java.awt.Component, boolean)
 	 */
+	@Override
 	public Paint getPaintForColorMutableIcon(Component c, boolean isSelected) {
 		return isSelected ? UIManager.getColor("Tree.selectionForeground") : UIManager.getColor("Label.foreground");	
 	}
 
-	/**
-	 * Returns size to be used with PopUpButton
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getPopUpButtonSize()
 	 */
+	@Override
 	public Dimension getPopUpButtonSize() {
 		return new Dimension(20, 20);
 	}
@@ -338,144 +324,155 @@ public abstract class AbstractLookAndFeel {
 	
 	/********************************************************* FONTS *******************************************************/
 	
-    /**
-     * Returns default font
-     * 
-     * @return
-     */
-    public Font getDefaultFont() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getDefaultFont()
+	 */
+    @Override
+	public Font getDefaultFont() {
         return this.baseFont;
     }
     
-	/**
-	 * Returns true if look and feel support custom font selection
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#supportsCustomFontSettings()
 	 */
+	@Override
 	public abstract boolean supportsCustomFontSettings();
 	
-    /**
-     * @return the aboutBigFont
-     */
-    public final Font getAboutBigFont() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getAboutBigFont()
+	 */
+    @Override
+	public final Font getAboutBigFont() {
         return getDefaultFont().deriveFont(getDefaultFont().getSize() + 8f);
     }
 
-    /**
-     * @return the playListFont
-     */
-    public Font getPlayListFont() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getPlayListFont()
+	 */
+    @Override
+	public Font getPlayListFont() {
         return getDefaultFont();
     }
 
-    /**
-     * @return the playListSelectedItemFont
-     */
-    public Font getPlayListSelectedItemFont() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getPlayListSelectedItemFont()
+	 */
+    @Override
+	public Font getPlayListSelectedItemFont() {
     	if (getPlayListFont() != null) {
     		return getPlayListFont().deriveFont(Font.BOLD);
     	}
     	return getDefaultFont();
     }
 
-    /**
-     * @return the contextInformationBigFont
-     */
-    public final Font getContextInformationBigFont() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getContextInformationBigFont()
+	 */
+    @Override
+	public final Font getContextInformationBigFont() {
         return getDefaultFont().deriveFont(getDefaultFont().getSize() + 8f);
     }
 
-    /**
-     * @return the propertiesDialogBigFont
-     */
-    public final Font getPropertiesDialogBigFont() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getPropertiesDialogBigFont()
+	 */
+    @Override
+	public final Font getPropertiesDialogBigFont() {
         return getDefaultFont().deriveFont(getDefaultFont().getSize() + 4f);
     }
 
-    /**
-     * @return the osdLine1Font
-     */
-    public final Font getOsdLine1Font() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getOsdLine1Font()
+	 */
+    @Override
+	public final Font getOsdLine1Font() {
         return getDefaultFont().deriveFont(Font.BOLD, getDefaultFont().getSize() + 4f);
     }
 
-    /**
-     * @return the osdLine2Font
-     */
-    public final Font getOsdLine2Font() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getOsdLine2Font()
+	 */
+    @Override
+	public final Font getOsdLine2Font() {
         return getDefaultFont().deriveFont(getDefaultFont().getSize() + 2f);
     }
 
-    /**
-     * @return the osdLine3Font
-     */
-    public final Font getOsdLine3Font() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getOsdLine3Font()
+	 */
+    @Override
+	public final Font getOsdLine3Font() {
         return getOsdLine2Font();
     }
 
-    /**
-     * @return the fullScreenLine1Font
-     */
-    public final Font getFullScreenLine1Font() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getFullScreenLine1Font()
+	 */
+    @Override
+	public final Font getFullScreenLine1Font() {
         return  getDefaultFont().deriveFont(getDefaultFont().getSize() + 25f);
     }
 
-    /**
-     * Returns split pane divider size for this look and feel. Default implementation returns current look and feel's default value
-     * @return
-     */
-    public int getSplitPaneDividerSize() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getSplitPaneDividerSize()
+	 */
+    @Override
+	public int getSplitPaneDividerSize() {
     	return new CustomSplitPane(JSplitPane.HORIZONTAL_SPLIT).getDividerSize();
     }
     
-    /**
-     * Returns instance of table with special look and feel settings
-     * @return
-     */
-    public abstract JTable getTable();
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getTable()
+	 */
+    @Override
+	public abstract JTable getTable();
     
-    /**
-     * Adds special look and feel settings to an already created JTable
-     * @param table
-     */
-    public abstract void decorateTable(JTable table);
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#decorateTable(javax.swing.JTable)
+	 */
+    @Override
+	public abstract void decorateTable(JTable table);
     
-    /**
-     * Returns scroll pane to show a table with special look and feel settings
-     * @return
-     */
-    public abstract JScrollPane getTableScrollPane(JTable table);
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getTableScrollPane(javax.swing.JTable)
+	 */
+    @Override
+	public abstract JScrollPane getTableScrollPane(JTable table);
     
-    /**
-     * Returns scroll pane to show a tree with special look and feel settings
-     * @param tree
-     * @return
-     */
-    public abstract JScrollPane getTreeScrollPane(JTree tree);
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getTreeScrollPane(javax.swing.JTree)
+	 */
+    @Override
+	public abstract JScrollPane getTreeScrollPane(JTree tree);
 
-    /**
-     * Returns instance of list with special look and feel settings
-     * @return
-     */
-    public abstract JList getList();
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getList()
+	 */
+    @Override
+	public abstract JList getList();
     
-    /**
-     * Returns scroll pane to show a list with special look and feel settings
-     * @param list
-     * @return
-     */
-    public abstract JScrollPane getListScrollPane(JList list);
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getListScrollPane(javax.swing.JList)
+	 */
+    @Override
+	public abstract JScrollPane getListScrollPane(JList list);
     
-    /**
-     * Returns scroll pane with special look and feel settings
-     * @param component
-     * @return
-     */
-    public abstract JScrollPane getScrollPane(Component component);
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getScrollPane(java.awt.Component)
+	 */
+    @Override
+	public abstract JScrollPane getScrollPane(Component component);
 
 	/**
 	 * @param osManager the osManager to set
 	 */
-	protected void setOsManager(IOSManager osManager) {
+    @Override
+	public void setOsManager(IOSManager osManager) {
 		this.osManager = osManager;
 	}
-    
+
+	@Override
+	public void setBaseFont(Font f) {
+		this.baseFont = f;
+	}
 }

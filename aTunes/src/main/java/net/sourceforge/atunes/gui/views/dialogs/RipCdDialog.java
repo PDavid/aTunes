@@ -40,12 +40,13 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -245,10 +246,10 @@ public final class RipCdDialog extends AbstractCustomDialog {
      * @param owner
      *            the owner
      */
-    public RipCdDialog(JFrame owner) {
-        super(owner, 750, 540, true, CloseAction.DISPOSE);
+    public RipCdDialog(JFrame owner, ILookAndFeelManager lookAndFeelManager) {
+        super(owner, 750, 540, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
         setTitle(I18nUtils.getString("RIP_CD"));
-        add(getContent());
+        add(getContent(lookAndFeelManager.getCurrentLookAndFeel()));
     }
 
     /**
@@ -307,14 +308,15 @@ public final class RipCdDialog extends AbstractCustomDialog {
 
     /**
      * Defines the content of the dialog box.
+     * @param iLookAndFeel 
      * 
      * @return the content
      */
-    private JPanel getContent() {
+    private JPanel getContent(ILookAndFeel iLookAndFeel) {
         JPanel panel = new JPanel(new GridBagLayout());
 
         tableModel = new CdInfoTableModel();
-        table = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
+        table = iLookAndFeel.getTable();
         table.setModel(tableModel);
         table.getColumnModel().getColumn(0).setMaxWidth(20);
         table.getColumnModel().getColumn(4).setMaxWidth(50);
@@ -334,10 +336,10 @@ public final class RipCdDialog extends AbstractCustomDialog {
         table.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(textfield2));
         table.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(textfield3));
 
-        table.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(
-                GuiUtils.getComponentOrientationTableCellRendererCode()));
+        table.setDefaultRenderer(String.class, iLookAndFeel.getTableCellRenderer(
+                GuiUtils.getComponentOrientationTableCellRendererCode(iLookAndFeel)));
 
-        JScrollPane scrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(table);
+        JScrollPane scrollPane = iLookAndFeel.getTableScrollPane(table);
         JLabel artistLabel = new JLabel(I18nUtils.getString("ALBUM_ARTIST"));
         artistTextField = new CustomTextField();
         JLabel albumLabel = new JLabel(I18nUtils.getString("ALBUM"));

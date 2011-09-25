@@ -26,6 +26,8 @@ import java.awt.geom.Area;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.model.ILookAndFeel;
+
 public class ArtistFavoriteImageIcon {
 
 	private static final int WIDTH = 26;
@@ -33,17 +35,26 @@ public class ArtistFavoriteImageIcon {
 	
 	private static ImageIcon icon;
 	
-	public static ImageIcon getIcon() {
+	/**
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getIcon(ILookAndFeel lookAndFeel) {
 		if (icon == null) {
-			icon = getIcon(null);	
+			icon = getIcon(null, lookAndFeel);	
 		}
 		return icon;
 	}
 	
-	public static ImageIcon getIcon(Paint color) {
+	/**
+	 * @param color
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getIcon(Paint color, ILookAndFeel lookAndFeel) {
 		Rectangle clip = new Rectangle(0, 1, WIDTH, HEIGHT - 2);
 		
 		Area heart = FavoriteImageIcon.getIconArea(10, 10, WIDTH - 10, 1);
-		return IconGenerator.generateIcon(color, clip, WIDTH, HEIGHT, ArtistImageIcon.getArtistIconArea(0), heart);
+		return IconGenerator.generateIcon(color, clip, WIDTH, HEIGHT, lookAndFeel, ArtistImageIcon.getArtistIconArea(0), heart);
 	}
 }

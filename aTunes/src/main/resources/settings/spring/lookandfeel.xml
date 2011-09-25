@@ -4,8 +4,9 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
 	
 	default-autowire="byName" default-lazy-init="true">
-	
-	<bean id="osManager" class="net.sourceforge.atunes.kernel.OsManager" init-method="initialize"/>
 
+	<bean id="lookAndFeelManager" class="net.sourceforge.atunes.gui.lookandfeel.LookAndFeelManager">
+		<constructor-arg ref="osManager"/>
+	</bean>
 
 </beans>

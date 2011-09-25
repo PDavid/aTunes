@@ -34,8 +34,9 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -75,12 +76,14 @@ public final class StatsDialog extends AbstractCustomDialog {
 
     /**
      * Instantiates a new stats dialog.
+     * @param owner
+     * @param lookAndFeelManager
      */
-    public StatsDialog(Window owner) {
-        super(owner, 750, 750, true, CloseAction.DISPOSE);
+    public StatsDialog(Window owner, ILookAndFeelManager lookAndFeelManager) {
+        super(owner, 750, 750, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
         setTitle(StringUtils.getString(I18nUtils.getString("STATS"), " - ", Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
         setResizable(false);
-        add(getContent());
+        add(getContent(lookAndFeelManager.getCurrentLookAndFeel()));
     }
 
     /**
@@ -121,16 +124,17 @@ public final class StatsDialog extends AbstractCustomDialog {
 
     /**
      * Gets the content.
+     * @param iLookAndFeel 
      * 
      * @return the content
      */
-    private JPanel getContent() {
+    private JPanel getContent(ILookAndFeel iLookAndFeel) {
         JPanel panel = new JPanel(new BorderLayout());
 
         // General stats
         JPanel generalPanel = new JPanel(new GridBagLayout());
-        generalTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
-        JScrollPane generalScrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(generalTable);
+        generalTable = iLookAndFeel.getTable();
+        JScrollPane generalScrollPane = iLookAndFeel.getTableScrollPane(generalTable);
         generalChart = new JLabel();
         generalChart.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -150,8 +154,8 @@ public final class StatsDialog extends AbstractCustomDialog {
 
         // Songs stats
         JPanel songPanel = new JPanel(new GridBagLayout());
-        songsTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
-        JScrollPane songsScrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(songsTable);
+        songsTable = iLookAndFeel.getTable();
+        JScrollPane songsScrollPane = iLookAndFeel.getTableScrollPane(songsTable);
         songsChart = new JLabel();
         songsChart.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -170,8 +174,8 @@ public final class StatsDialog extends AbstractCustomDialog {
 
         // Albums stats
         JPanel albumPanel = new JPanel(new GridBagLayout());
-        albumsTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
-        JScrollPane albumsScrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(albumsTable);
+        albumsTable = iLookAndFeel.getTable();
+        JScrollPane albumsScrollPane = iLookAndFeel.getTableScrollPane(albumsTable);
         albumsChart = new JLabel();
         albumsChart.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -188,8 +192,8 @@ public final class StatsDialog extends AbstractCustomDialog {
 
         // Artists stats
         JPanel artistPanel = new JPanel(new GridBagLayout());
-        artistsTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
-        JScrollPane artistsScrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(artistsTable);
+        artistsTable = iLookAndFeel.getTable();
+        JScrollPane artistsScrollPane = iLookAndFeel.getTableScrollPane(artistsTable);
         artistsChart = new JLabel();
         artistsChart.setHorizontalAlignment(SwingConstants.CENTER);
 

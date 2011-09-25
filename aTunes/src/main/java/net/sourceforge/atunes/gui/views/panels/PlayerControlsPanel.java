@@ -35,7 +35,7 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JToggleButton;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.playerControls.EqualizerButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.NextButton;
@@ -48,6 +48,7 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.SecondaryControl
 import net.sourceforge.atunes.gui.views.controls.playerControls.ShuffleButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 
@@ -75,15 +76,15 @@ public final class PlayerControlsPanel extends JPanel {
     public static final Dimension DEFAULT_BUTTONS_SIZE = new Dimension(34, 34);
 
     /** Size of play / pause button */
-    public static final Dimension PLAY_BUTTON_SIZE = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? new Dimension(45, 45)
+    public static final Dimension PLAY_BUTTON_SIZE = Context.getBean(ILookAndFeelManager.class).getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? new Dimension(45, 45)
             : PLAY_PREVIOUS_NEXT_BUTTONS_SIZE;
 
     /** Size of previous and next buttons */
-    public static final Dimension PREVIOUS_NEXT_BUTTONS_SIZE = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? new Dimension(62, 30)
+    public static final Dimension PREVIOUS_NEXT_BUTTONS_SIZE = Context.getBean(ILookAndFeelManager.class).getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? new Dimension(62, 30)
             : PLAY_PREVIOUS_NEXT_BUTTONS_SIZE;
 
     /** Size of stop and mute buttons */
-    public static final Dimension STOP_MUTE_BUTTONS_SIZE = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? new Dimension(30, 26)
+    public static final Dimension STOP_MUTE_BUTTONS_SIZE = Context.getBean(ILookAndFeelManager.class).getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? new Dimension(30, 26)
             : DEFAULT_BUTTONS_SIZE;
 
     /** Size of shuffle, repeat, ... buttons */
@@ -119,12 +120,17 @@ public final class PlayerControlsPanel extends JPanel {
 
     private IState state;
     
+    private ILookAndFeelManager lookAndFeelManager;
+    
     /**
      * Instantiates a new player controls panel.
+     * @param state
+     * @param lookAndFeelManager
      */
-    public PlayerControlsPanel(IState state) {
+    public PlayerControlsPanel(IState state, ILookAndFeelManager lookAndFeelManager) {
         super(new GridBagLayout());
         this.state = state;
+        this.lookAndFeelManager = lookAndFeelManager;
         addContent();
         GuiUtils.applyComponentOrientation(this);
     }
@@ -140,7 +146,7 @@ public final class PlayerControlsPanel extends JPanel {
         progressSlider = new ProgressSlider();
         JPanel mainControls = getMainControlsPanel();
         JPanel secondaryControls = getSecondaryControls();
-        filterPanel = new FilterPanel(state);
+        filterPanel = new FilterPanel(state, lookAndFeelManager);
         
         GridBagConstraints c = new GridBagConstraints();
         
@@ -222,14 +228,14 @@ public final class PlayerControlsPanel extends JPanel {
     }
 
     private JPanel getMainControlsPanel() {
-        previousButton = new PreviousButton(PREVIOUS_NEXT_BUTTONS_SIZE);
-        playButton = new PlayPauseButton(PLAY_BUTTON_SIZE);
-        stopButton = new StopButton(STOP_MUTE_BUTTONS_SIZE);
-        nextButton = new NextButton(PREVIOUS_NEXT_BUTTONS_SIZE);
-        volumeButton = new MuteButton(STOP_MUTE_BUTTONS_SIZE, state);
+        previousButton = new PreviousButton(PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
+        playButton = new PlayPauseButton(PLAY_BUTTON_SIZE, lookAndFeelManager);
+        stopButton = new StopButton(STOP_MUTE_BUTTONS_SIZE, lookAndFeelManager);
+        nextButton = new NextButton(PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
+        volumeButton = new MuteButton(STOP_MUTE_BUTTONS_SIZE, state, lookAndFeelManager);
         volumeButton.setText("");
         volumeSlider = new VolumeSlider(state);
-        JPanel panel = getPanelWithPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider);
+        JPanel panel = getPanelWithPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider, lookAndFeelManager);
         // add a small border to separate from other components
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 0));
         return panel;
@@ -245,10 +251,11 @@ public final class PlayerControlsPanel extends JPanel {
      * @param nextButton
      * @param volumeButton
      * @param volumeSlider
+     * @param lookAndFeelManager
      * @return
      */
-    public static JPanel getPanelWithPlayerControls(StopButton stopButton, PreviousButton previousButton, PlayPauseButton playButton, NextButton nextButton, MuteButton volumeButton, JSlider volumeSlider) {
-        return LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? 
+    public static JPanel getPanelWithPlayerControls(StopButton stopButton, PreviousButton previousButton, PlayPauseButton playButton, NextButton nextButton, MuteButton volumeButton, JSlider volumeSlider, ILookAndFeelManager lookAndFeelManager) {
+        return lookAndFeelManager.getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? 
         		getCustomPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider) : 
         		getStandardPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider);
     }
@@ -336,10 +343,10 @@ public final class PlayerControlsPanel extends JPanel {
 
     private JPanel getSecondaryControls() {
         if (secondaryControls == null) {
-            shuffleButton = new ShuffleButton();
-            repeatButton = new RepeatButton();
-            karaokeButton = new EqualizerButton();
-            normalizeButton = new NormalizationButton();
+            shuffleButton = new ShuffleButton(lookAndFeelManager);
+            repeatButton = new RepeatButton(lookAndFeelManager);
+            karaokeButton = new EqualizerButton(lookAndFeelManager);
+            normalizeButton = new NormalizationButton(lookAndFeelManager);
 
             secondaryControls = new JPanel(new GridBagLayout());
             GridBagConstraints c = new GridBagConstraints();
@@ -368,7 +375,7 @@ public final class PlayerControlsPanel extends JPanel {
         c.gridx = getSecondaryControls().getComponentCount();
         c.gridy = 0;
         c.insets = new Insets(0, 1, 0, 0);
-        JToggleButton button = new SecondaryControl(action);
+        JToggleButton button = new SecondaryControl(action, lookAndFeelManager);
         getSecondaryControls().add(button, c);
     }
     

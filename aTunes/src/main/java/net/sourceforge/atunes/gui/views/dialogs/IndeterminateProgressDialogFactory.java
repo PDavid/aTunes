@@ -25,17 +25,18 @@ import java.awt.Window;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 public class IndeterminateProgressDialogFactory implements IIndeterminateProgressDialogFactory {
 
 	@Override
-	public IIndeterminateProgressDialog newDialog(Window parent) {
-		return new IndeterminateProgressDialog(parent);
+	public IIndeterminateProgressDialog newDialog(Window parent, ILookAndFeelManager lookAndFeelManager) {
+		return new IndeterminateProgressDialog(parent, lookAndFeelManager);
 	}
 
 	@Override
-	public IIndeterminateProgressDialog newDialog(IFrame parent) {
-		return new IndeterminateProgressDialog(parent);
+	public IIndeterminateProgressDialog newDialog(IFrame parent, ILookAndFeelManager lookAndFeelManager) {
+		return new IndeterminateProgressDialog(parent, lookAndFeelManager);
 	}
 
 	

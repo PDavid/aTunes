@@ -18,10 +18,15 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.lookandfeel;
+package net.sourceforge.atunes.model;
 
 import java.io.Serializable;
 
+/**
+ * Configuration of a look and feel: name and skin
+ * @author alex
+ *
+ */
 public class LookAndFeelBean implements Serializable {
 
     /**

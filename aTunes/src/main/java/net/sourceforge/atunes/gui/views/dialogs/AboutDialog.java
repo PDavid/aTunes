@@ -43,12 +43,13 @@ import javax.swing.table.AbstractTableModel;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.model.IAboutDialog;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -221,23 +222,25 @@ public final class AboutDialog extends AbstractCustomDialog implements IAboutDia
      * Instantiates a new about dialog.
      * 
      * @param frame
+     * @param lookAndFeelManager
      */
-    public AboutDialog(IFrame frame) {
-        super(frame, 600, 550, true, CloseAction.DISPOSE);
-        add(getContent());
+    public AboutDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
+        super(frame, 600, 550, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
+        add(getContent(lookAndFeelManager.getCurrentLookAndFeel()));
         setResizable(false);
     }
 
     /**
      * Gets the content.
      * 
-     * @return the content
+     * @param lookAndFeel
+     * @return
      */
-    private JPanel getContent() {
+    private JPanel getContent(ILookAndFeel lookAndFeel) {
         JPanel panel = new JPanel(new GridBagLayout());
 
         UrlLabel title = new UrlLabel(Constants.APP_NAME + ' ' + Constants.VERSION.toString(), Constants.APP_WEB);
-        title.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getAboutBigFont());
+        title.setFont(lookAndFeel.getAboutBigFont());
         title.setFocusPainted(false);
         JLabel description = new JLabel(Constants.APP_DESCRIPTION);
 
@@ -252,11 +255,10 @@ public final class AboutDialog extends AbstractCustomDialog implements IAboutDia
 
         UrlLabel contributors = new UrlLabel(I18nUtils.getString("CONTRIBUTORS"), Constants.CONTRIBUTORS_WEB);
 
-        JTable propertiesTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
+        JTable propertiesTable = lookAndFeel.getTable();
         propertiesTable.setModel(tableModel);
-        propertiesTable.setDefaultRenderer(Object.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(
-                GuiUtils.getComponentOrientationTableCellRendererCode()));
-        JScrollPane propertiesScrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(propertiesTable);
+        propertiesTable.setDefaultRenderer(Object.class, lookAndFeel.getTableCellRenderer(GuiUtils.getComponentOrientationTableCellRendererCode(lookAndFeel)));
+        JScrollPane propertiesScrollPane = lookAndFeel.getTableScrollPane(propertiesTable);
 
         JButton close = new JButton(I18nUtils.getString("CLOSE"));
         close.addActionListener(new ActionListener() {

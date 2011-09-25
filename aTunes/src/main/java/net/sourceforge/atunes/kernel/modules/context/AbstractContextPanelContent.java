@@ -28,6 +28,7 @@ import javax.swing.JPanel;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextInformationSource;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IState;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -64,6 +65,8 @@ public abstract class AbstractContextPanelContent {
      * State of app
      */
     private IState state;
+    
+    private ILookAndFeelManager lookAndFeelManager;
 
     /**
      * Updates the context panel content with information of the given audio
@@ -181,6 +184,14 @@ public abstract class AbstractContextPanelContent {
     
     public void setDataSource(IContextInformationSource dataSource) {
 		this.dataSource = dataSource;
+	}
+    
+    public void setLookAndFeelManager(ILookAndFeelManager ILookAndFeelManager) {
+		this.lookAndFeelManager = ILookAndFeelManager;
+	}
+    
+    protected ILookAndFeelManager getLookAndFeelManager() {
+		return lookAndFeelManager;
 	}
     
     

@@ -42,7 +42,6 @@ import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.PlayListColumnModel;
 import net.sourceforge.atunes.gui.model.TransferableList;
 import net.sourceforge.atunes.gui.renderers.ColumnRenderers;
@@ -54,6 +53,7 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListTableModel;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectsSource;
 import net.sourceforge.atunes.model.IColumnSet;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.PlayState;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -77,11 +77,14 @@ public final class PlayListTable extends JTable implements DragSourceListener, D
 
     /**
      * Instantiates a new play list table.
+     * @param columnSet
+     * @param playListHandler
+     * @param lookAndFeelManager
      */
-    public PlayListTable(IColumnSet columnSet, IPlayListHandler playListHandler) {
+    public PlayListTable(IColumnSet columnSet, IPlayListHandler playListHandler, ILookAndFeelManager lookAndFeelManager) {
         super();
         this.playListHandler = playListHandler;
-        LookAndFeelSelector.getInstance().getCurrentLookAndFeel().decorateTable(this);
+        lookAndFeelManager.getCurrentLookAndFeel().decorateTable(this);
         setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         setDropMode(DropMode.ON);
 
@@ -90,7 +93,7 @@ public final class PlayListTable extends JTable implements DragSourceListener, D
         setModel(model);
 
         // Set column model
-        PlayListColumnModel columnModel = new PlayListColumnModel(this, playListHandler);
+        PlayListColumnModel columnModel = new PlayListColumnModel(this, playListHandler, lookAndFeelManager.getCurrentLookAndFeel());
         setColumnModel(columnModel);
 
         // Set sorter
@@ -103,7 +106,7 @@ public final class PlayListTable extends JTable implements DragSourceListener, D
         setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
         // Set renderers
-        ColumnRenderers.addRenderers(this, columnModel);
+        ColumnRenderers.addRenderers(this, columnModel, lookAndFeelManager.getCurrentLookAndFeel());
 
         // Remove enter key event, which moves selection down
         getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "none");

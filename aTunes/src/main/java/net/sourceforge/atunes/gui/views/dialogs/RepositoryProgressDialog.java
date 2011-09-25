@@ -42,6 +42,7 @@ import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.RepositoryLoadCancelAction;
 import net.sourceforge.atunes.kernel.actions.RepositoryLoadInBackgroundAction;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IRepositoryProgressDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -77,9 +78,10 @@ public final class RepositoryProgressDialog extends AbstractCustomDialog impleme
      * Instantiates a new repository progress dialog.
      * 
      * @param frame
+     * @param lookAndFeelManager
      */
-    public RepositoryProgressDialog(IFrame frame) {
-        super(frame, 500, 250, false, CloseAction.NOTHING);
+    public RepositoryProgressDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
+        super(frame, 500, 250, false, CloseAction.NOTHING, lookAndFeelManager.getCurrentLookAndFeel());
         add(getContent());
         backgroundButton.setVisible(false);
         cancelButton.setVisible(false);

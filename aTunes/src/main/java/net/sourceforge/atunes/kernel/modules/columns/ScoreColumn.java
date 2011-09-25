@@ -29,11 +29,12 @@ import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.StarImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractListCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 public class ScoreColumn extends AbstractColumn {
 
@@ -51,7 +52,7 @@ public class ScoreColumn extends AbstractColumn {
     public TableCellEditor getCellEditor() {
         JComboBox comboBox = new JComboBox(new Object[] { 0, 1, 2, 3, 4, 5 });
 
-        comboBox.setRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(new AbstractListCellRendererCode() {
+        comboBox.setRenderer(Context.getBean(ILookAndFeelManager.class).getCurrentLookAndFeel().getListCellRenderer(new AbstractListCellRendererCode() {
 
             @Override
             public JComponent getComponent(JComponent superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -65,7 +66,7 @@ public class ScoreColumn extends AbstractColumn {
 
     @Override
     public TableCellRenderer getCellRenderer() {
-        return LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new AbstractTableCellRendererCode() {
+        return Context.getBean(ILookAndFeelManager.class).getCurrentLookAndFeel().getTableCellRenderer(new AbstractTableCellRendererCode(Context.getBean(ILookAndFeelManager.class).getCurrentLookAndFeel()) {
 
             @Override
             public JComponent getComponent(JComponent superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -102,7 +103,7 @@ public class ScoreColumn extends AbstractColumn {
             label.setIcon(null);
         } else {
         	// TODO: ICONOS Sacar a un renderer
-            label.setIcon(StarImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(label, false), score));
+            label.setIcon(StarImageIcon.getIcon(Context.getBean(ILookAndFeelManager.class).getCurrentLookAndFeel().getPaintForColorMutableIcon(label, false), score, Context.getBean(ILookAndFeelManager.class).getCurrentLookAndFeel()));
         }
     }
 

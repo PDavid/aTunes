@@ -52,6 +52,7 @@ import javax.swing.text.StyleConstants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IState;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -488,12 +489,16 @@ public final class GuiUtils {
         return getGraphicsDeviceForLocation(p.x, p.y);
     }
 
-    public static ComponentOrientationTableCellRendererCode getComponentOrientationTableCellRendererCode() {
-        return new ComponentOrientationTableCellRendererCode();
+    public static ComponentOrientationTableCellRendererCode getComponentOrientationTableCellRendererCode(ILookAndFeel lookAndFeel) {
+        return new ComponentOrientationTableCellRendererCode(lookAndFeel);
     }
 
     public static class ComponentOrientationTableCellRendererCode extends AbstractTableCellRendererCode {
-        @Override
+        public ComponentOrientationTableCellRendererCode(ILookAndFeel lookAndFeel) {
+			super(lookAndFeel);
+		}
+
+		@Override
         public JComponent getComponent(JComponent superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         	if (superComponent instanceof JLabel) {
         		GuiUtils.applyComponentOrientation((JLabel) superComponent);

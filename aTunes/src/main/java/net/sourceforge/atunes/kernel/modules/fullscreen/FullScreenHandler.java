@@ -26,6 +26,7 @@ import java.util.List;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFullScreenHandler;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 
 public class FullScreenHandler extends AbstractHandler implements IFullScreenHandler {
@@ -69,7 +70,7 @@ public class FullScreenHandler extends AbstractHandler implements IFullScreenHan
 	 */
 	private void createFullScreenController() {
 		if (controller == null) {
-			controller = new FullScreenController(getState(), getFrame(), getOsManager());
+			controller = new FullScreenController(getState(), getFrame(), getOsManager(), getBean(ILookAndFeelManager.class));
 		}
 	}
 	

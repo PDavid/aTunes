@@ -26,6 +26,8 @@ import java.awt.geom.Ellipse2D;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.model.ILookAndFeel;
+
 public class AlbumImageIcon {
 
 	private static final int SIZE = 16;
@@ -33,21 +35,42 @@ public class AlbumImageIcon {
 	
 	private static ImageIcon icon;
 	
-	public static ImageIcon getIcon() {
+	/**
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getIcon(ILookAndFeel lookAndFeel) {
 		if (icon == null) {
-			icon = getIcon(null);	
+			icon = getIcon(null, lookAndFeel);	
 		}
 		return icon;
 	}
 	
-	public static ImageIcon getIcon(Paint color) {
-        return IconGenerator.generateIcon(color, SIZE, SIZE, getIconArea(SIZE, SIZE, 0, 0));
+	/**
+	 * @param color
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getIcon(Paint color, ILookAndFeel lookAndFeel) {
+        return IconGenerator.generateIcon(color, SIZE, SIZE, lookAndFeel, getIconArea(SIZE, SIZE, 0, 0));
 	}
 
-	public static ImageIcon getBigIcon(Paint color) {
-        return IconGenerator.generateIcon(color, BIG_SIZE, BIG_SIZE, getIconArea(BIG_SIZE, BIG_SIZE, 0, 0));
+	/**
+	 * @param color
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getBigIcon(Paint color, ILookAndFeel lookAndFeel) {
+        return IconGenerator.generateIcon(color, BIG_SIZE, BIG_SIZE, lookAndFeel, getIconArea(BIG_SIZE, BIG_SIZE, 0, 0));
 	}
 
+	/**
+	 * @param width
+	 * @param height
+	 * @param xAxis
+	 * @param yAxis
+	 * @return
+	 */
 	protected static Area getIconArea(int width, int height, int xAxis, int yAxis) {
 		int margin = 2 + xAxis;
 		int radius = width / 4;

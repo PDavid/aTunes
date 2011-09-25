@@ -37,9 +37,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -57,18 +57,24 @@ public class PluginEditorDialog extends AbstractCustomDialog {
 
     private PluginConfiguration configuration;
 
-    public PluginEditorDialog(Window owner, PluginInfo plugin, PluginConfiguration configuration) {
-        super(owner, GuiUtils.getComponentWidthForResolution(0.5f), GuiUtils.getComponentHeightForResolution(0.5f), true, CloseAction.DISPOSE);
+    /**
+     * @param owner
+     * @param plugin
+     * @param configuration
+     * @param lookAndFeel
+     */
+    public PluginEditorDialog(Window owner, PluginInfo plugin, PluginConfiguration configuration, ILookAndFeel lookAndFeel) {
+        super(owner, GuiUtils.getComponentWidthForResolution(0.5f), GuiUtils.getComponentHeightForResolution(0.5f), true, CloseAction.DISPOSE, lookAndFeel);
         this.configuration = configuration;
         setResizable(true);
         setTitle(StringUtils.getString(I18nUtils.getString("PLUGIN_PROPERTIES_EDITOR"), ": ", plugin.getName()));
-        add(getContent());
+        add(getContent(lookAndFeel));
     }
 
-    private JPanel getContent() {
+    private JPanel getContent(ILookAndFeel iLookAndFeel) {
         JPanel panel = new JPanel(new BorderLayout());
         PluginConfigurationPanel configPanel = new PluginConfigurationPanel(configuration);
-        panel.add(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getScrollPane(configPanel), BorderLayout.CENTER);
+        panel.add(iLookAndFeel.getScrollPane(configPanel), BorderLayout.CENTER);
         JButton okButton = new JButton(I18nUtils.getString("OK"));
         okButton.addActionListener(new ActionListener() {
             @Override

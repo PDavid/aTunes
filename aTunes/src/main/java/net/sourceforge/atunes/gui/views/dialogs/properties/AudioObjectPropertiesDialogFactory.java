@@ -26,6 +26,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialog;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
@@ -46,14 +47,14 @@ public class AudioObjectPropertiesDialogFactory implements IAudioObjectPropertie
 	 * @see net.sourceforge.atunes.gui.views.dialogs.properties.IAudioObjectPropertiesDialogFactory#newInstance(net.sourceforge.atunes.model.IAudioObject)
 	 */
     @Override
-	public IAudioObjectPropertiesDialog newInstance(IAudioObject a) {
+	public IAudioObjectPropertiesDialog newInstance(IAudioObject a, ILookAndFeelManager lookAndFeelManager) {
     	AudioObjectPropertiesDialog dialog = null;
     	if (a instanceof IPodcastFeedEntry) {
-    		dialog = new PodcastFeedEntryPropertiesDialog((IPodcastFeedEntry) a, frame, state);
+    		dialog = new PodcastFeedEntryPropertiesDialog((IPodcastFeedEntry) a, frame, state, lookAndFeelManager);
     	} else if (a instanceof IRadio) {
-    		dialog = new RadioPropertiesDialog((Radio) a, frame);
+    		dialog = new RadioPropertiesDialog((Radio) a, frame, lookAndFeelManager);
     	} else if (a instanceof AudioFile) {
-    		dialog = new AudioFilePropertiesDialog((AudioFile) a, state, frame, osManager, playListHandler);
+    		dialog = new AudioFilePropertiesDialog((AudioFile) a, state, frame, osManager, playListHandler, lookAndFeelManager);
     	}
     	if (dialog != null) {
     		dialog.setAudioObject(a);

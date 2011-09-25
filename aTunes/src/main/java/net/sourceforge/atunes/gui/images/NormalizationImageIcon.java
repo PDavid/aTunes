@@ -29,13 +29,18 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.model.ILookAndFeel;
 
 public class NormalizationImageIcon {
 
 	private static final int SIZE = 18;
 	
-	public static ImageIcon getIcon(Paint color) {
+	/**
+	 * @param color
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getIcon(Paint color, ILookAndFeel lookAndFeel) {
         Line2D l1 = new Line2D.Float(2, 9, 6, 9);
         Line2D l2 = new Line2D.Float(6, 9, 8, 3);
         Line2D l3 = new Line2D.Float(8, 3, 11, 14);
@@ -44,7 +49,7 @@ public class NormalizationImageIcon {
 		BufferedImage bi = new BufferedImage(SIZE, SIZE, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D g = bi.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setPaint(color != null ? color : LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForSpecialControls());
+        g.setPaint(color != null ? color : lookAndFeel.getPaintForSpecialControls());
         g.setStroke(new BasicStroke(2));
         g.draw(l1);
         g.draw(l2);
@@ -55,7 +60,11 @@ public class NormalizationImageIcon {
         return new ImageIcon(bi);
 	}
 
-	public static ImageIcon getIcon() {
-		return getIcon(null);
+	/**
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getIcon(ILookAndFeel lookAndFeel) {
+		return getIcon(null, lookAndFeel);
 	}
 }

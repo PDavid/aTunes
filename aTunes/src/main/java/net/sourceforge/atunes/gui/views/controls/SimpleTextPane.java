@@ -22,6 +22,8 @@ package net.sourceforge.atunes.gui.views.controls;
 
 import javax.swing.BorderFactory;
 
+import net.sourceforge.atunes.model.ILookAndFeelManager;
+
 
 
 /**
@@ -37,8 +39,12 @@ public final class SimpleTextPane extends CustomTextPane {
 	 */
 	private static final long serialVersionUID = 5228657021554681016L;
 
-	public SimpleTextPane(final String text) {
-        super();
+	/**
+	 * @param text
+	 * @param lookAndFeelManager
+	 */
+	public SimpleTextPane(final String text, ILookAndFeelManager lookAndFeelManager) {
+        super(lookAndFeelManager);
 		setEditable(false);
 		setBorder(BorderFactory.createEmptyBorder());
 		setOpaque(false);

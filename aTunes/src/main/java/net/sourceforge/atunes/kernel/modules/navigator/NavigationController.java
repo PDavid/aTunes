@@ -46,7 +46,6 @@ import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractListCellRendererCode;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
 import net.sourceforge.atunes.gui.model.NavigationTableColumnModel;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
@@ -70,6 +69,7 @@ import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IController;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IOSManager;
@@ -159,6 +159,8 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
     
     private ITaskService taskService;
     
+    private ILookAndFeelManager lookAndFeelManager;
+    
     /**
      * Instantiates a new navigation controller.
      * 
@@ -168,14 +170,16 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
      * @param osManager
      * @param navigationHandler
      * @param taskService
+     * @param lookAndFeelManager
      */
-    NavigationController(NavigationTreePanel treePanel, NavigationTablePanel tablePanel, IState state, IOSManager osManager, INavigationHandler navigationHandler, ITaskService taskService) {
+    NavigationController(NavigationTreePanel treePanel, NavigationTablePanel tablePanel, IState state, IOSManager osManager, INavigationHandler navigationHandler, ITaskService taskService, ILookAndFeelManager lookAndFeelManager) {
         this.navigationTreePanel = treePanel;
         this.navigationTablePanel = tablePanel;
         this.state = state;
         this.osManager = osManager;
         this.navigationHandler = navigationHandler;
         this.taskService = taskService;
+        this.lookAndFeelManager = lookAndFeelManager;
         addBindings();
         RepositoryHandler.getInstance().addAudioFilesRemovedListener(this);
         this.navigatorColumnSet = (IColumnSet) Context.getBean("navigatorColumnSet");
@@ -193,9 +197,9 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
     public void addBindings() {
         NavigationTableModel model = new NavigationTableModel();
         navigationTablePanel.getNavigationTable().setModel(model);
-        columnModel = new NavigationTableColumnModel(navigationTablePanel.getNavigationTable(), state, navigationHandler, taskService);
+        columnModel = new NavigationTableColumnModel(navigationTablePanel.getNavigationTable(), state, navigationHandler, taskService, lookAndFeelManager.getCurrentLookAndFeel());
         navigationTablePanel.getNavigationTable().setColumnModel(columnModel);
-        ColumnRenderers.addRenderers(navigationTablePanel.getNavigationTable(), columnModel);
+        ColumnRenderers.addRenderers(navigationTablePanel.getNavigationTable(), columnModel, lookAndFeelManager.getCurrentLookAndFeel());
 
         new ColumnSetRowSorter(navigationTablePanel.getNavigationTable(), model, columnModel);
 
@@ -234,12 +238,12 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
 			}
 		});
         
-        if (LookAndFeelSelector.getInstance().getCurrentLookAndFeel().customComboBoxRenderersSupported()) {
-        	navigationTreePanel.getTreeComboBox().setRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(new AbstractListCellRendererCode() {
+        if (lookAndFeelManager.getCurrentLookAndFeel().customComboBoxRenderersSupported()) {
+        	navigationTreePanel.getTreeComboBox().setRenderer(lookAndFeelManager.getCurrentLookAndFeel().getListCellRenderer(new AbstractListCellRendererCode() {
 
         		@Override
         		public JComponent getComponent(JComponent superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        			((JLabel)superComponent).setIcon(((INavigationView)value).getIcon().getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(superComponent, isSelected)));
+        			((JLabel)superComponent).setIcon(((INavigationView)value).getIcon().getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForColorMutableIcon(superComponent, isSelected)));
         			((JLabel)superComponent).setText(((INavigationView)value).getTitle());
         			return superComponent;
         		}
@@ -266,8 +270,8 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
     public ExtendedToolTip getExtendedToolTip() {
         if (extendedToolTip == null) {
             JDialog.setDefaultLookAndFeelDecorated(false);
-            extendedToolTip = new ExtendedToolTip();
-            JDialog.setDefaultLookAndFeelDecorated(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isDialogUndecorated());
+            extendedToolTip = new ExtendedToolTip(lookAndFeelManager.getCurrentLookAndFeel());
+            JDialog.setDefaultLookAndFeelDecorated(lookAndFeelManager.getCurrentLookAndFeel().isDialogUndecorated());
         }
         return extendedToolTip;
     }

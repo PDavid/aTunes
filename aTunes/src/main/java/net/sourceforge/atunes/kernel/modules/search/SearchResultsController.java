@@ -39,6 +39,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialogFactory;
 import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IColumnSet;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
 
@@ -52,11 +53,14 @@ final class SearchResultsController extends AbstractSimpleController<SearchResul
     private IColumnSet columnSet;
     
     private IPlayListHandler playListHandler;
-
-    SearchResultsController(SearchResultsDialog dialog, IState state, IPlayListHandler playListHandler) {
+    
+    private ILookAndFeelManager lookAndFeelManager;
+    
+    SearchResultsController(SearchResultsDialog dialog, IState state, IPlayListHandler playListHandler, ILookAndFeelManager lookAndFeelManager) {
         super(dialog, state);
         this.columnSet = (IColumnSet) Context.getBean("searchResultsColumnSet");
         this.playListHandler = playListHandler;
+        this.lookAndFeelManager = lookAndFeelManager;
         addBindings();
     }
 
@@ -91,7 +95,7 @@ final class SearchResultsController extends AbstractSimpleController<SearchResul
         SearchResultTableModel tableModel = new SearchResultTableModel(columnSet);
         table.setModel(tableModel);
 
-        SearchResultColumnModel columnModel = new SearchResultColumnModel(table, columnSet);
+        SearchResultColumnModel columnModel = new SearchResultColumnModel(table, columnSet, lookAndFeelManager.getCurrentLookAndFeel());
         table.setColumnModel(columnModel);
 
         // Set sorter
@@ -101,7 +105,7 @@ final class SearchResultsController extends AbstractSimpleController<SearchResul
         new ColumnSetPopupMenu(getComponentControlled().getSearchResultsTable(), columnModel);
 
         // Set renderers
-        ColumnRenderers.addRenderers(getComponentControlled().getSearchResultsTable(), columnModel);
+        ColumnRenderers.addRenderers(getComponentControlled().getSearchResultsTable(), columnModel, lookAndFeelManager.getCurrentLookAndFeel());
 
         SearchResultsListener listener = new SearchResultsListener(this, getComponentControlled());
         getComponentControlled().getShowElementInfo().addActionListener(listener);
@@ -118,7 +122,7 @@ final class SearchResultsController extends AbstractSimpleController<SearchResul
         if (selectedResults == null) {
             return;
         }
-        Context.getBean(IAudioObjectPropertiesDialogFactory.class).newInstance(selectedResults.get(0)).showDialog();
+        Context.getBean(IAudioObjectPropertiesDialogFactory.class).newInstance(selectedResults.get(0), lookAndFeelManager).showDialog();
     }
 
     /**

@@ -43,6 +43,7 @@ import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
@@ -121,7 +122,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
         SwingUtilities.invokeLater(new Runnable() {
         	@Override
         	public void run() {
-        		dialog = getBean(IIndeterminateProgressDialogFactory.class).newDialog(getBean(IFrame.class));
+        		dialog = getBean(IIndeterminateProgressDialogFactory.class).newDialog(getBean(IFrame.class), getBean(ILookAndFeelManager.class));
         		dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
         		dialog.showDialog();
         	}
@@ -146,7 +147,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
         SwingUtilities.invokeLater(new Runnable() {
         	@Override
         	public void run() {
-        		dialog = getBean(IIndeterminateProgressDialogFactory.class).newDialog(getBean(IFrame.class));
+        		dialog = getBean(IIndeterminateProgressDialogFactory.class).newDialog(getBean(IFrame.class), getBean(ILookAndFeelManager.class));
         		dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
         		dialog.showDialog();
         	}

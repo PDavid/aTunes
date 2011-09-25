@@ -46,6 +46,11 @@ public class LinuxOperatingSystem extends OperatingSystemAdapter {
      */
     private static String MPLAYER_LINUX_COMMAND = "mplayer";
     
+    /**
+     * @param systemType
+     * @param osManager
+     * @param lookAndFeelManager
+     */
     public LinuxOperatingSystem(OperatingSystem systemType, IOSManager osManager) {
 		super(systemType, osManager);
 	}

@@ -47,6 +47,7 @@ import net.sourceforge.atunes.kernel.modules.columns.TextAndIcon;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IColumnSet;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -68,30 +69,38 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
 
     private ITaskService taskService;
     
+    private ILookAndFeel lookAndFeel;
+    
     /**
      * Instantiates a new column model
      * 
      * @param table
      * @param columnSet
      * @param taskService
+     * @param lookAndFeel
      */
-    public AbstractCommonColumnModel(JTable table, IColumnSet columnSet, ITaskService taskService) {
-        this(table, taskService);
+    public AbstractCommonColumnModel(JTable table, IColumnSet columnSet, ITaskService taskService, ILookAndFeel lookAndFeel) {
+        this(table, taskService, lookAndFeel);
         this.columnSet = columnSet;
     }
 
     /**
      * Instantiates a new column model.
-     * 
      * @param table
      * @param taskService
+     * @param lookAndFeel
      */
-    public AbstractCommonColumnModel(JTable table, ITaskService taskService) {
+    public AbstractCommonColumnModel(JTable table, ITaskService taskService, ILookAndFeel lookAndFeel) {
         super();
         this.taskService = taskService;
+        this.lookAndFeel = lookAndFeel;
         this.table = table;
         this.model = (AbstractCommonTableModel) this.table.getModel();
     }
+    
+    protected ILookAndFeel getLookAndFeel() {
+		return lookAndFeel;
+	}
 
     /**
      * Return column for x position.
@@ -365,17 +374,17 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
      */
     public AbstractTableCellRendererCode getRendererCodeFor(Class<?> clazz) {
         if (clazz.equals(Integer.class)) {
-            return new IntegerTableCellRendererCode();
+            return new IntegerTableCellRendererCode(lookAndFeel);
         } else if (clazz.equals(ImageIcon.class)) {
-            return new ImageIconTableCellRendererCode(this);
+            return new ImageIconTableCellRendererCode(this, lookAndFeel);
         } else if (clazz.equals(String.class)) {
-            return new StringTableCellRendererCode(this);
+            return new StringTableCellRendererCode(this, lookAndFeel);
         } else if (clazz.equals(TextAndIcon.class)) {
-            return new TextAndIconTableCellRendererCode(this);
+            return new TextAndIconTableCellRendererCode(this, lookAndFeel);
         } else if (clazz.equals(Property.class)) {
-            return new PropertyTableCellRendererCode();
+            return new PropertyTableCellRendererCode(lookAndFeel);
         } else if (clazz.equals(IColorMutableImageIcon.class)) {
-        	return new ColorMutableTableCellRendererCode(this);
+        	return new ColorMutableTableCellRendererCode(this, lookAndFeel);
         }
         throw new IllegalArgumentException(StringUtils.getString("No renderer found for class: ", clazz.getName()));
     }

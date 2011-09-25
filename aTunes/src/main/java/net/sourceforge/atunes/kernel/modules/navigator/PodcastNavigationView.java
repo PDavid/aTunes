@@ -55,6 +55,7 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
@@ -77,8 +78,16 @@ public final class PodcastNavigationView extends AbstractNavigationView {
     
     private IPodcastFeedHandler podcastFeedHandler;
 
-    public PodcastNavigationView(IState state, AbstractCustomNavigatorColumnSet columnSet, INavigationHandler navigationHandler, IFrame frame, IPodcastFeedHandler podcastFeedHandler) {
-    	super(state, navigationHandler, frame);
+    /**
+     * @param state
+     * @param columnSet
+     * @param navigationHandler
+     * @param frame
+     * @param podcastFeedHandler
+     * @param lookAndFeelManager
+     */
+    public PodcastNavigationView(IState state, AbstractCustomNavigatorColumnSet columnSet, INavigationHandler navigationHandler, IFrame frame, IPodcastFeedHandler podcastFeedHandler, ILookAndFeelManager lookAndFeelManager) {
+    	super(state, navigationHandler, frame, lookAndFeelManager);
     	this.columnSet = columnSet;
     	this.podcastFeedHandler = podcastFeedHandler;
 	}
@@ -90,7 +99,7 @@ public final class PodcastNavigationView extends AbstractNavigationView {
 			
 			@Override
 			public ImageIcon getIcon(Paint paint) {
-				return RssImageIcon.getSmallIcon(paint);
+				return RssImageIcon.getSmallIcon(paint, getLookAndFeelManager().getCurrentLookAndFeel());
 			}
 		};
     }

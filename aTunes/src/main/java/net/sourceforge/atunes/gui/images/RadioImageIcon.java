@@ -28,6 +28,8 @@ import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.model.ILookAndFeel;
+
 public class RadioImageIcon {
 
 	private static final int SMALL_SIZE = 16;
@@ -36,22 +38,38 @@ public class RadioImageIcon {
 	
 	private static ImageIcon smallImageIcon; // Cached as it's heavily used
 
-	public static ImageIcon getSmallIcon() {
+	/**
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getSmallIcon(ILookAndFeel lookAndFeel) {
 		if (smallImageIcon == null) {
-			smallImageIcon = getSmallIcon(null, SMALL_SIZE, SMALL_SIZE); 
+			smallImageIcon = getSmallIcon(null, SMALL_SIZE, SMALL_SIZE, lookAndFeel); 
 		}
 		return smallImageIcon;
 	}
 
-	public static ImageIcon getSmallIcon(Paint paint) {
+	/**
+	 * @param paint
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getSmallIcon(Paint paint, ILookAndFeel lookAndFeel) {
 		if (paint == null) {
-			return getSmallIcon();
+			return getSmallIcon(lookAndFeel);
 		} else {
-			return getSmallIcon(paint, SMALL_SIZE, SMALL_SIZE);
+			return getSmallIcon(paint, SMALL_SIZE, SMALL_SIZE, lookAndFeel);
 		}
 	}
 
-	private static ImageIcon getSmallIcon(Paint color, int w, int h) {
+	/**
+	 * @param color
+	 * @param w
+	 * @param h
+	 * @param lookAndFeel
+	 * @return
+	 */
+	private static ImageIcon getSmallIcon(Paint color, int w, int h, ILookAndFeel lookAndFeel) {
 		int marginX = w / 10;
 		int marginTopY = h / 2;
 		int marginBottomY = h / 10;
@@ -73,26 +91,51 @@ public class RadioImageIcon {
 		marginTopY = marginTopY + insideMargin;
 		a.subtract(new Area(new Rectangle(marginX, marginTopY, w - 2 * marginX, h - marginTopY - marginBottomY)));
 		
-        return IconGenerator.generateIcon(color, w, h, a);
+        return IconGenerator.generateIcon(color, w, h, lookAndFeel, a);
 	}
 
-	public static ImageIcon getIcon() {
-		return getIcon(null, MEDIUM_SIZE, MEDIUM_SIZE);
+	/**
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getIcon(ILookAndFeel lookAndFeel) {
+		return getIcon(null, MEDIUM_SIZE, MEDIUM_SIZE, lookAndFeel);
 	}
 	
-	public static ImageIcon getIcon(Paint color) {
-		return getIcon(color, MEDIUM_SIZE, MEDIUM_SIZE);
+	/**
+	 * @param color
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getIcon(Paint color, ILookAndFeel lookAndFeel) {
+		return getIcon(color, MEDIUM_SIZE, MEDIUM_SIZE, lookAndFeel);
 	}
 
-	public static ImageIcon getBigIcon() {
-		return getIcon(null, LARGE_SIZE, LARGE_SIZE);
+	/**
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getBigIcon(ILookAndFeel lookAndFeel) {
+		return getIcon(null, LARGE_SIZE, LARGE_SIZE, lookAndFeel);
 	}
 	
-	public static ImageIcon getBigIcon(Paint color) {
-		return getIcon(color, LARGE_SIZE, LARGE_SIZE);
+	/**
+	 * @param color
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getBigIcon(Paint color, ILookAndFeel lookAndFeel) {
+		return getIcon(color, LARGE_SIZE, LARGE_SIZE, lookAndFeel);
 	}
 
-	private static ImageIcon getIcon(Paint color, int w, int h) {
+	/**
+	 * @param color
+	 * @param w
+	 * @param h
+	 * @param lookAndFeel
+	 * @return
+	 */
+	private static ImageIcon getIcon(Paint color, int w, int h, ILookAndFeel lookAndFeel) {
 		int marginX = w / 10;
 		int marginTopY = h / 2;
 		int marginBottomY = h / 10;
@@ -114,6 +157,6 @@ public class RadioImageIcon {
 		marginTopY = marginTopY + insideMargin;
 		a.subtract(new Area(new Rectangle(marginX, marginTopY, w - 2 * marginX, h - marginTopY - marginBottomY)));
 		
-        return IconGenerator.generateIcon(color, w, h, a);
+        return IconGenerator.generateIcon(color, w, h, lookAndFeel, a);
 	}
 }

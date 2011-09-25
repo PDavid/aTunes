@@ -60,7 +60,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.filechooser.FileFilter;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
 import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.NextButton;
@@ -74,6 +73,7 @@ import net.sourceforge.atunes.kernel.modules.player.ProgressBarSeekListener;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
@@ -220,15 +220,16 @@ public final class FullScreenWindow extends AbstractCustomWindow {
      * @param state
      * @param frame
      * @param osManager
+     * @param lookAndFeelManager
      */
-    public FullScreenWindow(JFrame owner, IState state, IFrame frame, IOSManager osManager) {
+    public FullScreenWindow(JFrame owner, IState state, IFrame frame, IOSManager osManager, ILookAndFeelManager lookAndFeelManager) {
         super(owner, 0, 0);
         this.state = state;
         this.frame = frame;
         this.osManager = osManager;
         setLocation(0, 0);
         setAlwaysOnTop(true);
-        setContent();
+        setContent(lookAndFeelManager);
         addKeyListener(keyAdapter);
         File backgroundFile = null;
         if (state.getFullScreenBackground() != null) {
@@ -332,8 +333,9 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 
     /**
      * Sets the content.
+     * @param lookAndFeelManager 
      */
-    private void setContent() {
+    private void setContent(ILookAndFeelManager lookAndFeelManager) {
         final JPanel panel = new JPanel(new BorderLayout()) {
             private static final long serialVersionUID = 109708757849271173L;
 
@@ -385,11 +387,11 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         options.add(removeBackground);
         options.add(exitFullScreen);
 
-        previousButton = new PreviousButton(PlayerControlsPanel.PREVIOUS_NEXT_BUTTONS_SIZE);
-        playButton = new PlayPauseButton(PlayerControlsPanel.PLAY_BUTTON_SIZE);
-        stopButton = new StopButton(PlayerControlsPanel.STOP_MUTE_BUTTONS_SIZE);
-        nextButton = new NextButton(PlayerControlsPanel.PREVIOUS_NEXT_BUTTONS_SIZE);
-        muteButton = new MuteButton(PlayerControlsPanel.STOP_MUTE_BUTTONS_SIZE, state);
+        previousButton = new PreviousButton(PlayerControlsPanel.PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
+        playButton = new PlayPauseButton(PlayerControlsPanel.PLAY_BUTTON_SIZE, lookAndFeelManager);
+        stopButton = new StopButton(PlayerControlsPanel.STOP_MUTE_BUTTONS_SIZE, lookAndFeelManager);
+        nextButton = new NextButton(PlayerControlsPanel.PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
+        muteButton = new MuteButton(PlayerControlsPanel.STOP_MUTE_BUTTONS_SIZE, state, lookAndFeelManager);
         muteButton.setText("");
         volumeSlider = new VolumeSlider(state);
 
@@ -400,7 +402,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         muteButton.addMouseListener(clickListener);
         volumeSlider.addMouseListener(clickListener);
 
-        covers = new CoverFlow();
+        covers = new CoverFlow(lookAndFeelManager.getCurrentLookAndFeel());
         Dimension coverSize = new Dimension(GuiUtils.getDeviceWidth(), GuiUtils.getDeviceHeight() * 5 / 7);
         covers.setMinimumSize(coverSize);
         covers.setMaximumSize(coverSize);
@@ -411,11 +413,11 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         covers.addMouseMotionListener(moveListener);
 
         textLabel = new JLabel();
-        textLabel.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getFullScreenLine1Font());
+        textLabel.setFont(lookAndFeelManager.getCurrentLookAndFeel().getFullScreenLine1Font());
         textLabel.setForeground(Color.WHITE);
 
         textLabel2 = new JLabel();
-        textLabel2.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getContextInformationBigFont());
+        textLabel2.setFont(lookAndFeelManager.getCurrentLookAndFeel().getContextInformationBigFont());
         textLabel2.setForeground(Color.WHITE);
 
         progressSlider = new ProgressSlider();
@@ -449,7 +451,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         c.fill = GridBagConstraints.HORIZONTAL;
         controlsPanel.add(progressSlider, c);
 
-        JPanel buttonsPanel = PlayerControlsPanel.getPanelWithPlayerControls(stopButton, previousButton, playButton, nextButton, muteButton, volumeSlider);
+        JPanel buttonsPanel = PlayerControlsPanel.getPanelWithPlayerControls(stopButton, previousButton, playButton, nextButton, muteButton, volumeSlider, lookAndFeelManager);
 
         c.gridx = 0;
         c.gridwidth = 3;

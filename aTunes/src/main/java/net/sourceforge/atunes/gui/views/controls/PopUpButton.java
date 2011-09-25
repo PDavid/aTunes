@@ -39,7 +39,8 @@ import javax.swing.JSeparator;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
@@ -66,19 +67,22 @@ public class PopUpButton extends JButton {
     
     private Polygon topShape;
     
+    private ILookAndFeel lookAndFeel;
+    
     /**
      * Instantiates a new pop up button with an arrow
      * 
      * @param location
      *            the location
      */
-    public PopUpButton(int location) {
+    public PopUpButton(int location, ILookAndFeelManager lookAndFeelManager) {
         super();
         this.location = location;
+        this.lookAndFeel = lookAndFeelManager.getCurrentLookAndFeel();
         setButton();
         GuiUtils.applyComponentOrientation(menu);
         
-        Dimension dimension = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPopUpButtonSize();
+        Dimension dimension = lookAndFeel.getPopUpButtonSize();
         if (dimension != null) {
         	setMinimumSize(dimension);
         	setPreferredSize(dimension);
@@ -120,8 +124,8 @@ public class PopUpButton extends JButton {
     	if (topShape != null) {
     		Graphics2D g2 = (Graphics2D) g;
     		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);    	
-    		g2.setPaint(isEnabled() ? LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForSpecialControls() :
-    			LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForDisabledSpecialControls());
+    		g2.setPaint(isEnabled() ? lookAndFeel.getPaintForSpecialControls() :
+    			lookAndFeel.getPaintForDisabledSpecialControls());
     		g2.translate(getWidth() / 2, getHeight() / 2);
     		if (this.location == BOTTOM_LEFT || this.location == BOTTOM_RIGHT) {
     			g2.rotate(Math.PI);

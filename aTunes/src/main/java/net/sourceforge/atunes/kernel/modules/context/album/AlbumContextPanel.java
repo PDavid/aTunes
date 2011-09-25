@@ -49,7 +49,7 @@ public class AlbumContextPanel extends AbstractContextPanel {
         return new IColorMutableImageIcon() {
         	@Override
         	public ImageIcon getIcon(Paint paint) {
-        		return AlbumImageIcon.getIcon(paint);
+        		return AlbumImageIcon.getIcon(paint, getLookAndFeel());
         	}
         };
     }

@@ -30,6 +30,7 @@ import javax.swing.KeyStroke;
 import net.sourceforge.atunes.gui.images.EqualizerImageIcon;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IEqualizerDialog;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -58,7 +59,7 @@ public class ShowEqualizerAction extends ActionWithColorMutableIcon {
 			
 			@Override
 			public ImageIcon getIcon(Paint paint) {
-				return EqualizerImageIcon.getIcon(paint);
+				return EqualizerImageIcon.getIcon(paint, getBean(ILookAndFeelManager.class).getCurrentLookAndFeel());
 			}
 		};
     }

@@ -25,11 +25,13 @@ import java.awt.Paint;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.ArtistFavoriteImageIcon;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.model.ColumnSort;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 public class ArtistColumn extends AbstractColumn {
 
@@ -65,7 +67,7 @@ public class ArtistColumn extends AbstractColumn {
 					
 					@Override
 					public ImageIcon getIcon(Paint paint) {
-						return ArtistFavoriteImageIcon.getIcon(paint);
+						return ArtistFavoriteImageIcon.getIcon(paint, Context.getBean(ILookAndFeelManager.class).getCurrentLookAndFeel());
 					}
 				}, SwingConstants.LEFT);
     }

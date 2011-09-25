@@ -43,6 +43,7 @@ import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.ImageSize;
@@ -635,13 +636,13 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
     }
 
     @Override
-    public IColorMutableImageIcon getGenericImage(GenericImageSize imageSize) {
+    public IColorMutableImageIcon getGenericImage(GenericImageSize imageSize, final ILookAndFeel lookAndFeel) {
         switch (imageSize) {
         case SMALL: {
         	return new IColorMutableImageIcon() {
         		@Override
         		public ImageIcon getIcon(Paint paint) {
-        			return AudioFileImageIcon.getSmallImageIcon(paint);
+        			return AudioFileImageIcon.getSmallImageIcon(paint, lookAndFeel);
         		}
         	};         
         }
@@ -649,7 +650,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
         	return new IColorMutableImageIcon() {
         		@Override
         		public ImageIcon getIcon(Paint paint) {
-        			return AudioFileImageIcon.getMediumImage(paint);
+        			return AudioFileImageIcon.getMediumImage(paint, lookAndFeel);
         		}
         	};         
         }
@@ -657,7 +658,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
         	return new IColorMutableImageIcon() {
         		@Override
         		public ImageIcon getIcon(Paint paint) {
-        			return AudioFileImageIcon.getMediumImage(paint);
+        			return AudioFileImageIcon.getMediumImage(paint, lookAndFeel);
         		}
         	};         
         }

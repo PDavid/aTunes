@@ -22,10 +22,17 @@ package net.sourceforge.atunes.gui.images;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.model.ILookAndFeel;
+
 public class VolumeMuteImageIcon {
 	
-	public static ImageIcon getIcon() {
+	/**
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getIcon(ILookAndFeel lookAndFeel) {
         return IconGenerator.generateIcon(VolumeCommonImageIcon.WIDTH, VolumeCommonImageIcon.HEIGHT, 
+        		lookAndFeel,
         		VolumeCommonImageIcon.getVolumeShape(), 
         		VolumeCommonImageIcon.getMute()); 
 	}

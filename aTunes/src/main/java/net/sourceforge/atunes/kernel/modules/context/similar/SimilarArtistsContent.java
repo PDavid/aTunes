@@ -63,8 +63,8 @@ public class SimilarArtistsContent extends AbstractContextPanelContent {
     @Override
     protected Component getComponent() {
         // Create components
-        similarArtistsTable = new SimilarArtistsContextTable();
-        similarArtistsTable.addContextRowPanel(new SimilarArtistTableCellRendererCode());
+        similarArtistsTable = new SimilarArtistsContextTable(getLookAndFeelManager().getCurrentLookAndFeel());
+        similarArtistsTable.addContextRowPanel(new SimilarArtistTableCellRendererCode(getLookAndFeelManager().getCurrentLookAndFeel()));
         return similarArtistsTable;
     }
 }

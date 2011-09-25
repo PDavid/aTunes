@@ -31,12 +31,12 @@ import javax.swing.table.TableColumn;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.PlayListStateImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.renderers.StringTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.TextAndIconTableCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.kernel.modules.columns.TextAndIcon;
 import net.sourceforge.atunes.model.IColumnSet;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.PlayState;
@@ -48,18 +48,18 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
 
     private final class PlayListTextAndIconTableCellRendererCode extends TextAndIconTableCellRendererCode {
 
-        private PlayListTextAndIconTableCellRendererCode(AbstractCommonColumnModel model) {
-            super(model);
+        private PlayListTextAndIconTableCellRendererCode(AbstractCommonColumnModel model, ILookAndFeel lookAndFeel) {
+            super(model, lookAndFeel);
         }
 
         @Override
         public JComponent getComponent(JComponent superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         	JComponent c = super.getComponent(superComponent, table, value, isSelected, hasFocus, row, column);
         	if (playListHandler.isCurrentVisibleRowPlaying(row)) {
-        		if (LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListSelectedItemFont() != null) {
-        			 ((JLabel) c).setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListSelectedItemFont());
-        		} else if (LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListFont() != null) {
-                    ((JLabel) c).setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListFont());
+        		if (getLookAndFeel().getPlayListSelectedItemFont() != null) {
+        			 ((JLabel) c).setFont(getLookAndFeel().getPlayListSelectedItemFont());
+        		} else if (getLookAndFeel().getPlayListFont() != null) {
+                    ((JLabel) c).setFont(getLookAndFeel().getPlayListFont());
         		}
         	}
             return c;
@@ -68,18 +68,18 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
 
     private final class PlayListStringTableCellRendererCode extends StringTableCellRendererCode {
 
-        private PlayListStringTableCellRendererCode(AbstractCommonColumnModel model) {
-            super(model);
+        private PlayListStringTableCellRendererCode(AbstractCommonColumnModel model, ILookAndFeel lookAndFeel) {
+            super(model, lookAndFeel);
         }
 
         @Override
         public JComponent getComponent(JComponent superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         	JComponent c = super.getComponent(superComponent, t, value, isSelected, hasFocus, row, column);
         	if (playListHandler.isCurrentVisibleRowPlaying(row)) {
-        		if (LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListSelectedItemFont() != null) {
-        			 ((JLabel) c).setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListSelectedItemFont());
-        		} else if (LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListFont() != null) {
-                    ((JLabel) c).setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListFont());
+        		if (getLookAndFeel().getPlayListSelectedItemFont() != null) {
+        			 ((JLabel) c).setFont(getLookAndFeel().getPlayListSelectedItemFont());
+        		} else if (getLookAndFeel().getPlayListFont() != null) {
+                    ((JLabel) c).setFont(getLookAndFeel().getPlayListFont());
         		}
         	}
             return c;
@@ -93,10 +93,11 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
      * Instantiates a new play list column model.
      * 
      * @param playList
-     *            the play list
+     * @param playListHandler
+     * @param lookAndFeel
      */
-    public PlayListColumnModel(PlayListTable playList, IPlayListHandler playListHandler) {
-        super(playList, (IColumnSet) Context.getBean("playlistColumnSet"), Context.getBean(ITaskService.class));
+    public PlayListColumnModel(PlayListTable playList, IPlayListHandler playListHandler, ILookAndFeel lookAndFeel) {
+        super(playList, (IColumnSet) Context.getBean("playlistColumnSet"), Context.getBean(ITaskService.class), lookAndFeel);
         this.playListHandler = playListHandler;
         enableColumnChange(true);
     }
@@ -118,7 +119,7 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
     @Override
     public AbstractTableCellRendererCode getRendererCodeFor(Class<?> clazz) {
         if (clazz.equals(Integer.class)) {
-            return new AbstractTableCellRendererCode() {
+            return new AbstractTableCellRendererCode(getLookAndFeel()) {
 
                 @Override
                 public JComponent getComponent(JComponent c, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -126,10 +127,10 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
                     //Display Integer values if the column is nameless
                     if (!"".equals(name)) {
                     	if (playListHandler.isCurrentVisibleRowPlaying(row)) {
-                    		if (LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListSelectedItemFont() != null) {
-                    			 ((JLabel) c).setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListSelectedItemFont());
-                    		} else if (LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListFont() != null) {
-                                ((JLabel) c).setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListFont());
+                    		if (getLookAndFeel().getPlayListSelectedItemFont() != null) {
+                    			 ((JLabel) c).setFont(getLookAndFeel().getPlayListSelectedItemFont());
+                    		} else if (getLookAndFeel().getPlayListFont() != null) {
+                                ((JLabel) c).setFont(getLookAndFeel().getPlayListFont());
                     		}
                     	}
                         ((JLabel) c).setIcon(null);
@@ -141,8 +142,8 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
                     //Display an icon if playing and cell is in a "special" column
                     ((JLabel) c).setText(null);
                     if (playListHandler.isCurrentVisibleRowPlaying(row)) {
-                        ((JLabel) c).setIcon(getPlayStateIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(c, isSelected), 
-                        		((PlayListTable) getTable()).getPlayState()));
+                        ((JLabel) c).setIcon(getPlayStateIcon(getLookAndFeel().getPaintForColorMutableIcon(c, isSelected), 
+                        		((PlayListTable) getTable()).getPlayState(), getLookAndFeel()));
                     } else {
                         ((JLabel) c).setIcon(null); // was using Images.getImage(Images.EMPTY) previously
                     }
@@ -153,22 +154,28 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
                 }
             };
         } else if (clazz.equals(String.class)) {
-            return new PlayListStringTableCellRendererCode(this);
+            return new PlayListStringTableCellRendererCode(this, getLookAndFeel());
         } else if (clazz.equals(TextAndIcon.class)) {
-            return new PlayListTextAndIconTableCellRendererCode(this);
+            return new PlayListTextAndIconTableCellRendererCode(this, getLookAndFeel());
         } else {
             return super.getRendererCodeFor(clazz);
         }
     }
     
-    private ImageIcon getPlayStateIcon(Paint color, PlayState state) {
+    /**
+     * @param color
+     * @param state
+     * @param lookAndFeel
+     * @return
+     */
+    private ImageIcon getPlayStateIcon(Paint color, PlayState state, ILookAndFeel lookAndFeel) {
         switch (state) {
         case PLAYING:
-            return PlayListStateImageIcon.getPlayIcon(color);
+            return PlayListStateImageIcon.getPlayIcon(color, lookAndFeel);
         case STOPPED:
-            return PlayListStateImageIcon.getStopIcon(color);
+            return PlayListStateImageIcon.getStopIcon(color, lookAndFeel);
         case PAUSED:
-            return PlayListStateImageIcon.getPauseIcon(color);
+            return PlayListStateImageIcon.getPauseIcon(color, lookAndFeel);
         case NONE:
             return null;
         default:

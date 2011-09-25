@@ -39,10 +39,10 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -125,8 +125,9 @@ public final class DevicePanel extends AbstractPreferencesPanel {
     /**
      * Instantiates a new device panel.
      * @param osManager
+     * @param lookAndFeel
      */
-    public DevicePanel(IOSManager osManager) {
+    public DevicePanel(IOSManager osManager, ILookAndFeel lookAndFeel) {
         super(I18nUtils.getString("DEVICE"));
         JLabel label = new JLabel(I18nUtils.getString("DEVICE_DEFAULT_LOCATION"));
         locationFileChooser = new CustomJFileChooser(this, 20, JFileChooser.DIRECTORIES_ONLY, osManager);
@@ -173,13 +174,13 @@ public final class DevicePanel extends AbstractPreferencesPanel {
         group2.add(folderPathNoChangeRadioButton);
         group2.add(folderPathCustomizedRadioButton);
 
-        availablePatternsTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
+        availablePatternsTable = lookAndFeel.getTable();
         availablePatternsTable.setModel(new AvailablePatternsDefaultTableModel());
 
         JPanel patternsPanel = new JPanel(new BorderLayout());
         patternsPanel.setPreferredSize(new Dimension(250, 200));
         patternsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0,0,0,0), I18nUtils.getString("AVAILABLE_PATTERNS")));
-        patternsPanel.add(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(availablePatternsTable), BorderLayout.CENTER);
+        patternsPanel.add(lookAndFeel.getTableScrollPane(availablePatternsTable), BorderLayout.CENTER);
 
         copySameSongForDifferentAlbums = new JCheckBox(I18nUtils.getString("ALLOW_COPY_TO_DEVICE_SAME_SONG_FOR_DIFFERENT_ALBUMS"));
 

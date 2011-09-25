@@ -29,10 +29,10 @@ import javax.swing.UIManager;
 import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITaskService;
@@ -45,8 +45,15 @@ public final class NavigationTableColumnModel extends AbstractCommonColumnModel 
     
     private INavigationHandler navigationHandler;
     
-    public NavigationTableColumnModel(JTable table, IState state, INavigationHandler navigationHandler, ITaskService taskService) {
-        super(table, taskService);
+    /**
+     * @param table
+     * @param state
+     * @param navigationHandler
+     * @param taskService
+     * @param lookAndFeel
+     */
+    public NavigationTableColumnModel(JTable table, IState state, INavigationHandler navigationHandler, ITaskService taskService, ILookAndFeel lookAndFeel) {
+        super(table, taskService, lookAndFeel);
         this.state = state;
         this.navigationHandler = navigationHandler;
         enableColumnChange(true);
@@ -66,7 +73,7 @@ public final class NavigationTableColumnModel extends AbstractCommonColumnModel 
     @Override
     public AbstractTableCellRendererCode getRendererCodeFor(Class<?> clazz) {
         AbstractTableCellRendererCode renderer = super.getRendererCodeFor(clazz);
-        return new NavigationTableCellRendererCode(renderer, state);
+        return new NavigationTableCellRendererCode(renderer, state, getLookAndFeel());
     }
 
     private class NavigationTableCellRendererCode extends AbstractTableCellRendererCode {
@@ -75,7 +82,8 @@ public final class NavigationTableColumnModel extends AbstractCommonColumnModel 
 
         private IState state;
         
-        public NavigationTableCellRendererCode(AbstractTableCellRendererCode renderer, IState state) {
+        public NavigationTableCellRendererCode(AbstractTableCellRendererCode renderer, IState state, ILookAndFeel lookAndFeel) {
+        	super(lookAndFeel);
             this.renderer = renderer;
             this.state = state;
         }
@@ -91,7 +99,7 @@ public final class NavigationTableColumnModel extends AbstractCommonColumnModel 
                     ((JLabel) c).setForeground(Color.red);
                 } else {
                 	// Only Substance doesn't need this workaround
-                	if (!LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getClass().equals(SubstanceLookAndFeel.class)) {
+                	if (!getLookAndFeel().getClass().equals(SubstanceLookAndFeel.class)) {
                 		((JLabel) c).setForeground(c.getForeground());
                 		if( isSelected ) {
                 			((JLabel) c).setForeground(UIManager.getColor("List.selectionForeground"));

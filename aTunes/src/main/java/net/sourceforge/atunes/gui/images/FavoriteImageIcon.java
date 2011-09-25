@@ -26,6 +26,8 @@ import java.awt.geom.CubicCurve2D;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.model.ILookAndFeel;
+
 public class FavoriteImageIcon {
 
 	private static final int WIDTH = 16;
@@ -33,15 +35,24 @@ public class FavoriteImageIcon {
 	
 	private static ImageIcon icon;
 	
-	public static ImageIcon getIcon() {
+	/**
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getIcon(ILookAndFeel lookAndFeel) {
 		if (icon == null) {
-			icon = getIcon(null);	
+			icon = getIcon(null, lookAndFeel);	
 		}
 		return icon;
 	}
 	
-	public static ImageIcon getIcon(Paint color) {
-        return IconGenerator.generateIcon(color, WIDTH, HEIGHT, getIconArea(WIDTH, HEIGHT, 0, 0));
+	/**
+	 * @param color
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getIcon(Paint color, ILookAndFeel lookAndFeel) {
+        return IconGenerator.generateIcon(color, WIDTH, HEIGHT, lookAndFeel, getIconArea(WIDTH, HEIGHT, 0, 0));
 	}
 	
 	protected static Area getIconArea(int width, int height, int xAxis, int yAxis) {

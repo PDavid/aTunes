@@ -25,11 +25,18 @@ import java.awt.Polygon;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.model.ILookAndFeel;
+
 public class DownloadImageIcon {
 
 	private static final int SIZE = 18;
 	
-	public static ImageIcon getIcon(Paint paint) {
+	/**
+	 * @param paint
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getIcon(Paint paint, ILookAndFeel lookAndFeel) {
         Polygon a = new Polygon();
         a.addPoint(7, 4);
         a.addPoint(11, 4);
@@ -38,10 +45,14 @@ public class DownloadImageIcon {
         a.addPoint(9, 15);
         a.addPoint(4, 11);
         a.addPoint(7, 11);
-		return IconGenerator.generateIcon(paint, SIZE, SIZE, a);
+		return IconGenerator.generateIcon(paint, SIZE, SIZE, lookAndFeel, a);
 	}
 
-	public static ImageIcon getIcon() {
-		return getIcon(null);
+	/**
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getIcon(ILookAndFeel lookAndFeel) {
+		return getIcon(null, lookAndFeel);
 	}
 }

@@ -27,12 +27,18 @@ import javax.swing.JTable;
 
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
+import net.sourceforge.atunes.model.ILookAndFeel;
 
 public class ImageIconTableCellRendererCode extends AbstractTableCellRendererCode {
 
     private AbstractCommonColumnModel model;
 
-    public ImageIconTableCellRendererCode(AbstractCommonColumnModel model) {
+    /**
+     * @param model
+     * @param lookAndFeel
+     */
+    public ImageIconTableCellRendererCode(AbstractCommonColumnModel model, ILookAndFeel lookAndFeel) {
+    	super(lookAndFeel);
         this.model = model;
     }
 

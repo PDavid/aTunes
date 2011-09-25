@@ -24,24 +24,34 @@ import java.awt.Polygon;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.model.ILookAndFeel;
+
 public class ArrowImageIcon {
 
 	private static final int WIDTH = 12;
 	private static final int HEIGHT = 12;
 	
-	public static ImageIcon getUpIcon() {
+	/**
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getUpIcon(ILookAndFeel lookAndFeel) {
         Polygon upShape = new Polygon();
         upShape.addPoint(2, 9);
         upShape.addPoint(10, 9);
         upShape.addPoint(6, 5);        
-		return IconGenerator.generateIcon(WIDTH, HEIGHT, upShape);
+		return IconGenerator.generateIcon(WIDTH, HEIGHT, lookAndFeel, upShape);
 	}
 
-	public static ImageIcon getDownIcon() {
+	/**
+	 * @param lookAndFeel 
+	 * @return
+	 */
+	public static ImageIcon getDownIcon(ILookAndFeel lookAndFeel) {
         Polygon downShape = new Polygon();
         downShape.addPoint(2, 5);
         downShape.addPoint(10, 5);
         downShape.addPoint(6, 9);        
-		return IconGenerator.generateIcon(WIDTH, HEIGHT, downShape);
+		return IconGenerator.generateIcon(WIDTH, HEIGHT, lookAndFeel, downShape);
 	}
 }

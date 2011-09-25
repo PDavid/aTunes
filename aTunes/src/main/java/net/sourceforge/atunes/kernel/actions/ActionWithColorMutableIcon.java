@@ -20,9 +20,9 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 public abstract class ActionWithColorMutableIcon extends CustomAbstractAction  implements ILookAndFeelChangeListener {
 
@@ -33,13 +33,13 @@ public abstract class ActionWithColorMutableIcon extends CustomAbstractAction  i
 
 	public ActionWithColorMutableIcon(String text) {
 		super(text);
-		LookAndFeelSelector.getInstance().addLookAndFeelChangeListener(this);
+		getBean(ILookAndFeelManager.class).addLookAndFeelChangeListener(this);
 		lookAndFeelChanged(); // Initial icon set
 	}
 
 	@Override
 	public final void lookAndFeelChanged() {
-		putValue(SMALL_ICON, getIcon().getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForSpecialControls()));
+		putValue(SMALL_ICON, getIcon().getIcon(getBean(ILookAndFeelManager.class).getCurrentLookAndFeel().getPaintForSpecialControls()));
 	}
 	
 	/**

@@ -27,11 +27,18 @@ import java.awt.geom.Ellipse2D;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.model.ILookAndFeel;
+
 public class GenreImageIcon {
 
 	private static final int SIZE = 18;
 	
-	public static ImageIcon getIcon(Paint color) {
+	/**
+	 * @param color
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getIcon(Paint color, ILookAndFeel lookAndFeel) {
 		
 		Ellipse2D e1 = new Ellipse2D.Float(2, 10, 7, 7);
 		Ellipse2D e2 = new Ellipse2D.Float(6, 8, 5, 5);
@@ -52,12 +59,14 @@ public class GenreImageIcon {
 		a.add(new Area(p));
 		a.subtract(new Area(e3));
 		
-
-		
-		return IconGenerator.generateIcon(color, SIZE, SIZE, a);
+		return IconGenerator.generateIcon(color, SIZE, SIZE, lookAndFeel, a);
 	}
 
-	public static ImageIcon getIcon() {
-		return getIcon(null);
+	/**
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getIcon(ILookAndFeel lookAndFeel) {
+		return getIcon(null, lookAndFeel);
 	}
 }

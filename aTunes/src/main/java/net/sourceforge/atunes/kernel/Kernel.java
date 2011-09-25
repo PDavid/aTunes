@@ -33,12 +33,12 @@ import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.ColorDefinitions;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITaskService;
@@ -110,7 +110,7 @@ public class Kernel {
             SwingUtilities.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
-                    LookAndFeelSelector.getInstance().setLookAndFeel(state.getLookAndFeel(), state, Context.getBean(IOSManager.class));
+                    Context.getBean(ILookAndFeelManager.class).setLookAndFeel(state.getLookAndFeel(), state, Context.getBean(IOSManager.class));
                     
                     IFrame frame = Context.getBean(IFrame.class);
                     AbstractHandler.setFrame(frame);

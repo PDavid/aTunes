@@ -52,6 +52,7 @@ import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
@@ -65,6 +66,8 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
     
     private IStateHandler stateHandler;
 
+	private ILookAndFeelManager lookAndFeelManager;
+
     /**
      * Instantiates a new edits the preferences dialog controller.
      * @param dialog
@@ -72,31 +75,33 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
      * @param osManager
      * @param frame
      * @param stateHandler
+     * @param lookAndFeelManager 
      */
-    EditPreferencesDialogController(EditPreferencesDialog dialog, IState state, IOSManager osManager, IFrame frame, IStateHandler stateHandler) {
+    EditPreferencesDialogController(EditPreferencesDialog dialog, IState state, IOSManager osManager, IFrame frame, IStateHandler stateHandler, ILookAndFeelManager lookAndFeelManager) {
         super(dialog, state);
         this.stateHandler = stateHandler;
+        this.lookAndFeelManager = lookAndFeelManager;
         panels = new ArrayList<AbstractPreferencesPanel>();
-        panels.add(new GeneralPanel(osManager));
+        panels.add(new GeneralPanel(osManager, lookAndFeelManager));
         panels.add(new RepositoryPanel()); 
-        panels.add(new PlayerPanel(osManager)); 
-        panels.add(new NavigatorPanel()); 
+        panels.add(new PlayerPanel(osManager, lookAndFeelManager.getCurrentLookAndFeel())); 
+        panels.add(new NavigatorPanel(lookAndFeelManager.getCurrentLookAndFeel())); 
         panels.add(new PlayListPrefPanel());
         panels.add(new OSDPanel()); 
-        panels.add(new ContextPanel()); 
+        panels.add(new ContextPanel(lookAndFeelManager.getCurrentLookAndFeel())); 
         panels.add(new InternetPanel()); 
         panels.add(new LastFmPanel()); 
-        panels.add(new DevicePanel(osManager)); 
+        panels.add(new DevicePanel(osManager, lookAndFeelManager.getCurrentLookAndFeel())); 
         panels.add(new RadioPanel()); 
         panels.add(new PodcastFeedPanel(osManager)); 
-        panels.add(new ImportExportPanel());
+        panels.add(new ImportExportPanel(lookAndFeelManager.getCurrentLookAndFeel()));
         
         for (AbstractPreferencesPanel panel : panels) {
         	panel.setState(state);
         }
         
         if (Kernel.isEnablePlugins()) {
-        	panels.add(new PluginsPanel(dialog, frame));
+        	panels.add(new PluginsPanel(dialog, frame, lookAndFeelManager.getCurrentLookAndFeel()));
         }
         getComponentControlled().setPanels(panels);
         buildList();
@@ -147,7 +152,7 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
      * @return
      */
     void validatePreferences() throws PreferencesValidationException {
-		final IIndeterminateProgressDialog dialog = Context.getBean(IIndeterminateProgressDialogFactory.class).newDialog(getComponentControlled());
+		final IIndeterminateProgressDialog dialog = Context.getBean(IIndeterminateProgressDialogFactory.class).newDialog(getComponentControlled(), lookAndFeelManager);
 
     	final SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
     		

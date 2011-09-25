@@ -51,7 +51,6 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.DeviceImageIcon;
 import net.sourceforge.atunes.gui.images.NewImageIcon;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomFrame;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.dialogs.UpdateDialog;
@@ -65,6 +64,7 @@ import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.model.ApplicationVersion;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrameState;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMenuBar;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IOSManager;
@@ -117,6 +117,8 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     
     private INavigationHandler navigationHandler;
     
+    private ILookAndFeelManager lookAndFeelManager;
+    
     /**
      * Instantiates a new standard frame.
      */
@@ -141,6 +143,14 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     
     public void setNavigationHandler(INavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
+	}
+    
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+    
+    protected ILookAndFeelManager getLookAndFeelManager() {
+		return lookAndFeelManager;
 	}
     
     @Override
@@ -272,7 +282,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     @Override
     public ContextPanel getContextPanel() {
         if (contextPanel == null) {
-            contextPanel = new ContextPanel();
+            contextPanel = new ContextPanel(lookAndFeelManager);
             contextPanel.setMinimumSize(getContextPanelMinimumSize());
             contextPanel.setPreferredSize(getContextPanelPreferredSize());
             contextPanel.setMaximumSize(getContextPanelMaximumSize());
@@ -322,7 +332,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     @Override
     public NavigationTreePanel getNavigationTreePanel() {
         if (navigationTreePanel == null) {
-            navigationTreePanel = new NavigationTreePanel();
+            navigationTreePanel = new NavigationTreePanel(lookAndFeelManager);
             navigationTreePanel.setMinimumSize(getNavigationTreePanelMinimumSize());
             navigationTreePanel.setPreferredSize(getNavigationTreePanelPreferredSize());
             navigationTreePanel.setMaximumSize(getNavigationTreePanelMaximumSize());
@@ -333,7 +343,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     @Override
     public NavigationTablePanel getNavigationTablePanel() {
         if (navigationTablePanel == null) {
-            navigationTablePanel = new NavigationTablePanel();
+            navigationTablePanel = new NavigationTablePanel(lookAndFeelManager);
             navigationTablePanel.setMinimumSize(getNavigationTablePanelMinimumSize());
             navigationTablePanel.setPreferredSize(getNavigationTablePanelPreferredSize());
             navigationTablePanel.setMaximumSize(getNavigationTablePanelMaximumSize());
@@ -344,7 +354,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     @Override
     public PlayerControlsPanel getPlayerControls() {
         if (playerControls == null) {
-            playerControls = new PlayerControlsPanel(state);
+            playerControls = new PlayerControlsPanel(state, lookAndFeelManager);
         }
         return playerControls;
     }
@@ -352,7 +362,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     @Override
     public PlayListPanel getPlayListPanel() {
         if (playListPanel == null) {
-            playListPanel = new PlayListPanel(playListHandler);
+            playListPanel = new PlayListPanel(playListHandler, lookAndFeelManager);
             playListPanel.setMinimumSize(getPlayListPanelMinimumSize());
             playListPanel.setPreferredSize(getPlayListPanelPreferredSize());
             playListPanel.setMaximumSize(getPlayListPanelMaximumSize());
@@ -423,14 +433,14 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
      */
     private JLabel getStatusBarDeviceLabel() {
         if (statusBarDeviceLabel == null) {
-            statusBarDeviceLabel = new JLabel(DeviceImageIcon.getIcon());
+            statusBarDeviceLabel = new JLabel(DeviceImageIcon.getIcon(lookAndFeelManager.getCurrentLookAndFeel()));
         }
         return statusBarDeviceLabel;
     }
 
     private JLabel getStatusBarNewPodcastEntriesLabel() {
         if (statusBarNewPodcastEntriesLabel == null) {
-            statusBarNewPodcastEntriesLabel = new JLabel(RssImageIcon.getSmallIcon());
+            statusBarNewPodcastEntriesLabel = new JLabel(RssImageIcon.getSmallIcon(lookAndFeelManager.getCurrentLookAndFeel()));
             statusBarNewPodcastEntriesLabel.setToolTipText(I18nUtils.getString("NEW_PODCAST_ENTRIES"));
             statusBarNewPodcastEntriesLabel.addMouseListener(new MouseAdapter() {
                 @Override
@@ -445,7 +455,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
 
     JLabel getStatusBarNewVersionLabel() {
         if (statusBarNewVersionLabel == null) {
-            statusBarNewVersionLabel = new JLabel(NewImageIcon.getIcon());
+            statusBarNewVersionLabel = new JLabel(NewImageIcon.getIcon(lookAndFeelManager.getCurrentLookAndFeel()));
             statusBarNewVersionLabel.setToolTipText(I18nUtils.getString("NEW_VERSION_AVAILABLE"));
             statusBarNewVersionLabel.addMouseListener(new MouseAdapter() {
                 @Override
@@ -586,7 +596,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
             }
             JXStatusBar.Constraint c = new JXStatusBar.Constraint(JXStatusBar.Constraint.ResizeBehavior.FIXED);
             statusBar.add(getStatusBarNewVersionLabel(), c);
-            updateDialog = new UpdateDialog(version, this.getFrame());
+            updateDialog = new UpdateDialog(version, this.getFrame(), lookAndFeelManager);
         } else {
             statusBar.remove(getStatusBarNewVersionLabel());
             updateDialog = null;
@@ -610,7 +620,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     	final int location = frameState.getSplitPaneDividerPos(s);
         c.setVisible(show);
         // Depending on visibility, set divider size, so if panel is not shown, its divider is hidden too 
-       	sp.setDividerSize(show ? LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getSplitPaneDividerSize() : 0);
+       	sp.setDividerSize(show ? lookAndFeelManager.getCurrentLookAndFeel().getSplitPaneDividerSize() : 0);
         if (show) {
         	SwingUtilities.invokeLater(new Runnable() {
         		@Override

@@ -47,12 +47,12 @@ public class AudioObjectContextPanel extends AbstractContextPanel {
     @Override
     protected IColorMutableImageIcon getContextPanelIcon(final IAudioObject audioObject) {
         if (audioObject != null) {
-            return audioObject.getGenericImage(GenericImageSize.SMALL);
+            return audioObject.getGenericImage(GenericImageSize.SMALL, getLookAndFeel());
         } else {
         	return new IColorMutableImageIcon() {
         		@Override
         		public ImageIcon getIcon(Paint paint) {
-        			return AudioFileImageIcon.getSmallImageIcon(paint);
+        			return AudioFileImageIcon.getSmallImageIcon(paint, getLookAndFeel());
         		}
         	};
         }

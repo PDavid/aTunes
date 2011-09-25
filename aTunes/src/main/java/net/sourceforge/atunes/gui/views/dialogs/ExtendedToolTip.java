@@ -32,9 +32,9 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -57,8 +57,9 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
 
     /**
      * Instantiates a new extended tool tip.
+     * @param lookAndFeel
      */
-    public ExtendedToolTip() {
+    public ExtendedToolTip(ILookAndFeel lookAndFeel) {
         super(null, IMAGE_DIMENSION.width, IMAGE_DIMENSION.height);
 
         setFocusableWindowState(false);
@@ -92,7 +93,7 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
         c.insets = new Insets(0, 10, 0, 10);
         container.add(line3, c);
         // Use scroll pane to draw a border consistent with look and feel
-        JScrollPane scrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getScrollPane(container);
+        JScrollPane scrollPane = lookAndFeel.getScrollPane(container);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         add(scrollPane);

@@ -33,14 +33,15 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.dialogs.StatsDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -62,7 +63,11 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
 	private IStatisticsHandler statisticsHandler;
 	
     private static class RightAlignmentTableCellRendererCode extends AbstractTableCellRendererCode {
-        @Override
+        public RightAlignmentTableCellRendererCode(ILookAndFeel lookAndFeel) {
+			super(lookAndFeel);
+		}
+
+		@Override
         public JComponent getComponent(JComponent superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         	if (superComponent instanceof JLabel) {
         		JLabel l = (JLabel) superComponent;
@@ -74,7 +79,11 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
     }
 
     private static class SwingOrientationTableCellRendererCode extends AbstractTableCellRendererCode {
-        @Override
+        public SwingOrientationTableCellRendererCode(ILookAndFeel lookAndFeel) {
+			super(lookAndFeel);
+		}
+
+		@Override
         public JComponent getComponent(JComponent superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         	if (superComponent instanceof JLabel) {
         		JLabel l = (JLabel) superComponent;
@@ -98,17 +107,20 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
         }
     }
 
+    private ILookAndFeelManager lookAndFeelManager;
+    
     /**
      * Instantiates a new stats dialog controller.
      * 
      * @param frame
      * @param state
      * @param statisticsHandler
+     * @param lookAndFeelManager
      */
-    StatsDialogController(StatsDialog frame, IState state, IStatisticsHandler statisticsHandler) {
+    StatsDialogController(StatsDialog frame, IState state, IStatisticsHandler statisticsHandler, ILookAndFeelManager lookAndFeelManager) {
         super(frame, state);
         this.statisticsHandler = statisticsHandler;
-        LookAndFeelSelector.getInstance().addLookAndFeelChangeListener(this);
+        lookAndFeelManager.addLookAndFeelChangeListener(this);
     }
 
     /**
@@ -394,14 +406,14 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
         table.getColumnModel().getColumn(0).setPreferredWidth(420);
         table.getColumnModel().getColumn(0).setWidth(table.getColumnModel().getColumn(0).getWidth());
         table.getColumnModel().getColumn(0).setCellRenderer(
-                LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new SwingOrientationTableCellRendererCode()));
+                lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(new SwingOrientationTableCellRendererCode(lookAndFeelManager.getCurrentLookAndFeel())));
         table.getColumnModel().getColumn(2).setPreferredWidth(30);
         table.getColumnModel().getColumn(2).setWidth(table.getColumnModel().getColumn(2).getWidth());
 
         table.getColumnModel().getColumn(1).setCellRenderer(
-                LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new RightAlignmentTableCellRendererCode()));
+                lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(new RightAlignmentTableCellRendererCode(lookAndFeelManager.getCurrentLookAndFeel())));
         table.getColumnModel().getColumn(2).setCellRenderer(
-                LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new RightAlignmentTableCellRendererCode()));
+                lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(new RightAlignmentTableCellRendererCode(lookAndFeelManager.getCurrentLookAndFeel())));
     }
 
     /**

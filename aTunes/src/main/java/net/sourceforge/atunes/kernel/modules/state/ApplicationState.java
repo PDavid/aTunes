@@ -28,7 +28,6 @@ import java.util.Map;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.frame.FrameState;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelBean;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeysConfig;
 import net.sourceforge.atunes.kernel.modules.navigator.RepositoryNavigationView;
@@ -45,6 +44,7 @@ import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.ILyricsEngineInfo;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateStore;
+import net.sourceforge.atunes.model.LookAndFeelBean;
 import net.sourceforge.atunes.model.ViewMode;
 
 /**

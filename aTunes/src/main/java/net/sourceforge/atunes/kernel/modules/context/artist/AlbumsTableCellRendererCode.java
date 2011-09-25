@@ -30,12 +30,17 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanel;
 import net.sourceforge.atunes.model.IAlbumInfo;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 class AlbumsTableCellRendererCode extends ContextTableRowPanel<IAlbumInfo> {
 	
+	public AlbumsTableCellRendererCode(ILookAndFeel lookAndFeel) {
+		super(lookAndFeel);
+	}
+
 	@Override
     public JComponent getComponent(JComponent superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         return getPanelForTableRenderer(((IAlbumInfo) value).getCover(), 
