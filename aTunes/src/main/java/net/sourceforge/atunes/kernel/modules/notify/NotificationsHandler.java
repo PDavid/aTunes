@@ -35,6 +35,7 @@ import net.sourceforge.atunes.kernel.modules.notify.growl.GrowlNotificationEngin
 import net.sourceforge.atunes.kernel.modules.notify.libnotify.LibnotifyNotificationEngine;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFullScreenHandler;
+import net.sourceforge.atunes.model.INotificationEngine;
 import net.sourceforge.atunes.model.IPlaybackStateListener;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.PlaybackState;
@@ -43,15 +44,15 @@ public final class NotificationsHandler extends AbstractHandler implements IPlay
 
     private static NotificationsHandler instance;
 
-    private static Map<String, NotificationEngine> engines = new HashMap<String, NotificationEngine>();
+    private static Map<String, INotificationEngine> engines = new HashMap<String, INotificationEngine>();
     
-    private NotificationEngine defaultEngine;
+    private INotificationEngine defaultEngine;
     
     /**
      * Adds a new notification engine
      * @param engine
      */
-    private void addNotificationEngine(NotificationEngine engine) {
+    private void addNotificationEngine(INotificationEngine engine) {
    		engines.put(engine.getName(), engine);
     }
 
@@ -70,8 +71,8 @@ public final class NotificationsHandler extends AbstractHandler implements IPlay
     /**
      * @return notification engine to use
      */
-    private NotificationEngine getNotificationEngine() {
-    	NotificationEngine engine = engines.get(getState().getNotificationEngine());
+    private INotificationEngine getNotificationEngine() {
+    	INotificationEngine engine = engines.get(getState().getNotificationEngine());
     	if (engine == null) {
     		engine = defaultEngine;
     	}
@@ -97,7 +98,7 @@ public final class NotificationsHandler extends AbstractHandler implements IPlay
     	addNotificationEngine(new GrowlNotificationEngine(getOsManager()));
 
     	// Load available engines
-    	for (NotificationEngine engine : engines.values()) {
+    	for (INotificationEngine engine : engines.values()) {
     		addAvailableNoticationEngine(engine);
     	}
     };
@@ -110,7 +111,7 @@ public final class NotificationsHandler extends AbstractHandler implements IPlay
      * Adds a new notification engine available
      * @param engine
      */
-    private void addAvailableNoticationEngine(NotificationEngine engine) {
+    private void addAvailableNoticationEngine(INotificationEngine engine) {
     	if (engine.isEngineAvailable()) {
     		availableEngines.add(engine.getName());
     	}
@@ -164,11 +165,11 @@ public final class NotificationsHandler extends AbstractHandler implements IPlay
 	 * @param name
 	 * @return notification engine by name
 	 */
-	public NotificationEngine getNotificationEngine(String name) {
+	public INotificationEngine getNotificationEngine(String name) {
 		return engines.get(name);
 	}
 	
-	public NotificationEngine getDefaultEngine() {
+	public INotificationEngine getDefaultEngine() {
 		return defaultEngine;
 	}
 }

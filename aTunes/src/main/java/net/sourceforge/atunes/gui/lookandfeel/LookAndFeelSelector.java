@@ -35,6 +35,7 @@ import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.kernel.modules.state.beans.FontBean;
+import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.Logger;
@@ -72,7 +73,7 @@ public final class LookAndFeelSelector implements PluginListener {
     /**
      * Look and Feel change listeners
      */
-    private static List<LookAndFeelChangeListener> changeListeners;
+    private static List<ILookAndFeelChangeListener> changeListeners;
 
     /**
      * Default constructor
@@ -254,7 +255,7 @@ public final class LookAndFeelSelector implements PluginListener {
             SwingUtilities.updateComponentTreeUI(window);
         }
         // Notify listeners
-        for (LookAndFeelChangeListener listener : getChangeListeners()) {
+        for (ILookAndFeelChangeListener listener : getChangeListeners()) {
         	listener.lookAndFeelChanged();
         }
     }
@@ -307,9 +308,9 @@ public final class LookAndFeelSelector implements PluginListener {
 	/**
 	 * @return the changeListeners
 	 */
-	protected static List<LookAndFeelChangeListener> getChangeListeners() {
+	protected static List<ILookAndFeelChangeListener> getChangeListeners() {
 		if (changeListeners == null) {
-			changeListeners = new ArrayList<LookAndFeelChangeListener>();
+			changeListeners = new ArrayList<ILookAndFeelChangeListener>();
 		}
 		return changeListeners;
 	}
@@ -318,7 +319,7 @@ public final class LookAndFeelSelector implements PluginListener {
 	 * Adds a new look and feel change listener
 	 * @param listener
 	 */
-	public void addLookAndFeelChangeListener(LookAndFeelChangeListener listener) {
+	public void addLookAndFeelChangeListener(ILookAndFeelChangeListener listener) {
 		getChangeListeners().add(listener);
 	}
 	
@@ -326,7 +327,7 @@ public final class LookAndFeelSelector implements PluginListener {
 	 * Removes a look and feel change listener
 	 * @param listener
 	 */
-	public void removeLookAndFeelChangeListener(LookAndFeelChangeListener listener) {
+	public void removeLookAndFeelChangeListener(ILookAndFeelChangeListener listener) {
 		getChangeListeners().remove(listener);
 	}
 }

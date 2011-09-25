@@ -18,27 +18,17 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.process;
+package net.sourceforge.atunes.model;
 
 /**
- * Interface to bind to a Process. Listener is notified when process is executed
- * or canceled
- * 
+ * Interface implemented by components that need be aware of look and feel changes
  * @author fleax
- * 
+ *
  */
-public interface ProcessListener {
+public interface ILookAndFeelChangeListener {
 
-    /**
-     * Called when process ends
-     * 
-     * @param ok
-     */
-    public void processFinished(boolean ok);
-
-    /**
-     * Called when process is canceled
-     */
-    public void processCanceled();
-
+	/**
+	 * Called every time application changes its look and feel
+	 */
+	public void lookAndFeelChanged();
 }

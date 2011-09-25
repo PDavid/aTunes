@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.kernel.modules.search.ISearchableObject;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
-import net.sourceforge.atunes.kernel.modules.search.SearchableObject;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -39,7 +39,7 @@ import org.apache.lucene.document.Field;
  * @author fleax
  * 
  */
-public abstract class AbstractCommonAudioFileSearchableObject implements SearchableObject {
+public abstract class AbstractCommonAudioFileSearchableObject implements ISearchableObject {
 
     // Fields for indexing
     /** The Constant INDEX_FIELD_TITLE. */

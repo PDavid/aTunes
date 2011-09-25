@@ -18,17 +18,29 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.lookandfeel;
+package net.sourceforge.atunes.model;
+
+import java.util.Map;
+
+import org.commonjukebox.plugins.model.PluginApi;
 
 /**
- * Interface implemented by components that need be aware of look and feel changes
- * @author fleax
- *
+ * This interface must be implemented by classes responsible of retrieve data
+ * used by a context panel
+ * 
+ * @author alex
+ * 
  */
-public interface LookAndFeelChangeListener {
+@PluginApi
+public interface IContextInformationSource {
 
-	/**
-	 * Called every time application changes its look and feel
-	 */
-	public void lookAndFeelChanged();
+    /**
+     * This method returns a map of objects containing information retrieved
+     * from data source given some parameters
+     * 
+     * @param parameters
+     * @return Map of objects containing information
+     */
+    public Map<String, ?> getData(Map<String, ?> parameters);
+    
 }

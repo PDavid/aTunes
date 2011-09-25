@@ -18,12 +18,15 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.notify;
+package net.sourceforge.atunes.model;
 
-import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IState;
 
-public interface NotificationEngine {
+/**
+ * A component responsible of notify user of audio objects being played
+ * @author alex
+ *
+ */
+public interface INotificationEngine {
 
 	/**
 	 * @return true if engine is supported and available

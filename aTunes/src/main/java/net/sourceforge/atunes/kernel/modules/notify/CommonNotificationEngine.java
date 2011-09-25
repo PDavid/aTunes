@@ -28,6 +28,7 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.INotificationEngine;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ITemporalDiskStorage;
 import net.sourceforge.atunes.model.ImageSize;
@@ -35,7 +36,7 @@ import net.sourceforge.atunes.utils.ImageUtils;
 
 import org.apache.commons.io.FileUtils;
 
-public abstract class CommonNotificationEngine implements NotificationEngine {
+public abstract class CommonNotificationEngine implements INotificationEngine {
 
 	private Boolean available;
 	

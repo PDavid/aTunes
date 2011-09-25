@@ -27,11 +27,11 @@ import java.util.Map;
 import java.util.Set;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.modules.context.ContextInformationDataSource;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IArtistInfo;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IContextInformationSource;
 import net.sourceforge.atunes.model.ISimilarArtistsInfo;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -42,7 +42,7 @@ import net.sourceforge.atunes.utils.ImageUtils;
  * @author alex
  * 
  */
-public class SimilarArtistsDataSource implements ContextInformationDataSource {
+public class SimilarArtistsDataSource implements IContextInformationSource {
 
     /**
      * Input parameter

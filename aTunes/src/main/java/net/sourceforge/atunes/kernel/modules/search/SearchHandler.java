@@ -72,10 +72,10 @@ public final class SearchHandler extends AbstractHandler {
 
     private final class RefreshSearchIndexSwingWorker extends
 			SwingWorker<Void, Void> {
-		private final SearchableObject searchableObject;
+		private final ISearchableObject searchableObject;
 		private IndexWriter indexWriter;
 
-		private RefreshSearchIndexSwingWorker(SearchableObject searchableObject) {
+		private RefreshSearchIndexSwingWorker(ISearchableObject searchableObject) {
 			this.searchableObject = searchableObject;
 		}
 
@@ -158,7 +158,7 @@ public final class SearchHandler extends AbstractHandler {
     }
 
     /** List of searchable objects available. */
-    private List<SearchableObject> searchableObjects = new ArrayList<SearchableObject>();
+    private List<ISearchableObject> searchableObjects = new ArrayList<ISearchableObject>();
 
     /** List of operators for simple rules. */
     private List<String> searchOperators;
@@ -167,10 +167,10 @@ public final class SearchHandler extends AbstractHandler {
      * List which indicates if an indexing process is currently running for a
      * given searchable object.
      */
-    private volatile Map<SearchableObject, Boolean> currentIndexingWorks = new HashMap<SearchableObject, Boolean>();
+    private volatile Map<ISearchableObject, Boolean> currentIndexingWorks = new HashMap<ISearchableObject, Boolean>();
 
     /** Map with locks for each index. */
-    private Map<SearchableObject, ReadWriteLock> indexLocks = new HashMap<SearchableObject, ReadWriteLock>();
+    private Map<ISearchableObject, ReadWriteLock> indexLocks = new HashMap<ISearchableObject, ReadWriteLock>();
 
 	private CustomSearchController customSearchController;
 
@@ -233,7 +233,7 @@ public final class SearchHandler extends AbstractHandler {
      * @param so
      *            the so
      */
-    public void registerSearchableObject(SearchableObject so) {
+    public void registerSearchableObject(ISearchableObject so) {
         currentIndexingWorks.put(so, Boolean.FALSE);
         indexLocks.put(so, new ReentrantReadWriteLock(true));
         searchableObjects.add(so);
@@ -245,7 +245,7 @@ public final class SearchHandler extends AbstractHandler {
      * 
      * @param so
      */
-    public void unregisterSearchableObject(SearchableObject so) {
+    public void unregisterSearchableObject(ISearchableObject so) {
         currentIndexingWorks.remove(so);
         indexLocks.remove(so);
         searchableObjects.remove(so);
@@ -265,7 +265,7 @@ public final class SearchHandler extends AbstractHandler {
      */
     public void startSearch() {
         // Updates indexes
-        for (SearchableObject searchableObject : searchableObjects) {
+        for (ISearchableObject searchableObject : searchableObjects) {
             updateSearchIndex(searchableObject);
         }
 
@@ -295,7 +295,7 @@ public final class SearchHandler extends AbstractHandler {
      * @throws SearchQuerySyntaxException
      *             If the search query has invalid syntax
      */
-    public List<IAudioObject> search(SearchableObject searchableObject, String queryStr) throws SearchIndexNotAvailableException, SearchQuerySyntaxException {
+    public List<IAudioObject> search(ISearchableObject searchableObject, String queryStr) throws SearchIndexNotAvailableException, SearchQuerySyntaxException {
         ReadWriteLock searchIndexLock = indexLocks.get(searchableObject);
         Searcher searcher = null;
         try {
@@ -360,7 +360,7 @@ public final class SearchHandler extends AbstractHandler {
      * @param searchableObject
      *            the searchable object
      */
-    private void updateSearchIndex(final SearchableObject searchableObject) {
+    private void updateSearchIndex(final ISearchableObject searchableObject) {
         SwingWorker<Void, Void> refreshSearchIndex = new RefreshSearchIndexSwingWorker(searchableObject);
         if (currentIndexingWorks.get(searchableObject) == null || !currentIndexingWorks.get(searchableObject)) {
             currentIndexingWorks.put(searchableObject, Boolean.TRUE);
@@ -377,7 +377,7 @@ public final class SearchHandler extends AbstractHandler {
      * @param result
      *            the result
      */
-    void showSearchResults(SearchableObject searchableObject, List<IAudioObject> result) {
+    void showSearchResults(ISearchableObject searchableObject, List<IAudioObject> result) {
         // Open search results dialog
         getSearchResultsController().showSearchResults(searchableObject, result);
     }

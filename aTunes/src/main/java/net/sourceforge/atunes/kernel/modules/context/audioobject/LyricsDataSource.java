@@ -23,14 +23,14 @@ package net.sourceforge.atunes.kernel.modules.context.audioobject;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.context.ContextInformationDataSource;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IContextInformationSource;
 import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.model.ILyricsService;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class LyricsDataSource implements ContextInformationDataSource {
+public class LyricsDataSource implements IContextInformationSource {
 
     /**
      * Input parameter

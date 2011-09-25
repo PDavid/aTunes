@@ -403,8 +403,8 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
     
     @Override
     public Paint getPaintForSpecialControls() {
-    	if (org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin() instanceof CustomSubstanceSkin) {
-    		return ((CustomSubstanceSkin)org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin()).getPaintForSpecialControls();
+    	if (org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin() instanceof ICustomSubstanceSkin) {
+    		return ((ICustomSubstanceSkin)org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin()).getPaintForSpecialControls();
     	} else {
     		Color c = org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin().getActiveColorScheme(DecorationAreaType.NONE).getForegroundColor();
     		return new Color(c.getRed(), c.getGreen(), c.getBlue(), 180);
@@ -413,8 +413,8 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 
     @Override
     public Paint getPaintForDisabledSpecialControls() {
-    	if (org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin() instanceof CustomSubstanceSkin) {
-    		return ((CustomSubstanceSkin)org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin()).getPaintForDisabledSpecialControls();
+    	if (org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin() instanceof ICustomSubstanceSkin) {
+    		return ((ICustomSubstanceSkin)org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin()).getPaintForDisabledSpecialControls();
     	} else {
     		Color c = org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin().getActiveColorScheme(DecorationAreaType.NONE).getForegroundColor();
     		return new Color(c.getRed(), c.getGreen(), c.getBlue(), 140);
@@ -423,8 +423,8 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 
     @Override
     public Paint getPaintForColorMutableIcon(Component component, boolean isSelected) {
-    	if (org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin() instanceof CustomSubstanceSkin) {
-    		return ((CustomSubstanceSkin)org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin()).getPaintForColorMutableIcon(component, isSelected);
+    	if (org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin() instanceof ICustomSubstanceSkin) {
+    		return ((ICustomSubstanceSkin)org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin()).getPaintForColorMutableIcon(component, isSelected);
     	} else {
     		return component.getForeground();    		
     	}

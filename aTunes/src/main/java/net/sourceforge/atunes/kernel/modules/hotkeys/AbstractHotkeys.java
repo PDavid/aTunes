@@ -28,9 +28,9 @@ import net.sourceforge.atunes.utils.Logger;
 
 public abstract class AbstractHotkeys {
 
-    private HotkeyListener hotkeyListener;
+    private IHotkeyListener hotkeyListener;
 
-    protected AbstractHotkeys(HotkeyListener hotkeyListener) {
+    protected AbstractHotkeys(IHotkeyListener hotkeyListener) {
         this.hotkeyListener = hotkeyListener;
     }
 
@@ -51,11 +51,11 @@ public abstract class AbstractHotkeys {
 
     public abstract void cleanUp();
 
-    public static AbstractHotkeys createInstance(HotkeyListener hotkeyListener) {
+    public static AbstractHotkeys createInstance(IHotkeyListener hotkeyListener) {
         try {
         	Class<?> clazz = Context.getBean(IOSManager.class).getHotkeysListener();
         	if (clazz != null) {
-                Constructor<?> constructor = clazz.getConstructor(HotkeyListener.class);
+                Constructor<?> constructor = clazz.getConstructor(IHotkeyListener.class);
                 return (AbstractHotkeys) constructor.newInstance(hotkeyListener);
             } else {
                 return null;
@@ -66,7 +66,7 @@ public abstract class AbstractHotkeys {
         }
     }
 
-    protected HotkeyListener getHotkeyListener() {
+    protected IHotkeyListener getHotkeyListener() {
         return hotkeyListener;
     }
 }

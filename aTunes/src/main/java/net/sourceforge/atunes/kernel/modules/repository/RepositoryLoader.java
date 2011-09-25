@@ -41,6 +41,7 @@ import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IRepositoryLoaderListener;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.Repository;
@@ -55,7 +56,7 @@ import net.sourceforge.atunes.utils.Timer;
 public class RepositoryLoader extends Thread {
 
 	// Some attributes to speed up populate info process
-	private LoaderListener listener;
+	private IRepositoryLoaderListener listener;
 	private List<File> folders;
 	private boolean refresh;
 	private boolean interrupt;
@@ -211,7 +212,7 @@ public class RepositoryLoader extends Thread {
 	 * 
 	 * @return the songs for dir
 	 */
-	public static List<ILocalAudioObject> getSongsForFolder(File folder, LoaderListener listener) {
+	public static List<ILocalAudioObject> getSongsForFolder(File folder, IRepositoryLoaderListener listener) {
 		List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
 
 		File[] list = folder.listFiles();
@@ -250,7 +251,7 @@ public class RepositoryLoader extends Thread {
 	 * @return
 	 */
 	public static List<ILocalAudioObject> getSongsForFolders(List<File> folders,
-			LoaderListener listener) {
+			IRepositoryLoaderListener listener) {
 		int filesCount = 0;
 		for (File folder : folders) {
 			filesCount = filesCount + countFiles(folder);
@@ -329,7 +330,7 @@ public class RepositoryLoader extends Thread {
 	 * @param listener
 	 *            the listener
 	 */
-	public void addRepositoryLoaderListener(LoaderListener listener) {
+	public void addRepositoryLoaderListener(IRepositoryLoaderListener listener) {
 		this.listener = listener;
 	}
 

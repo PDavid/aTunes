@@ -23,7 +23,7 @@ package net.sourceforge.atunes.gui.lookandfeel.substance;
 import java.awt.Component;
 import java.awt.Paint;
 
-public interface CustomSubstanceSkin {
+interface ICustomSubstanceSkin {
 	
 	/**
 	 * Defines custom colors for mutable icons

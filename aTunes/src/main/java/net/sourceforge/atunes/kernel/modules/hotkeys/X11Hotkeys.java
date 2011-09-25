@@ -29,7 +29,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 public class X11Hotkeys extends AbstractHotkeys implements jxgrabkey.HotkeyListener {
 
-    public X11Hotkeys(HotkeyListener hotkeyListener) {
+    public X11Hotkeys(IHotkeyListener hotkeyListener) {
         super(hotkeyListener);
         init();
     }

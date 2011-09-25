@@ -18,12 +18,14 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.repository;
+package net.sourceforge.atunes.model;
+
+import net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader;
 
 /**
  * The listener interface for receiving loader events.
  */
-public interface LoaderListener {
+public interface IRepositoryLoaderListener {
 
     /**
      * Notify current path.

@@ -50,7 +50,6 @@ import net.sourceforge.atunes.kernel.actions.RefreshFolderFromNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.RefreshRepositoryAction;
 import net.sourceforge.atunes.kernel.actions.RipCDAction;
 import net.sourceforge.atunes.kernel.actions.SelectRepositoryAction;
-import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.kernel.modules.repository.processes.ImportFilesProcess;
@@ -67,8 +66,10 @@ import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IRepositoryListener;
+import net.sourceforge.atunes.model.IRepositoryLoaderListener;
 import net.sourceforge.atunes.model.IRepositoryProgressDialog;
 import net.sourceforge.atunes.model.IReviewImportDialog;
 import net.sourceforge.atunes.model.IState;
@@ -91,7 +92,7 @@ import org.joda.time.DateTime;
 /**
  * The repository handler.
  */
-public final class RepositoryHandler extends AbstractHandler implements LoaderListener, IAudioFilesRemovedListener, IRepositoryListener {
+public final class RepositoryHandler extends AbstractHandler implements IRepositoryLoaderListener, IAudioFilesRemovedListener, IRepositoryListener {
 
 	// Used to retrieve covers and show in progress dialog
 	private String lastArtistRead;
@@ -106,7 +107,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 	
 	private INavigationHandler navigationHandler;
 	
-	private final class ImportFilesProcessListener implements ProcessListener {
+	private final class ImportFilesProcessListener implements IProcessListener {
 		private final ImportFilesProcess process;
 
 		private ImportFilesProcessListener(ImportFilesProcess process) {
@@ -146,7 +147,7 @@ public final class RepositoryHandler extends AbstractHandler implements LoaderLi
 			SwingWorker<List<ILocalAudioObject>, Void> {
     	
 		private final class ImportFoldersLoaderListener implements
-				LoaderListener {
+				IRepositoryLoaderListener {
 			private int filesLoaded = 0;
 			private int totalFiles;
 

@@ -68,7 +68,7 @@ final class SearchResultsController extends AbstractSimpleController<SearchResul
      * @param resultsList
      *            the results
      */
-    public void showSearchResults(SearchableObject searchableObject, List<IAudioObject> resultsList) {
+    public void showSearchResults(ISearchableObject searchableObject, List<IAudioObject> resultsList) {
         this.results = resultsList;
 
         SearchResultTableModel tableModel = (SearchResultTableModel) getComponentControlled().getSearchResultsTable().getModel();

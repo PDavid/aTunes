@@ -33,7 +33,6 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelChangeListener;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.dialogs.StatsDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
@@ -41,6 +40,7 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -57,7 +57,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.ui.RectangleInsets;
 
-final class StatsDialogController extends AbstractSimpleController<StatsDialog>  implements LookAndFeelChangeListener {
+final class StatsDialogController extends AbstractSimpleController<StatsDialog>  implements ILookAndFeelChangeListener {
 
 	private IStatisticsHandler statisticsHandler;
 	

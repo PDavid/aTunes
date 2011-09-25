@@ -27,7 +27,6 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.processes.ExportFilesProcess;
 import net.sourceforge.atunes.model.IConfirmationDialog;
@@ -38,6 +37,7 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -49,7 +49,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class ExportAction extends CustomAbstractAction {
 
-    private static class ExportProcessListener implements ProcessListener {
+    private static class ExportProcessListener implements IProcessListener {
         private static final class ShowErrorDialogRunnable implements Runnable {
             private final boolean ok;
 

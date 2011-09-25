@@ -23,10 +23,10 @@ package net.sourceforge.atunes.kernel.modules.context.artist;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.context.ContextInformationDataSource;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IContextInformationSource;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 
 /**
@@ -35,7 +35,7 @@ import net.sourceforge.atunes.model.IWebServicesHandler;
  * @author alex
  * 
  */
-public class ArtistPopularTracksDataSource implements ContextInformationDataSource {
+public class ArtistPopularTracksDataSource implements IContextInformationSource {
 
     /**
      * Input parameter

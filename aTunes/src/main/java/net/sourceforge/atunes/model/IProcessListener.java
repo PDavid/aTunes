@@ -18,29 +18,27 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.context;
-
-import java.util.Map;
-
-import org.commonjukebox.plugins.model.PluginApi;
+package net.sourceforge.atunes.model;
 
 /**
- * This interface must be implemented by classes responsible of retrieve data
- * used by a context panel
+ * Interface to bind to a Process. Listener is notified when process is executed
+ * or canceled
  * 
- * @author alex
+ * @author fleax
  * 
  */
-@PluginApi
-public interface ContextInformationDataSource {
+public interface IProcessListener {
 
     /**
-     * This method returns a map of objects containing information retrieved
-     * from data source given some parameters
+     * Called when process ends
      * 
-     * @param parameters
-     * @return Map of objects containing information
+     * @param ok
      */
-    public Map<String, ?> getData(Map<String, ?> parameters);
-    
+    public void processFinished(boolean ok);
+
+    /**
+     * Called when process is canceled
+     */
+    public void processCanceled();
+
 }

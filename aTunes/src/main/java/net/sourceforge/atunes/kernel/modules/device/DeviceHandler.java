@@ -47,8 +47,6 @@ import net.sourceforge.atunes.kernel.actions.DisconnectDeviceAction;
 import net.sourceforge.atunes.kernel.actions.RefreshDeviceAction;
 import net.sourceforge.atunes.kernel.actions.SynchronizeDeviceWithPlayListAction;
 import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
-import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
-import net.sourceforge.atunes.kernel.modules.repository.LoaderListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader;
 import net.sourceforge.atunes.model.Album;
@@ -61,6 +59,8 @@ import net.sourceforge.atunes.model.IFileSelectionDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.IProcessListener;
+import net.sourceforge.atunes.model.IRepositoryLoaderListener;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.ITaskService;
@@ -71,7 +71,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public final class DeviceHandler extends AbstractHandler implements LoaderListener, IAudioFilesRemovedListener {
+public final class DeviceHandler extends AbstractHandler implements IRepositoryLoaderListener, IAudioFilesRemovedListener {
 
     private static DeviceHandler instance = new DeviceHandler();
 
@@ -202,7 +202,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
      * @param listener
      *            A listener to be notified
      */
-    public void copyFilesToDevice(Collection<ILocalAudioObject> collection, ProcessListener listener) {
+    public void copyFilesToDevice(Collection<ILocalAudioObject> collection, IProcessListener listener) {
         filesCopiedToDevice = 0;
         if (collection.isEmpty()) {
             return;
@@ -223,7 +223,7 @@ public final class DeviceHandler extends AbstractHandler implements LoaderListen
         }
 
         final TransferToDeviceProcess process = new TransferToDeviceProcess(collection, deviceRepository.getRepositoryFolders().get(0).getAbsolutePath(), getState(), getFrame(), getOsManager());
-        process.addProcessListener(new ProcessListener() {
+        process.addProcessListener(new IProcessListener() {
             @Override
             public void processCanceled() {
                 // Nothing to do

@@ -24,10 +24,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.context.ContextInformationDataSource;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeResultEntry;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IContextInformationSource;
 
 /**
  * Similar artists data source
@@ -35,7 +35,7 @@ import net.sourceforge.atunes.model.IAudioObject;
  * @author alex
  * 
  */
-public class YoutubeDataSource implements ContextInformationDataSource {
+public class YoutubeDataSource implements IContextInformationSource {
 
     /**
      * Input parameter
