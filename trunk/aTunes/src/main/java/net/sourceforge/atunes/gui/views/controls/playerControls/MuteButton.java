@@ -30,13 +30,13 @@ import net.sourceforge.atunes.gui.images.VolumeMedImageIcon;
 import net.sourceforge.atunes.gui.images.VolumeMinImageIcon;
 import net.sourceforge.atunes.gui.images.VolumeMuteImageIcon;
 import net.sourceforge.atunes.gui.images.VolumeZeroImageIcon;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelChangeListener;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
+import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 import net.sourceforge.atunes.model.IState;
 
-public final class MuteButton extends JToggleButton implements LookAndFeelChangeListener {
+public final class MuteButton extends JToggleButton implements ILookAndFeelChangeListener {
 
     private static final long serialVersionUID = 6007885049773560874L;
 

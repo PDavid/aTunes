@@ -25,12 +25,12 @@ import java.awt.Dimension;
 import javax.swing.JButton;
 
 import net.sourceforge.atunes.gui.images.PreviousImageIcon;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelChangeListener;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectAction;
+import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 
-public final class PreviousButton extends JButton implements LookAndFeelChangeListener {
+public final class PreviousButton extends JButton implements ILookAndFeelChangeListener {
 
     private static final long serialVersionUID = -5415683019365261871L;
 

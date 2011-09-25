@@ -31,7 +31,7 @@ import org.apache.lucene.store.FSDirectory;
 /**
  * This interface represents objects that can be searched with Lucene.
  */
-public interface SearchableObject {
+public interface ISearchableObject {
 
     /**
      * Returns string representation of this searchable object.

@@ -33,6 +33,7 @@ import net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.ShowOSDAction;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ICommand;
 import net.sourceforge.atunes.model.IState;
 
 public final class CommandHandler extends AbstractHandler {
@@ -50,7 +51,7 @@ public final class CommandHandler extends AbstractHandler {
     /**
      * Map of commands defined to be used
      */
-    private Map<String, Command> commands;
+    private Map<String, ICommand> commands;
 
     /**
      * Singleton getter
@@ -84,9 +85,9 @@ public final class CommandHandler extends AbstractHandler {
      * 
      * @param cmd
      */
-    public void registerCommand(Command cmd) {
+    public void registerCommand(ICommand cmd) {
         if (commands == null) {
-            commands = new HashMap<String, Command>();
+            commands = new HashMap<String, ICommand>();
         }
         commands.put(cmd.getCommandName(), cmd);
     }
@@ -96,7 +97,7 @@ public final class CommandHandler extends AbstractHandler {
      * 
      * @param cmd
      */
-    public void unregisterCommand(Command cmd) {
+    public void unregisterCommand(ICommand cmd) {
         if (commands != null) {
             commands.remove(cmd.getCommandName());
         }
@@ -147,7 +148,7 @@ public final class CommandHandler extends AbstractHandler {
      * @param commandName
      */
     public void processAndRun(String commandName) {
-        Command cmd = commands.get(commandName.replaceFirst(COMMAND_PREFIX, ""));
+        ICommand cmd = commands.get(commandName.replaceFirst(COMMAND_PREFIX, ""));
         if (cmd != null) {
             SwingUtilities.invokeLater(new RunCommandRunnable(cmd));
         }
@@ -174,9 +175,9 @@ public final class CommandHandler extends AbstractHandler {
 
     private static class RunCommandRunnable implements Runnable {
 
-        private Command command;
+        private ICommand command;
 
-        public RunCommandRunnable(Command command) {
+        public RunCommandRunnable(ICommand command) {
             this.command = command;
         }
 

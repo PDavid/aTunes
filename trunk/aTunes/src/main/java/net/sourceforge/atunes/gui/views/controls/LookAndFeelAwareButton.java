@@ -22,15 +22,15 @@ package net.sourceforge.atunes.gui.views.controls;
 
 import javax.swing.JButton;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelChangeListener;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 
 /**
  * A JButton that is repaint when look and feel changes
  * @author fleax
  *
  */
-public class LookAndFeelAwareButton extends JButton implements LookAndFeelChangeListener {
+public class LookAndFeelAwareButton extends JButton implements ILookAndFeelChangeListener {
 
 	/**
 	 * 

@@ -27,15 +27,15 @@ import javax.swing.Icon;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.command.Command;
 import net.sourceforge.atunes.kernel.modules.command.CommandHandler;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ICommand;
 import net.sourceforge.atunes.model.IState;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
 @PluginApi
-public abstract class CustomAbstractAction extends javax.swing.AbstractAction implements Command {
+public abstract class CustomAbstractAction extends javax.swing.AbstractAction implements ICommand {
 
     private static final long serialVersionUID = 1648027023533465104L;
 

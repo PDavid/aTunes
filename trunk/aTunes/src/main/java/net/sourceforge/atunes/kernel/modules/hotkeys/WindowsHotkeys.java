@@ -28,7 +28,7 @@ import com.melloware.jintellitype.JIntellitypeConstants;
 
 public class WindowsHotkeys extends AbstractHotkeys implements com.melloware.jintellitype.HotkeyListener, IntellitypeListener {
 
-    public WindowsHotkeys(HotkeyListener hotkeyListener) {
+    public WindowsHotkeys(IHotkeyListener hotkeyListener) {
         super(hotkeyListener);
     }
 

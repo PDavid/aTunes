@@ -37,7 +37,7 @@ import org.pushingpixels.substance.api.painter.fill.ClassicFillPainter;
 import org.pushingpixels.substance.api.painter.highlight.ClassicHighlightPainter;
 import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 
-public final class SubstanceATunesGraySkin extends SubstanceSkin implements CustomSubstanceSkin {
+public final class SubstanceATunesGraySkin extends SubstanceSkin implements ICustomSubstanceSkin {
 
 	private Color highlightColor;
 	

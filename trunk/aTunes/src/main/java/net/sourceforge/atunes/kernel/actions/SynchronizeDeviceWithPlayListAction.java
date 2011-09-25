@@ -31,7 +31,6 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListLocalAudioObjectFilter;
-import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IFrame;
@@ -40,6 +39,7 @@ import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -56,7 +56,7 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
     private final class SynchronizeDeviceWithPlayListSwingWorker extends
 			SwingWorker<Map<String, List<ILocalAudioObject>>, Void> {
 		private int filesRemoved = 0;
-		private ProcessListener listener = new ProcessListener() {
+		private IProcessListener listener = new IProcessListener() {
 		    @Override
 		    public void processCanceled() {
 		        // Nothing to do

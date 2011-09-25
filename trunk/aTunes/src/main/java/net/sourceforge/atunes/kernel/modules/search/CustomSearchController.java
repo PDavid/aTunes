@@ -49,7 +49,7 @@ import org.jdesktop.swingx.combobox.ListComboBoxModel;
 final class CustomSearchController extends AbstractSimpleController<CustomSearchDialog> {
 
     /** List of searchable objects. */
-    private List<SearchableObject> searchableObjects;
+    private List<ISearchableObject> searchableObjects;
 
     /** Translated attributes */
     private Map<String, String> translatedAttributes = new HashMap<String, String>();
@@ -88,11 +88,11 @@ final class CustomSearchController extends AbstractSimpleController<CustomSearch
      * @param sObjects
      *            the s objects
      */
-    void setListOfSearchableObjects(List<SearchableObject> sObjects) {
+    void setListOfSearchableObjects(List<ISearchableObject> sObjects) {
         if (!sObjects.isEmpty()) {
             // Create list of names of searchable objects
             List<String> names = new ArrayList<String>();
-            for (SearchableObject o : sObjects) {
+            for (ISearchableObject o : sObjects) {
                 names.add(o.getSearchableObjectName());
             }
             getComponentControlled().getSearchAtComboBox().setModel(new ListComboBoxModel<String>(names));
@@ -119,7 +119,7 @@ final class CustomSearchController extends AbstractSimpleController<CustomSearch
     void updateAttributesList() {
         if (searchableObjects != null) {
             // Get selected searchable object
-            SearchableObject selectedSearchableObject = searchableObjects.get(getComponentControlled().getSearchAtComboBox().getSelectedIndex());
+            ISearchableObject selectedSearchableObject = searchableObjects.get(getComponentControlled().getSearchAtComboBox().getSelectedIndex());
 
             // Get attributes
             List<String> attributes = selectedSearchableObject.getSearchableAttributes();
@@ -358,7 +358,7 @@ final class CustomSearchController extends AbstractSimpleController<CustomSearch
     void search() {
         if (searchableObjects != null) {
             // Get searchable object
-            SearchableObject selectedSearchableObject = searchableObjects.get(getComponentControlled().getSearchAtComboBox().getSelectedIndex());
+            ISearchableObject selectedSearchableObject = searchableObjects.get(getComponentControlled().getSearchAtComboBox().getSelectedIndex());
 
             // Get query: as advanced search text field is updated with tree rules, we can always get query from this text field
             String query = getComponentControlled().getAdvancedSearchTextField().getText();

@@ -27,6 +27,7 @@ import java.util.Map;
 import javax.swing.JPanel;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IContextInformationSource;
 import net.sourceforge.atunes.model.IState;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -47,7 +48,7 @@ public abstract class AbstractContextPanelContent {
     /**
      * Data Source used by this content to retrieve context information
      */
-    private ContextInformationDataSource dataSource;
+    private IContextInformationSource dataSource;
 
     /**
      * Worker used to retrieve data
@@ -174,11 +175,11 @@ public abstract class AbstractContextPanelContent {
 		this.state = state;
 	}
     
-    protected ContextInformationDataSource getDataSource() {
+    protected IContextInformationSource getDataSource() {
 		return dataSource;
 	}
     
-    public void setDataSource(ContextInformationDataSource dataSource) {
+    public void setDataSource(IContextInformationSource dataSource) {
 		this.dataSource = dataSource;
 	}
     

@@ -40,7 +40,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * Handler for global hotkeys keys.
  */
-public final class HotkeyHandler extends AbstractHandler implements HotkeyListener {
+public final class HotkeyHandler extends AbstractHandler implements IHotkeyListener {
 
     private static HotkeyHandler instance;
 

@@ -18,24 +18,19 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.command;
+package net.sourceforge.atunes.kernel.modules.hotkeys;
 
 /**
- * This class represents commands sent to application by other instances or
- * third-party apps
- * 
- * @author fleax
- * 
+ * An object notified when a hotkey is pressed
+ * @author alex
+ *
  */
-public interface Command {
+interface IHotkeyListener {
 
     /**
-     * Called to run the command
+     * Called when hotkey pressed
+     * @param id
      */
-    public void runCommand();
+    public void onHotKey(int id);
 
-    /**
-     * @return the name
-     */
-    public String getCommandName();
 }

@@ -33,8 +33,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
-import net.sourceforge.atunes.kernel.modules.notify.NotificationEngine;
 import net.sourceforge.atunes.kernel.modules.notify.NotificationsHandler;
+import net.sourceforge.atunes.model.INotificationEngine;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -266,7 +266,7 @@ public final class OSDPanel extends AbstractPreferencesPanel {
      * @param notificationEngine
      */
     private void updatePanel(String notificationEngine) {
-		NotificationEngine engine = NotificationsHandler.getInstance().getNotificationEngine(notificationEngine);
+		INotificationEngine engine = NotificationsHandler.getInstance().getNotificationEngine(notificationEngine);
 		if (engine != null) {
 			engineAvailability.setVisible(!engine.isEngineAvailable());
 			engineDescription.setText(engine.getDescription());

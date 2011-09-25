@@ -26,8 +26,8 @@ import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelChangeListener;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
@@ -37,7 +37,7 @@ import net.sourceforge.atunes.utils.GuiUtils;
  * @author fleax
  * 
  */
-public class CustomTextPane extends JTextPane implements LookAndFeelChangeListener {
+public class CustomTextPane extends JTextPane implements ILookAndFeelChangeListener {
 
     private static final long serialVersionUID = -3601855261867415475L;
 

@@ -28,12 +28,12 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.images.PauseImageIcon;
 import net.sourceforge.atunes.gui.images.PlayImageIcon;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelChangeListener;
 import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.PlayAction;
+import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 
-public final class PlayPauseButton extends JButton implements LookAndFeelChangeListener {
+public final class PlayPauseButton extends JButton implements ILookAndFeelChangeListener {
 
     private static final long serialVersionUID = 4348041346542204394L;
 

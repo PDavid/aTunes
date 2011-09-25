@@ -29,6 +29,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -66,7 +67,7 @@ public abstract class AbstractProcess {
 
 		    // Notify all listeners
 		    if (listeners != null && !listeners.isEmpty()) {
-		        for (ProcessListener listener : listeners) {
+		        for (IProcessListener listener : listeners) {
 		            if (canceled) {
 		                listener.processCanceled();
 		            } else {
@@ -80,7 +81,7 @@ public abstract class AbstractProcess {
     /**
      * List of listeners notified when Process ends or is canceled
      */
-    private volatile List<ProcessListener> listeners;
+    private volatile List<IProcessListener> listeners;
 
     /**
      * Flag indicating if process has been canceled
@@ -122,9 +123,9 @@ public abstract class AbstractProcess {
      * 
      * @param listener
      */
-    public final void addProcessListener(ProcessListener listener) {
+    public final void addProcessListener(IProcessListener listener) {
         if (listeners == null) {
-            listeners = new CopyOnWriteArrayList<ProcessListener>();
+            listeners = new CopyOnWriteArrayList<IProcessListener>();
         }
         listeners.add(listener);
     }
@@ -134,7 +135,7 @@ public abstract class AbstractProcess {
      * 
      * @param listener
      */
-    public final void removeProcessListener(ProcessListener listener) {
+    public final void removeProcessListener(IProcessListener listener) {
         if (listeners != null) {
             listeners.remove(listener);
         }

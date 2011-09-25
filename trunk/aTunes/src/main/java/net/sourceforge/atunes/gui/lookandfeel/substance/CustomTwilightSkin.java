@@ -27,7 +27,7 @@ import java.awt.Paint;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.skin.TwilightSkin;
 
-public class CustomTwilightSkin extends TwilightSkin implements CustomSubstanceSkin {
+public class CustomTwilightSkin extends TwilightSkin implements ICustomSubstanceSkin {
 
 	/**
 	 * 

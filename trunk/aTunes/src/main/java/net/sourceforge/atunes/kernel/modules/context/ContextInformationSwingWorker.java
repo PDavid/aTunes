@@ -26,6 +26,7 @@ import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingWorker;
 
+import net.sourceforge.atunes.model.IContextInformationSource;
 import net.sourceforge.atunes.utils.Logger;
 
 /**
@@ -46,7 +47,7 @@ class ContextInformationSwingWorker extends SwingWorker<Map<String, ?>, Void> {
     /**
      * The context information data source used to retrieve information
      */
-    private ContextInformationDataSource dataSource;
+    private IContextInformationSource dataSource;
 
     /**
      * Parameters used to call data source
@@ -60,7 +61,7 @@ class ContextInformationSwingWorker extends SwingWorker<Map<String, ?>, Void> {
      * @param dataSource
      * @param parameters
      */
-    ContextInformationSwingWorker(AbstractContextPanelContent content, ContextInformationDataSource dataSource, Map<String, ?> parameters) {
+    ContextInformationSwingWorker(AbstractContextPanelContent content, IContextInformationSource dataSource, Map<String, ?> parameters) {
         this.content = content;
         this.dataSource = dataSource;
         this.parameters = parameters;

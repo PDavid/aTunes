@@ -28,11 +28,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import net.sourceforge.atunes.kernel.modules.context.ContextInformationDataSource;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IContextInformationSource;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
@@ -50,7 +50,7 @@ import net.sourceforge.atunes.utils.Logger;
  * @author alex
  * 
  */
-public class AlbumInfoDataSource implements ContextInformationDataSource {
+public class AlbumInfoDataSource implements IContextInformationSource {
 
     /**
      * Input parameter

@@ -43,11 +43,11 @@ import javax.swing.event.ListSelectionListener;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorFrame;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
-import net.sourceforge.atunes.kernel.modules.process.ProcessListener;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.GetCoversProcess;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 
@@ -105,7 +105,7 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
 	}
 
 	private final class GetCoversButtonActionListener implements ActionListener {
-		private final class GetCoversProcessListener implements ProcessListener {
+		private final class GetCoversProcessListener implements IProcessListener {
 			@Override
 			public void processCanceled() {
 			    update();

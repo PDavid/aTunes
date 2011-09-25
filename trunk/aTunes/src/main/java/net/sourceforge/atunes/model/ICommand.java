@@ -18,10 +18,24 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.hotkeys;
+package net.sourceforge.atunes.model;
 
-public interface HotkeyListener {
+/**
+ * This class represents commands sent to application by other instances or
+ * third-party apps
+ * 
+ * @author fleax
+ * 
+ */
+public interface ICommand {
 
-    public void onHotKey(int id);
+    /**
+     * Called to run the command
+     */
+    public void runCommand();
 
+    /**
+     * @return the name
+     */
+    public String getCommandName();
 }
