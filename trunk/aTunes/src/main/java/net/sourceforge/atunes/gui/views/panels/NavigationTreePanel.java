@@ -42,7 +42,7 @@ import net.sourceforge.atunes.kernel.actions.ShowFoldersInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowGenresInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigationTableAction;
 import net.sourceforge.atunes.kernel.actions.ShowYearsInNavigatorAction;
-import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
+import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.utils.GuiUtils;
 

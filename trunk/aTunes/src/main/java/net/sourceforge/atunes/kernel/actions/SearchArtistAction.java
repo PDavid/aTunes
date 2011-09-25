@@ -27,8 +27,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
-import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
 import net.sourceforge.atunes.utils.DesktopUtils;

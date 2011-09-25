@@ -30,6 +30,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
+import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IState;
 
 /**

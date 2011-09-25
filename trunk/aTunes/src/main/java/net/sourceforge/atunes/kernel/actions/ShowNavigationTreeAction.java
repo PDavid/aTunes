@@ -26,7 +26,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.kernel.modules.navigator.INavigationHandler;
+import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
