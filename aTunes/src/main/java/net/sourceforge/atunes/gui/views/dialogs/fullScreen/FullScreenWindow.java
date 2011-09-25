@@ -88,7 +88,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 			ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-		    setVisible(false);
+			setVisible(false);
 		    JFileChooser fileChooser = new JFileChooser();
 		    fileChooser.setFileFilter(new FileFilter() {
 		        @Override
@@ -111,6 +111,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 		        FullScreenWindow.this.invalidate();
 		        FullScreenWindow.this.repaint();
 		    }
+			setVisible(true);
 		}
 	}
 
