@@ -27,6 +27,8 @@ import java.awt.geom.Ellipse2D;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.model.ILookAndFeel;
+
 public class AudioFileImageIcon {
 
 	private static final int SMALL_WIDTH = 16;
@@ -35,7 +37,12 @@ public class AudioFileImageIcon {
 	private static final int MEDIUM_WIDTH = 70;
 	private static final int MEDIUM_HEIGHT = 70;
 	
-	private static ImageIcon getSmallImage(Paint color) {
+	/**
+	 * @param color
+	 * @param lookAndFeel
+	 * @return
+	 */
+	private static ImageIcon getSmallImage(Paint color, ILookAndFeel lookAndFeel) {
 		Ellipse2D.Float e1 = new Ellipse2D.Float(1, 11, 6, 3);
 		Ellipse2D.Float e2 = new Ellipse2D.Float(8, 10, 6, 3);
 		
@@ -47,10 +54,15 @@ public class AudioFileImageIcon {
 		r3.addPoint(14, 4);
 		r3.addPoint(14, 2);		
 		
-		return IconGenerator.generateIcon(color, SMALL_WIDTH, SMALL_HEIGHT, e1, e2, r1, r2, r3);
+		return IconGenerator.generateIcon(color, SMALL_WIDTH, SMALL_HEIGHT, lookAndFeel, e1, e2, r1, r2, r3);
 	}
 
-	public static ImageIcon getMediumImage(Paint color) {
+	/**
+	 * @param color
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getMediumImage(Paint color, ILookAndFeel lookAndFeel) {
 		Ellipse2D.Float e1 = new Ellipse2D.Float(4, 44, 24, 12);
 		Ellipse2D.Float e2 = new Ellipse2D.Float(32, 40, 24, 12);
 		
@@ -63,10 +75,15 @@ public class AudioFileImageIcon {
 		r3.addPoint(56, 8);		
 		
 		// This icon must be opaque since with this size shapes overlap is visible using alpha
-		return IconGenerator.generateIcon(color, MEDIUM_WIDTH, MEDIUM_HEIGHT, e1, e2, r1, r2, r3);
+		return IconGenerator.generateIcon(color, MEDIUM_WIDTH, MEDIUM_HEIGHT, lookAndFeel, e1, e2, r1, r2, r3);
 	}
 
-	public static ImageIcon getSmallImageIcon(Paint color) {
-		return getSmallImage(color);
+	/**
+	 * @param color
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getSmallImageIcon(Paint color, ILookAndFeel lookAndFeel) {
+		return getSmallImage(color, lookAndFeel);
 	}
 }

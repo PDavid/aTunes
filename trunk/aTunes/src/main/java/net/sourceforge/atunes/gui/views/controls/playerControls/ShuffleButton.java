@@ -22,6 +22,7 @@ package net.sourceforge.atunes.gui.views.controls.playerControls;
 
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ShuffleModeAction;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 /*
  * based on code from Xtreme Media Player
@@ -32,9 +33,10 @@ public final class ShuffleButton extends SecondaryControl {
 
     /**
      * Instantiates a new shuffle button.
+     * @param lookAndFeelManager
      */
-    public ShuffleButton() {
-        super(Actions.getAction(ShuffleModeAction.class));
+    public ShuffleButton(ILookAndFeelManager lookAndFeelManager) {
+        super(Actions.getAction(ShuffleModeAction.class), lookAndFeelManager);
     }    
     
 }

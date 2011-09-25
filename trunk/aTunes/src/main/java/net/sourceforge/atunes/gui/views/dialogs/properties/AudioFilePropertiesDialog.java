@@ -36,13 +36,13 @@ import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.tags.EditTagDialogController;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
@@ -109,17 +109,21 @@ final class AudioFilePropertiesDialog extends AudioObjectPropertiesDialog {
      * Instantiates a new audio file properties dialog.
      * 
      * @param file
-     *            the file
+     * @param state
+     * @param frame
+     * @param osManager
+     * @param playListHandler
+     * @param lookAndFeelManager
      */
-    AudioFilePropertiesDialog(AudioFile file, IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler) {
-        super(getTitleText(file), frame);
+    AudioFilePropertiesDialog(AudioFile file, IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, ILookAndFeelManager lookAndFeelManager) {
+        super(getTitleText(file), frame, lookAndFeelManager);
         this.file = file;
         this.state = state;
         this.frame = frame;
         this.osManager = osManager;
         this.playListHandler = playListHandler;
         setAudioObject(file);
-        addContent();
+        addContent(lookAndFeelManager);
 
         setContent();
         this.pack();
@@ -139,8 +143,9 @@ final class AudioFilePropertiesDialog extends AudioObjectPropertiesDialog {
 
     /**
      * Adds the content.
+     * @param iLookAndFeelManager
      */
-    private void addContent() {
+    private void addContent(final ILookAndFeelManager iLookAndFeelManager) {
         JPanel panel = new JPanel(new GridBagLayout());
 
         pictureLabel = new JLabel();
@@ -155,7 +160,7 @@ final class AudioFilePropertiesDialog extends AudioObjectPropertiesDialog {
         panel.add(pictureLabel, c);
 
         songLabel = new ProviderLabel(songProvider);
-        songLabel.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPropertiesDialogBigFont());
+        songLabel.setFont(iLookAndFeelManager.getCurrentLookAndFeel().getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 0;
         c.gridheight = 1;
@@ -164,19 +169,19 @@ final class AudioFilePropertiesDialog extends AudioObjectPropertiesDialog {
         panel.add(songLabel, c);
 
         artistLabel = new ProviderLabel(artistProvider);
-        artistLabel.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPropertiesDialogBigFont());
+        artistLabel.setFont(iLookAndFeelManager.getCurrentLookAndFeel().getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 1;
         panel.add(artistLabel, c);
 
         albumArtistLabel = new ProviderLabel(albumArtistProvider);
-        albumArtistLabel.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPropertiesDialogBigFont());
+        albumArtistLabel.setFont(iLookAndFeelManager.getCurrentLookAndFeel().getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 2;
         panel.add(albumArtistLabel, c);
 
         albumLabel = new ProviderLabel(albumProvider);
-        albumLabel.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPropertiesDialogBigFont());
+        albumLabel.setFont(iLookAndFeelManager.getCurrentLookAndFeel().getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 3;
         panel.add(albumLabel, c);
@@ -235,7 +240,7 @@ final class AudioFilePropertiesDialog extends AudioObjectPropertiesDialog {
         editTagsButton.setText(I18nUtils.getString("EDIT_TAG"));
         editTagsButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                EditTagDialogController ctl = new EditTagDialogController(new EditTagDialog(frame.getFrame(), false), state, osManager, playListHandler);
+                EditTagDialogController ctl = new EditTagDialogController(new EditTagDialog(frame.getFrame(), false, iLookAndFeelManager), state, osManager, playListHandler);
                 ctl.editFiles(java.util.Collections.singletonList(file));
             }
         });

@@ -27,6 +27,8 @@ import java.awt.geom.Ellipse2D;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.model.ILookAndFeel;
+
 public class ArtistImageIcon {
 
 	private static final int WIDTH = 16;
@@ -34,16 +36,25 @@ public class ArtistImageIcon {
 	
 	private static ImageIcon icon;
 	
-	public static ImageIcon getIcon() {
+	/**
+	 * @param lookAndFeel 
+	 * @return
+	 */
+	public static ImageIcon getIcon(ILookAndFeel lookAndFeel) {
 		if (icon == null) {
-			icon = getIcon(null);	
+			icon = getIcon(null, lookAndFeel);	
 		}
 		return icon;
 	}
 	
-	public static ImageIcon getIcon(Paint color) {
+	/**
+	 * @param color
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getIcon(Paint color, ILookAndFeel lookAndFeel) {
 		Rectangle clip = new Rectangle(2, 1, WIDTH - 4, HEIGHT - 2);
-		return IconGenerator.generateIcon(color, clip, WIDTH, HEIGHT, getArtistIconArea(0));
+		return IconGenerator.generateIcon(color, clip, WIDTH, HEIGHT, lookAndFeel, getArtistIconArea(0));
 	}
 	
 	protected static Area getArtistIconArea(int distanceFromCenter) {

@@ -37,8 +37,9 @@ import javax.swing.JScrollPane;
 import javax.swing.ListModel;
 
 import net.sourceforge.atunes.gui.lookandfeel.AbstractListCellRendererCode;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -59,13 +60,13 @@ public final class EditPreferencesDialog extends AbstractCustomDialog {
      * Instantiates a new edits the preferences dialog.
      * 
      * @param owner
-     *            the owner
+     * @param lookAndFeelManager
      */
-    public EditPreferencesDialog(JFrame owner) {
-        super(owner, GuiUtils.getComponentWidthForResolution(0.5f, 800),GuiUtils.getComponentHeightForResolution(0.6f, 600), true, CloseAction.DISPOSE);
+    public EditPreferencesDialog(JFrame owner, ILookAndFeelManager lookAndFeelManager) {
+        super(owner, GuiUtils.getComponentWidthForResolution(0.5f, 800),GuiUtils.getComponentHeightForResolution(0.6f, 600), true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
         setResizable(true);
         setTitle(I18nUtils.getString("PREFERENCES"));
-        add(getContent());
+        add(getContent(lookAndFeelManager.getCurrentLookAndFeel()));
     }
 
     /**
@@ -82,12 +83,12 @@ public final class EditPreferencesDialog extends AbstractCustomDialog {
      * 
      * @return the content
      */
-    private JPanel getContent() {
+    private JPanel getContent(ILookAndFeel lookAndFeel) {
         JPanel container = new JPanel(new GridBagLayout());
         container.setOpaque(false);
         list = new JList();
-        list.setCellRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(new PreferencesListCellRendererCode()));
-        JScrollPane scrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListScrollPane(list);
+        list.setCellRenderer(lookAndFeel.getListCellRenderer(new PreferencesListCellRendererCode()));
+        JScrollPane scrollPane = lookAndFeel.getListScrollPane(list);
         scrollPane.setMinimumSize(new Dimension(130, 0));
         options = new JPanel();
         ok = new JButton(I18nUtils.getString("OK"));

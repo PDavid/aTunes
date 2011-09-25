@@ -37,10 +37,10 @@ import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IContextHandler;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -74,6 +74,8 @@ public abstract class AbstractContextPanel {
     private List<AbstractContextPanelContent> contents;
     
     private IContextHandler contextHandler;
+    
+    private ILookAndFeel lookAndFeel;
     
     
     // BEGIN OF METHODS TO BE IMPLEMENTED BY CONCRETE CONTEXT PANELS
@@ -170,9 +172,10 @@ public abstract class AbstractContextPanel {
     /**
      * Returns a graphical component with all contents of the context panel
      * 
+     * @param lookAndFeel
      * @return
      */
-    public final Component getUIComponent() {
+    public final Component getUIComponent(ILookAndFeel lookAndFeel) {
     	if (component == null) {
     		JPanel panel = new JPanel(new GridBagLayout()) {
     			/**
@@ -204,13 +207,13 @@ public abstract class AbstractContextPanel {
     			if (content.isScrollNeeded()) {
     				JScrollPane scroll = null;
     		    	if (componentToAdd instanceof JTable) {
-    		    		scroll = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane((JTable)componentToAdd);
+    		    		scroll = lookAndFeel.getTableScrollPane((JTable)componentToAdd);
     		    	} else if (componentToAdd instanceof JTree) {
-    		    		scroll = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTreeScrollPane((JTree)componentToAdd);
+    		    		scroll = lookAndFeel.getTreeScrollPane((JTree)componentToAdd);
     		    	} else if (componentToAdd instanceof JList) {
-    		    		scroll = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListScrollPane((JList)componentToAdd);
+    		    		scroll = lookAndFeel.getListScrollPane((JList)componentToAdd);
     		    	} else {
-    		    		scroll = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getScrollPane(componentToAdd);
+    		    		scroll = lookAndFeel.getScrollPane(componentToAdd);
     		    	}
     				// Set a minimum height
     				scroll.setMinimumSize(new Dimension(0, 200));
@@ -225,7 +228,7 @@ public abstract class AbstractContextPanel {
     			panel.add(componentToAdd, c);
     			c.gridy++;
     		}
-    		JScrollPane scrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getScrollPane(panel);
+    		JScrollPane scrollPane = lookAndFeel.getScrollPane(panel);
     		scrollPane.getVerticalScrollBar().setUnitIncrement(50);
     		component = scrollPane;
     	}
@@ -353,5 +356,13 @@ public abstract class AbstractContextPanel {
     
     public void setContextHandler(IContextHandler contextHandler) {
 		this.contextHandler = contextHandler;
+	}
+    
+    public void setLookAndFeel(ILookAndFeel lookAndFeel) {
+		this.lookAndFeel = lookAndFeel;
+	}
+    
+    protected ILookAndFeel getLookAndFeel() {
+		return lookAndFeel;
 	}
 }

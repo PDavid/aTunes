@@ -172,7 +172,7 @@ public class LyricsContent extends AbstractContextPanelContent {
 
     @Override
     protected Component getComponent() {
-        lyricsContainer = new CustomTextPane(StyleConstants.ALIGN_CENTER);
+        lyricsContainer = new CustomTextPane(StyleConstants.ALIGN_CENTER, getLookAndFeelManager());
         lyricsContainer.setBorder(null);
         lyricsContainer.setEditable(false);
         lyricsContainer.setOpaque(false);

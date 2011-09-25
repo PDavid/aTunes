@@ -38,6 +38,7 @@ import javax.swing.JProgressBar;
 import net.sourceforge.atunes.gui.images.AlbumImageIcon;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IRipperProgressDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -58,9 +59,11 @@ public final class RipperProgressDialog extends AbstractCustomDialog implements 
 
     /**
      * Instantiates a new ripper progress dialog.
+     * @param frame
+     * @param lookAndFeelManager
      */
-    public RipperProgressDialog(IFrame frame) {
-        super(frame, 420, 200, true, CloseAction.NOTHING);
+    public RipperProgressDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
+        super(frame, 420, 200, true, CloseAction.NOTHING, lookAndFeelManager.getCurrentLookAndFeel());
         setTitle(I18nUtils.getString("RIPPING_CD"));
         setResizable(false);
         setContent();
@@ -88,7 +91,7 @@ public final class RipperProgressDialog extends AbstractCustomDialog implements 
     private void setContent() {
         JPanel panel = new JPanel(new GridBagLayout());
 
-        cover = new JLabel(AlbumImageIcon.getBigIcon(null));
+        cover = new JLabel(AlbumImageIcon.getBigIcon(null, lookAndFeel));
 
         JLabel totalProgressLabel = new JLabel(I18nUtils.getString("TOTAL_PROGRESS"));
         totalProgressBar = new JProgressBar();

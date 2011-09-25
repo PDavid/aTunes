@@ -32,14 +32,17 @@ public interface IIndeterminateProgressDialogFactory {
 
 	/**
 	 * @param parent
+	 * @param parent
+	 * @param lookAndFeelManager
 	 * @return
 	 */
-	public IIndeterminateProgressDialog newDialog(Window parent);
+	public IIndeterminateProgressDialog newDialog(Window parent, ILookAndFeelManager lookAndFeelManager);
 	
 	/**
 	 * @param parent
+	 * @param lookAndFeelManager
 	 * @return
 	 */
-	public IIndeterminateProgressDialog newDialog(IFrame parent);
+	public IIndeterminateProgressDialog newDialog(IFrame parent, ILookAndFeelManager lookAndFeelManager);
 	
 }

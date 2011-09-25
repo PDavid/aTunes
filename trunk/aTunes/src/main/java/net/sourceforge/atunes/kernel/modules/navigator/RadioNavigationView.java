@@ -54,6 +54,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IState;
@@ -75,8 +76,15 @@ public final class RadioNavigationView extends AbstractNavigationView {
     /** The column set */
     private IColumnSet columnSet;
 
-    public RadioNavigationView(IState state, IColumnSet columnSet, INavigationHandler navigationHandler, IFrame frame) {
-    	super(state, navigationHandler, frame);
+    /**
+     * @param state
+     * @param columnSet
+     * @param navigationHandler
+     * @param frame
+     * @param lookAndFeelManager
+     */
+    public RadioNavigationView(IState state, IColumnSet columnSet, INavigationHandler navigationHandler, IFrame frame, ILookAndFeelManager lookAndFeelManager) {
+    	super(state, navigationHandler, frame, lookAndFeelManager);
     	this.columnSet = columnSet;
 	}
 
@@ -86,7 +94,7 @@ public final class RadioNavigationView extends AbstractNavigationView {
 			
 			@Override
 			public ImageIcon getIcon(Paint paint) {
-				return RadioImageIcon.getSmallIcon(paint);
+				return RadioImageIcon.getSmallIcon(paint, getLookAndFeelManager().getCurrentLookAndFeel());
 			}
 		};
     }

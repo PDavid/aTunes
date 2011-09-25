@@ -49,7 +49,6 @@ import javax.swing.tree.TreePath;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellRendererCode;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
 import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedObjects;
 import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedTreeObjects;
@@ -61,6 +60,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IState;
@@ -126,6 +126,8 @@ public abstract class AbstractNavigationView implements INavigationView {
     
     private ITreeGeneratorFactory treeGeneratorFactory;
 
+	private ILookAndFeelManager lookAndFeelManager;
+
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#getTitle()
 	 */
@@ -173,11 +175,18 @@ public abstract class AbstractNavigationView implements INavigationView {
     @Override
 	public abstract JPopupMenu getTreePopupMenu();
 
-    public AbstractNavigationView(IState state, INavigationHandler navigationHandler, IFrame frame) {
+    /**
+     * @param state
+     * @param navigationHandler
+     * @param frame
+     * @param lookAndFeelManager
+     */
+    public AbstractNavigationView(IState state, INavigationHandler navigationHandler, IFrame frame, ILookAndFeelManager lookAndFeelManager) {
     	this.state = state;
     	this.navigationHandler = navigationHandler;
     	this.frame = frame;
     	this.treeGeneratorFactory = Context.getBean(ITreeGeneratorFactory.class);
+    	this.lookAndFeelManager = lookAndFeelManager;
     }
     
     /* (non-Javadoc)
@@ -207,7 +216,7 @@ public abstract class AbstractNavigationView implements INavigationView {
     @Override
 	public final JScrollPane getTreeScrollPane() {
         if (scrollPane == null) {
-            scrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTreeScrollPane(getTree());
+            scrollPane = lookAndFeelManager.getCurrentLookAndFeel().getTreeScrollPane(getTree());
         }
         return scrollPane;
     }
@@ -603,12 +612,12 @@ public abstract class AbstractNavigationView implements INavigationView {
      * @return
      */
     protected final TreeCellRenderer getTreeRenderer() {
-        return LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTreeCellRenderer(new AbstractTreeCellRendererCode() {
+        return lookAndFeelManager.getCurrentLookAndFeel().getTreeCellRenderer(new AbstractTreeCellRendererCode() {
 
             @Override
             public JComponent getComponent(JComponent superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
                 for (AbstractTreeCellDecorator decorator : getTreeCellDecorators()) {
-                    decorator.decorateTreeCellComponent(getState(), superComponent, ((DefaultMutableTreeNode) value).getUserObject(), isSelected);
+                    decorator.decorateTreeCellComponent(getState(), superComponent, ((DefaultMutableTreeNode) value).getUserObject(), isSelected, lookAndFeelManager.getCurrentLookAndFeel());
                 }
                 return superComponent;
             }
@@ -672,4 +681,8 @@ public abstract class AbstractNavigationView implements INavigationView {
 	public void selectArtist(ViewMode currentViewMode, String artist) {
 		
 	}	
+	
+	protected ILookAndFeelManager getLookAndFeelManager() {
+		return lookAndFeelManager;
+	}
 }

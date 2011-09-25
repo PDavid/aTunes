@@ -30,6 +30,7 @@ import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
@@ -341,13 +342,13 @@ public final class PodcastFeedEntry implements IPodcastFeedEntry {
     }
 
     @Override
-    public IColorMutableImageIcon getGenericImage(GenericImageSize imageSize) {
+    public IColorMutableImageIcon getGenericImage(GenericImageSize imageSize, final ILookAndFeel lookAndFeel) {
         switch (imageSize) {
         case SMALL: {
         	return new IColorMutableImageIcon() {				
 				@Override
 				public ImageIcon getIcon(Paint paint) {
-		            return RssImageIcon.getSmallIcon(paint);
+		            return RssImageIcon.getSmallIcon(paint, lookAndFeel);
 				}
 			};
         }
@@ -355,7 +356,7 @@ public final class PodcastFeedEntry implements IPodcastFeedEntry {
             return new IColorMutableImageIcon() {
             	@Override
             	public ImageIcon getIcon(Paint paint) {
-            		return RssImageIcon.getIcon(paint);
+            		return RssImageIcon.getIcon(paint, lookAndFeel);
             	}
             };
         }
@@ -363,7 +364,7 @@ public final class PodcastFeedEntry implements IPodcastFeedEntry {
             return new IColorMutableImageIcon() {
             	@Override
             	public ImageIcon getIcon(Paint paint) {
-            		return RssImageIcon.getBigIcon(paint);
+            		return RssImageIcon.getBigIcon(paint, lookAndFeel);
             	}
             };
         }

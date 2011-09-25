@@ -30,30 +30,39 @@ import javax.swing.JList;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.lookandfeel.AbstractListCellRendererCode;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.panels.ContextPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IContextHandler;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IState;
 
 class ContextController extends AbstractSimpleController<ContextPanel> {
 
 	private IContextHandler contextHandler;
 	
-	ContextController(ContextPanel componentControlled, IState state, IContextHandler contextHandler) {
+	private ILookAndFeel lookAndFeel;
+	
+	/**
+	 * @param componentControlled
+	 * @param state
+	 * @param contextHandler
+	 * @param lookAndFeel
+	 */
+	ContextController(ContextPanel componentControlled, IState state, IContextHandler contextHandler, ILookAndFeel lookAndFeel) {
 		super(componentControlled, state);
 		this.contextHandler = contextHandler;
+		this.lookAndFeel = lookAndFeel;
 		addBindings();
 	}
 
 	@Override
 	public void addBindings() {
-		if (LookAndFeelSelector.getInstance().getCurrentLookAndFeel().customComboBoxRenderersSupported()) {
-			getComponentControlled().getContextSelector().setRenderer(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListCellRenderer(new AbstractListCellRendererCode() {
+		if (lookAndFeel.customComboBoxRenderersSupported()) {
+			getComponentControlled().getContextSelector().setRenderer(lookAndFeel.getListCellRenderer(new AbstractListCellRendererCode() {
 
 				@Override
 				public JComponent getComponent(JComponent superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-					((JLabel)superComponent).setIcon(((AbstractContextPanel)value).getIcon().getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(superComponent, isSelected || cellHasFocus)));
+					((JLabel)superComponent).setIcon(((AbstractContextPanel)value).getIcon().getIcon(lookAndFeel.getPaintForColorMutableIcon(superComponent, isSelected || cellHasFocus)));
 					((JLabel)superComponent).setText(((AbstractContextPanel)value).getTitle());
 					return superComponent;
 				}

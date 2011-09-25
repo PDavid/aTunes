@@ -25,11 +25,18 @@ import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.model.ILookAndFeel;
+
 public class EqualizerImageIcon {
 
 	private static final int SIZE = 18;
 	
-	public static ImageIcon getIcon(Paint color) {
+	/**
+	 * @param color
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getIcon(Paint color, ILookAndFeel lookAndFeel) {
 		Rectangle r1 = new Rectangle(3, 3, 2, 12);
 		Rectangle r2 = new Rectangle(8, 3, 2, 12);
 		Rectangle r3 = new Rectangle(13, 3, 2, 12);
@@ -38,10 +45,14 @@ public class EqualizerImageIcon {
 		Rectangle r6 = new Rectangle(12, 11, 4, 2);
 		
 		
-		return IconGenerator.generateIcon(color, SIZE, SIZE, r1, r2, r3, r4, r5, r6);
+		return IconGenerator.generateIcon(color, SIZE, SIZE, lookAndFeel, r1, r2, r3, r4, r5, r6);
 	}
 
-	public static ImageIcon getIcon() {
-		return getIcon(null);
+	/**
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getIcon(ILookAndFeel lookAndFeel) {
+		return getIcon(null, lookAndFeel);
 	}
 }

@@ -26,16 +26,16 @@ import javax.swing.JLabel;
 
 import net.sourceforge.atunes.gui.images.GenreImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IState;
 
 public class GenreTreeCellDecorator extends AbstractTreeCellDecorator {
 
     @Override
-    public Component decorateTreeCellComponent(IState state, Component component, Object userObject, boolean isSelected) {
+    public Component decorateTreeCellComponent(IState state, Component component, Object userObject, boolean isSelected, ILookAndFeel lookAndFeel) {
         if (userObject instanceof Genre) {
-            ((JLabel) component).setIcon(GenreImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
+            ((JLabel) component).setIcon(GenreImageIcon.getIcon(lookAndFeel.getPaintForColorMutableIcon(component, isSelected), lookAndFeel));
         }
         return component;
     }

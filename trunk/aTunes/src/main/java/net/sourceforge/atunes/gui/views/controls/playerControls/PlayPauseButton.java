@@ -28,10 +28,11 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.images.PauseImageIcon;
 import net.sourceforge.atunes.gui.images.PlayImageIcon;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.PlayAction;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 public final class PlayPauseButton extends JButton implements ILookAndFeelChangeListener {
 
@@ -40,17 +41,20 @@ public final class PlayPauseButton extends JButton implements ILookAndFeelChange
     private boolean playing;
     
     private Dimension size;
+
+	private ILookAndFeel lookAndFeel;
     
     /**
      * Instantiates a new play pause button.
      * 
-     * @param width
-     * @param height
+     * @param size
+     * @param lookAndFeelManager
      */
-    public PlayPauseButton(Dimension size) {
+    public PlayPauseButton(Dimension size, ILookAndFeelManager lookAndFeelManager) {
         super(Actions.getAction(PlayAction.class));
         // Force size of button
         this.size = size;
+        this.lookAndFeel = lookAndFeelManager.getCurrentLookAndFeel();
         setPreferredSize(size);
         setMinimumSize(size);
         setMaximumSize(size);
@@ -59,8 +63,8 @@ public final class PlayPauseButton extends JButton implements ILookAndFeelChange
 
         setIcon();
         
-        LookAndFeelSelector.getInstance().getCurrentLookAndFeel().putClientProperties(this);
-        LookAndFeelSelector.getInstance().addLookAndFeelChangeListener(this);
+        lookAndFeel.putClientProperties(this);
+        lookAndFeelManager.addLookAndFeelChangeListener(this);
     }
     
     /**
@@ -103,9 +107,9 @@ public final class PlayPauseButton extends JButton implements ILookAndFeelChange
     
     private void setIcon() {
     	if (playing) {
-    		setIcon(PauseImageIcon.getIcon(size));
+    		setIcon(PauseImageIcon.getIcon(size, lookAndFeel));
     	} else {
-    		setIcon(PlayImageIcon.getIcon(size));
+    		setIcon(PlayImageIcon.getIcon(size, lookAndFeel));
     	}
     }
 

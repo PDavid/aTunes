@@ -34,7 +34,6 @@ import javax.swing.JPanel;
 import javax.swing.text.StyleConstants;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.CustomTextPane;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
@@ -111,8 +110,8 @@ public class ArtistBasicInfoContent extends AbstractContextPanelContent {
         // Create components
         artistImageLabel = new JLabel();
         artistNameLabel = new UrlLabel();
-        artistNameLabel.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getContextInformationBigFont());
-        artistWikiAbstract = new CustomTextPane(StyleConstants.ALIGN_JUSTIFIED);
+        artistNameLabel.setFont(getLookAndFeelManager().getCurrentLookAndFeel().getContextInformationBigFont());
+        artistWikiAbstract = new CustomTextPane(StyleConstants.ALIGN_JUSTIFIED, getLookAndFeelManager());
         artistWikiAbstract.setEditable(false);
         artistWikiAbstract.setBorder(BorderFactory.createEmptyBorder());
         artistWikiAbstract.setOpaque(false);

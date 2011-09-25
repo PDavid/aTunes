@@ -33,6 +33,7 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.Logger;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
@@ -51,20 +52,25 @@ public final class ContextPanel extends JPanel {
     
     private List<AbstractContextPanel> visiblePanels = new ArrayList<AbstractContextPanel>();
 
+    private ILookAndFeelManager lookAndFeelManager;
+    
     /**
      * Instantiates a new context panel
+     * @param lookAndFeelManager
      */
-    public ContextPanel() {
+    public ContextPanel(ILookAndFeelManager lookAndFeelManager) {
         super(new GridBagLayout());
-        setContent();
+        this.lookAndFeelManager = lookAndFeelManager;
+        setContent(lookAndFeelManager);
     }
 
     /**
      * Sets the content.
+     * @param lookAndFeelManager 
      */
-    private void setContent() {
+    private void setContent(ILookAndFeelManager lookAndFeelManager) {
     	contextSelector = new JComboBox(); 
-    	options = new PopUpButton(PopUpButton.BOTTOM_RIGHT);
+    	options = new PopUpButton(PopUpButton.BOTTOM_RIGHT, lookAndFeelManager);
     	container = new JPanel(new CardLayout());
     	GridBagConstraints c = new GridBagConstraints();
     	c.gridx = 0;
@@ -91,8 +97,8 @@ public final class ContextPanel extends JPanel {
         for (AbstractContextPanel panel : panels) {
         	if (panel.isVisible()) {
         		visiblePanels.add(panel);
-        		container.add(panel.getContextPanelName(), panel.getUIComponent());
-        		panel.getUIComponent().setEnabled(panel.isEnabled());
+        		container.add(panel.getContextPanelName(), panel.getUIComponent(lookAndFeelManager.getCurrentLookAndFeel()));
+        		panel.getUIComponent(lookAndFeelManager.getCurrentLookAndFeel()).setEnabled(panel.isEnabled());
         	}
         }
         contextSelector.setModel(new ListComboBoxModel<AbstractContextPanel>(visiblePanels));

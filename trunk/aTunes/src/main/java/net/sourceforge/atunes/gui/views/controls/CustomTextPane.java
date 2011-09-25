@@ -26,8 +26,8 @@ import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
@@ -43,17 +43,24 @@ public class CustomTextPane extends JTextPane implements ILookAndFeelChangeListe
 
     private Integer alignment;
 
-    public CustomTextPane() {
-    	this(null);
+    /**
+     * @param lookAndFeelManager
+     */
+    public CustomTextPane(ILookAndFeelManager lookAndFeelManager) {
+    	this(null, lookAndFeelManager);
     }
     
-    public CustomTextPane(Integer alignment) {
+    /**
+     * @param alignment
+     * @param lookAndFeelManager
+     */
+    public CustomTextPane(Integer alignment, ILookAndFeelManager lookAndFeelManager) {
         super();
         this.alignment = alignment;
         updateStyle(false);
         new EditionPopUpMenu(this);
         // Register look and feel change listener
-        LookAndFeelSelector.getInstance().addLookAndFeelChangeListener(this);
+        lookAndFeelManager.addLookAndFeelChangeListener(this);
     }
     
     @Override

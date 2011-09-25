@@ -46,9 +46,10 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.kernel.modules.state.beans.FontBean;
+import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class FontChooserDialog extends AbstractCustomDialog {
@@ -154,18 +155,18 @@ public final class FontChooserDialog extends AbstractCustomDialog {
 
     private FontSettings fontSettings = new FontSettings();
 
-    public FontChooserDialog(Window owner, int width, int height, Font font, boolean useFontSmoothing, boolean useFontSmoothingSettingsFromOs, Locale locale) {
-        super(owner, width, height, true, CloseAction.DISPOSE);
+    public FontChooserDialog(Window owner, int width, int height, Font font, boolean useFontSmoothing, boolean useFontSmoothingSettingsFromOs, Locale locale, ILookAndFeelManager lookAndFeelManager) {
+        super(owner, width, height, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
         this.locale = locale;
         this.fontSettings.setFont(new FontBean(font));
         this.fontSettings.setUseFontSmoothing(useFontSmoothing);
         this.fontSettings.setUseFontSmoothingSettingsFromOs(useFontSmoothingSettingsFromOs);
         setResizable(false);
         setTitle(I18nUtils.getString("FONT_SETTINGS"));
-        add(getContent());
+        add(getContent(lookAndFeelManager.getCurrentLookAndFeel()));
     }
 
-    private JPanel getContent() {
+    private JPanel getContent(ILookAndFeel iLookAndFeel) {
         String[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames(locale);
 
         fontPreviewLabel = new JLabel();
@@ -173,7 +174,7 @@ public final class FontChooserDialog extends AbstractCustomDialog {
         fontPreviewLabel.setMaximumSize(new Dimension(50, 20));
         fontPreviewLabel.setHorizontalAlignment(SwingConstants.CENTER);
         fontPreviewLabel.setText("Test Test");
-        fontList = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getList();
+        fontList = iLookAndFeel.getList();
         fontList.setListData(fonts);
         fontList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         fontList.addListSelectionListener(new ListSelectionListener() {
@@ -185,7 +186,7 @@ public final class FontChooserDialog extends AbstractCustomDialog {
             }
         });
         fontList.setSelectedValue(fontSettings.getFont().getName(), true);
-        fontSizeList = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getList();
+        fontSizeList = iLookAndFeel.getList();
         fontSizeList.setListData(FONT_SIZES);
         fontSizeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         fontSizeList.addListSelectionListener(new ListSelectionListener() {
@@ -248,7 +249,7 @@ public final class FontChooserDialog extends AbstractCustomDialog {
         c.fill = GridBagConstraints.BOTH;
         c.anchor = GridBagConstraints.CENTER;
         c.insets = new Insets(5, 5, 5, 5);
-        panel.add(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListScrollPane(fontList), c);
+        panel.add(iLookAndFeel.getListScrollPane(fontList), c);
         c.gridx = 1;
         c.gridy = 0;
         c.gridwidth = 1;
@@ -256,7 +257,7 @@ public final class FontChooserDialog extends AbstractCustomDialog {
         c.weighty = 0.7;
         c.fill = GridBagConstraints.BOTH;
         c.anchor = GridBagConstraints.CENTER;
-        panel.add(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getListScrollPane(fontSizeList), c);
+        panel.add(iLookAndFeel.getListScrollPane(fontSizeList), c);
         c.gridx = 0;
         c.gridy = 1;
         c.gridwidth = 2;

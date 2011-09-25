@@ -34,8 +34,9 @@ import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 
 import net.sourceforge.atunes.gui.images.RadioImageIcon;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -66,22 +67,25 @@ public final class RadioBrowserDialog extends AbstractCustomDialog {
 
     /**
      * Instantiates a new radio browser dialog.
+     * @param owner
+     * @param lookAndFeelManager
      */
-    public RadioBrowserDialog(Window owner) {
-        super(owner, GuiUtils.getComponentWidthForResolution(0.5f), GuiUtils.getComponentHeightForResolution(0.5f), true, CloseAction.DISPOSE);
+    public RadioBrowserDialog(Window owner, ILookAndFeelManager lookAndFeelManager) {
+        super(owner, GuiUtils.getComponentWidthForResolution(0.5f), GuiUtils.getComponentHeightForResolution(0.5f), true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
         setTitle(I18nUtils.getString("RADIO_BROWSER"));
-        setContent();
+        setContent(lookAndFeelManager.getCurrentLookAndFeel());
     }
 
     /**
      * Sets the content.
+     * @param iLookAndFeel 
      */
-    private void setContent() {
+    private void setContent(ILookAndFeel iLookAndFeel) {
         JPanel panel = new JPanel(new GridBagLayout());
         treeTable = new JXTreeTable();
         treeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JPanel topPanel = new JPanel(new BorderLayout(10, 0));
-        radioIcon = new JLabel(RadioImageIcon.getIcon());
+        radioIcon = new JLabel(RadioImageIcon.getIcon(lookAndFeel));
         browserInstructions = new JLabel(I18nUtils.getString("RADIO_BROWSER_INSTRUCTIONS"));
         closeButton = new JButton(I18nUtils.getString("CLOSE"));
         closeButton.addActionListener(new ActionListener() {
@@ -102,7 +106,7 @@ public final class RadioBrowserDialog extends AbstractCustomDialog {
         c.weightx = 1;
         c.weighty = 1;
         c.fill = GridBagConstraints.BOTH;
-        panel.add(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getScrollPane(treeTable), c);
+        panel.add(iLookAndFeel.getScrollPane(treeTable), c);
         c.gridy = 2;
         c.weightx = 0;
         c.weighty = 0;

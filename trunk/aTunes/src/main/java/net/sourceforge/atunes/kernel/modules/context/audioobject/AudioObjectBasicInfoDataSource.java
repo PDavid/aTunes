@@ -36,6 +36,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectStatistics;
 import net.sourceforge.atunes.model.IContextInformationSource;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
@@ -89,6 +90,8 @@ public class AudioObjectBasicInfoDataSource implements IContextInformationSource
     private IWebServicesHandler webServicesHandler;
     
     private IOSManager osManager;
+    
+    private ILookAndFeelManager lookAndFeelManager;
 
     @Override
     public Map<String, ?> getData(Map<String, ?> parameters) {
@@ -128,9 +131,9 @@ public class AudioObjectBasicInfoDataSource implements IContextInformationSource
             }
             return localImage;
         } else if (audioObject instanceof IRadio) {
-            return RadioImageIcon.getIcon();
+            return RadioImageIcon.getIcon(lookAndFeelManager.getCurrentLookAndFeel());
         } else if (audioObject instanceof IPodcastFeedEntry) {
-            return RssImageIcon.getIcon();
+            return RssImageIcon.getIcon(lookAndFeelManager.getCurrentLookAndFeel());
         }
         return null;
     }
@@ -163,5 +166,9 @@ public class AudioObjectBasicInfoDataSource implements IContextInformationSource
     
     public void setOsManager(IOSManager osManager) {
 		this.osManager = osManager;
+	}
+    
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
 	}
 }

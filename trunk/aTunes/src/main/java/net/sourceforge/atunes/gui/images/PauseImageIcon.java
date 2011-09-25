@@ -29,26 +29,43 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.model.ILookAndFeel;
 
 public class PauseImageIcon {
 
-	public static ImageIcon getIcon(Dimension size) {
-		return getIcon(null, size);
+	/**
+	 * @param size
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getIcon(Dimension size, ILookAndFeel lookAndFeel) {
+		return getIcon(null, size, lookAndFeel);
 	}
 	
-	public static ImageIcon getTrayIcon(Paint color, Dimension size) {
-		return getCustomTrayIcon(color, size);
+	/**
+	 * @param color
+	 * @param size
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getTrayIcon(Paint color, Dimension size, ILookAndFeel lookAndFeel) {
+		return getCustomTrayIcon(color, size, lookAndFeel);
 	}
 	
-	private static ImageIcon getIcon(Paint color, Dimension size) {
+	/**
+	 * @param color
+	 * @param size
+	 * @param lookAndFeel
+	 * @return
+	 */
+	private static ImageIcon getIcon(Paint color, Dimension size, ILookAndFeel lookAndFeel) {
         Rectangle pauseShape1 = new Rectangle(- size.width / 10 - size.width / 6, - size.height / 5, size.width / 7, (int) (size.height / (5f/2f)));
         Rectangle pauseShape2 = new Rectangle(- size.width / 20, - size.height / 5, size.width / 7, (int) (size.height / (5f/2f)));
 
 		BufferedImage bi = new BufferedImage(size.width, size.height, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D g2 = bi.createGraphics();
     	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    	g2.setPaint(color != null ? color : LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForSpecialControls());
+    	g2.setPaint(color != null ? color : lookAndFeel.getPaintForSpecialControls());
     	g2.translate(size.getWidth() * 4/7, size.getHeight() / 2);    	
 		
    		g2.fill(pauseShape1);
@@ -58,7 +75,13 @@ public class PauseImageIcon {
     	return new ImageIcon(bi);
 	}
 
-	private static ImageIcon getCustomTrayIcon(Paint color, Dimension size) {
+	/**
+	 * @param color
+	 * @param size
+	 * @param lookAndFeel
+	 * @return
+	 */
+	private static ImageIcon getCustomTrayIcon(Paint color, Dimension size, ILookAndFeel lookAndFeel) {
 		// Optimized for low sizes
 		
 		int hFactor = 5;
@@ -67,7 +90,7 @@ public class PauseImageIcon {
 		Rectangle r1 = new Rectangle(size.width / hFactor, size.height / vFactor, size.width / 2 - 3/2 * size.width / hFactor, size.height - 2 * size.height / vFactor);
 		Rectangle r2 = new Rectangle(size.width / 2 + size.width / hFactor, size.height / vFactor, size.width / 2 - 3/2 * size.width / hFactor, size.height - 2 * size.height / vFactor);
 		
-		return IconGenerator.generateIcon(color, size.width, size.height, r1, r2);
+		return IconGenerator.generateIcon(color, size.width, size.height, lookAndFeel, r1, r2);
 	}
 
 }

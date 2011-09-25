@@ -30,7 +30,6 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.AlbumTableColumnModel;
 import net.sourceforge.atunes.gui.model.AlbumTableModel;
 import net.sourceforge.atunes.gui.renderers.ColumnRenderers;
@@ -41,6 +40,8 @@ import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -55,13 +56,17 @@ public final class ArtistAlbumSelectorDialog extends AbstractCustomDialog implem
 	private Artist artist;
    
 	private Album album;
+	
+	private ILookAndFeel lookAndFeel;
 
     /**
      * Instantiates a new  dialog.
-     * @param jFrame 
+     * @param frame
+     * @param lookAndFeelManager
      */
-    public ArtistAlbumSelectorDialog(IFrame frame) {
-        super(frame, 600, 500, true, CloseAction.DISPOSE);
+    public ArtistAlbumSelectorDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
+        super(frame, 600, 500, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
+        this.lookAndFeel = lookAndFeelManager.getCurrentLookAndFeel();
         setResizable(false);
     }
     
@@ -73,20 +78,20 @@ public final class ArtistAlbumSelectorDialog extends AbstractCustomDialog implem
     private JPanel getContent() {
         JPanel panel = new JPanel(new BorderLayout());
         
-        final JTable albumTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
+        final JTable albumTable = lookAndFeel.getTable();
         albumTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);        
         // Disable autoresize, as we will control it
         albumTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         
-        panel.add(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(albumTable), BorderLayout.CENTER);
+        panel.add(lookAndFeel.getTableScrollPane(albumTable), BorderLayout.CENTER);
         
         ArrayList<Album> albumList = new ArrayList<Album>(artist.getAlbums().values());
         
-        final AlbumTableModel model = new AlbumTableModel();
+        final AlbumTableModel model = new AlbumTableModel(lookAndFeel);
         albumTable.setModel(model);
         
         // Set column model
-        AlbumTableColumnModel columnModel = new AlbumTableColumnModel(albumTable);
+        AlbumTableColumnModel columnModel = new AlbumTableColumnModel(albumTable, lookAndFeel);
         albumTable.setColumnModel(columnModel);
         
         // why ??? don't work without
@@ -96,7 +101,7 @@ public final class ArtistAlbumSelectorDialog extends AbstractCustomDialog implem
         // ???
         
         // 	Set renderers
-        ColumnRenderers.addRenderers(albumTable, columnModel);
+        ColumnRenderers.addRenderers(albumTable, columnModel, lookAndFeel);
         
         // Bind column set popup menu to select columns to display
 		new ColumnSetPopupMenu(albumTable, columnModel);

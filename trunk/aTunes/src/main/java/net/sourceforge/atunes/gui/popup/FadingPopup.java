@@ -29,7 +29,7 @@ import javax.swing.Popup;
 import javax.swing.border.Border;
 
 import net.sourceforge.atunes.gui.WindowFader;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
@@ -44,15 +44,13 @@ final class FadingPopup extends Popup {
      * Instantiates a new fading popup.
      * 
      * @param owner
-     *            the owner
      * @param contents
-     *            the contents
      * @param ownerX
-     *            the owner x
      * @param ownerY
-     *            the owner y
+     * @param shadowBorder
+     * @param lookAndFeel
      */
-    FadingPopup(Component owner, Component contents, int ownerX, int ownerY, boolean shadowBorder) {
+    FadingPopup(Component owner, Component contents, int ownerX, int ownerY, boolean shadowBorder, ILookAndFeel lookAndFeel) {
         // create a new heavyweighht window
         this.popupWindow = new JWindow();
         // determine the popup location
@@ -63,7 +61,7 @@ final class FadingPopup extends Popup {
         JComponent parent = (JComponent) contents.getParent();
         // set the shadow border
         if (shadowBorder) {
-            Border shadow = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getShadowBorder();
+            Border shadow = lookAndFeel.getShadowBorder();
             if (shadow != null) {
                 parent.setBorder(shadow);
             }

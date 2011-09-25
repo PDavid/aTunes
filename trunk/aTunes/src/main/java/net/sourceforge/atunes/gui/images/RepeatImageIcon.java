@@ -24,9 +24,15 @@ import java.awt.Polygon;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.model.ILookAndFeel;
+
 public class RepeatImageIcon {
 
-	public static ImageIcon getIcon() {
+	/**
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getIcon(ILookAndFeel lookAndFeel) {
 		Polygon p = new Polygon();
 		p.addPoint(2, 5);
 		p.addPoint(2, 3);
@@ -50,6 +56,6 @@ public class RepeatImageIcon {
 		p4.addPoint(7, 17);
 
 		
-		return IconGenerator.generateIcon(18, 18, p, p3, p4);
+		return IconGenerator.generateIcon(18, 18, lookAndFeel, p, p3, p4);
 	}
 }

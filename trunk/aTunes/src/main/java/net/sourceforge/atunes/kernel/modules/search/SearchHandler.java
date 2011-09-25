@@ -37,6 +37,7 @@ import net.sourceforge.atunes.gui.views.dialogs.SearchResultsDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.search.searchableobjects.DeviceSearchableObject;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -189,7 +190,7 @@ public final class SearchHandler extends AbstractHandler {
      */
     private CustomSearchController getSearchController() {
         if (customSearchController == null) {
-            customSearchController = new CustomSearchController(new CustomSearchDialog(getFrame().getFrame()), getState(), getFrame());
+            customSearchController = new CustomSearchController(new CustomSearchDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class)), getState(), getFrame());
         }
         return customSearchController;
     }
@@ -201,7 +202,7 @@ public final class SearchHandler extends AbstractHandler {
      */
     private SearchResultsController getSearchResultsController() {
         if (searchResultsController == null) {
-            searchResultsController = new SearchResultsController(new SearchResultsDialog(getFrame().getFrame()), getState(), getBean(IPlayListHandler.class));
+            searchResultsController = new SearchResultsController(new SearchResultsDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class)), getState(), getBean(IPlayListHandler.class), getBean(ILookAndFeelManager.class));
         }
         return searchResultsController;
     }

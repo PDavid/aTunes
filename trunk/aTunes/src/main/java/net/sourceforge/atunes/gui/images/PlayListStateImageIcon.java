@@ -26,24 +26,41 @@ import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.model.ILookAndFeel;
+
 public class PlayListStateImageIcon {
 
 	private static final int WIDTH = 14;
 	private static final int HEIGHT = 14;
 	
-	public static ImageIcon getStopIcon(Paint color) {
-		return IconGenerator.generateIcon(color, WIDTH, HEIGHT, new Rectangle(4, 4, 8, 8));
+	/**
+	 * @param color
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getStopIcon(Paint color, ILookAndFeel lookAndFeel) {
+		return IconGenerator.generateIcon(color, WIDTH, HEIGHT, lookAndFeel, new Rectangle(4, 4, 8, 8));
 	}
 
-	public static ImageIcon getPlayIcon(Paint color) {
+	/**
+	 * @param color
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getPlayIcon(Paint color, ILookAndFeel lookAndFeel) {
 		Polygon shape = new Polygon();
 		shape.addPoint(3, 3);
 		shape.addPoint(3, 11);
 		shape.addPoint(11, 7);
-		return IconGenerator.generateIcon(color, WIDTH, HEIGHT, shape);
+		return IconGenerator.generateIcon(color, WIDTH, HEIGHT, lookAndFeel, shape);
 	}
 
-	public static ImageIcon getPauseIcon(Paint color) {
-		return IconGenerator.generateIcon(color, WIDTH, HEIGHT, new Rectangle(3, 3, 3, 8), new Rectangle(8, 3, 3, 8));
+	/**
+	 * @param color
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getPauseIcon(Paint color, ILookAndFeel lookAndFeel) {
+		return IconGenerator.generateIcon(color, WIDTH, HEIGHT, lookAndFeel, new Rectangle(3, 3, 3, 8), new Rectangle(8, 3, 3, 8));
 	}
 }

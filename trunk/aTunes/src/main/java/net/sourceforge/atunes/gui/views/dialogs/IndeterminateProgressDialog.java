@@ -35,6 +35,7 @@ import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -60,10 +61,10 @@ public final class IndeterminateProgressDialog extends AbstractCustomDialog impl
      * Instantiates a new indeterminate progress dialog.
      * 
      * @param parent
-     *            the parent
+     * @param lookAndFeelManager
      */
-    public IndeterminateProgressDialog(Window parent) {
-        super(parent, 400, 130, true, CloseAction.DISPOSE);
+    public IndeterminateProgressDialog(Window parent, ILookAndFeelManager lookAndFeelManager) {
+        super(parent, 400, 130, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
         add(getContent());
         setResizable(false);
     }
@@ -74,8 +75,8 @@ public final class IndeterminateProgressDialog extends AbstractCustomDialog impl
      * @param parent
      *            the parent
      */
-    public IndeterminateProgressDialog(IFrame parent) {
-        super(parent, 400, 130, true, CloseAction.DISPOSE);
+    public IndeterminateProgressDialog(IFrame parent, ILookAndFeelManager lookAndFeelManager) {
+        super(parent, 400, 130, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
         add(getContent());
         setResizable(false);
     }

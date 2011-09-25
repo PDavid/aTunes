@@ -61,6 +61,7 @@ import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITreeObject;
@@ -76,8 +77,14 @@ public class RepositoryNavigationView extends AbstractNavigationView {
 
     private JPopupMenu tablePopupMenu;
 
-    public RepositoryNavigationView(IState state, INavigationHandler navigationHandler, IFrame frame) {
-    	super(state, navigationHandler, frame);
+    /**
+     * @param state
+     * @param navigationHandler
+     * @param frame
+     * @param lookAndFeelManager
+     */
+    public RepositoryNavigationView(IState state, INavigationHandler navigationHandler, IFrame frame, ILookAndFeelManager lookAndFeelManager) {
+    	super(state, navigationHandler, frame, lookAndFeelManager);
 	}
     
     @Override
@@ -86,7 +93,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
 			
 			@Override
 			public ImageIcon getIcon(Paint paint) {
-				return AudioFileImageIcon.getSmallImageIcon(paint);
+				return AudioFileImageIcon.getSmallImageIcon(paint, getLookAndFeelManager().getCurrentLookAndFeel());
 			}
 		};
     }

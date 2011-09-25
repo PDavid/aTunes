@@ -34,37 +34,37 @@ import net.sourceforge.atunes.gui.images.FolderImageIcon;
 import net.sourceforge.atunes.gui.images.RadioImageIcon;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class StringTreeCellDecorator extends AbstractTreeCellDecorator {
 
     @Override
-    public Component decorateTreeCellComponent(IState state, Component component, Object userObject, boolean isSelected) {
+    public Component decorateTreeCellComponent(IState state, Component component, Object userObject, boolean isSelected, ILookAndFeel lookAndFeel) {
         if (userObject instanceof String && component instanceof JLabel) {
             String text = ((String) userObject);
             JLabel label = (JLabel) component;
-            Paint color = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(label, isSelected);
+            Paint color = lookAndFeel.getPaintForColorMutableIcon(label, isSelected);
             if (text.equals(I18nUtils.getString("REPOSITORY"))) {
-                label.setIcon(AudioFileImageIcon.getSmallImageIcon(color));
+                label.setIcon(AudioFileImageIcon.getSmallImageIcon(color, lookAndFeel));
             } else if (text.equals(I18nUtils.getString("DEVICE"))) {
-                label.setIcon(DeviceImageIcon.getIcon(color));
+                label.setIcon(DeviceImageIcon.getIcon(color, lookAndFeel));
             } else if (text.equals(I18nUtils.getString("ARTISTS"))) {
-                label.setIcon(ArtistImageIcon.getIcon(color));
+                label.setIcon(ArtistImageIcon.getIcon(color, lookAndFeel));
             } else if (text.equals(I18nUtils.getString("ALBUMS"))) {
-                label.setIcon(AlbumImageIcon.getIcon(color));
+                label.setIcon(AlbumImageIcon.getIcon(color, lookAndFeel));
             } else if (text.equals(I18nUtils.getString("SONGS"))) {
-                label.setIcon(AudioFileImageIcon.getSmallImageIcon(color));
+                label.setIcon(AudioFileImageIcon.getSmallImageIcon(color, lookAndFeel));
             } else if (text.equals(I18nUtils.getString("FAVORITES"))) {
-                label.setIcon(FavoriteImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(label, isSelected)));
+                label.setIcon(FavoriteImageIcon.getIcon(lookAndFeel.getPaintForColorMutableIcon(label, isSelected), lookAndFeel));
             } else if (text.equals(I18nUtils.getString("PODCAST_FEEDS"))) {
-                label.setIcon(RssImageIcon.getSmallIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(label, isSelected)));
+                label.setIcon(RssImageIcon.getSmallIcon(lookAndFeel.getPaintForColorMutableIcon(label, isSelected), lookAndFeel));
             } else if (text.equals(I18nUtils.getString("RADIO"))) {
-                label.setIcon(RadioImageIcon.getSmallIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(label, isSelected)));
+                label.setIcon(RadioImageIcon.getSmallIcon(lookAndFeel.getPaintForColorMutableIcon(label, isSelected), lookAndFeel));
             } else {
                 // For radio view
-                label.setIcon(FolderImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(label, isSelected)));
+                label.setIcon(FolderImageIcon.getIcon(lookAndFeel.getPaintForColorMutableIcon(label, isSelected), lookAndFeel));
             }
 
             label.setToolTipText(null);

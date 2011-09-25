@@ -35,6 +35,7 @@ import net.sourceforge.atunes.kernel.modules.notify.growl.GrowlNotificationEngin
 import net.sourceforge.atunes.kernel.modules.notify.libnotify.LibnotifyNotificationEngine;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFullScreenHandler;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INotificationEngine;
 import net.sourceforge.atunes.model.IPlaybackStateListener;
 import net.sourceforge.atunes.model.IState;
@@ -91,11 +92,11 @@ public final class NotificationsHandler extends AbstractHandler implements IPlay
     
     @Override
     protected void initHandler() {
-    	defaultEngine = new DefaultNotifications(getState(), getOsManager());
+    	defaultEngine = new DefaultNotifications(getState(), getOsManager(), getBean(ILookAndFeelManager.class));
     	// Add here any new notification engine
     	addNotificationEngine(defaultEngine);
-    	addNotificationEngine(new LibnotifyNotificationEngine(getOsManager()));
-    	addNotificationEngine(new GrowlNotificationEngine(getOsManager()));
+    	addNotificationEngine(new LibnotifyNotificationEngine(getOsManager(), getBean(ILookAndFeelManager.class)));
+    	addNotificationEngine(new GrowlNotificationEngine(getOsManager(), getBean(ILookAndFeelManager.class)));
 
     	// Load available engines
     	for (INotificationEngine engine : engines.values()) {

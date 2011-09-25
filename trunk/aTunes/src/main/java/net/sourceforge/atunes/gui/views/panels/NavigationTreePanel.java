@@ -42,6 +42,7 @@ import net.sourceforge.atunes.kernel.actions.ShowFoldersInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowGenresInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigationTableAction;
 import net.sourceforge.atunes.kernel.actions.ShowYearsInNavigatorAction;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -58,17 +59,19 @@ public final class NavigationTreePanel extends JPanel {
     
     /**
      * Instantiates a new navigation panel.
+     * @param lookAndFeelManager
      */
-    public NavigationTreePanel()  {
+    public NavigationTreePanel(ILookAndFeelManager lookAndFeelManager)  {
         super(new GridBagLayout(), true);
-        addContent();
+        addContent(lookAndFeelManager);
     }
 
     /**
      * Adds the content.
+     * @param lookAndFeelManager 
      */
-    private void addContent() {
-    	options = new PopUpButton(PopUpButton.BOTTOM_RIGHT);
+    private void addContent(ILookAndFeelManager lookAndFeelManager) {
+    	options = new PopUpButton(PopUpButton.BOTTOM_RIGHT, lookAndFeelManager);
         JRadioButtonMenuItem showArtist = new JRadioButtonMenuItem(Actions.getAction(ShowArtistsInNavigatorAction.class));
         JRadioButtonMenuItem showAlbum = new JRadioButtonMenuItem(Actions.getAction(ShowAlbumsInNavigatorAction.class));
         JRadioButtonMenuItem showGenre = new JRadioButtonMenuItem(Actions.getAction(ShowGenresInNavigatorAction.class));

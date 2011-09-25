@@ -29,18 +29,27 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.model.ILookAndFeel;
 
 public class VideoImageIcon {
 
 	private static final int WIDTH = 16;
 	private static final int HEIGHT = 16;
 	
-	public static ImageIcon getIcon() {
-		return getIcon(null);	
+	/**
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getIcon(ILookAndFeel lookAndFeel) {
+		return getIcon(null, lookAndFeel);	
 	}
 	
-	public static ImageIcon getIcon(Paint color) {
+	/**
+	 * @param color
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getIcon(Paint color, ILookAndFeel lookAndFeel) {
 		int margin = 2;
 		int internalMarginX = 6;
 		int internalMarginY = 3;
@@ -52,7 +61,7 @@ public class VideoImageIcon {
 		BufferedImage bi = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D g = bi.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setPaint(color != null ? color : LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForSpecialControls());
+        g.setPaint(color != null ? color : lookAndFeel.getPaintForSpecialControls());
        	g.fill(r);
        	g.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
        	g.fill(r2);

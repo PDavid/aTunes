@@ -27,6 +27,7 @@ import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.AlbumImageIcon;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -61,7 +62,7 @@ public class ShowAlbumsInNavigatorAction extends ActionWithColorMutableIcon {
 			
 			@Override
 			public ImageIcon getIcon(Paint paint) {
-				return AlbumImageIcon.getIcon(paint);
+				return AlbumImageIcon.getIcon(paint, getBean(ILookAndFeelManager.class).getCurrentLookAndFeel());
 			}
 		};
     }

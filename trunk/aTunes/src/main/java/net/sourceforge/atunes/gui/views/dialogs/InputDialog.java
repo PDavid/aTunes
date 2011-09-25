@@ -35,6 +35,7 @@ import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IInputDialog;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -54,14 +55,10 @@ public final class InputDialog extends AbstractCustomDialog implements IInputDia
      * Instantiates a new input dialog.
      * 
      * @param owner
-     *            the owner
-     * @param title
-     *            the title
-     * @param image
-     *            the image
+     * @param lookAndFeelManager
      */
-    public InputDialog(IFrame frame) {
-        super(frame, 400, 130, true, CloseAction.DISPOSE);
+    public InputDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
+        super(frame, 400, 130, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
         setResizable(false);
         JPanel panel = new JPanel(new GridBagLayout());
         textField = new CustomTextField();

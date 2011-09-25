@@ -24,6 +24,7 @@ import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IColumnSet;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ITaskService;
 
 /**
@@ -36,8 +37,11 @@ public final class AlbumTableColumnModel extends AbstractCommonColumnModel {
 	private static final long serialVersionUID = 8480107980198328642L;
 
 
-	public AlbumTableColumnModel(JTable table) {
-        super(table, (IColumnSet) Context.getBean("albumColumnSet"), Context.getBean(ITaskService.class));
+	/**
+	 * @param table
+	 */
+	public AlbumTableColumnModel(JTable table, ILookAndFeel lookAndFeel) {
+        super(table, (IColumnSet) Context.getBean("albumColumnSet"), Context.getBean(ITaskService.class), lookAndFeel);
         enableColumnChange(true);
     }
 

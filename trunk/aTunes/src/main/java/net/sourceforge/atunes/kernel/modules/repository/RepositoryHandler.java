@@ -62,6 +62,7 @@ import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -916,7 +917,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
             getBean(IMessageDialog.class).showMessage(I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"), getFrame());
             retrieve(foldersToRead);
         } else {
-        	RepositorySelectionInfoDialog dialog = new RepositorySelectionInfoDialog(getFrame().getFrame());
+        	RepositorySelectionInfoDialog dialog = new RepositorySelectionInfoDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class));
         	dialog.setVisible(true);
         	if (dialog.userAccepted()) {
         		selectRepository();

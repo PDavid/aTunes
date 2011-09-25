@@ -27,6 +27,7 @@ import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.ShuffleImageIcon;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -60,7 +61,7 @@ public class ShuffleModeAction extends ActionWithColorMutableIcon {
 			
 			@Override
 			public ImageIcon getIcon(Paint paint) {
-				return ShuffleImageIcon.getIcon(paint);
+				return ShuffleImageIcon.getIcon(paint, getBean(ILookAndFeelManager.class).getCurrentLookAndFeel());
 			}
 		};
     }

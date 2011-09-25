@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.notify.libnotify;
 import net.sourceforge.atunes.kernel.modules.notify.CommonNotificationEngine;
 import net.sourceforge.atunes.kernel.modules.notify.libnotify.Notify.NotifyNotification;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -51,7 +52,12 @@ public class LibnotifyNotificationEngine extends CommonNotificationEngine {
 		}
 	}
 
-    public LibnotifyNotificationEngine(IOSManager osManager) {
+    /**
+     * @param osManager
+     * @param lookAndFeelManager
+     */
+    public LibnotifyNotificationEngine(IOSManager osManager, ILookAndFeelManager lookAndFeelManager) {
+    	super(lookAndFeelManager);
     	this.osManager = osManager;
     }
 

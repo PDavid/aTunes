@@ -27,6 +27,8 @@ import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.model.ILookAndFeel;
+
 public class RssImageIcon {
 
 	private static final int SMALL_SIZE = 16;
@@ -35,31 +37,58 @@ public class RssImageIcon {
 	
 	private static ImageIcon icon;
 	
-	public static ImageIcon getSmallIcon() {
+	/**
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getSmallIcon(ILookAndFeel lookAndFeel) {
 		if (icon == null) {
-			icon = getSmallIcon(null);	
+			icon = getSmallIcon(null, lookAndFeel);	
 		}
 		return icon;
 	}
 	
-	public static ImageIcon getSmallIcon(Paint color) {
-		return IconGenerator.generateIcon(color, SMALL_SIZE, SMALL_SIZE, getSmallIconArea(SMALL_SIZE));
+	/**
+	 * @param color
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getSmallIcon(Paint color, ILookAndFeel lookAndFeel) {
+		return IconGenerator.generateIcon(color, SMALL_SIZE, SMALL_SIZE, lookAndFeel, getSmallIconArea(SMALL_SIZE));
 	}
 
-	public static ImageIcon getIcon() {
-		return getIcon(null);
+	/**
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getIcon(ILookAndFeel lookAndFeel) {
+		return getIcon(null, lookAndFeel);
 	}
 
-	public static ImageIcon getIcon(Paint color) {
-		return IconGenerator.generateIcon(color, SIZE, SIZE, getIconArea(SIZE));
+	/**
+	 * @param color
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getIcon(Paint color, ILookAndFeel lookAndFeel) {
+		return IconGenerator.generateIcon(color, SIZE, SIZE, lookAndFeel, getIconArea(SIZE));
 	}
 
-	public static ImageIcon getBigIcon() {
-		return getBigIcon(null);
+	/**
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getBigIcon(ILookAndFeel lookAndFeel) {
+		return getBigIcon(null, lookAndFeel);
 	}
 
-	public static ImageIcon getBigIcon(Paint color) {
-		return IconGenerator.generateIcon(color, BIG_SIZE, BIG_SIZE, getIconArea(BIG_SIZE));
+	/**
+	 * @param color
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getBigIcon(Paint color, ILookAndFeel lookAndFeel) {
+		return IconGenerator.generateIcon(color, BIG_SIZE, BIG_SIZE, lookAndFeel, getIconArea(BIG_SIZE));
 	}
 	
 	private static Area getSmallIconArea(int size) {

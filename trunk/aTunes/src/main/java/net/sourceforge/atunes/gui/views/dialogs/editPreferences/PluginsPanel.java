@@ -52,12 +52,12 @@ import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.gui.views.dialogs.PluginEditorDialog;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -100,15 +100,15 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
     /**
      * Instantiates a new plugins panel.
      */
-    public PluginsPanel(EditPreferencesDialog dialog, final IFrame frame) {
+    public PluginsPanel(EditPreferencesDialog dialog, final IFrame frame, final ILookAndFeel lookAndFeel) {
         super(I18nUtils.getString("PLUGINS"));
         this.dialog = dialog;
-        pluginsTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
+        pluginsTable = lookAndFeel.getTable();
         pluginsTable.setRowHeight(CELL_HEIGHT);
         pluginsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         pluginsTable.setColumnModel(new PluginsTableDefaultTableColumnModel());
 
-        JScrollPane scrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(pluginsTable);
+        JScrollPane scrollPane = lookAndFeel.getTableScrollPane(pluginsTable);
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
@@ -154,7 +154,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
         c.fill = GridBagConstraints.HORIZONTAL;
         add(pluginDetailPanel, c);
 
-        pluginsTable.setDefaultRenderer(PluginInfo.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(new PluginsTableCellRendererCode()));
+        pluginsTable.setDefaultRenderer(PluginInfo.class, lookAndFeel.getTableCellRenderer(new PluginsTableCellRendererCode(lookAndFeel)));
 
         pluginsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -192,7 +192,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
                 int row = pluginsTable.getSelectedRow();
                 PluginInfo plugin = ((PluginsTableModel) pluginsTable.getModel()).getPluginAt(row);
                 PluginConfiguration configuration = ((PluginsTableModel) pluginsTable.getModel()).getPluginConfigurationAt(row);
-                PluginEditorDialog dialog = new PluginEditorDialog(PluginsPanel.this.dialog, plugin, configuration);
+                PluginEditorDialog dialog = new PluginEditorDialog(PluginsPanel.this.dialog, plugin, configuration, lookAndFeel);
                 dialog.setVisible(true);
                 configuration = dialog.getConfiguration();
                 if (configuration != null) {
@@ -346,7 +346,11 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	}
 
 	private static class PluginsTableCellRendererCode extends AbstractTableCellRendererCode {
-        @Override
+        public PluginsTableCellRendererCode(ILookAndFeel lookAndFeel) {
+			super(lookAndFeel);
+		}
+
+		@Override
         public JComponent getComponent(JComponent c, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             ((JLabel) c).setText(((PluginInfo) value).getName());
             if (((PluginInfo) value).getIcon() != null) {

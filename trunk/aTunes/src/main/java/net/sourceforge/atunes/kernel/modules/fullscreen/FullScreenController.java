@@ -24,22 +24,28 @@ import java.util.List;
 
 import javax.swing.JDialog;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.dialogs.fullScreen.FullScreenWindow;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 
 class FullScreenController extends AbstractSimpleController<FullScreenWindow> {
 
-	FullScreenController(IState state, IFrame frame, IOSManager osManager) {
+	/**
+	 * @param state
+	 * @param frame
+	 * @param osManager
+	 * @param lookAndFeelManager
+	 */
+	FullScreenController(IState state, IFrame frame, IOSManager osManager, ILookAndFeelManager lookAndFeelManager) {
 		super();
         setState(state);
 		JDialog.setDefaultLookAndFeelDecorated(false);
-		FullScreenWindow window = new FullScreenWindow(frame.getFrame(), getState(), frame, osManager);
-        JDialog.setDefaultLookAndFeelDecorated(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isDialogUndecorated());
+		FullScreenWindow window = new FullScreenWindow(frame.getFrame(), getState(), frame, osManager, lookAndFeelManager);
+        JDialog.setDefaultLookAndFeelDecorated(lookAndFeelManager.getCurrentLookAndFeel().isDialogUndecorated());
         setComponentControlled(window);
 	}
 

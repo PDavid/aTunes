@@ -55,6 +55,7 @@ import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IRipperProgressDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITrackInfo;
@@ -703,7 +704,7 @@ public final class RipperHandler extends AbstractHandler {
         SwingUtilities.invokeLater(new Runnable() {
         	@Override
         	public void run() {
-                indeterminateProgressDialog = getBean(IIndeterminateProgressDialogFactory.class).newDialog(getFrame());
+                indeterminateProgressDialog = getBean(IIndeterminateProgressDialogFactory.class).newDialog(getFrame(), getBean(ILookAndFeelManager.class));
                 indeterminateProgressDialog.setTitle(I18nUtils.getString("RIP_CD"));
                 indeterminateProgressDialog.showDialog();
         	}
@@ -735,7 +736,7 @@ public final class RipperHandler extends AbstractHandler {
      */
     RipCdDialogController getRipCdDialogController() {
         if (ripCdDialogController == null) {
-            ripCdDialogController = new RipCdDialogController(new RipCdDialog(getFrame().getFrame()), getState(), getOsManager());
+            ripCdDialogController = new RipCdDialogController(new RipCdDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class)), getState(), getOsManager());
         }
         return ripCdDialogController;
     }

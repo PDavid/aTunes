@@ -56,9 +56,10 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellRendererCode;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -513,26 +514,27 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
      * @param frame
      * @param osManager
      */
-    public MultiFolderSelectionDialog(IFrame frame, IOSManager osManager) {
-        super(frame, 460, 530, true, CloseAction.DISPOSE);
+    public MultiFolderSelectionDialog(IFrame frame, IOSManager osManager, ILookAndFeelManager lookAndFeelManager) {
+        super(frame, 460, 530, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
         this.osManager = osManager;
-        add(getContent());
+        add(getContent(lookAndFeelManager.getCurrentLookAndFeel()));
         setResizable(false);
     }
 
     /**
      * Gets the content.
      * 
-     * @return the content
+     * @param lookAndFeel
+     * @return
      */
-    private JPanel getContent() {
+    private JPanel getContent(ILookAndFeel lookAndFeel) {
         JPanel panel = new JPanel(null);
 
         text = new JLabel();
 
         fileSystemTree = new JTree();
         fileSystemTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-        scrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTreeScrollPane(fileSystemTree);
+        scrollPane = lookAndFeel.getTreeScrollPane(fileSystemTree);
 
         okButton = new JButton(I18nUtils.getString("OK"));
         okButton.addActionListener(new ActionListener() {

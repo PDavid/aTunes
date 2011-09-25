@@ -38,7 +38,6 @@ import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
 import net.sourceforge.atunes.model.Artist;
@@ -143,13 +142,13 @@ public class ArtistTopTracksContent extends AbstractContextPanelContent {
     @Override
     protected Component getComponent() {
         // Create components
-        tracksTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
+        tracksTable = getLookAndFeelManager().getCurrentLookAndFeel().getTable();
         tracksTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        tracksTable.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(
-                GuiUtils.getComponentOrientationTableCellRendererCode()));
+        tracksTable.setDefaultRenderer(String.class, getLookAndFeelManager().getCurrentLookAndFeel().getTableCellRenderer(
+                GuiUtils.getComponentOrientationTableCellRendererCode(getLookAndFeelManager().getCurrentLookAndFeel())));
 
-        tracksTable.setDefaultRenderer(Integer.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(
-                GuiUtils.getComponentOrientationTableCellRendererCode()));
+        tracksTable.setDefaultRenderer(Integer.class, getLookAndFeelManager().getCurrentLookAndFeel().getTableCellRenderer(
+                GuiUtils.getComponentOrientationTableCellRendererCode(getLookAndFeelManager().getCurrentLookAndFeel())));
 
         tracksTable.getTableHeader().setReorderingAllowed(true);
         tracksTable.getTableHeader().setResizingAllowed(false);

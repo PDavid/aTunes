@@ -36,6 +36,7 @@ import javax.swing.JTextArea;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -51,10 +52,10 @@ public final class RepositorySelectionInfoDialog extends AbstractCustomDialog {
      * Instantiates a new repository selection info dialog.
      * 
      * @param owner
-     *            the owner
+     * @param lookAndFeelManager
      */
-    public RepositorySelectionInfoDialog(JFrame owner) {
-        super(owner, 400, 250, true);
+    public RepositorySelectionInfoDialog(JFrame owner, ILookAndFeelManager lookAndFeelManager) {
+        super(owner, 400, 250, true, lookAndFeelManager.getCurrentLookAndFeel());
         setResizable(false);
         setTitle(I18nUtils.getString("REPOSITORY_SELECTION_INFO"));
         setContent();

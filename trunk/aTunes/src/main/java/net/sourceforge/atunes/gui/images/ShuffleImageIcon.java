@@ -25,9 +25,16 @@ import java.awt.Polygon;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.model.ILookAndFeel;
+
 public class ShuffleImageIcon {
 
-	public static ImageIcon getIcon(Paint color) {
+	/**
+	 * @param color
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getIcon(Paint color, ILookAndFeel lookAndFeel) {
 		Polygon p = new Polygon();
 		p.addPoint(2, 3);
 		p.addPoint(12, 3);
@@ -53,6 +60,6 @@ public class ShuffleImageIcon {
 		p4.addPoint(6, 17);
 
 		
-		return IconGenerator.generateIcon(color, 18, 18, p, p3, p4);
+		return IconGenerator.generateIcon(color, 18, 18, lookAndFeel, p, p3, p4);
 	}
 }

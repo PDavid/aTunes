@@ -34,7 +34,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.model.IAlbumInfo;
@@ -112,7 +111,7 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent {
         albumCoverLabel = new JLabel();
         albumLabel = new UrlLabel();
         albumLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        albumLabel.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getContextInformationBigFont());
+        albumLabel.setFont(getLookAndFeelManager().getCurrentLookAndFeel().getContextInformationBigFont());
         artistLabel = new UrlLabel();
         artistLabel.setHorizontalAlignment(SwingConstants.CENTER);
         yearLabel = new UrlLabel();

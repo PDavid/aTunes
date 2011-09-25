@@ -29,8 +29,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 
@@ -66,12 +66,17 @@ public final class OSDDialog extends AbstractCustomWindow {
      */
     private static final int LINE3_Y_POSITION = 60;
 
+    private ILookAndFeel lookAndFeel;
+    
     /**
      * Instantiates a new osd dialog.
+     * @param width
+     * @param lookAndFeel
      */
-    public OSDDialog(int width) {
+    public OSDDialog(int width, ILookAndFeel lookAndFeel) {
         super(null, 0, 0);
         this.width = width;
+        this.lookAndFeel = lookAndFeel;
         setSize(width, height);
         setFocusableWindowState(false);
         setAlwaysOnTop(true);
@@ -97,9 +102,9 @@ public final class OSDDialog extends AbstractCustomWindow {
         line2 = new JLabel();
         line3 = new JLabel();
 
-        line1.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getOsdLine1Font());
-        line2.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getOsdLine2Font());
-        line3.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getOsdLine3Font());
+        line1.setFont(lookAndFeel.getOsdLine1Font());
+        line2.setFont(lookAndFeel.getOsdLine2Font());
+        line3.setFont(lookAndFeel.getOsdLine3Font());
 
         line1.setHorizontalAlignment(SwingConstants.CENTER);
         line2.setHorizontalAlignment(SwingConstants.CENTER);

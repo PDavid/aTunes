@@ -44,7 +44,7 @@ public class YoutubeContextPanel extends AbstractContextPanel {
         return new IColorMutableImageIcon() {
         	@Override
         	public ImageIcon getIcon(Paint paint) {
-                return VideoImageIcon.getIcon(paint);
+                return VideoImageIcon.getIcon(paint, getLookAndFeel());
         	}
         };
     }

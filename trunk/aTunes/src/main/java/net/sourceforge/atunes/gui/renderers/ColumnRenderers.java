@@ -25,7 +25,6 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.kernel.modules.columns.TextAndIcon;
@@ -33,6 +32,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectStatistics;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -55,45 +55,44 @@ public final class ColumnRenderers {
      * Add renderers to table
      * 
      * @param jtable
-     *            the playlist
-     * 
      * @param model
+     * @param lookAndFeel
      */
-    public static void addRenderers(final JTable jtable, final AbstractCommonColumnModel model) {
+    public static void addRenderers(final JTable jtable, final AbstractCommonColumnModel model, ILookAndFeel lookAndFeel) {
 
         // Integer renderer
-        jtable.setDefaultRenderer(Integer.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(model.getRendererCodeFor(Integer.class)));
+        jtable.setDefaultRenderer(Integer.class, lookAndFeel.getTableCellRenderer(model.getRendererCodeFor(Integer.class)));
 
         // ImageIcon renderer
-        jtable.setDefaultRenderer(ImageIcon.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(model.getRendererCodeFor(ImageIcon.class)));
+        jtable.setDefaultRenderer(ImageIcon.class, lookAndFeel.getTableCellRenderer(model.getRendererCodeFor(ImageIcon.class)));
 
         // STRING renderer
-        jtable.setDefaultRenderer(String.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(model.getRendererCodeFor(String.class)));
+        jtable.setDefaultRenderer(String.class, lookAndFeel.getTableCellRenderer(model.getRendererCodeFor(String.class)));
 
         // TextAndIcon renderer
-        jtable.setDefaultRenderer(TextAndIcon.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(model.getRendererCodeFor(TextAndIcon.class)));
+        jtable.setDefaultRenderer(TextAndIcon.class, lookAndFeel.getTableCellRenderer(model.getRendererCodeFor(TextAndIcon.class)));
 
         // Property renderer
-        jtable.setDefaultRenderer(Property.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(model.getRendererCodeFor(Property.class)));
+        jtable.setDefaultRenderer(Property.class, lookAndFeel.getTableCellRenderer(model.getRendererCodeFor(Property.class)));
         
         // ColorMutableImageIcon
-        jtable.setDefaultRenderer(IColorMutableImageIcon.class, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(model.getRendererCodeFor(IColorMutableImageIcon.class)));
+        jtable.setDefaultRenderer(IColorMutableImageIcon.class, lookAndFeel.getTableCellRenderer(model.getRendererCodeFor(IColorMutableImageIcon.class)));
 
     }
 
     /**
      * Sets font for given label and row
-     * 
      * @param playListHandler
      * @param label
      * @param row
+     * @param lookAndFeel
      */
-    static void setFontForRow(IPlayListHandler playListHandler, JLabel label, int row) {
+    static void setFontForRow(IPlayListHandler playListHandler, JLabel label, int row, ILookAndFeel lookAndFeel) {
     	if (playListHandler.isCurrentVisibleRowPlaying(row)) {
-    		if (LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListSelectedItemFont() != null) {
-    			label.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListSelectedItemFont());
-    		} else if (LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListFont() != null) {
-                label.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPlayListFont());
+    		if (lookAndFeel.getPlayListSelectedItemFont() != null) {
+    			label.setFont(lookAndFeel.getPlayListSelectedItemFont());
+    		} else if (lookAndFeel.getPlayListFont() != null) {
+                label.setFont(lookAndFeel.getPlayListFont());
     		}
     	}
     }

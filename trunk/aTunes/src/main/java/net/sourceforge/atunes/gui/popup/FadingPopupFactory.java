@@ -26,6 +26,7 @@ import javax.swing.JToolTip;
 import javax.swing.Popup;
 import javax.swing.PopupFactory;
 
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
 
 /**
@@ -38,25 +39,31 @@ public final class FadingPopupFactory extends PopupFactory {
     
     private IOSManager osManager;
 
+	private ILookAndFeel lookAndFeel;
+
     /**
      * Instantiates a new fading popup factory.
      * @param osManager
+     * @param lookAndFeel
      */
-    FadingPopupFactory(IOSManager osManager) {
+    FadingPopupFactory(IOSManager osManager, ILookAndFeel lookAndFeel) {
         super();
         this.osManager = osManager;
+        this.lookAndFeel = lookAndFeel;
     }
 
     /**
      * Install.
+     * @param osManager
+     * @param lookAndFeel
      */
-    public static void install(IOSManager osManager) {
+    public static void install(IOSManager osManager, ILookAndFeel lookAndFeel) {
         PopupFactory pf = PopupFactory.getSharedInstance();
         if (pf instanceof FadingPopupFactory) {
             return;
         }
         popupFactory = pf;
-        PopupFactory.setSharedInstance(new FadingPopupFactory(osManager));
+        PopupFactory.setSharedInstance(new FadingPopupFactory(osManager, lookAndFeel));
     }
 
     /*
@@ -68,7 +75,7 @@ public final class FadingPopupFactory extends PopupFactory {
     @Override
     public Popup getPopup(Component owner, Component contents, int x, int y) throws IllegalArgumentException {
         if (contents instanceof JToolTip) {
-            return new FadingPopup(owner, contents, x, y, osManager.areShadowBordersForToolTipsSupported());
+            return new FadingPopup(owner, contents, x, y, osManager.areShadowBordersForToolTipsSupported(), lookAndFeel);
         }
         return popupFactory.getPopup(owner, contents, x, y);
     }

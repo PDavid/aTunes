@@ -31,6 +31,7 @@ import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectStatistics;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.ITaskService;
@@ -256,7 +257,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
     @Override
     public void showStatistics() {
 		if (controller == null) {
-			controller = new StatsDialogController(new StatsDialog(getFrame().getFrame()), getState(), this); 
+			controller = new StatsDialogController(new StatsDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class)), getState(), this, getBean(ILookAndFeelManager.class)); 
 		}
 		controller.showStats();
 	}

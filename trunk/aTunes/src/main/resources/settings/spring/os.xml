@@ -5,7 +5,7 @@
 	
 	default-autowire="byName" default-lazy-init="true">
 	
-	<bean id="osManager" class="net.sourceforge.atunes.kernel.OsManager"/>
+	<bean id="osManager" class="net.sourceforge.atunes.kernel.OsManager" init-method="initialize"/>
 
 
 </beans>

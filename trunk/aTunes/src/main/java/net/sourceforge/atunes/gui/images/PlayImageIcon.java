@@ -29,19 +29,36 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.model.ILookAndFeel;
 
 public class PlayImageIcon {
 
-	public static ImageIcon getIcon(Dimension size) {
-		return getIcon(null, size);
+	/**
+	 * @param size
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getIcon(Dimension size, ILookAndFeel lookAndFeel) {
+		return getIcon(null, size, lookAndFeel);
 	}
 	
-	public static ImageIcon getTrayIcon(Paint color, Dimension size) {
-		return getCustomTrayIcon(color, size);
+	/**
+	 * @param color
+	 * @param size
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getTrayIcon(Paint color, Dimension size, ILookAndFeel lookAndFeel) {
+		return getCustomTrayIcon(color, size, lookAndFeel);
 	}
 	
-	private static ImageIcon getIcon(Paint color, Dimension size) {
+	/**
+	 * @param color
+	 * @param size
+	 * @param lookAndFeel
+	 * @return
+	 */
+	private static ImageIcon getIcon(Paint color, Dimension size, ILookAndFeel lookAndFeel) {
 		Polygon playShape = new Polygon();
         playShape.addPoint(- size.width / 5, - size.height / 4);
         playShape.addPoint(- size.width / 5, size.height / 4);
@@ -50,7 +67,7 @@ public class PlayImageIcon {
 		BufferedImage bi = new BufferedImage(size.width, size.height, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D g2 = bi.createGraphics();
     	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    	g2.setPaint(color != null ? color : LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForSpecialControls());
+    	g2.setPaint(color != null ? color : lookAndFeel.getPaintForSpecialControls());
     	g2.translate(size.getWidth() * 4/7, size.getHeight() / 2);    	
 		
    		g2.fill(playShape);
@@ -59,7 +76,13 @@ public class PlayImageIcon {
     	return new ImageIcon(bi);
 	}
 
-	private static ImageIcon getCustomTrayIcon(Paint color, Dimension size) {
+	/**
+	 * @param color
+	 * @param size
+	 * @param lookAndFeel 
+	 * @return
+	 */
+	private static ImageIcon getCustomTrayIcon(Paint color, Dimension size, ILookAndFeel lookAndFeel) {
 		// Optimized for low sizes
 		int horizontalFactor = 4;
 		int verticalFactor = 5;
@@ -69,7 +92,7 @@ public class PlayImageIcon {
 		s1.addPoint(size.width / horizontalFactor, size.height - size.height / verticalFactor);
 		s1.addPoint(size.width - size.width / horizontalFactor, size.height / 2);
 		
-		return IconGenerator.generateIcon(color, size.width, size.height, s1);
+		return IconGenerator.generateIcon(color, size.width, size.height, lookAndFeel, s1);
 	}
 
 }

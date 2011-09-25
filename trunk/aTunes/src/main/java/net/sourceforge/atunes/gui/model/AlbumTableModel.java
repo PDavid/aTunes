@@ -33,6 +33,7 @@ import net.sourceforge.atunes.kernel.modules.columns.TypeColumn;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.ILookAndFeel;
 
 /**
  * The Class AlbumTableModel.
@@ -44,16 +45,17 @@ public final class AlbumTableModel extends AbstractColumnSetTableModel {
    
     /** The albums. */
     private List<Album> albums;
+	private ILookAndFeel lookAndFeel;
     
 
     /**
      * Instantiates a new navigation table model.
      * 
-     * @param controller
-     *            the controller
+     * @param lookAndFeel
      */
-    public AlbumTableModel() {
+    public AlbumTableModel(ILookAndFeel lookAndFeel) {
         super();
+        this.lookAndFeel = lookAndFeel;
     }
 
     /*
@@ -118,7 +120,7 @@ public final class AlbumTableModel extends AbstractColumnSetTableModel {
         	return new IColorMutableImageIcon() {
         	@Override
         	public ImageIcon getIcon(Paint paint) {
-        		return AlbumImageIcon.getIcon(paint);
+        		return AlbumImageIcon.getIcon(paint, lookAndFeel);
         	}
         };
         }

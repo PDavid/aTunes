@@ -28,6 +28,7 @@ import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITreeObject;
 
@@ -35,7 +36,7 @@ public class IncompleteTagsTreeCellDecorator extends AbstractTreeCellDecorator {
 
     @SuppressWarnings("unchecked")
 	@Override
-    public Component decorateTreeCellComponent(IState state, Component component, Object userObject, boolean isSelected) {
+    public Component decorateTreeCellComponent(IState state, Component component, Object userObject, boolean isSelected, ILookAndFeel lookAndFeel) {
         if (state.isHighlightIncompleteTagElements() && 
         		userObject instanceof ITreeObject && 
         		IncompleteTagsChecker.hasIncompleteTags((ITreeObject<? extends IAudioObject>) userObject, state)) {

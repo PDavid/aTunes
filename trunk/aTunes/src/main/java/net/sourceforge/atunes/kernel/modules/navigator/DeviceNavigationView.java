@@ -56,6 +56,7 @@ import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITreeObject;
@@ -73,8 +74,14 @@ public final class DeviceNavigationView extends AbstractNavigationView {
     /** The device table menu. */
     private JPopupMenu deviceTableMenu;
 
-    public DeviceNavigationView(IState state, INavigationHandler navigationHandler, IFrame frame) {
-    	super(state, navigationHandler, frame);
+    /**
+     * @param state
+     * @param navigationHandler
+     * @param frame
+     * @param lookAndFeelManager
+     */
+    public DeviceNavigationView(IState state, INavigationHandler navigationHandler, IFrame frame, ILookAndFeelManager lookAndFeelManager) {
+    	super(state, navigationHandler, frame, lookAndFeelManager);
 	}
     
     @Override
@@ -83,7 +90,7 @@ public final class DeviceNavigationView extends AbstractNavigationView {
 			
 			@Override
 			public ImageIcon getIcon(Paint paint) {
-				return DeviceImageIcon.getIcon(paint);
+				return DeviceImageIcon.getIcon(paint, getLookAndFeelManager().getCurrentLookAndFeel());
 			}
 		};
     }

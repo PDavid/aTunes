@@ -34,7 +34,6 @@ import java.util.logging.LogRecord;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
@@ -47,6 +46,7 @@ import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IGeneralPurposePluginsHandler;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlaybackStateListener;
 import net.sourceforge.atunes.model.IState;
@@ -84,7 +84,7 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
         pluginTypes.add(new PluginType(AbstractColumn.class.getName(), ColumnSets.getInstance(), false));
         pluginTypes.add(new PluginType(AbstractNavigationView.class.getName(), (PluginListener) Context.getBean(INavigationHandler.class), false));
         pluginTypes.add(new PluginType(AbstractContextPanel.class.getName(), (PluginListener) Context.getBean(IContextHandler.class), false));
-        pluginTypes.add(new PluginType(AbstractLookAndFeel.class.getName(), LookAndFeelSelector.getInstance(), false));
+        pluginTypes.add(new PluginType(AbstractLookAndFeel.class.getName(), (PluginListener) Context.getBean(ILookAndFeelManager.class), false));
         pluginTypes.add(new PluginType(AbstractGeneralPurposePlugin.class.getName(), (PluginListener) Context.getBean(IGeneralPurposePluginsHandler.class), false));
     }
 

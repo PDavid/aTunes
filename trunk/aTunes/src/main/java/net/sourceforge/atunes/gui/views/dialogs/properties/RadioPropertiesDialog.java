@@ -30,9 +30,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import net.sourceforge.atunes.gui.images.RadioImageIcon;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -58,11 +59,11 @@ final class RadioPropertiesDialog extends AudioObjectPropertiesDialog {
      * @param radio
      * @param frame
      */
-    RadioPropertiesDialog(Radio radio, IFrame frame) {
-        super(getTitleText(radio), frame);
+    RadioPropertiesDialog(Radio radio, IFrame frame, ILookAndFeelManager lookAndFeelManager) {
+        super(getTitleText(radio), frame, lookAndFeelManager);
         this.radio = radio;
         setAudioObject(radio);
-        addContent();
+        addContent(lookAndFeelManager.getCurrentLookAndFeel());
 
         setContent();
 
@@ -83,8 +84,9 @@ final class RadioPropertiesDialog extends AudioObjectPropertiesDialog {
 
     /**
      * Adds the content.
+     * @param iLookAndFeel 
      */
-    private void addContent() {
+    private void addContent(ILookAndFeel iLookAndFeel) {
         JPanel panel = new JPanel(new GridBagLayout());
 
         pictureLabel = new JLabel();
@@ -98,7 +100,7 @@ final class RadioPropertiesDialog extends AudioObjectPropertiesDialog {
         panel.add(pictureLabel, c);
 
         titleLabel = new JLabel();
-        titleLabel.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPropertiesDialogBigFont());
+        titleLabel.setFont(iLookAndFeel.getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 0;
         c.gridheight = 1;
@@ -107,7 +109,7 @@ final class RadioPropertiesDialog extends AudioObjectPropertiesDialog {
         panel.add(titleLabel, c);
 
         urlLabel = new JLabel();
-        urlLabel.setFont(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPropertiesDialogBigFont());
+        urlLabel.setFont(iLookAndFeel.getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 1;
         c.insets = new Insets(5, 10, 5, 10);
@@ -137,7 +139,7 @@ final class RadioPropertiesDialog extends AudioObjectPropertiesDialog {
      * Fill picture.
      */
     private void fillPicture() {
-        ImageIcon picture = RadioImageIcon.getIcon();
+        ImageIcon picture = RadioImageIcon.getIcon(lookAndFeel);
         pictureLabel.setPreferredSize(new Dimension(picture.getIconWidth(), picture.getIconHeight()));
         pictureLabel.setIcon(picture);
         pictureLabel.setVisible(true);

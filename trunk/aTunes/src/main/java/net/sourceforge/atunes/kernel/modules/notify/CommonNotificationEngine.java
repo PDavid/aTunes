@@ -28,6 +28,7 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INotificationEngine;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ITemporalDiskStorage;
@@ -39,6 +40,15 @@ import org.apache.commons.io.FileUtils;
 public abstract class CommonNotificationEngine implements INotificationEngine {
 
 	private Boolean available;
+	
+	private ILookAndFeelManager lookAndFeelManager;
+	
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public CommonNotificationEngine(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
 	
 	/**
 	 * @return if engine is available
@@ -59,7 +69,7 @@ public abstract class CommonNotificationEngine implements INotificationEngine {
 	protected final String getTemporalImage(IAudioObject audioObject, IOSManager osManager) {
 		ImageIcon imageForAudioObject = audioObject.getImage(ImageSize.SIZE_200, osManager);
 		if (imageForAudioObject == null) {
-			imageForAudioObject = audioObject.getGenericImage(GenericImageSize.MEDIUM).getIcon(null);
+			imageForAudioObject = audioObject.getGenericImage(GenericImageSize.MEDIUM, lookAndFeelManager.getCurrentLookAndFeel()).getIcon(null);
 		}
 		return Context.getBean(ITemporalDiskStorage.class).addImage(ImageUtils.toBufferedImage(imageForAudioObject.getImage()), UUID.randomUUID().toString()).getAbsolutePath();
 	}

@@ -32,13 +32,10 @@ public interface IAudioObjectPropertiesDialogFactory {
 	 * New instance.
 	 * 
 	 * @param a
-	 * @param owner
-	 * @param state
-	 * @param frame
-	 * @param osManager
+	 * @param lookAndFeelManager
 	 * @return
 	 */
-	public IAudioObjectPropertiesDialog newInstance(IAudioObject a);
+	public IAudioObjectPropertiesDialog newInstance(IAudioObject a, ILookAndFeelManager lookAndFeelManager);
 
 	/**
 	 * @param frame the frame to set

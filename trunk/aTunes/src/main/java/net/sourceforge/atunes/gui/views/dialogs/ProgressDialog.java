@@ -35,6 +35,7 @@ import javax.swing.JProgressBar;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -68,8 +69,8 @@ public class ProgressDialog extends AbstractCustomDialog implements IProgressDia
      * 
      * @param frame
      */
-    public ProgressDialog(IFrame frame) {
-        super(frame, 450, 150, false, CloseAction.NOTHING);
+    public ProgressDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
+        super(frame, 450, 150, false, CloseAction.NOTHING, lookAndFeelManager.getCurrentLookAndFeel());
         add(getContent());
         setResizable(false);
     }

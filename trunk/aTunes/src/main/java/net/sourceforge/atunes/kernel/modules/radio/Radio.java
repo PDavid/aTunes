@@ -34,6 +34,7 @@ import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.ImageSize;
@@ -408,13 +409,13 @@ public final class Radio implements IRadio {
     }
 
     @Override
-    public IColorMutableImageIcon getGenericImage(GenericImageSize imageSize) {
+    public IColorMutableImageIcon getGenericImage(GenericImageSize imageSize, final ILookAndFeel lookAndFeel) {
         switch (imageSize) {
         case SMALL: {
         	return new IColorMutableImageIcon() {
 				@Override
 				public ImageIcon getIcon(Paint paint) {
-		            return RadioImageIcon.getSmallIcon(paint);
+		            return RadioImageIcon.getSmallIcon(paint, lookAndFeel);
 				}
 			};
         }
@@ -422,7 +423,7 @@ public final class Radio implements IRadio {
         	return new IColorMutableImageIcon() {
 				@Override
 				public ImageIcon getIcon(Paint paint) {
-		            return RadioImageIcon.getIcon(paint);
+		            return RadioImageIcon.getIcon(paint, lookAndFeel);
 				}
 			};
         }
@@ -430,7 +431,7 @@ public final class Radio implements IRadio {
         	return new IColorMutableImageIcon() {
 				@Override
 				public ImageIcon getIcon(Paint paint) {
-		            return RadioImageIcon.getBigIcon(paint);
+		            return RadioImageIcon.getBigIcon(paint, lookAndFeel);
 				}
 			};
         }

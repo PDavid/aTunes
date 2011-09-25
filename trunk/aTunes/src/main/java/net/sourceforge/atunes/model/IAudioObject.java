@@ -184,10 +184,12 @@ public interface IAudioObject {
      * 
      * @param imageSize
      *            the size of the generic image
+     * @param lookAndFeel
      * @return the generic image or <code>null</code> if no such image is
      *         available
+     * @return
      */
-    public IColorMutableImageIcon getGenericImage(GenericImageSize imageSize);
+    public IColorMutableImageIcon getGenericImage(GenericImageSize imageSize, ILookAndFeel lookAndFeel);
 
     /**
      * Returns a image for this audio object.

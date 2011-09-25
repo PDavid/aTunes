@@ -43,13 +43,14 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.ReviewImportTreeTableModel;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IReviewImportDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITagAttributesReviewed;
@@ -84,18 +85,19 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements IR
      * Instantiates a new ReviewImportDialog
      * @param frame
      * @param state
+     * @param lookAndFeelManager
      */
-    public ReviewImportDialog(IFrame frame, IState state) {
-        super(frame, GuiUtils.getComponentWidthForResolution(0.80f), GuiUtils.getComponentHeightForResolution(0.75f), true, CloseAction.NOTHING);
+    public ReviewImportDialog(IFrame frame, IState state, ILookAndFeelManager lookAndFeelManager) {
+        super(frame, GuiUtils.getComponentWidthForResolution(0.80f), GuiUtils.getComponentHeightForResolution(0.75f), true, CloseAction.NOTHING, lookAndFeelManager.getCurrentLookAndFeel());
         this.state = state;
         setTitle(I18nUtils.getString("REVIEW_TAGS"));
-        setContent();
+        setContent(lookAndFeelManager.getCurrentLookAndFeel());
     }
 
     /**
      * Sets the content.
      */
-    private void setContent() {
+    private void setContent(final ILookAndFeel lookAndFeel) {
         JPanel panel = new JPanel(new GridBagLayout());
         treeTable = new JXTreeTable();
         treeTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
@@ -135,7 +137,7 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements IR
             public void actionPerformed(ActionEvent e) {
                 TreePath[] selectedNodes = treeTable.getTreeSelectionModel().getSelectionPaths();
                 if (selectedNodes.length > 0) {
-                    PatternInputDialog inputDialog = new PatternInputDialog(ReviewImportDialog.this, true, state);
+                    PatternInputDialog inputDialog = new PatternInputDialog(ReviewImportDialog.this, true, state, lookAndFeel);
                     Object node = selectedNodes[0].getLastPathComponent();
                     Object folder = ((DefaultMutableTreeTableNode)node).getUserObject();
                     inputDialog.show(AbstractPattern.getMassiveRecognitionPatterns(), ((File)folder).getAbsolutePath());
@@ -169,7 +171,7 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements IR
         panel.add(topPanel, c);
         c.gridy = 1;
         c.weighty = 1;
-        panel.add(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getScrollPane(treeTable), c);
+        panel.add(lookAndFeel.getScrollPane(treeTable), c);
         c.gridy = 2;
         c.weightx = 0;
         c.weighty = 0;

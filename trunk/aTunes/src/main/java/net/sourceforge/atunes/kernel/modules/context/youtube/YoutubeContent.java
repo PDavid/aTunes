@@ -112,8 +112,8 @@ public class YoutubeContent extends AbstractContextPanelContent {
     @Override
     protected Component getComponent() {
         // Create components
-        youtubeResultTable = new ContextTable();
-        youtubeResultTable.addContextRowPanel(new YoutubeResultsTableCellRendererCode());
+        youtubeResultTable = new ContextTable(getLookAndFeelManager().getCurrentLookAndFeel());
+        youtubeResultTable.addContextRowPanel(new YoutubeResultsTableCellRendererCode(getLookAndFeelManager().getCurrentLookAndFeel()));
         return youtubeResultTable;
     }
 

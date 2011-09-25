@@ -26,15 +26,26 @@ import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.model.ILookAndFeel;
+
 public class FolderImageIcon {
 
 	private static final int SIZE = 18;
 
-	public static ImageIcon getIcon() {
-		return getIcon(null);
+	/**
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getIcon(ILookAndFeel lookAndFeel) {
+		return getIcon(null, lookAndFeel);
 	}
 	
-	public static ImageIcon getIcon(Paint color) {
+	/**
+	 * @param color
+	 * @param lookAndFeel
+	 * @return
+	 */
+	public static ImageIcon getIcon(Paint color, ILookAndFeel lookAndFeel) {
 		RoundRectangle2D r = new RoundRectangle2D.Float(2, 5, 14, 10, 4, 4);
 		Polygon p = new Polygon();
 		p.addPoint(2, 8);
@@ -44,7 +55,7 @@ public class FolderImageIcon {
 		p.addPoint(10, 5);
 		p.addPoint(10, 8);
 		
-		return IconGenerator.generateIcon(color, SIZE, SIZE, r, p);
+		return IconGenerator.generateIcon(color, SIZE, SIZE, lookAndFeel, r, p);
 	}
 
 }

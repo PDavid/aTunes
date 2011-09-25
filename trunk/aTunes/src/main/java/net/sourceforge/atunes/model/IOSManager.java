@@ -25,7 +25,6 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Map;
 
-import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
@@ -205,13 +204,13 @@ public interface IOSManager {
 	 * Returns supported look and feels
 	 * @return
 	 */
-	public Map<String, Class<? extends AbstractLookAndFeel>> getLookAndFeels();
+	public Map<String, Class<? extends ILookAndFeel>> getLookAndFeels();
 
 	/**
 	 * Returns default look and feel class
 	 * @return
 	 */
-	public Class<? extends AbstractLookAndFeel> getDefaultLookAndFeel();
+	public Class<? extends ILookAndFeel> getDefaultLookAndFeel();
 
 	/**
 	 * Manages when no player engine is available

@@ -29,7 +29,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
+import net.sourceforge.atunes.model.ILookAndFeel;
 
 class IconGenerator {
 
@@ -37,11 +37,12 @@ class IconGenerator {
 	 * Creates an image icon drawing a list of shapes
 	 * @param width
 	 * @param height
+	 * @param lookAndFeel
 	 * @param shapes
 	 * @return
 	 */
-	protected static final ImageIcon generateIcon(int width, int height, Shape... shapes) {
-        return generateIcon(null, null, width, height, shapes);
+	protected static final ImageIcon generateIcon(int width, int height, ILookAndFeel lookAndFeel, Shape... shapes) {
+        return generateIcon(null, null, width, height, lookAndFeel, shapes);
 	}
 
 	/**
@@ -49,11 +50,12 @@ class IconGenerator {
 	 * @param clip
 	 * @param width
 	 * @param height
+	 * @param lookAndFeel
 	 * @param shapes
 	 * @return
 	 */
-	protected static final ImageIcon generateIcon(Shape clip, int width, int height, Shape... shapes) {
-        return generateIcon(null, clip, width, height, shapes);
+	protected static final ImageIcon generateIcon(Shape clip, int width, int height, ILookAndFeel lookAndFeel, Shape... shapes) {
+        return generateIcon(null, clip, width, height, lookAndFeel, shapes);
 	}
 
 	/**
@@ -61,27 +63,29 @@ class IconGenerator {
 	 * @param paint
 	 * @param width
 	 * @param height
+	 * @param lookAndFeel
 	 * @param shapes
 	 * @return
 	 */
-	protected static final ImageIcon generateIcon(Paint paint, int width, int height, Shape... shapes) {
-        return generateIcon(paint, null, width, height, shapes);
+	protected static final ImageIcon generateIcon(Paint paint, int width, int height, ILookAndFeel lookAndFeel, Shape... shapes) {
+        return generateIcon(paint, null, width, height, lookAndFeel, shapes);
 	}
 
 	/**
 	 * Creates an image icon drawing a list of shapes and applying a crop with clip provided
-	 * @param clip
 	 * @param paint
+	 * @param clip
 	 * @param width
 	 * @param height
+	 * @param lookAndFeel
 	 * @param shapes
 	 * @return
 	 */
-	protected static final ImageIcon generateIcon(Paint paint, Shape clip, int width, int height, Shape... shapes) {
+	protected static final ImageIcon generateIcon(Paint paint, Shape clip, int width, int height, ILookAndFeel lookAndFeel, Shape... shapes) {
 		BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D g = bi.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setPaint(paint != null ? paint : LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForSpecialControls());
+        g.setPaint(paint != null ? paint : lookAndFeel.getPaintForSpecialControls());
         Area a = new Area();
         for (Shape s : shapes) {
         	a.add(new Area(s));

@@ -52,10 +52,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -209,9 +209,10 @@ public final class PatternInputDialog extends AbstractCustomDialog {
      *            pattern for massive recognition or <code>false</code> for
      *            non-massive recognition (single file level)
      * @param state
+     * @param lookAndFeel
      */
-    public PatternInputDialog(Window owner, final boolean massiveRecognition, IState state) {
-        super(owner, 550, 350, true, CloseAction.DISPOSE);
+    public PatternInputDialog(Window owner, final boolean massiveRecognition, IState state, ILookAndFeel lookAndFeel) {
+        super(owner, 550, 350, true, CloseAction.DISPOSE, lookAndFeel);
         this.state = state;
         setResizable(false);
         setIconImage(Images.getImage(Images.APP_LOGO_16).getImage());
@@ -240,13 +241,13 @@ public final class PatternInputDialog extends AbstractCustomDialog {
         patternComboBox.setEditable(true);
 
         JPanel patternPreviewPanel = new JPanel(new BorderLayout());
-        patternPreviewTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
-        JScrollPane patternPreviewTableScrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(patternPreviewTable);
+        patternPreviewTable = lookAndFeel.getTable();
+        JScrollPane patternPreviewTableScrollPane = lookAndFeel.getTableScrollPane(patternPreviewTable);
         patternPreviewPanel.add(patternPreviewTableScrollPane, BorderLayout.CENTER);
         patternPreviewPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), I18nUtils.getString("PREVIEW")));
 
         JPanel availablePatternsPanel = new JPanel(new BorderLayout());
-        availablePatternsTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
+        availablePatternsTable = lookAndFeel.getTable();
         availablePatternsTable.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent e) {
@@ -264,7 +265,7 @@ public final class PatternInputDialog extends AbstractCustomDialog {
         		}
         	}
         });
-        JScrollPane availablePatternsScrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(availablePatternsTable);
+        JScrollPane availablePatternsScrollPane = lookAndFeel.getTableScrollPane(availablePatternsTable);
         availablePatternsPanel.add(availablePatternsScrollPane, BorderLayout.CENTER);
         availablePatternsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), I18nUtils.getString("AVAILABLE_PATTERNS")));
 

@@ -29,24 +29,25 @@ import net.sourceforge.atunes.gui.images.DownloadImageIcon;
 import net.sourceforge.atunes.gui.images.FavoriteImageIcon;
 import net.sourceforge.atunes.gui.images.NewImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
+import net.sourceforge.atunes.model.ILookAndFeel;
 
 public class PropertyTableCellRendererCode extends AbstractTableCellRendererCode {
 
-    public PropertyTableCellRendererCode() {
-    }
+    public PropertyTableCellRendererCode(ILookAndFeel lookAndFeel) {
+		super(lookAndFeel);
+	}
 
-    @Override
+	@Override
     public JComponent getComponent(JComponent comp, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         ImageIcon icon = null;
         Property val = (Property) value;
         if (val == Property.FAVORITE) {
-            icon = FavoriteImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(comp, isSelected));
+            icon = FavoriteImageIcon.getIcon(lookAndFeel.getPaintForColorMutableIcon(comp, isSelected), lookAndFeel);
         } else if (val == Property.NOT_LISTENED_ENTRY) {
-            icon = NewImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(comp, isSelected));
+            icon = NewImageIcon.getIcon(lookAndFeel.getPaintForColorMutableIcon(comp, isSelected), lookAndFeel);
         } else if (val == Property.DOWNLOADED_ENTRY) {
-            icon = DownloadImageIcon.getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(comp, isSelected));
+            icon = DownloadImageIcon.getIcon(lookAndFeel.getPaintForColorMutableIcon(comp, isSelected), lookAndFeel);
         }
         ((JLabel) comp).setIcon(icon);
         ((JLabel) comp).setText(null);

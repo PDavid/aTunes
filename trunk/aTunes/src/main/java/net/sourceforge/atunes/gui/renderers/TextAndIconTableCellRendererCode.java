@@ -25,15 +25,16 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
 import net.sourceforge.atunes.kernel.modules.columns.TextAndIcon;
+import net.sourceforge.atunes.model.ILookAndFeel;
 
 public class TextAndIconTableCellRendererCode extends AbstractTableCellRendererCode {
 
     private AbstractCommonColumnModel model;
 
-    public TextAndIconTableCellRendererCode(AbstractCommonColumnModel model) {
+    public TextAndIconTableCellRendererCode(AbstractCommonColumnModel model, ILookAndFeel lookAndFeel) {
+    	super(lookAndFeel);
         this.model = model;
     }
 
@@ -41,7 +42,7 @@ public class TextAndIconTableCellRendererCode extends AbstractTableCellRendererC
     public JComponent getComponent(JComponent c, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         ((JLabel) c).setText(((TextAndIcon) value).getText());
         if (((TextAndIcon) value).getIcon() != null) {
-        	((JLabel) c).setIcon(((TextAndIcon) value).getIcon().getIcon(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getPaintForColorMutableIcon(c, isSelected)));
+        	((JLabel) c).setIcon(((TextAndIcon) value).getIcon().getIcon(lookAndFeel.getPaintForColorMutableIcon(c, isSelected)));
         } else {
         	((JLabel) c).setIcon(null);
         }        

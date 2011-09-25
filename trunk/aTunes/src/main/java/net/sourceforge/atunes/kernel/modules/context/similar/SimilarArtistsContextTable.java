@@ -38,6 +38,7 @@ import net.sourceforge.atunes.gui.model.TransferableList;
 import net.sourceforge.atunes.kernel.modules.context.ContextTable;
 import net.sourceforge.atunes.kernel.modules.draganddrop.DragableArtist;
 import net.sourceforge.atunes.model.IArtistInfo;
+import net.sourceforge.atunes.model.ILookAndFeel;
 
 /**
  * 
@@ -52,9 +53,10 @@ public final class SimilarArtistsContextTable extends ContextTable implements Dr
 
     /**
      * Instantiates a new drag source table.
+     * @param lookAndFeel
      */
-    public SimilarArtistsContextTable() {
-        super();
+    public SimilarArtistsContextTable(ILookAndFeel lookAndFeel) {
+        super(lookAndFeel);
         setShowGrid(false);
         setDragSource();
         setDragEnabled(true);
@@ -77,10 +79,10 @@ public final class SimilarArtistsContextTable extends ContextTable implements Dr
      * Instantiates a new drag source table.
      * 
      * @param model
-     *            the model
+     * @param lookAndFeel
      */
-    public SimilarArtistsContextTable(TableModel model) {
-        this();
+    public SimilarArtistsContextTable(TableModel model, ILookAndFeel lookAndFeel) {
+        this(lookAndFeel);
         setModel(model);
     }
 

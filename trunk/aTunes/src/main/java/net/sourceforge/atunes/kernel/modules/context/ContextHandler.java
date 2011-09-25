@@ -28,6 +28,7 @@ import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IState;
@@ -249,7 +250,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 
     private ContextController getController() {
     	if (controller == null) {
-    		controller = new ContextController(getFrame().getContextPanel(), getState(), this);
+    		controller = new ContextController(getFrame().getContextPanel(), getState(), this, getBean(ILookAndFeelManager.class).getCurrentLookAndFeel());
     	}
     	return controller;
     }

@@ -30,8 +30,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -59,9 +60,9 @@ public final class EditTitlesDialog extends AbstractCustomDialog {
      * @param owner
      *            the owner
      */
-    public EditTitlesDialog(JFrame owner) {
-        super(owner, 500, 400, true, CloseAction.DISPOSE);
-        add(getContent());
+    public EditTitlesDialog(JFrame owner, ILookAndFeelManager lookAndFeelManager) {
+        super(owner, 500, 400, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
+        add(getContent(lookAndFeelManager.getCurrentLookAndFeel()));
     }
 
     /**
@@ -75,16 +76,17 @@ public final class EditTitlesDialog extends AbstractCustomDialog {
 
     /**
      * Gets the content.
+     * @param iLookAndFeel 
      * 
      * @return the content
      */
-    private JPanel getContent() {
+    private JPanel getContent(ILookAndFeel iLookAndFeel) {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setOpaque(false);
 
-        table = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
+        table = iLookAndFeel.getTable();
         table.setOpaque(false);
-        JScrollPane scrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(table);
+        JScrollPane scrollPane = iLookAndFeel.getTableScrollPane(table);
         retrieveTitles = new JButton(I18nUtils.getString("GET_TITLES"));
         okButton = new JButton(I18nUtils.getString("OK"));
         cancelButton = new JButton(I18nUtils.getString("CANCEL"));

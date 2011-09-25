@@ -40,6 +40,7 @@ import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.views.controls.Cover3D;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
@@ -54,21 +55,23 @@ public final class CoverFlow extends JPanel {
 		private final IAudioObject audioObject;
 		private final int index;
 		private IOSManager osManager;
+		private ILookAndFeel lookAndFeel;
 
-		private PaintCoversSwingWorker(Cover3D cover, IAudioObject audioObject, int index, IOSManager osManager) {
+		private PaintCoversSwingWorker(Cover3D cover, IAudioObject audioObject, int index, IOSManager osManager, ILookAndFeel lookAndFeel) {
 			this.cover = cover;
 			this.audioObject = audioObject;
 			this.index = index;
 			this.osManager = osManager;
+			this.lookAndFeel = lookAndFeel;
 		}
 
 		@Override
 		protected Void doInBackground() throws Exception {
 			Image image = null;
 		    if (audioObject instanceof IRadio) {
-		        image = RadioImageIcon.getBigIcon(Color.WHITE).getImage();
+		        image = RadioImageIcon.getBigIcon(Color.WHITE, lookAndFeel).getImage();
 		    } else if (audioObject instanceof IPodcastFeedEntry) {
-		        image = RssImageIcon.getBigIcon(Color.WHITE).getImage();
+		        image = RssImageIcon.getBigIcon(Color.WHITE, lookAndFeel).getImage();
 		    } else {
 	    		image = getPicture((AudioFile) audioObject, osManager);
 		    }
@@ -104,9 +107,12 @@ public final class CoverFlow extends JPanel {
 	private static final long serialVersionUID = -5982158797052430789L;
 
     private List<Cover3D> covers;
+    
+    private ILookAndFeel lookAndFeel;
 
-    CoverFlow() {
+    CoverFlow(ILookAndFeel lookAndFeel) {
         super(new GridBagLayout());
+        this.lookAndFeel = lookAndFeel;
         covers = new ArrayList<Cover3D>();
         covers.add(new Cover3D(0));
         covers.add(new Cover3D(0));
@@ -156,7 +162,7 @@ public final class CoverFlow extends JPanel {
         }
 
         // Fetch cover
-        new PaintCoversSwingWorker(cover, audioObject, index, osManager).execute();
+        new PaintCoversSwingWorker(cover, audioObject, index, osManager, lookAndFeel).execute();
     }
 
     /**

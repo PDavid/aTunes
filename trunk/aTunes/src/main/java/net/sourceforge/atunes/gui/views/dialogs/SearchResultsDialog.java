@@ -30,8 +30,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -61,27 +62,28 @@ public final class SearchResultsDialog extends AbstractCustomDialog {
      * Instantiates a new search results dialog.
      * 
      * @param owner
-     *            the owner
+     * @param lookAndFeelManager
      */
-    public SearchResultsDialog(JFrame owner) {
-        super(owner, GuiUtils.getComponentWidthForResolution(0.75f), GuiUtils.getComponentHeightForResolution(0.75f), true, CloseAction.DISPOSE);
+    public SearchResultsDialog(JFrame owner, ILookAndFeelManager lookAndFeelManager) {
+        super(owner, GuiUtils.getComponentWidthForResolution(0.75f), GuiUtils.getComponentHeightForResolution(0.75f), true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
         setResizable(true);
         setTitle(I18nUtils.getString("SEARCH_RESULTS"));
-        add(getContent());
+        add(getContent(lookAndFeelManager.getCurrentLookAndFeel()));
     }
 
     /**
      * Gets the content.
+     * @param iLookAndFeel 
      * 
      * @return the content
      */
-    private JPanel getContent() {
+    private JPanel getContent(ILookAndFeel iLookAndFeel) {
         JPanel panel = new JPanel(new GridBagLayout());
-        searchResultsTable = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTable();
+        searchResultsTable = iLookAndFeel.getTable();
         // Disable autoresize, as we will control it
         searchResultsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        tableScrollPane = LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableScrollPane(searchResultsTable);
+        tableScrollPane = iLookAndFeel.getTableScrollPane(searchResultsTable);
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;

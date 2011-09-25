@@ -46,8 +46,8 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.table.TableCellEditor;
 
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -60,8 +60,8 @@ public abstract class ContextTableRowPanel<T> extends AbstractTableCellRendererC
 	protected ContextTable table;
 	
 	@SuppressWarnings("unchecked")
-	public ContextTableRowPanel() {
-		super();
+	public ContextTableRowPanel(ILookAndFeel lookAndFeel) {
+		super(lookAndFeel);
 		this.clazz = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 	}
 	
@@ -71,7 +71,7 @@ public abstract class ContextTableRowPanel<T> extends AbstractTableCellRendererC
 	 */
 	public void bind(ContextTable table) {
 		this.table = table;
-        this.table.setDefaultRenderer(clazz, LookAndFeelSelector.getInstance().getCurrentLookAndFeel().getTableCellRenderer(this));
+        this.table.setDefaultRenderer(clazz, lookAndFeel.getTableCellRenderer(this));
         this.table.setDefaultEditor(clazz, this);
 	}
 	

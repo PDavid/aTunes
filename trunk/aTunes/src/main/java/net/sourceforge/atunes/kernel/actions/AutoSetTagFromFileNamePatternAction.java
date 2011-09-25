@@ -30,6 +30,7 @@ import net.sourceforge.atunes.kernel.modules.tags.EditTagFromFileNamePatternProc
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -52,7 +53,7 @@ public class AutoSetTagFromFileNamePatternAction extends AbstractActionOverSelec
     @Override
     protected void performAction(List<ILocalAudioObject> objects) {
         // Show pattern input dialog
-        PatternInputDialog inputDialog = new PatternInputDialog(getBean(IFrame.class).getFrame(), false, getState());
+        PatternInputDialog inputDialog = new PatternInputDialog(getBean(IFrame.class).getFrame(), false, getState(), getBean(ILookAndFeelManager.class).getCurrentLookAndFeel());
         inputDialog.show(AbstractPattern.getRecognitionPatterns(), objects.get(0).getNameWithoutExtension());
         String pattern = inputDialog.getResult();
 

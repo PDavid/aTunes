@@ -24,6 +24,7 @@ import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.NormalizeModeAction;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 /*
  * based on code from Xtreme Media Player
@@ -34,9 +35,10 @@ public final class NormalizationButton extends SecondaryControl {
 
     /**
      * Instantiates a new Normalize button.
+     * @param lookAndFeelManager
      */
-    public NormalizationButton() {
-        super(Actions.getAction(NormalizeModeAction.class));
+    public NormalizationButton(ILookAndFeelManager lookAndFeelManager) {
+        super(Actions.getAction(NormalizeModeAction.class), lookAndFeelManager);
         if (!PlayerHandler.getInstance().supportsCapability(PlayerEngineCapability.NORMALIZATION)) {
             setVisible(false);
         }

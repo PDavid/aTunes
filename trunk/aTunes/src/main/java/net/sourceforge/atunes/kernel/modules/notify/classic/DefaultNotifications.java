@@ -23,10 +23,10 @@ package net.sourceforge.atunes.kernel.modules.notify.classic;
 import javax.swing.JDialog;
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.gui.lookandfeel.LookAndFeelSelector;
 import net.sourceforge.atunes.gui.views.dialogs.OSDDialog;
 import net.sourceforge.atunes.kernel.modules.notify.CommonNotificationEngine;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -50,14 +50,18 @@ public class DefaultNotifications extends CommonNotificationEngine {
 	
 	private IOSManager osManager;
 	
+	private ILookAndFeelManager lookAndFeelManager;
+	
 	/**
 	 * 
 	 * @param state
 	 * @param osManager
 	 */
-	public DefaultNotifications(IState state, IOSManager osManager) {
+	public DefaultNotifications(IState state, IOSManager osManager, ILookAndFeelManager lookAndFeelManager) {
+		super(lookAndFeelManager);
 		this.state = state;
 		this.osManager = osManager;
+		this.lookAndFeelManager = lookAndFeelManager;
 	}
 	
     /**
@@ -68,9 +72,9 @@ public class DefaultNotifications extends CommonNotificationEngine {
     private OSDDialogController getOSDDialogController() {
         if (osdDialogController == null) {
             JDialog.setDefaultLookAndFeelDecorated(false);
-            osdDialog = new OSDDialog(state.getOsdWidth());
-            JDialog.setDefaultLookAndFeelDecorated(LookAndFeelSelector.getInstance().getCurrentLookAndFeel().isDialogUndecorated());
-            osdDialogController = new OSDDialogController(osdDialog, state, osManager);
+            osdDialog = new OSDDialog(state.getOsdWidth(), lookAndFeelManager.getCurrentLookAndFeel());
+            JDialog.setDefaultLookAndFeelDecorated(lookAndFeelManager.getCurrentLookAndFeel().isDialogUndecorated());
+            osdDialogController = new OSDDialogController(osdDialog, state, osManager, lookAndFeelManager);
         }
         return osdDialogController;
     }

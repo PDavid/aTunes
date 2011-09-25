@@ -38,6 +38,7 @@ import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.model.IEqualizerDialog;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -61,10 +62,11 @@ public final class EqualizerDialog extends AbstractCustomDialog implements IEqua
      * Draws the equalizer dialog.
      * 
      * @param frame
+     * @param lookAndFeelManager
      */
-    public EqualizerDialog(IFrame frame) {
+    public EqualizerDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
         // Width required by german translation
-        super(frame, 510, 300, true, CloseAction.DISPOSE);
+        super(frame, 510, 300, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
         setTitle(StringUtils.getString(I18nUtils.getString("EQUALIZER"), " - ", Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
         add(getContent());
         setResizable(false);
@@ -124,7 +126,7 @@ public final class EqualizerDialog extends AbstractCustomDialog implements IEqua
                 String[] names = PlayerHandler.getInstance().getEqualizer().getPresetsNames();
 
                 // Show selector
-                SelectorDialog selector = new SelectorDialog(EqualizerDialog.this, I18nUtils.getString("LOAD_PRESET"), names, null);
+                SelectorDialog selector = new SelectorDialog(EqualizerDialog.this, I18nUtils.getString("LOAD_PRESET"), names, null, lookAndFeel);
                 selector.setVisible(true);
 
                 // Get result
