@@ -40,7 +40,7 @@ import net.sourceforge.atunes.model.IRadio;
 public class YoutubeContextPanel extends AbstractContextPanel {
 
     @Override
-    protected IColorMutableImageIcon getContextPanelIcon(IAudioObject audioObject) {
+    public IColorMutableImageIcon getContextPanelIcon(IAudioObject audioObject) {
         return new IColorMutableImageIcon() {
         	@Override
         	public ImageIcon getIcon(Paint paint) {
@@ -55,12 +55,12 @@ public class YoutubeContextPanel extends AbstractContextPanel {
     }
 
     @Override
-    protected String getContextPanelTitle(IAudioObject audioObject) {
+    public String getContextPanelTitle(IAudioObject audioObject) {
         return "YouTube";
     }
 
     @Override
-    protected boolean isPanelVisibleForAudioObject(IAudioObject audioObject) {
+    public boolean isPanelVisibleForAudioObject(IAudioObject audioObject) {
         return (audioObject instanceof AudioFile) || (audioObject instanceof IRadio && ((IRadio) audioObject).isSongInfoAvailable());
     }
 

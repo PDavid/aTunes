@@ -36,32 +36,32 @@ public class SimilarArtistsContent extends AbstractContextPanelContent {
     private ContextTable similarArtistsTable;
 
     @Override
-    protected String getContentName() {
+    public String getContentName() {
         return I18nUtils.getString("SIMILAR");
     }
 
     @Override
-    protected Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
+    public Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put(SimilarArtistsDataSource.INPUT_AUDIO_OBJECT, audioObject);
         return parameters;
     }
 
     @Override
-    protected void updateContentWithDataSourceResult(Map<String, ?> result) {
+    public void updateContentWithDataSourceResult(Map<String, ?> result) {
         if (result.containsKey(SimilarArtistsDataSource.OUTPUT_ARTISTS)) {
             similarArtistsTable.setModel(new SimilarArtistsTableModel(((ISimilarArtistsInfo) result.get(SimilarArtistsDataSource.OUTPUT_ARTISTS)).getArtists()));
         }
     }
 
     @Override
-    protected void clearContextPanelContent() {
+    public void clearContextPanelContent() {
         super.clearContextPanelContent();
         similarArtistsTable.setModel(new SimilarArtistsTableModel(null));
     }
 
     @Override
-    protected Component getComponent() {
+    public Component getComponent() {
         // Create components
         similarArtistsTable = new SimilarArtistsContextTable(getLookAndFeelManager().getCurrentLookAndFeel());
         similarArtistsTable.addContextRowPanel(new SimilarArtistTableCellRendererCode(getLookAndFeelManager().getCurrentLookAndFeel()));

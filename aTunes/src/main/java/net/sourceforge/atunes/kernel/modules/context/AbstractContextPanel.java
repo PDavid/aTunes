@@ -40,6 +40,8 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IContextHandler;
+import net.sourceforge.atunes.model.IContextPanel;
+import net.sourceforge.atunes.model.IContextPanelContent;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.Logger;
@@ -53,12 +55,8 @@ import org.commonjukebox.plugins.model.PluginApi;
  * 
  * @author fleax
  */
-/**
- * @author alex
- *
- */
 @PluginApi
-public abstract class AbstractContextPanel {
+public abstract class AbstractContextPanel implements IContextPanel {
 
     private static final long serialVersionUID = 7870512266932745272L;
 
@@ -71,7 +69,7 @@ public abstract class AbstractContextPanel {
     
     private IState state;
     
-    private List<AbstractContextPanelContent> contents;
+    private List<IContextPanelContent> contents;
     
     private IContextHandler contextHandler;
     
@@ -80,55 +78,37 @@ public abstract class AbstractContextPanel {
     
     // BEGIN OF METHODS TO BE IMPLEMENTED BY CONCRETE CONTEXT PANELS
 
-    /**
-     * Name of the context panel. This is an internal ID
-     * 
-     * @return The name of the context panel
-     */
-    public abstract String getContextPanelName();
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#getContextPanelName()
+	 */
+    @Override
+	public abstract String getContextPanelName();
 
-    /**
-     * Title of the context panel as it will appear in context tab
-     * 
-     * @param audioObject
-     *            The current audio object in context panels or
-     *            <code>null</code> if no current audio object is selected
-     * 
-     * @return The title of the context panel
-     */
-    protected abstract String getContextPanelTitle(IAudioObject audioObject);
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#getContextPanelTitle(net.sourceforge.atunes.model.IAudioObject)
+	 */
+    @Override
+	public abstract String getContextPanelTitle(IAudioObject audioObject);
 
-    /**
-     * Icon of the context panel. This icon is used in context tab
-     * 
-     * @param audioObject
-     *            The current audio object in context panels or
-     *            <code>null</code> if no current audio object is selected
-     * @return The icon of the context panel
-     */
-    protected abstract IColorMutableImageIcon getContextPanelIcon(IAudioObject audioObject);
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#getContextPanelIcon(net.sourceforge.atunes.model.IAudioObject)
+	 */
+    @Override
+	public abstract IColorMutableImageIcon getContextPanelIcon(IAudioObject audioObject);
 
-    /**
-     * Indicates if panel must be visible for the given audio object
-     * 
-     * @param audioObject
-     *            The current audio object in context panels or
-     *            <code>null</code> if no current audio object is selected
-     * @return
-     */
-    protected abstract boolean isPanelVisibleForAudioObject(IAudioObject audioObject);
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#isPanelVisibleForAudioObject(net.sourceforge.atunes.model.IAudioObject)
+	 */
+    @Override
+	public abstract boolean isPanelVisibleForAudioObject(IAudioObject audioObject);
 
     // END OF METHODS TO BE IMPLEMENTED BY CONCRETE CONTEXT PANELS
 
-    /**
-     * Updates the context panel with information related to the given audio
-     * object This method must be called every time the current audio object of
-     * the application changes and the panel is visible (the context tab showing
-     * this panel is selected)
-     * 
-     * @param audioObject
-     */
-    protected final void updateContextPanel(final IAudioObject audioObject, final boolean forceUpdate) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#updateContextPanel(net.sourceforge.atunes.model.IAudioObject, boolean)
+	 */
+    @Override
+	public final void updateContextPanel(final IAudioObject audioObject, final boolean forceUpdate) {
         if (!EventQueue.isDispatchThread()) {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
@@ -148,7 +128,7 @@ public abstract class AbstractContextPanel {
         }
 
         Logger.debug("Updating panel: ", getContextPanelName());
-        for (AbstractContextPanelContent content : getContents()) {
+        for (IContextPanelContent content : getContents()) {
             content.clearContextPanelContent();
             content.updateContextPanelContent(audioObject);
         }
@@ -156,26 +136,23 @@ public abstract class AbstractContextPanel {
         this.audioObject = audioObject;
     }
 
-    /**
-     * Removes all content from this context panel This method must be called
-     * when the user selected a different context tab, so if user returns to the
-     * tab showing this panel method updateContextPanel must be called again
-     */
-    public final void clearContextPanel() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#clearContextPanel()
+	 */
+    @Override
+	public final void clearContextPanel() {
         Logger.debug("Clearing panel: ", getContextPanelName());
-        for (AbstractContextPanelContent content : getContents()) {
+        for (IContextPanelContent content : getContents()) {
             content.clearContextPanelContent();
         }
         audioObject = null;
     }
 
-    /**
-     * Returns a graphical component with all contents of the context panel
-     * 
-     * @param lookAndFeel
-     * @return
-     */
-    public final Component getUIComponent(ILookAndFeel lookAndFeel) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#getUIComponent(net.sourceforge.atunes.model.ILookAndFeel)
+	 */
+    @Override
+	public final Component getUIComponent(ILookAndFeel lookAndFeel) {
     	if (component == null) {
     		JPanel panel = new JPanel(new GridBagLayout()) {
     			/**
@@ -199,7 +176,7 @@ public abstract class AbstractContextPanel {
     		c.fill = GridBagConstraints.HORIZONTAL;
     		c.insets = new Insets(10, 10, 10, 10);
     		int numberOfContents = getContents().size();
-    		for (AbstractContextPanelContent content : getContents()) {
+    		for (IContextPanelContent content : getContents()) {
     			Component componentToAdd = content.getComponent();
     			if (componentToAdd instanceof JComponent) {
     				((JComponent) componentToAdd).setOpaque(false);
@@ -235,55 +212,51 @@ public abstract class AbstractContextPanel {
     	return component;
     }
 
-    /**
-     * Returns title to be used in tab for the current audio object
-     * 
-     * @return
-     */
-    public final String getTitle() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#getTitle()
+	 */
+    @Override
+	public final String getTitle() {
         return getContextPanelTitle(contextHandler.getCurrentAudioObject());
     }
 
-    /**
-     * Returns icon to be used in tab for the current audio object
-     * 
-     * @return
-     */
-    public final IColorMutableImageIcon getIcon() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#getIcon()
+	 */
+    @Override
+	public final IColorMutableImageIcon getIcon() {
         return getContextPanelIcon(contextHandler.getCurrentAudioObject());
     }
 
-    /**
-     * Returns <code>true</code> if tab is enabled (can be used) for the current
-     * audio object
-     * 
-     * @return
-     */
-    public final boolean isEnabled() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#isEnabled()
+	 */
+    @Override
+	public final boolean isEnabled() {
         if (contextHandler.getCurrentAudioObject() == null) {
             return false;
         }
         return true;
     }
     
-    /**
-     * Returns <code>true</code> if tab is visible for the current audio object
-     * @return
-     */
-    public final boolean isVisible() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#isVisible()
+	 */
+    @Override
+	public final boolean isVisible() {
         if (contextHandler.getCurrentAudioObject() == null) {
             return true;
         }
         return isPanelVisibleForAudioObject(contextHandler.getCurrentAudioObject());
     }
 
-	/**
-	 * Return components to show in options
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#getOptions()
 	 */
+	@Override
 	public List<Component> getOptions() {
 		List<Component> components = new ArrayList<Component>();
-		for (AbstractContextPanelContent content : getContents()) {
+		for (IContextPanelContent content : getContents()) {
 			List<Component> options = content.getOptions();
 			if (options != null && !options.isEmpty()) {
 				components.addAll(options);
@@ -317,7 +290,7 @@ public abstract class AbstractContextPanel {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		AbstractContextPanel other = (AbstractContextPanel) obj;
+		IContextPanel other = (IContextPanel) obj;
 		if (getContextPanelName() == null) {
 			if (other.getContextPanelName() != null) {
 				return false;
@@ -337,28 +310,39 @@ public abstract class AbstractContextPanel {
 		return state;
 	}
 	
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#setState(net.sourceforge.atunes.model.IState)
+	 */
+	@Override
 	public void setState(IState state) {
 		this.state = state;
 	}
 	
-    private final List<AbstractContextPanelContent> getContents() {
+    private final List<IContextPanelContent> getContents() {
     	return contents;
     }
     
-    /**
-     * List of contents shown in the context panel. Contents are shown in order
-     * in context tab
-     * @param contents
-     */
-    public final void setContents(List<AbstractContextPanelContent> contents) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#setContents(java.util.List)
+	 */
+    @Override
+	public final void setContents(List<IContextPanelContent> contents) {
 		this.contents = contents;
 	}
     
-    public void setContextHandler(IContextHandler contextHandler) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#setContextHandler(net.sourceforge.atunes.model.IContextHandler)
+	 */
+    @Override
+	public void setContextHandler(IContextHandler contextHandler) {
 		this.contextHandler = contextHandler;
 	}
     
-    public void setLookAndFeel(ILookAndFeel lookAndFeel) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#setLookAndFeel(net.sourceforge.atunes.model.ILookAndFeel)
+	 */
+    @Override
+	public void setLookAndFeel(ILookAndFeel lookAndFeel) {
 		this.lookAndFeel = lookAndFeel;
 	}
     

@@ -92,7 +92,7 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
     }
 
     @Override
-    protected void clearContextPanelContent() {
+    public void clearContextPanelContent() {
         super.clearContextPanelContent();
         audioObjectImage.setIcon(null);
         audioObjectImage.setBorder(null);
@@ -104,14 +104,14 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
     }
 
     @Override
-    protected Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
+    public Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
         Map<String, IAudioObject> parameters = new HashMap<String, IAudioObject>();
         parameters.put(AudioObjectBasicInfoDataSource.INPUT_AUDIO_OBJECT, audioObject);
         return parameters;
     }
 
     @Override
-    protected void updateContentWithDataSourceResult(Map<String, ?> result) {
+    public void updateContentWithDataSourceResult(Map<String, ?> result) {
         ImageIcon image = (ImageIcon) result.get(AudioObjectBasicInfoDataSource.OUTPUT_IMAGE);
         if (image != null) {
             audioObjectImage.setIcon(image);
@@ -140,12 +140,12 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
     }
 
     @Override
-    protected String getContentName() {
+    public String getContentName() {
         return I18nUtils.getString("INFO");
     }
 
     @Override
-    protected Component getComponent() {
+    public Component getComponent() {
         // Create components
         audioObjectImage = new JLabel();
         audioObjectTitle = new JLabel();
@@ -180,7 +180,7 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
     }
 
     @Override
-    protected List<Component> getOptions() {
+    public List<Component> getOptions() {
         List<Component> options = new ArrayList<Component>();
         options.add(lovedSong);
         options.add(bannedSong);

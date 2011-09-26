@@ -27,6 +27,7 @@ import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextHandler;
+import net.sourceforge.atunes.model.IContextPanel;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -57,13 +58,13 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     /**
      * Context panels defined
      */
-    private List<AbstractContextPanel> contextPanels;
+    private List<IContextPanel> contextPanels;
 
     @SuppressWarnings("unchecked")
 	@Override
     public void applicationStarted(List<IAudioObject> playList) {
     	
-    	contextPanels = (List<AbstractContextPanel>) getBean("contextPanels");
+    	contextPanels = (List<IContextPanel>) getBean("contextPanels");
     	
     	getController().addContextPanels(contextPanels);
     	
@@ -109,7 +110,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
      */
     private void clearTabsContent() {
         // Clear all context panels
-        for (AbstractContextPanel panel : contextPanels) {
+        for (IContextPanel panel : contextPanels) {
             panel.clearContextPanel();
         }
     }
@@ -178,7 +179,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
         // Context panel can be removed so check index
         String selectedTab = getState().getSelectedContextTab();
         // Update current context panel
-        for (AbstractContextPanel panel : contextPanels) {
+        for (IContextPanel panel : contextPanels) {
         	if (panel.getContextPanelName().equals(selectedTab)) {
         		panel.updateContextPanel(audioObject, forceUpdate);
         		break;
@@ -203,7 +204,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     @Override
     public void pluginActivated(PluginInfo plugin) {
         try {
-            AbstractContextPanel newPanel = (AbstractContextPanel) PluginsHandler.getInstance().getNewInstance(plugin);
+        	IContextPanel newPanel = (IContextPanel) PluginsHandler.getInstance().getNewInstance(plugin);
             contextPanels.add(newPanel);
         } catch (PluginSystemException e) {
             Logger.error(e);
@@ -214,7 +215,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     public void pluginDeactivated(PluginInfo plugin, Collection<Plugin> createdInstances) {
         for (Plugin instance : createdInstances) {
         	contextPanels.remove(instance);
-            getController().removeContextPanel((AbstractContextPanel) instance);
+            getController().removeContextPanel((IContextPanel) instance);
         }
     }
     

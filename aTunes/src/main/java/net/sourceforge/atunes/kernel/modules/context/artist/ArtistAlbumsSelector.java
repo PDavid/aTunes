@@ -21,7 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.context.artist;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
+import net.sourceforge.atunes.model.IContextPanelContent;
 import net.sourceforge.atunes.model.IState;
 
 public class ArtistAlbumsSelector {
@@ -31,7 +31,7 @@ public class ArtistAlbumsSelector {
 	 * @param state
 	 * @return
 	 */
-	public static AbstractContextPanelContent getContextPanelContent(IState state) {
-		return (AbstractContextPanelContent) Context.getBean(state.isShowContextAlbumsInGrid() ?  "artistAlbumsFlowContent" : "artistAlbumsContent");
+	public static IContextPanelContent getContextPanelContent(IState state) {
+		return (IContextPanelContent) Context.getBean(state.isShowContextAlbumsInGrid() ?  "artistAlbumsFlowContent" : "artistAlbumsContent");
 	}
 }

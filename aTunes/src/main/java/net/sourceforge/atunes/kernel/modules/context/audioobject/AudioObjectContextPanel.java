@@ -45,7 +45,7 @@ public class AudioObjectContextPanel extends AbstractContextPanel {
     private static final long serialVersionUID = -7910261492394049289L;
 
     @Override
-    protected IColorMutableImageIcon getContextPanelIcon(final IAudioObject audioObject) {
+    public IColorMutableImageIcon getContextPanelIcon(final IAudioObject audioObject) {
         if (audioObject != null) {
             return audioObject.getGenericImage(GenericImageSize.SMALL, getLookAndFeel());
         } else {
@@ -64,7 +64,7 @@ public class AudioObjectContextPanel extends AbstractContextPanel {
     }
 
     @Override
-    protected String getContextPanelTitle(IAudioObject audioObject) {
+    public String getContextPanelTitle(IAudioObject audioObject) {
         if (audioObject instanceof ILocalAudioObject || (audioObject instanceof IRadio && ((IRadio) audioObject).isSongInfoAvailable())) {
             return I18nUtils.getString("SONG");
         } else if (audioObject instanceof IRadio) {
@@ -77,7 +77,7 @@ public class AudioObjectContextPanel extends AbstractContextPanel {
     }
 
     @Override
-    protected boolean isPanelVisibleForAudioObject(IAudioObject audioObject) {
+    public boolean isPanelVisibleForAudioObject(IAudioObject audioObject) {
         return audioObject != null;
     }
 

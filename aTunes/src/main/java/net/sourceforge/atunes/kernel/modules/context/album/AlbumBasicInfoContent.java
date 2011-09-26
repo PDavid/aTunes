@@ -60,12 +60,12 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent {
     private UrlLabel yearLabel;
 
     @Override
-    protected String getContentName() {
+    public String getContentName() {
         return I18nUtils.getString("INFO");
     }
 
     @Override
-    protected Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
+    public Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put(AlbumInfoDataSource.INPUT_AUDIO_OBJECT, audioObject);
         // Want image too 
@@ -74,7 +74,7 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent {
     }
 
     @Override
-    protected void updateContentWithDataSourceResult(Map<String, ?> result) {
+    public void updateContentWithDataSourceResult(Map<String, ?> result) {
         IAudioObject audioObject = (IAudioObject) result.get(AlbumInfoDataSource.OUTPUT_AUDIO_OBJECT);
         if (result.containsKey(AlbumInfoDataSource.OUTPUT_ALBUM)) {
             IAlbumInfo album = (IAlbumInfo) result.get(AlbumInfoDataSource.OUTPUT_ALBUM);
@@ -96,7 +96,7 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent {
     }
 
     @Override
-    protected void clearContextPanelContent() {
+    public void clearContextPanelContent() {
         super.clearContextPanelContent();
         albumCoverLabel.setIcon(null);
         albumCoverLabel.setBorder(null);
@@ -106,7 +106,7 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent {
     }
 
     @Override
-    protected Component getComponent() {
+    public Component getComponent() {
         // Create components
         albumCoverLabel = new JLabel();
         albumLabel = new UrlLabel();

@@ -114,17 +114,17 @@ public class ArtistTopTracksContent extends AbstractContextPanelContent {
     }
 
     @Override
-    protected String getContentName() {
+    public String getContentName() {
         return I18nUtils.getString("SONGS");
     }
 
     @Override
-    protected Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
+    public Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
     	return Collections.singletonMap(ArtistPopularTracksDataSource.INPUT_AUDIO_OBJECT, audioObject);
     }
 
     @Override
-    protected void updateContentWithDataSourceResult(Map<String, ?> result) {
+    public void updateContentWithDataSourceResult(Map<String, ?> result) {
         if (result.containsKey(ArtistPopularTracksDataSource.OUTPUT_TRACKS)) {
         	lastTopTracks = (IArtistTopTracks) result.get(ArtistPopularTracksDataSource.OUTPUT_TRACKS);
             tracksTable.setModel(new ContextArtistTracksTableModel(lastTopTracks));
@@ -134,13 +134,13 @@ public class ArtistTopTracksContent extends AbstractContextPanelContent {
     }
 
     @Override
-    protected void clearContextPanelContent() {
+    public void clearContextPanelContent() {
         super.clearContextPanelContent();
         tracksTable.setModel(new ContextArtistTracksTableModel(null));
     }
 
     @Override
-    protected Component getComponent() {
+    public Component getComponent() {
         // Create components
         tracksTable = getLookAndFeelManager().getCurrentLookAndFeel().getTable();
         tracksTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -171,7 +171,7 @@ public class ArtistTopTracksContent extends AbstractContextPanelContent {
     }
     
     @Override
-    protected boolean isScrollNeeded() {
+    public boolean isScrollNeeded() {
     	return true;
     }
     

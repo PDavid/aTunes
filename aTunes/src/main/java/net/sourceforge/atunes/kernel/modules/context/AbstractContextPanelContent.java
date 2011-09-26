@@ -28,6 +28,7 @@ import javax.swing.JPanel;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextInformationSource;
+import net.sourceforge.atunes.model.IContextPanelContent;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IState;
 
@@ -42,7 +43,7 @@ import org.commonjukebox.plugins.model.PluginApi;
  * 
  */
 @PluginApi
-public abstract class AbstractContextPanelContent {
+public abstract class AbstractContextPanelContent implements IContextPanelContent {
 
     private static final long serialVersionUID = 7059398864514654378L;
 
@@ -68,13 +69,11 @@ public abstract class AbstractContextPanelContent {
     
     private ILookAndFeelManager lookAndFeelManager;
 
-    /**
-     * Updates the context panel content with information of the given audio
-     * object
-     * 
-     * @param audioObject
-     */
-    protected final void updateContextPanelContent(IAudioObject audioObject) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#updateContextPanelContent(net.sourceforge.atunes.model.IAudioObject)
+	 */
+    @Override
+	public final void updateContextPanelContent(IAudioObject audioObject) {
         // Get data source parameters and call data source
         callDataSource(getDataSourceParameters(audioObject));
     }
@@ -95,11 +94,11 @@ public abstract class AbstractContextPanelContent {
         worker.execute();
     }
 
-    /**
-     * Removes content from the context panel content This method must clear all
-     * previous information retrieved for previous audio object
-     */
-    protected void clearContextPanelContent() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#clearContextPanelContent()
+	 */
+    @Override
+	public void clearContextPanelContent() {
         parentPanel.setEnabled(false);
         parentPanel.setVisible(false);
         if (worker != null) {
@@ -107,74 +106,72 @@ public abstract class AbstractContextPanelContent {
         }
     }
 
-    /**
-     * By default contents don't need special scroll
-     * 
-     * @return
-     */
-    protected boolean isScrollNeeded() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#isScrollNeeded()
+	 */
+    @Override
+	public boolean isScrollNeeded() {
         return false;
     }
 
-    /**
-     * Given an audio object returns a map with necessary parameters to call
-     * data source
-     * 
-     * @param audioObject
-     * @return Map with parameters to call data source
-     */
-    protected abstract Map<String, ?> getDataSourceParameters(IAudioObject audioObject);
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#getDataSourceParameters(net.sourceforge.atunes.model.IAudioObject)
+	 */
+    @Override
+	public abstract Map<String, ?> getDataSourceParameters(IAudioObject audioObject);
 
-    /**
-     * Given a map containing result from data source updates this content
-     * 
-     * @param result
-     */
-    protected abstract void updateContentWithDataSourceResult(Map<String, ?> result);
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#updateContentWithDataSourceResult(java.util.Map)
+	 */
+    @Override
+	public abstract void updateContentWithDataSourceResult(Map<String, ?> result);
 
-    /**
-     * Returns the content name to be shown in context panel
-     * 
-     * @return
-     */
-    protected abstract String getContentName();
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#getContentName()
+	 */
+    @Override
+	public abstract String getContentName();
 
-    /**
-     * Method to return a Swing component with panel content
-     */
-    protected abstract Component getComponent();
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#getComponent()
+	 */
+    @Override
+	public abstract Component getComponent();
 
-    /**
-     * Returns a list of components to be shown in a popup button If this method
-     * returns <code>null</code> or empty list button will not be visible
-     * (default behaviour)
-     * 
-     * @return
-     */
-    protected List<Component> getOptions() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#getOptions()
+	 */
+    @Override
+	public List<Component> getOptions() {
         return null;
     }
 
-    /**
-     * @param parentPanel
-     *            the parentTaskPane to set
-     */
-    protected void setParentPanel(JPanel parentPanel) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#setParentPanel(javax.swing.JPanel)
+	 */
+    @Override
+	public void setParentPanel(JPanel parentPanel) {
         this.parentPanel = parentPanel;
     }
 
-    /**
-     * @return the parentTaskPane
-     */
-    protected JPanel getParentPanel() {
+    @Override
+    public JPanel getParentPanel() {
         return parentPanel;
     }
     
-    protected IState getState() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#getState()
+	 */
+    @Override
+	public IState getState() {
 		return state;
 	}
     
-    public void setState(IState state) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#setState(net.sourceforge.atunes.model.IState)
+	 */
+    @Override
+	public void setState(IState state) {
 		this.state = state;
 	}
     
@@ -182,18 +179,23 @@ public abstract class AbstractContextPanelContent {
 		return dataSource;
 	}
     
-    public void setDataSource(IContextInformationSource dataSource) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#setDataSource(net.sourceforge.atunes.model.IContextInformationSource)
+	 */
+    @Override
+	public void setDataSource(IContextInformationSource dataSource) {
 		this.dataSource = dataSource;
 	}
     
-    public void setLookAndFeelManager(ILookAndFeelManager ILookAndFeelManager) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#setLookAndFeelManager(net.sourceforge.atunes.model.ILookAndFeelManager)
+	 */
+    @Override
+	public void setLookAndFeelManager(ILookAndFeelManager ILookAndFeelManager) {
 		this.lookAndFeelManager = ILookAndFeelManager;
 	}
     
     protected ILookAndFeelManager getLookAndFeelManager() {
 		return lookAndFeelManager;
 	}
-    
-    
-
 }

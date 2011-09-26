@@ -74,7 +74,7 @@ public class ArtistAlbumsFlowContent extends AbstractContextPanelContent {
     private ScrollableFlowPanel coversPanel;
 
     @Override
-    protected Component getComponent() {
+    public Component getComponent() {
         coversPanel = new ScrollableFlowPanel();
         coversPanel.setOpaque(false);
         coversPanel.setLayout(new FlowLayout());
@@ -82,12 +82,12 @@ public class ArtistAlbumsFlowContent extends AbstractContextPanelContent {
     }
 
     @Override
-    protected String getContentName() {
+    public String getContentName() {
         return I18nUtils.getString("ALBUMS");
     }
 
     @Override
-    protected Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
+    public Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put(ArtistInfoDataSource.INPUT_AUDIO_OBJECT, audioObject);
         parameters.put(ArtistInfoDataSource.INPUT_ALBUMS, true);
@@ -96,7 +96,7 @@ public class ArtistAlbumsFlowContent extends AbstractContextPanelContent {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void updateContentWithDataSourceResult(Map<String, ?> result) {
+    public void updateContentWithDataSourceResult(Map<String, ?> result) {
         if (result != null && result.containsKey(ArtistInfoDataSource.OUTPUT_ALBUMS)) {
             List<IAlbumInfo> albums = (List<IAlbumInfo>) result.get(ArtistInfoDataSource.OUTPUT_ALBUMS);
             for (IAlbumInfo album : albums) {
@@ -109,7 +109,7 @@ public class ArtistAlbumsFlowContent extends AbstractContextPanelContent {
     }
 
     @Override
-    protected void clearContextPanelContent() {
+    public void clearContextPanelContent() {
         super.clearContextPanelContent();
         coversPanel.removeAll();
     };

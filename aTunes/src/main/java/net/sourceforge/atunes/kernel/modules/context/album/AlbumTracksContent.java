@@ -64,32 +64,32 @@ public class AlbumTracksContent extends AbstractContextPanelContent {
     private JTable tracksTable;
 
     @Override
-    protected String getContentName() {
+    public String getContentName() {
         return I18nUtils.getString("SONGS");
     }
 
     @Override
-    protected Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
+    public Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
         Map<String, IAudioObject> parameters = new HashMap<String, IAudioObject>();
         parameters.put(AlbumInfoDataSource.INPUT_AUDIO_OBJECT, audioObject);
         return parameters;
     }
 
     @Override
-    protected void updateContentWithDataSourceResult(Map<String, ?> result) {
+    public void updateContentWithDataSourceResult(Map<String, ?> result) {
         if (result.containsKey(AlbumInfoDataSource.OUTPUT_ALBUM)) {
             tracksTable.setModel(new ContextTracksTableModel((IAlbumInfo) result.get(AlbumInfoDataSource.OUTPUT_ALBUM)));
         }
     }
 
     @Override
-    protected void clearContextPanelContent() {
+    public void clearContextPanelContent() {
         super.clearContextPanelContent();
         tracksTable.setModel(new ContextTracksTableModel(null));
     }
 
     @Override
-    protected Component getComponent() {
+    public Component getComponent() {
         // Create components
         tracksTable = getLookAndFeelManager().getCurrentLookAndFeel().getTable();
         tracksTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

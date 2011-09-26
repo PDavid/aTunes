@@ -33,6 +33,7 @@ import net.sourceforge.atunes.gui.lookandfeel.AbstractListCellRendererCode;
 import net.sourceforge.atunes.gui.views.panels.ContextPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IContextHandler;
+import net.sourceforge.atunes.model.IContextPanel;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IState;
 
@@ -62,8 +63,8 @@ class ContextController extends AbstractSimpleController<ContextPanel> {
 
 				@Override
 				public JComponent getComponent(JComponent superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-					((JLabel)superComponent).setIcon(((AbstractContextPanel)value).getIcon().getIcon(lookAndFeel.getPaintForColorMutableIcon(superComponent, isSelected || cellHasFocus)));
-					((JLabel)superComponent).setText(((AbstractContextPanel)value).getTitle());
+					((JLabel)superComponent).setIcon(((IContextPanel)value).getIcon().getIcon(lookAndFeel.getPaintForColorMutableIcon(superComponent, isSelected || cellHasFocus)));
+					((JLabel)superComponent).setText(((IContextPanel)value).getTitle());
 					return superComponent;
 				}
 			}));
@@ -83,7 +84,7 @@ class ContextController extends AbstractSimpleController<ContextPanel> {
 	 * Returns context tab
 	 * @return
 	 */
-	AbstractContextPanel getContextTab() {
+	IContextPanel getContextTab() {
 		return getComponentControlled().getSelectedContextTab();
 	}
 
@@ -91,7 +92,7 @@ class ContextController extends AbstractSimpleController<ContextPanel> {
 		getComponentControlled().updateContextTabs();
 	}
 
-	void removeContextPanel(AbstractContextPanel instance) {
+	void removeContextPanel(IContextPanel instance) {
 		getComponentControlled().removeContextPanel(instance);
 	}
 
@@ -99,8 +100,8 @@ class ContextController extends AbstractSimpleController<ContextPanel> {
 	 * Adds context panels
 	 * @param contextPanels
 	 */
-	void addContextPanels(List<AbstractContextPanel> contextPanels) {
-		for (AbstractContextPanel panel : contextPanels) {
+	void addContextPanels(List<IContextPanel> contextPanels) {
+		for (IContextPanel panel : contextPanels) {
 			getComponentControlled().addContextPanel(panel);
 		}		
 	}
@@ -118,7 +119,7 @@ class ContextController extends AbstractSimpleController<ContextPanel> {
 					@Override
 					public void itemStateChanged(ItemEvent e) {
 						if (e.getStateChange() == ItemEvent.SELECTED) {
-							getComponentControlled().showContextPanel((AbstractContextPanel)e.getItem());
+							getComponentControlled().showContextPanel((IContextPanel)e.getItem());
 							contextHandler.contextPanelChanged();
 						}
 		            }
