@@ -32,6 +32,7 @@ import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IContextPanel;
+import net.sourceforge.atunes.model.IContextPanelsContainer;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRadio;
@@ -60,6 +61,10 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
      * Context panels defined
      */
     private List<IContextPanel> contextPanels;
+    
+    private IContextPanelsContainer contextPanelsContainer;
+    
+    private IPlayListHandler playListHandler;
 
 	@Override
     public void applicationStarted(List<IAudioObject> playList) {
@@ -71,12 +76,14 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     	// Enable listener for user selections
     	enableContextComboListener();
     	
-        showContextPanel(getState().isUseContext());
+    	getFrame().showContextPanel(getState().isUseContext());
     }
     
     @Override
     public void allHandlersInitialized() {
-    	retrieveInfoAndShowInPanel(getBean(IPlayListHandler.class).getCurrentAudioObjectFromVisiblePlayList());
+    	if (getState().isUseContext()) {
+    		retrieveInfoAndShowInPanel(playListHandler.getCurrentAudioObjectFromVisiblePlayList());
+    	}
     }
     
     /**
@@ -242,7 +249,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
         getState().setUseContext(show);
         getFrame().showContextPanel(show);
         if (show) {
-            retrieveInfoAndShowInPanel(getBean(IPlayListHandler.class).getCurrentAudioObjectFromVisiblePlayList());
+            retrieveInfoAndShowInPanel(playListHandler.getCurrentAudioObjectFromVisiblePlayList());
         }
     }
 
@@ -251,7 +258,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 	 * @param selectedContextTab
 	 */
 	private void setContextTab(String selectedContextTab) {
-		getFrame().getContextPanel().setSelectedContextPanel(selectedContextTab);
+		contextPanelsContainer.setSelectedContextPanel(selectedContextTab);
 		contextPanelChanged();
 	}
 	
@@ -260,15 +267,15 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 	 * @return
 	 */
 	private IContextPanel getContextTab() {
-		return getFrame().getContextPanel().getSelectedContextPanel();
+		return contextPanelsContainer.getSelectedContextPanel();
 	}
 
 	private void updateContextTabs() {
-		getFrame().getContextPanel().updateContextPanels();
+		contextPanelsContainer.updateContextPanels();
 	}
 
 	private void removeContextPanel(IContextPanel instance) {
-		getFrame().getContextPanel().removeContextPanel(instance);
+		contextPanelsContainer.removeContextPanel(instance);
 	}
 
 	/**
@@ -277,7 +284,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 	 */
 	private void addContextPanels(List<IContextPanel> contextPanels) {
 		for (IContextPanel panel : contextPanels) {
-			getFrame().getContextPanel().addContextPanel(panel);
+			contextPanelsContainer.addContextPanel(panel);
 		}		
 	}
 
@@ -289,12 +296,12 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				getFrame().getContextPanel().enableContextPanelSelection(new ItemListener() {
+				contextPanelsContainer.enableContextPanelSelection(new ItemListener() {
 					
 					@Override
 					public void itemStateChanged(ItemEvent e) {
 						if (e.getStateChange() == ItemEvent.SELECTED) {
-							getFrame().getContextPanel().showContextPanel((IContextPanel)e.getItem());
+							contextPanelsContainer.showContextPanel((IContextPanel)e.getItem());
 							contextPanelChanged();
 						}
 		            }
@@ -305,5 +312,13 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 	
 	public void setContextPanels(List<IContextPanel> contextPanels) {
 		this.contextPanels = contextPanels;
+	}
+	
+	public void setContextPanelsContainer(IContextPanelsContainer contextPanelsContainer) {
+		this.contextPanelsContainer = contextPanelsContainer;
+	}
+	
+	public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
 	}
 }
