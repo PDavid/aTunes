@@ -20,8 +20,12 @@
 
 package net.sourceforge.atunes.kernel.modules.context;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.Collection;
 import java.util.List;
+
+import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
@@ -29,7 +33,6 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IContextPanel;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IState;
@@ -42,8 +45,6 @@ import org.commonjukebox.plugins.model.PluginListener;
 
 public final class ContextHandler extends AbstractHandler implements PluginListener, IContextHandler {
 
-    private ContextController controller;
-    
     /**
      * The current audio object used to retrieve information
      */
@@ -63,16 +64,14 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     @SuppressWarnings("unchecked")
 	@Override
     public void applicationStarted(List<IAudioObject> playList) {
-    	
     	contextPanels = (List<IContextPanel>) getBean("contextPanels");
-    	
-    	getController().addContextPanels(contextPanels);
+    	addContextPanels(contextPanels);
     	
         // Set previous selected tab
-    	getController().setContextTab(getState().getSelectedContextTab());
+    	setContextTab(getState().getSelectedContextTab());
     	
     	// Enable listener for user selections
-    	getController().enableContextComboListener();
+    	enableContextComboListener();
     	
         showContextPanel(getState().isUseContext());
     }
@@ -87,7 +86,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
      */
     public void contextPanelChanged() {
         // Update selected tab
-        getState().setSelectedContextTab(getController().getContextTab() != null ? getController().getContextTab().getContextPanelName() : null);
+        getState().setSelectedContextTab(getContextTab() != null ? getContextTab().getContextPanelName() : null);
         // Call to fill information: Don't force update since audio object can be the same
         retrieveInfo(currentAudioObject, false);
     }
@@ -102,7 +101,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 
         // Select first tab
         getState().setSelectedContextTab(null);
-        getController().setContextTab(null);
+        setContextTab(null);
     }
 
     /**
@@ -145,7 +144,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 
         if (getState().isUseContext()) {
             // Enable or disable tabs
-            getController().updateContextTabs();
+            updateContextTabs();
 
             if (ao == null) {
                 // Clear all tabs
@@ -215,7 +214,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     public void pluginDeactivated(PluginInfo plugin, Collection<Plugin> createdInstances) {
         for (Plugin instance : createdInstances) {
         	contextPanels.remove(instance);
-            getController().removeContextPanel((IContextPanel) instance);
+            removeContextPanel((IContextPanel) instance);
         }
     }
     
@@ -249,10 +248,60 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
         }
     }
 
-    private ContextController getController() {
-    	if (controller == null) {
-    		controller = new ContextController(getFrame().getContextPanel(), getState(), this, getBean(ILookAndFeelManager.class).getCurrentLookAndFeel());
-    	}
-    	return controller;
-    }
+	/**
+	 * Selects context tab
+	 * @param selectedContextTab
+	 */
+	private void setContextTab(String selectedContextTab) {
+		getFrame().getContextPanel().setSelectedContextPanel(selectedContextTab);
+		contextPanelChanged();
+	}
+	
+	/**
+	 * Returns context tab
+	 * @return
+	 */
+	private IContextPanel getContextTab() {
+		return getFrame().getContextPanel().getSelectedContextPanel();
+	}
+
+	private void updateContextTabs() {
+		getFrame().getContextPanel().updateContextPanels();
+	}
+
+	private void removeContextPanel(IContextPanel instance) {
+		getFrame().getContextPanel().removeContextPanel(instance);
+	}
+
+	/**
+	 * Adds context panels
+	 * @param contextPanels
+	 */
+	private void addContextPanels(List<IContextPanel> contextPanels) {
+		for (IContextPanel panel : contextPanels) {
+			getFrame().getContextPanel().addContextPanel(panel);
+		}		
+	}
+
+	/**
+	 * Enables listening for combo box selections by user
+	 */
+	private void enableContextComboListener() {
+		// Wait until initial context panel selection is done
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				getFrame().getContextPanel().enableContextPanelSelection(new ItemListener() {
+					
+					@Override
+					public void itemStateChanged(ItemEvent e) {
+						if (e.getStateChange() == ItemEvent.SELECTED) {
+							getFrame().getContextPanel().showContextPanel((IContextPanel)e.getItem());
+							contextPanelChanged();
+						}
+		            }
+		        });	
+			}
+		});
+	}
 }

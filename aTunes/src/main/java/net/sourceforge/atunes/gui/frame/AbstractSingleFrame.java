@@ -63,6 +63,7 @@ import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.model.ApplicationVersion;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IContextPanelsContainer;
 import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMenuBar;
@@ -280,7 +281,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     }
 
     @Override
-    public ContextPanel getContextPanel() {
+    public IContextPanelsContainer getContextPanel() {
         if (contextPanel == null) {
             contextPanel = new ContextPanel(lookAndFeelManager);
             contextPanel.setMinimumSize(getContextPanelMinimumSize());

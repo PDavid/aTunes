@@ -58,7 +58,7 @@ public final class NavigatorTopPlayListBottomSingleFrame extends MainSplitPaneRi
 
     @Override
     public void showContextPanel(boolean show) {
-        applyVisibility(show, RIGHT_SPLIT_PANE, getContextPanel(), rightSplitPane);
+        applyVisibility(show, RIGHT_SPLIT_PANE, getContextPanel().getSwingComponent(), rightSplitPane);
     }
 
     @Override
@@ -94,7 +94,7 @@ public final class NavigatorTopPlayListBottomSingleFrame extends MainSplitPaneRi
     
     @Override
     protected JComponent getComponentC() {
-    	return getContextPanel();
+    	return getContextPanel().getSwingComponent();
     }
     
 	@Override

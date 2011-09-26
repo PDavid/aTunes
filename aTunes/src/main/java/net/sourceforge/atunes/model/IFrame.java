@@ -30,7 +30,6 @@ import javax.swing.JProgressBar;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
-import net.sourceforge.atunes.gui.views.panels.ContextPanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
@@ -60,7 +59,7 @@ public interface IFrame {
      * 
      * @return the context information panel
      */
-    public ContextPanel getContextPanel();
+    public IContextPanelsContainer getContextPanel();
 
     /**
      * Gets the extended state.
