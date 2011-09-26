@@ -20,15 +20,21 @@
 
 package net.sourceforge.atunes.gui.views.dialogs;
 
+import java.lang.reflect.InvocationTargetException;
+
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.Logger;
 
 public class ConfirmationDialog implements IConfirmationDialog {
 	
 	private IFrame frame;
+
+	private boolean result;
 	
 	/* (non-Javadoc)
 	 * @see net.sourceforge.atunes.gui.views.dialogs.IConfirmationDialog#setFrame(net.sourceforge.atunes.model.IFrame)
@@ -42,8 +48,24 @@ public class ConfirmationDialog implements IConfirmationDialog {
 	 * @see net.sourceforge.atunes.gui.views.dialogs.IConfirmationDialog#showDialog(java.lang.String)
 	 */
 	@Override
-	public boolean showDialog(String message) {
-		return JOptionPane.showConfirmDialog(frame.getFrame(), message, I18nUtils.getString("CONFIRMATION"), JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION;
+	public boolean showDialog(final String message) {
+		if (SwingUtilities.isEventDispatchThread()) {
+			return JOptionPane.showConfirmDialog(frame.getFrame(), message, I18nUtils.getString("CONFIRMATION"), JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION;
+		} else {
+			try {
+				SwingUtilities.invokeAndWait(new Runnable() {
+					@Override
+					public void run() {
+						result = JOptionPane.showConfirmDialog(frame.getFrame(), message, I18nUtils.getString("CONFIRMATION"), JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION;
+					}
+				});
+			} catch (InterruptedException e) {
+				Logger.error(e);
+			} catch (InvocationTargetException e) {
+				Logger.error(e);
+			}
+			return result;
+		}
 	}
 
 }

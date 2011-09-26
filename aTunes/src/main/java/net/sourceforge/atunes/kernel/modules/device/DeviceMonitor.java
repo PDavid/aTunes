@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.device;
 
 import java.io.File;
+import java.util.concurrent.ScheduledFuture;
 
 import net.sourceforge.atunes.kernel.DeviceListeners;
 import net.sourceforge.atunes.model.IState;
@@ -30,18 +31,27 @@ import net.sourceforge.atunes.utils.Logger;
 final class DeviceMonitor {
 
     private static int DELAY = 5;
+    
+    private static ScheduledFuture<?> future;
 
     /**
      * Start monitor.
      */
     static void startMonitor(final IState state, ITaskService taskService) {
-    	taskService.submitPeriodically("Device Monitor", DELAY, DELAY, new Runnable() {
+    	future = taskService.submitPeriodically("Device Monitor", DELAY, DELAY, new Runnable() {
     		@Override
     		public void run() {
     			checkConnection(state);
     			checkDisconnection();
     		}
     	});
+    }
+    
+    /**
+     * Stops monitor
+     */
+    static void stopMonitor() {
+    	future.cancel(true);
     }
 
     /**

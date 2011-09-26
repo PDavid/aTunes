@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -257,11 +258,24 @@ public final class DeviceHandler extends AbstractHandler implements IRepositoryL
      *            the location
      */
     @Override
-    public void deviceConnected(String location) {
-        if (getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("DEVICE_CONNECT_CONFIRMATION"))) {
-        	getFrame().showProgressBar(true, null);
-            this.retrieveDevice(new File(location));
-        }
+    public void deviceConnected(final String location) {
+    	try {
+			SwingUtilities.invokeAndWait(new Runnable() {
+				@Override
+				public void run() {
+			        if (getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("DEVICE_CONNECT_CONFIRMATION"))) {
+			        	getFrame().showProgressBar(true, null);
+			            DeviceHandler.this.retrieveDevice(new File(location));
+			        } else {
+			        	DeviceMonitor.stopMonitor();
+			        }
+				}
+			});
+		} catch (InterruptedException e) {
+			Logger.error(e);
+		} catch (InvocationTargetException e) {
+			Logger.error(e);
+		}
     }
 
     /**
