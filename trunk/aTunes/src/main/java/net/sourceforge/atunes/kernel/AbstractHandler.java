@@ -97,7 +97,11 @@ public abstract class AbstractHandler implements IHandler {
 		return frame;
 	}
 	
-	public static void setFrame(IFrame frame) {
+	public void setFrame(IFrame frame) {
+		this.frame = frame;
+	}
+	
+	public static void setFrameForHandlers(IFrame frame) {
 		for (AbstractHandler handler : getHandlers()) {
 			handler.frame = frame;
 		}

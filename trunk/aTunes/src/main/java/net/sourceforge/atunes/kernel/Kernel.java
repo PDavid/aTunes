@@ -113,7 +113,7 @@ public class Kernel {
                     Context.getBean(ILookAndFeelManager.class).setLookAndFeel(state.getLookAndFeel(), state, Context.getBean(IOSManager.class));
                     
                     IFrame frame = Context.getBean(IFrame.class);
-                    AbstractHandler.setFrame(frame);
+                    AbstractHandler.setFrameForHandlers(frame);
                 }
             });
         } catch (InvocationTargetException e) {
