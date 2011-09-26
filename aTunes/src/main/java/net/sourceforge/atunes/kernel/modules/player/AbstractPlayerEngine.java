@@ -28,6 +28,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.kernel.PlaybackStateListeners;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
@@ -382,7 +383,7 @@ public abstract class AbstractPlayerEngine {
 
                         // We need to update current object and active playlist first
                         playListHandler.setVisiblePlayListActive();
-                        playListHandler.selectedAudioObjectHasChanged(nextAudioObject);
+                        PlayListEventListeners.selectedAudioObjectHasChanged(nextAudioObject);
 
                         playAudioObject(nextAudioObject);
                     }
@@ -802,7 +803,7 @@ public abstract class AbstractPlayerEngine {
     private void switchPlaybackTo(IAudioObject audioObjectToSwitchTo, boolean resetIfNoObject, boolean autoNext) {
         if (audioObjectToSwitchTo != null) {
             try {
-                playListHandler.selectedAudioObjectHasChanged(audioObjectToSwitchTo);
+            	PlayListEventListeners.selectedAudioObjectHasChanged(audioObjectToSwitchTo);
                 if (isEnginePlaying() || isPaused() || autoNext) {
                     stopCurrentAudioObject(false);
                     if (!isPaused()) {
@@ -817,7 +818,7 @@ public abstract class AbstractPlayerEngine {
             if (resetIfNoObject) {
                 stopCurrentAudioObject(false);
                 playListHandler.resetCurrentPlayList();
-                playListHandler.selectedAudioObjectHasChanged(playListHandler.getCurrentAudioObjectFromCurrentPlayList());
+            	PlayListEventListeners.selectedAudioObjectHasChanged(playListHandler.getCurrentAudioObjectFromCurrentPlayList());
             }
         }
     }

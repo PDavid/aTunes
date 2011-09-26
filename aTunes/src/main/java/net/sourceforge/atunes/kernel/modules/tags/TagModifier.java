@@ -27,6 +27,7 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Format;
@@ -83,7 +84,8 @@ public final class TagModifier {
 		        // Changed current playing song
 		        if (playListHandler.getCurrentAudioObjectFromCurrentPlayList() != null
 		                && playListHandler.getCurrentAudioObjectFromCurrentPlayList().equals(audioFilesEditing.get(i))) {
-		        	playListHandler.selectedAudioObjectHasChanged(audioFilesEditing.get(i));
+		        	
+		        	PlayListEventListeners.selectedAudioObjectHasChanged(audioFilesEditing.get(i));
 
 		            if (PlayerHandler.getInstance().isEnginePlaying()) {
 		                Context.getBean(IUIHandler.class).updateTitleBar(audioFilesEditing.get(i));

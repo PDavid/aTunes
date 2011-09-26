@@ -201,15 +201,6 @@ public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
 	public void removeAudioObjects(int[] rows);
 
 	/**
-	 * Called when current audio object changes. Calls to all PlayListEventListener
-	 * 
-	 * @param audioObject
-	 *            the audio object
-	 */
-	public void selectedAudioObjectHasChanged(
-			final IAudioObject audioObject);
-
-	/**
 	 * Shuffle current play list
 	 */
 	public void shuffle();

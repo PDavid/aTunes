@@ -404,7 +404,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         Actions.getAction(ShufflePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
         showPlayListInformation(playList);
         if (isActivePlayListVisible()) {
-            selectedAudioObjectHasChanged(playList.getCurrentAudioObject());
+        	PlayListEventListeners.selectedAudioObjectHasChanged(playList.getCurrentAudioObject());
         }
     }
 
@@ -503,7 +503,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
                 selectedAudioObject = playList.getRandomPosition();
             }
 
-            selectedAudioObjectHasChanged(audioObjects.get(selectedAudioObject));
+            PlayListEventListeners.selectedAudioObjectHasChanged(audioObjects.get(selectedAudioObject));
             playList.setCurrentAudioObjectIndex(selectedAudioObject);
         }
 
@@ -851,13 +851,13 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
                     currentPlayList.setCurrentAudioObjectIndex(currentPlayList.size() - 1);
                 }
                 if (isActivePlayListVisible()) {
-                    selectedAudioObjectHasChanged(currentPlayList.getCurrentAudioObject());
+                	PlayListEventListeners.selectedAudioObjectHasChanged(currentPlayList.getCurrentAudioObject());
                 }
             }
         } else {
             currentPlayList.setCurrentAudioObjectIndex(currentPlayList.indexOf(playingAudioObject));
             if (isActivePlayListVisible()) {
-                selectedAudioObjectHasChanged(currentPlayList.getCurrentAudioObject());
+            	PlayListEventListeners.selectedAudioObjectHasChanged(currentPlayList.getCurrentAudioObject());
             }
         }
 
@@ -879,17 +879,13 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     	PlayListEventListeners.playListCleared();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#selectedAudioObjectHasChanged(net.sourceforge.atunes.model.IAudioObject)
-	 */
-    @Override
-	public void selectedAudioObjectHasChanged(final IAudioObject audioObject) {
-        if (audioObject == null) {
-            return;
-        }
-
+	@Override
+	public void selectedAudioObjectChanged(IAudioObject audioObject) {
         addToPlaybackHistory(audioObject);
-    }
+        getPlayListController().refreshPlayList();
+        getPlayListController().scrollPlayList(false);
+        playListsChanged(true, false);
+	};
 
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#shuffle()
@@ -1294,13 +1290,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 		playListsChanged(true, true);
 	}
 	
-	@Override
-	public void selectedAudioObjectChanged(IAudioObject audioObject) {
-        getPlayListController().refreshPlayList();
-        getPlayListController().scrollPlayList(false);
-        playListsChanged(true, false);
-	};
-
 	@Override
 	public void favoritesChanged() {
         // Update playlist to remove favorite icon
