@@ -51,7 +51,7 @@ public final class DefaultSingleFrame extends MainSplitPaneLeftSingleFrame imple
 
     @Override
     public void showContextPanel(boolean show) {
-        applyVisibility(show, RIGHT_SPLIT_PANE, getContextPanel(), rightSplitPane);
+        applyVisibility(show, RIGHT_SPLIT_PANE, getContextPanel().getSwingComponent(), rightSplitPane);
     }
 
     @Override
@@ -97,7 +97,7 @@ public final class DefaultSingleFrame extends MainSplitPaneLeftSingleFrame imple
     
     @Override
     protected JComponent getComponentC() {
-    	return getContextPanel();
+    	return getContextPanel().getSwingComponent();
     }
     
 	@Override
