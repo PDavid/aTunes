@@ -61,10 +61,8 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
      */
     private List<IContextPanel> contextPanels;
 
-    @SuppressWarnings("unchecked")
 	@Override
     public void applicationStarted(List<IAudioObject> playList) {
-    	contextPanels = (List<IContextPanel>) getBean("contextPanels");
     	addContextPanels(contextPanels);
     	
         // Set previous selected tab
@@ -113,7 +111,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
             panel.clearContextPanel();
         }
     }
-
+    
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.context.IContextHandler#retrieveInfoAndShowInPanel(net.sourceforge.atunes.model.IAudioObject)
 	 */
@@ -303,5 +301,9 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 		        });	
 			}
 		});
+	}
+	
+	public void setContextPanels(List<IContextPanel> contextPanels) {
+		this.contextPanels = contextPanels;
 	}
 }

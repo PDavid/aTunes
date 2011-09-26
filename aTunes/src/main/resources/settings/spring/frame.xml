@@ -10,5 +10,9 @@
 	</bean>
 	
 	<bean id="frame" factory-bean="frameFactory" factory-method="create"/>
+	
+	<bean id="contextPanelsContainer" class="net.sourceforge.atunes.gui.views.panels.ContextPanelContainer">
+		<constructor-arg ref="lookAndFeelManager"/>
+	</bean>
 
 </beans>
