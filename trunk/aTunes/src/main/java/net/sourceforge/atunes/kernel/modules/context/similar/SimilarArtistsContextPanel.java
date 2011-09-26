@@ -42,7 +42,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 public class SimilarArtistsContextPanel extends AbstractContextPanel {
 
     @Override
-    protected IColorMutableImageIcon getContextPanelIcon(IAudioObject audioObject) {
+    public IColorMutableImageIcon getContextPanelIcon(IAudioObject audioObject) {
         return new IColorMutableImageIcon() {
         	@Override
         	public ImageIcon getIcon(Paint paint) {
@@ -57,12 +57,12 @@ public class SimilarArtistsContextPanel extends AbstractContextPanel {
     }
 
     @Override
-    protected String getContextPanelTitle(IAudioObject audioObject) {
+    public String getContextPanelTitle(IAudioObject audioObject) {
         return I18nUtils.getString("SIMILAR");
     }
 
     @Override
-    protected boolean isPanelVisibleForAudioObject(IAudioObject audioObject) {
+    public boolean isPanelVisibleForAudioObject(IAudioObject audioObject) {
         // Avoid unknown artist or album
         if (Artist.isUnknownArtist(audioObject.getArtist())) {
             return false;

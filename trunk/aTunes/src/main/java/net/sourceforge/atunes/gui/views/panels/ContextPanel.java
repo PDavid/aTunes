@@ -32,7 +32,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
-import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
+import net.sourceforge.atunes.model.IContextPanel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -48,9 +48,9 @@ public final class ContextPanel extends JPanel {
     
     private JPanel container;
 
-    private List<AbstractContextPanel> panels = new ArrayList<AbstractContextPanel>();
+    private List<IContextPanel> panels = new ArrayList<IContextPanel>();
     
-    private List<AbstractContextPanel> visiblePanels = new ArrayList<AbstractContextPanel>();
+    private List<IContextPanel> visiblePanels = new ArrayList<IContextPanel>();
 
     private ILookAndFeelManager lookAndFeelManager;
     
@@ -91,17 +91,17 @@ public final class ContextPanel extends JPanel {
     }
 
     public void updateContextTabs() {
-    	AbstractContextPanel selectedPanel = contextSelector.getSelectedItem() != null ? (AbstractContextPanel) contextSelector.getSelectedItem() : null;
+    	IContextPanel selectedPanel = contextSelector.getSelectedItem() != null ? (IContextPanel) contextSelector.getSelectedItem() : null;
     	container.removeAll();
     	visiblePanels.clear();
-        for (AbstractContextPanel panel : panels) {
+        for (IContextPanel panel : panels) {
         	if (panel.isVisible()) {
         		visiblePanels.add(panel);
         		container.add(panel.getContextPanelName(), panel.getUIComponent(lookAndFeelManager.getCurrentLookAndFeel()));
         		panel.getUIComponent(lookAndFeelManager.getCurrentLookAndFeel()).setEnabled(panel.isEnabled());
         	}
         }
-        contextSelector.setModel(new ListComboBoxModel<AbstractContextPanel>(visiblePanels));
+        contextSelector.setModel(new ListComboBoxModel<IContextPanel>(visiblePanels));
         contextSelector.setSelectedIndex(selectedPanel != null ? visiblePanels.indexOf(selectedPanel) : 0);
         ((CardLayout)container.getLayout()).show(container, selectedPanel != null ? selectedPanel.getContextPanelName() : visiblePanels.get(0).getContextPanelName());
     }
@@ -111,7 +111,7 @@ public final class ContextPanel extends JPanel {
      * 
      * @param panel
      */
-    public void addContextPanel(AbstractContextPanel panel) {
+    public void addContextPanel(IContextPanel panel) {
         panels.add(panel);
         updateContextTabs();
     }
@@ -121,7 +121,7 @@ public final class ContextPanel extends JPanel {
      * 
      * @param panel
      */
-    public void removeContextPanel(AbstractContextPanel panel) {
+    public void removeContextPanel(IContextPanel panel) {
         panels.remove(panel);
         updateContextTabs();
     }
@@ -130,8 +130,8 @@ public final class ContextPanel extends JPanel {
 	 * Shows context panel
 	 * @param panel
 	 */
-	public void showContextPanel(AbstractContextPanel panel) {
-		final AbstractContextPanel source = panel != null ? panel : visiblePanels.get(0);
+	public void showContextPanel(IContextPanel panel) {
+		final IContextPanel source = panel != null ? panel : visiblePanels.get(0);
 		options.removeAllItems();
 		options.setEnabled(source != null && !source.getOptions().isEmpty());
 		if (source != null) {
@@ -155,8 +155,8 @@ public final class ContextPanel extends JPanel {
      * 
      * @return
      */
-    public AbstractContextPanel getSelectedContextTab() {
-    	return (AbstractContextPanel) contextSelector.getSelectedItem();
+    public IContextPanel getSelectedContextTab() {
+    	return (IContextPanel) contextSelector.getSelectedItem();
     }
     
     /**
@@ -171,9 +171,9 @@ public final class ContextPanel extends JPanel {
 	 */
 	public void setSelectedContextTab(String selectedContextTab) {
 		Logger.debug("Setting context view: ", selectedContextTab);
-		AbstractContextPanel panel = null;
+		IContextPanel panel = null;
 		if (selectedContextTab != null) {
-			for (AbstractContextPanel p : panels) {
+			for (IContextPanel p : panels) {
 				if (p.getContextPanelName().equals(selectedContextTab)) {
 					panel = p;
 					break;

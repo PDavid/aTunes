@@ -27,6 +27,7 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.model.IContextInformationSource;
+import net.sourceforge.atunes.model.IContextPanelContent;
 import net.sourceforge.atunes.utils.Logger;
 
 /**
@@ -42,7 +43,7 @@ class ContextInformationSwingWorker extends SwingWorker<Map<String, ?>, Void> {
      * The context panel content where information must be shown after
      * retrieving data
      */
-    private AbstractContextPanelContent content;
+    private IContextPanelContent content;
 
     /**
      * The context information data source used to retrieve information
@@ -61,7 +62,7 @@ class ContextInformationSwingWorker extends SwingWorker<Map<String, ?>, Void> {
      * @param dataSource
      * @param parameters
      */
-    ContextInformationSwingWorker(AbstractContextPanelContent content, IContextInformationSource dataSource, Map<String, ?> parameters) {
+    ContextInformationSwingWorker(IContextPanelContent content, IContextInformationSource dataSource, Map<String, ?> parameters) {
         this.content = content;
         this.dataSource = dataSource;
         this.parameters = parameters;

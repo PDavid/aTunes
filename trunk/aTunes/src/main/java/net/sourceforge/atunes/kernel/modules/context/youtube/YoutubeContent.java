@@ -80,12 +80,12 @@ public class YoutubeContent extends AbstractContextPanelContent {
     }
 
     @Override
-    protected String getContentName() {
+    public String getContentName() {
         return I18nUtils.getString("YOUTUBE_VIDEOS");
     }
 
     @Override
-    protected Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
+    public Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put(YoutubeDataSource.INPUT_AUDIO_OBJECT, audioObject);
         return parameters;
@@ -93,7 +93,7 @@ public class YoutubeContent extends AbstractContextPanelContent {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void updateContentWithDataSourceResult(Map<String, ?> result) {
+    public void updateContentWithDataSourceResult(Map<String, ?> result) {
         if (result.containsKey(YoutubeDataSource.OUTPUT_VIDEOS)) {
             youtubeResultTable.setModel(new YoutubeResultTableModel((List<YoutubeResultEntry>) result.get(YoutubeDataSource.OUTPUT_VIDEOS)));
             moreResults.setEnabled(true);
@@ -102,7 +102,7 @@ public class YoutubeContent extends AbstractContextPanelContent {
     }
 
     @Override
-    protected void clearContextPanelContent() {
+    public void clearContextPanelContent() {
         super.clearContextPanelContent();
         youtubeResultTable.setModel(new YoutubeResultTableModel(null));
         moreResults.setEnabled(false);
@@ -110,7 +110,7 @@ public class YoutubeContent extends AbstractContextPanelContent {
     }
 
     @Override
-    protected Component getComponent() {
+    public Component getComponent() {
         // Create components
         youtubeResultTable = new ContextTable(getLookAndFeelManager().getCurrentLookAndFeel());
         youtubeResultTable.addContextRowPanel(new YoutubeResultsTableCellRendererCode(getLookAndFeelManager().getCurrentLookAndFeel()));
@@ -118,7 +118,7 @@ public class YoutubeContent extends AbstractContextPanelContent {
     }
 
     @Override
-    protected List<Component> getOptions() {
+    public List<Component> getOptions() {
         List<Component> options = new ArrayList<Component>();
         options.add(moreResults);
         options.add(openYoutube);

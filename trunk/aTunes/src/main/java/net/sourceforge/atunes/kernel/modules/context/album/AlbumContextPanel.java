@@ -45,7 +45,7 @@ public class AlbumContextPanel extends AbstractContextPanel {
     private static final long serialVersionUID = -7910261492394049289L;
 
     @Override
-    protected IColorMutableImageIcon getContextPanelIcon(IAudioObject audioObject) {
+    public IColorMutableImageIcon getContextPanelIcon(IAudioObject audioObject) {
         return new IColorMutableImageIcon() {
         	@Override
         	public ImageIcon getIcon(Paint paint) {
@@ -60,12 +60,12 @@ public class AlbumContextPanel extends AbstractContextPanel {
     }
 
     @Override
-    protected String getContextPanelTitle(IAudioObject audioObject) {
+    public String getContextPanelTitle(IAudioObject audioObject) {
         return I18nUtils.getString("ALBUM");
     }
 
     @Override
-    protected boolean isPanelVisibleForAudioObject(IAudioObject audioObject) {
+    public boolean isPanelVisibleForAudioObject(IAudioObject audioObject) {
         // Avoid unknown artist or album
         if (Artist.isUnknownArtist(audioObject.getArtist()) || Album.isUnknownAlbum(audioObject.getAlbum())) {
             return false;

@@ -59,12 +59,12 @@ public class ArtistBasicInfoContent extends AbstractContextPanelContent {
     private UrlLabel artistWikiReadMore;
 
     @Override
-    protected String getContentName() {
+    public String getContentName() {
         return I18nUtils.getString("INFO");
     }
 
     @Override
-    protected Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
+    public Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put(ArtistInfoDataSource.INPUT_AUDIO_OBJECT, audioObject);
         // Want image too 
@@ -73,7 +73,7 @@ public class ArtistBasicInfoContent extends AbstractContextPanelContent {
     }
 
     @Override
-    protected void updateContentWithDataSourceResult(Map<String, ?> result) {
+    public void updateContentWithDataSourceResult(Map<String, ?> result) {
         Image artistImage = (Image) result.get(ArtistInfoDataSource.OUTPUT_IMAGE);
         if (artistImage != null) {
             artistImageLabel.setIcon(ImageUtils.scaleImageBicubic(artistImage, Constants.ARTIST_IMAGE_SIZE, Constants.ARTIST_IMAGE_SIZE));
@@ -96,7 +96,7 @@ public class ArtistBasicInfoContent extends AbstractContextPanelContent {
     }
 
     @Override
-    protected void clearContextPanelContent() {
+    public void clearContextPanelContent() {
         super.clearContextPanelContent();
         artistImageLabel.setIcon(null);
         artistImageLabel.setBorder(null);
@@ -106,7 +106,7 @@ public class ArtistBasicInfoContent extends AbstractContextPanelContent {
     }
 
     @Override
-    protected Component getComponent() {
+    public Component getComponent() {
         // Create components
         artistImageLabel = new JLabel();
         artistNameLabel = new UrlLabel();

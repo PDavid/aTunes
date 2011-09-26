@@ -43,12 +43,12 @@ public class ArtistAlbumsContent extends AbstractContextPanelContent {
     private ContextTable albumsTable;
 
     @Override
-    protected String getContentName() {
+    public String getContentName() {
         return I18nUtils.getString("ALBUMS");
     }
 
     @Override
-    protected Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
+    public Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put(ArtistInfoDataSource.INPUT_AUDIO_OBJECT, audioObject);
         parameters.put(ArtistInfoDataSource.INPUT_ALBUMS, true);
@@ -57,20 +57,20 @@ public class ArtistAlbumsContent extends AbstractContextPanelContent {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void updateContentWithDataSourceResult(Map<String, ?> result) {
+    public void updateContentWithDataSourceResult(Map<String, ?> result) {
         if (result.containsKey(ArtistInfoDataSource.OUTPUT_ALBUMS)) {
             albumsTable.setModel(new ContextAlbumsTableModel((List<IAlbumInfo>) result.get(ArtistInfoDataSource.OUTPUT_ALBUMS)));
         }
     }
 
     @Override
-    protected void clearContextPanelContent() {
+    public void clearContextPanelContent() {
         super.clearContextPanelContent();
         albumsTable.setModel(new ContextAlbumsTableModel(null));
     }
 
     @Override
-    protected Component getComponent() {
+    public Component getComponent() {
         // Create components
         albumsTable = new ContextTable(getLookAndFeelManager().getCurrentLookAndFeel());
         albumsTable.addContextRowPanel(new AlbumsTableCellRendererCode(getLookAndFeelManager().getCurrentLookAndFeel()));
