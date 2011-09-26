@@ -44,7 +44,7 @@ import net.sourceforge.atunes.utils.Logger;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
-public final class ContextPanel extends JPanel implements IContextPanelsContainer {
+public final class ContextPanelContainer extends JPanel implements IContextPanelsContainer {
 
 	private static final long serialVersionUID = 707242790413122482L;
 
@@ -64,7 +64,7 @@ public final class ContextPanel extends JPanel implements IContextPanelsContaine
      * Instantiates a new context panel
      * @param lookAndFeelManager
      */
-    public ContextPanel(ILookAndFeelManager lookAndFeelManager) {
+    public ContextPanelContainer(ILookAndFeelManager lookAndFeelManager) {
         super(new GridBagLayout());
         this.lookAndFeelManager = lookAndFeelManager;
         setContent(lookAndFeelManager);

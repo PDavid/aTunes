@@ -55,7 +55,6 @@ import net.sourceforge.atunes.gui.views.controls.AbstractCustomFrame;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.dialogs.UpdateDialog;
 import net.sourceforge.atunes.gui.views.menus.ApplicationMenuBar;
-import net.sourceforge.atunes.gui.views.panels.ContextPanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
@@ -104,7 +103,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     private JProgressBar progressBar;
     private IMenuBar appMenuBar;
     private PlayListPanel playListPanel;
-    private ContextPanel contextPanel;
+    private IContextPanelsContainer contextPanel;
     private PlayerControlsPanel playerControls;
     private JXStatusBar statusBar;
 
@@ -283,7 +282,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     @Override
     public IContextPanelsContainer getContextPanel() {
         if (contextPanel == null) {
-            contextPanel = new ContextPanel(lookAndFeelManager);
+            contextPanel = Context.getBean(IContextPanelsContainer.class);
             contextPanel.setMinimumSize(getContextPanelMinimumSize());
             contextPanel.setPreferredSize(getContextPanelPreferredSize());
             contextPanel.setMaximumSize(getContextPanelMaximumSize());
