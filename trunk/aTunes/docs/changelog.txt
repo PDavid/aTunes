@@ -86,6 +86,7 @@ aTunes 2.1.0
 - FIX: Better control over repository load when repository folders are moved (patch by Dave Badia)
 - FIX: Selecting full screen background fails [3413642]
 - FIX: debug option doesn't work [3196082]
+- FIX: Toggle favorites executed several times over same collection with repeated elements [3414462]
 
 aTunes 2.0.1
 -------------

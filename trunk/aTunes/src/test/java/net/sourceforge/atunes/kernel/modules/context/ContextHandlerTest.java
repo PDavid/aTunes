@@ -93,7 +93,6 @@ public class ContextHandlerTest {
 		sut.setState(state);
 
 		// Act
-		
 		sut.applicationStarted(null);		
 		sut.allHandlersInitialized();
 		

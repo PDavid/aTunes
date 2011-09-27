@@ -76,8 +76,8 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
             try {
                 // Get loved tracks
                 lovedTracks = get();
-                // Set favorites
-                Context.getBean(IFavoritesHandler.class).toggleFavoriteSongs(lovedTracks);
+                // Set favorites, but not in last.fm again
+                Context.getBean(IFavoritesHandler.class).addFavoriteSongs(lovedTracks, false);
             } catch (Exception e) {
             }
             getBean(IMessageDialog.class).showMessage(StringUtils.getString(I18nUtils.getString("LOVED_TRACKS_IMPORTED"), ": ", lovedTracks == null ? "0" : lovedTracks.size()), getBean(IFrame.class));
