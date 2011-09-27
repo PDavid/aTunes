@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel;
 
 import java.awt.Window;
 import java.io.File;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Properties;
@@ -40,9 +39,8 @@ import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.OperatingSystem;
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
-
-import org.apache.commons.io.FileUtils;
 
 public class OsManager implements IOSManager {
 
@@ -80,50 +78,63 @@ public class OsManager implements IOSManager {
 	 */
 	@Override
 	public String getUserConfigFolder(boolean useWorkDir) {
-		if (useWorkDir) {
-			return "./debug";
+		// Get path depending on parameters
+		String userConfigFolder = getConfigFolder(useWorkDir);
+
+		// Test if it's valid
+		if (!isValidConfigFolder(userConfigFolder)) {
+			// As workaround if can't get a valid folder, use temporal folder, for example: /tmp/atunes
+			userConfigFolder = StringUtils.getString(System.getProperty("java.io.tmpdir"), getFileSeparator(), "atunes");
+			Logger.error("Using ", userConfigFolder, " as config folder");
 		}
 		
-	    if (customConfigFolder != null) {
-            return customConfigFolder;
-        }
-		
-        String appDataFolder = adapter.getAppDataFolder();
-
-        File userConfigFolder = new File(appDataFolder);
-        String newAppDataFolder = userConfigFolder.getAbsolutePath();
-        
-        /* Move config folder from old one if necessary */
-        if (!userConfigFolder.exists()) {
-            /* Try to read old config folder. If found, move contents to new location */
-            String userHomePath = adapter.getUserHome();
-            String oldAppDataFolder = null;
-            if (userHomePath != null) {
-                File oldConfigFolder = new File(StringUtils.getString(userHomePath, "/.aTunes"));
-                if (oldConfigFolder.exists() && oldConfigFolder.isDirectory()) {
-                	oldAppDataFolder = oldConfigFolder.getAbsolutePath();
-                }            
-            }
-
-            if (oldAppDataFolder != null && !oldAppDataFolder.equals(newAppDataFolder)) {
-            	System.out.println(StringUtils.getString("Moving configuration from ", oldAppDataFolder, " to ", newAppDataFolder));
-            	try {
-            		FileUtils.moveDirectory(new File(oldAppDataFolder), new File(newAppDataFolder));
-            		System.out.println("Configuration moved");
-            	} catch (IOException e) {
-            		System.out.println(StringUtils.getString("Error moving configuration: ", e.getMessage()));
-            		e.printStackTrace();
-            	}
-            }
-        }
-        
-        if (!userConfigFolder.exists() && !userConfigFolder.mkdir()) {
-        	newAppDataFolder = ".";
-        }
-        
-        return newAppDataFolder;
+		return userConfigFolder;
 	}
 	
+	/**
+	 * Test if path is valid
+	 * @param path
+	 * @return
+	 */
+	private boolean isValidConfigFolder(String path) {
+		File folder = new File(path);
+		
+		// If folder does not exist, try to create
+		if (!folder.exists() && !folder.mkdirs()) {
+			Logger.error("Can't create folder ", path);
+			return false;
+		}
+		
+		// Folder exists, check if can write
+		if (!folder.canWrite()) {
+			Logger.error("Can't write folder ", path);
+			return false;
+		}
+		
+		// Also check if it's a directory
+		if (!folder.isDirectory()) {
+			Logger.error(path, " is not a directory");
+			return false;
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * Returns folder path where application stores its configuration
+	 * @param useWorkDir
+	 * @return
+	 */
+	private String getConfigFolder(boolean useWorkDir) {
+		if (useWorkDir) {
+			return "./debug";
+		} else if (customConfigFolder != null) {
+            return customConfigFolder;
+        } else {
+        	return adapter.getAppDataFolder();
+        }
+	}
+		
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.IOSManager#getFileFromUserConfigFolder(java.lang.String, boolean)
 	 */
