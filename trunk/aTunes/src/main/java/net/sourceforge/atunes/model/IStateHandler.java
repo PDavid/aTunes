@@ -23,7 +23,6 @@ package net.sourceforge.atunes.model;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.playlist.ListOfPlayLists;
-import net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites;
 import net.sourceforge.atunes.kernel.modules.statistics.Statistics;
 
 /**
@@ -61,7 +60,7 @@ public interface IStateHandler extends IHandler {
 	 * @param favorites
 	 *            Favorites that should be persisted
 	 */
-	public void persistFavoritesCache(Favorites favorites);
+	public void persistFavoritesCache(IFavorites favorites);
 
 	/**
 	 * Stores statistics cache.
@@ -125,7 +124,7 @@ public interface IStateHandler extends IHandler {
 	 * 
 	 * @return The retrieved favorites
 	 */
-	public Favorites retrieveFavoritesCache();
+	public IFavorites retrieveFavoritesCache();
 
 	/**
 	 * Reads statistics cache.

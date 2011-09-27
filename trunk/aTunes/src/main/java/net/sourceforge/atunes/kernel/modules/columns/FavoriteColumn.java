@@ -20,9 +20,10 @@
 
 package net.sourceforge.atunes.kernel.modules.columns;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
-import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
 
@@ -33,6 +34,8 @@ public class FavoriteColumn extends AbstractColumn {
      */
     private static final long serialVersionUID = -4652512586792166062L;
 
+    private IFavoritesHandler favoritesHandler;
+    
     public FavoriteColumn() {
         super("FAVORITES", Property.class);
         setResizable(false);
@@ -59,12 +62,20 @@ public class FavoriteColumn extends AbstractColumn {
         if (audioObject instanceof IPodcastFeedEntry) {
             return null;
         }
-        return FavoritesHandler.getInstance().getFavoriteSongsInfo().containsValue(audioObject) ? Property.FAVORITE : null;
+        return getFavoritesHandler().getFavoriteSongsInfo().containsValue(audioObject) ? Property.FAVORITE : null;
     }
 
     @Override
     public String getHeaderText() {
         return "";
     }
+    
+    private IFavoritesHandler getFavoritesHandler() {
+    	if (favoritesHandler == null) {
+    		favoritesHandler = Context.getBean(IFavoritesHandler.class);
+    	}
+    	return favoritesHandler;
+    }
+
 
 }

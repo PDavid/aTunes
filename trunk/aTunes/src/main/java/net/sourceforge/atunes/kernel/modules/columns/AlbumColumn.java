@@ -27,15 +27,17 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.AlbumFavoriteImageIcon;
-import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 public class AlbumColumn extends AbstractColumn {
 
     private static final long serialVersionUID = -6162621108007788707L;
 
+    private IFavoritesHandler favoritesHandler;
+    
     public AlbumColumn() {
         super("ALBUM", TextAndIcon.class);
         setVisible(true);
@@ -57,7 +59,7 @@ public class AlbumColumn extends AbstractColumn {
     public Object getValueFor(IAudioObject audioObject) {
         // Return album
         return new TextAndIcon(audioObject.getAlbum(), 
-        		!FavoritesHandler.getInstance().getFavoriteAlbumsInfo().containsKey(audioObject.getAlbum()) ? null : new IColorMutableImageIcon() {
+        		!getFavoritesHandler().getFavoriteAlbumsInfo().containsKey(audioObject.getAlbum()) ? null : new IColorMutableImageIcon() {
 					
 					@Override
 					public ImageIcon getIcon(Paint paint) {
@@ -69,6 +71,13 @@ public class AlbumColumn extends AbstractColumn {
     @Override
     public String getValueForFilter(IAudioObject audioObject) {
         return audioObject.getAlbum();
+    }
+    
+    private IFavoritesHandler getFavoritesHandler() {
+    	if (favoritesHandler == null) {
+    		favoritesHandler = Context.getBean(IFavoritesHandler.class);
+    	}
+    	return favoritesHandler;
     }
 
 }

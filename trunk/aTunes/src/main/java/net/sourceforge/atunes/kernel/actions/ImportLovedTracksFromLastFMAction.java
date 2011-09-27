@@ -28,9 +28,10 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
@@ -76,7 +77,7 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
                 // Get loved tracks
                 lovedTracks = get();
                 // Set favorites
-                FavoritesHandler.getInstance().toggleFavoriteSongs(lovedTracks);
+                Context.getBean(IFavoritesHandler.class).toggleFavoriteSongs(lovedTracks);
             } catch (Exception e) {
             }
             getBean(IMessageDialog.class).showMessage(StringUtils.getString(I18nUtils.getString("LOVED_TRACKS_IMPORTED"), ": ", lovedTracks == null ? "0" : lovedTracks.size()), getBean(IFrame.class));
