@@ -18,22 +18,23 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.panels;
+package net.sourceforge.atunes.model;
 
-import javax.swing.JTable;
+
 
 /**
  * A part of the interface that shows navigation table
  * @author alex
  *
  */
-public interface INavigationTablePanel {
+public interface INavigationTablePanel extends IPanel {
 
 	/**
 	 * Gets the navigation table.
 	 * 
 	 * @return the navigation table
 	 */
-	public JTable getNavigationTable();
+	public ITable getNavigationTable();
+
 
 }

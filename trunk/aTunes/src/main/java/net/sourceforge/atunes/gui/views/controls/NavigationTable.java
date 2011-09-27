@@ -37,8 +37,9 @@ import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.gui.model.TransferableList;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.ITable;
 
-public final class NavigationTable extends JTable implements DragSourceListener, DragGestureListener {
+public final class NavigationTable extends JTable implements DragSourceListener, DragGestureListener, ITable {
 
     private static final long serialVersionUID = -607346309523708685L;
     private DragSource dragSource;
@@ -119,5 +120,10 @@ public final class NavigationTable extends JTable implements DragSourceListener,
     private void setDragSource() {
         dragSource = new DragSource();
         dragSource.createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_COPY, this);
+    }
+    
+    @Override
+    public JTable getSwingComponent() {
+    	return this;
     }
 }

@@ -109,7 +109,7 @@ public final class ContextPanelContainer extends JPanel implements IContextPanel
     }
 
     @Override
-    public JComponent getSwingComponent() {
+    public JPanel getSwingComponent() {
     	return this;
     }
     

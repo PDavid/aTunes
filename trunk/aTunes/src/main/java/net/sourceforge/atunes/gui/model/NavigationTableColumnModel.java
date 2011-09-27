@@ -35,6 +35,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.model.ITaskService;
 
 public final class NavigationTableColumnModel extends AbstractCommonColumnModel {
@@ -52,8 +53,8 @@ public final class NavigationTableColumnModel extends AbstractCommonColumnModel 
      * @param taskService
      * @param lookAndFeel
      */
-    public NavigationTableColumnModel(JTable table, IState state, INavigationHandler navigationHandler, ITaskService taskService, ILookAndFeel lookAndFeel) {
-        super(table, taskService, lookAndFeel);
+    public NavigationTableColumnModel(ITable table, IState state, INavigationHandler navigationHandler, ITaskService taskService, ILookAndFeel lookAndFeel) {
+        super(table.getSwingComponent(), taskService, lookAndFeel);
         this.state = state;
         this.navigationHandler = navigationHandler;
         enableColumnChange(true);

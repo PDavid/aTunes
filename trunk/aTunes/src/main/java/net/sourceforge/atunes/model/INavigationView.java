@@ -26,7 +26,6 @@ import java.util.List;
 
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -137,8 +136,7 @@ public interface INavigationView extends IAudioObjectsSource, ITreeObjectsSource
 	 * @param table
 	 * @param e
 	 */
-	public void updateTablePopupMenuWithTableSelection(JTable table,
-			MouseEvent e);
+	public void updateTablePopupMenuWithTableSelection(ITable table, MouseEvent e);
 
 	/**
 	 * Returns the default comparator

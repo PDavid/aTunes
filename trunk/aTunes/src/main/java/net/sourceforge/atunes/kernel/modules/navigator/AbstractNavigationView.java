@@ -40,7 +40,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
@@ -64,6 +63,7 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.model.ITreeGeneratorFactory;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.ViewMode;
@@ -352,7 +352,7 @@ public abstract class AbstractNavigationView implements INavigationView {
 	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#updateTablePopupMenuWithTableSelection(javax.swing.JTable, java.awt.event.MouseEvent)
 	 */
     @Override
-	public final void updateTablePopupMenuWithTableSelection(JTable table, MouseEvent e) {
+	public final void updateTablePopupMenuWithTableSelection(ITable table, MouseEvent e) {
         updateTablePopupMenuItems(getTablePopupMenu(), ((NavigationTableModel) frame.getNavigationTable().getModel()).getAudioObjectsAt(table.getSelectedRows()));
     }
 
