@@ -61,9 +61,6 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
         SearchHandler.getInstance().registerSearchableObject(FavoritesSearchableObject.getInstance());
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.repository.favorites.IFavoritesHandler#toggleFavoriteAlbums(java.util.List)
-	 */
     @Override
 	public void toggleFavoriteAlbums(List<ILocalAudioObject> songs) {
     	if (songs == null || songs.isEmpty()) {
@@ -90,9 +87,6 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
         callActionsAfterFavoritesChange();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.repository.favorites.IFavoritesHandler#toggleFavoriteArtists(java.util.List)
-	 */
     @Override
 	public void toggleFavoriteArtists(List<ILocalAudioObject> songs) {
     	if (songs == null || songs.isEmpty()) {
@@ -114,9 +108,6 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
         callActionsAfterFavoritesChange();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.repository.favorites.IFavoritesHandler#toggleFavoriteSongs(java.util.List)
-	 */
     @Override
 	public void toggleFavoriteSongs(List<ILocalAudioObject> songs) {
         if (songs == null || songs.isEmpty()) {
@@ -142,9 +133,6 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
         callActionsAfterFavoritesChange();
     }
 
-    /**
-     * Finish.
-     */
     @Override
     public void applicationFinish() {
         // Only store repository if it's dirty
@@ -155,17 +143,11 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
         }
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.repository.favorites.IFavoritesHandler#getFavoriteAlbumsInfo()
-	 */
     @Override
 	public Map<String, Album> getFavoriteAlbumsInfo() {
         return favorites.getFavoriteAlbums();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.repository.favorites.IFavoritesHandler#getFavoriteArtistsInfo()
-	 */
     @Override
 	public Map<String, Artist> getFavoriteArtistsInfo() {
         return favorites.getFavoriteArtists();
@@ -185,33 +167,21 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
         };
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.repository.favorites.IFavoritesHandler#getFavoriteSongs()
-	 */
     @Override
 	public List<ILocalAudioObject> getFavoriteSongs() {
         return favorites.getAllFavoriteSongs();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.repository.favorites.IFavoritesHandler#getFavoriteSongsMap()
-	 */
     @Override
 	public Map<String, ILocalAudioObject> getFavoriteSongsMap() {
         return favorites.getAllFavoriteSongsMap();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.repository.favorites.IFavoritesHandler#getFavoriteSongsInfo()
-	 */
     @Override
 	public Map<String, ILocalAudioObject> getFavoriteSongsInfo() {
         return favorites.getFavoriteAudioFiles();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.repository.favorites.IFavoritesHandler#removeFromFavorites(java.util.List)
-	 */
     @Override
 	public void removeFromFavorites(List<ITreeObject<?>> objects) {
         for (ITreeObject<? extends IAudioObject> obj : objects) {
@@ -225,9 +195,6 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
         callActionsAfterFavoritesChange();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.repository.favorites.IFavoritesHandler#removeSongsFromFavorites(java.util.List)
-	 */
     @Override
 	public void removeSongsFromFavorites(List<IAudioObject> files) {
     	for (IAudioObject file : files) {
@@ -272,12 +239,4 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
         }
         callActionsAfterFavoritesChange();
     }
-
-	@Override
-    public void playListCleared() {
-    }
-
-	@Override
-    public void selectedAudioObjectChanged(IAudioObject audioObject) {
-}
 }
