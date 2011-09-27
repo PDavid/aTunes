@@ -68,7 +68,7 @@ public final class EnhancedSingleFrame extends MainSplitPaneLeftSingleFrame impl
 
     @Override
     public void showNavigationTable(boolean show) {
-        applyVisibility(show, PLAYLIST_SPLIT_PANE, getNavigationTablePanel(), playListSplitPane);
+        applyVisibility(show, PLAYLIST_SPLIT_PANE, getNavigationTablePanel().getSwingComponent(), playListSplitPane);
     }
     
     @Override
@@ -79,7 +79,7 @@ public final class EnhancedSingleFrame extends MainSplitPaneLeftSingleFrame impl
     @Override
     protected JComponent getComponentB() {
         playListSplitPane = new CustomSplitPane(JSplitPane.VERTICAL_SPLIT);
-        playListSplitPane.setLeftComponent(getNavigationTablePanel());
+        playListSplitPane.setLeftComponent(getNavigationTablePanel().getSwingComponent());
         playListSplitPane.setRightComponent(getPlayListPanel());
         playListSplitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
 

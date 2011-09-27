@@ -53,7 +53,6 @@ import net.sourceforge.atunes.gui.renderers.ColumnRenderers;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetRowSorter;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
-import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ShowAlbumsInNavigatorAction;
@@ -71,6 +70,7 @@ import net.sourceforge.atunes.model.IController;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.INavigationTablePanel;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ISearch;
@@ -127,7 +127,7 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
 	}
 
     private NavigationTreePanel navigationTreePanel;
-    private NavigationTablePanel navigationTablePanel;
+    private INavigationTablePanel navigationTablePanel;
 
     /** The current extended tool tip content. */
     private volatile Object currentExtendedToolTipContent;
@@ -172,7 +172,7 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
      * @param taskService
      * @param lookAndFeelManager
      */
-    NavigationController(NavigationTreePanel treePanel, NavigationTablePanel tablePanel, IState state, IOSManager osManager, INavigationHandler navigationHandler, ITaskService taskService, ILookAndFeelManager lookAndFeelManager) {
+    NavigationController(NavigationTreePanel treePanel, INavigationTablePanel tablePanel, IState state, IOSManager osManager, INavigationHandler navigationHandler, ITaskService taskService, ILookAndFeelManager lookAndFeelManager) {
         this.navigationTreePanel = treePanel;
         this.navigationTablePanel = tablePanel;
         this.state = state;
@@ -189,7 +189,7 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
         return navigationTreePanel;
     }
 
-    public NavigationTablePanel getNavigationTablePanel() {
+    public INavigationTablePanel getNavigationTablePanel() {
         return navigationTablePanel;
     }
 
@@ -199,12 +199,12 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
         navigationTablePanel.getNavigationTable().setModel(model);
         columnModel = new NavigationTableColumnModel(navigationTablePanel.getNavigationTable(), state, navigationHandler, taskService, lookAndFeelManager.getCurrentLookAndFeel());
         navigationTablePanel.getNavigationTable().setColumnModel(columnModel);
-        ColumnRenderers.addRenderers(navigationTablePanel.getNavigationTable(), columnModel, lookAndFeelManager.getCurrentLookAndFeel());
+        ColumnRenderers.addRenderers(navigationTablePanel.getNavigationTable().getSwingComponent(), columnModel, lookAndFeelManager.getCurrentLookAndFeel());
 
-        new ColumnSetRowSorter(navigationTablePanel.getNavigationTable(), model, columnModel);
+        new ColumnSetRowSorter(navigationTablePanel.getNavigationTable().getSwingComponent(), model, columnModel);
 
         // Bind column set popup menu
-        columnSetPopupMenu = new ColumnSetPopupMenu(navigationTablePanel.getNavigationTable(), columnModel);
+        columnSetPopupMenu = new ColumnSetPopupMenu(navigationTablePanel.getNavigationTable().getSwingComponent(), columnModel);
 
         // Add tree selection listeners to all views
         for (INavigationView view : navigationHandler.getNavigationViews()) {

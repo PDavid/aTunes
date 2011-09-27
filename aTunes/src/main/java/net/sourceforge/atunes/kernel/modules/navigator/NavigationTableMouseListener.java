@@ -26,9 +26,9 @@ import java.util.List;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
-import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.INavigationTablePanel;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -39,7 +39,7 @@ import net.sourceforge.atunes.utils.GuiUtils;
 public final class NavigationTableMouseListener extends MouseAdapter {
 
     private NavigationController controller;
-    private NavigationTablePanel panel;
+    private INavigationTablePanel panel;
     private INavigationHandler navigationHandler;
 
     /**
@@ -50,7 +50,7 @@ public final class NavigationTableMouseListener extends MouseAdapter {
      * @param panel
      *            the panel
      */
-    public NavigationTableMouseListener(NavigationController controller, NavigationTablePanel panel, INavigationHandler navigationHandler) {
+    public NavigationTableMouseListener(NavigationController controller, INavigationTablePanel panel, INavigationHandler navigationHandler) {
         this.controller = controller;
         this.panel = panel;
         this.navigationHandler = navigationHandler;
@@ -61,7 +61,7 @@ public final class NavigationTableMouseListener extends MouseAdapter {
         INavigationView currentView = navigationHandler.getCurrentView();
 
         if (GuiUtils.isSecondaryMouseButton(event)) {
-            controller.setPopupMenuCaller(panel.getNavigationTable());
+            controller.setPopupMenuCaller(panel.getNavigationTable().getSwingComponent());
             int[] rowsSelected = panel.getNavigationTable().getSelectedRows();
             int selected = panel.getNavigationTable().rowAtPoint(event.getPoint());
             boolean found = false;
@@ -89,9 +89,6 @@ public final class NavigationTableMouseListener extends MouseAdapter {
                 	Context.getBean(IPlayListHandler.class).addToPlayList(songs);
                 }
             }
-//          } else if (panel.getNavigationTable().getSelectedRowCount() > 0) {
-//              // Nothing to do
-//          }
         }
     }
 }

@@ -77,7 +77,6 @@ public final class ColumnRenderers {
         
         // ColorMutableImageIcon
         jtable.setDefaultRenderer(IColorMutableImageIcon.class, lookAndFeel.getTableCellRenderer(model.getRendererCodeFor(IColorMutableImageIcon.class)));
-
     }
 
     /**

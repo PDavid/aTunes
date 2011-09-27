@@ -29,8 +29,10 @@ import javax.swing.ListSelectionModel;
 
 import net.sourceforge.atunes.gui.views.controls.NavigationTable;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.INavigationTablePanel;
+import net.sourceforge.atunes.model.ITable;
 
-public final class NavigationTablePanel extends JPanel {
+public final class NavigationTablePanel extends JPanel implements INavigationTablePanel {
 
     private static final long serialVersionUID = -2900418193013495812L;
 
@@ -51,7 +53,6 @@ public final class NavigationTablePanel extends JPanel {
      * @param lookAndFeelManager 
      */
     private void addContent(ILookAndFeelManager lookAndFeelManager) {
-
         navigationTable = new NavigationTable(lookAndFeelManager);
         navigationTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
@@ -67,7 +68,12 @@ public final class NavigationTablePanel extends JPanel {
      * 
      * @return the navigation table
      */
-    public JTable getNavigationTable() {
+    public ITable getNavigationTable() {
         return navigationTable;
+    }
+    
+    @Override
+    public JPanel getSwingComponent() {
+    	return this;
     }
 }

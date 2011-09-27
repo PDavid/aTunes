@@ -27,8 +27,11 @@ import javax.swing.JScrollPane;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
+import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListTableTransferHandler;
+import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListToDeviceDragAndDropListener;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
 
@@ -86,21 +89,22 @@ public final class PlayListPanel extends JPanel {
     }
 
     /**
-     * Gets the play list table scroll.
-     * 
-     * @return the play list table scroll
-     */
-    public JScrollPane getPlayListTableScroll() {
-        return playListTableScroll;
-    }
-
-    /**
      * Gets the play list tab panel.
      * 
      * @return the playListTabPanel
      */
     public PlayListTabPanel getPlayListTabPanel() {
         return playListTabPanel;
+    }
+    
+    /**
+     * Prepares play list for drag and drop operations
+     * @param playListTableTransferHandler
+     */
+    public void enableDragAndDrop(PlayListTableTransferHandler playListTableTransferHandler) {
+        playListTable.setTransferHandler(playListTableTransferHandler);
+        playListTableScroll.setTransferHandler(playListTableTransferHandler);
+        new PlayListToDeviceDragAndDropListener(Context.getBean(INavigationHandler.class));
     }
 
 }

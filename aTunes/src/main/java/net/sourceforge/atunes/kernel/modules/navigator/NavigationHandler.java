@@ -26,11 +26,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.draganddrop.TreeNavigationTransferHandler;
@@ -40,6 +38,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.INavigationTablePanel;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
@@ -249,7 +248,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
     private NavigationController getNavigationController() {
         if (navigationController == null) {
             NavigationTreePanel treePanel = getFrame().getNavigationTreePanel();
-            NavigationTablePanel tablePanel = getFrame().getNavigationTablePanel();
+            INavigationTablePanel tablePanel = getFrame().getNavigationTablePanel();
             navigationController = new NavigationController(treePanel, tablePanel, getState(), getOsManager(), this, getBean(ITaskService.class), getBean(ILookAndFeelManager.class));
         }
         return navigationController;
@@ -269,10 +268,6 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 	@Override
 	public List<IAudioObject> getFilesSelectedInNavigator() {
 		return getNavigationController().getFilesSelectedInNavigator();
-	}
-
-	protected JTable getNavigationTable() {
-		return getNavigationController().getNavigationTablePanel().getNavigationTable();
 	}
 
 	/* (non-Javadoc)
@@ -316,7 +311,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 	 */
 	@Override
 	public IAudioObject getSelectedAudioObjectInNavigationTable() {
-		return getNavigationController().getAudioObjectInNavigationTable(getNavigationTable().getSelectedRow());
+		return getNavigationController().getAudioObjectInNavigationTable(getFrame().getNavigationTable().getSelectedRow());
 	}
 
 	/* (non-Javadoc)
@@ -325,7 +320,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 	@Override
 	public List<IAudioObject> getSelectedAudioObjectsInNavigationTable() {
 		List<IAudioObject> result = new ArrayList<IAudioObject>();
-		for (int i = 0; i < getNavigationTable().getSelectedRows().length; i++) {
+		for (int i = 0; i < getFrame().getNavigationTable().getSelectedRows().length; i++) {
 			result.add(getNavigationController().getAudioObjectInNavigationTable(i));
 		}
 		return result;

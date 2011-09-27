@@ -57,6 +57,8 @@ public interface ITable extends IComponent<JTable> {
 
 	public void scrollRectToVisible(Rectangle visibleRect);
 
+	public void setModel(TableModel model); 
+
 	public TableModel getModel();
 
 	public void setTransferHandler(TransferHandler transferHandler);
@@ -65,6 +67,13 @@ public interface ITable extends IComponent<JTable> {
 
 	public int rowAtPoint(Point point);
 
-	public TableColumnModel getColumnModel(); 
+	public void setColumnModel(TableColumnModel columnModel);
+
+	public TableColumnModel getColumnModel();
+
+	public void addRowSelectionInterval(int start, int end);
+
+	public void repaint();
+
 
 }

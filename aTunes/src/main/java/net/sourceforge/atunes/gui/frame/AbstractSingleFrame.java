@@ -43,7 +43,6 @@ import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JProgressBar;
 import javax.swing.JSplitPane;
-import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
@@ -66,10 +65,12 @@ import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMenuBar;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.INavigationTablePanel;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -92,7 +93,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     private IFrameState frameState;
 
     private NavigationTreePanel navigationTreePanel;
-    private NavigationTablePanel navigationTablePanel;
+    private INavigationTablePanel navigationTablePanel;
     private JLabel leftStatusBar;
     private JLabel centerStatusBar;
     private JLabel rightStatusBar;
@@ -341,7 +342,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     }
 
     @Override
-    public NavigationTablePanel getNavigationTablePanel() {
+    public INavigationTablePanel getNavigationTablePanel() {
         if (navigationTablePanel == null) {
             navigationTablePanel = new NavigationTablePanel(lookAndFeelManager);
             navigationTablePanel.setMinimumSize(getNavigationTablePanelMinimumSize());
@@ -376,7 +377,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     }
     
     @Override
-    public JTable getNavigationTable() {
+    public ITable getNavigationTable() {
     	return getNavigationTablePanel().getNavigationTable();
     }
 

@@ -24,7 +24,6 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JScrollPane;
 import javax.swing.Timer;
 import javax.swing.event.TableModelEvent;
 
@@ -104,15 +103,6 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
                 table.getSelectionModel().setSelectionInterval(newIndex, newIndex);
             }
         }
-    }
-
-    /**
-     * Gets the main play list scroll pane.
-     * 
-     * @return the main play list scroll pane
-     */
-    JScrollPane getMainPlayListScrollPane() {
-        return getComponentControlled().getPlayListTableScroll();
     }
 
     /**
