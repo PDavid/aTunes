@@ -63,7 +63,7 @@ public final class EnhancedSingleFrame extends MainSplitPaneLeftSingleFrame impl
 
     @Override
     public void showNavigationTree(boolean show) {
-        applyVisibility(show, LEFT_SPLIT_PANE, getNavigationTreePanel(), leftSplitPane);
+        applyVisibility(show, LEFT_SPLIT_PANE, getNavigationTreePanel().getSwingComponent(), leftSplitPane);
     }
 
     @Override
@@ -73,7 +73,7 @@ public final class EnhancedSingleFrame extends MainSplitPaneLeftSingleFrame impl
     
     @Override
     protected JComponent getComponentA() {
-    	return getNavigationTreePanel();
+    	return getNavigationTreePanel().getSwingComponent();
     }
     
     @Override

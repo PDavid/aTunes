@@ -30,6 +30,7 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
+import javax.swing.TransferHandler;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
@@ -44,10 +45,11 @@ import net.sourceforge.atunes.kernel.actions.ShowNavigationTableAction;
 import net.sourceforge.atunes.kernel.actions.ShowYearsInNavigatorAction;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.INavigationTreePanel;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.utils.GuiUtils;
 
-public final class NavigationTreePanel extends JPanel {
+public final class NavigationTreePanel extends JPanel implements INavigationTreePanel {
 
     private static final long serialVersionUID = -2900418193013495812L;
 
@@ -116,6 +118,7 @@ public final class NavigationTreePanel extends JPanel {
         for (INavigationView view : Context.getBean(INavigationHandler.class).getNavigationViews()) {
             GuiUtils.applyComponentOrientation(view.getTreePopupMenu());
         }
+       
     }
 
     /**
@@ -131,26 +134,38 @@ public final class NavigationTreePanel extends JPanel {
         }
     }
 
-    /**
-     * Updates trees
-     */
-    public void updateTrees() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.panels.INavigationTreePanel#updateTrees()
+	 */
+    @Override
+	public void updateTrees() {
         addTrees();
     }
 
-	/**
-	 * Shows tree view
-	 * @param view
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.panels.INavigationTreePanel#showNavigationView(net.sourceforge.atunes.model.INavigationView)
 	 */
+	@Override
 	public void showNavigationView(INavigationView view) {		
 		((CardLayout)treePanel.getLayout()).show(treePanel, view.getClass().getName());
 		treeComboBox.setSelectedItem(view);
 	}
 
-	/**
-	 * @return the treeComboBox
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.panels.INavigationTreePanel#getTreeComboBox()
 	 */
+	@Override
 	public JComboBox getTreeComboBox() {
 		return treeComboBox;
+	}
+	
+	@Override
+	public JPanel getSwingComponent() {
+		return this;
+	}
+	
+	@Override
+	public void enableDragAndDrop(TransferHandler transferHandler) {
+		setTransferHandler(transferHandler);
 	}
 }

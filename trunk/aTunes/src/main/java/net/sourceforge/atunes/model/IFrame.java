@@ -28,7 +28,6 @@ import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JProgressBar;
 
-import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 
@@ -91,7 +90,7 @@ public interface IFrame {
      * 
      * @return the navigation tree panel
      */
-    public NavigationTreePanel getNavigationTreePanel();
+    public INavigationTreePanel getNavigationTreePanel();
 
     /**
      * Gets the navigation table panel.

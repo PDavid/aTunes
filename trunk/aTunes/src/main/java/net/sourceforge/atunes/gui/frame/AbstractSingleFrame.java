@@ -66,6 +66,7 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMenuBar;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationTablePanel;
+import net.sourceforge.atunes.model.INavigationTreePanel;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
@@ -92,7 +93,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     
     private IFrameState frameState;
 
-    private NavigationTreePanel navigationTreePanel;
+    private INavigationTreePanel navigationTreePanel;
     private INavigationTablePanel navigationTablePanel;
     private JLabel leftStatusBar;
     private JLabel centerStatusBar;
@@ -331,7 +332,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     }
 
     @Override
-    public NavigationTreePanel getNavigationTreePanel() {
+    public INavigationTreePanel getNavigationTreePanel() {
         if (navigationTreePanel == null) {
             navigationTreePanel = new NavigationTreePanel(lookAndFeelManager);
             navigationTreePanel.setMinimumSize(getNavigationTreePanelMinimumSize());

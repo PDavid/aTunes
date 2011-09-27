@@ -53,7 +53,6 @@ import net.sourceforge.atunes.gui.renderers.ColumnRenderers;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetRowSorter;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
-import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ShowAlbumsInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowArtistsInNavigatorAction;
@@ -71,6 +70,7 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationTablePanel;
+import net.sourceforge.atunes.model.INavigationTreePanel;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ISearch;
@@ -126,7 +126,7 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
         }
 	}
 
-    private NavigationTreePanel navigationTreePanel;
+    private INavigationTreePanel navigationTreePanel;
     private INavigationTablePanel navigationTablePanel;
 
     /** The current extended tool tip content. */
@@ -172,7 +172,7 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
      * @param taskService
      * @param lookAndFeelManager
      */
-    NavigationController(NavigationTreePanel treePanel, INavigationTablePanel tablePanel, IState state, IOSManager osManager, INavigationHandler navigationHandler, ITaskService taskService, ILookAndFeelManager lookAndFeelManager) {
+    NavigationController(INavigationTreePanel treePanel, INavigationTablePanel tablePanel, IState state, IOSManager osManager, INavigationHandler navigationHandler, ITaskService taskService, ILookAndFeelManager lookAndFeelManager) {
         this.navigationTreePanel = treePanel;
         this.navigationTablePanel = tablePanel;
         this.state = state;
@@ -185,11 +185,11 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
         this.navigatorColumnSet = (IColumnSet) Context.getBean("navigatorColumnSet");
     }
 
-    public NavigationTreePanel getNavigationTreePanel() {
+    protected INavigationTreePanel getNavigationTreePanel() {
         return navigationTreePanel;
     }
 
-    public INavigationTablePanel getNavigationTablePanel() {
+    protected INavigationTablePanel getNavigationTablePanel() {
         return navigationTablePanel;
     }
 
