@@ -74,7 +74,7 @@ public final class NavigatorTopPlayListBottomSingleFrame extends MainSplitPaneRi
     @Override
     protected JComponent getComponentA() {
     	navigatorSplitPane = new CustomSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-    	navigatorSplitPane.setLeftComponent(getNavigationTreePanel());
+    	navigatorSplitPane.setLeftComponent(getNavigationTreePanel().getSwingComponent());
     	navigatorSplitPane.setRightComponent(getNavigationTablePanel().getSwingComponent());
     	navigatorSplitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
 

@@ -56,7 +56,7 @@ public final class DefaultSingleFrame extends MainSplitPaneLeftSingleFrame imple
 
     @Override
     public void showNavigationTree(boolean show) {
-        applyVisibility(show, NAVIGATOR_SPLIT_PANE, getNavigationTreePanel(), navigatorSplitPane);
+        applyVisibility(show, NAVIGATOR_SPLIT_PANE, getNavigationTreePanel().getSwingComponent(), navigatorSplitPane);
         checkNavigatorSplitPaneVisibility();
     }
 
@@ -77,7 +77,7 @@ public final class DefaultSingleFrame extends MainSplitPaneLeftSingleFrame imple
     @Override
     protected JComponent getComponentA() {
         navigatorSplitPane = new CustomSplitPane(JSplitPane.VERTICAL_SPLIT);
-        navigatorSplitPane.setLeftComponent(getNavigationTreePanel());
+        navigatorSplitPane.setLeftComponent(getNavigationTreePanel().getSwingComponent());
         navigatorSplitPane.setRightComponent(getNavigationTablePanel().getSwingComponent());
         navigatorSplitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
 

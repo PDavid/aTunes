@@ -29,7 +29,6 @@ import java.util.Map;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.draganddrop.TreeNavigationTransferHandler;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
@@ -39,6 +38,7 @@ import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationTablePanel;
+import net.sourceforge.atunes.model.INavigationTreePanel;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
@@ -109,9 +109,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
         // Navigation Panel View
         getNavigationController().setNavigationView(getState().getNavigationView(), false); 
         
-        
-        TreeNavigationTransferHandler treeNavigationTransferHandler = new TreeNavigationTransferHandler();
-        getNavigationController().getNavigationTreePanel().setTransferHandler(treeNavigationTransferHandler);
+        getNavigationController().getNavigationTreePanel().enableDragAndDrop(new TreeNavigationTransferHandler());
     }
 
     /* (non-Javadoc)
@@ -247,7 +245,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
      */
     private NavigationController getNavigationController() {
         if (navigationController == null) {
-            NavigationTreePanel treePanel = getFrame().getNavigationTreePanel();
+        	INavigationTreePanel treePanel = getFrame().getNavigationTreePanel();
             INavigationTablePanel tablePanel = getFrame().getNavigationTablePanel();
             navigationController = new NavigationController(treePanel, tablePanel, getState(), getOsManager(), this, getBean(ITaskService.class), getBean(ILookAndFeelManager.class));
         }
