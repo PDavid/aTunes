@@ -113,7 +113,7 @@ class PreferencesCache extends AbstractCache implements IStateStore {
         Element element = new Element(preferenceId.toString(), value != null ? new PasswordPreference(value) : null);
         getCache().put(element);
         getCache().flush();
-        Logger.debug("Stored Password Preference: ", preferenceId, " Value: ", value != null ? value.toString() : null);
+        Logger.debug("Stored Password Preference: ", preferenceId);
     }
 
     private Cache getCache() {
