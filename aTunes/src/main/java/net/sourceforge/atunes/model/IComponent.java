@@ -20,37 +20,19 @@
 
 package net.sourceforge.atunes.model;
 
-import java.awt.Dimension;
+import javax.swing.JComponent;
 
 /**
- * A graphical panel
- * 
+ * A graphical component
  * @author alex
  *
  */
-public interface IPanel extends IComponent {
+public interface IComponent<T extends JComponent> {
 
 	/**
-	 * Sets maximum size
-	 * @param size
+	 * Returns the underlying Swing component
+	 * @return
 	 */
-	public void setMaximumSize(Dimension size);
+	public T getSwingComponent();
 	
-	/**
-	 * Sets minimum size
-	 * @param size
-	 */
-	public void setMinimumSize(Dimension size);
-	
-	/**
-	 * Sets preferred size
-	 * @param size
-	 */
-	public void setPreferredSize(Dimension size);
-	
-	/**
-	 * Sets visibility
-	 * @param visible
-	 */
-	public void setVisible(boolean visible);
 }

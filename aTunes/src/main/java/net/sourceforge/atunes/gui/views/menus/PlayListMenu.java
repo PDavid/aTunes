@@ -30,7 +30,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddAlbumWithSelectedArtistsAction;
 import net.sourceforge.atunes.kernel.actions.AddAlbumsMostPlayedAction;
@@ -59,6 +58,7 @@ import net.sourceforge.atunes.kernel.actions.ShowPlayListItemInfoAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class PlayListMenu {
@@ -71,7 +71,7 @@ public final class PlayListMenu {
      * 
      * @param menu
      */
-    public static void fillPopUpMenu(JPopupMenu menu, PlayListTable table) {
+    public static void fillPopUpMenu(JPopupMenu menu, IPlayListTable table) {
         List<Object> objectsToAdd = getComponents(table);
         for (Object o : objectsToAdd) {
             // Object can be an action or a swing component
@@ -88,7 +88,7 @@ public final class PlayListMenu {
      * 
      * @param menu
      */
-    public static void fillMenu(JMenu menu, PlayListTable table) {
+    public static void fillMenu(JMenu menu, IPlayListTable table) {
         List<Object> objectsToAdd = getComponents(table);
         for (Object o : objectsToAdd) {
             // Object can be an action or a swing component
@@ -105,7 +105,7 @@ public final class PlayListMenu {
      * 
      * @return
      */
-    private static List<Object> getComponents(PlayListTable table) {
+    private static List<Object> getComponents(IPlayListTable table) {
         List<Object> objects = new ArrayList<Object>();
         objects.add(Actions.getAction(PlayAction.class));
         objects.add(Actions.getAction(ShowPlayListItemInfoAction.class));
@@ -192,7 +192,7 @@ public final class PlayListMenu {
      * 
      * @param table
      */
-	public static void updatePlayListMenuItems(PlayListTable table) {
+	public static void updatePlayListMenuItems(IPlayListTable table) {
         updatePlayListPopupMenuItems(table.getMenu(), Context.getBean(IPlayListHandler.class).getSelectedAudioObjects());
     }
 

@@ -20,37 +20,23 @@
 
 package net.sourceforge.atunes.model;
 
-import java.awt.Dimension;
+import java.awt.dnd.DragGestureListener;
+import java.awt.dnd.DragSourceListener;
+
+import javax.swing.JPopupMenu;
+
 
 /**
- * A graphical panel
- * 
+ * A table to show audio objects being played
  * @author alex
  *
  */
-public interface IPanel extends IComponent {
+public interface IPlayListTable extends DragSourceListener, DragGestureListener, IAudioObjectsSource, ITable {
 
-	/**
-	 * Sets maximum size
-	 * @param size
-	 */
-	public void setMaximumSize(Dimension size);
-	
-	/**
-	 * Sets minimum size
-	 * @param size
-	 */
-	public void setMinimumSize(Dimension size);
-	
-	/**
-	 * Sets preferred size
-	 * @param size
-	 */
-	public void setPreferredSize(Dimension size);
-	
-	/**
-	 * Sets visibility
-	 * @param visible
-	 */
-	public void setVisible(boolean visible);
+	public JPopupMenu getMenu();
+
+	public PlayState getPlayState();
+
+	public void setPlayState(PlayState playState);
+
 }

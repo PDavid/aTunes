@@ -29,7 +29,6 @@ import javax.swing.JFrame;
 import javax.swing.JProgressBar;
 import javax.swing.JTable;
 
-import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
@@ -122,7 +121,7 @@ public interface IFrame {
      * 
      * @return the play list table
      */
-    public PlayListTable getPlayListTable();
+    public IPlayListTable getPlayListTable();
 
     /**
      * Gets the size.

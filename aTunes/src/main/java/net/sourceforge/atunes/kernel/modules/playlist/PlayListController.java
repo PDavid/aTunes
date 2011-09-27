@@ -28,13 +28,13 @@ import javax.swing.JScrollPane;
 import javax.swing.Timer;
 import javax.swing.event.TableModelEvent;
 
-import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -63,7 +63,7 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
 
     @Override
 	public void addBindings() {
-        final PlayListTable table = getComponentControlled().getPlayListTable();
+        final IPlayListTable table = getComponentControlled().getPlayListTable();
 
         // Set key listener for table
         table.addKeyListener(new PlayListKeyListener(this));
@@ -88,21 +88,20 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
      * Delete selection.
      */
     void deleteSelection() {
-        PlayListTable table = frame.getPlayListTable();
+    	IPlayListTable table = frame.getPlayListTable();
         int[] rows = table.getSelectedRows();
         if (rows.length > 0) {
-            javax.swing.JTable aTable = getComponentControlled().getPlayListTable();
-            aTable.getSelectionModel().clearSelection();
+        	table.getSelectionModel().clearSelection();
             playListHandler.removeAudioObjects(rows);
             
-            int rowCount = aTable.getRowCount();
+            int rowCount = table.getRowCount();
             if(rowCount > 0) {
                 int newIndex = arrMin(rows);
 
                 if(newIndex >= rowCount)
                     newIndex = rowCount - 1;
 
-                aTable.getSelectionModel().setSelectionInterval(newIndex, newIndex);
+                table.getSelectionModel().setSelectionInterval(newIndex, newIndex);
             }
         }
     }
@@ -114,15 +113,6 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
      */
     JScrollPane getMainPlayListScrollPane() {
         return getComponentControlled().getPlayListTableScroll();
-    }
-
-    /**
-     * Gets the main play list table.
-     * 
-     * @return the main play list table
-     */
-    PlayListTable getMainPlayListTable() {
-        return getComponentControlled().getPlayListTable();
     }
 
     /**
