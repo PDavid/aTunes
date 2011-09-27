@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.FavoritesListeners;
@@ -43,14 +44,22 @@ import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.Logger;
 
+import org.apache.commons.collections.list.SetUniqueList;
+
 /**
  * The Class FavoritesHandler.
  */
 public final class FavoritesHandler extends AbstractHandler implements IAudioFilesRemovedListener, IFavoritesHandler {
 
+	private IStateHandler stateHandler;
+	
     /** The favorites. */
     private IFavorites favorites;
 
+    public void setStateHandler(IStateHandler stateHandler) {
+		this.stateHandler = stateHandler;
+	}
+    
     @Override
     protected void initHandler() {
         RepositoryHandler.getInstance().addAudioFilesRemovedListener(this);
@@ -67,10 +76,12 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
     		return;
     	}
     	
+        @SuppressWarnings("unchecked")
+		Set<ILocalAudioObject> set = SetUniqueList.decorate(songs).asSet();
+
     	List<ITreeObject<?>> toRemove = new ArrayList<ITreeObject<?>>();
         Map<String, Album> favAlbums = favorites.getFavoriteAlbums();
-        for (int i = 0; i < songs.size(); i++) {
-        	ILocalAudioObject f = songs.get(i);
+        for (ILocalAudioObject f : set) {
             Artist artist = RepositoryHandler.getInstance().getArtist(f.getArtist());
             if (artist == null) {
                 artist = RepositoryHandler.getInstance().getArtist(f.getAlbumArtist());
@@ -92,11 +103,13 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
     	if (songs == null || songs.isEmpty()) {
     		return;
     	}
+    	
+        @SuppressWarnings("unchecked")
+		Set<ILocalAudioObject> set = SetUniqueList.decorate(songs).asSet();
 
     	List<ITreeObject<?>> toRemove = new ArrayList<ITreeObject<?>>();    	
         Map<String, Artist> favArtists = favorites.getFavoriteArtists();
-        for (int i = 0; i < songs.size(); i++) {
-        	ILocalAudioObject f = songs.get(i);
+        for (ILocalAudioObject f : set) {
             Artist artist = RepositoryHandler.getInstance().getArtist(f.getArtist());
             if (favArtists.containsValue(artist)) {
             	toRemove.add(artist);
@@ -113,9 +126,13 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
         if (songs == null || songs.isEmpty()) {
             return;
         }
+        
+        @SuppressWarnings("unchecked")
+		Set<ILocalAudioObject> set = SetUniqueList.decorate(songs).asSet();
+        
         Map<String, ILocalAudioObject> favSongs = favorites.getFavoriteAudioFiles();
         List<IAudioObject> toRemove = new LinkedList<IAudioObject>();
-        for (ILocalAudioObject song : songs) {
+        for (ILocalAudioObject song : set) {
             //Toggle favorite songs
             if (favSongs.containsKey(song.getUrl())) {
                 toRemove.add(song);
@@ -134,10 +151,29 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
     }
 
     @Override
+	public void addFavoriteSongs(List<ILocalAudioObject> songs, boolean automcaticallyLove) {
+        if (songs == null || songs.isEmpty()) {
+            return;
+        }
+        
+        Map<String, ILocalAudioObject> favSongs = favorites.getFavoriteAudioFiles();
+        for (ILocalAudioObject song : songs) {
+        	favSongs.put(song.getUrl(), song);
+
+        	// Add to web service if necessary
+        	if (automcaticallyLove && getState().isLastFmEnabled() && getState().isAutoLoveFavoriteSong()) {
+        		// TODO: do this with a listener interface            	
+        		((AddLovedSongInLastFMAction) Actions.getAction(AddLovedSongInLastFMAction.class)).loveSong(song);
+        	}
+        }
+        callActionsAfterFavoritesChange();
+    }
+
+    @Override
     public void applicationFinish() {
         // Only store repository if it's dirty
         if (((Favorites)favorites).isDirty()) {
-        	getBean(IStateHandler.class).persistFavoritesCache(favorites);
+        	stateHandler.persistFavoritesCache(favorites);
         } else {
             Logger.info("Favorites are clean");
         }
@@ -159,7 +195,7 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
 
             @Override
             public void run() {
-                favorites = getBean(IStateHandler.class).retrieveFavoritesCache();
+                favorites = stateHandler.retrieveFavoritesCache();
                 if (favorites == null) {
                 	favorites = new Favorites();
                 }
@@ -239,4 +275,5 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
         }
         callActionsAfterFavoritesChange();
     }
+    
 }

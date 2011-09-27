@@ -56,6 +56,14 @@ public interface IFavoritesHandler extends IHandler {
 	public void toggleFavoriteSongs(List<ILocalAudioObject> songs);
 
 	/**
+	 * Adds the favorite songs, even if already added. Optionally can be automatically marked as loved in web services
+	 * 
+	 * @param songs
+	 * @param automaticallyLoveInWebService
+	 */
+	public void addFavoriteSongs(List<ILocalAudioObject> songs, boolean automaticallyLoveInWebService);
+
+	/**
 	 * Gets the favorite albums info.
 	 * 
 	 * @return the favorite albums info
