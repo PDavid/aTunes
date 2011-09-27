@@ -26,8 +26,8 @@ import java.awt.event.MouseEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.gui.views.menus.PlayListMenu;
+import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
@@ -35,7 +35,7 @@ import net.sourceforge.atunes.utils.GuiUtils;
  */
 public final class PlayListListener extends MouseAdapter implements ListSelectionListener {
 
-    private PlayListTable table;
+    private IPlayListTable table;
     private PlayListController controller;
 
     /**
@@ -46,7 +46,7 @@ public final class PlayListListener extends MouseAdapter implements ListSelectio
      * @param controller
      *            the controller
      */
-    protected PlayListListener(PlayListTable table, PlayListController controller) {
+    protected PlayListListener(IPlayListTable table, PlayListController controller) {
         this.table = table;
         this.controller = controller;
     }

@@ -22,22 +22,14 @@ package net.sourceforge.atunes.model;
 
 import java.awt.Dimension;
 
-import javax.swing.JComponent;
-
 /**
  * A graphical panel
  * 
  * @author alex
  *
  */
-public interface IPanel {
+public interface IPanel extends IComponent {
 
-	/**
-	 * Returns the underlying Swing component
-	 * @return
-	 */
-	public JComponent getSwingComponent();
-	
 	/**
 	 * Sets maximum size
 	 * @param size

@@ -181,7 +181,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     public void allHandlersInitialized() {
         // Create drag and drop listener
         PlayListTableTransferHandler playListTransferHandler = new PlayListTableTransferHandler(getFrame(), getOsManager(), this, getBean(INavigationHandler.class));
-        getPlayListController().getMainPlayListTable().setTransferHandler(playListTransferHandler);
+        getFrame().getPlayListTable().setTransferHandler(playListTransferHandler);
         getPlayListController().getMainPlayListScrollPane().setTransferHandler(playListTransferHandler);
         new PlayListToDeviceDragAndDropListener(getBean(INavigationHandler.class));
     }

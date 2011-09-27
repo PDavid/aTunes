@@ -22,12 +22,10 @@ package net.sourceforge.atunes.gui.views.controls.playList;
 
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragGestureEvent;
-import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DragSource;
 import java.awt.dnd.DragSourceDragEvent;
 import java.awt.dnd.DragSourceDropEvent;
 import java.awt.dnd.DragSourceEvent;
-import java.awt.dnd.DragSourceListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -51,17 +49,17 @@ import net.sourceforge.atunes.gui.views.menus.PlayListMenu;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListDragableRow;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListTableModel;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IAudioObjectsSource;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.PlayState;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
  * The play list table.
  */
-public final class PlayListTable extends JTable implements DragSourceListener, DragGestureListener, IAudioObjectsSource {
+public final class PlayListTable extends JTable implements IPlayListTable {
 
     private static final long serialVersionUID = 9209069236823917569L;
 
@@ -133,14 +131,26 @@ public final class PlayListTable extends JTable implements DragSourceListener, D
         setOpaque(false);
     }
 
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.controls.playList.IPlayListTable#getMenu()
+	 */
+	@Override
 	public JPopupMenu getMenu() {
         return menu;
     }
 
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.controls.playList.IPlayListTable#getPlayState()
+	 */
+	@Override
 	public PlayState getPlayState() {
         return playState;
     }
 
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.controls.playList.IPlayListTable#setPlayState(net.sourceforge.atunes.model.PlayState)
+	 */
+	@Override
 	public void setPlayState(PlayState playState) {
         this.playState = playState;
         revalidate();
@@ -189,6 +199,11 @@ public final class PlayListTable extends JTable implements DragSourceListener, D
     @Override
     public List<IAudioObject> getSelectedAudioObjects() {
         return playListHandler.getSelectedAudioObjects();
+    }
+    
+    @Override
+    public JTable getSwingComponent() {
+    	return this;
     }
    
 }

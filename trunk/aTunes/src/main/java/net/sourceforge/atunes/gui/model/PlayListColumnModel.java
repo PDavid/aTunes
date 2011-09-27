@@ -33,11 +33,11 @@ import net.sourceforge.atunes.gui.images.PlayListStateImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.StringTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.TextAndIconTableCellRendererCode;
-import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.kernel.modules.columns.TextAndIcon;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.PlayState;
 
@@ -96,8 +96,8 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
      * @param playListHandler
      * @param lookAndFeel
      */
-    public PlayListColumnModel(PlayListTable playList, IPlayListHandler playListHandler, ILookAndFeel lookAndFeel) {
-        super(playList, (IColumnSet) Context.getBean("playlistColumnSet"), Context.getBean(ITaskService.class), lookAndFeel);
+    public PlayListColumnModel(IPlayListTable playList, IPlayListHandler playListHandler, ILookAndFeel lookAndFeel) {
+        super(playList.getSwingComponent(), (IColumnSet) Context.getBean("playlistColumnSet"), Context.getBean(ITaskService.class), lookAndFeel);
         this.playListHandler = playListHandler;
         enableColumnChange(true);
     }
@@ -143,7 +143,7 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
                     ((JLabel) c).setText(null);
                     if (playListHandler.isCurrentVisibleRowPlaying(row)) {
                         ((JLabel) c).setIcon(getPlayStateIcon(getLookAndFeel().getPaintForColorMutableIcon(c, isSelected), 
-                        		((PlayListTable) getTable()).getPlayState(), getLookAndFeel()));
+                        		((IPlayListTable) getTable()).getPlayState(), getLookAndFeel()));
                     } else {
                         ((JLabel) c).setIcon(null); // was using Images.getImage(Images.EMPTY) previously
                     }
