@@ -85,6 +85,7 @@ aTunes 2.1.0
 - FIX: After playing all playlist and playing again, moving to next song doesn't work
 - FIX: Better control over repository load when repository folders are moved (patch by Dave Badia)
 - FIX: Selecting full screen background fails [3413642]
+- FIX: debug option doesn't work [3196082]
 
 aTunes 2.0.1
 -------------
