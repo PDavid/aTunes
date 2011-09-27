@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.repository.favorites;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,12 +27,13 @@ import java.util.Map;
 
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IFavorites;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
 /**
  * The Class Favorites.
  */
-public class Favorites implements Serializable {
+public class Favorites implements IFavorites {
 
     private static final long serialVersionUID = 4783402394156393291L;
 
@@ -54,18 +54,17 @@ public class Favorites implements Serializable {
     /**
      * Instantiates a new favorites.
      */
-    public Favorites() {
+    protected Favorites() {
         favoriteSongs = new HashMap<String, ILocalAudioObject>();
         favoriteAlbums = new HashMap<String, Album>();
         favoriteArtists = new HashMap<String, Artist>();
     }
 
-    /**
-     * Gets the all favorite songs.
-     * 
-     * @return the all favorite songs
-     */
-    public List<ILocalAudioObject> getAllFavoriteSongs() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.favorites.IFavorites#getAllFavoriteSongs()
+	 */
+    @Override
+	public List<ILocalAudioObject> getAllFavoriteSongs() {
         List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
         for (Artist artist : favoriteArtists.values()) {
             result.addAll(artist.getAudioObjects());
@@ -77,10 +76,11 @@ public class Favorites implements Serializable {
         return result;
     }
 
-    /**
-     * Gets a map with all favorite songs, with url as key
-     */
-    public Map<String, ILocalAudioObject> getAllFavoriteSongsMap() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.favorites.IFavorites#getAllFavoriteSongsMap()
+	 */
+    @Override
+	public Map<String, ILocalAudioObject> getAllFavoriteSongsMap() {
         Map<String, ILocalAudioObject> result = new HashMap<String, ILocalAudioObject>();
         for (ILocalAudioObject af : getAllFavoriteSongs()) {
             result.put(af.getUrl(), af);
@@ -88,60 +88,51 @@ public class Favorites implements Serializable {
         return result;
     }
 
-    /**
-     * Gets the favorite albums.
-     * 
-     * @return the favorite albums
-     */
-    public Map<String, Album> getFavoriteAlbums() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.favorites.IFavorites#getFavoriteAlbums()
+	 */
+    @Override
+	public Map<String, Album> getFavoriteAlbums() {
         return favoriteAlbums;
     }
 
-    /**
-     * Gets the favorite artists.
-     * 
-     * @return the favorite artists
-     */
-    public Map<String, Artist> getFavoriteArtists() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.favorites.IFavorites#getFavoriteArtists()
+	 */
+    @Override
+	public Map<String, Artist> getFavoriteArtists() {
         return favoriteArtists;
     }
 
-    /**
-     * Gets the favorite songs.
-     * 
-     * @return the favorite songs
-     */
-    public Map<String, ILocalAudioObject> getFavoriteAudioFiles() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.favorites.IFavorites#getFavoriteAudioFiles()
+	 */
+    @Override
+	public Map<String, ILocalAudioObject> getFavoriteAudioFiles() {
         return favoriteSongs;
     }
 
-    /**
-     * Sets the favorite albums.
-     * 
-     * @param favoriteAlbums
-     *            the favorite albums
-     */
-    public void setFavoriteAlbums(Map<String, Album> favoriteAlbums) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.favorites.IFavorites#setFavoriteAlbums(java.util.Map)
+	 */
+    @Override
+	public void setFavoriteAlbums(Map<String, Album> favoriteAlbums) {
         this.favoriteAlbums = favoriteAlbums;
     }
 
-    /**
-     * Sets the favorite artists.
-     * 
-     * @param favoriteArtists
-     *            the favorite artists
-     */
-    public void setFavoriteArtists(Map<String, Artist> favoriteArtists) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.favorites.IFavorites#setFavoriteArtists(java.util.Map)
+	 */
+    @Override
+	public void setFavoriteArtists(Map<String, Artist> favoriteArtists) {
         this.favoriteArtists = favoriteArtists;
     }
 
-    /**
-     * Sets the favorite songs.
-     * 
-     * @param favoriteSongs
-     *            the favorite songs
-     */
-    public void setFavoriteSongs(Map<String, ILocalAudioObject> favoriteSongs) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.favorites.IFavorites#setFavoriteSongs(java.util.Map)
+	 */
+    @Override
+	public void setFavoriteSongs(Map<String, ILocalAudioObject> favoriteSongs) {
         this.favoriteSongs = favoriteSongs;
     }
 

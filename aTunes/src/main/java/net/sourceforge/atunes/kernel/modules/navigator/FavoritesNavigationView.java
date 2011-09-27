@@ -53,12 +53,12 @@ import net.sourceforge.atunes.kernel.actions.SearchArtistAtAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
+import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -77,6 +77,8 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
 
     /** The favorite table menu. */
     private JPopupMenu favoriteTableMenu;
+    
+    private IFavoritesHandler favoritesHandler;
 
     /**
      * @param state
@@ -172,8 +174,8 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
     @Override
     public Map<String, ?> getViewData(ViewMode viewMode) {
         Map<String, Map<?, ?>> data = new HashMap<String, Map<?, ?>>();
-        data.put("ARTISTS", FavoritesHandler.getInstance().getFavoriteArtistsInfo());
-        data.put("ALBUMS", FavoritesHandler.getInstance().getFavoriteAlbumsInfo());
+        data.put("ARTISTS", favoritesHandler.getFavoriteArtistsInfo());
+        data.put("ALBUMS", favoritesHandler.getFavoriteAlbumsInfo());
         return data;
     }
 
@@ -232,20 +234,20 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
 
         if (node.isRoot()) {
             songs = new ArrayList<ILocalAudioObject>();
-            songs.addAll(RepositoryHandler.getInstance().getAudioFilesForArtists(FavoritesHandler.getInstance().getFavoriteArtistsInfo()));
-            songs.addAll(RepositoryHandler.getInstance().getAudioFilesForAlbums(FavoritesHandler.getInstance().getFavoriteAlbumsInfo()));
-            songs.addAll(FavoritesHandler.getInstance().getFavoriteSongsInfo().values());
+            songs.addAll(RepositoryHandler.getInstance().getAudioFilesForArtists(favoritesHandler.getFavoriteArtistsInfo()));
+            songs.addAll(RepositoryHandler.getInstance().getAudioFilesForAlbums(favoritesHandler.getFavoriteAlbumsInfo()));
+            songs.addAll(favoritesHandler.getFavoriteSongsInfo().values());
         } else {
             if (node.getUserObject() instanceof ITreeObject) {
                 songs = ((ITreeObject<ILocalAudioObject>) node.getUserObject()).getAudioObjects();
             } else {
                 songs = new ArrayList<ILocalAudioObject>();
                 if (node.getUserObject().toString().equals(I18nUtils.getString("ARTISTS"))) {
-                    songs.addAll(RepositoryHandler.getInstance().getAudioFilesForArtists(FavoritesHandler.getInstance().getFavoriteArtistsInfo()));
+                    songs.addAll(RepositoryHandler.getInstance().getAudioFilesForArtists(favoritesHandler.getFavoriteArtistsInfo()));
                 } else if (node.getUserObject().toString().equals(I18nUtils.getString("ALBUMS"))) {
-                    songs.addAll(RepositoryHandler.getInstance().getAudioFilesForAlbums(FavoritesHandler.getInstance().getFavoriteAlbumsInfo()));
+                    songs.addAll(RepositoryHandler.getInstance().getAudioFilesForAlbums(favoritesHandler.getFavoriteAlbumsInfo()));
                 } else {
-                    songs.addAll(new ArrayList<ILocalAudioObject>(FavoritesHandler.getInstance().getFavoriteSongsInfo().values()));
+                    songs.addAll(new ArrayList<ILocalAudioObject>(favoritesHandler.getFavoriteSongsInfo().values()));
                 }
             }
         }
@@ -332,4 +334,8 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
     public boolean isViewModeSupported() {
         return false;
     }
+    
+    public void setFavoritesHandler(IFavoritesHandler favoritesHandler) {
+		this.favoritesHandler = favoritesHandler;
+	}
 }

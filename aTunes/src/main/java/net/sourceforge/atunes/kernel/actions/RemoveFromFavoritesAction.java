@@ -29,10 +29,10 @@ import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.kernel.modules.navigator.FavoritesNavigationView;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -41,6 +41,7 @@ public class RemoveFromFavoritesAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -4288879781314486222L;
 
+    
     public RemoveFromFavoritesAction() {
         super(I18nUtils.getString("REMOVE_FROM_FAVORITES"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_FROM_FAVORITES"));
@@ -57,12 +58,12 @@ public class RemoveFromFavoritesAction extends CustomAbstractAction {
                 for (TreePath element : paths) {
                     objects.add((ITreeObject<? extends IAudioObject>) ((DefaultMutableTreeNode) element.getLastPathComponent()).getUserObject());
                 }
-                FavoritesHandler.getInstance().removeFromFavorites(objects);
+                getBean(IFavoritesHandler.class).removeFromFavorites(objects);
             }
         } else {
         	List<IAudioObject> audioObjects = navigationHandler.getSelectedAudioObjectsInNavigationTable();
             if (!audioObjects.isEmpty()) {
-                FavoritesHandler.getInstance().removeSongsFromFavorites(audioObjects);
+            	getBean(IFavoritesHandler.class).removeSongsFromFavorites(audioObjects);
             }
         }
     }
@@ -86,6 +87,6 @@ public class RemoveFromFavoritesAction extends CustomAbstractAction {
     @Override
     public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
         // Enabled if all selected items are favorite songs (not belong to favorite artist nor album)
-        return FavoritesHandler.getInstance().getFavoriteSongsInfo().values().containsAll(AudioFile.getAudioFiles(selection));
+        return getBean(IFavoritesHandler.class).getFavoriteSongsInfo().values().containsAll(AudioFile.getAudioFiles(selection));
     }
 }

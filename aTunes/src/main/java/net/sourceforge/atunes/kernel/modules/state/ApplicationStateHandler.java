@@ -43,6 +43,7 @@ import net.sourceforge.atunes.kernel.modules.repository.exception.InconsistentRe
 import net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites;
 import net.sourceforge.atunes.kernel.modules.statistics.Statistics;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFavorites;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IRadio;
@@ -107,7 +108,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#persistFavoritesCache(net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites)
 	 */
     @Override
-	public void persistFavoritesCache(Favorites favorites) {
+	public void persistFavoritesCache(IFavorites favorites) {
         ObjectOutputStream stream = null;
         try {
             stream = new ObjectOutputStream(new FileOutputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.CACHE_FAVORITES_NAME)));
@@ -295,28 +296,24 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#retrieveFavoritesCache()
 	 */
     @Override
-	public Favorites retrieveFavoritesCache() {
+	public IFavorites retrieveFavoritesCache() {
         ObjectInputStream stream = null;
         try {
             stream = new ObjectInputStream(new FileInputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.CACHE_FAVORITES_NAME)));
             Logger.info("Reading serialized favorites cache");
-            return (Favorites) stream.readObject();
+            return (IFavorites) stream.readObject();
         } catch (InvalidClassException e) {
             Logger.info("No serialized favorites info found");
-            Favorites xml = retrieveFavoritesCacheFromXML();
-            return xml != null ? xml : new Favorites();
+            return retrieveFavoritesCacheFromXML();
         } catch (IOException e) {
             Logger.info("No serialized favorites info found");
-            Favorites xml = retrieveFavoritesCacheFromXML();
-            return xml != null ? xml : new Favorites();
+            return retrieveFavoritesCacheFromXML();
         } catch (ClassNotFoundException e) {
             Logger.info("No serialized favorites info found");
-            Favorites xml = retrieveFavoritesCacheFromXML();
-            return xml != null ? xml : new Favorites();
+            return retrieveFavoritesCacheFromXML();
         } catch (ClassCastException e) {
             Logger.info("No serialized favorites info found");
-            Favorites xml = retrieveFavoritesCacheFromXML();
-            return xml != null ? xml : new Favorites();        	
+            return retrieveFavoritesCacheFromXML();
         } finally {
             ClosingUtils.close(stream);
         }

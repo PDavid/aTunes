@@ -24,4 +24,5 @@
 	</bean>
 	<bean id="podcastFeedHandler" class="net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler"/>
 	<bean id="stateHandler" class="net.sourceforge.atunes.kernel.modules.state.ApplicationStateHandler"/>
+	<bean id="favoritesHandler" class="net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler"/>
 </beans>

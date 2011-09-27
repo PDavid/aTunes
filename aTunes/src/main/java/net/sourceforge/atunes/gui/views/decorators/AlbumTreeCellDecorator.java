@@ -27,17 +27,19 @@ import javax.swing.JLabel;
 import net.sourceforge.atunes.gui.images.AlbumFavoriteImageIcon;
 import net.sourceforge.atunes.gui.images.AlbumImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
-import net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler;
 import net.sourceforge.atunes.model.Album;
+import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IState;
 
 public class AlbumTreeCellDecorator extends AbstractTreeCellDecorator {
 
+	private IFavoritesHandler favoritesHandler;
+	
     @Override
     public Component decorateTreeCellComponent(IState state, Component component, Object userObject, boolean isSelected, ILookAndFeel lookAndFeel) {
         if (userObject instanceof Album) {
-            if (!state.isShowFavoritesInNavigator() || !FavoritesHandler.getInstance().getFavoriteAlbumsInfo().containsValue(userObject)) {
+            if (!state.isShowFavoritesInNavigator() || !favoritesHandler.getFavoriteAlbumsInfo().containsValue(userObject)) {
                 ((JLabel) component).setIcon(AlbumImageIcon.getIcon(lookAndFeel.getPaintForColorMutableIcon(component, isSelected), lookAndFeel));
             } else {
                 ((JLabel) component).setIcon(AlbumFavoriteImageIcon.getIcon(lookAndFeel.getPaintForColorMutableIcon(component, isSelected), lookAndFeel));
@@ -46,5 +48,9 @@ public class AlbumTreeCellDecorator extends AbstractTreeCellDecorator {
         
         return component;
     }
+    
+    public void setFavoritesHandler(IFavoritesHandler favoritesHandler) {
+		this.favoritesHandler = favoritesHandler;
+	}
 
 }
