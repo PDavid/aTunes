@@ -61,6 +61,7 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IProcessListener;
+import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryLoaderListener;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
@@ -338,7 +339,7 @@ public final class DeviceHandler extends AbstractHandler implements IRepositoryL
      * 
      * @return the device repository
      */
-    public Repository getDeviceRepository() {
+    public IRepository getDeviceRepository() {
         return deviceRepository;
     }
 

@@ -28,8 +28,8 @@ import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.ITag;
-import net.sourceforge.atunes.model.Repository;
 
 /**
  * A class responsible of load repository structure
@@ -38,13 +38,13 @@ import net.sourceforge.atunes.model.Repository;
  */
 final class RepositoryFiller {
 
-	private Repository repository;
+	private IRepository repository;
 
 	/**
      * Creates a new filler for given repository
      * @param repository
      */
-    RepositoryFiller(Repository repository) {
+    RepositoryFiller(IRepository repository) {
     	if (repository == null) {
     		throw new IllegalArgumentException("Repository is null");
     	}

@@ -35,7 +35,7 @@ import net.sourceforge.atunes.utils.Logger;
 
 import org.joda.time.DateTime;
 
-public class Repository implements Serializable {
+public class Repository implements Serializable, IRepository {
 
     private static final long serialVersionUID = -8278937514875788175L;
 
@@ -117,82 +117,75 @@ public class Repository implements Serializable {
     @SuppressWarnings("unused")
     private Repository() {}
 
-    /**
-     * @param state
-     */
-    public void setState(IState state) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#setState(net.sourceforge.atunes.model.IState)
+	 */
+    @Override
+	public void setState(IState state) {
     	this.state = state;
     }
     
-    /**
-     * Gets the folders.
-     * 
-     * @return the folders
-     */
-    public List<File> getRepositoryFolders() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#getRepositoryFolders()
+	 */
+    @Override
+	public List<File> getRepositoryFolders() {
         return new ArrayList<File>(folders);
     }
 
-    /**
-     * Adds the duration in seconds.
-     * 
-     * @param seconds
-     *            the seconds
-     */
-    public void addDurationInSeconds(long seconds) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#addDurationInSeconds(long)
+	 */
+    @Override
+	public void addDurationInSeconds(long seconds) {
         this.totalDurationInSeconds += seconds;
     }
     
-    /**
-     * Removes the duration in seconds.
-     * 
-     * @param seconds
-     *            the seconds
-     */
-    public void removeDurationInSeconds(long seconds) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#removeDurationInSeconds(long)
+	 */
+    @Override
+	public void removeDurationInSeconds(long seconds) {
         totalDurationInSeconds -= seconds;
     }
 
-    /**
-     * Gets the total duration in seconds.
-     * 
-     * @return the total duration in seconds
-     */
-    public long getTotalDurationInSeconds() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#getTotalDurationInSeconds()
+	 */
+    @Override
+	public long getTotalDurationInSeconds() {
         return totalDurationInSeconds;
     }
 
-    /**
-     * Adds the size in bytes
-     * @param bytes
-     */
-    public void addSizeInBytes(long bytes) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#addSizeInBytes(long)
+	 */
+    @Override
+	public void addSizeInBytes(long bytes) {
     	totalSizeInBytes += bytes;
     }
     
-    /**
-     * Removes the size in bytes
-     * @param bytes
-     */
-    public void removeSizeInBytes(long bytes) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#removeSizeInBytes(long)
+	 */
+    @Override
+	public void removeSizeInBytes(long bytes) {
     	totalSizeInBytes -= bytes;
     }
     
-    /**
-     * Gets the total size in bytes.
-     * 
-     * @return the total size in bytes
-     */
-    public long getTotalSizeInBytes() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#getTotalSizeInBytes()
+	 */
+    @Override
+	public long getTotalSizeInBytes() {
         return totalSizeInBytes;
     }
 
-    /**
-     * Checks if repository exists on disk
-     * 
-     * @return if repository exists on disk
-     */
-    public boolean exists() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#exists()
+	 */
+    @Override
+	public boolean exists() {
     	// All folders must exist
     	for (File folder : getRepositoryFolders()) {
     		if (!folder.exists()) {
@@ -202,12 +195,11 @@ public class Repository implements Serializable {
         return true;
     }
 
-    /**
-     * Validates this repository throwing exception if object is not consistent. 
-     * For example when a new attribute is added a repository object without that attribute can be considered invalid
-     * @throws InconsistentRepositoryException
-     */
-    public void validateRepository() throws InconsistentRepositoryException {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#validateRepository()
+	 */
+    @Override
+	public void validateRepository() throws InconsistentRepositoryException {
         if (filesStructure == null || 
             getRepositoryFolders() == null || 
             artistsStructure == null || 
@@ -218,41 +210,47 @@ public class Repository implements Serializable {
         }
     }
 
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#setListener(net.sourceforge.atunes.model.IRepositoryListener)
+	 */
+	@Override
 	public void setListener(IRepositoryListener listener) {
 		this.listener = listener;
 	}
 	
-	/**
-	 * Starts a transaction to change repository
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#startTransaction()
 	 */
+	@Override
 	public void startTransaction() {
 		this.transaction = new RepositoryTransaction(this, listener);
 	}
 	
-	/**
-	 * Ends a transaction to change repository
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#endTransaction()
 	 */
+	@Override
 	public void endTransaction() {
 		if (this.transaction != null) {
 			this.transaction.finishTransaction();
 		}
 	}
 	
-	/**
-	 * Returns true if there is a repository transaction not finished
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#transactionPending()
 	 */
+	@Override
 	public boolean transactionPending() {
 		return this.transaction != null && this.transaction.isPending();
 	}
 	
 	public static final class RepositoryTransaction {
 		
-		private Repository repository;
+		private IRepository repository;
 		private IRepositoryListener listener;
 		private volatile boolean pending;
 		
-		private RepositoryTransaction(Repository repository, IRepositoryListener listener) {
+		private RepositoryTransaction(IRepository repository, IRepositoryListener listener) {
 			this.repository = repository;
 			this.listener = listener;
 			this.pending = true;
@@ -274,57 +272,51 @@ public class Repository implements Serializable {
 	
     //------------------------------------------ FILE OPERATIONS ------------------------------------- //
     
-    /**
-     * Count files.
-     * 
-     * @return the int
-     */
-    public int countFiles() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#countFiles()
+	 */
+    @Override
+	public int countFiles() {
         return filesStructure.count();
     }
 
-    /**
-     * Gets the file.
-     * 
-     * @param fileName
-     *            the file name
-     * 
-     * @return the file
-     */
-    public ILocalAudioObject getFile(String fileName) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#getFile(java.lang.String)
+	 */
+    @Override
+	public ILocalAudioObject getFile(String fileName) {
         return filesStructure.get(fileName);
     }
     
-    /**
-     * Gets all files
-     * @return
-     */
-    public Collection<ILocalAudioObject> getFiles() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#getFiles()
+	 */
+    @Override
+	public Collection<ILocalAudioObject> getFiles() {
     	return filesStructure.getAll();
     }
     
-    /**
-     * Puts a new file
-     * @param file
-     * @return
-     */
-    public ILocalAudioObject putFile(ILocalAudioObject file) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#putFile(net.sourceforge.atunes.model.ILocalAudioObject)
+	 */
+    @Override
+	public ILocalAudioObject putFile(ILocalAudioObject file) {
     	filesStructure.put(file.getUrl(), file);
     	return file;
     }
 
-	/**
-	 * Removes a file
-	 * @param file
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#removeFile(net.sourceforge.atunes.model.ILocalAudioObject)
 	 */
+	@Override
 	public void removeFile(ILocalAudioObject file) {
 		filesStructure.remove(file.getUrl());
 	}
 	
-	/**
-	 * Removes a file
-	 * @param file
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#removeFile(java.io.File)
 	 */
+	@Override
 	public void removeFile(File file) {
 		filesStructure.remove(file.getAbsolutePath());
 	}
@@ -339,20 +331,19 @@ public class Repository implements Serializable {
         return artistsStructure.getStructure();
     }
     
-	/**
-	 * Return number of artists
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#countArtists()
 	 */
+	@Override
 	public int countArtists() {
 		return artistsStructure.count();
 	}
 	
-    /**
-     * Returns artist given by name or null
-     * @param artistName
-     * @return
-     */
-    public Artist getArtist(String artistName) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#getArtist(java.lang.String)
+	 */
+    @Override
+	public Artist getArtist(String artistName) {
     	if (artistName == null) {
     		return null;
     	} else if (state.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
@@ -362,20 +353,19 @@ public class Repository implements Serializable {
     	}
     }
     
-    /**
-     * Returns all artists
-     * @return
-     */
-    public Collection<Artist> getArtists() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#getArtists()
+	 */
+    @Override
+	public Collection<Artist> getArtists() {
     	return artistsStructure.getAll();
     }
     
-    /**
-     * Adds an artist to repository
-     * @param artistName
-     * @return created artist
-     */
-    public Artist putArtist(String artistName) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#putArtist(java.lang.String)
+	 */
+    @Override
+	public Artist putArtist(String artistName) {
     	Artist artist = new Artist(artistName);
     	if (state.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
     		artistsStructure.put(artistName, artist);
@@ -385,11 +375,11 @@ public class Repository implements Serializable {
     	return artist;
     }
     
-    /**
-     * Removes artist from repository
-     * @param artist
-     */
-    public void removeArtist(Artist artist) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#removeArtist(net.sourceforge.atunes.model.Artist)
+	 */
+    @Override
+	public void removeArtist(Artist artist) {
     	if (state.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
     		artistsStructure.remove(artist.getName());
     	} else {
@@ -424,29 +414,27 @@ public class Repository implements Serializable {
         return foldersStructure.getStructure();
     }
 
-    /**
-     * Returns folder
-     * @param path
-     * @return
-     */
-    public Folder getFolder(String path) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#getFolder(java.lang.String)
+	 */
+    @Override
+	public Folder getFolder(String path) {
     	return foldersStructure.get(path);
     }
     
-    /**
-     * Returns all folders
-     * @return
-     */
-    public Collection<Folder> getFolders() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#getFolders()
+	 */
+    @Override
+	public Collection<Folder> getFolders() {
     	return foldersStructure.getAll();
     }
     
-    /**
-     * Puts folder
-     * @param folder
-     * @return
-     */
-    public Folder putFolder(Folder folder) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#putFolder(net.sourceforge.atunes.model.Folder)
+	 */
+    @Override
+	public Folder putFolder(Folder folder) {
     	foldersStructure.put(folder.getName(), folder);
     	return folder;
     }
@@ -461,20 +449,19 @@ public class Repository implements Serializable {
         return genresStructure.getStructure();
     }
 
-    /**
-     * Returns all genres
-     * @return
-     */
-    public Collection<Genre> getGenres() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#getGenres()
+	 */
+    @Override
+	public Collection<Genre> getGenres() {
     	return genresStructure.getAll();
     }
     
-    /**
-     * Returns genre given by name or null
-     * @param artistName
-     * @return
-     */
-    public Genre getGenre(String genre) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#getGenre(java.lang.String)
+	 */
+    @Override
+	public Genre getGenre(String genre) {
     	if (state.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
     		return genresStructure.get(genre);
     	} else {
@@ -482,12 +469,11 @@ public class Repository implements Serializable {
     	}
     }
 
-    /**
-     * Adds a genre to repository
-     * @param genreName
-     * @return created genre
-     */
-    public Genre putGenre(String genreName) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#putGenre(java.lang.String)
+	 */
+    @Override
+	public Genre putGenre(String genreName) {
     	Genre genre = new Genre(genreName);
     	if (state.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
     		genresStructure.put(genreName, genre);
@@ -497,11 +483,11 @@ public class Repository implements Serializable {
     	return genre;
     }
 
-    /**
-     * Removes genre from repository
-     * @param artist
-     */
-    public void removeGenre(Genre genre) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#removeGenre(net.sourceforge.atunes.kernel.modules.repository.data.Genre)
+	 */
+    @Override
+	public void removeGenre(Genre genre) {
     	if (state.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
     		genresStructure.remove(genre.getName());
     	} else {
@@ -519,38 +505,36 @@ public class Repository implements Serializable {
         return yearStructure.getStructure();
     }
 
-    /**
-     * Returns year
-     * @param year
-     * @return
-     */
-    public Year getYear(String year) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#getYear(java.lang.String)
+	 */
+    @Override
+	public Year getYear(String year) {
     	return yearStructure.get(year);
     }
     
-    /**
-     * Gets all years
-     * @return
-     */
-    public Collection<Year> getYears() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#getYears()
+	 */
+    @Override
+	public Collection<Year> getYears() {
     	return yearStructure.getAll();
     }
     
-    /**
-     * Puts a year
-     * @param year
-     * @return
-     */
-    public Year putYear(Year year) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#putYear(net.sourceforge.atunes.kernel.modules.repository.data.Year)
+	 */
+    @Override
+	public Year putYear(Year year) {
     	yearStructure.put(year.getName(), year);
     	return year;
     }
 
-    /**
-     * Removes a year
-     * @param year
-     */
-    public void removeYear(Year year) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IRepository#removeYear(net.sourceforge.atunes.kernel.modules.repository.data.Year)
+	 */
+    @Override
+	public void removeYear(Year year) {
     	yearStructure.remove(year.getName());
     }
 

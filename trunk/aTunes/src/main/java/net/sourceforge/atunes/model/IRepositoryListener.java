@@ -29,5 +29,5 @@ public interface IRepositoryListener {
     /**
      * Repository changed
      */
-    public void repositoryChanged(Repository repository);
+    public void repositoryChanged(IRepository repository);
 }

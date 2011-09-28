@@ -47,6 +47,7 @@ import net.sourceforge.atunes.model.IFavorites;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IRadio;
+import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IStateChangeListener;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.Repository;
@@ -236,7 +237,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	 */
 
     @Override
-	public void persistRepositoryCache(Repository repository, boolean asXmlIfEnabled) {
+	public void persistRepositoryCache(IRepository repository, boolean asXmlIfEnabled) {
         String folder = RepositoryHandler.getInstance().getRepositoryConfigurationFolder();
 
         ObjectOutputStream oos = null;
@@ -273,7 +274,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#persistDeviceCache(java.lang.String, net.sourceforge.atunes.model.Repository)
 	 */
     @Override
-	public void persistDeviceCache(String deviceId, Repository deviceRepository) {
+	public void persistDeviceCache(String deviceId, IRepository deviceRepository) {
         ObjectOutputStream oos = null;
         try {
             FileOutputStream fout = new FileOutputStream(StringUtils

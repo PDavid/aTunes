@@ -35,7 +35,7 @@ public class RepositoryTest {
 	private static final String REP_FOLDER_1 = "folder_1";
 	private static final String REP_FOLDER_2 = "folder_2";
 	
-	private Repository rep;
+	private IRepository rep;
 	
 	private static File f1 = new File(REP_FOLDER_1);
 	private static File f2 = new File(REP_FOLDER_2);
