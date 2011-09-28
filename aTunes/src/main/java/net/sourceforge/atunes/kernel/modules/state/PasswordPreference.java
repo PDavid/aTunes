@@ -66,9 +66,7 @@ public class PasswordPreference extends Preference {
 
 	public String getPassword() {
 		try {
-			String decrypted = new String(CryptoUtils.decrypt((byte[])super.getValue()));
-			Logger.debug("Decrypted password: ", decrypted);
-			return decrypted;
+			return new String(CryptoUtils.decrypt((byte[])super.getValue()));
 		} catch (GeneralSecurityException e) {
 			Logger.error(e);
 		} catch (IOException e) {
