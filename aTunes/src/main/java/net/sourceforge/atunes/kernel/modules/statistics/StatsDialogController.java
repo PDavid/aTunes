@@ -120,7 +120,8 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
     StatsDialogController(StatsDialog frame, IState state, IStatisticsHandler statisticsHandler, ILookAndFeelManager lookAndFeelManager) {
         super(frame, state);
         this.statisticsHandler = statisticsHandler;
-        lookAndFeelManager.addLookAndFeelChangeListener(this);
+        this.lookAndFeelManager = lookAndFeelManager;
+        this.lookAndFeelManager.addLookAndFeelChangeListener(this);
     }
 
     /**
