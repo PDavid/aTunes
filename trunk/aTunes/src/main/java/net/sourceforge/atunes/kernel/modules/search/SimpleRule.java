@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.search;
 
+import net.sourceforge.atunes.model.ISearchHandler;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -117,7 +118,7 @@ public class SimpleRule {
      */
     @Override
     public String toString() {
-        if (attribute.equalsIgnoreCase(SearchHandler.DEFAULT_INDEX)) {
+        if (attribute.equalsIgnoreCase(ISearchHandler.DEFAULT_INDEX)) {
             return value;
         }
         return StringUtils.getString(attribute, operator, " \"", value, "\"");

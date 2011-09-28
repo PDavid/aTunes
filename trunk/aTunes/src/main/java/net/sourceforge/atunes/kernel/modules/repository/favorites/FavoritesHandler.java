@@ -31,7 +31,6 @@ import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.actions.UnlovesongInLastFmAction;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
-import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.kernel.modules.search.searchableobjects.FavoritesSearchableObject;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
@@ -40,6 +39,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFavorites;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ISearchHandler;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.Logger;
@@ -67,7 +67,7 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
 
     @Override
     public void allHandlersInitialized() {
-        SearchHandler.getInstance().registerSearchableObject(FavoritesSearchableObject.getInstance());
+    	getBean(ISearchHandler.class).registerSearchableObject(FavoritesSearchableObject.getInstance());
     }
 
     @Override

@@ -39,7 +39,8 @@ import net.sourceforge.atunes.kernel.modules.search.searchableobjects.DeviceSear
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ISearchHandler;
+import net.sourceforge.atunes.model.ISearchableObject;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -60,16 +61,10 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.LockObtainFailedException;
 import org.apache.lucene.util.Version;
 
-public final class SearchHandler extends AbstractHandler {
-
-    /** Default lucene field. */
-    public static final String DEFAULT_INDEX = "any";
+public final class SearchHandler extends AbstractHandler implements ISearchHandler {
 
     /** Dummy lucene field to retrieve all elements. */
     private static final String INDEX_FIELD_DUMMY = "dummy";
-
-    /** Singleton instance. */
-    private static SearchHandler instance = new SearchHandler();
 
     private final class RefreshSearchIndexSwingWorker extends
 			SwingWorker<Void, Void> {
@@ -178,19 +173,13 @@ public final class SearchHandler extends AbstractHandler {
 	private SearchResultsController searchResultsController;
     
     /**
-     * Constructor.
-     */
-    private SearchHandler() {
-    }
-
-    /**
      * Gets the custom search controller.
      * 
      * @return the custom search controller
      */
     private CustomSearchController getSearchController() {
         if (customSearchController == null) {
-            customSearchController = new CustomSearchController(new CustomSearchDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class)), getState(), getFrame());
+            customSearchController = new CustomSearchController(new CustomSearchDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class)), getState(), getFrame(), this);
         }
         return customSearchController;
     }
@@ -207,64 +196,28 @@ public final class SearchHandler extends AbstractHandler {
         return searchResultsController;
     }
 
-
-    
-    @Override
-    public void applicationFinish() {
-    }
-
-    @Override
-    public void applicationStateChanged(IState newState) {
-    }
-
-    @Override
-    public void applicationStarted(List<IAudioObject> playList) {
-    }
-
     @Override
     protected void initHandler() {
         searchOperators = new ArrayList<String>();
         searchOperators.add(":");
     }
 
-    /**
-     * Method to register a searchable object. All searchable objects must call
-     * this method to initialize searches
-     * 
-     * @param so
-     *            the so
-     */
-    public void registerSearchableObject(ISearchableObject so) {
+    @Override
+	public void registerSearchableObject(ISearchableObject so) {
         currentIndexingWorks.put(so, Boolean.FALSE);
         indexLocks.put(so, new ReentrantReadWriteLock(true));
         searchableObjects.add(so);
     }
 
-    /**
-     * Method to unregister a searchable object. After this method is called,
-     * searchable object is not searchable, and must be registered again
-     * 
-     * @param so
-     */
-    public void unregisterSearchableObject(ISearchableObject so) {
+    @Override
+	public void unregisterSearchableObject(ISearchableObject so) {
         currentIndexingWorks.remove(so);
         indexLocks.remove(so);
         searchableObjects.remove(so);
     }
 
-    /**
-     * Returns SearchHandler unique instance.
-     * 
-     * @return the instance
-     */
-    public static SearchHandler getInstance() {
-        return instance;
-    }
-
-    /**
-     * Starts a search by updating indexes and showing search dialog.
-     */
-    public void startSearch() {
+    @Override
+	public void startSearch() {
         // Updates indexes
         for (ISearchableObject searchableObject : searchableObjects) {
             updateSearchIndex(searchableObject);
@@ -280,23 +233,8 @@ public final class SearchHandler extends AbstractHandler {
         getSearchController().showSearchDialog();
     }
 
-    /**
-     * Evaluates a search query and returns a result list of audio objects and
-     * scores (0 <= score <= 1).
-     * 
-     * @param queryStr
-     *            The search query
-     * @param searchableObject
-     *            the searchable object
-     * 
-     * @return The search result
-     * 
-     * @throws SearchIndexNotAvailableException
-     *             If no search index was found
-     * @throws SearchQuerySyntaxException
-     *             If the search query has invalid syntax
-     */
-    public List<IAudioObject> search(ISearchableObject searchableObject, String queryStr) throws SearchIndexNotAvailableException, SearchQuerySyntaxException {
+    @Override
+	public List<IAudioObject> search(ISearchableObject searchableObject, String queryStr) throws SearchIndexNotAvailableException, SearchQuerySyntaxException {
         ReadWriteLock searchIndexLock = indexLocks.get(searchableObject);
         Searcher searcher = null;
         try {
@@ -367,32 +305,19 @@ public final class SearchHandler extends AbstractHandler {
             currentIndexingWorks.put(searchableObject, Boolean.TRUE);
             refreshSearchIndex.execute();
         }
-
     }
 
-    /**
-     * Called to show search result.
-     * 
-     * @param searchableObject
-     *            the searchable object
-     * @param result
-     *            the result
-     */
-    void showSearchResults(ISearchableObject searchableObject, List<IAudioObject> result) {
+    @Override
+    public void showSearchResults(ISearchableObject searchableObject, List<IAudioObject> result) {
         // Open search results dialog
         getSearchResultsController().showSearchResults(searchableObject, result);
     }
 
+	@Override
 	public void refreshSearchResultColumns() {
         ((SearchResultColumnModel) getSearchResultsController().getComponentControlled().getSearchResultsTable().getColumnModel())
         .arrangeColumns(false);
 	}
-
-	@Override
-	public void playListCleared() {}
-
-	@Override
-	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
 
 	@Override
 	public void deviceReady(String location) {
