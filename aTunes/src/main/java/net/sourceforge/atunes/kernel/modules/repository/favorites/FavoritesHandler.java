@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.SwingUtilities;
+
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.FavoritesListeners;
 import net.sourceforge.atunes.kernel.actions.Actions;
@@ -39,6 +41,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFavorites;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.ISearchHandler;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.ITreeObject;
@@ -247,8 +250,17 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
     /**
      * Actions to do after a favorite change (add, remove)
      */
-    private void callActionsAfterFavoritesChange() {
-    	FavoritesListeners.favoritesChanged();
+    private void callActionsAfterFavoritesChange() { 
+    	if (SwingUtilities.isEventDispatchThread()) {
+    		FavoritesListeners.favoritesChanged();
+    	} else {
+    		SwingUtilities.invokeLater(new Runnable() {
+    			@Override
+    			public void run() {
+    	    		FavoritesListeners.favoritesChanged();
+    			}
+    		});
+    	}
     }
     
     @Override
@@ -275,5 +287,17 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
         }
         callActionsAfterFavoritesChange();
     }
-    
+
+    @Override
+    public void updateFavorites(IRepository repository) {
+    	List<IAudioObject> toRemove = new ArrayList<IAudioObject>();
+    	for (ILocalAudioObject favorite : favorites.getFavoriteAudioFiles().values()) {
+    		if (!repository.getFiles().contains(favorite)) {
+    			toRemove.add(favorite);
+    		}
+    	}
+    	if (!toRemove.isEmpty()) {
+    		removeSongsFromFavorites(toRemove);
+    	}
+    }
 }

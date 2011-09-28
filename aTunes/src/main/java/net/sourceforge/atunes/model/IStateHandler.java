@@ -114,10 +114,10 @@ public interface IStateHandler extends IHandler {
 	 *            The retrieved repository
 	 */
 
-	public void persistRepositoryCache(Repository repository,
+	public void persistRepositoryCache(IRepository repository,
 			boolean asXmlIfEnabled);
 
-	public void persistDeviceCache(String deviceId, Repository deviceRepository);
+	public void persistDeviceCache(String deviceId, IRepository deviceRepository);
 
 	/**
 	 * Reads favorites cache.

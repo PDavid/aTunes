@@ -41,6 +41,7 @@ import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryLoaderListener;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.ITag;
@@ -61,7 +62,7 @@ public class RepositoryLoader extends Thread {
 	private boolean refresh;
 	private boolean interrupt;
 	private Repository oldRepository;
-	private Repository repository;
+	private IRepository repository;
 	private int totalFilesToLoad;
 	private int filesLoaded;
 	private long startReadTime;
@@ -77,7 +78,7 @@ public class RepositoryLoader extends Thread {
 	 *            the refresh
 	 */
 	public RepositoryLoader(List<File> folders, Repository oldRepository,
-			Repository repository, boolean refresh) {
+			IRepository repository, boolean refresh) {
 		this.refresh = refresh;
 		this.folders = folders;
 		this.oldRepository = oldRepository;
@@ -93,7 +94,7 @@ public class RepositoryLoader extends Thread {
 	 * @param files
 	 *            Files to add
 	 */
-	static void addToRepository(Repository rep, List<File> files) {
+	static void addToRepository(IRepository rep, List<File> files) {
 		// Get folders where files are
 		Set<File> folders = new HashSet<File>();
 		for (File file : files) {
@@ -173,7 +174,7 @@ public class RepositoryLoader extends Thread {
 	 * 
 	 * @return the int
 	 */
-	static int countFilesInRepository(Repository rep) {
+	static int countFilesInRepository(IRepository rep) {
 		int files = 0;
 		for (File dir : rep.getRepositoryFolders()) {
 			files = files + countFiles(dir);
@@ -191,7 +192,7 @@ public class RepositoryLoader extends Thread {
 	 * 
 	 * @return the repository folder containing
 	 */
-	private static File getRepositoryFolderContaining(Repository rep,
+	private static File getRepositoryFolderContaining(IRepository rep,
 			File folder) {
 		String path = folder.getAbsolutePath();
 		for (File f : rep.getRepositoryFolders()) {
@@ -277,7 +278,7 @@ public class RepositoryLoader extends Thread {
 	 * @param file
 	 *            the file
 	 */
-	static void refreshFile(Repository repository, ILocalAudioObject file, IStatisticsHandler statisticsHandler) {
+	static void refreshFile(IRepository repository, ILocalAudioObject file, IStatisticsHandler statisticsHandler) {
 		try {
 			// Get old tag
 			ITag oldTag = file.getTag();
@@ -634,7 +635,7 @@ public class RepositoryLoader extends Thread {
 	 * @param picture
 	 *            the picture
 	 */
-	static void addExternalPictureForAlbum(Repository repository,
+	static void addExternalPictureForAlbum(IRepository repository,
 			String artistName, String albumName, File picture) {
 		if (repository != null) {
 			Artist artist = repository.getArtist(artistName);
@@ -770,7 +771,7 @@ public class RepositoryLoader extends Thread {
 	 * @param statisticsHandler
 	 * @param osManager
 	 */
-	public static void refreshFolders(Repository repository, List<Folder> folders, IStatisticsHandler statisticsHandler, IOSManager osManager) {
+	public static void refreshFolders(IRepository repository, List<Folder> folders, IStatisticsHandler statisticsHandler, IOSManager osManager) {
 		RepositoryHandler.getInstance().startTransaction();
 		
 		for (Folder folder : folders) {

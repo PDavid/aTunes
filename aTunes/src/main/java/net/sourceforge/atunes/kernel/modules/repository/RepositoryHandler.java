@@ -60,6 +60,7 @@ import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IErrorDialog;
+import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMessageDialog;
@@ -68,6 +69,7 @@ import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.model.IProgressDialog;
+import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryListener;
 import net.sourceforge.atunes.model.IRepositoryLoaderListener;
 import net.sourceforge.atunes.model.IRepositoryProgressDialog;
@@ -249,7 +251,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     
     private static final class RefreshFoldersSwingWorker extends SwingWorker<Void, Void> {
     	
-    	private Repository repository;
+    	private IRepository repository;
     	
     	private List<Folder> folders;
     	
@@ -257,7 +259,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     	
     	private IOSManager osManager;
     	
-    	public RefreshFoldersSwingWorker(Repository repository, List<Folder> folders, IStatisticsHandler statisticsHandler, IOSManager osManager) {
+    	public RefreshFoldersSwingWorker(IRepository repository, List<Folder> folders, IStatisticsHandler statisticsHandler, IOSManager osManager) {
     		this.repository = repository;
     		this.folders = folders;
     		this.statisticsHandler = statisticsHandler;
@@ -356,7 +358,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     
     @Override
     public void doUserInteraction() {
-    	Repository rep = repositoryRetrievedFromCache;
+    	IRepository rep = repositoryRetrievedFromCache;
     	if (rep == null) {
     		reloadExistingRepository();
     	}
@@ -573,7 +575,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
      * 
      * @return the repository
      */
-    Repository getRepository() {
+    IRepository getRepository() {
         return repository;
     }
 
@@ -884,7 +886,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
      * 
      * @param rep
      */
-    private void askUserForRepository(final Repository rep) {
+    private void askUserForRepository(final IRepository rep) {
         Object selection;
         do {
             String exitString = Actions.getAction(ExitAction.class).getValue(Action.NAME).toString();
@@ -1261,13 +1263,15 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	}
 
 	@Override
-	public void repositoryChanged(final Repository repository) {
+	public void repositoryChanged(final IRepository repository) {
 		getBean(ITaskService.class).submitNow("Persist Repository Cache", new Runnable() {
 			@Override
 			public void run() {
 				getBean(IStateHandler.class).persistRepositoryCache(repository, true);
 			}
 		});
+		
+		getBean(IFavoritesHandler.class).updateFavorites(repository);
 	}
 
 	/**

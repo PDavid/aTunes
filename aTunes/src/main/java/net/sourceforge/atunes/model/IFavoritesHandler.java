@@ -112,4 +112,11 @@ public interface IFavoritesHandler extends IHandler {
 	 */
 	public void removeSongsFromFavorites(List<IAudioObject> files);
 
+	/**
+	 * Updates favorites against given repository
+	 * Each favorite song must be repository. If not, will search for an alternative or remove from favorites
+	 * @param files
+	 */
+	public void updateFavorites(IRepository repository);
+
 }

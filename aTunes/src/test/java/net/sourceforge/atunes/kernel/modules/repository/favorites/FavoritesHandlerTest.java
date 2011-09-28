@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.UUID;
 
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
 
@@ -123,6 +124,27 @@ public class FavoritesHandlerTest {
 		assertTrue(sut.getFavoriteSongs().contains(ao2));
 	}
 
+	@Test
+	public void updateFavoritesWhenRemovedFromRepository() {
+		List<ILocalAudioObject> list = new ArrayList<ILocalAudioObject>();
+		IRepository repository = mock(IRepository.class);
+		ILocalAudioObject ao1 = mock(ILocalAudioObject.class);
+		when(ao1.getUrl()).thenReturn(UUID.randomUUID().toString());
+		ILocalAudioObject ao2 = mock(ILocalAudioObject.class);
+		when(ao1.getUrl()).thenReturn(UUID.randomUUID().toString());
+		when(repository.getFiles()).thenReturn(list);
+		list.add(ao1);
+		list.add(ao2);		
+		sut.toggleFavoriteSongs(list);
+		
+		// A favorite song is removed from repository
+		list.remove(ao2);
+		sut.updateFavorites(repository);
+		
+		// Should be removed from favorites
+		assertFalse(sut.getFavoriteSongs().contains(ao2));
+	}
+	
 	
 	// TODO: Add test for toggle favorite artists and albums, as need to refactor all handlers before
 
