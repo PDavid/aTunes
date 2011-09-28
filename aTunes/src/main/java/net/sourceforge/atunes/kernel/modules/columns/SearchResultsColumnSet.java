@@ -23,9 +23,10 @@ package net.sourceforge.atunes.kernel.modules.columns;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.ColumnBean;
 import net.sourceforge.atunes.model.IColumn;
+import net.sourceforge.atunes.model.ISearchHandler;
 
 /**
  * This class defines all columns than can be viewed in search results
@@ -51,6 +52,6 @@ public final class SearchResultsColumnSet extends AbstractColumnSet {
 
     @Override
     protected void refreshColumns() {
-    	SearchHandler.getInstance().refreshSearchResultColumns();
+    	Context.getBean(ISearchHandler.class).refreshSearchResultColumns();
     }
 }

@@ -40,6 +40,8 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IMessageDialog;
+import net.sourceforge.atunes.model.ISearchHandler;
+import net.sourceforge.atunes.model.ISearchableObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -56,6 +58,8 @@ final class CustomSearchController extends AbstractSimpleController<CustomSearch
     
     private IFrame frame;
 
+    private ISearchHandler searchHandler;
+    
     /**
      * Constructor.
      * 
@@ -63,9 +67,10 @@ final class CustomSearchController extends AbstractSimpleController<CustomSearch
      * @param state
      * @param frame
      */
-    CustomSearchController(CustomSearchDialog dialog, IState state, IFrame frame) {
+    CustomSearchController(CustomSearchDialog dialog, IState state, IFrame frame, ISearchHandler searchHandler) {
         super(dialog, state);
         this.frame = frame;
+        this.searchHandler = searchHandler;
         addBindings();
     }
 
@@ -123,7 +128,7 @@ final class CustomSearchController extends AbstractSimpleController<CustomSearch
 
             // Get attributes
             List<String> attributes = selectedSearchableObject.getSearchableAttributes();
-            attributes.add(0, SearchHandler.DEFAULT_INDEX);
+            attributes.add(0, ISearchHandler.DEFAULT_INDEX);
 
             // Translate attributes to locale
             List<String> translatedAttributesList = new ArrayList<String>();
@@ -368,7 +373,7 @@ final class CustomSearchController extends AbstractSimpleController<CustomSearch
 
             try {
                 // Invoke query
-                List<IAudioObject> result = SearchHandler.getInstance().search(selectedSearchableObject, query);
+                List<IAudioObject> result = searchHandler.search(selectedSearchableObject, query);
 
                 // If no matches found show a message
                 if (result.isEmpty()) {
@@ -377,7 +382,7 @@ final class CustomSearchController extends AbstractSimpleController<CustomSearch
                     // Hide search dialog
                     getComponentControlled().setVisible(false);
                     // Show result
-                    SearchHandler.getInstance().showSearchResults(selectedSearchableObject, result);
+                    searchHandler.showSearchResults(selectedSearchableObject, result);
                 }
             } catch (SearchIndexNotAvailableException e) {
                 // Thrown when an attribute does not exist on index

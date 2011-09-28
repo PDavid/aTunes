@@ -25,7 +25,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
+import net.sourceforge.atunes.model.ISearchHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -46,7 +46,7 @@ public class CustomSearchAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        SearchHandler.getInstance().startSearch();
+    	getBean(ISearchHandler.class).startSearch();
     }
 
 }

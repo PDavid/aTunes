@@ -24,9 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.search.ISearchableObject;
-import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ISearchHandler;
+import net.sourceforge.atunes.model.ISearchableObject;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.lucene.document.Document;
@@ -139,7 +139,7 @@ public abstract class AbstractCommonAudioFileSearchableObject implements ISearch
     		/*
     		 * All important fields
     		 */
-    		d.add(new Field(SearchHandler.DEFAULT_INDEX, StringUtils.getString(audioFile.getTitle(), " ", audioFile.getTrackNumber(), " ", audioFile.getArtist(), " ", audioFile
+    		d.add(new Field(ISearchHandler.DEFAULT_INDEX, StringUtils.getString(audioFile.getTitle(), " ", audioFile.getTrackNumber(), " ", audioFile.getArtist(), " ", audioFile
     				.getAlbumArtist(), " ", audioFile.getAlbum(), " ", audioFile.getComposer(), " ", audioFile.getYear(), " ", audioFile.getGenre()), Field.Store.YES,
     				Field.Index.ANALYZED));
 

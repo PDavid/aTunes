@@ -53,7 +53,6 @@ import net.sourceforge.atunes.kernel.actions.SelectRepositoryAction;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.kernel.modules.repository.processes.ImportFilesProcess;
-import net.sourceforge.atunes.kernel.modules.search.SearchHandler;
 import net.sourceforge.atunes.kernel.modules.search.searchableobjects.RepositorySearchableObject;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
@@ -73,6 +72,7 @@ import net.sourceforge.atunes.model.IRepositoryListener;
 import net.sourceforge.atunes.model.IRepositoryLoaderListener;
 import net.sourceforge.atunes.model.IRepositoryProgressDialog;
 import net.sourceforge.atunes.model.IReviewImportDialog;
+import net.sourceforge.atunes.model.ISearchHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.IStatisticsHandler;
@@ -345,7 +345,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     	if (repository == null) {
     		applyRepository();
     	}
-        SearchHandler.getInstance().registerSearchableObject(RepositorySearchableObject.getInstance());
+        getBean(ISearchHandler.class).registerSearchableObject(RepositorySearchableObject.getInstance());
         repositoryRefresher = new RepositoryAutoRefresher(RepositoryHandler.this, getState());
     }
     

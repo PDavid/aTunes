@@ -18,12 +18,12 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.search;
+package net.sourceforge.atunes.model;
 
 import java.io.IOException;
 import java.util.List;
 
-import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.kernel.modules.search.RawSearchResult;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.store.FSDirectory;

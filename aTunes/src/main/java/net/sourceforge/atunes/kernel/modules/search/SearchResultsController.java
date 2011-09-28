@@ -41,6 +41,7 @@ import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.ISearchableObject;
 import net.sourceforge.atunes.model.IState;
 
 /**
