@@ -38,7 +38,7 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.command.CommandHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -105,12 +105,12 @@ public final class MultipleInstancesHandler extends AbstractHandler {
                         Logger.info(StringUtils.getString("Received connection with content: \"", str, "\""));
                         if (PlayListIO.isValidPlayList(fileStr)) {
                             List<String> songs = PlayListIO.read(fileStr, getOsManager());
-                            List<IAudioObject> files = PlayListIO.getAudioObjectsFromFileNamesList(songs);
+                            List<IAudioObject> files = PlayListIO.getAudioObjectsFromFileNamesList(getBean(IRepositoryHandler.class), songs);
                             for (IAudioObject file : files) {
                                 queue.addSong(file);
                             }
                         } else if (AudioFile.isValidAudioFile(fileStr)) {
-                        	ILocalAudioObject file = RepositoryHandler.getInstance().getFileIfLoaded(str);
+                        	ILocalAudioObject file = getBean(IRepositoryHandler.class).getFileIfLoaded(str);
                             if (file == null) {
                                 // file not in repository, and don't add it now
                                 file = new AudioFile(fileStr);

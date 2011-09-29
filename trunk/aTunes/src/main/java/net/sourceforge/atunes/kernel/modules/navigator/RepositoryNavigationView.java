@@ -54,7 +54,7 @@ import net.sourceforge.atunes.kernel.actions.SetFavoriteAlbumFromNavigatorAction
 import net.sourceforge.atunes.kernel.actions.SetFavoriteArtistFromNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.SetFavoriteSongFromNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
@@ -76,6 +76,8 @@ public class RepositoryNavigationView extends AbstractNavigationView {
     private JPopupMenu treePopupMenu;
 
     private JPopupMenu tablePopupMenu;
+    
+    private IRepositoryHandler repositoryHandler;
 
     /**
      * @param state
@@ -173,7 +175,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
 
     @Override
     protected Map<String, ?> getViewData(ViewMode viewMode) {
-    	return RepositoryHandler.getInstance().getDataForView(viewMode);
+    	return repositoryHandler.getDataForView(viewMode);
     }
 
     @Override
@@ -211,7 +213,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
         List<ILocalAudioObject> songs = new ArrayList<ILocalAudioObject>();
         if (node.isRoot()) {
             if (treeFilter == null) {
-                songs.addAll(RepositoryHandler.getInstance().getAudioFilesList());
+                songs.addAll(repositoryHandler.getAudioFilesList());
             } else {
                 for (int i = 0; i < node.getChildCount(); i++) {
                     @SuppressWarnings("unchecked")
@@ -246,11 +248,15 @@ public class RepositoryNavigationView extends AbstractNavigationView {
     /**
      * Gets the tool tip for repository.
      * 
+     * @param repositoryHandler
      * @return the tool tip for repository
      */
-
-    static String getToolTipForRepository() {
-        int songs = RepositoryHandler.getInstance().getAudioFilesList().size();
+    static String getToolTipForRepository(IRepositoryHandler repositoryHandler) {
+        int songs = repositoryHandler.getAudioFilesList().size();
         return StringUtils.getString(I18nUtils.getString("REPOSITORY"), " (", songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG")), ")");
     }
+    
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
 }

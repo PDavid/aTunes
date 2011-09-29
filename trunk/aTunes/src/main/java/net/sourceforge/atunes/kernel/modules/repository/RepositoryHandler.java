@@ -70,7 +70,6 @@ import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IRepository;
-import net.sourceforge.atunes.model.IRepositoryListener;
 import net.sourceforge.atunes.model.IRepositoryLoaderListener;
 import net.sourceforge.atunes.model.IRepositoryProgressDialog;
 import net.sourceforge.atunes.model.IReviewImportDialog;
@@ -95,7 +94,7 @@ import org.joda.time.DateTime;
 /**
  * The repository handler.
  */
-public final class RepositoryHandler extends AbstractHandler implements IRepositoryLoaderListener, IAudioFilesRemovedListener, IRepositoryListener {
+public final class RepositoryHandler extends AbstractHandler implements IRepositoryHandler {
 
 	// Used to retrieve covers and show in progress dialog
 	private String lastArtistRead;
@@ -251,6 +250,8 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     
     private static final class RefreshFoldersSwingWorker extends SwingWorker<Void, Void> {
     	
+    	private IRepositoryHandler repositoryHandler;
+    	
     	private IRepository repository;
     	
     	private List<Folder> folders;
@@ -259,7 +260,8 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     	
     	private IOSManager osManager;
     	
-    	public RefreshFoldersSwingWorker(IRepository repository, List<Folder> folders, IStatisticsHandler statisticsHandler, IOSManager osManager) {
+    	public RefreshFoldersSwingWorker(IRepositoryHandler repositoryHandler, IRepository repository, List<Folder> folders, IStatisticsHandler statisticsHandler, IOSManager osManager) {
+    		this.repositoryHandler = repositoryHandler;
     		this.repository = repository;
     		this.folders = folders;
     		this.statisticsHandler = statisticsHandler;
@@ -268,16 +270,16 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     	
     	@Override
     	protected Void doInBackground() throws Exception {
-    		getInstance().startTransaction();
-            RepositoryLoader.refreshFolders(repository, folders, statisticsHandler, osManager);
-            getInstance().endTransaction();
+    		repositoryHandler.startTransaction();
+            RepositoryLoader.refreshFolders(repository, folders, statisticsHandler, osManager, repositoryHandler);
+            repositoryHandler.endTransaction();
     		return null;
     	}
     	
     	@Override
     	protected void done() {
     		super.done();
-    		getInstance().notifyFinishRefresh(null);
+    		repositoryHandler.notifyFinishRefresh(null);
     	}
     }
 
@@ -287,8 +289,6 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
             Actions.getAction(ExitAction.class).actionPerformed(null);
         }
     }
-
-    private static RepositoryHandler instance = new RepositoryHandler();
 
     private Repository repository;
     private int filesLoaded;
@@ -313,12 +313,6 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
             getFrame().getProgressBar().removeMouseListener(progressBarMouseAdapter);
         };
     };
-
-    /**
-     * Instantiates a new repository handler.
-     */
-    private RepositoryHandler() {
-    }
 
     @Override
     public void applicationStateChanged(IState newState) {
@@ -364,22 +358,11 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     	}
     }
 
-    /**
-     * Gets the single instance of RepositoryHandler.
-     * 
-     * @return single instance of RepositoryHandler
-     */
-    public static RepositoryHandler getInstance() {
-        return instance;
-    }
-
-    /**
-     * Adds the given files to repository and refresh.
-     * 
-     * @param files
-     *            the files
-     */
-    public void addFilesAndRefresh(final List<File> files) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#addFilesAndRefresh(java.util.List)
+	 */
+    @Override
+	public void addFilesAndRefresh(final List<File> files) {
     	SwingUtilities.invokeLater(new Runnable() {
     		@Override
     		public void run() {
@@ -406,17 +389,11 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         worker.execute();
     }
 
-    /**
-     * Adds the external picture for album.
-     * 
-     * @param artistName
-     *            the artist name
-     * @param albumName
-     *            the album name
-     * @param picture
-     *            the picture
-     */
-    public void addExternalPictureForAlbum(String artistName, String albumName, File picture) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#addExternalPictureForAlbum(java.lang.String, java.lang.String, java.io.File)
+	 */
+    @Override
+	public void addExternalPictureForAlbum(String artistName, String albumName, File picture) {
     	startTransaction();
         RepositoryLoader.addExternalPictureForAlbum(repository, artistName, albumName, picture);
         endTransaction();
@@ -455,19 +432,22 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         ImageCache.shutdown();
     }
 
-    public List<File> getFolders() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#getFolders()
+	 */
+    @Override
+	public List<File> getFolders() {
         if (repository != null) {
             return repository.getRepositoryFolders();
         }
         return Collections.emptyList();
     }
 
-    /**
-     * Gets the albums.
-     * 
-     * @return the albums
-     */
-    public List<Album> getAlbums() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#getAlbums()
+	 */
+    @Override
+	public List<Album> getAlbums() {
         List<Album> result = new ArrayList<Album>();
         if (repository != null) {
             Collection<Artist> artists = repository.getArtists();
@@ -479,12 +459,11 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         return result;
     }
 
-    /**
-     * Gets the artists.
-     * 
-     * @return the artists
-     */
-    public List<Artist> getArtists() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#getArtists()
+	 */
+    @Override
+	public List<Artist> getArtists() {
         List<Artist> result = new ArrayList<Artist>();
         if (repository != null) {
             result.addAll(repository.getArtists());
@@ -493,80 +472,72 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         return result;
     }
     
-    /**
-     * Returns artist with given name
-     * @param name
-     * @return
-     */
-    public Artist getArtist(String name) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#getArtist(java.lang.String)
+	 */
+    @Override
+	public Artist getArtist(String name) {
     	if (repository != null) {
     		return repository.getArtist(name);
     	}
     	return null;
     }
     
-    /**
-     * Removes artist
-     * @param artist
-     */
-    public void removeArtist(Artist artist) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#removeArtist(net.sourceforge.atunes.model.Artist)
+	 */
+    @Override
+	public void removeArtist(Artist artist) {
     	if (repository != null) {
     		repository.removeArtist(artist);
     	}
     }
 
-    /**
-     * Returns genre with given name
-     * @param genre
-     * @return
-     */
-    public Genre getGenre(String genre) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#getGenre(java.lang.String)
+	 */
+    @Override
+	public Genre getGenre(String genre) {
     	if (repository != null) {
     		return repository.getGenre(genre);
     	}
     	return null;
     }
     
-    /**
-     * Removes genre
-     * @param genre
-     */
-    public void removeGenre(Genre genre) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#removeGenre(net.sourceforge.atunes.kernel.modules.repository.data.Genre)
+	 */
+    @Override
+	public void removeGenre(Genre genre) {
     	if (repository != null) {
     		repository.removeGenre(genre);
     	}
     }
     
-    /**
-     * Gets the file if loaded.
-     * 
-     * @param fileName
-     *            the file name
-     * 
-     * @return the file if loaded
-     */
-    public ILocalAudioObject getFileIfLoaded(String fileName) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#getFileIfLoaded(java.lang.String)
+	 */
+    @Override
+	public ILocalAudioObject getFileIfLoaded(String fileName) {
         return repository == null ? null : repository.getFile(fileName);
     }
 
-    /**
-     * Returns number of root folders of repository
-     * 
-     * @return
-     */
-    public int getFoldersCount() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#getFoldersCount()
+	 */
+    @Override
+	public int getFoldersCount() {
         if (repository != null) {
             return repository.getRepositoryFolders().size();
         }
         return 0;
     }
 
-    /**
-     * Gets the path for new audio files ripped.
-     * 
-     * @return the path for new audio files ripped
-     */
-    public String getPathForNewAudioFilesRipped() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#getPathForNewAudioFilesRipped()
+	 */
+    @Override
+	public String getPathForNewAudioFilesRipped() {
         return StringUtils.getString(getRepositoryPath(), getOsManager().getFileSeparator(), Album.getUnknownAlbum(), " - ", DateUtils.toPathString(new DateTime()));
     }
 
@@ -579,15 +550,11 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         return repository;
     }
 
-    /**
-     * Returns repository root folder that contains file.
-     * 
-     * @param file
-     *            the file
-     * 
-     * @return the repository folder containing file
-     */
-    public File getRepositoryFolderContainingFile(ILocalAudioObject file) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#getRepositoryFolderContainingFile(net.sourceforge.atunes.model.ILocalAudioObject)
+	 */
+    @Override
+	public File getRepositoryFolderContainingFile(ILocalAudioObject file) {
         if (repository == null) {
             return null;
         }
@@ -599,55 +566,47 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         return null;
     }
 
-    /**
-     * Gets the repository path.
-     * 
-     * @return the repository path
-     */
-    public String getRepositoryPath() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#getRepositoryPath()
+	 */
+    @Override
+	public String getRepositoryPath() {
         // TODO: Remove this method as now more than one folder can be added to repository
         return repository != null ? repository.getRepositoryFolders().get(0).getAbsolutePath() : "";
     }
 
-    /**
-     * Gets the repository total size.
-     * 
-     * @return the repository total size
-     */
-    public long getRepositoryTotalSize() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#getRepositoryTotalSize()
+	 */
+    @Override
+	public long getRepositoryTotalSize() {
         return repository != null ? repository.getTotalSizeInBytes() : 0;
     }
 
-    /**
-     * Gets the number of files of repository
-     * 
-     * @return
-     */
-    public int getNumberOfFiles() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#getNumberOfFiles()
+	 */
+    @Override
+	public int getNumberOfFiles() {
         return repository != null ? repository.countFiles() : 0;
     }
 
-    /**
-     * Gets the audio files.
-     * 
-     * @return the audio files
-     */
-    public Collection<ILocalAudioObject> getAudioFilesList() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#getAudioFilesList()
+	 */
+    @Override
+	public Collection<ILocalAudioObject> getAudioFilesList() {
         if (repository != null) {
             return repository.getFiles();
         }
         return Collections.emptyList();
     }
 
-    /**
-     * Gets the audio files for albums.
-     * 
-     * @param albums
-     *            the albums
-     * 
-     * @return the audio files for albums
-     */
-    public List<ILocalAudioObject> getAudioFilesForAlbums(Map<String, Album> albums) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#getAudioFilesForAlbums(java.util.Map)
+	 */
+    @Override
+	public List<ILocalAudioObject> getAudioFilesForAlbums(Map<String, Album> albums) {
         List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
         for (Map.Entry<String, Album> entry : albums.entrySet()) {
             result.addAll(entry.getValue().getAudioObjects());
@@ -655,15 +614,11 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         return result;
     }
 
-    /**
-     * Gets the audio files for artists.
-     * 
-     * @param artists
-     *            the artists
-     * 
-     * @return the audio files for artists
-     */
-    public List<ILocalAudioObject> getAudioFilesForArtists(Map<String, Artist> artists) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#getAudioFilesForArtists(java.util.Map)
+	 */
+    @Override
+	public List<ILocalAudioObject> getAudioFilesForArtists(Map<String, Artist> artists) {
         List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
         for (Map.Entry<String, Artist> entry : artists.entrySet()) {
             result.addAll(entry.getValue().getAudioObjects());
@@ -671,15 +626,11 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         return result;
     }
     
-    /**
-     * Returns true if folder is in repository.
-     * 
-     * @param folder
-     *            the folder
-     * 
-     * @return true, if checks if is repository
-     */
-    public boolean isRepository(File folder) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#isRepository(java.io.File)
+	 */
+    @Override
+	public boolean isRepository(File folder) {
         if (repository == null) {
             return false;
         }
@@ -692,10 +643,11 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         return false;
     }
 
-    /**
-     * Notify cancel.
-     */
-    public void notifyCancel() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#notifyCancel()
+	 */
+    @Override
+	public void notifyCancel() {
         currentLoader.interruptLoad();
         repository = currentLoader.getOldRepository();
         notifyFinishRepositoryRead();
@@ -937,7 +889,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         backgroundLoad = false;
         Repository oldRepository = repository;
         repository = new Repository(folders, this, getState());
-        currentLoader = new RepositoryLoader(folders, oldRepository, repository, false);
+        currentLoader = new RepositoryLoader(this, folders, oldRepository, repository, false);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.start();
     }
@@ -950,37 +902,34 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         filesLoaded = 0;
         Repository oldRepository = repository;
         repository = new Repository(oldRepository.getRepositoryFolders(), this, getState());
-        currentLoader = new RepositoryLoader(oldRepository.getRepositoryFolders(), oldRepository, repository, true);
+        currentLoader = new RepositoryLoader(this, oldRepository.getRepositoryFolders(), oldRepository, repository, true);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.start();
     }
 
-    /**
-     * Refreshes a file after being modified
-     * 
-     * @param file
-     *            the file
-     */
-    public void refreshFile(ILocalAudioObject file) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#refreshFile(net.sourceforge.atunes.model.ILocalAudioObject)
+	 */
+    @Override
+	public void refreshFile(ILocalAudioObject file) {
         RepositoryLoader.refreshFile(repository, file, statisticsHandler);
     }
 
-    /**
-     * Refreshes a folder
-     * 
-     * @param file
-     *            the file
-     */
-    public void refreshFolders(List<Folder> folders) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#refreshFolders(java.util.List)
+	 */
+    @Override
+	public void refreshFolders(List<Folder> folders) {
     	getFrame().showProgressBar(true, StringUtils.getString(I18nUtils.getString("REFRESHING"), "..."));
         enableRepositoryActions(false);
-    	new RefreshFoldersSwingWorker(repository, folders, statisticsHandler, getOsManager()).execute();
+    	new RefreshFoldersSwingWorker(this, repository, folders, statisticsHandler, getOsManager()).execute();
     }
 
-    /**
-     * Refresh repository.
-     */
-    public void refreshRepository() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#refreshRepository()
+	 */
+    @Override
+	public void refreshRepository() {
         if (!repositoryIsNull()) {
             String text = StringUtils.getString(I18nUtils.getString("REFRESHING"), "...");
             getFrame().showProgressBar(true, text);
@@ -989,12 +938,11 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         }
     }
 
-    /**
-     * Removes a list of folders from repository.
-     * 
-     * @param foldersToRemove
-     */
-    public void removeFolders(List<Folder> foldersToRemove) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#removeFolders(java.util.List)
+	 */
+    @Override
+	public void removeFolders(List<Folder> foldersToRemove) {
         for (Folder folder : foldersToRemove) {
 
             // Remove content
@@ -1010,19 +958,17 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         }
     }
 
-    /**
-     * Removes a list of files from repository
-     * 
-     * @param filesToRemove
-     *            Files that should be removed
-     */
-    public void remove(List<ILocalAudioObject> filesToRemove) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#remove(java.util.List)
+	 */
+    @Override
+	public void remove(List<ILocalAudioObject> filesToRemove) {
         if (filesToRemove == null || filesToRemove.isEmpty()) {
             return;
         }
 
         for (ILocalAudioObject fileToRemove : filesToRemove) {
-            RepositoryLoader.deleteFile(fileToRemove, getOsManager());
+            RepositoryLoader.deleteFile(fileToRemove, getOsManager(), this);
         }
 
         // Notify listeners
@@ -1031,15 +977,11 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         }
     }
 
-    /**
-     * Renames an audio file
-     * 
-     * @param audioFile
-     *            the audio file that should be renamed
-     * @param name
-     *            the new name of the audio file
-     */
-    public void rename(ILocalAudioObject audioFile, String name) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#rename(net.sourceforge.atunes.model.ILocalAudioObject, java.lang.String)
+	 */
+    @Override
+	public void rename(ILocalAudioObject audioFile, String name) {
         File file = audioFile.getFile();
         String extension = FilenameUtils.getExtension(file.getAbsolutePath());
         File newFile = new File(StringUtils.getString(file.getParentFile().getAbsolutePath() + "/" + FileNameUtils.getValidFileName(name, getOsManager()) + "." + extension));
@@ -1066,24 +1008,19 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     	endTransaction();
 	}
 
-    /**
-     * Repository is null.
-     * 
-     * @return true, if successful
-     */
-    public boolean repositoryIsNull() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#repositoryIsNull()
+	 */
+    @Override
+	public boolean repositoryIsNull() {
         return repository == null;
     }
 
-    /**
-     * Retrieve.
-     * 
-     * @param folders
-     *            the folders
-     * 
-     * @return true, if successful
-     */
-    public boolean retrieve(List<File> folders) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#retrieve(java.util.List)
+	 */
+    @Override
+	public boolean retrieve(List<File> folders) {
         enableRepositoryActions(false);
         progressDialog = getBean(IRepositoryProgressDialog.class);
         // Start with indeterminate dialog
@@ -1105,12 +1042,11 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         }
     }
 
-    /**
-     * Select repository.
-     * 
-     * @return true, if successful
-     */
-    public boolean selectRepository() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#selectRepository()
+	 */
+    @Override
+	public boolean selectRepository() {
         return selectRepository(false);
     }
 
@@ -1137,19 +1073,18 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         return false;
     }
 
-    /**
-     * Imports folders to repository
-     */
-    public void importFoldersToRepository() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#importFoldersToRepository()
+	 */
+    @Override
+	public void importFoldersToRepository() {
     }
 
-    /**
-     * Imports folders passed as argument to repository
-     * 
-     * @param folders
-     * @param path
-     */
-    public void importFolders(final List<File> folders, final String path) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#importFolders(java.util.List, java.lang.String)
+	 */
+    @Override
+	public void importFolders(final List<File> folders, final String path) {
     	IProgressDialog progressDialog = (IProgressDialog) getBean("progressDialog");
     	progressDialog.setTitle(StringUtils.getString(I18nUtils.getString("READING_FILES_TO_IMPORT"), "..."));
         progressDialog.disableCancelButton();
@@ -1158,12 +1093,11 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         worker.execute();
     }
 
-    /**
-     * Adds a listener to be notified when an audio file is removed
-     * 
-     * @param listener
-     */
-    public void addAudioFilesRemovedListener(IAudioFilesRemovedListener listener) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#addAudioFilesRemovedListener(net.sourceforge.atunes.model.IAudioFilesRemovedListener)
+	 */
+    @Override
+	public void addAudioFilesRemovedListener(IAudioFilesRemovedListener listener) {
         audioFilesRemovedListeners.add(listener);
     }
 
@@ -1173,7 +1107,11 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
     }
 
-    public void doInBackground() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#doInBackground()
+	 */
+    @Override
+	public void doInBackground() {
         if (currentLoader != null) {
             backgroundLoad = true;
             currentLoader.setPriority(Thread.MIN_PRIORITY);
@@ -1212,12 +1150,11 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         return currentLoader != null;
     }
 
-    /**
-     * Returns folder where repository configuration is stored
-     * 
-     * @return
-     */
-    public String getRepositoryConfigurationFolder() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#getRepositoryConfigurationFolder()
+	 */
+    @Override
+	public String getRepositoryConfigurationFolder() {
         String customRepositoryConfigFolder = getOsManager().getCustomRepositoryConfigFolder();
         return customRepositoryConfigFolder != null ? customRepositoryConfigFolder : getOsManager().getUserConfigFolder(Kernel.isDebug());
     }
@@ -1274,33 +1211,38 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 		getBean(IFavoritesHandler.class).updateFavorites(repository);
 	}
 
-	/**
-	 * Starts a transaction
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#startTransaction()
 	 */
+	@Override
 	public void startTransaction() {
 		if (repository != null) {
 			repository.startTransaction();
 		}
 	}
 	
-	/**
-	 * Ends a transaction
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#endTransaction()
 	 */
+	@Override
 	public void endTransaction() {
 		if (repository != null) {
 			repository.endTransaction();
 		}
 	}
 
-	/**
-	 * Returns data to show in tree
-	 * @param viewMode
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#getDataForView(net.sourceforge.atunes.model.ViewMode)
 	 */
+	@Override
 	public Map<String, ?> getDataForView(ViewMode viewMode) {
 		return viewMode.getDataForView(repository);
 	}
 
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#getFile(java.lang.String)
+	 */
+	@Override
 	public ILocalAudioObject getFile(String fileName) {
 		if (repository != null) {
 			return repository.getFile(fileName);
@@ -1308,11 +1250,10 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 		return null;
 	}
 
-	/**
-	 * @param year
-	 * @return
-	 * @see net.sourceforge.atunes.model.Repository#getYear(java.lang.String)
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#getYear(java.lang.String)
 	 */
+	@Override
 	public Year getYear(String year) {
 		if (repository != null) {
 			return repository.getYear(year);
@@ -1320,20 +1261,20 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 		return null;
 	}
 
-	/**
-	 * @param year
-	 * @see net.sourceforge.atunes.model.Repository#removeYear(net.sourceforge.atunes.kernel.modules.repository.data.Year)
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#removeYear(net.sourceforge.atunes.kernel.modules.repository.data.Year)
 	 */
+	@Override
 	public void removeYear(Year year) {
 		if (repository != null) {
 			repository.removeYear(year);
 		}
 	}
 
-	/**
-	 * @param file
-	 * 
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#removeFile(net.sourceforge.atunes.model.ILocalAudioObject)
 	 */
+	@Override
 	public void removeFile(ILocalAudioObject file) {
 		if (repository != null) {
 			repository.removeFile(file);
@@ -1342,11 +1283,10 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 		}
 	}
 
-	/**
-	 * @param path
-	 * @return
-	 * @see net.sourceforge.atunes.model.Repository#getFolder(java.lang.String)
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler#getFolder(java.lang.String)
 	 */
+	@Override
 	public Folder getFolder(String path) {
 		if (repository != null) {
 			return repository.getFolder(path);

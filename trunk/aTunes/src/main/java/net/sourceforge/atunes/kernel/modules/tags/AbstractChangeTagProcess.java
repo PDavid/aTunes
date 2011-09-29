@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.process.AbstractProcess;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
@@ -45,16 +45,22 @@ public abstract class AbstractChangeTagProcess extends AbstractProcess {
     private List<ILocalAudioObject> filesToChange;
     
     private IPlayListHandler playListHandler;
+    
+    private IRepositoryHandler repositoryHandler;
 
     /**
      * Constructor, initialized with AudioFiles to be changed
      * 
      * @param filesToChange
+     * @param state
+     * @param playListHandler
+     * @param repositoryHandler
      */
-    protected AbstractChangeTagProcess(List<ILocalAudioObject> filesToChange, IState state, IPlayListHandler playListHandler) {
+    protected AbstractChangeTagProcess(List<ILocalAudioObject> filesToChange, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler) {
     	super(state);
         this.filesToChange = filesToChange;
         this.playListHandler = playListHandler;
+        this.repositoryHandler = repositoryHandler;
     }
 
     @Override
@@ -71,14 +77,14 @@ public abstract class AbstractChangeTagProcess extends AbstractProcess {
     protected boolean runProcess() {
         // Retrieve information needed to change tags
         retrieveInformationBeforeChangeTags();
-        RepositoryHandler.getInstance().startTransaction();
+        repositoryHandler.startTransaction();
         boolean errors = false;
         try {
             for (int i = 0; i < this.filesToChange.size() && !isCanceled(); i++) {
                 // Change every AudioFile
                 changeTag(this.filesToChange.get(i));
                 // Reread every file after being writen
-                RepositoryHandler.getInstance().refreshFile(this.filesToChange.get(i));
+                repositoryHandler.refreshFile(this.filesToChange.get(i));
                 setCurrentProgress(i + 1);
             }
         } catch (Exception e) {
@@ -88,7 +94,7 @@ public abstract class AbstractChangeTagProcess extends AbstractProcess {
         // Refresh swing components
         TagModifier.refreshAfterTagModify(filesToChange, playListHandler);
 
-        RepositoryHandler.getInstance().endTransaction();
+        repositoryHandler.endTransaction();
         
         return !errors;
     }

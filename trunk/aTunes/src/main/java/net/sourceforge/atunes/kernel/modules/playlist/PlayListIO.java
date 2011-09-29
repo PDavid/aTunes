@@ -33,7 +33,7 @@ import javax.swing.filechooser.FileFilter;
 
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
@@ -77,15 +77,16 @@ public final class PlayListIO {
     /**
      * Returns a list of files contained in a list of file names.
      * 
+     * @param repositoryHandler
      * @param fileNames
      *            the file names
      * 
      * @return the audio objects from file names list
      */
-    public static List<IAudioObject> getAudioObjectsFromFileNamesList(List<String> fileNames) {
+    public static List<IAudioObject> getAudioObjectsFromFileNamesList(IRepositoryHandler repositoryHandler, List<String> fileNames) {
         List<IAudioObject> result = new ArrayList<IAudioObject>();
         for (String fileName : fileNames) {
-            result.add(getAudioFileOrCreate(fileName));
+            result.add(getAudioFileOrCreate(repositoryHandler, fileName));
         }
         return result;
     }
@@ -94,10 +95,11 @@ public final class PlayListIO {
      * Returns an AudioObject given a resource name or instantiates it if does
      * not exist. A resource can be a file or URL at this moment
      * 
+     * @param repositoryHandler
      * @param resourceName
      * @return
      */
-    static IAudioObject getAudioFileOrCreate(String resourceName) {
+    static IAudioObject getAudioFileOrCreate(IRepositoryHandler repositoryHandler, String resourceName) {
         IAudioObject ao = null;
 
         // It's an online radio
@@ -111,7 +113,7 @@ public final class PlayListIO {
         }
 
         // It's not an online radio, then it must be an AudioFile
-        ao = RepositoryHandler.getInstance().getFileIfLoaded(resourceName);
+        ao = repositoryHandler.getFileIfLoaded(resourceName);
         if (ao == null) {
             // If LocalAudioObject is not previously loaded in application then create a new AudioFile
             ao = new AudioFile(new File(resourceName));
@@ -123,12 +125,13 @@ public final class PlayListIO {
      * Returns a list of files contained in a play list file.
      * 
      * @param file
+     * @param repositoryHandler
      * @param osManager
      * @return
      */
-    public static List<IAudioObject> getFilesFromList(File file, IOSManager osManager) {
+    public static List<IAudioObject> getFilesFromList(File file, IRepositoryHandler repositoryHandler, IOSManager osManager) {
         List<String> list = read(file, osManager);
-        return getAudioObjectsFromFileNamesList(list);
+        return getAudioObjectsFromFileNamesList(repositoryHandler, list);
     }
 
     /**

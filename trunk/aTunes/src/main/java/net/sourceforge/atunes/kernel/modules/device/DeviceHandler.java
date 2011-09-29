@@ -48,7 +48,7 @@ import net.sourceforge.atunes.kernel.actions.DisconnectDeviceAction;
 import net.sourceforge.atunes.kernel.actions.RefreshDeviceAction;
 import net.sourceforge.atunes.kernel.actions.SynchronizeDeviceWithPlayListAction;
 import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
@@ -101,7 +101,7 @@ public final class DeviceHandler extends AbstractHandler implements IRepositoryL
     @Override
     protected void initHandler() {
     	caseSensitiveTrees = getState().isKeyAlwaysCaseSensitiveInRepositoryStructure();
-        RepositoryHandler.getInstance().addAudioFilesRemovedListener(this);
+    	getBean(IRepositoryHandler.class).addAudioFilesRemovedListener(this);
     }
 
     @Override
@@ -133,7 +133,7 @@ public final class DeviceHandler extends AbstractHandler implements IRepositoryL
         long leaveFree = leaveFreeLong;
 
         // Get reference to Repository songs
-        List<ILocalAudioObject> songs = new ArrayList<ILocalAudioObject>(RepositoryHandler.getInstance().getAudioFilesList());
+        List<ILocalAudioObject> songs = new ArrayList<ILocalAudioObject>(getBean(IRepositoryHandler.class).getAudioFilesList());
 
         // Songs selected
         Map<Integer, ILocalAudioObject> songsSelected = new HashMap<Integer, ILocalAudioObject>();
@@ -455,7 +455,7 @@ public final class DeviceHandler extends AbstractHandler implements IRepositoryL
         Logger.info("Refreshing device");
         Repository oldDeviceRepository = deviceRepository;
         deviceRepository = new Repository(oldDeviceRepository.getRepositoryFolders(), null, getState());
-        currentLoader = new RepositoryLoader(oldDeviceRepository.getRepositoryFolders(), oldDeviceRepository, deviceRepository, true);
+        currentLoader = new RepositoryLoader(getBean(IRepositoryHandler.class), oldDeviceRepository.getRepositoryFolders(), oldDeviceRepository, deviceRepository, true);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.start();
     }
@@ -486,7 +486,7 @@ public final class DeviceHandler extends AbstractHandler implements IRepositoryL
         List<File> folders = new ArrayList<File>();
         folders.add(path);
         deviceRepository = new Repository(folders, null, getState());
-        currentLoader = new RepositoryLoader(folders, null, deviceRepository, false);
+        currentLoader = new RepositoryLoader(getBean(IRepositoryHandler.class), folders, null, deviceRepository, false);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.start();
     }

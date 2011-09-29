@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.Set;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IArtistInfo;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -56,6 +56,8 @@ public class SimilarArtistsDataSource implements IContextInformationSource {
 
 	private IWebServicesHandler webServicesHandler;
 
+	private IRepositoryHandler repositoryHandler;
+	
     @Override
     public Map<String, ?> getData(Map<String, ?> parameters) {
         Map<String, Object> result = new HashMap<String, Object>();
@@ -78,7 +80,7 @@ public class SimilarArtistsDataSource implements IContextInformationSource {
             ISimilarArtistsInfo artists = webServicesHandler.getSimilarArtists(audioObject.getArtist());
             if (artists != null) {
             	Set<String> artistNamesSet = new HashSet<String>();
-            	for (Artist a : RepositoryHandler.getInstance().getArtists()) {
+            	for (Artist a : repositoryHandler.getArtists()) {
             		artistNamesSet.add(a.getName().toUpperCase());
             	}
                 for (int i = 0; i < artists.getArtists().size(); i++) {
@@ -95,5 +97,9 @@ public class SimilarArtistsDataSource implements IContextInformationSource {
 
     public final void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
+	}
+    
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
 	}
 }

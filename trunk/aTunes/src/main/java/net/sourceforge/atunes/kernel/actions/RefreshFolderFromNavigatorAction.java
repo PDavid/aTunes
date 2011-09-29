@@ -24,7 +24,7 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -68,7 +68,7 @@ public class RefreshFolderFromNavigatorAction extends AbstractActionOverSelected
     
     @Override
     protected void performAction(List<Folder> folders) {
-       	RepositoryHandler.getInstance().refreshFolders(folders);        	        
+       	getBean(IRepositoryHandler.class).refreshFolders(folders);        	        
     }
 
 }

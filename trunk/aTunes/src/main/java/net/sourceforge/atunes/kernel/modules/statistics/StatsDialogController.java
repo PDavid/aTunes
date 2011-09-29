@@ -35,7 +35,7 @@ import javax.swing.table.DefaultTableModel;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.views.dialogs.StatsDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -61,6 +61,8 @@ import org.jfree.ui.RectangleInsets;
 final class StatsDialogController extends AbstractSimpleController<StatsDialog>  implements ILookAndFeelChangeListener {
 
 	private IStatisticsHandler statisticsHandler;
+	
+	private IRepositoryHandler repositoryHandler;
 	
     private static class RightAlignmentTableCellRendererCode extends AbstractTableCellRendererCode {
         public RightAlignmentTableCellRendererCode(ILookAndFeel lookAndFeel) {
@@ -116,12 +118,14 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
      * @param state
      * @param statisticsHandler
      * @param lookAndFeelManager
+     * @param repositoryHandler
      */
-    StatsDialogController(StatsDialog frame, IState state, IStatisticsHandler statisticsHandler, ILookAndFeelManager lookAndFeelManager) {
+    StatsDialogController(StatsDialog frame, IState state, IStatisticsHandler statisticsHandler, ILookAndFeelManager lookAndFeelManager, IRepositoryHandler repositoryHandler) {
         super(frame, state);
         this.statisticsHandler = statisticsHandler;
         this.lookAndFeelManager = lookAndFeelManager;
         this.lookAndFeelManager.addLookAndFeelChangeListener(this);
+        this.repositoryHandler = repositoryHandler;
     }
 
     /**
@@ -284,7 +288,7 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
     private void setGeneralChart() {
         DefaultPieDataset dataset = new DefaultPieDataset();
         int different = statisticsHandler.getDifferentAudioObjectsPlayed();
-        int total = RepositoryHandler.getInstance().getAudioFilesList().size();
+        int total = repositoryHandler.getAudioFilesList().size();
         dataset.setValue(I18nUtils.getString("SONGS_PLAYED"), different);
         dataset.setValue(I18nUtils.getString("SONGS_NEVER_PLAYED"), total - different);
         JFreeChart chart = ChartFactory.createPieChart3D(I18nUtils.getString("SONGS_PLAYED"), dataset, false, false, false);
@@ -306,7 +310,7 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
 
     private void setGeneralTable() {
         int different = statisticsHandler.getDifferentAudioObjectsPlayed();
-        int total = RepositoryHandler.getInstance().getAudioFilesList().size();
+        int total = repositoryHandler.getAudioFilesList().size();
         if (total != 0) {
             String[] headers = new String[] { " ", I18nUtils.getString("COUNT"), "%" };
             Object[][] content = new Object[2][3];

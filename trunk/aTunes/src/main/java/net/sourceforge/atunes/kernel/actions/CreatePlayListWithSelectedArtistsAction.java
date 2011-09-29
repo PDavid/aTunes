@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -57,7 +57,7 @@ public class CreatePlayListWithSelectedArtistsAction extends AbstractActionOverS
         List<Artist> selectedArtists = new ArrayList<Artist>();
         for (IAudioObject ao : objects) {
             String artist = ao.getArtist();
-            Artist a = RepositoryHandler.getInstance().getArtist(artist);
+            Artist a = getBean(IRepositoryHandler.class).getArtist(artist);
             if (a != null) {
                 if (!selectedArtists.contains(a)) {
                     selectedArtists.add(a);
@@ -67,7 +67,7 @@ public class CreatePlayListWithSelectedArtistsAction extends AbstractActionOverS
 
         // For every artist
         for (Artist artist : selectedArtists) {
-            List<ILocalAudioObject> audioObjects = RepositoryHandler.getInstance().getAudioFilesForArtists(Collections.singletonMap(artist.getName(), artist));
+            List<ILocalAudioObject> audioObjects = getBean(IRepositoryHandler.class).getAudioFilesForArtists(Collections.singletonMap(artist.getName(), artist));
             AudioObjectComparator.sort(audioObjects);
 
             // Create a new play list with artist as name and audio objects selected

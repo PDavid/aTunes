@@ -29,6 +29,7 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListTableTransferHandler;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListToDeviceDragAndDropListener;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -54,15 +55,18 @@ public final class PlayListPanel extends JPanel {
     private JScrollPane playListTableScroll;
     
     private IPlayListHandler playListHandler;
+    
+    private IRepositoryHandler repositoryHandler;
 
     /**
      * Instantiates a new play list panel.
      * @param playListHandler
      * @param lookAndFeelManager
      */
-    public PlayListPanel(IPlayListHandler playListHandler, ILookAndFeelManager lookAndFeelManager) {
+    public PlayListPanel(IPlayListHandler playListHandler, ILookAndFeelManager lookAndFeelManager, IRepositoryHandler repositoryHandler) {
         super(new BorderLayout());
         this.playListHandler = playListHandler;
+        this.repositoryHandler = repositoryHandler;
         addContent(lookAndFeelManager);
     }
 
@@ -72,7 +76,7 @@ public final class PlayListPanel extends JPanel {
      */
     private void addContent(ILookAndFeelManager lookAndFeelManager) {
         playListTabPanel = new PlayListTabPanel(lookAndFeelManager);
-        playListTable = new PlayListTable((IColumnSet) Context.getBean("playlistColumnSet"), playListHandler, lookAndFeelManager);
+        playListTable = new PlayListTable((IColumnSet) Context.getBean("playlistColumnSet"), playListHandler, lookAndFeelManager, repositoryHandler);
         playListTableScroll = lookAndFeelManager.getCurrentLookAndFeel().getTableScrollPane(playListTable.getSwingComponent());
 
         add(playListTabPanel, BorderLayout.NORTH);

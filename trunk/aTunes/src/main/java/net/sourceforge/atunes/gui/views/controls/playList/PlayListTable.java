@@ -48,6 +48,7 @@ import net.sourceforge.atunes.gui.views.controls.ColumnSetRowSorter;
 import net.sourceforge.atunes.gui.views.menus.PlayListMenu;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListDragableRow;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListTableModel;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -78,8 +79,9 @@ public final class PlayListTable extends JTable implements IPlayListTable {
      * @param columnSet
      * @param playListHandler
      * @param lookAndFeelManager
+     * @param repositoryHandler 
      */
-    public PlayListTable(IColumnSet columnSet, IPlayListHandler playListHandler, ILookAndFeelManager lookAndFeelManager) {
+    public PlayListTable(IColumnSet columnSet, IPlayListHandler playListHandler, ILookAndFeelManager lookAndFeelManager, IRepositoryHandler repositoryHandler) {
         super();
         this.playListHandler = playListHandler;
         lookAndFeelManager.getCurrentLookAndFeel().decorateTable(this);
@@ -87,7 +89,7 @@ public final class PlayListTable extends JTable implements IPlayListTable {
         setDropMode(DropMode.ON);
 
         // Set table model
-        PlayListTableModel model = new PlayListTableModel(columnSet, playListHandler);
+        PlayListTableModel model = new PlayListTableModel(columnSet, playListHandler, repositoryHandler);
         setModel(model);
 
         // Set column model

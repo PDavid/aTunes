@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorFrame;
 import net.sourceforge.atunes.kernel.modules.covernavigator.CoverNavigatorController;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
@@ -47,7 +47,7 @@ public class ShowCoverNavigatorAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        CoverNavigatorFrame coverNavigator = new CoverNavigatorFrame(RepositoryHandler.getInstance().getArtists(), 
+        CoverNavigatorFrame coverNavigator = new CoverNavigatorFrame(getBean(IRepositoryHandler.class).getArtists(), 
         															 getBean(IFrame.class).getFrame(),
         															 getBean(ILookAndFeelManager.class));
         new CoverNavigatorController(coverNavigator, getState(), getBean(IOSManager.class));

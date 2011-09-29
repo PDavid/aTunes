@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -80,6 +80,8 @@ public class AlbumInfoDataSource implements IContextInformationSource {
     private IState state;
     
     private IWebServicesHandler webServicesHandler;
+    
+    private IRepositoryHandler repositoryHandler;
     
     private IOSManager osManager;
     
@@ -215,7 +217,7 @@ public class AlbumInfoDataSource implements IContextInformationSource {
                 try {
                     ImageUtils.writeImageToFile(img, imageFileName);
                     // Add picture to songs of album
-                    RepositoryHandler.getInstance().addExternalPictureForAlbum(file.getArtist(), file.getAlbum(), imageFile);
+                    repositoryHandler.addExternalPictureForAlbum(file.getArtist(), file.getAlbum(), imageFile);
                 } catch (IOException e) {
                     Logger.error(e);
                 }
@@ -258,6 +260,10 @@ public class AlbumInfoDataSource implements IContextInformationSource {
     
     public final void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
+	}
+    
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
 	}
 
 }

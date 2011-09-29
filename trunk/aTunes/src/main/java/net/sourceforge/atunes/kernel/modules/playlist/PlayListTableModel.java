@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 import java.util.Comparator;
 
 import net.sourceforge.atunes.gui.model.AbstractColumnSetTableModel;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -41,16 +41,19 @@ public class PlayListTableModel extends AbstractColumnSetTableModel {
     private PlayList visiblePlayList = null;
     
     private IPlayListHandler playListHandler;
+    
+    private IRepositoryHandler repositoryHandler;
 
     /**
      * Constructor.
-     * 
      * @param columnSet
      * @param playListHandler
+     * @param repositoryHandler
      */
-    public PlayListTableModel(IColumnSet columnSet, IPlayListHandler playListHandler) {
+    public PlayListTableModel(IColumnSet columnSet, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler) {
         super(columnSet);
         this.playListHandler = playListHandler;
+        this.repositoryHandler = repositoryHandler;
     }
 
     /**
@@ -113,7 +116,7 @@ public class PlayListTableModel extends AbstractColumnSetTableModel {
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
     	// Open repository transaction
-    	RepositoryHandler.getInstance().startTransaction();
+    	repositoryHandler.startTransaction();
     	
         // AudioFile
         IAudioObject audioObject = visiblePlayList.get(rowIndex);
@@ -125,7 +128,7 @@ public class PlayListTableModel extends AbstractColumnSetTableModel {
         playListHandler.refreshPlayList();
 
         // End repository transaction
-        RepositoryHandler.getInstance().endTransaction();
+        repositoryHandler.endTransaction();
     }
 
     /**

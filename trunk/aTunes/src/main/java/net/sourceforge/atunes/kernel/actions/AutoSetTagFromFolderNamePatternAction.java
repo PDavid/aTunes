@@ -27,6 +27,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.PatternInputDialog;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.tags.EditTagFromFolderNamePatternProcess;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
@@ -63,7 +64,7 @@ public class AutoSetTagFromFolderNamePatternAction extends AbstractActionOverSel
 
         // If user entered a pattern apply to files
         if (pattern != null) {
-            new EditTagFromFolderNamePatternProcess(objects, pattern, getState(), getBean(IPlayListHandler.class)).execute();
+            new EditTagFromFolderNamePatternProcess(objects, pattern, getState(), getBean(IPlayListHandler.class), getBean(IRepositoryHandler.class)).execute();
         }
     }
 

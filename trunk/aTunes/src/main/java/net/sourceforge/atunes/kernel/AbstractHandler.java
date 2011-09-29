@@ -38,7 +38,7 @@ import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListAudioObject;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IFavoritesHandler;
@@ -159,7 +159,7 @@ public abstract class AbstractHandler implements IHandler {
             handlers.add((AbstractHandler) Context.getBean(IPlayListHandler.class));
             handlers.add(PluginsHandler.getInstance());
             handlers.add(RadioHandler.getInstance());
-            handlers.add(RepositoryHandler.getInstance());
+            handlers.add((AbstractHandler) Context.getBean(IRepositoryHandler.class));
             handlers.add((AbstractHandler) Context.getBean(ISearchHandler.class));
             handlers.add((AbstractHandler) Context.getBean(IUpdateHandler.class));
             handlers.add((AbstractHandler) Context.getBean(IUIHandler.class));

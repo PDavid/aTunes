@@ -68,17 +68,18 @@ public class RepositoryLoader extends Thread {
 	private long startReadTime;
 	private String fastRepositoryPath;
 	private int fastFirstChar;
+	private IRepositoryHandler repositoryHandler;
 
 	/**
 	 * Instantiates a new repository loader.
-	 * 
+	 * @param repositoryHandler
 	 * @param folders
-	 *            the folders
+	 * @param oldRepository
+	 * @param repository
 	 * @param refresh
-	 *            the refresh
 	 */
-	public RepositoryLoader(List<File> folders, Repository oldRepository,
-			IRepository repository, boolean refresh) {
+	public RepositoryLoader(IRepositoryHandler repositoryHandler, List<File> folders, Repository oldRepository, IRepository repository, boolean refresh) {
+		this.repositoryHandler = repositoryHandler;
 		this.refresh = refresh;
 		this.folders = folders;
 		this.oldRepository = oldRepository;
@@ -567,7 +568,7 @@ public class RepositoryLoader extends Thread {
 	 * Notify finish.
 	 */
 	private void notifyFinish() {
-		RepositoryHandler.getInstance().endTransaction();
+		repositoryHandler.endTransaction();
 		
 		ImageCache.getImageCache().clearCache();
 
@@ -595,7 +596,7 @@ public class RepositoryLoader extends Thread {
 	public void run() {
 		Logger.info("Starting repository read");
 		
-		RepositoryHandler.getInstance().startTransaction();
+		repositoryHandler.startTransaction();
 		
 		Timer timer = new Timer();
 		timer.start();
@@ -661,10 +662,10 @@ public class RepositoryLoader extends Thread {
 	 * To notify repository change call Repository.setDirty(true, true) when finish
 	 * 
 	 * @param file
-	 *            File to be removed permanently
 	 * @param osManager
+	 * @param repositoryHandler
 	 */
-	static void deleteFile(ILocalAudioObject file, IOSManager osManager) {
+	static void deleteFile(ILocalAudioObject file, IOSManager osManager, IRepositoryHandler repositoryHandler) {
 		String albumArtist = file.getAlbumArtist();
 		String artist = file.getArtist();
 		String album = file.getAlbum();
@@ -672,9 +673,9 @@ public class RepositoryLoader extends Thread {
 		String year = file.getYear();
 
 		// Only do this if file is in repository
-		if (getFolderForFile(file, osManager) != null) {
+		if (getFolderForFile(file, osManager, repositoryHandler) != null) {
 			// Remove from file structure
-			Folder f = getFolderForFile(file, osManager);
+			Folder f = getFolderForFile(file, osManager, repositoryHandler);
 			if (f != null) {
 				f.removeAudioFile(file);
 				// If folder is empty, remove too
@@ -684,9 +685,9 @@ public class RepositoryLoader extends Thread {
 			}
 
 			// Remove from tree structure
-			Artist a = RepositoryHandler.getInstance().getArtist(albumArtist);
+			Artist a = repositoryHandler.getArtist(albumArtist);
 			if (a == null) {
-				a = RepositoryHandler.getInstance().getArtist(artist);
+				a = repositoryHandler.getArtist(artist);
 			}
 			if (a != null) {
 				Album alb = a.getAlbum(album);
@@ -698,31 +699,31 @@ public class RepositoryLoader extends Thread {
 					}
 
 					if (a.size() <= 1) {
-						RepositoryHandler.getInstance().removeArtist(a);
+						repositoryHandler.removeArtist(a);
 					}
 				}
 			}
 
 			// Remove from genre structure
-			Genre g = RepositoryHandler.getInstance().getGenre(genre);
+			Genre g = repositoryHandler.getGenre(genre);
 			if (g != null) {
 				g.removeAudioFile(file);
 				if (g.size() <= 1) {
-					RepositoryHandler.getInstance().removeGenre(g);
+					repositoryHandler.removeGenre(g);
 				}
 			}
 
 			// Remove from year structure
-			Year y = RepositoryHandler.getInstance().getYear(year);
+			Year y = repositoryHandler.getYear(year);
 			if (y != null) {
 				y.removeAudioFile(file);
 				if (y.size() <= 1) {
-					RepositoryHandler.getInstance().removeYear(y);
+					repositoryHandler.removeYear(y);
 				}
 			}
 
 			// Remove from repository
-			RepositoryHandler.getInstance().removeFile(file);
+			repositoryHandler.removeFile(file);
 		}
 		// File is on a device
 		else if (DeviceHandler.getInstance().isDevicePath(file.getUrl())) {
@@ -737,19 +738,19 @@ public class RepositoryLoader extends Thread {
 	 *            Audio file for which the folder is wanted
 	 * 
 	 * @param osManager
+	 * @param repositoryHandler
 	 * @return Either folder or null if file is not in repository
 	 */
-	private static Folder getFolderForFile(ILocalAudioObject file, IOSManager osManager) {
+	private static Folder getFolderForFile(ILocalAudioObject file, IOSManager osManager, IRepositoryHandler repositoryHandler) {
 		// Get repository folder where file is
-		File repositoryFolder = RepositoryHandler.getInstance()
-				.getRepositoryFolderContainingFile(file);
+		File repositoryFolder = repositoryHandler.getRepositoryFolderContainingFile(file);
 		// If the file is not in the repository, return null
 		if (repositoryFolder == null) {
 			return null;
 		}
 
 		// Get root folder
-		Folder rootFolder = RepositoryHandler.getInstance().getFolder(repositoryFolder.getAbsolutePath());
+		Folder rootFolder = repositoryHandler.getFolder(repositoryFolder.getAbsolutePath());
 
 		// Now navigate through folder until find folder that contains file
 		String path = file.getFile().getParentFile().getAbsolutePath();
@@ -770,9 +771,10 @@ public class RepositoryLoader extends Thread {
 	 * @param folders
 	 * @param statisticsHandler
 	 * @param osManager
+	 * @param repositoryHandler
 	 */
-	public static void refreshFolders(IRepository repository, List<Folder> folders, IStatisticsHandler statisticsHandler, IOSManager osManager) {
-		RepositoryHandler.getInstance().startTransaction();
+	public static void refreshFolders(IRepository repository, List<Folder> folders, IStatisticsHandler statisticsHandler, IOSManager osManager, IRepositoryHandler repositoryHandler) {
+		repositoryHandler.startTransaction();
 		
 		for (Folder folder : folders) {
 			// Remove o refresh previous files		
@@ -783,7 +785,7 @@ public class RepositoryLoader extends Thread {
 					refreshFile(repository, ao, statisticsHandler);
 				} else {
 					Logger.debug("Removing file: ", ao.getFile().getAbsolutePath());
-					RepositoryHandler.getInstance().remove(Collections.singletonList(ao));
+					repositoryHandler.remove(Collections.singletonList(ao));
 				}
 			}
 
@@ -797,7 +799,7 @@ public class RepositoryLoader extends Thread {
 			}
 		}
 		
-		RepositoryHandler.getInstance().endTransaction();
+		repositoryHandler.endTransaction();
 	}
 
 }

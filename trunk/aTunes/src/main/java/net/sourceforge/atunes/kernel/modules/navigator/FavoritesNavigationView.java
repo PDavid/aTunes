@@ -52,7 +52,7 @@ import net.sourceforge.atunes.kernel.actions.SearchArtistAction;
 import net.sourceforge.atunes.kernel.actions.SearchArtistAtAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -79,6 +79,8 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
     private JPopupMenu favoriteTableMenu;
     
     private IFavoritesHandler favoritesHandler;
+    
+    private IRepositoryHandler repositoryHandler;
 
     /**
      * @param state
@@ -88,6 +90,10 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
      */
     public FavoritesNavigationView(IState state, INavigationHandler navigationHandler, IFrame frame, ILookAndFeelManager lookAndFeelManager) {
     	super(state, navigationHandler, frame, lookAndFeelManager);
+	}
+    
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
 	}
     
     @Override
@@ -234,8 +240,8 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
 
         if (node.isRoot()) {
             songs = new ArrayList<ILocalAudioObject>();
-            songs.addAll(RepositoryHandler.getInstance().getAudioFilesForArtists(favoritesHandler.getFavoriteArtistsInfo()));
-            songs.addAll(RepositoryHandler.getInstance().getAudioFilesForAlbums(favoritesHandler.getFavoriteAlbumsInfo()));
+            songs.addAll(repositoryHandler.getAudioFilesForArtists(favoritesHandler.getFavoriteArtistsInfo()));
+            songs.addAll(repositoryHandler.getAudioFilesForAlbums(favoritesHandler.getFavoriteAlbumsInfo()));
             songs.addAll(favoritesHandler.getFavoriteSongsInfo().values());
         } else {
             if (node.getUserObject() instanceof ITreeObject) {
@@ -243,9 +249,9 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
             } else {
                 songs = new ArrayList<ILocalAudioObject>();
                 if (node.getUserObject().toString().equals(I18nUtils.getString("ARTISTS"))) {
-                    songs.addAll(RepositoryHandler.getInstance().getAudioFilesForArtists(favoritesHandler.getFavoriteArtistsInfo()));
+                    songs.addAll(repositoryHandler.getAudioFilesForArtists(favoritesHandler.getFavoriteArtistsInfo()));
                 } else if (node.getUserObject().toString().equals(I18nUtils.getString("ALBUMS"))) {
-                    songs.addAll(RepositoryHandler.getInstance().getAudioFilesForAlbums(favoritesHandler.getFavoriteAlbumsInfo()));
+                    songs.addAll(repositoryHandler.getAudioFilesForAlbums(favoritesHandler.getFavoriteAlbumsInfo()));
                 } else {
                     songs.addAll(new ArrayList<ILocalAudioObject>(favoritesHandler.getFavoriteSongsInfo().values()));
                 }

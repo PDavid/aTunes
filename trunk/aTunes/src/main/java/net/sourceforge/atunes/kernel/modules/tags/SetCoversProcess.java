@@ -31,6 +31,7 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
@@ -55,9 +56,10 @@ public class SetCoversProcess extends AbstractChangeTagProcess {
      * @param files
      * @param state
      * @param playListHandler
+     * @param repositoryHandler
      */
-    SetCoversProcess(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler) {
-        super(files, state, playListHandler);
+    SetCoversProcess(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler) {
+        super(files, state, playListHandler, repositoryHandler);
     }
 
     @Override

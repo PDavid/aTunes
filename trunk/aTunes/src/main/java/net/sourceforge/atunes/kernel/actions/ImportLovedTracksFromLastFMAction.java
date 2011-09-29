@@ -29,7 +29,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.IFrame;
@@ -55,7 +55,7 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
             if (!lovedTracks.isEmpty()) {
                 List<ILocalAudioObject> favoriteAudioFiles = new ArrayList<ILocalAudioObject>();
                 for (ILovedTrack lovedTrack : lovedTracks) {
-                    Artist artist = RepositoryHandler.getInstance().getArtist(lovedTrack.getArtist());
+                    Artist artist = getBean(IRepositoryHandler.class).getArtist(lovedTrack.getArtist());
                     if (artist != null) {
                         for (ILocalAudioObject audioObject : artist.getAudioObjects()) {
                             if (audioObject.getTitleOrFileName().equalsIgnoreCase(lovedTrack.getTitle())) {

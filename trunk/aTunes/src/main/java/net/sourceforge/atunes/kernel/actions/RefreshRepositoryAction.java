@@ -25,7 +25,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -46,7 +46,7 @@ public class RefreshRepositoryAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        RepositoryHandler.getInstance().refreshRepository();
+        getBean(IRepositoryHandler.class).refreshRepository();
     }
 
 }

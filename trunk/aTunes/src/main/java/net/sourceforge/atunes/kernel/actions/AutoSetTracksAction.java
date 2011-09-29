@@ -24,6 +24,7 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -47,7 +48,7 @@ public class AutoSetTracksAction extends AbstractActionOverSelectedObjects<ILoca
 
     @Override
     protected void performAction(List<ILocalAudioObject> objects) {
-        TagEditionOperations.editTrackNumber(objects, getState(), getBean(IPlayListHandler.class));
+        TagEditionOperations.editTrackNumber(objects, getState(), getBean(IPlayListHandler.class), getBean(IRepositoryHandler.class));
     }
 
     @Override
