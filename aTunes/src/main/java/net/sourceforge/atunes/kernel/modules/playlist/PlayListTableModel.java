@@ -23,10 +23,10 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 import java.util.Comparator;
 
 import net.sourceforge.atunes.gui.model.AbstractColumnSetTableModel;
-import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IRepositoryHandler;
 
 /**
  * The playlist table model.

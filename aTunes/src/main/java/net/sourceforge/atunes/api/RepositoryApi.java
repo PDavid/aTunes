@@ -21,8 +21,8 @@
 package net.sourceforge.atunes.api;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IRepositoryHandler;
 
 import org.commonjukebox.plugins.model.PluginApi;
 

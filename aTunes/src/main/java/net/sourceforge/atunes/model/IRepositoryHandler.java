@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.repository;
+package net.sourceforge.atunes.model;
 
 import java.io.File;
 import java.util.Collection;
@@ -27,15 +27,6 @@ import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.Artist;
-import net.sourceforge.atunes.model.Folder;
-import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
-import net.sourceforge.atunes.model.IHandler;
-import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IRepositoryListener;
-import net.sourceforge.atunes.model.IRepositoryLoaderListener;
-import net.sourceforge.atunes.model.ViewMode;
 
 public interface IRepositoryHandler extends IHandler, IRepositoryLoaderListener, IAudioFilesRemovedListener, IRepositoryListener {
 

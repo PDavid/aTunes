@@ -38,8 +38,6 @@ public class ArtistColumn extends AbstractColumn {
     
     private static final long serialVersionUID = 8144686293055648148L;
 
-    private IFavoritesHandler favoritesHandler;
-    
     public ArtistColumn() {
         super("ARTIST", TextAndIcon.class);
         setVisible(true);
@@ -65,7 +63,7 @@ public class ArtistColumn extends AbstractColumn {
     public Object getValueFor(IAudioObject audioObject) {
         // Return artist
         return new TextAndIcon(audioObject.getArtist(), 
-        		!getFavoritesHandler().getFavoriteArtistsInfo().containsKey(audioObject.getArtist()) ? null : new IColorMutableImageIcon() {
+        		!Context.getBean(IFavoritesHandler.class).getFavoriteArtistsInfo().containsKey(audioObject.getArtist()) ? null : new IColorMutableImageIcon() {
 					
 					@Override
 					public ImageIcon getIcon(Paint paint) {
@@ -78,13 +76,4 @@ public class ArtistColumn extends AbstractColumn {
     public String getValueForFilter(IAudioObject audioObject) {
         return audioObject.getArtist();
     }
-    
-    private IFavoritesHandler getFavoritesHandler() {
-    	if (favoritesHandler == null) {
-    		favoritesHandler = Context.getBean(IFavoritesHandler.class);
-    	}
-    	return favoritesHandler;
-    }
-
-
 }

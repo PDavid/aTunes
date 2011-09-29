@@ -38,7 +38,6 @@ import net.sourceforge.atunes.gui.views.dialogs.editPreferences.EditPreferencesD
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.playlist.ListOfPlayLists;
-import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.exception.InconsistentRepositoryException;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites;
 import net.sourceforge.atunes.kernel.modules.statistics.Statistics;
@@ -48,6 +47,7 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRepository;
+import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IStateChangeListener;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.Repository;
