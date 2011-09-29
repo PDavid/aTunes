@@ -30,6 +30,7 @@ import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListTableTransferHandler;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListToDeviceDragAndDropListener;
 import net.sourceforge.atunes.model.IColumnSet;
+import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -108,7 +109,7 @@ public final class PlayListPanel extends JPanel {
     public void enableDragAndDrop(PlayListTableTransferHandler playListTableTransferHandler) {
         playListTable.setTransferHandler(playListTableTransferHandler);
         playListTableScroll.setTransferHandler(playListTableTransferHandler);
-        new PlayListToDeviceDragAndDropListener(Context.getBean(INavigationHandler.class));
+        new PlayListToDeviceDragAndDropListener(Context.getBean(INavigationHandler.class), Context.getBean(IDeviceHandler.class));
     }
 
 }

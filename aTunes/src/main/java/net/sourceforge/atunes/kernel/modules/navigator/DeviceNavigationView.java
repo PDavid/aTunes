@@ -49,11 +49,11 @@ import net.sourceforge.atunes.kernel.actions.RemoveFromDiskAction;
 import net.sourceforge.atunes.kernel.actions.SearchArtistAction;
 import net.sourceforge.atunes.kernel.actions.SearchArtistAtAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
-import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
+import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -73,6 +73,8 @@ public final class DeviceNavigationView extends AbstractNavigationView {
 
     /** The device table menu. */
     private JPopupMenu deviceTableMenu;
+    
+    private IDeviceHandler deviceHandler;
 
     /**
      * @param state
@@ -82,6 +84,10 @@ public final class DeviceNavigationView extends AbstractNavigationView {
      */
     public DeviceNavigationView(IState state, INavigationHandler navigationHandler, IFrame frame, ILookAndFeelManager lookAndFeelManager) {
     	super(state, navigationHandler, frame, lookAndFeelManager);
+	}
+    
+    public void setDeviceHandler(IDeviceHandler deviceHandler) {
+		this.deviceHandler = deviceHandler;
 	}
     
     @Override
@@ -161,7 +167,7 @@ public final class DeviceNavigationView extends AbstractNavigationView {
 
     @Override
     protected Map<String, ?> getViewData(ViewMode viewMode) {
-    	return DeviceHandler.getInstance().getDataForView(viewMode);
+    	return deviceHandler.getDataForView(viewMode);
     }
 
     @SuppressWarnings("unchecked")
@@ -200,7 +206,7 @@ public final class DeviceNavigationView extends AbstractNavigationView {
         List<ILocalAudioObject> songs = new ArrayList<ILocalAudioObject>();
         if (node.isRoot()) {
             if (treeFilter == null) {
-                songs.addAll(DeviceHandler.getInstance().getAudioFilesList());
+                songs.addAll(deviceHandler.getAudioFilesList());
             } else {
                 for (int i = 0; i < node.getChildCount(); i++) {
                     @SuppressWarnings("unchecked")

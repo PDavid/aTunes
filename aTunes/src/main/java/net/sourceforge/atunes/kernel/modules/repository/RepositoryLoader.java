@@ -32,13 +32,13 @@ import java.util.StringTokenizer;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.Folder;
+import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRepository;
@@ -665,8 +665,9 @@ public class RepositoryLoader extends Thread {
 	 * @param file
 	 * @param osManager
 	 * @param repositoryHandler
+	 * @param deviceHandler
 	 */
-	static void deleteFile(ILocalAudioObject file, IOSManager osManager, IRepositoryHandler repositoryHandler) {
+	static void deleteFile(ILocalAudioObject file, IOSManager osManager, IRepositoryHandler repositoryHandler, IDeviceHandler deviceHandler) {
 		String albumArtist = file.getAlbumArtist();
 		String artist = file.getArtist();
 		String album = file.getAlbum();
@@ -727,7 +728,7 @@ public class RepositoryLoader extends Thread {
 			repositoryHandler.removeFile(file);
 		}
 		// File is on a device
-		else if (DeviceHandler.getInstance().isDevicePath(file.getUrl())) {
+		else if (deviceHandler.isDevicePath(file.getUrl())) {
 			Logger.info("Deleted file ", file, " from device");
 		}
 	}

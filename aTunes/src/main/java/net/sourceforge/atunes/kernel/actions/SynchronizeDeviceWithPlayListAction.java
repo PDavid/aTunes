@@ -29,9 +29,9 @@ import java.util.Map;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListLocalAudioObjectFilter;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
@@ -75,7 +75,7 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 		        @Override
 		        public void run() {
 		        	getBean(IMessageDialog.class).showMessage(
-		                    StringUtils.getString(I18nUtils.getString("SYNCHRONIZATION_FINISHED"), " ", I18nUtils.getString("ADDED"), ": ", added ? DeviceHandler.getInstance()
+		                    StringUtils.getString(I18nUtils.getString("SYNCHRONIZATION_FINISHED"), " ", I18nUtils.getString("ADDED"), ": ", added ? getBean(IDeviceHandler.class)
 		                            .getFilesCopiedToDevice() : 0, " ", I18nUtils.getString("REMOVED"), ": ", filesRemoved), getBean(IFrame.class));
 		        }
 		    });
@@ -94,10 +94,10 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 		    }
 
 		    // Get elements present in play list and not in device -> objects to be copied to device
-		    List<ILocalAudioObject> objectsToCopyToDevice = DeviceHandler.getInstance().getElementsNotPresentInDevice(playListObjects);
+		    List<ILocalAudioObject> objectsToCopyToDevice = getBean(IDeviceHandler.class).getElementsNotPresentInDevice(playListObjects);
 
 		    // Get elements present in device and not in play list -> objects to be removed from device
-		    List<ILocalAudioObject> objectsToRemoveFromDevice = DeviceHandler.getInstance().getElementsNotPresentInList(playListObjects);
+		    List<ILocalAudioObject> objectsToRemoveFromDevice = getBean(IDeviceHandler.class).getElementsNotPresentInList(playListObjects);
 
 		    Map<String, List<ILocalAudioObject>> result = new HashMap<String, List<ILocalAudioObject>>();
 		    result.put("ADD", objectsToCopyToDevice);
@@ -142,7 +142,7 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 		        // Copy elements to device if necessary, otherwise show message and finish
 		        if (!files.get("ADD").isEmpty()) {
 		            // The process will show message when finish
-		            DeviceHandler.getInstance().copyFilesToDevice(files.get("ADD"), listener);
+		        	getBean(IDeviceHandler.class).copyFilesToDevice(files.get("ADD"), listener);
 		        } else {
 		            showMessage(false);
 		        }

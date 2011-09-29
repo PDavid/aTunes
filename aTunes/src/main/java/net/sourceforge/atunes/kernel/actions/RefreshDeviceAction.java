@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
+import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -43,7 +43,7 @@ public class RefreshDeviceAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        DeviceHandler.getInstance().refreshDevice();
+    	getBean(IDeviceHandler.class).refreshDevice();
     }
 
 }

@@ -25,7 +25,7 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
+import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IInputDialog;
@@ -49,7 +49,7 @@ public class FillDeviceWithRandomSongsAction extends CustomAbstractAction {
         dialog.showDialog(freeMemory);
         freeMemory = dialog.getResult();
         try {
-            DeviceHandler.getInstance().fillWithRandomSongs(Long.parseLong(freeMemory.trim()));
+        	getBean(IDeviceHandler.class).fillWithRandomSongs(Long.parseLong(freeMemory.trim()));
         } catch (Exception e2) {
             // User did not enter numerical value. Show error dialog
         	getBean(IErrorDialog.class).showErrorDialog(getBean(IFrame.class), I18nUtils.getString("ERROR_NO_NUMERICAL_VALUE"));
@@ -58,6 +58,6 @@ public class FillDeviceWithRandomSongsAction extends CustomAbstractAction {
 
     @Override
     public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        return DeviceHandler.getInstance().isDeviceConnected();
+        return getBean(IDeviceHandler.class).isDeviceConnected();
     }
 }

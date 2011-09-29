@@ -51,18 +51,16 @@ import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
-import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IConfirmationDialog;
+import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFileSelectionDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IProcessListener;
-import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.model.IRepositoryLoaderListener;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.ITaskService;
@@ -73,9 +71,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public final class DeviceHandler extends AbstractHandler implements IRepositoryLoaderListener, IAudioFilesRemovedListener {
-
-    private static DeviceHandler instance = new DeviceHandler();
+public final class DeviceHandler extends AbstractHandler implements IDeviceHandler {
 
     private Repository deviceRepository;
     private RepositoryLoader currentLoader;
@@ -92,12 +88,6 @@ public final class DeviceHandler extends AbstractHandler implements IRepositoryL
     
     private boolean caseSensitiveTrees;
 
-    /**
-     * Instantiates a new device handler.
-     */
-    private DeviceHandler() {    	
-    }
-
     @Override
     protected void initHandler() {
     	caseSensitiveTrees = getState().isKeyAlwaysCaseSensitiveInRepositoryStructure();
@@ -105,31 +95,16 @@ public final class DeviceHandler extends AbstractHandler implements IRepositoryL
     }
 
     @Override
-    public void applicationStarted(List<IAudioObject> playList) {
-    }
-    
-    @Override
     public void allHandlersInitialized() {
         // Start device monitor
-        DeviceMonitor.startMonitor(getState(), getBean(ITaskService.class));
+        DeviceMonitor.startMonitor(getState(), getBean(ITaskService.class), this);
     }
 
-    /**
-     * Gets the single instance of DeviceHandler.
-     * 
-     * @return single instance of DeviceHandler
-     */
-    public static DeviceHandler getInstance() {
-        return instance;
-    }
-
-    /**
-     * Fills the device with songs until the specified memory is left.
-     * 
-     * @param leaveFreeLong
-     *            Memory to leave free
-     */
-    public void fillWithRandomSongs(long leaveFreeLong) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.device.IDeviceHandler#fillWithRandomSongs(long)
+	 */
+    @Override
+	public void fillWithRandomSongs(long leaveFreeLong) {
         long leaveFree = leaveFreeLong;
 
         // Get reference to Repository songs
@@ -172,10 +147,11 @@ public final class DeviceHandler extends AbstractHandler implements IRepositoryL
         copyFilesToDevice(new ArrayList<ILocalAudioObject>(songsSelected.values()));
     }
 
-    /**
-     * Connect device.
-     */
-    public void connectDevice() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.device.IDeviceHandler#connectDevice()
+	 */
+    @Override
+	public void connectDevice() {
     	IFileSelectionDialog dialog = getBean(IFileSelectionDialog.class);
     	dialog.setDirectoryOnly(true);
         dialog.setTitle(I18nUtils.getString("SELECT_DEVICE"));
@@ -187,24 +163,19 @@ public final class DeviceHandler extends AbstractHandler implements IRepositoryL
         }
     }
 
-    /**
-     * Copy files to device
-     * 
-     * @param collection
-     */
-    public void copyFilesToDevice(Collection<ILocalAudioObject> collection) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.device.IDeviceHandler#copyFilesToDevice(java.util.Collection)
+	 */
+    @Override
+	public void copyFilesToDevice(Collection<ILocalAudioObject> collection) {
         copyFilesToDevice(collection, null);
     }
 
-    /**
-     * Copy files to mp3 device.
-     * 
-     * @param collection
-     *            Files to be written to a mp3 device
-     * @param listener
-     *            A listener to be notified
-     */
-    public void copyFilesToDevice(Collection<ILocalAudioObject> collection, IProcessListener listener) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.device.IDeviceHandler#copyFilesToDevice(java.util.Collection, net.sourceforge.atunes.model.IProcessListener)
+	 */
+    @Override
+	public void copyFilesToDevice(Collection<ILocalAudioObject> collection, IProcessListener listener) {
         filesCopiedToDevice = 0;
         if (collection.isEmpty()) {
             return;
@@ -334,45 +305,30 @@ public final class DeviceHandler extends AbstractHandler implements IRepositoryL
         return null;
     }
 
-    /**
-     * Gets the device repository.
-     * 
-     * @return the device repository
-     */
-    public IRepository getDeviceRepository() {
-        return deviceRepository;
-    }
-
-    /**
-     * Gets the device songs.
-     * 
-     * @return the device songs
-     */
-    public Collection<ILocalAudioObject> getAudioFilesList() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.device.IDeviceHandler#getAudioFilesList()
+	 */
+    @Override
+	public Collection<ILocalAudioObject> getAudioFilesList() {
         if (deviceRepository != null) {
             return deviceRepository.getFiles();
         }
         return Collections.emptyList();
     }
 
-    /**
-     * Checks if is device connected.
-     * 
-     * @return true, if is device connected
-     */
-    public boolean isDeviceConnected() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.device.IDeviceHandler#isDeviceConnected()
+	 */
+    @Override
+	public boolean isDeviceConnected() {
         return deviceRepository != null;
     }
 
-    /**
-     * Checks if given file is in the device path.
-     * 
-     * @param path
-     *            Absolute path of the file
-     * 
-     * @return true if file is in device, false otherwise
-     */
-    public boolean isDevicePath(String path) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.device.IDeviceHandler#isDevicePath(java.lang.String)
+	 */
+    @Override
+	public boolean isDevicePath(String path) {
         if (path.contains(devicePath.toString())) {
             return true;
         }
@@ -447,10 +403,11 @@ public final class DeviceHandler extends AbstractHandler implements IRepositoryL
         // Nothing to do
     }
 
-    /**
-     * Refresh device.
-     */
-    public void refreshDevice() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.device.IDeviceHandler#refreshDevice()
+	 */
+    @Override
+	public void refreshDevice() {
     	getFrame().showProgressBar(true, null);
         Logger.info("Refreshing device");
         Repository oldDeviceRepository = deviceRepository;
@@ -501,15 +458,11 @@ public final class DeviceHandler extends AbstractHandler implements IRepositoryL
         devicePath = path;
     }
 
-    /**
-     * Gets the file if is in device
-     * 
-     * @param fileName
-     *            the file name
-     * 
-     * @return the file if loaded
-     */
-    public ILocalAudioObject getFileIfLoaded(String fileName) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.device.IDeviceHandler#getFileIfLoaded(java.lang.String)
+	 */
+    @Override
+	public ILocalAudioObject getFileIfLoaded(String fileName) {
         return deviceRepository == null ? null : deviceRepository.getFile(fileName);
     }
 
@@ -565,20 +518,19 @@ public final class DeviceHandler extends AbstractHandler implements IRepositoryL
         }
     }
 
-    /**
-     * @return the filesCopiedToDevice
-     */
-    public int getFilesCopiedToDevice() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.device.IDeviceHandler#getFilesCopiedToDevice()
+	 */
+    @Override
+	public int getFilesCopiedToDevice() {
         return filesCopiedToDevice;
     }
 
-    /**
-     * Returns elements present in list and not present in device
-     * 
-     * @param list
-     * @return
-     */
-    public List<ILocalAudioObject> getElementsNotPresentInDevice(List<ILocalAudioObject> list) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.device.IDeviceHandler#getElementsNotPresentInDevice(java.util.List)
+	 */
+    @Override
+	public List<ILocalAudioObject> getElementsNotPresentInDevice(List<ILocalAudioObject> list) {
         List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
         if (list != null && !list.isEmpty()) {
             for (ILocalAudioObject af : list) {
@@ -624,13 +576,11 @@ public final class DeviceHandler extends AbstractHandler implements IRepositoryL
         return result;
     }
 
-    /**
-     * Returns elements present in device and not present in list
-     * 
-     * @param list
-     * @return
-     */
-    public List<ILocalAudioObject> getElementsNotPresentInList(List<ILocalAudioObject> list) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.device.IDeviceHandler#getElementsNotPresentInList(java.util.List)
+	 */
+    @Override
+	public List<ILocalAudioObject> getElementsNotPresentInList(List<ILocalAudioObject> list) {
         // Start with all device
         List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>(getAudioFilesList());
 
@@ -683,35 +633,33 @@ public final class DeviceHandler extends AbstractHandler implements IRepositoryL
 	@Override
 	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
 
-	/**
-	 * Returns device location
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.device.IDeviceHandler#getDeviceLocation()
 	 */
+	@Override
 	public String getDeviceLocation() {
-		return getDeviceRepository() != null ? getDeviceRepository().getRepositoryFolders().get(0).getAbsolutePath() : null;
+		return deviceRepository != null ? deviceRepository.getRepositoryFolders().get(0).getAbsolutePath() : null;
 	}
 
 	@Override
 	public void notifyCurrentAlbum(String artist, String album) {
 	}
 	
-    /**
-     * Returns artist with given name
-     * @param name
-     * @return
-     */
-    public Artist getArtist(String name) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.device.IDeviceHandler#getArtist(java.lang.String)
+	 */
+    @Override
+	public Artist getArtist(String name) {
     	if (deviceRepository != null) {
     		return deviceRepository.getArtist(name);
     	}
     	return null;
     }
 
-	/**
-	 * Returns data to show in a tree
-	 * @param viewMode
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.device.IDeviceHandler#getDataForView(net.sourceforge.atunes.model.ViewMode)
 	 */
+	@Override
 	public Map<String, ?> getDataForView(ViewMode viewMode) {
 		return viewMode.getDataForView(deviceRepository);
 	}

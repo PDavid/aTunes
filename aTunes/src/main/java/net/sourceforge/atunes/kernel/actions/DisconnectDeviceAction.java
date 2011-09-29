@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 
 import net.sourceforge.atunes.kernel.DeviceListeners;
-import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
+import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -45,7 +45,7 @@ public class DisconnectDeviceAction extends CustomAbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
     	// Launch a device disconnected event
-    	DeviceListeners.deviceDisconnected(DeviceHandler.getInstance().getDeviceLocation());
+    	DeviceListeners.deviceDisconnected(getBean(IDeviceHandler.class).getDeviceLocation());
     }
 
 }

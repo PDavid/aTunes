@@ -25,10 +25,10 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
@@ -57,17 +57,17 @@ public class CopyToDeviceAction extends AbstractActionOverSelectedObjects<IAudio
 
     @Override
     protected void performAction(List<IAudioObject> objects) {
-        DeviceHandler.getInstance().copyFilesToDevice(AudioFile.getAudioFiles(objects));
+    	getBean(IDeviceHandler.class).copyFilesToDevice(AudioFile.getAudioFiles(objects));
     }
 
     @Override
     public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        return DeviceHandler.getInstance().isDeviceConnected() && !rootSelected && !selection.isEmpty();
+        return getBean(IDeviceHandler.class).isDeviceConnected() && !rootSelected && !selection.isEmpty();
     }
 
     @Override
     public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
-        if (!DeviceHandler.getInstance().isDeviceConnected()) {
+        if (!getBean(IDeviceHandler.class).isDeviceConnected()) {
             return false;
         }
 
