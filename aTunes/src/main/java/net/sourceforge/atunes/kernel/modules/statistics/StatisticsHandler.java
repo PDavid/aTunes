@@ -37,8 +37,6 @@ import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.RankList;
 
-import org.joda.time.DateTime;
-
 public final class StatisticsHandler extends AbstractHandler implements IStatisticsHandler {
 
     private Statistics statistics;
@@ -69,14 +67,12 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
             statistics.setTotalPlays(statistics.getTotalPlays() + 1);
 
             AudioObjectStats stats = statistics.getAudioFilesStats().get(songPath);
-            if (stats != null) {
-                stats.setLastPlayed(new DateTime());
-                stats.increaseTimesPlayed();
-            } else {
+            if (stats == null) {
                 stats = new AudioObjectStats();
                 statistics.getAudioFilesStats().put(songPath, stats);
                 statistics.setDifferentAudioFilesPlayed(statistics.getDifferentAudioFilesPlayed() + 1);
             }
+            stats.increaseStatistics();
             statistics.getAudioFilesRanking().addItem(audioFile.getUrl());
 
             String artist = audioFile.getArtist();

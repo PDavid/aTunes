@@ -46,21 +46,12 @@ public interface IAudioObjectStatistics extends Serializable {
 	public int getTimesPlayed();
 
 	/**
-	 * Increase times played.
+	 * Increase statistics
 	 */
-	public void increaseTimesPlayed();
+	public void increaseStatistics();
 
 	/**
 	 * Reset.
 	 */
-	public void reset();
-
-	/**
-	 * Sets the last played.
-	 * 
-	 * @param lastPlayed
-	 *            the new last played
-	 */
-	public void setLastPlayed(DateTime lastPlayed);
-
+	public void resetStatistics();
 }
