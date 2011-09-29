@@ -96,9 +96,35 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 
     @Override
     public void allHandlersInitialized() {
-        // Start device monitor
-        DeviceMonitor.startMonitor(getState(), getBean(ITaskService.class), this);
+    	if (isDefaultDeviceLocationConfigured(getState())) { 
+    		// Start device monitor if necessary
+    		DeviceMonitor.startMonitor(getState(), getBean(ITaskService.class), this);
+    	}
     }
+    
+    @Override
+    public void applicationStateChanged(IState newState) {
+    	if (caseSensitiveTrees != newState.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+    		caseSensitiveTrees = getState().isKeyAlwaysCaseSensitiveInRepositoryStructure();
+    		refreshDevice();
+    	}
+    	
+    	if (isDefaultDeviceLocationConfigured(newState) && !DeviceMonitor.isMonitorRunning()) {
+    		DeviceMonitor.startMonitor(getState(), getBean(ITaskService.class), this);
+    	} else if (!isDefaultDeviceLocationConfigured(newState) && DeviceMonitor.isMonitorRunning()) {
+    		DeviceMonitor.stopMonitor();
+    	}
+    }
+    
+    /**
+     * Returns if user configured a default device location
+     * @param state
+     * @return
+     */
+    private boolean isDefaultDeviceLocationConfigured(IState state) {
+    	return state.getDefaultDeviceLocation() != null && !state.getDefaultDeviceLocation().isEmpty();
+    }
+    
 
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.device.IDeviceHandler#fillWithRandomSongs(long)
@@ -619,14 +645,6 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
         return result;
     }
 
-    @Override
-    public void applicationStateChanged(IState newState) {
-    	if (caseSensitiveTrees != newState.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
-    		caseSensitiveTrees = getState().isKeyAlwaysCaseSensitiveInRepositoryStructure();
-    		refreshDevice();
-    	}
-    }
-    
 	@Override
 	public void playListCleared() {}
 
