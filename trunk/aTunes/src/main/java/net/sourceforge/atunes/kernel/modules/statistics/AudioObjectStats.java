@@ -27,7 +27,7 @@ import net.sourceforge.atunes.model.IAudioObjectStatistics;
 import org.joda.time.DateTime;
 
 /**
- * The playing stats of an audio object.
+ * The playing statistics of an audio object.
  */
 public class AudioObjectStats implements Serializable, IAudioObjectStatistics {
 
@@ -38,14 +38,6 @@ public class AudioObjectStats implements Serializable, IAudioObjectStatistics {
 
     /** The times played. */
     private int timesPlayed;
-
-    /**
-     * Instantiates a new audio file stats object.
-     */
-    public AudioObjectStats() {
-        lastPlayed = new DateTime();
-        timesPlayed = 1;
-    }
 
     @Override
 	public DateTime getLastPlayed() {
@@ -58,18 +50,14 @@ public class AudioObjectStats implements Serializable, IAudioObjectStatistics {
     }
 
     @Override
-	public void increaseTimesPlayed() {
+	public void increaseStatistics() {
         this.timesPlayed++;
+        this.lastPlayed = new DateTime();
     }
 
     @Override
-	public void reset() {
+	public void resetStatistics() {
         lastPlayed = null;
         timesPlayed = 0;
-    }
-
-    @Override
-	public void setLastPlayed(DateTime lastPlayed) {
-        this.lastPlayed = lastPlayed;
     }
 }
