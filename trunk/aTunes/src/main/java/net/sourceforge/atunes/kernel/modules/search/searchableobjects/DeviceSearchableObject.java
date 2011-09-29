@@ -28,9 +28,9 @@ import java.util.List;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.Kernel;
-import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.search.RawSearchResult;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -81,7 +81,7 @@ public final class DeviceSearchableObject extends AbstractCommonAudioFileSearcha
     public List<IAudioObject> getSearchResult(List<RawSearchResult> rawSearchResults) {
         List<IAudioObject> result = new ArrayList<IAudioObject>();
         for (RawSearchResult rawSearchResult : rawSearchResults) {
-        	ILocalAudioObject audioFile = DeviceHandler.getInstance().getFileIfLoaded(rawSearchResult.getDocument().get("url"));
+        	ILocalAudioObject audioFile = Context.getBean(IDeviceHandler.class).getFileIfLoaded(rawSearchResult.getDocument().get("url"));
             if (audioFile != null) {
                 result.add(audioFile);
             }
@@ -91,7 +91,7 @@ public final class DeviceSearchableObject extends AbstractCommonAudioFileSearcha
 
     @Override
     public List<IAudioObject> getElementsToIndex() {
-        return new ArrayList<IAudioObject>(DeviceHandler.getInstance().getAudioFilesList());
+        return new ArrayList<IAudioObject>(Context.getBean(IDeviceHandler.class).getAudioFilesList());
     }
 
 }

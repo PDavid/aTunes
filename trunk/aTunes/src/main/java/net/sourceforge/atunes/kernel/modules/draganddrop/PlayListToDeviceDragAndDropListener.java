@@ -32,8 +32,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.gui.model.TransferableList;
-import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
+import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.utils.Logger;
@@ -43,10 +43,15 @@ import net.sourceforge.atunes.utils.Logger;
  */
 public class PlayListToDeviceDragAndDropListener implements DropTargetListener {
 
+	private IDeviceHandler deviceHandler;
+	
     /**
      * Instantiates a new drag and drop listener.
+     * @param navigationHandler
+     * @param deviceHandler
      */
-    public PlayListToDeviceDragAndDropListener(INavigationHandler navigationHandler) {
+    public PlayListToDeviceDragAndDropListener(INavigationHandler navigationHandler, IDeviceHandler deviceHandler) {
+    	this.deviceHandler = deviceHandler;
         // Drop targets for drag and drops operations from playlist to device tree
         new DropTarget(navigationHandler.getView(DeviceNavigationView.class).getTreeScrollPane(), this);
         new DropTarget(navigationHandler.getView(DeviceNavigationView.class).getTree(), this);
@@ -105,18 +110,18 @@ public class PlayListToDeviceDragAndDropListener implements DropTargetListener {
                 List<PlayListDragableRow> listOfObjectsDragged = (List<PlayListDragableRow>) transferable.getTransferData(aTunesFlavorAccepted);
 
                 // If device is connected, then copy files to device
-                if (DeviceHandler.getInstance().isDeviceConnected()) {
+                if (deviceHandler.isDeviceConnected()) {
                     // Don't copy files already in device
                     List<ILocalAudioObject> filesToCopy = new ArrayList<ILocalAudioObject>();
                     for (PlayListDragableRow f : listOfObjectsDragged) {
                         // Only accept LocalAudioObject objects
-                        if (f.getRowContent() instanceof ILocalAudioObject && !DeviceHandler.getInstance().isDevicePath(f.getRowContent().getUrl())) {
+                        if (f.getRowContent() instanceof ILocalAudioObject && !deviceHandler.isDevicePath(f.getRowContent().getUrl())) {
                             filesToCopy.add((ILocalAudioObject) f.getRowContent());
                         }
                     }
                     // Copy files
                     if (!filesToCopy.isEmpty()) {
-                        DeviceHandler.getInstance().copyFilesToDevice(filesToCopy);
+                        deviceHandler.copyFilesToDevice(filesToCopy);
                     }
                 }
             } catch (Exception e) {

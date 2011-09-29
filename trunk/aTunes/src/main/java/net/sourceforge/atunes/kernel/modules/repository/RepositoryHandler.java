@@ -59,6 +59,7 @@ import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -969,7 +970,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         }
 
         for (ILocalAudioObject fileToRemove : filesToRemove) {
-            RepositoryLoader.deleteFile(fileToRemove, getOsManager(), this);
+            RepositoryLoader.deleteFile(fileToRemove, getOsManager(), this, getBean(IDeviceHandler.class));
         }
 
         // Notify listeners

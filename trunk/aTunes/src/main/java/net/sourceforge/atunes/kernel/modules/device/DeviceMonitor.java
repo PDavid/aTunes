@@ -24,6 +24,7 @@ import java.io.File;
 import java.util.concurrent.ScheduledFuture;
 
 import net.sourceforge.atunes.kernel.DeviceListeners;
+import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.Logger;
@@ -33,11 +34,17 @@ final class DeviceMonitor {
     private static int DELAY = 5;
     
     private static ScheduledFuture<?> future;
+    
+    private static IDeviceHandler deviceHandler;
 
     /**
      * Start monitor.
+     * @param state
+     * @param taskService
+     * @param handler
      */
-    static void startMonitor(final IState state, ITaskService taskService) {
+    static void startMonitor(final IState state, ITaskService taskService, IDeviceHandler handler) {
+    	deviceHandler = handler;
     	future = taskService.submitPeriodically("Device Monitor", DELAY, DELAY, new Runnable() {
     		@Override
     		public void run() {
@@ -59,11 +66,11 @@ final class DeviceMonitor {
      * @return
      */
     protected static boolean checkDisconnection() {
-        if (!DeviceHandler.getInstance().isDeviceConnected()) {
+        if (!deviceHandler.isDeviceConnected()) {
             return false;
         }
 
-        File deviceLocationFile = new File(DeviceHandler.getInstance().getDeviceLocation());
+        File deviceLocationFile = new File(deviceHandler.getDeviceLocation());
         if (!deviceLocationFile.exists()) {
             Logger.info("Device disconnected");
             DeviceListeners.deviceDisconnected(deviceLocationFile.getAbsolutePath());
@@ -81,7 +88,7 @@ final class DeviceMonitor {
     	String deviceLocation = state.getDefaultDeviceLocation();
         if (deviceLocation != null && !deviceLocation.equals("")) {
             File deviceLocationFile = new File(deviceLocation);
-            if (!DeviceHandler.getInstance().isDeviceConnected() && deviceLocationFile.exists()) {
+            if (!deviceHandler.isDeviceConnected() && deviceLocationFile.exists()) {
             	Logger.info("Device connected");
             	DeviceListeners.deviceConnected(deviceLocationFile.getAbsolutePath());
             	return true;
