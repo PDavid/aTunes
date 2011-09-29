@@ -43,7 +43,6 @@ import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListTableTransferHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
-import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
@@ -59,6 +58,7 @@ import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
+import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.ITaskService;
@@ -112,7 +112,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     private int visiblePlayListIndex = 0;
 
     /** Stores original play list without filter. */
-    private static PlayList nonFilteredPlayList;
+    private PlayList nonFilteredPlayList;
 
     /** Play lists stored */
     private static ListOfPlayLists playListsRetrievedFromCache;

@@ -31,9 +31,9 @@ import javax.swing.JComboBox;
 import javax.swing.table.TableCellEditor;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.ITagAttributesReviewed;
 

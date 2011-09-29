@@ -24,8 +24,8 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.Folder;
+import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 

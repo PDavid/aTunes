@@ -26,11 +26,11 @@ import java.util.List;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.SelectorDialog;
-import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
+import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 

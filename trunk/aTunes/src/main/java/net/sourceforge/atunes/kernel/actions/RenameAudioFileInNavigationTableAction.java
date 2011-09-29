@@ -23,11 +23,11 @@ package net.sourceforge.atunes.kernel.actions;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IInputDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.apache.commons.io.FilenameUtils;

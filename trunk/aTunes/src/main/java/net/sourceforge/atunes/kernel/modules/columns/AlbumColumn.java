@@ -36,8 +36,6 @@ public class AlbumColumn extends AbstractColumn {
 
     private static final long serialVersionUID = -6162621108007788707L;
 
-    private IFavoritesHandler favoritesHandler;
-    
     public AlbumColumn() {
         super("ALBUM", TextAndIcon.class);
         setVisible(true);
@@ -59,7 +57,7 @@ public class AlbumColumn extends AbstractColumn {
     public Object getValueFor(IAudioObject audioObject) {
         // Return album
         return new TextAndIcon(audioObject.getAlbum(), 
-        		!getFavoritesHandler().getFavoriteAlbumsInfo().containsKey(audioObject.getAlbum()) ? null : new IColorMutableImageIcon() {
+        		!Context.getBean(IFavoritesHandler.class).getFavoriteAlbumsInfo().containsKey(audioObject.getAlbum()) ? null : new IColorMutableImageIcon() {
 					
 					@Override
 					public ImageIcon getIcon(Paint paint) {
@@ -72,12 +70,4 @@ public class AlbumColumn extends AbstractColumn {
     public String getValueForFilter(IAudioObject audioObject) {
         return audioObject.getAlbum();
     }
-    
-    private IFavoritesHandler getFavoritesHandler() {
-    	if (favoritesHandler == null) {
-    		favoritesHandler = Context.getBean(IFavoritesHandler.class);
-    	}
-    	return favoritesHandler;
-    }
-
 }

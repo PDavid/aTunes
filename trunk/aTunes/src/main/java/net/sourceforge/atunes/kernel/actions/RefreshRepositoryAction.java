@@ -25,7 +25,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
+import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**

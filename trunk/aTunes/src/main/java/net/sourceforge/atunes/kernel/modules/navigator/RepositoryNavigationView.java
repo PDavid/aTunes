@@ -54,7 +54,6 @@ import net.sourceforge.atunes.kernel.actions.SetFavoriteAlbumFromNavigatorAction
 import net.sourceforge.atunes.kernel.actions.SetFavoriteArtistFromNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.SetFavoriteSongFromNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
-import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
@@ -63,6 +62,7 @@ import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.ViewMode;

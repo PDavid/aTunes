@@ -34,8 +34,6 @@ public class FavoriteColumn extends AbstractColumn {
      */
     private static final long serialVersionUID = -4652512586792166062L;
 
-    private IFavoritesHandler favoritesHandler;
-    
     public FavoriteColumn() {
         super("FAVORITES", Property.class);
         setResizable(false);
@@ -62,20 +60,11 @@ public class FavoriteColumn extends AbstractColumn {
         if (audioObject instanceof IPodcastFeedEntry) {
             return null;
         }
-        return getFavoritesHandler().getFavoriteSongsInfo().containsValue(audioObject) ? Property.FAVORITE : null;
+        return Context.getBean(IFavoritesHandler.class).getFavoriteSongsInfo().containsValue(audioObject) ? Property.FAVORITE : null;
     }
 
     @Override
     public String getHeaderText() {
         return "";
     }
-    
-    private IFavoritesHandler getFavoritesHandler() {
-    	if (favoritesHandler == null) {
-    		favoritesHandler = Context.getBean(IFavoritesHandler.class);
-    	}
-    	return favoritesHandler;
-    }
-
-
 }

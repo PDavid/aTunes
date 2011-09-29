@@ -48,12 +48,12 @@ import net.sourceforge.atunes.gui.views.controls.ColumnSetRowSorter;
 import net.sourceforge.atunes.gui.views.menus.PlayListMenu;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListDragableRow;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListTableModel;
-import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
+import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.PlayState;
 import net.sourceforge.atunes.utils.GuiUtils;
 

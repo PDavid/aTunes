@@ -27,10 +27,10 @@ import java.util.Map;
 
 import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
-import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
 
 final class EditTitlesDialogController extends AbstractSimpleController<EditTitlesDialog> {

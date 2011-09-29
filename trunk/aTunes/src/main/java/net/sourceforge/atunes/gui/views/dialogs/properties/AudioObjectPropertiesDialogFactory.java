@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.gui.views.dialogs.properties;
 
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialog;
@@ -32,6 +31,7 @@ import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
+import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
 
 public class AudioObjectPropertiesDialogFactory implements IAudioObjectPropertiesDialogFactory {

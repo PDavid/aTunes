@@ -39,12 +39,12 @@ import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
-import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ITrackInfo;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.GuiUtils;
