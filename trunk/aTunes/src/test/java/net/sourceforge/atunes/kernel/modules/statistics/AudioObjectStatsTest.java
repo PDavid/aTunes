@@ -43,7 +43,7 @@ public class AudioObjectStatsTest {
 		sut.increaseStatistics();
 		Assert.assertNotNull(sut.getLastPlayed());
 		Assert.assertEquals(2, sut.getTimesPlayed());
-		Assert.assertTrue(sut.getLastPlayed().isAfter(dt));
+		Assert.assertFalse(sut.getLastPlayed().isBefore(dt));
 	}
 
 	@Test
