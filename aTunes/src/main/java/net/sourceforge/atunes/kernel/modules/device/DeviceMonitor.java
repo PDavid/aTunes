@@ -60,6 +60,14 @@ final class DeviceMonitor {
     static void stopMonitor() {
     	future.cancel(true);
     }
+    
+    /**
+     * Returns if monitor is running
+     * @return
+     */
+    static boolean isMonitorRunning() {
+    	return future != null;
+    }
 
     /**
      * Checks if device has been disconnected, returning true if so, false otherwise
