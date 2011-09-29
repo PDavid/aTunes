@@ -38,6 +38,7 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.tags.EditTagDialogController;
 import net.sourceforge.atunes.model.IFrame;
@@ -105,6 +106,8 @@ final class AudioFilePropertiesDialog extends AudioObjectPropertiesDialog {
     
     private IPlayListHandler playListHandler;
     
+    private IRepositoryHandler repositoryHandler;
+    
     /**
      * Instantiates a new audio file properties dialog.
      * 
@@ -114,14 +117,16 @@ final class AudioFilePropertiesDialog extends AudioObjectPropertiesDialog {
      * @param osManager
      * @param playListHandler
      * @param lookAndFeelManager
+     * @param repositoryHandler
      */
-    AudioFilePropertiesDialog(AudioFile file, IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, ILookAndFeelManager lookAndFeelManager) {
+    AudioFilePropertiesDialog(AudioFile file, IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, ILookAndFeelManager lookAndFeelManager, IRepositoryHandler repositoryHandler) {
         super(getTitleText(file), frame, lookAndFeelManager);
         this.file = file;
         this.state = state;
         this.frame = frame;
         this.osManager = osManager;
         this.playListHandler = playListHandler;
+        this.repositoryHandler = repositoryHandler;
         setAudioObject(file);
         addContent(lookAndFeelManager);
 
@@ -240,7 +245,7 @@ final class AudioFilePropertiesDialog extends AudioObjectPropertiesDialog {
         editTagsButton.setText(I18nUtils.getString("EDIT_TAG"));
         editTagsButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                EditTagDialogController ctl = new EditTagDialogController(new EditTagDialog(frame.getFrame(), false, iLookAndFeelManager), state, osManager, playListHandler);
+                EditTagDialogController ctl = new EditTagDialogController(new EditTagDialog(frame.getFrame(), false, iLookAndFeelManager), state, osManager, playListHandler, repositoryHandler);
                 ctl.editFiles(java.util.Collections.singletonList(file));
             }
         });

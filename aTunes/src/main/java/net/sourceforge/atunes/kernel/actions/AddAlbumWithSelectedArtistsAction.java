@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.actions;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -57,7 +57,7 @@ public class AddAlbumWithSelectedArtistsAction extends AbstractActionOverSelecte
         List<Artist> selectedArtists = new ArrayList<Artist>();
         for (IAudioObject ao : objects) {
             String artistName = ao.getArtist();
-            Artist a = RepositoryHandler.getInstance().getArtist(artistName);
+            Artist a = getBean(IRepositoryHandler.class).getArtist(artistName);
             if (a != null) {
                 if (!selectedArtists.contains(a)) {
                     selectedArtists.add(a);

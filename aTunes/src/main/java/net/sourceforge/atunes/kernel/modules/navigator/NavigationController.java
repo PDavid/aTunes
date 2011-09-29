@@ -60,7 +60,7 @@ import net.sourceforge.atunes.kernel.actions.ShowFoldersInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowGenresInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowYearsInNavigatorAction;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumn;
@@ -163,7 +163,6 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
     
     /**
      * Instantiates a new navigation controller.
-     * 
      * @param treePanel
      * @param tablePanel
      * @param state
@@ -171,8 +170,9 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
      * @param navigationHandler
      * @param taskService
      * @param lookAndFeelManager
+     * @param repositoryHandler
      */
-    NavigationController(INavigationTreePanel treePanel, INavigationTablePanel tablePanel, IState state, IOSManager osManager, INavigationHandler navigationHandler, ITaskService taskService, ILookAndFeelManager lookAndFeelManager) {
+    NavigationController(INavigationTreePanel treePanel, INavigationTablePanel tablePanel, IState state, IOSManager osManager, INavigationHandler navigationHandler, ITaskService taskService, ILookAndFeelManager lookAndFeelManager, IRepositoryHandler repositoryHandler) {
         this.navigationTreePanel = treePanel;
         this.navigationTablePanel = tablePanel;
         this.state = state;
@@ -181,7 +181,7 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
         this.taskService = taskService;
         this.lookAndFeelManager = lookAndFeelManager;
         addBindings();
-        RepositoryHandler.getInstance().addAudioFilesRemovedListener(this);
+        repositoryHandler.addAudioFilesRemovedListener(this);
         this.navigatorColumnSet = (IColumnSet) Context.getBean("navigatorColumnSet");
     }
 

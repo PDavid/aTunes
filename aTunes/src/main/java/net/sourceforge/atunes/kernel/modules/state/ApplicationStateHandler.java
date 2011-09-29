@@ -38,7 +38,7 @@ import net.sourceforge.atunes.gui.views.dialogs.editPreferences.EditPreferencesD
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.playlist.ListOfPlayLists;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.exception.InconsistentRepositoryException;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites;
 import net.sourceforge.atunes.kernel.modules.statistics.Statistics;
@@ -238,7 +238,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 
     @Override
 	public void persistRepositoryCache(IRepository repository, boolean asXmlIfEnabled) {
-        String folder = RepositoryHandler.getInstance().getRepositoryConfigurationFolder();
+        String folder = getBean(IRepositoryHandler.class).getRepositoryConfigurationFolder();
 
         ObjectOutputStream oos = null;
         try {
@@ -467,7 +467,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	 */
     @Override
 	public Repository retrieveRepositoryCache() {
-        String folder = RepositoryHandler.getInstance().getRepositoryConfigurationFolder();
+        String folder = getBean(IRepositoryHandler.class).getRepositoryConfigurationFolder();
 
         ObjectInputStream ois = null;
         try {

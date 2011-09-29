@@ -32,7 +32,7 @@ import net.sourceforge.atunes.gui.views.dialogs.RipCdDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
 import net.sourceforge.atunes.kernel.modules.cdripper.encoders.Encoder;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
@@ -56,6 +56,8 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
     private String folder;
     
     private IOSManager osManager;
+    
+    private IRepositoryHandler repositoryHandler;
 
     /** The error correction setting for cd ripping */
     //private boolean useCdErrorCorrection;
@@ -65,10 +67,12 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
      * @param dialogControlled
      * @param state
      * @param osManager
+     * @param repositoryHandler
      */
-    RipCdDialogController(RipCdDialog dialogControlled, IState state, IOSManager osManager) {
+    RipCdDialogController(RipCdDialog dialogControlled, IState state, IOSManager osManager, IRepositoryHandler repositoryHandler) {
         super(dialogControlled, state);
         this.osManager = osManager;
+        this.repositoryHandler = repositoryHandler;         
         addBindings();
     }
 
@@ -91,7 +95,7 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
         // Add autocompletion
         AutoCompleteDecorator.decorate(getComponentControlled().getGenreComboBox());
 
-        RipCdDialogListener listener = new RipCdDialogListener(getComponentControlled(), this, osManager);
+        RipCdDialogListener listener = new RipCdDialogListener(getComponentControlled(), this, osManager, repositoryHandler);
         getComponentControlled().getOk().addActionListener(listener);
         getComponentControlled().getCancel().addActionListener(listener);
         getComponentControlled().getFolderSelectionButton().addActionListener(listener);
@@ -260,9 +264,9 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
      * 
      * @param cdInfo
      * @param path
-     * @param osManager
+     * @param repositoryPath
      */
-    void showCdInfo(CDInfo cdInfo, String path) {
+    void showCdInfo(CDInfo cdInfo, String path, String repositoryPath) {
         setArtist(cdInfo.getArtist());
         getComponentControlled().getArtistTextField().setText(cdInfo.getArtist());
         setAlbum(cdInfo.getAlbum());
@@ -273,7 +277,7 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
         // Creates folders when information is coming from cdda2wav
         if (cdInfo.getArtist() != null && cdInfo.getAlbum() != null) {
             getComponentControlled().getFolderName().setText(
-                    StringUtils.getString(RepositoryHandler.getInstance().getRepositoryPath(), osManager.getFileSeparator(), cdInfo.getArtist(),
+                    StringUtils.getString(repositoryPath, osManager.getFileSeparator(), cdInfo.getArtist(),
                     		osManager.getFileSeparator(), cdInfo.getAlbum()));
         } else {
             getComponentControlled().getFolderName().setText(path);

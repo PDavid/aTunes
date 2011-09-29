@@ -40,6 +40,7 @@ import net.sourceforge.atunes.api.RepositoryApi;
 import net.sourceforge.atunes.gui.model.TransferableList;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
 import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.Artist;
@@ -84,6 +85,8 @@ public class PlayListTableTransferHandler extends TransferHandler {
     private IPlayListHandler playListHandler;
 
     private INavigationHandler navigationHandler;
+    
+    private IRepositoryHandler repositoryHandler;
     
     static {
         try {
@@ -159,11 +162,12 @@ public class PlayListTableTransferHandler extends TransferHandler {
         return false;
     }
 
-    public PlayListTableTransferHandler(IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, INavigationHandler navigationHandler) {
+    public PlayListTableTransferHandler(IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, INavigationHandler navigationHandler, IRepositoryHandler repositoryHandler) {
     	this.frame = frame;
     	this.osManager = osManager;
     	this.playListHandler = playListHandler;
     	this.navigationHandler = navigationHandler;
+    	this.repositoryHandler = repositoryHandler;
 	}
     
     @Override
@@ -173,10 +177,10 @@ public class PlayListTableTransferHandler extends TransferHandler {
         }
 
         if (support.getTransferable().isDataFlavorSupported(internalDataFlavor)) {
-            return processInternalImport(support, frame);
+            return processInternalImport(support);
         }
 
-        return processExternalImport(support, frame, osManager);
+        return processExternalImport(support);
     }
 
     /**
@@ -187,7 +191,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
      * @return
      */
     @SuppressWarnings("unchecked")
-    private boolean processInternalImport(TransferSupport support, IFrame frame) {
+    private boolean processInternalImport(TransferSupport support) {
         try {
             List<IAudioObject> audioObjectsToAdd = new ArrayList<IAudioObject>();
             List<?> listOfObjectsDragged = (List<?>) support.getTransferable().getTransferData(internalDataFlavor);
@@ -321,7 +325,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
     }
 
     @SuppressWarnings("unchecked")
-    private boolean processExternalImport(TransferSupport support, IFrame frame, IOSManager osManager) {
+    private boolean processExternalImport(TransferSupport support) {
         List<File> files = null;
         try {
             // External drag and drop for Windows
@@ -349,7 +353,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
                 	ILocalAudioObject song = new AudioFile(f);
                     filesToAdd.add(song);
                 } else if (f.getName().toLowerCase().endsWith("m3u")) {
-                    filesToAdd.addAll(PlayListIO.getFilesFromList(f, osManager));
+                    filesToAdd.addAll(PlayListIO.getFilesFromList(f, repositoryHandler, osManager));
                 }
             }
             int dropRow = frame.getPlayListTable().rowAtPoint(support.getDropLocation().getDropPoint());

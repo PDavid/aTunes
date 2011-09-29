@@ -48,7 +48,7 @@ import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavCo
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.NoCdListener;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
 import net.sourceforge.atunes.kernel.modules.cdripper.encoders.Encoder;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IErrorDialog;
@@ -147,7 +147,7 @@ public final class RipperHandler extends AbstractHandler {
 		    try {
 		        cdInfo = get();
 		        if (cdInfo != null) {
-		        	getRipCdDialogController().showCdInfo(cdInfo, RepositoryHandler.getInstance().getPathForNewAudioFilesRipped());
+		        	getRipCdDialogController().showCdInfo(cdInfo, repositoryHandler.getPathForNewAudioFilesRipped(), repositoryHandler.getRepositoryPath());
 		            if (!getRipCdDialogController().isCancelled()) {
 		                String artist = getRipCdDialogController().getArtist();
 		                String album = getRipCdDialogController().getAlbum();
@@ -272,6 +272,8 @@ public final class RipperHandler extends AbstractHandler {
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     
     private IIndeterminateProgressDialog indeterminateProgressDialog;
+    
+    private IRepositoryHandler repositoryHandler;
 
     /**
      * Map of available encoders in the system: key is format name, value is
@@ -328,6 +330,7 @@ public final class RipperHandler extends AbstractHandler {
 
     @Override
     public void applicationStarted(List<IAudioObject> playList) {
+    	this.repositoryHandler = getBean(IRepositoryHandler.class);
     }
 
     @Override
@@ -344,8 +347,8 @@ public final class RipperHandler extends AbstractHandler {
      *            the folder
      */
     private void addFilesToRepositoryAndRefresh(List<File> files, File folder) {
-        if (RepositoryHandler.getInstance().isRepository(folder)) {
-            RepositoryHandler.getInstance().addFilesAndRefresh(files);
+        if (repositoryHandler.isRepository(folder)) {
+            repositoryHandler.addFilesAndRefresh(files);
         }
     }
 
@@ -736,7 +739,7 @@ public final class RipperHandler extends AbstractHandler {
      */
     RipCdDialogController getRipCdDialogController() {
         if (ripCdDialogController == null) {
-            ripCdDialogController = new RipCdDialogController(new RipCdDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class)), getState(), getOsManager());
+            ripCdDialogController = new RipCdDialogController(new RipCdDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class)), getState(), getOsManager(), repositoryHandler);
         }
         return ripCdDialogController;
     }

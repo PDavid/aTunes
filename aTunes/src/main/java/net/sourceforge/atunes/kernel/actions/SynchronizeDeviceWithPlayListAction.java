@@ -31,7 +31,7 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.kernel.modules.device.DeviceHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListLocalAudioObjectFilter;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
@@ -115,9 +115,9 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 
 		        // Remove elements from device
 		        final List<ILocalAudioObject> filesToRemove = files.get("REMOVE");
-		        RepositoryHandler.getInstance().startTransaction();
-		        RepositoryHandler.getInstance().remove(filesToRemove);
-		        RepositoryHandler.getInstance().endTransaction();
+		        getBean(IRepositoryHandler.class).startTransaction();
+		        getBean(IRepositoryHandler.class).remove(filesToRemove);
+		        getBean(IRepositoryHandler.class).endTransaction();
 		        SynchronizeDeviceWithPlayListAction.this.setEnabled(false);
 		        new SwingWorker<Void, Void>() {
 		            @Override

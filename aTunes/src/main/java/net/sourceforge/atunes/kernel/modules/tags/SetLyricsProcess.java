@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.List;
 
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -42,9 +43,10 @@ public class SetLyricsProcess extends AbstractChangeTagProcess {
      * @param files
      * @param state
      * @param playListHandler
+     * @param repositoryHandler
      */
-    SetLyricsProcess(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler) {
-        super(files, state, playListHandler);
+    SetLyricsProcess(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler) {
+        super(files, state, playListHandler, repositoryHandler);
     }
 
     @Override

@@ -27,7 +27,7 @@ import java.util.Random;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -57,7 +57,7 @@ public final class SmartPlayListHandler extends AbstractHandler implements ISmar
 
         // Add album songs
         for (Album a : albums) {
-            songsSelected.addAll(RepositoryHandler.getInstance().getAudioFilesForAlbums(Collections.singletonMap(a.getName(), a)));
+            songsSelected.addAll(getBean(IRepositoryHandler.class).getAudioFilesForAlbums(Collections.singletonMap(a.getName(), a)));
         }
 
         // Sort
@@ -90,7 +90,7 @@ public final class SmartPlayListHandler extends AbstractHandler implements ISmar
     @Override
 	public void addRandomSongs(int n) {
         // Get reference to Repository songs
-        List<ILocalAudioObject> songs = new ArrayList<ILocalAudioObject>(RepositoryHandler.getInstance().getAudioFilesList());
+        List<ILocalAudioObject> songs = new ArrayList<ILocalAudioObject>(getBean(IRepositoryHandler.class).getAudioFilesList());
 
         // Songs selected
         List<IAudioObject> songsSelected = new ArrayList<IAudioObject>();

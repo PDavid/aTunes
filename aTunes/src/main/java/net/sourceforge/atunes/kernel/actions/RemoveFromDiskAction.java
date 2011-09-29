@@ -34,7 +34,7 @@ import javax.swing.tree.TreePath;
 import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.RepositoryNavigationView;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -99,7 +99,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
     public void actionPerformed(ActionEvent e) {
         // Show confirmation
         if (getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("REMOVE_CONFIRMATION"))) {
-
+        	IRepositoryHandler repositoryHandler = getBean(IRepositoryHandler.class);
             // Podcast view
             if (navigationHandler.getCurrentView() instanceof PodcastNavigationView) {
                 fromPodcastView();
@@ -107,18 +107,18 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
             } else if ((navigationHandler.getCurrentView() instanceof RepositoryNavigationView || navigationHandler.getCurrentView() instanceof DeviceNavigationView)
                     && navigationHandler.getCurrentViewMode() == ViewMode.FOLDER
                     && navigationHandler.isActionOverTree()) {
-                fromRepositoryOrDeviceView();
+                fromRepositoryOrDeviceView(repositoryHandler);
             } else {
-                fromOtherViews();
+                fromOtherViews(repositoryHandler);
             }
         }
     }
 
-    private void fromOtherViews() {
+    private void fromOtherViews(IRepositoryHandler repositoryHandler) {
         final List<IAudioObject> files = navigationHandler.getFilesSelectedInNavigator();
-        RepositoryHandler.getInstance().startTransaction();
-        RepositoryHandler.getInstance().remove(AudioFile.getAudioFiles(files));
-        RepositoryHandler.getInstance().endTransaction();
+        repositoryHandler.startTransaction();
+        repositoryHandler.remove(AudioFile.getAudioFiles(files));
+        repositoryHandler.endTransaction();
         SwingUtilities.invokeLater(new Runnable() {
         	@Override
         	public void run() {
@@ -130,7 +130,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
         new DeleteFilesWorker(AudioFile.getAudioFiles(files)).execute();
     }
 
-    private void fromRepositoryOrDeviceView() {
+    private void fromRepositoryOrDeviceView(IRepositoryHandler repositoryHandler) {
         TreePath[] paths = navigationHandler.getCurrentView().getTree().getSelectionPaths();
         final List<Folder> foldersToRemove = new ArrayList<Folder>();
         if (paths != null) {
@@ -141,9 +141,9 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
                 }
             }
         }
-        RepositoryHandler.getInstance().startTransaction();
-        RepositoryHandler.getInstance().removeFolders(foldersToRemove);
-        RepositoryHandler.getInstance().endTransaction();
+        repositoryHandler.startTransaction();
+        repositoryHandler.removeFolders(foldersToRemove);
+        repositoryHandler.endTransaction();
         SwingUtilities.invokeLater(new Runnable() {
         	@Override
         	public void run() {

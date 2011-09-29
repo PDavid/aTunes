@@ -58,7 +58,7 @@ class RepositoryAutoRefresher extends Thread {
                     int filesLoaded = handler.getAudioFilesList().size();
                     int newFilesCount = RepositoryLoader.countFilesInRepository(handler.getRepository());
                     if (filesLoaded != newFilesCount) {
-                        RepositoryHandler.getInstance().refreshRepository();
+                    	handler.refreshRepository();
                     }
                 }
                 // If it has been disabled exit

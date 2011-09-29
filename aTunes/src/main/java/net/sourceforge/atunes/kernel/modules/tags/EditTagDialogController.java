@@ -39,7 +39,7 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.autocomplete.AutoCompleteDecorator;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -125,6 +125,8 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
     private IOSManager osManager;
     
     private IPlayListHandler playListHandler;
+    
+    private IRepositoryHandler repositoryHandler;
 
     /**
      * Instantiates a new edits the tag dialog controller.
@@ -132,11 +134,13 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
      * @param state
      * @param osManager
      * @param playListHandler
+     * @param repositoryHandler
      */
-    public EditTagDialogController(EditTagDialog dialog, IState state, IOSManager osManager, IPlayListHandler playListHandler) {
+    public EditTagDialogController(EditTagDialog dialog, IState state, IOSManager osManager, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler) {
         super(dialog, state);
         this.osManager = osManager;
         this.playListHandler = playListHandler;
+        this.repositoryHandler = repositoryHandler;
         addBindings();
         addStateBindings();
     }
@@ -181,7 +185,7 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
         coverEdited = false;
 
         // Load artists into combo box
-        List<Artist> artistList = RepositoryHandler.getInstance().getArtists();
+        List<Artist> artistList = repositoryHandler.getArtists();
         List<String> artistNames = new ArrayList<String>();
         for (Artist a : artistList) {
             artistNames.add(a.getName());
@@ -191,7 +195,7 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
         AutoCompleteDecorator.decorate(getComponentControlled().getArtistTextField());
 
         // Load albums into combo box
-        List<Album> albumList = RepositoryHandler.getInstance().getAlbums();
+        List<Album> albumList = repositoryHandler.getAlbums();
         List<String> albumNames = new ArrayList<String>();
         for (Album alb : albumList) {
             // Because of artists and album artists there can be more than one album with the same name
@@ -468,7 +472,7 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
             editTagInfo.put("COVER", newCover);
         }
 
-        EditTagsProcess process = new EditTagsProcess(new ArrayList<ILocalAudioObject>(audioFilesEditing), editTagInfo, getState(), playListHandler);
+        EditTagsProcess process = new EditTagsProcess(new ArrayList<ILocalAudioObject>(audioFilesEditing), editTagInfo, getState(), playListHandler, repositoryHandler);
         process.execute();
     }
 

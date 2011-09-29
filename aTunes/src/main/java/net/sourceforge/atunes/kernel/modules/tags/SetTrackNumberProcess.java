@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
@@ -40,10 +41,12 @@ public class SetTrackNumberProcess extends AbstractChangeTagProcess {
      * Instantiates a new sets the track number process.
      * 
      * @param filesAndTracks
-     *            the files and tracks
+     * @param state
+     * @param playListHandler
+     * @param repositoryHandler
      */
-    SetTrackNumberProcess(Map<ILocalAudioObject, Integer> filesAndTracks, IState state, IPlayListHandler playListHandler) {
-        super(new ArrayList<ILocalAudioObject>(filesAndTracks.keySet()), state, playListHandler);
+    SetTrackNumberProcess(Map<ILocalAudioObject, Integer> filesAndTracks, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler) {
+        super(new ArrayList<ILocalAudioObject>(filesAndTracks.keySet()), state, playListHandler, repositoryHandler);
         this.filesAndTracks = filesAndTracks;
     }
 

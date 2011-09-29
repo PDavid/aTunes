@@ -39,7 +39,7 @@ import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -82,11 +82,13 @@ public class ArtistTopTracksContent extends AbstractContextPanelContent {
     
     private IArtistTopTracks lastTopTracks;
     
+    private IRepositoryHandler repositoryHandler;
+    
     private class CreatePlaylistWithPopularTracksActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
         	// Get artist files from repository and match by title with top tracks to create a play list
-    		Artist artist = RepositoryHandler.getInstance().getArtist(lastTopTracks.getArtist());
+    		Artist artist = repositoryHandler.getArtist(lastTopTracks.getArtist());
     		if (artist != null) {
     			List<ILocalAudioObject> audioObjects = artist.getAudioObjects();
     			Map<String, ILocalAudioObject> titles = new HashMap<String, ILocalAudioObject>();
@@ -181,5 +183,9 @@ public class ArtistTopTracksContent extends AbstractContextPanelContent {
         options.add(createPlayList);
         return options;
     }
+    
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
 
 }

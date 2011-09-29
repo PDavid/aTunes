@@ -24,6 +24,7 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.tags.ClearTagsProcess;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -44,7 +45,7 @@ public class ClearTagAction extends AbstractActionOverSelectedObjects<ILocalAudi
 
     @Override
     protected void performAction(List<ILocalAudioObject> objects) {
-        new ClearTagsProcess(objects, getState(), getBean(IPlayListHandler.class)).execute();
+        new ClearTagsProcess(objects, getState(), getBean(IPlayListHandler.class), getBean(IRepositoryHandler.class)).execute();
     }
 
     @Override

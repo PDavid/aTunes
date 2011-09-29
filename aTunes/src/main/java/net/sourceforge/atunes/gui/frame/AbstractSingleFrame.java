@@ -58,6 +58,7 @@ import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.ApplicationVersion;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextPanelsContainer;
@@ -121,6 +122,8 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     
     private ILookAndFeelManager lookAndFeelManager;
     
+    private IRepositoryHandler repositoryHandler;
+    
     /**
      * Instantiates a new standard frame.
      */
@@ -145,6 +148,10 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     
     public void setNavigationHandler(INavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
+	}
+    
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
 	}
     
     public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
@@ -364,7 +371,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     @Override
     public PlayListPanel getPlayListPanel() {
         if (playListPanel == null) {
-            playListPanel = new PlayListPanel(playListHandler, lookAndFeelManager);
+            playListPanel = new PlayListPanel(playListHandler, lookAndFeelManager, repositoryHandler);
             playListPanel.setMinimumSize(getPlayListPanelMinimumSize());
             playListPanel.setPreferredSize(getPlayListPanelPreferredSize());
             playListPanel.setMaximumSize(getPlayListPanelMaximumSize());

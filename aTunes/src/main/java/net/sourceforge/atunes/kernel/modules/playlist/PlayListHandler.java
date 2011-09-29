@@ -43,7 +43,7 @@ import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListTableTransferHandler;
 import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
@@ -162,7 +162,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     @Override
     protected void initHandler() {
         // Add audio file removed listener
-        RepositoryHandler.getInstance().addAudioFilesRemovedListener(this);
+        getBean(IRepositoryHandler.class).addAudioFilesRemovedListener(this);
     }
 
     @Override
@@ -179,7 +179,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     @Override
     public void allHandlersInitialized() {
         // Create drag and drop listener
-    	getFrame().getPlayListPanel().enableDragAndDrop(new PlayListTableTransferHandler(getFrame(), getOsManager(), this, getBean(INavigationHandler.class)));
+    	getFrame().getPlayListPanel().enableDragAndDrop(new PlayListTableTransferHandler(getFrame(), getOsManager(), this, getBean(INavigationHandler.class), getBean(IRepositoryHandler.class)));
     }
 
     /**
@@ -646,7 +646,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         	//TODO also for radios and podcast feed entries
         	for (int i = 0; i < audioObjects.size(); i++) {
         		IAudioObject ao = audioObjects.get(i);
-        		ILocalAudioObject repositoryFile = RepositoryHandler.getInstance().getFileIfLoaded(ao.getUrl());
+        		ILocalAudioObject repositoryFile = getBean(IRepositoryHandler.class).getFileIfLoaded(ao.getUrl());
         		if (repositoryFile != null) {
         			lastPlayList.replace(i, repositoryFile);
         		}
@@ -683,7 +683,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
                 List<String> filesToLoad = PlayListIO.read(file, getOsManager());
                 // Background loading - but only when returned array is not null (Progress dialog hangs otherwise)
                 if (filesToLoad != null) {
-                    LoadPlayListProcess process = new LoadPlayListProcess(filesToLoad, getState());
+                    LoadPlayListProcess process = new LoadPlayListProcess(filesToLoad, getState(), getBean(IRepositoryHandler.class));
                     process.execute();
                 }
             } else {

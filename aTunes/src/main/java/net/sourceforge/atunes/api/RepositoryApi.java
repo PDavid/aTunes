@@ -20,7 +20,8 @@
 
 package net.sourceforge.atunes.api;
 
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.Artist;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -40,6 +41,6 @@ public final class RepositoryApi {
      * @return
      */
     public static Artist getArtist(String artistName) {
-        return RepositoryHandler.getInstance().getArtist(artistName);
+        return Context.getBean(IRepositoryHandler.class).getArtist(artistName);
     }
 }

@@ -31,7 +31,7 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.context.ContextTable;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanel;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.IArtistInfo;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -91,7 +91,7 @@ class SimilarArtistTableCellRendererCode extends ContextTableRowPanel<IArtistInf
 
 			@Override
 			protected void execute(IArtistInfo object) {
-				Context.getBean(IPlayListHandler.class).showAddArtistDragDialog(RepositoryHandler.getInstance().getArtist(object.getName()));
+				Context.getBean(IPlayListHandler.class).showAddArtistDragDialog(Context.getBean(IRepositoryHandler.class).getArtist(object.getName()));
 			}
 			
 			@Override
@@ -101,7 +101,7 @@ class SimilarArtistTableCellRendererCode extends ContextTableRowPanel<IArtistInf
 			
 			@Override
 			protected boolean isEnabledForObject(IArtistInfo object) {
-				return RepositoryHandler.getInstance().getArtist(object.getName()) != null;
+				return Context.getBean(IRepositoryHandler.class).getArtist(object.getName()) != null;
 			}				
 		});
 		

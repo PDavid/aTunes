@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.modules.device;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.process.AbstractAudioFileTransferProcess;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
@@ -32,8 +32,11 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 public class TransferToRepositoryProcess extends AbstractAudioFileTransferProcess {
 
-    public TransferToRepositoryProcess(List<ILocalAudioObject> files, IState state, IFrame frame, IOSManager osManager) {
-        super(files, state, frame, osManager);
+	private IRepositoryHandler repositoryHandler;
+	
+    public TransferToRepositoryProcess(List<ILocalAudioObject> files, IState state, IFrame frame, IOSManager osManager, IRepositoryHandler repositoryHandler) {
+    	super(files, state, frame, osManager);
+    	this.repositoryHandler = repositoryHandler;
     }
 
     @Override
@@ -43,6 +46,6 @@ public class TransferToRepositoryProcess extends AbstractAudioFileTransferProces
 
     @Override
     protected String getDestination() {
-        return RepositoryHandler.getInstance().getRepositoryPath();
+        return repositoryHandler.getRepositoryPath();
     }
 }

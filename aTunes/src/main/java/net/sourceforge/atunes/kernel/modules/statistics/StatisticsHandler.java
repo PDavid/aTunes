@@ -25,7 +25,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.gui.views.dialogs.StatsDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -63,7 +63,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
      */
     private void fillStats(IAudioObject audioFile) {
         String songPath = audioFile.getUrl();
-        if (RepositoryHandler.getInstance().getFile(songPath) != null) {
+        if (getBean(IRepositoryHandler.class).getFile(songPath) != null) {
             statistics.setTotalPlays(statistics.getTotalPlays() + 1);
 
             AudioObjectStats stats = statistics.getAudioFilesStats().get(songPath);
@@ -77,7 +77,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
 
             String artist = audioFile.getArtist();
 
-            Artist a = RepositoryHandler.getInstance().getArtist(artist);
+            Artist a = getBean(IRepositoryHandler.class).getArtist(artist);
 
             // Unknown artist -> don't fill artist stats
             if (a == null) {
@@ -119,7 +119,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
         if (statisticsAlbums != null) {
             List<Album> albums = new ArrayList<Album>();
             for (StatisticsAlbum statisticAlbum : statisticsAlbums) {
-            	Artist artist = RepositoryHandler.getInstance().getArtist(statisticAlbum.getArtist());
+            	Artist artist = getBean(IRepositoryHandler.class).getArtist(statisticAlbum.getArtist());
             	if (artist != null) {
             		Album album = artist.getAlbum(statisticAlbum.getAlbum());
             		if (album != null) {
@@ -143,7 +143,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
         if (artistsNames != null) {
             List<Artist> artists = new ArrayList<Artist>();
             for (String artistName : artistsNames) {
-                artists.add(RepositoryHandler.getInstance().getArtist(artistName));
+                artists.add(getBean(IRepositoryHandler.class).getArtist(artistName));
             }
             return artists;
         }
@@ -161,7 +161,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
         if (audioFilesUrls != null) {
             List<IAudioObject> audioFiles = new ArrayList<IAudioObject>();
             for (String audioFileUrl : audioFilesUrls) {
-                audioFiles.add(RepositoryHandler.getInstance().getFileIfLoaded(audioFileUrl));
+                audioFiles.add(getBean(IRepositoryHandler.class).getFileIfLoaded(audioFileUrl));
             }
             return audioFiles;
         }
@@ -185,7 +185,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
 
     @Override
     public List<IAudioObject> getUnplayedAudioObjects() {
-        List<IAudioObject> unplayedAudioFiles = new ArrayList<IAudioObject>(RepositoryHandler.getInstance().getAudioFilesList());
+        List<IAudioObject> unplayedAudioFiles = new ArrayList<IAudioObject>(getBean(IRepositoryHandler.class).getAudioFilesList());
         unplayedAudioFiles.removeAll(statistics.getAudioFilesRanking().getNFirstElements(-1));
         return unplayedAudioFiles;
     }
@@ -253,7 +253,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
     @Override
     public void showStatistics() {
 		if (controller == null) {
-			controller = new StatsDialogController(new StatsDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class)), getState(), this, getBean(ILookAndFeelManager.class)); 
+			controller = new StatsDialogController(new StatsDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class)), getState(), this, getBean(ILookAndFeelManager.class), getBean(IRepositoryHandler.class)); 
 		}
 		controller.showStats();
 	}

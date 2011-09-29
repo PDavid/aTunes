@@ -26,7 +26,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.SelectorDialog;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -51,8 +51,9 @@ public class ImportToRepositoryAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+    	IRepositoryHandler repositoryHandler = getBean(IRepositoryHandler.class);
         // First check if repository is selected. If not, display a message
-        if (RepositoryHandler.getInstance().repositoryIsNull()) {
+        if (repositoryHandler.repositoryIsNull()) {
         	getBean(IErrorDialog.class).showErrorDialog(getBean(IFrame.class), I18nUtils.getString("SELECT_REPOSITORY_BEFORE_IMPORT"));
             return;
         }
@@ -67,9 +68,9 @@ public class ImportToRepositoryAction extends CustomAbstractAction {
             // If user selected folders...
             if (!folders.isEmpty()) {
                 String path;
-                String[] foldersList = new String[RepositoryHandler.getInstance().getFoldersCount()];
-                for (int i = 0; i < RepositoryHandler.getInstance().getFolders().size(); i++) {
-                    foldersList[i] = RepositoryHandler.getInstance().getFolders().get(i).getAbsolutePath();
+                String[] foldersList = new String[repositoryHandler.getFoldersCount()];
+                for (int i = 0; i < repositoryHandler.getFolders().size(); i++) {
+                    foldersList[i] = repositoryHandler.getFolders().get(i).getAbsolutePath();
                 }
                 // If repository folders are more than one then user must select where to import songs
                 if (foldersList.length > 1) {
@@ -84,7 +85,7 @@ public class ImportToRepositoryAction extends CustomAbstractAction {
                 } else {
                     path = foldersList[0];
                 }
-                RepositoryHandler.getInstance().importFolders(folders, path);
+                repositoryHandler.importFolders(folders, path);
             }
         }
     }

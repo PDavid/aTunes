@@ -31,7 +31,7 @@ import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.dialogs.RipCdDialog;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -49,6 +49,8 @@ final class RipCdDialogListener extends KeyAdapter implements ActionListener {
     private RipCdDialogController ripCdDialogController;
     
     private IOSManager osManager;
+    
+    private IRepositoryHandler repositoryHandler;
 
     /**
      * Instantiates a new rip cd dialog listener.
@@ -56,11 +58,13 @@ final class RipCdDialogListener extends KeyAdapter implements ActionListener {
      * @param ripCdDialog
      * @param ripCdDialogController
      * @param osManager
+     * @param repositoryHandler
      */
-    public RipCdDialogListener(RipCdDialog ripCdDialog, RipCdDialogController ripCdDialogController, IOSManager osManager) {
+    public RipCdDialogListener(RipCdDialog ripCdDialog, RipCdDialogController ripCdDialogController, IOSManager osManager, IRepositoryHandler repositoryHandler) {
         this.ripCdDialog = ripCdDialog;
         this.ripCdDialogController = ripCdDialogController;
         this.osManager = osManager;
+        this.repositoryHandler = repositoryHandler;         
     }
 
     @Override
@@ -112,7 +116,7 @@ final class RipCdDialogListener extends KeyAdapter implements ActionListener {
                 public void run() {
                     String artist = ripCdDialog.getArtistTextField().getText();
                     String album = ripCdDialog.getAlbumTextField().getText();
-                    String repositoryPath = RepositoryHandler.getInstance().getRepositoryPath();
+                    String repositoryPath = repositoryHandler.getRepositoryPath();
                     boolean enabled = !artist.equals("") && !album.equals("");
                     ripCdDialog.getTitlesButton().setEnabled(enabled);
                     if (!ripCdDialogController.isFolderNameEdited()) {

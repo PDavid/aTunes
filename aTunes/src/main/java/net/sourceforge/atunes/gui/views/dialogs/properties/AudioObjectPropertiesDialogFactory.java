@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.gui.views.dialogs.properties;
 
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialog;
@@ -43,6 +44,8 @@ public class AudioObjectPropertiesDialogFactory implements IAudioObjectPropertie
 	
 	private IPlayListHandler playListHandler;
 	
+	private IRepositoryHandler repositoryHandler;
+	
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.gui.views.dialogs.properties.IAudioObjectPropertiesDialogFactory#newInstance(net.sourceforge.atunes.model.IAudioObject)
 	 */
@@ -54,7 +57,7 @@ public class AudioObjectPropertiesDialogFactory implements IAudioObjectPropertie
     	} else if (a instanceof IRadio) {
     		dialog = new RadioPropertiesDialog((Radio) a, frame, lookAndFeelManager);
     	} else if (a instanceof AudioFile) {
-    		dialog = new AudioFilePropertiesDialog((AudioFile) a, state, frame, osManager, playListHandler, lookAndFeelManager);
+    		dialog = new AudioFilePropertiesDialog((AudioFile) a, state, frame, osManager, playListHandler, lookAndFeelManager, repositoryHandler);
     	}
     	if (dialog != null) {
     		dialog.setAudioObject(a);
@@ -89,5 +92,9 @@ public class AudioObjectPropertiesDialogFactory implements IAudioObjectPropertie
 	@Override
 	public void setPlayListHandler(IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
+	}
+	
+	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
 	}
 }

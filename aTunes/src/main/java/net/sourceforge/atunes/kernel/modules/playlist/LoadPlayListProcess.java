@@ -27,6 +27,7 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.process.AbstractProcess;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
@@ -35,10 +36,13 @@ import net.sourceforge.atunes.utils.I18nUtils;
 class LoadPlayListProcess extends AbstractProcess {
 
     private List<String> filenamesToLoad;
+    
+    private IRepositoryHandler repositoryHandler;
 
-    LoadPlayListProcess(List<String> filenamesToLoad, IState state) {
+    LoadPlayListProcess(List<String> filenamesToLoad, IState state, IRepositoryHandler repositoryHandler) {
     	super(state);
         this.filenamesToLoad = filenamesToLoad;
+        this.repositoryHandler = repositoryHandler;
     }
 
     @Override
@@ -60,7 +64,7 @@ class LoadPlayListProcess extends AbstractProcess {
     protected boolean runProcess() {
         final List<IAudioObject> songsLoaded = new ArrayList<IAudioObject>();
         for (int i = 0; i < filenamesToLoad.size() && !isCanceled(); i++) {
-            songsLoaded.add(PlayListIO.getAudioFileOrCreate(filenamesToLoad.get(i)));
+            songsLoaded.add(PlayListIO.getAudioFileOrCreate(repositoryHandler, filenamesToLoad.get(i)));
             setCurrentProgress(i + 1);
         }
         // If canceled loaded files are added anyway

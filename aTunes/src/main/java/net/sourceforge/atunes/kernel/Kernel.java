@@ -35,6 +35,7 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
+import net.sourceforge.atunes.kernel.modules.repository.IRepositoryHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
@@ -143,7 +144,7 @@ public class Kernel {
         		// Start component creation
         		startCreation();
 
-            	callActionsAfterStart(PlayListIO.getAudioObjectsFromFileNamesList(songs));
+            	callActionsAfterStart(PlayListIO.getAudioObjectsFromFileNamesList(Context.getBean(IRepositoryHandler.class), songs));
             	Logger.info(StringUtils.getString("Application started (", StringUtils.toString(timer.stop(), 3), " seconds)"));
             	timer = null;
         	}
