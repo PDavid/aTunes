@@ -377,6 +377,7 @@ public final class PlayerControlsPanel extends JPanel {
         c.insets = new Insets(0, 1, 0, 0);
         JToggleButton button = new SecondaryControl(action, lookAndFeelManager);
         getSecondaryControls().add(button, c);
+        getSecondaryControls().repaint();
     }
     
     /**
