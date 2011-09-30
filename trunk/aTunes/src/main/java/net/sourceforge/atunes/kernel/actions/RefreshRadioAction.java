@@ -25,7 +25,7 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
+import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class RefreshRadioAction extends CustomAbstractAction {
@@ -39,7 +39,7 @@ public class RefreshRadioAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        RadioHandler.getInstance().retrieveRadios();
+        getBean(IRadioHandler.class).retrieveRadios();
     }
 
     @Override

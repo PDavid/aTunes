@@ -40,6 +40,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITaskService;
@@ -144,7 +145,7 @@ public class Kernel {
         		// Start component creation
         		startCreation();
 
-            	callActionsAfterStart(PlayListIO.getAudioObjectsFromFileNamesList(Context.getBean(IRepositoryHandler.class), songs));
+            	callActionsAfterStart(PlayListIO.getAudioObjectsFromFileNamesList(Context.getBean(IRepositoryHandler.class), songs, Context.getBean(IRadioHandler.class)));
             	Logger.info(StringUtils.getString("Application started (", StringUtils.toString(timer.stop(), 3), " seconds)"));
             	timer = null;
         	}
