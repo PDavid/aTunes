@@ -25,7 +25,7 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
+import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -45,7 +45,7 @@ public class AddRadioAction extends CustomAbstractAction {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        RadioHandler.getInstance().addRadio();
+    	getBean(IRadioHandler.class).addRadio();
     }
 
     @Override

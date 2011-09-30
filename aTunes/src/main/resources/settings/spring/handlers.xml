@@ -28,4 +28,5 @@
 	<bean id="searchHandler" class="net.sourceforge.atunes.kernel.modules.search.SearchHandler"/>
 	<bean id="repositoryHandler" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler"/>
 	<bean id="deviceHandler" class="net.sourceforge.atunes.kernel.modules.device.DeviceHandler"/>
+	<bean id="radioHandler" class="net.sourceforge.atunes.kernel.modules.radio.RadioHandler"/>
 </beans>

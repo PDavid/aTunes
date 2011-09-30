@@ -24,9 +24,9 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IRadio;
+import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class RemoveRadioAction extends AbstractActionOverSelectedObjects<IRadio> {
@@ -40,7 +40,7 @@ public class RemoveRadioAction extends AbstractActionOverSelectedObjects<IRadio>
 
     @Override
     protected void performAction(List<IRadio> objects) {
-        RadioHandler.getInstance().removeRadios(objects);
+    	getBean(IRadioHandler.class).removeRadios(objects);
     }
 
     @Override

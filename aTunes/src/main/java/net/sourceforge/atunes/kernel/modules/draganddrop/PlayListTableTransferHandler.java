@@ -49,6 +49,7 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -87,6 +88,8 @@ public class PlayListTableTransferHandler extends TransferHandler {
     private INavigationHandler navigationHandler;
     
     private IRepositoryHandler repositoryHandler;
+    
+    private IRadioHandler radioHandler;
     
     static {
         try {
@@ -162,12 +165,13 @@ public class PlayListTableTransferHandler extends TransferHandler {
         return false;
     }
 
-    public PlayListTableTransferHandler(IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, INavigationHandler navigationHandler, IRepositoryHandler repositoryHandler) {
+    public PlayListTableTransferHandler(IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, INavigationHandler navigationHandler, IRepositoryHandler repositoryHandler, IRadioHandler radioHandler) {
     	this.frame = frame;
     	this.osManager = osManager;
     	this.playListHandler = playListHandler;
     	this.navigationHandler = navigationHandler;
     	this.repositoryHandler = repositoryHandler;
+    	this.radioHandler = radioHandler;
 	}
     
     @Override
@@ -353,7 +357,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
                 	ILocalAudioObject song = new AudioFile(f);
                     filesToAdd.add(song);
                 } else if (f.getName().toLowerCase().endsWith("m3u")) {
-                    filesToAdd.addAll(PlayListIO.getFilesFromList(f, repositoryHandler, osManager));
+                    filesToAdd.addAll(PlayListIO.getFilesFromList(f, repositoryHandler, osManager, radioHandler));
                 }
             }
             int dropRow = frame.getPlayListTable().rowAtPoint(support.getDropLocation().getDropPoint());

@@ -27,10 +27,10 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationView;
-import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.model.IInputDialog;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IRadio;
+import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class RenameRadioLabelAction extends CustomAbstractAction {
@@ -56,8 +56,8 @@ public class RenameRadioLabelAction extends CustomAbstractAction {
             dialog.showDialog(label);
             String result = dialog.getResult();
             if (result != null) {
-                List<IRadio> radios = RadioHandler.getInstance().getRadios(label);
-                RadioHandler.getInstance().setLabel(radios, result);
+                List<IRadio> radios = getBean(IRadioHandler.class).getRadios(label);
+                getBean(IRadioHandler.class).setLabel(radios, result);
                 navigationHandler.refreshView(RadioNavigationView.class);
             }
         } else if (o instanceof IRadio) {

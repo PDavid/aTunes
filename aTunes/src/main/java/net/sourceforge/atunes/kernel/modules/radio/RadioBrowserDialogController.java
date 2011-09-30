@@ -28,6 +28,7 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.gui.model.RadioBrowserTreeTableModel;
 import net.sourceforge.atunes.gui.views.dialogs.RadioBrowserDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
+import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -37,7 +38,7 @@ final class RadioBrowserDialogController extends AbstractSimpleController<RadioB
 			SwingWorker<List<Radio>, Void> {
 		@Override
 		protected List<Radio> doInBackground() throws Exception {
-		    return RadioHandler.getInstance().retrieveRadiosForBrowser();
+		    return radioHandler.retrieveRadiosForBrowser();
 		}
 
 		@Override
@@ -55,14 +56,18 @@ final class RadioBrowserDialogController extends AbstractSimpleController<RadioB
 		}
 	}
 
+    private IRadioHandler radioHandler;
+    
 	/**
      * Instantiates a new radio browser dialog controller.
      * 
      * @param frameControlled
      * @param state
+     * @param radioHandler
      */
-    RadioBrowserDialogController(RadioBrowserDialog frameControlled, IState state) {
+    RadioBrowserDialogController(RadioBrowserDialog frameControlled, IState state, IRadioHandler radioHandler) {
         super(frameControlled, state);
+        this.radioHandler = radioHandler;
         addBindings();
         addStateBindings();
     }
@@ -86,7 +91,7 @@ final class RadioBrowserDialogController extends AbstractSimpleController<RadioB
 
     @Override
 	public void addBindings() {
-        RadioBrowserDialogListener listener = new RadioBrowserDialogListener(getComponentControlled());
+        RadioBrowserDialogListener listener = new RadioBrowserDialogListener(getComponentControlled(), radioHandler);
         getComponentControlled().getTreeTable().addMouseListener(listener);
     }
 }

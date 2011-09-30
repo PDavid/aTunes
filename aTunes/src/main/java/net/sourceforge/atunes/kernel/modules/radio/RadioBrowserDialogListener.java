@@ -24,6 +24,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import net.sourceforge.atunes.gui.views.dialogs.RadioBrowserDialog;
+import net.sourceforge.atunes.model.IRadioHandler;
 
 import org.jdesktop.swingx.JXTreeTable;
 import org.jdesktop.swingx.treetable.DefaultMutableTreeTableNode;
@@ -35,15 +36,18 @@ final class RadioBrowserDialogListener extends MouseAdapter {
 
     /** The radio browser dialog. */
     private RadioBrowserDialog radioBrowserDialog;
+    
+    private IRadioHandler radioHandler;
 
     /**
      * Instantiates a new radio browser dialog listener.
      * 
      * @param radioBrowserDialog
-     *            the radio browser dialog
+     * @param radioHandler
      */
-    RadioBrowserDialogListener(RadioBrowserDialog radioBrowserDialog) {
+    RadioBrowserDialogListener(RadioBrowserDialog radioBrowserDialog, IRadioHandler radioHandler) {
         this.radioBrowserDialog = radioBrowserDialog;
+        this.radioHandler = radioHandler;
     }
 
     @Override
@@ -52,11 +56,9 @@ final class RadioBrowserDialogListener extends MouseAdapter {
             JXTreeTable treeTable = radioBrowserDialog.getTreeTable();
             if (e.getClickCount() == 2) {
                 Radio radio = (Radio) ((DefaultMutableTreeTableNode) treeTable.getPathForLocation(e.getX(), e.getY()).getLastPathComponent()).getUserObject();
-                RadioHandler.getInstance().addRadio(radio);
+                radioHandler.addRadio(radio);
             }
 
         }
-
     }
-
 }

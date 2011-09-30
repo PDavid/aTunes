@@ -35,12 +35,11 @@ import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationView;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioDialog;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.NetworkUtils;
@@ -51,7 +50,7 @@ import net.sourceforge.atunes.utils.XMLUtils;
  * 
  * @author sylvain
  */
-public final class RadioHandler extends AbstractHandler {
+public final class RadioHandler extends AbstractHandler implements IRadioHandler {
 
     private final class RetrieveRadiosSwingWorker extends SwingWorker<List<Radio>, Void> {
         private final ProxyBean proxy = RadioHandler.this.getState().getProxy();
@@ -86,9 +85,6 @@ public final class RadioHandler extends AbstractHandler {
         }
     };
 
-
-    private static RadioHandler instance = new RadioHandler();
-
     private List<IRadio> radios;
     private List<IRadio> presetRadios;
     private List<IRadio> retrievedPresetRadios = new ArrayList<IRadio>();
@@ -99,37 +95,8 @@ public final class RadioHandler extends AbstractHandler {
      */
     private boolean radioListDirty = false;
 
-    /**
-     * Instantiates a new radio handler.
-     */
-    private RadioHandler() {
-    }
-
     @Override
-    public void applicationStateChanged(IState newState) {
-    }
-
-    @Override
-    protected void initHandler() {
-    }
-
-    @Override
-    public void applicationStarted(List<IAudioObject> playList) {
-    }
-
-    /**
-     * Gets the single instance of RadioHandler.
-     * 
-     * @return single instance of RadioHandler
-     */
-    public static RadioHandler getInstance() {
-        return instance;
-    }
-
-    /**
-     * Add the radio station from the add radio dialog.
-     */
-    public void addRadio() {
+	public void addRadio() {
         IRadioDialog dialog = getBean(IRadioDialog.class);
         dialog.showDialog();
         IRadio radio = dialog.getRadio();
@@ -138,13 +105,8 @@ public final class RadioHandler extends AbstractHandler {
         }
     }
 
-    /**
-     * Add a radio station to the list.
-     * 
-     * @param radio
-     *            Station
-     */
-    public void addRadio(IRadio radio) {
+    @Override
+	public void addRadio(IRadio radio) {
         Logger.info("Adding radio");
         if (radio != null && !getRadios().contains(radio)) {
             getRadios().add(radio);
@@ -157,6 +119,7 @@ public final class RadioHandler extends AbstractHandler {
     /**
      * Write stations to xml files.
      */
+    @Override
     public void applicationFinish() {
         if (radioListDirty) {
         	getBean(IStateHandler.class).persistRadioCache(getRadios());
@@ -185,23 +148,13 @@ public final class RadioHandler extends AbstractHandler {
         };
     }
 
-    /**
-     * Gets the radios.
-     * 
-     * Radio cache is read on demand
-     * 
-     * @return the radios
-     */
-    public List<IRadio> getRadios() {
+    @Override
+	public List<IRadio> getRadios() {
         return radios;
     }
 
-    /**
-     * Gets the radio presets.
-     * 
-     * @return the preset radios, minus user maintained radio stations.
-     */
-    public List<IRadio> getRadioPresets() {
+    @Override
+	public List<IRadio> getRadioPresets() {
         // Check if new stations were added and set false if yes
         if (noNewStations == true) {
             noNewStations = presetRadios.containsAll(retrievedPresetRadios);
@@ -215,24 +168,13 @@ public final class RadioHandler extends AbstractHandler {
         return new ArrayList<IRadio>(presetRadios);
     }
 
-    /**
-     * Gets the radios.
-     * 
-     * @param label
-     *            the label
-     * 
-     * @return the radios
-     */
-    public List<IRadio> getRadios(String label) {
+    @Override
+	public List<IRadio> getRadios(String label) {
         return new ArrayList<IRadio>(getRadios());
     }
 
-    /**
-     * Sorts the labels alphabetically
-     * 
-     * @return Sorted label list
-     */
-    public List<String> sortRadioLabels() {
+    @Override
+	public List<String> sortRadioLabels() {
         List<String> result = new ArrayList<String>();
         List<String> newResult = new ArrayList<String>();
         // Read labels from user radios
@@ -272,14 +214,8 @@ public final class RadioHandler extends AbstractHandler {
         return newResult;
     }
 
-    /**
-     * Remove stations from the list. Preset stations are not really removed but
-     * are marked so they not show up in the navigator
-     * 
-     * @param radio
-     *            Radio to be removed
-     */
-    public void removeRadios(List<IRadio> radios) {
+    @Override
+	public void removeRadios(List<IRadio> radios) {
         Logger.info("Removing radios");
         for (IRadio radio : radios) {
             if (!presetRadios.contains(radio)) {
@@ -297,24 +233,13 @@ public final class RadioHandler extends AbstractHandler {
         getBean(INavigationHandler.class).refreshView(RadioNavigationView.class);
     }
 
-    /**
-     * Convenience method to remove a single radio
-     * 
-     * @param radio
-     */
-    public void removeRadio(IRadio radio) {
+    @Override
+	public void removeRadio(IRadio radio) {
         removeRadios(Collections.singletonList(radio));
     }
 
-    /**
-     * Retrieve radios for browser.
-     * 
-     * @return the list< radio>
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    @SuppressWarnings("unchecked")
+    @Override
+	@SuppressWarnings("unchecked")
     public List<Radio> retrieveRadiosForBrowser() throws IOException {
         try {
             String xml = NetworkUtils.readURL(NetworkUtils.getConnection(Constants.RADIO_LIST_DOWNLOAD_COMMON_JUKEBOX, ExtendedProxy.getProxy(getState().getProxy())));
@@ -325,25 +250,16 @@ public final class RadioHandler extends AbstractHandler {
         }
     }
 
-    /**
-     * Retrieve radios.
-     */
     /*
      * Get radios from the internet (update preset list)
      */
-    public void retrieveRadios() {
+    @Override
+	public void retrieveRadios() {
         new RetrieveRadiosSwingWorker().execute();
     }
 
-    /**
-     * Change label of radio.
-     * 
-     * @param radioList
-     *            List of radios for which the label should be changed
-     * @param label
-     *            New label
-     */
-    public void setLabel(List<IRadio> radioList, String label) {
+    @Override
+	public void setLabel(List<IRadio> radioList, String label) {
         for (IRadio r : radioList) {
             // Write preset stations to user list in order to modify label
             if (presetRadios.contains(r)) {
@@ -354,26 +270,15 @@ public final class RadioHandler extends AbstractHandler {
         radioListDirty = true;
     }
 
-    /**
-     * Change radio attributes
-     * 
-     * @param radio
-     * @param newRadio
-     */
-    public void replace(IRadio radio, IRadio newRadio) {
+    @Override
+	public void replace(IRadio radio, IRadio newRadio) {
         removeRadio(radio);
         addRadio(newRadio);
         radioListDirty = true;
     }
 
-    /**
-     * Returns a Radio object for the given url or null if a Radio object is not
-     * available for that url
-     * 
-     * @param url
-     * @return
-     */
-    public IRadio getRadioIfLoaded(String url) {
+    @Override
+	public IRadio getRadioIfLoaded(String url) {
         // Check in user radios
         for (IRadio radio : getRadios()) {
             if (radio.getUrl().equalsIgnoreCase(url)) {
@@ -389,24 +294,16 @@ public final class RadioHandler extends AbstractHandler {
         return null;
     }
     
-	/**
-	 * Shows radio browser
-	 */
+	@Override
 	public void showRadioBrowser() {
-		new RadioBrowserDialogController(new RadioBrowserDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class)), getState()).showRadioBrowser();
+		new RadioBrowserDialogController(new RadioBrowserDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class)), getState(), this).showRadioBrowser();
 	}
 
 	@Override
-	public void playListCleared() {}
-
-	@Override
-	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
-
 	public IRadio editRadio(IRadio radio) {
 		IRadioDialog dialog = getBean(IRadioDialog.class);
 		dialog.setRadio(radio);
 		dialog.showDialog();
 		return dialog.getRadio();
 	}
-
 }

@@ -24,9 +24,9 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IRadio;
+import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class EditRadioAction extends AbstractActionOverSelectedObjects<IRadio> {
@@ -41,9 +41,9 @@ public class EditRadioAction extends AbstractActionOverSelectedObjects<IRadio> {
     @Override
     protected void performAction(List<IRadio> objects) {
         IRadio radio = objects.get(0); // Guaranteed only one radio
-        IRadio radioEdited = RadioHandler.getInstance().editRadio(radio);
+        IRadio radioEdited = getBean(IRadioHandler.class).editRadio(radio);
         if (radioEdited != null) {
-            RadioHandler.getInstance().replace(radio, radioEdited);
+        	getBean(IRadioHandler.class).replace(radio, radioEdited);
         }
     }
 

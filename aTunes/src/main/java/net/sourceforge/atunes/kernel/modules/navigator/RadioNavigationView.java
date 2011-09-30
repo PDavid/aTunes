@@ -49,7 +49,6 @@ import net.sourceforge.atunes.kernel.actions.RenameRadioLabelAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
@@ -57,6 +56,7 @@ import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IRadio;
+import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.ViewMode;
@@ -76,6 +76,8 @@ public final class RadioNavigationView extends AbstractNavigationView {
     /** The column set */
     private IColumnSet columnSet;
 
+    private IRadioHandler radioHandler;
+    
     /**
      * @param state
      * @param columnSet
@@ -159,8 +161,8 @@ public final class RadioNavigationView extends AbstractNavigationView {
     protected Map<String, ?> getViewData(ViewMode viewMode) {
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("SHOW_ALL_STATIONS", getState().isShowAllRadioStations());
-        data.put("RADIOS", RadioHandler.getInstance().getRadios());
-        data.put("PRESET_RADIOS", RadioHandler.getInstance().getRadioPresets());
+        data.put("RADIOS", radioHandler.getRadios());
+        data.put("PRESET_RADIOS", radioHandler.getRadioPresets());
         return data;
     }
 
@@ -238,7 +240,7 @@ public final class RadioNavigationView extends AbstractNavigationView {
      * @param showAllStations
      *            the show all stations
      */
-    private static void addRadioNodes(List<Radio> radios, List<Radio> presetRadios, DefaultMutableTreeNode root, String currentFilter, boolean showAllStations, List<ITreeObject<? extends IAudioObject>> objectsExpanded, List<ITreeObject<? extends IAudioObject>> objectsSelected, List<DefaultMutableTreeNode> nodesToExpand, List<DefaultMutableTreeNode> nodesToSelect) {
+    private void addRadioNodes(List<Radio> radios, List<Radio> presetRadios, DefaultMutableTreeNode root, String currentFilter, boolean showAllStations, List<ITreeObject<? extends IAudioObject>> objectsExpanded, List<ITreeObject<? extends IAudioObject>> objectsSelected, List<DefaultMutableTreeNode> nodesToExpand, List<DefaultMutableTreeNode> nodesToSelect) {
         if (radios == null) {
             return;
         }
@@ -311,7 +313,7 @@ public final class RadioNavigationView extends AbstractNavigationView {
                     }
                     // Marked as removed, so remove for next start
                     else if (r.isRemoved()) {
-                        RadioHandler.getInstance().removeRadio(r);
+                        radioHandler.removeRadio(r);
                     } else {
                         DefaultMutableTreeNode labelNode;
                         if (r.getLabel() == null || r.getLabel().trim().equals("")) {
@@ -338,7 +340,7 @@ public final class RadioNavigationView extends AbstractNavigationView {
         }
 
         // Sort and add labels 
-        List<String> RadioLabels = RadioHandler.getInstance().sortRadioLabels();
+        List<String> RadioLabels = radioHandler.sortRadioLabels();
         for (String label : RadioLabels) {
             for (DefaultMutableTreeNode labelNode : radioGroups.values()) {
                 if (labelNode.toString().equals(label)) {
@@ -369,5 +371,9 @@ public final class RadioNavigationView extends AbstractNavigationView {
     public boolean isViewModeSupported() {
         return false;
     }
+    
+    public void setRadioHandler(IRadioHandler radioHandler) {
+		this.radioHandler = radioHandler;
+	}
 
 }

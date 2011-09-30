@@ -42,6 +42,7 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -105,7 +106,7 @@ public final class MultipleInstancesHandler extends AbstractHandler {
                         Logger.info(StringUtils.getString("Received connection with content: \"", str, "\""));
                         if (PlayListIO.isValidPlayList(fileStr)) {
                             List<String> songs = PlayListIO.read(fileStr, getOsManager());
-                            List<IAudioObject> files = PlayListIO.getAudioObjectsFromFileNamesList(getBean(IRepositoryHandler.class), songs);
+                            List<IAudioObject> files = PlayListIO.getAudioObjectsFromFileNamesList(getBean(IRepositoryHandler.class), songs, getBean(IRadioHandler.class));
                             for (IAudioObject file : files) {
                                 queue.addSong(file);
                             }

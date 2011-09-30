@@ -32,11 +32,11 @@ import java.util.List;
 import javax.swing.filechooser.FileFilter;
 
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayList;
+import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -79,14 +79,14 @@ public final class PlayListIO {
      * 
      * @param repositoryHandler
      * @param fileNames
-     *            the file names
+     * @param radioHandler
      * 
      * @return the audio objects from file names list
      */
-    public static List<IAudioObject> getAudioObjectsFromFileNamesList(IRepositoryHandler repositoryHandler, List<String> fileNames) {
+    public static List<IAudioObject> getAudioObjectsFromFileNamesList(IRepositoryHandler repositoryHandler, List<String> fileNames, IRadioHandler radioHandler) {
         List<IAudioObject> result = new ArrayList<IAudioObject>();
         for (String fileName : fileNames) {
-            result.add(getAudioFileOrCreate(repositoryHandler, fileName));
+            result.add(getAudioFileOrCreate(repositoryHandler, fileName, radioHandler));
         }
         return result;
     }
@@ -97,14 +97,15 @@ public final class PlayListIO {
      * 
      * @param repositoryHandler
      * @param resourceName
+     * @param radioHandler
      * @return
      */
-    static IAudioObject getAudioFileOrCreate(IRepositoryHandler repositoryHandler, String resourceName) {
+    static IAudioObject getAudioFileOrCreate(IRepositoryHandler repositoryHandler, String resourceName, IRadioHandler radioHandler) {
         IAudioObject ao = null;
 
         // It's an online radio
         if (resourceName.startsWith(M3U_HTTP_PREFIX)) {
-            ao = RadioHandler.getInstance().getRadioIfLoaded(resourceName);
+            ao = radioHandler.getRadioIfLoaded(resourceName);
             if (ao == null) {
                 // If radio is not previously loaded in application then create a new Radio object with resource as name and url and leave label empty
                 ao = new Radio(resourceName, resourceName, null);
@@ -127,11 +128,12 @@ public final class PlayListIO {
      * @param file
      * @param repositoryHandler
      * @param osManager
+     * @param radioHandler
      * @return
      */
-    public static List<IAudioObject> getFilesFromList(File file, IRepositoryHandler repositoryHandler, IOSManager osManager) {
+    public static List<IAudioObject> getFilesFromList(File file, IRepositoryHandler repositoryHandler, IOSManager osManager, IRadioHandler radioHandler) {
         List<String> list = read(file, osManager);
-        return getAudioObjectsFromFileNamesList(repositoryHandler, list);
+        return getAudioObjectsFromFileNamesList(repositoryHandler, list, radioHandler);
     }
 
     /**

@@ -58,6 +58,7 @@ import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
+import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
@@ -179,7 +180,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     @Override
     public void allHandlersInitialized() {
         // Create drag and drop listener
-    	getFrame().getPlayListPanel().enableDragAndDrop(new PlayListTableTransferHandler(getFrame(), getOsManager(), this, getBean(INavigationHandler.class), getBean(IRepositoryHandler.class)));
+    	getFrame().getPlayListPanel().enableDragAndDrop(new PlayListTableTransferHandler(getFrame(), getOsManager(), this, getBean(INavigationHandler.class), getBean(IRepositoryHandler.class), getBean(IRadioHandler.class)));
     }
 
     /**
@@ -683,7 +684,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
                 List<String> filesToLoad = PlayListIO.read(file, getOsManager());
                 // Background loading - but only when returned array is not null (Progress dialog hangs otherwise)
                 if (filesToLoad != null) {
-                    LoadPlayListProcess process = new LoadPlayListProcess(filesToLoad, getState(), getBean(IRepositoryHandler.class));
+                    LoadPlayListProcess process = new LoadPlayListProcess(filesToLoad, getState(), getBean(IRepositoryHandler.class), getBean(IRadioHandler.class));
                     process.execute();
                 }
             } else {

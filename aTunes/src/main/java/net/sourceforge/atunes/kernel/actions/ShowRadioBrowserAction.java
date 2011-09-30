@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.kernel.modules.radio.RadioHandler;
+import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -41,7 +41,7 @@ public class ShowRadioBrowserAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-    	RadioHandler.getInstance().showRadioBrowser();
+    	getBean(IRadioHandler.class).showRadioBrowser();
     }
 
 }
