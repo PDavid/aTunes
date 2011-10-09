@@ -7,6 +7,7 @@ aTunes 2.1.1
 - Plugins can be enabled from preferences panel [ patch by Laurent Cathala ]
 - FIX: Problems reading XML data from previous versions
 - FIX: Multiple selection fires contextual menu [ 3419492 ] [ patch by deathgorepain ]
+- FIX: Player error when using normalization and equalizer with MPlayer [ 3419533 ] [ patch by Laurent Cathala ]
 
 
 aTunes 2.1.0
