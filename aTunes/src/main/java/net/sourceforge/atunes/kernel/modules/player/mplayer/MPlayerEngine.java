@@ -366,21 +366,25 @@ public class MPlayerEngine extends AbstractPlayerEngine {
         		command.add(CACHE_FILL_SIZE_IN_PERCENT);
         	}
 
-        	//float[] eualizer = getEqualizer();
-        	if ((audioObject instanceof ILocalAudioObject && getEqualizer().getEqualizerValues() != null) || isSoundNormalizationEnabled()) {
-        		command.add(AUDIO_FILTER);
-        	}
 
         	// normalization
         	if (isSoundNormalizationEnabled()) {
+        		command.add(AUDIO_FILTER);
         		command.add(VOLUME_NORM);
         	}
 
         	// Build equalizer command. Mplayer uses 10 bands
         	if (audioObject instanceof ILocalAudioObject && getEqualizer().getEqualizerValues() != null) {
         		float[] equalizer = getEqualizer().getEqualizerValues();
-        		command.add(EQUALIZER + equalizer[0] + ":" + equalizer[1] + ":" + equalizer[2] + ":" + equalizer[3] + ":" + equalizer[4] + ":" + equalizer[5] + ":" + equalizer[6]
-        		                                                                                                                                                                + ":" + equalizer[7] + ":" + equalizer[8] + ":" + equalizer[9]);
+        		command.add(AUDIO_FILTER);
+        		StringBuilder eqString = new StringBuilder(EQUALIZER);
+        		for (int i = 0; i <= 9; i++) {
+        			eqString.append(equalizer[i]);
+        			if (i < 9) {
+        				eqString.append(":");
+        			}
+        		}
+        		command.add(eqString.toString());
         	}
 
         	Logger.debug((Object[]) command.toArray(new String[command.size()]));
