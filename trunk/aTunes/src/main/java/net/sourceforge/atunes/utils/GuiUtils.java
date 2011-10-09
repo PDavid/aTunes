@@ -53,6 +53,7 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -522,6 +523,16 @@ public final class GuiUtils {
      * @return
      */
     public static boolean isSecondaryMouseButton(MouseEvent e) {
-    	return SwingUtilities.isRightMouseButton(e) || e.isControlDown();
+    	if (!Context.getBean(IOSManager.class).isMacOsX()) {
+    		return SwingUtilities.isRightMouseButton(e);
+    	} else {
+    		// When Cmd key is pressed, left and right buttons seems pressed
+    		// In this case return false
+    		if (e.isMetaDown() && SwingUtilities.isRightMouseButton(e) && SwingUtilities.isLeftMouseButton(e)) {
+    			return false;
+    		}
+    		return SwingUtilities.isRightMouseButton(e) ||
+    		       SwingUtilities.isLeftMouseButton(e) && e.isControlDown();
+    	}
     }
 }

@@ -6,6 +6,7 @@ aTunes 2.1.1
 ------------
 - Plugins can be enabled from preferences panel [ patch by Laurent Cathala ]
 - FIX: Problems reading XML data from previous versions
+- FIX: Multiple selection fires contextual menu [ 3419492 ] [ patch by deathgorepain ]
 
 
 aTunes 2.1.0
