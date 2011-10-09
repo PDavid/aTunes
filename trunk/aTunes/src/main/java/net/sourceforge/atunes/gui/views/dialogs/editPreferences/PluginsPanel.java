@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -72,416 +73,475 @@ import org.commonjukebox.plugins.model.PluginInfo;
 
 public final class PluginsPanel extends AbstractPreferencesPanel {
 
-    private static final long serialVersionUID = 8611795969151425262L;
+	private static final long serialVersionUID = 8611795969151425262L;
 
-    private JTable pluginsTable;
+	private JPanel mainPanel;
 
-    private JButton pluginPreferencesButton;
+	private JCheckBox enabledPluginBox;
 
-    private JButton uninstallPluginButton;
+	private JTable pluginsTable;
 
-    private static final int CELL_HEIGHT = 30;
+	private JButton pluginPreferencesButton;
 
-    /**
-     * Plugins modified with their modified configuration
-     */
-    private Map<PluginInfo, PluginConfiguration> pluginsModified;
+	private JButton uninstallPluginButton;
 
-    /**
-     * Plugins activated or deactivated
-     */
-    private Map<PluginInfo, Boolean> pluginsActivation;
+	private static final int CELL_HEIGHT = 30;
 
-    /**
-     * Preferences dialog
-     */
-    private EditPreferencesDialog dialog;
-    
-    /**
-     * Instantiates a new plugins panel.
-     */
-    public PluginsPanel(EditPreferencesDialog dialog, final IFrame frame, final ILookAndFeel lookAndFeel) {
-        super(I18nUtils.getString("PLUGINS"));
-        this.dialog = dialog;
-        pluginsTable = lookAndFeel.getTable();
-        pluginsTable.setRowHeight(CELL_HEIGHT);
-        pluginsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        pluginsTable.setColumnModel(new PluginsTableDefaultTableColumnModel());
+	/**
+	 * Plugins modified with their modified configuration
+	 */
+	private Map<PluginInfo, PluginConfiguration> pluginsModified;
 
-        JScrollPane scrollPane = lookAndFeel.getTableScrollPane(pluginsTable);
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 1;
-        c.weighty = 1;
-        c.fill = GridBagConstraints.BOTH;
-        c.gridheight = 3;
+	/**
+	 * Plugins activated or deactivated
+	 */
+	private Map<PluginInfo, Boolean> pluginsActivation;
 
-        add(scrollPane, c);
+	/**
+	 * Preferences dialog
+	 */
+	private EditPreferencesDialog dialog;
+	
+	private IState state;
 
-        JPanel pluginDetailPanel = new JPanel(new GridBagLayout());
-        final JLabel pluginNameLabel = new JLabel();
-        final JLabel pluginVersionLabel = new JLabel();
-        final JLabel pluginClassNameLabel = new JLabel();
-        final JLabel pluginLocationLabel = new JLabel();
-        final JLabel pluginAuthorLabel = new JLabel();
-        final UrlLabel pluginUrlLabel = new UrlLabel();
-        
-        GridBagConstraints c2 = new GridBagConstraints();
+	/**
+	 * Instantiates a new plugins panel.
+	 * @param dialog
+	 * @param frame
+	 * @param lookAndFeel
+	 * @param state
+	 */
+	public PluginsPanel(EditPreferencesDialog dialog, final IFrame frame, final ILookAndFeel lookAndFeel, IState state) {
+		super(I18nUtils.getString("PLUGINS"));
+		this.state = state;
+		this.dialog = dialog;
 
-        c2.gridx = 0;
-        c2.weightx = 1;
-        c2.fill = GridBagConstraints.HORIZONTAL;
-        c2.anchor = GridBagConstraints.WEST;
-        c2.gridy = 0;
-        pluginDetailPanel.add(pluginNameLabel, c2);
-        c2.gridy = 1;
-        pluginDetailPanel.add(pluginVersionLabel, c2);
-        c2.gridy = 2;
-        pluginDetailPanel.add(pluginClassNameLabel, c2);
-        c2.gridy = 3;
-        pluginDetailPanel.add(pluginLocationLabel, c2);
-        c2.gridy = 4;
-        pluginDetailPanel.add(pluginAuthorLabel, c2);
-        c2.gridy = 5;
-        pluginDetailPanel.add(pluginUrlLabel, c2);
+		enabledPluginBox = new JCheckBox(I18nUtils.getString("ENABLED_PLUGINS"));
 
-        c.gridy = 3;
-        c.insets = new Insets(10, 5, 10, 5);
-        c.gridheight = 1;
-        c.gridwidth = 2;
-        c.weighty = 0;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        add(pluginDetailPanel, c);
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 1;
+		c.weighty = state.isPluginsEnabled() ? 0 : 1;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.anchor = GridBagConstraints.NORTHWEST;
 
-        pluginsTable.setDefaultRenderer(PluginInfo.class, lookAndFeel.getTableCellRenderer(new PluginsTableCellRendererCode(lookAndFeel)));
+		add(enabledPluginBox,c);
 
-        pluginsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                // Enable preferences button if plugin has any configuration and update detail panel
-                if (pluginsTable.getSelectedRow() != -1) {
-                    PluginInfo plugin = ((PluginsTableModel) pluginsTable.getModel()).getPluginAt(pluginsTable.getSelectedRow());
-                    pluginNameLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("NAME"), ":</b> ", plugin.getName(), "</html>"));
-                    pluginVersionLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("VERSION"), ":</b> ", plugin.getVersion(), "</html>"));
-                    pluginClassNameLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("CLASS_NAME"), ":</b> ", plugin.getClassName(), "</html>"));
-                    pluginLocationLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("LOCATION"), ":</b> ", plugin.getPluginFolder().getName(), "</html>"));
-                    pluginAuthorLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("AUTHOR"), ":</b> ", plugin.getAuthor(), "</html>"));
-                    pluginUrlLabel.setText(plugin.getUrl(), plugin.getUrl());
-                    pluginPreferencesButton.setEnabled(((PluginsTableModel) pluginsTable.getModel()).getPluginConfigurationAt(pluginsTable.getSelectedRow()) != null);
-                    uninstallPluginButton.setEnabled(pluginsTable.getSelectedRow() != -1);
-                }
-            }
-        });
+		mainPanel = new JPanel(new GridBagLayout());
+		mainPanel.setVisible(state.isPluginsEnabled());
+		c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 1;
+		c.weightx = 1;
+		c.weighty = 1;
+		c.fill = GridBagConstraints.BOTH;
+		add(mainPanel,c);
 
-        pluginPreferencesButton = new JButton(StringUtils.getString(I18nUtils.getString("PREFERENCES"), "..."));
-        pluginPreferencesButton.setEnabled(false);
-        c.gridx = 1;
-        c.gridy = 0;
-        c.weightx = 0;
-        c.weighty = 0;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.anchor = GridBagConstraints.NORTH;
-        c.insets = new Insets(10, 10, 0, 0);
-        c.gridwidth = 1;
-        add(pluginPreferencesButton, c);
+		pluginsTable = lookAndFeel.getTable();
+		pluginsTable.setRowHeight(CELL_HEIGHT);
+		pluginsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		pluginsTable.setColumnModel(new PluginsTableDefaultTableColumnModel());
 
-        pluginPreferencesButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int row = pluginsTable.getSelectedRow();
-                PluginInfo plugin = ((PluginsTableModel) pluginsTable.getModel()).getPluginAt(row);
-                PluginConfiguration configuration = ((PluginsTableModel) pluginsTable.getModel()).getPluginConfigurationAt(row);
-                PluginEditorDialog dialog = new PluginEditorDialog(PluginsPanel.this.dialog, plugin, configuration, lookAndFeel);
-                dialog.setVisible(true);
-                configuration = dialog.getConfiguration();
-                if (configuration != null) {
-                    // Validate plugin configuration
-                    try {
-                    	PluginsHandler.getInstance().validateConfiguration(plugin, configuration);
-                        pluginsModified.put(plugin, configuration);
-                    } catch (InvalidPluginConfigurationException ex) {
-                    	Context.getBean(IErrorDialog.class).showErrorDialog(frame, StringUtils.getString(I18nUtils.getString("PLUGIN_CONFIGURATION_INVALID"), ex.getMessage()));
-                    }
-                }
-            }
-        });
+		JScrollPane scrollPane = lookAndFeel.getTableScrollPane(pluginsTable);
+		c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 1;
+		c.weighty = 1;
+		c.fill = GridBagConstraints.BOTH;
+		c.gridheight = 3;
 
-        JButton installNewPluginButton = new JButton(StringUtils.getString(I18nUtils.getString("INSTALL"), "..."));
-        c.gridy = 1;
-        add(installNewPluginButton, c);
+		mainPanel.add(scrollPane, c);
 
-        installNewPluginButton.addActionListener(new InstallNewPluginActionListener());
+		JPanel pluginDetailPanel = new JPanel(new GridBagLayout());
+		final JLabel pluginNameLabel = new JLabel();
+		final JLabel pluginVersionLabel = new JLabel();
+		final JLabel pluginClassNameLabel = new JLabel();
+		final JLabel pluginLocationLabel = new JLabel();
+		final JLabel pluginAuthorLabel = new JLabel();
+		final UrlLabel pluginUrlLabel = new UrlLabel();
 
-        uninstallPluginButton = new JButton(I18nUtils.getString("UNINSTALL"));
-        uninstallPluginButton.setEnabled(false);
-        c.gridy = 2;
-        add(uninstallPluginButton, c);
+		GridBagConstraints c2 = new GridBagConstraints();
 
-        uninstallPluginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int row = pluginsTable.getSelectedRow();
-                PluginInfo plugin = ((PluginsTableModel) pluginsTable.getModel()).getPluginAt(row);
-                try {
-		            Map<PluginFolder, PluginSystemException> problemsFound = PluginsHandler.getInstance().uninstallPlugin(plugin);
-		            if (problemsFound != null) {
-		            	for (Map.Entry<PluginFolder, PluginSystemException> pluginFolderEntry : problemsFound.entrySet()) {
-		            		Context.getBean(IErrorDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_UNINSTALLATION_ERROR"), pluginFolderEntry.getValue());
-		            	}
-		            }
-                    
-                    // Update panel after uninstalling a plugin
-                    updatePanel(null);
-                } catch (Exception e1) {
-                    Context.getBean(IErrorDialog.class).showErrorDialog(frame, e1.getMessage());
-                    Logger.error(e1);
-                }
-            }
-        });
-    }
+		c2.gridx = 0;
+		c2.weightx = 1;
+		c2.fill = GridBagConstraints.HORIZONTAL;
+		c2.anchor = GridBagConstraints.WEST;
+		c2.gridy = 0;
+		pluginDetailPanel.add(pluginNameLabel, c2);
+		c2.gridy = 1;
+		pluginDetailPanel.add(pluginVersionLabel, c2);
+		c2.gridy = 2;
+		pluginDetailPanel.add(pluginClassNameLabel, c2);
+		c2.gridy = 3;
+		pluginDetailPanel.add(pluginLocationLabel, c2);
+		c2.gridy = 4;
+		pluginDetailPanel.add(pluginAuthorLabel, c2);
+		c2.gridy = 5;
+		pluginDetailPanel.add(pluginUrlLabel, c2);
 
-    @Override
-    public boolean applyPreferences(IState state) {
-        boolean restartNeeded = false;
-        try {
-            // if any plugin has been modified then write configuration
-            for (PluginInfo plugin : pluginsModified.keySet()) {
-                Logger.debug("Writting configuration of plugin: ", plugin.getName());
+		c.gridy = 3;
+		c.insets = new Insets(10, 5, 10, 5);
+		c.gridheight = 1;
+		c.gridwidth = 2;
+		c.weighty = 0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		mainPanel.add(pluginDetailPanel, c);
 
-                // Avoid plugins throw exceptions when setting configuration
-                try {
-                    PluginsHandler.getInstance().setConfiguration(plugin, pluginsModified.get(plugin));
-                } catch (PluginSystemException t) {
-                    StringBuilder sb = new StringBuilder();
-                    sb.append(I18nUtils.getString("PLUGIN_CONFIGURATION_ERROR"));
-                    sb.append(" ");
-                    sb.append(plugin.getName());
-                    Context.getBean(IErrorDialog.class).showExceptionDialog(sb.toString(), t);
-                }
+		pluginsTable.setDefaultRenderer(PluginInfo.class, lookAndFeel.getTableCellRenderer(new PluginsTableCellRendererCode(lookAndFeel)));
 
-                restartNeeded = restartNeeded || PluginsHandler.getInstance().pluginNeedsRestart(plugin);
-            }
-            // If any plugin has been activated or deactivated then apply changes
-            for (PluginInfo plugin : pluginsActivation.keySet()) {
-                if (pluginsActivation.get(plugin)) {
-                	PluginsHandler.getInstance().activatePlugin(plugin);
-                } else {
-                	PluginsHandler.getInstance().deactivatePlugin(plugin);
-                }
+		pluginsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				// Enable preferences button if plugin has any configuration and update detail panel
+				if (pluginsTable.getSelectedRow() != -1) {
+					PluginInfo plugin = ((PluginsTableModel) pluginsTable.getModel()).getPluginAt(pluginsTable.getSelectedRow());
+					pluginNameLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("NAME"), ":</b> ", plugin.getName(), "</html>"));
+					pluginVersionLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("VERSION"), ":</b> ", plugin.getVersion(), "</html>"));
+					pluginClassNameLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("CLASS_NAME"), ":</b> ", plugin.getClassName(), "</html>"));
+					pluginLocationLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("LOCATION"), ":</b> ", plugin.getPluginFolder().getName(), "</html>"));
+					pluginAuthorLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("AUTHOR"), ":</b> ", plugin.getAuthor(), "</html>"));
+					pluginUrlLabel.setText(plugin.getUrl(), plugin.getUrl());
+					pluginPreferencesButton.setEnabled(((PluginsTableModel) pluginsTable.getModel()).getPluginConfigurationAt(pluginsTable.getSelectedRow()) != null);
+					uninstallPluginButton.setEnabled(pluginsTable.getSelectedRow() != -1);
+				}
+			}
+		});
 
-                restartNeeded = restartNeeded || PluginsHandler.getInstance().pluginNeedsRestart(plugin);
-            }
-        } catch (PluginSystemException e) {
-            Logger.error(e);
-            if (e.getCause() != null) {
-                Logger.error(e.getCause());
-            }
-        }
-        return restartNeeded;
-    }
+		pluginPreferencesButton = new JButton(StringUtils.getString(I18nUtils.getString("PREFERENCES"), "..."));
+		pluginPreferencesButton.setEnabled(false);
+		c.gridx = 1;
+		c.gridy = 0;
+		c.weightx = 0;
+		c.weighty = 0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.anchor = GridBagConstraints.NORTH;
+		c.insets = new Insets(10, 10, 0, 0);
+		c.gridwidth = 1;
+		mainPanel.add(pluginPreferencesButton, c);
 
-    @Override
-    public void updatePanel(IState state) {
-        List<PluginInfo> plugins = PluginsHandler.getInstance().getAvailablePlugins();
-        pluginsTable.setModel(new PluginsTableModel(plugins));
-    }
+		pluginPreferencesButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int row = pluginsTable.getSelectedRow();
+				PluginInfo plugin = ((PluginsTableModel) pluginsTable.getModel()).getPluginAt(row);
+				PluginConfiguration configuration = ((PluginsTableModel) pluginsTable.getModel()).getPluginConfigurationAt(row);
+				PluginEditorDialog dialog = new PluginEditorDialog(PluginsPanel.this.dialog, plugin, configuration, lookAndFeel);
+				dialog.setVisible(true);
+				configuration = dialog.getConfiguration();
+				if (configuration != null) {
+					// Validate plugin configuration
+					try {
+						PluginsHandler.getInstance().validateConfiguration(plugin, configuration);
+						pluginsModified.put(plugin, configuration);
+					} catch (InvalidPluginConfigurationException ex) {
+						Context.getBean(IErrorDialog.class).showErrorDialog(frame, StringUtils.getString(I18nUtils.getString("PLUGIN_CONFIGURATION_INVALID"), ex.getMessage()));
+					}
+				}
+			}
+		});
 
-    @Override
-    public void resetImmediateChanges(IState state) {
-        // Do nothing
-    }
+		JButton installNewPluginButton = new JButton(StringUtils.getString(I18nUtils.getString("INSTALL"), "..."));
+		c.gridy = 1;
+		mainPanel.add(installNewPluginButton, c);
 
-    @Override
-    public void validatePanel() throws PreferencesValidationException {
-    }
+		installNewPluginButton.addActionListener(new InstallNewPluginActionListener());
 
-    @Override
-    public void dialogVisibilityChanged(boolean visible) {
-        if (visible) {
-            // Initialize plugins modified 
-            pluginsModified = new HashMap<PluginInfo, PluginConfiguration>();
-            pluginsActivation = new HashMap<PluginInfo, Boolean>();
-            // Select first plugin
-            if (!PluginsHandler.getInstance().getAvailablePlugins().isEmpty()) {
-                pluginsTable.getSelectionModel().setSelectionInterval(0, 0);
-            }
-        }
-    }
+		uninstallPluginButton = new JButton(I18nUtils.getString("UNINSTALL"));
+		uninstallPluginButton.setEnabled(false);
+		c.gridy = 2;
+		mainPanel.add(uninstallPluginButton, c);
 
-    private final class InstallNewPluginActionListener implements
-			ActionListener {
+		uninstallPluginButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int row = pluginsTable.getSelectedRow();
+				PluginInfo plugin = ((PluginsTableModel) pluginsTable.getModel()).getPluginAt(row);
+				try {
+					Map<PluginFolder, PluginSystemException> problemsFound = PluginsHandler.getInstance().uninstallPlugin(plugin);
+					if (problemsFound != null) {
+						for (Map.Entry<PluginFolder, PluginSystemException> pluginFolderEntry : problemsFound.entrySet()) {
+							Context.getBean(IErrorDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_UNINSTALLATION_ERROR"), pluginFolderEntry.getValue());
+						}
+					}
+
+					// Update panel after uninstalling a plugin
+					updatePanel(null);
+				} catch (Exception e1) {
+					Context.getBean(IErrorDialog.class).showErrorDialog(frame, e1.getMessage());
+					Logger.error(e1);
+				}
+			}
+		});
+	}
+
+	@Override
+	public boolean applyPreferences(IState state) {
+		boolean restartNeeded = false;
+		if (state.isPluginsEnabled() != enabledPluginBox.isSelected()){
+			state.setPluginsEnabled(enabledPluginBox.isSelected());
+			restartNeeded = true;
+		}
+
+		if (state.isPluginsEnabled()) {
+			try {
+				// if any plugin has been modified then write configuration
+				for (PluginInfo plugin : pluginsModified.keySet()) {
+					Logger.debug("Writting configuration of plugin: ", plugin.getName());
+
+					// Avoid plugins throw exceptions when setting configuration
+					try {
+						PluginsHandler.getInstance().setConfiguration(plugin, pluginsModified.get(plugin));
+					} catch (PluginSystemException t) {
+						StringBuilder sb = new StringBuilder();
+						sb.append(I18nUtils.getString("PLUGIN_CONFIGURATION_ERROR"));
+						sb.append(" ");
+						sb.append(plugin.getName());
+						Context.getBean(IErrorDialog.class).showExceptionDialog(sb.toString(), t);
+					}
+
+					restartNeeded = restartNeeded || PluginsHandler.getInstance().pluginNeedsRestart(plugin);
+				}
+				// If any plugin has been activated or deactivated then apply changes
+				for (PluginInfo plugin : pluginsActivation.keySet()) {
+					if (pluginsActivation.get(plugin)) {
+						PluginsHandler.getInstance().activatePlugin(plugin);
+					} else {
+						PluginsHandler.getInstance().deactivatePlugin(plugin);
+					}
+
+					restartNeeded = restartNeeded || PluginsHandler.getInstance().pluginNeedsRestart(plugin);
+				}
+			} catch (PluginSystemException e) {
+				Logger.error(e);
+				if (e.getCause() != null) {
+					Logger.error(e.getCause());
+				}
+			}
+		}
+		return restartNeeded;
+	}
+
+	/**
+	 * Sets the plugins availlability
+	 * 
+	 * @param enabled
+	 */
+	private void setPluginsEnabled(boolean enabled) {
+		enabledPluginBox.setSelected(enabled);
+	}
+
+	@Override
+	public void updatePanel(IState state) {
+		if (state != null) {
+			setPluginsEnabled(state.isPluginsEnabled());
+			if (state.isPluginsEnabled()){
+				List<PluginInfo> plugins = PluginsHandler.getInstance().getAvailablePlugins();
+				pluginsTable.setModel(new PluginsTableModel(plugins));
+			}
+		}
+	}
+
+	@Override
+	public void resetImmediateChanges(IState state) {
+		// Do nothing
+	}
+
+	@Override
+	public void validatePanel() throws PreferencesValidationException {
+	}
+
+	@Override
+	public void dialogVisibilityChanged(boolean visible) {
+		if (visible) {
+			// Initialize plugins modified 
+			pluginsModified = new HashMap<PluginInfo, PluginConfiguration>();
+			pluginsActivation = new HashMap<PluginInfo, Boolean>();
+			// Select first plugin
+			if (state.isPluginsEnabled()) {
+				if (!PluginsHandler.getInstance().getAvailablePlugins().isEmpty()) {
+					pluginsTable.getSelectionModel().setSelectionInterval(0, 0);
+				}
+			}
+		}
+	}
+
+	private final class InstallNewPluginActionListener implements
+	ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-		    JFileChooser fileChooser = new JFileChooser();
-		    FileFilter filter = new FileFilter() {
-		        @Override
-		        public boolean accept(File f) {
-		            return f.isDirectory() || f.getName().toUpperCase().endsWith("ZIP");
-		        }
+			JFileChooser fileChooser = new JFileChooser();
+			FileFilter filter = new FileFilter() {
+				@Override
+				public boolean accept(File f) {
+					return f.isDirectory() || f.getName().toUpperCase().endsWith("ZIP");
+				}
 
-		        @Override
-		        public String getDescription() {
-		            return I18nUtils.getString("ZIP_FILES");
-		        }
-		    };
-		    fileChooser.setFileFilter(filter);
-		    if (fileChooser.showOpenDialog(getPreferenceDialog()) == JFileChooser.APPROVE_OPTION) {
-		        File zipFile = fileChooser.getSelectedFile();
-		        try {
-		            Map<PluginFolder, PluginSystemException> problemsFound = PluginsHandler.getInstance().installPlugin(zipFile);
-		            if (problemsFound != null) {
-		            	for (Entry<PluginFolder, PluginSystemException> pluginFolderEntry : problemsFound.entrySet()) {
-		            		Context.getBean(IErrorDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_INSTALLATION_ERROR"), pluginFolderEntry.getValue());
-		            	}
-		            }
-		            
-		            // Update panel after installing a new plugin
-		            updatePanel(null);
-		        } catch (Exception e1) {
-		            Context.getBean(IErrorDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_INSTALLATION_ERROR"), e1);
-		        }
-		    }
+				@Override
+				public String getDescription() {
+					return I18nUtils.getString("ZIP_FILES");
+				}
+			};
+			fileChooser.setFileFilter(filter);
+			if (fileChooser.showOpenDialog(getPreferenceDialog()) == JFileChooser.APPROVE_OPTION) {
+				File zipFile = fileChooser.getSelectedFile();
+				try {
+					Map<PluginFolder, PluginSystemException> problemsFound = PluginsHandler.getInstance().installPlugin(zipFile);
+					if (problemsFound != null) {
+						for (Entry<PluginFolder, PluginSystemException> pluginFolderEntry : problemsFound.entrySet()) {
+							Context.getBean(IErrorDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_INSTALLATION_ERROR"), pluginFolderEntry.getValue());
+						}
+					}
+
+					// Update panel after installing a new plugin
+					updatePanel(null);
+				} catch (Exception e1) {
+					Context.getBean(IErrorDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_INSTALLATION_ERROR"), e1);
+				}
+			}
 		}
 	}
 
 	private static class PluginsTableCellRendererCode extends AbstractTableCellRendererCode {
-        public PluginsTableCellRendererCode(ILookAndFeel lookAndFeel) {
+		public PluginsTableCellRendererCode(ILookAndFeel lookAndFeel) {
 			super(lookAndFeel);
 		}
 
 		@Override
-        public JComponent getComponent(JComponent c, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            ((JLabel) c).setText(((PluginInfo) value).getName());
-            if (((PluginInfo) value).getIcon() != null) {
-                ((JLabel) c).setIcon(ImageUtils.scaleImageBicubic(((PluginInfo) value).getIcon(), CELL_HEIGHT - 5, CELL_HEIGHT - 5));
-            } else {
-                ((JLabel) c).setIcon(null);
-            }
-            return c;
-        }
-    }
+		public JComponent getComponent(JComponent c, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+			((JLabel) c).setText(((PluginInfo) value).getName());
+			if (((PluginInfo) value).getIcon() != null) {
+				((JLabel) c).setIcon(ImageUtils.scaleImageBicubic(((PluginInfo) value).getIcon(), CELL_HEIGHT - 5, CELL_HEIGHT - 5));
+			} else {
+				((JLabel) c).setIcon(null);
+			}
+			return c;
+		}
+	}
 
-    private static class PluginsTableDefaultTableColumnModel extends DefaultTableColumnModel {
-        private static final long serialVersionUID = -4128210690358582389L;
+	private static class PluginsTableDefaultTableColumnModel extends DefaultTableColumnModel {
+		private static final long serialVersionUID = -4128210690358582389L;
 
-        @Override
-        public void addColumn(TableColumn column) {
-            super.addColumn(column);
-            if (column.getHeaderValue().equals(I18nUtils.getString("ACTIVE"))) {
-                column.setMinWidth(80);
-                column.setMaxWidth(100);
-            }
-        }
-    }
+		@Override
+		public void addColumn(TableColumn column) {
+			super.addColumn(column);
+			if (column.getHeaderValue().equals(I18nUtils.getString("ACTIVE"))) {
+				column.setMinWidth(80);
+				column.setMaxWidth(100);
+			}
+		}
+	}
 
-    private class PluginsTableModel implements TableModel {
+	private class PluginsTableModel implements TableModel {
 
-        private List<PluginInfo> plugins;
+		private List<PluginInfo> plugins;
 
-        private List<TableModelListener> listeners = new ArrayList<TableModelListener>();
+		private List<TableModelListener> listeners = new ArrayList<TableModelListener>();
 
-        public PluginsTableModel(List<PluginInfo> plugins) {
-            super();
-            this.plugins = plugins;
-            // Sort plugins by name
-            Collections.sort(this.plugins, new Comparator<PluginInfo>() {
-                @Override
-                public int compare(PluginInfo o1, PluginInfo o2) {
-                    return o1.getName().compareToIgnoreCase(o2.getName());
-                }
-            });
-        }
+		public PluginsTableModel(List<PluginInfo> plugins) {
+			super();
+			this.plugins = plugins;
+			// Sort plugins by name
+			Collections.sort(this.plugins, new Comparator<PluginInfo>() {
+				@Override
+				public int compare(PluginInfo o1, PluginInfo o2) {
+					return o1.getName().compareToIgnoreCase(o2.getName());
+				}
+			});
+		}
 
-        @Override
-        public void addTableModelListener(TableModelListener l) {
-            listeners.add(l);
-        }
+		@Override
+		public void addTableModelListener(TableModelListener l) {
+			listeners.add(l);
+		}
 
-        @Override
-        public Class<?> getColumnClass(int columnIndex) {
-            switch (columnIndex) {
-            case 0:
-                return Boolean.class;
-            case 1:
-                return PluginInfo.class;
-            default:
-                break;
-            }
-            return null;
-        }
+		@Override
+		public Class<?> getColumnClass(int columnIndex) {
+			switch (columnIndex) {
+			case 0:
+				return Boolean.class;
+			case 1:
+				return PluginInfo.class;
+			default:
+				break;
+			}
+			return null;
+		}
 
-        @Override
-        public int getColumnCount() {
-            return 2;
-        }
+		@Override
+		public int getColumnCount() {
+			return 2;
+		}
 
-        @Override
-        public String getColumnName(int columnIndex) {
-            switch (columnIndex) {
-            case 0:
-                return I18nUtils.getString("ACTIVE");
-            case 1:
-                return I18nUtils.getString("NAME");
-            default:
-                break;
-            }
-            return null;
-        }
+		@Override
+		public String getColumnName(int columnIndex) {
+			switch (columnIndex) {
+			case 0:
+				return I18nUtils.getString("ACTIVE");
+			case 1:
+				return I18nUtils.getString("NAME");
+			default:
+				break;
+			}
+			return null;
+		}
 
-        @Override
-        public int getRowCount() {
-            return this.plugins.size();
-        }
+		@Override
+		public int getRowCount() {
+			return this.plugins.size();
+		}
 
-        @Override
-        public Object getValueAt(int rowIndex, int columnIndex) {
-            switch (columnIndex) {
-            case 0:
-                return (pluginsActivation.containsKey(this.plugins.get(rowIndex)) ? pluginsActivation.get(this.plugins.get(rowIndex)) : this.plugins.get(rowIndex).isActive());
-            case 1:
-                return this.plugins.get(rowIndex);
-            default:
-                break;
-            }
-            return null;
-        }
+		@Override
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			switch (columnIndex) {
+			case 0:
+				return (pluginsActivation.containsKey(this.plugins.get(rowIndex)) ? pluginsActivation.get(this.plugins.get(rowIndex)) : this.plugins.get(rowIndex).isActive());
+			case 1:
+				return this.plugins.get(rowIndex);
+			default:
+				break;
+			}
+			return null;
+		}
 
-        @Override
-        public boolean isCellEditable(int rowIndex, int columnIndex) {
-            return columnIndex == 0;
-        }
+		@Override
+		public boolean isCellEditable(int rowIndex, int columnIndex) {
+			return columnIndex == 0;
+		}
 
-        @Override
-        public void removeTableModelListener(TableModelListener l) {
-            listeners.remove(l);
-        }
+		@Override
+		public void removeTableModelListener(TableModelListener l) {
+			listeners.remove(l);
+		}
 
-        @Override
-        public void setValueAt(Object value, int rowIndex, int columnIndex) {
-            if (columnIndex == 0) {
-                // If value changed then add to map
-                if (((Boolean) value) != this.plugins.get(rowIndex).isActive()) {
-                    pluginsActivation.put(this.plugins.get(rowIndex), (Boolean) value);
-                } else {
-                    // If value is the same then remove from map to avoid set the same status as it was previously
-                    pluginsActivation.remove(this.plugins.get(rowIndex));
-                }
-            }
-        }
+		@Override
+		public void setValueAt(Object value, int rowIndex, int columnIndex) {
+			if (columnIndex == 0) {
+				// If value changed then add to map
+				if (((Boolean) value) != this.plugins.get(rowIndex).isActive()) {
+					pluginsActivation.put(this.plugins.get(rowIndex), (Boolean) value);
+				} else {
+					// If value is the same then remove from map to avoid set the same status as it was previously
+					pluginsActivation.remove(this.plugins.get(rowIndex));
+				}
+			}
+		}
 
-        public PluginConfiguration getPluginConfigurationAt(int row) {
-            try {
-                return PluginsHandler.getInstance().getConfiguration(this.plugins.get(row));
-            } catch (PluginSystemException e) {
-                Logger.error(e);
-                return null;
-            }
-        }
+		public PluginConfiguration getPluginConfigurationAt(int row) {
+			try {
+				return PluginsHandler.getInstance().getConfiguration(this.plugins.get(row));
+			} catch (PluginSystemException e) {
+				Logger.error(e);
+				return null;
+			}
+		}
 
-        public PluginInfo getPluginAt(int row) {
-            return this.plugins.get(row);
-        }
+		public PluginInfo getPluginAt(int row) {
+			return this.plugins.get(row);
+		}
 
-    }
+	}
+
+
 }

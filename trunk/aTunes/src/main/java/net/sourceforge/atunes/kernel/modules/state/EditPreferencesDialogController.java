@@ -48,7 +48,6 @@ import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PreferencesValid
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.RadioPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.RepositoryPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
-import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
@@ -95,17 +94,17 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
         panels.add(new RadioPanel()); 
         panels.add(new PodcastFeedPanel(osManager)); 
         panels.add(new ImportExportPanel(lookAndFeelManager.getCurrentLookAndFeel()));
-        
+    	panels.add(new PluginsPanel(dialog, frame, lookAndFeelManager.getCurrentLookAndFeel(), state));
+    	
         for (AbstractPreferencesPanel panel : panels) {
         	panel.setState(state);
         }
         
-        if (Kernel.isEnablePlugins()) {
-        	panels.add(new PluginsPanel(dialog, frame, lookAndFeelManager.getCurrentLookAndFeel()));
-        }
         getComponentControlled().setPanels(panels);
         buildList();
         addBindings();
+        
+        dialog.pack();
     }
 
     @Override

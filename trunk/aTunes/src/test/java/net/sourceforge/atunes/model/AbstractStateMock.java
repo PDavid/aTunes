@@ -1206,4 +1206,16 @@ public abstract class AbstractStateMock implements IState {
 		
 	}
 
+	@Override
+	public void setPluginsEnabled(boolean pluginsEnabled) {
+		
+	}
+
+	@Override
+	public boolean isPluginsEnabled() {
+		return false;
+	}
+	
+	
+
 }

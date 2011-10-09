@@ -70,11 +70,6 @@ public class Kernel {
     
     private static IState state;
 
-	/**
-	 * True to enable plugins
-	 */
-	private static boolean enablePlugins;
-
     /**
      * Constructor of Kernel.
      */
@@ -270,18 +265,4 @@ public class Kernel {
     public static void setNoUpdate(boolean noUpdate) {
         Kernel.noUpdate = noUpdate;
     }
-    
-    /**
-     * @param enable
-     */
-    public static void setEnablePlugins(boolean enable) {
-    	Kernel.enablePlugins = enable;
-    }
-
-	/**
-	 * @return the enablePlugins
-	 */
-	public static boolean isEnablePlugins() {
-		return enablePlugins;
-	}
 }

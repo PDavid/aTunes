@@ -1906,4 +1906,15 @@ public class ApplicationState implements IState {
 	public void setAlbumColumns(Map<String, ColumnBean> columnsConfiguration) {
     	this.stateStore.storePreference(Preferences.ALBUM_COLUMNS, columnsConfiguration);
     }
+
+	@Override
+	public void setPluginsEnabled(boolean pluginsEnabled) {
+		this.stateStore.storePreference(Preferences.PLUGINS_ENABLED, pluginsEnabled);
+		
+	}
+
+	@Override
+	public boolean isPluginsEnabled() {
+		return (Boolean) this.stateStore.retrievePreference(Preferences.PLUGINS_ENABLED, false);
+	}
 }
