@@ -32,6 +32,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CancellationException;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -233,6 +234,13 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
             @Override
             public void run() {
                 podcastFeeds = getBean(IStateHandler.class).retrievePodcastFeedCache();
+                if (podcastFeeds == null) {
+                	/*
+                     * java.util.concurrent.CopyOnWriteArrayList instead of e.g.
+                     * java.util.ArrayList to avoid ConcurrentModificationException
+                     */
+                	podcastFeeds = new CopyOnWriteArrayList<IPodcastFeed>();
+                }
             }
         };
     }

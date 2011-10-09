@@ -64,6 +64,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.converters.ConversionException;
 
 /**
  * Utility methods for XML.
@@ -232,7 +233,7 @@ public final class XMLUtils {
      * @param filename
      *            filename
      * 
-     * @return The object read from the xml file
+     * @return The object read from the xml file or null if can't be read
      * 
      * @throws IOException
      *             Signals that an I/O exception has occurred.
@@ -242,6 +243,8 @@ public final class XMLUtils {
         try {
             inputStreamReader = new InputStreamReader(new FileInputStream(filename), "UTF-8");
             return getXStream().fromXML(inputStreamReader);
+        } catch (ConversionException e) {
+        	return null;
         } finally {
             ClosingUtils.close(inputStreamReader);
         }
