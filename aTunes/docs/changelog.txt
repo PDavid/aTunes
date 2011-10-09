@@ -1,3 +1,7 @@
+aTunes 2.2.0
+------------
+- Allow truncate playlist when copying to device [ patch by deathgorepain ]
+
 aTunes 2.1.1
 ------------
 - Plugins can be enabled from preferences panel [ patch by Laurent Cathala ]

@@ -17,7 +17,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package net.sourceforge.atunes.kernel.modules.device;
 
 import java.io.BufferedReader;
@@ -32,6 +31,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -80,12 +80,10 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
      * Device identification
      */
     private String deviceId;
-
     /**
      * Used to store number of files copied
      */
     private int filesCopiedToDevice;
-    
     private boolean caseSensitiveTrees;
 
     @Override
@@ -217,12 +215,36 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 
         // Check if there is enough free space on device
         if (size > deviceFreeSpace) {
-        	getBean(IErrorDialog.class).showErrorDialog(getFrame(), I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
-            return;
+        	boolean truncate = getBean(IConfirmationDialog.class).showDialog(
+        			String.format("%1s%n%2s"
+        					, I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE")
+        					, I18nUtils.getString("TRUNCATE_COPYLIST")
+        			));
+        	//If so truncate the list and continue
+        	if (truncate) {
+        		Collection<ILocalAudioObject> toCopy = new LinkedList<ILocalAudioObject>();
+        		size = 0;
+        		long fileSize = 0;
+        		for (ILocalAudioObject file : collection) {
+        			fileSize = file.getFile().length();
+        			if ((fileSize + size) < deviceFreeSpace) {
+        				toCopy.add(file);
+        				size += fileSize;
+        			} else {
+        				break;
+        			}
+
+        		}
+        		collection = toCopy;
+        	}//Otherwise quit 
+        	else {
+        		return;
+        	}
         }
 
         final TransferToDeviceProcess process = new TransferToDeviceProcess(collection, deviceRepository.getRepositoryFolders().get(0).getAbsolutePath(), getState(), getFrame(), getOsManager());
         process.addProcessListener(new IProcessListener() {
+
             @Override
             public void processCanceled() {
                 // Nothing to do
@@ -231,6 +253,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
             @Override
             public void processFinished(final boolean ok) {
                 SwingUtilities.invokeLater(new Runnable() {
+
                     @Override
                     public void run() {
                         refreshDevice();
@@ -681,5 +704,4 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 	public Map<String, ?> getDataForView(ViewMode viewMode) {
 		return viewMode.getDataForView(deviceRepository);
 	}
-
 }
