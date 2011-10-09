@@ -463,9 +463,13 @@ public interface IState {
 
 	public void setShowPlayerControlsOnTop(boolean onTop);
 
-
 	public Map<String, ColumnBean> getAlbumsColumns();
 
 	public void setAlbumColumns(Map<String, ColumnBean> columnsConfiguration);
+
+	public void setPluginsEnabled(boolean pluginsEnabled);
+
+	public boolean isPluginsEnabled();
+
 
 }

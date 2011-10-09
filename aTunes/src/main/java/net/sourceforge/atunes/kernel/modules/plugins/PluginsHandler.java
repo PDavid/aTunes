@@ -138,7 +138,7 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
 
     @Override
     protected void initHandler() {
-    	if (Kernel.isEnablePlugins()) {
+    	if (getState().isPluginsEnabled()) {
     		initPlugins();
     	} else {
     		Logger.info("Plugins are disabled");
@@ -148,7 +148,7 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
 
     @Override
     public void applicationStarted(List<IAudioObject> playList) {
-    	if (!Kernel.isEnablePlugins()) {
+    	if (!getState().isPluginsEnabled()) {
     		return;
     	}
     	
@@ -214,7 +214,10 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
      * @return
      */
     public List<PluginInfo> getAvailablePlugins() {
-        return this.factory.getPlugins();
+    	if (getState().isPluginsEnabled()) {
+    		return this.factory.getPlugins();
+    	}
+    	return null;
     }
 
     /**

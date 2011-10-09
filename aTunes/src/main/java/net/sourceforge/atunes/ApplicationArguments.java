@@ -62,11 +62,6 @@ public final class ApplicationArguments {
     public static final String NO_UPDATE = "no-update";
     
     /**
-     * Used to enable plugins
-     */
-    public static final String ENABLE_PLUGINS = "enable-plugins";
-
-    /**
      * Saved arguments
      */
     private static List<String> savedArguments;
@@ -129,7 +124,6 @@ public final class ApplicationArguments {
         checkAndSave(arguments, USE_CONFIG_FOLDER);
         checkAndSave(arguments, USE_REPOSITORY_CONFIG_FOLDER);
         checkAndSave(arguments, NO_UPDATE);
-        checkAndSave(arguments, ENABLE_PLUGINS);
         checkAndSave(arguments, CommandHandler.COMMAND_PREFIX);
     }
 

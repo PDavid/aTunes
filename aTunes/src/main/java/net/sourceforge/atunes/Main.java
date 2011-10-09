@@ -112,8 +112,6 @@ public final class Main {
             // Set no update flag in kernel
             Kernel.setNoUpdate(arguments.contains(ApplicationArguments.NO_UPDATE));
             
-            Kernel.setEnablePlugins(arguments.contains(ApplicationArguments.ENABLE_PLUGINS));
-
             // Set custom config folder if passed as argument
             osManager.setCustomConfigFolder(ApplicationArguments.getUserConfigFolder(arguments));
 
