@@ -49,6 +49,9 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
             @Override
             public void run() {
                 statistics = getBean(IStateHandler.class).retrieveStatisticsCache();
+                if (statistics == null) {
+                	statistics = new Statistics();
+                }
             }
         };
     }

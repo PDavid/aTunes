@@ -94,6 +94,9 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         @Override
         public void run() {
             playListsRetrievedFromCache = Context.getBean(IStateHandler.class).retrievePlayListsCache();
+            if (playListsRetrievedFromCache == null) {
+            	playListsRetrievedFromCache = ListOfPlayLists.getEmptyPlayList(Context.getBean(IState.class));
+            }
         }
     }
 

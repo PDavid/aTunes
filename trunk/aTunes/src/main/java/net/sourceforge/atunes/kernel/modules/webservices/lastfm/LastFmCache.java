@@ -437,15 +437,19 @@ public class LastFmCache extends AbstractCache {
 
     @SuppressWarnings("unchecked")
     public synchronized List<SubmissionData> getSubmissionData() {
+    	List<SubmissionData> data = null;
         try {
             String path = getFileNameForSubmissionCache();
             if (path != null && new File(path).exists()) {
-                return (List<SubmissionData>) XMLUtils.readObjectFromFile(path);
+                data = (List<SubmissionData>) XMLUtils.readObjectFromFile(path);
             }
         } catch (IOException e) {
             Logger.error(e);
         }
-        return new ArrayList<SubmissionData>();
+        if (data == null) {
+        	data = new ArrayList<SubmissionData>();
+        }
+        return data;
     }
 
     public synchronized void removeSubmissionData() {

@@ -1,3 +1,8 @@
+aTunes 2.1.1
+------------
+- FIX: Problems reading XML data from previous versions
+
+
 aTunes 2.1.0
 ------------
 - New lyric engine: LyrDB (www.lyrdb.com)

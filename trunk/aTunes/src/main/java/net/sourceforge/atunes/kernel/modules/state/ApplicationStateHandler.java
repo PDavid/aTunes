@@ -27,11 +27,9 @@ import java.io.IOException;
 import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.EditPreferencesDialog;
@@ -371,14 +369,12 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
         } finally {
             ClosingUtils.close(stream);
         }
-        // If some 
-        return new Statistics();
+        return null;
     }
 
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#retrievePlayListsCache()
 	 */
-
     @Override
 	@SuppressWarnings("unchecked")
     public ListOfPlayLists retrievePlayListsCache() {
@@ -386,30 +382,29 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
         try {
             // First get list of playlists
             ListOfPlayLists listOfPlayLists = (ListOfPlayLists) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.PLAYLISTS_FILE));
-            listOfPlayLists.setState(getState());
-            Logger.info(StringUtils.getString("List of playlists loaded"));
+            if (listOfPlayLists != null) {
+            	listOfPlayLists.setState(getState());
+            	Logger.info(StringUtils.getString("List of playlists loaded"));
 
-            // Then read contents
-            stream = new ObjectInputStream(new FileInputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.PLAYLISTS_CONTENTS_FILE)));
-            List<List<IAudioObject>> contents = (List<List<IAudioObject>>) stream.readObject();
-            Logger.info(StringUtils.getString("Playlists contents loaded"));
-            listOfPlayLists.setContents(contents, getState());
-            return listOfPlayLists;
+            	// Then read contents
+            	stream = new ObjectInputStream(new FileInputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.PLAYLISTS_CONTENTS_FILE)));
+            	List<List<IAudioObject>> contents = (List<List<IAudioObject>>) stream.readObject();
+            	Logger.info(StringUtils.getString("Playlists contents loaded"));
+            	listOfPlayLists.setContents(contents, getState());
+            	return listOfPlayLists;
+            }
         } catch (FileNotFoundException e) {
             Logger.info("No playlist information found");
-            return ListOfPlayLists.getEmptyPlayList(getState());
         } catch (IOException e) {
             Logger.error(e);
-            return ListOfPlayLists.getEmptyPlayList(getState());
         } catch (ClassNotFoundException e) {
             Logger.error(e);
-            return ListOfPlayLists.getEmptyPlayList(getState());
         } catch (ClassCastException e) {
             Logger.error(e);
-            return ListOfPlayLists.getEmptyPlayList(getState());
         } finally {
             ClosingUtils.close(stream);
         }
+        return null;
     }
 
     /* (non-Javadoc)
@@ -421,12 +416,9 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
         try {
             return (List<IPodcastFeed>) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.PODCAST_FEED_CACHE));
         } catch (IOException e) {
-            /*
-             * java.util.concurrent.CopyOnWriteArrayList instead of e.g.
-             * java.util.ArrayList to avoid ConcurrentModificationException
-             */
-            return new CopyOnWriteArrayList<IPodcastFeed>();
+            Logger.error(e);
         }
+    	return null;
     }
 
     /* (non-Javadoc)
@@ -438,9 +430,9 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
         try {
             return (List<IRadio>) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.RADIO_CACHE));
         } catch (IOException e) {
-            return new ArrayList<IRadio>();
+        	Logger.error(e);
         }
-
+    	return null;
     }
 
     /* (non-Javadoc)
@@ -455,11 +447,12 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
         } catch (IOException e) {
             try {
                 // Otherwise use list in application folder
-                return (List<IRadio>) XMLUtils.readObjectFromFile(ApplicationStateHandler.class.getResourceAsStream("/settings/" + Constants.PRESET_RADIO_CACHE));
+                return (List<IRadio>) XMLUtils.readObjectFromFile(ApplicationStateHandler.class.getResourceAsStream(StringUtils.getString("/settings/", Constants.PRESET_RADIO_CACHE)));
             } catch (IOException e2) {
-                return new ArrayList<IRadio>();
+            	Logger.error(e2);
             }
         }
+        return null;
     }
 
     /* (non-Javadoc)
@@ -485,14 +478,16 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
             Logger.info(StringUtils.getString("Reading repository cache done (", timer.stop(), " seconds)"));
             return result;
         } catch (InvalidClassException e) {
-            //TODO remove in next version
-            Logger.error(e);
-            return null;
+        	Logger.error(e);
+        	return exceptionReadingRepository(folder);
         } catch (IOException e) {
+        	Logger.error(e);
         	return exceptionReadingRepository(folder);
         } catch (ClassNotFoundException e) {
+        	Logger.error(e);
         	return exceptionReadingRepository(folder);
         } catch (InconsistentRepositoryException e) {
+        	Logger.error(e);
         	return exceptionReadingRepository(folder);
         } finally {
             ClosingUtils.close(ois);
@@ -506,21 +501,21 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
                 Logger.info("Reading xml repository cache");
                 long t0 = System.currentTimeMillis();
                 Repository repository = (Repository) XMLUtils.readObjectFromFile(StringUtils.getString(folder, "/", Constants.XML_CACHE_REPOSITORY_NAME));
-                repository.setState(getState());
+                if (repository != null) {
+                	repository.setState(getState());
 
-                // Check repository integrity
-                repository.validateRepository();
+                	// Check repository integrity
+                	repository.validateRepository();
 
-                long t1 = System.currentTimeMillis();
-                Logger.info(StringUtils.getString("Reading repository cache done (", (t1 - t0) / 1000.0, " seconds)"));
-                
-                return repository;
+                	long t1 = System.currentTimeMillis();
+                	Logger.info(StringUtils.getString("Reading repository cache done (", (t1 - t0) / 1000.0, " seconds)"));
+
+                	return repository;
+                }
             } catch (IOException e1) {
                 Logger.info("No xml repository info found");
-                return null;
             } catch (InconsistentRepositoryException e1) {
                 Logger.info("No xml repository info found");
-                return null;
             }
         }
         return null;    	

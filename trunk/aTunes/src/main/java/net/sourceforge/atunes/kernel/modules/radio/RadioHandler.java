@@ -143,7 +143,13 @@ public final class RadioHandler extends AbstractHandler implements IRadioHandler
             @Override
             public void run() {
                 radios = getBean(IStateHandler.class).retrieveRadioCache();
+                if (radios == null) {
+                	radios = new ArrayList<IRadio>();
+                }
                 presetRadios = getBean(IStateHandler.class).retrieveRadioPreset();
+                if (presetRadios == null) {
+                	presetRadios = new ArrayList<IRadio>();
+                }
             }
         };
     }
