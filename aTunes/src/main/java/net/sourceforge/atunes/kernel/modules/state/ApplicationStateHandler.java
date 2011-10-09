@@ -301,21 +301,20 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
             stream = new ObjectInputStream(new FileInputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.CACHE_FAVORITES_NAME)));
             Logger.info("Reading serialized favorites cache");
             return (IFavorites) stream.readObject();
+        } catch (FileNotFoundException e) {
+            Logger.info("No serialized favorites info found");
         } catch (InvalidClassException e) {
             Logger.info("No serialized favorites info found");
-            return retrieveFavoritesCacheFromXML();
         } catch (IOException e) {
             Logger.info("No serialized favorites info found");
-            return retrieveFavoritesCacheFromXML();
         } catch (ClassNotFoundException e) {
             Logger.info("No serialized favorites info found");
-            return retrieveFavoritesCacheFromXML();
         } catch (ClassCastException e) {
             Logger.info("No serialized favorites info found");
-            return retrieveFavoritesCacheFromXML();
         } finally {
             ClosingUtils.close(stream);
         }
+        return retrieveFavoritesCacheFromXML();
     }
     
     private Favorites retrieveFavoritesCacheFromXML() {
@@ -415,6 +414,8 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
     public List<IPodcastFeed> retrievePodcastFeedCache() {
         try {
             return (List<IPodcastFeed>) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.PODCAST_FEED_CACHE));
+        } catch (FileNotFoundException e) {
+        	Logger.info(e.getMessage());
         } catch (IOException e) {
             Logger.error(e);
         }
@@ -429,6 +430,8 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
     public List<IRadio> retrieveRadioCache() {
         try {
             return (List<IRadio>) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.RADIO_CACHE));
+        } catch (FileNotFoundException e) {
+        	Logger.info(e.getMessage());
         } catch (IOException e) {
         	Logger.error(e);
         }
@@ -477,24 +480,23 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 
             Logger.info(StringUtils.getString("Reading repository cache done (", timer.stop(), " seconds)"));
             return result;
+        } catch (FileNotFoundException e) {
+        	Logger.info(e.getMessage());
         } catch (InvalidClassException e) {
         	Logger.error(e);
-        	return exceptionReadingRepository(folder);
         } catch (IOException e) {
         	Logger.error(e);
-        	return exceptionReadingRepository(folder);
         } catch (ClassNotFoundException e) {
         	Logger.error(e);
-        	return exceptionReadingRepository(folder);
         } catch (InconsistentRepositoryException e) {
         	Logger.error(e);
-        	return exceptionReadingRepository(folder);
         } finally {
             ClosingUtils.close(ois);
         }
+    	return readRepositoryFromXml(folder);
     }
     
-    private Repository exceptionReadingRepository(String folder) {
+    private Repository readRepositoryFromXml(String folder) {
         Logger.info("No serialized repository info found");
         if (getState().isSaveRepositoryAsXml()) {
             try {
