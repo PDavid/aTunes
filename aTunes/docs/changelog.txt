@@ -8,6 +8,7 @@ aTunes 2.1.1
 - FIX: Problems reading XML data from previous versions
 - FIX: Multiple selection fires contextual menu [ 3419492 ] [ patch by deathgorepain ]
 - FIX: Player error when using normalization and equalizer with MPlayer [ 3419533 ] [ patch by Laurent Cathala ]
+- FIX: Device options in play list not enabled when device connected
 - Unix shell script changed to use /bin/sh instead of /bin/bash for better compatibility
 
 

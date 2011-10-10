@@ -399,6 +399,10 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
     	getFrame().hideProgressBar();
     	getBean(INavigationHandler.class).refreshView(DeviceNavigationView.class);
 
+        // Enable action to copy to device
+        Actions.getAction(CopyPlayListToDeviceAction.class).setEnabled(true);
+        Actions.getAction(SynchronizeDeviceWithPlayListAction.class).setEnabled(true);
+
     	Actions.getAction(ConnectDeviceAction.class).setEnabled(loader == null);
     	Actions.getAction(RefreshDeviceAction.class).setEnabled(loader != null);
     	Actions.getAction(DisconnectDeviceAction.class).setEnabled(loader != null);
@@ -435,11 +439,8 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 
     @Override
     public void notifyFinishRefresh(RepositoryLoader loader) {
+    	Logger.info("Device refresh");
         notifyDeviceReload(loader);
-
-        // Enable action to copy to device
-        Actions.getAction(CopyPlayListToDeviceAction.class).setEnabled(true);
-        Actions.getAction(SynchronizeDeviceWithPlayListAction.class).setEnabled(true);
     }
 
     @Override
