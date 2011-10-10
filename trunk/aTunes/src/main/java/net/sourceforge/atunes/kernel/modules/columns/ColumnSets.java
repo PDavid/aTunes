@@ -43,30 +43,15 @@ public class ColumnSets implements PluginListener {
     /**
      * Column sets
      */
-    private static List<AbstractColumnSet> columnSets;
+    private static List<AbstractColumnSet> columnSets = new ArrayList<AbstractColumnSet>();
 
     /**
      * Singleton instance
      */
-    private static ColumnSets instance;
+    private static ColumnSets instance = new ColumnSets();
 
     public static ColumnSets getInstance() {
-        if (instance == null) {
-            instance = new ColumnSets();
-        }
         return instance;
-    }
-
-    /**
-     * Column sets
-     * 
-     * @return
-     */
-    private static List<AbstractColumnSet> getColumnSets() {
-        if (columnSets == null) {
-            columnSets = new ArrayList<AbstractColumnSet>();
-        }
-        return columnSets;
     }
 
     /**
@@ -75,13 +60,13 @@ public class ColumnSets implements PluginListener {
      * @param columnSet
      */
     protected static void registerColumnSet(AbstractColumnSet columnSet) {
-        getColumnSets().add(columnSet);
+    	columnSets.add(columnSet);
     }
 
     @Override
     public void pluginActivated(PluginInfo plugin) {
         try {
-            for (AbstractColumnSet columnSet : getColumnSets()) {
+            for (AbstractColumnSet columnSet : columnSets) {
                 columnSet.addNewColumn((AbstractColumn) PluginsHandler.getInstance().getNewInstance(plugin));
             }
         } catch (PluginSystemException e) {
@@ -98,7 +83,7 @@ public class ColumnSets implements PluginListener {
             break;
         }
 
-        for (IColumnSet columnSet : getColumnSets()) {
+        for (IColumnSet columnSet : columnSets) {
             columnSet.removeColumn(columnClass);
         }
     }

@@ -44,7 +44,7 @@ public final class FavoritesSearchableObject extends AbstractCommonAudioFileSear
     /**
      * Singleton instance of this class
      */
-    private static FavoritesSearchableObject instance;
+    private static FavoritesSearchableObject instance = new FavoritesSearchableObject();
 
     private FSDirectory indexDirectory;
 
@@ -61,9 +61,6 @@ public final class FavoritesSearchableObject extends AbstractCommonAudioFileSear
      * @return
      */
     public static FavoritesSearchableObject getInstance() {
-        if (instance == null) {
-            instance = new FavoritesSearchableObject();
-        }
         return instance;
     }
 
