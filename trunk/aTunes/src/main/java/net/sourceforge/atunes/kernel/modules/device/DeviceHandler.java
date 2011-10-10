@@ -403,9 +403,9 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
         Actions.getAction(CopyPlayListToDeviceAction.class).setEnabled(true);
         Actions.getAction(SynchronizeDeviceWithPlayListAction.class).setEnabled(true);
 
-    	Actions.getAction(ConnectDeviceAction.class).setEnabled(loader == null);
-    	Actions.getAction(RefreshDeviceAction.class).setEnabled(loader != null);
-    	Actions.getAction(DisconnectDeviceAction.class).setEnabled(loader != null);
+    	Actions.getAction(ConnectDeviceAction.class).setEnabled(false);
+    	Actions.getAction(RefreshDeviceAction.class).setEnabled(true);
+    	Actions.getAction(DisconnectDeviceAction.class).setEnabled(true);
 
     	// Update status bar info
     	if (loader != null) {
@@ -433,13 +433,13 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 
     @Override
     public void notifyFinishRead(RepositoryLoader loader) {
-        Logger.info("Device read");
+        Logger.debug("Device read done");
         notifyDeviceReload(loader);
     }
 
     @Override
     public void notifyFinishRefresh(RepositoryLoader loader) {
-    	Logger.info("Device refresh");
+    	Logger.debug("Device refresh done");
         notifyDeviceReload(loader);
     }
 
