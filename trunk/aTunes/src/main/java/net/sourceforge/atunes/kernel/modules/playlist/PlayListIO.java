@@ -209,10 +209,11 @@ public final class PlayListIO {
             List<String> result = new ArrayList<String>();
             br = new BufferedReader(new FileReader(file));
             String line;
-            //line = br.readLine();
             // Do look for the first uncommented line
-            while ((line = br.readLine()) != null && line.startsWith(M3U_START_COMMENT)) {
+            line = br.readLine();
+            while (line != null && line.startsWith(M3U_START_COMMENT)) {
                 // Go to next line
+                line = br.readLine();
             }
             if (line == null) {
                 return Collections.emptyList();

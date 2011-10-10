@@ -144,9 +144,7 @@ public abstract class AbstractAudioFileTransferProcess extends AbstractProcess {
                     } catch (InvocationTargetException e1) {
                         // Do nothing
                     }
-                    if (I18nUtils.getString("IGNORE").equals(userSelectionWhenErrors)) {
-                        // Do nothing, let execution continue
-                    } else if (I18nUtils.getString("IGNORE_ALL").equals(userSelectionWhenErrors)) {
+                    if (I18nUtils.getString("IGNORE_ALL").equals(userSelectionWhenErrors)) {
                         // Don't display more error messages
                         ignoreAllErrors = true;
                     } else if (I18nUtils.getString("CANCEL").equals(userSelectionWhenErrors)) {
