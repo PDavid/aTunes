@@ -63,8 +63,6 @@ public class EditTagAction extends AbstractActionOverSelectedObjects<ILocalAudio
             getBean(ITagHandler.class).editFiles(editTagSource, objects);
         } catch (IllegalArgumentException iae) {
             Logger.error(iae);
-        } catch (NullPointerException npe) {
-            Logger.error(npe);
         }
     }
 
