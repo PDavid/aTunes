@@ -95,31 +95,6 @@ public final class CheckThreadViolationRepaintManager extends RepaintManager {
     }
 
     /**
-     * The main method.
-     * 
-     * @param args
-     *            the arguments
-     * 
-     * @throws Exception
-     *             the exception
-     */
-    public static void main(String[] args) throws Exception {
-        //set CheckThreadViolationRepaintManager 
-        RepaintManager.setCurrentManager(new CheckThreadViolationRepaintManager());
-        //Valid code  
-        SwingUtilities.invokeAndWait(new Runnable() {
-            public void run() {
-                test();
-            }
-        });
-        System.out.println("Valid code passed...");
-        repaintTest();
-        System.out.println("Repaint test - correct code");
-        //Invalide code (stack trace expected) 
-        test();
-    }
-
-    /**
      * Repaint test.
      */
     static void repaintTest() {

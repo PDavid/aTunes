@@ -208,8 +208,6 @@ public class Kernel {
 
             }
 
-            System.out.println(pb.command().toString());
-
             // Start new application instance
             pb.start();
 
