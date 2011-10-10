@@ -50,8 +50,6 @@ final class RadioBrowserDialogController extends AbstractSimpleController<RadioB
 		        Logger.error(e);
 		    } catch (ExecutionException e) {
 		        Logger.error(e);
-		    } finally {
-		        //getFrameControlled().setCursor(Cursor.getDefaultCursor());
 		    }
 		}
 	}
