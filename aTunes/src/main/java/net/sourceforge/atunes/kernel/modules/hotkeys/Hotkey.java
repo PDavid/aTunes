@@ -23,10 +23,16 @@ package net.sourceforge.atunes.kernel.modules.hotkeys;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.beans.ConstructorProperties;
+import java.io.Serializable;
 
-public class Hotkey {
+public class Hotkey implements Serializable {
 
-    private int id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -1438992610049688867L;
+	
+	private int id;
     private int mod;
     private int key;
     private String description;
