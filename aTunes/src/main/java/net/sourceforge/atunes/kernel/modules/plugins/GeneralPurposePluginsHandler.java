@@ -26,6 +26,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IGeneralPurposePluginsHandler;
+import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.utils.Logger;
 
 import org.commonjukebox.plugins.exceptions.PluginSystemException;
@@ -52,7 +53,7 @@ public class GeneralPurposePluginsHandler extends AbstractHandler implements IGe
     @Override
     public void pluginActivated(PluginInfo plugin) {
         try {
-            AbstractGeneralPurposePlugin instance = (AbstractGeneralPurposePlugin) PluginsHandler.getInstance().getNewInstance(plugin);
+            AbstractGeneralPurposePlugin instance = (AbstractGeneralPurposePlugin) getBean(IPluginsHandler.class).getNewInstance(plugin);
             if (plugins == null) {
                 plugins = new ArrayList<AbstractGeneralPurposePlugin>();
             }

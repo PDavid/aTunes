@@ -55,10 +55,10 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.gui.views.dialogs.PluginEditorDialog;
-import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -103,6 +103,8 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	private EditPreferencesDialog dialog;
 	
 	private IState state;
+	
+	private IPluginsHandler pluginsHandler;
 
 	/**
 	 * Instantiates a new plugins panel.
@@ -110,11 +112,13 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	 * @param frame
 	 * @param lookAndFeel
 	 * @param state
+	 * @param pluginsHandler
 	 */
-	public PluginsPanel(EditPreferencesDialog dialog, final IFrame frame, final ILookAndFeel lookAndFeel, IState state) {
+	public PluginsPanel(EditPreferencesDialog dialog, final IFrame frame, final ILookAndFeel lookAndFeel, IState state, IPluginsHandler pluginsHandler) {
 		super(I18nUtils.getString("PLUGINS"));
 		this.state = state;
 		this.dialog = dialog;
+		this.pluginsHandler = pluginsHandler;
 
 		enabledPluginBox = new JCheckBox(I18nUtils.getString("ENABLED_PLUGINS"));
 
@@ -233,7 +237,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 				if (configuration != null) {
 					// Validate plugin configuration
 					try {
-						PluginsHandler.getInstance().validateConfiguration(plugin, configuration);
+						PluginsPanel.this.pluginsHandler.validateConfiguration(plugin, configuration);
 						pluginsModified.put(plugin, configuration);
 					} catch (InvalidPluginConfigurationException ex) {
 						Context.getBean(IErrorDialog.class).showErrorDialog(frame, StringUtils.getString(I18nUtils.getString("PLUGIN_CONFIGURATION_INVALID"), ex.getMessage()));
@@ -259,7 +263,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 				int row = pluginsTable.getSelectedRow();
 				PluginInfo plugin = ((PluginsTableModel) pluginsTable.getModel()).getPluginAt(row);
 				try {
-					Map<PluginFolder, PluginSystemException> problemsFound = PluginsHandler.getInstance().uninstallPlugin(plugin);
+					Map<PluginFolder, PluginSystemException> problemsFound = PluginsPanel.this.pluginsHandler.uninstallPlugin(plugin);
 					if (problemsFound != null) {
 						for (Map.Entry<PluginFolder, PluginSystemException> pluginFolderEntry : problemsFound.entrySet()) {
 							Context.getBean(IErrorDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_UNINSTALLATION_ERROR"), pluginFolderEntry.getValue());
@@ -292,7 +296,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 
 					// Avoid plugins throw exceptions when setting configuration
 					try {
-						PluginsHandler.getInstance().setConfiguration(plugin, pluginsModified.get(plugin));
+						pluginsHandler.setConfiguration(plugin, pluginsModified.get(plugin));
 					} catch (PluginSystemException t) {
 						StringBuilder sb = new StringBuilder();
 						sb.append(I18nUtils.getString("PLUGIN_CONFIGURATION_ERROR"));
@@ -301,17 +305,17 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 						Context.getBean(IErrorDialog.class).showExceptionDialog(sb.toString(), t);
 					}
 
-					restartNeeded = restartNeeded || PluginsHandler.getInstance().pluginNeedsRestart(plugin);
+					restartNeeded = restartNeeded || pluginsHandler.pluginNeedsRestart(plugin);
 				}
 				// If any plugin has been activated or deactivated then apply changes
 				for (PluginInfo plugin : pluginsActivation.keySet()) {
 					if (pluginsActivation.get(plugin)) {
-						PluginsHandler.getInstance().activatePlugin(plugin);
+						pluginsHandler.activatePlugin(plugin);
 					} else {
-						PluginsHandler.getInstance().deactivatePlugin(plugin);
+						pluginsHandler.deactivatePlugin(plugin);
 					}
 
-					restartNeeded = restartNeeded || PluginsHandler.getInstance().pluginNeedsRestart(plugin);
+					restartNeeded = restartNeeded || pluginsHandler.pluginNeedsRestart(plugin);
 				}
 			} catch (PluginSystemException e) {
 				Logger.error(e);
@@ -337,7 +341,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		if (state != null) {
 			setPluginsEnabled(state.isPluginsEnabled());
 			if (state.isPluginsEnabled()){
-				List<PluginInfo> plugins = PluginsHandler.getInstance().getAvailablePlugins();
+				List<PluginInfo> plugins = pluginsHandler.getAvailablePlugins();
 				pluginsTable.setModel(new PluginsTableModel(plugins));
 			}
 		}
@@ -360,7 +364,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 			pluginsActivation = new HashMap<PluginInfo, Boolean>();
 			// Select first plugin
 			if (state.isPluginsEnabled()) {
-				if (!PluginsHandler.getInstance().getAvailablePlugins().isEmpty()) {
+				if (!pluginsHandler.getAvailablePlugins().isEmpty()) {
 					pluginsTable.getSelectionModel().setSelectionInterval(0, 0);
 				}
 			}
@@ -387,7 +391,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 			if (fileChooser.showOpenDialog(getPreferenceDialog()) == JFileChooser.APPROVE_OPTION) {
 				File zipFile = fileChooser.getSelectedFile();
 				try {
-					Map<PluginFolder, PluginSystemException> problemsFound = PluginsHandler.getInstance().installPlugin(zipFile);
+					Map<PluginFolder, PluginSystemException> problemsFound = pluginsHandler.installPlugin(zipFile);
 					if (problemsFound != null) {
 						for (Entry<PluginFolder, PluginSystemException> pluginFolderEntry : problemsFound.entrySet()) {
 							Context.getBean(IErrorDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_INSTALLATION_ERROR"), pluginFolderEntry.getValue());
@@ -530,7 +534,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 
 		public PluginConfiguration getPluginConfigurationAt(int row) {
 			try {
-				return PluginsHandler.getInstance().getConfiguration(this.plugins.get(row));
+				return pluginsHandler.getConfiguration(this.plugins.get(row));
 			} catch (PluginSystemException e) {
 				Logger.error(e);
 				return null;

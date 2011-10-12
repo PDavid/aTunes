@@ -34,4 +34,5 @@
 	<bean id="multipleInstancesHandler" class="net.sourceforge.atunes.kernel.modules.instances.MultipleInstancesHandler"/>
 	<bean id="notificationsHandler" class="net.sourceforge.atunes.kernel.modules.notify.NotificationsHandler"/>
 	<bean id="filterHandler" class="net.sourceforge.atunes.kernel.modules.filter.FilterHandler"/>
+	<bean id="pluginsHandler" class="net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler"/>
 </beans>

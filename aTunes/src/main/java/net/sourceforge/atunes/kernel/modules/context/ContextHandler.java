@@ -28,13 +28,13 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IContextPanel;
 import net.sourceforge.atunes.model.IContextPanelsContainer;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.Logger;
@@ -208,7 +208,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     @Override
     public void pluginActivated(PluginInfo plugin) {
         try {
-        	IContextPanel newPanel = (IContextPanel) PluginsHandler.getInstance().getNewInstance(plugin);
+        	IContextPanel newPanel = (IContextPanel) getBean(IPluginsHandler.class).getNewInstance(plugin);
             contextPanels.add(newPanel);
         } catch (PluginSystemException e) {
             Logger.error(e);

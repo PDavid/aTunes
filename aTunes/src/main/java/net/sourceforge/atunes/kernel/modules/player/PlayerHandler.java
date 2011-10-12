@@ -32,7 +32,6 @@ import net.sourceforge.atunes.kernel.PlaybackStateListeners;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine.SubmissionState;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.xine.XineEngine;
-import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
@@ -41,6 +40,7 @@ import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlaybackStateListener;
 import net.sourceforge.atunes.model.IPlayerHandler;
+import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.ITemporalDiskStorage;
@@ -407,7 +407,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     @Override
     public void pluginActivated(PluginInfo plugin) {
         try {
-            IPlaybackStateListener listener = (IPlaybackStateListener) PluginsHandler.getInstance().getNewInstance(plugin);
+            IPlaybackStateListener listener = (IPlaybackStateListener) getBean(IPluginsHandler.class).getNewInstance(plugin);
             PlaybackStateListeners.addPlaybackStateListener(listener);
         } catch (PluginSystemException e) {
             Logger.error(e);

@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
-import java.util.logging.LogRecord;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
@@ -49,7 +48,7 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlaybackStateListener;
 import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -66,10 +65,7 @@ import org.commonjukebox.plugins.model.PluginFolder;
 import org.commonjukebox.plugins.model.PluginInfo;
 import org.commonjukebox.plugins.model.PluginListener;
 
-public class PluginsHandler extends AbstractHandler implements PluginListener {
-
-    /** Singleton instance */
-    private static PluginsHandler instance;
+public class PluginsHandler extends AbstractHandler implements PluginListener, IPluginsHandler {
 
     /**
      * Plugins factory
@@ -94,18 +90,6 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
     private Map<PluginFolder, PluginSystemException> problemsLoadingPlugins;
     
     /**
-     * Getter of singleton instance
-     * 
-     * @return
-     */
-    public static PluginsHandler getInstance() {
-        if (instance == null) {
-            instance = new PluginsHandler();
-        }
-        return instance;
-    }
-
-    /**
      * Initializes all plugins found in plugins dir
      */
     private void initPlugins() {
@@ -129,21 +113,12 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
     }
 
     @Override
-    public void applicationFinish() {
-    }
-
-    @Override
-    public void applicationStateChanged(IState newState) {
-    }
-
-    @Override
     protected void initHandler() {
     	if (getState().isPluginsEnabled()) {
     		initPlugins();
     	} else {
     		Logger.info("Plugins are disabled");
     	}
-    	
     }
 
     @Override
@@ -208,12 +183,8 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
         }
     }
 
-    /**
-     * Return list of available plugins
-     * 
-     * @return
-     */
-    public List<PluginInfo> getAvailablePlugins() {
+    @Override
+	public List<PluginInfo> getAvailablePlugins() {
     	if (getState().isPluginsEnabled()) {
     		return this.factory.getPlugins();
     	}
@@ -249,14 +220,8 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
     	return temporalPluginsFolder;
     }
 
-    /**
-     * Unzips a zip file in user plugins directory and updates plugins
-     * 
-     * @param zipFile
-     * @throws PluginSystemException
-     *             , IOException
-     */
-    public Map<PluginFolder, PluginSystemException> installPlugin(File zipFile) throws PluginSystemException {
+    @Override
+	public Map<PluginFolder, PluginSystemException> installPlugin(File zipFile) throws PluginSystemException {
         try {
         	return factory.installPlugin(zipFile);
         } catch (PluginSystemException e) {
@@ -265,14 +230,8 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
         }
     }
 
-    /**
-     * Removes a plugin from user plugins folder and updates plugins
-     * 
-     * @param plugin
-     * @throws IOException
-     * @throws PluginSystemException
-     */
-    public Map<PluginFolder, PluginSystemException> uninstallPlugin(PluginInfo plugin) throws IOException, PluginSystemException {
+    @Override
+	public Map<PluginFolder, PluginSystemException> uninstallPlugin(PluginInfo plugin) throws IOException, PluginSystemException {
         // Only remove plugins if are contained in a separate folder under user plugins folder
         File pluginLocation = plugin.getPluginFolder();
         if (pluginLocation.getParent().equals(new File(getUserPluginsFolder()).getAbsolutePath())) {
@@ -286,18 +245,13 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
         return new HashMap<PluginFolder, PluginSystemException>();
     }
 
-    /**
-     * Activates or deactivates given plugin
-     * 
-     * @param plugin
-     * @param active
-     */
-    public void setPluginActive(PluginInfo plugin, boolean active) {
+    @Override
+	public void setPluginActive(PluginInfo plugin, boolean active) {
         try {
             if (active) {
-                PluginsHandler.getInstance().activatePlugin(plugin);
+                activatePlugin(plugin);
             } else {
-            	PluginsHandler.getInstance().deactivatePlugin(plugin);
+            	deactivatePlugin(plugin);
             }
         } catch (PluginSystemException e) {
             Logger.error(e);
@@ -314,14 +268,8 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
         Logger.info(StringUtils.getString("Plugin deactivated: ", plugin.getName(), " (", plugin.getClassName(), ")"));
     }
 
-    /**
-     * Returns <code>true</code> if the application must be restarted after
-     * changing or activating / deactivating the given plugin
-     * 
-     * @param plugin
-     * @return
-     */
-    public boolean pluginNeedsRestart(PluginInfo plugin) {
+    @Override
+	public boolean pluginNeedsRestart(PluginInfo plugin) {
         for (PluginType pluginType : pluginTypes) {
             if (plugin.getPluginType().equals(pluginType.getClassType())) {
                 return pluginType.isApplicationNeedsRestart();
@@ -330,89 +278,33 @@ public class PluginsHandler extends AbstractHandler implements PluginListener {
         return false;
     }
 
-    /**
-     * Returns new instance of plugin
-     * @param pluginInfo
-     * @return
-     * @throws PluginSystemException
-     */
-    public Plugin getNewInstance(PluginInfo pluginInfo) throws PluginSystemException {
+    @Override
+	public Plugin getNewInstance(PluginInfo pluginInfo) throws PluginSystemException {
     	return factory.getNewInstance(pluginInfo);
     }
     
-    /**
-     * Activates plugin
-     * @param plugin
-     * @throws PluginSystemException
-     */
-    public void activatePlugin(PluginInfo plugin) throws PluginSystemException {
+    @Override
+	public void activatePlugin(PluginInfo plugin) throws PluginSystemException {
     	factory.activatePlugin(plugin);
     }
     
-    /**
-     * Deactivates plugin
-     * @param plugin
-     * @throws PluginSystemException 
-     */
-    public void deactivatePlugin(PluginInfo plugin) throws PluginSystemException {
+    @Override
+	public void deactivatePlugin(PluginInfo plugin) throws PluginSystemException {
     	factory.deactivatePlugin(plugin);
     }
 
-    /**
-     * Validates plugin configuration
-     * @param plugin
-     * @param configuration
-     * @throws InvalidPluginConfigurationException
-     */
-    public void validateConfiguration(PluginInfo plugin, PluginConfiguration configuration) throws InvalidPluginConfigurationException {
+    @Override
+	public void validateConfiguration(PluginInfo plugin, PluginConfiguration configuration) throws InvalidPluginConfigurationException {
     	factory.validateConfiguration(plugin, configuration);
     }
     
-    /**
-     * Sets plugin configuration
-     * @param plugin
-     * @param configuration
-     * @throws PluginSystemException
-     */
-    public void setConfiguration(PluginInfo plugin, PluginConfiguration configuration) throws PluginSystemException {
+    @Override
+	public void setConfiguration(PluginInfo plugin, PluginConfiguration configuration) throws PluginSystemException {
     	factory.setConfiguration(plugin, configuration);
     }
     
-    /**
-     * Returns plugin configuration
-     * @param plugin
-     * @return plugin configuration
-     * @throws PluginSystemException
-     */
-    public PluginConfiguration getConfiguration(PluginInfo plugin) throws PluginSystemException {
+    @Override
+	public PluginConfiguration getConfiguration(PluginInfo plugin) throws PluginSystemException {
     	return factory.getConfiguration(plugin);
     }
-    
-    private static class PluginsLoggerHandler extends java.util.logging.Handler {
-
-        @Override
-        public void publish(LogRecord record) {
-            if (record.getLevel().equals(Level.SEVERE)) {
-                Logger.error(record.getMessage());
-            } else {
-                Logger.info(record.getMessage());
-            }
-        }
-
-        @Override
-        public void flush() {
-        }
-
-        @Override
-        public void close() throws SecurityException {
-        }
-
-    }
-
-	@Override
-	public void playListCleared() {}
-
-	@Override
-	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
-
 }

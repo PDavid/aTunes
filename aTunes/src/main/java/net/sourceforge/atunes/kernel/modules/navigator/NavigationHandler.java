@@ -32,7 +32,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.draganddrop.TreeNavigationTransferHandler;
-import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IFilterHandler;
@@ -41,6 +40,7 @@ import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationTablePanel;
 import net.sourceforge.atunes.model.INavigationTreePanel;
 import net.sourceforge.atunes.model.INavigationView;
+import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
@@ -187,7 +187,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
     @Override
     public void pluginActivated(PluginInfo plugin) {
         try {
-            getNavigationViews().add((INavigationView) PluginsHandler.getInstance().getNewInstance(plugin));
+            getNavigationViews().add((INavigationView) getBean(IPluginsHandler.class).getNewInstance(plugin));
             // Set tress
             getNavigationController().getNavigationTreePanel().updateTrees();
         } catch (PluginSystemException e) {
