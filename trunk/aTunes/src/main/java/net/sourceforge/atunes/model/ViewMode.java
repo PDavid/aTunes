@@ -25,7 +25,7 @@ import java.util.Map;
 
 public enum ViewMode {
 
-    ARTIST, ALBUM, GENRE, FOLDER, YEAR, ARTIST_ALBUM;
+    ARTIST, ALBUM, GENRE, FOLDER, YEAR;
     
     /**
      * Returns data from repository for this view
@@ -40,7 +40,6 @@ public enum ViewMode {
 			case FOLDER : return repository.getFolderStructure();
 			case ALBUM : return repository.getAlbumStructure();
 			case ARTIST : return repository.getArtistStructure();
-			case ARTIST_ALBUM : return repository.getArtistStructure();
 			}
 		}
 		return Collections.emptyMap();

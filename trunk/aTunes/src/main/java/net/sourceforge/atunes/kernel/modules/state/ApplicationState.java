@@ -38,6 +38,7 @@ import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
 import net.sourceforge.atunes.kernel.modules.tags.TagAttribute;
+import net.sourceforge.atunes.model.ArtistViewMode;
 import net.sourceforge.atunes.model.ColumnBean;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IFrameState;
@@ -1917,4 +1918,17 @@ public class ApplicationState implements IState {
 	public boolean isPluginsEnabled() {
 		return (Boolean) this.stateStore.retrievePreference(Preferences.PLUGINS_ENABLED, false);
 	}
+	
+	@Override
+	public void setArtistViewMode(ArtistViewMode artistViewMode) {
+		this.stateStore.storePreference(Preferences.ARTIST_VIEW_MODE, artistViewMode);
+		
+	}
+
+	@Override
+	public ArtistViewMode getArtistViewMode() {
+		return (ArtistViewMode) this.stateStore.retrievePreference(Preferences.ARTIST_VIEW_MODE, ArtistViewMode.BOTH);
+	}
+	
+	
 }

@@ -261,19 +261,22 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     	private IStatisticsHandler statisticsHandler;
     	
     	private IOSManager osManager;
+
+		private IState state;
     	
-    	public RefreshFoldersSwingWorker(IRepositoryHandler repositoryHandler, IRepository repository, List<Folder> folders, IStatisticsHandler statisticsHandler, IOSManager osManager) {
+    	public RefreshFoldersSwingWorker(IRepositoryHandler repositoryHandler, IRepository repository, List<Folder> folders, IStatisticsHandler statisticsHandler, IOSManager osManager,IState state) {
     		this.repositoryHandler = repositoryHandler;
     		this.repository = repository;
     		this.folders = folders;
     		this.statisticsHandler = statisticsHandler;
     		this.osManager = osManager;
+    		this.state = state;
 		}
     	
     	@Override
     	protected Void doInBackground() throws Exception {
     		repositoryHandler.startTransaction();
-            RepositoryLoader.refreshFolders(repository, folders, statisticsHandler, osManager, repositoryHandler);
+            RepositoryLoader.refreshFolders(state, repository, folders, statisticsHandler, osManager, repositoryHandler);
             repositoryHandler.endTransaction();
     		return null;
     	}
@@ -291,7 +294,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
             Actions.getAction(ExitAction.class).actionPerformed(null);
         }
     }
-
+    
     private Repository repository;
     private int filesLoaded;
     private RepositoryLoader currentLoader;
@@ -375,7 +378,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
             @Override
             protected Void doInBackground() {
             	startTransaction();
-                RepositoryLoader.addToRepository(repository, files);
+                RepositoryLoader.addToRepository(RepositoryHandler.this.getState(), repository, files);
                 endTransaction();
                 return null;
             }
@@ -891,7 +894,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         backgroundLoad = false;
         Repository oldRepository = repository;
         repository = new Repository(folders, this, getState());
-        currentLoader = new RepositoryLoader(this, folders, oldRepository, repository, false);
+        currentLoader = new RepositoryLoader(getState(),this, folders, oldRepository, repository, false);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.start();
     }
@@ -904,7 +907,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         filesLoaded = 0;
         Repository oldRepository = repository;
         repository = new Repository(oldRepository.getRepositoryFolders(), this, getState());
-        currentLoader = new RepositoryLoader(this, oldRepository.getRepositoryFolders(), oldRepository, repository, true);
+        currentLoader = new RepositoryLoader(getState(),this, oldRepository.getRepositoryFolders(), oldRepository, repository, true);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.start();
     }
@@ -914,7 +917,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	 */
     @Override
 	public void refreshFile(ILocalAudioObject file) {
-        RepositoryLoader.refreshFile(repository, file, statisticsHandler);
+        RepositoryLoader.refreshFile(getState(),repository, file, statisticsHandler);
     }
 
     /* (non-Javadoc)
@@ -924,7 +927,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	public void refreshFolders(List<Folder> folders) {
     	getFrame().showProgressBar(true, StringUtils.getString(I18nUtils.getString("REFRESHING"), "..."));
         enableRepositoryActions(false);
-    	new RefreshFoldersSwingWorker(this, repository, folders, statisticsHandler, getOsManager()).execute();
+    	new RefreshFoldersSwingWorker(this, repository, folders, statisticsHandler, getOsManager(), getState()).execute();
     }
 
     /* (non-Javadoc)

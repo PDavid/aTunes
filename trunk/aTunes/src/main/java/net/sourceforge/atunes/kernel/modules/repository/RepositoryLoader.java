@@ -44,6 +44,7 @@ import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IRepositoryLoaderListener;
+import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.Repository;
@@ -70,6 +71,7 @@ public class RepositoryLoader extends Thread {
 	private String fastRepositoryPath;
 	private int fastFirstChar;
 	private IRepositoryHandler repositoryHandler;
+	private IState state;
 
 	/**
 	 * Instantiates a new repository loader.
@@ -79,12 +81,13 @@ public class RepositoryLoader extends Thread {
 	 * @param repository
 	 * @param refresh
 	 */
-	public RepositoryLoader(IRepositoryHandler repositoryHandler, List<File> folders, Repository oldRepository, IRepository repository, boolean refresh) {
+	public RepositoryLoader(IState state, IRepositoryHandler repositoryHandler, List<File> folders, Repository oldRepository, IRepository repository, boolean refresh) {
 		this.repositoryHandler = repositoryHandler;
 		this.refresh = refresh;
 		this.folders = folders;
 		this.oldRepository = oldRepository;
 		this.repository = repository;
+		this.state = state;
 		setPriority(Thread.MAX_PRIORITY);
 	}
 
@@ -96,7 +99,7 @@ public class RepositoryLoader extends Thread {
 	 * @param files
 	 *            Files to add
 	 */
-	static void addToRepository(IRepository rep, List<File> files) {
+	static void addToRepository(IState state, IRepository rep, List<File> files) {
 		// Get folders where files are
 		Set<File> folders = new HashSet<File>();
 		for (File file : files) {
@@ -122,7 +125,7 @@ public class RepositoryLoader extends Thread {
 				}
 			}
 
-			RepositoryFiller filler = new RepositoryFiller(rep);
+			RepositoryFiller filler = new RepositoryFiller(rep, state);
 			for (File f : files) {
 				if (f.getParentFile().equals(folder)) {
 					AudioFile audioFile = null;
@@ -280,7 +283,7 @@ public class RepositoryLoader extends Thread {
 	 * @param file
 	 *            the file
 	 */
-	static void refreshFile(IRepository repository, ILocalAudioObject file, IStatisticsHandler statisticsHandler) {
+	static void refreshFile(IState state, IRepository repository, ILocalAudioObject file, IStatisticsHandler statisticsHandler) {
 		try {
 			// Get old tag
 			ITag oldTag = file.getTag();
@@ -289,7 +292,7 @@ public class RepositoryLoader extends Thread {
 			file.refreshTag();		
 			
 			// Update repository
-			new RepositoryFiller(repository).refreshAudioFile(file, oldTag);
+			new RepositoryFiller(repository, state).refreshAudioFile(file, oldTag);
 
 			// Compare old tag with new tag
 			ITag newTag = file.getTag();
@@ -489,7 +492,7 @@ public class RepositoryLoader extends Thread {
 	 * @param picturesList
 	 * @param relativeTo
 	 */
-	private void processAudioFiles(File dir, List<File> picturesList, File relativeTo) {
+	private void processAudioFiles( File dir, List<File> picturesList, File relativeTo) {
         // Get audio files
         File[] audiofiles = dir.listFiles(AudioFile.validAudioFileFilter());
         
@@ -509,7 +512,7 @@ public class RepositoryLoader extends Thread {
 
         // Process audio files
         if (audiofiles != null) {
-        	RepositoryFiller filler = new RepositoryFiller(repository);
+        	RepositoryFiller filler = new RepositoryFiller(repository, state);
         	for (File audiofile : audiofiles) {
         		if (!interrupt) {
         			processAudioFile(audiofile, picturesList, filler, relativeTo, relativePath);
@@ -775,7 +778,7 @@ public class RepositoryLoader extends Thread {
 	 * @param osManager
 	 * @param repositoryHandler
 	 */
-	public static void refreshFolders(IRepository repository, List<Folder> folders, IStatisticsHandler statisticsHandler, IOSManager osManager, IRepositoryHandler repositoryHandler) {
+	public static void refreshFolders(IState state, IRepository repository, List<Folder> folders, IStatisticsHandler statisticsHandler, IOSManager osManager, IRepositoryHandler repositoryHandler) {
 		repositoryHandler.startTransaction();
 		
 		for (Folder folder : folders) {
@@ -784,7 +787,7 @@ public class RepositoryLoader extends Thread {
 			for (ILocalAudioObject ao : aos) {
 				if (ao.getFile().exists()) {
 					Logger.debug("Refreshing file: ", ao.getFile().getAbsolutePath());
-					refreshFile(repository, ao, statisticsHandler);
+					refreshFile(state, repository, ao, statisticsHandler);
 				} else {
 					Logger.debug("Removing file: ", ao.getFile().getAbsolutePath());
 					repositoryHandler.remove(Collections.singletonList(ao));
@@ -796,7 +799,7 @@ public class RepositoryLoader extends Thread {
 			for (ILocalAudioObject ao : allObjects) {
 				if (repository.getFile(ao.getFile().getAbsolutePath()) == null) {
 					Logger.debug("Adding file: ", ao.getFile().getAbsolutePath());
-					addToRepository(repository, Collections.singletonList(ao.getFile()));
+					addToRepository(state, repository, Collections.singletonList(ao.getFile()));
 				}
 			}
 		}
