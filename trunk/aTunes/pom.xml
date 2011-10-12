@@ -250,39 +250,13 @@
 					</dependency>
 				</dependencies>
 			</plugin>		
-			        <plugin>
-				      <groupId>org.codehaus.mojo</groupId>
-	                  <artifactId>osxappbundle-maven-plugin</artifactId>
-                      <version>1.0-alpha-2</version>
-                      <configuration>
-                          <mainClass>net.sourceforge.atunes.Main</mainClass>
-                      	  <iconFile>${basedir}/build_resources/macos/aTunes.icns</iconFile>
-                          <jvmVersion>1.6+</jvmVersion>
-                          <javaApplicationStub>${basedir}/build_resources/macos/JavaApplicationStub</javaApplicationStub>
-                          <dictionaryFile>${basedir}/build_resources/macos/Info.plist</dictionaryFile>
-                          <additionalResources>
-                              <fileSet>
-                                  <directory>${basedir}/build_resources</directory>
-                                  <includes>
-                        	          <include>license.txt</include>
-                                  </includes>
-                              </fileSet>
-                          </additionalResources>
-                      </configuration>
-                      <executions>
-                          <execution>
-                              <phase>package</phase>
-                              <goals>
-                                  <goal>bundle</goal>
-                              </goals>
-                          </execution>
-                      </executions>
-                  </plugin>          
 		</plugins>
 	</build>
 	
+	<!--  Need separate profiles for mac and unix to create mac package, as in windows plugin fails -->
     <profiles>
         <profile>
+          <id>mac_os_build</id>
           <activation>
             <os>
               <family>mac</family>
@@ -311,11 +285,80 @@
 						</goals>
 					</execution>
 				  </executions>
-				  </plugin>			
+				  </plugin>	
+				  <plugin>
+				      <groupId>org.codehaus.mojo</groupId>
+	                  <artifactId>osxappbundle-maven-plugin</artifactId>
+                      <version>1.0-alpha-2</version>
+                      <configuration>
+                          <mainClass>net.sourceforge.atunes.Main</mainClass>
+                      	  <iconFile>${basedir}/build_resources/macos/aTunes.icns</iconFile>
+                          <jvmVersion>1.6+</jvmVersion>
+                          <javaApplicationStub>${basedir}/build_resources/macos/JavaApplicationStub</javaApplicationStub>
+                          <dictionaryFile>${basedir}/build_resources/macos/Info.plist</dictionaryFile>
+                          <additionalResources>
+                              <fileSet>
+                                  <directory>${basedir}/build_resources</directory>
+                                  <includes>
+                        	          <include>license.txt</include>
+                                  </includes>
+                              </fileSet>
+                          </additionalResources>
+                      </configuration>
+                      <executions>
+                          <execution>
+                              <phase>package</phase>
+                              <goals>
+                                  <goal>bundle</goal>
+                              </goals>
+                          </execution>
+                      </executions>
+                  </plugin>          
+              </plugins>
+          </build>
+        </profile>
+        <profile>
+          <id>unix_build</id>
+          <activation>
+            <os>
+              <family>unix</family>
+	        </os>
+          </activation>
+          <build>
+              <plugins>
+				  <plugin>
+				      <groupId>org.codehaus.mojo</groupId>
+	                  <artifactId>osxappbundle-maven-plugin</artifactId>
+                      <version>1.0-alpha-2</version>
+                      <configuration>
+                          <mainClass>net.sourceforge.atunes.Main</mainClass>
+                      	  <iconFile>${basedir}/build_resources/macos/aTunes.icns</iconFile>
+                          <jvmVersion>1.6+</jvmVersion>
+                          <javaApplicationStub>${basedir}/build_resources/macos/JavaApplicationStub</javaApplicationStub>
+                          <dictionaryFile>${basedir}/build_resources/macos/Info.plist</dictionaryFile>
+                          <additionalResources>
+                              <fileSet>
+                                  <directory>${basedir}/build_resources</directory>
+                                  <includes>
+                        	          <include>license.txt</include>
+                                  </includes>
+                              </fileSet>
+                          </additionalResources>
+                      </configuration>
+                      <executions>
+                          <execution>
+                              <phase>package</phase>
+                              <goals>
+                                  <goal>bundle</goal>
+                              </goals>
+                          </execution>
+                      </executions>
+                  </plugin>          
               </plugins>
           </build>
         </profile>
     </profiles>
+
     
 	<dependencies>
 		<dependency>
