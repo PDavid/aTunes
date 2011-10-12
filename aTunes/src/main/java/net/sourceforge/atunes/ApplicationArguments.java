@@ -23,7 +23,6 @@ package net.sourceforge.atunes;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.command.CommandHandler;
 import net.sourceforge.atunes.model.ICommandHandler;
 
 import org.commonjukebox.plugins.model.PluginApi;

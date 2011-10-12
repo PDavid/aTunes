@@ -32,4 +32,5 @@
 	<bean id="playerHandler" class="net.sourceforge.atunes.kernel.modules.player.PlayerHandler"/>
 	<bean id="ripperHandler" class="net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler"/>
 	<bean id="commandHandler" class="net.sourceforge.atunes.kernel.modules.command.CommandHandler"/>
+	<bean id="hotkeyHandler" class="net.sourceforge.atunes.kernel.modules.hotkeys.HotkeyHandler"/>
 </beans>

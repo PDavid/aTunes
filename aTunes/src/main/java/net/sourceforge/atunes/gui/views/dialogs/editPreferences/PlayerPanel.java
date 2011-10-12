@@ -48,9 +48,9 @@ import javax.swing.table.AbstractTableModel;
 
 import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.kernel.modules.hotkeys.Hotkey;
-import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeyHandler;
-import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeysConfig;
+import net.sourceforge.atunes.model.IHotkey;
+import net.sourceforge.atunes.model.IHotkeyHandler;
+import net.sourceforge.atunes.model.IHotkeysConfig;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayerHandler;
@@ -92,7 +92,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         private static final long serialVersionUID = -5726677745418003289L;
 
         /** The data. */
-        private HotkeysConfig hotkeysConfig;
+        private IHotkeysConfig hotkeysConfig;
 
         @Override
         public int getColumnCount() {
@@ -121,14 +121,14 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
             return "";
         }
 
-        public void setHotkeysConfig(HotkeysConfig hotkeysConfig) {
+        public void setHotkeysConfig(IHotkeysConfig hotkeysConfig) {
             this.hotkeysConfig = hotkeysConfig;
             conflicts = hotkeysConfig.conflicts();
             notRecommendedKeys = hotkeysConfig.notRecommendedKeys();
             fireTableDataChanged();
         }
 
-        public HotkeysConfig getHotkeysConfig() {
+        public IHotkeysConfig getHotkeysConfig() {
             return hotkeysConfig;
         }
 
@@ -181,16 +181,20 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
     private JComboBox engineCombo;
     
     private IOSManager osManager;
+    
+    private IHotkeyHandler hotkeyHandler;
 
     /**
      * Instantiates a new player panel.
      * @param osManager
      * @param lookAndFeel
      * @param playerHandler
+     * @param hotkeyHandler
      */
-    public PlayerPanel(IOSManager osManager, ILookAndFeel lookAndFeel, IPlayerHandler playerHandler) {
+    public PlayerPanel(IOSManager osManager, ILookAndFeel lookAndFeel, IPlayerHandler playerHandler, IHotkeyHandler hotkeyHandler) {
         super(I18nUtils.getString("PLAYER"));
         this.osManager = osManager;
+        this.hotkeyHandler = hotkeyHandler;
         Box engineBox = Box.createHorizontalBox();
         engineBox.setAlignmentX(Component.LEFT_ALIGNMENT);
         engineBox.add(new JLabel(I18nUtils.getString("PLAYER_ENGINE")));
@@ -214,7 +218,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         hotkeyTable.getTableHeader().setReorderingAllowed(false);
         hotkeyTable.getTableHeader().setResizingAllowed(false);
         hotkeyTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        hotkeyTable.setEnabled(HotkeyHandler.getInstance().areHotkeysSupported());
+        hotkeyTable.setEnabled(hotkeyHandler.areHotkeysSupported());
         hotkeyTable.setDefaultRenderer(Object.class, lookAndFeel.getTableCellRenderer(new HotkeyTableTableCellRendererCode(lookAndFeel)));
 
         hotkeyTable.addKeyListener(new KeyAdapter() {
@@ -225,7 +229,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
                 int keyCode = e.getKeyCode();
                 if (selectedRow != -1 && keyCode != KeyEvent.VK_UNDEFINED && (modifiersEx & InputEvent.BUTTON1_DOWN_MASK) == 0 && (modifiersEx & InputEvent.BUTTON2_DOWN_MASK) == 0
                         && (modifiersEx & InputEvent.BUTTON3_DOWN_MASK) == 0) {
-                    Hotkey hotkey = tableModel.getHotkeysConfig().getHotkeyByOrder(selectedRow);
+                    IHotkey hotkey = tableModel.getHotkeysConfig().getHotkeyByOrder(selectedRow);
                     hotkey.setMod(modifiersEx);
                     hotkey.setKey(keyCode);
 
@@ -247,7 +251,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         resetHotkeys.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                tableModel.setHotkeysConfig(HotkeyHandler.getInstance().getDefaultHotkeysConfiguration());
+                tableModel.setHotkeysConfig(PlayerPanel.this.hotkeyHandler.getDefaultHotkeysConfiguration());
                 tableModel.fireTableDataChanged();
             }
         });
@@ -416,7 +420,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         this.cacheFilesBeforePlaying.setSelected(cacheFiles);
     }
 
-    private void setHotkeysConfig(HotkeysConfig hotkeysConfig) {
+    private void setHotkeysConfig(IHotkeysConfig hotkeysConfig) {
         this.tableModel.setHotkeysConfig(hotkeysConfig);
     }
 
@@ -434,12 +438,12 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         setShowPlayerControlsOnTop(state.isShowPlayerControlsOnTop());
         setCacheFilesBeforePlaying(state.isCacheFilesBeforePlaying());
         setEnableHotkeys(state.isEnableHotkeys());
-        HotkeysConfig hotkeysConfig = state.getHotkeysConfig();
-        setHotkeysConfig(hotkeysConfig != null ? hotkeysConfig : HotkeyHandler.getInstance().getHotkeysConfig());
+        IHotkeysConfig hotkeysConfig = state.getHotkeysConfig();
+        setHotkeysConfig(hotkeysConfig != null ? hotkeysConfig : hotkeyHandler.getHotkeysConfig());
         setUseShortPathNames(state.isUseShortPathNames());
         getUseShortPathNames().setEnabled(osManager.usesShortPathNames());
         
-        boolean hotKeysSupported = HotkeyHandler.getInstance().areHotkeysSupported();
+        boolean hotKeysSupported = hotkeyHandler.areHotkeysSupported();
         getEnableGlobalHotkeys().setVisible(hotKeysSupported);
         getHotkeyScrollPane().setVisible(hotKeysSupported);
         getResetHotkeys().setVisible(hotKeysSupported);
@@ -460,11 +464,11 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         // As Dialog uses CardLayout to show panels, that layout invokes setVisible(false) when creating dialog just before showing it
         // so it can execute both code blocks before showing dialog
         if (visible) {
-            HotkeyHandler.getInstance().disableHotkeys();
+            hotkeyHandler.disableHotkeys();
         } else {
             // Enable hotkeys again only if user didn't disable them
             if (getState().isEnableHotkeys()) {
-                HotkeyHandler.getInstance().enableHotkeys(getState().getHotkeysConfig());
+                hotkeyHandler.enableHotkeys(getState().getHotkeysConfig());
             }
         }
     }

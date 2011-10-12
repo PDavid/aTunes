@@ -23,6 +23,8 @@ package net.sourceforge.atunes.kernel.modules.hotkeys;
 import java.lang.reflect.Constructor;
 
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.model.IHotkey;
+import net.sourceforge.atunes.model.IHotkeyListener;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -41,9 +43,9 @@ public abstract class AbstractHotkeys {
      * @return <code>true</code> if hotkey was registered, <code>false</code>
      *         otherwise
      */
-    public abstract boolean registerHotkey(Hotkey hotkey);
+    public abstract boolean registerHotkey(IHotkey hotkey);
 
-    public abstract void unregisterHotkey(Hotkey hotkey);
+    public abstract void unregisterHotkey(IHotkey hotkey);
 
     public abstract void deactivate();
 

@@ -410,7 +410,7 @@ public interface IState {
 
 	public HotkeysConfig getHotkeysConfig();
 
-	public void setHotkeysConfig(HotkeysConfig hotkeysConfig);
+	public void setHotkeysConfig(IHotkeysConfig hotkeysConfig);
 
 
 	public List<String> getRecognitionPatterns();

@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.kernel.modules.hotkeys;
 
 import java.beans.ConstructorProperties;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -30,21 +29,21 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-public class HotkeysConfig implements Iterable<Hotkey>, Serializable {
+import net.sourceforge.atunes.model.IHotkey;
+import net.sourceforge.atunes.model.IHotkeysConfig;
 
-    /**
-	 * 
-	 */
+public class HotkeysConfig implements IHotkeysConfig {
+
 	private static final long serialVersionUID = -2980797763805865156L;
 	
-	private SortedMap<Integer, Hotkey> config;
+	private SortedMap<Integer, IHotkey> config;
 
     public HotkeysConfig() {
-        this.config = new TreeMap<Integer, Hotkey>();
+        this.config = new TreeMap<Integer, IHotkey>();
     }
 
     public HotkeysConfig(List<Hotkey> hotkeys) {
-        this.config = new TreeMap<Integer, Hotkey>();
+        this.config = new TreeMap<Integer, IHotkey>();
         for (Hotkey hotkey : hotkeys) {
             config.put(hotkey.getId(), hotkey);
         }
@@ -52,40 +51,35 @@ public class HotkeysConfig implements Iterable<Hotkey>, Serializable {
 
     @ConstructorProperties( { "config" })
     public HotkeysConfig(SortedMap<Integer, Hotkey> map) {
-        this.config = new TreeMap<Integer, Hotkey>(map);
+        this.config = new TreeMap<Integer, IHotkey>(map);
     }
 
-    public void putHotkey(Hotkey hotkey) {
+    void putHotkey(Hotkey hotkey) {
         config.put(hotkey.getId(), hotkey);
     }
 
-    public Hotkey getHotkey(int id) {
-        return config.get(id);
-    }
-
-    public int size() {
+    @Override
+	public int size() {
         return config.size();
     }
 
-    public SortedMap<Integer, Hotkey> getConfig() {
-        return config;
-    }
-
-    @Override
-    public Iterator<Hotkey> iterator() {
+	@Override
+    public Iterator<IHotkey> iterator() {
         return config.values().iterator();
     }
 
-    public Hotkey getHotkeyByOrder(int i) {
-        return new ArrayList<Hotkey>(config.values()).get(i);
+    @Override
+	public IHotkey getHotkeyByOrder(int i) {
+        return new ArrayList<IHotkey>(config.values()).get(i);
     }
 
-    public Set<Integer> conflicts() {
+    @Override
+	public Set<Integer> conflicts() {
         Set<Integer> result = new HashSet<Integer>();
         for (int i = 0; i < size(); i++) {
-            Hotkey h1 = getHotkeyByOrder(i);
+            IHotkey h1 = getHotkeyByOrder(i);
             for (int j = 0; j < size(); j++) {
-                Hotkey h2 = getHotkeyByOrder(j);
+                IHotkey h2 = getHotkeyByOrder(j);
                 if (i != j && h1.getMod() == h2.getMod() && h1.getKey() == h2.getKey()) {
                     result.add(i);
                 }
@@ -94,15 +88,15 @@ public class HotkeysConfig implements Iterable<Hotkey>, Serializable {
         return result;
     }
 
-    public Set<Integer> notRecommendedKeys() {
+    @Override
+	public Set<Integer> notRecommendedKeys() {
         Set<Integer> result = new HashSet<Integer>();
         for (int i = 0; i < size(); i++) {
-            Hotkey h = getHotkeyByOrder(i);
+            IHotkey h = getHotkeyByOrder(i);
             if (!h.isRecommended()) {
                 result.add(i);
             }
         }
         return result;
     }
-
 }

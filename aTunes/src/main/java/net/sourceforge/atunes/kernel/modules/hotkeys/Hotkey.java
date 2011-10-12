@@ -23,9 +23,11 @@ package net.sourceforge.atunes.kernel.modules.hotkeys;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.beans.ConstructorProperties;
-import java.io.Serializable;
 
-public class Hotkey implements Serializable {
+import net.sourceforge.atunes.model.IHotkey;
+import net.sourceforge.atunes.utils.StringUtils;
+
+public class Hotkey implements IHotkey {
 
     /**
 	 * 
@@ -45,45 +47,53 @@ public class Hotkey implements Serializable {
         this.description = description;
     }
 
-    public int getId() {
+    @Override
+	public int getId() {
         return id;
     }
 
-    public int getMod() {
+    @Override
+	public int getMod() {
         return mod;
     }
 
-    public int getKey() {
+    @Override
+	public int getKey() {
         return key;
     }
 
-    public String getDescription() {
+    @Override
+	public String getDescription() {
         return description;
     }
 
-    public void setMod(int mod) {
+    @Override
+	public void setMod(int mod) {
         this.mod = mod;
     }
 
-    public void setKey(int key) {
+    @Override
+	public void setKey(int key) {
         this.key = key;
     }
 
-    public String getKeyDescription() {
+    @Override
+	public String getKeyDescription() {
         String keyText = KeyEvent.getKeyText(getKey());
         if (getMod() != 0) {
             String modifiersExText = InputEvent.getModifiersExText(getMod());
             if (keyText.equals(modifiersExText)) {
                 return keyText;
             } else {
-                return modifiersExText + "+" + keyText;
+                return StringUtils.getString(modifiersExText, "+", keyText);
             }
         } else {
             return keyText;
         }
     }
 
-    public boolean isRecommended() {
+    @Override
+	public boolean isRecommended() {
         boolean recommended = false;
         if (getMod() != 0 && getKey() != 0 && !isKeyModifier(getKey())) {
             recommended = true;
@@ -104,6 +114,6 @@ public class Hotkey implements Serializable {
 
     @Override
     public String toString() {
-        return description + " " + getKeyDescription();
+        return StringUtils.getString(description, " ", getKeyDescription());
     }
 }

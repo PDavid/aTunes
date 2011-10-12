@@ -18,19 +18,31 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.hotkeys;
+package net.sourceforge.atunes.model;
+
+import java.io.Serializable;
 
 /**
- * An object notified when a hotkey is pressed
+ * A hotkey: a key typed which fires an action in application
  * @author alex
  *
  */
-interface IHotkeyListener {
+public interface IHotkey extends Serializable {
 
-    /**
-     * Called when hotkey pressed
-     * @param id
-     */
-    public void onHotKey(int id);
+	public int getId();
+
+	public int getMod();
+
+	public int getKey();
+
+	public String getDescription();
+
+	public void setMod(int mod);
+
+	public void setKey(int key);
+
+	public String getKeyDescription();
+
+	public boolean isRecommended();
 
 }

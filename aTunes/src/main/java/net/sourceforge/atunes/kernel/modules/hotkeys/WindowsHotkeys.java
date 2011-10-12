@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.hotkeys;
 
+import net.sourceforge.atunes.model.IHotkey;
+import net.sourceforge.atunes.model.IHotkeyListener;
 import net.sourceforge.atunes.model.IOSManager;
 
 import com.melloware.jintellitype.IntellitypeListener;
@@ -33,13 +35,13 @@ public class WindowsHotkeys extends AbstractHotkeys implements com.melloware.jin
     }
 
     @Override
-    public boolean registerHotkey(Hotkey hotkey) {
+    public boolean registerHotkey(IHotkey hotkey) {
         JIntellitype.getInstance().registerSwingHotKey(hotkey.getId(), hotkey.getMod(), hotkey.getKey());
         return true;
     }
 
     @Override
-    public void unregisterHotkey(Hotkey hotkey) {
+    public void unregisterHotkey(IHotkey hotkey) {
         JIntellitype.getInstance().unregisterHotKey(hotkey.getId());
     }
 
