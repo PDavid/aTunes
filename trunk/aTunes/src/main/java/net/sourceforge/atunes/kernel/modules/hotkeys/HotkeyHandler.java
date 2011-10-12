@@ -26,7 +26,6 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
-import net.sourceforge.atunes.kernel.modules.notify.NotificationsHandler;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IHotkey;
 import net.sourceforge.atunes.model.IHotkeyHandler;

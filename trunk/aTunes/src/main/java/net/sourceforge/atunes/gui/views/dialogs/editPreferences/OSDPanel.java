@@ -33,7 +33,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
-import net.sourceforge.atunes.kernel.modules.notify.NotificationsHandler;
 import net.sourceforge.atunes.model.INotificationEngine;
 import net.sourceforge.atunes.model.INotificationsHandler;
 import net.sourceforge.atunes.model.IState;

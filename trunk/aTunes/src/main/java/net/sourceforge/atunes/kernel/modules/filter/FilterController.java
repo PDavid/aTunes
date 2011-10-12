@@ -32,12 +32,11 @@ import java.util.Map;
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.SwingUtilities;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import net.sourceforge.atunes.gui.views.panels.FilterPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IFilter;
+import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -46,47 +45,9 @@ class FilterController extends AbstractSimpleController<FilterPanel> {
 
 	private FilterTextFieldDocumentListener listener;
 	
-	private boolean filterApplied = false;
+	boolean filterApplied = false;
 	
-    private final class FilterTextFieldDocumentListener implements DocumentListener {
-    	
-    	public FilterTextFieldDocumentListener() {
-            updateFilterPanel();
-		}
-    	
-		@Override
-		public void removeUpdate(DocumentEvent e) {
-		    update();
-		}
-
-		@Override
-		public void insertUpdate(DocumentEvent e) {
-		    update();
-		}
-
-		@Override
-		public void changedUpdate(DocumentEvent e) {
-		    update();
-		}
-
-		private void update() {
-		    // Search as user type
-		    SwingUtilities.invokeLater(new Runnable() {
-		        @Override
-		        public void run() {
-		            applyFilter(getFilter());
-		            updateFilterPanel();
-		        }
-		    });
-		}
-		
-		private void updateFilterPanel() {
-            getComponentControlled().setFilterApplied(filterApplied);
-		}
-		
-	}
-
-	/**
+    /**
      * Group of controls (filters)
      */
     private ButtonGroup group;
@@ -95,13 +56,21 @@ class FilterController extends AbstractSimpleController<FilterPanel> {
      * Filters and UI controls
      */
     private Map<String, JRadioButtonMenuItem> filters;
+    
+    private IFilterHandler filterHandler;
 
-    FilterController(FilterPanel panel, IState state) {
+    /**
+     * @param panel
+     * @param state
+     * @param filterHandler
+     */
+    FilterController(FilterPanel panel, IState state, IFilterHandler filterHandler) {
         super(panel, state);
+        this.group = new ButtonGroup();
+        this.filters = new HashMap<String, JRadioButtonMenuItem>();
+        this.listener = new FilterTextFieldDocumentListener(this);
+        this.filterHandler = filterHandler;
         addBindings();
-        group = new ButtonGroup();
-        filters = new HashMap<String, JRadioButtonMenuItem>();
-        listener = new FilterTextFieldDocumentListener();
     }
 
     @Override
@@ -172,7 +141,7 @@ class FilterController extends AbstractSimpleController<FilterPanel> {
 					applyFilter(null);
 
 					// Set selected filter and apply
-					FilterHandler.getInstance().setSelectedFilter(filter.getName());
+					filterHandler.setSelectedFilter(filter.getName());
 					applyFilter(getFilter());
 				}
             }
@@ -208,9 +177,9 @@ class FilterController extends AbstractSimpleController<FilterPanel> {
      * 
      * @param filter
      */
-    private void applyFilter(String filter) {
+    void applyFilter(String filter) {
     	filterApplied = filter != null && !filter.equals("");
-        FilterHandler.getInstance().applyFilter(filter);
+        filterHandler.applyFilter(filter);
     }
 
     /**
