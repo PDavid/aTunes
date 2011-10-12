@@ -1215,7 +1215,15 @@ public abstract class AbstractStateMock implements IState {
 	public boolean isPluginsEnabled() {
 		return false;
 	}
-	
-	
+
+	@Override
+	public ArtistViewMode getArtistViewMode() {
+		return ArtistViewMode.BOTH;
+	}
+
+	@Override
+	public void setArtistViewMode(ArtistViewMode artistViewMode) {
+		
+	}
 
 }

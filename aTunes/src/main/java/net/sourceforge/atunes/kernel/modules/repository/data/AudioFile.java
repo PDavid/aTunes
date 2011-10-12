@@ -243,17 +243,17 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
     @Override
     public String getAlbumArtist() {
         String albumArtist;
-        if (tag != null && tag.getAlbumArtist() != null) {
+        if (tag != null && tag.getAlbumArtist() != null && !tag.getAlbumArtist().isEmpty()) {
             albumArtist = tag.getAlbumArtist();
         } else {
-            albumArtist = "";
+            albumArtist = Artist.getUnknownArtist();
         }
         return albumArtist;
     }
 
     @Override
     public String getAlbumArtistOrArtist() {
-        return getAlbumArtist().isEmpty() ? getArtist() : getAlbumArtist();
+        return getAlbumArtist().isEmpty() || getAlbumArtist().equals(Artist.getUnknownArtist()) ? getArtist() : getAlbumArtist();
     }
 
     @Override

@@ -471,5 +471,10 @@ public interface IState {
 
 	public boolean isPluginsEnabled();
 
+	public ArtistViewMode getArtistViewMode();
+
+	void setArtistViewMode(ArtistViewMode artistViewMode); 
+	
+
 
 }

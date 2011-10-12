@@ -20,28 +20,11 @@
 
 package net.sourceforge.atunes.model;
 
-import java.util.Collections;
-import java.util.Map;
 
-public enum ViewMode {
 
-    ARTIST, ALBUM, GENRE, FOLDER, YEAR;
+public enum ArtistViewMode {
+
+    ARTIST, ARTIST_OF_ALBUM, BOTH;
     
-    /**
-     * Returns data from repository for this view
-     * @param repository
-     * @return
-     */
-    public Map<String, ?> getDataForView(Repository repository) {
-		if (repository != null) {
-			switch (this) {
-			case YEAR: return repository.getYearStructure();
-			case GENRE: return repository.getGenreStructure();
-			case FOLDER : return repository.getFolderStructure();
-			case ALBUM : return repository.getAlbumStructure();
-			case ARTIST : return repository.getArtistStructure();
-			}
-		}
-		return Collections.emptyMap();
-    }
+    
 }

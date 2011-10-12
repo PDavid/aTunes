@@ -462,7 +462,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
         Logger.info("Refreshing device");
         Repository oldDeviceRepository = deviceRepository;
         deviceRepository = new Repository(oldDeviceRepository.getRepositoryFolders(), null, getState());
-        currentLoader = new RepositoryLoader(getBean(IRepositoryHandler.class), oldDeviceRepository.getRepositoryFolders(), oldDeviceRepository, deviceRepository, true);
+        currentLoader = new RepositoryLoader(getState(), getBean(IRepositoryHandler.class), oldDeviceRepository.getRepositoryFolders(), oldDeviceRepository, deviceRepository, true);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.start();
     }
@@ -493,7 +493,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
         List<File> folders = new ArrayList<File>();
         folders.add(path);
         deviceRepository = new Repository(folders, null, getState());
-        currentLoader = new RepositoryLoader(getBean(IRepositoryHandler.class), folders, null, deviceRepository, false);
+        currentLoader = new RepositoryLoader(getState(), getBean(IRepositoryHandler.class), folders, null, deviceRepository, false);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.start();
     }
