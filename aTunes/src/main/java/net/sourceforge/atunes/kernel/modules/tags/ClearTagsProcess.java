@@ -24,6 +24,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
 
@@ -38,9 +39,10 @@ public class ClearTagsProcess extends AbstractChangeTagProcess {
      * @param state
      * @param playListHandler
      * @param repositoryHandler
+     * @param playerHandler
      */
-    public ClearTagsProcess(List<ILocalAudioObject> filesToClear, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler) {
-        super(filesToClear, state, playListHandler, repositoryHandler);
+    public ClearTagsProcess(List<ILocalAudioObject> filesToClear, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
+        super(filesToClear, state, playListHandler, repositoryHandler, playerHandler);
     }
 
     @Override

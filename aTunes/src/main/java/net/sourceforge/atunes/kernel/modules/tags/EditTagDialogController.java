@@ -44,6 +44,7 @@ import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITag;
@@ -127,6 +128,8 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
     private IPlayListHandler playListHandler;
     
     private IRepositoryHandler repositoryHandler;
+    
+    private IPlayerHandler playerHandler;
 
     /**
      * Instantiates a new edits the tag dialog controller.
@@ -135,12 +138,14 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
      * @param osManager
      * @param playListHandler
      * @param repositoryHandler
+     * @param playerHandler
      */
-    public EditTagDialogController(EditTagDialog dialog, IState state, IOSManager osManager, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler) {
+    public EditTagDialogController(EditTagDialog dialog, IState state, IOSManager osManager, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
         super(dialog, state);
         this.osManager = osManager;
         this.playListHandler = playListHandler;
         this.repositoryHandler = repositoryHandler;
+        this.playerHandler = playerHandler;
         addBindings();
         addStateBindings();
     }
@@ -472,7 +477,7 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
             editTagInfo.put("COVER", newCover);
         }
 
-        EditTagsProcess process = new EditTagsProcess(new ArrayList<ILocalAudioObject>(audioFilesEditing), editTagInfo, getState(), playListHandler, repositoryHandler);
+        EditTagsProcess process = new EditTagsProcess(new ArrayList<ILocalAudioObject>(audioFilesEditing), editTagInfo, getState(), playListHandler, repositoryHandler, playerHandler);
         process.execute();
     }
 

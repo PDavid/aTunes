@@ -29,6 +29,7 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
@@ -47,9 +48,10 @@ public class SetGenresProcess extends AbstractChangeTagProcess {
      * @param state
      * @param playListHandler
      * @param repositoryHandler
+     * @param playerHandler
      */
-    SetGenresProcess(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler) {
-        super(files, state, playListHandler, repositoryHandler);
+    SetGenresProcess(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
+        super(files, state, playListHandler, repositoryHandler, playerHandler);
     }
 
     @Override

@@ -51,9 +51,9 @@ import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.kernel.modules.hotkeys.Hotkey;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeyHandler;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeysConfig;
-import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -186,15 +186,16 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
      * Instantiates a new player panel.
      * @param osManager
      * @param lookAndFeel
+     * @param playerHandler
      */
-    public PlayerPanel(IOSManager osManager, ILookAndFeel lookAndFeel) {
+    public PlayerPanel(IOSManager osManager, ILookAndFeel lookAndFeel, IPlayerHandler playerHandler) {
         super(I18nUtils.getString("PLAYER"));
         this.osManager = osManager;
         Box engineBox = Box.createHorizontalBox();
         engineBox.setAlignmentX(Component.LEFT_ALIGNMENT);
         engineBox.add(new JLabel(I18nUtils.getString("PLAYER_ENGINE")));
         engineBox.add(Box.createHorizontalStrut(6));
-        String[] engineNames = PlayerHandler.getInstance().getEngineNames();
+        String[] engineNames = playerHandler.getEngineNames();
         engineCombo = new JComboBox(engineNames);
         // Disable combo if no player engine available
         engineCombo.setEnabled(engineNames.length > 0);

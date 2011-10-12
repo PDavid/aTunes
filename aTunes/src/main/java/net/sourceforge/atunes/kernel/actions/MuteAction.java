@@ -22,9 +22,10 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
-import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -55,7 +56,7 @@ public class MuteAction extends CustomAbstractAction {
             putValue(SELECTED_KEY, !(Boolean) getValue(SELECTED_KEY));
         }
         getState().setMuteEnabled((Boolean) getValue(SELECTED_KEY));
-        PlayerHandler.getInstance().applyMuteState(getState().isMuteEnabled());
+        Context.getBean(IPlayerHandler.class).applyMuteState(getState().isMuteEnabled());
         updateIcon();
     }
 

@@ -27,11 +27,12 @@ import javax.swing.JComponent;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanel;
-import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeResultEntry;
 import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -68,8 +69,8 @@ public class YoutubeResultsTableCellRendererCode extends ContextTableRowPanel<Yo
 			     //open youtube url
                 DesktopUtils.openURL(entry.getUrl());
                 // When playing a video in web browser automatically pause current song
-                if (PlayerHandler.getInstance().isEnginePlaying()) {
-                    PlayerHandler.getInstance().playCurrentAudioObject(true);
+                if (Context.getBean(IPlayerHandler.class).isEnginePlaying()) {
+                    Context.getBean(IPlayerHandler.class).playCurrentAudioObject(true);
                 }
 			}
 			

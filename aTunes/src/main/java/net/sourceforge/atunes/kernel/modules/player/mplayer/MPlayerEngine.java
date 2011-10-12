@@ -41,6 +41,7 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
 import net.sourceforge.atunes.model.IRadio;
@@ -83,8 +84,17 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 
     private IPlayListHandler playListHandler;
     
-    public MPlayerEngine(IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, INavigationHandler navigationHandler, ITemporalDiskStorage temporalDiskStorage) {
-    	super(state, frame, osManager, playListHandler, navigationHandler, temporalDiskStorage);
+    /**
+     * @param state
+     * @param frame
+     * @param osManager
+     * @param playListHandler
+     * @param navigationHandler
+     * @param temporalDiskStorage
+     * @param playerHandler
+     */
+    public MPlayerEngine(IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, INavigationHandler navigationHandler, ITemporalDiskStorage temporalDiskStorage, IPlayerHandler playerHandler) {
+    	super(state, frame, osManager, playListHandler, navigationHandler, temporalDiskStorage, playerHandler);
     	this.playListHandler = playListHandler;
     	commandWriter = MPlayerCommandWriter.newCommandWriter(null, osManager);
     }

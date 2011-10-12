@@ -42,7 +42,6 @@ import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListTableTransferHandler;
-import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
@@ -56,6 +55,7 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioHandler;
@@ -156,6 +156,8 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	
 	private IColumnSet playListColumnSet;
 	
+	private IPlayerHandler playerHandler;
+	
     /**
      * Private constructor.
      */
@@ -167,6 +169,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     protected void initHandler() {
         // Add audio file removed listener
         getBean(IRepositoryHandler.class).addAudioFilesRemovedListener(this);
+        playerHandler = getBean(IPlayerHandler.class);
     }
 
     @Override
@@ -229,7 +232,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
             // Removed play list is active, then set visible play list as active and stop player
             if (activePlayListIsBeingRemoved) {
                 activePlayListIndex = visiblePlayListIndex;
-                PlayerHandler.getInstance().stopCurrentAudioObject(false);
+                playerHandler.stopCurrentAudioObject(false);
             }
 
             // Delete tab
@@ -369,7 +372,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 
         //don't stop player if user has setup the option
         if (getState().isStopPlayerOnPlayListSwitch()) {
-            PlayerHandler.getInstance().stopCurrentAudioObject(false);
+            playerHandler.stopCurrentAudioObject(false);
         }
 
         // Remove filter from current play list before change play list
@@ -491,12 +494,12 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
             int selectedAudioObject = 0;
 
             // If stopPlayerWhenPlayListClear property is disabled try to locate audio object in play list. If it's not available then stop playing
-            if (!getState().isStopPlayerOnPlayListClear() && PlayerHandler.getInstance().isEnginePlaying()) {
-                int index = playList.indexOf(PlayerHandler.getInstance().getAudioObject());
+            if (!getState().isStopPlayerOnPlayListClear() && playerHandler.isEnginePlaying()) {
+                int index = playList.indexOf(playerHandler.getAudioObject());
                 if (index != -1) {
                     selectedAudioObject = index;
                 } else {
-                    PlayerHandler.getInstance().stopCurrentAudioObject(false);
+                    playerHandler.stopCurrentAudioObject(false);
                 }
             } else if (getState().isShuffle()) {
                 // If shuffle enabled, select a random audio object
@@ -546,7 +549,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 
             // Only if this play list is the active stop playback
             if (isActivePlayListVisible() && getState().isStopPlayerOnPlayListClear()) {
-                PlayerHandler.getInstance().stopCurrentAudioObject(false);
+                playerHandler.stopCurrentAudioObject(false);
             }
 
             // Set first audio object as current
@@ -817,7 +820,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
             addToPlayListAndPlay(list);
         } else {
             setPositionToPlayInVisiblePlayList(getCurrentPlayList(true).indexOf(audioObject));
-            PlayerHandler.getInstance().playCurrentAudioObject(false);
+            playerHandler.playCurrentAudioObject(false);
         }
     }
 
@@ -841,7 +844,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         if (hasToBeRemoved) {
             // Only stop if this is the active play list
             if (isActivePlayListVisible()) {
-                PlayerHandler.getInstance().stopCurrentAudioObject(false);
+                playerHandler.stopCurrentAudioObject(false);
             }
             if (currentPlayList.isEmpty()) {
                 clear();
@@ -922,7 +925,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         int playListCurrentSize = getCurrentPlayList(true).size();
         addToPlayList(audioObjects);
         setPositionToPlayInVisiblePlayList(playListCurrentSize);
-        PlayerHandler.getInstance().playCurrentAudioObject(false);
+        playerHandler.playCurrentAudioObject(false);
     }
 
     /* (non-Javadoc)
@@ -1206,7 +1209,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         if (playListController == null) {
             PlayListPanel panel = null;
             panel = getFrame().getPlayListPanel();
-            playListController = new PlayListController(panel, getState(), getFrame(), this);
+            playListController = new PlayListController(panel, getState(), getFrame(), this, playerHandler);
         }
         return playListController;
     }

@@ -75,6 +75,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IState;
@@ -212,6 +213,8 @@ public final class FullScreenWindow extends AbstractCustomWindow {
     private IFrame frame;
     
     private IOSManager osManager;
+    
+    private IPlayerHandler playerHandler;
 
     /**
      * Instantiates a new full screen dialog.
@@ -221,12 +224,14 @@ public final class FullScreenWindow extends AbstractCustomWindow {
      * @param frame
      * @param osManager
      * @param lookAndFeelManager
+     * @param playerHandler
      */
-    public FullScreenWindow(JFrame owner, IState state, IFrame frame, IOSManager osManager, ILookAndFeelManager lookAndFeelManager) {
+    public FullScreenWindow(JFrame owner, IState state, IFrame frame, IOSManager osManager, ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler) {
         super(owner, 0, 0);
         this.state = state;
         this.frame = frame;
         this.osManager = osManager;
+        this.playerHandler = playerHandler;
         setLocation(0, 0);
         setAlwaysOnTop(true);
         setContent(lookAndFeelManager);
@@ -393,7 +398,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         nextButton = new NextButton(PlayerControlsPanel.PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
         muteButton = new MuteButton(PlayerControlsPanel.STOP_MUTE_BUTTONS_SIZE, state, lookAndFeelManager);
         muteButton.setText("");
-        volumeSlider = new VolumeSlider(state);
+        volumeSlider = new VolumeSlider(state, playerHandler);
 
         previousButton.addMouseListener(clickListener);
         playButton.addMouseListener(clickListener);
@@ -421,7 +426,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         textLabel2.setForeground(Color.WHITE);
 
         progressSlider = new ProgressSlider();
-        ProgressBarSeekListener seekListener = new ProgressBarSeekListener(progressSlider);
+        ProgressBarSeekListener seekListener = new ProgressBarSeekListener(progressSlider, playerHandler);
         progressSlider.addMouseListener(seekListener);        
         progressSlider.addKeyListener(keyAdapter);
         progressSlider.setOpaque(false);

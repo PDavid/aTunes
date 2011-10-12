@@ -24,15 +24,19 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import net.sourceforge.atunes.gui.views.controls.playerControls.ProgressSlider;
+import net.sourceforge.atunes.model.IPlayerHandler;
 
 
 public class ProgressBarSeekListener extends MouseAdapter {
 
 	private ProgressSlider progressBar;
 	
-	public ProgressBarSeekListener(ProgressSlider progressBar) {
+	private IPlayerHandler playerHandler;
+	
+	public ProgressBarSeekListener(ProgressSlider progressBar, IPlayerHandler playerHandler) {
 		super();
 		this.progressBar = progressBar;
+		this.playerHandler = playerHandler;
 	}
 	
 	@Override
@@ -45,7 +49,7 @@ public class ProgressBarSeekListener extends MouseAdapter {
         	
         	// Force new value to avoid jump to next major tick
         	progressBar.setValue(value);
-        	PlayerHandler.getInstance().seekCurrentAudioObject(value);
+        	playerHandler.seekCurrentAudioObject(value);
         }
 	}
 }

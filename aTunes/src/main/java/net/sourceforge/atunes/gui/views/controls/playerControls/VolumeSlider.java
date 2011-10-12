@@ -29,6 +29,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import net.sourceforge.atunes.kernel.modules.player.Volume;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 
@@ -36,7 +37,12 @@ public final class VolumeSlider extends JSlider {
 
     private static final long serialVersionUID = -7802263658163323018L;
 
-    public VolumeSlider(final IState state) {
+    /**
+     * Slider to control volume
+     * @param state
+     * @param playerHandler
+     */
+    public VolumeSlider(final IState state, final IPlayerHandler playerHandler) {
         super();
         setOpaque(false);
         setMinimum(0);
@@ -56,14 +62,14 @@ public final class VolumeSlider extends JSlider {
                     setValue(getValue() - 5);
                 }
 
-                Volume.setVolume(getValue(), state);
+                Volume.setVolume(getValue(), state, playerHandler);
             }
         });
 
         addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-				Volume.setVolume(getValue(), state);
+				Volume.setVolume(getValue(), state, playerHandler);
             }
         });
     }

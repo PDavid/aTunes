@@ -25,6 +25,7 @@ import java.util.List;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
 
@@ -40,9 +41,10 @@ public class SetAlbumNamesProcess extends AbstractChangeTagProcess {
      * @param state
      * @param playListHandler
      * @param repositoryHandler
+     * @param playerHandler
      */
-    SetAlbumNamesProcess(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler) {
-        super(files, state, playListHandler, repositoryHandler);
+    SetAlbumNamesProcess(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
+        super(files, state, playListHandler, repositoryHandler, playerHandler);
     }
 
     @Override

@@ -34,7 +34,6 @@ import net.sourceforge.atunes.gui.frame.FrameState;
 import net.sourceforge.atunes.gui.popup.FadingPopupFactory;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
-import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.model.IAboutDialog;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -43,6 +42,7 @@ import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ISystemTrayHandler;
 import net.sourceforge.atunes.model.IUIHandler;
@@ -112,7 +112,7 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
      *            the new playing
      */
     private void setPlaying(boolean playing) {
-        PlayerHandler.getInstance().setPlaying(playing);
+        getBean(IPlayerHandler.class).setPlaying(playing);
         getBean(IFullScreenHandler.class).setPlaying(playing);
         getBean(ISystemTrayHandler.class).setPlaying(playing);
     }

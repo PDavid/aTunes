@@ -24,7 +24,8 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
+import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -45,7 +46,7 @@ public class VolumeUpAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        PlayerHandler.getInstance().volumeUp();
+        Context.getBean(IPlayerHandler.class).volumeUp();
     }
 
 }

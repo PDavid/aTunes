@@ -30,10 +30,10 @@ import javax.swing.event.TableModelEvent;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
-import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -45,6 +45,8 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
     private IFrame frame;
     
     private IPlayListHandler playListHandler;
+    
+    private IPlayerHandler playerHandler;
 
     /**
      * Instantiates a new play list controller.
@@ -52,10 +54,11 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
      * @param panel
      * @param state
      */
-    PlayListController(PlayListPanel panel, IState state, IFrame frame, IPlayListHandler playListHandler) {
+    PlayListController(PlayListPanel panel, IState state, IFrame frame, IPlayListHandler playListHandler, IPlayerHandler playerHandler) {
         super(panel, state);
         this.frame = frame;
         this.playListHandler = playListHandler;
+        this.playerHandler = playerHandler;
         addBindings();
         addStateBindings();
     }
@@ -65,7 +68,7 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
         final IPlayListTable table = getComponentControlled().getPlayListTable();
 
         // Set key listener for table
-        table.addKeyListener(new PlayListKeyListener(this));
+        table.addKeyListener(new PlayListKeyListener(playerHandler));
 
         PlayListListener listener = new PlayListListener(table, this);
 
@@ -161,7 +164,7 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
     void playSelectedAudioObject() {
         int audioObject = getComponentControlled().getPlayListTable().getSelectedRow();
         playListHandler.setPositionToPlayInVisiblePlayList(audioObject);
-        PlayerHandler.getInstance().playCurrentAudioObject(false);
+        playerHandler.playCurrentAudioObject(false);
     }
 
     /**

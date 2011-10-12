@@ -53,6 +53,7 @@ import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -74,16 +75,17 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
      * @param osManager
      * @param frame
      * @param stateHandler
-     * @param lookAndFeelManager 
+     * @param lookAndFeelManager
+     * @param playerHandler
      */
-    EditPreferencesDialogController(EditPreferencesDialog dialog, IState state, IOSManager osManager, IFrame frame, IStateHandler stateHandler, ILookAndFeelManager lookAndFeelManager) {
+    EditPreferencesDialogController(EditPreferencesDialog dialog, IState state, IOSManager osManager, IFrame frame, IStateHandler stateHandler, ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler) {
         super(dialog, state);
         this.stateHandler = stateHandler;
         this.lookAndFeelManager = lookAndFeelManager;
         panels = new ArrayList<AbstractPreferencesPanel>();
         panels.add(new GeneralPanel(osManager, lookAndFeelManager));
         panels.add(new RepositoryPanel()); 
-        panels.add(new PlayerPanel(osManager, lookAndFeelManager.getCurrentLookAndFeel())); 
+        panels.add(new PlayerPanel(osManager, lookAndFeelManager.getCurrentLookAndFeel(), playerHandler)); 
         panels.add(new NavigatorPanel(lookAndFeelManager.getCurrentLookAndFeel())); 
         panels.add(new PlayListPrefPanel());
         panels.add(new OSDPanel()); 

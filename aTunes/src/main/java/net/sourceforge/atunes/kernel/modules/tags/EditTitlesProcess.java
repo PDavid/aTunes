@@ -27,6 +27,7 @@ import java.util.Map;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
@@ -46,9 +47,10 @@ public class EditTitlesProcess extends AbstractChangeTagProcess {
      * @param state
      * @param playListHandler
      * @param repositoryHandler
+     * @param playerHandler
      */
-    public EditTitlesProcess(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler) {
-        super(files, state, playListHandler, repositoryHandler);
+    public EditTitlesProcess(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
+        super(files, state, playListHandler, repositoryHandler, playerHandler);
     }
 
     @Override

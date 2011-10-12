@@ -26,15 +26,21 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IFullScreenHandler;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
 
 public final class Volume {
 
     private Volume() {
-
     }
 
-    public static void setVolume(int volume, boolean saveVolume, IState state) {
+    /**
+     * @param volume
+     * @param saveVolume
+     * @param state
+     * @param playerHandler
+     */
+    public static void setVolume(int volume, boolean saveVolume, IState state, IPlayerHandler playerHandler) {
         if (volume < 0) {
             volume = 0;
         } else if (volume > 100) {
@@ -44,7 +50,7 @@ public final class Volume {
         if (saveVolume) {
         	state.setVolume(finalVolume);
         }
-        PlayerHandler.getInstance().setVolume(finalVolume);
+        playerHandler.setVolume(finalVolume);
 
         if (!EventQueue.isDispatchThread()) {
             SwingUtilities.invokeLater(new Runnable() {
@@ -58,7 +64,12 @@ public final class Volume {
         }
     }
     
-    public static void setVolume(int volume, IState state) {
-    	setVolume(volume, true, state);
+    /**
+     * @param volume
+     * @param state
+     * @param playerHandler
+     */
+    public static void setVolume(int volume, IState state, IPlayerHandler playerHandler) {
+    	setVolume(volume, true, state, playerHandler);
     }
 }

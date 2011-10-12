@@ -22,7 +22,8 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
+import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class PlayNextAudioObjectAction extends CustomAbstractAction {
@@ -35,7 +36,7 @@ public class PlayNextAudioObjectAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        PlayerHandler.getInstance().playNextAudioObject();
+        Context.getBean(IPlayerHandler.class).playNextAudioObject();
     }
 
     @Override

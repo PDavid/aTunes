@@ -27,11 +27,11 @@ import java.util.Map;
 
 import javax.swing.SwingConstants;
 
+import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.frame.FrameState;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeysConfig;
 import net.sourceforge.atunes.kernel.modules.navigator.RepositoryNavigationView;
-import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.kernel.modules.state.beans.ColorBean;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
@@ -1329,7 +1329,7 @@ public class ApplicationState implements IState {
 	 */
     @Override
 	public String getPlayerEngine() {
-    	return (String) this.stateStore.retrievePreference(Preferences.PLAYER_ENGINE, PlayerHandler.DEFAULT_ENGINE);        
+    	return (String) this.stateStore.retrievePreference(Preferences.PLAYER_ENGINE, Constants.DEFAULT_ENGINE);        
     }
 
     /* (non-Javadoc)

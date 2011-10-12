@@ -32,6 +32,7 @@ import net.sourceforge.atunes.model.EditTagSources;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ITagHandler;
 
@@ -52,7 +53,7 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 
         if (!editTagDialogControllerMap.containsKey(sourceOfEditTagDialog)) {
             boolean arePrevNextButtonsShown = sourceOfEditTagDialog != EditTagSources.NAVIGATOR;
-            editTagDialogControllerMap.put(sourceOfEditTagDialog, new EditTagDialogController(new EditTagDialog(getFrame().getFrame(), arePrevNextButtonsShown, getBean(ILookAndFeelManager.class)), getState(), getOsManager(), getBean(IPlayListHandler.class), getBean(IRepositoryHandler.class)));
+            editTagDialogControllerMap.put(sourceOfEditTagDialog, new EditTagDialogController(new EditTagDialog(getFrame().getFrame(), arePrevNextButtonsShown, getBean(ILookAndFeelManager.class)), getState(), getOsManager(), getBean(IPlayListHandler.class), getBean(IRepositoryHandler.class), getBean(IPlayerHandler.class)));
         }
         return editTagDialogControllerMap.get(sourceOfEditTagDialog);
     }
@@ -64,7 +65,7 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 	
 	@Override
 	public void editFiles(Album a) {
-		new EditTitlesDialogController(new EditTitlesDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class)), getState(), getBean(IPlayListHandler.class), getBean(IRepositoryHandler.class)).editFiles(a);
+		new EditTitlesDialogController(new EditTitlesDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class)), getState(), getBean(IPlayListHandler.class), getBean(IRepositoryHandler.class), getBean(IPlayerHandler.class)).editFiles(a);
 	}
 	
 }

@@ -41,6 +41,7 @@ import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITemporalDiskStorage;
@@ -192,6 +193,8 @@ public abstract class AbstractPlayerEngine {
     private INavigationHandler navigationHandler;
     
     private ITemporalDiskStorage temporalDiskStorage;
+    
+    private IPlayerHandler playerHandler;
     
     /**
      * A thread invoking play in engine
@@ -539,14 +542,14 @@ public abstract class AbstractPlayerEngine {
      * Lower volume
      */
     public final void volumeDown() {
-        Volume.setVolume(state.getVolume() - 5, state);
+        Volume.setVolume(state.getVolume() - 5, state, playerHandler);
     }
 
     /**
      * Raise volume
      */
     public final void volumeUp() {
-        Volume.setVolume(state.getVolume() + 5, state);
+        Volume.setVolume(state.getVolume() + 5, state, playerHandler);
     }
 
     /**
@@ -569,21 +572,24 @@ public abstract class AbstractPlayerEngine {
      * @param playListHandler
      * @param navigationHandler
      * @param temporalDiskStorage
+     * @param playerHandler
      */
     protected AbstractPlayerEngine(IState state, 
     							   IFrame frame, 
     							   IOSManager osManager, 
     							   IPlayListHandler playListHandler, 
     							   INavigationHandler navigationHandler,
-    							   ITemporalDiskStorage temporalDiskStorage) {
+    							   ITemporalDiskStorage temporalDiskStorage,
+    							   IPlayerHandler playerHandler) {
         // To properly init player must call method "initPlayerEngine"
-        this.equalizer = new Equalizer(state);
+        this.equalizer = new Equalizer(state, playerHandler);
         this.state = state;
         this.frame = frame;
         this.osManager = osManager;
         this.playListHandler = playListHandler;
         this.navigationHandler = navigationHandler;
         this.temporalDiskStorage = temporalDiskStorage;
+        this.playerHandler = playerHandler;
     }
 
     /**
@@ -629,7 +635,7 @@ public abstract class AbstractPlayerEngine {
     protected final void setCurrentAudioObjectLength(long currentLength) {
         this.currentAudioObjectLength = currentLength;
         // Update sliders with max length
-        PlayerHandler.getInstance().setAudioObjectLength(currentLength);
+        playerHandler.setAudioObjectLength(currentLength);
         Context.getBean(IFullScreenHandler.class).setAudioObjectLength(currentLength);
     }
 
@@ -642,7 +648,7 @@ public abstract class AbstractPlayerEngine {
     protected final void setCurrentAudioObjectPlayedTime(long playedTime) {
         long actualPlayedTime = playedTime;
         this.currentAudioObjectPlayedTime = actualPlayedTime;
-        PlayerHandler.getInstance().setCurrentAudioObjectTimePlayed(actualPlayedTime, currentAudioObjectLength);
+        playerHandler.setCurrentAudioObjectTimePlayed(actualPlayedTime, currentAudioObjectLength);
         Context.getBean(IFullScreenHandler.class).setCurrentAudioObjectPlayedTime(actualPlayedTime, currentAudioObjectLength);
 
         // Conditions to submit an object:

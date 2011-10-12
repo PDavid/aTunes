@@ -34,6 +34,7 @@ import java.util.StringTokenizer;
 import javax.swing.JSlider;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -46,11 +47,16 @@ public class Equalizer {
 
     private IState state;
     
+    private IPlayerHandler playerHandler;
+    
     /**
      * Instantiates a new equalizer handler.
+     * @param state
+     * @param playerHandler
      */
-    public Equalizer(IState state) {
+    public Equalizer(IState state, IPlayerHandler playerHandler) {
     	this.state = state;
+    	this.playerHandler = playerHandler;
         presets = getPresetsFromBundle();
     }
 
@@ -141,8 +147,8 @@ public class Equalizer {
 
         state.setEqualizerSettings(eqSettings);
 
-        if (PlayerHandler.getInstance().supportsCapability(PlayerEngineCapability.EQUALIZER_CHANGE)) {
-            PlayerHandler.getInstance().applyEqualization(eqSettings);
+        if (playerHandler.supportsCapability(PlayerEngineCapability.EQUALIZER_CHANGE)) {
+        	playerHandler.applyEqualization(eqSettings);
         }
     }
 

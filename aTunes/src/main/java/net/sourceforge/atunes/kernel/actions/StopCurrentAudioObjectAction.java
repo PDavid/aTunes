@@ -22,7 +22,8 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
+import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class StopCurrentAudioObjectAction extends CustomAbstractAction {
@@ -35,7 +36,7 @@ public class StopCurrentAudioObjectAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        PlayerHandler.getInstance().stopCurrentAudioObject(true);
+        Context.getBean(IPlayerHandler.class).stopCurrentAudioObject(true);
     }
 
     @Override

@@ -28,12 +28,12 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
-import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Format;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.utils.Logger;
@@ -66,10 +66,12 @@ public final class TagModifier {
     	
 		private List<ILocalAudioObject> audioFilesEditing;
 		private IPlayListHandler playListHandler;
+		private IPlayerHandler playerHandler;
 
-		private RefreshTagAfterModifyRunnable(List<ILocalAudioObject> audioFilesEditing, IPlayListHandler playListHandler) {
+		private RefreshTagAfterModifyRunnable(List<ILocalAudioObject> audioFilesEditing, IPlayListHandler playListHandler, IPlayerHandler playerHandler) {
 			this.audioFilesEditing = audioFilesEditing;
 			this.playListHandler = playListHandler;
+			this.playerHandler = playerHandler;
 		}
 
 		@Override
@@ -87,7 +89,7 @@ public final class TagModifier {
 		        	
 		        	PlayListEventListeners.selectedAudioObjectHasChanged(audioFilesEditing.get(i));
 
-		            if (PlayerHandler.getInstance().isEnginePlaying()) {
+		            if (playerHandler.isEnginePlaying()) {
 		                Context.getBean(IUIHandler.class).updateTitleBar(audioFilesEditing.get(i));
 		            }
 		        }
@@ -135,12 +137,12 @@ public final class TagModifier {
 
     /**
      * Refresh after tag modify.
-     * 
      * @param audioFilesEditing
      * @param playListHandler
+     * @param playerHandler
      */
-    static void refreshAfterTagModify(final List<ILocalAudioObject> audioFilesEditing, IPlayListHandler playListHandler) {
-        SwingUtilities.invokeLater(new RefreshTagAfterModifyRunnable(audioFilesEditing, playListHandler));
+    static void refreshAfterTagModify(final List<ILocalAudioObject> audioFilesEditing, IPlayListHandler playListHandler, IPlayerHandler playerHandler) {
+        SwingUtilities.invokeLater(new RefreshTagAfterModifyRunnable(audioFilesEditing, playListHandler, playerHandler));
     }
 
     /**
