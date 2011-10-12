@@ -28,7 +28,6 @@ import java.util.concurrent.TimeUnit;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
-import net.sourceforge.atunes.kernel.modules.instances.MultipleInstancesHandler;
 import net.sourceforge.atunes.kernel.modules.notify.NotificationsHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListAudioObject;
 import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
@@ -42,6 +41,7 @@ import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.IGeneralPurposePluginsHandler;
 import net.sourceforge.atunes.model.IHandler;
 import net.sourceforge.atunes.model.IHotkeyHandler;
+import net.sourceforge.atunes.model.IMultipleInstancesHandler;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -151,7 +151,7 @@ public abstract class AbstractHandler implements IHandler {
         	handlers.add((AbstractHandler) Context.getBean(IDeviceHandler.class));
         	handlers.add((AbstractHandler) Context.getBean(IFavoritesHandler.class));
         	handlers.add((AbstractHandler) Context.getBean(IHotkeyHandler.class));
-        	handlers.add(MultipleInstancesHandler.getInstance());
+        	handlers.add((AbstractHandler) Context.getBean(IMultipleInstancesHandler.class));
         	handlers.add((AbstractHandler) Context.getBean(INavigationHandler.class));
             handlers.add(NotificationsHandler.getInstance());
             handlers.add((AbstractHandler) Context.getBean(IPlayerHandler.class));

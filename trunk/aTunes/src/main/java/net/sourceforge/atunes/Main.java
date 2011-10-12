@@ -26,7 +26,7 @@ import javax.swing.RepaintManager;
 
 import net.sourceforge.atunes.gui.debug.CheckThreadViolationRepaintManager;
 import net.sourceforge.atunes.kernel.Kernel;
-import net.sourceforge.atunes.kernel.modules.instances.MultipleInstancesHandler;
+import net.sourceforge.atunes.model.IMultipleInstancesHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -100,9 +100,9 @@ public final class Main {
         ApplicationArguments.saveArguments(arguments);
 
         // First, look up for other instances running
-        if (!arguments.contains(ApplicationArguments.ALLOW_MULTIPLE_INSTANCE) && !MultipleInstancesHandler.getInstance().isFirstInstance()) {
+        if (!arguments.contains(ApplicationArguments.ALLOW_MULTIPLE_INSTANCE) && !Context.getBean(IMultipleInstancesHandler.class).isFirstInstance()) {
             // Is not first aTunes instance running, so send parameters and finalize
-            MultipleInstancesHandler.getInstance().sendArgumentsToFirstInstance(arguments);
+        	Context.getBean(IMultipleInstancesHandler.class).sendArgumentsToFirstInstance(arguments);
         } else {
             // NORMAL APPLICATION STARTUP
 

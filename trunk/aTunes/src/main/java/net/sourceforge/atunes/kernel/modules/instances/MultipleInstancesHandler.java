@@ -20,223 +20,36 @@
 
 package net.sourceforge.atunes.kernel.modules.instances;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.SwingUtilities;
-
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ICommandHandler;
-import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IMultipleInstancesHandler;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.ClosingUtils;
-import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * The Class MultipleInstancesHandler.
  */
-public final class MultipleInstancesHandler extends AbstractHandler {
+public final class MultipleInstancesHandler extends AbstractHandler implements IMultipleInstancesHandler {
 
     /**
      * Used to ignore errors in sockets when closing application
      */
     private boolean closing = false;
 
-    /**
-     * This class is responsible of listening to server socket and accept
-     * connections from "slave" aTunes instances.
-     */
-    class SocketListener extends Thread {
-
-        /** The socket. */
-        private ServerSocket socket;
-
-        /** The queue. */
-        private SongsQueue queue;
-
-        /**
-         * Instantiates a new socket listener.
-         * 
-         * @param serverSocket
-         *            the server socket
-         * @param queue
-         *            the queue
-         */
-        SocketListener(ServerSocket serverSocket, SongsQueue queue) {
-            super();
-            socket = serverSocket;
-            this.queue = queue;
-        }
-
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.lang.Thread#run()
-         */
-        @Override
-        public void run() {
-            Socket s = null;
-            BufferedReader br = null;
-            BufferedOutputStream bos = null;
-            try {
-                while (true) {
-                    s = socket.accept();
-                    // Once a connection arrives, read args
-                    br = new BufferedReader(new InputStreamReader(s.getInputStream()));
-                    String str;
-                    while ((str = br.readLine()) != null) {
-                    	File fileStr = new File(str);
-                        Logger.info(StringUtils.getString("Received connection with content: \"", str, "\""));
-                        if (PlayListIO.isValidPlayList(fileStr)) {
-                            List<String> songs = PlayListIO.read(fileStr, getOsManager());
-                            List<IAudioObject> files = PlayListIO.getAudioObjectsFromFileNamesList(getBean(IRepositoryHandler.class), songs, getBean(IRadioHandler.class));
-                            for (IAudioObject file : files) {
-                                queue.addSong(file);
-                            }
-                        } else if (AudioFile.isValidAudioFile(fileStr)) {
-                        	ILocalAudioObject file = getBean(IRepositoryHandler.class).getFileIfLoaded(str);
-                            if (file == null) {
-                                // file not in repository, and don't add it now
-                                file = new AudioFile(fileStr);
-                            }
-                            queue.addSong(file);
-                        } else if (getBean(ICommandHandler.class).isValidCommand(str)) {
-                        	getBean(ICommandHandler.class).processAndRun(str);
-                        }
-                    }
-                    ClosingUtils.close(br);
-                    ClosingUtils.close(s);
-                    Logger.info(StringUtils.getString("Connection finished"));
-                }
-            } catch (IOException e) {
-                if (!MultipleInstancesHandler.this.isClosing()) {
-                    Logger.error(e);
-                }
-            } finally {
-                ClosingUtils.close(bos);
-                ClosingUtils.close(br);
-                ClosingUtils.close(s);
-            }
-        }
-    }
-
-    /**
-     * This class is responsible of create a queue of songs to be added. When
-     * opening multiple files, OS launch a "slave" aTunes for every file, so
-     * this queue adds songs in the order connections are made, and when no more
-     * connections are received, then add to playlist
-     */
-    static class SongsQueue extends Thread {
-
-        /** The songs queue. */
-        private List<IAudioObject> songsQueue;
-
-        /** The last song added. */
-        private long lastSongAdded = 0;
-        
-        /**
-         * Instantiates a new songs queue.
-         */
-        SongsQueue() {
-            songsQueue = new ArrayList<IAudioObject>();
-        }
-
-        /**
-         * Adds the song.
-         * 
-         * @param song
-         *            the song
-         */
-        public void addSong(IAudioObject song) {
-            songsQueue.add(song);
-            lastSongAdded = System.currentTimeMillis();
-        }
-
-        /*
-         * (non-Javadoc)
-         * 
-         * @see java.lang.Thread#run()
-         */
-        @Override
-        public void run() {
-            try {
-                while (true) {
-                    if (!songsQueue.isEmpty() && lastSongAdded < System.currentTimeMillis() - 1000) {
-                        SwingUtilities.invokeLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                // Get an auxiliar list with songs
-                                ArrayList<IAudioObject> auxList = new ArrayList<IAudioObject>(songsQueue);
-                                // Clear songs queue
-                                songsQueue.clear();
-                                // Add songs
-                                Context.getBean(IPlayListHandler.class).addToPlayListAndPlay(auxList);
-                            }
-                        });
-                    }
-                    // Wait one second always, even if songsQueue was not empty, to avoid entering again until songsQueue is cleared
-                    Thread.sleep(1000);
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
-
-    /** The instance. */
-    private static MultipleInstancesHandler instance;
-
     /** The server socket. */
     private ServerSocket serverSocket;
-
-    /**
-     * Instantiates a new multiple instances handler.
-     */
-    private MultipleInstancesHandler() {
-        // Nothing to do
-    }
-
-    @Override
-    public void applicationStateChanged(IState newState) {
-    }
-
-    @Override
-    protected void initHandler() {
-    }
-
-    @Override
-    public void applicationStarted(List<IAudioObject> playList) {
-    }
-
-    /**
-     * Gets the single instance of MultipleInstancesHandler.
-     * 
-     * @return single instance of MultipleInstancesHandler
-     */
-    public static MultipleInstancesHandler getInstance() {
-        if (instance == null) {
-            instance = new MultipleInstancesHandler();
-        }
-        return instance;
-    }
 
     /**
      * Called when aTunes finishes.
@@ -248,13 +61,8 @@ public final class MultipleInstancesHandler extends AbstractHandler {
         }
     }
 
-    /**
-     * Tries to open a server socket to listen to other aTunes instances.
-     * 
-     * @return true if server socket could be opened
-     */
-
-    public boolean isFirstInstance() {
+    @Override
+	public boolean isFirstInstance() {
         try {
             // Open server socket
             serverSocket = new ServerSocket(Constants.MULTIPLE_INSTANCES_SOCKET);
@@ -264,7 +72,7 @@ public final class MultipleInstancesHandler extends AbstractHandler {
             SongsQueue songsQueue = new SongsQueue();
 
             // Initialize socket listener
-            SocketListener listener = new SocketListener(serverSocket, songsQueue);
+            SocketListener listener = new SocketListener(this, serverSocket, songsQueue, getBean(IOSManager.class), getBean(IRepositoryHandler.class), getBean(IRadioHandler.class), getBean(ICommandHandler.class));
 
             // Start threads
             songsQueue.start();
@@ -283,13 +91,8 @@ public final class MultipleInstancesHandler extends AbstractHandler {
         }
     }
 
-    /**
-     * Opens a client socket and sends arguments to "master".
-     * 
-     * @param args
-     *            the args
-     */
-    public void sendArgumentsToFirstInstance(List<String> args) {
+    @Override
+	public void sendArgumentsToFirstInstance(List<String> args) {
         Socket clientSocket = null;
         PrintWriter output = null;
         try {
@@ -315,17 +118,10 @@ public final class MultipleInstancesHandler extends AbstractHandler {
         }
     }
     
-	@Override
-	public void playListCleared() {}
-
-	@Override
-	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
-
 	/**
 	 * @return the closing
 	 */
-	private boolean isClosing() {
+	boolean isClosing() {
 		return closing;
 	}
-
 }
