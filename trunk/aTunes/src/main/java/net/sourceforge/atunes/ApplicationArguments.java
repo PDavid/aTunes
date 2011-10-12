@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.command.CommandHandler;
+import net.sourceforge.atunes.model.ICommandHandler;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -124,7 +125,7 @@ public final class ApplicationArguments {
         checkAndSave(arguments, USE_CONFIG_FOLDER);
         checkAndSave(arguments, USE_REPOSITORY_CONFIG_FOLDER);
         checkAndSave(arguments, NO_UPDATE);
-        checkAndSave(arguments, CommandHandler.COMMAND_PREFIX);
+        checkAndSave(arguments, Constants.COMMAND_PREFIX);
     }
 
     /**
@@ -145,13 +146,13 @@ public final class ApplicationArguments {
 
     /**
      * Returns a string with saved arguments (not commands)
-     * 
+     * @param commandHandler
      * @return
      */
-    public static String getSavedArguments() {
+    public static String getSavedArguments(ICommandHandler commandHandler) {
         StringBuilder sb = new StringBuilder();
         for (String arg : savedArguments) {
-            if (!CommandHandler.getInstance().isValidCommand(arg)) {
+            if (!commandHandler.isValidCommand(arg)) {
                 sb.append(arg);
                 sb.append(" ");
             }
@@ -161,11 +162,13 @@ public final class ApplicationArguments {
 
     /**
      * Returns a string with saved commands
+     * @param commandHandler
+     * @return
      */
-    public static String getSavedCommands() {
+    public static String getSavedCommands(ICommandHandler commandHandler) {
         StringBuilder sb = new StringBuilder();
         for (String arg : savedArguments) {
-            if (CommandHandler.getInstance().isValidCommand(arg)) {
+            if (commandHandler.isValidCommand(arg)) {
                 sb.append(arg);
                 sb.append(" ");
             }

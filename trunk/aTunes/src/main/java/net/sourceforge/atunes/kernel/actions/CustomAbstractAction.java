@@ -27,9 +27,9 @@ import javax.swing.Icon;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.command.CommandHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ICommand;
+import net.sourceforge.atunes.model.ICommandHandler;
 import net.sourceforge.atunes.model.IState;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -68,7 +68,7 @@ public abstract class CustomAbstractAction extends javax.swing.AbstractAction im
 
     {
         if (!getCommandName().isEmpty()) {
-            CommandHandler.getInstance().registerCommand(this);
+            Context.getBean(ICommandHandler.class).registerCommand(this);
         }
     }
     

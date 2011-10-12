@@ -224,5 +224,11 @@ public final class Constants {
 
     
 	public static final String DEFAULT_ENGINE = "MPlayer";
-    
+
+    /**
+     * Prefix used in all commands when invoked
+     */
+    public static final String COMMAND_PREFIX = "command:";
+
+
 }

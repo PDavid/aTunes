@@ -21,96 +21,49 @@
 package net.sourceforge.atunes.kernel.modules.command;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.ApplicationArguments;
+import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.ShowOSDAction;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ICommand;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ICommandHandler;
 
-public final class CommandHandler extends AbstractHandler {
-
-    /**
-     * Singleton instance
-     */
-    private static CommandHandler instance;
-
-    /**
-     * Prefix used in all commands when invoked
-     */
-    public static final String COMMAND_PREFIX = "command:";
+public final class CommandHandler extends AbstractHandler implements ICommandHandler {
 
     /**
      * Map of commands defined to be used
      */
     private Map<String, ICommand> commands;
 
-    /**
-     * Singleton getter
-     * 
-     * @return
-     */
-    public static CommandHandler getInstance() {
-        if (instance == null) {
-            instance = new CommandHandler();
-        }
-        return instance;
-    }
-
-    /**
-     * Default constructor made private
-     */
-    private CommandHandler() {
-    }
-
-    @Override
-    public void applicationStarted(List<IAudioObject> playList) {
-    }
-    
     @Override
     public void allHandlersInitialized() {
-        runCommands(ApplicationArguments.getSavedCommands());
+        runCommands(ApplicationArguments.getSavedCommands(this));
     }
 
-    /**
-     * Adds a command to the map of commands ready to be used
-     * 
-     * @param cmd
-     */
-    public void registerCommand(ICommand cmd) {
+    @Override
+	public void registerCommand(ICommand cmd) {
         if (commands == null) {
             commands = new HashMap<String, ICommand>();
         }
         commands.put(cmd.getCommandName(), cmd);
     }
 
-    /**
-     * Removed command from map of commands ready to be used
-     * 
-     * @param cmd
-     */
-    public void unregisterCommand(ICommand cmd) {
+    @Override
+	public void unregisterCommand(ICommand cmd) {
         if (commands != null) {
             commands.remove(cmd.getCommandName());
         }
     }
 
-    /**
-     * Parses commandline to search for commands and execute them. Return of
-     * command is ignored This method is created to run commands without sending
-     * it to another instance
-     * 
-     * @param commandline
-     */
-    public void runCommands(String commandline) {
+    @Override
+	public void runCommands(String commandline) {
         if (commands != null) {
             String[] tokens = commandline.split(" ");
             for (String token : tokens) {
@@ -121,45 +74,22 @@ public final class CommandHandler extends AbstractHandler {
         }
     }
 
-    /**
-     * Returns <code>true</code> if the given string is a valid command: has
-     * correct syntax and exists
-     * 
-     * @param commandName
-     * @return
-     */
-    public boolean isValidCommand(String commandName) {
-        return isCommand(commandName) && commands.containsKey(commandName.replaceFirst(COMMAND_PREFIX, ""));
+    @Override
+	public boolean isValidCommand(String commandName) {
+        return isCommand(commandName) && commands.containsKey(commandName.replaceFirst(Constants.COMMAND_PREFIX, ""));
     }
 
-    /**
-     * Returns <code>true</code> if the given string has correct command syntax
-     * 
-     * @param commandName
-     * @return
-     */
-    public boolean isCommand(String commandName) {
-        return commandName.startsWith(COMMAND_PREFIX);
+    @Override
+	public boolean isCommand(String commandName) {
+        return commandName.startsWith(Constants.COMMAND_PREFIX);
     }
 
-    /**
-     * Identifies and executes given command
-     * 
-     * @param commandName
-     */
-    public void processAndRun(String commandName) {
-        ICommand cmd = commands.get(commandName.replaceFirst(COMMAND_PREFIX, ""));
+    @Override
+	public void processAndRun(String commandName) {
+        ICommand cmd = commands.get(commandName.replaceFirst(Constants.COMMAND_PREFIX, ""));
         if (cmd != null) {
             SwingUtilities.invokeLater(new RunCommandRunnable(cmd));
         }
-    }
-
-    @Override
-    public void applicationFinish() {
-    }
-
-    @Override
-    public void applicationStateChanged(IState newState) {
     }
 
     @Override
@@ -172,26 +102,5 @@ public final class CommandHandler extends AbstractHandler {
         Actions.getAction(PlayPreviousAudioObjectAction.class);
         Actions.getAction(ShowOSDAction.class);
     }
-
-    private static class RunCommandRunnable implements Runnable {
-
-        private ICommand command;
-
-        public RunCommandRunnable(ICommand command) {
-            this.command = command;
-        }
-
-        @Override
-        public void run() {
-            command.runCommand();
-        }
-
-    }
-
-	@Override
-	public void playListCleared() {}
-
-	@Override
-	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
 
 }
