@@ -218,7 +218,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     @Override
     public void pluginDeactivated(PluginInfo plugin, Collection<Plugin> createdInstances) {
         for (Plugin instance : createdInstances) {
-        	contextPanels.remove(instance);
+        	contextPanels.remove((IContextPanel)instance);
             removeContextPanel((IContextPanel) instance);
         }
     }

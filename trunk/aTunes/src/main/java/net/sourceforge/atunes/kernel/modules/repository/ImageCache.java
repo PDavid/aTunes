@@ -38,7 +38,7 @@ public class ImageCache extends AbstractCache {
 
     private static ImageCache cache;
     
-    public static ImageCache getImageCache() {
+    public static synchronized ImageCache getImageCache() {
     	if (cache == null) {
     		cache = new ImageCache();
     	}    		
