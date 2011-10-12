@@ -35,6 +35,7 @@ import javax.swing.SwingConstants;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.kernel.modules.notify.NotificationsHandler;
 import net.sourceforge.atunes.model.INotificationEngine;
+import net.sourceforge.atunes.model.INotificationsHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -62,14 +63,18 @@ public final class OSDPanel extends AbstractPreferencesPanel {
     private static final String TOP = I18nUtils.getString("TOP");
     private static final String BOTTOM = I18nUtils.getString("BOTTOM");
 
+    private INotificationsHandler notificationsHandler;
+    
     /**
      * Instantiates a new oSD panel.
+     * @param notificationsHandler
      */
-    public OSDPanel() {
+    public OSDPanel(INotificationsHandler notificationsHandler) {
         super(I18nUtils.getString("OSD"));
+        this.notificationsHandler = notificationsHandler;
         
         JLabel enginesLabel = new JLabel(I18nUtils.getString("NOTIFICATION_ENGINE"));
-        notificationEngines = new JComboBox(NotificationsHandler.getInstance().getNotificationEngines().toArray());
+        notificationEngines = new JComboBox(notificationsHandler.getNotificationEngines().toArray());
         notificationEngines.addItemListener(new ItemListener() {
 			
 			@Override
@@ -257,7 +262,7 @@ public final class OSDPanel extends AbstractPreferencesPanel {
      * @param engine
      */
     private void setNotificationEngine(String engine) {
-    	notificationEngines.setSelectedItem(engine != null ? engine : NotificationsHandler.getInstance().getDefaultEngine().getName());
+    	notificationEngines.setSelectedItem(engine != null ? engine : notificationsHandler.getDefaultEngine().getName());
     	updatePanel((String)notificationEngines.getSelectedItem());
     }
     
@@ -266,13 +271,13 @@ public final class OSDPanel extends AbstractPreferencesPanel {
      * @param notificationEngine
      */
     private void updatePanel(String notificationEngine) {
-		INotificationEngine engine = NotificationsHandler.getInstance().getNotificationEngine(notificationEngine);
+		INotificationEngine engine = notificationsHandler.getNotificationEngine(notificationEngine);
 		if (engine != null) {
 			engineAvailability.setVisible(!engine.isEngineAvailable());
 			engineDescription.setText(engine.getDescription());
 			engineMoreInformation.setText(engine.getUrl(), engine.getUrl());
 			// Show settings for default engine
-			osdSettings.setVisible(engine.getName().equals(NotificationsHandler.getInstance().getDefaultEngine().getName()));
+			osdSettings.setVisible(engine.getName().equals(notificationsHandler.getDefaultEngine().getName()));
 		}
     }
     
@@ -293,7 +298,7 @@ public final class OSDPanel extends AbstractPreferencesPanel {
     @Override
     public void validatePanel() throws PreferencesValidationException {
     	// Notification engine must be available
-    	if (!NotificationsHandler.getInstance().getNotificationEngine((String)notificationEngines.getSelectedItem()).isEngineAvailable()) {
+    	if (!notificationsHandler.getNotificationEngine((String)notificationEngines.getSelectedItem()).isEngineAvailable()) {
     		throw new PreferencesValidationException(I18nUtils.getString("NOTIFICATION_ENGINE_NOT_AVAILABLE"), null);
     	}
     }

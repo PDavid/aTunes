@@ -53,6 +53,7 @@ import net.sourceforge.atunes.model.IHotkeyHandler;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.INotificationsHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
@@ -78,9 +79,10 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
      * @param stateHandler
      * @param lookAndFeelManager
      * @param playerHandler
-     * @param hotkeyHandler 
+     * @param hotkeyHandler
+     * @param notificationsHandler
      */
-    EditPreferencesDialogController(EditPreferencesDialog dialog, IState state, IOSManager osManager, IFrame frame, IStateHandler stateHandler, ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler, IHotkeyHandler hotkeyHandler) {
+    EditPreferencesDialogController(EditPreferencesDialog dialog, IState state, IOSManager osManager, IFrame frame, IStateHandler stateHandler, ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler, IHotkeyHandler hotkeyHandler, INotificationsHandler notificationsHandler) {
         super(dialog, state);
         this.stateHandler = stateHandler;
         this.lookAndFeelManager = lookAndFeelManager;
@@ -90,7 +92,7 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
         panels.add(new PlayerPanel(osManager, lookAndFeelManager.getCurrentLookAndFeel(), playerHandler, hotkeyHandler)); 
         panels.add(new NavigatorPanel(lookAndFeelManager.getCurrentLookAndFeel())); 
         panels.add(new PlayListPrefPanel());
-        panels.add(new OSDPanel()); 
+        panels.add(new OSDPanel(notificationsHandler)); 
         panels.add(new ContextPanel(lookAndFeelManager.getCurrentLookAndFeel())); 
         panels.add(new InternetPanel()); 
         panels.add(new LastFmPanel()); 
