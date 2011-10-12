@@ -35,10 +35,10 @@ import javax.swing.JSlider;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
-import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.model.IEqualizerDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -57,16 +57,20 @@ public final class EqualizerDialog extends AbstractCustomDialog implements IEqua
 
     /** The labels. */
     private JLabel[] labels;
+    
+    private IPlayerHandler playerHandler;
 
     /**
      * Draws the equalizer dialog.
      * 
      * @param frame
      * @param lookAndFeelManager
+     * @param playerHandler
      */
-    public EqualizerDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
+    public EqualizerDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler) {
         // Width required by german translation
         super(frame, 510, 300, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
+        this.playerHandler = playerHandler;
         setTitle(StringUtils.getString(I18nUtils.getString("EQUALIZER"), " - ", Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
         add(getContent());
         setResizable(false);
@@ -91,7 +95,7 @@ public final class EqualizerDialog extends AbstractCustomDialog implements IEqua
      * Updates sliders with current equalizer settings.
      */
     private void setSliderValues() {
-        int[] eqSettings = PlayerHandler.getInstance().getEqualizer().getEqualizerSettingsToShowInGUI();
+        int[] eqSettings = playerHandler.getEqualizer().getEqualizerSettingsToShowInGUI();
         if (eqSettings != null) {
             for (int i = 0; i < 10; i++) {
                 bands[i].setValue(eqSettings[i]);
@@ -123,14 +127,14 @@ public final class EqualizerDialog extends AbstractCustomDialog implements IEqua
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                String[] names = PlayerHandler.getInstance().getEqualizer().getPresetsNames();
+                String[] names = playerHandler.getEqualizer().getPresetsNames();
 
                 // Show selector
                 SelectorDialog selector = new SelectorDialog(EqualizerDialog.this, I18nUtils.getString("LOAD_PRESET"), names, null, lookAndFeel);
                 selector.setVisible(true);
 
                 // Get result
-                Integer[] presets = PlayerHandler.getInstance().getEqualizer().getPresetByNameForShowInGUI(selector.getSelection());
+                Integer[] presets = playerHandler.getEqualizer().getPresetByNameForShowInGUI(selector.getSelection());
 
                 for (int i = 0; i < bands.length; i++) {
                     bands[i].setValue(presets[i]);
@@ -143,7 +147,7 @@ public final class EqualizerDialog extends AbstractCustomDialog implements IEqua
             // When OK is clicked, save settings and change application state
             @Override
             public void actionPerformed(ActionEvent e) {
-                PlayerHandler.getInstance().getEqualizer().setEqualizerFromGUI(bands);
+                playerHandler.getEqualizer().setEqualizerFromGUI(bands);
                 EqualizerDialog.this.setVisible(false);
             }
         });
@@ -154,7 +158,7 @@ public final class EqualizerDialog extends AbstractCustomDialog implements IEqua
             // and restart the current playing media from its's last postion 
             @Override
             public void actionPerformed(ActionEvent e) {
-                PlayerHandler.getInstance().getEqualizer().setEqualizerFromGUI(bands);
+                playerHandler.getEqualizer().setEqualizerFromGUI(bands);
                 //EqualizerDialog.this.setVisible(false);
             }
         });
@@ -206,7 +210,7 @@ public final class EqualizerDialog extends AbstractCustomDialog implements IEqua
         c.fill = GridBagConstraints.SOUTH;
         panel.add(loadPresetButton, c);
 
-        if (!PlayerHandler.getInstance().supportsCapability(PlayerEngineCapability.EQUALIZER_CHANGE)) {
+        if (!playerHandler.supportsCapability(PlayerEngineCapability.EQUALIZER_CHANGE)) {
             c.gridy = 3;
             panel.add(changeWhenStopped, c);
         }

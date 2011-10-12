@@ -27,11 +27,12 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.NormalizationImageIcon;
 import net.sourceforge.atunes.gui.images.WarningImageIcon;
-import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class NormalizeModeAction extends ActionWithColorMutableIcon {
@@ -70,7 +71,7 @@ public class NormalizeModeAction extends ActionWithColorMutableIcon {
     public void actionPerformed(ActionEvent e) {
         boolean isNormalized = !getState().isUseNormalisation();
         getState().setUseNormalisation(isNormalized);
-        PlayerHandler.getInstance().applyNormalization();
+        Context.getBean(IPlayerHandler.class).applyNormalization();
         if (timer.isRunning()) {
             timer.stop();
             putValue(SMALL_ICON, NormalizationImageIcon.getIcon(getBean(ILookAndFeelManager.class).getCurrentLookAndFeel().getPaintForSpecialControls(), getBean(ILookAndFeelManager.class).getCurrentLookAndFeel()));

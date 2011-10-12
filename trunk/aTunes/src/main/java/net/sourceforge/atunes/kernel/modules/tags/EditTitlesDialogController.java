@@ -30,6 +30,7 @@ import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
 
@@ -40,17 +41,22 @@ final class EditTitlesDialogController extends AbstractSimpleController<EditTitl
     private EditTitlesTableModel model;
     private IPlayListHandler playListHandler;
     private IRepositoryHandler repositoryHandler;
+    private IPlayerHandler playerHandler;
 
     /**
      * Instantiates a new edits the titles dialog controller.
      * 
      * @param dialog
      * @param state
+     * @param playListHandler
+     * @param repositoryHandler
+     * @param playerHandler
      */
-    EditTitlesDialogController(EditTitlesDialog dialog, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler) {
+    EditTitlesDialogController(EditTitlesDialog dialog, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
         super(dialog, state);
         this.playListHandler = playListHandler;
         this.repositoryHandler = repositoryHandler;
+        this.playerHandler = playerHandler;
         addBindings();
     }
 
@@ -67,7 +73,7 @@ final class EditTitlesDialogController extends AbstractSimpleController<EditTitl
      */
     protected void editFiles() {
         Map<ILocalAudioObject, String> filesAndTitles = ((EditTitlesTableModel) getComponentControlled().getTable().getModel()).getNewValues();
-        EditTitlesProcess process = new EditTitlesProcess(new ArrayList<ILocalAudioObject>(filesAndTitles.keySet()), getState(), playListHandler, repositoryHandler);
+        EditTitlesProcess process = new EditTitlesProcess(new ArrayList<ILocalAudioObject>(filesAndTitles.keySet()), getState(), playListHandler, repositoryHandler, playerHandler);
         process.setFilesAndTitles(filesAndTitles);
         process.execute();
     }

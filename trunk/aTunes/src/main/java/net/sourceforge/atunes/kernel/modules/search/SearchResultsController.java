@@ -41,6 +41,7 @@ import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.ISearchableObject;
 import net.sourceforge.atunes.model.IState;
 
@@ -57,11 +58,21 @@ final class SearchResultsController extends AbstractSimpleController<SearchResul
     
     private ILookAndFeelManager lookAndFeelManager;
     
-    SearchResultsController(SearchResultsDialog dialog, IState state, IPlayListHandler playListHandler, ILookAndFeelManager lookAndFeelManager) {
+    private IPlayerHandler playerHandler;
+    
+    /**
+     * @param dialog
+     * @param state
+     * @param playListHandler
+     * @param lookAndFeelManager
+     * @param playerHandler
+     */
+    SearchResultsController(SearchResultsDialog dialog, IState state, IPlayListHandler playListHandler, ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler) {
         super(dialog, state);
         this.columnSet = (IColumnSet) Context.getBean("searchResultsColumnSet");
         this.playListHandler = playListHandler;
         this.lookAndFeelManager = lookAndFeelManager;
+        this.playerHandler = playerHandler;
         addBindings();
     }
 
@@ -123,7 +134,7 @@ final class SearchResultsController extends AbstractSimpleController<SearchResul
         if (selectedResults == null) {
             return;
         }
-        Context.getBean(IAudioObjectPropertiesDialogFactory.class).newInstance(selectedResults.get(0), lookAndFeelManager).showDialog();
+        Context.getBean(IAudioObjectPropertiesDialogFactory.class).newInstance(selectedResults.get(0), lookAndFeelManager, playerHandler).showDialog();
     }
 
     /**

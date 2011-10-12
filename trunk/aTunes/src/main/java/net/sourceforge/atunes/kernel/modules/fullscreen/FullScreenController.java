@@ -30,6 +30,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
 
 class FullScreenController extends AbstractSimpleController<FullScreenWindow> {
@@ -39,12 +40,13 @@ class FullScreenController extends AbstractSimpleController<FullScreenWindow> {
 	 * @param frame
 	 * @param osManager
 	 * @param lookAndFeelManager
+	 * @param playerHandler 
 	 */
-	FullScreenController(IState state, IFrame frame, IOSManager osManager, ILookAndFeelManager lookAndFeelManager) {
+	FullScreenController(IState state, IFrame frame, IOSManager osManager, ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler) {
 		super();
         setState(state);
 		JDialog.setDefaultLookAndFeelDecorated(false);
-		FullScreenWindow window = new FullScreenWindow(frame.getFrame(), getState(), frame, osManager, lookAndFeelManager);
+		FullScreenWindow window = new FullScreenWindow(frame.getFrame(), getState(), frame, osManager, lookAndFeelManager, playerHandler);
         JDialog.setDefaultLookAndFeelDecorated(lookAndFeelManager.getCurrentLookAndFeel().isDialogUndecorated());
         setComponentControlled(window);
 	}

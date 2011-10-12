@@ -28,6 +28,7 @@ import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -48,7 +49,7 @@ public class AutoSetTracksAction extends AbstractActionOverSelectedObjects<ILoca
 
     @Override
     protected void performAction(List<ILocalAudioObject> objects) {
-        TagEditionOperations.editTrackNumber(objects, getState(), getBean(IPlayListHandler.class), getBean(IRepositoryHandler.class));
+        TagEditionOperations.editTrackNumber(objects, getState(), getBean(IPlayListHandler.class), getBean(IRepositoryHandler.class), getBean(IPlayerHandler.class));
     }
 
     @Override

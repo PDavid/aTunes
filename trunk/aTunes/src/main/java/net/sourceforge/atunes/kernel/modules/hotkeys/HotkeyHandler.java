@@ -23,14 +23,15 @@ package net.sourceforge.atunes.kernel.modules.hotkeys;
 import java.awt.event.InputEvent;
 import java.util.List;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
 import net.sourceforge.atunes.kernel.modules.notify.NotificationsHandler;
-import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -233,27 +234,27 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
         Logger.debug("Hotkey ", id);
         switch (id) {
         case HOTKEY_NEXT: {
-            PlayerHandler.getInstance().playNextAudioObject();
+            Context.getBean(IPlayerHandler.class).playNextAudioObject();
             break;
         }
         case HOTKEY_PREVIOUS: {
-            PlayerHandler.getInstance().playPreviousAudioObject();
+            Context.getBean(IPlayerHandler.class).playPreviousAudioObject();
             break;
         }
         case HOTKEY_VOLUME_UP: {
-            PlayerHandler.getInstance().volumeUp();
+            Context.getBean(IPlayerHandler.class).volumeUp();
             break;
         }
         case HOTKEY_VOLUME_DOWN: {
-            PlayerHandler.getInstance().volumeDown();
+            Context.getBean(IPlayerHandler.class).volumeDown();
             break;
         }
         case HOTKEY_PAUSE: {
-            PlayerHandler.getInstance().playCurrentAudioObject(true);
+            Context.getBean(IPlayerHandler.class).playCurrentAudioObject(true);
             break;
         }
         case HOTKEY_STOP: {
-            PlayerHandler.getInstance().stopCurrentAudioObject(true);
+            Context.getBean(IPlayerHandler.class).stopCurrentAudioObject(true);
             break;
         }
         case HOTKEY_TOGGLE_WINDOW_VISIBILITY: {

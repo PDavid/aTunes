@@ -21,9 +21,9 @@
 package net.sourceforge.atunes.api;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.PlaybackState;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -39,28 +39,28 @@ public final class PlayerApi {
      * Stops current object being played
      */
     public static void stop() {
-        PlayerHandler.getInstance().stopCurrentAudioObject(true);
+        Context.getBean(IPlayerHandler.class).stopCurrentAudioObject(true);
     }
 
     /**
      * Starts playing previous object
      */
     public static void previous() {
-        PlayerHandler.getInstance().playPreviousAudioObject();
+        Context.getBean(IPlayerHandler.class).playPreviousAudioObject();
     }
 
     /**
      * Starts playing next object
      */
     public static void next() {
-        PlayerHandler.getInstance().playNextAudioObject();
+        Context.getBean(IPlayerHandler.class).playNextAudioObject();
     }
 
     /**
      * Plays or pauses current object
      */
     public static void play() {
-        PlayerHandler.getInstance().playCurrentAudioObject(true);
+        Context.getBean(IPlayerHandler.class).playCurrentAudioObject(true);
     }
 
     /**
@@ -78,7 +78,7 @@ public final class PlayerApi {
      * @return
      */
     public static PlaybackState getCurrentPlaybackState() {
-        return PlayerHandler.getInstance().getPlaybackState();
+        return Context.getBean(IPlayerHandler.class).getPlaybackState();
     }
 
     /**
@@ -87,7 +87,7 @@ public final class PlayerApi {
      * @return
      */
     public static long getCurrentAudioObjectPlayedTime() {
-        return PlayerHandler.getInstance().getCurrentAudioObjectPlayedTime();
+        return Context.getBean(IPlayerHandler.class).getCurrentAudioObjectPlayedTime();
     }
 
     /**
@@ -96,20 +96,20 @@ public final class PlayerApi {
      * @return
      */
     public static long getCurrentAudioObjectLength() {
-        return PlayerHandler.getInstance().getCurrentAudioObjectLength();
+        return Context.getBean(IPlayerHandler.class).getCurrentAudioObjectLength();
     }
 
     /**
      * Raise volume
      */
     public static void volumeUp() {
-        PlayerHandler.getInstance().volumeUp();
+        Context.getBean(IPlayerHandler.class).volumeUp();
     }
 
     /**
      * Lower volume
      */
     public static void volumeDown() {
-        PlayerHandler.getInstance().volumeDown();
+        Context.getBean(IPlayerHandler.class).volumeDown();
     }
 }

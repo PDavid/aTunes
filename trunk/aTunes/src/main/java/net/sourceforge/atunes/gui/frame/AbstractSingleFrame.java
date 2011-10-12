@@ -70,6 +70,7 @@ import net.sourceforge.atunes.model.INavigationTreePanel;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITable;
@@ -124,6 +125,8 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     
     private IRepositoryHandler repositoryHandler;
     
+    private IPlayerHandler playerHandler;
+    
     /**
      * Instantiates a new standard frame.
      */
@@ -160,6 +163,10 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     
     protected ILookAndFeelManager getLookAndFeelManager() {
 		return lookAndFeelManager;
+	}
+    
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
 	}
     
     @Override
@@ -283,7 +290,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     @Override
     public IMenuBar getAppMenuBar() {
         if (appMenuBar == null) {
-            appMenuBar = new ApplicationMenuBar(osManager);
+            appMenuBar = new ApplicationMenuBar(osManager, playerHandler);
         }
         return appMenuBar;
     }
@@ -363,7 +370,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     @Override
     public PlayerControlsPanel getPlayerControls() {
         if (playerControls == null) {
-            playerControls = new PlayerControlsPanel(state, lookAndFeelManager);
+            playerControls = new PlayerControlsPanel(state, lookAndFeelManager, playerHandler);
         }
         return playerControls;
     }

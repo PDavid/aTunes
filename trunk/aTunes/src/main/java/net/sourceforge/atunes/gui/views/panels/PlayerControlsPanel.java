@@ -49,6 +49,7 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.ShuffleButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 
@@ -122,15 +123,18 @@ public final class PlayerControlsPanel extends JPanel {
     
     private ILookAndFeelManager lookAndFeelManager;
     
+    private IPlayerHandler playerHandler;
+    
     /**
      * Instantiates a new player controls panel.
      * @param state
      * @param lookAndFeelManager
      */
-    public PlayerControlsPanel(IState state, ILookAndFeelManager lookAndFeelManager) {
+    public PlayerControlsPanel(IState state, ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler) {
         super(new GridBagLayout());
         this.state = state;
         this.lookAndFeelManager = lookAndFeelManager;
+        this.playerHandler = playerHandler;
         addContent();
         GuiUtils.applyComponentOrientation(this);
     }
@@ -234,7 +238,7 @@ public final class PlayerControlsPanel extends JPanel {
         nextButton = new NextButton(PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
         volumeButton = new MuteButton(STOP_MUTE_BUTTONS_SIZE, state, lookAndFeelManager);
         volumeButton.setText("");
-        volumeSlider = new VolumeSlider(state);
+        volumeSlider = new VolumeSlider(state, playerHandler);
         JPanel panel = getPanelWithPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider, lookAndFeelManager);
         // add a small border to separate from other components
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 0));
@@ -345,8 +349,8 @@ public final class PlayerControlsPanel extends JPanel {
         if (secondaryControls == null) {
             shuffleButton = new ShuffleButton(lookAndFeelManager);
             repeatButton = new RepeatButton(lookAndFeelManager);
-            karaokeButton = new EqualizerButton(lookAndFeelManager);
-            normalizeButton = new NormalizationButton(lookAndFeelManager);
+            karaokeButton = new EqualizerButton(lookAndFeelManager, playerHandler);
+            normalizeButton = new NormalizationButton(lookAndFeelManager, playerHandler);
 
             secondaryControls = new JPanel(new GridBagLayout());
             GridBagConstraints c = new GridBagConstraints();

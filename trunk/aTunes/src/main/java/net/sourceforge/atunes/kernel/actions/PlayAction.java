@@ -26,11 +26,12 @@ import java.util.List;
 
 import javax.swing.KeyStroke;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
-import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class PlayAction extends CustomAbstractAction {
@@ -52,21 +53,21 @@ public class PlayAction extends CustomAbstractAction {
         }
         
         int selAudioObject = getBean(IFrame.class).getPlayListTable().getSelectedRow();
-        int currPlayingAudioObject = getBean(IPlayListHandler.class).getIndexOfAudioObject(PlayerHandler.getInstance().getAudioObject());
+        int currPlayingAudioObject = getBean(IPlayListHandler.class).getIndexOfAudioObject(Context.getBean(IPlayerHandler.class).getAudioObject());
 
         if (selAudioObject != currPlayingAudioObject) {
             // another song selected to play
             if (e == null || e.getSource().getClass().equals(PlayPauseButton.class)) {
                 // action is from PlayPauseButton (or system tray) -> pause
-                PlayerHandler.getInstance().playCurrentAudioObject(true);
+                Context.getBean(IPlayerHandler.class).playCurrentAudioObject(true);
             } else {
                 // play another song
             	getBean(IPlayListHandler.class).setPositionToPlayInVisiblePlayList(selAudioObject);
-                PlayerHandler.getInstance().playCurrentAudioObject(false);
+                Context.getBean(IPlayerHandler.class).playCurrentAudioObject(false);
             }
         } else
             // selected song equals to song being currently played -> pause
-            PlayerHandler.getInstance().playCurrentAudioObject(true);
+            Context.getBean(IPlayerHandler.class).playCurrentAudioObject(true);
     }
 
     @Override

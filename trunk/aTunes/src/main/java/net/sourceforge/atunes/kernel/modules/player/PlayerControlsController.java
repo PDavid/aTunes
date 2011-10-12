@@ -31,6 +31,7 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.Logger;
@@ -46,21 +47,25 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
     private static final int MINUTES_10 = 600000;
     private static final int MINUTES_30 = 1800000;
 
+    private IPlayerHandler playerHandler;
+    
     /**
      * Instantiates a new player controls controller.
      * 
      * @param panel
      * @param state
+     * @param playerHandler
      */
-    PlayerControlsController(PlayerControlsPanel panel, IState state) {
+    PlayerControlsController(PlayerControlsPanel panel, IState state, IPlayerHandler playerHandler) {
         super(panel, state);
+        this.playerHandler = playerHandler;
         addBindings();
         addStateBindings();
     }
 
     @Override
 	public void addBindings() {
-        ProgressBarSeekListener seekListener = new ProgressBarSeekListener(getComponentControlled().getProgressSlider());        
+        ProgressBarSeekListener seekListener = new ProgressBarSeekListener(getComponentControlled().getProgressSlider(), playerHandler);        
         getComponentControlled().getProgressSlider().addMouseListener(seekListener);
     }
 

@@ -30,6 +30,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialogFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -53,7 +54,7 @@ public class ShowPlayListItemInfoAction extends CustomAbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         IAudioObject audioObject = getBean(IPlayListHandler.class).getSelectedAudioObjects().get(0);
-        getBean(IAudioObjectPropertiesDialogFactory.class).newInstance(audioObject, getBean(ILookAndFeelManager.class)).showDialog();
+        getBean(IAudioObjectPropertiesDialogFactory.class).newInstance(audioObject, getBean(ILookAndFeelManager.class), getBean(IPlayerHandler.class)).showDialog();
     }
 
     @Override

@@ -31,6 +31,7 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
@@ -49,14 +50,14 @@ public final class TagEditionOperations {
 
     /**
      * Adds the lyrics.
-     * 
      * @param files
      * @param state
      * @param playListHandler
      * @param repositoryHandler
+     * @param playerHandler
      */
-    public static void addLyrics(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler) {
-        SetLyricsProcess process = new SetLyricsProcess(files, state, playListHandler, repositoryHandler);
+    public static void addLyrics(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
+        SetLyricsProcess process = new SetLyricsProcess(files, state, playListHandler, repositoryHandler, playerHandler);
         process.execute();
     }
 
@@ -67,9 +68,10 @@ public final class TagEditionOperations {
      * @param state
      * @param playListHandler
      * @param repositoryHandler
+     * @param playerHandler
      */
-    private static void editAlbumName(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler) {
-        SetAlbumNamesProcess process = new SetAlbumNamesProcess(files, state, playListHandler, repositoryHandler);
+    private static void editAlbumName(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
+        SetAlbumNamesProcess process = new SetAlbumNamesProcess(files, state, playListHandler, repositoryHandler, playerHandler);
         process.execute();
     }
 
@@ -80,9 +82,10 @@ public final class TagEditionOperations {
      * @param state
      * @param playListHandler
      * @param repositoryHandler
+     * @param playerHandler
      */
-    public static void editGenre(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler) {
-        SetGenresProcess process = new SetGenresProcess(files, state, playListHandler, repositoryHandler);
+    public static void editGenre(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
+        SetGenresProcess process = new SetGenresProcess(files, state, playListHandler, repositoryHandler, playerHandler);
         process.execute();
     }
 
@@ -93,9 +96,10 @@ public final class TagEditionOperations {
      * @param state
      * @param playListHandler
      * @param repositoryHandler
+     * @param playerHandler
      */
-    public static void editCover(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler) {
-        SetCoversProcess process = new SetCoversProcess(files, state, playListHandler, repositoryHandler);
+    public static void editCover(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
+        SetCoversProcess process = new SetCoversProcess(files, state, playListHandler, repositoryHandler, playerHandler);
         process.execute();
     }
 
@@ -106,8 +110,9 @@ public final class TagEditionOperations {
      * @param state
      * @param playListHandler
      * @param repositoryHandler
+     * @param playerHandler
      */
-    public static void editTrackNumber(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler) {
+    public static void editTrackNumber(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
         /*
          * Given an array of files, returns a map containing each file and its
          * track number based on information found on file name.
@@ -122,7 +127,7 @@ public final class TagEditionOperations {
         }
         if (!filesToSet.isEmpty()) {
             // Call process
-            SetTrackNumberProcess process = new SetTrackNumberProcess(filesToSet, state, playListHandler, repositoryHandler);
+            SetTrackNumberProcess process = new SetTrackNumberProcess(filesToSet, state, playListHandler, repositoryHandler, playerHandler);
             process.execute();
         }
     }
@@ -167,8 +172,9 @@ public final class TagEditionOperations {
      * @param state
      * @param playListHandler
      * @param repositoryHandler
+     * @param playerHandler
      */
-    public static void repairAlbumNames(IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler) {
+    public static void repairAlbumNames(IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
         // Show confirmation dialog
         if (Context.getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("REPAIR_ALBUM_NAMES_MESSAGE"))) {
 
@@ -184,7 +190,7 @@ public final class TagEditionOperations {
             }
 
             // Call album name edit
-            editAlbumName(audioFilesToBeRepaired, state, playListHandler, repositoryHandler);
+            editAlbumName(audioFilesToBeRepaired, state, playListHandler, repositoryHandler, playerHandler);
         }
     }
 
@@ -193,8 +199,9 @@ public final class TagEditionOperations {
      * @param state
      * @param playListHandler
      * @param repositoryHandler
+     * @param playerHandler
      */
-    public static void repairGenres(IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler) {
+    public static void repairGenres(IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
         // Show confirmation dialog
         if (Context.getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("REPAIR_GENRES_MESSAGE"))) {
 
@@ -210,7 +217,7 @@ public final class TagEditionOperations {
             }
 
             // Call genre edit
-            editGenre(audioFilesToBeRepaired, state, playListHandler, repositoryHandler);
+            editGenre(audioFilesToBeRepaired, state, playListHandler, repositoryHandler, playerHandler);
         }
 
     }
@@ -220,8 +227,9 @@ public final class TagEditionOperations {
      * @param state
      * @param playListHandler
      * @param repositoryHandler
+     * @param playerHandler
      */
-    public static void repairTrackNumbers(IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler) {
+    public static void repairTrackNumbers(IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
         // Show confirmation dialog
         if (Context.getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("REPAIR_TRACK_NUMBERS_MESSAGE"))) {
 
@@ -237,7 +245,7 @@ public final class TagEditionOperations {
             }
 
             // Call track number edit
-            editTrackNumber(audioFilesToBeRepaired, state, playListHandler, repositoryHandler);
+            editTrackNumber(audioFilesToBeRepaired, state, playListHandler, repositoryHandler, playerHandler);
         }
     }
 }

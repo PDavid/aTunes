@@ -37,6 +37,7 @@ import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IState;
@@ -61,8 +62,17 @@ public class XineEngine extends AbstractPlayerEngine {
     private Timer durationUpdater;
     private final Object xineLock = new Object();
 
-    public XineEngine(IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, INavigationHandler navigationHandler, ITemporalDiskStorage temporalDiskStorage) {
-    	super(state, frame, osManager, playListHandler, navigationHandler, temporalDiskStorage);
+    /**
+     * @param state
+     * @param frame
+     * @param osManager
+     * @param playListHandler
+     * @param navigationHandler
+     * @param temporalDiskStorage
+     * @param playerHandler
+     */
+    public XineEngine(IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, INavigationHandler navigationHandler, ITemporalDiskStorage temporalDiskStorage, IPlayerHandler playerHandler) {
+    	super(state, frame, osManager, playListHandler, navigationHandler, temporalDiskStorage, playerHandler);
 	}
     
     @Override

@@ -39,11 +39,11 @@ import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
-import net.sourceforge.atunes.kernel.modules.player.PlayerEngineManager;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.OperatingSystem;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -60,7 +60,7 @@ public abstract class OperatingSystemAdapter {
 	/**
 	 * @param systemType
 	 * @param osManager
-	 * @param lookAndFeelManager
+	 * @param playerHandler
 	 */
 	public OperatingSystemAdapter(OperatingSystem systemType, IOSManager osManager) {
 		this.systemType = systemType;
@@ -306,7 +306,7 @@ public abstract class OperatingSystemAdapter {
 	 * Called when player engine is found (after searching or entering manually)
 	 */
 	public void playerEngineFound() {
-		PlayerEngineManager.playerEngineFound();
+		Context.getBean(IPlayerHandler.class).initializeAndCheck();
 	}
 
 	/**

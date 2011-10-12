@@ -26,6 +26,7 @@ import java.util.List;
 import net.sourceforge.atunes.kernel.modules.process.AbstractProcess;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -47,6 +48,8 @@ public abstract class AbstractChangeTagProcess extends AbstractProcess {
     private IPlayListHandler playListHandler;
     
     private IRepositoryHandler repositoryHandler;
+    
+    private IPlayerHandler playerHandler;
 
     /**
      * Constructor, initialized with AudioFiles to be changed
@@ -55,12 +58,14 @@ public abstract class AbstractChangeTagProcess extends AbstractProcess {
      * @param state
      * @param playListHandler
      * @param repositoryHandler
+     * @param playerHandler
      */
-    protected AbstractChangeTagProcess(List<ILocalAudioObject> filesToChange, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler) {
+    protected AbstractChangeTagProcess(List<ILocalAudioObject> filesToChange, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
     	super(state);
         this.filesToChange = filesToChange;
         this.playListHandler = playListHandler;
         this.repositoryHandler = repositoryHandler;
+        this.playerHandler = playerHandler;
     }
 
     @Override
@@ -92,7 +97,7 @@ public abstract class AbstractChangeTagProcess extends AbstractProcess {
             errors = true;
         }
         // Refresh swing components
-        TagModifier.refreshAfterTagModify(filesToChange, playListHandler);
+        TagModifier.refreshAfterTagModify(filesToChange, playListHandler, playerHandler);
 
         repositoryHandler.endTransaction();
         

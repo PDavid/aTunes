@@ -23,25 +23,21 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import net.sourceforge.atunes.kernel.modules.player.PlayerHandler;
+import net.sourceforge.atunes.model.IPlayerHandler;
 
 /**
  * The listener interface for receiving playList key events.
  */
 public final class PlayListKeyListener extends KeyAdapter {
 
-    //	/**
-    //	 * Play list controller
-    //	 */
-    //	private PlayListController controller;
-
+	private IPlayerHandler playerHandler;
+	
     /**
      * Constructor
-     * 
-     * @param controller
+     * @param playerHandler
      */
-    PlayListKeyListener(PlayListController controller) {
-        //this.controller = controller;
+    PlayListKeyListener(IPlayerHandler playerHandler) {
+        this.playerHandler = playerHandler;
     }
 
     @Override
@@ -54,7 +50,7 @@ public final class PlayListKeyListener extends KeyAdapter {
 
         // If user presses SPACE -> Pause actually playing song
         if (e.getKeyChar() == KeyEvent.VK_SPACE) {
-            PlayerHandler.getInstance().playCurrentAudioObject(true);
+        	playerHandler.playCurrentAudioObject(true);
         }
 
     }
