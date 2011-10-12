@@ -42,6 +42,7 @@ import net.sourceforge.atunes.model.ArtistViewMode;
 import net.sourceforge.atunes.model.ColumnBean;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IFrameState;
+import net.sourceforge.atunes.model.IHotkeysConfig;
 import net.sourceforge.atunes.model.ILyricsEngineInfo;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateStore;
@@ -1680,7 +1681,7 @@ public class ApplicationState implements IState {
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setHotkeysConfig(net.sourceforge.atunes.kernel.modules.hotkeys.HotkeysConfig)
 	 */
     @Override
-	public void setHotkeysConfig(HotkeysConfig hotkeysConfig) {
+	public void setHotkeysConfig(IHotkeysConfig hotkeysConfig) {
     	this.stateStore.storePreference(Preferences.HOTKEYS_CONFIG, hotkeysConfig);
     }
     

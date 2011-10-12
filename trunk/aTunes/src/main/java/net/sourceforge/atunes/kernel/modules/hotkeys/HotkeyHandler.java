@@ -21,15 +21,17 @@
 package net.sourceforge.atunes.kernel.modules.hotkeys;
 
 import java.awt.event.InputEvent;
-import java.util.List;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
 import net.sourceforge.atunes.kernel.modules.notify.NotificationsHandler;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IErrorDialog;
+import net.sourceforge.atunes.model.IHotkey;
+import net.sourceforge.atunes.model.IHotkeyHandler;
+import net.sourceforge.atunes.model.IHotkeyListener;
+import net.sourceforge.atunes.model.IHotkeysConfig;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
@@ -41,9 +43,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * Handler for global hotkeys keys.
  */
-public final class HotkeyHandler extends AbstractHandler implements IHotkeyListener {
-
-    private static HotkeyHandler instance;
+public final class HotkeyHandler extends AbstractHandler implements IHotkeyListener, IHotkeyHandler {
 
     private static final int RIGHT_ARROW = 39;
     private static final int LEFT_ARROW = 37;
@@ -63,7 +63,7 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
     private boolean supported;
     private boolean enabled;
     private AbstractHotkeys hotkeys;
-    private HotkeysConfig hotkeysConfig;
+    private IHotkeysConfig hotkeysConfig;
 
     private static final HotkeysConfig DEFAULT_HOTKEYS_CONFIG;
     static {
@@ -81,12 +81,6 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
         DEFAULT_HOTKEYS_CONFIG.putHotkey(new Hotkey(HOTKEY_SHOW_OSD, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK, 'I', I18nUtils.getString("SHOW_OSD")));
     }
 
-    /**
-     * Instantiates a new hotkey handler.
-     */
-    private HotkeyHandler() {
-    }
-
     @Override
     protected void initHandler() {
         hotkeys = AbstractHotkeys.createInstance(this);
@@ -101,10 +95,6 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
     }
 
     @Override
-    public void applicationStarted(List<IAudioObject> playList) {
-    }
-    
-    @Override
     public void allHandlersInitialized() {
         // Hotkeys
         if (getState().isEnableHotkeys()) {
@@ -114,33 +104,21 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
         }
     }
 
-    /**
-     * Checks if hotkeys are supported.
-     * 
-     * @return if hotkeys are supported
-     */
-    public boolean areHotkeysSupported() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.hotkeys.IHotkeysHandler#areHotkeysSupported()
+	 */
+    @Override
+	public boolean areHotkeysSupported() {
         return supported;
     }
 
-    /**
-     * Gets the single instance of HotkeyHandler.
-     * 
-     * @return single instance of HotkeyHandler
-     */
-    public static synchronized HotkeyHandler getInstance() {
-        if (instance == null) {
-            instance = new HotkeyHandler();
-        }
-        return instance;
-    }
-
-    /**
-     * Disables hotkeys.
-     */
-    public void disableHotkeys() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.hotkeys.IHotkeysHandler#disableHotkeys()
+	 */
+    @Override
+	public void disableHotkeys() {
         if (areHotkeysSupported() && enabled) {
-            for (Hotkey entry : hotkeysConfig) {
+            for (IHotkey entry : hotkeysConfig) {
                 hotkeys.unregisterHotkey(entry);
             }
             hotkeys.deactivate();
@@ -148,13 +126,11 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
         }
     }
 
-    /**
-     * Enables hotkeys with a given configuration,
-     * 
-     * @param hc
-     *            the hotkeys configuration
-     */
-    public void enableHotkeys(HotkeysConfig hc) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.hotkeys.IHotkeysHandler#enableHotkeys(net.sourceforge.atunes.model.IHotkeysConfig)
+	 */
+    @Override
+	public void enableHotkeys(IHotkeysConfig hc) {
         disableHotkeys();
         if (hc == null) {
             this.hotkeysConfig = DEFAULT_HOTKEYS_CONFIG;
@@ -164,14 +140,13 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
         registerAndActivateHotkeys();
     }
 
-    /**
-     * Returns the default hotkey configuration
-     * 
-     * @return the default hotkey configuration
-     */
-    public HotkeysConfig getDefaultHotkeysConfiguration() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.hotkeys.IHotkeysHandler#getDefaultHotkeysConfiguration()
+	 */
+    @Override
+	public IHotkeysConfig getDefaultHotkeysConfiguration() {
         HotkeysConfig config = new HotkeysConfig();
-        for (Hotkey hotkey : DEFAULT_HOTKEYS_CONFIG) {
+        for (IHotkey hotkey : DEFAULT_HOTKEYS_CONFIG) {
             config.putHotkey(new Hotkey(hotkey.getId(), hotkey.getMod(), hotkey.getKey(), hotkey.getDescription()));
         }
         return config;
@@ -180,7 +155,7 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
     private void registerAndActivateHotkeys() {
         if (areHotkeysSupported()) {
             boolean allHotKeysRegistered = true;
-            for (Hotkey entry : hotkeysConfig) {
+            for (IHotkey entry : hotkeysConfig) {
                 if (!hotkeys.registerHotkey(entry)) {
                     allHotKeysRegistered = false;
                     break;
@@ -193,7 +168,7 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
                 Logger.info("Hotkeys activated successfully");
             } else {
                 // If not, then unregister hotkeys
-                for (Hotkey entry : hotkeysConfig) {
+                for (IHotkey entry : hotkeysConfig) {
                     hotkeys.unregisterHotkey(entry);
                 }
 
@@ -216,20 +191,22 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
         }
     }
 
-    /**
-     * Returns the current hotkeys configuration
-     * 
-     * @return the current hotkeys configuration
-     */
-    public HotkeysConfig getHotkeysConfig() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.hotkeys.IHotkeysHandler#getHotkeysConfig()
+	 */
+    @Override
+	public IHotkeysConfig getHotkeysConfig() {
         HotkeysConfig config = new HotkeysConfig();
-        for (Hotkey hotkey : hotkeysConfig) {
+        for (IHotkey hotkey : hotkeysConfig) {
             config.putHotkey(new Hotkey(hotkey.getId(), hotkey.getMod(), hotkey.getKey(), hotkey.getDescription()));
         }
         return config;
     }
 
-    @Override
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.hotkeys.IHotkeysHandler#onHotKey(int)
+	 */
+	@Override
     public void onHotKey(final int id) {
         Logger.debug("Hotkey ", id);
         switch (id) {
@@ -284,10 +261,4 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
         }
     }
     
-	@Override
-	public void playListCleared() {}
-
-	@Override
-	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
-
 }

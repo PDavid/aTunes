@@ -1053,7 +1053,7 @@ public abstract class AbstractStateMock implements IState {
 	}
 
 	@Override
-	public void setHotkeysConfig(HotkeysConfig hotkeysConfig) {
+	public void setHotkeysConfig(IHotkeysConfig hotkeysConfig) {
 		
 		
 	}

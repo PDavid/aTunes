@@ -24,6 +24,8 @@ import javax.swing.SwingUtilities;
 
 import jxgrabkey.HotkeyConflictException;
 import jxgrabkey.JXGrabKey;
+import net.sourceforge.atunes.model.IHotkey;
+import net.sourceforge.atunes.model.IHotkeyListener;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -56,7 +58,7 @@ public class X11Hotkeys extends AbstractHotkeys implements jxgrabkey.HotkeyListe
     }
 
     @Override
-    public boolean registerHotkey(Hotkey hotkey) {
+    public boolean registerHotkey(IHotkey hotkey) {
         try {
             JXGrabKey.getInstance().registerAwtHotkey(hotkey.getId(), hotkey.getMod(), hotkey.getKey());
         } catch (HotkeyConflictException e) {
@@ -67,7 +69,7 @@ public class X11Hotkeys extends AbstractHotkeys implements jxgrabkey.HotkeyListe
     }
 
     @Override
-    public void unregisterHotkey(Hotkey hotkey) {
+    public void unregisterHotkey(IHotkey hotkey) {
         JXGrabKey.getInstance().unregisterHotKey(hotkey.getId());
     }
 
