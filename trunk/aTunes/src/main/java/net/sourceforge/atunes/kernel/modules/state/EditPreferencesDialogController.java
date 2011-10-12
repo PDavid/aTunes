@@ -56,6 +56,7 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INotificationsHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayerHandler;
+import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -81,8 +82,11 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
      * @param playerHandler
      * @param hotkeyHandler
      * @param notificationsHandler
+     * @param pluginsHandler
      */
-    EditPreferencesDialogController(EditPreferencesDialog dialog, IState state, IOSManager osManager, IFrame frame, IStateHandler stateHandler, ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler, IHotkeyHandler hotkeyHandler, INotificationsHandler notificationsHandler) {
+    EditPreferencesDialogController(EditPreferencesDialog dialog, IState state, IOSManager osManager, IFrame frame, IStateHandler stateHandler, 
+    		ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler, IHotkeyHandler hotkeyHandler, 
+    		INotificationsHandler notificationsHandler, IPluginsHandler pluginsHandler) {
         super(dialog, state);
         this.stateHandler = stateHandler;
         this.lookAndFeelManager = lookAndFeelManager;
@@ -100,7 +104,7 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
         panels.add(new RadioPanel()); 
         panels.add(new PodcastFeedPanel(osManager)); 
         panels.add(new ImportExportPanel(lookAndFeelManager.getCurrentLookAndFeel()));
-    	panels.add(new PluginsPanel(dialog, frame, lookAndFeelManager.getCurrentLookAndFeel(), state));
+    	panels.add(new PluginsPanel(dialog, frame, lookAndFeelManager.getCurrentLookAndFeel(), state, pluginsHandler));
     	
         for (AbstractPreferencesPanel panel : panels) {
         	panel.setState(state);

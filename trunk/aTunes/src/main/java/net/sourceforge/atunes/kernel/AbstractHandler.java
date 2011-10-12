@@ -28,7 +28,6 @@ import java.util.concurrent.TimeUnit;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListAudioObject;
-import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ICommandHandler;
 import net.sourceforge.atunes.model.IContextHandler;
@@ -46,6 +45,7 @@ import net.sourceforge.atunes.model.INotificationsHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
+import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
 import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -157,7 +157,7 @@ public abstract class AbstractHandler implements IHandler {
             handlers.add((AbstractHandler) Context.getBean(IPlayerHandler.class));
             handlers.add((AbstractHandler) Context.getBean(IFilterHandler.class));
             handlers.add((AbstractHandler) Context.getBean(IPlayListHandler.class));
-            handlers.add(PluginsHandler.getInstance());
+            handlers.add((AbstractHandler) Context.getBean(IPluginsHandler.class));
             handlers.add((AbstractHandler) Context.getBean(IRadioHandler.class));
             handlers.add((AbstractHandler) Context.getBean(IRepositoryHandler.class));
             handlers.add((AbstractHandler) Context.getBean(ISearchHandler.class));

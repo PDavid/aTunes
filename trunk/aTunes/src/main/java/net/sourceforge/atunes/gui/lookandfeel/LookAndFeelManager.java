@@ -30,14 +30,15 @@ import java.util.Map;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.Kernel;
-import net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler;
 import net.sourceforge.atunes.kernel.modules.state.beans.FontBean;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LookAndFeelBean;
 import net.sourceforge.atunes.utils.Logger;
@@ -80,7 +81,7 @@ public final class LookAndFeelManager implements PluginListener, ILookAndFeelMan
     @Override
     public void pluginActivated(PluginInfo plugin) {
         try {
-        	ILookAndFeel laf = (ILookAndFeel) PluginsHandler.getInstance().getNewInstance(plugin);
+        	ILookAndFeel laf = (ILookAndFeel) Context.getBean(IPluginsHandler.class).getNewInstance(plugin);
             lookAndFeels.put(laf.getName(), laf.getClass());
         } catch (PluginSystemException e) {
             Logger.error(e);
