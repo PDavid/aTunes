@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes;
 
+import java.util.Collection;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -40,6 +42,10 @@ public class Context {
 	
 	public static Object getBean(String name) {
 		return context.getBean(name);
+	}
+	
+	public static <T> Collection<T> getBeans(Class<T> beanType) {
+		return context.getBeansOfType(beanType).values();
 	}
 	
 	

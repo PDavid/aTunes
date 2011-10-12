@@ -338,12 +338,13 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 
     @Override
     public void applicationStarted(List<IAudioObject> playList) {
-        applyRepositoryFromCache();
     }
     
     @Override
     public void allHandlersInitialized() {
-    	if (repository == null) {
+        applyRepositoryFromCache();
+
+        if (repository == null) {
     		applyRepository();
     	}
         getBean(ISearchHandler.class).registerSearchableObject(RepositorySearchableObject.getInstance());

@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -29,37 +28,11 @@ import java.util.concurrent.TimeUnit;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListAudioObject;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.ICommandHandler;
-import net.sourceforge.atunes.model.IContextHandler;
-import net.sourceforge.atunes.model.IDeviceHandler;
-import net.sourceforge.atunes.model.IFavoritesHandler;
-import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.IFullScreenHandler;
-import net.sourceforge.atunes.model.IGeneralPurposePluginsHandler;
 import net.sourceforge.atunes.model.IHandler;
-import net.sourceforge.atunes.model.IHotkeyHandler;
-import net.sourceforge.atunes.model.IMultipleInstancesHandler;
-import net.sourceforge.atunes.model.INavigationHandler;
-import net.sourceforge.atunes.model.INotificationsHandler;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IPluginsHandler;
-import net.sourceforge.atunes.model.IPodcastFeedHandler;
-import net.sourceforge.atunes.model.IRadioHandler;
-import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.model.IRipperHandler;
-import net.sourceforge.atunes.model.ISearchHandler;
-import net.sourceforge.atunes.model.ISmartPlayListHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
-import net.sourceforge.atunes.model.IStatisticsHandler;
-import net.sourceforge.atunes.model.ISystemTrayHandler;
-import net.sourceforge.atunes.model.ITagHandler;
-import net.sourceforge.atunes.model.IUIHandler;
-import net.sourceforge.atunes.model.IUpdateHandler;
-import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.model.PlaybackState;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -70,8 +43,6 @@ public abstract class AbstractHandler implements IHandler {
 	private IFrame frame;
 	
 	private IOSManager osManager;
-	
-	private static List<AbstractHandler> handlers;
 	
 	/**
 	 * Returns access to state of application
@@ -102,8 +73,8 @@ public abstract class AbstractHandler implements IHandler {
 	}
 	
 	public static void setFrameForHandlers(IFrame frame) {
-		for (AbstractHandler handler : getHandlers()) {
-			handler.frame = frame;
+		for (AbstractHandler handler : Context.getBeans(AbstractHandler.class)) {
+			handler.setFrame(frame);
 		}
 	}
 	
@@ -129,51 +100,15 @@ public abstract class AbstractHandler implements IHandler {
      * 
      * @param handler
      */
-    private static final void registerHandler(AbstractHandler handler) {
-        ApplicationLifeCycleListeners.addApplicationLifeCycleListener(handler);
-        FavoritesListeners.addFavoritesListener(handler);
-        Context.getBean(IStateHandler.class).addStateChangeListener(handler);
-        DeviceListeners.addDeviceListener(handler);
-        PlaybackStateListeners.addPlaybackStateListener(handler);
-        PlayListEventListeners.addPlayListEventListener(handler);
+    public final void registerHandler() {
+        ApplicationLifeCycleListeners.addApplicationLifeCycleListener(this);
+        FavoritesListeners.addFavoritesListener(this);
+        Context.getBean(IStateHandler.class).addStateChangeListener(this);
+        DeviceListeners.addDeviceListener(this);
+        PlaybackStateListeners.addPlaybackStateListener(this);
+        PlayListEventListeners.addPlayListEventListener(this);
     }
 
-    private static synchronized List<AbstractHandler> getHandlers() {
-    	if (handlers == null) {
-            // Instance handlers
-        	// TODO: Add here every new Handler
-        	handlers = new ArrayList<AbstractHandler>();
-        	handlers.add((AbstractHandler) Context.getBean(IStateHandler.class));
-        	handlers.add((AbstractHandler) Context.getBean(IPodcastFeedHandler.class));
-        	handlers.add((AbstractHandler) Context.getBean(IContextHandler.class));
-        	handlers.add((AbstractHandler) Context.getBean(IRipperHandler.class));
-        	handlers.add((AbstractHandler) Context.getBean(ICommandHandler.class));
-        	handlers.add((AbstractHandler) Context.getBean(IDeviceHandler.class));
-        	handlers.add((AbstractHandler) Context.getBean(IFavoritesHandler.class));
-        	handlers.add((AbstractHandler) Context.getBean(IHotkeyHandler.class));
-        	handlers.add((AbstractHandler) Context.getBean(IMultipleInstancesHandler.class));
-        	handlers.add((AbstractHandler) Context.getBean(INavigationHandler.class));
-            handlers.add((AbstractHandler) Context.getBean(INotificationsHandler.class));
-            handlers.add((AbstractHandler) Context.getBean(IPlayerHandler.class));
-            handlers.add((AbstractHandler) Context.getBean(IFilterHandler.class));
-            handlers.add((AbstractHandler) Context.getBean(IPlayListHandler.class));
-            handlers.add((AbstractHandler) Context.getBean(IPluginsHandler.class));
-            handlers.add((AbstractHandler) Context.getBean(IRadioHandler.class));
-            handlers.add((AbstractHandler) Context.getBean(IRepositoryHandler.class));
-            handlers.add((AbstractHandler) Context.getBean(ISearchHandler.class));
-            handlers.add((AbstractHandler) Context.getBean(IUpdateHandler.class));
-            handlers.add((AbstractHandler) Context.getBean(IUIHandler.class));
-            handlers.add((AbstractHandler) Context.getBean(ISmartPlayListHandler.class));
-            handlers.add((AbstractHandler) Context.getBean(IStatisticsHandler.class));
-            handlers.add((AbstractHandler) Context.getBean(ISystemTrayHandler.class));
-            handlers.add((AbstractHandler) Context.getBean(IGeneralPurposePluginsHandler.class));
-            handlers.add((AbstractHandler) Context.getBean(IWebServicesHandler.class));
-            handlers.add((AbstractHandler) Context.getBean(ITagHandler.class));
-            handlers.add((AbstractHandler) Context.getBean(IFullScreenHandler.class));
-    	}
-    	return handlers;
-    }
-    
     /**
      * Creates and registers all defined handlers
      * @param state
@@ -182,10 +117,7 @@ public abstract class AbstractHandler implements IHandler {
 
         ExecutorService executorService = Executors.newFixedThreadPool(3);
         // Register handlers
-        for (AbstractHandler handler : getHandlers()) {
-        	handler.setState(state);
-        	handler.setOsManager(Context.getBean(IOSManager.class));
-            registerHandler(handler);
+        for (AbstractHandler handler : Context.getBeans(AbstractHandler.class)) {
             Runnable task = handler.getPreviousInitializationTask();
             if (task != null) {
                 executorService.submit(task);
@@ -193,7 +125,7 @@ public abstract class AbstractHandler implements IHandler {
         }
 
         // Initialize handlers
-        for (final AbstractHandler handler : getHandlers()) {
+        for (final AbstractHandler handler : Context.getBeans(AbstractHandler.class)) {
             executorService.submit(new Runnable() {
             	@Override
             	public void run() {
