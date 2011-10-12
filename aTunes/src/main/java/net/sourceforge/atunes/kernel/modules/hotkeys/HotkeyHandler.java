@@ -32,6 +32,7 @@ import net.sourceforge.atunes.model.IHotkey;
 import net.sourceforge.atunes.model.IHotkeyHandler;
 import net.sourceforge.atunes.model.IHotkeyListener;
 import net.sourceforge.atunes.model.IHotkeysConfig;
+import net.sourceforge.atunes.model.INotificationsHandler;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
@@ -243,7 +244,7 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
             break;
         }
         case HOTKEY_SHOW_OSD: {
-            NotificationsHandler.getInstance().showNotification(getBean(IPlayListHandler.class).getCurrentAudioObjectFromCurrentPlayList());
+            getBean(INotificationsHandler.class).showNotification(getBean(IPlayListHandler.class).getCurrentAudioObjectFromCurrentPlayList());
             break;
         }
         default: {

@@ -43,6 +43,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFavorites;
 import net.sourceforge.atunes.model.IHotkeyHandler;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.INotificationsHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IRadio;
@@ -566,6 +567,6 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
     @Override
 	public void editPreferences() {
     	EditPreferencesDialog dialog = new EditPreferencesDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class));
-    	new EditPreferencesDialogController(dialog, getState(), getOsManager(), getFrame(), this, getBean(ILookAndFeelManager.class), getBean(IPlayerHandler.class), getBean(IHotkeyHandler.class)).start();
+    	new EditPreferencesDialogController(dialog, getState(), getOsManager(), getFrame(), this, getBean(ILookAndFeelManager.class), getBean(IPlayerHandler.class), getBean(IHotkeyHandler.class), getBean(INotificationsHandler.class)).start();
     }
 }

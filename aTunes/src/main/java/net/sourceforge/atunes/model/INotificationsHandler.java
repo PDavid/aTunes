@@ -18,28 +18,38 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.actions;
+package net.sourceforge.atunes.model;
 
-import java.awt.event.ActionEvent;
+import java.util.List;
 
-import net.sourceforge.atunes.model.INotificationsHandler;
-import net.sourceforge.atunes.model.IPlayListHandler;
 
-public class ShowOSDAction extends CustomAbstractAction {
+/**
+ * Responsible of showing notifications to user
+ * @author alex
+ *
+ */
+public interface INotificationsHandler extends IHandler {
 
-    private static final long serialVersionUID = 646318992035897920L;
+	/**
+	 * Show notification
+	 */
+	public void showNotification(IAudioObject audioObject);
 
-    ShowOSDAction() {
-        super();
-    }
+	/**
+	 * @return set of names of notification engines, default is the first one
+	 */
+	public List<String> getNotificationEngines();
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        getBean(INotificationsHandler.class).showNotification(getBean(IPlayListHandler.class).getCurrentAudioObjectFromCurrentPlayList());
-    }
+	/**
+	 * @param name
+	 * @return notification engine by name
+	 */
+	public INotificationEngine getNotificationEngine(String name);
 
-    @Override
-    public String getCommandName() {
-        return "showOSD";
-    }
+	/**
+	 * Returns default notification engine used by application
+	 * @return
+	 */
+	public INotificationEngine getDefaultEngine();
+
 }

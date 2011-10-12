@@ -37,13 +37,12 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INotificationEngine;
+import net.sourceforge.atunes.model.INotificationsHandler;
 import net.sourceforge.atunes.model.IPlaybackStateListener;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.PlaybackState;
 
-public final class NotificationsHandler extends AbstractHandler implements IPlaybackStateListener {
-
-    private static NotificationsHandler instance;
+public final class NotificationsHandler extends AbstractHandler implements IPlaybackStateListener, INotificationsHandler {
 
     private static Map<String, INotificationEngine> engines = new HashMap<String, INotificationEngine>();
     
@@ -59,16 +58,6 @@ public final class NotificationsHandler extends AbstractHandler implements IPlay
 
     private static Set<String> availableEngines = new HashSet<String>();
     
-    private NotificationsHandler() {
-    }
-
-    public static NotificationsHandler getInstance() {
-        if (instance == null) {
-            instance = new NotificationsHandler();
-        }
-        return instance;
-    }
-
     /**
      * @return notification engine to use
      */
@@ -104,10 +93,6 @@ public final class NotificationsHandler extends AbstractHandler implements IPlay
     	}
     };
 
-    @Override
-    public void applicationStarted(List<IAudioObject> playList) {
-    }
-
     /**
      * Adds a new notification engine available
      * @param engine
@@ -118,11 +103,8 @@ public final class NotificationsHandler extends AbstractHandler implements IPlay
     	}
     }
     
-    
-    /**
-     * Show notification
-     */
-    public void showNotification(IAudioObject audioObject) {
+    @Override
+	public void showNotification(IAudioObject audioObject) {
     	// only show notification if not in full screen
     	if (!getBean(IFullScreenHandler.class).isVisible()) {
     		getNotificationEngine().showNotification(audioObject);
@@ -138,14 +120,6 @@ public final class NotificationsHandler extends AbstractHandler implements IPlay
     }
     
 	@Override
-	public void playListCleared() {}
-
-	@Override
-	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
-	
-	/**
-	 * @return set of names of notification engines, default is the first one
-	 */
 	public List<String> getNotificationEngines() {
 		List<String> names = new ArrayList<String>(engines.keySet());
 		Collections.sort(names, new Comparator<String>() {
@@ -162,14 +136,12 @@ public final class NotificationsHandler extends AbstractHandler implements IPlay
 		return names;
 	}
 
-	/**
-	 * @param name
-	 * @return notification engine by name
-	 */
+	@Override
 	public INotificationEngine getNotificationEngine(String name) {
 		return engines.get(name);
 	}
 	
+	@Override
 	public INotificationEngine getDefaultEngine() {
 		return defaultEngine;
 	}
