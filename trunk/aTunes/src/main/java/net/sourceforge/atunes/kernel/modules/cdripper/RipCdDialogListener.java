@@ -33,6 +33,7 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.gui.views.dialogs.RipCdDialog;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.IRipperHandler;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -51,6 +52,8 @@ final class RipCdDialogListener extends KeyAdapter implements ActionListener {
     private IOSManager osManager;
     
     private IRepositoryHandler repositoryHandler;
+    
+    private IRipperHandler ripperHandler;
 
     /**
      * Instantiates a new rip cd dialog listener.
@@ -60,11 +63,12 @@ final class RipCdDialogListener extends KeyAdapter implements ActionListener {
      * @param osManager
      * @param repositoryHandler
      */
-    public RipCdDialogListener(RipCdDialog ripCdDialog, RipCdDialogController ripCdDialogController, IOSManager osManager, IRepositoryHandler repositoryHandler) {
+    public RipCdDialogListener(RipCdDialog ripCdDialog, RipCdDialogController ripCdDialogController, IOSManager osManager, IRepositoryHandler repositoryHandler, IRipperHandler ripperHandler) {
         this.ripCdDialog = ripCdDialog;
         this.ripCdDialogController = ripCdDialogController;
         this.osManager = osManager;
-        this.repositoryHandler = repositoryHandler;         
+        this.repositoryHandler = repositoryHandler;
+        this.ripperHandler = ripperHandler;
     }
 
     @Override
@@ -95,12 +99,12 @@ final class RipCdDialogListener extends KeyAdapter implements ActionListener {
             }
         } else if (e.getSource() == ripCdDialog.getFormat()) {
             // Fill quality combo
-            String[] qualities = RipperHandler.getInstance().getEncoderQualities((String) ripCdDialog.getFormat().getSelectedItem());
+            String[] qualities = ripperHandler.getEncoderQualities((String) ripCdDialog.getFormat().getSelectedItem());
             ripCdDialog.getQualityComboBox().setEnabled(qualities.length > 0);
             ripCdDialog.getQualityComboBox().setModel(new DefaultComboBoxModel(qualities));
-            ripCdDialog.getQualityComboBox().setSelectedItem(RipperHandler.getInstance().getEncoderDefaultQuality((String) ripCdDialog.getFormat().getSelectedItem()));
+            ripCdDialog.getQualityComboBox().setSelectedItem(ripperHandler.getEncoderDefaultQuality((String) ripCdDialog.getFormat().getSelectedItem()));
         } else if (e.getSource() == ripCdDialog.getTitlesButton()) {
-            RipperHandler.getInstance().fillSongTitles(ripCdDialog.getArtistTextField().getText(), ripCdDialog.getAlbumTextField().getText());
+        	ripperHandler.fillSongTitles(ripCdDialog.getArtistTextField().getText(), ripCdDialog.getAlbumTextField().getText());
         }
     }
 

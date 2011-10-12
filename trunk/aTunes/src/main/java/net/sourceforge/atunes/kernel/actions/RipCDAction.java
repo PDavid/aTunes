@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
-import net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler;
+import net.sourceforge.atunes.model.IRipperHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -43,12 +43,12 @@ public class RipCDAction extends CustomAbstractAction {
 
     @Override
     public void setEnabled(boolean newValue) {    	
-    	super.setEnabled(RipperHandler.getInstance().isRipSupported() && newValue);
+    	super.setEnabled(getBean(IRipperHandler.class).isRipSupported() && newValue);
     }
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        RipperHandler.getInstance().startCdRipper();
+    	getBean(IRipperHandler.class).startCdRipper();
     }
 
     @Override

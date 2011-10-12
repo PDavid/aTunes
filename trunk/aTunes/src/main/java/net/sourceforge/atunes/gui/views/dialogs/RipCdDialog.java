@@ -42,7 +42,6 @@ import javax.swing.table.AbstractTableModel;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
-import net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -361,7 +360,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
         quality.setMinimumSize(new Dimension(150, 20));
         JLabel filePatternLabel = new JLabel(I18nUtils.getString("FILEPATTERN"));
 
-        filePattern = new JComboBox(RipperHandler.FILENAMEPATTERN);
+        filePattern = new JComboBox();
         JLabel dir = new JLabel(I18nUtils.getString("FOLDER"));
 
         folderName = new CustomTextField();

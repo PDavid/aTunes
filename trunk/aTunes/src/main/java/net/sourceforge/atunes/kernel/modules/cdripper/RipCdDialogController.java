@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.modules.cdripper;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import javax.swing.DefaultComboBoxModel;
 
@@ -31,7 +31,6 @@ import net.sourceforge.atunes.gui.autocomplete.AutoCompleteDecorator;
 import net.sourceforge.atunes.gui.views.dialogs.RipCdDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
-import net.sourceforge.atunes.kernel.modules.cdripper.encoders.Encoder;
 import net.sourceforge.atunes.kernel.modules.tags.AbstractTag;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -58,6 +57,8 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
     private IOSManager osManager;
     
     private IRepositoryHandler repositoryHandler;
+    
+    private RipperHandler ripperHandler;
 
     /** The error correction setting for cd ripping */
     //private boolean useCdErrorCorrection;
@@ -68,11 +69,13 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
      * @param state
      * @param osManager
      * @param repositoryHandler
+     * @param ripperHandler
      */
-    RipCdDialogController(RipCdDialog dialogControlled, IState state, IOSManager osManager, IRepositoryHandler repositoryHandler) {
+    RipCdDialogController(RipCdDialog dialogControlled, IState state, IOSManager osManager, IRepositoryHandler repositoryHandler, RipperHandler ripperHandler) {
         super(dialogControlled, state);
         this.osManager = osManager;
-        this.repositoryHandler = repositoryHandler;         
+        this.repositoryHandler = repositoryHandler;
+        this.ripperHandler = ripperHandler;
         addBindings();
     }
 
@@ -84,18 +87,15 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
         Collections.sort(genresSorted);
         getComponentControlled().getGenreComboBox().setModel(new ListComboBoxModel<String>(genresSorted));
 
-        // Get the encoders
-        Map<String, Encoder> encoders = RipperHandler.getInstance().getAvailableEncoders();
-
-        // We must process "List encoderList" to display it correctly in the dropdown menu. Encoders don't work otherwise.
-        String[] avaibleEncoders = encoders.keySet().toArray(new String[encoders.size()]);
+        Set<String> encoders = ripperHandler.getAvailableEncodersNames();
+        String[] avaibleEncoders = encoders.toArray(new String[encoders.size()]);
 
         getComponentControlled().getFormat().setModel(new DefaultComboBoxModel(avaibleEncoders));
 
         // Add autocompletion
         AutoCompleteDecorator.decorate(getComponentControlled().getGenreComboBox());
 
-        RipCdDialogListener listener = new RipCdDialogListener(getComponentControlled(), this, osManager, repositoryHandler);
+        RipCdDialogListener listener = new RipCdDialogListener(getComponentControlled(), this, osManager, repositoryHandler, ripperHandler);
         getComponentControlled().getOk().addActionListener(listener);
         getComponentControlled().getCancel().addActionListener(listener);
         getComponentControlled().getFolderSelectionButton().addActionListener(listener);
@@ -283,10 +283,11 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
             getComponentControlled().getFolderName().setText(path);
         }
         getComponentControlled().getTitlesButton().setEnabled(false);
-        getComponentControlled().getFormat().setSelectedItem(RipperHandler.getInstance().getEncoder());
-        getComponentControlled().getQualityComboBox().setSelectedItem(RipperHandler.getInstance().getEncoderQuality());
-        getComponentControlled().getUseCdErrorCorrection().setSelected(RipperHandler.getInstance().getCdErrorCorrection());
-        getComponentControlled().getFilePattern().setSelectedItem(RipperHandler.getInstance().getFileNamePattern());
+        getComponentControlled().getFormat().setSelectedItem(ripperHandler.getEncoderName());
+        getComponentControlled().getQualityComboBox().setSelectedItem(getState().getEncoderQuality());
+        getComponentControlled().getUseCdErrorCorrection().setSelected(getState().isUseCdErrorCorrection());
+        getComponentControlled().getFilePattern().setModel(new DefaultComboBoxModel(ripperHandler.getFilenamePatterns()));
+        getComponentControlled().getFilePattern().setSelectedItem(getState().getCdRipperFileNamePattern());
         setFolder(null);
         getComponentControlled().setTableData(cdInfo);
         getComponentControlled().updateTrackNames(cdInfo.getTitles());

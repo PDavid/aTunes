@@ -27,7 +27,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler;
 import net.sourceforge.atunes.kernel.modules.command.CommandHandler;
 import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeyHandler;
@@ -50,6 +49,7 @@ import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
 import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.IRipperHandler;
 import net.sourceforge.atunes.model.ISearchHandler;
 import net.sourceforge.atunes.model.ISmartPlayListHandler;
 import net.sourceforge.atunes.model.IState;
@@ -146,7 +146,7 @@ public abstract class AbstractHandler implements IHandler {
         	handlers.add((AbstractHandler) Context.getBean(IStateHandler.class));
         	handlers.add((AbstractHandler) Context.getBean(IPodcastFeedHandler.class));
         	handlers.add((AbstractHandler) Context.getBean(IContextHandler.class));
-        	handlers.add(RipperHandler.getInstance());
+        	handlers.add((AbstractHandler) Context.getBean(IRipperHandler.class));
         	handlers.add(CommandHandler.getInstance());
         	handlers.add((AbstractHandler) Context.getBean(IDeviceHandler.class));
         	handlers.add((AbstractHandler) Context.getBean(IFavoritesHandler.class));
