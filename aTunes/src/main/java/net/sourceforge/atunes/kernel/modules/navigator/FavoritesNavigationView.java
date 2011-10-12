@@ -58,6 +58,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IFavoritesHandler;
+import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -87,9 +88,10 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
      * @param navigationHandler
      * @param frame
      * @param lookAndFeelManager
+     * @param filterHandler
      */
-    public FavoritesNavigationView(IState state, INavigationHandler navigationHandler, IFrame frame, ILookAndFeelManager lookAndFeelManager) {
-    	super(state, navigationHandler, frame, lookAndFeelManager);
+    public FavoritesNavigationView(IState state, INavigationHandler navigationHandler, IFrame frame, ILookAndFeelManager lookAndFeelManager, IFilterHandler filterHandler) {
+    	super(state, navigationHandler, frame, lookAndFeelManager, filterHandler);
 	}
     
     public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {

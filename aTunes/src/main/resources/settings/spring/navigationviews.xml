@@ -22,7 +22,8 @@
 		<constructor-arg ref="state" />
 		<constructor-arg ref="navigationHandler"/>
 		<constructor-arg ref="frame"/>
-		<constructor-arg ref="lookAndFeelManager"/>		
+		<constructor-arg ref="lookAndFeelManager"/>
+		<constructor-arg ref="filterHandler"/>				
 	</bean>
 
 	<bean id="repositoryNavigationView"

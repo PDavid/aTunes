@@ -50,6 +50,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFilter;
+import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.IInputDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -1209,7 +1210,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         if (playListController == null) {
             PlayListPanel panel = null;
             panel = getFrame().getPlayListPanel();
-            playListController = new PlayListController(panel, getState(), getFrame(), this, playerHandler);
+            playListController = new PlayListController(panel, getState(), getFrame(), this, playerHandler, getBean(IFilterHandler.class));
         }
         return playListController;
     }

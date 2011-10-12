@@ -54,6 +54,7 @@ import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
+import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -85,9 +86,10 @@ public final class PodcastNavigationView extends AbstractNavigationView {
      * @param frame
      * @param podcastFeedHandler
      * @param lookAndFeelManager
+     * @param filterHandler 
      */
-    public PodcastNavigationView(IState state, AbstractCustomNavigatorColumnSet columnSet, INavigationHandler navigationHandler, IFrame frame, IPodcastFeedHandler podcastFeedHandler, ILookAndFeelManager lookAndFeelManager) {
-    	super(state, navigationHandler, frame, lookAndFeelManager);
+    public PodcastNavigationView(IState state, AbstractCustomNavigatorColumnSet columnSet, INavigationHandler navigationHandler, IFrame frame, IPodcastFeedHandler podcastFeedHandler, ILookAndFeelManager lookAndFeelManager, IFilterHandler filterHandler) {
+    	super(state, navigationHandler, frame, lookAndFeelManager, filterHandler);
     	this.columnSet = columnSet;
     	this.podcastFeedHandler = podcastFeedHandler;
 	}

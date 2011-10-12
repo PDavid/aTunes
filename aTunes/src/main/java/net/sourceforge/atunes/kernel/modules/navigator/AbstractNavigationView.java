@@ -53,11 +53,11 @@ import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedObjects;
 import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedTreeObjects;
 import net.sourceforge.atunes.kernel.actions.ActionWithColorMutableIcon;
 import net.sourceforge.atunes.kernel.actions.Actions;
-import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
+import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -127,28 +127,18 @@ public abstract class AbstractNavigationView implements INavigationView {
     private ITreeGeneratorFactory treeGeneratorFactory;
 
 	private ILookAndFeelManager lookAndFeelManager;
+	
+	private IFilterHandler filterHandler;
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#getTitle()
-	 */
     @Override
 	public abstract String getTitle();
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#getIcon()
-	 */
     @Override
 	public abstract IColorMutableImageIcon getIcon();
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#getTooltip()
-	 */
     @Override
 	public abstract String getTooltip();
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#getTree()
-	 */
     @Override
 	public abstract JTree getTree();
     
@@ -161,17 +151,11 @@ public abstract class AbstractNavigationView implements INavigationView {
     	return decorators;
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#setDecorators(java.util.List)
-	 */
     @Override
 	public void setDecorators(List<AbstractTreeCellDecorator> decorators) {
 		this.decorators = decorators;
 	}
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#getTreePopupMenu()
-	 */
     @Override
 	public abstract JPopupMenu getTreePopupMenu();
 
@@ -180,18 +164,17 @@ public abstract class AbstractNavigationView implements INavigationView {
      * @param navigationHandler
      * @param frame
      * @param lookAndFeelManager
+     * @param filterHandler
      */
-    public AbstractNavigationView(IState state, INavigationHandler navigationHandler, IFrame frame, ILookAndFeelManager lookAndFeelManager) {
+    public AbstractNavigationView(IState state, INavigationHandler navigationHandler, IFrame frame, ILookAndFeelManager lookAndFeelManager, IFilterHandler filterHandler) {
     	this.state = state;
     	this.navigationHandler = navigationHandler;
     	this.frame = frame;
     	this.treeGeneratorFactory = Context.getBean(ITreeGeneratorFactory.class);
     	this.lookAndFeelManager = lookAndFeelManager;
+    	this.filterHandler = filterHandler;
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#getTreeGeneratorFactory()
-	 */
     @Override
 	public ITreeGeneratorFactory getTreeGeneratorFactory() {
 		return treeGeneratorFactory;
@@ -469,8 +452,8 @@ public abstract class AbstractNavigationView implements INavigationView {
             List<IAudioObject> audioObjectsSelected = new ArrayList<IAudioObject>();
             if (paths != null) {
                 for (TreePath path : paths) {
-                    audioObjectsSelected.addAll(getAudioObjectForTreeNode((DefaultMutableTreeNode) path.getLastPathComponent(), getCurrentViewMode(), FilterHandler.getInstance()
-                            .isFilterSelected(navigationHandler.getTreeFilter()) ? FilterHandler.getInstance().getFilter() : null));
+                    audioObjectsSelected.addAll(getAudioObjectForTreeNode((DefaultMutableTreeNode) path.getLastPathComponent(), getCurrentViewMode(), 
+                    		filterHandler.isFilterSelected(navigationHandler.getTreeFilter()) ? filterHandler.getFilter() : null));
                     AudioObjectComparator.sort(audioObjectsSelected);
                 }
             }

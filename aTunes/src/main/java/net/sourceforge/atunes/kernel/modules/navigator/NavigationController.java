@@ -59,12 +59,12 @@ import net.sourceforge.atunes.kernel.actions.ShowArtistsInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowFoldersInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowGenresInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowYearsInNavigatorAction;
-import net.sourceforge.atunes.kernel.modules.filter.FilterHandler;
 import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IController;
+import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -161,6 +161,8 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
     
     private ILookAndFeelManager lookAndFeelManager;
     
+    private IFilterHandler filterHandler;
+    
     /**
      * Instantiates a new navigation controller.
      * @param treePanel
@@ -171,8 +173,9 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
      * @param taskService
      * @param lookAndFeelManager
      * @param repositoryHandler
+     * @param filterHandler 
      */
-    NavigationController(INavigationTreePanel treePanel, INavigationTablePanel tablePanel, IState state, IOSManager osManager, INavigationHandler navigationHandler, ITaskService taskService, ILookAndFeelManager lookAndFeelManager, IRepositoryHandler repositoryHandler) {
+    NavigationController(INavigationTreePanel treePanel, INavigationTablePanel tablePanel, IState state, IOSManager osManager, INavigationHandler navigationHandler, ITaskService taskService, ILookAndFeelManager lookAndFeelManager, IRepositoryHandler repositoryHandler, IFilterHandler filterHandler) {
         this.navigationTreePanel = treePanel;
         this.navigationTablePanel = tablePanel;
         this.state = state;
@@ -180,6 +183,7 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
         this.navigationHandler = navigationHandler;
         this.taskService = taskService;
         this.lookAndFeelManager = lookAndFeelManager;
+        this.filterHandler = filterHandler;
         addBindings();
         repositoryHandler.addAudioFilesRemovedListener(this);
         this.navigatorColumnSet = (IColumnSet) Context.getBean("navigatorColumnSet");
@@ -330,7 +334,7 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
      */
     public List<? extends IAudioObject> getAudioObjectsForTreeNode(Class<? extends INavigationView> navigationViewClass, DefaultMutableTreeNode node) {
         List<? extends IAudioObject> audioObjects = navigationHandler.getView(navigationViewClass).getAudioObjectForTreeNode(node, state.getViewMode(),
-                FilterHandler.getInstance().isFilterSelected(navigationHandler.getTreeFilter()) ? FilterHandler.getInstance().getFilter() : null);
+                filterHandler.isFilterSelected(navigationHandler.getTreeFilter()) ? filterHandler.getFilter() : null);
 
         IColumnSet columnSet = navigationHandler.getCurrentView().getCustomColumnSet();
         if (columnSet == null) {
@@ -468,16 +472,16 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
      * @return
      */
     private List<IAudioObject> filterNavigationTable(List<IAudioObject> audioObjects) {
-        if (!FilterHandler.getInstance().isFilterSelected(navigationHandler.getTableFilter())) {
+        if (!filterHandler.isFilterSelected(navigationHandler.getTableFilter())) {
             return audioObjects;
         }
 
         if (navigationHandler.getCurrentView().isUseDefaultNavigatorColumnSet()) {
             // Use column set filtering
-            return navigatorColumnSet.filterAudioObjects(audioObjects, FilterHandler.getInstance().getFilter());
+            return navigatorColumnSet.filterAudioObjects(audioObjects, filterHandler.getFilter());
         } else {
             // Use custom filter
-            return navigationHandler.getCurrentView().getCustomColumnSet().filterAudioObjects(audioObjects, FilterHandler.getInstance().getFilter());
+            return navigationHandler.getCurrentView().getCustomColumnSet().filterAudioObjects(audioObjects, filterHandler.getFilter());
         }
     }
 

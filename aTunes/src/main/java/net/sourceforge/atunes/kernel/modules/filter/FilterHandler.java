@@ -21,46 +21,16 @@
 package net.sourceforge.atunes.kernel.modules.filter;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFilter;
+import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 
-public final class FilterHandler extends AbstractHandler {
-
-    private final class AllFilter implements IFilter {
-    	
-		@Override
-        public String getName() {
-            return "ALL";
-        }
-
-		@Override
-        public String getDescription() {
-            return I18nUtils.getString("ALL");
-        }
-
-		@Override
-        public void applyFilter(String filterString) {
-            for (IFilter filter : getFilters().values()) {
-                if (!filter.equals(this)) {
-                    filter.applyFilter(filterString);
-                }
-            }
-        }
-	}
-
-	/**
-     * Singleton instance
-     */
-    private static FilterHandler instance;
+public final class FilterHandler extends AbstractHandler implements IFilterHandler {
 
     /**
      * Controller
@@ -75,7 +45,7 @@ public final class FilterHandler extends AbstractHandler {
     /**
      * Filter for all current filters at the same time
      */
-    private IFilter allFilter = new AllFilter();
+    private IFilter allFilter = new AllFilter(this);
 
     /**
      * Selected filter (by default all)
@@ -88,28 +58,6 @@ public final class FilterHandler extends AbstractHandler {
     private String currentFilterText;
 
     /**
-     * Private constructor
-     */
-    private FilterHandler() {
-    }
-
-    @Override
-    protected void initHandler() {
-    }
-
-    /**
-     * Getter for singleton instance
-     * 
-     * @return
-     */
-    public static FilterHandler getInstance() {
-        if (instance == null) {
-            instance = new FilterHandler();
-        }
-        return instance;
-    }
-
-    /**
      * Adds a new filter
      * 
      * @param filter
@@ -120,32 +68,20 @@ public final class FilterHandler extends AbstractHandler {
         getToolBarFilterController().addFilter(filter);
     }
 
-    /**
-     * Removes a filter
-     * 
-     * @param filter
-     */
-    public void removeFilter(IFilter filter) {
+    @Override
+	public void removeFilter(IFilter filter) {
     	getFilters().remove(filter.getName());
         // Update UI to hide filter
         getToolBarFilterController().removeFilter(filter.getName());
     }
 
-    /**
-     * Applies given filter which is the current filter
-     * 
-     * @param filter
-     */
-    public void applyFilter(String filter) {
+    @Override
+	public void applyFilter(String filter) {
         this.currentFilterText = filter;
         Logger.debug("Applying filter: ", filter);
         getFilters().get(selectedFilter).applyFilter(filter);
     }
 
-    @Override
-    public void applicationStarted(List<IAudioObject> playList) {
-    }
-    
     @Override
     public void allHandlersInitialized() {
         addFilter(allFilter);
@@ -162,48 +98,22 @@ public final class FilterHandler extends AbstractHandler {
     }
 
     @Override
-    public void applicationFinish() {
-    }
-
-    @Override
-    public void applicationStateChanged(IState newState) {
-    }
-
-    /**
-     * @param selectedFilter
-     *            the selectedFilter to set
-     */
-    public void setSelectedFilter(String selectedFilter) {
+	public void setSelectedFilter(String selectedFilter) {
         this.selectedFilter = selectedFilter;
     }
 
-    /**
-     * Returns filter
-     * 
-     * @return
-     */
-    public String getFilter() {
+    @Override
+	public String getFilter() {
         return this.currentFilterText;
     }
 
-    /**
-     * Returns <code>true</code> if given filter is selected (or "all" is
-     * selected) and filter text is not null
-     * 
-     * @param filter
-     * @return
-     */
-    public boolean isFilterSelected(IFilter filter) {
+    @Override
+	public boolean isFilterSelected(IFilter filter) {
         return (this.selectedFilter.equals(allFilter.getName()) || this.selectedFilter.equals(filter.getName())) && getFilter() != null;
     }
 
-    /**
-     * Sets filter enabled or disabled
-     * 
-     * @param filter
-     * @param enabled
-     */
-    public void setFilterEnabled(IFilter filter, boolean enabled) {
+    @Override
+	public void setFilterEnabled(IFilter filter, boolean enabled) {
         // If filter is selected and must be disabled change to "all" and set filter null
         if (this.selectedFilter.equals(filter.getName()) && !enabled) {
             this.selectedFilter = allFilter.getName();
@@ -221,7 +131,7 @@ public final class FilterHandler extends AbstractHandler {
      */
     private FilterController getToolBarFilterController() {
         if (toolBarFilterController == null) {
-            toolBarFilterController = new FilterController(getFrame().getPlayerControls().getFilterPanel(), getState());
+            toolBarFilterController = new FilterController(getFrame().getPlayerControls().getFilterPanel(), getState(), this);
         }
         return toolBarFilterController;
     }
@@ -230,17 +140,10 @@ public final class FilterHandler extends AbstractHandler {
      * Return filters
      * @return
      */
-    private Map<String, IFilter> getFilters() {
+    Map<String, IFilter> getFilters() {
     	if (filters == null) {
     		filters = new HashMap<String, IFilter>();
     	}
     	return filters;
     }
-    
-	@Override
-	public void playListCleared() {}
-
-	@Override
-	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
-
 }
