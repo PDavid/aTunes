@@ -18,42 +18,32 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.actions;
+package net.sourceforge.atunes.kernel.modules.cdripper;
 
-import java.awt.event.ActionEvent;
+import java.io.File;
 
-import net.sourceforge.atunes.model.IRipperHandler;
-import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.model.IRipperProgressDialog;
 import net.sourceforge.atunes.utils.StringUtils;
 
-/**
- * This action start rip dialog
- * 
- * @author alex
- * 
- */
-public class RipCDAction extends CustomAbstractAction {
+final class DecoderProgressListener implements ProgressListener {
+    private final IRipperProgressDialog dialog;
 
-    private static final long serialVersionUID = -362457188090138933L;
-
-    RipCDAction() {
-        super(StringUtils.getString(I18nUtils.getString("RIP_CD"), "..."));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("RIP_CD"));
+    DecoderProgressListener(IRipperProgressDialog dialog) {
+        this.dialog = dialog;
     }
 
     @Override
-    public void setEnabled(boolean newValue) {    	
-    	super.setEnabled(getBean(IRipperHandler.class).isRipSupported() && newValue);
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-    	getBean(IRipperHandler.class).startCdRipper();
+    public void notifyFileFinished(File f) {
+        // Nothing to do
     }
 
     @Override
-    public String getCommandName() {
-        return "cdripper";
+    public void notifyProgress(int percent) {
+        dialog.setDecodeProgressValue(percent);
+        if (percent > 0) {
+            dialog.setDecodeProgressValue(StringUtils.getString(percent, "%"));
+        } else {
+            dialog.setDecodeProgressValue("");
+        }
     }
-
 }

@@ -18,42 +18,34 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.actions;
+package net.sourceforge.atunes.kernel.modules.cdripper;
 
-import java.awt.event.ActionEvent;
+import java.io.File;
+import java.util.List;
 
-import net.sourceforge.atunes.model.IRipperHandler;
-import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.model.IRipperProgressDialog;
 import net.sourceforge.atunes.utils.StringUtils;
 
-/**
- * This action start rip dialog
- * 
- * @author alex
- * 
- */
-public class RipCDAction extends CustomAbstractAction {
+final class TotalProgressListener implements ProgressListener {
+    private final IRipperProgressDialog dialog;
+    private final List<File> filesImported;
 
-    private static final long serialVersionUID = -362457188090138933L;
-
-    RipCDAction() {
-        super(StringUtils.getString(I18nUtils.getString("RIP_CD"), "..."));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("RIP_CD"));
+    TotalProgressListener(IRipperProgressDialog dialog, List<File> filesImported) {
+        this.dialog = dialog;
+        this.filesImported = filesImported;
     }
 
     @Override
-    public void setEnabled(boolean newValue) {    	
-    	super.setEnabled(getBean(IRipperHandler.class).isRipSupported() && newValue);
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-    	getBean(IRipperHandler.class).startCdRipper();
+    public void notifyFileFinished(File file) {
+        filesImported.add(file);
     }
 
     @Override
-    public String getCommandName() {
-        return "cdripper";
+    public void notifyProgress(int value) {
+        dialog.setTotalProgressValue(value);
+        dialog.setDecodeProgressValue(0);
+        dialog.setDecodeProgressValue(StringUtils.getString(0, "%"));
+        dialog.setEncodeProgressValue(0);
+        dialog.setEncodeProgressValue(StringUtils.getString(0, "%"));
     }
-
 }

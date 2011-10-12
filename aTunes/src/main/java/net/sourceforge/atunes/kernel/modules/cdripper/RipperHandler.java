@@ -32,248 +32,50 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.RipCdDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.RipCDAction;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
-import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.NoCdListener;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
 import net.sourceforge.atunes.kernel.modules.cdripper.encoders.Encoder;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IErrorDialog;
-import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.IRipperHandler;
 import net.sourceforge.atunes.model.IRipperProgressDialog;
-import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.ITrackInfo;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public final class RipperHandler extends AbstractHandler {
+public final class RipperHandler extends AbstractHandler implements IRipperHandler {
 
-	// Encoder options and file name patterns. Add here for more options
-    public static final String[] FILENAMEPATTERN = { StringUtils.getString(CdRipper.TRACK_NUMBER, " - ", CdRipper.TITLE_PATTERN),
+    private static final String[] FILENAMEPATTERN = { StringUtils.getString(CdRipper.TRACK_NUMBER, " - ", CdRipper.TITLE_PATTERN),
             StringUtils.getString(CdRipper.ARTIST_PATTERN, " - ", CdRipper.ALBUM_PATTERN, " - ", CdRipper.TRACK_NUMBER, " - ", CdRipper.TITLE_PATTERN),
             StringUtils.getString(CdRipper.ARTIST_PATTERN, " - ", CdRipper.TITLE_PATTERN) };
 
-    private final class FillSongTitlesSwingWorker extends
-			SwingWorker<IAlbumInfo, Void> {
-		private final String artist;
-		private final String album;
-
-		private FillSongTitlesSwingWorker(String artist, String album) {
-			this.artist = artist;
-			this.album = album;
-		}
-
-		@Override
-		protected IAlbumInfo doInBackground() throws Exception {
-		    return getBean(IWebServicesHandler.class).getAlbum(artist, album);
-		}
-
-		@Override
-		protected void done() {
-		    try {
-		        if (get() != null) {
-		            albumInfo = get();
-		            List<String> trackNames = new ArrayList<String>();
-		            for (ITrackInfo trackInfo : get().getTracks()) {
-		                trackNames.add(trackInfo.getTitle());
-		            }
-		            getRipCdDialogController().getComponentControlled().updateTrackNames(trackNames);
-		        }
-		    } catch (InterruptedException e) {
-		        Logger.error(e);
-		    } catch (ExecutionException e) {
-		        Logger.error(e);
-		    } finally {
-		    	getRipCdDialogController().getComponentControlled().setCursor(Cursor.getDefaultCursor());
-		    	getRipCdDialogController().getComponentControlled().getTitlesButton().setEnabled(true);
-		    }
-		}
-	}
-
-	private final class GetCdInfoAndStartRippingSwingWorker extends
-			SwingWorker<CDInfo, Void> {
-		private final RipCdDialog dialog;
-
-		private GetCdInfoAndStartRippingSwingWorker(RipCdDialog dialog) {
-			this.dialog = dialog;
-		}
-
-		@Override
-		protected CDInfo doInBackground() throws Exception {
-		    if (!testTools()) {
-		        return null;
-		    }
-		    ripper = new CdRipper(getOsManager());
-		    ripper.setNoCdListener(new NoCdListener() {
-		        @Override
-		        public void noCd() {
-		            Logger.error("No cd inserted");
-		            interrupted = true;
-		            SwingUtilities.invokeLater(new Runnable() {
-		                @Override
-		                public void run() {
-		                	indeterminateProgressDialog.hideDialog();
-		                    getBean(IErrorDialog.class).showErrorDialog(getFrame(), I18nUtils.getString("NO_CD_INSERTED"));
-		                }
-		            });
-		        }
-		    });
-		    return ripper.getCDInfo();
-		}
-
-		@Override
-		protected void done() {
-			indeterminateProgressDialog.hideDialog();
-		    CDInfo cdInfo;
-		    try {
-		        cdInfo = get();
-		        if (cdInfo != null) {
-		        	getRipCdDialogController().showCdInfo(cdInfo, repositoryHandler.getPathForNewAudioFilesRipped(), repositoryHandler.getRepositoryPath());
-		            if (!getRipCdDialogController().isCancelled()) {
-		                String artist = getRipCdDialogController().getArtist();
-		                String album = getRipCdDialogController().getAlbum();
-		                int year = getRipCdDialogController().getYear();
-		                String genre = getRipCdDialogController().getGenre();
-		                String folder = getRipCdDialogController().getFolder();
-		                List<Integer> tracks = dialog.getTracksSelected();
-		                List<String> trckNames = dialog.getTrackNames();
-		                List<String> artistNames = dialog.getArtistNames();
-		                List<String> composerNames = dialog.getComposerNames();
-		                setUseCdErrorCorrection(dialog.getUseCdErrorCorrection().isSelected());
-		                setEncoder(dialog.getFormat().getSelectedItem().toString());
-		                setEncoderQuality(dialog.getQuality());
-		                setFileNamePattern(dialog.getFileNamePattern());
-		                importSongs(folder, artist, album, year, genre, tracks, trckNames, artistNames, composerNames, dialog.getFormat().getSelectedItem().toString(), dialog
-		                        .getQuality(), dialog.getUseCdErrorCorrection().isSelected());
-		            } else {
-		                setUseCdErrorCorrection(dialog.getUseCdErrorCorrection().isSelected());
-		                setEncoder(dialog.getFormat().getSelectedItem().toString());
-		                setEncoderQuality(dialog.getQuality());
-		                setFileNamePattern(dialog.getFileNamePattern());
-		            }
-		        }
-		    } catch (InterruptedException e) {
-		    	getRipCdDialogController().getComponentControlled().setVisible(false);
-		        Logger.error(e);
-		    } catch (ExecutionException e) {
-		    	getRipCdDialogController().getComponentControlled().setVisible(false);
-		        Logger.error(e);
-		    }
-		}
-	}
-
-	private static class ShowErrorDialogRunnable implements Runnable {
-		
-		private IFrame frame;
-		
-		public ShowErrorDialogRunnable(IFrame frame) {
-			this.frame = frame;
-		}
-		
-        @Override
-        public void run() {
-        	Context.getBean(IErrorDialog.class).showErrorDialog(frame, I18nUtils.getString("CDDA2WAV_NOT_FOUND"));
-        }
-    }
-
-    private static final class TotalProgressListener implements ProgressListener {
-        private final IRipperProgressDialog dialog;
-        private final List<File> filesImported;
-
-        private TotalProgressListener(IRipperProgressDialog dialog, List<File> filesImported) {
-            this.dialog = dialog;
-            this.filesImported = filesImported;
-        }
-
-        @Override
-        public void notifyFileFinished(File file) {
-            filesImported.add(file);
-        }
-
-        @Override
-        public void notifyProgress(int value) {
-            dialog.setTotalProgressValue(value);
-            dialog.setDecodeProgressValue(0);
-            dialog.setDecodeProgressValue(StringUtils.getString(0, "%"));
-            dialog.setEncodeProgressValue(0);
-            dialog.setEncodeProgressValue(StringUtils.getString(0, "%"));
-        }
-    }
-
-    private static final class EncoderProgressListener implements ProgressListener {
-        private final IRipperProgressDialog dialog;
-
-        private EncoderProgressListener(IRipperProgressDialog dialog) {
-            this.dialog = dialog;
-        }
-
-        @Override
-        public void notifyFileFinished(File f) {
-            // Nothing to do
-        }
-
-        @Override
-        public void notifyProgress(int percent) {
-            dialog.setEncodeProgressValue(percent);
-            if (!(percent < 0)) {
-                dialog.setEncodeProgressValue(StringUtils.getString(percent, "%"));
-            }
-        }
-    }
-
-    private static final class DecoderProgressListener implements ProgressListener {
-        private final IRipperProgressDialog dialog;
-
-        private DecoderProgressListener(IRipperProgressDialog dialog) {
-            this.dialog = dialog;
-        }
-
-        @Override
-        public void notifyFileFinished(File f) {
-            // Nothing to do
-        }
-
-        @Override
-        public void notifyProgress(int percent) {
-            dialog.setDecodeProgressValue(percent);
-            if (percent > 0) {
-                dialog.setDecodeProgressValue(StringUtils.getString(percent, "%"));
-            } else {
-                dialog.setDecodeProgressValue("");
-            }
-        }
-    }
-
-    private static RipperHandler instance = new RipperHandler();
-
-    private CdRipper ripper;
-    private volatile boolean interrupted;
+    CdRipper ripper;
+    volatile boolean interrupted;
     private boolean folderCreated;
-    private IAlbumInfo albumInfo;
+    IAlbumInfo albumInfo;
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     
-    private IIndeterminateProgressDialog indeterminateProgressDialog;
+    IIndeterminateProgressDialog indeterminateProgressDialog;
     
-    private IRepositoryHandler repositoryHandler;
+    IRepositoryHandler repositoryHandler;
 
     /**
      * Map of available encoders in the system: key is format name, value is
@@ -304,37 +106,9 @@ public final class RipperHandler extends AbstractHandler {
         allEncoders.add("net.sourceforge.atunes.kernel.modules.cdripper.encoders.WavEncoder");
     }
 
-    /**
-     * Instantiates a new ripper handler.
-     */
-    private RipperHandler() {
-        // Nothing to do
-    }
-
-    /**
-     * Gets the single instance of RipperHandler.
-     * 
-     * @return single instance of RipperHandler
-     */
-    public static RipperHandler getInstance() {
-        return instance;
-    }
-
-    @Override
-    public void applicationFinish() {
-    }
-
-    @Override
-    public void applicationStateChanged(IState newState) {
-    }
-
     @Override
     public void applicationStarted(List<IAudioObject> playList) {
     	this.repositoryHandler = getBean(IRepositoryHandler.class);
-    }
-
-    @Override
-    protected void initHandler() {
     }
 
     /**
@@ -352,37 +126,31 @@ public final class RipperHandler extends AbstractHandler {
         }
     }
 
-    /**
-     * Cancel process.
-     */
-    public void cancelProcess() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.cdripper.IRipperHandler#cancelProcess()
+	 */
+    @Override
+	public void cancelProcess() {
         interrupted = true;
         ripper.stop();
         Logger.info("Process cancelled");
     }
 
-    /**
-     * Fill songs titles
-     * 
-     * @param artist
-     *            the artist
-     * @param album
-     *            the album
-     */
-    void fillSongTitles(final String artist, final String album) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.cdripper.IRipperHandler#fillSongTitles(java.lang.String, java.lang.String)
+	 */
+    @Override
+	public void fillSongTitles(final String artist, final String album) {
         getRipCdDialogController().getComponentControlled().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         getRipCdDialogController().getComponentControlled().getTitlesButton().setEnabled(false);
-        new FillSongTitlesSwingWorker(artist, album).execute();
+        new FillSongTitlesSwingWorker(this, artist, album, getBean(IWebServicesHandler.class)).execute();
     }
 
-    /**
-     * Gets format name of the encoder which was used for ripping CD's. If
-     * encoder is not available then get one of the available
-     * 
-     * @return Return the format name of the encoder used the previous time or
-     *         default one if it's available
-     */
-    String getEncoder() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.cdripper.IRipperHandler#getEncoderName()
+	 */
+    @Override
+	public String getEncoderName() {
         String encoderFormat = getState().getEncoder();
         if (getAvailableEncoders().containsKey(encoderFormat)) {
             return encoderFormat;
@@ -406,26 +174,22 @@ public final class RipperHandler extends AbstractHandler {
         return null;
     }
 
-    /**
-     * Returns available qualities for given format name
-     * 
-     * @param formatName
-     * @return
-     */
-    String[] getEncoderQualities(String formatName) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.cdripper.IRipperHandler#getEncoderQualities(java.lang.String)
+	 */
+    @Override
+	public String[] getEncoderQualities(String formatName) {
         if (getAvailableEncoders().containsKey(formatName)) {
             return getAvailableEncoders().get(formatName).getAvailableQualities();
         }
         return new String[0];
     }
 
-    /**
-     * Returns default quality for given format name
-     * 
-     * @param formatName
-     * @return
-     */
-    String getEncoderDefaultQuality(String formatName) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.cdripper.IRipperHandler#getEncoderDefaultQuality(java.lang.String)
+	 */
+    @Override
+	public String getEncoderDefaultQuality(String formatName) {
         if (getAvailableEncoders().containsKey(formatName)) {
             return getAvailableEncoders().get(formatName).getDefaultQuality();
         }
@@ -433,29 +197,11 @@ public final class RipperHandler extends AbstractHandler {
     }
 
     /**
-     * Gets the encoder quality.
-     * 
-     * @return the encoder quality
-     */
-    String getEncoderQuality() {
-        return getState().getEncoderQuality();
-    }
-
-    /**
-     * Returns the filename pattern which is used.
-     * 
-     * @return The filename pattern
-     */
-    String getFileNamePattern() {
-        return getState().getCdRipperFileNamePattern();
-    }
-
-    /**
      * Test for available encoders and returns a Map of the found encoders.
      * 
      * @return the available encoders
      */
-    Map<String, Encoder> getAvailableEncoders() {
+    private Map<String, Encoder> getAvailableEncoders() {
         if (availableEncoders == null) {
             availableEncoders = new HashMap<String, Encoder>();
 
@@ -490,43 +236,20 @@ public final class RipperHandler extends AbstractHandler {
         }
         return availableEncoders;
     }
-
-    /**
-     * Indicates if the user requested cd error correction
-     * 
-     * @return true if error correction for cd ripping should be used
-     */
-    boolean getCdErrorCorrection() {
-        return getState().isUseCdErrorCorrection();
+    
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.cdripper.IRipperHandler#getAvailableEncodersNames()
+	 */
+    @Override
+	public Set<String> getAvailableEncodersNames() {
+    	return getAvailableEncoders().keySet();
     }
 
-    /**
-     * Controls the import process for ripping audio CD's.
-     * 
-     * @param folder
-     *            The folder where the files should be saved
-     * @param artist
-     *            Artist name (whole CD)
-     * @param album
-     *            Album name
-     * @param year
-     *            Release year
-     * @param genre
-     *            Album genre
-     * @param tracks
-     *            List of the track numbers
-     * @param trckNames
-     *            List of the track names
-     * @param format
-     *            Format in which the files should converted
-     * @param quality1
-     *            Quality setting to be used
-     * @param artistNames
-     *            the artist names
-     * @param composerNames
-     *            the composer names
-     */
-    void importSongs(String folder, final String artist, final String album, final int year, final String genre, final List<Integer> tracks, final List<String> trckNames, final List<String> artistNames, final List<String> composerNames, final String format, final String quality1, final boolean useParanoia) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.cdripper.IRipperHandler#importSongs(java.lang.String, java.lang.String, java.lang.String, int, java.lang.String, java.util.List, java.util.List, java.util.List, java.util.List, java.lang.String, java.lang.String, boolean)
+	 */
+    @Override
+	public void importSongs(String folder, final String artist, final String album, final int year, final String genre, final List<Integer> tracks, final List<String> trckNames, final List<String> artistNames, final List<String> composerNames, final String format, final String quality1, final boolean useParanoia) {
         // Disable import cd option in menu
         Actions.getAction(RipCDAction.class).setEnabled(false);
 
@@ -550,7 +273,7 @@ public final class RipperHandler extends AbstractHandler {
         ripper.setAlbum(album);
         ripper.setYear(year);
         ripper.setGenre(genre);
-        ripper.setFileNamePattern(getFileNamePattern());
+        ripper.setFileNamePattern(getState().getCdRipperFileNamePattern());
 
         final IRipperProgressDialog dialog = getBean(IRipperProgressDialog.class);
         dialog.addCancelAction(new ActionListener() {
@@ -607,7 +330,7 @@ public final class RipperHandler extends AbstractHandler {
      * @param folder
      *            the folder
      */
-    void notifyFinishImport(final List<File> filesImported, final File folder) {
+    private void notifyFinishImport(final List<File> filesImported, final File folder) {
         if (interrupted) { // If process is interrupted delete all imported files
             Runnable deleter = new Runnable() {
                 @Override
@@ -658,50 +381,11 @@ public final class RipperHandler extends AbstractHandler {
         }
     }
 
-    /**
-     * Sets the format name of the encoder.
-     * 
-     * @param encoder
-     *            the new format name of the encoder
-     */
-    void setEncoder(String encoder) {
-        getState().setEncoder(encoder);
-    }
-
-    /**
-     * Sets the encoder quality.
-     * 
-     * @param quality
-     *            the new encoder quality
-     */
-    void setEncoderQuality(String quality) {
-        getState().setEncoderQuality(quality);
-    }
-
-    /**
-     * Sets the used filename pattern.
-     * 
-     * @param fileNamePattern
-     *            The filename pattern used
-     */
-    void setFileNamePattern(String fileNamePattern) {
-        getState().setCdRipperFileNamePattern(fileNamePattern);
-    }
-
-    /**
-     * Sets CD correction
-     * 
-     * @param useCdErrorCorrection
-     *            True if cd correction should be set
-     */
-    void setUseCdErrorCorrection(boolean useCdErrorCorrection) {
-        getState().setUseCdErrorCorrection(useCdErrorCorrection);
-    }
-
-    /**
-     * Start cd ripper.
-     */
-    public void startCdRipper() {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.cdripper.IRipperHandler#startCdRipper()
+	 */
+    @Override
+	public void startCdRipper() {
         interrupted = false;
         final RipCdDialog dialog = getRipCdDialogController().getComponentControlled();
         SwingUtilities.invokeLater(new Runnable() {
@@ -713,13 +397,13 @@ public final class RipperHandler extends AbstractHandler {
         	}
         });
 
-        SwingWorker<CDInfo, Void> getCdInfoAndStartRipping = new GetCdInfoAndStartRippingSwingWorker(dialog);
+        SwingWorker<CDInfo, Void> getCdInfoAndStartRipping = new GetCdInfoAndStartRippingSwingWorker(getBean(IOSManager.class), getState(), this, getFrame(), dialog);
         getCdInfoAndStartRipping.execute();
     }
 
     /**
      * Test the presence of cdda2wav/icedax. Calls the test function from
-     * Cdda2wav.java
+     * Cdda2wav
      * 
      * @return Returns true if cdda2wav/icedax is present, false otherwise
      */
@@ -739,23 +423,24 @@ public final class RipperHandler extends AbstractHandler {
      */
     RipCdDialogController getRipCdDialogController() {
         if (ripCdDialogController == null) {
-            ripCdDialogController = new RipCdDialogController(new RipCdDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class)), getState(), getOsManager(), repositoryHandler);
+            ripCdDialogController = new RipCdDialogController(new RipCdDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class)), getState(), getOsManager(), repositoryHandler, this);
         }
         return ripCdDialogController;
     }
 
-	@Override
-	public void playListCleared() {}
-
-	@Override
-	public void selectedAudioObjectChanged(IAudioObject audioObject) {}
-
-	/**
-	 * Returns true if rip CDs is supported in current system
-	 * @return
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.cdripper.IRipperHandler#isRipSupported()
 	 */
+	@Override
 	public boolean isRipSupported() {
 		return getOsManager().isRipSupported();
 	}
-
+	
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.kernel.modules.cdripper.IRipperHandler#getFilenamePatterns()
+	 */
+	@Override
+	public String[] getFilenamePatterns() {
+		return FILENAMEPATTERN;
+	}
 }

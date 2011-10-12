@@ -30,4 +30,5 @@
 	<bean id="deviceHandler" class="net.sourceforge.atunes.kernel.modules.device.DeviceHandler"/>
 	<bean id="radioHandler" class="net.sourceforge.atunes.kernel.modules.radio.RadioHandler"/>
 	<bean id="playerHandler" class="net.sourceforge.atunes.kernel.modules.player.PlayerHandler"/>
+	<bean id="ripperHandler" class="net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler"/>
 </beans>
