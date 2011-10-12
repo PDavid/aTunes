@@ -40,6 +40,7 @@ import net.sourceforge.atunes.kernel.modules.command.CommandHandler;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ICommandHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRadioHandler;
@@ -117,8 +118,8 @@ public final class MultipleInstancesHandler extends AbstractHandler {
                                 file = new AudioFile(fileStr);
                             }
                             queue.addSong(file);
-                        } else if (CommandHandler.getInstance().isValidCommand(str)) {
-                            CommandHandler.getInstance().processAndRun(str);
+                        } else if (getBean(ICommandHandler.class).isValidCommand(str)) {
+                        	getBean(ICommandHandler.class).processAndRun(str);
                         }
                     }
                     ClosingUtils.close(br);
@@ -301,7 +302,7 @@ public final class MultipleInstancesHandler extends AbstractHandler {
                     // Send args: audio files or play lists
                     System.out.println(StringUtils.getString("INFO: Sending arg \"", arg, "\""));
                     output.write(arg);
-                } else if (CommandHandler.getInstance().isCommand(arg)) {
+                } else if (getBean(ICommandHandler.class).isCommand(arg)) {
                     // It's a command
                     System.out.println(StringUtils.getString("INFO: Sending command \"", arg, "\""));
                     output.write(arg);

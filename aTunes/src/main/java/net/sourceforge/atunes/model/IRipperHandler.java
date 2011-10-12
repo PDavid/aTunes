@@ -28,7 +28,7 @@ import java.util.Set;
  * @author alex
  *
  */
-public interface IRipperHandler {
+public interface IRipperHandler extends IHandler {
 
 	/**
 	 * Cancel process.

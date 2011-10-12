@@ -37,6 +37,7 @@ import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ICommandHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
@@ -202,9 +203,9 @@ public class Kernel {
         	String parameters = osManager.getLaunchParameters();
             ProcessBuilder pb = null;
             if (parameters != null && !parameters.trim().isEmpty()) {
-            	pb = new ProcessBuilder(osManager.getLaunchCommand(), parameters, ApplicationArguments.getSavedArguments());
+            	pb = new ProcessBuilder(osManager.getLaunchCommand(), parameters, ApplicationArguments.getSavedArguments(Context.getBean(ICommandHandler.class)));
             } else {
-            	pb = new ProcessBuilder(osManager.getLaunchCommand(), ApplicationArguments.getSavedArguments());
+            	pb = new ProcessBuilder(osManager.getLaunchCommand(), ApplicationArguments.getSavedArguments(Context.getBean(ICommandHandler.class)));
 
             }
 

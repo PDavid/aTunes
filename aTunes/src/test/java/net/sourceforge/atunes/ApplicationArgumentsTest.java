@@ -25,8 +25,12 @@ import java.util.List;
 
 import junit.framework.Assert;
 
+import net.sourceforge.atunes.model.ICommandHandler;
+
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 
 public class ApplicationArgumentsTest {
 
@@ -68,10 +72,12 @@ public class ApplicationArgumentsTest {
     @Test
     public void testSaveArguments() {
         ApplicationArguments.saveArguments(null);
-        Assert.assertEquals("", ApplicationArguments.getSavedArguments());
+        ICommandHandler commandHandler = Mockito.mock(ICommandHandler.class);
+        Mockito.when(commandHandler.isValidCommand(Mockito.anyString())).thenReturn(false);
+        Assert.assertEquals("", ApplicationArguments.getSavedArguments(commandHandler));
 
         ApplicationArguments.saveArguments(args3);
-        String savedArguments = ApplicationArguments.getSavedArguments();
+        String savedArguments = ApplicationArguments.getSavedArguments(commandHandler);
         Assert.assertTrue(savedArguments.contains("debug"));
         Assert.assertTrue(savedArguments.contains("uSe-CoNfIg-FoLdEr=/home/user/.aTunes"));
         Assert.assertTrue(savedArguments.contains("UsE-rEpOsItOrY-cOnFiG-fOlDeR=/home/user/repository"));
