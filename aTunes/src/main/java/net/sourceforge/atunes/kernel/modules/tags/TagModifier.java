@@ -87,7 +87,7 @@ public final class TagModifier {
 		        if (playListHandler.getCurrentAudioObjectFromCurrentPlayList() != null
 		                && playListHandler.getCurrentAudioObjectFromCurrentPlayList().equals(audioFilesEditing.get(i))) {
 		        	
-		        	PlayListEventListeners.selectedAudioObjectHasChanged(audioFilesEditing.get(i));
+		        	Context.getBean(PlayListEventListeners.class).selectedAudioObjectHasChanged(audioFilesEditing.get(i));
 
 		            if (playerHandler.isEnginePlaying()) {
 		                Context.getBean(IUIHandler.class).updateTitleBar(audioFilesEditing.get(i));

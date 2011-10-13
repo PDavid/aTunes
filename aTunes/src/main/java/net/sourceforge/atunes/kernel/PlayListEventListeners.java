@@ -20,37 +20,40 @@
 
 package net.sourceforge.atunes.kernel;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListAudioObject;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayListEventListener;
 
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
 /**
  * Holds references to PlayListEventListener instances
  * @author fleax
  *
  */
-public class PlayListEventListeners {
+public class PlayListEventListeners implements ApplicationContextAware {
 
-	private static List<IPlayListEventListener> listeners = new ArrayList<IPlayListEventListener>();
+	private Collection<IPlayListEventListener> listeners;
 	
-    /**
-     * Adds a new play list event listener
-     * @param listener
-     */
-    public static void addPlayListEventListener(IPlayListEventListener listener) {
-    	if (listener != null) {
-    		listeners.add(listener);
-    	}
-    }
-
+	protected void setListeners(Collection<IPlayListEventListener> listeners) {
+		this.listeners = listeners;
+	}
+	
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		listeners = applicationContext.getBeansOfType(IPlayListEventListener.class).values();
+	}
+	
 	/**
 	 * Called when added objects to play list
 	 * @param playListAudioObjects
 	 */
-	public static void audioObjectsAdded(List<PlayListAudioObject> playListAudioObjects) {
+	public void audioObjectsAdded(List<PlayListAudioObject> playListAudioObjects) {
 		for (IPlayListEventListener listener : listeners) {
 			listener.audioObjectsAdded(playListAudioObjects);
 		}
@@ -60,7 +63,7 @@ public class PlayListEventListeners {
 	 * Called when audio objects are removed from play list
 	 * @param audioObjectList
 	 */
-	public static void audioObjectsRemoved(List<PlayListAudioObject> audioObjectList) {
+	public void audioObjectsRemoved(List<PlayListAudioObject> audioObjectList) {
 		for (IPlayListEventListener listener : listeners) {
 			listener.audioObjectsRemoved(audioObjectList);
 		}
@@ -69,7 +72,7 @@ public class PlayListEventListeners {
 	/**
 	 * Play list has been cleared
 	 */
-	public static void playListCleared() {
+	public void playListCleared() {
 		for (IPlayListEventListener listener : listeners) {
 			listener.playListCleared();
 		}
@@ -81,7 +84,7 @@ public class PlayListEventListeners {
      * @param audioObject
      *            the audio object
      */
-    public static void selectedAudioObjectHasChanged(final IAudioObject audioObject) {
+    public void selectedAudioObjectHasChanged(final IAudioObject audioObject) {
         if (audioObject == null) {
             return;
         }

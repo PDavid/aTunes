@@ -30,6 +30,7 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
@@ -92,9 +93,10 @@ public class MPlayerEngine extends AbstractPlayerEngine {
      * @param navigationHandler
      * @param temporalDiskStorage
      * @param playerHandler
+     * @param playListEventListeners 
      */
-    public MPlayerEngine(IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, INavigationHandler navigationHandler, ITemporalDiskStorage temporalDiskStorage, IPlayerHandler playerHandler) {
-    	super(state, frame, osManager, playListHandler, navigationHandler, temporalDiskStorage, playerHandler);
+    public MPlayerEngine(IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, INavigationHandler navigationHandler, ITemporalDiskStorage temporalDiskStorage, IPlayerHandler playerHandler, PlayListEventListeners playListEventListeners) {
+    	super(state, frame, osManager, playListHandler, navigationHandler, temporalDiskStorage, playerHandler, playListEventListeners);
     	this.playListHandler = playListHandler;
     	commandWriter = MPlayerCommandWriter.newCommandWriter(null, osManager);
     }
