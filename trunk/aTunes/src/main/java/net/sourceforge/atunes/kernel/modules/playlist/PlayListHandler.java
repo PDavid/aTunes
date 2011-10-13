@@ -159,6 +159,8 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	
 	private IPlayerHandler playerHandler;
 	
+	private PlayListEventListeners playListEventListeners;
+	
     /**
      * Private constructor.
      */
@@ -166,6 +168,10 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     	playListColumnSet = (IColumnSet) getBean("playlistColumnSet");
     }
 
+    public void setPlayListEventListeners(PlayListEventListeners playListEventListeners) {
+		this.playListEventListeners = playListEventListeners;
+	}
+    
     @Override
     protected void initHandler() {
         // Add audio file removed listener
@@ -407,7 +413,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         Actions.getAction(ShufflePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
         showPlayListInformation(playList);
         if (isActivePlayListVisible()) {
-        	PlayListEventListeners.selectedAudioObjectHasChanged(playList.getCurrentAudioObject());
+        	playListEventListeners.selectedAudioObjectHasChanged(playList.getCurrentAudioObject());
         }
     }
 
@@ -506,7 +512,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
                 selectedAudioObject = playList.getRandomPosition();
             }
 
-            PlayListEventListeners.selectedAudioObjectHasChanged(audioObjects.get(selectedAudioObject));
+            playListEventListeners.selectedAudioObjectHasChanged(audioObjects.get(selectedAudioObject));
             playList.setCurrentAudioObjectIndex(selectedAudioObject);
         }
 
@@ -854,13 +860,13 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
                     currentPlayList.setCurrentAudioObjectIndex(currentPlayList.size() - 1);
                 }
                 if (isActivePlayListVisible()) {
-                	PlayListEventListeners.selectedAudioObjectHasChanged(currentPlayList.getCurrentAudioObject());
+                	playListEventListeners.selectedAudioObjectHasChanged(currentPlayList.getCurrentAudioObject());
                 }
             }
         } else {
             currentPlayList.setCurrentAudioObjectIndex(currentPlayList.indexOf(playingAudioObject));
             if (isActivePlayListVisible()) {
-            	PlayListEventListeners.selectedAudioObjectHasChanged(currentPlayList.getCurrentAudioObject());
+            	playListEventListeners.selectedAudioObjectHasChanged(currentPlayList.getCurrentAudioObject());
             }
         }
 
@@ -879,7 +885,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
      * Called when play list is cleared. Calls to all PlayListEventListener
      */
     private void clear() {
-    	PlayListEventListeners.playListCleared();
+    	playListEventListeners.playListCleared();
     }
 
 	@Override

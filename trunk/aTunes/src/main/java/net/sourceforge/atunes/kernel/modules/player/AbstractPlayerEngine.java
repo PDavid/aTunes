@@ -196,6 +196,8 @@ public abstract class AbstractPlayerEngine {
     
     private IPlayerHandler playerHandler;
     
+    private PlayListEventListeners playListEventListeners;
+    
     /**
      * A thread invoking play in engine
      */
@@ -386,7 +388,7 @@ public abstract class AbstractPlayerEngine {
 
                         // We need to update current object and active playlist first
                         playListHandler.setVisiblePlayListActive();
-                        PlayListEventListeners.selectedAudioObjectHasChanged(nextAudioObject);
+                        playListEventListeners.selectedAudioObjectHasChanged(nextAudioObject);
 
                         playAudioObject(nextAudioObject);
                     }
@@ -573,6 +575,7 @@ public abstract class AbstractPlayerEngine {
      * @param navigationHandler
      * @param temporalDiskStorage
      * @param playerHandler
+     * @param playListEventListeners
      */
     protected AbstractPlayerEngine(IState state, 
     							   IFrame frame, 
@@ -580,7 +583,8 @@ public abstract class AbstractPlayerEngine {
     							   IPlayListHandler playListHandler, 
     							   INavigationHandler navigationHandler,
     							   ITemporalDiskStorage temporalDiskStorage,
-    							   IPlayerHandler playerHandler) {
+    							   IPlayerHandler playerHandler,
+    							   PlayListEventListeners playListEventListeners) {
         // To properly init player must call method "initPlayerEngine"
         this.equalizer = new Equalizer(state, playerHandler);
         this.state = state;
@@ -590,6 +594,7 @@ public abstract class AbstractPlayerEngine {
         this.navigationHandler = navigationHandler;
         this.temporalDiskStorage = temporalDiskStorage;
         this.playerHandler = playerHandler;
+        this.playListEventListeners = playListEventListeners;
     }
 
     /**
@@ -809,7 +814,7 @@ public abstract class AbstractPlayerEngine {
     private void switchPlaybackTo(IAudioObject audioObjectToSwitchTo, boolean resetIfNoObject, boolean autoNext) {
         if (audioObjectToSwitchTo != null) {
             try {
-            	PlayListEventListeners.selectedAudioObjectHasChanged(audioObjectToSwitchTo);
+            	playListEventListeners.selectedAudioObjectHasChanged(audioObjectToSwitchTo);
                 if (isEnginePlaying() || isPaused() || autoNext) {
                     stopCurrentAudioObject(false);
                     if (!isPaused()) {
@@ -824,7 +829,7 @@ public abstract class AbstractPlayerEngine {
             if (resetIfNoObject) {
                 stopCurrentAudioObject(false);
                 playListHandler.resetCurrentPlayList();
-            	PlayListEventListeners.selectedAudioObjectHasChanged(playListHandler.getCurrentAudioObjectFromCurrentPlayList());
+                playListEventListeners.selectedAudioObjectHasChanged(playListHandler.getCurrentAudioObjectFromCurrentPlayList());
             }
         }
     }

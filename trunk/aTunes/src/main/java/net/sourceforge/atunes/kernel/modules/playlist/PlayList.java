@@ -27,6 +27,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayList;
@@ -480,7 +481,7 @@ public class PlayList implements IPlayList {
         // Notify mode too
         getMode().audioObjectsAdded(playListAudioObjects);
 
-        PlayListEventListeners.audioObjectsAdded(playListAudioObjects);
+        Context.getBean(PlayListEventListeners.class).audioObjectsAdded(playListAudioObjects);
     }
 
     /**
@@ -492,7 +493,7 @@ public class PlayList implements IPlayList {
         // Notify mode too
         getMode().audioObjectsRemoved(audioObjectList);
 
-    	PlayListEventListeners.audioObjectsRemoved(audioObjectList);
+        Context.getBean(PlayListEventListeners.class).audioObjectsRemoved(audioObjectList);
     }
 
     /**
@@ -503,7 +504,7 @@ public class PlayList implements IPlayList {
         // Notify mode too
         getMode().audioObjectsRemovedAll();
 
-    	PlayListEventListeners.playListCleared();
+        Context.getBean(PlayListEventListeners.class).playListCleared();
     }
 
     /**
@@ -511,7 +512,7 @@ public class PlayList implements IPlayList {
      * @param audioObject
      */
     private void notifyCurrentAudioObjectChanged(IAudioObject audioObject) {
-    	PlayListEventListeners.selectedAudioObjectHasChanged(audioObject);
+    	Context.getBean(PlayListEventListeners.class).selectedAudioObjectHasChanged(audioObject);
     }
 
     /**

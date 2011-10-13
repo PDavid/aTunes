@@ -10,6 +10,7 @@
 	<bean id="deviceListeners" class="net.sourceforge.atunes.kernel.DeviceListeners"/>
 	<bean id="favoritesListeners" class="net.sourceforge.atunes.kernel.FavoritesListeners"/>
 	<bean id="playbackStateListeners" class="net.sourceforge.atunes.kernel.PlaybackStateListeners"/>
+	<bean id="playListEventListeners" class="net.sourceforge.atunes.kernel.PlayListEventListeners"/>
 	
 
 

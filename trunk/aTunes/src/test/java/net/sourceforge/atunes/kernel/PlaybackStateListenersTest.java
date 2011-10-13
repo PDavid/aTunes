@@ -48,7 +48,7 @@ public class PlaybackStateListenersTest {
 	}
 
 	@Test
-	public void deviceConnected() {
+	public void playbackStateChanged() {
 		sut.playbackStateChanged(PlaybackState.PLAYING, audioObject);
 		
 		verify(mock1).playbackStateChanged(PlaybackState.PLAYING, audioObject);

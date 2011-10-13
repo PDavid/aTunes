@@ -102,7 +102,6 @@ public abstract class AbstractHandler implements IHandler {
      */
     public final void registerHandler() {
         Context.getBean(IStateHandler.class).addStateChangeListener(this);
-        PlayListEventListeners.addPlayListEventListener(this);
     }
 
     /**
