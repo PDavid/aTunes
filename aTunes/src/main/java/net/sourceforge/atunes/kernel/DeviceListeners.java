@@ -20,35 +20,37 @@
 
 package net.sourceforge.atunes.kernel;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import net.sourceforge.atunes.model.IDeviceListener;
 
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
 /**
- * Holds references to DeviceListener instances
+ * Calls to to DeviceListener instances
  * @author fleax
  *
  */
-public class DeviceListeners {
+public class DeviceListeners implements ApplicationContextAware {
 
-	private static List<IDeviceListener> listeners = new ArrayList<IDeviceListener>();
+	private Collection<IDeviceListener> listeners;
 	
-    /**
-     * Adds a device listener
-     * @param listener
-     */
-    static void addDeviceListener(IDeviceListener listener) {
-    	if (listener != null) {
-    		listeners.add(listener);
-    	}
-    }
-
+	protected void setListeners(Collection<IDeviceListener> listeners) {
+		this.listeners = listeners;
+	}
+	
+	@Override
+	public void setApplicationContext(ApplicationContext ctx) throws BeansException {
+		listeners = ctx.getBeansOfType(IDeviceListener.class).values();
+	}
+	
 	/**
 	 * Called when device connected
 	 * @param path
 	 */
-	public static void deviceConnected(String path) {
+	public void deviceConnected(String path) {
         for (IDeviceListener l : listeners) {
         	l.deviceConnected(path);
         }
@@ -58,7 +60,7 @@ public class DeviceListeners {
 	 * Called when device is ready
 	 * @param path
 	 */
-	public static void deviceReady(String path) {
+	public void deviceReady(String path) {
         for (IDeviceListener l : listeners) {
         	l.deviceReady(path);
         }
@@ -68,7 +70,7 @@ public class DeviceListeners {
 	 * Called when device disconnected
 	 * @param location
 	 */
-	public static void deviceDisconnected(String location) {
+	public void deviceDisconnected(String location) {
         for (IDeviceListener l : listeners) {
         	l.deviceDisconnected(location);
         }

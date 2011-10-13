@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.device;
 import java.io.File;
 import java.util.concurrent.ScheduledFuture;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.DeviceListeners;
 import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.IState;
@@ -36,7 +37,7 @@ final class DeviceMonitor {
     private static ScheduledFuture<?> future;
     
     private static IDeviceHandler deviceHandler;
-
+    
     /**
      * Start monitor.
      * @param state
@@ -81,7 +82,7 @@ final class DeviceMonitor {
         File deviceLocationFile = new File(deviceHandler.getDeviceLocation());
         if (!deviceLocationFile.exists()) {
             Logger.info("Device disconnected");
-            DeviceListeners.deviceDisconnected(deviceLocationFile.getAbsolutePath());
+            Context.getBean(DeviceListeners.class).deviceDisconnected(deviceLocationFile.getAbsolutePath());
             return true;
         }
         return false;
@@ -98,7 +99,7 @@ final class DeviceMonitor {
             File deviceLocationFile = new File(deviceLocation);
             if (!deviceHandler.isDeviceConnected() && deviceLocationFile.exists()) {
             	Logger.info("Device connected");
-            	DeviceListeners.deviceConnected(deviceLocationFile.getAbsolutePath());
+            	Context.getBean(DeviceListeners.class).deviceConnected(deviceLocationFile.getAbsolutePath());
             	return true;
             }
         }
