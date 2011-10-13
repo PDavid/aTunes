@@ -101,7 +101,6 @@ public abstract class AbstractHandler implements IHandler {
      * @param handler
      */
     public final void registerHandler() {
-        ApplicationLifeCycleListeners.addApplicationLifeCycleListener(this);
         FavoritesListeners.addFavoritesListener(this);
         Context.getBean(IStateHandler.class).addStateChangeListener(this);
         DeviceListeners.addDeviceListener(this);

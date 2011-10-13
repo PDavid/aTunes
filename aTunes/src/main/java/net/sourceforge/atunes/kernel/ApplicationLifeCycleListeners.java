@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -33,33 +34,34 @@ import net.sourceforge.atunes.model.IApplicationLifeCycleListener;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.Logger;
 
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
 /**
  * Holds references to ApplicationLifeCycleListener instances
+ * 
  * @author fleax
  *
  */
-public class ApplicationLifeCycleListeners {
+public class ApplicationLifeCycleListeners implements ApplicationContextAware {
 
-	private static List<IApplicationLifeCycleListener> listeners = new ArrayList<IApplicationLifeCycleListener>();
+	private Collection<IApplicationLifeCycleListener> listeners;
+
+	public void setListeners(Collection<IApplicationLifeCycleListener> listeners) {
+		this.listeners = listeners;
+	}
 	
-    /**
-     * Adds a life cycle listener to list of listeners. All classes that implements
-     * ApplicationLifeCycleListener must call this method in order to be notified by
-     * Kernel when application phase changes
-     * 
-     * @param listener
-     */
-    static void addApplicationLifeCycleListener(IApplicationLifeCycleListener listener) {
-    	if (listener != null) {
-    		listeners.add(listener);
-    	}
-    }
-    
+	@Override
+	public void setApplicationContext(ApplicationContext context) throws BeansException {
+		listeners = context.getBeansOfType(IApplicationLifeCycleListener.class).values();
+	}
+
     /**
      * Call after application started
      * @param playList
      */
-    static void applicationStarted(List<IAudioObject> playList) {
+    void applicationStarted(List<IAudioObject> playList) {
         for (IApplicationLifeCycleListener listener : listeners) {
        		listener.applicationStarted(playList);
         }
@@ -68,7 +70,7 @@ public class ApplicationLifeCycleListeners {
     /**
      * Called after all handlers initialized
      */
-    static void allHandlersInitialized() {
+    void allHandlersInitialized() {
         for (IApplicationLifeCycleListener listener : listeners) {
        		listener.allHandlersInitialized();
         }
@@ -78,7 +80,7 @@ public class ApplicationLifeCycleListeners {
      * Executes actions needed before closing application, finished all
      * necessary modules and writes configuration.
      */
-    static void applicationFinish() {
+    void applicationFinish() {
         for (IApplicationLifeCycleListener listener : listeners) {
        		listener.applicationFinish();
         }
@@ -88,7 +90,7 @@ public class ApplicationLifeCycleListeners {
      * Calculates components that need user interaction
      * @return
      */
-    static Map<Integer, IApplicationLifeCycleListener> getUserInteractionRequests() {
+    Map<Integer, IApplicationLifeCycleListener> getUserInteractionRequests() {
     	Map<Integer, IApplicationLifeCycleListener> requests = new HashMap<Integer, IApplicationLifeCycleListener>();
     	for (IApplicationLifeCycleListener listener : listeners) {
     		int request = listener.requestUserInteraction();
@@ -107,7 +109,7 @@ public class ApplicationLifeCycleListeners {
      * Calls user interaction in requested order
      * @param requests
      */
-    static void doUserInteraction(final Map<Integer, IApplicationLifeCycleListener> requests) {
+    void doUserInteraction(final Map<Integer, IApplicationLifeCycleListener> requests) {
     	List<Integer> order = new ArrayList<Integer>(requests.keySet());
     	Collections.sort(order);
     	for (final Integer req: order) {

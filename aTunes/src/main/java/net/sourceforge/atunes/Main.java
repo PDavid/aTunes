@@ -83,6 +83,7 @@ public final class Main {
     			"/settings/spring/os.xml",
     			"/settings/spring/tasks.xml",
     			"/settings/spring/utils.xml",
+    			"/settings/spring/listeners.xml",
     			"/settings/spring/lookandfeel.xml");
     	
         // Fetch arguments into a list
