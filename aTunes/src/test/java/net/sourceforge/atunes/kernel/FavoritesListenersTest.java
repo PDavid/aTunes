@@ -20,38 +20,40 @@
 
 package net.sourceforge.atunes.kernel;
 
-import java.util.Collection;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import net.sourceforge.atunes.model.IFavoritesListener;
 
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import org.junit.Before;
+import org.junit.Test;
 
-/**
- * Calls to FavoritesListener instances
- * @author fleax
- *
- */
-public class FavoritesListeners implements ApplicationContextAware {
 
-	private Collection<IFavoritesListener> listeners;
+public class FavoritesListenersTest {
+
+	private FavoritesListeners sut;	
+	private IFavoritesListener mock1;
+	private IFavoritesListener mock2;
 	
-	@Override
-	public void setApplicationContext(ApplicationContext ctx) throws BeansException {
-		listeners = ctx.getBeansOfType(IFavoritesListener.class).values();
+	@Before
+	public void init() {
+		sut = new FavoritesListeners();
+		List<IFavoritesListener> listeners = new ArrayList<IFavoritesListener>();
+		mock1 = mock(IFavoritesListener.class);
+		mock2 = mock(IFavoritesListener.class);
+		listeners.add(mock1);
+		listeners.add(mock2);
+		sut.setListeners(listeners);
 	}
 	
-	protected void setListeners(Collection<IFavoritesListener> listeners) {
-		this.listeners = listeners;
+	@Test
+	public void favoritesChanged() {
+		sut.favoritesChanged();
+		
+		verify(mock1).favoritesChanged();
+		verify(mock2).favoritesChanged();
 	}
-	
-    /**
-     * Called when favorites changed
-     */
-    public void favoritesChanged() {
-    	for (IFavoritesListener listener : listeners) {
-    		listener.favoritesChanged();
-    	}
-    }
 }

@@ -59,9 +59,15 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
 	
 	private IRepositoryHandler repositoryHandler;
 	
+	private FavoritesListeners favoritesListeners;
+	
     /** The favorites. */
     private IFavorites favorites;
 
+    public void setFavoritesListeners(FavoritesListeners favoritesListeners) {
+		this.favoritesListeners = favoritesListeners;
+	}
+    
     public void setStateHandler(IStateHandler stateHandler) {
 		this.stateHandler = stateHandler;
 	}
@@ -259,12 +265,12 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
      */
     private void callActionsAfterFavoritesChange() { 
     	if (SwingUtilities.isEventDispatchThread()) {
-    		FavoritesListeners.favoritesChanged();
+    		favoritesListeners.favoritesChanged();
     	} else {
     		SwingUtilities.invokeLater(new Runnable() {
     			@Override
     			public void run() {
-    	    		FavoritesListeners.favoritesChanged();
+    				favoritesListeners.favoritesChanged();
     			}
     		});
     	}
