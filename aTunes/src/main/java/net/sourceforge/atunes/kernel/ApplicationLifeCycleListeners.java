@@ -48,7 +48,7 @@ public class ApplicationLifeCycleListeners implements ApplicationContextAware {
 
 	private Collection<IApplicationLifeCycleListener> listeners;
 
-	public void setListeners(Collection<IApplicationLifeCycleListener> listeners) {
+	protected void setListeners(Collection<IApplicationLifeCycleListener> listeners) {
 		this.listeners = listeners;
 	}
 	
@@ -113,18 +113,20 @@ public class ApplicationLifeCycleListeners implements ApplicationContextAware {
     	List<Integer> order = new ArrayList<Integer>(requests.keySet());
     	Collections.sort(order);
     	for (final Integer req: order) {
-    		try {
-				SwingUtilities.invokeAndWait(new Runnable() {
-					@Override
-					public void run() {
-						requests.get(req).doUserInteraction();
-					}
-				});
-			} catch (InterruptedException e) {
-				Logger.error(e);
-			} catch (InvocationTargetException e) {
-				Logger.error(e);
-			}
+    		if (req != -1) {
+    			try {
+    				SwingUtilities.invokeAndWait(new Runnable() {
+    					@Override
+    					public void run() {
+    						requests.get(req).doUserInteraction();
+    					}
+    				});
+    			} catch (InterruptedException e) {
+    				Logger.error(e);
+    			} catch (InvocationTargetException e) {
+    				Logger.error(e);
+    			}
+    		}
     	}
     }
 }
