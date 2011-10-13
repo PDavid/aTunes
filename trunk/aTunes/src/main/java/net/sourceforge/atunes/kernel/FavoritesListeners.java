@@ -20,34 +20,36 @@
 
 package net.sourceforge.atunes.kernel;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import net.sourceforge.atunes.model.IFavoritesListener;
 
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
 /**
- * Holds references to FavoritesListener instances
+ * Calls to FavoritesListener instances
  * @author fleax
  *
  */
-public class FavoritesListeners {
+public class FavoritesListeners implements ApplicationContextAware {
 
-	private static List<IFavoritesListener> listeners = new ArrayList<IFavoritesListener>();
+	private Collection<IFavoritesListener> listeners;
 	
-    /**
-     * Adds a new listener
-     * @param listener
-     */
-    public static void addFavoritesListener(IFavoritesListener listener) {
-    	if (listener != null) {
-    		listeners.add(listener);
-    	}
-    }
-
+	@Override
+	public void setApplicationContext(ApplicationContext ctx) throws BeansException {
+		listeners = ctx.getBeansOfType(IFavoritesListener.class).values();
+	}
+	
+	protected void setListeners(Collection<IFavoritesListener> listeners) {
+		this.listeners = listeners;
+	}
+	
     /**
      * Called when favorites changed
      */
-    public static void favoritesChanged() {
+    public void favoritesChanged() {
     	for (IFavoritesListener listener : listeners) {
     		listener.favoritesChanged();
     	}

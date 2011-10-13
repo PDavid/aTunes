@@ -4,11 +4,11 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
-						default-lazy-init="true">
+						default-lazy-init="true" default-autowire="byName">
 	
-	<bean class="net.sourceforge.atunes.kernel.ApplicationLifeCycleListeners"/>
-	<bean class="net.sourceforge.atunes.kernel.DeviceListeners"/>
-	
+	<bean id="applicationLifeCycleListeners" class="net.sourceforge.atunes.kernel.ApplicationLifeCycleListeners"/>
+	<bean id="deviceListeners" class="net.sourceforge.atunes.kernel.DeviceListeners"/>
+	<bean id="favoritesListeners" class="net.sourceforge.atunes.kernel.FavoritesListeners"/>
 	
 
 
