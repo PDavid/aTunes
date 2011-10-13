@@ -27,6 +27,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.PlaybackStateListeners;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine.SubmissionState;
@@ -408,7 +409,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     public void pluginActivated(PluginInfo plugin) {
         try {
             IPlaybackStateListener listener = (IPlaybackStateListener) getBean(IPluginsHandler.class).getNewInstance(plugin);
-            PlaybackStateListeners.addPlaybackStateListener(listener);
+            Context.getBean(PlaybackStateListeners.class).addPlaybackStateListener(listener);
         } catch (PluginSystemException e) {
             Logger.error(e);
         }
@@ -418,7 +419,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     public void pluginDeactivated(PluginInfo plugin, Collection<Plugin> createdInstances) {
         Logger.info(StringUtils.getString("Plugin deactivated: ", plugin.getName(), " (", plugin.getClassName(), ")"));
         for (Plugin createdInstance : createdInstances) {
-        	PlaybackStateListeners.removePlaybackStateListener((IPlaybackStateListener) createdInstance);
+        	Context.getBean(PlaybackStateListeners.class).removePlaybackStateListener((IPlaybackStateListener) createdInstance);
         }
     }
 
