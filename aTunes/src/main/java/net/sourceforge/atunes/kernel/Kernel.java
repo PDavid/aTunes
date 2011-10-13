@@ -91,7 +91,8 @@ public class Kernel {
 
         state = (IState) Context.getBean(IState.class);
         
-        LanguageSelector.setLanguage(state);
+        new LanguageSelector().setLanguage(state);
+        
         ColorDefinitions.initColors();
         // Init proxy settings
         try {

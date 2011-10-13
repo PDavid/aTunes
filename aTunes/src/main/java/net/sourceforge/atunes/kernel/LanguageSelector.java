@@ -33,17 +33,12 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 final class LanguageSelector {
 
-    private LanguageSelector() {
-
-    }
-
     /**
      * Sets application language. If a language is defined in the state, it's
-     * used. If not, a dialog is shown to let the user choose. The language
-     * selected is used and stored in state
+     * used. If not, default locale is used
      * @param state
      */
-    static void setLanguage(IState state) {
+    void setLanguage(IState state) {
         LocaleBean localeBean = state.getLocale();
         if (localeBean != null) {
             I18nUtils.setLocale(localeBean.getLocale());
