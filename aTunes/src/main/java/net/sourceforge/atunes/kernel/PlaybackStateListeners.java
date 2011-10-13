@@ -21,28 +21,42 @@
 package net.sourceforge.atunes.kernel;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlaybackStateListener;
 import net.sourceforge.atunes.model.PlaybackState;
+
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 /**
  * Holds references to PlaybackStateListener instances
  * @author fleax
  *
  */
-public class PlaybackStateListeners {
+public class PlaybackStateListeners implements ApplicationContextAware {
 
-	private static List<IPlaybackStateListener> listeners = new ArrayList<IPlaybackStateListener>();
+	private Collection<IPlaybackStateListener> listeners;
+	
+	protected void setListeners(Collection<IPlaybackStateListener> listeners) {
+		this.listeners = listeners;
+	}
+	
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		// Clone listeners as list can be modified when adding plugins
+		listeners = new ArrayList<IPlaybackStateListener>(applicationContext.getBeansOfType(IPlaybackStateListener.class).values());
+	}
 	
     /**
      * Adds a new listener
      * @param listener
      */
-    public static void addPlaybackStateListener(IPlaybackStateListener listener) {
+    public void addPlaybackStateListener(IPlaybackStateListener listener) {
     	if (listener != null) {
-    		listeners.add(listener);
+    		getListeners().add(listener);
     	}
     }
 
@@ -51,8 +65,8 @@ public class PlaybackStateListeners {
      * @param newState
      * @param audioObject
      */
-    public static void playbackStateChanged(PlaybackState newState, IAudioObject audioObject) {
-		for (IPlaybackStateListener listener : listeners) {
+    public void playbackStateChanged(PlaybackState newState, IAudioObject audioObject) {
+		for (IPlaybackStateListener listener : getListeners()) {
 			listener.playbackStateChanged(newState, audioObject);
 		}
     }
@@ -61,9 +75,16 @@ public class PlaybackStateListeners {
 	 * Removes a listener
 	 * @param createdInstance
 	 */
-	public static void removePlaybackStateListener(IPlaybackStateListener createdInstance) {
+	public void removePlaybackStateListener(IPlaybackStateListener createdInstance) {
 		if (createdInstance != null) {
-			listeners.remove(createdInstance);
+			getListeners().remove(createdInstance);
 		}
+	}
+	
+	private Collection<IPlaybackStateListener> getListeners() {
+		if (listeners == null) {
+			listeners = new ArrayList<IPlaybackStateListener>();
+		}
+		return listeners;
 	}
 }

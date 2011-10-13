@@ -346,7 +346,7 @@ public abstract class AbstractPlayerEngine {
      */
     final void callPlaybackStateListeners(PlaybackState newState) {
     	if (!isCallToPlaybackStateListenersDisabled()) {
-    		PlaybackStateListeners.playbackStateChanged(newState, audioObject);
+    		Context.getBean(PlaybackStateListeners.class).playbackStateChanged(newState, audioObject);
     	}
     }
 
