@@ -148,7 +148,8 @@ public class Kernel {
         });
 
         // Call user interaction
-        ApplicationLifeCycleListeners.doUserInteraction(ApplicationLifeCycleListeners.getUserInteractionRequests());
+        Context.getBean(ApplicationLifeCycleListeners.class).doUserInteraction(
+        		Context.getBean(ApplicationLifeCycleListeners.class).getUserInteractionRequests());
     }
 
     /**
@@ -161,7 +162,7 @@ public class Kernel {
             Logger.info(StringUtils.getString("Closing ", Constants.APP_NAME, " ", Constants.VERSION.toString()));
             Context.getBean(ITemporalDiskStorage.class).removeAll();
             
-            ApplicationLifeCycleListeners.applicationFinish();
+            Context.getBean(ApplicationLifeCycleListeners.class).applicationFinish();
             
             Context.getBean(ITaskService.class).shutdownService();
             
@@ -177,8 +178,8 @@ public class Kernel {
      * Call actions after start.
      */
     static void callActionsAfterStart(List<IAudioObject> playList) {
-    	ApplicationLifeCycleListeners.applicationStarted(playList);
-    	ApplicationLifeCycleListeners.allHandlersInitialized();
+    	Context.getBean(ApplicationLifeCycleListeners.class).applicationStarted(playList);
+    	Context.getBean(ApplicationLifeCycleListeners.class).allHandlersInitialized();
     }
 
     /**
@@ -195,7 +196,7 @@ public class Kernel {
     public static void restart() {
         try {
             // Store all configuration and finish all active modules
-        	ApplicationLifeCycleListeners.applicationFinish();
+        	Context.getBean(ApplicationLifeCycleListeners.class).applicationFinish();
 
         	IOSManager osManager = Context.getBean(IOSManager.class);
         	
