@@ -45,7 +45,7 @@ public class DisconnectDeviceAction extends CustomAbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
     	// Launch a device disconnected event
-    	DeviceListeners.deviceDisconnected(getBean(IDeviceHandler.class).getDeviceLocation());
+    	getBean(DeviceListeners.class).deviceDisconnected(getBean(IDeviceHandler.class).getDeviceLocation());
     }
 
 }

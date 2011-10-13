@@ -39,7 +39,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 /**
- * Holds references to ApplicationLifeCycleListener instances
+ * Calls to ApplicationLifeCycleListener instances
  * 
  * @author fleax
  *
