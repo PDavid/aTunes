@@ -44,6 +44,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.gui.frame.Frames;
 import net.sourceforge.atunes.gui.views.controls.ByImageChoosingPanel;
 import net.sourceforge.atunes.gui.views.controls.ByImageChoosingPanel.ImageEntry;
@@ -104,14 +105,20 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
     private IOSManager osManager;
 
 	private ILookAndFeelManager lookAndFeelManager;
+	
+	private transient ApplicationArguments applicationArguments;
 
     /**
      * Instantiates a new general panel.
+     * @param osManager
+     * @param lookAndFeelManager
+     * @param applicationArguments
      */
-    public GeneralPanel(final IOSManager osManager, ILookAndFeelManager lookAndFeelManager) {
+    public GeneralPanel(final IOSManager osManager, ILookAndFeelManager lookAndFeelManager, ApplicationArguments applicationArguments) {
         super(I18nUtils.getString("GENERAL"));
         this.osManager = osManager;
         this.lookAndFeelManager = lookAndFeelManager;
+        this.applicationArguments = applicationArguments;
         JLabel windowTypeLabel = new JLabel(I18nUtils.getString("WINDOW_TYPE"));
         JLabel languageLabel = new JLabel(I18nUtils.getString("LANGUAGE"));
         language = new JComboBox();
@@ -187,10 +194,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
                     if (currentSkin == null) {
                     	currentSkin = GeneralPanel.this.lookAndFeelManager.getDefaultSkin(getState().getLookAndFeel().getName());
                     }
-                    GeneralPanel.this.lookAndFeelManager.applySkin(currentSkin, getState(), osManager);
-            		
-            		
-            		
+                    GeneralPanel.this.lookAndFeelManager.applySkin(GeneralPanel.this.applicationArguments, currentSkin, getState(), osManager);
             	}
             	updateSkins((String)lookAndFeel.getSelectedItem(), skinName);
             }
@@ -393,7 +397,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
     @Override
     public void resetImmediateChanges(IState state) {
         if (state.getLookAndFeel().getSkin() == null || !state.getLookAndFeel().getSkin().equals(skin.getSelectedItem())) {
-            lookAndFeelManager.applySkin(state.getLookAndFeel().getSkin(), getState(), osManager);
+            lookAndFeelManager.applySkin(applicationArguments, state.getLookAndFeel().getSkin(), getState(), osManager);
         }
     }
 
@@ -439,7 +443,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
     		String selectedSkin = (String) skin.getSelectedItem();
     		boolean isCurrentLookAndFeel = lookAndFeelManager.getCurrentLookAndFeelName().equals(lookAndFeel.getSelectedItem());
     		if (isCurrentLookAndFeel) {
-    			lookAndFeelManager.applySkin(selectedSkin, getState(), osManager);
+    			lookAndFeelManager.applySkin(applicationArguments, selectedSkin, getState(), osManager);
     		}
     	}
     }

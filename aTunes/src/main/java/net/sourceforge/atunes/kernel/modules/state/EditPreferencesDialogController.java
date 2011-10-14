@@ -29,6 +29,7 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.DefaultListModel;
 import javax.swing.SwingWorker;
 
+import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.AbstractPreferencesPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.ContextPanel;
@@ -83,15 +84,16 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
      * @param hotkeyHandler
      * @param notificationsHandler
      * @param pluginsHandler
+     * @param applicationArguments
      */
     EditPreferencesDialogController(EditPreferencesDialog dialog, IState state, IOSManager osManager, IFrame frame, StateChangeListeners stateChangeListeners, 
     		ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler, IHotkeyHandler hotkeyHandler, 
-    		INotificationsHandler notificationsHandler, IPluginsHandler pluginsHandler) {
+    		INotificationsHandler notificationsHandler, IPluginsHandler pluginsHandler, ApplicationArguments applicationArguments) {
         super(dialog, state);
         this.stateChangeListeners = stateChangeListeners;
         this.lookAndFeelManager = lookAndFeelManager;
         panels = new ArrayList<AbstractPreferencesPanel>();
-        panels.add(new GeneralPanel(osManager, lookAndFeelManager));
+        panels.add(new GeneralPanel(osManager, lookAndFeelManager, applicationArguments));
         panels.add(new RepositoryPanel()); 
         panels.add(new PlayerPanel(osManager, lookAndFeelManager.getCurrentLookAndFeel(), playerHandler, hotkeyHandler)); 
         panels.add(new NavigatorPanel(lookAndFeelManager.getCurrentLookAndFeel())); 

@@ -32,10 +32,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.SystemLookAndFeel;
-import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
@@ -299,7 +299,7 @@ public abstract class OperatingSystemAdapter {
 	 * @return
 	 */
 	private final String getOsPropertiesFileName() {
-		return StringUtils.getString(osManager.getUserConfigFolder(Context.getBean(Kernel.class).isDebug()), getFileSeparator(), "os.properties");
+		return StringUtils.getString(osManager.getUserConfigFolder(Context.getBean(ApplicationArguments.class).isDebug()), getFileSeparator(), "os.properties");
 	}
 
 	/**

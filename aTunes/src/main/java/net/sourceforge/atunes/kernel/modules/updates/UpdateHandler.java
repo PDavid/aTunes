@@ -24,8 +24,8 @@ import java.io.IOException;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
 
+import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.model.ApplicationVersion;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -54,7 +54,7 @@ public final class UpdateHandler extends AbstractHandler implements IUpdateHandl
     
     @Override
     public void allHandlersInitialized() {
-        if (!getBean(Kernel.class).isNoUpdate()) {
+        if (!getBean(ApplicationArguments.class).isNoUpdate()) {
             checkUpdates(false, false);
         }
     }

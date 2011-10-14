@@ -42,11 +42,10 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.SwingWorker;
 
+import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.model.IAddPodcastFeedDialog;
 import net.sourceforge.atunes.model.IFrame;
@@ -407,7 +406,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
 	public String getDownloadPath(IPodcastFeedEntry podcastFeedEntry) {
         String path = getState().getPodcastFeedEntryDownloadPath();
         if (path == null || path.isEmpty()) {
-            path = StringUtils.getString(getOsManager().getUserConfigFolder(Context.getBean(Kernel.class).isDebug()), "/", Constants.DEFAULT_PODCAST_FEED_ENTRY_DOWNLOAD_DIR);
+            path = StringUtils.getString(getOsManager().getUserConfigFolder(getBean(ApplicationArguments.class).isDebug()), "/", Constants.DEFAULT_PODCAST_FEED_ENTRY_DOWNLOAD_DIR);
         }
         File podcastFeedsDownloadFolder = new File(path);
 

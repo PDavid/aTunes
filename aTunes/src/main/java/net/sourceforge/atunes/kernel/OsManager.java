@@ -26,6 +26,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Properties;
 
+import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
@@ -161,7 +162,7 @@ public class OsManager implements IOSManager {
 	 */
     @Override
 	public String getTempFolder() {
-        String userConfigFolder = getUserConfigFolder(Context.getBean(Kernel.class).isDebug());
+        String userConfigFolder = getUserConfigFolder(Context.getBean(ApplicationArguments.class).isDebug());
         String tempFolder = StringUtils.getString(userConfigFolder, adapter.getFileSeparator(), Constants.TEMP_DIR);
         File tempFile = new File(tempFolder);
         if (!tempFile.exists() && !tempFile.mkdir()) {

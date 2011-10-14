@@ -30,9 +30,9 @@ import java.util.Map;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
-import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.state.beans.FontBean;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
@@ -95,12 +95,9 @@ public final class LookAndFeelManager implements PluginListener, ILookAndFeelMan
         }
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeelManager#setLookAndFeel(net.sourceforge.atunes.model.LookAndFeelBean, net.sourceforge.atunes.model.IState, net.sourceforge.atunes.model.IOSManager)
-	 */
     @Override
-	public void setLookAndFeel(LookAndFeelBean lookAndFeelBean, IState state, IOSManager osManager) {
-        if (Context.getBean(Kernel.class).isIgnoreLookAndFeel()) {
+	public void setLookAndFeel(ApplicationArguments arguments, LookAndFeelBean lookAndFeelBean, IState state, IOSManager osManager) {
+        if (arguments.isIgnoreLookAndFeel()) {
             return;
         }
 
@@ -217,15 +214,12 @@ public final class LookAndFeelManager implements PluginListener, ILookAndFeelMan
         return currentLookAndFeel.getName();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeelManager#applySkin(java.lang.String, net.sourceforge.atunes.model.IState, net.sourceforge.atunes.model.IOSManager)
-	 */
     @Override
-	public void applySkin(String selectedSkin, IState state, IOSManager osManager) {
+	public void applySkin(ApplicationArguments arguments, String selectedSkin, IState state, IOSManager osManager) {
         LookAndFeelBean bean = new LookAndFeelBean();
         bean.setName(currentLookAndFeel.getName());
         bean.setSkin(selectedSkin);
-        setLookAndFeel(bean, state, osManager);
+        setLookAndFeel(arguments, bean, state, osManager);
         for (Window window : Window.getWindows()) {
             SwingUtilities.updateComponentTreeUI(window);
         }
