@@ -36,9 +36,24 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class Main {
 
-    private Main() {
-    }
-
+	private ApplicationArguments applicationArguments;
+	
+	private IOSManager osManager;
+	
+	/**
+	 * @param applicationArguments
+	 */
+	public void setApplicationArguments(ApplicationArguments applicationArguments) {
+		this.applicationArguments = applicationArguments;
+	}
+	
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
+	
     /**
      * Log some properties at start.
      * 
@@ -69,25 +84,24 @@ public final class Main {
      *            the args
      */
     public static void main(String[] args) {
+    	Context.initialize("/settings/spring/");
+    	Context.getBean(Main.class).start(args);
+    }
+    
+    private void start(String[] args) {
         // Fetch arguments into a list
         List<String> arguments = StringUtils.fromStringArrayToList(args);
 
-    	Context.initialize("/settings/spring/");
-
         // Save arguments, if application is restarted they will be necessary
-    	Context.getBean(ApplicationArguments.class).saveArguments(arguments);
+    	applicationArguments.saveArguments(arguments);
 
-        Kernel kernel = Context.getBean(Kernel.class);
-        
         // For detecting Swing threading violations
-        if (Context.getBean(ApplicationArguments.class).isDebug()) {
+        if (applicationArguments.isDebug()) {
             RepaintManager.setCurrentManager(new CheckThreadViolationRepaintManager());
         }
 
-        IOSManager osManager = Context.getBean(IOSManager.class);
-        
         // Set log4j properties
-        Logger.loadProperties(Context.getBean(ApplicationArguments.class).isDebug(), osManager);
+        Logger.loadProperties(applicationArguments.isDebug(), osManager);
 
         // First, look up for other instances running
         if (!arguments.contains(ApplicationArguments.ALLOW_MULTIPLE_INSTANCE) && !Context.getBean(IMultipleInstancesHandler.class).isFirstInstance()) {
@@ -97,33 +111,23 @@ public final class Main {
             // NORMAL APPLICATION STARTUP
 
             // Set custom config folder if passed as argument
-            osManager.setCustomConfigFolder(Context.getBean(ApplicationArguments.class).getUserConfigFolder(arguments));
+            osManager.setCustomConfigFolder(applicationArguments.getUserConfigFolder(arguments));
 
             // Set custom repository config folder if passed as argument
-            osManager.setCustomRepositoryConfigFolder(Context.getBean(ApplicationArguments.class).getRepositoryConfigFolder(arguments));
+            osManager.setCustomRepositoryConfigFolder(applicationArguments.getRepositoryConfigFolder(arguments));
 
             // Enable uncaught exception catching
-            try {
-                Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-                    @Override
-                    public void uncaughtException(Thread t, Throwable e) {
-                        Logger.error(StringUtils.getString("Thread: ", t.getName()));
-                        Logger.error(e);
-                    }
-                });
-            } catch (Throwable t) {
-                Logger.error(t);
-            }
+            Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler());
 
             // WE ARE CLOSING ERROR STREAM!!!
             // THIS IS DONE TO AVOID ANNOYING MESSAGES FROM SOME LIBRARIES
             System.err.close();
 
             // Log program properties
-            logProgramProperties(Context.getBean(ApplicationArguments.class), osManager);
+            logProgramProperties(applicationArguments, osManager);
 
             // Start the Kernel, which really starts application
-            kernel.start();
+            Context.getBean(Kernel.class).start();
         }
     }
 }
