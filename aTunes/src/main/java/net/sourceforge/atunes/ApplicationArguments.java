@@ -33,38 +33,42 @@ import org.commonjukebox.plugins.model.PluginApi;
 @PluginApi
 public final class ApplicationArguments {
 
-    private ApplicationArguments() {
-    }
-
-    /** Debug constant This argument makes a big log file. */
+    /** 
+     * Debug constant This argument makes a big log file. 
+     */
     public static final String DEBUG = "debug";
 
     /**
-     * Ignore look and feel constant This argument makes application use OS
-     * default Look And Feel.
+     * Ignore look and feel constant. This argument makes application use OS default Look And Feel.
      */
     public static final String IGNORE_LOOK_AND_FEEL = "ignore-look-and-feel";
 
-    /** Disable multiple instances control. */
+    /** 
+     * Disable multiple instances control. 
+     */
     public static final String ALLOW_MULTIPLE_INSTANCE = "multiple-instance";
 
-    /** Argument to define a custom folder from which to read configuration. */
+    /** 
+     * Argument to define a custom folder from which to read configuration. 
+     */
     public static final String USE_CONFIG_FOLDER = "use-config-folder=";
 
     /**
      * Argument to define a custom folder from which to read repository
      * configuration (useful to share a repository configuration) This parameter
      * has priority over USE_CONFIG_FOLDER
-     * */
+     */
     public static final String USE_REPOSITORY_CONFIG_FOLDER = "use-repository-config-folder=";
 
-    /** Do not try to update the application (useful for Linux packages). */
+    /** 
+     * Do not try to update the application (useful for Linux packages). 
+     */
     public static final String NO_UPDATE = "no-update";
     
     /**
      * Saved arguments
      */
-    private static List<String> savedArguments;
+    private List<String> savedArguments;
 
     /**
      * Finds USE_CONFIG_FOLDER at argument list and gets value.
@@ -74,18 +78,8 @@ public final class ApplicationArguments {
      * 
      * @return the user config folder
      */
-    public static String getUserConfigFolder(List<String> args) {
-        String configFolder = null;
-
-        if (args != null) {
-            for (String arg : args) {
-                if (arg.toLowerCase().startsWith(USE_CONFIG_FOLDER)) {
-                    configFolder = arg.substring(USE_CONFIG_FOLDER.length());
-                }
-            }
-        }
-
-        return configFolder;
+    public String getUserConfigFolder(List<String> args) {
+    	return getArgument(args, USE_CONFIG_FOLDER);
     }
 
     /**
@@ -96,18 +90,20 @@ public final class ApplicationArguments {
      * 
      * @return the repository config folder
      */
-    public static String getRepositoryConfigFolder(List<String> args) {
-        String configFolder = null;
-
-        if (args != null) {
-            for (String arg : args) {
-                if (arg.toLowerCase().startsWith(USE_REPOSITORY_CONFIG_FOLDER)) {
-                    configFolder = arg.substring(USE_REPOSITORY_CONFIG_FOLDER.length());
+    public String getRepositoryConfigFolder(List<String> args) {
+    	return getArgument(args, USE_REPOSITORY_CONFIG_FOLDER);
+    }
+    
+    private String getArgument(List<String> arguments, String argument) {
+        String value = null;
+        if (arguments != null) {
+            for (String arg : arguments) {
+                if (arg.toLowerCase().startsWith(argument)) {
+                    value = arg.substring(argument.length());
                 }
             }
         }
-
-        return configFolder;
+        return value;
     }
 
     /**
@@ -116,7 +112,7 @@ public final class ApplicationArguments {
      * 
      * @param arguments
      */
-    public static void saveArguments(List<String> arguments) {
+    public void saveArguments(List<String> arguments) {
         savedArguments = new ArrayList<String>();
         checkAndSave(arguments, DEBUG);
         checkAndSave(arguments, IGNORE_LOOK_AND_FEEL);
@@ -133,7 +129,7 @@ public final class ApplicationArguments {
      * @param arguments
      * @param arg
      */
-    private static void checkAndSave(List<String> arguments, String arg) {
+    private void checkAndSave(List<String> arguments, String arg) {
         if (arguments != null) {
             for (String argument : arguments) {
                 if (argument.toLowerCase().startsWith(arg.toLowerCase())) {
@@ -148,15 +144,8 @@ public final class ApplicationArguments {
      * @param commandHandler
      * @return
      */
-    public static String getSavedArguments(ICommandHandler commandHandler) {
-        StringBuilder sb = new StringBuilder();
-        for (String arg : savedArguments) {
-            if (!commandHandler.isValidCommand(arg)) {
-                sb.append(arg);
-                sb.append(" ");
-            }
-        }
-        return sb.toString().trim();
+    public String getSavedArguments(ICommandHandler commandHandler) {
+    	return getSavedArguments(commandHandler, false);
     }
 
     /**
@@ -164,10 +153,20 @@ public final class ApplicationArguments {
      * @param commandHandler
      * @return
      */
-    public static String getSavedCommands(ICommandHandler commandHandler) {
+    public String getSavedCommands(ICommandHandler commandHandler) {
+    	return getSavedArguments(commandHandler, true);
+    }
+    
+    /**
+     * Returns commands or arguments
+     * @param commandHandler
+     * @param commands
+     * @return
+     */
+    private String getSavedArguments(ICommandHandler commandHandler, boolean commands) {
         StringBuilder sb = new StringBuilder();
         for (String arg : savedArguments) {
-            if (commandHandler.isValidCommand(arg)) {
+            if (commands && commandHandler.isValidCommand(arg) || !commands && !commandHandler.isValidCommand(arg)) {
                 sb.append(arg);
                 sb.append(" ");
             }

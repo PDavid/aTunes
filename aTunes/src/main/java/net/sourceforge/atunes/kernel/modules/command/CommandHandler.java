@@ -41,10 +41,16 @@ public final class CommandHandler extends AbstractHandler implements ICommandHan
      * Map of commands defined to be used
      */
     private Map<String, ICommand> commands;
+    
+    private ApplicationArguments applicationArguments;
+    
+    public void setApplicationArguments(ApplicationArguments arguments) {
+		this.applicationArguments = arguments;
+	}
 
     @Override
     public void allHandlersInitialized() {
-        runCommands(ApplicationArguments.getSavedCommands(this));
+        runCommands(applicationArguments.getSavedCommands(this));
     }
 
     @Override

@@ -66,11 +66,13 @@ public final class Main {
      *            the args
      */
     public static void main(String[] args) {
-    	
-    	Context.initialize("/settings/spring/");
-    	
         // Fetch arguments into a list
         List<String> arguments = StringUtils.fromStringArrayToList(args);
+
+    	Context.initialize("/settings/spring/");
+
+        // Save arguments, if application is restarted they will be necessary
+    	Context.getBean(ApplicationArguments.class).saveArguments(arguments);
 
         Kernel kernel = Context.getBean(Kernel.class);
         
@@ -82,9 +84,6 @@ public final class Main {
         // Set log4j properties
         Logger.loadProperties(kernel.isDebug(), osManager);
 
-        // Save arguments, if application is restarted they will be necessary
-        ApplicationArguments.saveArguments(arguments);
-
         // First, look up for other instances running
         if (!arguments.contains(ApplicationArguments.ALLOW_MULTIPLE_INSTANCE) && !Context.getBean(IMultipleInstancesHandler.class).isFirstInstance()) {
             // Is not first aTunes instance running, so send parameters and finalize
@@ -93,10 +92,10 @@ public final class Main {
             // NORMAL APPLICATION STARTUP
 
             // Set custom config folder if passed as argument
-            osManager.setCustomConfigFolder(ApplicationArguments.getUserConfigFolder(arguments));
+            osManager.setCustomConfigFolder(Context.getBean(ApplicationArguments.class).getUserConfigFolder(arguments));
 
             // Set custom repository config folder if passed as argument
-            osManager.setCustomRepositoryConfigFolder(ApplicationArguments.getRepositoryConfigFolder(arguments));
+            osManager.setCustomRepositoryConfigFolder(Context.getBean(ApplicationArguments.class).getRepositoryConfigFolder(arguments));
 
             // Enable uncaught exception catching
             try {
