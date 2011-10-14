@@ -28,16 +28,20 @@ import net.sourceforge.atunes.model.ICommandHandler;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
+import static org.mockito.Mockito.*;
 
 public class ApplicationArgumentsTest {
 
+	private ApplicationArguments sut;
+	
     private List<String> args1;
     private List<String> args2;
     private List<String> args3;
 
     @Before
     public void init() {
+    	sut = new ApplicationArguments();
+    	
         args1 = new ArrayList<String>();
 
         args2 = new ArrayList<String>();
@@ -53,29 +57,29 @@ public class ApplicationArgumentsTest {
 
     @Test
     public void testUserConfigFolder() {
-        Assert.assertEquals(null, ApplicationArguments.getUserConfigFolder(null));
-        Assert.assertEquals(null, ApplicationArguments.getUserConfigFolder(args1));
-        Assert.assertEquals("", ApplicationArguments.getUserConfigFolder(args2));
-        Assert.assertEquals("/home/user/.aTunes", ApplicationArguments.getUserConfigFolder(args3));
+        Assert.assertEquals(null, sut.getUserConfigFolder(null));
+        Assert.assertEquals(null, sut.getUserConfigFolder(args1));
+        Assert.assertEquals("", sut.getUserConfigFolder(args2));
+        Assert.assertEquals("/home/user/.aTunes", sut.getUserConfigFolder(args3));
     }
 
     @Test
     public void testRepositoryConfigFolder() {
-        Assert.assertEquals(null, ApplicationArguments.getRepositoryConfigFolder(null));
-        Assert.assertEquals(null, ApplicationArguments.getRepositoryConfigFolder(args1));
-        Assert.assertEquals("", ApplicationArguments.getRepositoryConfigFolder(args2));
-        Assert.assertEquals("/home/user/repository", ApplicationArguments.getRepositoryConfigFolder(args3));
+        Assert.assertEquals(null, sut.getRepositoryConfigFolder(null));
+        Assert.assertEquals(null, sut.getRepositoryConfigFolder(args1));
+        Assert.assertEquals("", sut.getRepositoryConfigFolder(args2));
+        Assert.assertEquals("/home/user/repository", sut.getRepositoryConfigFolder(args3));
     }
 
     @Test
     public void testSaveArguments() {
-        ApplicationArguments.saveArguments(null);
-        ICommandHandler commandHandler = Mockito.mock(ICommandHandler.class);
-        Mockito.when(commandHandler.isValidCommand(Mockito.anyString())).thenReturn(false);
-        Assert.assertEquals("", ApplicationArguments.getSavedArguments(commandHandler));
+    	sut.saveArguments(null);
+        ICommandHandler commandHandler = mock(ICommandHandler.class);
+        when(commandHandler.isValidCommand(anyString())).thenReturn(false);
+        Assert.assertEquals("", sut.getSavedArguments(commandHandler));
 
-        ApplicationArguments.saveArguments(args3);
-        String savedArguments = ApplicationArguments.getSavedArguments(commandHandler);
+        sut.saveArguments(args3);
+        String savedArguments = sut.getSavedArguments(commandHandler);
         Assert.assertTrue(savedArguments.contains("debug"));
         Assert.assertTrue(savedArguments.contains("uSe-CoNfIg-FoLdEr=/home/user/.aTunes"));
         Assert.assertTrue(savedArguments.contains("UsE-rEpOsItOrY-cOnFiG-fOlDeR=/home/user/repository"));

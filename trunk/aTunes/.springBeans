@@ -10,7 +10,6 @@
 		<config>src/main/resources/settings/spring/context.xml</config>
 		<config>src/main/resources/settings/spring/columnsets.xml</config>
 		<config>src/main/resources/settings/spring/navigationviews.xml</config>
-		<config>src/main/resources/settings/spring/state.xml</config>
 		<config>src/main/resources/settings/spring/treecelldecorators.xml</config>
 		<config>src/main/resources/settings/spring/treegenerators.xml</config>
 		<config>src/main/resources/settings/spring/webservices.xml</config>
@@ -21,8 +20,7 @@
 		<config>src/main/resources/settings/spring/tasks.xml</config>
 		<config>src/main/resources/settings/spring/utils.xml</config>
 		<config>src/main/resources/settings/spring/lookandfeel.xml</config>
-		<config>src/main/resources/settings/spring/listeners.xml</config>
-		<config>src/main/resources/settings/spring/kernel.xml</config>
+		<config>src/main/resources/settings/spring/core.xml</config>
 	</configs>
 	<configSets>
 		<configSet>
@@ -33,7 +31,6 @@
 				<config>src/main/resources/settings/spring/columnsets.xml</config>
 				<config>src/main/resources/settings/spring/context.xml</config>
 				<config>src/main/resources/settings/spring/navigationviews.xml</config>
-				<config>src/main/resources/settings/spring/state.xml</config>
 				<config>src/main/resources/settings/spring/treecelldecorators.xml</config>
 				<config>src/main/resources/settings/spring/treegenerators.xml</config>
 				<config>src/main/resources/settings/spring/webservices.xml</config>
@@ -44,8 +41,7 @@
 				<config>src/main/resources/settings/spring/tasks.xml</config>
 				<config>src/main/resources/settings/spring/utils.xml</config>
 				<config>src/main/resources/settings/spring/lookandfeel.xml</config>
-				<config>src/main/resources/settings/spring/listeners.xml</config>
-				<config>src/main/resources/settings/spring/kernel.xml</config>
+				<config>src/main/resources/settings/spring/core.xml</config>
 			</configs>
 		</configSet>
 	</configSets>

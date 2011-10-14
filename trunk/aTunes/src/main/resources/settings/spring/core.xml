@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
-						default-lazy-init="true" default-autowire="byName">
-	
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+	default-autowire="byName" default-lazy-init="true">
+
+	<bean class="net.sourceforge.atunes.kernel.Kernel"/>
+
+	<bean id="applicationArguments" class="net.sourceforge.atunes.ApplicationArguments"/>
+
+	<bean id="state" class="net.sourceforge.atunes.kernel.modules.state.ApplicationState" />
+	<bean id="stateStore" class="net.sourceforge.atunes.kernel.modules.state.PreferencesCache">
+		<constructor-arg value="/settings/ehcache-preferences.xml" />
+	</bean>
+
+
+
 	<bean id="applicationLifeCycleListeners" class="net.sourceforge.atunes.kernel.ApplicationLifeCycleListeners"/>
 	<bean id="deviceListeners" class="net.sourceforge.atunes.kernel.DeviceListeners"/>
 	<bean id="favoritesListeners" class="net.sourceforge.atunes.kernel.FavoritesListeners"/>
 	<bean id="playbackStateListeners" class="net.sourceforge.atunes.kernel.PlaybackStateListeners"/>
 	<bean id="playListEventListeners" class="net.sourceforge.atunes.kernel.PlayListEventListeners"/>
 	<bean id="stateChangeListeners" class="net.sourceforge.atunes.kernel.StateChangeListeners"/>
-	
-
 
 </beans>

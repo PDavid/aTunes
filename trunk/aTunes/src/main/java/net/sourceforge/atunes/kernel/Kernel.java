@@ -195,9 +195,9 @@ public final class Kernel {
         	String parameters = osManager.getLaunchParameters();
             ProcessBuilder pb = null;
             if (parameters != null && !parameters.trim().isEmpty()) {
-            	pb = new ProcessBuilder(osManager.getLaunchCommand(), parameters, ApplicationArguments.getSavedArguments(Context.getBean(ICommandHandler.class)));
+            	pb = new ProcessBuilder(osManager.getLaunchCommand(), parameters, Context.getBean(ApplicationArguments.class).getSavedArguments(Context.getBean(ICommandHandler.class)));
             } else {
-            	pb = new ProcessBuilder(osManager.getLaunchCommand(), ApplicationArguments.getSavedArguments(Context.getBean(ICommandHandler.class)));
+            	pb = new ProcessBuilder(osManager.getLaunchCommand(), Context.getBean(ApplicationArguments.class).getSavedArguments(Context.getBean(ICommandHandler.class)));
 
             }
 
