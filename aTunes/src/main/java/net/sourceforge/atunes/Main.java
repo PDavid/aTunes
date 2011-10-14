@@ -70,21 +70,7 @@ public final class Main {
      */
     public static void main(String[] args) {
     	
-    	Context.initialize("/settings/spring/state.xml", 
-    			"/settings/spring/columnsets.xml", 
-    			"/settings/spring/webservices.xml", 
-    			"/settings/spring/navigationviews.xml", 
-    			"/settings/spring/treecelldecorators.xml",
-    			"/settings/spring/context.xml",
-    			"/settings/spring/treegenerators.xml",
-    			"/settings/spring/handlers.xml",
-    			"/settings/spring/frame.xml",
-    			"/settings/spring/dialogs.xml",
-    			"/settings/spring/os.xml",
-    			"/settings/spring/tasks.xml",
-    			"/settings/spring/utils.xml",
-    			"/settings/spring/listeners.xml",
-    			"/settings/spring/lookandfeel.xml");
+    	Context.initialize("/settings/spring/");
     	
         // Fetch arguments into a list
         List<String> arguments = StringUtils.fromStringArrayToList(args);
