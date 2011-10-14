@@ -4,7 +4,9 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
 	default-autowire="byName" default-lazy-init="true">
 
-	<bean class="net.sourceforge.atunes.kernel.Kernel"/>
+	<bean class="net.sourceforge.atunes.Main"/>
+
+	<bean id="kernel" class="net.sourceforge.atunes.kernel.Kernel"/>
 
 	<bean id="applicationArguments" class="net.sourceforge.atunes.ApplicationArguments"/>
 
