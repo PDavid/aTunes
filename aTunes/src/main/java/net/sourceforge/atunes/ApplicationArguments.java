@@ -131,6 +131,15 @@ public final class ApplicationArguments {
     	return getArgument(originalArguments, USE_REPOSITORY_CONFIG_FOLDER);
     }
     
+	/**
+	 * Returns if application received multiple instance argument
+	 * @return
+	 */
+	public boolean isMultipleInstance() {
+		return originalArguments.contains(ALLOW_MULTIPLE_INSTANCE);
+	}
+
+    
     private String getArgument(List<String> arguments, String argument) {
         String value = null;
         if (arguments != null) {

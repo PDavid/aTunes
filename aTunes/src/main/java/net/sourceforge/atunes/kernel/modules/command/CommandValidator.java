@@ -18,22 +18,8 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.kernel.modules.command;
 
-
-
-/**
- * Responsible of managing communication between instances of application
- * @author alex
- *
- */
-public interface IMultipleInstancesHandler extends IHandler {
-
-	/**
-	 * Tries to open a server socket to listen to other aTunes instances.
-	 * 
-	 * @return true if server socket could be opened
-	 */
-	public void startListening();
+public class CommandValidator {
 
 }

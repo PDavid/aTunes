@@ -22,21 +22,12 @@ package net.sourceforge.atunes.kernel.modules.instances;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ICommandHandler;
-import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IRadioHandler;
-import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -55,43 +46,21 @@ class SocketListener extends Thread {
 	/** The socket. */
     private ServerSocket socket;
 
-    /** The queue. */
-    private SongsQueue queue;
-    
-    private IOSManager osManager;
-    
-    private IRepositoryHandler repositoryHandler;
-    
-    private IRadioHandler radioHandler;
-    
     private ICommandHandler commandHandler;
 
     /**
      * Instantiates a new socket listener.
      * @param multipleInstancesHandler
      * @param serverSocket
-     * @param queue
-     * @param osManager
-     * @param repositoryHandler
-     * @param radioHandler
      * @param commandHandler
      */
-    SocketListener(MultipleInstancesHandler multipleInstancesHandler, ServerSocket serverSocket, SongsQueue queue, IOSManager osManager, IRepositoryHandler repositoryHandler, IRadioHandler radioHandler, ICommandHandler commandHandler) {
+    SocketListener(MultipleInstancesHandler multipleInstancesHandler, ServerSocket serverSocket, ICommandHandler commandHandler) {
         super();
 		this.multipleInstancesHandler = multipleInstancesHandler;
-		this.osManager = osManager;
-		this.repositoryHandler = repositoryHandler;
-		this.radioHandler = radioHandler;
 		this.commandHandler = commandHandler;
         this.socket = serverSocket;
-        this.queue = queue;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Thread#run()
-     */
     @Override
     public void run() {
         Socket s = null;
@@ -104,22 +73,8 @@ class SocketListener extends Thread {
                 br = new BufferedReader(new InputStreamReader(s.getInputStream()));
                 String str;
                 while ((str = br.readLine()) != null) {
-                	File fileStr = new File(str);
-                    Logger.info(StringUtils.getString("Received connection with content: \"", str, "\""));
-                    if (PlayListIO.isValidPlayList(fileStr)) {
-                        List<String> songs = PlayListIO.read(fileStr, osManager);
-                        List<IAudioObject> files = PlayListIO.getAudioObjectsFromFileNamesList(repositoryHandler, songs, radioHandler);
-                        for (IAudioObject file : files) {
-                            queue.addSong(file);
-                        }
-                    } else if (AudioFile.isValidAudioFile(fileStr)) {
-                    	ILocalAudioObject file = repositoryHandler.getFileIfLoaded(str);
-                        if (file == null) {
-                            // file not in repository, and don't add it now
-                            file = new AudioFile(fileStr);
-                        }
-                        queue.addSong(file);
-                    } else if (commandHandler.isValidCommand(str)) {
+                	Logger.info("Receiver argument: ", str);
+                    if (commandHandler.isValidCommand(str)) {
                     	commandHandler.processAndRun(str);
                     }
                 }
