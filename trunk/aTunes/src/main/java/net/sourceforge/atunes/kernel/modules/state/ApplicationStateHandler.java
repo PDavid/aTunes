@@ -30,6 +30,7 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.EditPreferencesDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
@@ -515,7 +516,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
     }
 
     private String getUserConfigFolder() {
-        return getOsManager().getUserConfigFolder(Kernel.isDebug());
+        return getOsManager().getUserConfigFolder(Context.getBean(Kernel.class).isDebug());
     }
     
     /* (non-Javadoc)

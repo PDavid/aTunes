@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -40,6 +41,6 @@ public class ExitAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Kernel.finish();
+    	Context.getBean(Kernel.class).finish();
     }
 }

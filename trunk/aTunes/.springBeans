@@ -22,6 +22,7 @@
 		<config>src/main/resources/settings/spring/utils.xml</config>
 		<config>src/main/resources/settings/spring/lookandfeel.xml</config>
 		<config>src/main/resources/settings/spring/listeners.xml</config>
+		<config>src/main/resources/settings/spring/kernel.xml</config>
 	</configs>
 	<configSets>
 		<configSet>
@@ -44,6 +45,7 @@
 				<config>src/main/resources/settings/spring/utils.xml</config>
 				<config>src/main/resources/settings/spring/lookandfeel.xml</config>
 				<config>src/main/resources/settings/spring/listeners.xml</config>
+				<config>src/main/resources/settings/spring/kernel.xml</config>
 			</configs>
 		</configSet>
 	</configSets>

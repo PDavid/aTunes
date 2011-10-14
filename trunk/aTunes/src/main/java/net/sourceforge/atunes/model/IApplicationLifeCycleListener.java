@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.model;
 
-import java.util.List;
 
 
 /**
@@ -34,9 +33,8 @@ public interface IApplicationLifeCycleListener {
 
     /**
      * Called after application start
-     * @param playList 
      */
-    public void applicationStarted(List<IAudioObject> playList);
+    public void applicationStarted();
     
     /**
      * Code to be executed when all handlers have been initialized

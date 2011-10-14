@@ -100,7 +100,7 @@ public final class LookAndFeelManager implements PluginListener, ILookAndFeelMan
 	 */
     @Override
 	public void setLookAndFeel(LookAndFeelBean lookAndFeelBean, IState state, IOSManager osManager) {
-        if (Kernel.isIgnoreLookAndFeel()) {
+        if (Context.getBean(Kernel.class).isIgnoreLookAndFeel()) {
             return;
         }
 

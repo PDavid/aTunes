@@ -28,6 +28,7 @@ import java.util.Properties;
 import java.util.PropertyResourceBundle;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.model.IOSManager;
 
@@ -57,7 +58,7 @@ public class Logger {
      *            the objects to show in log
      */
     public static void debug(Object... objects) {
-        if (!Kernel.isDebug()) {
+        if (!Context.getBean(Kernel.class).isDebug()) {
             return;
         }
 

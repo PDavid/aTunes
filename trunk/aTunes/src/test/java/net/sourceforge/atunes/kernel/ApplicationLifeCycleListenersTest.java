@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyList;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -36,7 +35,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.model.IApplicationLifeCycleListener;
-import net.sourceforge.atunes.model.IAudioObject;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -65,12 +63,11 @@ public class ApplicationLifeCycleListenersTest {
 	
 	@Test
 	public void applicationStarted() {
-		List<IAudioObject> list = anyList();
-		sut.applicationStarted(list);
+		sut.applicationStarted();
 		
-		verify(mock1).applicationStarted(list);
-		verify(mock2).applicationStarted(list);
-		verify(mock3).applicationStarted(list);
+		verify(mock1).applicationStarted();
+		verify(mock2).applicationStarted();
+		verify(mock3).applicationStarted();
 	}
 	
 	@Test

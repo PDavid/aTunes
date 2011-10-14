@@ -34,6 +34,7 @@ import javax.swing.ImageIcon;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAlbumListInfo;
@@ -122,7 +123,7 @@ public class LastFmCache extends AbstractCache {
 
     private synchronized File getSubmissionDataDir() throws IOException {
     	if (submissionCacheDir == null) {
-    		submissionCacheDir = new File(StringUtils.getString(osManager.getUserConfigFolder(Kernel.isDebug()), osManager.getFileSeparator(),
+    		submissionCacheDir = new File(StringUtils.getString(osManager.getUserConfigFolder(Context.getBean(Kernel.class).isDebug()), osManager.getFileSeparator(),
     		            Constants.CACHE_DIR, osManager.getFileSeparator(), Constants.LAST_FM_CACHE_DIR, osManager.getFileSeparator(), Constants.LAST_FM_SUBMISSION_CACHE_DIR));
     	}
         if (!submissionCacheDir.exists()) {

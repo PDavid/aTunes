@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.ui;
 import java.awt.ComponentOrientation;
 import java.awt.EventQueue;
 import java.awt.Window;
-import java.util.List;
 
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
@@ -56,7 +55,7 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
 
  
     @Override
-    public void applicationStarted(List<IAudioObject> playList) {
+    public void applicationStarted() {
         getFrame().setVisible(true);
     	
     	IState state = getState();
@@ -76,7 +75,7 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
     @Override
 	public void finish() {
         if (!getState().isShowSystemTray() && getOsManager().isClosingMainWindowClosesApplication()) {
-            Kernel.finish();
+        	getBean(Kernel.class).finish();
         }
     }
 

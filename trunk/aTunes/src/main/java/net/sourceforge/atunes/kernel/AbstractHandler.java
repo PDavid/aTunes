@@ -165,7 +165,7 @@ public abstract class AbstractHandler implements IHandler {
     public void applicationStateChanged(IState newState) {}
 
     @Override
-    public void applicationStarted(List<IAudioObject> playList) {}
+    public void applicationStarted() {}
     
 	@Override
 	public void playListCleared() {}

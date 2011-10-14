@@ -111,7 +111,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 	}
 	
     @Override
-    public void applicationStarted(List<IAudioObject> playList) {
+    public void applicationStarted() {
         showNavigationTree(getState().isShowNavigationTree());
         applyNavigationTableVisibility(getState().isShowNavigationTree() && getState().isShowNavigationTable());
 
