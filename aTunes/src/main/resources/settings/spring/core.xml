@@ -5,6 +5,7 @@
 	default-autowire="byName" default-lazy-init="true">
 
 	<bean class="net.sourceforge.atunes.Main"/>
+	<bean id="applicationPropertiesLogger" class="net.sourceforge.atunes.ApplicationPropertiesLogger"/>
 
 	<bean id="kernel" class="net.sourceforge.atunes.kernel.Kernel"/>
 

@@ -59,14 +59,6 @@ public interface IOSManager {
 	public File getFileFromUserConfigFolder(String name, boolean useWorkDir);
 
 	/**
-	 * Sets the custom config folder.
-	 * 
-	 * @param customConfigFolder
-	 *            the customConfigFolder to set
-	 */
-	public void setCustomConfigFolder(String folder);
-
-	/**
 	 * Return path to temporal folder, which is inside user's configuration folder.
 	 * 
 	 * @return the temporal folder
@@ -84,12 +76,6 @@ public interface IOSManager {
 	 * @return the customRepositoryConfigFolder
 	 */
 	public String getCustomRepositoryConfigFolder();
-
-	/**
-	 * Sets custom repository folder
-	 * @param folder
-	 */
-	public void setCustomRepositoryConfigFolder(String folder);
 
 	/**
 	 * Returns a string with command to launch application This method is

@@ -60,18 +60,22 @@ public class ApplicationArgumentsTest {
 
     @Test
     public void testUserConfigFolder() {
-        Assert.assertEquals(null, sut.getUserConfigFolder(null));
-        Assert.assertEquals(null, sut.getUserConfigFolder(args1));
-        Assert.assertEquals("", sut.getUserConfigFolder(args2));
-        Assert.assertEquals("/home/user/.aTunes", sut.getUserConfigFolder(args3));
+    	sut.saveArguments(args1);
+        Assert.assertEquals(null, sut.getUserConfigFolder());
+    	sut.saveArguments(args2);
+        Assert.assertEquals("", sut.getUserConfigFolder());
+    	sut.saveArguments(args3);
+        Assert.assertEquals("/home/user/.aTunes", sut.getUserConfigFolder());
     }
 
     @Test
     public void testRepositoryConfigFolder() {
-        Assert.assertEquals(null, sut.getRepositoryConfigFolder(null));
-        Assert.assertEquals(null, sut.getRepositoryConfigFolder(args1));
-        Assert.assertEquals("", sut.getRepositoryConfigFolder(args2));
-        Assert.assertEquals("/home/user/repository", sut.getRepositoryConfigFolder(args3));
+    	sut.saveArguments(args1);
+        Assert.assertEquals(null, sut.getRepositoryConfigFolder());
+    	sut.saveArguments(args2);
+        Assert.assertEquals("", sut.getRepositoryConfigFolder());
+        sut.saveArguments(args3);
+        Assert.assertEquals("/home/user/repository", sut.getRepositoryConfigFolder());
     }
 
     @Test(expected=IllegalArgumentException.class)

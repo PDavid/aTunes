@@ -58,6 +58,11 @@ public class OsManager implements IOSManager {
     
     /** Path to repository config folder as passed as argument to app. */
     private String customRepositoryConfigFolder = null;
+    
+    public void setApplicationArguments(ApplicationArguments applicationArguments) {
+    	customConfigFolder = applicationArguments.getUserConfigFolder();
+    	customRepositoryConfigFolder = applicationArguments.getRepositoryConfigFolder();
+	}
 	
     /**
      *  Initializes os manager 
@@ -150,14 +155,6 @@ public class OsManager implements IOSManager {
     }
 
     /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#setCustomConfigFolder(java.lang.String)
-	 */
-    @Override
-	public void setCustomConfigFolder(String folder) {
-        customConfigFolder = folder;
-    }
-
-    /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.IOSManager#getTempFolder()
 	 */
     @Override
@@ -206,14 +203,6 @@ public class OsManager implements IOSManager {
         return customRepositoryConfigFolder;
     }
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#setCustomRepositoryConfigFolder(java.lang.String)
-	 */
-	@Override
-	public void setCustomRepositoryConfigFolder(String folder) {
-		customRepositoryConfigFolder = folder;
-	}
-	
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.IOSManager#getLaunchCommand()
 	 */

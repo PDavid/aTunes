@@ -220,7 +220,7 @@ public abstract class AbstractAudioFileTransferProcess extends AbstractProcess {
      * @param song
      * @param destination
      * @param isMp3Device
-     * @param osManager
+     * @param data.osManager
      * @return
      */
     public String getDirectory(ILocalAudioObject song, File destination, boolean isMp3Device) {
