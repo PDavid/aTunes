@@ -22,6 +22,8 @@ package net.sourceforge.atunes.model;
 
 import java.util.List;
 
+import net.sourceforge.atunes.ApplicationArguments;
+
 
 /**
  * Responsible of managing look and feels
@@ -33,10 +35,12 @@ public interface ILookAndFeelManager {
 	/**
 	 * Sets the look and feel.
 	 * 
+	 * @param arguments
 	 * @param lookAndFeelBean
 	 * @param state
+	 * @param osManager
 	 */
-	public void setLookAndFeel(LookAndFeelBean lookAndFeelBean, IState state, IOSManager osManager);
+	public void setLookAndFeel(ApplicationArguments arguments, LookAndFeelBean lookAndFeelBean, IState state, IOSManager osManager);
 
 	/**
 	 * Returns available look and feels
@@ -61,11 +65,12 @@ public interface ILookAndFeelManager {
 	/**
 	 * Updates the user interface to use a new skin
 	 * 
+	 * @param arguments
 	 * @param selectedSkin
 	 * @param state
 	 * @param osManager
 	 */
-	public void applySkin(String selectedSkin, IState state, IOSManager osManager);
+	public void applySkin(ApplicationArguments arguments, String selectedSkin, IState state, IOSManager osManager);
 
 	/**
 	 * @return the currentLookAndFeel

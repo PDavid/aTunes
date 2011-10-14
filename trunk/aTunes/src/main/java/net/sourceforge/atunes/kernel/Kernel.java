@@ -23,16 +23,13 @@ package net.sourceforge.atunes.kernel;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.UnknownHostException;
-import java.util.List;
 
-import javax.swing.RepaintManager;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.ColorDefinitions;
-import net.sourceforge.atunes.gui.debug.CheckThreadViolationRepaintManager;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.model.ICommandHandler;
 import net.sourceforge.atunes.model.IFrame;
@@ -52,38 +49,16 @@ import net.sourceforge.atunes.utils.Timer;
  */
 public final class Kernel {
 
-    /** Defines if aTunes is running in debug mode. */
-    private boolean debug;
-
-    /** Defines if aTunes will ignore look and feel. */
-    private boolean ignoreLookAndFeel;
-
-    /** Defines if aTunes should not try to update (for Linux packages). */
-    private boolean noUpdate;
-    
     /** Timer used to measure start time */
     private Timer timer;
     
     private IState state;
     
-    public void initialize(List<String> arguments) {
-        // Set debug flag in kernel
-        setDebug(arguments.contains(ApplicationArguments.DEBUG));
-        // Set ignore look and feel flag in kernel
-    	setIgnoreLookAndFeel(arguments.contains(ApplicationArguments.IGNORE_LOOK_AND_FEEL));
-        // Set no update flag in kernel
-    	setNoUpdate(arguments.contains(ApplicationArguments.NO_UPDATE));
-        // For detecting Swing threading violations
-        if (isDebug()) {
-            RepaintManager.setCurrentManager(new CheckThreadViolationRepaintManager());
-        }
-    }
-    
     /**
      * Static method to create the Kernel instance. This method starts the
      * application, so should be called from the main method of the application.
      */
-    public void startKernel() {
+    public void start() {
         Logger.debug("Starting Kernel");
         
         timer = new Timer();
@@ -109,7 +84,7 @@ public final class Kernel {
             SwingUtilities.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
-                    Context.getBean(ILookAndFeelManager.class).setLookAndFeel(state.getLookAndFeel(), state, Context.getBean(IOSManager.class));
+                    Context.getBean(ILookAndFeelManager.class).setLookAndFeel(Context.getBean(ApplicationArguments.class), state.getLookAndFeel(), state, Context.getBean(IOSManager.class));
                     
                     IFrame frame = Context.getBean(IFrame.class);
                     AbstractHandler.setFrameForHandlers(frame);
@@ -210,50 +185,5 @@ public final class Kernel {
             // Exit normally
             System.exit(0);
         }
-    }
-
-    /**
-     * @return the debug
-     */
-    public boolean isDebug() {
-        return debug;
-    }
-
-    /**
-     * @param debug
-     *            the debug to set
-     */
-    private void setDebug(boolean debug) {
-        this.debug = debug;
-    }
-
-    /**
-     * @return the ignoreLookAndFeel
-     */
-    public boolean isIgnoreLookAndFeel() {
-        return ignoreLookAndFeel;
-    }
-
-    /**
-     * @param ignoreLookAndFeel
-     *            the ignoreLookAndFeel to set
-     */
-    private void setIgnoreLookAndFeel(boolean ignoreLookAndFeel) {
-    	this.ignoreLookAndFeel = ignoreLookAndFeel;
-    }
-
-    /**
-     * @return the noUpdate
-     */
-    public boolean isNoUpdate() {
-        return noUpdate;
-    }
-
-    /**
-     * @param noUpdate
-     *            the noUpdate to set
-     */
-    private void setNoUpdate(boolean noUpdate) {
-    	this.noUpdate = noUpdate;
     }
 }

@@ -38,10 +38,9 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.gui.views.dialogs.RepositorySelectionInfoDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ConnectDeviceAction;
 import net.sourceforge.atunes.kernel.actions.ExitAction;
@@ -1163,7 +1162,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     @Override
 	public String getRepositoryConfigurationFolder() {
         String customRepositoryConfigFolder = getOsManager().getCustomRepositoryConfigFolder();
-        return customRepositoryConfigFolder != null ? customRepositoryConfigFolder : getOsManager().getUserConfigFolder(Context.getBean(Kernel.class).isDebug());
+        return customRepositoryConfigFolder != null ? customRepositoryConfigFolder : getOsManager().getUserConfigFolder(getBean(ApplicationArguments.class).isDebug());
     }
     
 	@Override

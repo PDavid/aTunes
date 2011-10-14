@@ -29,11 +29,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
 
+import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.EditPreferencesDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.StateChangeListeners;
 import net.sourceforge.atunes.kernel.modules.playlist.ListOfPlayLists;
 import net.sourceforge.atunes.kernel.modules.repository.exception.InconsistentRepositoryException;
@@ -516,7 +515,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
     }
 
     private String getUserConfigFolder() {
-        return getOsManager().getUserConfigFolder(Context.getBean(Kernel.class).isDebug());
+        return getOsManager().getUserConfigFolder(getBean(ApplicationArguments.class).isDebug());
     }
     
     /* (non-Javadoc)
@@ -527,6 +526,6 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
     	EditPreferencesDialog dialog = new EditPreferencesDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class));
     	new EditPreferencesDialogController(dialog, getState(), getOsManager(), getFrame(), getBean(StateChangeListeners.class), getBean(ILookAndFeelManager.class), 
     			getBean(IPlayerHandler.class), getBean(IHotkeyHandler.class), getBean(INotificationsHandler.class), 
-    			getBean(IPluginsHandler.class)).start();
+    			getBean(IPluginsHandler.class), getBean(ApplicationArguments.class)).start();
     }
 }

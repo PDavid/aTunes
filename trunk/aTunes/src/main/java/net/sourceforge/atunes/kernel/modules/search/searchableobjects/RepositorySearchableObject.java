@@ -25,9 +25,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.search.RawSearchResult;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -75,7 +75,7 @@ public final class RepositorySearchableObject extends AbstractCommonAudioFileSea
     @Override
     public FSDirectory getIndexDirectory() throws IOException {
         if (indexDirectory == null) {
-            indexDirectory = new SimpleFSDirectory(new File(StringUtils.getString(Context.getBean(IOSManager.class).getUserConfigFolder(Context.getBean(Kernel.class).isDebug()), "/", Constants.REPOSITORY_INDEX_DIR)));
+            indexDirectory = new SimpleFSDirectory(new File(StringUtils.getString(Context.getBean(IOSManager.class).getUserConfigFolder(Context.getBean(ApplicationArguments.class).isDebug()), "/", Constants.REPOSITORY_INDEX_DIR)));
         }
         return indexDirectory;
     }

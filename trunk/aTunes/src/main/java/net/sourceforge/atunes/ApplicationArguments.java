@@ -66,9 +66,46 @@ public final class ApplicationArguments {
     public static final String NO_UPDATE = "no-update";
     
     /**
+     * Original arguments passed to application
+     */
+    private List<String> originalArguments;
+    
+    /**
      * Saved arguments
      */
     private List<String> savedArguments;
+
+    /** 
+     * Defines if aTunes is running in debug mode. 
+     */
+    private boolean debug;
+
+    /** Defines if aTunes will ignore look and feel. */
+    private boolean ignoreLookAndFeel;
+
+    /** Defines if aTunes should not try to update (for Linux packages). */
+    private boolean noUpdate;
+    
+    /**
+     * @return the debug
+     */
+    public boolean isDebug() {
+        return debug;
+    }
+
+    /**
+     * @return the ignoreLookAndFeel
+     */
+    public boolean isIgnoreLookAndFeel() {
+        return ignoreLookAndFeel;
+    }
+
+    /**
+     * @return the noUpdate
+     */
+    public boolean isNoUpdate() {
+        return noUpdate;
+    }
 
     /**
      * Finds USE_CONFIG_FOLDER at argument list and gets value.
@@ -113,6 +150,10 @@ public final class ApplicationArguments {
      * @param arguments
      */
     public void saveArguments(List<String> arguments) {
+    	if (arguments == null) {
+    		throw new IllegalArgumentException();
+    	}
+    	originalArguments = arguments;
         savedArguments = new ArrayList<String>();
         checkAndSave(arguments, DEBUG);
         checkAndSave(arguments, IGNORE_LOOK_AND_FEEL);
@@ -121,6 +162,13 @@ public final class ApplicationArguments {
         checkAndSave(arguments, USE_REPOSITORY_CONFIG_FOLDER);
         checkAndSave(arguments, NO_UPDATE);
         checkAndSave(arguments, Constants.COMMAND_PREFIX);
+        
+        // Set debug
+        debug = arguments.contains(ApplicationArguments.DEBUG);
+        // Set ignore look and feel
+    	ignoreLookAndFeel = arguments.contains(ApplicationArguments.IGNORE_LOOK_AND_FEEL);
+        // Set no update
+    	noUpdate = arguments.contains(ApplicationArguments.NO_UPDATE);
     }
 
     /**
@@ -139,6 +187,14 @@ public final class ApplicationArguments {
         }
     }
 
+    /**
+     * Returns original arguments of application
+     * @return
+     */
+    public List<String> getOriginalArguments() {
+		return originalArguments;
+	}
+    
     /**
      * Returns a string with saved arguments (not commands)
      * @param commandHandler

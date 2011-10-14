@@ -22,6 +22,9 @@ package net.sourceforge.atunes;
 
 import java.util.List;
 
+import javax.swing.RepaintManager;
+
+import net.sourceforge.atunes.gui.debug.CheckThreadViolationRepaintManager;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.model.IMultipleInstancesHandler;
 import net.sourceforge.atunes.model.IOSManager;
@@ -42,7 +45,7 @@ public final class Main {
      * @param arguments
      * @param osManager
      */
-    private static void logProgramProperties(List<String> arguments, IOSManager osManager) {
+    private static void logProgramProperties(ApplicationArguments arguments, IOSManager osManager) {
         // First line: version number
         Logger.info("Starting ", Constants.APP_NAME, " ", Constants.VERSION);
 
@@ -50,10 +53,10 @@ public final class Main {
         Logger.info("Running in Java Virtual Machine ", System.getProperty("java.version"));
 
         // Third line: Application Arguments
-        Logger.info("Arguments = ", arguments);
+        Logger.info("Arguments = ", arguments.getOriginalArguments());
 
         // Fourth line: DEBUG mode
-        Logger.info("Debug mode = ", Context.getBean(Kernel.class).isDebug());
+        Logger.info("Debug mode = ", arguments.isDebug());
 
         // Fifth line: Execution path
         Logger.info("Execution path = ", osManager.getWorkingDirectory());
@@ -76,13 +79,15 @@ public final class Main {
 
         Kernel kernel = Context.getBean(Kernel.class);
         
-        // Initialize kernel with arguments
-        kernel.initialize(arguments);
-        
+        // For detecting Swing threading violations
+        if (Context.getBean(ApplicationArguments.class).isDebug()) {
+            RepaintManager.setCurrentManager(new CheckThreadViolationRepaintManager());
+        }
+
         IOSManager osManager = Context.getBean(IOSManager.class);
         
         // Set log4j properties
-        Logger.loadProperties(kernel.isDebug(), osManager);
+        Logger.loadProperties(Context.getBean(ApplicationArguments.class).isDebug(), osManager);
 
         // First, look up for other instances running
         if (!arguments.contains(ApplicationArguments.ALLOW_MULTIPLE_INSTANCE) && !Context.getBean(IMultipleInstancesHandler.class).isFirstInstance()) {
@@ -115,10 +120,10 @@ public final class Main {
             System.err.close();
 
             // Log program properties
-            logProgramProperties(arguments, osManager);
+            logProgramProperties(Context.getBean(ApplicationArguments.class), osManager);
 
             // Start the Kernel, which really starts application
-            kernel.startKernel();
+            kernel.start();
         }
     }
 }

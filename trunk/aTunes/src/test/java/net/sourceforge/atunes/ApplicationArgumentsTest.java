@@ -20,6 +20,10 @@
 
 package net.sourceforge.atunes;
 
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +32,6 @@ import net.sourceforge.atunes.model.ICommandHandler;
 
 import org.junit.Before;
 import org.junit.Test;
-import static org.mockito.Mockito.*;
 
 public class ApplicationArgumentsTest {
 
@@ -71,9 +74,14 @@ public class ApplicationArgumentsTest {
         Assert.assertEquals("/home/user/repository", sut.getRepositoryConfigFolder(args3));
     }
 
+    @Test(expected=IllegalArgumentException.class)
+    public void testSaveArgumentsError() {
+    	sut.saveArguments(null);
+    }
+
     @Test
     public void testSaveArguments() {
-    	sut.saveArguments(null);
+    	sut.saveArguments(new ArrayList<String>());
         ICommandHandler commandHandler = mock(ICommandHandler.class);
         when(commandHandler.isValidCommand(anyString())).thenReturn(false);
         Assert.assertEquals("", sut.getSavedArguments(commandHandler));
@@ -84,6 +92,5 @@ public class ApplicationArgumentsTest {
         Assert.assertTrue(savedArguments.contains("uSe-CoNfIg-FoLdEr=/home/user/.aTunes"));
         Assert.assertTrue(savedArguments.contains("UsE-rEpOsItOrY-cOnFiG-fOlDeR=/home/user/repository"));
         Assert.assertFalse(savedArguments.contains("argument"));
-
     }
 }

@@ -30,11 +30,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
+import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnSets;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
@@ -196,7 +196,7 @@ public class PluginsHandler extends AbstractHandler implements PluginListener, I
      * @return the plugins folder
      */
     private String getUserPluginsFolder() {
-        String userConfigFolder = getOsManager().getUserConfigFolder(Context.getBean(Kernel.class).isDebug());
+        String userConfigFolder = getOsManager().getUserConfigFolder(getBean(ApplicationArguments.class).isDebug());
         String pluginsFolder = StringUtils.getString(userConfigFolder, getOsManager().getFileSeparator(), Constants.PLUGINS_DIR);
         File pluginFile = new File(pluginsFolder);
         if (!pluginFile.exists() && !pluginFile.mkdir()) {
