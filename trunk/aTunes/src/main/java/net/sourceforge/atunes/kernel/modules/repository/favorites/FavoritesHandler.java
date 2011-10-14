@@ -264,15 +264,17 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
      * Actions to do after a favorite change (add, remove)
      */
     private void callActionsAfterFavoritesChange() { 
-    	if (SwingUtilities.isEventDispatchThread()) {
-    		favoritesListeners.favoritesChanged();
-    	} else {
-    		SwingUtilities.invokeLater(new Runnable() {
-    			@Override
-    			public void run() {
-    				favoritesListeners.favoritesChanged();
-    			}
-    		});
+    	if (favoritesListeners != null) {
+    		if (SwingUtilities.isEventDispatchThread()) {
+    			favoritesListeners.favoritesChanged();
+    		} else {
+    			SwingUtilities.invokeLater(new Runnable() {
+    				@Override
+    				public void run() {
+    					favoritesListeners.favoritesChanged();
+    				}
+    			});
+    		}
     	}
     }
     
