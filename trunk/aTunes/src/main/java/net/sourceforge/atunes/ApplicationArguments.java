@@ -115,8 +115,8 @@ public final class ApplicationArguments {
      * 
      * @return the user config folder
      */
-    public String getUserConfigFolder(List<String> args) {
-    	return getArgument(args, USE_CONFIG_FOLDER);
+    public String getUserConfigFolder() {
+    	return getArgument(originalArguments, USE_CONFIG_FOLDER);
     }
 
     /**
@@ -127,8 +127,8 @@ public final class ApplicationArguments {
      * 
      * @return the repository config folder
      */
-    public String getRepositoryConfigFolder(List<String> args) {
-    	return getArgument(args, USE_REPOSITORY_CONFIG_FOLDER);
+    public String getRepositoryConfigFolder() {
+    	return getArgument(originalArguments, USE_REPOSITORY_CONFIG_FOLDER);
     }
     
     private String getArgument(List<String> arguments, String argument) {

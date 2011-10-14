@@ -35,11 +35,11 @@ import net.sourceforge.atunes.utils.StringUtils;
  * Main class to launch aTunes.
  */
 public final class Main {
-
+	
 	private ApplicationArguments applicationArguments;
-	
 	private IOSManager osManager;
-	
+	private ApplicationPropertiesLogger applicationPropertiesLogger;
+
 	/**
 	 * @param applicationArguments
 	 */
@@ -54,29 +54,13 @@ public final class Main {
 		this.osManager = osManager;
 	}
 	
-    /**
-     * Log some properties at start.
-     * 
-     * @param arguments
-     * @param osManager
-     */
-    private static void logProgramProperties(ApplicationArguments arguments, IOSManager osManager) {
-        // First line: version number
-        Logger.info("Starting ", Constants.APP_NAME, " ", Constants.VERSION);
-
-        // Second line: Java Virtual Machine Version
-        Logger.info("Running in Java Virtual Machine ", System.getProperty("java.version"));
-
-        // Third line: Application Arguments
-        Logger.info("Arguments = ", arguments.getOriginalArguments());
-
-        // Fourth line: DEBUG mode
-        Logger.info("Debug mode = ", arguments.isDebug());
-
-        // Fifth line: Execution path
-        Logger.info("Execution path = ", osManager.getWorkingDirectory());
-    }
-
+	/**
+	 * @param applicationPropertiesLogger
+	 */
+	public void setApplicationPropertiesLogger(ApplicationPropertiesLogger applicationPropertiesLogger) {
+		this.applicationPropertiesLogger = applicationPropertiesLogger;
+	}
+	
     /**
      * Main method for calling aTunes.
      * 
@@ -84,17 +68,16 @@ public final class Main {
      *            the args
      */
     public static void main(String[] args) {
-    	Context.initialize("/settings/spring/");
-    	Context.getBean(Main.class).start(args);
-    }
-    
-    private void start(String[] args) {
         // Fetch arguments into a list
         List<String> arguments = StringUtils.fromStringArrayToList(args);
-
+    	Context.initialize("/settings/spring/");
         // Save arguments, if application is restarted they will be necessary
-    	applicationArguments.saveArguments(arguments);
-
+    	Context.getBean(ApplicationArguments.class).saveArguments(arguments);
+    	// Now start application
+    	Context.getBean(Main.class).start(arguments);
+    }
+    
+    private void start(List<String> arguments) {
         // For detecting Swing threading violations
         if (applicationArguments.isDebug()) {
             RepaintManager.setCurrentManager(new CheckThreadViolationRepaintManager());
@@ -110,12 +93,6 @@ public final class Main {
         } else {
             // NORMAL APPLICATION STARTUP
 
-            // Set custom config folder if passed as argument
-            osManager.setCustomConfigFolder(applicationArguments.getUserConfigFolder(arguments));
-
-            // Set custom repository config folder if passed as argument
-            osManager.setCustomRepositoryConfigFolder(applicationArguments.getRepositoryConfigFolder(arguments));
-
             // Enable uncaught exception catching
             Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler());
 
@@ -124,7 +101,7 @@ public final class Main {
             System.err.close();
 
             // Log program properties
-            logProgramProperties(applicationArguments, osManager);
+            applicationPropertiesLogger.logProgramProperties();
 
             // Start the Kernel, which really starts application
             Context.getBean(Kernel.class).start();
