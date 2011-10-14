@@ -78,7 +78,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 		// Generate and register the OSXAdapter, passing it a hash of all the methods we wish to
 		// use as delegates for various com.apple.eawt.ApplicationListener methods
 		try {
-			MacOSXAdapter.setQuitHandler(null, Kernel.class.getDeclaredMethod("finish", (Class[]) null));
+			MacOSXAdapter.setQuitHandler(Context.getBean(Kernel.class), Kernel.class.getDeclaredMethod("finish", (Class[]) null));
 		} catch (Exception e) {
 			Logger.error(e.getMessage());
 		}
