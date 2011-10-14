@@ -33,28 +33,6 @@ import net.sourceforge.atunes.kernel.modules.statistics.Statistics;
 public interface IStateHandler extends IHandler {
 
 	/**
-	 * Adds a new ApplicationStateChangeListener. This listener will be notified
-	 * when application state is changed
-	 * 
-	 * @param listener
-	 */
-	public void addStateChangeListener(IStateChangeListener listener);
-
-	/**
-	 * Removes an ApplicationStateChangeListener. This listener will not be
-	 * notified again when application state is changed
-	 * 
-	 * @param listener
-	 */
-	public void removeStateChangeListener(
-			IStateChangeListener listener);
-
-	/**
-	 * Notifies all listeners of an application state change
-	 */
-	public void notifyApplicationStateChanged();
-
-	/**
 	 * Stores favorites cache.
 	 * 
 	 * @param favorites

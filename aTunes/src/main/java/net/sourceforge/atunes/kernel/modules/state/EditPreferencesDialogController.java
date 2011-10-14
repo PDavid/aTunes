@@ -48,6 +48,7 @@ import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PreferencesValid
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.RadioPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.RepositoryPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
+import net.sourceforge.atunes.kernel.StateChangeListeners;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IHotkeyHandler;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
@@ -58,7 +59,6 @@ import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -67,7 +67,7 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
     /** The panels of the edit preferences dialog */
     private List<AbstractPreferencesPanel> panels;
     
-    private IStateHandler stateHandler;
+    private StateChangeListeners stateChangeListeners;
 
 	private ILookAndFeelManager lookAndFeelManager;
 
@@ -77,18 +77,18 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
      * @param state
      * @param osManager
      * @param frame
-     * @param stateHandler
+     * @param stateChangeListeners
      * @param lookAndFeelManager
      * @param playerHandler
      * @param hotkeyHandler
      * @param notificationsHandler
      * @param pluginsHandler
      */
-    EditPreferencesDialogController(EditPreferencesDialog dialog, IState state, IOSManager osManager, IFrame frame, IStateHandler stateHandler, 
+    EditPreferencesDialogController(EditPreferencesDialog dialog, IState state, IOSManager osManager, IFrame frame, StateChangeListeners stateChangeListeners, 
     		ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler, IHotkeyHandler hotkeyHandler, 
     		INotificationsHandler notificationsHandler, IPluginsHandler pluginsHandler) {
         super(dialog, state);
-        this.stateHandler = stateHandler;
+        this.stateChangeListeners = stateChangeListeners;
         this.lookAndFeelManager = lookAndFeelManager;
         panels = new ArrayList<AbstractPreferencesPanel>();
         panels.add(new GeneralPanel(osManager, lookAndFeelManager));
@@ -119,7 +119,7 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
 
     @Override
 	public void addBindings() {
-        EditPreferencesDialogListener listener = new EditPreferencesDialogListener(getComponentControlled(), this, stateHandler);
+        EditPreferencesDialogListener listener = new EditPreferencesDialogListener(getComponentControlled(), this, stateChangeListeners);
         getComponentControlled().getList().addListSelectionListener(listener);
         getComponentControlled().getCancel().addActionListener(listener);
         getComponentControlled().getOk().addActionListener(listener);

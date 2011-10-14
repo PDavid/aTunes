@@ -30,9 +30,9 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.EditPreferencesDialog;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PreferencesValidationException;
 import net.sourceforge.atunes.kernel.Kernel;
+import net.sourceforge.atunes.kernel.StateChangeListeners;
 import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.IErrorDialog;
-import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -42,21 +42,21 @@ public final class EditPreferencesDialogListener implements ListSelectionListene
 
     private EditPreferencesDialog editPreferencesDialog;
     private EditPreferencesDialogController editPreferencesDialogController;
-    private IStateHandler stateHandler;
+    private StateChangeListeners listeners;
 
     /**
      * Instantiates a new edits the preferences dialog listener.
      * 
      * @param editPreferencesDialog
      * @param editPreferencesDialogController
-     * @param stateHandler
+     * @param listeners
      */
     public EditPreferencesDialogListener(EditPreferencesDialog editPreferencesDialog, 
     								     EditPreferencesDialogController editPreferencesDialogController,
-    								     IStateHandler stateHandler) {
+    								     StateChangeListeners listeners) {
         this.editPreferencesDialog = editPreferencesDialog;
         this.editPreferencesDialogController = editPreferencesDialogController;
-        this.stateHandler = stateHandler;
+        this.listeners = listeners;
     }
 
     @Override
@@ -66,7 +66,7 @@ public final class EditPreferencesDialogListener implements ListSelectionListene
             	editPreferencesDialogController.validatePreferences();
 	        	boolean needRestart = editPreferencesDialogController.processPreferences();
 	        	editPreferencesDialog.setVisible(false);
-	        	stateHandler.notifyApplicationStateChanged();
+	        	listeners.notifyApplicationStateChanged();
 	        	if (needRestart) {
 	        		// Let user decide if want to restart
 	        		if (Context.getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("APPLICATION_NEEDS_RESTART"))) {

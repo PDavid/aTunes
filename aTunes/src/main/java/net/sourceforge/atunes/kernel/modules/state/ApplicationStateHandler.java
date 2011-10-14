@@ -27,14 +27,13 @@ import java.io.IOException;
 import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.EditPreferencesDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
+import net.sourceforge.atunes.kernel.StateChangeListeners;
 import net.sourceforge.atunes.kernel.modules.playlist.ListOfPlayLists;
 import net.sourceforge.atunes.kernel.modules.repository.exception.InconsistentRepositoryException;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites;
@@ -50,7 +49,6 @@ import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.model.IStateChangeListener;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -64,48 +62,6 @@ import net.sourceforge.atunes.utils.XMLUtils;
  * caches.
  */
 public final class ApplicationStateHandler extends AbstractHandler implements IStateHandler {
-
-    /**
-     * Listeners of the state of the application
-     */
-    private Set<IStateChangeListener> stateChangeListeners;
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#addStateChangeListener(net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListener)
-	 */
-    @Override
-	public void addStateChangeListener(IStateChangeListener listener) {
-        if (stateChangeListeners == null) {
-            stateChangeListeners = new HashSet<IStateChangeListener>();
-        }
-        stateChangeListeners.add(listener);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#removeStateChangeListener(net.sourceforge.atunes.kernel.modules.state.ApplicationStateChangeListener)
-	 */
-    @Override
-	public void removeStateChangeListener(IStateChangeListener listener) {
-        if (stateChangeListeners == null) {
-            return;
-        }
-        stateChangeListeners.remove(listener);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#notifyApplicationStateChanged()
-	 */
-    @Override
-	public void notifyApplicationStateChanged() {
-        try {
-            for (IStateChangeListener listener : stateChangeListeners) {
-                Logger.debug("Call to ApplicationStateChangeListener: ", listener.getClass().getName());
-                listener.applicationStateChanged(getState());
-            }
-        } catch (Throwable t) {
-            t.printStackTrace();
-        }
-    }
 
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#persistFavoritesCache(net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites)
@@ -568,7 +524,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
     @Override
 	public void editPreferences() {
     	EditPreferencesDialog dialog = new EditPreferencesDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class));
-    	new EditPreferencesDialogController(dialog, getState(), getOsManager(), getFrame(), this, getBean(ILookAndFeelManager.class), 
+    	new EditPreferencesDialogController(dialog, getState(), getOsManager(), getFrame(), getBean(StateChangeListeners.class), getBean(ILookAndFeelManager.class), 
     			getBean(IPlayerHandler.class), getBean(IHotkeyHandler.class), getBean(INotificationsHandler.class), 
     			getBean(IPluginsHandler.class)).start();
     }
