@@ -28,8 +28,6 @@ import java.util.Properties;
 import java.util.PropertyResourceBundle;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.model.IOSManager;
 
 import org.apache.log4j.PropertyConfigurator;
@@ -41,6 +39,12 @@ public class Logger {
 
     /** Internal logger. */
     private static org.apache.log4j.Logger logger;
+    
+    private static boolean debug;
+    
+    public static void setDebug(boolean debug) {
+		Logger.debug = debug;
+	}
 
     /**
      * Initialize logger
@@ -58,7 +62,7 @@ public class Logger {
      *            the objects to show in log
      */
     public static void debug(Object... objects) {
-        if (!Context.getBean(Kernel.class).isDebug()) {
+        if (!debug) {
             return;
         }
 
@@ -194,5 +198,6 @@ public class Logger {
     		props.put("log4j.appender.A.layout.ConversionPattern", "%-7p %m%n");
     	}
 		PropertyConfigurator.configure(props);
+		Logger.setDebug(debug);
     }
 }

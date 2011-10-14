@@ -41,7 +41,7 @@ public class AlbumTest {
 	
 	@Before
 	public void init() {
-		Context.initialize("/spring/os.xml");
+		Context.initialize("/spring/");
 	}
 	
 	@Test
