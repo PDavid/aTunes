@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.model;
 
-import java.util.List;
 
 
 /**
@@ -35,14 +34,6 @@ public interface IMultipleInstancesHandler extends IHandler {
 	 * 
 	 * @return true if server socket could be opened
 	 */
-	public boolean isFirstInstance();
-
-	/**
-	 * Opens a client socket and sends arguments to "master".
-	 * 
-	 * @param args
-	 *            the args
-	 */
-	public void sendArgumentsToFirstInstance(List<String> args);
+	public void startListening();
 
 }

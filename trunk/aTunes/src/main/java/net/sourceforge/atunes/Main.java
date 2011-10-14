@@ -26,7 +26,6 @@ import javax.swing.RepaintManager;
 
 import net.sourceforge.atunes.gui.debug.CheckThreadViolationRepaintManager;
 import net.sourceforge.atunes.kernel.Kernel;
-import net.sourceforge.atunes.model.IMultipleInstancesHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -39,6 +38,8 @@ public final class Main {
 	private ApplicationArguments applicationArguments;
 	private IOSManager osManager;
 	private ApplicationPropertiesLogger applicationPropertiesLogger;
+	private MultipleInstancesCheck multipleInstancesCheck;
+	private ApplicationArgumentsSender applicationArgumentsSender;
 
 	/**
 	 * @param applicationArguments
@@ -61,11 +62,23 @@ public final class Main {
 		this.applicationPropertiesLogger = applicationPropertiesLogger;
 	}
 	
+	/**
+	 * @param multipleInstancesCheck
+	 */
+	public void setMultipleInstancesCheck(MultipleInstancesCheck multipleInstancesCheck) {
+		this.multipleInstancesCheck = multipleInstancesCheck;
+	}
+	
+	/**
+	 * @param applicationArgumentsSender
+	 */
+	public void setApplicationArgumentsSender(ApplicationArgumentsSender applicationArgumentsSender) {
+		this.applicationArgumentsSender = applicationArgumentsSender;
+	}
+	
     /**
      * Main method for calling aTunes.
-     * 
      * @param args
-     *            the args
      */
     public static void main(String[] args) {
         // Fetch arguments into a list
@@ -87,12 +100,10 @@ public final class Main {
         Logger.loadProperties(applicationArguments.isDebug(), osManager);
 
         // First, look up for other instances running
-        if (!arguments.contains(ApplicationArguments.ALLOW_MULTIPLE_INSTANCE) && !Context.getBean(IMultipleInstancesHandler.class).isFirstInstance()) {
+        if (!applicationArguments.isMultipleInstance() && !multipleInstancesCheck.isFirstInstance()) {
             // Is not first aTunes instance running, so send parameters and finalize
-        	Context.getBean(IMultipleInstancesHandler.class).sendArgumentsToFirstInstance(arguments);
+        	applicationArgumentsSender.sendArgumentsToFirstInstance(arguments);
         } else {
-            // NORMAL APPLICATION STARTUP
-
             // Enable uncaught exception catching
             Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler());
 

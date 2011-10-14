@@ -4,8 +4,10 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
 	default-autowire="byName" default-lazy-init="true">
 
-	<bean class="net.sourceforge.atunes.Main"/>
-	<bean id="applicationPropertiesLogger" class="net.sourceforge.atunes.ApplicationPropertiesLogger"/>
+	<bean class="net.sourceforge.atunes.Main" scope="prototype"/>
+	<bean id="applicationPropertiesLogger" class="net.sourceforge.atunes.ApplicationPropertiesLogger" scope="prototype"/>
+	<bean id="multipleInstancesCheck" class="net.sourceforge.atunes.MultipleInstancesCheck" scope="prototype"/>
+	<bean id="applicationArgumentsSender" class="net.sourceforge.atunes.ApplicationArgumentsSender" scope="prototype"/>
 
 	<bean id="kernel" class="net.sourceforge.atunes.kernel.Kernel"/>
 
