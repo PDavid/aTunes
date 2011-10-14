@@ -11,6 +11,7 @@
 	<bean id="favoritesListeners" class="net.sourceforge.atunes.kernel.FavoritesListeners"/>
 	<bean id="playbackStateListeners" class="net.sourceforge.atunes.kernel.PlaybackStateListeners"/>
 	<bean id="playListEventListeners" class="net.sourceforge.atunes.kernel.PlayListEventListeners"/>
+	<bean id="stateChangeListeners" class="net.sourceforge.atunes.kernel.StateChangeListeners"/>
 	
 
 

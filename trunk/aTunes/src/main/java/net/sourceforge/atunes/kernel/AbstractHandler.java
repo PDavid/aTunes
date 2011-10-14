@@ -32,7 +32,6 @@ import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.PlaybackState;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -93,15 +92,6 @@ public abstract class AbstractHandler implements IHandler {
      */
     public void allHandlersInitialized() {
     	// Does nothing by default
-    }
-
-    /**
-     * Registers handler
-     * 
-     * @param handler
-     */
-    public final void registerHandler() {
-        Context.getBean(IStateHandler.class).addStateChangeListener(this);
     }
 
     /**
