@@ -47,7 +47,6 @@ import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavCo
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
 import net.sourceforge.atunes.kernel.modules.cdripper.encoders.Encoder;
 import net.sourceforge.atunes.model.IAlbumInfo;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -107,7 +106,7 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
     }
 
     @Override
-    public void applicationStarted(List<IAudioObject> playList) {
+    public void applicationStarted() {
     	this.repositoryHandler = getBean(IRepositoryHandler.class);
     }
 

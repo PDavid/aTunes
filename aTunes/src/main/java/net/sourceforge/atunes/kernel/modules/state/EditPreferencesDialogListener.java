@@ -70,7 +70,7 @@ public final class EditPreferencesDialogListener implements ListSelectionListene
 	        	if (needRestart) {
 	        		// Let user decide if want to restart
 	        		if (Context.getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("APPLICATION_NEEDS_RESTART"))) {
-	        			Kernel.restart();
+	        			Context.getBean(Kernel.class).restart();
 	        		}
 	        	}
 			} catch (PreferencesValidationException e1) {

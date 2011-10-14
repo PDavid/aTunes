@@ -22,9 +22,6 @@ package net.sourceforge.atunes;
 
 import java.util.List;
 
-import javax.swing.RepaintManager;
-
-import net.sourceforge.atunes.gui.debug.CheckThreadViolationRepaintManager;
 import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.model.IMultipleInstancesHandler;
 import net.sourceforge.atunes.model.IOSManager;
@@ -56,7 +53,7 @@ public final class Main {
         Logger.info("Arguments = ", arguments);
 
         // Fourth line: DEBUG mode
-        Logger.info("Debug mode = ", Kernel.isDebug());
+        Logger.info("Debug mode = ", Context.getBean(Kernel.class).isDebug());
 
         // Fifth line: Execution path
         Logger.info("Execution path = ", osManager.getWorkingDirectory());
@@ -75,13 +72,15 @@ public final class Main {
         // Fetch arguments into a list
         List<String> arguments = StringUtils.fromStringArrayToList(args);
 
-        // Set debug flag in kernel
-        Kernel.setDebug(arguments.contains(ApplicationArguments.DEBUG));
-
+        Kernel kernel = Context.getBean(Kernel.class);
+        
+        // Initialize kernel with arguments
+        kernel.initialize(arguments);
+        
         IOSManager osManager = Context.getBean(IOSManager.class);
         
         // Set log4j properties
-        Logger.loadProperties(Kernel.isDebug(), osManager);
+        Logger.loadProperties(kernel.isDebug(), osManager);
 
         // Save arguments, if application is restarted they will be necessary
         ApplicationArguments.saveArguments(arguments);
@@ -93,12 +92,6 @@ public final class Main {
         } else {
             // NORMAL APPLICATION STARTUP
 
-            // Set ignore look and feel flag in kernel
-            Kernel.setIgnoreLookAndFeel(arguments.contains(ApplicationArguments.IGNORE_LOOK_AND_FEEL));
-
-            // Set no update flag in kernel
-            Kernel.setNoUpdate(arguments.contains(ApplicationArguments.NO_UPDATE));
-            
             // Set custom config folder if passed as argument
             osManager.setCustomConfigFolder(ApplicationArguments.getUserConfigFolder(arguments));
 
@@ -122,17 +115,11 @@ public final class Main {
             // THIS IS DONE TO AVOID ANNOYING MESSAGES FROM SOME LIBRARIES
             System.err.close();
 
-            // For detecting Swing threading violations
-            if (Kernel.isDebug()) {
-                RepaintManager.setCurrentManager(new CheckThreadViolationRepaintManager());
-            }
-
             // Log program properties
             logProgramProperties(arguments, osManager);
 
             // Start the Kernel, which really starts application
-            Kernel.startKernel(arguments);
+            kernel.startKernel();
         }
-
     }
 }

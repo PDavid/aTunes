@@ -93,7 +93,7 @@ public class ContextHandlerTest {
 		sut.setState(state);
 
 		// Act
-		sut.applicationStarted(null);		
+		sut.applicationStarted();		
 		sut.allHandlersInitialized();
 		
 		// Verify
@@ -120,7 +120,7 @@ public class ContextHandlerTest {
 		sut.setState(state);
 		
 		// Act
-		sut.applicationStarted(null);		
+		sut.applicationStarted();		
 		sut.allHandlersInitialized();
 		
 		// Verify
@@ -145,7 +145,7 @@ public class ContextHandlerTest {
 		
 		// Act
 		sut.setState(state);
-		sut.applicationStarted(null);		
+		sut.applicationStarted();		
 		sut.allHandlersInitialized();
 		sut.showContextPanel(true);
 		

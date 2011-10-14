@@ -46,7 +46,7 @@ public class ShowLogAction extends CustomAbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        final File file = getBean(IOSManager.class).getFileFromUserConfigFolder(Constants.LOG_FILE, Kernel.isDebug());
+        final File file = getBean(IOSManager.class).getFileFromUserConfigFolder(Constants.LOG_FILE, getBean(Kernel.class).isDebug());
         DesktopUtils.openFile(file, getBean(IOSManager.class));
     }
 

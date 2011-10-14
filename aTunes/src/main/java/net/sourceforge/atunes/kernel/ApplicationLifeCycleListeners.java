@@ -31,7 +31,6 @@ import java.util.Map;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.model.IApplicationLifeCycleListener;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.Logger;
 
 import org.springframework.beans.BeansException;
@@ -59,11 +58,10 @@ public class ApplicationLifeCycleListeners implements ApplicationContextAware {
 
     /**
      * Call after application started
-     * @param playList
      */
-    void applicationStarted(List<IAudioObject> playList) {
+    void applicationStarted() {
         for (IApplicationLifeCycleListener listener : listeners) {
-       		listener.applicationStarted(playList);
+       		listener.applicationStarted();
         }
     }
     

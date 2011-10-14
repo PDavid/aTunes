@@ -299,7 +299,7 @@ public abstract class OperatingSystemAdapter {
 	 * @return
 	 */
 	private final String getOsPropertiesFileName() {
-		return StringUtils.getString(osManager.getUserConfigFolder(Kernel.isDebug()), getFileSeparator(), "os.properties");
+		return StringUtils.getString(osManager.getUserConfigFolder(Context.getBean(Kernel.class).isDebug()), getFileSeparator(), "os.properties");
 	}
 
 	/**

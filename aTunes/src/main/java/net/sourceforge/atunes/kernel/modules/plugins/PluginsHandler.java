@@ -39,7 +39,6 @@ import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnSets;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
 import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IErrorDialog;
@@ -122,7 +121,7 @@ public class PluginsHandler extends AbstractHandler implements PluginListener, I
     }
 
     @Override
-    public void applicationStarted(List<IAudioObject> playList) {
+    public void applicationStarted() {
     	if (!getState().isPluginsEnabled()) {
     		return;
     	}
@@ -197,7 +196,7 @@ public class PluginsHandler extends AbstractHandler implements PluginListener, I
      * @return the plugins folder
      */
     private String getUserPluginsFolder() {
-        String userConfigFolder = getOsManager().getUserConfigFolder(Kernel.isDebug());
+        String userConfigFolder = getOsManager().getUserConfigFolder(Context.getBean(Kernel.class).isDebug());
         String pluginsFolder = StringUtils.getString(userConfigFolder, getOsManager().getFileSeparator(), Constants.PLUGINS_DIR);
         File pluginFile = new File(pluginsFolder);
         if (!pluginFile.exists() && !pluginFile.mkdir()) {

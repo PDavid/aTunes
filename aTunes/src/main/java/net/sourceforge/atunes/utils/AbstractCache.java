@@ -38,7 +38,7 @@ public abstract class AbstractCache {
     }
 
     private void init(URL settings) {
-        System.setProperty("ehcache.disk.store.dir", StringUtils.getString(Context.getBean(IOSManager.class).getUserConfigFolder(Kernel.isDebug()), Context.getBean(IOSManager.class).getFileSeparator(), Constants.CACHE_DIR));
+        System.setProperty("ehcache.disk.store.dir", StringUtils.getString(Context.getBean(IOSManager.class).getUserConfigFolder(Context.getBean(Kernel.class).isDebug()), Context.getBean(IOSManager.class).getFileSeparator(), Constants.CACHE_DIR));
         this.cacheManager = new CacheManager(settings);
     }
 

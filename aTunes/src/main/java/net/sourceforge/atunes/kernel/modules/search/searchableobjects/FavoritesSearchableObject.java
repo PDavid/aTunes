@@ -72,7 +72,7 @@ public final class FavoritesSearchableObject extends AbstractCommonAudioFileSear
     @Override
     public FSDirectory getIndexDirectory() throws IOException {
         if (indexDirectory == null) {
-            indexDirectory = new SimpleFSDirectory(new File(StringUtils.getString(Context.getBean(IOSManager.class).getUserConfigFolder(Kernel.isDebug()), "/", Constants.FAVORITES_INDEX_DIR)));
+            indexDirectory = new SimpleFSDirectory(new File(StringUtils.getString(Context.getBean(IOSManager.class).getUserConfigFolder(Context.getBean(Kernel.class).isDebug()), "/", Constants.FAVORITES_INDEX_DIR)));
         }
         return indexDirectory;
     }

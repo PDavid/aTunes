@@ -92,11 +92,6 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     	getPlayerControlsController().getComponentControlled().showAdvancedPlayerControls(newState.isShowAdvancedPlayerControls());
     }
 
-    @Override
-    public void applicationStarted(List<IAudioObject> playList) {
-    	// All initialization in this handler must be done after all handlers are initialized and ready
-    }
-
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.player.IPlayerHandler#isEnginePlaying()
 	 */

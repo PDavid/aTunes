@@ -20,29 +20,24 @@
 
 package net.sourceforge.atunes.kernel;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.RepaintManager;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.ColorDefinitions;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
+import net.sourceforge.atunes.gui.debug.CheckThreadViolationRepaintManager;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ICommandHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IRadioHandler;
-import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.ITemporalDiskStorage;
@@ -55,35 +50,40 @@ import net.sourceforge.atunes.utils.Timer;
  * The Kernel is the class responsible of create and interconnect all modules of
  * aTunes.
  */
-public class Kernel {
+public final class Kernel {
 
     /** Defines if aTunes is running in debug mode. */
-    private static boolean debug;
+    private boolean debug;
 
     /** Defines if aTunes will ignore look and feel. */
-    private static boolean ignoreLookAndFeel;
+    private boolean ignoreLookAndFeel;
 
     /** Defines if aTunes should not try to update (for Linux packages). */
-    private static boolean noUpdate;
+    private boolean noUpdate;
     
     /** Timer used to measure start time */
-    private static Timer timer;
+    private Timer timer;
     
-    private static IState state;
-
-    /**
-     * Constructor of Kernel.
-     */
-    private Kernel() {}
-
+    private IState state;
+    
+    public void initialize(List<String> arguments) {
+        // Set debug flag in kernel
+        setDebug(arguments.contains(ApplicationArguments.DEBUG));
+        // Set ignore look and feel flag in kernel
+    	setIgnoreLookAndFeel(arguments.contains(ApplicationArguments.IGNORE_LOOK_AND_FEEL));
+        // Set no update flag in kernel
+    	setNoUpdate(arguments.contains(ApplicationArguments.NO_UPDATE));
+        // For detecting Swing threading violations
+        if (isDebug()) {
+            RepaintManager.setCurrentManager(new CheckThreadViolationRepaintManager());
+        }
+    }
+    
     /**
      * Static method to create the Kernel instance. This method starts the
      * application, so should be called from the main method of the application.
-     * 
-     * @param args
-     *            the args
      */
-    public static void startKernel(final List<String> args) {
+    public void startKernel() {
         Logger.debug("Starting Kernel");
         
         timer = new Timer();
@@ -126,23 +126,13 @@ public class Kernel {
         // Register and initialize handlers
         AbstractHandler.registerAndInitializeHandlers(state);
 
-        // Find for audio files on arguments
-        final List<String> songs = new ArrayList<String>();
-        for (String arg : args) {
-            if (AudioFile.isValidAudioFile(arg)) {
-                songs.add(arg);
-            } else if (PlayListIO.isValidPlayList(arg)) {
-                songs.addAll(PlayListIO.read(new File(arg), Context.getBean(IOSManager.class)));
-            }
-        }
-
         SwingUtilities.invokeLater(new Runnable() {
         	@Override
         	public void run() {
         		// Start component creation
         		startCreation();
 
-            	callActionsAfterStart(PlayListIO.getAudioObjectsFromFileNamesList(Context.getBean(IRepositoryHandler.class), songs, Context.getBean(IRadioHandler.class)));
+            	callActionsAfterStart();
             	Logger.info(StringUtils.getString("Application started (", StringUtils.toString(timer.stop(), 3), " seconds)"));
             	timer = null;
         	}
@@ -156,7 +146,7 @@ public class Kernel {
     /**
      * Called when closing application
      */
-    public static void finish() {
+    public void finish() {
         Timer timer = new Timer();
         try {
             timer.start();
@@ -178,15 +168,15 @@ public class Kernel {
     /**
      * Call actions after start.
      */
-    static void callActionsAfterStart(List<IAudioObject> playList) {
-    	Context.getBean(ApplicationLifeCycleListeners.class).applicationStarted(playList);
+    void callActionsAfterStart() {
+    	Context.getBean(ApplicationLifeCycleListeners.class).applicationStarted();
     	Context.getBean(ApplicationLifeCycleListeners.class).allHandlersInitialized();
     }
 
     /**
      * Creates all objects of aTunes: visual objects, controllers, and handlers.
      */
-    static void startCreation() {
+    private void startCreation() {
         Logger.debug("Starting components");
         Context.getBean(IUIHandler.class).startVisualization();
     }
@@ -194,7 +184,7 @@ public class Kernel {
     /**
      * Called when restarting application
      */
-    public static void restart() {
+    public void restart() {
         try {
             // Store all configuration and finish all active modules
         	Context.getBean(ApplicationLifeCycleListeners.class).applicationFinish();
@@ -225,7 +215,7 @@ public class Kernel {
     /**
      * @return the debug
      */
-    public static boolean isDebug() {
+    public boolean isDebug() {
         return debug;
     }
 
@@ -233,14 +223,14 @@ public class Kernel {
      * @param debug
      *            the debug to set
      */
-    public static void setDebug(boolean debug) {
-        Kernel.debug = debug;
+    private void setDebug(boolean debug) {
+        this.debug = debug;
     }
 
     /**
      * @return the ignoreLookAndFeel
      */
-    public static boolean isIgnoreLookAndFeel() {
+    public boolean isIgnoreLookAndFeel() {
         return ignoreLookAndFeel;
     }
 
@@ -248,14 +238,14 @@ public class Kernel {
      * @param ignoreLookAndFeel
      *            the ignoreLookAndFeel to set
      */
-    public static void setIgnoreLookAndFeel(boolean ignoreLookAndFeel) {
-        Kernel.ignoreLookAndFeel = ignoreLookAndFeel;
+    private void setIgnoreLookAndFeel(boolean ignoreLookAndFeel) {
+    	this.ignoreLookAndFeel = ignoreLookAndFeel;
     }
 
     /**
      * @return the noUpdate
      */
-    public static boolean isNoUpdate() {
+    public boolean isNoUpdate() {
         return noUpdate;
     }
 
@@ -263,7 +253,7 @@ public class Kernel {
      * @param noUpdate
      *            the noUpdate to set
      */
-    public static void setNoUpdate(boolean noUpdate) {
-        Kernel.noUpdate = noUpdate;
+    private void setNoUpdate(boolean noUpdate) {
+    	this.noUpdate = noUpdate;
     }
 }

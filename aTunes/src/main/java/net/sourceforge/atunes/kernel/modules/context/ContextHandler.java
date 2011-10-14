@@ -67,7 +67,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     private IPlayListHandler playListHandler;
 
 	@Override
-    public void applicationStarted(List<IAudioObject> playList) {
+    public void applicationStarted() {
     	addContextPanels(contextPanels);
     	
         // Set previous selected tab

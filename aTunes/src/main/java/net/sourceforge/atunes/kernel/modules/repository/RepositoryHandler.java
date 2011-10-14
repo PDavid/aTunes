@@ -38,6 +38,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.RepositorySelectionInfoDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.Kernel;
@@ -337,7 +338,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     }
 
     @Override
-    public void applicationStarted(List<IAudioObject> playList) {
+    public void applicationStarted() {
     }
     
     @Override
@@ -1162,7 +1163,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     @Override
 	public String getRepositoryConfigurationFolder() {
         String customRepositoryConfigFolder = getOsManager().getCustomRepositoryConfigFolder();
-        return customRepositoryConfigFolder != null ? customRepositoryConfigFolder : getOsManager().getUserConfigFolder(Kernel.isDebug());
+        return customRepositoryConfigFolder != null ? customRepositoryConfigFolder : getOsManager().getUserConfigFolder(Context.getBean(Kernel.class).isDebug());
     }
     
 	@Override

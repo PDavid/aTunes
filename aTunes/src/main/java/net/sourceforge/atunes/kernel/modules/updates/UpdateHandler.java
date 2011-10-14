@@ -54,7 +54,7 @@ public final class UpdateHandler extends AbstractHandler implements IUpdateHandl
     
     @Override
     public void allHandlersInitialized() {
-        if (!Kernel.isNoUpdate()) {
+        if (!getBean(Kernel.class).isNoUpdate()) {
             checkUpdates(false, false);
         }
     }

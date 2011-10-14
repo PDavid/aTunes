@@ -180,14 +180,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     }
 
     @Override
-    public void applicationStarted(List<IAudioObject> playList) {        
-        if (!playList.isEmpty()) {
-            addToPlayListAndPlay(playList);
-            getPlayListController().refreshPlayList();
-        }
-    }
-    
-    @Override
     public void allHandlersInitialized() {
         setPlayLists();
 

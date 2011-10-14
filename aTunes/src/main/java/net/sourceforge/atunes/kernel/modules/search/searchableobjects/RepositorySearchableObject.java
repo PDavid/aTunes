@@ -75,7 +75,7 @@ public final class RepositorySearchableObject extends AbstractCommonAudioFileSea
     @Override
     public FSDirectory getIndexDirectory() throws IOException {
         if (indexDirectory == null) {
-            indexDirectory = new SimpleFSDirectory(new File(StringUtils.getString(Context.getBean(IOSManager.class).getUserConfigFolder(Kernel.isDebug()), "/", Constants.REPOSITORY_INDEX_DIR)));
+            indexDirectory = new SimpleFSDirectory(new File(StringUtils.getString(Context.getBean(IOSManager.class).getUserConfigFolder(Context.getBean(Kernel.class).isDebug()), "/", Constants.REPOSITORY_INDEX_DIR)));
         }
         return indexDirectory;
     }
