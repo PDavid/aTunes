@@ -55,6 +55,14 @@ public final class Kernel {
     private IState state;
     
     /**
+     * Sets state
+     * @param state
+     */
+    public void setState(IState state) {
+		this.state = state;
+	}
+    
+    /**
      * Static method to create the Kernel instance. This method starts the
      * application, so should be called from the main method of the application.
      */
@@ -64,8 +72,6 @@ public final class Kernel {
         timer = new Timer();
         timer.start();
 
-        state = (IState) Context.getBean(IState.class);
-        
         new LanguageSelector().setLanguage(state);
         
         ColorDefinitions.initColors();
