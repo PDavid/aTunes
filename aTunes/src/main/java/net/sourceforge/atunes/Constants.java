@@ -166,9 +166,6 @@ public final class Constants {
     /** Last.fm artist submission cache dir. */
     public static final String LAST_FM_SUBMISSION_CACHE_DIR = "submission";
 
-    /** Equalizer presets file. */
-    public static final String EQUALIZER_PRESETS_FILE = "/settings/presets.properties";
-
     /** Lucene index dir. */
     public static final String LUCENE_INDEX_DIR = "index";
 

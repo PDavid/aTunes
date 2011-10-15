@@ -36,6 +36,7 @@ import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.xine.XineEngine;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IEqualizer;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IOSManager;
@@ -240,7 +241,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 	 * @see net.sourceforge.atunes.kernel.modules.player.IPlayerHandler#getEqualizer()
 	 */
     @Override
-	public Equalizer getEqualizer() {
+	public IEqualizer getEqualizer() {
         return playerEngine != null ? playerEngine.getEqualizer() : null;
     }
 
@@ -251,8 +252,8 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
      */
     private List<AbstractPlayerEngine> getEngines() {
         List<AbstractPlayerEngine> result = new ArrayList<AbstractPlayerEngine>(2);
-        result.add(new MPlayerEngine(getState(), getFrame(), getOsManager(), getBean(IPlayListHandler.class), getBean(INavigationHandler.class), getBean(ITemporalDiskStorage.class), this, getBean(PlayListEventListeners.class)));
-        result.add(new XineEngine(getState(), getFrame(), getOsManager(), getBean(IPlayListHandler.class), getBean(INavigationHandler.class), getBean(ITemporalDiskStorage.class), this, getBean(PlayListEventListeners.class)));
+        result.add(new MPlayerEngine(getBean(IEqualizer.class), getState(), getFrame(), getOsManager(), getBean(IPlayListHandler.class), getBean(INavigationHandler.class), getBean(ITemporalDiskStorage.class), this, getBean(PlayListEventListeners.class)));
+        result.add(new XineEngine(getBean(IEqualizer.class), getState(), getFrame(), getOsManager(), getBean(IPlayListHandler.class), getBean(INavigationHandler.class), getBean(ITemporalDiskStorage.class), this, getBean(PlayListEventListeners.class)));
         //result.add(new VlcPlayerEngine());
         //result.add(new GStreamerEngine());
         return result;

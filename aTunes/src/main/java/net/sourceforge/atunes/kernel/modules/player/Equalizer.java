@@ -20,107 +20,59 @@
 
 package net.sourceforge.atunes.kernel.modules.player;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.PropertyResourceBundle;
-import java.util.StringTokenizer;
 
 import javax.swing.JSlider;
 
-import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.model.IEqualizer;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.utils.Logger;
 
 /**
  * The equalizer for player engines.
  */
-public class Equalizer {
+public class Equalizer implements IEqualizer {
 
     private Map<String, Integer[]> presets;
 
     private IState state;
     
     private IPlayerHandler playerHandler;
+
+    /**
+     * @param presets
+     */
+    public void setPresets(Map<String, Integer[]> presets) {
+		this.presets = presets;
+	}
     
     /**
-     * Instantiates a new equalizer handler.
      * @param state
+     */
+    public void setState(IState state) {
+		this.state = state;
+	}
+    
+    /**
      * @param playerHandler
      */
-    public Equalizer(IState state, IPlayerHandler playerHandler) {
-    	this.state = state;
-    	this.playerHandler = playerHandler;
-        presets = getPresetsFromBundle();
-    }
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
 
-    /**
-     * Returns presets loaded from properties file. Keys are transformed to be
-     * shown on GUI
-     * 
-     * @return the presets from bundle
-     */
-    private Map<String, Integer[]> getPresetsFromBundle() {
-        Map<String, Integer[]> result = new HashMap<String, Integer[]>();
-
-        try {
-            PropertyResourceBundle presetsBundle = new PropertyResourceBundle(Equalizer.class.getResourceAsStream(Constants.EQUALIZER_PRESETS_FILE));
-            Enumeration<String> keys = presetsBundle.getKeys();
-
-            while (keys.hasMoreElements()) {
-                String key = keys.nextElement();
-                String preset = presetsBundle.getString(key);
-
-                // Transform key
-                key = key.replace('.', ' ');
-
-                // Parse preset
-                StringTokenizer st = new StringTokenizer(preset, ",");
-                Integer[] presetsArray = new Integer[10];
-                int i = 0;
-                while (st.hasMoreTokens()) {
-                    String token = st.nextToken();
-                    presetsArray[i++] = Integer.parseInt(token);
-                }
-
-                result.put(key, presetsArray);
-            }
-
-        } catch (IOException ioe) {
-            Logger.error(ioe);
-        } catch (NumberFormatException nfe) {
-            Logger.error(nfe);
-        }
-
-        return result;
-    }
-
-    /**
-     * Gets the presets names.
-     * 
-     * @return the presets
-     */
-    public String[] getPresetsNames() {
+    @Override
+	public String[] getPresetsNames() {
         List<String> names = new ArrayList<String>(presets.keySet());
         Collections.sort(names);
         return names.toArray(new String[names.size()]);
     }
 
-    /**
-     * Returns presets for a preset name.
-     * 
-     * @param presetName
-     *            the preset name
-     * 
-     * @return the preset by name for show in gui
-     */
-    public Integer[] getPresetByNameForShowInGUI(String presetName) {
+    @Override
+	public Integer[] getPresetByNameForShowInGUI(String presetName) {
         Integer[] preset = presets.get(presetName);
         // As preset is transformed to be shown in GUI, we must clone Integer[]
         // in order that this transformation does not affect original preset value
@@ -131,13 +83,8 @@ public class Equalizer {
         return clonedPreset;
     }
 
-    /**
-     * Gets preset from GUI and sets into application state.
-     * 
-     * @param bands
-     *            the bands
-     */
-    public void setEqualizerFromGUI(JSlider[] bands) {
+    @Override
+	public void setEqualizerFromGUI(JSlider[] bands) {
         float[] eqSettings = new float[10];
 
         // Transform from [-32,32] to [-12,12] with float values and inversion
@@ -152,12 +99,8 @@ public class Equalizer {
         }
     }
 
-    /**
-     * Returns bands transformed in [-32,32] scale to be shown in GUI.
-     * 
-     * @return the equalizer settings to show in gui
-     */
-    public int[] getEqualizerSettingsToShowInGUI() {
+    @Override
+	public int[] getEqualizerSettingsToShowInGUI() {
         float[] eqSettings = getEqualizerValues();
         if (eqSettings == null) {
             return new int[10];
@@ -171,13 +114,8 @@ public class Equalizer {
         return result;
     }
 
-    /**
-     * Returns equalizer values or <code>null</code> if equalizer is disabled
-     * TODO: Add more explanation about equalizer values
-     * 
-     * @return the equalizer
-     */
-    public float[] getEqualizerValues() {
+    @Override
+	public float[] getEqualizerValues() {
         float[] equalizerSettings = state.getEqualizerSettings();
         return equalizerSettings != null ? Arrays.copyOf(equalizerSettings, equalizerSettings.length) : null;
     }

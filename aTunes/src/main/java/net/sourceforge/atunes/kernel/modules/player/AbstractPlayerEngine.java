@@ -31,6 +31,7 @@ import net.sourceforge.atunes.kernel.PlaybackStateListeners;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IEqualizer;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IFullScreenHandler;
@@ -96,7 +97,7 @@ public abstract class AbstractPlayerEngine {
     /**
      * Equalizer used
      */
-    private Equalizer equalizer;
+    private IEqualizer equalizer;
     
     private IState state;
     
@@ -484,6 +485,7 @@ public abstract class AbstractPlayerEngine {
 
     /**
      * Instantiates a new player handler.
+     * @param equalizer
      * @param state
      * @param frame
      * @param osManager
@@ -493,7 +495,8 @@ public abstract class AbstractPlayerEngine {
      * @param playerHandler
      * @param playListEventListeners
      */
-    protected AbstractPlayerEngine(IState state, 
+    protected AbstractPlayerEngine(IEqualizer equalizer, 
+    							   IState state, 
     							   IFrame frame, 
     							   IOSManager osManager, 
     							   IPlayListHandler playListHandler, 
@@ -502,7 +505,7 @@ public abstract class AbstractPlayerEngine {
     							   IPlayerHandler playerHandler,
     							   PlayListEventListeners playListEventListeners) {
         // To properly init player must call method "initPlayerEngine"
-        this.equalizer = new Equalizer(state, playerHandler);
+        this.equalizer = equalizer;
         this.state = state;
         this.frame = frame;
         this.osManager = osManager;
@@ -518,7 +521,7 @@ public abstract class AbstractPlayerEngine {
      * 
      * @return the equalizer of this player engine
      */
-    public Equalizer getEqualizer() {
+    public IEqualizer getEqualizer() {
         return equalizer;
     }
 

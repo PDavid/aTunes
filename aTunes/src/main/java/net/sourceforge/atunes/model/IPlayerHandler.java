@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.model;
 
-import net.sourceforge.atunes.kernel.modules.player.Equalizer;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 
 /**
@@ -128,7 +127,7 @@ public interface IPlayerHandler extends IHandler {
 	 * 
 	 * @return the equalizer of this player engine
 	 */
-	public Equalizer getEqualizer();
+	public IEqualizer getEqualizer();
 
 	/**
 	 * Returns current audio object
