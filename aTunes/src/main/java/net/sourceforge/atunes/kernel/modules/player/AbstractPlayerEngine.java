@@ -20,11 +20,9 @@
 
 package net.sourceforge.atunes.kernel.modules.player;
 
-import java.awt.Cursor;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
@@ -37,7 +35,6 @@ import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -56,88 +53,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public abstract class AbstractPlayerEngine {
 
-	/**
-	 * Runnable to play audio objects and (if needed) cache files
-	 * @author fleax
-	 *
-	 */
-    private final class PlayAudioObjectRunnable implements Runnable {
-    	
-		private final IAudioObject audioObject;
-		IAudioObject audioObjectToPlay = null;
-		private IFrame frame;
-		private ITemporalDiskStorage temporalDiskStorage;
-		
-		private PlayAudioObjectRunnable(IAudioObject audioObject, IFrame frame, ITemporalDiskStorage temporalDiskStorage) {
-			this.audioObject = audioObject;			
-			this.frame = frame;
-			this.temporalDiskStorage = temporalDiskStorage;
-			this.frame.getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-		}
-				
-		@Override
-		public void run() {
-		    audioObjectToPlay = cacheAudioObject(audioObject, temporalDiskStorage);
-			// Set default cursor again
-			frame.getFrame().setCursor(Cursor.getDefaultCursor());
-			
-			playAudioObjectAfterCache(audioObjectToPlay, audioObject);
-			
-			playAudioObjectThread = null;
-		}		
-	}
-
-	private static final class ApplyUserSelectionRunnable implements Runnable {
-        private AbstractPlayerEngine engine;
-        private final boolean ignorePlaybackError;
-
-        private ApplyUserSelectionRunnable(AbstractPlayerEngine engine, boolean ignorePlaybackError) {
-            this.engine = engine;
-            this.ignorePlaybackError = ignorePlaybackError;
-        }
-
-        @Override
-        public void run() {
-            if (ignorePlaybackError) {
-                // Move to the next audio object
-                engine.playNextAudioObject(true);
-            } else {
-                // Stop playback
-                engine.stopCurrentAudioObject(false);
-            }
-        }
-    }
-
-    private static final class ShowPlaybackErrorRunnable implements Runnable {
-        private final String[] errorMessages;
-        private boolean ignore;
-        private IFrame frame;
-
-        private ShowPlaybackErrorRunnable(String[] errorMessages, IFrame frame) {
-            this.errorMessages = errorMessages;
-            this.frame = frame;
-        }
-
-        @Override
-        public void run() {
-        	StringBuilder sb = new StringBuilder();
-        	for (String errorMessage : errorMessages) {
-        		sb.append(errorMessage).append(" ");
-        	}
-            String selection = (String) Context.getBean(IMessageDialog.class).showMessage(frame, StringUtils.getString(sb.toString()), I18nUtils.getString("ERROR"),
-                    JOptionPane.ERROR_MESSAGE, new String[] { I18nUtils.getString("IGNORE"), I18nUtils.getString("CANCEL") });
-            ignore = selection.equals(I18nUtils.getString("IGNORE"));
-        }
-
-        /**
-         * @return the ignore
-         */
-        protected boolean isIgnore() {
-            return ignore;
-        }
-    }
-
-    enum SubmissionState {
+	enum SubmissionState {
         NOT_SUBMITTED, PENDING, SUBMITTED;
     }
 
@@ -201,7 +117,7 @@ public abstract class AbstractPlayerEngine {
     /**
      * A thread invoking play in engine
      */
-    private Thread playAudioObjectThread;
+    Thread playAudioObjectThread;
 
     /**
      * Checks if engine is currently playing (<code>true</code>) or not (
@@ -711,7 +627,7 @@ public abstract class AbstractPlayerEngine {
 
         if (state.isCacheFilesBeforePlaying()) {
 
-        	PlayAudioObjectRunnable r = new PlayAudioObjectRunnable(audioObject, frame, temporalDiskStorage);
+        	PlayAudioObjectRunnable r = new PlayAudioObjectRunnable(this, audioObject, frame, temporalDiskStorage);
         	
         	// NOTE: This thread was initially a SwingWorker but as number of concurrent SwingWorkers is limited if context panel SwingWorker were working
         	// this one was blocked so use a Thread to avoid blocking no matters if a SwingWorker is active or not
@@ -728,7 +644,7 @@ public abstract class AbstractPlayerEngine {
      * @param temporalDiskStorage
      * @return
      */
-    private IAudioObject cacheAudioObject(IAudioObject audioObject, ITemporalDiskStorage temporalDiskStorage) {
+    IAudioObject cacheAudioObject(IAudioObject audioObject, ITemporalDiskStorage temporalDiskStorage) {
     	IAudioObject audioObjectToPlay = null;
     	
         // If cacheFilesBeforePlaying is true and audio object is an audio file, copy it to temp folder
@@ -763,7 +679,7 @@ public abstract class AbstractPlayerEngine {
      * @param audioObjectToPlay Cached audio object
      * @param audioObject real audio object
      */
-    private void playAudioObjectAfterCache(IAudioObject audioObjectToPlay, IAudioObject audioObject) {
+    void playAudioObjectAfterCache(IAudioObject audioObjectToPlay, IAudioObject audioObject) {
 		// This audio object has not been listened yet
 		submissionState = SubmissionState.NOT_SUBMITTED;
 
