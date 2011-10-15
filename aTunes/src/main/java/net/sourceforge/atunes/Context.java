@@ -55,7 +55,7 @@ public class Context {
 			});
 			paths = new String[files.length];
 			for (int i = 0; i < paths.length; i++) {
-				paths[i] = StringUtils.getString("/settings/spring/", files[i].getName());
+				paths[i] = StringUtils.getString(path, files[i].getName());
 			} 
 			
 			context = new ClassPathXmlApplicationContext(paths);
