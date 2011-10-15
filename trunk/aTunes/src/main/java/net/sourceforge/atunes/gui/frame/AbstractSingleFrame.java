@@ -290,7 +290,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     @Override
     public IMenuBar getAppMenuBar() {
         if (appMenuBar == null) {
-            appMenuBar = new ApplicationMenuBar(osManager, playerHandler);
+            appMenuBar = new ApplicationMenuBar(osManager);
         }
         return appMenuBar;
     }

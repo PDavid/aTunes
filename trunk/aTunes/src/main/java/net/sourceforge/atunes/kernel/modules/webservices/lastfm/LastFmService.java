@@ -219,11 +219,8 @@ public final class LastFmService {
      * Finishes service
      */
     public void finishService() {
-        // Maybe it's not initialized if not used
-        if (lastFmCache != null) {
-        	Logger.debug("Finalizing LastFmCache");
-        	lastFmCache.shutdown();
-        }
+    	Logger.debug("Finalizing LastFmCache");
+    	getCache().shutdown();
     }
 
     /**

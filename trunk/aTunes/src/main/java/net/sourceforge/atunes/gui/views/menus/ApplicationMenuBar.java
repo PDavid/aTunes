@@ -27,7 +27,6 @@ import javax.swing.Action;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 
@@ -69,13 +68,11 @@ import net.sourceforge.atunes.kernel.actions.ShowStatsAction;
 import net.sourceforge.atunes.kernel.actions.ShowStatusBarAction;
 import net.sourceforge.atunes.kernel.actions.VolumeDownAction;
 import net.sourceforge.atunes.kernel.actions.VolumeUpAction;
-import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IMenuBar;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -95,17 +92,14 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
     
     private IOSManager osManager;
     
-    private IPlayerHandler playerHandler;
-    
     /**
      * Instantiates a new application menu bar.
      * @param osManager
      * @param playerHandler
      */
-    public ApplicationMenuBar(IOSManager osManager, IPlayerHandler playerHandler) {
+    public ApplicationMenuBar(IOSManager osManager) {
         super();
         this.osManager = osManager;
-        this.playerHandler = playerHandler;
         addMenus();
     }
 
@@ -139,11 +133,7 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
         if (edit == null) {
             edit = new JMenu(I18nUtils.getString("EDIT"));
             JMenu player = new JMenu(I18nUtils.getString("VOLUME"));
-            JMenuItem showEqual = new JMenuItem(Actions.getAction(ShowEqualizerAction.class));
-            player.add(showEqual);
-            if (!playerHandler.supportsCapability(PlayerEngineCapability.EQUALIZER)) {
-                showEqual.setEnabled(false);
-            }
+            player.add(Actions.getAction(ShowEqualizerAction.class));
             player.add(Actions.getAction(VolumeUpAction.class));
             player.add(Actions.getAction(VolumeDownAction.class));
             player.add(new JCheckBoxMenuItem(Actions.getAction(MuteAction.class)));

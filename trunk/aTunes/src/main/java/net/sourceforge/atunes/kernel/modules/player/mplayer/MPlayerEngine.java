@@ -37,6 +37,7 @@ import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IEqualizer;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -86,6 +87,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
     private IPlayListHandler playListHandler;
     
     /**
+     * @param equalizer
      * @param state
      * @param frame
      * @param osManager
@@ -93,10 +95,10 @@ public class MPlayerEngine extends AbstractPlayerEngine {
      * @param navigationHandler
      * @param temporalDiskStorage
      * @param playerHandler
-     * @param playListEventListeners 
+     * @param playListEventListeners
      */
-    public MPlayerEngine(IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, INavigationHandler navigationHandler, ITemporalDiskStorage temporalDiskStorage, IPlayerHandler playerHandler, PlayListEventListeners playListEventListeners) {
-    	super(state, frame, osManager, playListHandler, navigationHandler, temporalDiskStorage, playerHandler, playListEventListeners);
+    public MPlayerEngine(IEqualizer equalizer, IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, INavigationHandler navigationHandler, ITemporalDiskStorage temporalDiskStorage, IPlayerHandler playerHandler, PlayListEventListeners playListEventListeners) {
+    	super(equalizer, state, frame, osManager, playListHandler, navigationHandler, temporalDiskStorage, playerHandler, playListEventListeners);
     	this.playListHandler = playListHandler;
     	commandWriter = MPlayerCommandWriter.newCommandWriter(null, osManager);
     }

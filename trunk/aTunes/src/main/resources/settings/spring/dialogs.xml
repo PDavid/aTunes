@@ -14,6 +14,7 @@
 	<bean id="equalizerDialog" class="net.sourceforge.atunes.gui.views.dialogs.EqualizerDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 		<constructor-arg ref="lookAndFeelManager"/>		
+		<constructor-arg ref="playerHandler"/>
 	</bean> 
 
 	<bean id="fileSelectionDialog" class="net.sourceforge.atunes.gui.views.dialogs.FileSelectionDialog" scope="prototype">

@@ -35,6 +35,7 @@ import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IEqualizer;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IOSManager;
@@ -59,6 +60,7 @@ public class GStreamerEngine extends AbstractPlayerEngine {
     private ScheduledFuture<?> scheduledFuture;
 
     /**
+     * @param equalizer
      * @param state
      * @param frame
      * @param osManager
@@ -66,10 +68,10 @@ public class GStreamerEngine extends AbstractPlayerEngine {
      * @param navigationHandler
      * @param temporalDiskStorage
      * @param playerHandler
-     * @param playListEventListeners 
+     * @param playListEventListeners
      */
-    public GStreamerEngine(IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, INavigationHandler navigationHandler, ITemporalDiskStorage temporalDiskStorage, IPlayerHandler playerHandler, PlayListEventListeners playListEventListeners) {
-    	super(state, frame, osManager, playListHandler, navigationHandler, temporalDiskStorage, playerHandler, playListEventListeners);
+    public GStreamerEngine(IEqualizer equalizer, IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, INavigationHandler navigationHandler, ITemporalDiskStorage temporalDiskStorage, IPlayerHandler playerHandler, PlayListEventListeners playListEventListeners) {
+    	super(equalizer, state, frame, osManager, playListHandler, navigationHandler, temporalDiskStorage, playerHandler, playListEventListeners);
     	try {
             Gst.init("AudioPlayer", new String[] {});
             playBin = new PlayBin("AudioPlayer");
