@@ -30,20 +30,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IEqualizer;
-import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.INavigationHandler;
-import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
-import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.ITemporalDiskStorage;
 import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -64,21 +55,6 @@ public class XineEngine extends AbstractPlayerEngine {
     private Timer durationUpdater;
     private final Object xineLock = new Object();
 
-    /**
-     * @param equalizer
-     * @param state
-     * @param frame
-     * @param osManager
-     * @param playListHandler
-     * @param navigationHandler
-     * @param temporalDiskStorage
-     * @param playerHandler
-     * @param playListEventListeners
-     */
-    public XineEngine(IEqualizer equalizer, IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, INavigationHandler navigationHandler, ITemporalDiskStorage temporalDiskStorage, IPlayerHandler playerHandler, PlayListEventListeners playListEventListeners) {
-    	super(equalizer, state, frame, osManager, playListHandler, navigationHandler, temporalDiskStorage, playerHandler, playListEventListeners);
-	}
-    
     @Override
     protected boolean isEngineAvailable() {
     	try {

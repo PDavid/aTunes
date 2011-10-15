@@ -5,7 +5,7 @@
 	
 	default-autowire="byName" default-lazy-init="true">
 
-	<bean id="tempFolder" class="net.sourceforge.atunes.utils.TempFolder"/>
+	<bean id="temporalDiskStorage" class="net.sourceforge.atunes.utils.TempFolder"/>
 	<bean id="clipboard" class="net.sourceforge.atunes.utils.ClipboardFacade"/>
 	
 

@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.player;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -29,24 +28,18 @@ import java.util.List;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.kernel.PlaybackStateListeners;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine.SubmissionState;
-import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
-import net.sourceforge.atunes.kernel.modules.player.xine.XineEngine;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IEqualizer;
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlaybackStateListener;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStatisticsHandler;
-import net.sourceforge.atunes.model.ITemporalDiskStorage;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.model.PlaybackState;
 import net.sourceforge.atunes.utils.Logger;
@@ -83,6 +76,15 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
      * Controller
      */
     private PlayerControlsController playerControlsController;
+    
+    private List<AbstractPlayerEngine> engines;
+    
+    /**
+     * @param engines
+     */
+    public void setEngines(List<AbstractPlayerEngine> engines) {
+		this.engines = engines;
+	}
     
     @Override
     public void applicationStateChanged(IState newState) {
@@ -245,20 +247,6 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
         return playerEngine != null ? playerEngine.getEqualizer() : null;
     }
 
-    /**
-     * Returns the list of player engines
-     * 
-     * @return list with player engines
-     */
-    private List<AbstractPlayerEngine> getEngines() {
-        List<AbstractPlayerEngine> result = new ArrayList<AbstractPlayerEngine>(2);
-        result.add(new MPlayerEngine(getBean(IEqualizer.class), getState(), getFrame(), getOsManager(), getBean(IPlayListHandler.class), getBean(INavigationHandler.class), getBean(ITemporalDiskStorage.class), this, getBean(PlayListEventListeners.class)));
-        result.add(new XineEngine(getBean(IEqualizer.class), getState(), getFrame(), getOsManager(), getBean(IPlayListHandler.class), getBean(INavigationHandler.class), getBean(ITemporalDiskStorage.class), this, getBean(PlayListEventListeners.class)));
-        //result.add(new VlcPlayerEngine());
-        //result.add(new GStreamerEngine());
-        return result;
-    }
-
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.player.IPlayerHandler#getAudioObject()
 	 */
@@ -271,9 +259,6 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
      * Initializes player engine
      */
     private void initPlayerEngine() {
-        // Get engines list
-        List<AbstractPlayerEngine> engines = getEngines();
-
         // Remove unsupported engines
         Iterator<AbstractPlayerEngine> it = engines.iterator();
         while (it.hasNext()) {
@@ -313,7 +298,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
             for (AbstractPlayerEngine engine : engines) {
                 if (engine.getEngineName().equals(selectedEngine)) {
                 	playerEngine = engine;
-                    Logger.info("Engine initialized : " + selectedEngine);
+                    Logger.info("Engine initialized : ", selectedEngine);
                     break;
                 }
             }

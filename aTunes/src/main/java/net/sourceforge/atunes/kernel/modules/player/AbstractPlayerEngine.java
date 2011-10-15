@@ -97,23 +97,23 @@ public abstract class AbstractPlayerEngine {
     /**
      * Equalizer used
      */
-    private IEqualizer equalizer;
+    protected IEqualizer equalizer;
     
-    private IState state;
+    protected IState state;
     
-    private IFrame frame;
+    protected IFrame frame;
     
-    private IOSManager osManager;
+    protected IOSManager osManager;
     
-    private IPlayListHandler playListHandler;
+    protected IPlayListHandler playListHandler;
     
-    private INavigationHandler navigationHandler;
+    protected INavigationHandler navigationHandler;
     
-    private ITemporalDiskStorage temporalDiskStorage;
+    protected ITemporalDiskStorage temporalDiskStorage;
     
-    private IPlayerHandler playerHandler;
+    protected IPlayerHandler playerHandler;
     
-    private PlayListEventListeners playListEventListeners;
+    protected PlayListEventListeners playListEventListeners;
     
     /**
      * A thread invoking play in engine
@@ -484,39 +484,6 @@ public abstract class AbstractPlayerEngine {
     }
 
     /**
-     * Instantiates a new player handler.
-     * @param equalizer
-     * @param state
-     * @param frame
-     * @param osManager
-     * @param playListHandler
-     * @param navigationHandler
-     * @param temporalDiskStorage
-     * @param playerHandler
-     * @param playListEventListeners
-     */
-    protected AbstractPlayerEngine(IEqualizer equalizer, 
-    							   IState state, 
-    							   IFrame frame, 
-    							   IOSManager osManager, 
-    							   IPlayListHandler playListHandler, 
-    							   INavigationHandler navigationHandler,
-    							   ITemporalDiskStorage temporalDiskStorage,
-    							   IPlayerHandler playerHandler,
-    							   PlayListEventListeners playListEventListeners) {
-        // To properly init player must call method "initPlayerEngine"
-        this.equalizer = equalizer;
-        this.state = state;
-        this.frame = frame;
-        this.osManager = osManager;
-        this.playListHandler = playListHandler;
-        this.navigationHandler = navigationHandler;
-        this.temporalDiskStorage = temporalDiskStorage;
-        this.playerHandler = playerHandler;
-        this.playListEventListeners = playListEventListeners;
-    }
-
-    /**
      * Returns the equalizer of this player engine
      * 
      * @return the equalizer of this player engine
@@ -835,4 +802,67 @@ public abstract class AbstractPlayerEngine {
 		return osManager;
 	}
 
+    /**
+     * @param equalizer
+     */
+    public void setEqualizer(IEqualizer equalizer) {
+		this.equalizer = equalizer;
+	}
+    
+    /**
+     * @param state
+     */
+    public void setState(IState state) {
+		this.state = state;
+	}
+    
+    /**
+     * @param frame
+     */
+    public void setFrame(IFrame frame) {
+		this.frame = frame;
+	}
+    
+    /**
+     * @param osManager
+     */
+    public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+    
+    /**
+     * @param temporalDiskStorage
+     */
+    public void setTemporalDiskStorage(ITemporalDiskStorage temporalDiskStorage) {
+		this.temporalDiskStorage = temporalDiskStorage;
+	}
+    
+    /**
+     * @param playerHandler
+     */
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
+    
+    /**
+     * @param playListEventListeners
+     */
+    public void setPlayListEventListeners(PlayListEventListeners playListEventListeners) {
+		this.playListEventListeners = playListEventListeners;
+	}
+    
 }
