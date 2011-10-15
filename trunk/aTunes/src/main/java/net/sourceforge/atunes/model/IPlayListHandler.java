@@ -133,12 +133,6 @@ public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
 	public void clearPlayList();
 
 	/**
-	 * Retrieves stored play list and loads it. This method is used when opening
-	 * application, to load play list of previous execution
-	 */
-	public void setPlayLists();
-
-	/**
 	 * Loads play list from a file.
 	 */
 	public void loadPlaylist();
