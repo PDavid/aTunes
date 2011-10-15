@@ -32,6 +32,7 @@ import net.sourceforge.atunes.model.IHotkeyHandler;
 import net.sourceforge.atunes.model.IHotkeyListener;
 import net.sourceforge.atunes.model.IHotkeysConfig;
 import net.sourceforge.atunes.model.INotificationsHandler;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
@@ -83,7 +84,7 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
 
     @Override
     protected void initHandler() {
-        hotkeys = AbstractHotkeys.createInstance(this);
+        hotkeys = AbstractHotkeys.createInstance(this, getBean(IOSManager.class));
         HotkeysConfig hc = getState().getHotkeysConfig();
         hotkeysConfig = hc != null ? hc : DEFAULT_HOTKEYS_CONFIG;
         if (hotkeys != null) {

@@ -40,6 +40,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
+import org.codehaus.plexus.logging.LogEnabled;
 import org.libxinejna.Xine;
 import org.libxinejna.XineController;
 import org.libxinejna.XineEventListener;
@@ -59,13 +60,12 @@ public class XineEngine extends AbstractPlayerEngine {
     protected boolean isEngineAvailable() {
     	try {
     		String v = Xine.getLibXineVersion();
-    		info("Engine version: " + v);
+    		info(StringUtils.getString("Engine version: ", v));
     		if (v != null && v.trim().length() > 0) {
     			return true;
     		}
-    	} catch (Throwable th) {
-    		// catching of Throwable is bad practice, but there are too many possible exceptions
-    		// with only result - Xine is not available
+    	} catch (Exception e) {
+    		Logger.info("Xine not available: ", e.getMessage());
     	}
     	return false;
     }
@@ -252,7 +252,7 @@ public class XineEngine extends AbstractPlayerEngine {
     }
 
     protected void info(String info) {
-        Logger.info("Xine: " + info);
+        Logger.info("Xine: ", info);
     }
 
     protected void error(Exception o) {

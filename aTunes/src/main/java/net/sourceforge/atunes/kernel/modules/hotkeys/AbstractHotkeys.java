@@ -21,8 +21,8 @@
 package net.sourceforge.atunes.kernel.modules.hotkeys;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IHotkey;
 import net.sourceforge.atunes.model.IHotkeyListener;
 import net.sourceforge.atunes.model.IOSManager;
@@ -53,19 +53,34 @@ public abstract class AbstractHotkeys {
 
     public abstract void cleanUp();
 
-    public static AbstractHotkeys createInstance(IHotkeyListener hotkeyListener) {
+    public static AbstractHotkeys createInstance(IHotkeyListener hotkeyListener, IOSManager osManager) {
         try {
-        	Class<?> clazz = Context.getBean(IOSManager.class).getHotkeysListener();
+        	Class<?> clazz = osManager.getHotkeysListener();
         	if (clazz != null) {
                 Constructor<?> constructor = clazz.getConstructor(IHotkeyListener.class);
                 return (AbstractHotkeys) constructor.newInstance(hotkeyListener);
             } else {
                 return null;
             }
-        } catch (Throwable e) {
-            Logger.info("No hotkeys supported");
+        } catch (SecurityException e) {
+            Logger.info("No hotkeys supported", e.getMessage());
             return null;
-        }
+		} catch (NoSuchMethodException e) {
+            Logger.info("No hotkeys supported", e.getMessage());
+            return null;
+		} catch (IllegalArgumentException e) {
+            Logger.info("No hotkeys supported", e.getMessage());
+            return null;
+		} catch (InstantiationException e) {
+            Logger.info("No hotkeys supported", e.getMessage());
+            return null;
+		} catch (IllegalAccessException e) {
+            Logger.info("No hotkeys supported", e.getMessage());
+            return null;
+		} catch (InvocationTargetException e) {
+            Logger.info("No hotkeys supported", e.getMessage());
+            return null;
+		}
     }
 
     protected IHotkeyListener getHotkeyListener() {

@@ -55,7 +55,7 @@ public class GStreamerEngine extends AbstractPlayerEngine {
             Gst.init("AudioPlayer", new String[] {});
             playBin = new PlayBin("AudioPlayer");
             playBin.setVideoSink(ElementFactory.make("fakesink", "videosink"));
-        } catch (Throwable e) {
+        } catch (Exception e) {
             Logger.error("GStreamer is not supported");
         }
 
@@ -110,7 +110,7 @@ public class GStreamerEngine extends AbstractPlayerEngine {
     protected boolean isEngineAvailable() {
         try {
             Gst.init();
-        } catch (Throwable e) {
+        } catch (Exception e) {
             return false;
         }
         return true;
