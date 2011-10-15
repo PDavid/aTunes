@@ -185,7 +185,7 @@ public final class LastFmService {
     	updateService();
     }
     
-    private LastFmCache getCache() {
+    private synchronized LastFmCache getCache() {
     	if (lastFmCache == null) {
     		Logger.debug("Initializing LastFmCache");
     		lastFmCache = new LastFmCache(osManager);

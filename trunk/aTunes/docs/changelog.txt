@@ -12,6 +12,7 @@ aTunes 2.1.1
 - FIX: Player error when using normalization and equalizer with MPlayer [ 3419533 ] [ patch by Laurent Cathala ]
 - FIX: Device options in play list not enabled when device connected
 - FIX: Hotkeys reset after application restart [ 3421011 ]
+- FIX: Last.fm cache initialized several times
 
 
 aTunes 2.1.0
