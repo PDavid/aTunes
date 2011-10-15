@@ -63,7 +63,7 @@ public final class LyricsService implements IStateChangeListener, ILyricsService
         this.lyricsEngines = loadEngines(state.getProxy());
     }
     
-    private LyricsCache getLyricsCache() {
+    private synchronized LyricsCache getLyricsCache() {
     	if (lyricsCache == null) {
     		Logger.debug("Initializing LyricsCache");
     		lyricsCache = new LyricsCache();
