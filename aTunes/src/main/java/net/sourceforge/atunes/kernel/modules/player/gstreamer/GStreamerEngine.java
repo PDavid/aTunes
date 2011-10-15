@@ -31,10 +31,10 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
-import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IUIHandler;
+import net.sourceforge.atunes.model.PlayerEngineCapability;
 import net.sourceforge.atunes.utils.Logger;
 
 import org.gstreamer.Bus;

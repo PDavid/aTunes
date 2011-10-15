@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.model;
 
-import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 
 /**
  * Responsible of playing music

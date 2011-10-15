@@ -22,9 +22,9 @@ package net.sourceforge.atunes.gui.views.controls.playerControls;
 
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.NormalizeModeAction;
-import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayerHandler;
+import net.sourceforge.atunes.model.PlayerEngineCapability;
 
 /*
  * based on code from Xtreme Media Player

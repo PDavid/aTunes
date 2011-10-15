@@ -31,6 +31,7 @@ import javax.swing.JSlider;
 import net.sourceforge.atunes.model.IEqualizer;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.PlayerEngineCapability;
 
 /**
  * The equalizer for player engines.

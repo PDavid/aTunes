@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.player;
+package net.sourceforge.atunes.model;
 
 /**
  * Capabilities of player engines
