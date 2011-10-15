@@ -298,9 +298,12 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 			public void run() {
 				contextPanelsContainer.enableContextPanelSelection(new ItemListener() {
 					
+					private Object item;
+					
 					@Override
 					public void itemStateChanged(ItemEvent e) {
-						if (e.getStateChange() == ItemEvent.SELECTED) {
+						if (e.getStateChange() == ItemEvent.SELECTED && (item == null || !e.getItem().equals(item))) {
+							item = e.getItem();
 							contextPanelsContainer.showContextPanel((IContextPanel)e.getItem());
 							contextPanelChanged();
 						}
