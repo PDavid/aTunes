@@ -30,25 +30,17 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IEqualizer;
-import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
 import net.sourceforge.atunes.model.IRadio;
-import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.ITemporalDiskStorage;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -84,25 +76,12 @@ public class MPlayerEngine extends AbstractPlayerEngine {
     /** The current fade away process running */
     private FadeAwayRunnable currentFadeAwayRunnable = null;
 
-    private IPlayListHandler playListHandler;
-    
-    /**
-     * @param equalizer
-     * @param state
-     * @param frame
-     * @param osManager
-     * @param playListHandler
-     * @param navigationHandler
-     * @param temporalDiskStorage
-     * @param playerHandler
-     * @param playListEventListeners
-     */
-    public MPlayerEngine(IEqualizer equalizer, IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, INavigationHandler navigationHandler, ITemporalDiskStorage temporalDiskStorage, IPlayerHandler playerHandler, PlayListEventListeners playListEventListeners) {
-    	super(equalizer, state, frame, osManager, playListHandler, navigationHandler, temporalDiskStorage, playerHandler, playListEventListeners);
-    	this.playListHandler = playListHandler;
+    @Override
+    public void setOsManager(IOSManager osManager) {
+    	super.setOsManager(osManager);
     	commandWriter = MPlayerCommandWriter.newCommandWriter(null, osManager);
     }
-
+    
     @Override
     public boolean isEngineAvailable() {
     	InputStream in = null;

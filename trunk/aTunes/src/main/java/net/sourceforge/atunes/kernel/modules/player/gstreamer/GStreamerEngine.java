@@ -30,19 +30,10 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IEqualizer;
-import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.INavigationHandler;
-import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.ITemporalDiskStorage;
 import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -59,19 +50,7 @@ public class GStreamerEngine extends AbstractPlayerEngine {
     private Runnable remainingTimeRunnable;
     private ScheduledFuture<?> scheduledFuture;
 
-    /**
-     * @param equalizer
-     * @param state
-     * @param frame
-     * @param osManager
-     * @param playListHandler
-     * @param navigationHandler
-     * @param temporalDiskStorage
-     * @param playerHandler
-     * @param playListEventListeners
-     */
-    public GStreamerEngine(IEqualizer equalizer, IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, INavigationHandler navigationHandler, ITemporalDiskStorage temporalDiskStorage, IPlayerHandler playerHandler, PlayListEventListeners playListEventListeners) {
-    	super(equalizer, state, frame, osManager, playListHandler, navigationHandler, temporalDiskStorage, playerHandler, playListEventListeners);
+    public GStreamerEngine() {
     	try {
             Gst.init("AudioPlayer", new String[] {});
             playBin = new PlayBin("AudioPlayer");
@@ -98,7 +77,6 @@ public class GStreamerEngine extends AbstractPlayerEngine {
                 });
             }
         };
-
     }
 
     @Override
