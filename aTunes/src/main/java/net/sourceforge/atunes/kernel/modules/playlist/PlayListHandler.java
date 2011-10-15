@@ -180,9 +180,13 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     }
 
     @Override
-    public void allHandlersInitialized() {
+    public void applicationStarted() {
+    	// Playlists need to be loaded before other handlers access them in allHandlersInitialized
         setPlayLists();
-
+    }
+    
+    @Override
+    public void allHandlersInitialized() {
         // Create drag and drop listener
     	getFrame().getPlayListPanel().enableDragAndDrop(new PlayListTableTransferHandler(getFrame(), getOsManager(), this, getBean(INavigationHandler.class), getBean(IRepositoryHandler.class), getBean(IRadioHandler.class)));
     }
@@ -611,11 +615,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         return new PreviousInitializationTaskRunnable();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#setPlayLists()
-	 */
-    @Override
-	public void setPlayLists() {
+	private void setPlayLists() {
         // Get playlists from application cache
         final ListOfPlayLists listOfPlayLists = playListsRetrievedFromCache;
 
