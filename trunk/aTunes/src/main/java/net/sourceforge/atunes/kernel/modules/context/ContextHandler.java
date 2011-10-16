@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.context;
 
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.util.Collection;
 import java.util.List;
 
@@ -74,7 +72,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     	setContextTab(getState().getSelectedContextTab());
     	
     	// Enable listener for user selections
-    	enableContextComboListener();
+    	enableContextComboListener(getState().getSelectedContextTab());
     	
     	getFrame().showContextPanel(getState().isUseContext());
     }
@@ -257,7 +255,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 	 * Selects context tab
 	 * @param selectedContextTab
 	 */
-	private void setContextTab(String selectedContextTab) {
+    void setContextTab(String selectedContextTab) {
 		contextPanelsContainer.setSelectedContextPanel(selectedContextTab);
 		contextPanelChanged();
 	}
@@ -291,24 +289,12 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 	/**
 	 * Enables listening for combo box selections by user
 	 */
-	private void enableContextComboListener() {
+	private void enableContextComboListener(final String initialContextPanel) {
 		// Wait until initial context panel selection is done
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				contextPanelsContainer.enableContextPanelSelection(new ItemListener() {
-					
-					private Object item;
-					
-					@Override
-					public void itemStateChanged(ItemEvent e) {
-						if (e.getStateChange() == ItemEvent.SELECTED && (item == null || !e.getItem().equals(item))) {
-							item = e.getItem();
-							contextPanelsContainer.showContextPanel((IContextPanel)e.getItem());
-							contextPanelChanged();
-						}
-		            }
-		        });	
+				contextPanelsContainer.enableContextPanelSelection(new ContextPanelListener(ContextHandler.this, initialContextPanel));	
 			}
 		});
 	}
