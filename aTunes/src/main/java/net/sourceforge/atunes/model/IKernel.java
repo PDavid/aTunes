@@ -18,29 +18,29 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.actions;
-
-import java.awt.event.ActionEvent;
-
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.model.IKernel;
-import net.sourceforge.atunes.utils.I18nUtils;
+package net.sourceforge.atunes.model;
 
 /**
- * This action finishes application
- * 
- * @author fleax
+ * Core of application, responsible of start, restart and stop application
+ * @author alex
+ *
  */
-public class ExitAction extends CustomAbstractAction {
+public interface IKernel {
 
-    private static final long serialVersionUID = 1900672708942690561L;
+	/**
+	 * Static method to create the Kernel instance. This method starts the
+	 * application, so should be called from the main method of the application.
+	 */
+	public void start();
 
-    ExitAction() {
-        super(I18nUtils.getString("EXIT"));
-    }
+	/**
+	 * Called when closing application
+	 */
+	public void finish();
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-    	Context.getBean(IKernel.class).finish();
-    }
+	/**
+	 * Called when restarting application
+	 */
+	public void restart();
+
 }

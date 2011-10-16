@@ -18,29 +18,31 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.actions;
+package net.sourceforge.atunes.kernel.modules.os.macosx;
 
-import java.awt.event.ActionEvent;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
 
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.model.IKernel;
-import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.ReflectionUtils;
 
 /**
- * This action finishes application
- * 
- * @author fleax
+ * Listener to be called when application is reopened, usually from dock
+ * @author alex
+ *
  */
-public class ExitAction extends CustomAbstractAction {
+final class MacOSXAppReOpenedListener implements InvocationHandler {
+	
+	private Object targetObject;
+	private Method targetMethod;
 
-    private static final long serialVersionUID = 1900672708942690561L;
-
-    ExitAction() {
-        super(I18nUtils.getString("EXIT"));
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-    	Context.getBean(IKernel.class).finish();
-    }
+	public MacOSXAppReOpenedListener(Object target, String methodName) {
+        this.targetObject = target;
+        this.targetMethod = ReflectionUtils.getMethod(target.getClass(), methodName);
+	}
+	
+	@Override
+	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+		targetMethod.invoke(targetObject, (Object[]) null);
+		return null;
+	}
 }

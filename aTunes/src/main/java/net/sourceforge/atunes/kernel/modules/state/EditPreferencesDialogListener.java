@@ -29,10 +29,10 @@ import javax.swing.event.ListSelectionListener;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.EditPreferencesDialog;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PreferencesValidationException;
-import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.StateChangeListeners;
 import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.IErrorDialog;
+import net.sourceforge.atunes.model.IKernel;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -70,7 +70,7 @@ public final class EditPreferencesDialogListener implements ListSelectionListene
 	        	if (needRestart) {
 	        		// Let user decide if want to restart
 	        		if (Context.getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("APPLICATION_NEEDS_RESTART"))) {
-	        			Context.getBean(Kernel.class).restart();
+	        			Context.getBean(IKernel.class).restart();
 	        		}
 	        	}
 			} catch (PreferencesValidationException e1) {

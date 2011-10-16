@@ -18,29 +18,21 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.actions;
+package net.sourceforge.atunes.kernel.modules.os.macosx;
 
-import java.awt.event.ActionEvent;
-
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.model.IKernel;
-import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
- * This action finishes application
- * 
- * @author fleax
+ * Pass this method an Object and a Method equipped to display application options
+ * They will be called when the Preferences menu item is selected from the application menu
+ * @author alex
  */
-public class ExitAction extends CustomAbstractAction {
+public class MacOSXPreferencesHandler extends MacOSXAdapter {
 
-    private static final long serialVersionUID = 1900672708942690561L;
-
-    ExitAction() {
-        super(I18nUtils.getString("EXIT"));
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-    	Context.getBean(IKernel.class).finish();
-    }
+	/**
+	 * @param target
+	 * @param methodName
+	 */
+	protected MacOSXPreferencesHandler(Object target, String methodName) {
+		super("handlePreferences", target, methodName);
+	}
 }

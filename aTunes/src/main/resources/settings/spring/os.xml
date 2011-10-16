@@ -7,5 +7,7 @@
 	
 	<bean id="osManager" class="net.sourceforge.atunes.kernel.OsManager" init-method="initialize"/>
 
+	<bean id="macOsApplication" class="net.sourceforge.atunes.kernel.modules.os.macosx.MacOSXApplication" scope="prototype"/>
+	<bean id="macOsInitializer" class="net.sourceforge.atunes.kernel.modules.os.macosx.MacOSXInitializer" scope="prototype"/>
 
 </beans>
