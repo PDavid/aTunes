@@ -48,4 +48,30 @@
 		<property name="i18nKey" value="ADD_100_RANDOM_SONGS"/>
 	</bean> 
 
+	<bean id="addSongsMostPlayedAction10" class="net.sourceforge.atunes.kernel.actions.AddSongsMostPlayedAction">
+		<property name="songs" value="10"/>
+		<property name="i18nKey" value="ADD_10_SONGS_MOST_PLAYED"/>
+	</bean> 
+	<bean id="addSongsMostPlayedAction50" class="net.sourceforge.atunes.kernel.actions.AddSongsMostPlayedAction">
+		<property name="songs" value="50"/>
+		<property name="i18nKey" value="ADD_50_SONGS_MOST_PLAYED"/>
+	</bean> 
+	<bean id="addSongsMostPlayedAction100" class="net.sourceforge.atunes.kernel.actions.AddSongsMostPlayedAction">
+		<property name="songs" value="100"/>
+		<property name="i18nKey" value="ADD_100_SONGS_MOST_PLAYED"/>
+	</bean> 
+
+	<bean id="addUnplayedSongsAction10" class="net.sourceforge.atunes.kernel.actions.AddUnplayedSongsAction">
+		<property name="songs" value="10"/>
+		<property name="i18nKey" value="ADD_10_UNPLAYED_SONGS"/>
+	</bean> 
+	<bean id="addUnplayedSongsAction50" class="net.sourceforge.atunes.kernel.actions.AddUnplayedSongsAction">
+		<property name="songs" value="50"/>
+		<property name="i18nKey" value="ADD_50_UNPLAYED_SONGS"/>
+	</bean> 
+	<bean id="addUnplayedSongsAction100" class="net.sourceforge.atunes.kernel.actions.AddUnplayedSongsAction">
+		<property name="songs" value="100"/>
+		<property name="i18nKey" value="ADD_100_UNPLAYED_SONGS"/>
+	</bean> 
+
 </beans>
