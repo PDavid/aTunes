@@ -5,19 +5,32 @@
 	
 	default-autowire="byName" default-lazy-init="true" default-init-method="initialize">
 	
-	<bean id="addAlbumMostPlayerAction1" class="net.sourceforge.atunes.kernel.actions.AddAlbumsMostPlayedAction">
+	<bean id="addAlbumMostPlayedAction1" class="net.sourceforge.atunes.kernel.actions.AddAlbumsMostPlayedAction">
 		<property name="albums" value="1"/>
 		<property name="i18nKey" value="ADD_ALBUM_MOST_PLAYED"/>
 	</bean>
-	<bean id="addAlbumMostPlayerAction5" class="net.sourceforge.atunes.kernel.actions.AddAlbumsMostPlayedAction">
+	<bean id="addAlbumMostPlayedAction5" class="net.sourceforge.atunes.kernel.actions.AddAlbumsMostPlayedAction">
 		<property name="albums" value="5"/>
 		<property name="i18nKey" value="ADD_5_ALBUMS_MOST_PLAYED"/>
 	</bean>
-	<bean id="addAlbumMostPlayerAction10" class="net.sourceforge.atunes.kernel.actions.AddAlbumsMostPlayedAction">
+	<bean id="addAlbumMostPlayedAction10" class="net.sourceforge.atunes.kernel.actions.AddAlbumsMostPlayedAction">
 		<property name="albums" value="10"/>
 		<property name="i18nKey" value="ADD_10_ALBUMS_MOST_PLAYED"/>
 	</bean>
 	
+	<bean id="addArtistsMostPlayedAction1" class="net.sourceforge.atunes.kernel.actions.AddArtistsMostPlayedAction">
+		<property name="artists" value="1"/>
+		<property name="i18nKey" value="ADD_ARTIST_MOST_PLAYED"/>
+	</bean>
+	<bean id="addArtistsMostPlayedAction5" class="net.sourceforge.atunes.kernel.actions.AddArtistsMostPlayedAction">
+		<property name="artists" value="5"/>
+		<property name="i18nKey" value="ADD_5_ARTISTS_MOST_PLAYED"/>
+	</bean>
+	<bean id="addArtistsMostPlayedAction10" class="net.sourceforge.atunes.kernel.actions.AddArtistsMostPlayedAction">
+		<property name="artists" value="10"/>
+		<property name="i18nKey" value="ADD_10_ARTISTS_MOST_PLAYED"/>
+	</bean>
+
 
 
 </beans>

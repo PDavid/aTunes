@@ -26,17 +26,17 @@ import net.sourceforge.atunes.model.ISmartPlayListHandler;
 
 import org.junit.Test;
 
-public class AddAlbumsMostPlayedActionTest {
+public class AddArtistsMostPlayedActionTest {
 
 	@Test
 	public void test() {
-		AddAlbumsMostPlayedAction sut = new AddAlbumsMostPlayedAction();
+		AddArtistsMostPlayedAction sut = new AddArtistsMostPlayedAction();
 		ISmartPlayListHandler smartPlayListHandler = mock(ISmartPlayListHandler.class);
-		sut.setAlbums(3);
+		sut.setArtists(3);
 		sut.setSmartPlayListHandler(smartPlayListHandler);
 		
 		sut.executeAction();
 		
-		verify(smartPlayListHandler).addAlbumsMostPlayed(3);
+		verify(smartPlayListHandler).addArtistsMostPlayed(3);
 	}
 }
