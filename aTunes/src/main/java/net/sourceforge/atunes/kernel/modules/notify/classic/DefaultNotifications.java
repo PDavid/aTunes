@@ -81,7 +81,9 @@ public class DefaultNotifications extends CommonNotificationEngine {
 
     @Override
     public void updateNotification(IState newState) {
-    	osdDialog.setWidth(newState.getOsdWidth());
+    	if (osdDialog != null) {
+    		osdDialog.setWidth(newState.getOsdWidth());
+    	}
     }
 	
     @Override
