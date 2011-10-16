@@ -106,7 +106,7 @@
 
 	<bean id="audioObjectBasicInfoContent"
 		class="net.sourceforge.atunes.kernel.modules.context.audioobject.AudioObjectBasicInfoContent"
-		parent="contextPanelContent" init-method="initialize">
+		parent="contextPanelContent">
 		<property name="dataSource" ref="audioObjectBasicInfoDataSource" />
 	</bean>
 

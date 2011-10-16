@@ -40,7 +40,6 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
-import org.codehaus.plexus.logging.LogEnabled;
 import org.libxinejna.Xine;
 import org.libxinejna.XineController;
 import org.libxinejna.XineEventListener;
