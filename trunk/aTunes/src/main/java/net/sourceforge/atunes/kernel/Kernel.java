@@ -33,6 +33,7 @@ import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.model.ICommandHandler;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IKernel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
@@ -47,7 +48,7 @@ import net.sourceforge.atunes.utils.Timer;
  * The Kernel is the class responsible of create and interconnect all modules of
  * aTunes.
  */
-public final class Kernel {
+public final class Kernel implements IKernel {
 
     /** Timer used to measure start time */
     private Timer timer;
@@ -62,11 +63,8 @@ public final class Kernel {
 		this.state = state;
 	}
     
-    /**
-     * Static method to create the Kernel instance. This method starts the
-     * application, so should be called from the main method of the application.
-     */
-    public void start() {
+    @Override
+	public void start() {
         Logger.debug("Starting Kernel");
         
         timer = new Timer();
@@ -124,10 +122,8 @@ public final class Kernel {
         		Context.getBean(ApplicationLifeCycleListeners.class).getUserInteractionRequests());
     }
 
-    /**
-     * Called when closing application
-     */
-    public void finish() {
+    @Override
+	public void finish() {
         Timer timer = new Timer();
         try {
             timer.start();
@@ -162,10 +158,8 @@ public final class Kernel {
         Context.getBean(IUIHandler.class).startVisualization();
     }
 
-    /**
-     * Called when restarting application
-     */
-    public void restart() {
+    @Override
+	public void restart() {
         try {
             // Store all configuration and finish all active modules
         	Context.getBean(ApplicationLifeCycleListeners.class).applicationFinish();

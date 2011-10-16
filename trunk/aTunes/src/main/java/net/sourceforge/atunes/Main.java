@@ -25,7 +25,7 @@ import java.util.List;
 import javax.swing.RepaintManager;
 
 import net.sourceforge.atunes.gui.debug.CheckThreadViolationRepaintManager;
-import net.sourceforge.atunes.kernel.Kernel;
+import net.sourceforge.atunes.model.IKernel;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -115,7 +115,7 @@ public final class Main {
             applicationPropertiesLogger.logProgramProperties();
 
             // Start the Kernel, which really starts application
-            Context.getBean(Kernel.class).start();
+            Context.getBean(IKernel.class).start();
         }
     }
 }

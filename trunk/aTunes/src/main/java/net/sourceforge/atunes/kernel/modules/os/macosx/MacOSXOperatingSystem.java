@@ -26,7 +26,6 @@ import java.util.Map;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.macos.MacOSXLookAndFeel;
-import net.sourceforge.atunes.kernel.Kernel;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.Cdparanoia;
 import net.sourceforge.atunes.kernel.modules.os.OperatingSystemAdapter;
@@ -36,10 +35,7 @@ import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IStateHandler;
-import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.model.OperatingSystem;
-import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class MacOSXOperatingSystem extends OperatingSystemAdapter {
@@ -74,37 +70,9 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 		return System.getProperty("atunes.package"); // This property is set in Info.plist
 	}	
 	
+	@Override
 	public void setUpFrame(IFrame frame) {
-		// Generate and register the OSXAdapter, passing it a hash of all the methods we wish to
-		// use as delegates for various com.apple.eawt.ApplicationListener methods
-		try {
-			MacOSXAdapter.setQuitHandler(Context.getBean(Kernel.class), Kernel.class.getDeclaredMethod("finish", (Class[]) null));
-		} catch (Exception e) {
-			Logger.error(e.getMessage());
-		}
-		
-		IUIHandler uiHandler = Context.getBean(IUIHandler.class);
-		IStateHandler stateHandler = Context.getBean(IStateHandler.class);
-		
-		try {
-			MacOSXAdapter.setAboutHandler(uiHandler, uiHandler.getClass().getDeclaredMethod("showAboutDialog", (Class[]) null));
-		} catch (Exception e) {
-			Logger.error(e.getMessage());
-		}
-		
-		try {
-			MacOSXAdapter.setPreferencesHandler(stateHandler, stateHandler.getClass().getDeclaredMethod("editPreferences", (Class[]) null));
-		} catch (Exception e) {
-			Logger.error(e.getMessage());
-		}
-		
-		try {
-			MacOSXAdapter.setListener(uiHandler, uiHandler.getClass().getDeclaredMethod("showFullFrame", (Class[]) null));
-		} catch (Exception e) {
-			Logger.error(e.getMessage());
-		}
-		
-		MacOSXAdapter.addDockIconMenu();
+		Context.getBean(MacOSXInitializer.class).initialize();
 	}
 	
 	@Override
@@ -131,6 +99,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 	 * Returns list of supported look and feels
 	 * @return
 	 */
+	@Override
 	public Map<String, Class<? extends ILookAndFeel>> getSupportedLookAndFeels() {
 	    Map<String, Class<? extends ILookAndFeel>> lookAndFeels = new HashMap<String, Class<? extends ILookAndFeel>>();
         lookAndFeels.put(SubstanceLookAndFeel.SUBSTANCE, SubstanceLookAndFeel.class);
@@ -142,6 +111,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 	 * Returns default look and feel class
 	 * @return
 	 */
+	@Override
 	public Class<? extends ILookAndFeel> getDefaultLookAndFeel() {
 		return SubstanceLookAndFeel.class;
 	}
@@ -171,6 +141,4 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 	public boolean isRipSupported() {
 		return false;
 	}
-
-
 }
