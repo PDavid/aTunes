@@ -34,6 +34,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.RadioImageIcon;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.kernel.actions.Actions;
@@ -131,7 +132,7 @@ public final class RadioNavigationView extends AbstractNavigationView {
             radioTreeMenu.add(getMenuItemForAction(AddToPlayListAction.class));
             radioTreeMenu.add(getMenuItemForAction(SetAsPlayListAction.class));
             radioTreeMenu.add(new JSeparator());
-            radioTreeMenu.add(new JMenuItem(Actions.getAction(AddRadioAction.class)));
+            radioTreeMenu.add(new JMenuItem(Context.getBean(AddRadioAction.class)));
             radioTreeMenu.add(new JMenuItem(Actions.getAction(RefreshRadioAction.class)));
             radioTreeMenu.add(getMenuItemForAction(AddFavoriteRadioAction.class));
             radioTreeMenu.add(getMenuItemForAction(EditRadioAction.class));
