@@ -209,9 +209,9 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
             tools.add(Actions.getAction(ShowStatsAction.class));
             tools.add(Actions.getAction(ShowCoverNavigatorAction.class));
             tools.add(new JSeparator());
-            tools.add(Actions.getAction(AddRadioAction.class));
+            tools.add(Context.getBean(AddRadioAction.class));
             tools.add(Actions.getAction(ShowRadioBrowserAction.class));
-            tools.add(Actions.getAction(AddPodcastFeedAction.class));
+            tools.add(Context.getBean(AddPodcastFeedAction.class));
             tools.add(new JSeparator());
             tools.add(Actions.getAction(CustomSearchAction.class));
             tools.add(new JSeparator());

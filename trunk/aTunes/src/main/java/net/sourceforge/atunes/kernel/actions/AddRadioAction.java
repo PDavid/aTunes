@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
 import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -38,14 +37,23 @@ public class AddRadioAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -5764149587317233484L;
 
+    private IRadioHandler radioHandler;
+    
     public AddRadioAction() {
         super(I18nUtils.getString("ADD_RADIO"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("ADD_RADIO"));
     }
     
+    /**
+     * @param radioHandler
+     */
+    public void setRadioHandler(IRadioHandler radioHandler) {
+		this.radioHandler = radioHandler;
+	}
+    
     @Override
-    public void actionPerformed(ActionEvent e) {
-    	getBean(IRadioHandler.class).addRadio();
+    protected void executeAction() {
+    	radioHandler.addRadio();
     }
 
     @Override

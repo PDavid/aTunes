@@ -31,6 +31,8 @@
 		<property name="i18nKey" value="ADD_10_ARTISTS_MOST_PLAYED"/>
 	</bean>
 
+	<bean class="net.sourceforge.atunes.kernel.actions.AddPodcastFeedAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.AddRadioAction"/>
 
 
 </beans>

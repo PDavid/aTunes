@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
 import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -38,13 +37,22 @@ public class AddPodcastFeedAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 2866782020999148427L;
 
-    AddPodcastFeedAction() {
+    private IPodcastFeedHandler podcastFeedHandler;
+    
+    public AddPodcastFeedAction() {
         super(I18nUtils.getString("ADD_PODCAST_FEED"));
     }
     
+    /**
+     * @param podcastFeedHandler
+     */
+    public void setPodcastFeedHandler(IPodcastFeedHandler podcastFeedHandler) {
+		this.podcastFeedHandler = podcastFeedHandler;
+	}
+    
     @Override
-    public void actionPerformed(ActionEvent e) {
-        getBean(IPodcastFeedHandler.class).addPodcastFeed();
+    protected void executeAction() {
+    	podcastFeedHandler.addPodcastFeed();
     }
 
     @Override
