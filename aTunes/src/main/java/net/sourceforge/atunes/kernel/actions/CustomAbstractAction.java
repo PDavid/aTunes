@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import java.awt.event.ActionEvent;
 import java.util.List;
 import java.util.Properties;
 
@@ -31,6 +32,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ICommand;
 import net.sourceforge.atunes.model.ICommandHandler;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.utils.Logger;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -149,8 +151,20 @@ public abstract class CustomAbstractAction extends javax.swing.AbstractAction im
     public void runCommand() {
         actionPerformed(null);
     }
-
+    
     @Override
+    public void actionPerformed(ActionEvent e) {
+    	Logger.debug("Executing action: ", this.getClass().getName());
+    	executeAction();
+    }
+    
+    /**
+     * Override this method to execute action
+     */
+    protected void executeAction() {
+	}
+
+	@Override
     public String getCommandName() {
         return "";
     }
