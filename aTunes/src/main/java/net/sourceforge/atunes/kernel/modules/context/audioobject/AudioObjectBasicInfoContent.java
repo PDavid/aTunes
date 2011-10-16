@@ -35,6 +35,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import net.sourceforge.atunes.kernel.actions.Actions;
+import net.sourceforge.atunes.kernel.actions.AddBannedSongInLastFMAction;
+import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -69,28 +72,10 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
      */
     private JLabel audioObjectLastPlayDate;
 
-    /**
-     * Mark song as loved track in last.fm
-     */
-    private JMenuItem lovedSong;
-
-    /**
-     * Mark song as banned track in last.fm
-     */
-    private JMenuItem bannedSong;
-    
     private IWebServicesHandler webServicesHandler;
     
     private IContextHandler contextHandler;
     
-    /**
-     * Default constructor
-     */
-    public AudioObjectBasicInfoContent() {
-        lovedSong = new JMenuItem(I18nUtils.getString("ADD_LOVED_SONG_IN_LASTFM"));
-        bannedSong = new JMenuItem(I18nUtils.getString("ADD_BANNED_SONG_IN_LASTFM"));
-    }
-
     @Override
     public void clearContextPanelContent() {
         super.clearContextPanelContent();
@@ -99,8 +84,8 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
         audioObjectTitle.setText(null);
         audioObjectArtist.setText(null);
         audioObjectLastPlayDate.setText(null);
-        lovedSong.setEnabled(false);
-        bannedSong.setEnabled(false);
+        Actions.getAction(AddLovedSongInLastFMAction.class).setEnabled(false);
+        Actions.getAction(AddBannedSongInLastFMAction.class).setEnabled(false);
     }
 
     @Override
@@ -135,8 +120,8 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
         }
 
         // TODO: Allow these options for radios where song information is available
-        lovedSong.setEnabled(getState().isLastFmEnabled() && result.get(AudioObjectBasicInfoDataSource.OUTPUT_AUDIO_OBJECT) instanceof AudioFile);
-        bannedSong.setEnabled(getState().isLastFmEnabled() && result.get(AudioObjectBasicInfoDataSource.OUTPUT_AUDIO_OBJECT) instanceof AudioFile);
+        Actions.getAction(AddLovedSongInLastFMAction.class).setEnabled(getState().isLastFmEnabled() && result.get(AudioObjectBasicInfoDataSource.OUTPUT_AUDIO_OBJECT) instanceof AudioFile);
+        Actions.getAction(AddBannedSongInLastFMAction.class).setEnabled(getState().isLastFmEnabled() && result.get(AudioObjectBasicInfoDataSource.OUTPUT_AUDIO_OBJECT) instanceof AudioFile);
     }
 
     @Override
@@ -182,8 +167,8 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
     @Override
     public List<Component> getOptions() {
         List<Component> options = new ArrayList<Component>();
-        options.add(lovedSong);
-        options.add(bannedSong);
+        options.add(new JMenuItem(Actions.getAction(AddLovedSongInLastFMAction.class)));
+        options.add(new JMenuItem(Actions.getAction(AddBannedSongInLastFMAction.class)));
         return options;
     }
     
@@ -194,10 +179,4 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
     public void setContextHandler(IContextHandler contextHandler) {
 		this.contextHandler = contextHandler;
 	}
-    
-    public void initialize() {
-        this.lovedSong.addActionListener(new AddLovedSongActionListener(webServicesHandler, contextHandler));
-        this.bannedSong.addActionListener(new AddBannedSongActionListener(webServicesHandler, contextHandler));
-	}
-
 }
