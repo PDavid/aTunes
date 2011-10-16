@@ -34,7 +34,6 @@ import javax.swing.JSeparator;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddAlbumWithSelectedArtistsAction;
-import net.sourceforge.atunes.kernel.actions.AddRandomSongsAction;
 import net.sourceforge.atunes.kernel.actions.AddSongsMostPlayedAction;
 import net.sourceforge.atunes.kernel.actions.AddUnplayedSongsAction;
 import net.sourceforge.atunes.kernel.actions.AutoScrollPlayListAction;
@@ -136,9 +135,9 @@ public final class PlayListMenu {
      */
     private static JMenu getSmartPlayListMenu() {
         JMenu smartPlayList = new JMenu(I18nUtils.getString("SMART_PLAYLIST"));
-        smartPlayList.add(Actions.getAction(AddRandomSongsAction.class, AddRandomSongsAction.INSTANCE_10));
-        smartPlayList.add(Actions.getAction(AddRandomSongsAction.class, AddRandomSongsAction.INSTANCE_50));
-        smartPlayList.add(Actions.getAction(AddRandomSongsAction.class, AddRandomSongsAction.INSTANCE_100));
+        smartPlayList.add((AbstractAction)Context.getBean("addRandomSongsAction10"));
+        smartPlayList.add((AbstractAction)Context.getBean("addRandomSongsAction50"));
+        smartPlayList.add((AbstractAction)Context.getBean("addRandomSongsAction100"));
         smartPlayList.add(new JSeparator());
         smartPlayList.add(Actions.getAction(AddSongsMostPlayedAction.class, AddSongsMostPlayedAction.INSTANCE_10));
         smartPlayList.add(Actions.getAction(AddSongsMostPlayedAction.class, AddSongsMostPlayedAction.INSTANCE_50));

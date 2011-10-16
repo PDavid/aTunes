@@ -32,7 +32,20 @@
 	</bean>
 
 	<bean class="net.sourceforge.atunes.kernel.actions.AddPodcastFeedAction"/>
+	
 	<bean class="net.sourceforge.atunes.kernel.actions.AddRadioAction"/>
 
+	<bean id="addRandomSongsAction10" class="net.sourceforge.atunes.kernel.actions.AddRandomSongsAction">
+		<property name="songs" value="10"/>
+		<property name="i18nKey" value="ADD_10_RANDOM_SONGS"/>
+	</bean> 
+	<bean id="addRandomSongsAction50" class="net.sourceforge.atunes.kernel.actions.AddRandomSongsAction">
+		<property name="songs" value="50"/>
+		<property name="i18nKey" value="ADD_50_RANDOM_SONGS"/>
+	</bean> 
+	<bean id="addRandomSongsAction100" class="net.sourceforge.atunes.kernel.actions.AddRandomSongsAction">
+		<property name="songs" value="100"/>
+		<property name="i18nKey" value="ADD_100_RANDOM_SONGS"/>
+	</bean> 
 
 </beans>
