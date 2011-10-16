@@ -24,6 +24,7 @@ import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -33,7 +34,6 @@ import javax.swing.JSeparator;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddAlbumWithSelectedArtistsAction;
-import net.sourceforge.atunes.kernel.actions.AddAlbumsMostPlayedAction;
 import net.sourceforge.atunes.kernel.actions.AddArtistsMostPlayedAction;
 import net.sourceforge.atunes.kernel.actions.AddRandomSongsAction;
 import net.sourceforge.atunes.kernel.actions.AddSongsMostPlayedAction;
@@ -145,9 +145,9 @@ public final class PlayListMenu {
         smartPlayList.add(Actions.getAction(AddSongsMostPlayedAction.class, AddSongsMostPlayedAction.INSTANCE_50));
         smartPlayList.add(Actions.getAction(AddSongsMostPlayedAction.class, AddSongsMostPlayedAction.INSTANCE_100));
         smartPlayList.add(new JSeparator());
-        smartPlayList.add(Actions.getAction(AddAlbumsMostPlayedAction.class, AddAlbumsMostPlayedAction.INSTANCE_1));
-        smartPlayList.add(Actions.getAction(AddAlbumsMostPlayedAction.class, AddAlbumsMostPlayedAction.INSTANCE_5));
-        smartPlayList.add(Actions.getAction(AddAlbumsMostPlayedAction.class, AddAlbumsMostPlayedAction.INSTANCE_10));
+        smartPlayList.add((AbstractAction)Context.getBean("addAlbumMostPlayerAction1"));
+        smartPlayList.add((AbstractAction)Context.getBean("addAlbumMostPlayerAction5"));
+        smartPlayList.add((AbstractAction)Context.getBean("addAlbumMostPlayerAction10"));
         smartPlayList.add(new JSeparator());
         smartPlayList.add(Actions.getAction(AddArtistsMostPlayedAction.class, AddArtistsMostPlayedAction.INSTANCE_1));
         smartPlayList.add(Actions.getAction(AddArtistsMostPlayedAction.class, AddArtistsMostPlayedAction.INSTANCE_5));

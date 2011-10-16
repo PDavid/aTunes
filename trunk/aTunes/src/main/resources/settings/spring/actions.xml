@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+	
+	default-autowire="byName" default-lazy-init="true" default-init-method="initialize">
+	
+	<bean id="addAlbumMostPlayerAction1" class="net.sourceforge.atunes.kernel.actions.AddAlbumsMostPlayedAction">
+		<property name="albums" value="1"/>
+		<property name="i18nKey" value="ADD_ALBUM_MOST_PLAYED"/>
+	</bean>
+	<bean id="addAlbumMostPlayerAction5" class="net.sourceforge.atunes.kernel.actions.AddAlbumsMostPlayedAction">
+		<property name="albums" value="5"/>
+		<property name="i18nKey" value="ADD_5_ALBUMS_MOST_PLAYED"/>
+	</bean>
+	<bean id="addAlbumMostPlayerAction10" class="net.sourceforge.atunes.kernel.actions.AddAlbumsMostPlayedAction">
+		<property name="albums" value="10"/>
+		<property name="i18nKey" value="ADD_10_ALBUMS_MOST_PLAYED"/>
+	</bean>
+	
+
+
+</beans>
