@@ -34,8 +34,6 @@ import javax.swing.JSeparator;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddAlbumWithSelectedArtistsAction;
-import net.sourceforge.atunes.kernel.actions.AddSongsMostPlayedAction;
-import net.sourceforge.atunes.kernel.actions.AddUnplayedSongsAction;
 import net.sourceforge.atunes.kernel.actions.AutoScrollPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ClearPlayListAction;
 import net.sourceforge.atunes.kernel.actions.CreatePlayListWithSelectedAlbumsAction;
@@ -139,9 +137,9 @@ public final class PlayListMenu {
         smartPlayList.add((AbstractAction)Context.getBean("addRandomSongsAction50"));
         smartPlayList.add((AbstractAction)Context.getBean("addRandomSongsAction100"));
         smartPlayList.add(new JSeparator());
-        smartPlayList.add(Actions.getAction(AddSongsMostPlayedAction.class, AddSongsMostPlayedAction.INSTANCE_10));
-        smartPlayList.add(Actions.getAction(AddSongsMostPlayedAction.class, AddSongsMostPlayedAction.INSTANCE_50));
-        smartPlayList.add(Actions.getAction(AddSongsMostPlayedAction.class, AddSongsMostPlayedAction.INSTANCE_100));
+        smartPlayList.add((AbstractAction)Context.getBean("addSongsMostPlayedAction10"));
+        smartPlayList.add((AbstractAction)Context.getBean("addSongsMostPlayedAction50"));
+        smartPlayList.add((AbstractAction)Context.getBean("addSongsMostPlayedAction100"));
         smartPlayList.add(new JSeparator());
         smartPlayList.add((AbstractAction)Context.getBean("addAlbumMostPlayedAction1"));
         smartPlayList.add((AbstractAction)Context.getBean("addAlbumMostPlayedAction5"));
@@ -151,9 +149,9 @@ public final class PlayListMenu {
         smartPlayList.add((AbstractAction)Context.getBean("addArtistsMostPlayedAction5"));
         smartPlayList.add((AbstractAction)Context.getBean("addArtistsMostPlayedAction10"));
         smartPlayList.add(new JSeparator());
-        smartPlayList.add(Actions.getAction(AddUnplayedSongsAction.class, AddUnplayedSongsAction.INSTANCE_10));
-        smartPlayList.add(Actions.getAction(AddUnplayedSongsAction.class, AddUnplayedSongsAction.INSTANCE_50));
-        smartPlayList.add(Actions.getAction(AddUnplayedSongsAction.class, AddUnplayedSongsAction.INSTANCE_100));
+        smartPlayList.add((AbstractAction)Context.getBean("addUnplayedSongsAction10"));
+        smartPlayList.add((AbstractAction)Context.getBean("addUnplayedSongsAction50"));
+        smartPlayList.add((AbstractAction)Context.getBean("addUnplayedSongsAction100"));
         return smartPlayList;
     }
     

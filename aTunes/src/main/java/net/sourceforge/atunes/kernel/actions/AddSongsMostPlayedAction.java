@@ -20,9 +20,7 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
 import java.util.List;
-import java.util.Properties;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ISmartPlayListHandler;
@@ -38,34 +36,43 @@ public class AddSongsMostPlayedAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -2036319858956733773L;
 
-    public static final String INSTANCE_10 = "ADD_10_SONGS_MOST_PLAYED";
-    public static final String INSTANCE_50 = "ADD_50_SONGS_MOST_PLAYED";
-    public static final String INSTANCE_100 = "ADD_100_SONGS_MOST_PLAYED";
-
-    public static final String PARAMETER = "PARAMETER";
-
+    private int songs;
+    
+    private ISmartPlayListHandler smartPlayListHandler;
+    
+    private String i18nKey;
+    
+    /**
+     * @param songs
+     */
+    public void setSongs(int songs) {
+		this.songs = songs;
+	}
+    
+    /**
+     * @param smartPlayListHandler
+     */
+    public void setSmartPlayListHandler(
+			ISmartPlayListHandler smartPlayListHandler) {
+		this.smartPlayListHandler = smartPlayListHandler;
+	}
+    
+    /**
+     * @param i18nKey
+     */
+    public void setI18nKey(String i18nKey) {
+		this.i18nKey = i18nKey;
+	}
+    
     @Override
     protected void initialize() {
-        putValue(NAME, I18nUtils.getString(getActionId()));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString(getActionId()));
+        putValue(NAME, I18nUtils.getString(i18nKey));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString(i18nKey));
     }
-
+    
     @Override
-    protected Properties getProperties(String instanceid) {
-        Properties instanceProperties = new Properties();
-        if (INSTANCE_10.equals(instanceid)) {
-            instanceProperties.put(PARAMETER, 10);
-        } else if (INSTANCE_50.equals(instanceid)) {
-            instanceProperties.put(PARAMETER, 50);
-        } else {
-            instanceProperties.put(PARAMETER, 100);
-        }
-        return instanceProperties;
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-    	getBean(ISmartPlayListHandler.class).addSongsMostPlayed((Integer) this.getProperties().get(PARAMETER));
+    protected void executeAction() {
+    	smartPlayListHandler.addSongsMostPlayed(songs);
     }
 
     @Override
