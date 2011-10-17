@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
@@ -38,20 +37,28 @@ public class FullScreenAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 916565212685861604L;
 
-    FullScreenAction() {
+    private IFullScreenHandler fullScreenHandler;
+    
+    /**
+     * @param fullScreenHandler
+     */
+    public void setFullScreenHandler(IFullScreenHandler fullScreenHandler) {
+		this.fullScreenHandler = fullScreenHandler;
+	}
+    
+    public FullScreenAction() {
         super(I18nUtils.getString("FULL_SCREEN"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("FULL_SCREEN"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F11, 0));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-    	getBean(IFullScreenHandler.class).toggleFullScreenVisibility();
+    protected void executeAction() {
+    	fullScreenHandler.toggleFullScreenVisibility();
     }
 
     @Override
     public String getCommandName() {
         return "fullscreen";
     }
-
 }

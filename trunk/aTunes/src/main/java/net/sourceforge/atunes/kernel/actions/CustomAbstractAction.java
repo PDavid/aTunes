@@ -51,6 +51,8 @@ public abstract class CustomAbstractAction extends javax.swing.AbstractAction im
      */
     private Properties properties;
     
+    private ICommandHandler commandHandler;
+    
     /**
      * State of the application
      */
@@ -68,11 +70,9 @@ public abstract class CustomAbstractAction extends javax.swing.AbstractAction im
         super(name, icon);
     }
 
-    {
-        if (!getCommandName().isEmpty()) {
-            Context.getBean(ICommandHandler.class).registerCommand(this);
-        }
-    }
+    public void setCommandHandler(ICommandHandler commandHandler) {
+		this.commandHandler = commandHandler;
+	}
     
     protected void setState(IState state) {
     	this.state = state;
@@ -108,9 +108,13 @@ public abstract class CustomAbstractAction extends javax.swing.AbstractAction im
     /**
      * Initializes action if needed
      * All initialization needed retrieving values from <code>getState</code> must be done here
+     * Must call super.initialize() when overriding
      * @param state
      */
-    protected void initialize() {    	
+    protected void initialize() {   
+        if (!getCommandName().isEmpty()) {
+        	commandHandler.registerCommand(this);
+        }
     }
 
     /**

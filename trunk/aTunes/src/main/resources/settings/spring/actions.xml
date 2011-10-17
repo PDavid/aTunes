@@ -93,4 +93,5 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.FillDeviceWithRandomSongsAction">
 		<property name="freeMemory" value="50"/>
 	</bean>
+	<bean class="net.sourceforge.atunes.kernel.actions.FullScreenAction"/>
 </beans>
