@@ -111,7 +111,7 @@ public final class PlayListMenu {
         objects.add(new EditTagMenu(true, table));
         objects.add(getFavoritesMenu());
         objects.add(new JSeparator());
-        objects.add(Actions.getAction(AutoScrollPlayListAction.class));
+        objects.add(Context.getBean(AutoScrollPlayListAction.class));
         objects.add(getMoveMenu());
         objects.add(Actions.getAction(RemoveFromPlayListAction.class));
         objects.add(Actions.getAction(ClearPlayListAction.class));

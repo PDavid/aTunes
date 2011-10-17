@@ -248,7 +248,7 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
             help.add(Actions.getAction(ReportBugOrFeatureRequestAction.class));
             help.add(new JSeparator());
             help.add(Actions.getAction(ShowLogAction.class));
-            help.add(Actions.getAction(CheckUpdatesAction.class));
+            help.add(Context.getBean(CheckUpdatesAction.class));
             if (!osManager.areMenuEntriesDelegated()) {
             	help.add(new JSeparator());
             	help.add(Actions.getAction(ShowAboutAction.class));

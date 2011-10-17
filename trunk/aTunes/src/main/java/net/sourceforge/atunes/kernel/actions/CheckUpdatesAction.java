@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
 import net.sourceforge.atunes.model.IUpdateHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -35,14 +33,19 @@ public class CheckUpdatesAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 999420226547524484L;
 
+    private IUpdateHandler updateHandler;
+    
+    public void setUpdateHandler(IUpdateHandler updateHandler) {
+		this.updateHandler = updateHandler;
+	}
+    
     CheckUpdatesAction() {
         super(I18nUtils.getString("CHECK_FOR_UPDATES"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("CHECK_FOR_UPDATES"));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        getBean(IUpdateHandler.class).checkUpdates(true, true);
+    protected void executeAction() {
+    	updateHandler.checkUpdates(true, true);
     }
-
 }
