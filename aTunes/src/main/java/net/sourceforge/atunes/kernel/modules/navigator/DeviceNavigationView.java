@@ -33,6 +33,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.DeviceImageIcon;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
@@ -138,7 +139,7 @@ public final class DeviceNavigationView extends AbstractNavigationView {
             deviceTreeMenu.add(new JMenuItem(Actions.getAction(RemoveFromDiskAction.class)));
             deviceTreeMenu.add(new JSeparator());
             deviceTreeMenu.add(getMenuItemForAction(CopyToRepositoryAction.class));
-            deviceTreeMenu.add(new JMenuItem(Actions.getAction(FillDeviceWithRandomSongsAction.class)));
+            deviceTreeMenu.add(new JMenuItem(Context.getBean(FillDeviceWithRandomSongsAction.class)));
             deviceTreeMenu.add(new JSeparator());
             deviceTreeMenu.add(Actions.getAction(SearchArtistAction.class));
             deviceTreeMenu.add(Actions.getAction(SearchArtistAtAction.class));
