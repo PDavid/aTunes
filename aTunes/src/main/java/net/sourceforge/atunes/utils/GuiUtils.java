@@ -100,7 +100,12 @@ public final class GuiUtils {
             Logger.info("method in class com.sun.awt.AWTUtilities not found");
         }
 
-        mainDeviceBounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getBounds();
+        try {
+        	mainDeviceBounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getBounds();
+        } catch (Exception e) {
+        	Logger.error("error obtaining main device bounds");
+        	Logger.error(e);
+        }
     }
 
     private GuiUtils() {
