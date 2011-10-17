@@ -74,4 +74,6 @@
 		<property name="i18nKey" value="ADD_100_UNPLAYED_SONGS"/>
 	</bean> 
 
+	<bean class="net.sourceforge.atunes.kernel.actions.AutoScrollPlayListAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.CheckUpdatesAction"/>
 </beans>

@@ -20,32 +20,22 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import net.sourceforge.atunes.model.IUpdateHandler;
-import net.sourceforge.atunes.utils.I18nUtils;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import net.sourceforge.atunes.model.IPlayListHandler;
 
-/**
- * Called to search for a new version of the application
- * 
- * @author fleax
- * 
- */
-public class CheckUpdatesAction extends CustomAbstractAction {
+import org.junit.Assert;
+import org.junit.Test;
 
-    private static final long serialVersionUID = 999420226547524484L;
+public class AutoScrollPlayListActionTest {
 
-    private IUpdateHandler updateHandler;
-    
-    public void setUpdateHandler(IUpdateHandler updateHandler) {
-		this.updateHandler = updateHandler;
+	@Test
+	public void test() {
+		AutoScrollPlayListAction sut = new AutoScrollPlayListAction();
+		IPlayListHandler playListHandler = mock(IPlayListHandler.class);
+		sut.setPlayListHandler(playListHandler);
+		sut.executeAction();
+		verify(playListHandler).scrollPlayList(true);
+		Assert.assertTrue(sut.isEnabledForPlayListSelection(null));
 	}
-    
-    CheckUpdatesAction() {
-        super(I18nUtils.getString("CHECK_FOR_UPDATES"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("CHECK_FOR_UPDATES"));
-    }
-
-    @Override
-    protected void executeAction() {
-    	updateHandler.checkUpdates(true, true);
-    }
 }
