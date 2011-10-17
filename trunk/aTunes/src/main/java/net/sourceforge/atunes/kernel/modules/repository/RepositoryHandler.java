@@ -33,17 +33,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-import javax.swing.Action;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.ApplicationArguments;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.RepositorySelectionInfoDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ConnectDeviceAction;
-import net.sourceforge.atunes.kernel.actions.ExitAction;
 import net.sourceforge.atunes.kernel.actions.ExportAction;
 import net.sourceforge.atunes.kernel.actions.ImportToRepositoryAction;
 import net.sourceforge.atunes.kernel.actions.RefreshFolderFromNavigatorAction;
@@ -62,6 +61,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFavoritesHandler;
+import net.sourceforge.atunes.model.IKernel;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMessageDialog;
@@ -291,7 +291,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     private static class ExitRunnable implements Runnable {
         @Override
         public void run() {
-            Actions.getAction(ExitAction.class).actionPerformed(null);
+        	Context.getBean(IKernel.class).finish();
         }
     }
     
@@ -847,12 +847,12 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     private void askUserForRepository(final IRepository rep) {
         Object selection;
         do {
-            String exitString = Actions.getAction(ExitAction.class).getValue(Action.NAME).toString();
-            selection = getBean(IMessageDialog.class).showMessage(getFrame(), StringUtils.getString(I18nUtils.getString("REPOSITORY_NOT_FOUND"), ": ", rep.getRepositoryFolders().get(0)),
+            selection = getBean(IMessageDialog.class).
+            	showMessage(getFrame(), StringUtils.getString(I18nUtils.getString("REPOSITORY_NOT_FOUND"), ": ", rep.getRepositoryFolders().get(0)),
                     I18nUtils.getString("REPOSITORY_NOT_FOUND"), JOptionPane.WARNING_MESSAGE,
-                    new String[] { I18nUtils.getString("RETRY"), I18nUtils.getString("SELECT_REPOSITORY"), exitString });
+                    new String[] { I18nUtils.getString("RETRY"), I18nUtils.getString("SELECT_REPOSITORY"), I18nUtils.getString("EXIT") });
 
-            if (selection.equals(exitString)) {
+            if (selection.equals(I18nUtils.getString("EXIT"))) {
                 SwingUtilities.invokeLater(new ExitRunnable());
             }
         } while (I18nUtils.getString("RETRY").equals(selection) && !rep.exists());
@@ -1141,7 +1141,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         Actions.getAction(RefreshRepositoryAction.class).setEnabled(enable);
         Actions.getAction(ImportToRepositoryAction.class).setEnabled(enable);
         Actions.getAction(ExportAction.class).setEnabled(enable);
-        Actions.getAction(ConnectDeviceAction.class).setEnabled(enable);
+        getBean(ConnectDeviceAction.class).setEnabled(enable);
         Actions.getAction(RipCDAction.class).setEnabled(enable);
         Actions.getAction(RefreshFolderFromNavigatorAction.class).setEnabled(enable);
     }

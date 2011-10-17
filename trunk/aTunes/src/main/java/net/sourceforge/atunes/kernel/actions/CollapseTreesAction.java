@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -31,16 +29,24 @@ public class CollapseTreesAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 4230335834253793622L;
 
+    private INavigationHandler navigationHandler;
+    
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+    
     CollapseTreesAction() {
         super(I18nUtils.getString("COLLAPSE"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("COLLAPSE"));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        for (INavigationView view : getBean(INavigationHandler.class).getNavigationViews()) {
+    protected void executeAction() {
+        for (INavigationView view : navigationHandler.getNavigationViews()) {
             GuiUtils.collapseTree(view.getTree());
         }
     }
-
 }

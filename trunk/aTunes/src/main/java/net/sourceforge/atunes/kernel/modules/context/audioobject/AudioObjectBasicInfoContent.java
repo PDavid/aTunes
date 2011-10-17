@@ -41,9 +41,7 @@ import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jdesktop.swingx.border.DropShadowBorder;
@@ -72,10 +70,6 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
      */
     private JLabel audioObjectLastPlayDate;
 
-    private IWebServicesHandler webServicesHandler;
-    
-    private IContextHandler contextHandler;
-    
     @Override
     public void clearContextPanelContent() {
         super.clearContextPanelContent();
@@ -171,12 +165,4 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
         options.add(new JMenuItem(Actions.getAction(AddBannedSongInLastFMAction.class)));
         return options;
     }
-    
-    public final void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
-		this.webServicesHandler = webServicesHandler;
-    }
-    
-    public void setContextHandler(IContextHandler contextHandler) {
-		this.contextHandler = contextHandler;
-	}
 }

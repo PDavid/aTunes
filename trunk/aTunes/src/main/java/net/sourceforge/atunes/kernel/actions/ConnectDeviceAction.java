@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
 import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -35,14 +33,22 @@ public class ConnectDeviceAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -8571631451521817410L;
 
+    private IDeviceHandler deviceHandler;
+    
+    /**
+     * @param deviceHandler
+     */
+    public void setDeviceHandler(IDeviceHandler deviceHandler) {
+		this.deviceHandler = deviceHandler;
+	}
+    
     public ConnectDeviceAction() {
         super(I18nUtils.getString("CONNECT"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("CONNECT"));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        getBean(IDeviceHandler.class).connectDevice();
+    protected void executeAction() {
+    	deviceHandler.connectDevice();
     }
-
 }

@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
 import net.sourceforge.atunes.kernel.DeviceListeners;
 import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -36,6 +34,24 @@ public class DisconnectDeviceAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 1782027529649014492L;
 
+    private IDeviceHandler deviceHandler;
+    
+    private DeviceListeners deviceListeners;
+    
+    /**
+     * @param deviceHandler
+     */
+    public void setDeviceHandler(IDeviceHandler deviceHandler) {
+		this.deviceHandler = deviceHandler;
+	}
+    
+    /**
+     * @param deviceListeners
+     */
+    public void setDeviceListeners(DeviceListeners deviceListeners) {
+		this.deviceListeners = deviceListeners;
+	}
+    
     public DisconnectDeviceAction() {
         super(I18nUtils.getString("DISCONNECT"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("DISCONNECT"));
@@ -43,9 +59,8 @@ public class DisconnectDeviceAction extends CustomAbstractAction {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    protected void executeAction() {
     	// Launch a device disconnected event
-    	getBean(DeviceListeners.class).deviceDisconnected(getBean(IDeviceHandler.class).getDeviceLocation());
+    	deviceListeners.deviceDisconnected(deviceHandler.getDeviceLocation());
     }
-
 }

@@ -316,11 +316,11 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
     		@Override
     		public void run() {
     	        notifyFinishRefresh(null);
-    	        Actions.getAction(ConnectDeviceAction.class).setEnabled(true);
+    	        getBean(ConnectDeviceAction.class).setEnabled(true);
     	        Actions.getAction(RefreshDeviceAction.class).setEnabled(false);
-    	        Actions.getAction(DisconnectDeviceAction.class).setEnabled(false);
+    	        getBean(DisconnectDeviceAction.class).setEnabled(false);
     	        Actions.getAction(SynchronizeDeviceWithPlayListAction.class).setEnabled(false);
-    	        Actions.getAction(CopyPlayListToDeviceAction.class).setEnabled(false);
+    	        getBean(CopyPlayListToDeviceAction.class).setEnabled(false);
     	        getFrame().showDeviceInfo(false);
     	        getBean(IMessageDialog.class).showMessage(I18nUtils.getString("DEVICE_DISCONNECTION_DETECTED"), getFrame());		    
     		}
@@ -400,12 +400,12 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
     	getBean(INavigationHandler.class).refreshView(DeviceNavigationView.class);
 
         // Enable action to copy to device
-        Actions.getAction(CopyPlayListToDeviceAction.class).setEnabled(true);
+    	getBean(CopyPlayListToDeviceAction.class).setEnabled(true);
         Actions.getAction(SynchronizeDeviceWithPlayListAction.class).setEnabled(true);
 
-    	Actions.getAction(ConnectDeviceAction.class).setEnabled(false);
+        getBean(ConnectDeviceAction.class).setEnabled(false);
     	Actions.getAction(RefreshDeviceAction.class).setEnabled(true);
-    	Actions.getAction(DisconnectDeviceAction.class).setEnabled(true);
+    	getBean(DisconnectDeviceAction.class).setEnabled(true);
 
     	// Update status bar info
     	if (loader != null) {

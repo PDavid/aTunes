@@ -25,8 +25,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.panels.PlayListTabPanel;
-import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.CloseOtherPlaylistsAction;
 import net.sourceforge.atunes.kernel.actions.ClosePlaylistAction;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -59,8 +59,8 @@ final class PlayListTabListener implements ActionListener, ItemListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
         boolean moreThanOnePlayList = playListHandler.getPlayListCount() > 1;
-        Actions.getAction(ClosePlaylistAction.class).setEnabled(moreThanOnePlayList);
-        Actions.getAction(CloseOtherPlaylistsAction.class).setEnabled(moreThanOnePlayList);
+        Context.getBean(ClosePlaylistAction.class).setEnabled(moreThanOnePlayList);
+        Context.getBean(CloseOtherPlaylistsAction.class).setEnabled(moreThanOnePlayList);
 	}
 
 }

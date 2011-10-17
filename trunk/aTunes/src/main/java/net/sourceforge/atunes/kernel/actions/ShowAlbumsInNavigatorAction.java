@@ -51,8 +51,8 @@ public class ShowAlbumsInNavigatorAction extends ActionWithColorMutableIcon {
         if (getState().getViewMode() != ViewMode.ALBUM) {
             getState().setViewMode(ViewMode.ALBUM);
             getBean(INavigationHandler.class).refreshCurrentView();
-            Actions.getAction(CollapseTreesAction.class).setEnabled(true);
-            Actions.getAction(ExpandTreesAction.class).setEnabled(true);
+            getBean(CollapseTreesAction.class).setEnabled(true);
+            getBean(ExpandTreesAction.class).setEnabled(true);
         }
     }
 

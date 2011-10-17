@@ -38,6 +38,15 @@ public class CustomSearchAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 7036619806075628842L;
 
+    private ISearchHandler searchHandler;
+    
+    /**
+     * @param searchHandler
+     */
+    public void setSearchHandler(ISearchHandler searchHandler) {
+		this.searchHandler = searchHandler;
+	}
+    
     CustomSearchAction() {
         super(I18nUtils.getString("SEARCH"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SEARCH"));
@@ -45,8 +54,7 @@ public class CustomSearchAction extends CustomAbstractAction {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-    	getBean(ISearchHandler.class).startSearch();
+    protected void executeAction() {
+    	searchHandler.startSearch();
     }
-
 }

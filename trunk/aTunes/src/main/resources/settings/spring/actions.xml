@@ -76,4 +76,18 @@
 
 	<bean class="net.sourceforge.atunes.kernel.actions.AutoScrollPlayListAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.CheckUpdatesAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.CloseOtherPlaylistsAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.ClosePlaylistAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.CollapseTreesAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.ConnectDeviceAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.CopyPlayListToDeviceAction">
+		<property name="playListObjectFilter">
+			<bean class="net.sourceforge.atunes.kernel.modules.playlist.PlayListLocalAudioObjectFilter" scope="prototype"/>
+		</property>
+	</bean>
+	<bean class="net.sourceforge.atunes.kernel.actions.CustomSearchAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.DisconnectDeviceAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.EditPreferencesAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.ExitAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.ExpandTreesAction"/>
 </beans>
