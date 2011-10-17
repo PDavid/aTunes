@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
 import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -40,24 +39,67 @@ public class FillDeviceWithRandomSongsAction extends CustomAbstractAction {
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("FILL_DEVICE_WITH_RANDOM_SONGS"));
     }
 
+    private String freeMemory;
+    
+    private IInputDialog inputDialog;
+    
+    private IDeviceHandler deviceHandler; 
+    
+    private IErrorDialog errorDialog;
+    
+    private IFrame frame;
+    
     @Override
-    public void actionPerformed(ActionEvent e) {
-        String freeMemory = "20";
+    protected void executeAction() {
         // Ask how much memory should be left free
-        IInputDialog dialog = getBean(IInputDialog.class);
-        dialog.setTitle(I18nUtils.getString("MEMORY_TO_LEAVE_FREE"));
-        dialog.showDialog(freeMemory);
-        freeMemory = dialog.getResult();
+    	inputDialog.setTitle(I18nUtils.getString("MEMORY_TO_LEAVE_FREE"));
+    	inputDialog.showDialog(freeMemory);
+        freeMemory = inputDialog.getResult();
         try {
-        	getBean(IDeviceHandler.class).fillWithRandomSongs(Long.parseLong(freeMemory.trim()));
-        } catch (Exception e2) {
+        	deviceHandler.fillWithRandomSongs(Long.parseLong(freeMemory.trim()));
+        } catch (NumberFormatException e) {
             // User did not enter numerical value. Show error dialog
-        	getBean(IErrorDialog.class).showErrorDialog(getBean(IFrame.class), I18nUtils.getString("ERROR_NO_NUMERICAL_VALUE"));
+        	errorDialog.showErrorDialog(frame, I18nUtils.getString("ERROR_NO_NUMERICAL_VALUE"));
         }
     }
 
     @Override
     public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        return getBean(IDeviceHandler.class).isDeviceConnected();
+        return deviceHandler.isDeviceConnected();
     }
+
+	/**
+	 * @param freeMemory the freeMemory to set
+	 */
+	public void setFreeMemory(String freeMemory) {
+		this.freeMemory = freeMemory;
+	}
+
+	/**
+	 * @param inputDialog the inputDialog to set
+	 */
+	public void setInputDialog(IInputDialog inputDialog) {
+		this.inputDialog = inputDialog;
+	}
+
+	/**
+	 * @param deviceHandler the deviceHandler to set
+	 */
+	public void setDeviceHandler(IDeviceHandler deviceHandler) {
+		this.deviceHandler = deviceHandler;
+	}
+
+	/**
+	 * @param errorDialog the errorDialog to set
+	 */
+	public void setErrorDialog(IErrorDialog errorDialog) {
+		this.errorDialog = errorDialog;
+	}
+
+	/**
+	 * @param frame the frame to set
+	 */
+	public void setFrame(IFrame frame) {
+		this.frame = frame;
+	}
 }

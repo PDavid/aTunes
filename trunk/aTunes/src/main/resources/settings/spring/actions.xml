@@ -90,4 +90,7 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.EditPreferencesAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ExitAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ExpandTreesAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.FillDeviceWithRandomSongsAction">
+		<property name="freeMemory" value="50"/>
+	</bean>
 </beans>
