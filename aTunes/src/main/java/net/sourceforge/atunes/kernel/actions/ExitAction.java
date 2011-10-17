@@ -20,9 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IKernel;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -35,12 +32,18 @@ public class ExitAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 1900672708942690561L;
 
+    private IKernel kernel;
+    
+    public void setKernel(IKernel kernel) {
+		this.kernel = kernel;
+	}
+    
     ExitAction() {
         super(I18nUtils.getString("EXIT"));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-    	Context.getBean(IKernel.class).finish();
+    protected void executeAction() {
+    	kernel.finish();
     }
 }

@@ -118,7 +118,7 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
             file.add(Actions.getAction(ExportAction.class));
             if (!osManager.areMenuEntriesDelegated()) {
             	file.add(new JSeparator());
-            	file.add(Actions.getAction(ExitAction.class));
+            	file.add(Context.getBean(ExitAction.class));
             }
         }
         return file;
@@ -143,7 +143,7 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
             repair.add(Actions.getAction(RepairAlbumNamesAction.class));
             edit.add(player);
             if (!osManager.areMenuEntriesDelegated()) {
-            	edit.add(Actions.getAction(EditPreferencesAction.class));
+            	edit.add(Context.getBean(EditPreferencesAction.class));
             }
             edit.add(new JSeparator());
             edit.add(repair);
@@ -213,7 +213,7 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
             tools.add(Actions.getAction(ShowRadioBrowserAction.class));
             tools.add(Context.getBean(AddPodcastFeedAction.class));
             tools.add(new JSeparator());
-            tools.add(Actions.getAction(CustomSearchAction.class));
+            tools.add(Context.getBean(CustomSearchAction.class));
             tools.add(new JSeparator());
             tools.add(Actions.getAction(ImportLovedTracksFromLastFMAction.class));
         }
@@ -228,9 +228,9 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
     private JMenu getDeviceMenu() {
         if (device == null) {
             device = new JMenu(I18nUtils.getString("DEVICE"));
-            device.add(Actions.getAction(ConnectDeviceAction.class));
+            device.add(Context.getBean(ConnectDeviceAction.class));
             device.add(Actions.getAction(RefreshDeviceAction.class));
-            device.add(Actions.getAction(DisconnectDeviceAction.class));
+            device.add(Context.getBean(DisconnectDeviceAction.class));
         }
         return device;
     }

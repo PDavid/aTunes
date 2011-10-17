@@ -20,11 +20,10 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListLocalAudioObjectFilter;
 import net.sourceforge.atunes.model.IDeviceHandler;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayListObjectFilter;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -37,16 +36,44 @@ public class CopyPlayListToDeviceAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 5899793232403738425L;
 
+    private IDeviceHandler deviceHandler;
+    
+    private IPlayListHandler playListHandler;
+    
+    private IPlayListObjectFilter<ILocalAudioObject> playListObjectFilter;
+    
     CopyPlayListToDeviceAction() {
         super(I18nUtils.getString("COPY_PLAYLIST_TO_DEVICE"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("COPY_PLAYLIST_TO_DEVICE"));
         setEnabled(false);
     }
 
+    /**
+     * @param deviceHandler
+     */
+    public void setDeviceHandler(IDeviceHandler deviceHandler) {
+		this.deviceHandler = deviceHandler;
+	}
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    /**
+     * @param playListObjectFilter
+     */
+    public void setPlayListObjectFilter(IPlayListObjectFilter<ILocalAudioObject> playListObjectFilter) {
+		this.playListObjectFilter = playListObjectFilter;
+	}
+    
     @Override
-    public void actionPerformed(ActionEvent e) {
+    protected void executeAction() {
         // Copy only LocalAudioObject objects
-    	getBean(IDeviceHandler.class).copyFilesToDevice(new PlayListLocalAudioObjectFilter().getObjects(getBean(IPlayListHandler.class).getCurrentPlayList(true)));
+    	deviceHandler.copyFilesToDevice(
+    			playListObjectFilter.getObjects(
+    					playListHandler.getCurrentPlayList(true)));
     }
-
 }

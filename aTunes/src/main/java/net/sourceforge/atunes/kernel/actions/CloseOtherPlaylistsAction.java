@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -29,14 +27,22 @@ public class CloseOtherPlaylistsAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 902195930910854889L;
 
+    private IPlayListHandler playListHandler;
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
     CloseOtherPlaylistsAction() {
         super(I18nUtils.getString("CLOSE_OTHER_PLAYLISTS"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("CLOSE_OTHER_PLAYLISTS"));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-    	getBean(IPlayListHandler.class).closeOtherPlaylists();
+    protected void executeAction() {
+    	playListHandler.closeOtherPlaylists();
     }
-
 }

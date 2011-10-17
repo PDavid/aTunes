@@ -79,8 +79,6 @@ public final class GuiUtils {
     /** The set window opaque method. */
     private static Method setWindowOpaqueMethod;
 
-    private static IState state = Context.getBean(IState.class);
-    
     /**
      * Bounds of the main screen device, used to calculate sizes
      */
@@ -346,6 +344,7 @@ public final class GuiUtils {
      * Sets the component orientation.
      */
     private static void setComponentOrientation() {
+    	IState state = Context.getBean(IState.class);
     	componentOrientation = ComponentOrientation.LEFT_TO_RIGHT;
     	if (state.getLocale() != null) {
     		if ("ug".equalsIgnoreCase(state.getLocale().getLocale().getLanguage())) {

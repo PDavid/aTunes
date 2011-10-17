@@ -20,33 +20,39 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JTree;
+
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
-import net.sourceforge.atunes.utils.GuiUtils;
-import net.sourceforge.atunes.utils.I18nUtils;
 
-public class CollapseTreesAction extends CustomAbstractAction {
+import org.junit.Test;
 
-    private static final long serialVersionUID = 4230335834253793622L;
+public class ExpandTreesActionTest {
 
-    private INavigationHandler navigationHandler;
-    
-    /**
-     * @param navigationHandler
-     */
-    public void setNavigationHandler(INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
+	@Test
+	public void test() {
+		ExpandTreesAction sut = new ExpandTreesAction();
+		INavigationHandler navigationHandler = mock(INavigationHandler.class);
+		INavigationView nv2 = mock(INavigationView.class);
+		INavigationView nv1 = mock(INavigationView.class);
+		when(nv1.getTree()).thenReturn(new JTree());
+		when(nv2.getTree()).thenReturn(new JTree());
+		List<INavigationView> nvs = new ArrayList<INavigationView>();
+		nvs.add(nv1);
+		nvs.add(nv2);
+		when(navigationHandler.getNavigationViews()).thenReturn(nvs);		
+		sut.setNavigationHandler(navigationHandler);
+		
+		sut.executeAction();
+		
+		verify(nv1).getTree();
+		verify(nv2).getTree();
 	}
-    
-    CollapseTreesAction() {
-        super(I18nUtils.getString("COLLAPSE"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("COLLAPSE"));
-    }
-
-    @Override
-    protected void executeAction() {
-        for (INavigationView view : navigationHandler.getNavigationViews()) {
-            GuiUtils.collapseTree(view.getTree());
-        }
-    }
 }

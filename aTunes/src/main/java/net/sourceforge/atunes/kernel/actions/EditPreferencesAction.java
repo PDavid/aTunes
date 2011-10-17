@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -36,14 +34,22 @@ public class EditPreferencesAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -6303396973997577995L;
 
-    EditPreferencesAction() {
+    private IStateHandler stateHandler;
+    
+    /**
+     * @param stateHandler
+     */
+    public void setStateHandler(IStateHandler stateHandler) {
+		this.stateHandler = stateHandler;
+	}
+    
+    public EditPreferencesAction() {
         super(StringUtils.getString(I18nUtils.getString("PREFERENCES"), "..."));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("PREFERENCES"));
     }
-
+    
     @Override
-    public void actionPerformed(ActionEvent e) {
-    	getBean(IStateHandler.class).editPreferences();
+    protected void executeAction() {
+    	stateHandler.editPreferences();
     }
-
 }

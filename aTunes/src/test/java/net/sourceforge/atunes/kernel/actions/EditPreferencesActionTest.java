@@ -20,29 +20,22 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.utils.I18nUtils;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import net.sourceforge.atunes.model.IStateHandler;
 
-public class ClosePlaylistAction extends CustomAbstractAction {
+import org.junit.Test;
 
-    private static final long serialVersionUID = -710334709397174680L;
+public class EditPreferencesActionTest {
 
-    private IPlayListHandler playListHandler;
-    
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
+	@Test
+	public void test() {
+		EditPreferencesAction sut = new EditPreferencesAction();
+		IStateHandler stateHandler = mock(IStateHandler.class);
+		sut.setStateHandler(stateHandler);
+		
+		sut.executeAction();
+		
+		verify(stateHandler).editPreferences();
 	}
-    
-    public ClosePlaylistAction() {
-        super(I18nUtils.getString("CLOSE"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("CLOSE"));
-    }
-
-    @Override
-    protected void executeAction() {
-    	playListHandler.closeCurrentPlaylist();
-    }
 }
