@@ -148,28 +148,6 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
     }
 
     /**
-     * Sets the albums chart.
-     */
-    private void setAlbumsChart() {
-        DefaultCategoryDataset dataset = getDataSet(getMostPlayedAlbumsInRanking(10));
-        JFreeChart chart = ChartFactory.createStackedBarChart3D(I18nUtils.getString("ALBUM_MOST_PLAYED"), null, null, dataset, PlotOrientation.HORIZONTAL, false, false, false);
-        chart.setBackgroundPaint(Color.WHITE);
-        chart.setPadding(new RectangleInsets(5, 0, 0, 0));
-        NumberAxis axis = new NumberAxis();
-        axis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-        chart.setBackgroundPaint(GuiUtils.getBackgroundColor());
-        chart.getTitle().setPaint(GuiUtils.getForegroundColor());
-        chart.getCategoryPlot().setRangeAxis(axis);
-        chart.getCategoryPlot().setForegroundAlpha(1f);
-        chart.getCategoryPlot().getRenderer().setSeriesPaint(0, Color.GREEN);
-        chart.getCategoryPlot().getDomainAxis().setTickLabelPaint(GuiUtils.getForegroundColor());
-        chart.getCategoryPlot().getRangeAxis().setTickLabelPaint(GuiUtils.getForegroundColor());
-        chart.getPlot().setBackgroundPaint(GuiUtils.getBackgroundColor());
-
-        getComponentControlled().getAlbumsChart().setIcon(new ImageIcon(chart.createBufferedImage(710, 250)));
-    }
-
-    /**
      * Sets the albums table.
      */
     private void setAlbumsTable() {
@@ -211,28 +189,6 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
             }
         }
         return result;
-    }
-
-    /**
-     * Sets the artists chart.
-     */
-    private void setArtistsChart() {
-        DefaultCategoryDataset dataset = getDataSet(getMostPlayedArtistsInRanking(10));
-        JFreeChart chart = ChartFactory.createStackedBarChart3D(I18nUtils.getString("ARTIST_MOST_PLAYED"), null, null, dataset, PlotOrientation.HORIZONTAL, false, false, false);
-        chart.setBackgroundPaint(Color.WHITE);
-        chart.setPadding(new RectangleInsets(5, 0, 0, 0));
-        NumberAxis axis = new NumberAxis();
-        axis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-        chart.setBackgroundPaint(GuiUtils.getBackgroundColor());
-        chart.getTitle().setPaint(GuiUtils.getForegroundColor());
-        chart.getCategoryPlot().setRangeAxis(axis);
-        chart.getCategoryPlot().setForegroundAlpha(1f);
-        chart.getCategoryPlot().getRenderer().setSeriesPaint(0, Color.GREEN);
-        chart.getCategoryPlot().getDomainAxis().setTickLabelPaint(GuiUtils.getForegroundColor());
-        chart.getCategoryPlot().getRangeAxis().setTickLabelPaint(GuiUtils.getForegroundColor());
-        chart.getPlot().setBackgroundPaint(GuiUtils.getBackgroundColor());
-
-        getComponentControlled().getArtistsChart().setIcon(new ImageIcon(chart.createBufferedImage(710, 250)));
     }
 
     /**
@@ -283,28 +239,6 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
     }
 
     /**
-     * Sets the general chart.
-     */
-    private void setGeneralChart() {
-        DefaultPieDataset dataset = new DefaultPieDataset();
-        int different = statisticsHandler.getDifferentAudioObjectsPlayed();
-        int total = repositoryHandler.getAudioFilesList().size();
-        dataset.setValue(I18nUtils.getString("SONGS_PLAYED"), different);
-        dataset.setValue(I18nUtils.getString("SONGS_NEVER_PLAYED"), total - different);
-        JFreeChart chart = ChartFactory.createPieChart3D(I18nUtils.getString("SONGS_PLAYED"), dataset, false, false, false);
-        chart.setBackgroundPaint(GuiUtils.getBackgroundColor());
-        chart.getTitle().setPaint(GuiUtils.getForegroundColor());
-        chart.setPadding(new RectangleInsets(5, 0, 0, 0));
-        DefaultDrawingSupplier drawingSupplier = new DefaultDrawingSupplier(new Paint[] { new Color(0, 1, 0, 0.6f), new Color(1, 0, 0, 0.6f) }, new Paint[] {
-                new Color(0, 1, 0, 0.4f), new Color(1, 0, 0, 0.4f) }, DefaultDrawingSupplier.DEFAULT_STROKE_SEQUENCE, DefaultDrawingSupplier.DEFAULT_STROKE_SEQUENCE,
-                DefaultDrawingSupplier.DEFAULT_SHAPE_SEQUENCE);
-        chart.getPlot().setDrawingSupplier(drawingSupplier);
-        ((PiePlot3D) chart.getPlot()).setOutlineVisible(false);
-        ((PiePlot3D) chart.getPlot()).setBackgroundPaint(GuiUtils.getBackgroundColor());
-        getComponentControlled().getGeneralChart().setIcon(new ImageIcon(chart.createBufferedImage(710, 250)));
-    }
-
-    /**
      * Sets the general table.
      */
 
@@ -324,28 +258,6 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
             content[1][2] = StringUtils.toString((float) (total - different) / (float) total * 100, 2);
             setTable(getComponentControlled().getGeneralTable(), headers, content);
         }
-    }
-
-    /**
-     * Sets the songs chart.
-     */
-    private void setSongsChart() {
-        DefaultCategoryDataset dataset = getDataSet(getMostPlayedAudioFilesInRanking(10));
-        JFreeChart chart = ChartFactory.createStackedBarChart3D(I18nUtils.getString("SONG_MOST_PLAYED"), null, null, dataset, PlotOrientation.HORIZONTAL, false, false, false);
-        chart.setBackgroundPaint(Color.WHITE);
-        chart.setPadding(new RectangleInsets(5, 0, 0, 0));
-        NumberAxis axis = new NumberAxis();
-        axis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
-        chart.setBackgroundPaint(GuiUtils.getBackgroundColor());
-        chart.getTitle().setPaint(GuiUtils.getForegroundColor());
-        chart.getCategoryPlot().setRangeAxis(axis);
-        chart.getCategoryPlot().setForegroundAlpha(1f);
-        chart.getCategoryPlot().getRenderer().setSeriesPaint(0, Color.GREEN);
-        chart.getCategoryPlot().getDomainAxis().setTickLabelPaint(GuiUtils.getForegroundColor());
-        chart.getCategoryPlot().getRangeAxis().setTickLabelPaint(GuiUtils.getForegroundColor());
-        chart.getPlot().setBackgroundPaint(GuiUtils.getBackgroundColor());
-
-        getComponentControlled().getSongsChart().setIcon(new ImageIcon(chart.createBufferedImage(710, 250)));
     }
 
     /**
@@ -449,5 +361,71 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
 	public void lookAndFeelChanged() {
 		updateStats(); // Update color of charts
 	}
+	
+	/**
+	 * Puts image with chart in given label, with title and data provided
+	 * @param data
+	 * @param titleKey
+	 * @param chartLabel
+	 */
+	private void setChart(List<?> data, String titleKey, JLabel chartLabel) {
+        DefaultCategoryDataset dataset = getDataSet(data);
+        JFreeChart chart = ChartFactory.createStackedBarChart3D(I18nUtils.getString(titleKey), null, null, dataset, PlotOrientation.HORIZONTAL, false, false, false);
+        chart.setBackgroundPaint(Color.WHITE);
+        chart.setPadding(new RectangleInsets(5, 0, 0, 0));
+        NumberAxis axis = new NumberAxis();
+        axis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+        chart.setBackgroundPaint(GuiUtils.getBackgroundColor());
+        chart.getTitle().setPaint(GuiUtils.getForegroundColor());
+        chart.getCategoryPlot().setRangeAxis(axis);
+        chart.getCategoryPlot().setForegroundAlpha(1f);
+        chart.getCategoryPlot().getRenderer().setSeriesPaint(0, Color.GREEN);
+        chart.getCategoryPlot().getDomainAxis().setTickLabelPaint(GuiUtils.getForegroundColor());
+        chart.getCategoryPlot().getRangeAxis().setTickLabelPaint(GuiUtils.getForegroundColor());
+        chart.getPlot().setBackgroundPaint(GuiUtils.getBackgroundColor());
+        chartLabel.setIcon(new ImageIcon(chart.createBufferedImage(710, 250)));
+	}
+	
+    /**
+     * Sets the artists chart.
+     */
+    private void setArtistsChart() {
+    	setChart(getMostPlayedArtistsInRanking(10), "ARTIST_MOST_PLAYED", getComponentControlled().getArtistsChart());
+    }
 
+    /**
+     * Sets the albums chart.
+     */
+    private void setAlbumsChart() {
+    	setChart(getMostPlayedAlbumsInRanking(10), "ALBUM_MOST_PLAYED", getComponentControlled().getAlbumsChart());
+    }
+    
+    /**
+     * Sets the songs chart.
+     */
+    private void setSongsChart() {
+    	setChart(getMostPlayedAudioFilesInRanking(10), "SONG_MOST_PLAYED", getComponentControlled().getSongsChart());
+    }
+
+    /**
+     * Sets the general chart.
+     */
+    private void setGeneralChart() {
+        DefaultPieDataset dataset = new DefaultPieDataset();
+        int different = statisticsHandler.getDifferentAudioObjectsPlayed();
+        int total = repositoryHandler.getAudioFilesList().size();
+        dataset.setValue(I18nUtils.getString("SONGS_PLAYED"), different);
+        dataset.setValue(I18nUtils.getString("SONGS_NEVER_PLAYED"), total - different);
+        JFreeChart chart = ChartFactory.createPieChart3D(I18nUtils.getString("SONGS_PLAYED"), dataset, false, false, false);
+        chart.setBackgroundPaint(GuiUtils.getBackgroundColor());
+        chart.getTitle().setPaint(GuiUtils.getForegroundColor());
+        chart.setPadding(new RectangleInsets(5, 0, 0, 0));
+        DefaultDrawingSupplier drawingSupplier = new DefaultDrawingSupplier(new Paint[] { new Color(0, 1, 0, 0.6f), new Color(1, 0, 0, 0.6f) }, new Paint[] {
+                new Color(0, 1, 0, 0.4f), new Color(1, 0, 0, 0.4f) }, DefaultDrawingSupplier.DEFAULT_STROKE_SEQUENCE, DefaultDrawingSupplier.DEFAULT_STROKE_SEQUENCE,
+                DefaultDrawingSupplier.DEFAULT_SHAPE_SEQUENCE);
+        chart.getPlot().setDrawingSupplier(drawingSupplier);
+        ((PiePlot3D) chart.getPlot()).setOutlineVisible(false);
+        ((PiePlot3D) chart.getPlot()).setBackgroundPaint(GuiUtils.getBackgroundColor());
+        getComponentControlled().getGeneralChart().setIcon(new ImageIcon(chart.createBufferedImage(710, 250)));
+    }
 }
