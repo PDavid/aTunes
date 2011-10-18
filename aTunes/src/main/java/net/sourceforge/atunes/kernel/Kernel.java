@@ -26,10 +26,12 @@ import java.net.UnknownHostException;
 
 import javax.swing.SwingUtilities;
 
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
 import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.model.ICommandHandler;
 import net.sourceforge.atunes.model.IFrame;
@@ -48,12 +50,19 @@ import net.sourceforge.atunes.utils.Timer;
  * The Kernel is the class responsible of create and interconnect all modules of
  * aTunes.
  */
-public final class Kernel implements IKernel {
+public final class Kernel implements IKernel, ApplicationContextAware {
 
     /** Timer used to measure start time */
     private Timer timer;
     
     private IState state;
+    
+    private ApplicationContext context;
+    
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    	this.context = applicationContext;
+    }
     
     /**
      * Sets state
@@ -72,8 +81,21 @@ public final class Kernel implements IKernel {
 
         new LanguageSelector().setLanguage(state);
         
-        ColorDefinitions.initColors();
-        // Init proxy settings
+        initializeProxy();
+        initializeUI();
+        AbstractHandler.registerAndInitializeHandlers(state);
+        createUI();
+
+        // Call user interaction
+        context.getBean(ApplicationLifeCycleListeners.class).doUserInteraction(
+        		context.getBean(ApplicationLifeCycleListeners.class).getUserInteractionRequests());
+    }
+    
+    /**
+     * Initializes proxy
+     */
+    private void initializeProxy() {
+        Logger.debug("Initializing proxy");
         try {
             ExtendedProxy.initProxy(ExtendedProxy.getProxy(state.getProxy()));
         } catch (UnknownHostException e) {
@@ -81,17 +103,21 @@ public final class Kernel implements IKernel {
         } catch (IOException e) {
             Logger.error(e);
         }
-
-
+    }
+    
+    /**
+     * Initializes UI
+     */
+    private void initializeUI() {
+        Logger.debug("Initializing UI");
         try {
         	// Call invokeAndWait to wait until splash screen is visible
             SwingUtilities.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
-                    Context.getBean(ILookAndFeelManager.class).setLookAndFeel(Context.getBean(ApplicationArguments.class), state.getLookAndFeel(), state, Context.getBean(IOSManager.class));
-                    
-                    IFrame frame = Context.getBean(IFrame.class);
-                    AbstractHandler.setFrameForHandlers(frame);
+                    context.getBean(ILookAndFeelManager.class).setLookAndFeel(context.getBean(ApplicationArguments.class), state.getLookAndFeel(), state, context.getBean(IOSManager.class));
+
+                    AbstractHandler.setFrameForHandlers(context.getBean(IFrame.class));
                 }
             });
         } catch (InvocationTargetException e) {
@@ -101,25 +127,30 @@ public final class Kernel implements IKernel {
             Logger.error(e);
             Logger.error(e.getCause());
 		}
+    }
+    
+    /**
+     * Creates UI
+     */
+    private void createUI() {
+        Logger.debug("Creating UI");
+        try {
+			SwingUtilities.invokeAndWait(new Runnable() {
+				@Override
+				public void run() {
+					// Start component creation
+					startCreation();
 
-        // Register and initialize handlers
-        AbstractHandler.registerAndInitializeHandlers(state);
-
-        SwingUtilities.invokeLater(new Runnable() {
-        	@Override
-        	public void run() {
-        		// Start component creation
-        		startCreation();
-
-            	callActionsAfterStart();
-            	Logger.info(StringUtils.getString("Application started (", StringUtils.toString(timer.stop(), 3), " seconds)"));
-            	timer = null;
-        	}
-        });
-
-        // Call user interaction
-        Context.getBean(ApplicationLifeCycleListeners.class).doUserInteraction(
-        		Context.getBean(ApplicationLifeCycleListeners.class).getUserInteractionRequests());
+			    	callActionsAfterStart();
+			    	Logger.info(StringUtils.getString("Application started (", StringUtils.toString(timer.stop(), 3), " seconds)"));
+			    	timer = null;
+				}
+			});
+		} catch (InterruptedException e) {
+			Logger.error(e);
+		} catch (InvocationTargetException e) {
+			Logger.error(e);
+		}
     }
 
     @Override
@@ -128,11 +159,11 @@ public final class Kernel implements IKernel {
         try {
             timer.start();
             Logger.info(StringUtils.getString("Closing ", Constants.APP_NAME, " ", Constants.VERSION.toString()));
-            Context.getBean(ITemporalDiskStorage.class).removeAll();
+            context.getBean(ITemporalDiskStorage.class).removeAll();
             
-            Context.getBean(ApplicationLifeCycleListeners.class).applicationFinish();
+            context.getBean(ApplicationLifeCycleListeners.class).applicationFinish();
             
-            Context.getBean(ITaskService.class).shutdownService();
+            context.getBean(ITaskService.class).shutdownService();
             
         } finally {
             Logger.info(StringUtils.getString("Application finished (", StringUtils.toString(timer.stop(), 3), " seconds)"));
@@ -146,8 +177,8 @@ public final class Kernel implements IKernel {
      * Call actions after start.
      */
     void callActionsAfterStart() {
-    	Context.getBean(ApplicationLifeCycleListeners.class).applicationStarted();
-    	Context.getBean(ApplicationLifeCycleListeners.class).allHandlersInitialized();
+    	context.getBean(ApplicationLifeCycleListeners.class).applicationStarted();
+    	context.getBean(ApplicationLifeCycleListeners.class).allHandlersInitialized();
     }
 
     /**
@@ -155,24 +186,24 @@ public final class Kernel implements IKernel {
      */
     private void startCreation() {
         Logger.debug("Starting components");
-        Context.getBean(IUIHandler.class).startVisualization();
+        context.getBean(IUIHandler.class).startVisualization();
     }
 
     @Override
 	public void restart() {
         try {
             // Store all configuration and finish all active modules
-        	Context.getBean(ApplicationLifeCycleListeners.class).applicationFinish();
+        	context.getBean(ApplicationLifeCycleListeners.class).applicationFinish();
 
-        	IOSManager osManager = Context.getBean(IOSManager.class);
+        	IOSManager osManager = context.getBean(IOSManager.class);
         	
             // Build a process builder with OS-specific command and saved arguments
         	String parameters = osManager.getLaunchParameters();
             ProcessBuilder pb = null;
             if (parameters != null && !parameters.trim().isEmpty()) {
-            	pb = new ProcessBuilder(osManager.getLaunchCommand(), parameters, Context.getBean(ApplicationArguments.class).getSavedArguments(Context.getBean(ICommandHandler.class)));
+            	pb = new ProcessBuilder(osManager.getLaunchCommand(), parameters, context.getBean(ApplicationArguments.class).getSavedArguments(context.getBean(ICommandHandler.class)));
             } else {
-            	pb = new ProcessBuilder(osManager.getLaunchCommand(), Context.getBean(ApplicationArguments.class).getSavedArguments(Context.getBean(ICommandHandler.class)));
+            	pb = new ProcessBuilder(osManager.getLaunchCommand(), context.getBean(ApplicationArguments.class).getSavedArguments(context.getBean(ICommandHandler.class)));
 
             }
 
