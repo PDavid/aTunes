@@ -39,8 +39,17 @@ import net.sourceforge.atunes.utils.I18nUtils;
 public class MoveDownAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 8200322913128575526L;
+    
+    private IPlayListHandler playListHandler;
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
 
-    MoveDownAction() {
+    public MoveDownAction() {
         super(I18nUtils.getString("MOVE_DOWN"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("MOVE_DOWN_TOOLTIP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, ActionEvent.ALT_MASK));
@@ -48,13 +57,13 @@ public class MoveDownAction extends CustomAbstractAction {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-    	getBean(IPlayListHandler.class).moveDown();
+    protected void executeAction() {
+    	playListHandler.moveDown();
     }
 
     @Override
     public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
-        return !selection.isEmpty();
+        return selection != null && !selection.isEmpty();
     }
 
 }

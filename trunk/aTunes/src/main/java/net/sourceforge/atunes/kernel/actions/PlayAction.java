@@ -29,6 +29,7 @@ import javax.swing.KeyStroke;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ICommandHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
@@ -42,6 +43,7 @@ public class PlayAction extends CustomAbstractAction {
         super(I18nUtils.getString("PLAY"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("PLAY"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0));
+        setCommandHandler(getBean(ICommandHandler.class));
     }
 
     @Override

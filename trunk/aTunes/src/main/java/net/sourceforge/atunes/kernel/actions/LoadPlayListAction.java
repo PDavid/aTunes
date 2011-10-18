@@ -41,20 +41,28 @@ public class LoadPlayListAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 3409230917351152853L;
 
-    LoadPlayListAction() {
+    private IPlayListHandler playListHandler;
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    public LoadPlayListAction() {
         super(StringUtils.getString(I18nUtils.getString("LOAD"), "..."));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("LOAD_PLAYLIST_TOOLTIP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-    	getBean(IPlayListHandler.class).loadPlaylist();
+    protected void executeAction() {
+    	playListHandler.loadPlaylist();
     }
 
     @Override
     public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
         return true;
     }
-
 }

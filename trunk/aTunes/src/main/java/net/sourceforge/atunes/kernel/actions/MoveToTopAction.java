@@ -40,7 +40,16 @@ public class MoveToTopAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 8200322913128575526L;
 
-    MoveToTopAction() {
+    private IPlayListHandler playListHandler;
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    public MoveToTopAction() {
         super(I18nUtils.getString("MOVE_TO_TOP"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("MOVE_TO_TOP_TOOLTIP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_T, ActionEvent.ALT_MASK));
@@ -48,13 +57,12 @@ public class MoveToTopAction extends CustomAbstractAction {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-    	getBean(IPlayListHandler.class).moveToTop();
+    protected void executeAction() {
+    	playListHandler.moveToTop();
     }
 
     @Override
     public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
-        return !selection.isEmpty();
+        return selection != null && !selection.isEmpty();
     }
-
 }
