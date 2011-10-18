@@ -43,6 +43,15 @@ public class MoveAfterCurrentAudioObjectAction extends CustomAbstractAction {
 	 */
 	private static final long serialVersionUID = 89994064517052361L;
 
+	private IPlayListHandler playListHandler;
+	
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+	
 	public MoveAfterCurrentAudioObjectAction() {
         super(I18nUtils.getString("MOVE_AFTER_CURRENT_SONG"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("MOVE_AFTER_CURRENT_SONG_TOOLTIP"));
@@ -50,15 +59,16 @@ public class MoveAfterCurrentAudioObjectAction extends CustomAbstractAction {
         setEnabled(false);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-    	getBean(IPlayListHandler.class).moveSelectionAfterCurrentAudioObject();
+	@Override
+	protected void executeAction() {
+    	playListHandler.moveSelectionAfterCurrentAudioObject();
     }
     
     @Override
     public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
         //Don't allow moving songs from other playlists into active playlist
-        if (!getBean(IPlayListHandler.class).isActivePlayListVisible() || getBean(IPlayListHandler.class).isFiltered()) {
+        if (!playListHandler.isActivePlayListVisible() || 
+        	 playListHandler.isFiltered()) {
             return false;
         }
 

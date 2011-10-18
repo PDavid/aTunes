@@ -117,7 +117,7 @@ public final class PlayListMenu {
         objects.add(Actions.getAction(ClearPlayListAction.class));
         objects.add(new JSeparator());
         objects.add(Actions.getAction(SavePlayListAction.class));
-        objects.add(Actions.getAction(LoadPlayListAction.class));
+        objects.add(Context.getBean(LoadPlayListAction.class));
         objects.add(new JSeparator());
         objects.add(getSmartPlayListMenu());
         objects.add(new JSeparator());
@@ -173,12 +173,12 @@ public final class PlayListMenu {
      */
     private static JMenu getMoveMenu() {
         JMenu move = new JMenu(I18nUtils.getString("MOVE"));
-        move.add(Actions.getAction(MoveAfterCurrentAudioObjectAction.class));
+        move.add(Context.getBean(MoveAfterCurrentAudioObjectAction.class));
         move.add(new JSeparator());
-        move.add(Actions.getAction(MoveToTopAction.class));
-        move.add(Actions.getAction(MoveUpAction.class));
-        move.add(Actions.getAction(MoveDownAction.class));
-        move.add(Actions.getAction(MoveToBottomAction.class));
+        move.add(Context.getBean(MoveToTopAction.class));
+        move.add(Context.getBean(MoveUpAction.class));
+        move.add(Context.getBean(MoveDownAction.class));
+        move.add(Context.getBean(MoveToBottomAction.class));
         move.add(new JSeparator());
         move.add(Actions.getAction(ShufflePlayListAction.class));
         return move;

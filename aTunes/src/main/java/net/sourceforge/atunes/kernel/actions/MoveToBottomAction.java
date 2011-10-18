@@ -40,7 +40,16 @@ public class MoveToBottomAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 8200322913128575526L;
 
-    MoveToBottomAction() {
+    private IPlayListHandler playListHandler;
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    public MoveToBottomAction() {
         super(I18nUtils.getString("MOVE_TO_BOTTOM"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("MOVE_BOTTOM_TOOLTIP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_B, ActionEvent.ALT_MASK));
@@ -48,13 +57,12 @@ public class MoveToBottomAction extends CustomAbstractAction {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-    	getBean(IPlayListHandler.class).moveToBottom();
+    protected void executeAction() {
+    	playListHandler.moveToBottom();
     }
 
     @Override
     public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
-        return !selection.isEmpty();
+        return selection != null && !selection.isEmpty();
     }
-
 }

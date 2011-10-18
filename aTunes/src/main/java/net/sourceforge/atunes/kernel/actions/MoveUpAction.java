@@ -40,7 +40,16 @@ public class MoveUpAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 8200322913128575526L;
 
-    MoveUpAction() {
+    private IPlayListHandler playListHandler;
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    public MoveUpAction() {
         super(I18nUtils.getString("MOVE_UP"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("MOVE_UP_TOOLTIP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_UP, ActionEvent.ALT_MASK));
@@ -48,13 +57,12 @@ public class MoveUpAction extends CustomAbstractAction {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-    	getBean(IPlayListHandler.class).moveUp();
+    protected void executeAction() {
+    	playListHandler.moveUp();
     }
 
     @Override
     public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
-        return !selection.isEmpty();
+        return selection != null && !selection.isEmpty();
     }
-
 }

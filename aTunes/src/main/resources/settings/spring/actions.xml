@@ -94,4 +94,10 @@
 		<property name="freeMemory" value="50"/>
 	</bean>
 	<bean class="net.sourceforge.atunes.kernel.actions.FullScreenAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.LoadPlayListAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.MoveAfterCurrentAudioObjectAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.MoveDownAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.MoveToBottomAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.MoveToTopAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.MoveUpAction"/>
 </beans>

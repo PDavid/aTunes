@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 
+import net.sourceforge.atunes.model.ICommandHandler;
 import net.sourceforge.atunes.model.IRipperHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -39,6 +40,7 @@ public class RipCDAction extends CustomAbstractAction {
     RipCDAction() {
         super(StringUtils.getString(I18nUtils.getString("RIP_CD"), "..."));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("RIP_CD"));
+    	setCommandHandler(getBean(ICommandHandler.class));
     }
 
     @Override
