@@ -28,12 +28,12 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
-import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.AbstractLyricsEngine;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsEngineInfo;
 import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.model.ILyricsEngineInfo;
 import net.sourceforge.atunes.model.ILyricsService;
+import net.sourceforge.atunes.model.IProxy;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateChangeListener;
 import net.sourceforge.atunes.utils.Logger;
@@ -148,7 +148,7 @@ public final class LyricsService implements IStateChangeListener, ILyricsService
      * 
      * @return the lyrics engines
      */
-    private List<AbstractLyricsEngine> loadEngines(ProxyBean proxy) {
+    private List<AbstractLyricsEngine> loadEngines(IProxy proxy) {
         List<ILyricsEngineInfo> lyricsEnginesInfo = state.getLyricsEnginesInfo();
         boolean enginesModified = false;
 
@@ -248,7 +248,7 @@ public final class LyricsService implements IStateChangeListener, ILyricsService
      * @param lyricsEnginesInfo
      *            the lyrics engines info
      */
-    private void setLyricsEngines(ProxyBean p, List<ILyricsEngineInfo> lyricsEnginesInfo) {
+    private void setLyricsEngines(IProxy p, List<ILyricsEngineInfo> lyricsEnginesInfo) {
         List<AbstractLyricsEngine> result = new ArrayList<AbstractLyricsEngine>();
 
         // Get engines

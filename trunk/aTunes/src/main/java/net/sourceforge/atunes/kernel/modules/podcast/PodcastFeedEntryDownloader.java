@@ -33,10 +33,10 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
-import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
+import net.sourceforge.atunes.model.IProxy;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.NetworkUtils;
@@ -55,7 +55,7 @@ public class PodcastFeedEntryDownloader extends SwingWorker<Boolean, Void> {
     private volatile long byteProgress;
     private volatile boolean failed;
     
-    private ProxyBean proxy;
+    private IProxy proxy;
     
     private IFrame frame;
     
@@ -69,7 +69,7 @@ public class PodcastFeedEntryDownloader extends SwingWorker<Boolean, Void> {
      * @param frame
      * @param podcastFeedHandler
      */
-    public PodcastFeedEntryDownloader(IPodcastFeedEntry podcastFeedEntry, ProxyBean proxy, IFrame frame, IPodcastFeedHandler podcastFeedHandler) {
+    public PodcastFeedEntryDownloader(IPodcastFeedEntry podcastFeedEntry, IProxy proxy, IFrame frame, IPodcastFeedHandler podcastFeedHandler) {
         this.podcastFeedEntry = podcastFeedEntry;
         this.proxy = proxy;
         this.frame = frame;
