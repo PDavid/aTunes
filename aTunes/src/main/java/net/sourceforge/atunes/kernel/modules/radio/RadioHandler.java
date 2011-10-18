@@ -34,9 +34,9 @@ import net.sourceforge.atunes.gui.views.dialogs.RadioBrowserDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationView;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
-import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.IProxy;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioDialog;
 import net.sourceforge.atunes.model.IRadioHandler;
@@ -53,7 +53,7 @@ import net.sourceforge.atunes.utils.XMLUtils;
 public final class RadioHandler extends AbstractHandler implements IRadioHandler {
 
     private final class RetrieveRadiosSwingWorker extends SwingWorker<List<Radio>, Void> {
-        private final ProxyBean proxy = RadioHandler.this.getState().getProxy();
+        private final IProxy proxy = RadioHandler.this.getState().getProxy();
 
         @SuppressWarnings("unchecked")
         @Override

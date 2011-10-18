@@ -26,7 +26,7 @@ import java.net.PasswordAuthentication;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
+import net.sourceforge.atunes.model.IProxy;
 
 /**
  * The Class CustomProxy.
@@ -83,7 +83,6 @@ public class ExtendedProxy extends java.net.Proxy {
         } else {
             Authenticator.setDefault(null);
         }
-
     }
 
     /**
@@ -100,11 +99,11 @@ public class ExtendedProxy extends java.net.Proxy {
      * @throws IOException
      *             If an IO exception occurs
      */
-    public static ExtendedProxy getProxy(ProxyBean proxy) throws UnknownHostException, IOException {
+    public static ExtendedProxy getProxy(IProxy proxy) throws UnknownHostException, IOException {
         if (proxy == null) {
             return null;
         }
-        return new ExtendedProxy(proxy.getType().equals(ProxyBean.HTTP_PROXY) ? Type.HTTP : Type.SOCKS, proxy.getUrl(), proxy.getPort(), proxy.getUser(), proxy.getPassword());
+        return new ExtendedProxy(proxy.getType().equals(IProxy.HTTP_PROXY) ? Type.HTTP : Type.SOCKS, proxy.getUrl(), proxy.getPort(), proxy.getUser(), proxy.getPassword());
     }
 
     /**

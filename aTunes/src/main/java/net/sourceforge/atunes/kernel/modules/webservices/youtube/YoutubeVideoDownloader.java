@@ -32,8 +32,8 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
-import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.model.IProgressDialog;
+import net.sourceforge.atunes.model.IProxy;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -83,7 +83,7 @@ public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
      */
     private boolean cancelled = false;
 
-    private ProxyBean proxy;
+    private IProxy proxy;
     
     private YoutubeService youtubeService;
     
@@ -94,7 +94,7 @@ public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
      * @param file
      * @param proxy
      */
-    public YoutubeVideoDownloader(YoutubeResultEntry entry, File file, ProxyBean proxy, YoutubeService youtubeService) {
+    public YoutubeVideoDownloader(YoutubeResultEntry entry, File file, IProxy proxy, YoutubeService youtubeService) {
         this.entry = entry;
         this.youtubeService = youtubeService;
         File f = file;

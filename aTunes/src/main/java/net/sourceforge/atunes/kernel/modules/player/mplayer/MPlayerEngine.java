@@ -33,12 +33,12 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
+import net.sourceforge.atunes.model.IProxy;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.PlayerEngineCapability;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -326,8 +326,8 @@ public class MPlayerEngine extends AbstractPlayerEngine {
 
         			// proxy
         			StringBuilder proxy = new StringBuilder();
-        			ProxyBean proxyBean = getState().getProxy();
-        			if (proxyBean != null && proxyBean.getType().equals(ProxyBean.HTTP_PROXY)) {
+        			IProxy proxyBean = getState().getProxy();
+        			if (proxyBean != null && proxyBean.getType().equals(IProxy.HTTP_PROXY)) {
         				//String user = proxyBean.getUser();
         				//String password = proxyBean.getPassword();
         				String proxyUrl = proxyBean.getUrl();

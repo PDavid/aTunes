@@ -35,7 +35,6 @@ import net.sourceforge.atunes.kernel.modules.navigator.RepositoryNavigationView;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.kernel.modules.state.beans.ColorBean;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
-import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
 import net.sourceforge.atunes.kernel.modules.tags.TagAttribute;
 import net.sourceforge.atunes.model.ArtistViewMode;
@@ -44,6 +43,7 @@ import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.IHotkeysConfig;
 import net.sourceforge.atunes.model.ILyricsEngineInfo;
+import net.sourceforge.atunes.model.IProxy;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateStore;
 import net.sourceforge.atunes.model.LookAndFeelBean;
@@ -398,15 +398,15 @@ public class ApplicationState implements IState {
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getProxy()
 	 */
     @Override
-	public ProxyBean getProxy() {
-        return (ProxyBean) this.stateStore.retrievePreference(Preferences.PROXY, null);
+	public IProxy getProxy() {
+        return (IProxy) this.stateStore.retrievePreference(Preferences.PROXY, null);
     }
 
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setProxy(net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean)
 	 */
     @Override
-	public void setProxy(ProxyBean proxy) {
+	public void setProxy(IProxy proxy) {
         this.stateStore.storePreference(Preferences.PROXY, proxy);
     }
     

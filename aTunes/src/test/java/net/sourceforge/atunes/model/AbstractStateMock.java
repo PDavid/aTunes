@@ -27,7 +27,6 @@ import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeysConfig;
 import net.sourceforge.atunes.kernel.modules.state.beans.ColorBean;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
-import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.kernel.modules.tags.TagAttribute;
 
 /**
@@ -207,13 +206,13 @@ public abstract class AbstractStateMock implements IState {
 	}
 
 	@Override
-	public ProxyBean getProxy() {
+	public IProxy getProxy() {
 		
 		return null;
 	}
 
 	@Override
-	public void setProxy(ProxyBean proxy) {
+	public void setProxy(IProxy proxy) {
 		
 		
 	}

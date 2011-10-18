@@ -37,6 +37,7 @@ import javax.swing.JTextField;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
+import net.sourceforge.atunes.model.IProxy;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -188,7 +189,7 @@ public final class InternetPanel extends AbstractPreferencesPanel {
      * 
      * @return the proxy
      */
-    private ProxyBean getProxy() {
+    private IProxy getProxy() {
         if (noProxyRadioButton.isSelected()) {
             return null;
         }
@@ -196,11 +197,11 @@ public final class InternetPanel extends AbstractPreferencesPanel {
         int port = Integer.parseInt(proxyPort.getText());
         String type;
         if (httpProxyRadioButton.isSelected()) {
-            type = ProxyBean.HTTP_PROXY;
+            type = IProxy.HTTP_PROXY;
         } else {
-            type = ProxyBean.SOCKS_PROXY;
+            type = IProxy.SOCKS_PROXY;
         }
-        ProxyBean proxy = new ProxyBean();
+        IProxy proxy = new ProxyBean();
         proxy.setUrl(proxyURL.getText());
         proxy.setPort(port);
         proxy.setUser(proxyUser.getText());
@@ -211,7 +212,7 @@ public final class InternetPanel extends AbstractPreferencesPanel {
 
     @Override
     public boolean applyPreferences(IState state) {
-        ProxyBean proxy = getProxy();
+        IProxy proxy = getProxy();
         state.setProxy(proxy);
         try {
             ExtendedProxy.initProxy(ExtendedProxy.getProxy(proxy));
@@ -252,11 +253,11 @@ public final class InternetPanel extends AbstractPreferencesPanel {
      * @param proxy
      *            the new configuration
      */
-    private void setConfiguration(ProxyBean proxy) {
+    private void setConfiguration(IProxy proxy) {
         enableProxySettings(proxy != null);
         if (proxy == null) {
             noProxyRadioButton.setSelected(true);
-        } else if (proxy.getType().equals(ProxyBean.HTTP_PROXY)) {
+        } else if (proxy.getType().equals(IProxy.HTTP_PROXY)) {
             httpProxyRadioButton.setSelected(true);
         } else {
             socksProxyRadioButton.setSelected(true);
