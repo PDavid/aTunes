@@ -32,6 +32,7 @@ import javax.swing.UIManager;
 
 import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.modules.state.beans.FontBean;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -100,7 +101,7 @@ public final class LookAndFeelManager implements PluginListener, ILookAndFeelMan
         if (arguments.isIgnoreLookAndFeel()) {
             return;
         }
-
+        
         if (lookAndFeelBean == null || lookAndFeelBean.getName() == null) {
             lookAndFeelBean = new LookAndFeelBean();
             ILookAndFeel defaultLookAndFeel = null;
@@ -135,6 +136,7 @@ public final class LookAndFeelManager implements PluginListener, ILookAndFeelMan
         currentLookAndFeel.initializeLookAndFeel();
         currentLookAndFeel.setLookAndFeel(lookAndFeelBean.getSkin());        
         initializeFonts(currentLookAndFeel, state);
+        ColorDefinitions.initColors();
     }
     
     /**
