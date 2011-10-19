@@ -197,16 +197,12 @@ public final class LastFmService {
      * Updates service after a configuration change
      */
     public void updateService() {
-        ExtendedProxy proxy = null;
         try {
-            if (state.getProxy() != null) {
-                proxy = ExtendedProxy.getProxy(state.getProxy());
-            }
+            this.proxy = ExtendedProxy.getProxy(state.getProxy());
         } catch (Exception e) {
             Logger.error(e);
         }
 
-        this.proxy = proxy;
         this.user = state.getLastFmUser();
         this.password = state.getLastFmPassword();
         
