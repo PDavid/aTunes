@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.webservices.lastfm;
 import java.util.List;
 
 import junit.framework.Assert;
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.ILovedTrack;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
@@ -36,7 +35,6 @@ public class LastFmServiceTest {
 
 	@Before
 	public void init() {
-		Context.initialize("/spring/");
 	}
 	
     @Test

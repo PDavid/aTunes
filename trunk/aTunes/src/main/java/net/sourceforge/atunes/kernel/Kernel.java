@@ -26,10 +26,6 @@ import java.net.UnknownHostException;
 
 import javax.swing.SwingUtilities;
 
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-
 import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
@@ -45,6 +41,10 @@ import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.Timer;
+
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 /**
  * The Kernel is the class responsible of create and interconnect all modules of
