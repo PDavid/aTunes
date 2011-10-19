@@ -100,4 +100,5 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.MoveToBottomAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.MoveToTopAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.MoveUpAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.MuteAction"/>
 </beans>

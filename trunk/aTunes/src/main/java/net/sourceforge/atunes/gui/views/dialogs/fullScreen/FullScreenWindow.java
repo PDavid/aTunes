@@ -60,6 +60,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.filechooser.FileFilter;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
 import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.NextButton;
@@ -69,6 +70,7 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.ProgressSlider;
 import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
+import net.sourceforge.atunes.kernel.actions.MuteAction;
 import net.sourceforge.atunes.kernel.modules.player.ProgressBarSeekListener;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -396,7 +398,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         playButton = new PlayPauseButton(PlayerControlsPanel.PLAY_BUTTON_SIZE, lookAndFeelManager);
         stopButton = new StopButton(PlayerControlsPanel.STOP_MUTE_BUTTONS_SIZE, lookAndFeelManager);
         nextButton = new NextButton(PlayerControlsPanel.PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
-        muteButton = new MuteButton(PlayerControlsPanel.STOP_MUTE_BUTTONS_SIZE, state, lookAndFeelManager);
+        muteButton = new MuteButton(PlayerControlsPanel.STOP_MUTE_BUTTONS_SIZE, state, lookAndFeelManager, Context.getBean(MuteAction.class));
         muteButton.setText("");
         volumeSlider = new VolumeSlider(state, playerHandler);
 

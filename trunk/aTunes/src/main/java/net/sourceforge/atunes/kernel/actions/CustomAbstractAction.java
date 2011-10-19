@@ -74,7 +74,7 @@ public abstract class CustomAbstractAction extends javax.swing.AbstractAction im
 		this.commandHandler = commandHandler;
 	}
     
-    protected void setState(IState state) {
+    public void setState(IState state) {
     	this.state = state;
     }
     

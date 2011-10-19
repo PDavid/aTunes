@@ -22,9 +22,7 @@ package net.sourceforge.atunes.kernel.modules.hotkeys;
 
 import java.awt.event.InputEvent;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IHotkey;
@@ -212,27 +210,27 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
         Logger.debug("Hotkey ", id);
         switch (id) {
         case HOTKEY_NEXT: {
-            Context.getBean(IPlayerHandler.class).playNextAudioObject();
+            getBean(IPlayerHandler.class).playNextAudioObject();
             break;
         }
         case HOTKEY_PREVIOUS: {
-            Context.getBean(IPlayerHandler.class).playPreviousAudioObject();
+            getBean(IPlayerHandler.class).playPreviousAudioObject();
             break;
         }
         case HOTKEY_VOLUME_UP: {
-            Context.getBean(IPlayerHandler.class).volumeUp();
+            getBean(IPlayerHandler.class).volumeUp();
             break;
         }
         case HOTKEY_VOLUME_DOWN: {
-            Context.getBean(IPlayerHandler.class).volumeDown();
+            getBean(IPlayerHandler.class).volumeDown();
             break;
         }
         case HOTKEY_PAUSE: {
-            Context.getBean(IPlayerHandler.class).playCurrentAudioObject(true);
+            getBean(IPlayerHandler.class).playCurrentAudioObject(true);
             break;
         }
         case HOTKEY_STOP: {
-            Context.getBean(IPlayerHandler.class).stopCurrentAudioObject(true);
+            getBean(IPlayerHandler.class).stopCurrentAudioObject(true);
             break;
         }
         case HOTKEY_TOGGLE_WINDOW_VISIBILITY: {
@@ -240,7 +238,7 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
             break;
         }
         case HOTKEY_MUTE: {
-            Actions.getAction(MuteAction.class).actionPerformed(null);
+            getBean(MuteAction.class).switchState();
             break;
         }
         case HOTKEY_SHOW_OSD: {

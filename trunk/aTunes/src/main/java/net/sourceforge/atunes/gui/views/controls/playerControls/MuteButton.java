@@ -22,15 +22,8 @@ package net.sourceforge.atunes.gui.views.controls.playerControls;
 
 import java.awt.Dimension;
 
-import javax.swing.ImageIcon;
 import javax.swing.JToggleButton;
 
-import net.sourceforge.atunes.gui.images.VolumeMaxImageIcon;
-import net.sourceforge.atunes.gui.images.VolumeMedImageIcon;
-import net.sourceforge.atunes.gui.images.VolumeMinImageIcon;
-import net.sourceforge.atunes.gui.images.VolumeMuteImageIcon;
-import net.sourceforge.atunes.gui.images.VolumeZeroImageIcon;
-import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
@@ -51,9 +44,10 @@ public final class MuteButton extends JToggleButton implements ILookAndFeelChang
      * @param size
      * @param state
      * @param lookAndFeelManager
+     * @param muteAction
      */
-    public MuteButton(Dimension size, IState state, ILookAndFeelManager lookAndFeelManager) {
-        super(Actions.getAction(MuteAction.class));
+    public MuteButton(Dimension size, IState state, ILookAndFeelManager lookAndFeelManager, MuteAction muteAction) {
+        super(muteAction);
         this.state = state;
         this.lookAndFeel = lookAndFeelManager.getCurrentLookAndFeel();
 
@@ -77,30 +71,6 @@ public final class MuteButton extends JToggleButton implements ILookAndFeelChang
      * @param state
      */
     public void updateIcon(IState state) {
-    	setIcon(getVolumeIcon(state, lookAndFeel));
+    	setIcon(new VolumeIcon(state, lookAndFeel).getVolumeIcon());
     }
-    
-    /**
-     * Returns icon to use depending on volume and mute state
-     * @param state
-     * @param lookAndFeel
-     * @return
-     */
-    public static ImageIcon getVolumeIcon(IState state, ILookAndFeel lookAndFeel) {
-        if (state.isMuteEnabled()) {
-            return VolumeMuteImageIcon.getIcon(lookAndFeel);
-        } else {
-            int volume = state.getVolume();
-            if (volume > 80) {
-                return VolumeMaxImageIcon.getIcon(lookAndFeel);
-            } else if (volume > 40) {
-            	return VolumeMedImageIcon.getIcon(lookAndFeel);
-            } else if (volume > 5) {
-            	return VolumeMinImageIcon.getIcon(lookAndFeel);
-            } else {
-            	return VolumeZeroImageIcon.getIcon(lookAndFeel);
-            }
-        }
-    }
-
 }

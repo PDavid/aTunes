@@ -343,7 +343,7 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
      * @return
      */
     private JCheckBoxMenuItem getMuteCheckBoxMenuItem() {
-        JCheckBoxMenuItem mute = new JCheckBoxMenuItem(Actions.getAction(MuteAction.class));
+        JCheckBoxMenuItem mute = new JCheckBoxMenuItem(getBean(MuteAction.class));
         mute.setIcon(null);
         return mute;
     }
