@@ -48,6 +48,7 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.SecondaryControl
 import net.sourceforge.atunes.gui.views.controls.playerControls.ShuffleButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
+import net.sourceforge.atunes.kernel.actions.MuteAction;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
@@ -236,7 +237,7 @@ public final class PlayerControlsPanel extends JPanel {
         playButton = new PlayPauseButton(PLAY_BUTTON_SIZE, lookAndFeelManager);
         stopButton = new StopButton(STOP_MUTE_BUTTONS_SIZE, lookAndFeelManager);
         nextButton = new NextButton(PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
-        volumeButton = new MuteButton(STOP_MUTE_BUTTONS_SIZE, state, lookAndFeelManager);
+        volumeButton = new MuteButton(STOP_MUTE_BUTTONS_SIZE, state, lookAndFeelManager, Context.getBean(MuteAction.class));
         volumeButton.setText("");
         volumeSlider = new VolumeSlider(state, playerHandler);
         JPanel panel = getPanelWithPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider, lookAndFeelManager);

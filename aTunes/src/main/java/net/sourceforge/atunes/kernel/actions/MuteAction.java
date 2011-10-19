@@ -20,10 +20,7 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
+import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeIcon;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -38,7 +35,25 @@ public class MuteAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 306200192652324065L;
 
-    MuteAction() {
+    private IPlayerHandler playerHandler;
+    
+    private ILookAndFeelManager lookAndFeelManager;
+    
+    /**
+     * @param playerHandler
+     */
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
+    
+    /**
+     * @param lookAndFeelManager
+     */
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+    
+    public MuteAction() {
         super(I18nUtils.getString("MUTE"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("MUTE"));
     }
@@ -50,20 +65,24 @@ public class MuteAction extends CustomAbstractAction {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        // If this action is called from aTunes code (action is not fired in EDT) then switch the value of mute
-        if (e == null) {
-            putValue(SELECTED_KEY, !(Boolean) getValue(SELECTED_KEY));
-        }
+    protected void executeAction() {
         getState().setMuteEnabled((Boolean) getValue(SELECTED_KEY));
-        Context.getBean(IPlayerHandler.class).applyMuteState(getState().isMuteEnabled());
+        playerHandler.applyMuteState(getState().isMuteEnabled());
         updateIcon();
+    }
+    
+    /**
+     * This method must be called when action code is fired from app, not from Swing
+     */
+    public void switchState() {
+        putValue(SELECTED_KEY, !(Boolean) getValue(SELECTED_KEY));
+        executeAction();
     }
 
     /**
      * Updates icon of mute
      */
     private void updateIcon() {
-        putValue(SMALL_ICON, MuteButton.getVolumeIcon(getState(), getBean(ILookAndFeelManager.class).getCurrentLookAndFeel()));
+        putValue(SMALL_ICON, new VolumeIcon(getState(), lookAndFeelManager.getCurrentLookAndFeel()).getVolumeIcon());
     }
 }
