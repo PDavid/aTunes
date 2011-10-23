@@ -20,7 +20,16 @@
 
 package net.sourceforge.atunes.kernel.modules.cdripper.encoders;
 
+import java.io.File;
+
 import net.sourceforge.atunes.kernel.modules.cdripper.ProgressListener;
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
+import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
+import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ITag;
+import net.sourceforge.atunes.utils.Logger;
+import net.sourceforge.atunes.utils.StringUtils;
 
 public abstract class AbstractEncoder implements Encoder {
 
@@ -128,5 +137,37 @@ public abstract class AbstractEncoder implements Encoder {
     @Override
     public final String getFormatName() {
         return formatName;
+    }
+    
+    /**
+     * Sets tag of file once has been encoded
+     * @param file
+     * @param title
+     * @param trackNumber
+     * @param artist
+     * @param composer
+     * @return
+     */
+    final boolean setTag(File file, String title, int trackNumber, String artist, String composer) {
+        try {
+            ILocalAudioObject audiofile = new AudioFile(file);
+            ITag tag = new DefaultTag();
+
+            tag.setAlbum(getAlbum());
+            tag.setAlbumArtist(getAlbumArtist());
+            tag.setArtist(artist);
+            tag.setYear(getYear());
+            tag.setGenre(getGenre());
+            tag.setTitle(title);
+            tag.setComposer(composer);
+            tag.setTrackNumber(trackNumber);
+
+            TagModifier.setInfo(audiofile, tag);
+
+            return true;
+        } catch (Exception e) {
+            Logger.error(StringUtils.getString("Tag Process execution caused exception ", e));
+            return false;
+        }
     }
 }

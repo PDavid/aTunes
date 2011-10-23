@@ -29,13 +29,7 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.modules.cdripper.ProgressListener;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
-import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
-import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -59,12 +53,6 @@ public class LameEncoder extends AbstractEncoder {
     static final String MP3_DEFAULT_QUALITY = "medium";
 
     private Process p;
-    private ProgressListener listener;
-    private String albumArtist;
-    private String album;
-    private int year;
-    private String genre;
-    private String quality;
 
     private IOSManager osManager;
     
@@ -135,12 +123,12 @@ public class LameEncoder extends AbstractEncoder {
             List<String> command = new ArrayList<String>();
             command.add(StringUtils.getString(osManager.getExternalToolsPath(), LAME));
             // Presets don't need the -b option, but --preset, so check if preset is used
-            if (quality.contains("insane") || quality.contains("extreme") || quality.contains("medium") || quality.contains("standard")) {
+            if (getQuality().contains("insane") || getQuality().contains("extreme") || getQuality().contains("medium") || getQuality().contains("standard")) {
                 command.add(PRESET);
             } else {
                 command.add(QUALITY);
             }
-            command.add(quality);
+            command.add(getQuality());
 
             command.add(wavFile.getAbsolutePath());
             command.add(mp3File.getAbsolutePath());
@@ -149,7 +137,7 @@ public class LameEncoder extends AbstractEncoder {
             String s = null;
             int percent = -1;
             while ((s = stdInput.readLine()) != null) {
-                if (listener != null) {
+                if (getListener() != null) {
                     if (s.matches(".*\\(..%\\).*")) {
                         int aux = Integer.parseInt((s.substring(s.indexOf('(') + 1, s.indexOf('%'))).trim());
                         if (aux != percent) {
@@ -159,7 +147,7 @@ public class LameEncoder extends AbstractEncoder {
                             SwingUtilities.invokeLater(new Runnable() {
                                 @Override
                                 public void run() {
-                                    listener.notifyProgress(percentHelp);
+                                	getListener().notifyProgress(percentHelp);
                                 }
                             });
                         }
@@ -168,7 +156,7 @@ public class LameEncoder extends AbstractEncoder {
                     	SwingUtilities.invokeLater(new Runnable() {
                     		@Override
                     		public void run() {
-                    			listener.notifyProgress(100);
+                    			getListener().notifyProgress(100);
                     		}
                     	});
                     }
@@ -182,25 +170,12 @@ public class LameEncoder extends AbstractEncoder {
             }
 
             // Gather the info and write the tag
-            try {
-            	ILocalAudioObject audiofile = new AudioFile(mp3File);
-                ITag tag = new DefaultTag();
-
-                tag.setAlbum(album);
-                tag.setAlbumArtist(albumArtist);
-                tag.setArtist(artist);
-                tag.setYear(year);
-                tag.setTitle(title);
-                tag.setGenre(genre);
-                tag.setComposer(composer);
-                tag.setTrackNumber(trackNumber);
-
-                TagModifier.setInfo(audiofile, tag);
-
-            } catch (Exception e) {
-                Logger.error(StringUtils.getString("Jaudiotagger: Process execution caused exception ", e));
-                return false;
+            boolean tagOk = setTag(mp3File, title, trackNumber, artist, composer);
+            
+            if (!tagOk) {
+            	return false;
             }
+
             Logger.info("Encoded ok!!");
             return true;
         } catch (IOException e) {

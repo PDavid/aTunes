@@ -29,13 +29,7 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.modules.cdripper.ProgressListener;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
-import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
-import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -61,12 +55,6 @@ public class OggEncoder extends AbstractEncoder {
     static final String DEFAULT_OGG_QUALITY = "5";
 
     private Process p;
-    private ProgressListener listener;
-    private String albumArtist;
-    private String album;
-    private int year;
-    private String genre;
-    private String quality;
     
     private IOSManager osManager;
 
@@ -143,7 +131,7 @@ public class OggEncoder extends AbstractEncoder {
             command.add(OUTPUT);
             command.add(oggFile.getAbsolutePath());
             command.add(QUALITY);
-            command.add(quality);
+            command.add(getQuality());
             p = new ProcessBuilder(command).start();
             stdInput = new BufferedReader(new InputStreamReader(p.getErrorStream()));
             String s = null;
@@ -151,7 +139,7 @@ public class OggEncoder extends AbstractEncoder {
 
             // Read progress
             while ((s = stdInput.readLine()) != null) {
-                if (listener != null) {
+                if (getListener() != null) {
                     if (s.matches("\t\\[.....%.*")) {
                         // Percent values can be for example 0.3% or 0,3%, so be careful with "." and ","
                         int decimalPointPosition = s.indexOf('.');
@@ -165,7 +153,7 @@ public class OggEncoder extends AbstractEncoder {
                             SwingUtilities.invokeLater(new Runnable() {
                                 @Override
                                 public void run() {
-                                    listener.notifyProgress(percentHelp);
+                                	getListener().notifyProgress(percentHelp);
                                 }
                             });
                         }
@@ -173,7 +161,7 @@ public class OggEncoder extends AbstractEncoder {
                         SwingUtilities.invokeLater(new Runnable() {
                             @Override
                             public void run() {
-                                listener.notifyProgress(100);
+                            	getListener().notifyProgress(100);
                             }
                         });
                     }
@@ -187,25 +175,12 @@ public class OggEncoder extends AbstractEncoder {
             }
 
             // Gather the info and write the tag
-            try {
-            	ILocalAudioObject audiofile = new AudioFile(oggFile);
-                ITag tag = new DefaultTag();
-
-                tag.setAlbum(album);
-                tag.setAlbumArtist(albumArtist);
-                tag.setArtist(artist);
-                tag.setYear(year);
-                tag.setGenre(genre);
-                tag.setComposer(composer);
-                tag.setTitle(title);
-                tag.setTrackNumber(trackNumber);
-
-                TagModifier.setInfo(audiofile, tag);
-
-            } catch (Exception e) {
-                Logger.error(StringUtils.getString("Jaudiotagger: Process execution caused exception ", e));
-                return false;
+            boolean tagOk = setTag(oggFile, title, trackNumber, artist, composer);
+            
+            if (!tagOk) {
+            	return false;
             }
+
             Logger.info("Encoded ok!!");
             return true;
 

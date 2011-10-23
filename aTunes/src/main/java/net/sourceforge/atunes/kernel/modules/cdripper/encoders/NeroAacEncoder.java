@@ -29,13 +29,7 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.modules.cdripper.ProgressListener;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
-import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
-import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -57,13 +51,7 @@ public class NeroAacEncoder extends AbstractEncoder {
     static final String[] NERO_AAC_QUALITY = { "0.3", "0.4", "0.5", "0.6", "0.7", "0.8", "0.9", "1.0" };
     static final String DEFAULT_NERO_AAC_QUALITY = "0.4";
 
-    private ProgressListener listener;
     private Process p;
-    private String albumArtist;
-    private String album;
-    private int year;
-    private String genre;
-    private String quality;
 
     private IOSManager osManager;
     
@@ -132,7 +120,7 @@ public class NeroAacEncoder extends AbstractEncoder {
             List<String> command = new ArrayList<String>();
             command.add(StringUtils.getString(osManager.getExternalToolsPath(), NERO_AAC));
             command.add(QUALITY);
-            command.add(quality);
+            command.add(getQuality());
             //command.add(IGNORE_LENGTH);
             command.add(INPUT);
             command.add(wavFile.getAbsolutePath());
@@ -146,11 +134,11 @@ public class NeroAacEncoder extends AbstractEncoder {
             while ((line = stdInput.readLine()) != null) {
             	Logger.debug(line);
                 // Enable indeterminate progress bar
-                if (listener != null) {
+                if (getListener() != null) {
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override
                         public void run() {
-                            listener.notifyProgress(-1);
+                        	getListener().notifyProgress(-1);
                         }
                     });
                 }
@@ -162,24 +150,10 @@ public class NeroAacEncoder extends AbstractEncoder {
             }
 
             // Gather the info and write the tag
-            try {
-            	ILocalAudioObject audiofile = new AudioFile(mp4File);
-                ITag tag = new DefaultTag();
-
-                tag.setAlbum(album);
-                tag.setAlbumArtist(albumArtist);
-                tag.setArtist(artist);
-                tag.setComposer(composer);
-                tag.setYear(year);
-                tag.setGenre(genre);
-                tag.setTitle(title);
-                tag.setTrackNumber(trackNumber);
-
-                TagModifier.setInfo(audiofile, tag);
-
-            } catch (Exception e) {
-                Logger.error(StringUtils.getString("Jaudiotagger: Process execution caused exception ", e));
-                return false;
+            boolean tagOk = setTag(mp4File, title, trackNumber, artist, composer);
+            
+            if (!tagOk) {
+            	return false;
             }
 
             Logger.info("Encoded ok!!");
