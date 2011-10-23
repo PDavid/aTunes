@@ -31,14 +31,12 @@ import java.util.Map;
 
 import javax.swing.JMenuItem;
 import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableColumnModel;
-import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
+import net.sourceforge.atunes.kernel.modules.context.TracksTableFactory;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -47,7 +45,6 @@ import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ITrackInfo;
 import net.sourceforge.atunes.utils.DesktopUtils;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -57,22 +54,6 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * 
  */
 public class ArtistTopTracksContent extends AbstractContextPanelContent {
-
-    private static class TracksDefaultTableColumnModel extends DefaultTableColumnModel {
-
-        /**
-		 * 
-		 */
-		private static final long serialVersionUID = -3430934135011974702L;
-
-		@Override
-        public void addColumn(TableColumn column) {
-            super.addColumn(column);
-            if (column.getModelIndex() == 0) {
-                column.setMaxWidth(25);
-            }
-        }
-    }
 
     private static final long serialVersionUID = -5538266144953409867L;
 
@@ -144,19 +125,9 @@ public class ArtistTopTracksContent extends AbstractContextPanelContent {
     @Override
     public Component getComponent() {
         // Create components
-        tracksTable = getLookAndFeelManager().getCurrentLookAndFeel().getTable();
-        tracksTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        tracksTable.setDefaultRenderer(String.class, getLookAndFeelManager().getCurrentLookAndFeel().getTableCellRenderer(
-                GuiUtils.getComponentOrientationTableCellRendererCode(getLookAndFeelManager().getCurrentLookAndFeel())));
-
-        tracksTable.setDefaultRenderer(Integer.class, getLookAndFeelManager().getCurrentLookAndFeel().getTableCellRenderer(
-                GuiUtils.getComponentOrientationTableCellRendererCode(getLookAndFeelManager().getCurrentLookAndFeel())));
-
-        tracksTable.getTableHeader().setReorderingAllowed(true);
-        tracksTable.getTableHeader().setResizingAllowed(false);
-        tracksTable.setColumnModel(new TracksDefaultTableColumnModel());
-
-        tracksTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+    	TracksTableFactory factory = new TracksTableFactory();
+    	factory.setLookAndFeelManager(getLookAndFeelManager());
+    	tracksTable = factory.getNewTracksTable(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
@@ -168,7 +139,6 @@ public class ArtistTopTracksContent extends AbstractContextPanelContent {
                 }
             }
         });
-
         return tracksTable;
     }
     
