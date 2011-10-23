@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -38,15 +36,21 @@ public class NewPlayListAction extends CustomAbstractAction {
      */
     private static final long serialVersionUID = 3866441529401824151L;
 
+    private IPlayListHandler playListHandler;
+    
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
     public NewPlayListAction() {
         super(I18nUtils.getString("NEW_PLAYLIST"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("NEW_PLAYLIST"));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    protected void executeAction() {
         // Create a new empty play list
-    	getBean(IPlayListHandler.class).newPlayList(null);
+    	playListHandler.newPlayList(null);
     }
 
 }

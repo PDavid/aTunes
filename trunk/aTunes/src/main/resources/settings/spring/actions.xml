@@ -101,4 +101,5 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.MoveToTopAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.MoveUpAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.MuteAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.NewPlayListAction"/>
 </beans>
