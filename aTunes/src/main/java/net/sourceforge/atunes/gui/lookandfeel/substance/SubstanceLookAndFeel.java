@@ -24,10 +24,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Paint;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,15 +33,10 @@ import java.util.Map;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JList;
-import javax.swing.JTable;
-import javax.swing.JTree;
 import javax.swing.ListCellRenderer;
-import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
-import javax.swing.plaf.FontUIResource;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
@@ -65,12 +58,6 @@ import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
 import org.pushingpixels.lafwidget.utils.ShadowPopupBorder;
 import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceConstants;
-import org.pushingpixels.substance.api.fonts.FontPolicy;
-import org.pushingpixels.substance.api.fonts.FontSet;
-import org.pushingpixels.substance.api.renderers.SubstanceDefaultListCellRenderer;
-import org.pushingpixels.substance.api.renderers.SubstanceDefaultTableCellRenderer;
-import org.pushingpixels.substance.api.renderers.SubstanceDefaultTableHeaderCellRenderer;
-import org.pushingpixels.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 
 public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 
@@ -78,135 +65,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 
     private Object menuBarUI;
     
-	private static final class CustomFontPolicy implements FontPolicy {
-        private final class CustomFontSet implements FontSet {
-			private FontUIResource windowTitleFont = new FontUIResource(baseFont.deriveFont(Font.BOLD, baseFont.getSize() + 1f));
-			private FontUIResource titleFont = new FontUIResource(baseFont.deriveFont((float) baseFont.getSize()));
-			private FontUIResource smallFont = new FontUIResource(baseFont.deriveFont(baseFont.getSize() - 1f));
-			private FontUIResource messageFont = new FontUIResource(baseFont.deriveFont(baseFont.getSize() - 1f));
-			private FontUIResource menuFont = new FontUIResource(baseFont.deriveFont((float) baseFont.getSize()));
-			private FontUIResource controlFont = new FontUIResource(baseFont.deriveFont((float) baseFont.getSize()));
-
-			@Override
-			public FontUIResource getWindowTitleFont() {
-			    return windowTitleFont;
-			}
-
-			@Override
-			public FontUIResource getTitleFont() {
-			    return titleFont;
-			}
-
-			@Override
-			public FontUIResource getSmallFont() {
-			    return smallFont;
-			}
-
-			@Override
-			public FontUIResource getMessageFont() {
-			    return messageFont;
-			}
-
-			@Override
-			public FontUIResource getMenuFont() {
-			    return menuFont;
-			}
-
-			@Override
-			public FontUIResource getControlFont() {
-			    return controlFont;
-			}
-		}
-
-		private final Font baseFont;
-
-        private CustomFontPolicy(Font baseFont) {
-            this.baseFont = baseFont;
-        }
-
-        @Override
-        public FontSet getFontSet(String arg0, UIDefaults arg1) {
-            return new CustomFontSet();
-        }
-    }
-
-    private static final class SubstanceLookAndFeelListCellRenderer extends SubstanceDefaultListCellRenderer {
-        private final AbstractListCellRendererCode code;
-
-        private static final long serialVersionUID = 2572603555660744197L;
-
-        private SubstanceLookAndFeelListCellRenderer(AbstractListCellRendererCode code) {
-            this.code = code;
-        }
-
-        @Override
-        public JComponent getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        	JComponent c = (JComponent) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-            return code.getComponent(c, list, value, index, isSelected, cellHasFocus);
-        }
-    }
-
-    private static final class SubstanceLookAndFeelTableHeaderCellRenderer extends SubstanceDefaultTableHeaderCellRenderer {
-        private final AbstractTableCellRendererCode code;
-
-        private static final long serialVersionUID = 1L;
-
-        private SubstanceLookAndFeelTableHeaderCellRenderer(AbstractTableCellRendererCode code) {
-            this.code = code;
-        }
-
-        @Override
-        public JComponent getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        	JComponent c = (JComponent) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            return code.getComponent(c, table, value, isSelected, hasFocus, row, column);
-        }
-    }
-
-    private static final class SubstanceLookAndFeelTableCellRenderer extends SubstanceDefaultTableCellRenderer {
-        private final AbstractTableCellRendererCode code;
-
-        private static final long serialVersionUID = 2844251523912028654L;
-
-        private SubstanceLookAndFeelTableCellRenderer(AbstractTableCellRendererCode code) {
-            this.code = code;
-        }
-
-        @Override
-        public JComponent getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        	JComponent c = (JComponent) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            return code.getComponent(c, table, value, isSelected, hasFocus, row, column);
-        }
-    }
-
-    private static final class SubstanceLookAndFeelTreeCellRenderer extends SubstanceDefaultTreeCellRenderer {
-        private final AbstractTreeCellRendererCode code;
-
-        private static final long serialVersionUID = 3830003466764008228L;
-
-        private SubstanceLookAndFeelTreeCellRenderer(AbstractTreeCellRendererCode code) {
-            this.code = code;
-        }
-
-        @Override
-        public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        	JComponent c = (JComponent) super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-            return code.getComponent(c, tree, value, sel, expanded, leaf, row, hasFocus);
-        }
-    }
-
-    private static final class SkinsComparator implements Comparator<String>, Serializable {
-        /**
-		 * 
-		 */
-		private static final long serialVersionUID = 8396385246074192265L;
-
-		@Override
-        public int compare(String o1, String o2) {
-            return o1.toLowerCase().compareTo(o2.toLowerCase());
-        }
-    }
-
-    /** The map of skin names and class names */
+	/** The map of skin names and class names */
     private Map<String, String> skins = setMapOfSkins();
 
     /** The default skin */
