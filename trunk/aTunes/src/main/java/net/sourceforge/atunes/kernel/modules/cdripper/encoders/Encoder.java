@@ -70,7 +70,7 @@ public interface Encoder {
      * @param artist
      *            the new artist
      */
-    public void setArtist(String artist);
+    public void setAlbumArtist(String artist);
 
     /**
      * Sets the genre.
