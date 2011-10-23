@@ -20,15 +20,10 @@
 
 package net.sourceforge.atunes.gui.lookandfeel.system;
 
-import java.awt.Component;
 import java.util.List;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTree;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -92,42 +87,4 @@ public class SystemLookAndFeel extends AbstractLookAndFeel {
     public boolean supportsCustomFontSettings() {
     	return false;
     }
-
-    @Override
-    public JScrollPane getScrollPane(Component component) {
-    	return new JScrollPane(component);
-    }
-    
-    @Override
-    public JScrollPane getTableScrollPane(JTable table) {
-    	return getScrollPane(table);
-    }
-    
-    @Override
-    public JTable getTable() {
-    	JTable table = new JTable();
-    	table.setShowGrid(false);
-    	return table;
-    }
-    
-    @Override
-    public void decorateTable(JTable table) {
-    	table.setShowGrid(false);
-    }
-    
-    @Override
-    public JScrollPane getTreeScrollPane(JTree tree) {
-    	return getScrollPane(tree);
-    }
-    
-    @Override
-    public JScrollPane getListScrollPane(JList list) {
-    	return getScrollPane(list);
-    }
-    
-    @Override
-    public JList getList() {
-    	return new JList();
-    }
-
 }
