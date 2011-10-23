@@ -137,43 +137,19 @@ public class GenreTreeGenerator implements ITreeGenerator {
     
     @Override
     public void selectAudioObject(JTree tree, IAudioObject audioObject) {
-
     	DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) tree.getModel().getRoot();
-    	TreePath treePath = null;
-
-    	@SuppressWarnings("unchecked")
-    	Enumeration<DefaultMutableTreeNode> genres = rootNode.children();
-
-    	while (genres.hasMoreElements()){
-    		DefaultMutableTreeNode genreNode = genres.nextElement();
-    		Genre genre = (Genre) genreNode.getUserObject();
-    		if (genre.getName().equals(audioObject.getGenre())){
-    			@SuppressWarnings("unchecked")
-    			Enumeration<DefaultMutableTreeNode> artists = genreNode.children();
-
-    			while (artists.hasMoreElements()){
-    				DefaultMutableTreeNode artistNode = artists.nextElement();
-    				Artist artist = (Artist) artistNode.getUserObject();
-    				if (artist.getName().equals(audioObject.getArtist())){
-    					@SuppressWarnings("unchecked")
-    					Enumeration<DefaultMutableTreeNode> albums = artistNode.children();
-    					while (albums.hasMoreElements()){
-    						DefaultMutableTreeNode albumNode = albums.nextElement();
-    						Album album = (Album) albumNode.getUserObject();
-    						if (album.getName().equals(audioObject.getAlbum())){
-    							treePath = new TreePath(albumNode.getPath());
-    							break;
-    						}
-    					}
-    					break;
-    				}
+    	DefaultMutableTreeNode genreNode = new GenreAudioObjectSelector().getNodeRepresentingAudioObject(rootNode, audioObject);
+    	if (genreNode != null) {
+    		DefaultMutableTreeNode artistNode = new ArtistAudioObjectSelector().getNodeRepresentingAudioObject(genreNode, audioObject);
+    		if (artistNode != null) {
+    			DefaultMutableTreeNode albumNode = new AlbumAudioObjectSelector().getNodeRepresentingAudioObject(artistNode, audioObject);
+    			if (albumNode != null) {
+    				TreePath treePath = new TreePath(albumNode.getPath());
+    		    	tree.setSelectionPath(treePath);
+    		    	tree.scrollPathToVisible(treePath);
     			}
-    			break;
     		}
     	}
-
-    	tree.setSelectionPath(treePath);
-    	tree.scrollPathToVisible(treePath);
     }
 
     @Override
@@ -181,36 +157,24 @@ public class GenreTreeGenerator implements ITreeGenerator {
     	DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) tree.getModel().getRoot();
     	List<TreePath> treePathList = new ArrayList<TreePath>();
     	TreePath[] treePaths = null;
-
     	@SuppressWarnings("unchecked")
     	Enumeration<DefaultMutableTreeNode> genres = rootNode.children();
-
-    	while (genres.hasMoreElements()){
-
-    		DefaultMutableTreeNode genreNode = genres.nextElement();
-
-    		@SuppressWarnings("unchecked")
-    		Enumeration<DefaultMutableTreeNode> artists = genreNode.children();
-
-    		while (artists.hasMoreElements()){
-    			DefaultMutableTreeNode artistNode = artists.nextElement();
-    			Artist artist = (Artist) artistNode.getUserObject();
-    			if (artist.getName().equals(artistName)){
-    				TreePath treePath = new TreePath(artistNode.getPath()); 
-    				treePathList.add(treePath);
-    				tree.expandPath(treePath);
-    				break;
-    			}
+    	ArtistByNameAudioObjectSelector selector = new ArtistByNameAudioObjectSelector();
+    	while (genres.hasMoreElements()) {
+    		DefaultMutableTreeNode artistNode = selector.getNodeRepresentingAudioObject(genres.nextElement(), artistName);
+    		if (artistNode != null) {
+				TreePath treePath = new TreePath(artistNode.getPath()); 
+				treePathList.add(treePath);
+				tree.expandPath(treePath);
     		}
     	}
 
-    	treePaths = new TreePath[treePathList.size()];
-    	treePaths = (TreePath[]) treePathList.toArray(treePaths);
-
-    	tree.setSelectionPaths(treePaths);
-    	tree.scrollPathToVisible(treePaths[0]);
-
-
+    	if (!treePathList.isEmpty()) {
+    		treePaths = new TreePath[treePathList.size()];
+    		treePaths = (TreePath[]) treePathList.toArray(treePaths);
+    		tree.setSelectionPaths(treePaths);
+    		tree.scrollPathToVisible(treePaths[0]);
+    	}
     }
 
 
