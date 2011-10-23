@@ -86,34 +86,8 @@ public final class ImageUtils {
      * @return the image icon
      */
     public static ImageIcon scaleImageBicubic(Image image, int width, int height) {
-        if (image == null) {
-            return null;
-        }
-
-        double thumbRatio = (double) width / (double) height;
-        int imageWidth = image.getWidth(null);
-        int imageHeight = image.getHeight(null);
-        double imageRatio = (double) imageWidth / (double) imageHeight;
-        int calculatedWidth = width;
-        int calculatedHeight = height;
-        if (thumbRatio < imageRatio) {
-            calculatedHeight = (int) (width / imageRatio);
-        } else {
-            calculatedWidth = (int) (height * imageRatio);
-        }
-
-        if (imageWidth <= calculatedWidth && imageHeight <= calculatedHeight) {
-            BufferedImage thumbImage = new BufferedImage(calculatedWidth, calculatedHeight, BufferedImage.TYPE_INT_ARGB);
-            Graphics2D graphics2D = thumbImage.createGraphics();
-            graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-            graphics2D.drawImage(image, 0, 0, calculatedWidth, calculatedHeight, null);
-            graphics2D.dispose();
-            return new ImageIcon(thumbImage);
-        } else {
-            // If scaled image is smaller then use SwingX utilities (looks much better)
-            BufferedImage bi = GraphicsUtilities.createThumbnail(toBufferedImage(image), calculatedWidth, calculatedHeight);
-            return new ImageIcon(bi);
-        }
+    	BufferedImage bi = scaleBufferedImageBicubic(image, width, height);
+    	return bi != null ? new ImageIcon(bi) : null;
     }
     
     /**
