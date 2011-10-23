@@ -29,12 +29,7 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
-import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
-import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -110,7 +105,7 @@ public class FlacEncoder extends AbstractEncoder {
      *            The title of the song (only title, not artist and album)
      * @param trackNumber
      *            The track number of the song
-     * @param oggFile
+     * @param file
      *            the ogg file
      * @param artist
      *            the artist
@@ -120,8 +115,8 @@ public class FlacEncoder extends AbstractEncoder {
      * @return Returns true if encoding was successfull, false otherwise.
      */
     @Override
-    public boolean encode(File wavFile, File oggFile, String title, int trackNumber, String artist, String composer) {
-        Logger.info(StringUtils.getString("Flac encoding process started... ", wavFile.getName(), " -> ", oggFile.getName()));
+    public boolean encode(File wavFile, File file, String title, int trackNumber, String artist, String composer) {
+        Logger.info(StringUtils.getString("Flac encoding process started... ", wavFile.getName(), " -> ", file.getName()));
         BufferedReader stdInput = null;
         try {
             // Encode the file using FLAC. We could pass the infos for the tag, but 
@@ -132,7 +127,7 @@ public class FlacEncoder extends AbstractEncoder {
             command.add(FORCE);
             command.add(wavFile.getAbsolutePath());
             command.add(OUTPUT);
-            command.add(oggFile.getAbsolutePath());
+            command.add(file.getAbsolutePath());
             process = new ProcessBuilder(command).start();
             stdInput = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 
@@ -171,25 +166,12 @@ public class FlacEncoder extends AbstractEncoder {
             }
 
             // Gather the info and write the tag
-            try {
-                ILocalAudioObject audiofile = new AudioFile(oggFile);
-                ITag tag = new DefaultTag();
-
-                tag.setAlbum(getAlbum());
-                tag.setAlbumArtist(getAlbumArtist());
-                tag.setArtist(artist);
-                tag.setYear(getYear());
-                tag.setGenre(getGenre());
-                tag.setTitle(title);
-                tag.setComposer(composer);
-                tag.setTrackNumber(trackNumber);
-
-                TagModifier.setInfo(audiofile, tag);
-
-            } catch (Exception e) {
-                Logger.error(StringUtils.getString("Jaudiotagger: Process execution caused exception ", e));
-                return false;
+            boolean tagOk = setTag(file, title, trackNumber, artist, composer);
+            
+            if (!tagOk) {
+            	return false;
             }
+            
             Logger.info("Encoded ok!!");
             return true;
 
