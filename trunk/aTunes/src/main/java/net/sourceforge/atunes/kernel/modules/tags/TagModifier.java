@@ -26,16 +26,12 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Format;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.ITag;
-import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -46,6 +42,7 @@ import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
 import org.jaudiotagger.tag.FieldDataInvalidException;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.KeyNotFoundException;
+import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagException;
 import org.jaudiotagger.tag.datatype.Artwork;
 import org.jaudiotagger.tag.reference.PictureTypes;
@@ -62,48 +59,7 @@ import org.jaudiotagger.tag.reference.PictureTypes;
  */
 public final class TagModifier {
 
-    private static final class RefreshTagAfterModifyRunnable implements Runnable {
-    	
-		private List<ILocalAudioObject> audioFilesEditing;
-		private IPlayListHandler playListHandler;
-		private IPlayerHandler playerHandler;
-
-		private RefreshTagAfterModifyRunnable(List<ILocalAudioObject> audioFilesEditing, IPlayListHandler playListHandler, IPlayerHandler playerHandler) {
-			this.audioFilesEditing = audioFilesEditing;
-			this.playListHandler = playListHandler;
-			this.playerHandler = playerHandler;
-		}
-
-		@Override
-		public void run() {
-		    // update Swing components if necessary
-		    boolean playListContainsRefreshedFile = false;
-		    for (int i = 0; i < audioFilesEditing.size(); i++) {
-		        if (playListHandler.getCurrentPlayList(true).contains(audioFilesEditing.get(i))) {
-		            playListContainsRefreshedFile = true;
-		        }
-
-		        // Changed current playing song
-		        if (playListHandler.getCurrentAudioObjectFromCurrentPlayList() != null
-		                && playListHandler.getCurrentAudioObjectFromCurrentPlayList().equals(audioFilesEditing.get(i))) {
-		        	
-		        	Context.getBean(PlayListEventListeners.class).selectedAudioObjectHasChanged(audioFilesEditing.get(i));
-
-		            if (playerHandler.isEnginePlaying()) {
-		                Context.getBean(IUIHandler.class).updateTitleBar(audioFilesEditing.get(i));
-		            }
-		        }
-		    }
-		    if (playListContainsRefreshedFile) {
-		    	playListHandler.refreshPlayList();
-		    }
-		    Context.getBean(INavigationHandler.class).repositoryReloaded();
-		}
-	}
-
-    private TagModifier() {
-
-    }
+    private TagModifier() {}
 
     /**
      * Delete tags.
@@ -132,7 +88,6 @@ public final class TagModifier {
 			// We must catch any other exception to avoid throw exceptions outside this method
 			reportWriteError(file, e);
 		}
-
     }
 
     /**
@@ -153,30 +108,14 @@ public final class TagModifier {
      * @param album
      *            Album of file
      */
-    static void setAlbum(ILocalAudioObject file, String album) {
-        // Be sure file is writable before setting info
-        setWritable(file);
-        try {
-            org.jaudiotagger.audio.AudioFile audioFile = org.jaudiotagger.audio.AudioFileIO.read(file.getFile());
-            org.jaudiotagger.tag.Tag newTag = audioFile.getTagOrCreateAndSetDefault();
-            newTag.setField(FieldKey.ALBUM, album);
-            audioFile.commit();
-        } catch (IOException e) {
-            reportWriteError(file, e);
-        } catch (CannotReadException e) {
-            reportWriteError(file, e);
-		} catch (TagException e) {
-            reportWriteError(file, e);
-		} catch (ReadOnlyFileException e) {
-            reportWriteError(file, e);
-		} catch (InvalidAudioFrameException e) {
-            reportWriteError(file, e);
-		} catch (CannotWriteException e) {
-            reportWriteError(file, e);
-		} catch (Exception e) {
-			// We must catch any other exception to avoid throw exceptions outside this method
-			reportWriteError(file, e);
-		}
+    static void setAlbum(ILocalAudioObject file, final String album) {
+    	modifyTag(file, new ITagModification() {
+
+    		@Override
+    		public void modify(Tag tag) throws KeyNotFoundException, FieldDataInvalidException {
+    			tag.setField(FieldKey.ALBUM, album);
+    		}
+    	});
     }
 
     /**
@@ -187,31 +126,14 @@ public final class TagModifier {
      * @param genre
      *            Genre of file
      */
-    static void setGenre(ILocalAudioObject file, String genre) {
-        // Be sure file is writable before setting info
-        setWritable(file);
-        try {
-            org.jaudiotagger.audio.AudioFile audioFile = org.jaudiotagger.audio.AudioFileIO.read(file.getFile());
-            org.jaudiotagger.tag.Tag newTag = audioFile.getTagOrCreateAndSetDefault();
-            //newTag.setGenre(genre);
-            newTag.setField(newTag.createField(FieldKey.GENRE, genre));
-            audioFile.commit();
-        } catch (TagException e) {
-            reportWriteError(file, e);
-        } catch (ReadOnlyFileException e) {
-            reportWriteError(file, e);
-        } catch (InvalidAudioFrameException e) {
-            reportWriteError(file, e);
-        } catch (CannotWriteException e) {
-            reportWriteError(file, e);
-        } catch (CannotReadException e) {
-            reportWriteError(file, e);
-        } catch (IOException e) {
-            reportWriteError(file, e);
-        } catch (Exception e) {
-			// We must catch any other exception to avoid throw exceptions outside this method
-			reportWriteError(file, e);
-        }
+    static void setGenre(ILocalAudioObject file, final String genre) {
+    	modifyTag(file, new ITagModification() {
+
+    		@Override
+    		public void modify(Tag tag) throws KeyNotFoundException, FieldDataInvalidException {
+    			tag.setField(tag.createField(FieldKey.GENRE, genre));
+    		}
+    	});
     }
     
     /**
@@ -372,30 +294,14 @@ public final class TagModifier {
      * @param lyrics
      *            the lyrics
      */
-    static void setLyrics(ILocalAudioObject file, String lyrics) {
-        // Be sure file is writable before setting info
-        setWritable(file);
-        try {
-            org.jaudiotagger.audio.AudioFile audioFile = org.jaudiotagger.audio.AudioFileIO.read(file.getFile());
-            org.jaudiotagger.tag.Tag newTag = audioFile.getTagOrCreateAndSetDefault();
-            newTag.setField(newTag.createField(FieldKey.LYRICS, lyrics));
-            audioFile.commit();
-        } catch (IOException e) {
-            reportWriteError(file, e);
-        } catch (CannotReadException e) {
-            reportWriteError(file, e);
-		} catch (TagException e) {
-            reportWriteError(file, e);
-		} catch (ReadOnlyFileException e) {
-            reportWriteError(file, e);
-		} catch (InvalidAudioFrameException e) {
-            reportWriteError(file, e);
-		} catch (CannotWriteException e) {
-            reportWriteError(file, e);
-		} catch (Exception e) {
-			// We must catch any other exception to avoid throw exceptions outside this method
-			reportWriteError(file, e);
-		}
+    static void setLyrics(ILocalAudioObject file, final String lyrics) {
+    	modifyTag(file, new ITagModification() {
+			
+			@Override
+			public void modify(Tag tag) throws KeyNotFoundException, FieldDataInvalidException {
+				tag.setField(tag.createField(FieldKey.LYRICS, lyrics));
+			}
+		});
     }
 
     /**
@@ -406,30 +312,14 @@ public final class TagModifier {
      * @param newTitle
      *            New title
      */
-    static void setTitles(ILocalAudioObject file, String newTitle) {
-        // Be sure file is writable before setting info
-        setWritable(file);
-        try {
-            org.jaudiotagger.audio.AudioFile audioFile = org.jaudiotagger.audio.AudioFileIO.read(file.getFile());
-            org.jaudiotagger.tag.Tag newTag = audioFile.getTagOrCreateAndSetDefault();
-            newTag.setField(FieldKey.TITLE, newTitle);
-            audioFile.commit();
-        } catch (IOException e) {
-        	reportWriteError(file, e);
-        } catch (CannotReadException e) {
-        	reportWriteError(file, e);
-		} catch (TagException e) {
-        	reportWriteError(file, e);
-		} catch (ReadOnlyFileException e) {
-        	reportWriteError(file, e);
-		} catch (InvalidAudioFrameException e) {
-        	reportWriteError(file, e);
-		} catch (CannotWriteException e) {
-        	reportWriteError(file, e);
-		} catch (Exception e) {
-			// We must catch any other exception to avoid throw exceptions outside this method
-			reportWriteError(file, e);
-		}
+    static void setTitles(ILocalAudioObject file, final String newTitle) {
+    	modifyTag(file, new ITagModification() {
+			
+			@Override
+			public void modify(Tag tag) throws KeyNotFoundException, FieldDataInvalidException {
+	            tag.setField(FieldKey.TITLE, newTitle);
+			}
+		});
     }
 
     /**
@@ -440,13 +330,28 @@ public final class TagModifier {
      * @param track
      *            Track number
      */
-    static void setTrackNumber(ILocalAudioObject file, Integer track) {
+    static void setTrackNumber(ILocalAudioObject file, final Integer track) {
+    	modifyTag(file, new ITagModification() {
+			
+			@Override
+			public void modify(Tag tag) throws KeyNotFoundException, FieldDataInvalidException {
+				tag.setField(FieldKey.TRACK, track.toString());
+			}
+		});
+    }
+
+    /**
+     * Changes file with given modification
+     * @param file
+     * @param modification
+     */
+    private static void modifyTag(ILocalAudioObject file, ITagModification modification) {
         // Be sure file is writable before setting info
         setWritable(file);
         try {
             org.jaudiotagger.audio.AudioFile audioFile = org.jaudiotagger.audio.AudioFileIO.read(file.getFile());
             org.jaudiotagger.tag.Tag newTag = audioFile.getTagOrCreateAndSetDefault();
-            newTag.setField(FieldKey.TRACK, track.toString());
+            modification.modify(newTag);
             audioFile.commit();
         } catch (IOException e) {
             reportWriteError(file, e);
@@ -465,7 +370,7 @@ public final class TagModifier {
 			reportWriteError(file, e);
 		}
     }
-
+    
     /**
      * Logs error while writing
      * @param file
@@ -499,6 +404,4 @@ public final class TagModifier {
             file.getFile().getParentFile().setWritable(true);
         }
     }
-
-
 }
