@@ -21,24 +21,11 @@
 package net.sourceforge.atunes.gui.lookandfeel.substance;
 
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Paint;
 
-import org.pushingpixels.substance.api.ComponentState;
-import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
-import org.pushingpixels.substance.api.SubstanceColorSchemeBundle;
-import org.pushingpixels.substance.api.SubstanceSkin;
-import org.pushingpixels.substance.api.painter.border.ClassicBorderPainter;
-import org.pushingpixels.substance.api.painter.decoration.MatteDecorationPainter;
-import org.pushingpixels.substance.api.painter.fill.ClassicFillPainter;
-import org.pushingpixels.substance.api.painter.highlight.ClassicHighlightPainter;
-import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 
-public final class SubstanceATunesBlueSkin extends SubstanceSkin implements ICustomSubstanceSkin {
+public final class SubstanceATunesBlueSkin extends net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceSkin implements ICustomSubstanceSkin {
 
-	private Color highlightColor;
-	
 	/**
 	 * Creates a new skin.
 	 */
@@ -81,28 +68,7 @@ public final class SubstanceATunesBlueSkin extends SubstanceSkin implements ICus
 				hightlightColor,
 				Color.WHITE);
 
-		// the default theme bundle
-		SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(defaultScheme, defaultScheme, disabledScheme);
-		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme, 1f, ComponentState.ROLLOVER_UNSELECTED);
-		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme, 1f, ComponentState.SELECTED);
-		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme, 1f, ComponentState.ROLLOVER_SELECTED);
-		defaultSchemeBundle.registerHighlightColorScheme(highlightScheme, 1f, ComponentState.ARMED, ComponentState.ROLLOVER_ARMED);
-		this.registerDecorationAreaSchemeBundle(defaultSchemeBundle, DecorationAreaType.NONE);
-
-		// the special theme bundle
-		SubstanceColorSchemeBundle specialSchemeBundle = new SubstanceColorSchemeBundle(activeScheme, activeScheme, disabledScheme);
-		this.registerDecorationAreaSchemeBundle(specialSchemeBundle, DecorationAreaType.PRIMARY_TITLE_PANE, DecorationAreaType.SECONDARY_TITLE_PANE);
-
-		this.setSelectedTabFadeStart(1);
-		this.setSelectedTabFadeEnd(1);
-
-		this.buttonShaper = new ClassicButtonShaper();
-		this.fillPainter = new ClassicFillPainter();
-		this.borderPainter = new ClassicBorderPainter();
-		this.decorationPainter = new MatteDecorationPainter();
-		this.highlightPainter = new ClassicHighlightPainter();
-		
-		this.highlightColor = highlightScheme.getLightColor();
+		initializeSkin(activeScheme, defaultScheme, disabledScheme, highlightScheme);
 
 	}
 
@@ -110,26 +76,4 @@ public final class SubstanceATunesBlueSkin extends SubstanceSkin implements ICus
 	public String getDisplayName() {
 		return "aTunes Blue skin";
 	}
-
-    @Override
-	public Paint getPaintForColorMutableIcon(Component component, boolean isSelected) {
-    	if (isSelected) {
-    		return component.getForeground();    		
-    	} else {
-    		Color c = highlightColor.darker();    		
-    		return new Color(c.getRed(), c.getGreen(), c.getBlue(), 200);
-    	}
-	}
-	
-    @Override
-	public Paint getPaintForSpecialControls() {
-		return highlightColor.darker();    		
-	}
-
-    @Override
-	public Paint getPaintForDisabledSpecialControls() {
-		Color c = highlightColor.darker();    		
-		return new Color(c.getRed(), c.getGreen(), c.getBlue(), 140);
-	}
-
 }
