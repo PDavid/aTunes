@@ -29,7 +29,6 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.modules.cdripper.ProgressListener;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
 import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
@@ -43,7 +42,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The Class FlacEncoder.
  */
-public class FlacEncoder implements Encoder {
+public class FlacEncoder extends AbstractEncoder {
 
     /** The format name of this encoder */
     public static final String FORMAT_NAME = "FLAC";
@@ -62,12 +61,6 @@ public class FlacEncoder implements Encoder {
     static final String DEFAULT_FLAC_QUALITY = "-5";
 
     private Process process;
-    private ProgressListener listener;
-    private String albumArtist;
-    private String album;
-    private int year;
-    private String genre;
-    private String quality;
     
     private IOSManager osManager;
 
@@ -104,6 +97,7 @@ public class FlacEncoder implements Encoder {
     }
 
     public FlacEncoder(IOSManager osManager) {
+    	super("flac", FLAC_QUALITY, DEFAULT_FLAC_QUALITY, FORMAT_NAME);
     	this.osManager = osManager;
 	}
     
@@ -134,7 +128,7 @@ public class FlacEncoder implements Encoder {
             // FLAC is very difficult with special characters so we don't use it.
             List<String> command = new ArrayList<String>();
             command.add(StringUtils.getString(osManager.getExternalToolsPath(), FLAC));
-            command.add(quality);
+            command.add(getQuality());
             command.add(FORCE);
             command.add(wavFile.getAbsolutePath());
             command.add(OUTPUT);
@@ -148,7 +142,7 @@ public class FlacEncoder implements Encoder {
             // Read progress
             while ((s = stdInput.readLine()) != null) {
                 int index = s.indexOf('%');
-                if (listener != null && s.contains("% complete, ratio")) {
+                if (getListener() != null && s.contains("% complete, ratio")) {
                 	aux = Integer.parseInt(s.substring(index - 2, index).trim());
                 	if (aux != percent) {
                 		percent = aux;
@@ -156,7 +150,7 @@ public class FlacEncoder implements Encoder {
                 		SwingUtilities.invokeLater(new Runnable() {
                 			@Override
                 			public void run() {
-                				listener.notifyProgress(percentHelp);
+                				getListener().notifyProgress(percentHelp);
                 			}
                 		});
                 	}
@@ -166,7 +160,7 @@ public class FlacEncoder implements Encoder {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    listener.notifyProgress(100);
+                    getListener().notifyProgress(100);
                 }
             });
 
@@ -181,11 +175,11 @@ public class FlacEncoder implements Encoder {
                 ILocalAudioObject audiofile = new AudioFile(oggFile);
                 ITag tag = new DefaultTag();
 
-                tag.setAlbum(album);
-                tag.setAlbumArtist(albumArtist);
+                tag.setAlbum(getAlbum());
+                tag.setAlbumArtist(getAlbumArtist());
                 tag.setArtist(artist);
-                tag.setYear(year);
-                tag.setGenre(genre);
+                tag.setYear(getYear());
+                tag.setGenre(getGenre());
                 tag.setTitle(title);
                 tag.setComposer(composer);
                 tag.setTrackNumber(trackNumber);
@@ -209,66 +203,10 @@ public class FlacEncoder implements Encoder {
         }
     }
 
-    /**
-     * Gets the extension of encoded files.
-     * 
-     * @return Returns the extension of the encoded file
-     */
-    @Override
-    public String getExtensionOfEncodedFiles() {
-        return "flac";
-    }
-
-    @Override
-    public void setAlbum(String album) {
-        this.album = album;
-    }
-
-    //AlbumArtist
-    @Override
-    public void setArtist(String albumArtist) {
-        this.albumArtist = albumArtist;
-    }
-
-    @Override
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
-    @Override
-    public void setListener(ProgressListener listener) {
-        this.listener = listener;
-    }
-
-    @Override
-    public void setQuality(String quality) {
-        this.quality = quality;
-    }
-
-    @Override
-    public void setYear(int year) {
-        this.year = year;
-    }
-
     @Override
     public void stop() {
         if (process != null) {
             process.destroy();
         }
-    }
-
-    @Override
-    public String[] getAvailableQualities() {
-        return FLAC_QUALITY;
-    }
-
-    @Override
-    public String getDefaultQuality() {
-        return DEFAULT_FLAC_QUALITY;
-    }
-
-    @Override
-    public String getFormatName() {
-        return FORMAT_NAME;
     }
 }

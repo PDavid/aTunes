@@ -22,14 +22,13 @@ package net.sourceforge.atunes.kernel.modules.cdripper.encoders;
 
 import java.io.File;
 
-import net.sourceforge.atunes.kernel.modules.cdripper.ProgressListener;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * The Class WavEncoder.
  */
-public class WavEncoder implements Encoder {
+public class WavEncoder extends AbstractEncoder {
 
     /** The format name of this encoder */
     public static final String FORMAT_NAME = "WAV";
@@ -69,64 +68,13 @@ public class WavEncoder implements Encoder {
         }
     }
 
-    /**
-     * Gets the extension of encoded files.
-     * 
-     * @return Returns the extension of the encoded file
-     */
-    @Override
-    public String getExtensionOfEncodedFiles() {
-        return "wav";
+    public WavEncoder() {
+    	super("wav", new String[0], "", FORMAT_NAME);
     }
-
-    @Override
-    public void setAlbum(String album) {
-        // do nothing
-    }
-
-    @Override
-    public void setArtist(String artist) {
-        // do nothing
-    }
-
-    @Override
-    public void setGenre(String genre) {
-        // do nothing
-    }
-
-    @Override
-    public void setListener(ProgressListener listener) {
-        // do nothing
-    }
-
-    @Override
-    public void setQuality(String quality) {
-        // do nothing
-    }
-
-    @Override
-    public void setYear(int year) {
-        // do nothing
-    }
-
+ 
     @Override
     public void stop() {
         // do nothing
-    }
-
-    @Override
-    public String[] getAvailableQualities() {
-        return new String[0];
-    }
-
-    @Override
-    public String getDefaultQuality() {
-        return "";
-    }
-
-    @Override
-    public String getFormatName() {
-        return FORMAT_NAME;
     }
 
     public static boolean testTool() {

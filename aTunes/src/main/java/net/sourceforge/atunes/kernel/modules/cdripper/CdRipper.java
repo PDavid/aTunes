@@ -314,7 +314,7 @@ class CdRipper {
             this.artist = artist;
         }
         if (encoder != null) {
-            encoder.setArtist(this.artist);
+            encoder.setAlbumArtist(this.artist);
         }
     }
 

@@ -43,7 +43,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The Class Mp4Encoder.
  */
-public class Mp4Encoder implements Encoder {
+public class Mp4Encoder extends AbstractEncoder {
 
     /** The format name of this encoder */
     public static final String FORMAT_NAME = "FAAC_MP4";
@@ -101,6 +101,7 @@ public class Mp4Encoder implements Encoder {
     }
 
     public Mp4Encoder(IOSManager osManager) {
+    	super("m4a", MP4_QUALITY, DEFAULT_MP4_QUALITY, FORMAT_NAME);
     	this.osManager = osManager;
 	}
     
@@ -209,111 +210,10 @@ public class Mp4Encoder implements Encoder {
         }
     }
 
-    /**
-     * Gets the album.
-     * 
-     * @return the album
-     */
-    public String getAlbum() {
-        return album;
-    }
-
-    /**
-     * Gets the album artist.
-     * 
-     * @return the albumArtist
-     */
-    public String getAlbumArtist() {
-        return albumArtist;
-    }
-
-    /**
-     * Gets the extension of encoded files.
-     * 
-     * @return Returns the extension of the encoded file
-     */
-    @Override
-    public String getExtensionOfEncodedFiles() {
-        return "m4a";
-    }
-
-    /**
-     * Gets the genre.
-     * 
-     * @return the genre
-     */
-    public String getGenre() {
-        return genre;
-    }
-
-    /**
-     * Gets the year.
-     * 
-     * @return the year
-     */
-    public int getYear() {
-        return year;
-    }
-
-    @Override
-    public void setAlbum(String album) {
-        this.album = album;
-    }
-
-    /**
-     * Sets the album artist.
-     * 
-     * @param albumArtist
-     *            the albumArtist to set
-     */
-    public void setAlbumArtist(String albumArtist) {
-        this.albumArtist = albumArtist;
-    }
-
-    @Override
-    public void setArtist(String artist) {
-        this.albumArtist = artist;
-    }
-
-    @Override
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
-    @Override
-    public void setListener(ProgressListener listener) {
-        this.listener = listener;
-    }
-
-    @Override
-    public void setQuality(String quality) {
-        this.quality = quality;
-    }
-
-    @Override
-    public void setYear(int year) {
-        this.year = year;
-    }
-
     @Override
     public void stop() {
         if (p != null) {
             p.destroy();
         }
-    }
-
-    @Override
-    public String[] getAvailableQualities() {
-        return MP4_QUALITY;
-    }
-
-    @Override
-    public String getDefaultQuality() {
-        return DEFAULT_MP4_QUALITY;
-    }
-
-    @Override
-    public String getFormatName() {
-        return FORMAT_NAME;
     }
 }

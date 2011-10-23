@@ -43,7 +43,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The Class NeroAacEncoder.
  */
-public class NeroAacEncoder implements Encoder {
+public class NeroAacEncoder extends AbstractEncoder {
 
     /** The format name of this encoder */
     public static final String FORMAT_NAME = "Nero_AAC";
@@ -102,6 +102,7 @@ public class NeroAacEncoder implements Encoder {
     }
     
     public NeroAacEncoder(IOSManager osManager) {
+    	super("m4a", NERO_AAC_QUALITY, DEFAULT_NERO_AAC_QUALITY, FORMAT_NAME);
     	this.osManager = osManager;
 	}
 
@@ -192,75 +193,10 @@ public class NeroAacEncoder implements Encoder {
         }
     }
 
-    /**
-     * Gets the extension of encoded files.
-     * 
-     * @return Returns the extension of the encoded file
-     */
-    @Override
-    public String getExtensionOfEncodedFiles() {
-        return "m4a";
-    }
-
-    @Override
-    public void setAlbum(String album) {
-        this.album = album;
-    }
-
-    /**
-     * Sets the album artist.
-     * 
-     * @param albumArtist
-     *            the new album artist
-     */
-    public void setAlbumArtist(String albumArtist) {
-        this.albumArtist = albumArtist;
-    }
-
-    @Override
-    public void setArtist(String artist) {
-        this.albumArtist = artist;
-    }
-
-    @Override
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
-    @Override
-    public void setListener(ProgressListener listener) {
-        this.listener = listener;
-    }
-
-    @Override
-    public void setQuality(String quality) {
-        this.quality = quality;
-    }
-
-    @Override
-    public void setYear(int year) {
-        this.year = year;
-    }
-
     @Override
     public void stop() {
         if (p != null) {
             p.destroy();
         }
-    }
-
-    @Override
-    public String[] getAvailableQualities() {
-        return NERO_AAC_QUALITY;
-    }
-
-    @Override
-    public String getDefaultQuality() {
-        return DEFAULT_NERO_AAC_QUALITY;
-    }
-
-    @Override
-    public String getFormatName() {
-        return FORMAT_NAME;
     }
 }

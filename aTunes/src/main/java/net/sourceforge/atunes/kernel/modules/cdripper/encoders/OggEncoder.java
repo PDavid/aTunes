@@ -43,7 +43,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The Class OggEncoder.
  */
-public class OggEncoder implements Encoder {
+public class OggEncoder extends AbstractEncoder {
 
     /** The format name of this encoder */
     public static final String FORMAT_NAME = "OGG";
@@ -107,6 +107,7 @@ public class OggEncoder implements Encoder {
     }
 
     public OggEncoder(IOSManager osManager) {
+    	super("ogg", OGG_QUALITIES, DEFAULT_OGG_QUALITY, FORMAT_NAME);
     	this.osManager = osManager;
 	}
     
@@ -219,65 +220,10 @@ public class OggEncoder implements Encoder {
         }
     }
 
-    /**
-     * Gets the extension of encoded files.
-     * 
-     * @return Returns the extension of the encoded file
-     */
-    @Override
-    public String getExtensionOfEncodedFiles() {
-        return "ogg";
-    }
-
-    @Override
-    public void setAlbum(String album) {
-        this.album = album;
-    }
-
-    @Override
-    public void setArtist(String artist) {
-        this.albumArtist = artist;
-    }
-
-    @Override
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
-    @Override
-    public void setListener(ProgressListener listener) {
-        this.listener = listener;
-    }
-
-    @Override
-    public void setQuality(String quality) {
-        this.quality = quality;
-    }
-
-    @Override
-    public void setYear(int year) {
-        this.year = year;
-    }
-
     @Override
     public void stop() {
         if (p != null) {
             p.destroy();
         }
-    }
-
-    @Override
-    public String[] getAvailableQualities() {
-        return OGG_QUALITIES;
-    }
-
-    @Override
-    public String getDefaultQuality() {
-        return DEFAULT_OGG_QUALITY;
-    }
-
-    @Override
-    public String getFormatName() {
-        return FORMAT_NAME;
     }
 }

@@ -43,7 +43,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The Class LameEncoder.
  */
-public class LameEncoder implements Encoder {
+public class LameEncoder extends AbstractEncoder {
 
     /** The format name of this encoder */
     public static final String FORMAT_NAME = "MP3";
@@ -104,6 +104,7 @@ public class LameEncoder implements Encoder {
     }
 
     public LameEncoder(IOSManager osManager) {
+    	super("mp3", MP3_QUALITIES, MP3_DEFAULT_QUALITY, FORMAT_NAME);
     	this.osManager = osManager;
 	}
     
@@ -215,65 +216,10 @@ public class LameEncoder implements Encoder {
         }
     }
 
-    /**
-     * Gets the extension of encoded files.
-     * 
-     * @return Returns the extension of the encoded file
-     */
-    @Override
-    public String getExtensionOfEncodedFiles() {
-        return "mp3";
-    }
-
-    @Override
-    public void setAlbum(String album) {
-        this.album = album;
-    }
-
-    @Override
-    public void setArtist(String albumArtist) {
-        this.albumArtist = albumArtist;
-    }
-
-    @Override
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
-    @Override
-    public void setListener(ProgressListener listener) {
-        this.listener = listener;
-    }
-
-    @Override
-    public void setQuality(String quality) {
-        this.quality = quality;
-    }
-
-    @Override
-    public void setYear(int year) {
-        this.year = year;
-    }
-
     @Override
     public void stop() {
         if (p != null) {
             p.destroy();
         }
-    }
-
-    @Override
-    public String[] getAvailableQualities() {
-        return MP3_QUALITIES;
-    }
-
-    @Override
-    public String getDefaultQuality() {
-        return MP3_DEFAULT_QUALITY;
-    }
-
-    @Override
-    public String getFormatName() {
-        return FORMAT_NAME;
     }
 }
