@@ -20,37 +20,22 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.utils.I18nUtils;
 
-/**
- * Creates a new empty play list
- * 
- * @author fleax
- * 
- */
-public class NewPlayListAction extends CustomAbstractAction {
+import org.junit.Test;
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 3866441529401824151L;
+public class NewPlayListActionTest {
 
-    private IPlayListHandler playListHandler;
-    
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
+	@Test
+	public void test() {
+		NewPlayListAction sut = new NewPlayListAction();
+		IPlayListHandler playListHandler = mock(IPlayListHandler.class);
+		sut.setPlayListHandler(playListHandler);
+		
+		sut.executeAction();
+		
+		verify(playListHandler).newPlayList(null);
 	}
-    
-    public NewPlayListAction() {
-        super(I18nUtils.getString("NEW_PLAYLIST"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("NEW_PLAYLIST"));
-    }
-
-    @Override
-    protected void executeAction() {
-        // Create a new empty play list
-    	playListHandler.newPlayList(null);
-    }
-
 }
