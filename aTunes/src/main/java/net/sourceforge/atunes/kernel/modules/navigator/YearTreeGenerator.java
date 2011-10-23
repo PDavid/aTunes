@@ -127,43 +127,19 @@ public class YearTreeGenerator implements ITreeGenerator {
 
     @Override
     public void selectAudioObject(JTree tree, IAudioObject audioObject) {
-
     	DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) tree.getModel().getRoot();
-    	TreePath treePath = null;
-
-    	@SuppressWarnings("unchecked")
-    	Enumeration<DefaultMutableTreeNode> years = rootNode.children();
-
-    	while (years.hasMoreElements()){
-    		DefaultMutableTreeNode yearNode = years.nextElement();
-    		Year year = (Year) yearNode.getUserObject();
-    		if (year.getName().equals(audioObject.getYear())){
-    			@SuppressWarnings("unchecked")
-    			Enumeration<DefaultMutableTreeNode> artists = yearNode.children();
-
-    			while (artists.hasMoreElements()){
-    				DefaultMutableTreeNode artistNode = artists.nextElement();
-    				Artist artist = (Artist) artistNode.getUserObject();
-    				if (artist.getName().equals(audioObject.getArtist())){
-    					@SuppressWarnings("unchecked")
-    					Enumeration<DefaultMutableTreeNode> albums = artistNode.children();
-    					while (albums.hasMoreElements()){
-    						DefaultMutableTreeNode albumNode = albums.nextElement();
-    						Album album = (Album) albumNode.getUserObject();
-    						if (album.getName().equals(audioObject.getAlbum())){
-    							treePath = new TreePath(albumNode.getPath());
-    							break;
-    						}
-    					}
-    					break;
-    				}
+    	DefaultMutableTreeNode yearNode = new YearAudioObjectSelector().getNodeRepresentingAudioObject(rootNode, audioObject);
+    	if (yearNode != null) {
+    		DefaultMutableTreeNode artistNode = new ArtistAudioObjectSelector().getNodeRepresentingAudioObject(yearNode, audioObject);
+    		if (artistNode != null) {
+    			DefaultMutableTreeNode albumNode = new AlbumAudioObjectSelector().getNodeRepresentingAudioObject(artistNode, audioObject);
+    			if (albumNode != null) {
+    				TreePath treePath = new TreePath(albumNode.getPath());
+    		    	tree.setSelectionPath(treePath);
+    		    	tree.scrollPathToVisible(treePath);
     			}
-    			break;
     		}
     	}
-
-    	tree.setSelectionPath(treePath);
-    	tree.scrollPathToVisible(treePath);
     }
 
     @Override
@@ -171,35 +147,24 @@ public class YearTreeGenerator implements ITreeGenerator {
     	DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) tree.getModel().getRoot();
     	List<TreePath> treePathList = new ArrayList<TreePath>();
     	TreePath[] treePaths = null;
-
     	@SuppressWarnings("unchecked")
     	Enumeration<DefaultMutableTreeNode> years = rootNode.children();
-
+    	ArtistByNameAudioObjectSelector selector = new ArtistByNameAudioObjectSelector();
     	while (years.hasMoreElements()){
-
     		DefaultMutableTreeNode yearNode = years.nextElement();
-
-    		@SuppressWarnings("unchecked")
-    		Enumeration<DefaultMutableTreeNode> artists = yearNode.children();
-
-    		while (artists.hasMoreElements()){
-    			DefaultMutableTreeNode artistNode = artists.nextElement();
-    			Artist artist = (Artist) artistNode.getUserObject();
-    			if (artist.getName().equals(artistName)){
-    				TreePath treePath = new TreePath(artistNode.getPath()); 
-    				treePathList.add(treePath);
-    				tree.expandPath(treePath);
-    				break;
-    			}
+    		DefaultMutableTreeNode artistNode = selector.getNodeRepresentingAudioObject(yearNode, artistName);
+    		if (artistNode != null) {
+				TreePath treePath = new TreePath(artistNode.getPath()); 
+				treePathList.add(treePath);
+				tree.expandPath(treePath);
     		}
     	}
 
-    	treePaths = new TreePath[treePathList.size()];
-    	treePaths = (TreePath[]) treePathList.toArray(treePaths);
-
-    	tree.setSelectionPaths(treePaths);
-    	tree.scrollPathToVisible(treePaths[0]);
+    	if (!treePathList.isEmpty()) {
+    		treePaths = new TreePath[treePathList.size()];
+    		treePaths = (TreePath[]) treePathList.toArray(treePaths);
+    		tree.setSelectionPaths(treePaths);
+    		tree.scrollPathToVisible(treePaths[0]);
+    	}
     }
-
-
 }

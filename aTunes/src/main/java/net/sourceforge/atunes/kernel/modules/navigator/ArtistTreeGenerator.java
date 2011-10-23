@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.navigator;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
@@ -125,54 +124,29 @@ public class ArtistTreeGenerator implements ITreeGenerator {
 
 	@Override
 	public void selectAudioObject(JTree tree, IAudioObject audioObject) {
-
 		DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) tree.getModel().getRoot();
-		TreePath treePath = null;
-
-		@SuppressWarnings("unchecked")
-		Enumeration<DefaultMutableTreeNode> artists = rootNode.children();
-		while (artists.hasMoreElements()){
-			DefaultMutableTreeNode artistNode = artists.nextElement();
-			Artist artist = (Artist) artistNode.getUserObject();
-			if (artist.getName().equals(audioObject.getArtist())){
-				@SuppressWarnings("unchecked")
-				Enumeration<DefaultMutableTreeNode> albums = artistNode.children();
-				while (albums.hasMoreElements()){
-					DefaultMutableTreeNode albumNode = albums.nextElement();
-					Album album = (Album) albumNode.getUserObject();
-					if (album.getName().equals(audioObject.getAlbum())){
-						treePath = new TreePath(albumNode.getPath());
-						break;
-					}
-				}
-				break;
+		
+		DefaultMutableTreeNode artistNode = new ArtistAudioObjectSelector().getNodeRepresentingAudioObject(rootNode, audioObject);
+		if (artistNode != null) {
+			DefaultMutableTreeNode albumNode = new AlbumAudioObjectSelector().getNodeRepresentingAudioObject(artistNode, audioObject);
+			if (albumNode != null) {
+				TreePath treePath = new TreePath(albumNode.getPath());
+				tree.setSelectionPath(treePath);
+				tree.scrollPathToVisible(treePath);
 			}
 		}
-
-		tree.setSelectionPath(treePath);
-		tree.scrollPathToVisible(treePath);
 	}
 
     @Override
 	public void selectArtist(JTree tree, String artistName) {
 		DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) tree.getModel().getRoot();
-		TreePath treePath = null;
 
-		@SuppressWarnings("unchecked")
-		Enumeration<DefaultMutableTreeNode> artists = rootNode.children();
-		while (artists.hasMoreElements()){
-			DefaultMutableTreeNode artistNode = artists.nextElement();
-			Artist artist = (Artist) artistNode.getUserObject();
-			if (artist.getName().equals(artistName)){
-				treePath = new TreePath(artistNode.getPath());
-				break;
-			}
+		DefaultMutableTreeNode artistNode = new ArtistByNameAudioObjectSelector().getNodeRepresentingAudioObject(rootNode, artistName);
+		if (artistNode != null) {
+			TreePath treePath = new TreePath(artistNode.getPath());
+			tree.setSelectionPath(treePath);
+			tree.scrollPathToVisible(treePath);
+			tree.expandPath(treePath);
 		}
-
-		tree.setSelectionPath(treePath);
-		tree.scrollPathToVisible(treePath);
-		tree.expandPath(treePath);
-
 	}
-
 }

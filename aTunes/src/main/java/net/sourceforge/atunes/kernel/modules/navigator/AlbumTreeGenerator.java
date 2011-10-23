@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.navigator;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
@@ -110,50 +109,34 @@ public class AlbumTreeGenerator implements ITreeGenerator {
 
     @Override
     public void selectAudioObject(JTree tree, IAudioObject audioObject) {
-
     	DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) tree.getModel().getRoot();
-    	TreePath treePath = null;
 
-    	@SuppressWarnings("unchecked")
-    	Enumeration<DefaultMutableTreeNode> albums = rootNode.children();
-
-    	while (albums.hasMoreElements()){
-    		DefaultMutableTreeNode albumNode = albums.nextElement();
-    		Album album = (Album) albumNode.getUserObject();
-    		if (album.getName().equals(audioObject.getAlbum())){
-    			treePath = new TreePath(albumNode.getPath());
-    			break;
-    		}
+    	DefaultMutableTreeNode albumNode = new AlbumAudioObjectSelector().getNodeRepresentingAudioObject(rootNode, audioObject);
+    	if (albumNode != null) {
+        	TreePath treePath = new TreePath(albumNode.getPath());
+        	tree.setSelectionPath(treePath);
+        	tree.scrollPathToVisible(treePath);
     	}
-
-    	tree.setSelectionPath(treePath);
-    	tree.scrollPathToVisible(treePath);
     }
 
     @Override
     public void selectArtist(JTree tree, String artist) {
     	DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) tree.getModel().getRoot();
-    	List<TreePath> treePathList = new ArrayList<TreePath>();
-    	TreePath[] treePaths = null;
 
-    	@SuppressWarnings("unchecked")
-    	Enumeration<DefaultMutableTreeNode> albums = rootNode.children();
-
-    	while (albums.hasMoreElements()){
-    		DefaultMutableTreeNode albumNode = albums.nextElement();
-    		Album album = (Album) albumNode.getUserObject();
-    		if (album.getArtist().getName().equals(artist)){
-    			TreePath treePath = new TreePath(albumNode.getPath()); 
+    	List<DefaultMutableTreeNode> albumsNodes = new AlbumWithArtistAudioObjectSelector().getNodesRepresentingAudioObject(rootNode, artist);
+    	if (!albumsNodes.isEmpty()) {
+        	List<TreePath> treePathList = new ArrayList<TreePath>();
+        	for (DefaultMutableTreeNode node : albumsNodes) {
+    			TreePath treePath = new TreePath(node.getPath()); 
     			treePathList.add(treePath);
     			tree.expandPath(treePath);
-    			break;
-    		}
+        	}
+    		
+        	TreePath[] treePaths = new TreePath[treePathList.size()];
+        	treePaths = (TreePath[]) treePathList.toArray(treePaths);
+
+        	tree.setSelectionPaths(treePaths);
+        	tree.scrollPathToVisible(treePaths[0]);
     	}
-
-    	treePaths = new TreePath[treePathList.size()];
-    	treePaths = (TreePath[]) treePathList.toArray(treePaths);
-
-    	tree.setSelectionPaths(treePaths);
-    	tree.scrollPathToVisible(treePaths[0]);
     }
 }

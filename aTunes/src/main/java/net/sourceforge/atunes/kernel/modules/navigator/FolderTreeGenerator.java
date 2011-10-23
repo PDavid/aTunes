@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
@@ -92,57 +91,38 @@ public class FolderTreeGenerator implements ITreeGenerator {
         NavigationViewHelper.selectNodes(view.getTree(), nodesToSelect);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void selectAudioObject(JTree tree, IAudioObject audioObject) {
-
     	if (audioObject instanceof AudioFile) {
-    		TreePath treePath = null;
-    		AudioFile audioFile = (AudioFile)audioObject;
-    		String filePath = audioFile.getFile().getPath();
-
-    		Enumeration<DefaultMutableTreeNode> foldersTreeNodes = ((DefaultMutableTreeNode)tree.getModel().getRoot()).children();
-    		while (foldersTreeNodes.hasMoreElements()) {
-    			DefaultMutableTreeNode currentFolderNode = (DefaultMutableTreeNode) foldersTreeNodes.nextElement();
-    			Folder currentFolder = (Folder) currentFolderNode.getUserObject();
-    			if (filePath.startsWith(currentFolder.getName())){
-    				String searchPath = filePath.substring(currentFolder.getName().length()+1);
-    				String[] paths = searchPath.split(Context.getBean(IOSManager.class).getFileSeparator());
-    				treePath = getTreePathForLevel(paths,0,currentFolderNode.children());
-    				break;
-    			}
-
+    		String filePath = audioObject.getUrl();
+    		DefaultMutableTreeNode folderNode = new FolderAudioObjectSelector().getNodeRepresentingAudioObject((DefaultMutableTreeNode)tree.getModel().getRoot(), filePath);
+    		if (folderNode != null) {
+    			Folder f = (Folder) folderNode.getUserObject();
+				String searchPath = filePath.substring(f.getName().length()+1);
+				String[] paths = searchPath.split(Context.getBean(IOSManager.class).getFileSeparator());
+				TreePath treePath = getTreePathForLevel(paths, 0, folderNode);
+				if (treePath != null) {
+					tree.setSelectionPath(treePath);
+					tree.scrollPathToVisible(treePath);
+					tree.expandPath(treePath);
+				}
     		}
-
-    		tree.setSelectionPath(treePath);
-    		tree.scrollPathToVisible(treePath);
-    		tree.expandPath(treePath);
     	}
-
     }
 
-    @SuppressWarnings("unchecked")
-    private TreePath getTreePathForLevel(String[] paths, int currentLevel,
-    		Enumeration<DefaultMutableTreeNode> foldersTreeNodes) {
-
+    private TreePath getTreePathForLevel(String[] paths, int currentLevel, DefaultMutableTreeNode foldersRootNode) {
     	TreePath treePath = null;
-
-    	while (foldersTreeNodes.hasMoreElements()){
-    		DefaultMutableTreeNode currentFolderNode = (DefaultMutableTreeNode) foldersTreeNodes.nextElement();
-    		Folder currentFolder = (Folder) currentFolderNode.getUserObject();
-    		if (currentFolder.getName().equals(paths[currentLevel])){
-    			if (currentLevel == paths.length-2){
-    				treePath =  new TreePath(currentFolderNode.getPath());
-    			} else {
-    				treePath = getTreePathForLevel(paths, ++currentLevel, currentFolderNode.children());
-    			}
-    			break;
-    		}
+    	DefaultMutableTreeNode folderNode = new FolderAudioObjectSelector().getNodeRepresentingAudioObject(foldersRootNode, paths[currentLevel]);
+    	if (folderNode != null) {
+			if (currentLevel == paths.length - 2) {
+				treePath =  new TreePath(folderNode.getPath());
+			} else {
+				treePath = getTreePathForLevel(paths, currentLevel + 1, folderNode);
+			}
     	}
     	return treePath;
     }
 
     @Override
-    public void selectArtist(JTree tree, String artist) {
-    }
+    public void selectArtist(JTree tree, String artist) {}
 }
