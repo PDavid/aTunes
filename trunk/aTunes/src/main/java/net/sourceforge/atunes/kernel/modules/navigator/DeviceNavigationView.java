@@ -57,7 +57,6 @@ import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IState;
@@ -205,24 +204,8 @@ public final class DeviceNavigationView extends AbstractNavigationView {
     }
 
     @Override
-    public List<ILocalAudioObject> getAudioObjectForTreeNode(DefaultMutableTreeNode node, ViewMode viewMode, String treeFilter) {
-        List<ILocalAudioObject> songs = new ArrayList<ILocalAudioObject>();
-        if (node.isRoot()) {
-            if (treeFilter == null) {
-                songs.addAll(deviceHandler.getAudioFilesList());
-            } else {
-                for (int i = 0; i < node.getChildCount(); i++) {
-                    @SuppressWarnings("unchecked")
-					ITreeObject<ILocalAudioObject> obj = (ITreeObject<ILocalAudioObject>) ((DefaultMutableTreeNode) node.getChildAt(i)).getUserObject();
-                    songs.addAll(obj.getAudioObjects());
-                }
-            }
-        } else {
-            @SuppressWarnings("unchecked")
-			ITreeObject<ILocalAudioObject> obj = (ITreeObject<ILocalAudioObject>) node.getUserObject();
-            songs = obj.getAudioObjects();
-        }
-        return songs;
+    public List<? extends IAudioObject> getAudioObjectForTreeNode(DefaultMutableTreeNode node, ViewMode viewMode, String treeFilter) {
+    	return new RepositoryAudioObjectsHelper().getAudioObjectForTreeNode(deviceHandler.getAudioFilesList(), node, viewMode, treeFilter);
     }
 
     @Override

@@ -252,6 +252,41 @@ public final class RadioNavigationView extends AbstractNavigationView {
         Map<String, DefaultMutableTreeNode> radioGroups = new HashMap<String, DefaultMutableTreeNode>();
         Map<String, DefaultMutableTreeNode> radioGroupNoLabel = new HashMap<String, DefaultMutableTreeNode>();
 
+        // Add radios
+        addRadioNodes(radios, presetRadios, currentFilter, objectsExpanded, objectsSelected, nodesToExpand, nodesToSelect, radioGroups, radioGroupNoLabel);
+        
+        // Add presets
+        if (showAllStations) {
+        	addRadioNodes(presetRadios, null, currentFilter, objectsExpanded, objectsSelected, nodesToExpand, nodesToSelect, radioGroups, radioGroupNoLabel);
+        }
+        
+        // Sort and add labels 
+        List<String> RadioLabels = radioHandler.sortRadioLabels();
+        for (String label : RadioLabels) {
+            for (DefaultMutableTreeNode labelNode : radioGroups.values()) {
+                if (labelNode.toString().equals(label)) {
+                    root.add(labelNode);
+                    break;
+                }
+            }
+        }
+
+        // Add radio nodes without labels
+        for (DefaultMutableTreeNode radioNode : radioGroupNoLabel.values()) {
+            root.add(radioNode);
+        }
+    }
+
+    private void addRadioNodes(List<Radio> radios,
+    						   List<Radio> presetRadios,
+    						   String currentFilter, 
+    						   List<ITreeObject<? extends IAudioObject>> objectsExpanded, 
+    						   List<ITreeObject<? extends IAudioObject>> objectsSelected, 
+    						   List<DefaultMutableTreeNode> nodesToExpand, 
+    						   List<DefaultMutableTreeNode> nodesToSelect, 
+    						   Map<String, DefaultMutableTreeNode> radioGroups, 
+    						   Map<String, DefaultMutableTreeNode> radioGroupNoLabel) {
+    	
         for (Radio r : radios) {
             if (currentFilter == null || r.getName().toUpperCase().contains(currentFilter.toUpperCase())) {
                 // Create radio node
@@ -269,9 +304,13 @@ public final class RadioNavigationView extends AbstractNavigationView {
                 if (radioGroups.containsKey(r.getLabel()) && !r.isRemoved()) {
                     radioGroups.get(r.getLabel()).add(radioNode);
                 } else if (r.isRemoved()) {
-                    if (!presetRadios.isEmpty()) {
-                        presetRadios.remove(r);
-                    }
+                	if (presetRadios != null) {
+                		if (!presetRadios.isEmpty()) {
+                			presetRadios.remove(r);
+                		}
+                	} else {
+                		radioHandler.removeRadio(r);
+                	}
                 } else {
                     DefaultMutableTreeNode labelNode;
                     if (r.getLabel() == null || r.getLabel().trim().equals("")) {
@@ -295,71 +334,8 @@ public final class RadioNavigationView extends AbstractNavigationView {
                 }
             }
         }
-
-        if (presetRadios != null && showAllStations) {
-            for (Radio r : presetRadios) {
-                if (currentFilter == null || r.getName().toUpperCase().contains(currentFilter.toUpperCase())) {
-                    // Create radio node
-                    DefaultMutableTreeNode radioNode = new DefaultMutableTreeNode(r);
-                    // If node was selected before refreshing...
-                    if (objectsSelected.contains(radioNode.getUserObject())) {
-                        nodesToSelect.add(radioNode);
-                    }
-                    // If node was expanded before refreshing...
-                    if (objectsExpanded.contains(radioNode.getUserObject())) {
-                        nodesToExpand.add(radioNode);
-                    }
-
-                    // Insert radio node into label node
-                    if (radioGroups.containsKey(r.getLabel()) && !r.isRemoved()) {
-                        radioGroups.get(r.getLabel()).add(radioNode);
-                    }
-                    // Marked as removed, so remove for next start
-                    else if (r.isRemoved()) {
-                        radioHandler.removeRadio(r);
-                    } else {
-                        DefaultMutableTreeNode labelNode;
-                        if (r.getLabel() == null || r.getLabel().trim().equals("")) {
-                            //labelNode = new DefaultMutableTreeNode(LanguageTool.getString("UNLABELED"));
-                            radioGroupNoLabel.put(r.getName(), radioNode);
-                        } else {
-                            if (!r.isRemoved()) {
-                                labelNode = new DefaultMutableTreeNode(r.getLabel());
-                                labelNode.add(radioNode);
-                                // If node was selected before refreshing...
-                                if (objectsSelected.contains(labelNode.getUserObject())) {
-                                    nodesToSelect.add(labelNode);
-                                }
-                                // If node was expanded before refreshing...
-                                if (objectsExpanded.contains(labelNode.getUserObject())) {
-                                    nodesToExpand.add(labelNode);
-                                }
-                                radioGroups.put(r.getLabel(), labelNode);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        // Sort and add labels 
-        List<String> RadioLabels = radioHandler.sortRadioLabels();
-        for (String label : RadioLabels) {
-            for (DefaultMutableTreeNode labelNode : radioGroups.values()) {
-                if (labelNode.toString().equals(label)) {
-                    root.add(labelNode);
-                    break;
-                }
-            }
-        }
-
-        // Add radio nodes without labels
-        for (DefaultMutableTreeNode radioNode : radioGroupNoLabel.values()) {
-            root.add(radioNode);
-        }
-
     }
-
+    
     @Override
     public boolean isUseDefaultNavigatorColumnSet() {
         return false;
