@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.player;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -261,7 +262,9 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
      */
     private void initPlayerEngine() {
         // Remove unsupported engines
-        Iterator<AbstractPlayerEngine> it = engines.iterator();
+    	// To do that create a clone of list to be able to remove from
+    	List<AbstractPlayerEngine> availableEngines = new ArrayList<AbstractPlayerEngine>(engines);
+        Iterator<AbstractPlayerEngine> it = availableEngines.iterator();
         while (it.hasNext()) {
         	AbstractPlayerEngine engine = it.next();
         	// Engines must be supported for given OS and available
@@ -270,11 +273,11 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
             }
         }
 
-        if (!engines.isEmpty()) {
+        if (!availableEngines.isEmpty()) {
             // Update engine names
-            engineNames = new String[engines.size()];
-            for (int i = 0; i < engines.size(); i++) {
-                engineNames[i] = engines.get(i).getEngineName();
+            engineNames = new String[availableEngines.size()];
+            for (int i = 0; i < availableEngines.size(); i++) {
+                engineNames[i] = availableEngines.get(i).getEngineName();
             }
 
             Logger.info("List of availables engines : ", ArrayUtils.toString(engineNames));
@@ -290,13 +293,13 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
                     selectedEngine = Constants.DEFAULT_ENGINE;
                 } else {
                     // If default engine is not available, then get the first engine of map returned
-                    selectedEngine = engines.iterator().next().getEngineName();
+                    selectedEngine = availableEngines.iterator().next().getEngineName();
                 }
                 // Update application state with this engine
                 getState().setPlayerEngine(selectedEngine);
             }
 
-            for (AbstractPlayerEngine engine : engines) {
+            for (AbstractPlayerEngine engine : availableEngines) {
                 if (engine.getEngineName().equals(selectedEngine)) {
                 	playerEngine = engine;
                     Logger.info("Engine initialized : ", selectedEngine);
