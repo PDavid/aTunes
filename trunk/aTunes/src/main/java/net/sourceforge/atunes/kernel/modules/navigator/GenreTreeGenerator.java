@@ -138,17 +138,17 @@ public class GenreTreeGenerator implements ITreeGenerator {
     @Override
     public void selectAudioObject(JTree tree, IAudioObject audioObject) {
     	DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) tree.getModel().getRoot();
-    	DefaultMutableTreeNode genreNode = new GenreAudioObjectSelector().getNodeRepresentingAudioObject(rootNode, audioObject);
-    	if (genreNode != null) {
-    		DefaultMutableTreeNode artistNode = new ArtistAudioObjectSelector().getNodeRepresentingAudioObject(genreNode, audioObject);
-    		if (artistNode != null) {
-    			DefaultMutableTreeNode albumNode = new AlbumAudioObjectSelector().getNodeRepresentingAudioObject(artistNode, audioObject);
-    			if (albumNode != null) {
-    				TreePath treePath = new TreePath(albumNode.getPath());
-    		    	tree.setSelectionPath(treePath);
-    		    	tree.scrollPathToVisible(treePath);
-    			}
-    		}
+    	
+    	@SuppressWarnings({ "unchecked", "rawtypes" })
+		ChainOfSelectors chain = new ChainOfSelectors((AudioObjectSelector) new GenreAudioObjectSelector(), 
+    												  (AudioObjectSelector) new ArtistAudioObjectSelector(), 
+    												  (AudioObjectSelector) new AlbumAudioObjectSelector());
+    	DefaultMutableTreeNode albumNode = chain.selectAudioObject(rootNode, audioObject);
+
+    	if (albumNode != null) {
+    		TreePath treePath = new TreePath(albumNode.getPath());
+    		tree.setSelectionPath(treePath);
+    		tree.scrollPathToVisible(treePath);
     	}
     }
 

@@ -128,17 +128,17 @@ public class YearTreeGenerator implements ITreeGenerator {
     @Override
     public void selectAudioObject(JTree tree, IAudioObject audioObject) {
     	DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) tree.getModel().getRoot();
-    	DefaultMutableTreeNode yearNode = new YearAudioObjectSelector().getNodeRepresentingAudioObject(rootNode, audioObject);
-    	if (yearNode != null) {
-    		DefaultMutableTreeNode artistNode = new ArtistAudioObjectSelector().getNodeRepresentingAudioObject(yearNode, audioObject);
-    		if (artistNode != null) {
-    			DefaultMutableTreeNode albumNode = new AlbumAudioObjectSelector().getNodeRepresentingAudioObject(artistNode, audioObject);
-    			if (albumNode != null) {
-    				TreePath treePath = new TreePath(albumNode.getPath());
-    		    	tree.setSelectionPath(treePath);
-    		    	tree.scrollPathToVisible(treePath);
-    			}
-    		}
+    	
+    	@SuppressWarnings({ "unchecked", "rawtypes" })
+		ChainOfSelectors chain = new ChainOfSelectors((AudioObjectSelector) new YearAudioObjectSelector(), 
+    												  (AudioObjectSelector) new ArtistAudioObjectSelector(), 
+    												  (AudioObjectSelector) new AlbumAudioObjectSelector());
+    	DefaultMutableTreeNode albumNode = chain.selectAudioObject(rootNode, audioObject);
+    	
+    	if (albumNode != null) {
+    		TreePath treePath = new TreePath(albumNode.getPath());
+    		tree.setSelectionPath(treePath);
+    		tree.scrollPathToVisible(treePath);
     	}
     }
 
