@@ -149,117 +149,69 @@ public abstract class AbstractLookAndFeel implements ILookAndFeel {
         }
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getName()
-	 */
     @Override
 	public abstract String getName();
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getDescription()
-	 */
     @Override
 	public abstract String getDescription();
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#initializeLookAndFeel()
-	 */
     @Override
 	public abstract void initializeLookAndFeel();
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#setLookAndFeel(java.lang.String)
-	 */
     @Override
 	public abstract void setLookAndFeel(String skin);
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getDefaultSkin()
-	 */
     @Override
 	public abstract String getDefaultSkin();
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getSkins()
-	 */
     @Override
 	public abstract List<String> getSkins();
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#isDialogUndecorated()
-	 */
     @Override
 	public boolean isDialogUndecorated() {
         return false;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getTreeCellRenderer(net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellRendererCode)
-	 */
     @Override
 	public TreeCellRenderer getTreeCellRenderer(final AbstractTreeCellRendererCode code) {
         return new LookAndFeelTreeCellRenderer(code);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getTableCellRenderer(net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode)
-	 */
     @Override
 	public TableCellRenderer getTableCellRenderer(final AbstractTableCellRendererCode code) {
         return new LookAndFeelTableCellRenderer(code);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getTableHeaderCellRenderer(net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode)
-	 */
     @Override
 	public TableCellRenderer getTableHeaderCellRenderer(final AbstractTableCellRendererCode code) {
         return new LookAndFeelTableHeaderCellRenderer(code);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getListCellRenderer(net.sourceforge.atunes.gui.lookandfeel.AbstractListCellRendererCode)
-	 */
     @Override
 	public ListCellRenderer getListCellRenderer(final AbstractListCellRendererCode code) {
         return new LookAndFeelListCellRenderer(code);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#customComboBoxRenderersSupported()
-	 */
     @Override
 	public boolean customComboBoxRenderersSupported() {
     	return true;
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#putClientProperties(javax.swing.JComponent)
-	 */
     @Override
 	public void putClientProperties(JComponent c) {
         // No properties by default
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#isCustomPlayerControlsSupported()
-	 */
     @Override
 	public boolean isCustomPlayerControlsSupported() {
         return false;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getShadowBorder()
-	 */
     @Override
 	public Border getShadowBorder() {
         return null;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#initializeFonts(java.awt.Font)
-	 */
     @Override
 	public void initializeFonts(Font baseFont) {
     	this.baseFont = baseFont;
@@ -281,41 +233,26 @@ public abstract class AbstractLookAndFeel implements ILookAndFeel {
     	}
     }    
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#allowsSkins()
-	 */
     @Override
 	public boolean allowsSkins() {
     	return getSkins() != null && !getSkins().isEmpty();
     }
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getPaintForSpecialControls()
-	 */
 	@Override
 	public Paint getPaintForSpecialControls() {
 		return UIManager.getColor("Label.foreground"); 
 	}
 	
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getPaintForDisabledSpecialControls()
-	 */
 	@Override
 	public Paint getPaintForDisabledSpecialControls() {
 		return UIManager.getColor("Label.foreground"); 
 	}	
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getPaintForColorMutableIcon(java.awt.Component, boolean)
-	 */
 	@Override
 	public Paint getPaintForColorMutableIcon(Component c, boolean isSelected) {
 		return isSelected ? UIManager.getColor("Tree.selectionForeground") : UIManager.getColor("Label.foreground");	
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getPopUpButtonSize()
-	 */
 	@Override
 	public Dimension getPopUpButtonSize() {
 		return new Dimension(20, 20);
@@ -324,39 +261,24 @@ public abstract class AbstractLookAndFeel implements ILookAndFeel {
 	
 	/********************************************************* FONTS *******************************************************/
 	
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getDefaultFont()
-	 */
     @Override
 	public Font getDefaultFont() {
         return this.baseFont;
     }
     
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#supportsCustomFontSettings()
-	 */
 	@Override
 	public abstract boolean supportsCustomFontSettings();
 	
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getAboutBigFont()
-	 */
     @Override
 	public final Font getAboutBigFont() {
         return getDefaultFont().deriveFont(getDefaultFont().getSize() + 8f);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getPlayListFont()
-	 */
     @Override
 	public Font getPlayListFont() {
         return getDefaultFont();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getPlayListSelectedItemFont()
-	 */
     @Override
 	public Font getPlayListSelectedItemFont() {
     	if (getPlayListFont() != null) {
@@ -365,107 +287,81 @@ public abstract class AbstractLookAndFeel implements ILookAndFeel {
     	return getDefaultFont();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getContextInformationBigFont()
-	 */
     @Override
 	public final Font getContextInformationBigFont() {
         return getDefaultFont().deriveFont(getDefaultFont().getSize() + 8f);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getPropertiesDialogBigFont()
-	 */
     @Override
 	public final Font getPropertiesDialogBigFont() {
         return getDefaultFont().deriveFont(getDefaultFont().getSize() + 4f);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getOsdLine1Font()
-	 */
     @Override
 	public final Font getOsdLine1Font() {
         return getDefaultFont().deriveFont(Font.BOLD, getDefaultFont().getSize() + 4f);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getOsdLine2Font()
-	 */
     @Override
 	public final Font getOsdLine2Font() {
         return getDefaultFont().deriveFont(getDefaultFont().getSize() + 2f);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getOsdLine3Font()
-	 */
     @Override
 	public final Font getOsdLine3Font() {
         return getOsdLine2Font();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getFullScreenLine1Font()
-	 */
     @Override
 	public final Font getFullScreenLine1Font() {
         return  getDefaultFont().deriveFont(getDefaultFont().getSize() + 25f);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getSplitPaneDividerSize()
-	 */
     @Override
 	public int getSplitPaneDividerSize() {
     	return new CustomSplitPane(JSplitPane.HORIZONTAL_SPLIT).getDividerSize();
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getTable()
-	 */
     @Override
-	public abstract JTable getTable();
+	public JTable getTable() {
+    	JTable table = new JTable();
+    	table.setShowGrid(false);
+    	return table;
+    }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#decorateTable(javax.swing.JTable)
-	 */
     @Override
-	public abstract void decorateTable(JTable table);
+	public void decorateTable(JTable table) {
+    	table.setShowGrid(false);
+    }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getTableScrollPane(javax.swing.JTable)
-	 */
     @Override
-	public abstract JScrollPane getTableScrollPane(JTable table);
+	public JScrollPane getTableScrollPane(JTable table) {
+    	return getScrollPane(table);
+    }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getTreeScrollPane(javax.swing.JTree)
-	 */
     @Override
-	public abstract JScrollPane getTreeScrollPane(JTree tree);
+	public JScrollPane getTreeScrollPane(JTree tree) {
+    	return getScrollPane(tree);
+    }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getList()
-	 */
     @Override
-	public abstract JList getList();
+	public JList getList() {
+    	return new JList();
+    }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getListScrollPane(javax.swing.JList)
-	 */
     @Override
-	public abstract JScrollPane getListScrollPane(JList list);
+	public JScrollPane getListScrollPane(JList list) {
+    	return getScrollPane(list);
+    }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.lookandfeel.ILookAndFeel#getScrollPane(java.awt.Component)
-	 */
     @Override
-	public abstract JScrollPane getScrollPane(Component component);
+	public JScrollPane getScrollPane(Component component) {
+    	return new JScrollPane(component);
+    }
 
 	/**
 	 * @param osManager the osManager to set
-	 */
+	 */ 
     @Override
 	public void setOsManager(IOSManager osManager) {
 		this.osManager = osManager;

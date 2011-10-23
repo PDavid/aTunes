@@ -22,7 +22,6 @@ package net.sourceforge.atunes.gui.lookandfeel.substance;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Paint;
 import java.io.Serializable;
@@ -37,7 +36,6 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JList;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.ListCellRenderer;
@@ -431,50 +429,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
     }
     
     @Override
-    public Dimension getPopUpButtonSize() {
-    	return new Dimension(20, 20);
-    }
-    
-    @Override
     public boolean supportsCustomFontSettings() {
     	return true;
-    }
-    
-    @Override
-    public JScrollPane getScrollPane(Component component) {
-    	return new JScrollPane(component);
-    }
-    
-    @Override
-    public JScrollPane getTableScrollPane(JTable table) {
-    	return getScrollPane(table);
-    }
-    
-    @Override
-    public JTable getTable() {
-    	JTable table = new JTable();
-    	table.setShowGrid(false);
-    	return table;
-    }
-    
-    @Override
-    public void decorateTable(JTable table) {
-    	table.setShowGrid(false);
-    }
-    
-    @Override
-    public JScrollPane getTreeScrollPane(JTree tree) {
-    	return getScrollPane(tree);
-    }
-    
-    @Override
-    public JScrollPane getListScrollPane(JList list) {
-    	return getScrollPane(list);
-    }
-    
-    @Override
-    public JList getList() {
-    	return new JList();
-    }
-
+    }    
 }

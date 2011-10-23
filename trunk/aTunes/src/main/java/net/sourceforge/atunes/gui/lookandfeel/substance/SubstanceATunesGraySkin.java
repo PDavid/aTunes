@@ -29,8 +29,6 @@ import org.pushingpixels.substance.api.DecorationAreaType;
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceColorSchemeBundle;
 import org.pushingpixels.substance.api.SubstanceSkin;
-import org.pushingpixels.substance.api.colorscheme.BaseColorScheme;
-import org.pushingpixels.substance.api.colorscheme.BaseLightColorScheme;
 import org.pushingpixels.substance.api.painter.border.ClassicBorderPainter;
 import org.pushingpixels.substance.api.painter.decoration.MatteDecorationPainter;
 import org.pushingpixels.substance.api.painter.fill.ClassicFillPainter;
@@ -41,214 +39,47 @@ public final class SubstanceATunesGraySkin extends SubstanceSkin implements ICus
 
 	private Color highlightColor;
 	
-	static class GrayColorScheme extends BaseLightColorScheme {
-
-		public GrayColorScheme(String displayName) {
-			super(displayName);
-		}
-
-		private Color ultraDarkColor = new Color(101, 101, 101);
-		private Color darkColor = new Color(130, 130, 130);
-		private Color midColor = new Color(141, 141, 141);
-		private Color lightColor = new Color(162, 162, 162);
-		private Color extraLightColor = new Color(182, 182, 182);
-		private Color ultraLightColor = new Color(204, 204, 204);
-		private Color foregroundColor = new Color(246, 246, 246);
-
-		@Override
-		public Color getUltraDarkColor() {
-			return ultraDarkColor;
-		}
-
-		@Override
-		public Color getDarkColor() {
-			return darkColor;
-		}
-
-		@Override
-		public Color getMidColor() {
-			return midColor;
-		}
-
-		@Override
-		public Color getLightColor() {
-			return lightColor;
-		}
-
-		@Override
-		public Color getExtraLightColor() {
-			return extraLightColor;
-		}
-
-		@Override
-		public Color getUltraLightColor() {
-			return ultraLightColor;
-		}
-
-		@Override
-		public Color getForegroundColor() {
-			return foregroundColor;
-		}
-
-	}
-
-	static class HighlightGrayColorScheme extends BaseColorScheme {
-
-		public HighlightGrayColorScheme(String displayName) {
-			super(displayName, false);
-		}
-
-		private Color color = new Color(162, 162, 162);
-		private Color foreground = Color.WHITE;
-
-		@Override
-		public Color getUltraDarkColor() {
-			return color;
-		}
-
-		@Override
-		public Color getDarkColor() {
-			return color;
-		}
-
-		@Override
-		public Color getMidColor() {
-			return color;
-		}
-
-		@Override
-		public Color getLightColor() {
-			return color;
-		}
-
-		@Override
-		public Color getExtraLightColor() {
-			return color;
-		}
-
-		@Override
-		public Color getUltraLightColor() {
-			return color;
-		}
-
-		@Override
-		public Color getForegroundColor() {
-			return foreground;
-		}
-		
-		
-
-	}
-
-	static class MetallicColorScheme extends BaseLightColorScheme {
-
-		public MetallicColorScheme(String displayName) {
-			super(displayName);
-		}
-
-		private Color ultraDarkColor = new Color(91, 91, 91);
-		private Color darkColor = new Color(127, 127, 127);
-		private Color midColor = new Color(202, 202, 202);
-		private Color lightColor = new Color(221, 221, 221);
-		private Color extraLightColor = new Color(247, 247, 247);
-		private Color ultraLightColor = new Color(252, 252, 252);
-		private Color foregroundColor = new Color(80, 80, 80);
-
-		@Override
-		public Color getUltraDarkColor() {
-			return ultraDarkColor;
-		}
-
-		@Override
-		public Color getDarkColor() {
-			return darkColor;
-		}
-
-		@Override
-		public Color getMidColor() {
-			return midColor;
-		}
-
-		@Override
-		public Color getLightColor() {
-			return lightColor;
-		}
-
-		@Override
-		public Color getExtraLightColor() {
-			return extraLightColor;
-		}
-
-		@Override
-		public Color getUltraLightColor() {
-			return ultraLightColor;
-		}
-
-		@Override
-		public Color getForegroundColor() {
-			return foregroundColor;
-		}
-	}
-
-	static class DisabledMetallicColorScheme extends BaseLightColorScheme {
-
-		public DisabledMetallicColorScheme(String displayName) {
-			super(displayName);
-		}
-
-		private Color ultraDarkColor = new Color(106, 106, 106);
-		private Color darkColor = new Color(185, 185, 185);
-		private Color midColor = new Color(214, 214, 214);
-		private Color lightColor = new Color(228, 228, 228);
-		private Color extraLightColor = new Color(242, 242, 242);
-		private Color ultraLightColor = new Color(251, 251, 251);
-		private Color foregroundColor = new Color(125, 125, 125);
-
-		@Override
-		public Color getUltraDarkColor() {
-			return ultraDarkColor;
-		}
-
-		@Override
-		public Color getDarkColor() {
-			return darkColor;
-		}
-
-		@Override
-		public Color getMidColor() {
-			return midColor;
-		}
-
-		@Override
-		public Color getLightColor() {
-			return lightColor;
-		}
-
-		@Override
-		public Color getExtraLightColor() {
-			return extraLightColor;
-		}
-
-		@Override
-		public Color getUltraLightColor() {
-			return ultraLightColor;
-		}
-
-		@Override
-		public Color getForegroundColor() {
-			return foregroundColor;
-		}
-	}
-
 	/**
 	 * Creates a new skin.
 	 */
 	public SubstanceATunesGraySkin() {
 
-		SubstanceColorScheme activeScheme = new GrayColorScheme("aTunes Gray");
-		SubstanceColorScheme defaultScheme = new MetallicColorScheme("Metallic");
-		SubstanceColorScheme disabledScheme = new DisabledMetallicColorScheme("Disabled Metallic");
-		SubstanceColorScheme highlightScheme = new HighlightGrayColorScheme("Highlight");
+		SubstanceColorScheme activeScheme = new SubstanceBaseColorScheme("aTunes Gray", false, 
+				new Color(101, 101, 101), 
+				new Color(130, 130, 130), 
+				new Color(141, 141, 141),
+				new Color(162, 162, 162),
+				new Color(182, 182, 182),
+				new Color(204, 204, 204),
+				new Color(246, 246, 246));
+
+		SubstanceColorScheme defaultScheme = new SubstanceBaseColorScheme("Metallic", false, 
+				new Color(91, 91, 91),
+				new Color(127, 127, 127),
+				new Color(202, 202, 202),
+				new Color(221, 221, 221),
+				new Color(247, 247, 247),
+				new Color(252, 252, 252),
+				new Color(80, 80, 80));
+
+		SubstanceColorScheme disabledScheme = new SubstanceBaseColorScheme("Disabled Metallic", false,
+				new Color(106, 106, 106),
+				new Color(185, 185, 185),
+				new Color(214, 214, 214),
+				new Color(228, 228, 228),
+				new Color(242, 242, 242),
+				new Color(251, 251, 251),
+				new Color(125, 125, 125));
+
+		Color highlightColor = new Color(162, 162, 162);
+		SubstanceColorScheme highlightScheme = new SubstanceBaseColorScheme("Highlight", false,
+				highlightColor,
+				highlightColor,
+				highlightColor,
+				highlightColor,
+				highlightColor,
+				highlightColor,
+				Color.WHITE);
 
 		// the default theme bundle
 		SubstanceColorSchemeBundle defaultSchemeBundle = new SubstanceColorSchemeBundle(defaultScheme, defaultScheme, disabledScheme);
@@ -272,7 +103,6 @@ public final class SubstanceATunesGraySkin extends SubstanceSkin implements ICus
 		this.highlightPainter = new ClassicHighlightPainter();
 		
 		this.highlightColor = highlightScheme.getLightColor();
-
 	}
 
 	@Override
