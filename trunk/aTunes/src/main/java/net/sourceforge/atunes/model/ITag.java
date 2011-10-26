@@ -166,14 +166,6 @@ public interface ITag extends Serializable {
 	 * @param genre
 	 *            the new genre
 	 */
-	public void setGenre(int genre);
-
-	/**
-	 * Sets the genre.
-	 * 
-	 * @param genre
-	 *            the new genre
-	 */
 	public void setGenre(String genre);
 
 	/**

@@ -35,19 +35,6 @@ public abstract class AbstractTag implements Serializable, ITag {
 
     private static final long serialVersionUID = -4044670497563446883L;
 
-    public static final String[] genres = { "Blues", "Classic Rock", "Country", "Dance", "Disco", "Funk", "Grunge", "Hip-Hop", "Jazz", "Metal", "New Age", "Oldies", "Other",
-            "Pop", "R&B", "Rap", "Reggae", "Rock", "Techno", "Industrial", "Alternative", "Ska", "Death Metal", "Pranks", "Soundtrack", "Euro-Techno", "Ambient", "Trip-Hop",
-            "Vocal", "Jazz+Funk", "Fusion", "Trance", "Classical", "Instrumental", "Acid", "House", "Game", "Sound Clip", "Gospel", "Noise", "AlternRock", "Bass", "Soul", "Punk",
-            "Space", "Meditative", "Instrumental Pop", "Instrumental Rock", "Ethnic", "Gothic", "Darkwave", "Techno-Industrial", "Electronic", "Pop-Folk", "Eurodance", "Dream",
-            "Southern Rock", "Comedy", "Cult", "Gangsta", "Top 40", "Christian Rap", "Pop/Funk", "Jungle", "Native American", "Cabaret", "New Wave", "Psychadelic", "Rave",
-            "Showtunes", "Trailer", "Lo-Fi", "Tribal", "Acid Punk", "Acid Jazz", "Polka", "Retro", "Musical", "Rock & Roll", "Hard Rock", "Folk", "Folk-Rock", "National Folk",
-            "Swing", "Fast Fusion", "Bebob", "Latin", "Revival", "Celtic", "Bluegrass", "Avantgarde", "Gothic Rock", "Progressive Rock", "Psychedelic Rock", "Symphonic Rock",
-            "Slow Rock", "Big Band", "Chorus", "Easy Listening", "Acoustic", "Humour", "Speech", "Chanson", "Opera", "Chamber Music", "Sonata", "Symphony", "Booty Brass",
-            "Primus", "Porn Groove", "Satire", "Slow Jam", "Club", "Tango", "Samba", "Folklore", "Ballad", "Power Ballad", "Rhythmic Soul", "Freestyle", "Duet", "Punk Rock",
-            "Drum Solo", "A Capela", "Euro-House", "Dance Hall", "Goa", "Drum & Bass", "Club-House", "Hardcore", "Terror", "Indie", "BritPop", "Negerpunk", "Polsk Punk", "Beat",
-            "Christian Gangsta Rap", "Heavy Metal", "Black Metal", "Crossover", "Contemporary Christian", "Christian Rock", "Merengue", "Salsa", "Thrash Metal", "Anime", "JPop",
-            "SynthPop" };
-
     /** The title. */
     private String title;
 
@@ -86,41 +73,6 @@ public abstract class AbstractTag implements Serializable, ITag {
 
     /** If this tag has an internal image */
     private boolean internalImage;
-
-    /**
-     * Tries to find the string provided in the table and returns the
-     * corresponding int code if successful. Returns -1 if the genres is not
-     * found in the table.
-     * 
-     * @param str
-     *            the genre to search for
-     * 
-     * @return the integer code for the genre or -1 if the genre is not found
-     */
-    public static int getGenre(String str) {
-        int retval = -1;
-
-        for (int i = 0; (i < genres.length); i++) {
-            if (genres[i].equalsIgnoreCase(str)) {
-                retval = i;
-                break;
-            }
-        }
-
-        return retval;
-    }
-
-    /**
-     * Gets the genre for code.
-     * 
-     * @param code
-     *            the code
-     * 
-     * @return the genre for code
-     */
-    public static final String getGenreForCode(int code) {
-        return code >= 0 ? genres[code] : "";
-    }
 
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#getAlbum()
@@ -260,14 +212,6 @@ public abstract class AbstractTag implements Serializable, ITag {
     @Override
 	public void setComposer(String composer) {
         this.composer = composer != null ? composer.trim() : "";
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#setGenre(int)
-	 */
-    @Override
-	public void setGenre(int genre) {
-        this.genre = getGenreForCode(genre);
     }
 
     /* (non-Javadoc)
