@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.tags;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.utils.DateUtils;
 
@@ -153,7 +154,7 @@ public class DefaultTag extends AbstractTag {
         if (result.matches("\\(.*\\).*")) {
             result = result.substring(1, result.indexOf(')'));
             try {
-                result = AbstractTag.getGenreForCode(Integer.parseInt(result));
+                result = Context.getBean(Genres.class).getGenreForCode(Integer.parseInt(result));
             } catch (Exception e) {
                 setGenre(""); // error, return unknown
             }
@@ -161,8 +162,8 @@ public class DefaultTag extends AbstractTag {
         // If genre is a number mapping a known style, use this style
         try {
             int number = Integer.parseInt(result);
-            if (number >= 0 && AbstractTag.getGenreForCode(number) != "") {
-                result = AbstractTag.getGenreForCode(Integer.parseInt(result));
+            if (number >= 0 && Context.getBean(Genres.class).getGenreForCode(number) != "") {
+                result = Context.getBean(Genres.class).getGenreForCode(Integer.parseInt(result));
             }
         } catch (NumberFormatException e) {
             // nothing wrong here
@@ -295,4 +296,5 @@ public class DefaultTag extends AbstractTag {
             setDate((DateTime)null);
         }
     }
+
 }

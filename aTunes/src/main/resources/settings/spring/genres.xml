@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+	
+	default-autowire="byName">
+
+	<bean id="genresHelper" class="net.sourceforge.atunes.kernel.modules.tags.Genres"/>
+
+	<bean id="genres" class="java.util.ArrayList">
+		<constructor-arg>
+			<list>
+				    <value>Blues</value>
+				    <value>Classic Rock</value>
+				    <value>Country</value>
+				    <value>Dance</value>
+				    <value>Disco</value>
+				    <value>Funk</value>
+				    <value>Grunge</value>
+				    <value>Hip-Hop</value>
+				    <value>Jazz</value>
+				    <value>Metal</value>
+				    <value>New Age</value>
+				    <value>Oldies</value>
+				    <value>Other</value>
+            	    <value>Pop</value>
+            	    <value><![CDATA[R&B]]></value>
+            	    <value>Rap</value>
+            	    <value>Reggae</value>
+            	    <value>Rock</value>
+            	    <value>Techno</value>
+            	    <value>Industrial</value>
+            	    <value>Alternative</value>
+            	    <value>Ska</value>
+            	    <value>Death Metal</value>
+            	    <value>Pranks</value>
+            	    <value>Soundtrack</value>
+            	    <value>Euro-Techno</value>
+            	    <value>Ambient</value>
+            	    <value>Trip-Hop</value>
+            		<value>Vocal</value>
+            		<value>Jazz+Funk</value>
+            		<value>Fusion</value>
+            		<value>Trance</value>
+            		<value>Classical</value>
+            		<value>Instrumental</value>
+            		<value>Acid</value>
+            		<value>House</value>
+            		<value>Game</value>
+            		<value>Sound Clip</value>
+            		<value>Gospel</value>
+            		<value>Noise</value>
+            		<value>AlternRock</value>
+            		<value>Bass</value>
+            		<value>Soul</value>
+            		<value>Punk</value>
+            		<value>Space</value>
+            		<value>Meditative</value>
+            		<value>Instrumental Pop</value>
+            		<value>Instrumental Rock</value>
+            		<value>Ethnic</value>
+            		<value>Gothic</value>
+            		<value>Darkwave</value>
+            		<value>Techno-Industrial</value>
+            		<value>Electronic</value>
+            		<value>Pop-Folk</value>
+            		<value>Eurodance</value>
+            		<value>Dream</value>
+            		<value>Southern Rock</value>
+            		<value>Comedy</value>
+            		<value>Cult</value>
+            		<value>Gangsta</value>
+            		<value>Top 40</value>
+            		<value>Christian Rap</value>
+            		<value>Pop/Funk</value>
+            		<value>Jungle</value>
+            		<value>Native American</value>
+            		<value>Cabaret</value>
+            		<value>New Wave</value>
+            		<value>Psychadelic</value>
+            		<value>Rave</value>
+            		<value>Showtunes</value>
+            		<value>Trailer</value>
+            		<value>Lo-Fi</value>
+            		<value>Tribal</value>
+            		<value>Acid Punk</value>
+            		<value>Acid Jazz</value>
+            		<value>Polka</value>
+            		<value>Retro</value>
+            		<value>Musical</value>
+            		<value><![CDATA[Rock & Roll]]></value>
+            		<value>Hard Rock</value>
+            		<value>Folk</value>
+            		<value>Folk-Rock</value>
+            		<value>National Folk</value>
+            		<value>Swing</value>
+            		<value>Fast Fusion</value>
+            		<value>Bebob</value>
+            		<value>Latin</value>
+            		<value>Revival</value>
+            		<value>Celtic</value>
+            		<value>Bluegrass</value>
+            		<value>Avantgarde</value>
+            		<value>Gothic Rock</value>
+            		<value>Progressive Rock</value>
+            		<value>Psychedelic Rock</value>
+            		<value>Symphonic Rock</value>
+            		<value>Slow Rock</value>
+            		<value>Big Band</value>
+            		<value>Chorus</value>
+            		<value>Easy Listening</value>
+            		<value>Acoustic</value>
+            		<value>Humour</value>
+            		<value>Speech</value>
+            		<value>Chanson</value>
+            		<value>Opera</value>
+            		<value>Chamber Music</value>
+            		<value>Sonata</value>
+            		<value>Symphony</value>
+            		<value>Booty Brass</value>
+            		<value>Primus</value>
+            		<value>Porn Groove</value>
+            		<value>Satire</value>
+            		<value>Slow Jam</value>
+            		<value>Club</value>
+            		<value>Tango</value>
+            		<value>Samba</value>
+            		<value>Folklore</value>
+            		<value>Ballad</value>
+            		<value>Power Ballad</value>
+            		<value>Rhythmic Soul</value>
+            		<value>Freestyle</value>
+            		<value>Duet</value>
+            		<value>Punk Rock</value>
+            		<value>Drum Solo</value>
+            		<value>A Capela</value>
+            		<value>Euro-House</value>
+            		<value>Dance Hall</value>
+            		<value>Goa</value>
+            		<value><![CDATA[Drum & Bass]]></value>
+            		<value>Club-House</value>
+            		<value>Hardcore</value>
+            		<value>Terror</value>
+            		<value>Indie</value>
+            		<value>BritPop</value>
+            		<value>Negerpunk</value>
+            		<value>Polsk Punk</value>
+            		<value>Beat</value>
+            		<value>Christian Gangsta Rap</value>
+            		<value>Heavy Metal</value>
+            		<value>Black Metal</value>
+            		<value>Crossover</value>
+            		<value>Contemporary Christian</value>
+            		<value>Christian Rock</value>
+            		<value>Merengue</value>
+            		<value>Salsa</value>
+            		<value>Thrash Metal</value>
+            		<value>Anime</value>
+            		<value>JPop</value>
+            		<value>SynthPop</value>
+			</list>
+		</constructor-arg>
+	</bean>
+
+</beans>

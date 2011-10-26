@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.tags;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -36,6 +35,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.autocomplete.AutoCompleteDecorator;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
@@ -153,7 +153,7 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
     @Override
 	public void addBindings() {
         // Add genres combo box items
-        List<String> genresSorted = Arrays.asList(AbstractTag.genres);
+        List<String> genresSorted = Context.getBean(Genres.class).getGenres();
         Collections.sort(genresSorted);
         getComponentControlled().getGenreComboBox().setModel(new ListComboBoxModel<String>(genresSorted));
         // Add autocompletion

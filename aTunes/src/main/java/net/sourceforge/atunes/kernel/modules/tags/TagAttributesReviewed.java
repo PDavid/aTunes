@@ -232,7 +232,7 @@ public class TagAttributesReviewed implements ITagAttributesReviewed {
         @Override
         TableCellEditor getCellEditor() {
             // Add genres combo box items
-            List<String> genresSorted = Arrays.asList(AbstractTag.genres);
+            List<String> genresSorted = Context.getBean(Genres.class).getGenres();
             Collections.sort(genresSorted);
             JComboBox genreComboBox = new JComboBox(new ListComboBoxModel<String>(genresSorted));
             genreComboBox.setEditable(true);
