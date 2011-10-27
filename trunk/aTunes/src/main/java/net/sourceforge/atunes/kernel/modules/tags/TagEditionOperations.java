@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.tags;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +27,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -36,6 +36,9 @@ import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 
 /**
  * The Class TagEditionOperations.
@@ -70,7 +73,7 @@ public final class TagEditionOperations {
      * @param repositoryHandler
      * @param playerHandler
      */
-    private static void editAlbumName(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
+    private static void editAlbumName(Collection<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
         SetAlbumNamesProcess process = new SetAlbumNamesProcess(files, state, playListHandler, repositoryHandler, playerHandler);
         process.execute();
     }
@@ -84,7 +87,7 @@ public final class TagEditionOperations {
      * @param repositoryHandler
      * @param playerHandler
      */
-    public static void editGenre(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
+    public static void editGenre(Collection<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
         SetGenresProcess process = new SetGenresProcess(files, state, playListHandler, repositoryHandler, playerHandler);
         process.execute();
     }
@@ -112,17 +115,17 @@ public final class TagEditionOperations {
      * @param repositoryHandler
      * @param playerHandler
      */
-    public static void editTrackNumber(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
+    public static void editTrackNumber(Collection<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
         /*
          * Given an array of files, returns a map containing each file and its
          * track number based on information found on file name.
          */
         Map<ILocalAudioObject, Integer> filesToSet = new HashMap<ILocalAudioObject, Integer>();
-        for (int j = 0; j < files.size(); j++) {
-            int trackNumber = getTrackNumber(files.get(j));
+        for (ILocalAudioObject ao : files) {
+            int trackNumber = getTrackNumber(ao);
 
             if (trackNumber != 0) {
-                filesToSet.put(files.get(j), trackNumber);
+                filesToSet.put(ao, trackNumber);
             }
         }
         if (!filesToSet.isEmpty()) {
@@ -177,20 +180,8 @@ public final class TagEditionOperations {
     public static void repairAlbumNames(IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
         // Show confirmation dialog
         if (Context.getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("REPAIR_ALBUM_NAMES_MESSAGE"))) {
-
-            // Get all repository audio files
-            Collection<ILocalAudioObject> repositoryAudioFiles = repositoryHandler.getAudioFilesList();
-
-            // Get audio files with empty track number
-            List<ILocalAudioObject> audioFilesToBeRepaired = new ArrayList<ILocalAudioObject>();
-            for (ILocalAudioObject file : repositoryAudioFiles) {
-                if ((file.getGenre() == null) || (file.getGenre().isEmpty())) {
-                    audioFilesToBeRepaired.add(file);
-                }
-            }
-
             // Call album name edit
-            editAlbumName(audioFilesToBeRepaired, state, playListHandler, repositoryHandler, playerHandler);
+            editAlbumName(getFilesWithEmptyAlbum(repositoryHandler.getAudioFilesList()), state, playListHandler, repositoryHandler, playerHandler);
         }
     }
 
@@ -204,20 +195,8 @@ public final class TagEditionOperations {
     public static void repairGenres(IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
         // Show confirmation dialog
         if (Context.getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("REPAIR_GENRES_MESSAGE"))) {
-
-            // Get all repository audio files
-        	Collection<ILocalAudioObject> repositoryAudioFiles = repositoryHandler.getAudioFilesList();
-
-            // Get audio files with empty track number
-            List<ILocalAudioObject> audioFilesToBeRepaired = new ArrayList<ILocalAudioObject>();
-            for (ILocalAudioObject file : repositoryAudioFiles) {
-                if ((file.getGenre() == null) || (file.getGenre().isEmpty())) {
-                    audioFilesToBeRepaired.add(file);
-                }
-            }
-
             // Call genre edit
-            editGenre(audioFilesToBeRepaired, state, playListHandler, repositoryHandler, playerHandler);
+            editGenre(getFilesWithEmptyGenre(repositoryHandler.getAudioFilesList()), state, playListHandler, repositoryHandler, playerHandler);
         }
 
     }
@@ -232,20 +211,50 @@ public final class TagEditionOperations {
     public static void repairTrackNumbers(IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
         // Show confirmation dialog
         if (Context.getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("REPAIR_TRACK_NUMBERS_MESSAGE"))) {
-
-            // Get all repository audio files
-        	Collection<ILocalAudioObject> repositoryAudioFiles = repositoryHandler.getAudioFilesList();
-
-            // Get audio files with empty track number
-            List<ILocalAudioObject> audioFilesToBeRepaired = new ArrayList<ILocalAudioObject>();
-            for (ILocalAudioObject song : repositoryAudioFiles) {
-                if (song.getTrackNumber() == 0) {
-                    audioFilesToBeRepaired.add(song);
-                }
-            }
-
             // Call track number edit
-            editTrackNumber(audioFilesToBeRepaired, state, playListHandler, repositoryHandler, playerHandler);
+            editTrackNumber(getFilesWithEmptyTracks(repositoryHandler.getAudioFilesList()), state, playListHandler, repositoryHandler, playerHandler);
         }
+    }
+    
+    /**
+     * Returns files without track number
+     * @param audioFiles
+     * @return
+     */
+    private static Collection<ILocalAudioObject> getFilesWithEmptyTracks(Collection<ILocalAudioObject> audioFiles) {
+    	return Collections2.filter(audioFiles, new Predicate<ILocalAudioObject>() {
+    		@Override
+    		public boolean apply(ILocalAudioObject ao) {
+    			return ao.getTrackNumber() == 0;
+    		}
+		});
+    }
+    
+    /**
+     * Returns files without genre
+     * @param audioFiles
+     * @return
+     */
+    private static Collection<ILocalAudioObject> getFilesWithEmptyGenre(Collection<ILocalAudioObject> audioFiles) {
+    	return Collections2.filter(audioFiles, new Predicate<ILocalAudioObject>() {
+    		@Override
+    		public boolean apply(ILocalAudioObject ao) {
+    			return ao.getGenre() == null || ao.getGenre().isEmpty();
+    		}
+		});
+    }
+
+    /**
+     * Returns files without album
+     * @param audioFiles
+     * @return
+     */
+    private static Collection<ILocalAudioObject> getFilesWithEmptyAlbum(Collection<ILocalAudioObject> audioFiles) {
+    	return Collections2.filter(audioFiles, new Predicate<ILocalAudioObject>() {
+    		@Override
+    		public boolean apply(ILocalAudioObject ao) {
+    			return ao.getAlbum() == null || Album.isUnknownAlbum(ao.getAlbum()) || ao.getAlbum().isEmpty();
+    		}
+		});
     }
 }

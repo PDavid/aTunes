@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.tags;
 
-import java.util.List;
+import java.util.Collection;
 
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -43,7 +43,7 @@ public class SetAlbumNamesProcess extends AbstractChangeTagProcess {
      * @param repositoryHandler
      * @param playerHandler
      */
-    SetAlbumNamesProcess(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
+    SetAlbumNamesProcess(Collection<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
         super(files, state, playListHandler, repositoryHandler, playerHandler);
     }
 

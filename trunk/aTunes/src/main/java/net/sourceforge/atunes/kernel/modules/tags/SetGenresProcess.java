@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.tags;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +51,7 @@ public class SetGenresProcess extends AbstractChangeTagProcess {
      * @param repositoryHandler
      * @param playerHandler
      */
-    SetGenresProcess(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
+    SetGenresProcess(Collection<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
         super(files, state, playListHandler, repositoryHandler, playerHandler);
     }
 

@@ -40,7 +40,7 @@ import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
  * @author alex
  *
  */
-abstract class SubstanceSkin extends org.pushingpixels.substance.api.SubstanceSkin implements ICustomSubstanceSkin {
+abstract class CustomSubstanceSkin extends org.pushingpixels.substance.api.SubstanceSkin implements ICustomSubstanceSkin {
 
 	private Color highlightColor;
 
