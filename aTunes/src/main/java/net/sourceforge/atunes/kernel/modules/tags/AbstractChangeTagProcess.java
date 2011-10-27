@@ -21,6 +21,8 @@
 package net.sourceforge.atunes.kernel.modules.tags;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.process.AbstractProcess;
@@ -60,9 +62,9 @@ public abstract class AbstractChangeTagProcess extends AbstractProcess {
      * @param repositoryHandler
      * @param playerHandler
      */
-    protected AbstractChangeTagProcess(List<ILocalAudioObject> filesToChange, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
+    protected AbstractChangeTagProcess(Collection<ILocalAudioObject> filesToChange, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
     	super(state);
-        this.filesToChange = filesToChange;
+        this.filesToChange = new ArrayList<ILocalAudioObject>(filesToChange);
         this.playListHandler = playListHandler;
         this.repositoryHandler = repositoryHandler;
         this.playerHandler = playerHandler;
