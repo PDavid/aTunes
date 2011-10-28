@@ -21,8 +21,6 @@
 package net.sourceforge.atunes.gui.frame;
 
 import java.awt.Dimension;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -73,18 +71,11 @@ public final class NavigatorTopPlayListBottomSingleFrame extends MainSplitPaneRi
     
     @Override
     protected JComponent getComponentA() {
-    	navigatorSplitPane = new CustomSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-    	navigatorSplitPane.setLeftComponent(getNavigationTreePanel().getSwingComponent());
-    	navigatorSplitPane.setRightComponent(getNavigationTablePanel().getSwingComponent());
-    	navigatorSplitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
-
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                getFrameState().putSplitPaneDividerPos(NAVIGATOR_SPLIT_PANE, (Integer) evt.getNewValue());
-                storeFrameState();
-            }
-        });
-        return navigatorSplitPane;
+    	return (navigatorSplitPane = new SplitPaneFactory().getSplitPane(this, 
+    																	 NAVIGATOR_SPLIT_PANE, 
+    																	 JSplitPane.HORIZONTAL_SPLIT, 
+    																	 getNavigationTreePanel().getSwingComponent(),
+    																	 getNavigationTablePanel().getSwingComponent()));
     }
     
     @Override
