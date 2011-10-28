@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -30,11 +28,11 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class OSDSettingAction extends CustomAbstractAction {
+public class ToggleOSDSettingAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 646318992035897920L;
 
-    OSDSettingAction() {
+    public ToggleOSDSettingAction() {
         super(I18nUtils.getString("SHOW_OSD"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_OSD"));
     }
@@ -45,7 +43,7 @@ public class OSDSettingAction extends CustomAbstractAction {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    protected void executeAction() {
         getState().setShowOSD((Boolean) getValue(SELECTED_KEY));
     }
 
