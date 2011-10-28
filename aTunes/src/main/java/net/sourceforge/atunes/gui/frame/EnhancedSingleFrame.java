@@ -21,8 +21,6 @@
 package net.sourceforge.atunes.gui.frame;
 
 import java.awt.Dimension;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -78,18 +76,11 @@ public final class EnhancedSingleFrame extends MainSplitPaneLeftSingleFrame impl
     
     @Override
     protected JComponent getComponentB() {
-        playListSplitPane = new CustomSplitPane(JSplitPane.VERTICAL_SPLIT);
-        playListSplitPane.setLeftComponent(getNavigationTablePanel().getSwingComponent());
-        playListSplitPane.setRightComponent(getPlayListPanel());
-        playListSplitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
-
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                getFrameState().putSplitPaneDividerPos(PLAYLIST_SPLIT_PANE, (Integer) evt.getNewValue());
-                storeFrameState();
-            }
-        });
-        return playListSplitPane;
+    	return (playListSplitPane = new SplitPaneFactory().getSplitPane(this, 
+    																    PLAYLIST_SPLIT_PANE, 
+    																    JSplitPane.VERTICAL_SPLIT, 
+    																    getNavigationTablePanel().getSwingComponent(),
+    																    getPlayListPanel()));
     }
     
     @Override
