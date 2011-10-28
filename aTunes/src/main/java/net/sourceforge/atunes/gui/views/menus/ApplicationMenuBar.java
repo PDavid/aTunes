@@ -48,7 +48,7 @@ import net.sourceforge.atunes.kernel.actions.GoToWikiAction;
 import net.sourceforge.atunes.kernel.actions.ImportLovedTracksFromLastFMAction;
 import net.sourceforge.atunes.kernel.actions.ImportToRepositoryAction;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
-import net.sourceforge.atunes.kernel.actions.OSDSettingAction;
+import net.sourceforge.atunes.kernel.actions.ToggleOSDSettingAction;
 import net.sourceforge.atunes.kernel.actions.RefreshDeviceAction;
 import net.sourceforge.atunes.kernel.actions.RefreshRepositoryAction;
 import net.sourceforge.atunes.kernel.actions.RepairAlbumNamesAction;
@@ -176,7 +176,7 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
             view.add(new JCheckBoxMenuItem(Actions.getAction(ShowStatusBarAction.class)));
             view.add(new JCheckBoxMenuItem(Actions.getAction(ShowNavigationTreeAction.class)));
             view.add(new JCheckBoxMenuItem(Actions.getAction(ShowContextAction.class)));
-            view.add(new JCheckBoxMenuItem(Actions.getAction(OSDSettingAction.class)));
+            view.add(new JCheckBoxMenuItem(Context.getBean(ToggleOSDSettingAction.class)));
             view.add(new JSeparator());
             view.add(Context.getBean(FullScreenAction.class));
         }

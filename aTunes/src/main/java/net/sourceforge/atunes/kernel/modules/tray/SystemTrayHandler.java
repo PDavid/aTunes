@@ -49,7 +49,7 @@ import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ExitAction;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
-import net.sourceforge.atunes.kernel.actions.OSDSettingAction;
+import net.sourceforge.atunes.kernel.actions.ToggleOSDSettingAction;
 import net.sourceforge.atunes.kernel.actions.PlayAction;
 import net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectAction;
@@ -370,7 +370,7 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
      * @return
      */
     private JCheckBoxMenuItem getShowOSDCheckBoxMenuItem() {
-        return new JCheckBoxMenuItem(Actions.getAction(OSDSettingAction.class));
+        return new JCheckBoxMenuItem(getBean(ToggleOSDSettingAction.class));
     }
 
     /**
