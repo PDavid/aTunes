@@ -107,4 +107,12 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.PlayNowAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.RefreshDeviceAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.RefreshRadioAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.RefreshRepositoryAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.RemoveFromPlayListAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.RenamePlaylistAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.RepeatModeAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.RepositoryLoadCancelAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.RepositoryLoadInBackgroundAction"/>
 </beans>

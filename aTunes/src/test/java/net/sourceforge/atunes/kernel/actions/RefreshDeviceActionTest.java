@@ -20,31 +20,29 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import net.sourceforge.atunes.utils.I18nUtils;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import net.sourceforge.atunes.model.IDeviceHandler;
 
-/**
- * This action enables or disables repeat mode
- * 
- * @author fleax
- * 
- */
-public class RepeatModeAction extends CustomAbstractAction {
+import org.junit.Assert;
+import org.junit.Test;
 
-    private static final long serialVersionUID = 2032609750151412458L;
+public class RefreshDeviceActionTest {
 
-    public RepeatModeAction() {
-        super(I18nUtils.getString("REPEAT"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("REPEAT"));
-    }
-    
-    @Override
-    protected void initialize() {
-        putValue(SELECTED_KEY, getState().isRepeat());
-    }
+	@Test
+	public void test() {
+		RefreshDeviceAction sut = new RefreshDeviceAction();
+		IDeviceHandler deviceHandler = mock(IDeviceHandler.class);
+		sut.setDeviceHandler(deviceHandler);
 
-    @Override
-    protected void executeAction() {
-        getState().setRepeat((Boolean) getValue(SELECTED_KEY));
-    }
-
+		sut.executeAction();
+		
+		verify(deviceHandler).refreshDevice();
+	}
+	
+	@Test
+	public void testDisabledByDefault() {
+		RefreshDeviceAction sut = new RefreshDeviceAction();
+		Assert.assertFalse(sut.isEnabled());
+	}
 }

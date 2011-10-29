@@ -49,7 +49,6 @@ import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ExitAction;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
-import net.sourceforge.atunes.kernel.actions.ToggleOSDSettingAction;
 import net.sourceforge.atunes.kernel.actions.PlayAction;
 import net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectAction;
@@ -57,6 +56,7 @@ import net.sourceforge.atunes.kernel.actions.RepeatModeAction;
 import net.sourceforge.atunes.kernel.actions.ShowAboutAction;
 import net.sourceforge.atunes.kernel.actions.ShuffleModeAction;
 import net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectAction;
+import net.sourceforge.atunes.kernel.actions.ToggleOSDSettingAction;
 import net.sourceforge.atunes.kernel.actions.ToggleWindowVisibilityAction;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -361,7 +361,7 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
      * Getter for repeat menu item
      */
     private JCheckBoxMenuItem getRepeatCheckBoxMenuItem() {
-        return new JCheckBoxMenuItem(Actions.getAction(RepeatModeAction.class));
+        return new JCheckBoxMenuItem(getBean(RepeatModeAction.class));
     }
 
     /**

@@ -20,31 +20,22 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import net.sourceforge.atunes.utils.I18nUtils;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import net.sourceforge.atunes.model.IRepositoryHandler;
 
-/**
- * This action enables or disables repeat mode
- * 
- * @author fleax
- * 
- */
-public class RepeatModeAction extends CustomAbstractAction {
+import org.junit.Test;
 
-    private static final long serialVersionUID = 2032609750151412458L;
+public class RepositoryLoadInBackgroundActionTest {
 
-    public RepeatModeAction() {
-        super(I18nUtils.getString("REPEAT"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("REPEAT"));
-    }
-    
-    @Override
-    protected void initialize() {
-        putValue(SELECTED_KEY, getState().isRepeat());
-    }
-
-    @Override
-    protected void executeAction() {
-        getState().setRepeat((Boolean) getValue(SELECTED_KEY));
-    }
-
+	@Test
+	public void test() {
+		RepositoryLoadInBackgroundAction sut = new RepositoryLoadInBackgroundAction();
+		IRepositoryHandler repositoryHandler = mock(IRepositoryHandler.class);
+		sut.setRepositoryHandler(repositoryHandler);
+		
+		sut.executeAction();
+		
+		verify(repositoryHandler).doInBackground();
+	}
 }

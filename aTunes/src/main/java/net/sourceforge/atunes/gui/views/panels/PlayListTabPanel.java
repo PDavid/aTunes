@@ -66,7 +66,7 @@ public final class PlayListTabPanel extends JPanel {
         add(playListCombo, BorderLayout.CENTER);
 
         options.add(Context.getBean(NewPlayListAction.class));
-        options.add(Actions.getAction(RenamePlaylistAction.class));
+        options.add(Context.getBean(RenamePlaylistAction.class));
         options.add(Context.getBean(ClosePlaylistAction.class));
         options.add(Context.getBean(CloseOtherPlaylistsAction.class));
         options.addSeparator();

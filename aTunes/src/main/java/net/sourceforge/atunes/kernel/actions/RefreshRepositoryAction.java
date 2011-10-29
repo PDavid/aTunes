@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
@@ -38,15 +37,24 @@ public class RefreshRepositoryAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -5708270585764283210L;
 
-    RefreshRepositoryAction() {
+    private IRepositoryHandler repositoryHandler;
+    
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+    
+    public RefreshRepositoryAction() {
         super(I18nUtils.getString("REFRESH_REPOSITORY"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("REFRESH_REPOSITORY"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        getBean(IRepositoryHandler.class).refreshRepository();
+    protected void executeAction() {
+    	repositoryHandler.refreshRepository();
     }
 
 }

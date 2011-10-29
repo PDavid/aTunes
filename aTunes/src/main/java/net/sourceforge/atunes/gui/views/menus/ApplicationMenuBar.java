@@ -229,7 +229,7 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
         if (device == null) {
             device = new JMenu(I18nUtils.getString("DEVICE"));
             device.add(Context.getBean(ConnectDeviceAction.class));
-            device.add(Actions.getAction(RefreshDeviceAction.class));
+            device.add(Context.getBean(RefreshDeviceAction.class));
             device.add(Context.getBean(DisconnectDeviceAction.class));
         }
         return device;

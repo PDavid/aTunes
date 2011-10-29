@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
@@ -40,7 +39,16 @@ public class RemoveFromPlayListAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 7249538257655420803L;
 
-    RemoveFromPlayListAction() {
+    private IPlayListHandler playListHandler;
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    public RemoveFromPlayListAction() {
         super(I18nUtils.getString("REMOVE"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_TOOLTIP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
@@ -48,13 +56,13 @@ public class RemoveFromPlayListAction extends CustomAbstractAction {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-    	getBean(IPlayListHandler.class).deleteSelection();
+    protected void executeAction() {
+    	playListHandler.deleteSelection();
     }
 
     @Override
     public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
-        return !selection.isEmpty();
+        return selection != null && !selection.isEmpty();
     }
 
 }

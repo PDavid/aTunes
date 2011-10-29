@@ -317,7 +317,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
     		public void run() {
     	        notifyFinishRefresh(null);
     	        getBean(ConnectDeviceAction.class).setEnabled(true);
-    	        Actions.getAction(RefreshDeviceAction.class).setEnabled(false);
+    	        getBean(RefreshDeviceAction.class).setEnabled(false);
     	        getBean(DisconnectDeviceAction.class).setEnabled(false);
     	        Actions.getAction(SynchronizeDeviceWithPlayListAction.class).setEnabled(false);
     	        getBean(CopyPlayListToDeviceAction.class).setEnabled(false);
@@ -404,7 +404,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
         Actions.getAction(SynchronizeDeviceWithPlayListAction.class).setEnabled(true);
 
         getBean(ConnectDeviceAction.class).setEnabled(false);
-    	Actions.getAction(RefreshDeviceAction.class).setEnabled(true);
+    	getBean(RefreshDeviceAction.class).setEnabled(true);
     	getBean(DisconnectDeviceAction.class).setEnabled(true);
 
     	// Update status bar info

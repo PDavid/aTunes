@@ -20,31 +20,40 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import net.sourceforge.atunes.utils.I18nUtils;
+import javax.swing.AbstractAction;
 
-/**
- * This action enables or disables repeat mode
- * 
- * @author fleax
- * 
- */
-public class RepeatModeAction extends CustomAbstractAction {
+import net.sourceforge.atunes.model.AbstractStateMock;
+import net.sourceforge.atunes.model.IState;
 
-    private static final long serialVersionUID = 2032609750151412458L;
+import org.junit.Assert;
+import org.junit.Test;
 
-    public RepeatModeAction() {
-        super(I18nUtils.getString("REPEAT"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("REPEAT"));
-    }
-    
-    @Override
-    protected void initialize() {
-        putValue(SELECTED_KEY, getState().isRepeat());
-    }
+public class RepeatModeActionTest {
 
-    @Override
-    protected void executeAction() {
-        getState().setRepeat((Boolean) getValue(SELECTED_KEY));
-    }
+	@Test
+	public void test() {
+		RepeatModeAction sut = new RepeatModeAction();
+		IState state = new AbstractStateMock() {
+			private boolean repeat;
+
+			public void setRepeat(boolean repeat) { 
+				this.repeat = repeat;
+			};
+			
+			@Override
+			public boolean isRepeat() {
+				return this.repeat;
+			}
+		};
+		sut.setState(state);
+
+		state.setRepeat(false);
+		sut.putValue(AbstractAction.SELECTED_KEY, true);
+		sut.executeAction();
+		Assert.assertTrue(state.isRepeat());
+		sut.putValue(AbstractAction.SELECTED_KEY, false);
+		sut.executeAction();
+		Assert.assertFalse(state.isRepeat());
+	}
 
 }
