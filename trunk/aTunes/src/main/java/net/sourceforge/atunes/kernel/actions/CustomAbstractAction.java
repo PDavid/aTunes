@@ -57,6 +57,11 @@ public abstract class CustomAbstractAction extends javax.swing.AbstractAction im
      * State of the application
      */
     private IState state;
+    
+    /**
+     * Source of the action
+     */
+    private Object source;
 
     public CustomAbstractAction() {
         super();
@@ -159,8 +164,17 @@ public abstract class CustomAbstractAction extends javax.swing.AbstractAction im
     @Override
     public void actionPerformed(ActionEvent e) {
     	Logger.debug("Executing action: ", this.getClass().getName());
+    	this.source = e != null ? e.getSource() : null;
     	executeAction();
     }
+
+    /**
+     * Source component that fired this action
+     * @return
+     */
+    protected Object getSource() {
+		return source;
+	}
     
     /**
      * Override this method to execute action

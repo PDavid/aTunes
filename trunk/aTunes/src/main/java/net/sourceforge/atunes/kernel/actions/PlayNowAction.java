@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
@@ -32,21 +31,39 @@ public class PlayNowAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -2099290583376403144L;
 
-    PlayNowAction() {
+    private IPlayListHandler playListHandler;
+    
+    private INavigationHandler navigationHandler;
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+    
+    public PlayNowAction() {
         super(I18nUtils.getString("PLAY_NOW"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("PLAY_NOW"));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    protected void executeAction() {
         // Play now feature plays selected song immediately. If song is added to play list, then is automatically selected.
         // If not, it's added to play list    	
-        getBean(IPlayListHandler.class).playNow(getBean(INavigationHandler.class).getSelectedAudioObjectInNavigationTable());
+        playListHandler.playNow(navigationHandler.getSelectedAudioObjectInNavigationTable());
     }
 
     @Override
     public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
-        return selection.size() == 1;
+        return selection != null && selection.size() == 1;
     }
 
 }

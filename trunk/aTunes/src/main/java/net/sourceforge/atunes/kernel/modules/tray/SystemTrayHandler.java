@@ -302,7 +302,7 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
      */
     private JMenuItem getPlayMenuItem() {
         if (playMenuItem == null) {
-            playMenuItem = new JMenuItem(Actions.getAction(PlayAction.class));
+            playMenuItem = new JMenuItem(getBean(PlayAction.class));
         }
         return playMenuItem;
     }
@@ -323,7 +323,7 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
      * @return
      */
     private JMenuItem getPreviousMenuItem() {
-        JMenuItem previous = new JMenuItem(Actions.getAction(PlayPreviousAudioObjectAction.class));
+        JMenuItem previous = new JMenuItem(getBean(PlayPreviousAudioObjectAction.class));
         return previous;
     }
 
@@ -333,7 +333,7 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
      * @return
      */
     private JMenuItem getNextMenuItem() {
-        JMenuItem next = new JMenuItem(Actions.getAction(PlayNextAudioObjectAction.class));
+        JMenuItem next = new JMenuItem(getBean(PlayNextAudioObjectAction.class));
         return next;
     }
 
@@ -417,7 +417,7 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
         if (nextIcon == null) {
         	Color color = getState().getTrayPlayerIconsColor().getColor();
         	Image icon = NextImageIcon.getTrayIcon(color, tray.getTrayIconSize(), lookAndFeelManager.getCurrentLookAndFeel()).getImage();
-            nextIcon = new ActionTrayIcon(icon, Actions.getAction(PlayNextAudioObjectAction.class));
+            nextIcon = new ActionTrayIcon(icon, getBean(PlayNextAudioObjectAction.class));
         }
         return nextIcon;
     }
@@ -445,7 +445,7 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
         if (playIcon == null) {
         	Color color = getState().getTrayPlayerIconsColor().getColor();
         	Image icon = PlayImageIcon.getTrayIcon(color, tray.getTrayIconSize(), lookAndFeelManager.getCurrentLookAndFeel()).getImage();
-            playIcon = new ActionTrayIcon(icon, Actions.getAction(PlayAction.class));
+            playIcon = new ActionTrayIcon(icon, getBean(PlayAction.class));
         }
         return playIcon;
     }
@@ -459,7 +459,7 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
     	if (previousIcon == null) {
     		Color color = getState().getTrayPlayerIconsColor().getColor();
     		Image icon = PreviousImageIcon.getTrayIcon(color, tray.getTrayIconSize(), lookAndFeelManager.getCurrentLookAndFeel()).getImage();
-    		previousIcon = new ActionTrayIcon(icon, Actions.getAction(PlayPreviousAudioObjectAction.class));
+    		previousIcon = new ActionTrayIcon(icon, getBean(PlayPreviousAudioObjectAction.class));
     	}
         return previousIcon;
     }

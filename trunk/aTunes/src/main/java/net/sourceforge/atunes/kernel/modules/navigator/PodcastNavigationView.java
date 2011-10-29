@@ -150,7 +150,7 @@ public final class PodcastNavigationView extends AbstractNavigationView {
             podcastFeedTableMenu.add(getMenuItemForAction(AddToPlayListAction.class));
             podcastFeedTableMenu.add(getMenuItemForAction(AddToPlayListAfterCurrentAudioObjectAction.class));
             podcastFeedTableMenu.add(getMenuItemForAction(SetAsPlayListAction.class));
-            podcastFeedTableMenu.add(Actions.getAction(PlayNowAction.class));
+            podcastFeedTableMenu.add(Context.getBean(PlayNowAction.class));
             podcastFeedTableMenu.add(new JSeparator());
             podcastFeedTableMenu.add(Actions.getAction(ShowNavigatorTableItemInfoAction.class));
             podcastFeedTableMenu.add(new JSeparator());

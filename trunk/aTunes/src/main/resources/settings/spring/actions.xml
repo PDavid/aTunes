@@ -103,4 +103,8 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.MuteAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.NewPlayListAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ToggleOSDSettingAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.PlayAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.PlayNowAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectAction"/>
 </beans>

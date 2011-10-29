@@ -34,6 +34,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.FavoriteImageIcon;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
@@ -160,7 +161,7 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
             favoriteTableMenu.add(getMenuItemForAction(AddToPlayListAction.class));
             favoriteTableMenu.add(getMenuItemForAction(AddToPlayListAfterCurrentAudioObjectAction.class));
             favoriteTableMenu.add(getMenuItemForAction(SetAsPlayListAction.class));
-            favoriteTableMenu.add(Actions.getAction(PlayNowAction.class));
+            favoriteTableMenu.add(Context.getBean(PlayNowAction.class));
             favoriteTableMenu.add(new JSeparator());
             favoriteTableMenu.add(Actions.getAction(ShowNavigatorTableItemInfoAction.class));
             favoriteTableMenu.add(new JSeparator());

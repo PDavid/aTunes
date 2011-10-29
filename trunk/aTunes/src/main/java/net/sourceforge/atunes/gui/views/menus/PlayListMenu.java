@@ -104,7 +104,7 @@ public final class PlayListMenu {
      */
     private static List<Object> getComponents(IPlayListTable table) {
         List<Object> objects = new ArrayList<Object>();
-        objects.add(Actions.getAction(PlayAction.class));
+        objects.add(Context.getBean(PlayAction.class));
         objects.add(Actions.getAction(ShowPlayListItemInfoAction.class));
         objects.add(Actions.getMenuItemForAction(OpenFolderAction.class, table));
         objects.add(new JSeparator());

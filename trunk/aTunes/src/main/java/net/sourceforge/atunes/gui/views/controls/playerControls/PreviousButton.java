@@ -24,8 +24,8 @@ import java.awt.Dimension;
 
 import javax.swing.JButton;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.PreviousImageIcon;
-import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectAction;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
@@ -46,7 +46,7 @@ public final class PreviousButton extends JButton implements ILookAndFeelChangeL
      * @param lookAndFeelManager
      */
     public PreviousButton(Dimension size, ILookAndFeelManager lookAndFeelManager) {
-        super(Actions.getAction(PlayPreviousAudioObjectAction.class));
+        super(Context.getBean(PlayPreviousAudioObjectAction.class));
         // Force size
         this.size = size;
         this.lookAndFeel = lookAndFeelManager.getCurrentLookAndFeel();
