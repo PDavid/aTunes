@@ -22,8 +22,6 @@ package net.sourceforge.atunes.kernel.modules.repository.data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -31,7 +29,6 @@ import java.util.Set;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
-import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
@@ -197,34 +194,14 @@ public class Year implements Serializable, ITreeObject<ILocalAudioObject> {
      * @return the artists
      */
     public Map<String, Artist> getArtistObjects() {
-        Map<String, Artist> structure = new HashMap<String, Artist>();
-        for (ILocalAudioObject song : audioFiles) {
-            String artist = !song.getAlbumArtist().equals("") ? song.getAlbumArtist() : song.getArtist();
-            if (!structure.containsKey(artist)) {
-                structure.put(artist, new Artist(artist));
-            }
-            if (!structure.get(artist).getAlbums().containsKey(song.getAlbum())) {
-                Album album = new Album(structure.get(artist), song.getAlbum());
-                structure.get(artist).addAlbum(album);
-            }
-            structure.get(artist).getAlbum(song.getAlbum()).addAudioFile(song);
-        }
-        return structure;
+    	return new ArtistStructureBuilder().getArtistObjects(audioFiles);
     }
 
     /**
      * Returns all artists of this year
      */
     public Set<String> getArtistSet() {
-        Set<String> artists = new HashSet<String>();
-        for (ILocalAudioObject song : audioFiles) {
-            if (!song.getAlbumArtist().equals("")) {
-                artists.add(song.getAlbumArtist());
-            } else {
-                artists.add(song.getArtist());
-            }
-        }
-        return artists;
+    	return new ArtistStructureBuilder().getArtistSet(audioFiles);
     }
     
     @Override
