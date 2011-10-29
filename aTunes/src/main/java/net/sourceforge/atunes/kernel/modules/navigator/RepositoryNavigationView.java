@@ -32,6 +32,7 @@ import javax.swing.ToolTipManager;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
@@ -154,7 +155,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
             tablePopupMenu.add(getMenuItemForAction(AddToPlayListAction.class));
             tablePopupMenu.add(getMenuItemForAction(AddToPlayListAfterCurrentAudioObjectAction.class));
             tablePopupMenu.add(getMenuItemForAction(SetAsPlayListAction.class));
-            tablePopupMenu.add(Actions.getAction(PlayNowAction.class));
+            tablePopupMenu.add(Context.getBean(PlayNowAction.class));
             tablePopupMenu.add(new JSeparator());
             tablePopupMenu.add(Actions.getAction(ShowNavigatorTableItemInfoAction.class));
             tablePopupMenu.add(new JSeparator());

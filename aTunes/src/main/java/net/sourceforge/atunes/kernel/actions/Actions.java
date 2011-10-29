@@ -174,21 +174,4 @@ public final class Actions {
         menuItem.setAction(Actions.getActionAndBind(clazz, actionId, menuItem, audioObjectsSource));
         return menuItem;
     }
-
-    /**
-     * Returns a MenuItem that executes given action class
-     * @param clazz
-     * @return
-     */
-    public static MenuItem getMenuItemForAction(final Class<? extends CustomAbstractAction> clazz) {
-    	MenuItem menuItem = new MenuItem((String)getAction(clazz).getValue(AbstractAction.NAME));
-    	menuItem.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				getAction(clazz).actionPerformed(null);
-			}
-		});
-    	return menuItem;
-    }    
 }

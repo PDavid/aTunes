@@ -104,8 +104,8 @@ public final class CommandHandler extends AbstractHandler implements ICommandHan
     }
 
     private void initActions() {
-        Actions.getAction(PlayNextAudioObjectAction.class);
-        Actions.getAction(PlayPreviousAudioObjectAction.class);
+        getBean(PlayNextAudioObjectAction.class);
+        getBean(PlayPreviousAudioObjectAction.class);
         Actions.getAction(ShowOSDAction.class);
     }
 

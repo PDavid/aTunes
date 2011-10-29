@@ -26,9 +26,9 @@ import java.awt.EventQueue;
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.PauseImageIcon;
 import net.sourceforge.atunes.gui.images.PlayImageIcon;
-import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.PlayAction;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
@@ -51,7 +51,7 @@ public final class PlayPauseButton extends JButton implements ILookAndFeelChange
      * @param lookAndFeelManager
      */
     public PlayPauseButton(Dimension size, ILookAndFeelManager lookAndFeelManager) {
-        super(Actions.getAction(PlayAction.class));
+        super(Context.getBean(PlayAction.class));
         // Force size of button
         this.size = size;
         this.lookAndFeel = lookAndFeelManager.getCurrentLookAndFeel();

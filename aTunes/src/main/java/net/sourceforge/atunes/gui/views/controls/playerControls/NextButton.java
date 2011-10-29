@@ -24,8 +24,8 @@ import java.awt.Dimension;
 
 import javax.swing.JButton;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.NextImageIcon;
-import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectAction;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
@@ -46,7 +46,7 @@ public final class NextButton extends JButton implements ILookAndFeelChangeListe
      * @param lookAndFeelManager
      */
     public NextButton(Dimension size, ILookAndFeelManager lookAndFeelManager) {
-        super(Actions.getAction(PlayNextAudioObjectAction.class));
+        super(Context.getBean(PlayNextAudioObjectAction.class));
         this.size = size;
         this.lookAndFeel = lookAndFeelManager.getCurrentLookAndFeel();
         setPreferredSize(size);

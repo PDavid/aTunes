@@ -20,10 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.model.ICommandHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -31,14 +27,19 @@ public class PlayPreviousAudioObjectAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -1177020643937370678L;
 
-    PlayPreviousAudioObjectAction() {
+    private IPlayerHandler playerHandler;
+    
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
+    
+    public PlayPreviousAudioObjectAction() {
     	super(I18nUtils.getString("PREVIOUS"));
-    	setCommandHandler(getBean(ICommandHandler.class));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        Context.getBean(IPlayerHandler.class).playPreviousAudioObject();
+    protected void executeAction() {
+    	playerHandler.playPreviousAudioObject();
     }
 
     @Override

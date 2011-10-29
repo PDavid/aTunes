@@ -20,56 +20,72 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.ICommandHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.Logger;
 
 public class PlayAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -1122746023245126869L;
 
-    PlayAction() {
+    private IFrame frame;
+    
+    private IPlayListHandler playListHandler;
+    
+    private IPlayerHandler playerHandler;
+    
+    public void setFrame(IFrame frame) {
+		this.frame = frame;
+	}
+    
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
+    
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    public PlayAction() {
         super(I18nUtils.getString("PLAY"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("PLAY"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0));
-        setCommandHandler(getBean(ICommandHandler.class));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    protected void executeAction() {
         // disable enter key when focus is on filter text field (so event is not fired from PLAY/PAUSE button)
-        if (getBean(IFrame.class).getPlayerControls().getFilterPanel().getFilterTextField().isFocusOwner()
-                && e != null && !(e.getSource().getClass().equals(PlayPauseButton.class))) {
+        if (frame.getPlayerControls().getFilterPanel().getFilterTextField().isFocusOwner()
+                && getSource() != null && !(getSource().getClass().equals(PlayPauseButton.class))) {
+        	Logger.debug("Skipping play action");
             return;
         }
         
-        int selAudioObject = getBean(IFrame.class).getPlayListTable().getSelectedRow();
-        int currPlayingAudioObject = getBean(IPlayListHandler.class).getIndexOfAudioObject(Context.getBean(IPlayerHandler.class).getAudioObject());
+        int selAudioObject = frame.getPlayListTable().getSelectedRow();
+        int currPlayingAudioObject = playListHandler.getIndexOfAudioObject(playerHandler.getAudioObject());
 
         if (selAudioObject != currPlayingAudioObject) {
             // another song selected to play
-            if (e == null || e.getSource().getClass().equals(PlayPauseButton.class)) {
+            if (getSource() == null || getSource().getClass().equals(PlayPauseButton.class)) {
                 // action is from PlayPauseButton (or system tray) -> pause
-                Context.getBean(IPlayerHandler.class).playCurrentAudioObject(true);
+                playerHandler.playCurrentAudioObject(true);
             } else {
                 // play another song
-            	getBean(IPlayListHandler.class).setPositionToPlayInVisiblePlayList(selAudioObject);
-                Context.getBean(IPlayerHandler.class).playCurrentAudioObject(false);
+            	playListHandler.setPositionToPlayInVisiblePlayList(selAudioObject);
+                playerHandler.playCurrentAudioObject(false);
             }
         } else
             // selected song equals to song being currently played -> pause
-            Context.getBean(IPlayerHandler.class).playCurrentAudioObject(true);
+            playerHandler.playCurrentAudioObject(true);
     }
 
     @Override

@@ -153,7 +153,7 @@ public final class DeviceNavigationView extends AbstractNavigationView {
             deviceTableMenu.add(getMenuItemForAction(AddToPlayListAction.class));
             deviceTableMenu.add(getMenuItemForAction(AddToPlayListAfterCurrentAudioObjectAction.class));
             deviceTableMenu.add(getMenuItemForAction(SetAsPlayListAction.class));
-            deviceTableMenu.add(new JMenuItem(Actions.getAction(PlayNowAction.class)));
+            deviceTableMenu.add(Context.getBean(PlayNowAction.class));
             deviceTableMenu.add(new JSeparator());
             deviceTableMenu.add(new JMenuItem(Actions.getAction(OpenFolderFromNavigatorAction.class)));
             deviceTableMenu.add(new JSeparator());
