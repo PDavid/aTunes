@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
 import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -35,15 +33,21 @@ public class RefreshDeviceAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -5047885921099142L;
 
+    private IDeviceHandler deviceHandler;
+    
+    public void setDeviceHandler(IDeviceHandler deviceHandler) {
+		this.deviceHandler = deviceHandler;
+	}
+    
     public RefreshDeviceAction() {
         super(I18nUtils.getString("REFRESH"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("REFRESH"));
         setEnabled(false);
     }
-
+    
     @Override
-    public void actionPerformed(ActionEvent e) {
-    	getBean(IDeviceHandler.class).refreshDevice();
+    protected void executeAction() {
+    	deviceHandler.refreshDevice();
     }
 
 }

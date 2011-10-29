@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -29,13 +27,22 @@ public class RepositoryLoadCancelAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -9039622325405324974L;
 
-    RepositoryLoadCancelAction() {
+    private IRepositoryHandler repositoryHandler;
+    
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+    
+    public RepositoryLoadCancelAction() {
         super(I18nUtils.getString("CANCEL"), null);
     }
-
+    
     @Override
-    public void actionPerformed(ActionEvent e) {
-    	getBean(IRepositoryHandler.class).notifyCancel();
+    protected void executeAction() {
+    	repositoryHandler.notifyCancel();
     }
 
 }

@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -32,14 +30,23 @@ public class RenamePlaylistAction extends CustomAbstractAction {
 	 */
     private static final long serialVersionUID = 8445003048535126058L;
 
-    RenamePlaylistAction() {
+    private IPlayListHandler playListHandler;
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    public RenamePlaylistAction() {
         super(I18nUtils.getString("RENAME_PLAYLIST"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("RENAME_PLAYLIST"));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-    	getBean(IPlayListHandler.class).renamePlayList();
+    protected void executeAction() {
+    	playListHandler.renamePlayList();
     }
 
 }

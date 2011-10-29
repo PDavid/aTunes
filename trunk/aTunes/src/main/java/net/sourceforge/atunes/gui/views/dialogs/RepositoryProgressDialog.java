@@ -36,9 +36,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.RepositoryLoadCancelAction;
 import net.sourceforge.atunes.kernel.actions.RepositoryLoadInBackgroundAction;
 import net.sourceforge.atunes.model.IFrame;
@@ -123,8 +123,8 @@ public final class RepositoryProgressDialog extends AbstractCustomDialog impleme
         progressBar.setBorder(BorderFactory.createEmptyBorder());
         folderLabel = new JLabel(" ");
         remainingTimeLabel = new JLabel(" ");
-        backgroundButton = new JButton(Actions.getAction(RepositoryLoadInBackgroundAction.class));
-        cancelButton = new JButton(Actions.getAction(RepositoryLoadCancelAction.class));
+        backgroundButton = new JButton(Context.getBean(RepositoryLoadInBackgroundAction.class));
+        cancelButton = new JButton(Context.getBean(RepositoryLoadCancelAction.class));
 
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.add(backgroundButton);

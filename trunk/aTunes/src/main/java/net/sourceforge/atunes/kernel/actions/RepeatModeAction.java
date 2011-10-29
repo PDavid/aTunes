@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -34,7 +32,7 @@ public class RepeatModeAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 2032609750151412458L;
 
-    RepeatModeAction() {
+    public RepeatModeAction() {
         super(I18nUtils.getString("REPEAT"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("REPEAT"));
     }
@@ -45,7 +43,7 @@ public class RepeatModeAction extends CustomAbstractAction {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    protected void executeAction() {
         getState().setRepeat((Boolean) getValue(SELECTED_KEY));
     }
 

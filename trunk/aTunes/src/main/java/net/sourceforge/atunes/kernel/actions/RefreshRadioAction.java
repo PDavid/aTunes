@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
 import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -32,14 +31,23 @@ public class RefreshRadioAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 2614238225399634969L;
 
-    RefreshRadioAction() {
+    private IRadioHandler radioHandler;
+    
+    /**
+     * @param radioHandler
+     */
+    public void setRadioHandler(IRadioHandler radioHandler) {
+		this.radioHandler = radioHandler;
+	}
+    
+    public RefreshRadioAction() {
         super(I18nUtils.getString("REFRESH"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("REFRESH"));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        getBean(IRadioHandler.class).retrieveRadios();
+    protected void executeAction() {
+    	radioHandler.retrieveRadios();
     }
 
     @Override

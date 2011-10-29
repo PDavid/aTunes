@@ -20,8 +20,8 @@
 
 package net.sourceforge.atunes.gui.views.controls.playerControls;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.RepeatImageIcon;
-import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.RepeatModeAction;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
@@ -41,7 +41,7 @@ public final class RepeatButton extends SecondaryControl implements ILookAndFeel
      * @param lookAndFeelManager
      */
     public RepeatButton(ILookAndFeelManager lookAndFeelManager) {
-        super(Actions.getAction(RepeatModeAction.class), lookAndFeelManager);
+        super(Context.getBean(RepeatModeAction.class), lookAndFeelManager);
         this.lookAndFeel = lookAndFeelManager.getCurrentLookAndFeel();
         setIcon();
         lookAndFeelManager.addLookAndFeelChangeListener(this);

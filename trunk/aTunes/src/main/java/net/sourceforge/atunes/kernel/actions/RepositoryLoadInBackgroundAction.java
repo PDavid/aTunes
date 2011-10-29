@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -29,13 +27,22 @@ public class RepositoryLoadInBackgroundAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -9039622325405324974L;
 
-    RepositoryLoadInBackgroundAction() {
+    private IRepositoryHandler repositoryHandler;
+    
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+    
+    public RepositoryLoadInBackgroundAction() {
         super(I18nUtils.getString("DO_IN_BACKGROUND"), null);
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-    	getBean(IRepositoryHandler.class).doInBackground();
+    protected void executeAction() {
+    	repositoryHandler.doInBackground();
     }
 
 }
