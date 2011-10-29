@@ -20,12 +20,7 @@
 
 package net.sourceforge.atunes;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.net.URISyntaxException;
 import java.util.Collection;
-
-import net.sourceforge.atunes.utils.StringUtils;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -38,30 +33,28 @@ public class Context {
 	}
 	
 	/**
-	 * Initializes Spring with path where bean definition files are
-	 * @param path
+	 * Initializes Spring with bean definition files
 	 */
-	public static void initialize(String path) {
-		File folder = null;
-		String[] paths = null;
-		try {
-			folder = new File(Context.class.getResource(path).toURI());
-			File[] files = folder.listFiles(new FilenameFilter() {
-				
-				@Override
-				public boolean accept(File dir, String name) {
-					return name.toLowerCase().endsWith(".xml");
-				}
-			});
-			paths = new String[files.length];
-			for (int i = 0; i < paths.length; i++) {
-				paths[i] = StringUtils.getString(path, files[i].getName());
-			} 
-			
-			context = new ClassPathXmlApplicationContext(paths);
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
+	public static void initialize() {
+		context = new ClassPathXmlApplicationContext(
+				"/settings/spring/actions.xml", 
+				"/settings/spring/columnsets.xml", 
+				"/settings/spring/context.xml", 
+				"/settings/spring/core.xml", 
+				"/settings/spring/dialogs.xml", 
+				"/settings/spring/frame.xml", 
+				"/settings/spring/genres.xml", 
+				"/settings/spring/handlers.xml", 
+				"/settings/spring/lookandfeel.xml", 
+				"/settings/spring/navigationviews.xml", 
+				"/settings/spring/os.xml", 
+				"/settings/spring/player.xml", 
+				"/settings/spring/tasks.xml", 
+				"/settings/spring/treecelldecorators.xml", 
+				"/settings/spring/treegenerators.xml", 
+				"/settings/spring/utils.xml", 
+				"/settings/spring/webservices.xml" 
+				);
 	}
 	
 	public static <T> T getBean(Class<T> beanType) {

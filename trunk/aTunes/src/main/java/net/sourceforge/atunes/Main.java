@@ -83,7 +83,7 @@ public final class Main {
     public static void main(String[] args) {
         // Fetch arguments into a list
         List<String> arguments = StringUtils.fromStringArrayToList(args);
-    	Context.initialize("/settings/spring/");
+    	Context.initialize();
         // Save arguments, if application is restarted they will be necessary
     	Context.getBean(ApplicationArguments.class).saveArguments(arguments);
     	// Now start application
