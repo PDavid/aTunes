@@ -21,13 +21,9 @@
 package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.Component;
-import java.awt.MenuItem;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.AbstractAction;
 import javax.swing.JMenuItem;
 
 import net.sourceforge.atunes.Context;

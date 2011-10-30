@@ -26,12 +26,12 @@ import java.util.List;
 
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
+import net.sourceforge.atunes.model.LocalAudioObjectFilter;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -52,7 +52,8 @@ public class SetPlayListSelectionAsFavoriteArtistAction extends CustomAbstractAc
 
     @Override
     public void actionPerformed(ActionEvent e) {
-    	getBean(IFavoritesHandler.class).toggleFavoriteArtists(AudioFile.getAudioFiles(getBean(IPlayListHandler.class).getSelectedAudioObjects()));
+    	getBean(IFavoritesHandler.class).toggleFavoriteArtists(
+    			new LocalAudioObjectFilter().getLocalAudioObjects(getBean(IPlayListHandler.class).getSelectedAudioObjects()));
     }
 
     @Override

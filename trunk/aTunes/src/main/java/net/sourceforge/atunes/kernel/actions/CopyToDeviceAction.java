@@ -32,6 +32,7 @@ import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
+import net.sourceforge.atunes.model.LocalAudioObjectFilter;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class CopyToDeviceAction extends AbstractActionOverSelectedObjects<IAudioObject> {
@@ -57,7 +58,7 @@ public class CopyToDeviceAction extends AbstractActionOverSelectedObjects<IAudio
 
     @Override
     protected void performAction(List<IAudioObject> objects) {
-    	getBean(IDeviceHandler.class).copyFilesToDevice(AudioFile.getAudioFiles(objects));
+    	getBean(IDeviceHandler.class).copyFilesToDevice(new LocalAudioObjectFilter().getLocalAudioObjects(objects));
     }
 
     @Override

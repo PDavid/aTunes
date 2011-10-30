@@ -28,13 +28,13 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.kernel.modules.navigator.FavoritesNavigationView;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.ITreeObject;
+import net.sourceforge.atunes.model.LocalAudioObjectFilter;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class RemoveFromFavoritesAction extends CustomAbstractAction {
@@ -87,6 +87,7 @@ public class RemoveFromFavoritesAction extends CustomAbstractAction {
     @Override
     public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
         // Enabled if all selected items are favorite songs (not belong to favorite artist nor album)
-        return getBean(IFavoritesHandler.class).getFavoriteSongsInfo().values().containsAll(AudioFile.getAudioFiles(selection));
+        return getBean(IFavoritesHandler.class).getFavoriteSongsInfo().values().containsAll(
+        		new LocalAudioObjectFilter().getLocalAudioObjects(selection));
     }
 }

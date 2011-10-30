@@ -27,7 +27,6 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.processes.ExportFilesProcess;
 import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.IErrorDialog;
@@ -38,6 +37,7 @@ import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IProcessListener;
+import net.sourceforge.atunes.model.LocalAudioObjectFilter;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -107,10 +107,10 @@ public class ExportAction extends CustomAbstractAction {
 
                     // If user wants to export navigator ask current navigation view to return selected objects
                     if (exportNavigator) {
-                        songs = AudioFile.getAudioFiles(getBean(INavigationHandler.class).getCurrentView().getSelectedAudioObjects());
+                        songs = new LocalAudioObjectFilter().getLocalAudioObjects(getBean(INavigationHandler.class).getCurrentView().getSelectedAudioObjects());
                     } else {
                         // Get only LocalAudioObject objects of current play list
-                        songs = AudioFile.getAudioFiles(Context.getBean(IPlayListHandler.class).getSelectedAudioObjects());
+                        songs = new LocalAudioObjectFilter().getLocalAudioObjects(getBean(IPlayListHandler.class).getSelectedAudioObjects());
                     }
 
                     ExportFilesProcess process = new ExportFilesProcess(songs, path, getState(), Context.getBean(IFrame.class), Context.getBean(IOSManager.class));

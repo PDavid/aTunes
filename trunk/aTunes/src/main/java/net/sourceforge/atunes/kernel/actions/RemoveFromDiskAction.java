@@ -34,7 +34,6 @@ import javax.swing.tree.TreePath;
 import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.navigator.RepositoryNavigationView;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IConfirmationDialog;
@@ -48,6 +47,7 @@ import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.LocalAudioObjectFilter;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -117,7 +117,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
     private void fromOtherViews(IRepositoryHandler repositoryHandler) {
         final List<IAudioObject> files = navigationHandler.getFilesSelectedInNavigator();
         repositoryHandler.startTransaction();
-        repositoryHandler.remove(AudioFile.getAudioFiles(files));
+        repositoryHandler.remove(new LocalAudioObjectFilter().getLocalAudioObjects(files));
         repositoryHandler.endTransaction();
         SwingUtilities.invokeLater(new Runnable() {
         	@Override
@@ -127,7 +127,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
         		dialog.showDialog();
         	}
         });
-        new DeleteFilesWorker(AudioFile.getAudioFiles(files)).execute();
+        new DeleteFilesWorker(new LocalAudioObjectFilter().getLocalAudioObjects(files)).execute();
     }
 
     private void fromRepositoryOrDeviceView(IRepositoryHandler repositoryHandler) {
