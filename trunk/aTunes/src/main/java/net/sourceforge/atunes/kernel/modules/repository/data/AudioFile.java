@@ -25,9 +25,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.ImageIcon;
 
@@ -540,51 +538,6 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
             return tag.getDiscNumber();
         }
         return 0;
-    }
-
-    /**
-     * Returns a list where there are no repeated songs (same title and artist)
-     * 
-     * @param list
-     * @return
-     */
-    public static List<ILocalAudioObject> filterRepeatedSongs(List<ILocalAudioObject> list) {
-        List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>(list);
-        HashSet<Integer> artistAndTitles = new HashSet<Integer>();
-        for (ILocalAudioObject af : list) {
-            // Build a set of strings of type artist_hash * title_hash
-            Integer hash = (!af.getAlbumArtist().trim().equals("") ? af.getAlbumArtist() : af.getArtist()).hashCode() * af.getTitle().hashCode();
-            if (artistAndTitles.contains(hash)) {
-                // Repeated artist + title, remove from result list
-                result.remove(af);
-            } else {
-                artistAndTitles.add(hash);
-            }
-        }
-        return result;
-    }
-
-    /**
-     * Returns a list where there are no repeated songs (same title and album
-     * and artist)
-     * 
-     * @param list
-     * @return
-     */
-    public static List<ILocalAudioObject> filterRepeatedSongsAndAlbums(List<ILocalAudioObject> list) {
-        List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>(list);
-        Set<Integer> artistAndTitles = new HashSet<Integer>();
-        for (ILocalAudioObject af : list) {
-            // Build a set of strings of type artist_hash * album_hash * title_hash
-            Integer hash = (!af.getAlbumArtist().trim().equals("") ? af.getAlbumArtist() : af.getArtist()).hashCode() * af.getAlbum().hashCode() * af.getTitle().hashCode();
-            if (artistAndTitles.contains(hash)) {
-                // Repeated artist + album + title, remove from result list
-                result.remove(af);
-            } else {
-                artistAndTitles.add(hash);
-            }
-        }
-        return result;
     }
 
     /* (non-Javadoc)
