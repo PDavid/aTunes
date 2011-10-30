@@ -117,4 +117,7 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.RepositoryLoadInBackgroundAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RipCDAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.SelectRepositoryAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.SetPlayListSelectionAsFavoriteAlbumAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.SetPlayListSelectionAsFavoriteArtistAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.SetPlayListSelectionAsFavoriteSongAction"/>
 </beans>

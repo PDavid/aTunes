@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
@@ -44,21 +43,39 @@ public class SetPlayListSelectionAsFavoriteAlbumAction extends CustomAbstractAct
 
     private static final long serialVersionUID = 4274931214366676521L;
 
-    SetPlayListSelectionAsFavoriteAlbumAction() {
+    private IFavoritesHandler favoritesHandler;
+    
+    private IPlayListHandler playListHandler;
+    
+    /**
+     * @param favoritesHandler
+     */
+    public void setFavoritesHandler(IFavoritesHandler favoritesHandler) {
+		this.favoritesHandler = favoritesHandler;
+	}
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    public SetPlayListSelectionAsFavoriteAlbumAction() {
         super(I18nUtils.getString("SET_FAVORITE_ALBUM"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0));
         setEnabled(false);
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-    	getBean(IFavoritesHandler.class).toggleFavoriteAlbums(
-    			new LocalAudioObjectFilter().getLocalAudioObjects(getBean(IPlayListHandler.class).getSelectedAudioObjects()));
+    protected void executeAction() {
+    	favoritesHandler.toggleFavoriteAlbums(
+    			new LocalAudioObjectFilter().getLocalAudioObjects(playListHandler.getSelectedAudioObjects()));
     }
 
     @Override
     public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
-        if (selection.isEmpty()) {
+        if (selection == null || selection.isEmpty()) {
             return false;
         }
 

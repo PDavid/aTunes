@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
@@ -44,16 +43,34 @@ public class SetPlayListSelectionAsFavoriteSongAction extends CustomAbstractActi
 
     private static final long serialVersionUID = 1185876110005394694L;
 
-    SetPlayListSelectionAsFavoriteSongAction() {
+    private IFavoritesHandler favoritesHandler;
+    
+    private IPlayListHandler playListHandler;
+    
+    /**
+     * @param favoritesHandler
+     */
+    public void setFavoritesHandler(IFavoritesHandler favoritesHandler) {
+		this.favoritesHandler = favoritesHandler;
+	}
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    public SetPlayListSelectionAsFavoriteSongAction() {
         super(I18nUtils.getString("SET_FAVORITE_SONG"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
         setEnabled(false);
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-    	getBean(IFavoritesHandler.class).toggleFavoriteSongs(
-    			new LocalAudioObjectFilter().getLocalAudioObjects(getBean(IPlayListHandler.class).getSelectedAudioObjects()));
+    protected void executeAction() {
+    	favoritesHandler.toggleFavoriteSongs(
+    			new LocalAudioObjectFilter().getLocalAudioObjects(playListHandler.getSelectedAudioObjects()));
     }
 
     @Override
