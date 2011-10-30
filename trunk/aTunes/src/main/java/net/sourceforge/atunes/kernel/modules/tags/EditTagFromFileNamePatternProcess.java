@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
@@ -75,6 +74,6 @@ public class EditTagFromFileNamePatternProcess extends AbstractChangeTagProcess 
 
     @Override
     protected void changeTag(ILocalAudioObject file) {
-        TagModifier.setInfo(file, AudioFile.getNewTag(file, filesAndTags.get(file)));
+        TagModifier.setInfo(file, TagFactory.getNewTag(file, filesAndTags.get(file)));
     }
 }

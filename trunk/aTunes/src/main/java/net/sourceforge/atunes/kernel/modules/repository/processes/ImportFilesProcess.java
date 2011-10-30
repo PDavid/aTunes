@@ -28,8 +28,8 @@ import java.util.List;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.process.AbstractAudioFileTransferProcess;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
 import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
+import net.sourceforge.atunes.kernel.modules.tags.TagFactory;
 import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -223,7 +223,7 @@ public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
         	int newTrackNumber = TagEditionOperations.getTrackNumber(fileToImport);
         	if (newTrackNumber > 0) {
         		if (fileToImport.getTag() == null) {
-        			fileToImport.setTag(new DefaultTag());
+        			fileToImport.setTag(TagFactory.getNewTag());
         		}
         		fileToImport.getTag().setTrackNumber(newTrackNumber);
         		if (!filesToChangeTag.contains(fileToImport)) {
@@ -244,7 +244,7 @@ public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
             String newTitle = Context.getBean(IWebServicesHandler.class).getTitleForAudioObject(fileToImport);
             if (newTitle != null) {
                 if (fileToImport.getTag() == null) {
-                    fileToImport.setTag(new DefaultTag());
+                    fileToImport.setTag(TagFactory.getNewTag());
                 }
                 fileToImport.getTag().setTitle(newTitle);
                 if (!filesToChangeTag.contains(fileToImport)) {

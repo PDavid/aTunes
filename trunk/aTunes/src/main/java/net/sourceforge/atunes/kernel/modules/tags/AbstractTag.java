@@ -131,10 +131,10 @@ public abstract class AbstractTag implements Serializable, ITag {
     }
 
     /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#getTagFromProperties(net.sourceforge.atunes.kernel.modules.tags.EditTagInfo, net.sourceforge.atunes.kernel.modules.tags.ITag)
+	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#setTagFromProperties(net.sourceforge.atunes.kernel.modules.tags.EditTagInfo, net.sourceforge.atunes.kernel.modules.tags.ITag)
 	 */
     @Override
-	public abstract ITag getTagFromProperties(EditTagInfo editTagInfo, ITag oldTag);
+	public abstract ITag setTagFromProperties(EditTagInfo editTagInfo, ITag oldTag);
 
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.tags.ITag#getTitle()
