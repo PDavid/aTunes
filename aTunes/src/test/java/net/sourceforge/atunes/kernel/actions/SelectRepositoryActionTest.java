@@ -20,37 +20,22 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.StringUtils;
 
-/**
- * This action show a window to select folders to set as repository
- * 
- * @author fleax
- * 
- */
-public class SelectRepositoryAction extends CustomAbstractAction {
+import org.junit.Test;
 
-    private static final long serialVersionUID = 6921256152199287639L;
+public class SelectRepositoryActionTest {
 
-    private IRepositoryHandler repositoryHandler;
-    
-    /**
-     * @param repositoryHandler
-     */
-    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
+	@Test
+	public void test() {
+		SelectRepositoryAction sut = new SelectRepositoryAction();
+		IRepositoryHandler repositoryHandler = mock(IRepositoryHandler.class);
+		sut.setRepositoryHandler(repositoryHandler);
+		
+		sut.executeAction();
+		
+		verify(repositoryHandler).selectRepository();
 	}
-    
-    public SelectRepositoryAction() {
-        super(StringUtils.getString(I18nUtils.getString("SELECT_REPOSITORY"), "..."));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SELECT_REPOSITORY"));
-    }
-
-    @Override
-    protected void executeAction() {
-        repositoryHandler.selectRepository();
-    }
-
 }

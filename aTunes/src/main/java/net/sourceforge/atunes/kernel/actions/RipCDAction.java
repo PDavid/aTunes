@@ -20,9 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
-import net.sourceforge.atunes.model.ICommandHandler;
 import net.sourceforge.atunes.model.IRipperHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -37,20 +34,28 @@ public class RipCDAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -362457188090138933L;
 
-    RipCDAction() {
+    private IRipperHandler ripperHandler;
+    
+    /**
+     * @param ripperHandler
+     */
+    public void setRipperHandler(IRipperHandler ripperHandler) {
+		this.ripperHandler = ripperHandler;
+	}
+    
+    public RipCDAction() {
         super(StringUtils.getString(I18nUtils.getString("RIP_CD"), "..."));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("RIP_CD"));
-    	setCommandHandler(getBean(ICommandHandler.class));
     }
 
     @Override
     public void setEnabled(boolean newValue) {    	
-    	super.setEnabled(getBean(IRipperHandler.class).isRipSupported() && newValue);
+    	super.setEnabled(ripperHandler.isRipSupported() && newValue);
     }
     
     @Override
-    public void actionPerformed(ActionEvent e) {
-    	getBean(IRipperHandler.class).startCdRipper();
+    protected void executeAction() {
+    	ripperHandler.startCdRipper();
     }
 
     @Override

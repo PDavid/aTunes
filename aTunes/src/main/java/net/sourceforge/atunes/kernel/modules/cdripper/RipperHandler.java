@@ -250,7 +250,7 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
     @Override
 	public void importSongs(String folder, final String artist, final String album, final int year, final String genre, final List<Integer> tracks, final List<String> trckNames, final List<String> artistNames, final List<String> composerNames, final String format, final String quality1, final boolean useParanoia) {
         // Disable import cd option in menu
-        Actions.getAction(RipCDAction.class).setEnabled(false);
+        getBean(RipCDAction.class).setEnabled(false);
 
         final File folderFile = new File(folder);
         if (!folderFile.exists()) {
@@ -314,7 +314,7 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
             	dialog.hideDialog();
                 notifyFinishImport(filesImported, folderFile);
                 // Enable import cd option in menu
-                Actions.getAction(RipCDAction.class).setEnabled(true);
+                getBean(RipCDAction.class).setEnabled(true);
             }
         }.execute();
 
