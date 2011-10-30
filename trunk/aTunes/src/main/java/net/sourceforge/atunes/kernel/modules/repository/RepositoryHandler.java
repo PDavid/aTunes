@@ -1137,12 +1137,12 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
      * @param enable
      */
     private void enableRepositoryActions(boolean enable) {
-        Actions.getAction(SelectRepositoryAction.class).setEnabled(enable);
+        getBean(SelectRepositoryAction.class).setEnabled(enable);
         Actions.getAction(RefreshRepositoryAction.class).setEnabled(enable);
         Actions.getAction(ImportToRepositoryAction.class).setEnabled(enable);
         Actions.getAction(ExportAction.class).setEnabled(enable);
         getBean(ConnectDeviceAction.class).setEnabled(enable);
-        Actions.getAction(RipCDAction.class).setEnabled(enable);
+        getBean(RipCDAction.class).setEnabled(enable);
         Actions.getAction(RefreshFolderFromNavigatorAction.class).setEnabled(enable);
     }
 

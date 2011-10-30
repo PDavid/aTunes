@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -36,14 +34,23 @@ public class SelectRepositoryAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 6921256152199287639L;
 
-    SelectRepositoryAction() {
+    private IRepositoryHandler repositoryHandler;
+    
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+    
+    public SelectRepositoryAction() {
         super(StringUtils.getString(I18nUtils.getString("SELECT_REPOSITORY"), "..."));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SELECT_REPOSITORY"));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        getBean(IRepositoryHandler.class).selectRepository();
+    protected void executeAction() {
+        repositoryHandler.selectRepository();
     }
 
 }

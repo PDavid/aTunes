@@ -111,7 +111,7 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
     private JMenu getFileMenu() {
         if (file == null) {
             file = new JMenu(I18nUtils.getString("FILE"));
-            file.add(Actions.getAction(SelectRepositoryAction.class));
+            file.add(Context.getBean(SelectRepositoryAction.class));
             file.add(Actions.getAction(RefreshRepositoryAction.class));
             file.add(new JSeparator());
             file.add(Actions.getAction(ImportToRepositoryAction.class));
@@ -204,7 +204,7 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
     private JMenu getToolsMenu() {
         if (tools == null) {
             tools = new JMenu(I18nUtils.getString("TOOLS"));
-            tools.add(Actions.getAction(RipCDAction.class));
+            tools.add(Context.getBean(RipCDAction.class));
             tools.add(new JSeparator());
             tools.add(Actions.getAction(ShowStatsAction.class));
             tools.add(Actions.getAction(ShowCoverNavigatorAction.class));

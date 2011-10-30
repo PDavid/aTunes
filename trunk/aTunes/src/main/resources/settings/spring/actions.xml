@@ -115,4 +115,6 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.RepeatModeAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RepositoryLoadCancelAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RepositoryLoadInBackgroundAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.RipCDAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.SelectRepositoryAction"/>
 </beans>
