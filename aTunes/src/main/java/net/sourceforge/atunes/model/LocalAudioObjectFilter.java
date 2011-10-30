@@ -22,7 +22,9 @@ package net.sourceforge.atunes.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class LocalAudioObjectFilter {
 
@@ -45,5 +47,67 @@ public class LocalAudioObjectFilter {
         return result;
     }
 
+    /**
+     * Returns a list where there are no repeated audio objects (same title and artist)
+     * 
+     * @param list
+     * @return
+     */
+    public List<ILocalAudioObject> filterRepeatedObjects(List<ILocalAudioObject> list) {
+    	return filterWithHash(list, new IHashCalculator() {
+    		@Override
+    		public int getHash(ILocalAudioObject lao) {
+    			return (lao.getAlbumArtist() != null && !lao.getAlbumArtist().trim().equals("") ? lao.getAlbumArtist() : lao.getArtist()).hashCode() * 
+    					lao.getTitle().hashCode();
+    		}
+    	});
+    }
+    
+    /**
+     * Returns a list where there are no repeated audio objects (same title and album and artist)
+     * 
+     * @param list
+     * @return
+     */
+    public List<ILocalAudioObject> filterRepeatedObjectsWithAlbums(List<ILocalAudioObject> list) {
+    	return filterWithHash(list, new IHashCalculator() {
+    		@Override
+    		public int getHash(ILocalAudioObject lao) {
+    			return (lao.getAlbumArtist() != null && !lao.getAlbumArtist().trim().equals("") ? lao.getAlbumArtist() : lao.getArtist()).hashCode() * 
+    					lao.getAlbum().hashCode() * 
+    					lao.getTitle().hashCode();
+    		}
+    	});
+    }
 
+    /**
+     * Returns a list where there are no repeated audio objects (same title and album and artist)
+     * 
+     * @param list
+     * @return
+     */
+    private List<ILocalAudioObject> filterWithHash(List<ILocalAudioObject> list, IHashCalculator hashCalculator) {
+        List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>(list);
+        Set<Integer> artistAndTitles = new HashSet<Integer>();
+        for (ILocalAudioObject af : list) {
+            // Build a set of strings of type artist_hash * album_hash * title_hash
+            Integer hash = hashCalculator.getHash(af);
+            if (artistAndTitles.contains(hash)) {
+                // Repeated artist + album + title, remove from result list
+                result.remove(af);
+            } else {
+                artistAndTitles.add(hash);
+            }
+        }
+        return result;
+    }
+    
+    private interface IHashCalculator {
+    	/**
+    	 * Gets hash for a lao
+    	 * @param lao
+    	 * @return
+    	 */
+    	public int getHash(ILocalAudioObject lao);
+    }
 }
