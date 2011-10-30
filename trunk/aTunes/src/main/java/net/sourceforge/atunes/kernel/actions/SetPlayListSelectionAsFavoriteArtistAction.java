@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
@@ -44,16 +43,34 @@ public class SetPlayListSelectionAsFavoriteArtistAction extends CustomAbstractAc
 
     private static final long serialVersionUID = 3403777999793279297L;
 
-    SetPlayListSelectionAsFavoriteArtistAction() {
+    private IFavoritesHandler favoritesHandler;
+    
+    private IPlayListHandler playListHandler;
+    
+    /**
+     * @param favoritesHandler
+     */
+    public void setFavoritesHandler(IFavoritesHandler favoritesHandler) {
+		this.favoritesHandler = favoritesHandler;
+	}
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    public SetPlayListSelectionAsFavoriteArtistAction() {
         super(I18nUtils.getString("SET_FAVORITE_ARTIST"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0));
         setEnabled(false);
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-    	getBean(IFavoritesHandler.class).toggleFavoriteArtists(
-    			new LocalAudioObjectFilter().getLocalAudioObjects(getBean(IPlayListHandler.class).getSelectedAudioObjects()));
+    protected void executeAction() {
+    	favoritesHandler.toggleFavoriteArtists(
+    			new LocalAudioObjectFilter().getLocalAudioObjects(playListHandler.getSelectedAudioObjects()));
     }
 
     @Override
@@ -69,5 +86,4 @@ public class SetPlayListSelectionAsFavoriteArtistAction extends CustomAbstractAc
         }
         return true;
     }
-
 }

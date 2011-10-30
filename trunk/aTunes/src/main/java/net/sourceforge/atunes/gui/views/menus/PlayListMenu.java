@@ -161,9 +161,9 @@ public final class PlayListMenu {
      */
     private static JMenu getFavoritesMenu() {
         JMenu favorites = new JMenu(I18nUtils.getString("FAVORITES"));
-        favorites.add(Actions.getAction(SetPlayListSelectionAsFavoriteSongAction.class));
-        favorites.add(Actions.getAction(SetPlayListSelectionAsFavoriteAlbumAction.class));
-        favorites.add(Actions.getAction(SetPlayListSelectionAsFavoriteArtistAction.class));
+        favorites.add(Context.getBean(SetPlayListSelectionAsFavoriteSongAction.class));
+        favorites.add(Context.getBean(SetPlayListSelectionAsFavoriteAlbumAction.class));
+        favorites.add(Context.getBean(SetPlayListSelectionAsFavoriteArtistAction.class));
         return favorites;
     }
     
