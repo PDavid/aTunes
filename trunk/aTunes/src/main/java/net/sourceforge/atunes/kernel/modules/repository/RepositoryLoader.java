@@ -162,7 +162,7 @@ public class RepositoryLoader extends Thread {
 			return files;
 		}
 		for (File element : list) {
-			if (AudioFile.isValidAudioFile(element)) {
+			if (LocalAudioObjectValidator.isValidAudioFile(element)) {
 				files++;
 			} else if (element.isDirectory()) {
 				files = files + countFiles(element);
@@ -227,7 +227,7 @@ public class RepositoryLoader extends Thread {
 		if (list != null) {
 			// First find pictures, audio and files
 			for (File element : list) {
-				if (AudioFile.isValidAudioFile(element)) {
+				if (LocalAudioObjectValidator.isValidAudioFile(element)) {
 					files.add(element);
 				} else if (element.isDirectory()) {
 					result.addAll(getSongsForFolder(element, listener));
@@ -356,7 +356,7 @@ public class RepositoryLoader extends Thread {
 				return files;
 			}
 			for (File element : list) {
-				if (AudioFile.isValidAudioFile(element)) {
+				if (LocalAudioObjectValidator.isValidAudioFile(element)) {
 					files++;
 				} else if (element.isDirectory()) {
 					files = files + countFilesInDir(element);
@@ -494,7 +494,7 @@ public class RepositoryLoader extends Thread {
 	 */
 	private void processAudioFiles( File dir, List<File> picturesList, File relativeTo) {
         // Get audio files
-        File[] audiofiles = dir.listFiles(AudioFile.validAudioFileFilter());
+        File[] audiofiles = dir.listFiles(LocalAudioObjectValidator.validAudioFileFilter());
         
         String pathToFile = dir.getAbsolutePath().replace('\\', '/');
 

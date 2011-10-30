@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.repository.data;
 
 import java.awt.Paint;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +30,7 @@ import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
 import net.sourceforge.atunes.kernel.modules.repository.ImageCache;
+import net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectValidator;
 import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
 import net.sourceforge.atunes.kernel.modules.tags.TagDetector;
 import net.sourceforge.atunes.model.Album;
@@ -99,64 +99,10 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
      */
     private void readFile() {
         // Don't read from formats not supported by Jaudiotagger
-        if (!isValidAudioFile(filePath, Format.APE, Format.MPC)) {
+        if (!LocalAudioObjectValidator.isValidAudioFile(filePath, Format.APE, Format.MPC)) {
             readInformation(true);
         }
         this.readTime = System.currentTimeMillis();
-    }
-
-    /**
-     * Checks if is valid audio file.
-     * 
-     * @param file
-     *            the file
-     * 
-     * @return true, if is valid audio file
-     */
-    public static boolean isValidAudioFile(File file) {
-        return !file.isDirectory()
-                && isValidAudioFile(file.getName(), Format.MP3, Format.OGG, Format.MP4_1, Format.MP4_2, Format.WAV, Format.WMA, Format.FLAC, Format.REAL_1, Format.REAL_2, Format.APE,
-                        Format.MPC);
-    }
-    
-    public static FileFilter validAudioFileFilter() {
-    	return new FileFilter() {
-			
-			@Override
-			public boolean accept(File pathname) {
-				return isValidAudioFile(pathname);
-			}
-		};
-    }
-
-    /**
-     * Checks if a file is a valid audio file given its name
-     * 
-     * @param fileName
-     * @param formats
-     * @return if the file is a valid audio file
-     */
-    public static boolean isValidAudioFile(String fileName, Format... formats) {
-        String path = fileName.toLowerCase();
-        for (Format format : formats) {
-            if (path.endsWith(format.getExtension())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Checks if is valid audio file.
-     * 
-     * @param file
-     *            the file
-     * 
-     * @return true, if is valid audio file
-     */
-    public static boolean isValidAudioFile(String file) {
-        File f = new File(file);
-        return f.exists() && isValidAudioFile(f);
     }
 
     /**
@@ -422,7 +368,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
      */
     @Override
     public final boolean supportsInternalPicture() {
-        return isValidAudioFile(filePath, Format.FLAC, Format.MP3, Format.MP4_1, Format.MP4_2, Format.OGG, Format.WMA);
+        return LocalAudioObjectValidator.isValidAudioFile(filePath, Format.FLAC, Format.MP3, Format.MP4_1, Format.MP4_2, Format.OGG, Format.WMA);
     }
 
     /**

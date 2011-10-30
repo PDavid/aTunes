@@ -40,6 +40,7 @@ import net.sourceforge.atunes.api.RepositoryApi;
 import net.sourceforge.atunes.gui.model.TransferableList;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
 import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
+import net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectValidator;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.Artist;
@@ -353,7 +354,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
             for (File f : files) {
                 if (f.isDirectory()) {
                     filesToAdd.addAll(RepositoryLoader.getSongsForFolder(f, null));
-                } else if (AudioFile.isValidAudioFile(f)) {
+                } else if (LocalAudioObjectValidator.isValidAudioFile(f)) {
                 	ILocalAudioObject song = new AudioFile(f);
                     filesToAdd.add(song);
                 } else if (f.getName().toLowerCase().endsWith("m3u")) {
