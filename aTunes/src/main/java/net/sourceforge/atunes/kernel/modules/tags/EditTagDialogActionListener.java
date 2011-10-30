@@ -37,6 +37,7 @@ import javax.swing.filechooser.FileFilter;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
+import net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectValidator;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -98,7 +99,7 @@ public final class EditTagDialogActionListener implements ActionListener {
                 playListHandler.changeSelectedAudioObjectToIndex(++currentSelectedSongIndex);
                 selectedFiles.clear();
                 selectedFiles.add(playListHandler.getSelectedAudioObjects().get(0));
-                validAudioFile = AudioFile.isValidAudioFile(selectedFiles.get(0).getUrl());
+                validAudioFile = LocalAudioObjectValidator.isValidAudioFile(selectedFiles.get(0).getUrl());
             }
             if (validAudioFile) {
                 nextFile.add((AudioFile) selectedFiles.get(0));
@@ -120,7 +121,7 @@ public final class EditTagDialogActionListener implements ActionListener {
                 playListHandler.changeSelectedAudioObjectToIndex(--currentSelectedSongIndex);
                 selectedFiles.clear();
                 selectedFiles.add(playListHandler.getSelectedAudioObjects().get(0));
-                validAudioFile = AudioFile.isValidAudioFile(selectedFiles.get(0).getUrl());
+                validAudioFile = LocalAudioObjectValidator.isValidAudioFile(selectedFiles.get(0).getUrl());
                 // Reaching the begin of the playlist
                 if (currentSelectedSongIndex == -1) {
                     // Set to false to make tag edit dialog disappear 
