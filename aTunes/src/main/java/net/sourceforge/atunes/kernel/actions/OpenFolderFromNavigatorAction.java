@@ -28,10 +28,10 @@ import java.util.Set;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.LocalAudioObjectFilter;
 
 /**
  * Opens OS file browser with folder of selected elements
@@ -46,12 +46,12 @@ public class OpenFolderFromNavigatorAction extends OpenFolderAction {
     @Override
     public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
         List<IAudioObject> filesSelectedInNavigator = getBean(INavigationHandler.class).getFilesSelectedInNavigator();
-        return sameParentFile(AudioFile.getAudioFiles(filesSelectedInNavigator));
+        return sameParentFile(new LocalAudioObjectFilter().getLocalAudioObjects(filesSelectedInNavigator));
     }
 
     @Override
     public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
-        return sameParentFile(AudioFile.getAudioFiles(selection));
+        return sameParentFile(new LocalAudioObjectFilter().getLocalAudioObjects(selection));
     }
     
     /**

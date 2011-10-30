@@ -25,7 +25,6 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -40,7 +39,6 @@ import net.sourceforge.atunes.kernel.modules.tags.TagDetector;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.GenericImageSize;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -108,27 +106,6 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
             readInformation(true);
         }
         this.readTime = System.currentTimeMillis();
-    }
-
-    /**
-     * Gets the audio files.
-     * 
-     * @param audioObjects
-     *            the audio objects
-     * 
-     * @return the audio files
-     */
-    public static List<ILocalAudioObject> getAudioFiles(List<IAudioObject> audioObjects) {
-        if (audioObjects == null) {
-            return Collections.emptyList();
-        }
-        List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
-        for (IAudioObject audioObject : audioObjects) {
-            if (audioObject instanceof ILocalAudioObject) {
-                result.add((ILocalAudioObject) audioObject);
-            }
-        }
-        return result;
     }
 
     /**
