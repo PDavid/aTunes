@@ -38,7 +38,7 @@ public class DefaultTag extends AbstractTag {
     /**
      * Instantiates a new default tag.
      */
-    public DefaultTag() {
+    DefaultTag() {
         // Nothing to do
     }
 
@@ -49,7 +49,7 @@ public class DefaultTag extends AbstractTag {
      * @param tag
      *            JAudiotagger type tag must be passed
      */
-    public DefaultTag(org.jaudiotagger.tag.Tag tag) {
+    DefaultTag(org.jaudiotagger.tag.Tag tag) {
         setAlbum(tag.getFirst(FieldKey.ALBUM));
         setArtist(tag.getFirst(FieldKey.ARTIST));
         setComment(tag.getFirst(FieldKey.COMMENT));
@@ -172,94 +172,172 @@ public class DefaultTag extends AbstractTag {
     }
 
     @Override
-    public ITag getTagFromProperties(EditTagInfo editTagInfo, ITag oldTag) {
+    public ITag setTagFromProperties(EditTagInfo editTagInfo, ITag oldTag) {
+        setTitleFromProperties(editTagInfo, oldTag);
+        setArtistFromProperties(editTagInfo, oldTag);
+        setAlbumFromProperties(editTagInfo, oldTag);
+        setYearFromProperties(editTagInfo, oldTag);
+        setCommentFromProperties(editTagInfo, oldTag);
+        setTrackNumberFromProperties(editTagInfo, oldTag);
+        setDiscNumberFromProperties(editTagInfo, oldTag);
+        setGenreFromProperties(editTagInfo, oldTag);
+        setLyricsFromProperties(editTagInfo, oldTag);
+        setComposerFromProperties(editTagInfo, oldTag);
+        setAlbumArtistFromProperties(editTagInfo, oldTag);
+        return this;
+    }
 
-        DefaultTag defaultTag = new DefaultTag();
-        if (editTagInfo.isTagEdited("TITLE")) {
-            defaultTag.setTitle((String) editTagInfo.get("TITLE"));
+	/**
+	 * @param editTagInfo
+	 * @param oldTag
+	 */
+	private void setAlbumArtistFromProperties(EditTagInfo editTagInfo,
+			ITag oldTag) {
+		if (editTagInfo.isTagEdited("ALBUM_ARTIST")) {
+            setAlbumArtist((String) editTagInfo.get("ALBUM_ARTIST"));
         } else {
-            defaultTag.setTitle(oldTag != null ? oldTag.getTitle() : null);
+            setAlbumArtist(oldTag != null ? oldTag.getAlbumArtist() : null);
         }
+	}
 
-        if (editTagInfo.isTagEdited("ARTIST")) {
-            defaultTag.setArtist((String) editTagInfo.get("ARTIST"));
+	/**
+	 * @param editTagInfo
+	 * @param oldTag
+	 */
+	private void setComposerFromProperties(EditTagInfo editTagInfo, ITag oldTag) {
+		if (editTagInfo.isTagEdited("COMPOSER")) {
+            setComposer((String) editTagInfo.get("COMPOSER"));
         } else {
-            defaultTag.setArtist(oldTag != null ? oldTag.getArtist() : null);
+            setComposer(oldTag != null ? oldTag.getComposer() : null);
         }
+	}
 
-        if (editTagInfo.isTagEdited("ALBUM")) {
-            defaultTag.setAlbum((String) editTagInfo.get("ALBUM"));
+	/**
+	 * @param editTagInfo
+	 * @param oldTag
+	 */
+	private void setLyricsFromProperties(EditTagInfo editTagInfo, ITag oldTag) {
+		if (editTagInfo.isTagEdited("LYRICS")) {
+            setLyrics((String) editTagInfo.get("LYRICS"));
         } else {
-            defaultTag.setAlbum(oldTag != null ? oldTag.getAlbum() : null);
+            setLyrics(oldTag != null ? oldTag.getLyrics() : null);
         }
+	}
 
-        if (editTagInfo.isTagEdited("YEAR")) {
-            try {
-                defaultTag.setYear(Integer.parseInt((String) editTagInfo.get("YEAR")));
-            } catch (NumberFormatException ex) {
-                defaultTag.setYear(-1);
-            }
-        } else {
-            defaultTag.setYear(oldTag != null ? oldTag.getYear() : 0);
-        }
-
-        if (editTagInfo.isTagEdited("COMMENT")) {
-            defaultTag.setComment((String) editTagInfo.get("COMMENT"));
-        } else {
-            defaultTag.setComment(oldTag != null ? oldTag.getComment() : null);
-        }
-
-        if (editTagInfo.isTagEdited("TRACK")) {
-            try {
-                defaultTag.setTrackNumber(Integer.parseInt((String) editTagInfo.get("TRACK")));
-            } catch (NumberFormatException ex) {
-                defaultTag.setTrackNumber(-1);
-            }
-        } else {
-            defaultTag.setTrackNumber(oldTag != null ? oldTag.getTrackNumber() : 0);
-        }
-
-        if (editTagInfo.isTagEdited("DISC_NUMBER")) {
-            try {
-                defaultTag.setDiscNumber(Integer.parseInt((String) editTagInfo.get("DISC_NUMBER")));
-            } catch (NumberFormatException ex) {
-                defaultTag.setDiscNumber(0);
-            }
-        } else {
-            defaultTag.setDiscNumber(oldTag != null ? oldTag.getDiscNumber() : 1);
-        }
-
-        if (editTagInfo.isTagEdited("GENRE")) {
+	/**
+	 * @param editTagInfo
+	 * @param oldTag
+	 */
+	private void setGenreFromProperties(EditTagInfo editTagInfo, ITag oldTag) {
+		if (editTagInfo.isTagEdited("GENRE")) {
             String genreString = (String) editTagInfo.get("GENRE");
             if (genreString == null) {
-                defaultTag.setGenre("");
+                setGenre("");
             } else {
-                defaultTag.setGenre(genreString);
+                setGenre(genreString);
             }
         } else {
-            defaultTag.setGenre(oldTag != null ? oldTag.getGenre() : null);
+            setGenre(oldTag != null ? oldTag.getGenre() : null);
         }
+	}
 
-        if (editTagInfo.isTagEdited("LYRICS")) {
-            defaultTag.setLyrics((String) editTagInfo.get("LYRICS"));
+	/**
+	 * @param editTagInfo
+	 * @param oldTag
+	 */
+	private void setDiscNumberFromProperties(EditTagInfo editTagInfo,
+			ITag oldTag) {
+		if (editTagInfo.isTagEdited("DISC_NUMBER")) {
+            try {
+                setDiscNumber(Integer.parseInt((String) editTagInfo.get("DISC_NUMBER")));
+            } catch (NumberFormatException ex) {
+                setDiscNumber(0);
+            }
         } else {
-            defaultTag.setLyrics(oldTag != null ? oldTag.getLyrics() : null);
+            setDiscNumber(oldTag != null ? oldTag.getDiscNumber() : 1);
         }
+	}
 
-        if (editTagInfo.isTagEdited("COMPOSER")) {
-            defaultTag.setComposer((String) editTagInfo.get("COMPOSER"));
+	/**
+	 * @param editTagInfo
+	 * @param oldTag
+	 */
+	private void setTrackNumberFromProperties(EditTagInfo editTagInfo,
+			ITag oldTag) {
+		if (editTagInfo.isTagEdited("TRACK")) {
+            try {
+                setTrackNumber(Integer.parseInt((String) editTagInfo.get("TRACK")));
+            } catch (NumberFormatException ex) {
+                setTrackNumber(-1);
+            }
         } else {
-            defaultTag.setComposer(oldTag != null ? oldTag.getComposer() : null);
+            setTrackNumber(oldTag != null ? oldTag.getTrackNumber() : 0);
         }
+	}
 
-        if (editTagInfo.isTagEdited("ALBUM_ARTIST")) {
-            defaultTag.setAlbumArtist((String) editTagInfo.get("ALBUM_ARTIST"));
+	/**
+	 * @param editTagInfo
+	 * @param oldTag
+	 */
+	private void setCommentFromProperties(EditTagInfo editTagInfo, ITag oldTag) {
+		if (editTagInfo.isTagEdited("COMMENT")) {
+            setComment((String) editTagInfo.get("COMMENT"));
         } else {
-            defaultTag.setAlbumArtist(oldTag != null ? oldTag.getAlbumArtist() : null);
+            setComment(oldTag != null ? oldTag.getComment() : null);
         }
+	}
 
-        return defaultTag;
-    }
+	/**
+	 * @param editTagInfo
+	 * @param oldTag
+	 */
+	private void setYearFromProperties(EditTagInfo editTagInfo, ITag oldTag) {
+		if (editTagInfo.isTagEdited("YEAR")) {
+            try {
+                setYear(Integer.parseInt((String) editTagInfo.get("YEAR")));
+            } catch (NumberFormatException ex) {
+                setYear(-1);
+            }
+        } else {
+            setYear(oldTag != null ? oldTag.getYear() : 0);
+        }
+	}
+
+	/**
+	 * @param editTagInfo
+	 * @param oldTag
+	 */
+	private void setAlbumFromProperties(EditTagInfo editTagInfo, ITag oldTag) {
+		if (editTagInfo.isTagEdited("ALBUM")) {
+            setAlbum((String) editTagInfo.get("ALBUM"));
+        } else {
+            setAlbum(oldTag != null ? oldTag.getAlbum() : null);
+        }
+	}
+
+	/**
+	 * @param editTagInfo
+	 * @param oldTag
+	 */
+	private void setArtistFromProperties(EditTagInfo editTagInfo, ITag oldTag) {
+		if (editTagInfo.isTagEdited("ARTIST")) {
+            setArtist((String) editTagInfo.get("ARTIST"));
+        } else {
+            setArtist(oldTag != null ? oldTag.getArtist() : null);
+        }
+	}
+
+	/**
+	 * @param editTagInfo
+	 * @param oldTag
+	 */
+	private void setTitleFromProperties(EditTagInfo editTagInfo, ITag oldTag) {
+		if (editTagInfo.isTagEdited("TITLE")) {
+            setTitle((String) editTagInfo.get("TITLE"));
+        } else {
+            setTitle(oldTag != null ? oldTag.getTitle() : null);
+        }
+	}
 
     /**
      * Sets date from tag

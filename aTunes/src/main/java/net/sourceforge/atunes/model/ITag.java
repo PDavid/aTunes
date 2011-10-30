@@ -83,14 +83,14 @@ public interface ITag extends Serializable {
 	public String getLyrics();
 
 	/**
-	 * Gets the tag from properties.
+	 * Sets the tag from properties.
 	 * 
 	 * @param properties
 	 *            the properties
 	 * 
 	 * @return the tag from properties
 	 */
-	public ITag getTagFromProperties(EditTagInfo editTagInfo, ITag oldTag);
+	public ITag setTagFromProperties(EditTagInfo editTagInfo, ITag oldTag);
 
 	/**
 	 * Gets the title.

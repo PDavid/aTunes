@@ -137,7 +137,7 @@ public class TagAttributesReviewed implements ITagAttributesReviewed {
         for (AbstractTagAttributeReviewed tagAttribute : getTagAttributes()) {
             if (tagAttribute.getChangesMade().containsKey(parentFolder)) {
                 if (tag == null) {
-                    tag = file.getTag() != null ? file.getTag() : new DefaultTag();
+                    tag = file.getTag() != null ? file.getTag() : TagFactory.getNewTag();
                 }
                 tag = tagAttribute.changeTag(tag, tagAttribute.getChangesMade().get(parentFolder));
             }

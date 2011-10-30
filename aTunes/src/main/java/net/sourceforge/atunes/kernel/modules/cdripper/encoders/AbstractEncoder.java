@@ -24,7 +24,7 @@ import java.io.File;
 
 import net.sourceforge.atunes.kernel.modules.cdripper.ProgressListener;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
+import net.sourceforge.atunes.kernel.modules.tags.TagFactory;
 import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ITag;
@@ -151,7 +151,7 @@ public abstract class AbstractEncoder implements Encoder {
     final boolean setTag(File file, String title, int trackNumber, String artist, String composer) {
         try {
             ILocalAudioObject audiofile = new AudioFile(file);
-            ITag tag = new DefaultTag();
+            ITag tag = TagFactory.getNewTag();
 
             tag.setAlbum(getAlbum());
             tag.setAlbumArtist(getAlbumArtist());

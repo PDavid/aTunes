@@ -32,7 +32,6 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
 import net.sourceforge.atunes.kernel.modules.repository.ImageCache;
 import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
-import net.sourceforge.atunes.kernel.modules.tags.EditTagInfo;
 import net.sourceforge.atunes.kernel.modules.tags.TagDetector;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
@@ -104,20 +103,6 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
             readInformation(true);
         }
         this.readTime = System.currentTimeMillis();
-    }
-
-    /**
-     * Gets the new tag.
-     * 
-     * @param file
-     *            the file
-     * @param editTagInfo
-     *            the edit tag info
-     * 
-     * @return the new tag
-     */
-    public static ITag getNewTag(ILocalAudioObject file, EditTagInfo editTagInfo) {
-        return new DefaultTag().getTagFromProperties(editTagInfo, file.getTag());
     }
 
     /**
