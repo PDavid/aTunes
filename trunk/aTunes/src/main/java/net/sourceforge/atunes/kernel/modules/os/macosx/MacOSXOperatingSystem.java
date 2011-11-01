@@ -31,6 +31,7 @@ import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.Cdparanoia;
 import net.sourceforge.atunes.kernel.modules.os.OperatingSystemAdapter;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
+import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -118,7 +119,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 	
 	@Override
 	public void manageNoPlayerEngine(IFrame frame) {
-		MacOSXPlayerSelectionDialog dialog = new MacOSXPlayerSelectionDialog(frame, osManager, Context.getBean(ILookAndFeelManager.class));
+		MacOSXPlayerSelectionDialog dialog = new MacOSXPlayerSelectionDialog(frame, osManager, Context.getBean(ILookAndFeelManager.class), Context.getBean(IDesktop.class));
 		dialog.setVisible(true);
 	}
 	

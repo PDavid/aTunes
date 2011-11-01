@@ -32,17 +32,20 @@ import net.sourceforge.atunes.kernel.modules.context.ContextTable;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanel;
 import net.sourceforge.atunes.model.IArtistInfo;
+import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 class SimilarArtistTableCellRendererCode extends ContextTableRowPanel<IArtistInfo> {
 
-	public SimilarArtistTableCellRendererCode(ILookAndFeel lookAndFeel) {
+	private IDesktop desktop;
+	
+	public SimilarArtistTableCellRendererCode(ILookAndFeel lookAndFeel, IDesktop desktop) {
 		super(lookAndFeel);
+		this.desktop = desktop;
 	}
 
 	@Override
@@ -59,7 +62,7 @@ class SimilarArtistTableCellRendererCode extends ContextTableRowPanel<IArtistInf
 	@Override
 	public List<ContextTableAction<IArtistInfo>> getActions() {
 		List<ContextTableAction<IArtistInfo>> actions = new ArrayList<ContextTableAction<IArtistInfo>>();
-		actions.add(new ContextTableAction<IArtistInfo>(I18nUtils.getString("READ_MORE"), (ContextTable) table) {
+		actions.add(new ContextTableAction<IArtistInfo>(I18nUtils.getString("READ_MORE"), (ContextTable) table, desktop) {
 			
 			/**
 			 * 
@@ -68,7 +71,7 @@ class SimilarArtistTableCellRendererCode extends ContextTableRowPanel<IArtistInf
 
 			@Override
 			protected void execute(IArtistInfo object) {
-                DesktopUtils.openURL(object.getUrl());
+				desktop.openURL(object.getUrl());
 			}
 
 			@Override
@@ -82,7 +85,7 @@ class SimilarArtistTableCellRendererCode extends ContextTableRowPanel<IArtistInf
 			}
 			
 		});
-		actions.add(new ContextTableAction<IArtistInfo>(I18nUtils.getString("ADD_ALBUM_ARTIST_TO_PLAYLIST"), (ContextTable) table) {
+		actions.add(new ContextTableAction<IArtistInfo>(I18nUtils.getString("ADD_ALBUM_ARTIST_TO_PLAYLIST"), (ContextTable) table, desktop) {
 			
 			/**
 			 * 

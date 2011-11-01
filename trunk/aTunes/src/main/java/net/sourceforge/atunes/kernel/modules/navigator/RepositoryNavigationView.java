@@ -142,8 +142,8 @@ public class RepositoryNavigationView extends AbstractNavigationView {
             treePopupMenu.add(getMenuItemForAction(SetFavoriteAlbumFromNavigatorAction.class));
             treePopupMenu.add(getMenuItemForAction(SetFavoriteArtistFromNavigatorAction.class));
             treePopupMenu.add(new JSeparator());
-            treePopupMenu.add(Actions.getAction(SearchArtistAction.class));
-            treePopupMenu.add(Actions.getAction(SearchArtistAtAction.class));
+            treePopupMenu.add(Context.getBean(SearchArtistAction.class));
+            treePopupMenu.add(Context.getBean(SearchArtistAtAction.class));
         }
         return treePopupMenu;
     }

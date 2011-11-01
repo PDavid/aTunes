@@ -243,11 +243,11 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
     private JMenu getCustomHelpMenu() {
         if (help == null) {
             help = new JMenu(I18nUtils.getString("HELP"));
-            help.add(Actions.getAction(GoToWebSiteAction.class));
-            help.add(Actions.getAction(GoToWikiAction.class));
-            help.add(Actions.getAction(ReportBugOrFeatureRequestAction.class));
+            help.add(Context.getBean(GoToWebSiteAction.class));
+            help.add(Context.getBean(GoToWikiAction.class));
+            help.add(Context.getBean(ReportBugOrFeatureRequestAction.class));
             help.add(new JSeparator());
-            help.add(Actions.getAction(ShowLogAction.class));
+            help.add(Context.getBean(ShowLogAction.class));
             help.add(Context.getBean(CheckUpdatesAction.class));
             if (!osManager.areMenuEntriesDelegated()) {
             	help.add(new JSeparator());

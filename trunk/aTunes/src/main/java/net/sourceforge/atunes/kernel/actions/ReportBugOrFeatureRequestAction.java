@@ -20,10 +20,8 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.utils.DesktopUtils;
+import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -36,14 +34,23 @@ public class ReportBugOrFeatureRequestAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -2614037760672140565L;
 
-    ReportBugOrFeatureRequestAction() {
+    private IDesktop desktop;
+    
+    /**
+     * @param desktop
+     */
+    public void setDesktop(IDesktop desktop) {
+		this.desktop = desktop;
+	}
+    
+    public ReportBugOrFeatureRequestAction() {
         super(I18nUtils.getString("REPORT_BUG_OR_REQUEST_FEATURE"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("REPORT_BUG_OR_REQUEST_FEATURE"));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        DesktopUtils.openURL(Constants.REPORT_BUG_OR_REQUEST_FEATURE_URL);
+    protected void executeAction() {
+    	desktop.openURL(Constants.REPORT_BUG_OR_REQUEST_FEATURE_URL);
     }
 
 }

@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,9 +32,14 @@ import org.commonjukebox.plugins.model.PluginApi;
  * This class defines accepted arguments by application.
  */
 @PluginApi
-public final class ApplicationArguments {
+public final class ApplicationArguments implements Serializable {
 
-    /** 
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8482627877309499076L;
+
+	/** 
      * Debug constant This argument makes a big log file. 
      */
     public static final String DEBUG = "debug";

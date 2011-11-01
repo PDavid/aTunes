@@ -94,6 +94,8 @@
 		<property name="freeMemory" value="50"/>
 	</bean>
 	<bean class="net.sourceforge.atunes.kernel.actions.FullScreenAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.GoToWebSiteAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.GoToWikiAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.LoadPlayListAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.MoveAfterCurrentAudioObjectAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.MoveDownAction"/>
@@ -113,9 +115,12 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.RemoveFromPlayListAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RenamePlaylistAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RepeatModeAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.ReportBugOrFeatureRequestAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RepositoryLoadCancelAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RepositoryLoadInBackgroundAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RipCDAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.SearchArtistAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.SearchArtistAtAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.SelectRepositoryAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.SetPlayListSelectionAsFavoriteAlbumAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.SetPlayListSelectionAsFavoriteArtistAction"/>
@@ -123,4 +128,5 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.ShowAboutAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShowContextAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShowCoverNavigatorAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.ShowLogAction"/>
 </beans>

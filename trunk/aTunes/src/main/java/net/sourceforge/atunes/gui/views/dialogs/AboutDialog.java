@@ -47,6 +47,7 @@ import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.model.IAboutDialog;
+import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -218,6 +219,17 @@ public final class AboutDialog extends AbstractCustomDialog implements IAboutDia
 
     });
 
+    private IDesktop desktop;
+
+    private ILookAndFeelManager lookAndFeelManager;
+    
+    /**
+     * @param desktop
+     */
+    public void setDesktop(IDesktop desktop) {
+		this.desktop = desktop;
+	}
+    
     /**
      * Instantiates a new about dialog.
      * 
@@ -226,8 +238,15 @@ public final class AboutDialog extends AbstractCustomDialog implements IAboutDia
      */
     public AboutDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
         super(frame, 600, 550, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
+        this.lookAndFeelManager = lookAndFeelManager;
+    }
+    
+    /**
+     * Initializes dialog after finishing setting dependencies
+     */
+    public void initialize() {
         add(getContent(lookAndFeelManager.getCurrentLookAndFeel()));
-        setResizable(false);
+        setResizable(false);    	
     }
 
     /**
@@ -239,7 +258,7 @@ public final class AboutDialog extends AbstractCustomDialog implements IAboutDia
     private JPanel getContent(ILookAndFeel lookAndFeel) {
         JPanel panel = new JPanel(new GridBagLayout());
 
-        UrlLabel title = new UrlLabel(Constants.APP_NAME + ' ' + Constants.VERSION.toString(), Constants.APP_WEB);
+        UrlLabel title = new UrlLabel(desktop, StringUtils.getString(Constants.APP_NAME, " ", Constants.VERSION.toString()), Constants.APP_WEB);
         title.setFont(lookAndFeel.getAboutBigFont());
         title.setFocusPainted(false);
         JLabel description = new JLabel(Constants.APP_DESCRIPTION);
@@ -253,7 +272,7 @@ public final class AboutDialog extends AbstractCustomDialog implements IAboutDia
         license.setOpaque(false);
         license.setBorder(BorderFactory.createEmptyBorder());
 
-        UrlLabel contributors = new UrlLabel(I18nUtils.getString("CONTRIBUTORS"), Constants.CONTRIBUTORS_WEB);
+        UrlLabel contributors = new UrlLabel(desktop, I18nUtils.getString("CONTRIBUTORS"), Constants.CONTRIBUTORS_WEB);
 
         JTable propertiesTable = lookAndFeel.getTable();
         propertiesTable.setModel(tableModel);

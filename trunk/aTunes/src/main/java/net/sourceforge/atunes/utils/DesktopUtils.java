@@ -28,9 +28,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
+import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ISearch;
 
@@ -40,31 +40,14 @@ import org.commonjukebox.plugins.model.PluginApi;
  * Desktop utility methods
  */
 @PluginApi
-public final class DesktopUtils {
+public final class DesktopUtils implements IDesktop {
 
-    private static boolean isDesktopSupported;
-    private static Desktop desktop;
-
-    static {
-        isDesktopSupported = Desktop.isDesktopSupported();
-        if (isDesktopSupported) {
-            desktop = Desktop.getDesktop();
-        }
-    }
-
-    private DesktopUtils() {
-    }
-
-    /**
-     * Starts web browser.
-     * 
-     * @param search
-     *            Search object
-     * @param query
-     *            query
-     */
-    public static void openSearch(ISearch search, String query) {
-        if (search != null && isDesktopSupported) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.utils.IDesktop#openSearch(net.sourceforge.atunes.model.ISearch, java.lang.String)
+	 */
+    @Override
+	public void openSearch(ISearch search, String query) {
+        if (search != null) {
             try {
                 browse(search.getURL(query).toURI());
             } catch (MalformedURLException e) {
@@ -75,40 +58,12 @@ public final class DesktopUtils {
         }
     }
 
-    /**
-     * Starts web browser with specified URI.
-     * 
-     * @param uri
-     *            URI
-     */
-    public static void openURI(URI uri) {
-        if (isDesktopSupported) {
-            browse(uri);
-        }
-    }
-
-    private static void browse(final URI uri) {
-        SwingUtilities.invokeLater(new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-                    desktop.browse(uri);
-                } catch (IOException e) {
-                    Logger.error(e);
-                }
-            }
-        });
-    }
-
-    /**
-     * Starts web browser with specified URL.
-     * 
-     * @param url
-     *            URL
-     */
-    public static void openURL(String url) {
-        if (isDesktopSupported) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.utils.IDesktop#openURL(java.lang.String)
+	 */
+    @Override
+	public void openURL(String url) {
+        if (isDesktopSupported()) {
             try {
                 openURI(new URL(url).toURI());
             } catch (MalformedURLException e) {
@@ -119,30 +74,12 @@ public final class DesktopUtils {
         }
     }
 
-    /**
-     * Starts web browser with specified URL.
-     * 
-     * @param url
-     *            URL
-     */
-    public static void openURL(URL url) {
-        if (isDesktopSupported) {
-            try {
-                openURI(url.toURI());
-            } catch (URISyntaxException e) {
-                Logger.error(e);
-            }
-        }
-    }
-
-    /**
-     * Opens a file with the associated program.
-     * 
-     * @param file
-     * @param osManager
-     */
-    public static void openFile(File file, IOSManager osManager) {
-        if (isDesktopSupported) {
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.utils.IDesktop#openFile(java.io.File, net.sourceforge.atunes.model.IOSManager)
+	 */
+    @Override
+	public void openFile(File file, IOSManager osManager) {
+        if (isDesktopSupported()) {
             final File fileToOpen;
             /*
              * Needed for UNC filenames with spaces ->
@@ -157,7 +94,7 @@ public final class DesktopUtils {
                 @Override
                 protected Void doInBackground() throws Exception {
                     try {
-                        desktop.open(fileToOpen);
+                    	Desktop.getDesktop().open(fileToOpen);
                     } catch (IOException e) {
                         Logger.error(e);
                     }
@@ -165,5 +102,42 @@ public final class DesktopUtils {
                 }
             }.execute();
         }
+    }
+    
+    /**
+     * Returns if desktop actions are supported
+     * @return
+     */
+    private boolean isDesktopSupported() {
+    	return Desktop.isDesktopSupported();
+    }
+    
+    /**
+     * Starts web browser with specified URI.
+     * @param uri
+     *            URI
+     */
+    private void openURI(URI uri) {
+    	browse(uri);
+    }
+
+    /**
+     * Opens desktop browser with given address
+     * @param uri
+     */
+    private void browse(final URI uri) {
+    	if (isDesktopSupported()) {
+    		new SwingWorker<Void, Void>() {
+    			@Override
+    			protected Void doInBackground() throws Exception {
+    				try {
+    					Desktop.getDesktop().browse(uri);
+    				} catch (IOException e) {
+    					Logger.error(e);
+    				}
+    				return null;
+    			}
+    		}.execute();
+    	}
     }
 }

@@ -37,7 +37,6 @@ import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeResultEn
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextHandler;
-import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -113,7 +112,7 @@ public class YoutubeContent extends AbstractContextPanelContent {
     public Component getComponent() {
         // Create components
         youtubeResultTable = new ContextTable(getLookAndFeelManager().getCurrentLookAndFeel());
-        youtubeResultTable.addContextRowPanel(new YoutubeResultsTableCellRendererCode(getLookAndFeelManager().getCurrentLookAndFeel()));
+        youtubeResultTable.addContextRowPanel(new YoutubeResultsTableCellRendererCode(getLookAndFeelManager().getCurrentLookAndFeel(), getDesktop()));
         return youtubeResultTable;
     }
 
@@ -142,7 +141,7 @@ public class YoutubeContent extends AbstractContextPanelContent {
      * Opens a web browser to show youtube results
      */
     protected void openYoutube() {
-        DesktopUtils.openSearch(SearchFactory.getSearchForName("YouTube"), youtubeService.getSearchForAudioObject(
+    	getDesktop().openSearch(SearchFactory.getSearchForName("YouTube"), youtubeService.getSearchForAudioObject(
         		contextHandler.getCurrentAudioObject()));
     }
     

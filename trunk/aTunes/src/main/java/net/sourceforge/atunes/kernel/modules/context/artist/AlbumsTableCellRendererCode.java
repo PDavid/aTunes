@@ -30,15 +30,18 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanel;
 import net.sourceforge.atunes.model.IAlbumInfo;
+import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 class AlbumsTableCellRendererCode extends ContextTableRowPanel<IAlbumInfo> {
 	
-	public AlbumsTableCellRendererCode(ILookAndFeel lookAndFeel) {
+	private IDesktop desktop;
+	
+	public AlbumsTableCellRendererCode(ILookAndFeel lookAndFeel, IDesktop desktop) {
 		super(lookAndFeel);
+		this.desktop = desktop;
 	}
 
 	@Override
@@ -54,7 +57,7 @@ class AlbumsTableCellRendererCode extends ContextTableRowPanel<IAlbumInfo> {
 	
 	@Override
 	public List<ContextTableAction<IAlbumInfo>> getActions() {
-		ContextTableAction<IAlbumInfo> action = new ContextTableAction<IAlbumInfo>(I18nUtils.getString("READ_MORE"), table) {
+		ContextTableAction<IAlbumInfo> action = new ContextTableAction<IAlbumInfo>(I18nUtils.getString("READ_MORE"), table, desktop) {
 			/**
 			 * 
 			 */
@@ -62,7 +65,7 @@ class AlbumsTableCellRendererCode extends ContextTableRowPanel<IAlbumInfo> {
 
 			@Override
 			protected void execute(IAlbumInfo object) {
-				DesktopUtils.openURL(object.getUrl());
+				getDesktop().openURL(object.getUrl());
 			}
 			
 			@Override

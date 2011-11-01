@@ -24,7 +24,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
-import net.sourceforge.atunes.utils.DesktopUtils;
+import net.sourceforge.atunes.model.IDesktop;
 
 /**
  * A link for url labels
@@ -33,21 +33,23 @@ final class Link extends AbstractAction {
 
     private static final long serialVersionUID = -3784927498125973809L;
 
+    private IDesktop desktop;
+    
     private String url;
 
     /**
      * Instantiates a new link
-     * 
+     * @param desktop
      * @param url
-     *            the url
      */
-    Link(String url) {
+    Link(IDesktop desktop, String url) {
+    	this.desktop = desktop;
         this.url = url;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        DesktopUtils.openURL(url);
+    	desktop.openURL(url);
     }
 
 }

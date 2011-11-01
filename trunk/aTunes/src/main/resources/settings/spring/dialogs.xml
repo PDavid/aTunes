@@ -48,7 +48,7 @@
 		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
 	
-	<bean id="aboutDialog" class="net.sourceforge.atunes.gui.views.dialogs.AboutDialog" scope="prototype">
+	<bean id="aboutDialog" class="net.sourceforge.atunes.gui.views.dialogs.AboutDialog" init-method="initialize" scope="prototype">
 		<constructor-arg ref="frame"/>
 		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>

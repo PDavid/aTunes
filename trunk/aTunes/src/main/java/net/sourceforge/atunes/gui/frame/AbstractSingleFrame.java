@@ -61,6 +61,7 @@ import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.model.ApplicationVersion;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextPanelsContainer;
+import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMenuBar;
@@ -127,6 +128,8 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     
     private IPlayerHandler playerHandler;
     
+    private IDesktop desktop;
+    
     /**
      * Instantiates a new standard frame.
      */
@@ -153,20 +156,39 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
 		this.navigationHandler = navigationHandler;
 	}
     
+    /**
+     * @param repositoryHandler
+     */
     public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
     
+    /**
+     * @param lookAndFeelManager
+     */
     public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
     
+    /**
+     * @return
+     */
     protected ILookAndFeelManager getLookAndFeelManager() {
 		return lookAndFeelManager;
 	}
     
+    /**
+     * @param playerHandler
+     */
     public void setPlayerHandler(IPlayerHandler playerHandler) {
 		this.playerHandler = playerHandler;
+	}
+    
+    /**
+     * @param desktop
+     */
+    public void setDesktop(IDesktop desktop) {
+		this.desktop = desktop;
 	}
     
     @Override
@@ -612,7 +634,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
             }
             JXStatusBar.Constraint c = new JXStatusBar.Constraint(JXStatusBar.Constraint.ResizeBehavior.FIXED);
             statusBar.add(getStatusBarNewVersionLabel(), c);
-            updateDialog = new UpdateDialog(version, this.getFrame(), lookAndFeelManager);
+            updateDialog = new UpdateDialog(version, this.getFrame(), lookAndFeelManager, desktop);
         } else {
             statusBar.remove(getStatusBarNewVersionLabel());
             updateDialog = null;

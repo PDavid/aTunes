@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
 import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -28,37 +27,55 @@ import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
-import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class SearchArtistAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -4695334457704311336L;
 
-    SearchArtistAction() {
+    private IDesktop desktop;
+    
+    private INavigationHandler navigationHandler;
+    
+    /**
+     * @param desktop
+     */
+    public void setDesktop(IDesktop desktop) {
+		this.desktop = desktop;
+	}
+    
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+    
+    public SearchArtistAction() {
         super(I18nUtils.getString("SEARCH_ARTIST"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SEARCH_ARTIST"));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        TreePath path = getBean(INavigationHandler.class).getCurrentView().getTree().getSelectionPath();
+    protected void executeAction() {
+        TreePath path = navigationHandler.getCurrentView().getTree().getSelectionPath();
         if (((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject() instanceof Artist) {
             Artist a = (Artist) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
             ISearch search = SearchFactory.getSearchForName(getState().getDefaultSearch());
             if (search == null) {
                 ISearchDialog dialog = getBean(ISearchDialog.class);
-                search = getBean(INavigationHandler.class).openSearchDialog(dialog, false);
+                search = navigationHandler.openSearchDialog(dialog, false);
                 if (search != null) {
                     getState().setDefaultSearch(search.toString());
                 }
             }
 
             if (search != null) {
-                DesktopUtils.openSearch(search, a.getName());
+            	desktop.openSearch(search, a.getName());
             }
         }
     }
@@ -75,5 +92,4 @@ public class SearchArtistAction extends CustomAbstractAction {
         }
         return true;
     }
-
 }

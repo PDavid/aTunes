@@ -50,6 +50,7 @@ import net.sourceforge.atunes.gui.views.dialogs.editPreferences.RadioPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.RepositoryPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.StateChangeListeners;
+import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IHotkeyHandler;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
@@ -85,10 +86,11 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
      * @param notificationsHandler
      * @param pluginsHandler
      * @param applicationArguments
+     * @param desktop
      */
     EditPreferencesDialogController(EditPreferencesDialog dialog, IState state, IOSManager osManager, IFrame frame, StateChangeListeners stateChangeListeners, 
     		ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler, IHotkeyHandler hotkeyHandler, 
-    		INotificationsHandler notificationsHandler, IPluginsHandler pluginsHandler, ApplicationArguments applicationArguments) {
+    		INotificationsHandler notificationsHandler, IPluginsHandler pluginsHandler, ApplicationArguments applicationArguments, IDesktop desktop) {
         super(dialog, state);
         this.stateChangeListeners = stateChangeListeners;
         this.lookAndFeelManager = lookAndFeelManager;
@@ -98,15 +100,15 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
         panels.add(new PlayerPanel(osManager, lookAndFeelManager.getCurrentLookAndFeel(), playerHandler, hotkeyHandler)); 
         panels.add(new NavigatorPanel(lookAndFeelManager.getCurrentLookAndFeel())); 
         panels.add(new PlayListPrefPanel());
-        panels.add(new OSDPanel(notificationsHandler)); 
-        panels.add(new ContextPanel(lookAndFeelManager.getCurrentLookAndFeel())); 
+        panels.add(new OSDPanel(notificationsHandler, desktop)); 
+        panels.add(new ContextPanel(lookAndFeelManager.getCurrentLookAndFeel(), desktop)); 
         panels.add(new InternetPanel()); 
         panels.add(new LastFmPanel()); 
         panels.add(new DevicePanel(osManager, lookAndFeelManager.getCurrentLookAndFeel())); 
         panels.add(new RadioPanel()); 
         panels.add(new PodcastFeedPanel(osManager)); 
         panels.add(new ImportExportPanel(lookAndFeelManager.getCurrentLookAndFeel()));
-    	panels.add(new PluginsPanel(dialog, frame, lookAndFeelManager.getCurrentLookAndFeel(), state, pluginsHandler));
+    	panels.add(new PluginsPanel(dialog, frame, lookAndFeelManager.getCurrentLookAndFeel(), state, pluginsHandler, desktop));
     	
         for (AbstractPreferencesPanel panel : panels) {
         	panel.setState(state);

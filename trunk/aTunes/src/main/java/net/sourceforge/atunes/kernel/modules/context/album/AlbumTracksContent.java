@@ -33,7 +33,6 @@ import net.sourceforge.atunes.kernel.modules.context.TracksTableFactory;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ITrackInfo;
-import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -85,7 +84,7 @@ public class AlbumTracksContent extends AbstractContextPanelContent {
                     int selectedTrack = tracksTable.getSelectedRow();
                     if (selectedTrack != -1) {
                         ITrackInfo track = ((ContextTracksTableModel) tracksTable.getModel()).getTrack(selectedTrack);
-                        DesktopUtils.openURL(track.getUrl());
+                        getDesktop().openURL(track.getUrl());
                     }
                 }
             }

@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.context.audioobject;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -46,7 +45,6 @@ import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.model.ILyricsService;
 import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.utils.ClipboardFacade;
-import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -56,19 +54,6 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * 
  */
 public class LyricsContent extends AbstractContextPanelContent {
-
-    private static final class OpenUrlActionListener implements ActionListener {
-        private final Entry<String, String> entry;
-
-        private OpenUrlActionListener(Entry<String, String> entry) {
-            this.entry = entry;
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            DesktopUtils.openURL(entry.getValue());
-        }
-    }
 
     private static final long serialVersionUID = 962229017133714396L;
 
@@ -110,7 +95,7 @@ public class LyricsContent extends AbstractContextPanelContent {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (lyricsSourceUrl != null && !lyricsSourceUrl.trim().isEmpty()) {
-                    DesktopUtils.openURL(lyricsSourceUrl);
+                	getDesktop().openURL(lyricsSourceUrl);
                 } else {
                     if (audioObject instanceof AudioFile) {
                     	Context.getBean(ITagHandler.class).editFiles(EditTagSources.NAVIGATOR, Arrays.asList((ILocalAudioObject) audioObject));                        
@@ -144,7 +129,7 @@ public class LyricsContent extends AbstractContextPanelContent {
                 addLyrics.removeAll();
                 for (final Entry<String, String> entry : lyricsService.getUrlsForAddingNewLyrics(audioObject.getArtist(), audioObject.getTitle()).entrySet()) {
                     JMenuItem mi = new JMenuItem(entry.getKey());
-                    mi.addActionListener(new OpenUrlActionListener(entry));
+                    mi.addActionListener(new OpenUrlActionListener(entry, getDesktop()));
                     addLyrics.add(mi);
                 }
                 addLyrics.setEnabled(addLyrics.getMenuComponentCount() > 0);

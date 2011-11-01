@@ -31,16 +31,19 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanel;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeResultEntry;
+import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class YoutubeResultsTableCellRendererCode extends ContextTableRowPanel<YoutubeResultEntry> {
 	
-	public YoutubeResultsTableCellRendererCode(ILookAndFeel lookAndFeel) {
+	private IDesktop desktop;
+	
+	public YoutubeResultsTableCellRendererCode(ILookAndFeel lookAndFeel, IDesktop desktop) {
 		super(lookAndFeel);
+		this.desktop = desktop;
 	}
 
 	@Override
@@ -57,7 +60,7 @@ public class YoutubeResultsTableCellRendererCode extends ContextTableRowPanel<Yo
 	@Override
 	public List<ContextTableAction<YoutubeResultEntry>> getActions() {
 		List<ContextTableAction<YoutubeResultEntry>> actions = new ArrayList<ContextTableAction<YoutubeResultEntry>>();
-		actions.add(new ContextTableAction<YoutubeResultEntry>(I18nUtils.getString("PLAY_VIDEO_AT_YOUTUBE"), table) {
+		actions.add(new ContextTableAction<YoutubeResultEntry>(I18nUtils.getString("PLAY_VIDEO_AT_YOUTUBE"), table, desktop) {
 
 			/**
 			 * 
@@ -67,7 +70,7 @@ public class YoutubeResultsTableCellRendererCode extends ContextTableRowPanel<Yo
 			@Override
 			protected void execute(YoutubeResultEntry entry) {
 			     //open youtube url
-                DesktopUtils.openURL(entry.getUrl());
+				desktop.openURL(entry.getUrl());
                 // When playing a video in web browser automatically pause current song
                 if (Context.getBean(IPlayerHandler.class).isEnginePlaying()) {
                     Context.getBean(IPlayerHandler.class).playCurrentAudioObject(true);
@@ -87,42 +90,7 @@ public class YoutubeResultsTableCellRendererCode extends ContextTableRowPanel<Yo
 		
 		// DOWNLOAD NOT WORKING AS API HAS CHANGED AND MP4 FILES ARE NOT AVAILABLE
 		// SEE BUG 3405858
-//		actions.add(new ContextTableAction<YoutubeResultEntry>(I18nUtils.getString("DOWNLOAD_VIDEO"), table) {
-//			
-//			/**
-//			 * 
-//			 */
-//			private static final long serialVersionUID = -4803916885071056150L;
-//
-//			@Override
-//			protected void execute(YoutubeResultEntry entry) {
-//				// Open save dialog to select file
-//	            JFileChooser dialog = new JFileChooser();
-//	            dialog.setDialogType(JFileChooser.SAVE_DIALOG);
-//	            dialog.setDialogTitle(I18nUtils.getString("SAVE_YOUTUBE_VIDEO"));
-//	            dialog.setFileFilter(new ExtensionFileFilter("MP4", "MP4"));
-//	            // Set default file name
-//	            // for some reason dialog fails with files with [ or ] chars
-//	            File defaultFileName = new File(FileNameUtils.getValidFileName(entry.getName().replace("\\", "\\\\").replace("$", "\\$").replace('[', ' ').replace(']', ' '), osManager));
-//	            dialog.setSelectedFile(defaultFileName);
-//	            int returnValue = dialog.showSaveDialog(Context.getBean(IFrame.class).getFrame());
-//	            File selectedFile = dialog.getSelectedFile();
-//	            if (selectedFile != null && JFileChooser.APPROVE_OPTION == returnValue) {
-//	                final YoutubeVideoDownloader downloader = new YoutubeVideoDownloader(entry, selectedFile, state.getProxy(), youtubeService);
-//	                downloader.execute();
-//	            }
-//			}
-//			
-//			@Override
-//			protected YoutubeResultEntry getSelectedObject(int row) {
-//				return ((YoutubeResultTableModel) table.getModel()).getEntry(row);
-//			}
-//			
-//			@Override
-//			protected boolean isEnabledForObject(YoutubeResultEntry object) {
-//				return true;
-//			}
-//		});
+
 		return actions;
 	}
 }

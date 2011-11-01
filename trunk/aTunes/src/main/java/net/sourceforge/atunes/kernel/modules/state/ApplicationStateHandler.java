@@ -39,6 +39,7 @@ import net.sourceforge.atunes.kernel.modules.repository.exception.InconsistentRe
 import net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites;
 import net.sourceforge.atunes.kernel.modules.statistics.Statistics;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFavorites;
 import net.sourceforge.atunes.model.IHotkeyHandler;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -526,6 +527,6 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
     	EditPreferencesDialog dialog = new EditPreferencesDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class));
     	new EditPreferencesDialogController(dialog, getState(), getOsManager(), getFrame(), getBean(StateChangeListeners.class), getBean(ILookAndFeelManager.class), 
     			getBean(IPlayerHandler.class), getBean(IHotkeyHandler.class), getBean(INotificationsHandler.class), 
-    			getBean(IPluginsHandler.class), getBean(ApplicationArguments.class)).start();
+    			getBean(IPluginsHandler.class), getBean(ApplicationArguments.class), getBean(IDesktop.class)).start();
     }
 }

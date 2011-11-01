@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -56,8 +57,9 @@ public class OpenFolderAction extends AbstractActionOverSelectedObjects<AudioFil
         }
 
         // ... then open
+        IDesktop desktop = new DesktopUtils();
         for (File folder : foldersToOpen) {
-            DesktopUtils.openFile(folder, getBean(IOSManager.class));
+        	desktop.openFile(folder, getBean(IOSManager.class));
         }
     }
 }

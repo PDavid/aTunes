@@ -20,10 +20,8 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.utils.DesktopUtils;
+import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -36,14 +34,19 @@ public class GoToWebSiteAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -2614037760672140565L;
 
-    GoToWebSiteAction() {
+    private IDesktop desktop;
+    
+    public void setDesktop(IDesktop desktop) {
+		this.desktop = desktop;
+	}
+    
+    public GoToWebSiteAction() {
         super(I18nUtils.getString("GO_TO_WEB_SITE"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("GO_TO_WEB_SITE"));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        DesktopUtils.openURL(Constants.APP_WEB);
+    protected void executeAction() {
+    	desktop.openURL(Constants.APP_WEB);
     }
-
 }
