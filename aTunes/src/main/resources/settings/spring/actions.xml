@@ -120,6 +120,7 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.RefreshRadioAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RefreshRepositoryAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RemoveFromPlayListAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.RemoveLovedSongInLastFmAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RenamePlaylistAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RepeatModeAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ReportBugOrFeatureRequestAction"/>
