@@ -20,30 +20,45 @@
 
 package net.sourceforge.atunes.model;
 
+import java.util.concurrent.Callable;
+
 /**
  * Basic implementation for tests
  * @author alex
  *
  */
-public class BackgroundWorkerMock implements IBackgroundWorker {
+public class BackgroundWorkerMock<T> implements IBackgroundWorker<T> {
 
-	private Runnable backgroundActions;
+	private Callable<T> backgroundActions;
 
-	private Runnable graphicalActions;
+	private Runnable afterStartActions;
+	
+	private IActionsWithBackgroundResult<T> graphicalActions;
 	
 	@Override
-	public void setBackgroundActions(Runnable backgroundActions) {
+	public void execute() {
+		T result = null;
+		try {
+			result = this.backgroundActions.call();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		this.afterStartActions.run();
+		this.graphicalActions.call(result);
+	}
+
+	@Override
+	public void setBackgroundActions(Callable<T> backgroundActions) {
 		this.backgroundActions = backgroundActions;
 	}
-
+	
 	@Override
-	public void setGraphicalActionsWhenDone(Runnable graphicalActions) {
-		this.graphicalActions = graphicalActions;
+	public void setActionsAfterBackgroundStarted(Runnable afterStartActions) {
+		this.afterStartActions = afterStartActions;
 	}
 
 	@Override
-	public void execute() {
-		this.backgroundActions.run();
-		this.graphicalActions.run();
+	public void setActionsWhenDone(IActionsWithBackgroundResult<T> graphicalActions) {
+		this.graphicalActions = graphicalActions;
 	}
 }

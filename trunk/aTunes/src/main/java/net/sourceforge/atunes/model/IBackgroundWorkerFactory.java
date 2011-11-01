@@ -20,12 +20,18 @@
 
 package net.sourceforge.atunes.model;
 
+/**
+ * @author alex
+ *
+ */
 public interface IBackgroundWorkerFactory {
 
 	/**
 	 * Returns a new IBackgroundWorker
+	 * @param <T>
+	 * @param clazz
 	 * @return
 	 */
-	public IBackgroundWorker getWorker();
+	public <T> IBackgroundWorker<T> getWorker();
 
 }

@@ -64,7 +64,7 @@ import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.IKernel;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.model.IMessageDialog;
+import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IOSManager;
@@ -847,7 +847,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     private void askUserForRepository(final IRepository rep) {
         Object selection;
         do {
-            selection = getBean(IMessageDialog.class).
+            selection = getBean(IMessageDialogFactory.class).getDialog().
             	showMessage(getFrame(), StringUtils.getString(I18nUtils.getString("REPOSITORY_NOT_FOUND"), ": ", rep.getRepositoryFolders().get(0)),
                     I18nUtils.getString("REPOSITORY_NOT_FOUND"), JOptionPane.WARNING_MESSAGE,
                     new String[] { I18nUtils.getString("RETRY"), I18nUtils.getString("SELECT_REPOSITORY"), I18nUtils.getString("EXIT") });
@@ -874,7 +874,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
             for (String f : lastRepositoryFolders) {
                 foldersToRead.add(new File(f));
             }
-            getBean(IMessageDialog.class).showMessage(I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"), getFrame());
+            getBean(IMessageDialogFactory.class).getDialog().showMessage(I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"), getFrame());
             retrieve(foldersToRead);
         } else {
         	RepositorySelectionInfoDialog dialog = new RepositorySelectionInfoDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class));

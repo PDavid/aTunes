@@ -102,6 +102,7 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.FullScreenAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.GoToWebSiteAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.GoToWikiAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.ImportLovedTracksFromLastFMAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.LoadPlayListAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.MoveAfterCurrentAudioObjectAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.MoveDownAction"/>

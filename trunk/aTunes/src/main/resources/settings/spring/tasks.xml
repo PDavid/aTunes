@@ -10,8 +10,7 @@
 		<property name="threadSuffix" value="TaskService-"/>
 	</bean>
 	
-	<bean id="backgroundWorkerFactory" class="net.sourceforge.atunes.model.BackgroundWorkerFactory"/>
-	<bean id="backgroundWorker" class="net.sourceforge.atunes.gui.SwingBackgroundWorker" scope="prototype"/>
+	<bean id="backgroundWorkerFactory" class="net.sourceforge.atunes.gui.SwingBackgroundWorkerFactory"/>
 
 
 </beans>

@@ -39,7 +39,7 @@ import net.sourceforge.atunes.kernel.modules.search.SearchHandler.LogicalOperato
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.IMessageDialog;
+import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.ISearchHandler;
 import net.sourceforge.atunes.model.ISearchableObject;
 import net.sourceforge.atunes.model.IState;
@@ -377,7 +377,7 @@ final class CustomSearchController extends AbstractSimpleController<CustomSearch
 
                 // If no matches found show a message
                 if (result.isEmpty()) {
-                	Context.getBean(IMessageDialog.class).showMessage(I18nUtils.getString("NO_MATCHES_FOUND"), frame);
+                	Context.getBean(IMessageDialogFactory.class).getDialog().showMessage(I18nUtils.getString("NO_MATCHES_FOUND"), frame);
                 } else {
                     // Hide search dialog
                     getComponentControlled().setVisible(false);
@@ -392,7 +392,7 @@ final class CustomSearchController extends AbstractSimpleController<CustomSearch
             	Context.getBean(IErrorDialog.class).showErrorDialog(frame, I18nUtils.getString("INVALID_SEARCH_RULE"));
             }
         } else {
-        	Context.getBean(IMessageDialog.class).showMessage(I18nUtils.getString("NO_MATCHES_FOUND"), frame);
+        	Context.getBean(IMessageDialogFactory.class).getDialog().showMessage(I18nUtils.getString("NO_MATCHES_FOUND"), frame);
         }
     }
 

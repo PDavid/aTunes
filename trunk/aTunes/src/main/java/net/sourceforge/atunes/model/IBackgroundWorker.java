@@ -20,28 +20,45 @@
 
 package net.sourceforge.atunes.model;
 
+import java.util.concurrent.Callable;
+
 /**
  * Interface implemented by tasks done in background that perform some graphical actions when done
  * @author alex
  *
  */
-public interface IBackgroundWorker {
+public interface IBackgroundWorker<T> {
 	
 	/**
-	 * Executes in background
+	 * Set background actions
 	 * @param backgroundActions
 	 */
-	public void setBackgroundActions(Runnable backgroundActions);
+	public void setBackgroundActions(Callable<T> backgroundActions);
+	
+	/**
+	 * Graphical actions to do after start background
+	 * @param afterStartActions
+	 */
+	public void setActionsAfterBackgroundStarted(Runnable afterStartActions);
 	
 	/**
 	 * Graphical actions to do when finish
 	 * @param graphicalActions
 	 */
-	public void setGraphicalActionsWhenDone(Runnable graphicalActions);
+	public void setActionsWhenDone(IActionsWithBackgroundResult<T> graphicalActions);
 	
 	/**
 	 * Execute actions
 	 */
 	public void execute();
 
+	/**
+	 * Result of a background work
+	 * @author alex
+	 *
+	 */
+	public interface IActionsWithBackgroundResult<T> {
+		
+		void call(T result);
+	}
 }
