@@ -30,7 +30,7 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.EditPreferencesDialog;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PreferencesValidationException;
 import net.sourceforge.atunes.kernel.StateChangeListeners;
-import net.sourceforge.atunes.model.IConfirmationDialog;
+import net.sourceforge.atunes.model.IConfirmationDialogFactory;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IKernel;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -69,7 +69,7 @@ public final class EditPreferencesDialogListener implements ListSelectionListene
 	        	listeners.notifyApplicationStateChanged();
 	        	if (needRestart) {
 	        		// Let user decide if want to restart
-	        		if (Context.getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("APPLICATION_NEEDS_RESTART"))) {
+	        		if (Context.getBean(IConfirmationDialogFactory.class).getDialog().showDialog(I18nUtils.getString("APPLICATION_NEEDS_RESTART"))) {
 	        			Context.getBean(IKernel.class).restart();
 	        		}
 	        	}

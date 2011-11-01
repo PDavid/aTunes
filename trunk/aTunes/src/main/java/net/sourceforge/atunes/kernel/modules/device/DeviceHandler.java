@@ -52,7 +52,7 @@ import net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IConfirmationDialog;
+import net.sourceforge.atunes.model.IConfirmationDialogFactory;
 import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFileSelectionDialog;
@@ -215,7 +215,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 
         // Check if there is enough free space on device
         if (size > deviceFreeSpace) {
-        	boolean truncate = getBean(IConfirmationDialog.class).showDialog(
+        	boolean truncate = getBean(IConfirmationDialogFactory.class).getDialog().showDialog(
         			String.format("%1s%n%2s"
         					, I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE")
         					, I18nUtils.getString("TRUNCATE_COPYLIST")
@@ -284,7 +284,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 			SwingUtilities.invokeAndWait(new Runnable() {
 				@Override
 				public void run() {
-			        if (getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("DEVICE_CONNECT_CONFIRMATION"))) {
+			        if (getBean(IConfirmationDialogFactory.class).getDialog().showDialog(I18nUtils.getString("DEVICE_CONNECT_CONFIRMATION"))) {
 			        	getFrame().showProgressBar(true, null);
 			            DeviceHandler.this.retrieveDevice(new File(location));
 			        } else {

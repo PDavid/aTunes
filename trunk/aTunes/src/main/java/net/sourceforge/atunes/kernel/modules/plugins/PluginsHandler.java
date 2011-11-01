@@ -39,7 +39,7 @@ import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnSets;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
 import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
-import net.sourceforge.atunes.model.IConfirmationDialog;
+import net.sourceforge.atunes.model.IConfirmationDialogFactory;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IGeneralPurposePluginsHandler;
@@ -147,7 +147,7 @@ public class PluginsHandler extends AbstractHandler implements PluginListener, I
     			getBean(IErrorDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_LOAD_ERROR"), problemsLoadingPlugins.get(pluginFolder));
     			
     			// Ask user to remove plugin folder
-    			if (getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("PLUGIN_LOAD_ERROR_REMOVE_CONFIRMATION"))) {
+    			if (getBean(IConfirmationDialogFactory.class).getDialog().showDialog(I18nUtils.getString("PLUGIN_LOAD_ERROR_REMOVE_CONFIRMATION"))) {
     				try {
 						FileUtils.deleteDirectory(pluginFolder);
 					} catch (IOException e) {

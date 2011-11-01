@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.IConfirmationDialog;
+import net.sourceforge.atunes.model.IConfirmationDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
@@ -179,7 +179,7 @@ public final class TagEditionOperations {
      */
     public static void repairAlbumNames(IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
         // Show confirmation dialog
-        if (Context.getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("REPAIR_ALBUM_NAMES_MESSAGE"))) {
+        if (Context.getBean(IConfirmationDialogFactory.class).getDialog().showDialog(I18nUtils.getString("REPAIR_ALBUM_NAMES_MESSAGE"))) {
             // Call album name edit
             editAlbumName(getFilesWithEmptyAlbum(repositoryHandler.getAudioFilesList()), state, playListHandler, repositoryHandler, playerHandler);
         }
@@ -194,7 +194,7 @@ public final class TagEditionOperations {
      */
     public static void repairGenres(IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
         // Show confirmation dialog
-        if (Context.getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("REPAIR_GENRES_MESSAGE"))) {
+        if (Context.getBean(IConfirmationDialogFactory.class).getDialog().showDialog(I18nUtils.getString("REPAIR_GENRES_MESSAGE"))) {
             // Call genre edit
             editGenre(getFilesWithEmptyGenre(repositoryHandler.getAudioFilesList()), state, playListHandler, repositoryHandler, playerHandler);
         }
@@ -210,7 +210,7 @@ public final class TagEditionOperations {
      */
     public static void repairTrackNumbers(IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
         // Show confirmation dialog
-        if (Context.getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("REPAIR_TRACK_NUMBERS_MESSAGE"))) {
+        if (Context.getBean(IConfirmationDialogFactory.class).getDialog().showDialog(I18nUtils.getString("REPAIR_TRACK_NUMBERS_MESSAGE"))) {
             // Call track number edit
             editTrackNumber(getFilesWithEmptyTracks(repositoryHandler.getAudioFilesList()), state, playListHandler, repositoryHandler, playerHandler);
         }
