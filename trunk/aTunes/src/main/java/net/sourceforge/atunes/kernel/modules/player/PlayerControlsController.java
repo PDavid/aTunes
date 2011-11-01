@@ -22,7 +22,9 @@ package net.sourceforge.atunes.kernel.modules.player;
 
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -192,7 +194,7 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
      * @param length
      */
     private void setupTicksLabels(long length) {
-        Hashtable<Integer, JLabel> ticksLabels = new Hashtable<Integer, JLabel>();
+        Map<Integer, JLabel> ticksLabels = new HashMap<Integer, JLabel>();
 
         for (int k = 0; k < length; k++) {
 
@@ -219,7 +221,7 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
         }
         getComponentControlled().getProgressSlider().setPaintLabels(getState().isShowTicks() && ticksLabels.size() > 0);
         if (ticksLabels.size() > 0) {
-        	getComponentControlled().getProgressSlider().setLabelTable(ticksLabels);
+        	getComponentControlled().getProgressSlider().setLabelTable(new Hashtable<Integer, JLabel>(ticksLabels));
         }
 
     }
