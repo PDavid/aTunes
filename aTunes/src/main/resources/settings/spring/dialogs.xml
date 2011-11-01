@@ -86,6 +86,7 @@
 	
 	<bean id="errorDialog" class="net.sourceforge.atunes.gui.views.dialogs.ErrorDialog" scope="prototype"/>
 	
+	<bean id="confirmationDialogFactory" class="net.sourceforge.atunes.model.ConfirmationDialogFactory"/>
 	<bean id="confirmationDialog" class="net.sourceforge.atunes.gui.views.dialogs.ConfirmationDialog" scope="prototype"/>
 	
 	<bean id="messageDialog" class="net.sourceforge.atunes.gui.views.dialogs.MessageDialog" scope="prototype"/>

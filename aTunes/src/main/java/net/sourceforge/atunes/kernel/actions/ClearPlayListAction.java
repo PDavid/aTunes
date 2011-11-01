@@ -24,11 +24,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
-import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IConfirmationDialogFactory;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -41,18 +40,34 @@ public class ClearPlayListAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 7784228526804232608L;
 
-    ClearPlayListAction() {
+    private IConfirmationDialogFactory confirmationDialogFactory;
+    
+    private IPlayListHandler playListHandler;
+    
+    /**
+     * @param confirmationDialogFactory
+     */
+    public void setConfirmationDialogFactory(IConfirmationDialogFactory confirmationDialogFactory) {
+		this.confirmationDialogFactory = confirmationDialogFactory;
+	}
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    public ClearPlayListAction() {
         super(I18nUtils.getString("CLEAR"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("CLEAR_TOOLTIP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, ActionEvent.CTRL_MASK));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        int returnValue = JOptionPane.showConfirmDialog(getBean(IFrame.class).getFrame(), I18nUtils.getString("CLEAR_PLAYLIST_WARNING"),
-                I18nUtils.getString("CLEAR"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        if (JOptionPane.YES_OPTION == returnValue) {
-        	getBean(IPlayListHandler.class).clearPlayList();
+    protected void executeAction() {
+        if (confirmationDialogFactory.getDialog().showDialog(I18nUtils.getString("CLEAR_PLAYLIST_WARNING"))) {
+        	playListHandler.clearPlayList();
         }
     }
 
@@ -60,5 +75,4 @@ public class ClearPlayListAction extends CustomAbstractAction {
     public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
         return true;
     }
-
 }
