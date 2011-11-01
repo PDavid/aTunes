@@ -21,12 +21,12 @@
 package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.Cursor;
-import java.awt.event.ActionEvent;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.SwingWorker;
 
+import net.sourceforge.atunes.model.IBackgroundWorker;
+import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -43,27 +43,47 @@ public class ClearCachesAction extends CustomAbstractAction {
 	 */
     private static final long serialVersionUID = 5131926704037915711L;
 
+    private IWebServicesHandler webServicesHandler;
+    
+    private IBackgroundWorkerFactory backgroundWorkerFactory;
+    
+    /**
+     * @param webServicesHandler
+     */
+    public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+		this.webServicesHandler = webServicesHandler;
+	}
+    
+    /**
+     * @param backgroundWorkerFactory
+     */
+    public void setBackgroundWorkerFactory(IBackgroundWorkerFactory backgroundWorkerFactory) {
+    	this.backgroundWorkerFactory = backgroundWorkerFactory;
+	}
+    
     public ClearCachesAction() {
         super(I18nUtils.getString("CLEAR_CACHE"));
     }
 
     @Override
-    public void actionPerformed(final ActionEvent e) {
-        SwingWorker<Boolean, Void> clearCaches = new SwingWorker<Boolean, Void>() {
-            @Override
-            protected Boolean doInBackground() throws Exception {
-                return getBean(IWebServicesHandler.class).clearCache();
-            }
-
-            @Override
-            protected void done() {
-            	((JPanel)((JButton)e.getSource()).getParent()).setCursor(Cursor.getDefaultCursor());
-                setEnabled(true);
-            }
-        };
+    protected void executeAction() {
         setEnabled(false);
-    	((JPanel)((JButton)e.getSource()).getParent()).setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        clearCaches.execute();
+    	((JPanel)((JButton)getSource()).getParent()).setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+    	IBackgroundWorker backgroundWorker = backgroundWorkerFactory.getWorker();
+    	backgroundWorker.setBackgroundActions(new Runnable() {
+    		@Override
+    		public void run() {
+    			webServicesHandler.clearCache();
+    		}
+    	});
+    	backgroundWorker.setGraphicalActionsWhenDone(new Runnable() {
+    		@Override
+    		public void run() {
+            	((JPanel)((JButton)getSource()).getParent()).setCursor(Cursor.getDefaultCursor());
+                setEnabled(true);
+    		}
+    	});
+    	backgroundWorker.execute();
     }
 
 }

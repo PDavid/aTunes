@@ -79,6 +79,7 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.ArrangePlayListColumnsAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.AutoScrollPlayListAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.CheckUpdatesAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.ClearCachesAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.CloseOtherPlaylistsAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ClosePlaylistAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.CollapseTreesAction"/>

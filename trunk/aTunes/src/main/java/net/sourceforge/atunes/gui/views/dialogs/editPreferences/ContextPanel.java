@@ -49,9 +49,9 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
-import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ClearCachesAction;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -256,7 +256,7 @@ public final class ContextPanel extends AbstractPreferencesPanel {
                 hideVariousArtistsAlbums.setEnabled(activateContext.isSelected());
             }
         });
-        JButton clearCache = new JButton(Actions.getAction(ClearCachesAction.class));
+        JButton clearCache = new JButton(Context.getBean(ClearCachesAction.class));
         info = new JLabel(Images.getImage(Images.POWERED_BY_LAST_FM), GuiUtils.getComponentOrientationAsSwingConstant());
         info.addMouseListener(new OpenLastFmMouseAdapter(desktop));
         JLabel enginesTableLabel = new JLabel(I18nUtils.getString("LYRICS_ENGINES_SELECTION"));

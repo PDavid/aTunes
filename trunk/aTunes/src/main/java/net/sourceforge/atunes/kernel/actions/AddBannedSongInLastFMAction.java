@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.actions;
 
 import net.sourceforge.atunes.model.IBackgroundWorker;
+import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -35,17 +36,14 @@ public class AddBannedSongInLastFMAction extends CustomAbstractAction {
 
 	private static final long serialVersionUID = -2687851398606488392L;
 
-	private IBackgroundWorker backgroundWorker;
+	private IBackgroundWorkerFactory backgroundWorkerFactory;
 	
 	private IWebServicesHandler webServicesHandler;
 	
 	private IContextHandler contextHandler;
-	
-	/**
-	 * @param backgroundWorker
-	 */
-	public void setBackgroundWorker(IBackgroundWorker backgroundWorker) {
-		this.backgroundWorker = backgroundWorker;
+
+	public void setBackgroundWorkerFactory(IBackgroundWorkerFactory backgroundWorkerFactory) {
+		this.backgroundWorkerFactory = backgroundWorkerFactory;
 	}
 	
 	/**
@@ -75,6 +73,7 @@ public class AddBannedSongInLastFMAction extends CustomAbstractAction {
     @Override
     protected void executeAction() {
         setEnabled(false);
+        IBackgroundWorker backgroundWorker = backgroundWorkerFactory.getWorker();
         backgroundWorker.setBackgroundActions(new Runnable() {
         	@Override
         	public void run() {
