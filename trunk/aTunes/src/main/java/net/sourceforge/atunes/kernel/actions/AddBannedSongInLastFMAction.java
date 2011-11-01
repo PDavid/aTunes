@@ -20,16 +20,10 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-import java.util.concurrent.ExecutionException;
-
-import javax.swing.SwingWorker;
-
-import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.Logger;
 
 /**
  * Adds a song to banned tracks in Last.fm profile
@@ -39,36 +33,36 @@ import net.sourceforge.atunes.utils.Logger;
  */
 public class AddBannedSongInLastFMAction extends CustomAbstractAction {
 
-    private final class BanSongSwingWorker extends SwingWorker<Void, Void> {
-		private final IAudioObject song;
-
-		private BanSongSwingWorker(IAudioObject song) {
-			this.song = song;
-		}
-
-		@Override
-		protected Void doInBackground() throws Exception {
-			getBean(IWebServicesHandler.class).addBannedSong(song);
-		    return null;
-		}
-
-		@Override
-		protected void done() {
-		    try {
-		        get();
-		    } catch (InterruptedException e) {
-		    	Logger.error(e);
-		    } catch (ExecutionException e) {
-		    	Logger.error(e);
-		    } finally {
-		        setEnabled(true);
-		    }
-		}
-	}
-
 	private static final long serialVersionUID = -2687851398606488392L;
 
-    AddBannedSongInLastFMAction() {
+	private IBackgroundWorker backgroundWorker;
+	
+	private IWebServicesHandler webServicesHandler;
+	
+	private IContextHandler contextHandler;
+	
+	/**
+	 * @param backgroundWorker
+	 */
+	public void setBackgroundWorker(IBackgroundWorker backgroundWorker) {
+		this.backgroundWorker = backgroundWorker;
+	}
+	
+	/**
+	 * @param webServicesHandler
+	 */
+	public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+		this.webServicesHandler = webServicesHandler;
+	}
+	
+	/**
+	 * @param contextHandler
+	 */
+	public void setContextHandler(IContextHandler contextHandler) {
+		this.contextHandler = contextHandler;
+	}
+	
+    public AddBannedSongInLastFMAction() {
         super(I18nUtils.getString("ADD_BANNED_SONG_IN_LASTFM"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("ADD_BANNED_SONG_IN_LASTFM"));
     }
@@ -77,20 +71,22 @@ public class AddBannedSongInLastFMAction extends CustomAbstractAction {
     protected void initialize() {
         setEnabled(getState().isLastFmEnabled());
     }
-
+    
     @Override
-    public void actionPerformed(ActionEvent e) {
-        banSong(getBean(IContextHandler.class).getCurrentAudioObject());
-    }
-
-    /**
-     * Calls last.fm service to ban a song
-     * 
-     * @param song
-     */
-    public void banSong(final IAudioObject song) {
+    protected void executeAction() {
         setEnabled(false);
-        new BanSongSwingWorker(song).execute();
+        backgroundWorker.setBackgroundActions(new Runnable() {
+        	@Override
+        	public void run() {
+    			webServicesHandler.addBannedSong(contextHandler.getCurrentAudioObject());
+        	}
+        });
+        backgroundWorker.setGraphicalActionsWhenDone(new Runnable() {
+        	@Override
+        	public void run() {
+		        setEnabled(true);
+        	}
+        });
+        backgroundWorker.execute();
     }
-
 }
