@@ -133,7 +133,7 @@ public final class DeviceNavigationView extends AbstractNavigationView {
             deviceTreeMenu.add(getMenuItemForAction(OpenFolderFromNavigatorAction.class));
             deviceTreeMenu.add(new JSeparator());
             deviceTreeMenu.add(new EditTagMenu(false, this));
-            deviceTreeMenu.add(Actions.getAction(EditTitlesAction.class));
+            deviceTreeMenu.add(Context.getBean(EditTitlesAction.class));
             deviceTreeMenu.add(new JSeparator());
             deviceTreeMenu.add(new JMenuItem(Actions.getAction(RemoveFromDiskAction.class)));
             deviceTreeMenu.add(new JSeparator());

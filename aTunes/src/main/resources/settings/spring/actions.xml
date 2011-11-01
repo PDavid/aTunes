@@ -93,6 +93,7 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.CustomSearchAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.DisconnectDeviceAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.EditPreferencesAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.EditTitlesAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ExitAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ExpandTreesAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.FillDeviceWithRandomSongsAction">

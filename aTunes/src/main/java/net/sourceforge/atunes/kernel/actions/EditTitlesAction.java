@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
 import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -35,16 +34,34 @@ public class EditTitlesAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -2883223880879440970L;
 
-    EditTitlesAction() {
+    private INavigationHandler navigationHandler;
+    
+    private ITagHandler tagHandler;
+    
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+    
+    /**
+     * @param tagHandler
+     */
+    public void setTagHandler(ITagHandler tagHandler) {
+		this.tagHandler = tagHandler;
+	}
+    
+    public EditTitlesAction() {
         super(I18nUtils.getString("EDIT_TITLES"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("EDIT_TITLES"));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        TreePath path = getBean(INavigationHandler.class).getCurrentView().getTree().getSelectionPath();
+    protected void executeAction() {
+        TreePath path = navigationHandler.getCurrentView().getTree().getSelectionPath();
         Album a = (Album) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-        getBean(ITagHandler.class).editFiles(a);
+        tagHandler.editFiles(a);
     }
 
     @Override
@@ -61,5 +78,4 @@ public class EditTitlesAction extends CustomAbstractAction {
 
         return true;
     }
-
 }
