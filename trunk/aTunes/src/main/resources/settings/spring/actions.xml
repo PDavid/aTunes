@@ -136,4 +136,6 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.ShowContextAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShowCoverNavigatorAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShowLogAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.VolumeDownAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.VolumeUpAction"/>
 </beans>

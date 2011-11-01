@@ -134,8 +134,8 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
             edit = new JMenu(I18nUtils.getString("EDIT"));
             JMenu player = new JMenu(I18nUtils.getString("VOLUME"));
             player.add(Actions.getAction(ShowEqualizerAction.class));
-            player.add(Actions.getAction(VolumeUpAction.class));
-            player.add(Actions.getAction(VolumeDownAction.class));
+            player.add(Context.getBean(VolumeUpAction.class));
+            player.add(Context.getBean(VolumeDownAction.class));
             player.add(new JCheckBoxMenuItem(Context.getBean(MuteAction.class)));
             JMenu repair = new JMenu(I18nUtils.getString("REPAIR"));
             repair.add(Actions.getAction(RepairTrackNumbersAction.class));

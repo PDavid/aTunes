@@ -20,11 +20,8 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -38,15 +35,23 @@ public class VolumeUpAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 8731458163463902477L;
 
-    VolumeUpAction() {
+    private IPlayerHandler playerHandler;
+    
+    /**
+     * @param playerHandler
+     */
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
+    
+    public VolumeUpAction() {
         super(I18nUtils.getString("VOLUME_UP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke('+'));
-
     }
-
+    
     @Override
-    public void actionPerformed(ActionEvent e) {
-        Context.getBean(IPlayerHandler.class).volumeUp();
+    protected void executeAction() {
+    	playerHandler.volumeUp();
     }
 
 }

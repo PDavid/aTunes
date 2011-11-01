@@ -38,13 +38,19 @@ public class BackgroundWorkerMock<T> implements IBackgroundWorker<T> {
 	@Override
 	public void execute() {
 		T result = null;
-		try {
-			result = this.backgroundActions.call();
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (this.backgroundActions != null) {
+			try {
+				result = this.backgroundActions.call();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-		this.afterStartActions.run();
-		this.graphicalActions.call(result);
+		if (this.afterStartActions != null) {
+			this.afterStartActions.run();
+		}
+		if (this.graphicalActions != null) {
+			this.graphicalActions.call(result);
+		}
 	}
 
 	@Override
