@@ -169,8 +169,8 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
         state.setLastFmPassword(String.valueOf(lastFmPassword.getPassword()));
         state.setLastFmEnabled(lastFmEnabled.isSelected());
         state.setAutoLoveFavoriteSong(autoLoveFavoriteSongs.isSelected());
-        Actions.getAction(AddLovedSongInLastFMAction.class).setEnabled(state.isLastFmEnabled());
-        Actions.getAction(AddBannedSongInLastFMAction.class).setEnabled(state.isLastFmEnabled());
+        Context.getBean(AddLovedSongInLastFMAction.class).setEnabled(state.isLastFmEnabled());
+        Context.getBean(AddBannedSongInLastFMAction.class).setEnabled(state.isLastFmEnabled());
         Actions.getAction(ImportLovedTracksFromLastFMAction.class).setEnabled(state.isLastFmEnabled());
         return false;
     }

@@ -9,6 +9,8 @@
 		<property name="poolSize" value="1"/>
 		<property name="threadSuffix" value="TaskService-"/>
 	</bean>
+	
+	<bean id="backgroundWorker" class="net.sourceforge.atunes.gui.SwingBackgroundWorker" scope="prototype"/>
 
 
 </beans>

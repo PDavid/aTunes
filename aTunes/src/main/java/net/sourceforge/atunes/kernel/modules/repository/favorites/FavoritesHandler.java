@@ -158,7 +158,7 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
             	// Add to LastFM if necessary
             	if (getState().isLastFmEnabled() && getState().isAutoLoveFavoriteSong()) {
             		// TODO: do this with a listener interface            	
-            		((AddLovedSongInLastFMAction) Actions.getAction(AddLovedSongInLastFMAction.class)).loveSong(song);
+            		getBean(AddLovedSongInLastFMAction.class).loveSong(song);
             	}
             }
         }
@@ -179,7 +179,7 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
         	// Add to web service if necessary
         	if (automcaticallyLove && getState().isLastFmEnabled() && getState().isAutoLoveFavoriteSong()) {
         		// TODO: do this with a listener interface            	
-        		((AddLovedSongInLastFMAction) Actions.getAction(AddLovedSongInLastFMAction.class)).loveSong(song);
+        		getBean(AddLovedSongInLastFMAction.class).loveSong(song);
         	}
         }
         callActionsAfterFavoritesChange();

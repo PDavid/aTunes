@@ -20,12 +20,8 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-import java.util.concurrent.ExecutionException;
-
-import javax.swing.SwingWorker;
-
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -40,7 +36,34 @@ public class AddLovedSongInLastFMAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -2687851398606488392L;
 
-    AddLovedSongInLastFMAction() {
+    private IContextHandler contextHandler;
+    
+    private IWebServicesHandler webServicesHandler;
+    
+    private IBackgroundWorker backgroundWorker;
+    
+    /**
+     * @param contextHandler
+     */
+    public void setContextHandler(IContextHandler contextHandler) {
+		this.contextHandler = contextHandler;
+	}
+    
+    /**
+     * @param webServicesHandler
+     */
+    public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+		this.webServicesHandler = webServicesHandler;
+	}
+    
+    /**
+     * @param backgroundWorker
+     */
+    public void setBackgroundWorker(IBackgroundWorker backgroundWorker) {
+		this.backgroundWorker = backgroundWorker;
+	}
+    
+    public AddLovedSongInLastFMAction() {
         super(I18nUtils.getString("ADD_LOVED_SONG_IN_LASTFM"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("ADD_LOVED_SONG_IN_LASTFM"));
     }
@@ -51,8 +74,8 @@ public class AddLovedSongInLastFMAction extends CustomAbstractAction {
     }
     
     @Override
-    public void actionPerformed(ActionEvent e) {
-        loveSong(getBean(IContextHandler.class).getCurrentAudioObject());
+    protected void executeAction() {
+        loveSong(contextHandler.getCurrentAudioObject());
     }
 
     /**
@@ -62,26 +85,19 @@ public class AddLovedSongInLastFMAction extends CustomAbstractAction {
      */
     public void loveSong(final IAudioObject song) {
         setEnabled(false);
-        new SwingWorker<Void, Void>() {
-
-            @Override
-            protected Void doInBackground() throws Exception {
-                getBean(IWebServicesHandler.class).addLovedSong(song);
-                return null;
-            }
-
-            @Override
-            protected void done() {
-                try {
-                    get();
-                } catch (InterruptedException e) {
-                } catch (ExecutionException e) {
-                } finally {
-                    setEnabled(true);
-                }
-            }
-
-        }.execute();
+        backgroundWorker.setBackgroundActions(new Runnable() {
+        	@Override
+        	public void run() {
+        		webServicesHandler.addLovedSong(song);
+        	}
+        });
+        backgroundWorker.setGraphicalActionsWhenDone(new Runnable() {
+        	@Override
+        	public void run() {
+		        setEnabled(true);
+        	}
+        });
+        backgroundWorker.execute();
     }
 
 }

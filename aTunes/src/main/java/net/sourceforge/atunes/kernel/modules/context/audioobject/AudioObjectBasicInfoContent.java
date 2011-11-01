@@ -35,7 +35,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.kernel.actions.Actions;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.actions.AddBannedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
@@ -78,8 +78,8 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
         audioObjectTitle.setText(null);
         audioObjectArtist.setText(null);
         audioObjectLastPlayDate.setText(null);
-        Actions.getAction(AddLovedSongInLastFMAction.class).setEnabled(false);
-        Actions.getAction(AddBannedSongInLastFMAction.class).setEnabled(false);
+        Context.getBean(AddLovedSongInLastFMAction.class).setEnabled(false);
+        Context.getBean(AddBannedSongInLastFMAction.class).setEnabled(false);
     }
 
     @Override
@@ -114,8 +114,8 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
         }
 
         // TODO: Allow these options for radios where song information is available
-        Actions.getAction(AddLovedSongInLastFMAction.class).setEnabled(getState().isLastFmEnabled() && result.get(AudioObjectBasicInfoDataSource.OUTPUT_AUDIO_OBJECT) instanceof AudioFile);
-        Actions.getAction(AddBannedSongInLastFMAction.class).setEnabled(getState().isLastFmEnabled() && result.get(AudioObjectBasicInfoDataSource.OUTPUT_AUDIO_OBJECT) instanceof AudioFile);
+        Context.getBean(AddLovedSongInLastFMAction.class).setEnabled(getState().isLastFmEnabled() && result.get(AudioObjectBasicInfoDataSource.OUTPUT_AUDIO_OBJECT) instanceof AudioFile);
+        Context.getBean(AddBannedSongInLastFMAction.class).setEnabled(getState().isLastFmEnabled() && result.get(AudioObjectBasicInfoDataSource.OUTPUT_AUDIO_OBJECT) instanceof AudioFile);
     }
 
     @Override
@@ -161,8 +161,8 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
     @Override
     public List<Component> getOptions() {
         List<Component> options = new ArrayList<Component>();
-        options.add(new JMenuItem(Actions.getAction(AddLovedSongInLastFMAction.class)));
-        options.add(new JMenuItem(Actions.getAction(AddBannedSongInLastFMAction.class)));
+        options.add(new JMenuItem(Context.getBean(AddLovedSongInLastFMAction.class)));
+        options.add(new JMenuItem(Context.getBean(AddBannedSongInLastFMAction.class)));
         return options;
     }
 }
