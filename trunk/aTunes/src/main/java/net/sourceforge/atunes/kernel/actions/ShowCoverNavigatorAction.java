@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
 import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorFrame;
 import net.sourceforge.atunes.kernel.modules.covernavigator.CoverNavigatorController;
 import net.sourceforge.atunes.model.IFrame;
@@ -40,17 +38,53 @@ public class ShowCoverNavigatorAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 4927892497869144235L;
 
-    ShowCoverNavigatorAction() {
+    private IRepositoryHandler repositoryHandler;
+    
+    private IFrame frame;
+    
+    private ILookAndFeelManager lookAndFeelManager;
+    
+    private IOSManager osManager;
+    
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+    
+    /**
+     * @param frame
+     */
+    public void setFrame(IFrame frame) {
+		this.frame = frame;
+	}
+    
+    /**
+     * @param lookAndFeelManager
+     */
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+    
+    /**
+     * @param osManager
+     */
+    public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
+    
+    public ShowCoverNavigatorAction() {
         super(I18nUtils.getString("COVER_NAVIGATOR"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("COVER_NAVIGATOR"));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        CoverNavigatorFrame coverNavigator = new CoverNavigatorFrame(getBean(IRepositoryHandler.class).getArtists(), 
-        															 getBean(IFrame.class).getFrame(),
-        															 getBean(ILookAndFeelManager.class));
-        new CoverNavigatorController(coverNavigator, getState(), getBean(IOSManager.class));
+    protected void executeAction() {
+        CoverNavigatorFrame coverNavigator = new CoverNavigatorFrame(repositoryHandler.getArtists(), 
+        															 frame.getFrame(),
+        															 lookAndFeelManager);
+        new CoverNavigatorController(coverNavigator, getState(), osManager);
         coverNavigator.setVisible(true);
     }
 
