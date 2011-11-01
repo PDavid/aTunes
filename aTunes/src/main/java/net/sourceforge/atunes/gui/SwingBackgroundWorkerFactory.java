@@ -18,13 +18,15 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.gui;
 
-public class BackgroundWorkerFactoryMock implements IBackgroundWorkerFactory {
+import net.sourceforge.atunes.model.IBackgroundWorker;
+import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
+
+public class SwingBackgroundWorkerFactory implements IBackgroundWorkerFactory {
 
 	@Override
 	public <T> IBackgroundWorker<T> getWorker() {
-		return new BackgroundWorkerMock<T>();
+		return new SwingBackgroundWorker<T>();
 	}
-
 }

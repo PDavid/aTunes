@@ -89,6 +89,7 @@
 	<bean id="confirmationDialogFactory" class="net.sourceforge.atunes.model.ConfirmationDialogFactory"/>
 	<bean id="confirmationDialog" class="net.sourceforge.atunes.gui.views.dialogs.ConfirmationDialog" scope="prototype"/>
 	
+	<bean id="messageDialogFactory" class="net.sourceforge.atunes.model.MessageDialogFactory"/>
 	<bean id="messageDialog" class="net.sourceforge.atunes.gui.views.dialogs.MessageDialog" scope="prototype"/>
 
 	<bean id="radioDialog" class="net.sourceforge.atunes.gui.views.dialogs.RadioDialog" scope="prototype">

@@ -20,29 +20,11 @@
 
 package net.sourceforge.atunes.model;
 
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+public interface IMessageDialogFactory {
 
-/**
- * Return instances of IBackgroundWorker
- * @author alex
- *
- */
-public class BackgroundWorkerFactory implements ApplicationContextAware, IBackgroundWorkerFactory {
-
-	private ApplicationContext context;
-	
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.context = applicationContext;
-	}
-	
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IBackgroundWorkerFactory#getWorker()
+	/**
+	 * Returns message dialog
+	 * @return
 	 */
-	@Override
-	public IBackgroundWorker getWorker() {
-		return this.context.getBean(IBackgroundWorker.class);
-	}
+	IMessageDialog getDialog();
 }

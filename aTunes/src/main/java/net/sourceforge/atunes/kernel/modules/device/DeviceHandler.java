@@ -57,7 +57,7 @@ import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFileSelectionDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IMessageDialog;
+import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -322,7 +322,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
     	        Actions.getAction(SynchronizeDeviceWithPlayListAction.class).setEnabled(false);
     	        getBean(CopyPlayListToDeviceAction.class).setEnabled(false);
     	        getFrame().showDeviceInfo(false);
-    	        getBean(IMessageDialog.class).showMessage(I18nUtils.getString("DEVICE_DISCONNECTION_DETECTED"), getFrame());		    
+    	        getBean(IMessageDialogFactory.class).getDialog().showMessage(I18nUtils.getString("DEVICE_DISCONNECTION_DETECTED"), getFrame());		    
     		}
     	});
 

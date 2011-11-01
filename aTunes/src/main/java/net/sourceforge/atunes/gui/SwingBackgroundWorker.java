@@ -20,8 +20,10 @@
 
 package net.sourceforge.atunes.gui;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 
+import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.model.IBackgroundWorker;
@@ -32,44 +34,60 @@ import net.sourceforge.atunes.utils.Logger;
  * @author alex
  *
  */
-public class SwingBackgroundWorker implements IBackgroundWorker {
+public class SwingBackgroundWorker<T> implements IBackgroundWorker<T> {
 
-	private Runnable backgroundActions;
+	private Callable<T> backgroundActions;
 	
-	private Runnable graphicalActionsWhenDone;
+	private Runnable graphicalActionsAfterStart;
+	
+	private IActionsWithBackgroundResult<T> graphicalActionsWhenDone;
 
 	@Override
-	public void setBackgroundActions(Runnable backgroundActions) {
+	public void setBackgroundActions(Callable<T> backgroundActions) {
 		this.backgroundActions = backgroundActions;
 	}
 	
 	@Override
-	public void setGraphicalActionsWhenDone(Runnable graphicalActionsWhenDone) {
+	public void setActionsAfterBackgroundStarted(Runnable afterStartActions) {
+		this.graphicalActionsAfterStart = afterStartActions;
+	}
+	
+	@Override
+	public void setActionsWhenDone(IActionsWithBackgroundResult<T> graphicalActionsWhenDone) {
 		this.graphicalActionsWhenDone = graphicalActionsWhenDone;
 	}
 	
 	@Override
 	public void execute() {
-		SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+		new SwingWorker<T, Void>() {
 			
-			protected Void doInBackground() {
+			protected T doInBackground() {
 				Logger.debug("Running background actions");
-				backgroundActions.run();
+				try {
+					return backgroundActions.call();
+				} catch (Exception e) {
+					Logger.error(e);
+				}
 				return null;
 			}
 			
 			protected void done() {
+				T backgroundResult = null;
 				try {
-					get();
+					backgroundResult = get();
 				} catch (InterruptedException e) {
 					Logger.error(e);
 				} catch (ExecutionException e) {
 					Logger.error(e);
 				}
-				graphicalActionsWhenDone.run();
+				graphicalActionsWhenDone.call(backgroundResult);
 				Logger.debug("Running finish actions completed");
 			}
-		};
-		worker.execute();
+			
+		}.execute();
+		
+		if (graphicalActionsAfterStart != null) {
+			SwingUtilities.invokeLater(graphicalActionsAfterStart);
+		}
 	}
 }

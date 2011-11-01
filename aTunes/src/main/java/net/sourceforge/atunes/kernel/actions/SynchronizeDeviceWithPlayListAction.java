@@ -36,7 +36,7 @@ import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.model.IMessageDialog;
+import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -74,7 +74,7 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 		    SwingUtilities.invokeLater(new Runnable() {
 		        @Override
 		        public void run() {
-		        	getBean(IMessageDialog.class).showMessage(
+		        	getBean(IMessageDialogFactory.class).getDialog().showMessage(
 		                    StringUtils.getString(I18nUtils.getString("SYNCHRONIZATION_FINISHED"), " ", I18nUtils.getString("ADDED"), ": ", added ? getBean(IDeviceHandler.class)
 		                            .getFilesCopiedToDevice() : 0, " ", I18nUtils.getString("REMOVED"), ": ", filesRemoved), getBean(IFrame.class));
 		        }

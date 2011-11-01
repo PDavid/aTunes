@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.Cursor;
+import java.util.concurrent.Callable;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -69,16 +70,18 @@ public class ClearCachesAction extends CustomAbstractAction {
     protected void executeAction() {
         setEnabled(false);
     	((JPanel)((JButton)getSource()).getParent()).setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-    	IBackgroundWorker backgroundWorker = backgroundWorkerFactory.getWorker();
-    	backgroundWorker.setBackgroundActions(new Runnable() {
+    	IBackgroundWorker<Void> backgroundWorker = backgroundWorkerFactory.getWorker();
+    	backgroundWorker.setBackgroundActions(new Callable<Void>() {
+    		
     		@Override
-    		public void run() {
+    		public Void call() {
     			webServicesHandler.clearCache();
+    			return null;
     		}
     	});
-    	backgroundWorker.setGraphicalActionsWhenDone(new Runnable() {
+    	backgroundWorker.setActionsWhenDone(new IBackgroundWorker.IActionsWithBackgroundResult<Void>() {
     		@Override
-    		public void run() {
+    		public void call(Void result) {
             	((JPanel)((JButton)getSource()).getParent()).setCursor(Cursor.getDefaultCursor());
                 setEnabled(true);
     		}

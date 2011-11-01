@@ -31,7 +31,7 @@ import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.model.FeedType;
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.IMessageDialog;
+import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
@@ -222,7 +222,7 @@ public class PodcastFeedEntryRetriever implements Runnable {
                                 podcastFeed.markEntriesAsNotNew();
                             }
                             if (!state.isShowStatusBar()) {
-                            	Context.getBean(IMessageDialog.class).showMessage(I18nUtils.getString("NEW_PODCAST_ENTRIES"), frame);
+                            	Context.getBean(IMessageDialogFactory.class).getDialog().showMessage(I18nUtils.getString("NEW_PODCAST_ENTRIES"), frame);
                             } else {
                                 frame.showNewPodcastFeedEntriesInfo(true);
                             }

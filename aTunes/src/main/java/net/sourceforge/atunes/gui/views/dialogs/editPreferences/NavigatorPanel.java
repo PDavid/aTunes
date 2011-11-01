@@ -50,7 +50,7 @@ import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
 import net.sourceforge.atunes.kernel.modules.tags.TagAttribute;
 import net.sourceforge.atunes.model.ArtistViewMode;
 import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.IMessageDialog;
+import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -316,7 +316,7 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 		
 		if (!newArtistViewState.equals(state.getArtistViewMode())) {
 			state.setArtistViewMode(newArtistViewState);
-			 Context.getBean(IMessageDialog.class).showMessage(I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"),this);
+			 Context.getBean(IMessageDialogFactory.class).getDialog().showMessage(I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"),this);
 			 Context.getBean(IRepositoryHandler.class).refreshRepository();
 		}
 

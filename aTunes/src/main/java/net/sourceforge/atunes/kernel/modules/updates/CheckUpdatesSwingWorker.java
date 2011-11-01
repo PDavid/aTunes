@@ -31,7 +31,7 @@ import net.sourceforge.atunes.model.ApplicationVersion;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.model.IMessageDialog;
+import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IUpdateHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -85,7 +85,7 @@ final class CheckUpdatesSwingWorker extends
 	                 frame.showNewVersionInfo(true, version);
 	             }
 	        } else if (showNoNewVersion) {
-	            Context.getBean(IMessageDialog.class).showMessage(I18nUtils.getString("NOT_NEW_VERSION"), frame);
+	            Context.getBean(IMessageDialogFactory.class).getDialog().showMessage(I18nUtils.getString("NOT_NEW_VERSION"), frame);
 	        }
 	    } catch (InterruptedException e) {
 	        Logger.error(e);

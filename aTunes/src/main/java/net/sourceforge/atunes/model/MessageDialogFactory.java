@@ -20,11 +20,22 @@
 
 package net.sourceforge.atunes.model;
 
-public class BackgroundWorkerFactoryMock implements IBackgroundWorkerFactory {
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
+public class MessageDialogFactory implements IMessageDialogFactory, ApplicationContextAware {
+
+	private ApplicationContext context;
+	
+	@Override
+	public IMessageDialog getDialog() {
+		return this.context.getBean(IMessageDialog.class);
+	}
 
 	@Override
-	public <T> IBackgroundWorker<T> getWorker() {
-		return new BackgroundWorkerMock<T>();
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.context = applicationContext;
 	}
 
 }

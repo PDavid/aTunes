@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import java.util.concurrent.Callable;
+
 import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
 import net.sourceforge.atunes.model.IContextHandler;
@@ -73,16 +75,18 @@ public class AddBannedSongInLastFMAction extends CustomAbstractAction {
     @Override
     protected void executeAction() {
         setEnabled(false);
-        IBackgroundWorker backgroundWorker = backgroundWorkerFactory.getWorker();
-        backgroundWorker.setBackgroundActions(new Runnable() {
+        IBackgroundWorker<Void> backgroundWorker = backgroundWorkerFactory.getWorker();
+        backgroundWorker.setBackgroundActions(new Callable<Void>() {
         	@Override
-        	public void run() {
+        	public Void call() {
     			webServicesHandler.addBannedSong(contextHandler.getCurrentAudioObject());
+    			return null;
         	}
         });
-        backgroundWorker.setGraphicalActionsWhenDone(new Runnable() {
+        backgroundWorker.setActionsWhenDone(new IBackgroundWorker.IActionsWithBackgroundResult<Void>() {
+			
         	@Override
-        	public void run() {
+        	public void call(Void result) {
 		        setEnabled(true);
         	}
         });

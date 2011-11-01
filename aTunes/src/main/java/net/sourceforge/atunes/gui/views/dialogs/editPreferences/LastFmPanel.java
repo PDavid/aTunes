@@ -35,12 +35,11 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
-import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddBannedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.actions.ImportLovedTracksFromLastFMAction;
 import net.sourceforge.atunes.model.IErrorDialog;
-import net.sourceforge.atunes.model.IMessageDialog;
+import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -65,7 +64,7 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
 			        boolean loginSuccessful;
 			        loginSuccessful = get();
 			        if (loginSuccessful) {
-			        	Context.getBean(IMessageDialog.class).showMessage(I18nUtils.getString("LOGIN_SUCCESSFUL"), getPreferenceDialog());
+			        	Context.getBean(IMessageDialogFactory.class).getDialog().showMessage(I18nUtils.getString("LOGIN_SUCCESSFUL"), getPreferenceDialog());
 			        } else {
 			        	Context.getBean(IErrorDialog.class).showErrorDialog(I18nUtils.getString("LOGIN_FAILED"), getPreferenceDialog());
 			        }
@@ -171,7 +170,7 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
         state.setAutoLoveFavoriteSong(autoLoveFavoriteSongs.isSelected());
         Context.getBean(AddLovedSongInLastFMAction.class).setEnabled(state.isLastFmEnabled());
         Context.getBean(AddBannedSongInLastFMAction.class).setEnabled(state.isLastFmEnabled());
-        Actions.getAction(ImportLovedTracksFromLastFMAction.class).setEnabled(state.isLastFmEnabled());
+        Context.getBean(ImportLovedTracksFromLastFMAction.class).setEnabled(state.isLastFmEnabled());
         return false;
     }
 
