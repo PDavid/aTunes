@@ -20,37 +20,23 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import javax.swing.KeyStroke;
-
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.utils.I18nUtils;
 
-/**
- * This action lowers volume
- * 
- * @author fleax
- * 
- */
-public class VolumeDownAction extends CustomAbstractAction {
+import org.junit.Test;
 
-    private static final long serialVersionUID = 8731458163463902477L;
 
-    private IPlayerHandler playerHandler;
-    
-    /**
-     * @param playerHandler
-     */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
-		this.playerHandler = playerHandler;
+public class VolumeUpActionTest {
+
+	@Test
+	public void test() {
+		VolumeUpAction sut = new VolumeUpAction();
+		IPlayerHandler playerHandler = mock(IPlayerHandler.class);
+		sut.setPlayerHandler(playerHandler);
+		
+		sut.executeAction();
+		
+		verify(playerHandler).volumeUp();
 	}
-    
-    public VolumeDownAction() {
-        super(I18nUtils.getString("VOLUME_DOWN"));
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke('-'));
-    }
-
-    @Override
-    protected void executeAction() {
-        playerHandler.volumeDown();
-    }
 }
