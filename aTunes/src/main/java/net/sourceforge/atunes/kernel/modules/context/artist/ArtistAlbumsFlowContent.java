@@ -21,11 +21,8 @@
 package net.sourceforge.atunes.kernel.modules.context.artist;
 
 import java.awt.Component;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,38 +35,12 @@ import net.sourceforge.atunes.gui.views.controls.ScrollableFlowPanel;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jdesktop.swingx.border.DropShadowBorder;
 
 public class ArtistAlbumsFlowContent extends AbstractContextPanelContent {
-
-    private static final class CoverMouseAdapter extends MouseAdapter {
-        private final IAlbumInfo album;
-        private final JLabel coverLabel;
-
-        private CoverMouseAdapter(IAlbumInfo album, JLabel coverLabel) {
-            this.album = album;
-            this.coverLabel = coverLabel;
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-            coverLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-            coverLabel.setCursor(Cursor.getDefaultCursor());
-        }
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            DesktopUtils.openURL(album.getUrl());
-        }
-    }
 
     private ScrollableFlowPanel coversPanel;
 
@@ -131,7 +102,7 @@ public class ArtistAlbumsFlowContent extends AbstractContextPanelContent {
             coverLabel.setBorder(new DropShadowBorder());
         }
 
-        coverLabel.addMouseListener(new CoverMouseAdapter(album, coverLabel));
+        coverLabel.addMouseListener(new CoverMouseAdapter(album, coverLabel, getDesktop()));
 
         return coverLabel;
     }

@@ -55,6 +55,7 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.gui.views.dialogs.PluginEditorDialog;
+import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -113,8 +114,9 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	 * @param lookAndFeel
 	 * @param state
 	 * @param pluginsHandler
+	 * @param desktop 
 	 */
-	public PluginsPanel(EditPreferencesDialog dialog, final IFrame frame, final ILookAndFeel lookAndFeel, IState state, IPluginsHandler pluginsHandler) {
+	public PluginsPanel(EditPreferencesDialog dialog, final IFrame frame, final ILookAndFeel lookAndFeel, IState state, IPluginsHandler pluginsHandler, IDesktop desktop) {
 		super(I18nUtils.getString("PLUGINS"));
 		this.state = state;
 		this.dialog = dialog;
@@ -164,7 +166,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		final JLabel pluginClassNameLabel = new JLabel();
 		final JLabel pluginLocationLabel = new JLabel();
 		final JLabel pluginAuthorLabel = new JLabel();
-		final UrlLabel pluginUrlLabel = new UrlLabel();
+		final UrlLabel pluginUrlLabel = new UrlLabel(desktop);
 
 		GridBagConstraints c2 = new GridBagConstraints();
 

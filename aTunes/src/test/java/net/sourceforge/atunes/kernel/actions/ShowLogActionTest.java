@@ -20,33 +20,35 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.io.File;
+
+import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.model.IDesktop;
-import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.model.IOSManager;
 
-/**
- * Opens browser to show main web site
- * 
- * @author fleax
- * 
- */
-public class GoToWebSiteAction extends CustomAbstractAction {
+import org.junit.Test;
 
-    private static final long serialVersionUID = -2614037760672140565L;
+public class ShowLogActionTest {
 
-    private IDesktop desktop;
-    
-    public void setDesktop(IDesktop desktop) {
-		this.desktop = desktop;
+	@Test
+	public void test() {
+		ShowLogAction sut = new ShowLogAction();
+		IOSManager osManager = mock(IOSManager.class);
+		File f = new File("dummy");
+		when(osManager.getFileFromUserConfigFolder(Constants.LOG_FILE, false)).thenReturn(f);
+		IDesktop desktop = mock(IDesktop.class);
+		sut.setApplicationArguments(new ApplicationArguments());
+		sut.setOsManager(osManager);
+		sut.setDesktop(desktop);
+		
+		sut.executeAction();
+		
+		verify(desktop).openFile(f, osManager);
+		
 	}
-    
-    public GoToWebSiteAction() {
-        super(I18nUtils.getString("GO_TO_WEB_SITE"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("GO_TO_WEB_SITE"));
-    }
-
-    @Override
-    protected void executeAction() {
-    	desktop.openURL(Constants.APP_WEB);
-    }
 }

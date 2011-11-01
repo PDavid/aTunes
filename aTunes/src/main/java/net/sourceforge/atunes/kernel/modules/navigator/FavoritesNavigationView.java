@@ -148,8 +148,8 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
             favoriteTreeMenu.add(new JSeparator());
             favoriteTreeMenu.add(Actions.getAction(RemoveFromFavoritesAction.class));
             favoriteTreeMenu.add(new JSeparator());
-            favoriteTreeMenu.add(Actions.getAction(SearchArtistAction.class));
-            favoriteTreeMenu.add(Actions.getAction(SearchArtistAtAction.class));
+            favoriteTreeMenu.add(Context.getBean(SearchArtistAction.class));
+            favoriteTreeMenu.add(Context.getBean(SearchArtistAtAction.class));
         }
         return favoriteTreeMenu;
     }

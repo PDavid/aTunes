@@ -18,39 +18,25 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.actions;
+package net.sourceforge.atunes.kernel.modules.context.audioobject;
 
-import net.sourceforge.atunes.Constants;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Map.Entry;
+
 import net.sourceforge.atunes.model.IDesktop;
-import net.sourceforge.atunes.utils.I18nUtils;
 
-/**
- * Opens browser to show Wiki
- * 
- * @author fleax
- * 
- */
-public class GoToWikiAction extends CustomAbstractAction {
+final class OpenUrlActionListener implements ActionListener {
+    private final Entry<String, String> entry;
+    private final IDesktop desktop;
 
-    private static final long serialVersionUID = -2614037760672140565L;
-
-    private IDesktop desktop;
-    
-    /**
-     * @param desktop
-     */
-    public void setDesktop(IDesktop desktop) {
-		this.desktop = desktop;
-	}
-    
-    public GoToWikiAction() {
-        super(I18nUtils.getString("GO_TO_WIKI"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("GO_TO_WIKI"));
+    OpenUrlActionListener(Entry<String, String> entry, IDesktop desktop) {
+        this.entry = entry;
+        this.desktop = desktop;
     }
 
     @Override
-    protected void executeAction() {
-    	desktop.openURL(Constants.APP_WIKI);
+    public void actionPerformed(ActionEvent e) {
+    	desktop.openURL(entry.getValue());
     }
-
 }

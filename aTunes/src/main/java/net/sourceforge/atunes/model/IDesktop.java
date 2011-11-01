@@ -18,38 +18,37 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.controls;
+package net.sourceforge.atunes.model;
 
-import java.awt.event.ActionEvent;
+import java.io.File;
 
-import javax.swing.AbstractAction;
 
-import net.sourceforge.atunes.model.IDesktop;
+public interface IDesktop {
 
-/**
- * A link for url labels
- */
-final class Link extends AbstractAction {
+	/**
+	 * Starts web browser.
+	 * 
+	 * @param search
+	 *            Search object
+	 * @param query
+	 *            query
+	 */
+	public void openSearch(ISearch search, String query);
 
-    private static final long serialVersionUID = -3784927498125973809L;
+	/**
+	 * Starts web browser with specified URL.
+	 * 
+	 * @param url
+	 *            URL
+	 */
+	public void openURL(String url);
 
-    private IDesktop desktop;
-    
-    private String url;
-
-    /**
-     * Instantiates a new link
-     * @param desktop
-     * @param url
-     */
-    Link(IDesktop desktop, String url) {
-    	this.desktop = desktop;
-        this.url = url;
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-    	desktop.openURL(url);
-    }
+	/**
+	 * Opens a file with the associated program.
+	 * 
+	 * @param file
+	 * @param osManager
+	 */
+	public void openFile(File file, IOSManager osManager);
 
 }

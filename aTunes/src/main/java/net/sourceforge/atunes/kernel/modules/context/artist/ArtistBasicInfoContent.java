@@ -109,13 +109,13 @@ public class ArtistBasicInfoContent extends AbstractContextPanelContent {
     public Component getComponent() {
         // Create components
         artistImageLabel = new JLabel();
-        artistNameLabel = new UrlLabel();
+        artistNameLabel = new UrlLabel(getDesktop());
         artistNameLabel.setFont(getLookAndFeelManager().getCurrentLookAndFeel().getContextInformationBigFont());
         artistWikiAbstract = new CustomTextPane(StyleConstants.ALIGN_JUSTIFIED, getLookAndFeelManager());
         artistWikiAbstract.setEditable(false);
         artistWikiAbstract.setBorder(BorderFactory.createEmptyBorder());
         artistWikiAbstract.setOpaque(false);
-        artistWikiReadMore = new UrlLabel();
+        artistWikiReadMore = new UrlLabel(getDesktop());
 
         // Add components
         JPanel panel = new JPanel(new GridBagLayout());

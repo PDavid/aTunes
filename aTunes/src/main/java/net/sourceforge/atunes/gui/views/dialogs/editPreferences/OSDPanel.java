@@ -33,6 +33,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
+import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.INotificationEngine;
 import net.sourceforge.atunes.model.INotificationsHandler;
 import net.sourceforge.atunes.model.IState;
@@ -67,8 +68,9 @@ public final class OSDPanel extends AbstractPreferencesPanel {
     /**
      * Instantiates a new oSD panel.
      * @param notificationsHandler
+     * @param desktop
      */
-    public OSDPanel(INotificationsHandler notificationsHandler) {
+    public OSDPanel(INotificationsHandler notificationsHandler, IDesktop desktop) {
         super(I18nUtils.getString("OSD"));
         this.notificationsHandler = notificationsHandler;
         
@@ -88,7 +90,7 @@ public final class OSDPanel extends AbstractPreferencesPanel {
         
         engineDescription = new JLabel();
         
-        engineMoreInformation = new UrlLabel();
+        engineMoreInformation = new UrlLabel(desktop);
      
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(10, 10, 0, 0);

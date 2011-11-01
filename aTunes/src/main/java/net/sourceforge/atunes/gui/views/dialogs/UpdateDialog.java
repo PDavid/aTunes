@@ -40,6 +40,7 @@ import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.model.ApplicationVersion;
+import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -51,8 +52,9 @@ public final class UpdateDialog extends AbstractCustomDialog {
      * @param version
      * @param owner
      * @param lookAndFeelManager
+     * @param desktop
      */
-    public UpdateDialog(ApplicationVersion version, Window owner, ILookAndFeelManager lookAndFeelManager) {
+    public UpdateDialog(ApplicationVersion version, Window owner, ILookAndFeelManager lookAndFeelManager, IDesktop desktop) {
         super(owner, 400, 150, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
         setTitle(I18nUtils.getString("NEW_VERSION_AVAILABLE"));
         setResizable(false);
@@ -71,7 +73,7 @@ public final class UpdateDialog extends AbstractCustomDialog {
         text1.setLineWrap(true);
         text1.setWrapStyleWord(true);
 
-        UrlLabel url = new UrlLabel(I18nUtils.getString("GO_TO_DOWNLOAD_PAGE"), version.getDownloadURL());
+        UrlLabel url = new UrlLabel(desktop, I18nUtils.getString("GO_TO_DOWNLOAD_PAGE"), version.getDownloadURL());
         url.setHorizontalAlignment(SwingConstants.CENTER);
 
         JButton ok = new JButton(I18nUtils.getString("OK"));

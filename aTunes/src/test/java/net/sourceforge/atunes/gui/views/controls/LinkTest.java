@@ -18,39 +18,21 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.actions;
+package net.sourceforge.atunes.gui.views.controls;
 
-import net.sourceforge.atunes.Constants;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import net.sourceforge.atunes.model.IDesktop;
-import net.sourceforge.atunes.utils.I18nUtils;
 
-/**
- * Opens browser to show Wiki
- * 
- * @author fleax
- * 
- */
-public class GoToWikiAction extends CustomAbstractAction {
+import org.junit.Test;
 
-    private static final long serialVersionUID = -2614037760672140565L;
+public class LinkTest {
 
-    private IDesktop desktop;
-    
-    /**
-     * @param desktop
-     */
-    public void setDesktop(IDesktop desktop) {
-		this.desktop = desktop;
+	@Test
+	public void test() {
+		IDesktop desktop = mock(IDesktop.class);
+		Link sut = new Link(desktop, "www.google.com");
+		sut.actionPerformed(null);
+		verify(desktop).openURL("www.google.com");
 	}
-    
-    public GoToWikiAction() {
-        super(I18nUtils.getString("GO_TO_WIKI"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("GO_TO_WIKI"));
-    }
-
-    @Override
-    protected void executeAction() {
-    	desktop.openURL(Constants.APP_WIKI);
-    }
-
 }

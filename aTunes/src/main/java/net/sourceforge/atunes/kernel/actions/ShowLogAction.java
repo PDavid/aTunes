@@ -20,17 +20,14 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-import java.io.File;
-
 import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
- * Opens application logs in OS default editor
+ * Opens application logs in OS default viewer
  * 
  * @author fleax
  * 
@@ -39,15 +36,43 @@ public class ShowLogAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 3596625443325726180L;
 
-    ShowLogAction() {
+    private IOSManager osManager;
+    
+    private ApplicationArguments applicationArguments;
+    
+    private IDesktop desktop;
+    
+    /**
+     * @param osManager
+     */
+    public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
+    
+    /**
+     * @param applicationArguments
+     */
+    public void setApplicationArguments(
+			ApplicationArguments applicationArguments) {
+		this.applicationArguments = applicationArguments;
+	}
+    
+    /**
+     * @param desktop
+     */
+    public void setDesktop(IDesktop desktop) {
+		this.desktop = desktop;
+	}
+    
+    public ShowLogAction() {
         super(I18nUtils.getString("SHOW_LOG"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_LOG"));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        final File file = getBean(IOSManager.class).getFileFromUserConfigFolder(Constants.LOG_FILE, getBean(ApplicationArguments.class).isDebug());
-        DesktopUtils.openFile(file, getBean(IOSManager.class));
+    protected void executeAction() {
+        desktop.openFile(
+        		osManager.getFileFromUserConfigFolder(Constants.LOG_FILE, applicationArguments.isDebug()), 
+        		osManager);
     }
-
 }

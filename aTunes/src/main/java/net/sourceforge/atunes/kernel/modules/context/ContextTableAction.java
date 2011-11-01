@@ -24,6 +24,8 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
+import net.sourceforge.atunes.model.IDesktop;
+
 /**
  * Action over an element of a context table
  * @author alex
@@ -39,9 +41,12 @@ public abstract class ContextTableAction<T> extends AbstractAction {
 	
 	private ContextTable table;
 	
-	public ContextTableAction(String name, ContextTable table) {
+	private IDesktop desktop;
+	
+	public ContextTableAction(String name, ContextTable table, IDesktop desktop) {
 		super(name);
 		this.table = table;
+		this.desktop = desktop;
 		
 	}
 	
@@ -54,6 +59,10 @@ public abstract class ContextTableAction<T> extends AbstractAction {
 		}
 	}
 
+	protected IDesktop getDesktop() {
+		return desktop;
+	}
+	
 	/**
 	 * Executes the action over the given object
 	 * @param object

@@ -29,6 +29,7 @@ import javax.swing.JPanel;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextInformationSource;
 import net.sourceforge.atunes.model.IContextPanelContent;
+import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IState;
 
@@ -68,6 +69,11 @@ public abstract class AbstractContextPanelContent implements IContextPanelConten
     private IState state;
     
     private ILookAndFeelManager lookAndFeelManager;
+    
+    /**
+     * Access to desktop
+     */
+    private IDesktop desktop;
 
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#updateContextPanelContent(net.sourceforge.atunes.model.IAudioObject)
@@ -197,5 +203,19 @@ public abstract class AbstractContextPanelContent implements IContextPanelConten
     
     protected ILookAndFeelManager getLookAndFeelManager() {
 		return lookAndFeelManager;
+	}
+    
+    /**
+     * @param desktop
+     */
+    public void setDesktop(IDesktop desktop) {
+		this.desktop = desktop;
+	}
+    
+    /**
+     * @return access to desktop
+     */
+    protected IDesktop getDesktop() {
+		return desktop;
 	}
 }

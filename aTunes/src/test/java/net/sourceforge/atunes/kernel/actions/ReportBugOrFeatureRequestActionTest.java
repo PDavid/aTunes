@@ -20,37 +20,23 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.model.IDesktop;
-import net.sourceforge.atunes.utils.I18nUtils;
 
-/**
- * Opens browser to show Wiki
- * 
- * @author fleax
- * 
- */
-public class GoToWikiAction extends CustomAbstractAction {
+import org.junit.Test;
 
-    private static final long serialVersionUID = -2614037760672140565L;
+public class ReportBugOrFeatureRequestActionTest {
 
-    private IDesktop desktop;
-    
-    /**
-     * @param desktop
-     */
-    public void setDesktop(IDesktop desktop) {
-		this.desktop = desktop;
+	@Test
+	public void test() {
+		ReportBugOrFeatureRequestAction sut = new ReportBugOrFeatureRequestAction();
+		IDesktop desktop = mock(IDesktop.class);
+		sut.setDesktop(desktop);
+		
+		sut.executeAction();
+		
+		verify(desktop).openURL(Constants.REPORT_BUG_OR_REQUEST_FEATURE_URL);
 	}
-    
-    public GoToWikiAction() {
-        super(I18nUtils.getString("GO_TO_WIKI"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("GO_TO_WIKI"));
-    }
-
-    @Override
-    protected void executeAction() {
-    	desktop.openURL(Constants.APP_WIKI);
-    }
-
 }

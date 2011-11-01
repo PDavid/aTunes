@@ -28,6 +28,7 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.UpdateDialog;
 import net.sourceforge.atunes.model.ApplicationVersion;
+import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMessageDialog;
@@ -47,6 +48,7 @@ final class CheckUpdatesSwingWorker extends
 	private IState state;
 	private IFrame frame;
 	private ILookAndFeelManager lookAndFeelManager;
+	private IDesktop desktop;
 
 	/**
 	 * @param updateHandler
@@ -55,14 +57,16 @@ final class CheckUpdatesSwingWorker extends
 	 * @param state
 	 * @param frame
 	 * @param lookAndFeelManager
+	 * @param desktop
 	 */
-	CheckUpdatesSwingWorker(IUpdateHandler updateHandler, boolean showNoNewVersion, boolean alwaysInDialog, IState state, IFrame frame, ILookAndFeelManager lookAndFeelManager) {
+	CheckUpdatesSwingWorker(IUpdateHandler updateHandler, boolean showNoNewVersion, boolean alwaysInDialog, IState state, IFrame frame, ILookAndFeelManager lookAndFeelManager, IDesktop desktop) {
 		this.updateHandler = updateHandler;
 		this.showNoNewVersion = showNoNewVersion;
 		this.alwaysInDialog = alwaysInDialog;
 		this.state = state;
 		this.frame = frame;
 		this.lookAndFeelManager = lookAndFeelManager;
+		this.desktop = desktop;
 	}
 
 	@Override
@@ -76,7 +80,7 @@ final class CheckUpdatesSwingWorker extends
 	        ApplicationVersion version = get();
 	        if (version != null && version.compareTo(Constants.VERSION) == 1) {
 	        	 if (alwaysInDialog || !state.isShowStatusBar()) {
-	                 new UpdateDialog(version, frame.getFrame(), lookAndFeelManager).setVisible(true);
+	                 new UpdateDialog(version, frame.getFrame(), lookAndFeelManager, desktop).setVisible(true);
 	             } else {
 	                 frame.showNewVersionInfo(true, version);
 	             }

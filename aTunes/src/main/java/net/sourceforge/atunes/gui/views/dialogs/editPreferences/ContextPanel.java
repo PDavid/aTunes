@@ -53,19 +53,25 @@ import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ClearCachesAction;
+import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILyricsEngineInfo;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class ContextPanel extends AbstractPreferencesPanel {
 
     private static class OpenLastFmMouseAdapter extends MouseAdapter {
+    	private IDesktop desktop;
+    	
+    	public OpenLastFmMouseAdapter(IDesktop desktop) {
+    		this.desktop = desktop;
+		}
+    	
         @Override
         public void mousePressed(MouseEvent e) {
-            DesktopUtils.openURL("http://www.last.fm");
+        	desktop.openURL("http://www.last.fm");
         }
     }
 
@@ -211,8 +217,9 @@ public final class ContextPanel extends AbstractPreferencesPanel {
     /**
      * Instantiates a new context panel.
      * @param lookAndFeel
+     * @param desktop
      */
-    public ContextPanel(ILookAndFeel lookAndFeel) {
+    public ContextPanel(ILookAndFeel lookAndFeel, IDesktop desktop) {
         super(I18nUtils.getString("CONTEXT_INFORMATION"));
         activateContext = new JCheckBox(I18nUtils.getString("ACTIVATE_CONTEXT_INFORMATION"));
         savePictures = new JCheckBox(I18nUtils.getString("SAVE_PICTURES_TO_AUDIO_FOLDERS"));
@@ -251,7 +258,7 @@ public final class ContextPanel extends AbstractPreferencesPanel {
         });
         JButton clearCache = new JButton(Actions.getAction(ClearCachesAction.class));
         info = new JLabel(Images.getImage(Images.POWERED_BY_LAST_FM), GuiUtils.getComponentOrientationAsSwingConstant());
-        info.addMouseListener(new OpenLastFmMouseAdapter());
+        info.addMouseListener(new OpenLastFmMouseAdapter(desktop));
         JLabel enginesTableLabel = new JLabel(I18nUtils.getString("LYRICS_ENGINES_SELECTION"));
         final LyricsEnginesTableModel model = new LyricsEnginesTableModel();
         enginesTable = lookAndFeel.getTable();

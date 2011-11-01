@@ -55,6 +55,7 @@ import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
 import net.sourceforge.atunes.gui.views.controls.SimpleTextPane;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
+import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
@@ -90,15 +91,19 @@ class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 	
 	private ILookAndFeelManager lookAndFeelManager;
 	
+	private IDesktop desktop;
+	
 	/**
 	 * @param parent
 	 * @param osManager
 	 * @param lookAndFeelManager
+	 * @param desktop
 	 */
-	public MacOSXPlayerSelectionDialog(IFrame parent, IOSManager osManager, ILookAndFeelManager lookAndFeelManager) {
+	public MacOSXPlayerSelectionDialog(IFrame parent, IOSManager osManager, ILookAndFeelManager lookAndFeelManager, IDesktop desktop) {
 		super(parent, 450, 250, true, CloseAction.NOTHING, lookAndFeelManager.getCurrentLookAndFeel());
 		this.osManager = osManager;
 		this.lookAndFeelManager = lookAndFeelManager;
+		this.desktop = desktop;
 		setResizable(false);
 		setTitle(I18nUtils.getString("PLAYER_ENGINE_SELECTION"));
 		
@@ -118,7 +123,7 @@ class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 	 */
 	private JPanel getFirstOptionsPanel() {
 		SimpleTextPane instructions = new SimpleTextPane(I18nUtils.getString("MAC_PLAYER_ENGINE_INSTRUCTIONS"), lookAndFeelManager);
-		UrlLabel appStoreURL = new UrlLabel(I18nUtils.getString("MAC_PLAYER_ENGINE_URL"), MPLAYER_APP_STORE_URL);
+		UrlLabel appStoreURL = new UrlLabel(desktop, I18nUtils.getString("MAC_PLAYER_ENGINE_URL"), MPLAYER_APP_STORE_URL);
 		final JRadioButton search = new JRadioButton(I18nUtils.getString("SEARCH_PLAYER_ENGINE"));
 		JRadioButton enterPath = new JRadioButton(I18nUtils.getString("ENTER_PLAYER_ENGINE_PATH"));
 		ButtonGroup b = new ButtonGroup();

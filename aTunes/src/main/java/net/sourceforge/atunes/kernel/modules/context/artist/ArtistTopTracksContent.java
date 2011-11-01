@@ -44,7 +44,6 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ITrackInfo;
-import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -134,7 +133,7 @@ public class ArtistTopTracksContent extends AbstractContextPanelContent {
                     int selectedTrack = tracksTable.getSelectedRow();
                     if (selectedTrack != -1) {
                         ITrackInfo track = ((ContextArtistTracksTableModel) tracksTable.getModel()).getTrack(selectedTrack);
-                        DesktopUtils.openURL(track.getUrl());
+                        getDesktop().openURL(track.getUrl());
                     }
                 }
             }

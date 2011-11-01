@@ -64,7 +64,7 @@ public class SimilarArtistsContent extends AbstractContextPanelContent {
     public Component getComponent() {
         // Create components
         similarArtistsTable = new SimilarArtistsContextTable(getLookAndFeelManager().getCurrentLookAndFeel());
-        similarArtistsTable.addContextRowPanel(new SimilarArtistTableCellRendererCode(getLookAndFeelManager().getCurrentLookAndFeel()));
+        similarArtistsTable.addContextRowPanel(new SimilarArtistTableCellRendererCode(getLookAndFeelManager().getCurrentLookAndFeel(), getDesktop()));
         return similarArtistsTable;
     }
 }

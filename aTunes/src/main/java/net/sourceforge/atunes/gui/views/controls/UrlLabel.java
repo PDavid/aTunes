@@ -24,42 +24,46 @@ import java.awt.Color;
 
 import javax.swing.UIManager;
 
+import net.sourceforge.atunes.model.IDesktop;
+
 import org.jdesktop.swingx.JXHyperlink;
 
 public final class UrlLabel extends JXHyperlink {
 
     private static final long serialVersionUID = -8368596300673361747L;
 
+    private IDesktop desktop;
+    
     /**
      * Instantiates a new url label.
+     * @param desktop
      */
-    public UrlLabel() {
+    public UrlLabel(IDesktop desktop) {
         super();
+        this.desktop = desktop;
     }
 
     /**
      * Instantiates a new url label.
      * 
+     * @param desktop
      * @param text
-     *            the text
      * @param url
-     *            the url
      */
-    public UrlLabel(String text, final String url) {
-        super(new Link(url));
+    public UrlLabel(IDesktop desktop, String text, final String url) {
+        super(new Link(desktop, url));
+        this.desktop = desktop;
         setTextAndColor(text);
     }
 
     /**
      * Sets the text.
-     * 
+     * @param desktop
      * @param text
-     *            the text
      * @param url
-     *            the url
      */
     public void setText(String text, final String url) {
-        setAction(new Link(url));
+        setAction(new Link(desktop, url));
         setTextAndColor(text);
     }
 

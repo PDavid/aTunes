@@ -58,7 +58,7 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent {
     private UrlLabel albumLabel;
     private UrlLabel artistLabel;
     private UrlLabel yearLabel;
-
+    
     @Override
     public String getContentName() {
         return I18nUtils.getString("INFO");
@@ -109,12 +109,12 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent {
     public Component getComponent() {
         // Create components
         albumCoverLabel = new JLabel();
-        albumLabel = new UrlLabel();
+        albumLabel = new UrlLabel(getDesktop());
         albumLabel.setHorizontalAlignment(SwingConstants.CENTER);
         albumLabel.setFont(getLookAndFeelManager().getCurrentLookAndFeel().getContextInformationBigFont());
-        artistLabel = new UrlLabel();
+        artistLabel = new UrlLabel(getDesktop());
         artistLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        yearLabel = new UrlLabel();
+        yearLabel = new UrlLabel(getDesktop());
         yearLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         // Add components
