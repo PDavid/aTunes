@@ -70,7 +70,7 @@ public final class PlayListTabPanel extends JPanel {
         options.add(Context.getBean(ClosePlaylistAction.class));
         options.add(Context.getBean(CloseOtherPlaylistsAction.class));
         options.addSeparator();
-        options.add(Actions.getAction(ArrangePlayListColumnsAction.class));
+        options.add(Context.getBean(ArrangePlayListColumnsAction.class));
         options.addSeparator();
         options.add(Context.getBean(CopyPlayListToDeviceAction.class));
         options.add(Actions.getAction(SynchronizeDeviceWithPlayListAction.class));

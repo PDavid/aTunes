@@ -64,7 +64,13 @@ public class ColumnSetPopupMenu {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            selectColumns(model);
+            // Show column selector
+        	IColumnSelectorDialog selector = Context.getBean(IColumnSelectorDialog.class);
+            selector.setColumnSetToSelect(model.getColumnSet());
+            selector.showDialog();
+
+            // Apply changes
+            model.arrangeColumns(true);
         }
     }
 
@@ -85,23 +91,7 @@ public class ColumnSetPopupMenu {
         table.getTableHeader().addMouseListener(new ColumnSetTableHeaderMouseAdapter(rightMenu, table));
     }
 
-    /**
-     * Opens selection dialog and updates model
-     * 
-     * @param model
-     */
-    public static void selectColumns(AbstractCommonColumnModel model) {
-        // Show column selector
-    	IColumnSelectorDialog selector = Context.getBean(IColumnSelectorDialog.class);
-        selector.setColumnSetToSelect(model.getColumnSet());
-        selector.showDialog();
-
-        // Apply changes
-        model.arrangeColumns(true);
-    }
-
     public void enableArrangeColumns(boolean enable) {
         arrangeColumns.setEnabled(enable);
     }
-
 }
