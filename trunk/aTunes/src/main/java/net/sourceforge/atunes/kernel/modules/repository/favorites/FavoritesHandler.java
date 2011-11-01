@@ -30,9 +30,8 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.FavoritesListeners;
-import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
-import net.sourceforge.atunes.kernel.actions.UnlovesongInLastFmAction;
+import net.sourceforge.atunes.kernel.actions.RemoveLovedSongInLastFmAction;
 import net.sourceforge.atunes.kernel.modules.search.searchableobjects.FavoritesSearchableObject;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
@@ -254,7 +253,7 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
     		// Unlove on LastFM if necessary
     		if (getState().isLastFmEnabled() && getState().isAutoLoveFavoriteSong()) {
     			// TODO: do this with a listener interface            	
-    			((UnlovesongInLastFmAction) Actions.getAction(UnlovesongInLastFmAction.class)).unloveSong(file);
+    			getBean(RemoveLovedSongInLastFmAction.class).removeFromLovedSongs(file);
     		}
     	}
     	callActionsAfterFavoritesChange();
