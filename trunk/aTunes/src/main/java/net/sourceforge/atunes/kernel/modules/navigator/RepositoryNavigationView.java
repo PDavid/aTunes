@@ -133,7 +133,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
             treePopupMenu.add(getMenuItemForTreeAction(RefreshFolderFromNavigatorAction.class));
             treePopupMenu.add(new JSeparator());
             treePopupMenu.add(new EditTagMenu(false, this));
-            treePopupMenu.add(Actions.getAction(EditTitlesAction.class));
+            treePopupMenu.add(Context.getBean(EditTitlesAction.class));
             treePopupMenu.add(new JSeparator());
             treePopupMenu.add(Actions.getAction(RemoveFromDiskAction.class));
             treePopupMenu.add(new JSeparator());
