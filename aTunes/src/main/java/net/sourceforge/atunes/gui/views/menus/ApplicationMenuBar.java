@@ -175,7 +175,7 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
             view.add(new JSeparator());
             view.add(new JCheckBoxMenuItem(Actions.getAction(ShowStatusBarAction.class)));
             view.add(new JCheckBoxMenuItem(Actions.getAction(ShowNavigationTreeAction.class)));
-            view.add(new JCheckBoxMenuItem(Actions.getAction(ShowContextAction.class)));
+            view.add(new JCheckBoxMenuItem(Context.getBean(ShowContextAction.class)));
             view.add(new JCheckBoxMenuItem(Context.getBean(ToggleOSDSettingAction.class)));
             view.add(new JSeparator());
             view.add(Context.getBean(FullScreenAction.class));
@@ -207,7 +207,7 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
             tools.add(Context.getBean(RipCDAction.class));
             tools.add(new JSeparator());
             tools.add(Actions.getAction(ShowStatsAction.class));
-            tools.add(Actions.getAction(ShowCoverNavigatorAction.class));
+            tools.add(Context.getBean(ShowCoverNavigatorAction.class));
             tools.add(new JSeparator());
             tools.add(Context.getBean(AddRadioAction.class));
             tools.add(Actions.getAction(ShowRadioBrowserAction.class));
@@ -251,7 +251,7 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
             help.add(Context.getBean(CheckUpdatesAction.class));
             if (!osManager.areMenuEntriesDelegated()) {
             	help.add(new JSeparator());
-            	help.add(Actions.getAction(ShowAboutAction.class));
+            	help.add(Context.getBean(ShowAboutAction.class));
             }
         }
         return help;

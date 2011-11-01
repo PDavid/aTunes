@@ -120,4 +120,7 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.SetPlayListSelectionAsFavoriteAlbumAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.SetPlayListSelectionAsFavoriteArtistAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.SetPlayListSelectionAsFavoriteSongAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.ShowAboutAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.ShowContextAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.ShowCoverNavigatorAction"/>
 </beans>

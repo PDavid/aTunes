@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
@@ -33,7 +32,16 @@ public class ShowContextAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 5939730387818346294L;
 
-    ShowContextAction() {
+    private IContextHandler contextHandler;
+    
+    /**
+     * @param contextHandler
+     */
+    public void setContextHandler(IContextHandler contextHandler) {
+		this.contextHandler = contextHandler;
+	}
+    
+    public ShowContextAction() {
         super(I18nUtils.getString("SHOW_CONTEXT_INFORMATION"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_CONTEXT_INFORMATION"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_I, InputEvent.CTRL_MASK));
@@ -45,7 +53,7 @@ public class ShowContextAction extends CustomAbstractAction {
     }
     
     @Override
-    public void actionPerformed(ActionEvent e) {
-    	getBean(IContextHandler.class).showContextPanel((Boolean) getValue(SELECTED_KEY));
+    protected void executeAction() {
+    	contextHandler.showContextPanel((Boolean) getValue(SELECTED_KEY));
     }
 }

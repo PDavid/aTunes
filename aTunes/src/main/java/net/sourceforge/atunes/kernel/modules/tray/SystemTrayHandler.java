@@ -379,7 +379,7 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
      * @return
      */
     private JMenuItem getAboutMenuItem() {
-        return new JMenuItem(Actions.getAction(ShowAboutAction.class));
+        return new JMenuItem(getBean(ShowAboutAction.class));
     }
 
     /**

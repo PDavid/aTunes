@@ -20,36 +20,22 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import net.sourceforge.atunes.model.IUIHandler;
-import net.sourceforge.atunes.utils.I18nUtils;
 
-/**
- * Shows about dialog
- * 
- * @author fleax
- * 
- */
-public class ShowAboutAction extends CustomAbstractAction {
+import org.junit.Test;
 
-    private static final long serialVersionUID = 5969136618082752831L;
+public class ShowAboutActionTest {
 
-    private IUIHandler uiHandler;
-    
-    /**
-     * @param uiHandler
-     */
-    public void setUiHandler(IUIHandler uiHandler) {
-		this.uiHandler = uiHandler;
+	@Test
+	public void test() {
+		ShowAboutAction sut = new ShowAboutAction();
+		IUIHandler uiHandler = mock(IUIHandler.class);
+		sut.setUiHandler(uiHandler);
+		
+		sut.executeAction();
+		
+		verify(uiHandler).showAboutDialog();
 	}
-    
-    public ShowAboutAction() {
-        super(I18nUtils.getString("ABOUT"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("ABOUT"));
-    }
-
-    @Override
-    protected void executeAction() {
-        uiHandler.showAboutDialog();
-    }
-
 }
