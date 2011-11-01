@@ -20,10 +20,8 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
 import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
-import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
+import net.sourceforge.atunes.model.IColumnSelectorDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -40,13 +38,29 @@ public class ArrangePlayListColumnsAction extends CustomAbstractAction {
      */
     private static final long serialVersionUID = 3866441529401824151L;
 
+    private IFrame frame;
+    
+    /**
+     * @param frame
+     */
+    public void setFrame(IFrame frame) {
+		this.frame = frame;
+	}
+    
     public ArrangePlayListColumnsAction() {
         super(I18nUtils.getString("ARRANGE_COLUMNS"));
     }
     
     @Override
-    public void actionPerformed(ActionEvent e) {
-    	ColumnSetPopupMenu.selectColumns((AbstractCommonColumnModel) getBean(IFrame.class).getPlayListTable().getColumnModel());
-    }
+    protected void executeAction() {
+    	AbstractCommonColumnModel model = (AbstractCommonColumnModel) frame.getPlayListTable().getColumnModel();
+    	
+        // Show column selector
+    	IColumnSelectorDialog selector = getBean(IColumnSelectorDialog.class);
+        selector.setColumnSetToSelect(model.getColumnSet());
+        selector.showDialog();
 
+        // Apply changes
+        model.arrangeColumns(true);
+    }
 }
