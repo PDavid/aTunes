@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IBackgroundWorker;
+import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -40,7 +41,7 @@ public class AddLovedSongInLastFMAction extends CustomAbstractAction {
     
     private IWebServicesHandler webServicesHandler;
     
-    private IBackgroundWorker backgroundWorker;
+    private IBackgroundWorkerFactory backgroundWorkerFactory;
     
     /**
      * @param contextHandler
@@ -55,12 +56,12 @@ public class AddLovedSongInLastFMAction extends CustomAbstractAction {
     public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
 	}
-    
+
     /**
-     * @param backgroundWorker
+     * @param backgroundWorkerFactory
      */
-    public void setBackgroundWorker(IBackgroundWorker backgroundWorker) {
-		this.backgroundWorker = backgroundWorker;
+    public void setBackgroundWorkerFactory(IBackgroundWorkerFactory backgroundWorkerFactory) {
+		this.backgroundWorkerFactory = backgroundWorkerFactory;
 	}
     
     public AddLovedSongInLastFMAction() {
@@ -85,6 +86,7 @@ public class AddLovedSongInLastFMAction extends CustomAbstractAction {
      */
     public void loveSong(final IAudioObject song) {
         setEnabled(false);
+        IBackgroundWorker backgroundWorker = backgroundWorkerFactory.getWorker();
         backgroundWorker.setBackgroundActions(new Runnable() {
         	@Override
         	public void run() {

@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.actions;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import net.sourceforge.atunes.model.BackgroundWorkerMock;
+import net.sourceforge.atunes.model.BackgroundWorkerFactoryMock;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IState;
@@ -46,7 +46,7 @@ public class AddLovedSongInLastFMActionTest {
 		sut.setState(state);
 		sut.setWebServicesHandler(webServicesHandler);
 		sut.setContextHandler(contextHandler);
-		sut.setBackgroundWorker(new BackgroundWorkerMock());
+		sut.setBackgroundWorkerFactory(new BackgroundWorkerFactoryMock());
 		
 		sut.initialize();
 		
