@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
 import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -35,13 +33,22 @@ public class ShowRadioBrowserAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 531135150461152301L;
 
-    ShowRadioBrowserAction() {
+    private IRadioHandler radioHandler;
+    
+    /**
+     * @param radioHandler
+     */
+    public void setRadioHandler(IRadioHandler radioHandler) {
+		this.radioHandler = radioHandler;
+	}
+    
+    public ShowRadioBrowserAction() {
         super(I18nUtils.getString("RADIO_BROWSER"));
     }
-
+    
     @Override
-    public void actionPerformed(ActionEvent e) {
-    	getBean(IRadioHandler.class).showRadioBrowser();
+    protected void executeAction() {
+    	radioHandler.showRadioBrowser();
     }
 
 }

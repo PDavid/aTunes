@@ -20,10 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.model.ICommandHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -31,14 +27,22 @@ public class StopCurrentAudioObjectAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -1177020643937370678L;
 
-    StopCurrentAudioObjectAction() {
+    private IPlayerHandler playerHandler;
+    
+    /**
+     * @param playerHandler
+     */
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
+    
+    public StopCurrentAudioObjectAction() {
     	super(I18nUtils.getString("STOP"));
-    	setCommandHandler(getBean(ICommandHandler.class));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        Context.getBean(IPlayerHandler.class).stopCurrentAudioObject(true);
+    protected void executeAction() {
+    	playerHandler.stopCurrentAudioObject(true);
     }
 
     @Override

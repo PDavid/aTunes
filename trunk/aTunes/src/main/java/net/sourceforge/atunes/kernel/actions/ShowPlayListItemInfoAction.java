@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
@@ -44,7 +43,15 @@ public class ShowPlayListItemInfoAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -2006569851431046347L;
 
-    ShowPlayListItemInfoAction() {
+    private IPlayListHandler playListHandler;
+    
+    private IAudioObjectPropertiesDialogFactory audioObjectPropertiesDialogFactory;
+    
+    private ILookAndFeelManager lookAndFeelManager;
+    
+    private IPlayerHandler playerHandler;
+    
+    public ShowPlayListItemInfoAction() {
         super(I18nUtils.getString("INFO"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("INFO_BUTTON_TOOLTIP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
@@ -52,9 +59,10 @@ public class ShowPlayListItemInfoAction extends CustomAbstractAction {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        IAudioObject audioObject = getBean(IPlayListHandler.class).getSelectedAudioObjects().get(0);
-        getBean(IAudioObjectPropertiesDialogFactory.class).newInstance(audioObject, getBean(ILookAndFeelManager.class), getBean(IPlayerHandler.class)).showDialog();
+    protected void executeAction() {
+        audioObjectPropertiesDialogFactory.newInstance(
+        		playListHandler.getSelectedAudioObjects().get(0), lookAndFeelManager, playerHandler)
+        			.showDialog();
     }
 
     @Override
@@ -62,4 +70,31 @@ public class ShowPlayListItemInfoAction extends CustomAbstractAction {
         return selection.size() == 1;
     }
 
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    /**
+     * @param audioObjectPropertiesDialogFactory
+     */
+    public void setAudioObjectPropertiesDialogFactory(IAudioObjectPropertiesDialogFactory audioObjectPropertiesDialogFactory) {
+		this.audioObjectPropertiesDialogFactory = audioObjectPropertiesDialogFactory;
+	}
+    
+    /**
+     * @param lookAndFeelManager
+     */
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+    
+    /**
+     * @param playerHandler
+     */
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
 }

@@ -313,7 +313,7 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
      * @return
      */
     private JMenuItem getStopMenuItem() {
-        JMenuItem stop = new JMenuItem(Actions.getAction(StopCurrentAudioObjectAction.class));
+        JMenuItem stop = new JMenuItem(getBean(StopCurrentAudioObjectAction.class));
         return stop;
     }
 
@@ -400,7 +400,7 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
         if (trayIcon == null) {
         	Dimension iconSize = tray.getTrayIconSize();
         	Image icon = ImageUtils.scaleImageBicubic(Images.getImage(Images.APP_LOGO_32).getImage(), iconSize.width, iconSize.height).getImage();
-            trayIcon = new JTrayIcon(icon, getOsManager().isLinux(), Actions.getAction(ToggleWindowVisibilityAction.class));
+            trayIcon = new JTrayIcon(icon, getOsManager().isLinux(), getBean(ToggleWindowVisibilityAction.class));
             trayIcon.setToolTip(StringUtils.getString(Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
             JPopupMenu popupmenu = fillMenu(new JTrayIconPopupMenu(trayIcon));
             trayIcon.setJTrayIconJPopupMenu(popupmenu);
@@ -431,7 +431,7 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
         if (stopIcon == null) {
         	Color color = getState().getTrayPlayerIconsColor().getColor();
         	Image icon = StopImageIcon.getTrayIcon(color, tray.getTrayIconSize(), lookAndFeelManager.getCurrentLookAndFeel()).getImage();
-            stopIcon = new ActionTrayIcon(icon, Actions.getAction(StopCurrentAudioObjectAction.class));
+            stopIcon = new ActionTrayIcon(icon, getBean(StopCurrentAudioObjectAction.class));
         }
         return stopIcon;
     }

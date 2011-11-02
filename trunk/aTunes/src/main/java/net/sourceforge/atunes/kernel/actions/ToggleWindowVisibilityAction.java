@@ -20,19 +20,23 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
 import net.sourceforge.atunes.model.IUIHandler;
 
 public class ToggleWindowVisibilityAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -1177020643937370678L;
 
-    ToggleWindowVisibilityAction() {
-    }
-
+    private IUIHandler uiHandler;
+    
+    /**
+     * @param uiHandler
+     */
+    public void setUiHandler(IUIHandler uiHandler) {
+		this.uiHandler = uiHandler;
+	}
+    
     @Override
-    public void actionPerformed(ActionEvent e) {
-        getBean(IUIHandler.class).toggleWindowVisibility();
+    protected void executeAction() {
+        uiHandler.toggleWindowVisibility();
     }
 }

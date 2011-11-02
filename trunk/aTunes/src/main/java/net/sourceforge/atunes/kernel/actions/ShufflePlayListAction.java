@@ -40,21 +40,29 @@ public class ShufflePlayListAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -6608120075596882123L;
 
-    ShufflePlayListAction() {
+    private IPlayListHandler playListHandler;
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    public ShufflePlayListAction() {
         super(I18nUtils.getString("SHUFFLE_PLAYLIST"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHUFFLE_PLAYLIST"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK));
         setEnabled(false);
     }
-
+    
     @Override
-    public void actionPerformed(ActionEvent e) {
-    	getBean(IPlayListHandler.class).shuffle();
+    protected void executeAction() {
+    	playListHandler.shuffle();
     }
 
     @Override
     public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
         return true;
     }
-
 }

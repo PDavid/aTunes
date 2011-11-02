@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
 import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -35,7 +33,16 @@ public class ShowStatusBarAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 2303076465024539635L;
 
-    ShowStatusBarAction() {
+    private IUIHandler uiHandler;
+    
+    /**
+     * @param uiHandler
+     */
+    public void setUiHandler(IUIHandler uiHandler) {
+		this.uiHandler = uiHandler;
+	}
+    
+    public ShowStatusBarAction() {
         super(I18nUtils.getString("SHOW_STATUS_BAR"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_STATUS_BAR"));
     }
@@ -46,8 +53,8 @@ public class ShowStatusBarAction extends CustomAbstractAction {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        getBean(IUIHandler.class).showStatusBar((Boolean) getValue(SELECTED_KEY), true);
+    protected void executeAction() {
+    	uiHandler.showStatusBar((Boolean) getValue(SELECTED_KEY), true);
     }
 
 }

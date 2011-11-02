@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -35,14 +33,22 @@ public class ShowStatsAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -7828653987968794083L;
 
-    ShowStatsAction() {
+    private IStatisticsHandler statisticsHandler;
+    
+    /**
+     * @param statisticsHandler
+     */
+    public void setStatisticsHandler(IStatisticsHandler statisticsHandler) {
+		this.statisticsHandler = statisticsHandler;
+	}
+    
+    public ShowStatsAction() {
         super(I18nUtils.getString("STATS"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("STATS"));
     }
-
+    
     @Override
-    public void actionPerformed(ActionEvent e) {
-        getBean(IStatisticsHandler.class).showStatistics();
+    protected void executeAction() {
+    	statisticsHandler.showStatistics();
     }
-
 }
