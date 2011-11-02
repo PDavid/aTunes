@@ -20,35 +20,23 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import net.sourceforge.atunes.model.IRadioHandler;
-import net.sourceforge.atunes.utils.I18nUtils;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import net.sourceforge.atunes.model.IPlayListHandler;
 
-/**
- * Shows radio browser
- * 
- * @author fleax
- * 
- */
-public class ShowRadioBrowserAction extends CustomAbstractAction {
+import org.junit.Test;
 
-    private static final long serialVersionUID = 531135150461152301L;
+public class ShufflePlayListActionTest {
 
-    private IRadioHandler radioHandler;
-    
-    /**
-     * @param radioHandler
-     */
-    public void setRadioHandler(IRadioHandler radioHandler) {
-		this.radioHandler = radioHandler;
+	@Test
+	public void test() {
+		ShufflePlayListAction sut = new ShufflePlayListAction();
+		IPlayListHandler playListHandler = mock(IPlayListHandler.class);
+		sut.setPlayListHandler(playListHandler);
+		
+		sut.executeAction();
+		
+		verify(playListHandler).shuffle();
 	}
-    
-    public ShowRadioBrowserAction() {
-        super(I18nUtils.getString("RADIO_BROWSER"));
-    }
-    
-    @Override
-    protected void executeAction() {
-    	radioHandler.showRadioBrowser();
-    }
-
+	
 }

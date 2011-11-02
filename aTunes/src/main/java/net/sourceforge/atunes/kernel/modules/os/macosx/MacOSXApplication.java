@@ -31,7 +31,6 @@ import java.lang.reflect.Proxy;
 import javax.swing.AbstractAction;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.CustomAbstractAction;
 import net.sourceforge.atunes.kernel.actions.PlayAction;
 import net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectAction;
@@ -109,29 +108,12 @@ public class MacOSXApplication implements IMacOSXApplication {
     private PopupMenu getDockMenu() {
     	PopupMenu menu = new PopupMenu();
     	menu.add(getMenuItemForContextAction(PlayAction.class));
-    	menu.add(getMenuItemForAction(StopCurrentAudioObjectAction.class));
+    	menu.add(getMenuItemForContextAction(StopCurrentAudioObjectAction.class));
     	menu.add(getMenuItemForContextAction(PlayPreviousAudioObjectAction.class));
     	menu.add(getMenuItemForContextAction(PlayNextAudioObjectAction.class));
     	return menu;
     }
     
-    /**
-     * Returns a MenuItem that executes given action class
-     * @param clazz
-     * @return
-     */
-    private MenuItem getMenuItemForAction(final Class<? extends CustomAbstractAction> clazz) {
-    	MenuItem menuItem = new MenuItem((String)Actions.getAction(clazz).getValue(AbstractAction.NAME));
-    	menuItem.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Actions.getAction(clazz).actionPerformed(null);
-			}
-		});
-    	return menuItem;
-    }    
-
     /**
      * Returns a MenuItem that executes given action class
      * @param clazz
@@ -148,5 +130,4 @@ public class MacOSXApplication implements IMacOSXApplication {
 		});
     	return menuItem;
     }    
-
 }

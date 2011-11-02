@@ -137,6 +137,13 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.ShowContextAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShowCoverNavigatorAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShowLogAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.ShowPlayListItemInfoAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.ShowRadioBrowserAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.ShowStatsAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.ShowStatusBarAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.ShufflePlayListAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.ToggleWindowVisibilityAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.VolumeDownAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.VolumeUpAction"/>
 </beans>

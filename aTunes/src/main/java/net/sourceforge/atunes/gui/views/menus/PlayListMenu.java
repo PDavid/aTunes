@@ -105,7 +105,7 @@ public final class PlayListMenu {
     private static List<Object> getComponents(IPlayListTable table) {
         List<Object> objects = new ArrayList<Object>();
         objects.add(Context.getBean(PlayAction.class));
-        objects.add(Actions.getAction(ShowPlayListItemInfoAction.class));
+        objects.add(Context.getBean(ShowPlayListItemInfoAction.class));
         objects.add(Actions.getMenuItemForAction(OpenFolderAction.class, table));
         objects.add(new JSeparator());
         objects.add(new EditTagMenu(true, table));
@@ -180,7 +180,7 @@ public final class PlayListMenu {
         move.add(Context.getBean(MoveDownAction.class));
         move.add(Context.getBean(MoveToBottomAction.class));
         move.add(new JSeparator());
-        move.add(Actions.getAction(ShufflePlayListAction.class));
+        move.add(Context.getBean(ShufflePlayListAction.class));
         return move;
     }
 

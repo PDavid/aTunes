@@ -406,7 +406,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
      */
     private void setPlayList(PlayList playList) {
         Actions.getAction(SavePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
-        Actions.getAction(ShufflePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
+        getBean(ShufflePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
         showPlayListInformation(playList);
         if (isActivePlayListVisible()) {
         	playListEventListeners.selectedAudioObjectHasChanged(playList.getCurrentAudioObject());
@@ -513,7 +513,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         }
 
         Actions.getAction(SavePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
-        Actions.getAction(ShufflePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
+        getBean(ShufflePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
 
         // Update play list number in status bar
         showPlayListInformation(playList);
@@ -559,7 +559,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 
             // Disable actions
             Actions.getAction(SavePlayListAction.class).setEnabled(false);
-            Actions.getAction(ShufflePlayListAction.class).setEnabled(false);
+            getBean(ShufflePlayListAction.class).setEnabled(false);
 
             // Update audio object number
             showPlayListInformation(playList);
@@ -866,7 +866,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 
         if (currentPlayList.isEmpty()) {
             Actions.getAction(SavePlayListAction.class).setEnabled(false);
-            Actions.getAction(ShufflePlayListAction.class).setEnabled(false);
+            getBean(ShufflePlayListAction.class).setEnabled(false);
             getFrame().getPlayerControls().setShowTicksAndLabels(false);
         }
         showPlayListInformation(currentPlayList);

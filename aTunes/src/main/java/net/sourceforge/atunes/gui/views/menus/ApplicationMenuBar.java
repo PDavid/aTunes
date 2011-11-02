@@ -173,7 +173,7 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
             }
 
             view.add(new JSeparator());
-            view.add(new JCheckBoxMenuItem(Actions.getAction(ShowStatusBarAction.class)));
+            view.add(new JCheckBoxMenuItem(Context.getBean(ShowStatusBarAction.class)));
             view.add(new JCheckBoxMenuItem(Actions.getAction(ShowNavigationTreeAction.class)));
             view.add(new JCheckBoxMenuItem(Context.getBean(ShowContextAction.class)));
             view.add(new JCheckBoxMenuItem(Context.getBean(ToggleOSDSettingAction.class)));
@@ -206,11 +206,11 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
             tools = new JMenu(I18nUtils.getString("TOOLS"));
             tools.add(Context.getBean(RipCDAction.class));
             tools.add(new JSeparator());
-            tools.add(Actions.getAction(ShowStatsAction.class));
+            tools.add(Context.getBean(ShowStatsAction.class));
             tools.add(Context.getBean(ShowCoverNavigatorAction.class));
             tools.add(new JSeparator());
             tools.add(Context.getBean(AddRadioAction.class));
-            tools.add(Actions.getAction(ShowRadioBrowserAction.class));
+            tools.add(Context.getBean(ShowRadioBrowserAction.class));
             tools.add(Context.getBean(AddPodcastFeedAction.class));
             tools.add(new JSeparator());
             tools.add(Context.getBean(CustomSearchAction.class));

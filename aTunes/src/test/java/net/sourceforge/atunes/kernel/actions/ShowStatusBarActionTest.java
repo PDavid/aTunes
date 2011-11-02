@@ -20,35 +20,38 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import net.sourceforge.atunes.model.IRadioHandler;
-import net.sourceforge.atunes.utils.I18nUtils;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
-/**
- * Shows radio browser
- * 
- * @author fleax
- * 
- */
-public class ShowRadioBrowserAction extends CustomAbstractAction {
+import javax.swing.AbstractAction;
 
-    private static final long serialVersionUID = 531135150461152301L;
+import net.sourceforge.atunes.model.IUIHandler;
 
-    private IRadioHandler radioHandler;
-    
-    /**
-     * @param radioHandler
-     */
-    public void setRadioHandler(IRadioHandler radioHandler) {
-		this.radioHandler = radioHandler;
+import org.junit.Test;
+
+public class ShowStatusBarActionTest {
+
+	@Test
+	public void testShow() {
+		ShowStatusBarAction sut = new ShowStatusBarAction();
+		IUIHandler uiHandler = mock(IUIHandler.class);
+		sut.setUiHandler(uiHandler);
+		
+		sut.putValue(AbstractAction.SELECTED_KEY, true);
+		sut.executeAction();
+		
+		verify(uiHandler).showStatusBar(true, true);
 	}
-    
-    public ShowRadioBrowserAction() {
-        super(I18nUtils.getString("RADIO_BROWSER"));
-    }
-    
-    @Override
-    protected void executeAction() {
-    	radioHandler.showRadioBrowser();
-    }
 
+	@Test
+	public void testHide() {
+		ShowStatusBarAction sut = new ShowStatusBarAction();
+		IUIHandler uiHandler = mock(IUIHandler.class);
+		sut.setUiHandler(uiHandler);
+		
+		sut.putValue(AbstractAction.SELECTED_KEY, false);
+		sut.executeAction();
+		
+		verify(uiHandler).showStatusBar(false, true);
+	}
 }
