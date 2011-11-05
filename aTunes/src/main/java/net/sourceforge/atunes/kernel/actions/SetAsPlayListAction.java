@@ -38,7 +38,7 @@ public class SetAsPlayListAction extends AbstractActionOverSelectedObjects<IAudi
     }
 
     @Override
-    protected void performAction(List<IAudioObject> objects) {
+    protected void executeAction(List<IAudioObject> objects) {
     	IPlayListHandler playListHandler = getBean(IPlayListHandler.class);
         playListHandler.clearPlayList();
         playListHandler.addToPlayList(objects);

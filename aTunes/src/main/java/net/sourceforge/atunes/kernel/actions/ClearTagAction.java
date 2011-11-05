@@ -45,7 +45,7 @@ public class ClearTagAction extends AbstractActionOverSelectedObjects<ILocalAudi
     }
 
     @Override
-    protected void performAction(List<ILocalAudioObject> objects) {
+    protected void executeAction(List<ILocalAudioObject> objects) {
         new ClearTagsProcess(objects, getState(), getBean(IPlayListHandler.class), getBean(IRepositoryHandler.class), getBean(IPlayerHandler.class)).execute();
     }
 

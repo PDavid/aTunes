@@ -38,7 +38,7 @@ public class AddToPlayListAfterCurrentAudioObjectAction extends AbstractActionOv
     }
     
     @Override
-    protected void performAction(List<IAudioObject> objects) {
+    protected void executeAction(List<IAudioObject> objects) {
     	getBean(IPlayListHandler.class).addToActivePlayList(objects);
     }
 

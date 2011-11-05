@@ -51,7 +51,7 @@ public class AddAlbumWithSelectedArtistsAction extends AbstractActionOverSelecte
     }
 
     @Override
-    protected void performAction(List<IAudioObject> objects) {
+    protected void executeAction(List<IAudioObject> objects) {
     	
         // Get selected artists from play list
         List<Artist> selectedArtists = new ArrayList<Artist>();
@@ -69,10 +69,5 @@ public class AddAlbumWithSelectedArtistsAction extends AbstractActionOverSelecte
         for (Artist artist : selectedArtists) {
         	getBean(IPlayListHandler.class).showAddArtistDragDialog(artist);
         }
-    }
-
-    @Override
-    public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
-        return !selection.isEmpty();
     }
 }

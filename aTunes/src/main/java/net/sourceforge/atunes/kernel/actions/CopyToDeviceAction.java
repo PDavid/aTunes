@@ -57,7 +57,7 @@ public class CopyToDeviceAction extends AbstractActionOverSelectedObjects<IAudio
     }
 
     @Override
-    protected void performAction(List<IAudioObject> objects) {
+    protected void executeAction(List<IAudioObject> objects) {
     	getBean(IDeviceHandler.class).copyFilesToDevice(new LocalAudioObjectFilter().getLocalAudioObjects(objects));
     }
 

@@ -48,7 +48,7 @@ public class AutoSetCoversAction extends AbstractActionOverSelectedObjects<ILoca
     }
 
     @Override
-    protected void performAction(List<ILocalAudioObject> objects) {
+    protected void executeAction(List<ILocalAudioObject> objects) {
         TagEditionOperations.editCover(objects, getState(), getBean(IPlayListHandler.class), getBean(IRepositoryHandler.class), getBean(IPlayerHandler.class));
     }
 

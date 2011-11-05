@@ -38,7 +38,7 @@ public class RemoveOldPodcastEntryAction extends AbstractActionOverSelectedObjec
     }
 
     @Override
-    protected void performAction(List<IPodcastFeedEntry> objects) {
+    protected void executeAction(List<IPodcastFeedEntry> objects) {
         for (IPodcastFeedEntry pfe : objects) {
             pfe.getPodcastFeed().removeEntry(pfe);
         }

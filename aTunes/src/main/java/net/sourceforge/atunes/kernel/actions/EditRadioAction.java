@@ -39,7 +39,7 @@ public class EditRadioAction extends AbstractActionOverSelectedObjects<IRadio> {
     }
 
     @Override
-    protected void performAction(List<IRadio> objects) {
+    protected void executeAction(List<IRadio> objects) {
         IRadio radio = objects.get(0); // Guaranteed only one radio
         IRadio radioEdited = getBean(IRadioHandler.class).editRadio(radio);
         if (radioEdited != null) {

@@ -38,7 +38,7 @@ public class ExtractPictureAction extends AbstractActionOverSelectedObjects<ILoc
     }
 
     @Override
-    protected void performAction(List<ILocalAudioObject> objects) {
+    protected void executeAction(List<ILocalAudioObject> objects) {
         // Export only first picture
         AudioFilePictureUtils.exportPicture(objects.get(0), getBean(IFrame.class).getFrame());
     }

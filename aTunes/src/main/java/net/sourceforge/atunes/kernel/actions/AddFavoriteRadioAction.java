@@ -44,7 +44,7 @@ public class AddFavoriteRadioAction extends AbstractActionOverSelectedObjects<Ra
     }
 
     @Override
-    protected void performAction(List<Radio> objects) {
+    protected void executeAction(List<Radio> objects) {
         for (Radio r : objects) {
             getBean(IRadioHandler.class).addRadio(r);
         }

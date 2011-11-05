@@ -41,7 +41,7 @@ public class SetFavoriteAlbumFromNavigatorAction extends AbstractActionOverSelec
     }
 
     @Override
-    protected void performAction(List<ILocalAudioObject> objects) {
+    protected void executeAction(List<ILocalAudioObject> objects) {
     	getBean(IFavoritesHandler.class).toggleFavoriteAlbums(objects);
         getBean(INavigationHandler.class).refreshNavigationTable();
     }
