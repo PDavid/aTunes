@@ -142,11 +142,11 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
             favoriteTreeMenu.add(new EditTagMenu(false, this));
             favoriteTreeMenu.add(Context.getBean(EditTitlesAction.class));
             favoriteTreeMenu.add(new JSeparator());
-            favoriteTreeMenu.add(Actions.getAction(RemoveFromDiskAction.class));
+            favoriteTreeMenu.add(Context.getBean(RemoveFromDiskAction.class));
             favoriteTreeMenu.add(new JSeparator());
             favoriteTreeMenu.add(getMenuItemForAction(CopyToDeviceAction.class));
             favoriteTreeMenu.add(new JSeparator());
-            favoriteTreeMenu.add(Actions.getAction(RemoveFromFavoritesAction.class));
+            favoriteTreeMenu.add(Context.getBean(RemoveFromFavoritesAction.class));
             favoriteTreeMenu.add(new JSeparator());
             favoriteTreeMenu.add(Context.getBean(SearchArtistAction.class));
             favoriteTreeMenu.add(Context.getBean(SearchArtistAtAction.class));
@@ -170,12 +170,12 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
             favoriteTableMenu.add(new EditTagMenu(false, this));
             favoriteTableMenu.add(getMenuItemForAction(ExtractPictureAction.class));
             favoriteTableMenu.add(new JSeparator());
-            favoriteTableMenu.add(Actions.getAction(RemoveFromDiskAction.class));
+            favoriteTableMenu.add(Context.getBean(RemoveFromDiskAction.class));
             favoriteTableMenu.add(Actions.getAction(RenameAudioFileInNavigationTableAction.class));
             favoriteTableMenu.add(new JSeparator());
             favoriteTableMenu.add(getMenuItemForAction(CopyToDeviceAction.class));
             favoriteTableMenu.add(new JSeparator());
-            favoriteTableMenu.add(Actions.getAction(RemoveFromFavoritesAction.class));
+            favoriteTableMenu.add(Context.getBean(RemoveFromFavoritesAction.class));
         }
         return favoriteTableMenu;
     }

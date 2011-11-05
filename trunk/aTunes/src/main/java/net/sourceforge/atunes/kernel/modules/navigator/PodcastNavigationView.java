@@ -138,7 +138,7 @@ public final class PodcastNavigationView extends AbstractNavigationView {
             podcastFeedTreeMenu.add(Context.getBean(AddPodcastFeedAction.class));
             podcastFeedTreeMenu.add(Actions.getAction(RenamePodcastFeedAction.class));
             podcastFeedTreeMenu.add(Context.getBean(MarkPodcastListenedAction.class));
-            podcastFeedTreeMenu.add(Actions.getAction(RemovePodcastFeedAction.class));
+            podcastFeedTreeMenu.add(Context.getBean(RemovePodcastFeedAction.class));
         }
         return podcastFeedTreeMenu;
     }
@@ -160,7 +160,7 @@ public final class PodcastNavigationView extends AbstractNavigationView {
             podcastFeedTableMenu.add(new JSeparator());
             podcastFeedTableMenu.add(getMenuItemForAction(CopyToDeviceAction.class));
             podcastFeedTableMenu.add(new JSeparator());
-            podcastFeedTableMenu.add(Actions.getAction(RemoveFromDiskAction.class));
+            podcastFeedTableMenu.add(Context.getBean(RemoveFromDiskAction.class));
         }
         return podcastFeedTableMenu;
     }
