@@ -41,7 +41,6 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ConnectDeviceAction;
 import net.sourceforge.atunes.kernel.actions.CopyPlayListToDeviceAction;
 import net.sourceforge.atunes.kernel.actions.DisconnectDeviceAction;
@@ -319,7 +318,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
     	        getBean(ConnectDeviceAction.class).setEnabled(true);
     	        getBean(RefreshDeviceAction.class).setEnabled(false);
     	        getBean(DisconnectDeviceAction.class).setEnabled(false);
-    	        Actions.getAction(SynchronizeDeviceWithPlayListAction.class).setEnabled(false);
+    	        getBean(SynchronizeDeviceWithPlayListAction.class).setEnabled(false);
     	        getBean(CopyPlayListToDeviceAction.class).setEnabled(false);
     	        getFrame().showDeviceInfo(false);
     	        getBean(IMessageDialogFactory.class).getDialog().showMessage(I18nUtils.getString("DEVICE_DISCONNECTION_DETECTED"), getFrame());		    
@@ -401,7 +400,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 
         // Enable action to copy to device
     	getBean(CopyPlayListToDeviceAction.class).setEnabled(true);
-        Actions.getAction(SynchronizeDeviceWithPlayListAction.class).setEnabled(true);
+        getBean(SynchronizeDeviceWithPlayListAction.class).setEnabled(true);
 
         getBean(ConnectDeviceAction.class).setEnabled(false);
     	getBean(RefreshDeviceAction.class).setEnabled(true);

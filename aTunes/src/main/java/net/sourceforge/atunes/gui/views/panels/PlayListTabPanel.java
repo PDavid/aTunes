@@ -27,7 +27,6 @@ import javax.swing.JPanel;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
-import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ArrangePlayListColumnsAction;
 import net.sourceforge.atunes.kernel.actions.CloseOtherPlaylistsAction;
 import net.sourceforge.atunes.kernel.actions.ClosePlaylistAction;
@@ -73,7 +72,7 @@ public final class PlayListTabPanel extends JPanel {
         options.add(Context.getBean(ArrangePlayListColumnsAction.class));
         options.addSeparator();
         options.add(Context.getBean(CopyPlayListToDeviceAction.class));
-        options.add(Actions.getAction(SynchronizeDeviceWithPlayListAction.class));
+        options.add(Context.getBean(SynchronizeDeviceWithPlayListAction.class));
     }
 
     /**
