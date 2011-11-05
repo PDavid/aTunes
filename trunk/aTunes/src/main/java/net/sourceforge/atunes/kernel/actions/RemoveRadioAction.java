@@ -39,7 +39,7 @@ public class RemoveRadioAction extends AbstractActionOverSelectedObjects<IRadio>
     }
 
     @Override
-    protected void performAction(List<IRadio> objects) {
+    protected void executeAction(List<IRadio> objects) {
     	getBean(IRadioHandler.class).removeRadios(objects);
     }
 

@@ -53,7 +53,7 @@ public class AutoSetTagFromFileNamePatternAction extends AbstractActionOverSelec
     }
 
     @Override
-    protected void performAction(List<ILocalAudioObject> objects) {
+    protected void executeAction(List<ILocalAudioObject> objects) {
         // Show pattern input dialog
         PatternInputDialog inputDialog = new PatternInputDialog(getBean(IFrame.class).getFrame(), false, getState(), getBean(ILookAndFeelManager.class).getCurrentLookAndFeel());
         inputDialog.show(AbstractPattern.getRecognitionPatterns(), objects.get(0).getNameWithoutExtension());

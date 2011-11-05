@@ -56,7 +56,7 @@ public class EditTagAction extends AbstractActionOverSelectedObjects<ILocalAudio
     }
 
     @Override
-    protected void performAction(List<ILocalAudioObject> objects) {
+    protected void executeAction(List<ILocalAudioObject> objects) {
         // Start edit by opening edit dialog
         try {
             EditTagSources editTagSource = EditTagSources.valueOf(getActionId());
@@ -81,9 +81,4 @@ public class EditTagAction extends AbstractActionOverSelectedObjects<ILocalAudio
         }
         return super.isEnabledForNavigationTableSelection(selection);
     }
-
-    @Override
-    public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
-    	return super.isEnabledForPlayListSelection(selection);
-    }    
 }

@@ -48,7 +48,7 @@ public class AutoSetTitlesAction extends AbstractActionOverSelectedObjects<ILoca
     }
 
     @Override
-    protected void performAction(List<ILocalAudioObject> objects) {
+    protected void executeAction(List<ILocalAudioObject> objects) {
         new EditTitlesProcess(objects, getState(), getBean(IPlayListHandler.class), getBean(IRepositoryHandler.class), getBean(IPlayerHandler.class)).execute();
     }
 

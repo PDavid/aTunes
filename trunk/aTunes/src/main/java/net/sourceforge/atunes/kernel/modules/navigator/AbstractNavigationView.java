@@ -496,16 +496,6 @@ public abstract class AbstractNavigationView implements INavigationView {
     }
 
     /**
-     * Returns a menu item with an action bound to view
-     * 
-     * @param clazz
-     * @return
-     */
-    protected JMenuItem getMenuItemForAction(Class<? extends AbstractActionOverSelectedObjects<? extends IAudioObject>> clazz, String actionId) {
-        return Actions.getMenuItemForAction(clazz, actionId, this);
-    }
-
-    /**
      * Returns all TreeObject instances selected in a tree
      * 
      * @param tree

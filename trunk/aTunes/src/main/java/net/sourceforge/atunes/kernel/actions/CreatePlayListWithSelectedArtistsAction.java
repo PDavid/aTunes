@@ -52,7 +52,7 @@ public class CreatePlayListWithSelectedArtistsAction extends AbstractActionOverS
     }
 
     @Override
-    protected void performAction(List<IAudioObject> objects) {
+    protected void executeAction(List<IAudioObject> objects) {
         // Get selected artists from play list
         List<Artist> selectedArtists = new ArrayList<Artist>();
         for (IAudioObject ao : objects) {
@@ -73,10 +73,5 @@ public class CreatePlayListWithSelectedArtistsAction extends AbstractActionOverS
             // Create a new play list with artist as name and audio objects selected
             getBean(IPlayListHandler.class).newPlayList(artist.getName(), audioObjects);
         }
-    }
-
-    @Override
-    public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
-        return !selection.isEmpty();
     }
 }

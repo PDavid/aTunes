@@ -37,7 +37,7 @@ public class MarkPodcastEntryListenedAction extends AbstractActionOverSelectedOb
     }
 
     @Override
-    protected void performAction(List<IPodcastFeedEntry> objects) {
+    protected void executeAction(List<IPodcastFeedEntry> objects) {
         for (IPodcastFeedEntry pfe : objects) {
             pfe.setListened(true);
         }

@@ -38,7 +38,7 @@ public class DownloadPodcastEntryAction extends AbstractActionOverSelectedObject
     }
 
     @Override
-    protected void performAction(List<IPodcastFeedEntry> objects) {
+    protected void executeAction(List<IPodcastFeedEntry> objects) {
         for (IPodcastFeedEntry pfe : objects) {
         	getBean(IPodcastFeedHandler.class).downloadPodcastFeedEntry(pfe);
         }

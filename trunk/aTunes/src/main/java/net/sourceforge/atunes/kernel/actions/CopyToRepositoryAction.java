@@ -73,7 +73,7 @@ public class CopyToRepositoryAction extends AbstractActionOverSelectedObjects<IL
     }
 
     @Override
-    protected void performAction(List<ILocalAudioObject> objects) {
+    protected void executeAction(List<ILocalAudioObject> objects) {
         final TransferToRepositoryProcess importer = new TransferToRepositoryProcess(objects, getState(), getBean(IFrame.class), getBean(IOSManager.class), getBean(IRepositoryHandler.class));
         importer.addProcessListener(new ImportProcessListener());
         importer.execute();

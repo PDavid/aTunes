@@ -63,7 +63,7 @@ public abstract class AbstractActionOverSelectedObjects<T extends IAudioObject> 
     }
 
     /**
-     * Given an audio object performs a preprocess returning audio object to
+     * Given an audio object performs a pre-process returning audio object to
      * include in list or null if given audio object must be excluded from list
      * 
      * Default implementation returns the same object
@@ -75,7 +75,7 @@ public abstract class AbstractActionOverSelectedObjects<T extends IAudioObject> 
         return audioObject;
     }
 
-    protected abstract void performAction(List<T> objects);
+    protected abstract void executeAction(List<T> objects);
 
     @Override
     public final void actionPerformed(ActionEvent e) {
@@ -106,11 +106,11 @@ public abstract class AbstractActionOverSelectedObjects<T extends IAudioObject> 
         }
 
         // Call to perform action
-        performAction(selectedObjects);
+        executeAction(selectedObjects);
     }
 
     @Override
-    public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
+    public final boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
         if (selection.isEmpty()) {
             return false;
         }
@@ -122,5 +122,4 @@ public abstract class AbstractActionOverSelectedObjects<T extends IAudioObject> 
         }
         return true;
     }
-
 }

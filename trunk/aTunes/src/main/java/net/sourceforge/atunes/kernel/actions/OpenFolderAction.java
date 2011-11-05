@@ -46,7 +46,7 @@ public class OpenFolderAction extends AbstractActionOverSelectedObjects<AudioFil
     }
 
     @Override
-    protected void performAction(List<AudioFile> objects) {
+    protected void executeAction(List<AudioFile> objects) {
         HashSet<File> foldersToOpen = new HashSet<File>();
 
         // Get folders ...
