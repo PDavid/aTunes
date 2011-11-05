@@ -165,7 +165,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
             tablePopupMenu.add(getMenuItemForAction(ExtractPictureAction.class));
             tablePopupMenu.add(new JSeparator());
             tablePopupMenu.add(Context.getBean(RemoveFromDiskAction.class));
-            tablePopupMenu.add(Actions.getAction(RenameAudioFileInNavigationTableAction.class));
+            tablePopupMenu.add(Context.getBean(RenameAudioFileInNavigationTableAction.class));
             tablePopupMenu.add(new JSeparator());
             tablePopupMenu.add(getMenuItemForAction(CopyToDeviceAction.class));
             tablePopupMenu.add(new JSeparator());

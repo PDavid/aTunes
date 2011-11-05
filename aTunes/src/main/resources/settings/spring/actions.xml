@@ -127,7 +127,10 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.RemoveFromPlayListAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RemoveLovedSongInLastFmAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RemovePodcastFeedAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.RenameAudioFileInNavigationTableAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RenamePlaylistAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.RenamePodcastFeedAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.RenameRadioLabelAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RepeatModeAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ReportBugOrFeatureRequestAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RepositoryLoadCancelAction"/>

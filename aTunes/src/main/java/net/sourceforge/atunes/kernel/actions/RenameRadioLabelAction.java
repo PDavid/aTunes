@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
 import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -28,6 +27,7 @@ import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationView;
 import net.sourceforge.atunes.model.IInputDialog;
+import net.sourceforge.atunes.model.IInputDialogFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioHandler;
@@ -37,18 +37,44 @@ public class RenameRadioLabelAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -606790181321223318L;
 
-    RenameRadioLabelAction() {
+    private INavigationHandler navigationHandler;
+    
+    private IRadioHandler radioHandler;
+    
+    private IInputDialogFactory inputDialogFactory;
+    
+    /**
+     * @param inputDialogFactory
+     */
+    public void setInputDialogFactory(IInputDialogFactory inputDialogFactory) {
+		this.inputDialogFactory = inputDialogFactory;
+	}
+    
+    /**
+     * @param radioHandler
+     */
+    public void setRadioHandler(IRadioHandler radioHandler) {
+		this.radioHandler = radioHandler;
+	}
+    
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+    
+    public RenameRadioLabelAction() {
         super(I18nUtils.getString("RENAME_LABEL"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("RENAME_LABEL"));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-    	INavigationHandler navigationHandler = getBean(INavigationHandler.class);
+    protected void executeAction() {
         TreePath path = navigationHandler.getView(RadioNavigationView.class).getTree().getSelectionPath();
         Object o = ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
         
-        IInputDialog dialog = getBean(IInputDialog.class);
+        IInputDialog dialog = inputDialogFactory.getDialog();
         dialog.setTitle(I18nUtils.getString("RENAME_LABEL"));
 
         if (o instanceof String) {
@@ -56,8 +82,8 @@ public class RenameRadioLabelAction extends CustomAbstractAction {
             dialog.showDialog(label);
             String result = dialog.getResult();
             if (result != null) {
-                List<IRadio> radios = getBean(IRadioHandler.class).getRadios(label);
-                getBean(IRadioHandler.class).setLabel(radios, result);
+                List<IRadio> radios = radioHandler.getRadios(label);
+                radioHandler.setLabel(radios, result);
                 navigationHandler.refreshView(RadioNavigationView.class);
             }
         } else if (o instanceof IRadio) {

@@ -74,6 +74,7 @@
 		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
 	
+	<bean id="inputDialogFactory" class="net.sourceforge.atunes.model.InputDialogFactory"/>
 	<bean id="inputDialog" class="net.sourceforge.atunes.gui.views.dialogs.InputDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 		<constructor-arg ref="lookAndFeelManager"/>

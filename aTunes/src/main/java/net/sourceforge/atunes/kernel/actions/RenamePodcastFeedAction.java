@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
 import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -28,24 +27,44 @@ import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.model.IInputDialog;
+import net.sourceforge.atunes.model.IInputDialogFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * @author alex
+ *
+ */
 public class RenamePodcastFeedAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 8334487960720117561L;
 
-    RenamePodcastFeedAction() {
+    private INavigationHandler navigationHandler;
+    
+    private IInputDialogFactory inputDialogFactory;
+    
+    /**
+     * @param inputDialogFactory
+     */
+    public void setInputDialogFactory(IInputDialogFactory inputDialogFactory) {
+		this.inputDialogFactory = inputDialogFactory;
+	}
+    
+    public void setNavigationHandler(INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+    
+    public RenamePodcastFeedAction() {
         super(I18nUtils.getString("RENAME_PODCAST_FEED"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("RENAME_PODCAST_FEED"));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        TreePath path = getBean(INavigationHandler.class).getView(PodcastNavigationView.class).getTree().getSelectionPath();
+    protected void executeAction() {
+        TreePath path = navigationHandler.getView(PodcastNavigationView.class).getTree().getSelectionPath();
         IPodcastFeed podcastFeed = (IPodcastFeed) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-        IInputDialog dialog = getBean(IInputDialog.class);
+        IInputDialog dialog = inputDialogFactory.getDialog();
         dialog.setTitle(I18nUtils.getString("RENAME_PODCAST_FEED"));
         dialog.showDialog(podcastFeed.getName());
         String result = dialog.getResult();
@@ -58,5 +77,4 @@ public class RenamePodcastFeedAction extends CustomAbstractAction {
     public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
         return !rootSelected && !selection.isEmpty();
     }
-
 }
