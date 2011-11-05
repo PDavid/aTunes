@@ -36,6 +36,7 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
+import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedTreeObjects;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAction;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAfterCurrentAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.CopyToDeviceAction;
@@ -54,6 +55,7 @@ import net.sourceforge.atunes.kernel.actions.SetFavoriteArtistFromNavigatorActio
 import net.sourceforge.atunes.kernel.actions.SetFavoriteSongFromNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
+import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
@@ -129,7 +131,9 @@ public class RepositoryNavigationView extends AbstractNavigationView {
             treePopupMenu.add(getMenuItemForAction(SetAsPlayListAction.class));
             treePopupMenu.add(new JSeparator());
             treePopupMenu.add(getMenuItemForAction(OpenFolderFromNavigatorAction.class));
-            treePopupMenu.add(getMenuItemForTreeAction(RefreshFolderFromNavigatorAction.class));
+            AbstractActionOverSelectedTreeObjects<Folder> refreshFolderFromNavigatorAction = Context.getBean(RefreshFolderFromNavigatorAction.class);
+            refreshFolderFromNavigatorAction.setTreeObjectsSource(this);
+            treePopupMenu.add(refreshFolderFromNavigatorAction);
             treePopupMenu.add(new JSeparator());
             treePopupMenu.add(new EditTagMenu(false, this));
             treePopupMenu.add(Context.getBean(EditTitlesAction.class));
