@@ -50,7 +50,6 @@ import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellRendererCode;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
 import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedObjects;
-import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedTreeObjects;
 import net.sourceforge.atunes.kernel.actions.ActionWithColorMutableIcon;
 import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
@@ -483,16 +482,6 @@ public abstract class AbstractNavigationView implements INavigationView {
      */
     protected JMenuItem getMenuItemForAction(Class<? extends AbstractActionOverSelectedObjects<? extends IAudioObject>> clazz) {
         return Actions.getMenuItemForAction(clazz, this);
-    }
-
-    /**
-     * Returns a menu item with an action bound to view
-     * 
-     * @param clazz
-     * @return
-     */
-    protected JMenuItem getMenuItemForTreeAction(Class<? extends AbstractActionOverSelectedTreeObjects<? extends ITreeObject<? extends IAudioObject>>> clazz) {
-        return Actions.getMenuItemForTreeAction(clazz, this);
     }
 
     /**

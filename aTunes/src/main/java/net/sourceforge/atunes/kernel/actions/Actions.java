@@ -86,7 +86,6 @@ public final class Actions {
      * @return
      */
     public static <T extends AbstractActionOverSelectedTreeObjects<? extends ITreeObject<? extends IAudioObject>>> CustomAbstractAction getTreeActionAndBind(Class<T> clazz, Component actionSource, ITreeObjectsSource selectedObjectsSource) {
-        AbstractActionOverSelectedTreeObjects.addRegisteredComponent(actionSource, selectedObjectsSource);
         return getAction(clazz);
     }
     

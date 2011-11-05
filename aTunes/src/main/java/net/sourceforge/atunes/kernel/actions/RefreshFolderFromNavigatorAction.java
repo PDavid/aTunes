@@ -37,16 +37,27 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class RefreshFolderFromNavigatorAction extends AbstractActionOverSelectedTreeObjects<Folder> {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = -6840836346786226858L;
 
-	RefreshFolderFromNavigatorAction() {
+	private IRepositoryHandler repositoryHandler;
+	
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+	
+	public RefreshFolderFromNavigatorAction() {
         super(I18nUtils.getString("REFRESH_FOLDER"), Folder.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("REFRESH_FOLDER"));
     }
 
+    @Override
+    protected void executeAction(List<Folder> folders) {
+    	repositoryHandler.refreshFolders(folders);        	        
+    }
+    
     @Override
     public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
         if (selection.isEmpty()) {
@@ -66,9 +77,4 @@ public class RefreshFolderFromNavigatorAction extends AbstractActionOverSelected
         return true;
     }
     
-    @Override
-    protected void performAction(List<Folder> folders) {
-       	getBean(IRepositoryHandler.class).refreshFolders(folders);        	        
-    }
-
 }
