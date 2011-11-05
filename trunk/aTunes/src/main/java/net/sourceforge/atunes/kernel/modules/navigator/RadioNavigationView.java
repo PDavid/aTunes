@@ -151,7 +151,7 @@ public final class RadioNavigationView extends AbstractNavigationView {
             radioTableMenu.add(getMenuItemForAction(SetAsPlayListAction.class));
             radioTableMenu.add(Context.getBean(PlayNowAction.class));
             radioTableMenu.add(new JSeparator());
-            radioTableMenu.add(new JMenuItem(Actions.getAction(ShowNavigatorTableItemInfoAction.class)));
+            radioTableMenu.add(new JMenuItem(Context.getBean(ShowNavigatorTableItemInfoAction.class)));
             radioTableMenu.add(new JSeparator());
             radioTableMenu.add(getMenuItemForAction(AddFavoriteRadioAction.class));
             radioTableMenu.add(getMenuItemForAction(EditRadioAction.class));

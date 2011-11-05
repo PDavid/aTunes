@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
@@ -38,7 +37,16 @@ public class ShowNavigationTreeAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 5137162733978906000L;
 
-    ShowNavigationTreeAction() {
+    private INavigationHandler navigationHandler;
+    
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+    
+    public ShowNavigationTreeAction() {
         super(I18nUtils.getString("SHOW_NAVIGATION_TREE"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_NAVIGATION_TREE"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_MASK));
@@ -50,8 +58,7 @@ public class ShowNavigationTreeAction extends CustomAbstractAction {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-    	getBean(INavigationHandler.class).showNavigationTree((Boolean) getValue(SELECTED_KEY));
+    protected void executeAction() {
+    	navigationHandler.showNavigationTree((Boolean) getValue(SELECTED_KEY));
     }
-
 }

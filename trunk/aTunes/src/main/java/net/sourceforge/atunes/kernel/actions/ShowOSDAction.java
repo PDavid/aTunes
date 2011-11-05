@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
 import net.sourceforge.atunes.model.INotificationsHandler;
 import net.sourceforge.atunes.model.IPlayListHandler;
 
@@ -29,13 +27,27 @@ public class ShowOSDAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 646318992035897920L;
 
-    ShowOSDAction() {
-        super();
-    }
+    private INotificationsHandler notificationsHandler;
+    
+    private IPlayListHandler playListHandler;
+    
+    /**
+     * @param notificationsHandler
+     */
+    public void setNotificationsHandler(INotificationsHandler notificationsHandler) {
+		this.notificationsHandler = notificationsHandler;
+	}
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        getBean(INotificationsHandler.class).showNotification(getBean(IPlayListHandler.class).getCurrentAudioObjectFromCurrentPlayList());
+    protected void executeAction() {
+    	notificationsHandler.showNotification(playListHandler.getCurrentAudioObjectFromCurrentPlayList());
     }
 
     @Override

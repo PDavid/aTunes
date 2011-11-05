@@ -174,7 +174,7 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
 
             view.add(new JSeparator());
             view.add(new JCheckBoxMenuItem(Context.getBean(ShowStatusBarAction.class)));
-            view.add(new JCheckBoxMenuItem(Actions.getAction(ShowNavigationTreeAction.class)));
+            view.add(new JCheckBoxMenuItem(Context.getBean(ShowNavigationTreeAction.class)));
             view.add(new JCheckBoxMenuItem(Context.getBean(ShowContextAction.class)));
             view.add(new JCheckBoxMenuItem(Context.getBean(ToggleOSDSettingAction.class)));
             view.add(new JSeparator());

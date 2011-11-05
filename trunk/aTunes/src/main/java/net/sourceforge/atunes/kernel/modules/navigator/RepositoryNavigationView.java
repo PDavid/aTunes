@@ -36,7 +36,6 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
-import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAction;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAfterCurrentAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.CopyToDeviceAction;
@@ -157,7 +156,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
             tablePopupMenu.add(getMenuItemForAction(SetAsPlayListAction.class));
             tablePopupMenu.add(Context.getBean(PlayNowAction.class));
             tablePopupMenu.add(new JSeparator());
-            tablePopupMenu.add(Actions.getAction(ShowNavigatorTableItemInfoAction.class));
+            tablePopupMenu.add(Context.getBean(ShowNavigatorTableItemInfoAction.class));
             tablePopupMenu.add(new JSeparator());
             tablePopupMenu.add(getMenuItemForAction(OpenFolderFromNavigatorAction.class));
             tablePopupMenu.add(new JSeparator());
