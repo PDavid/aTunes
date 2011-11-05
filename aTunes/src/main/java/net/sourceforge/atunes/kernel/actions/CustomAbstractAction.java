@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 import java.util.List;
-import java.util.Properties;
 
 import javax.swing.Icon;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -41,16 +40,6 @@ public abstract class CustomAbstractAction extends javax.swing.AbstractAction im
 
     private static final long serialVersionUID = 1648027023533465104L;
 
-    /**
-     * ID of the action
-     */
-    private String actionId;
-
-    /**
-     * Parameters of the instance
-     */
-    private Properties properties;
-    
     private ICommandHandler commandHandler;
     
     /**
@@ -86,29 +75,6 @@ public abstract class CustomAbstractAction extends javax.swing.AbstractAction im
     protected IState getState() {
 		return state;
 	}
-
-    /**
-     * @param actionId
-     *            the actionId to set
-     */
-    protected void setActionId(String actionId) {
-        this.actionId = actionId;
-    }
-
-    /**
-     * @param properties
-     *            the properties to set
-     */
-    protected void setProperties(Properties properties) {
-        this.properties = properties;
-    }
-
-    /**
-     * @return the properties
-     */
-    protected Properties getProperties(String actionId) {
-        return null;
-    }
 
     /**
      * Initializes action if needed
@@ -187,20 +153,6 @@ public abstract class CustomAbstractAction extends javax.swing.AbstractAction im
         return "";
     }
 
-    /**
-     * @return the actionId
-     */
-    protected String getActionId() {
-        return actionId;
-    }
-
-    /**
-     * @return the properties
-     */
-    protected Properties getProperties() {
-        return properties;
-    }
-    
     /**
      * Delegate method
      * @param <T>

@@ -31,9 +31,10 @@ import net.sourceforge.atunes.kernel.actions.AutoSetTagFromFileNamePatternAction
 import net.sourceforge.atunes.kernel.actions.AutoSetTagFromFolderNamePatternAction;
 import net.sourceforge.atunes.kernel.actions.AutoSetTitlesAction;
 import net.sourceforge.atunes.kernel.actions.AutoSetTracksAction;
-import net.sourceforge.atunes.kernel.actions.ClearTagAction;
-import net.sourceforge.atunes.kernel.actions.EditTagAction;
-import net.sourceforge.atunes.model.EditTagSources;
+import net.sourceforge.atunes.kernel.actions.ClearTagNavigatorAction;
+import net.sourceforge.atunes.kernel.actions.ClearTagPlaylistAction;
+import net.sourceforge.atunes.kernel.actions.EditTagNavigatorAction;
+import net.sourceforge.atunes.kernel.actions.EditTagPlaylistAction;
 import net.sourceforge.atunes.model.IAudioObjectsSource;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -43,8 +44,7 @@ public final class EditTagMenu extends JMenu {
 
     public EditTagMenu(boolean playlistMenu, IAudioObjectsSource audioObjectsSource) {
         super(I18nUtils.getString("TAGS"));
-        add(Actions.getMenuItemForAction(EditTagAction.class, playlistMenu ? EditTagSources.PLAYLIST.toString() : EditTagSources.NAVIGATOR.toString(),
-                audioObjectsSource));
+       	add(Actions.getMenuItemForAction(playlistMenu ? EditTagPlaylistAction.class : EditTagNavigatorAction.class, audioObjectsSource));
         add(new JSeparator());
         add(Actions.getMenuItemForAction(AutoSetTagFromFolderNamePatternAction.class, audioObjectsSource));
         add(Actions.getMenuItemForAction(AutoSetTagFromFileNamePatternAction.class, audioObjectsSource));
@@ -55,6 +55,6 @@ public final class EditTagMenu extends JMenu {
         add(Actions.getMenuItemForAction(AutoSetGenresAction.class, audioObjectsSource));
         add(Actions.getMenuItemForAction(AutoSetCoversAction.class, audioObjectsSource));
         add(new JSeparator());
-        add(Actions.getMenuItemForAction(ClearTagAction.class, playlistMenu ? ClearTagAction.PLAYLIST : ClearTagAction.NAVIGATOR, audioObjectsSource));
+       	add(Actions.getMenuItemForAction(playlistMenu ? ClearTagPlaylistAction.class : ClearTagNavigatorAction.class, audioObjectsSource));
     }
 }

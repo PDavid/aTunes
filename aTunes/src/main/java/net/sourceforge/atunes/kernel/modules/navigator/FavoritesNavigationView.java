@@ -38,7 +38,6 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.FavoriteImageIcon;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
-import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAction;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAfterCurrentAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.CopyToDeviceAction;

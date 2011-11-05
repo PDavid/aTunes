@@ -21,8 +21,6 @@
 package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.Component;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.swing.JMenuItem;
 
@@ -39,11 +37,6 @@ import org.commonjukebox.plugins.model.PluginApi;
 @PluginApi
 public final class Actions {
 
-    /**
-     * Map of actions.
-     */
-    private static Map<ActionInstance, CustomAbstractAction> actions = new HashMap<ActionInstance, CustomAbstractAction>();
-
     private static IState state = Context.getBean(IState.class);
     
     private Actions() {
@@ -56,33 +49,17 @@ public final class Actions {
      * @return
      */
     public static <T extends CustomAbstractAction> CustomAbstractAction getAction(Class<T> clazz) {
-        return getAction(clazz, null);
-    }
-
-    /**
-     * Returns an action object
-     * 
-     * @param clazz
-     * @return
-     */
-    public static <T extends CustomAbstractAction> CustomAbstractAction getAction(Class<T> clazz, String actionId) {
-        ActionInstance actionInstance = new ActionInstance(clazz, actionId);
-        CustomAbstractAction action = actions.get(actionInstance);
-        if (action == null) {
-            try {
-                action = clazz.newInstance();
-                action.setState(state);
-                action.setActionId(actionId);
-                action.setProperties(action.getProperties(actionId));
-                action.initialize();
-                actions.put(actionInstance, action);
-            } catch (InstantiationException e) {
-                Logger.error(e);
-            } catch (IllegalAccessException e) {
-                Logger.error(e);
-            }
-        }
-        return action;
+    	CustomAbstractAction action = null;
+    	try {
+    		action = clazz.newInstance();
+    		action.setState(state);
+    		action.initialize();
+    	} catch (InstantiationException e) {
+    		Logger.error(e);
+    	} catch (IllegalAccessException e) {
+    		Logger.error(e);
+    	}
+    	return action;
     }
 
     /**
@@ -96,7 +73,7 @@ public final class Actions {
      */
     public static <T extends AbstractActionOverSelectedObjects<? extends IAudioObject>> CustomAbstractAction getActionAndBind(Class<T> clazz, Component actionSource, IAudioObjectsSource selectedObjectsSource) {
         AbstractActionOverSelectedObjects.addRegisteredComponent(actionSource, selectedObjectsSource);
-        return getAction(clazz, null);
+        return getAction(clazz);
     }
     
     /**
@@ -110,25 +87,9 @@ public final class Actions {
      */
     public static <T extends AbstractActionOverSelectedTreeObjects<? extends ITreeObject<? extends IAudioObject>>> CustomAbstractAction getTreeActionAndBind(Class<T> clazz, Component actionSource, ITreeObjectsSource selectedObjectsSource) {
         AbstractActionOverSelectedTreeObjects.addRegisteredComponent(actionSource, selectedObjectsSource);
-        return getAction(clazz, null);
+        return getAction(clazz);
     }
     
-
-    /**
-     * Returns an action object of type ActionOverSelectedObjects and binds to a
-     * component and a objects source
-     * 
-     * @param clazz
-     * @param actionId
-     * @param actionSource
-     * @param selectedObjectsSource
-     * @return
-     */
-    public static <T extends AbstractActionOverSelectedObjects<? extends IAudioObject>> CustomAbstractAction getActionAndBind(Class<T> clazz, String actionId, Component actionSource, IAudioObjectsSource selectedObjectsSource) {
-        AbstractActionOverSelectedObjects.addRegisteredComponent(actionSource, selectedObjectsSource);
-        return getAction(clazz, actionId);
-    }
-
     /**
      * Returns a menu item bound to an Action
      * 
@@ -154,20 +115,6 @@ public final class Actions {
     public static JMenuItem getMenuItemForTreeAction(Class<? extends AbstractActionOverSelectedTreeObjects<? extends ITreeObject<? extends IAudioObject>>> clazz, ITreeObjectsSource audioObjectsSource) {
         JMenuItem menuItem = new JMenuItem();
         menuItem.setAction(Actions.getTreeActionAndBind(clazz, menuItem, audioObjectsSource));
-        return menuItem;
-    }
-
-    /**
-     * Returns a menu item bound to an Action
-     * 
-     * @param clazz
-     * @param actionId
-     * @param audioObjectsSource
-     * @return
-     */
-    public static JMenuItem getMenuItemForAction(Class<? extends AbstractActionOverSelectedObjects<? extends IAudioObject>> clazz, String actionId, IAudioObjectsSource audioObjectsSource) {
-        JMenuItem menuItem = new JMenuItem();
-        menuItem.setAction(Actions.getActionAndBind(clazz, actionId, menuItem, audioObjectsSource));
         return menuItem;
     }
 }

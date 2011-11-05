@@ -32,14 +32,11 @@ import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class ClearTagAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
+public class ClearTagNavigatorAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
     private static final long serialVersionUID = 4476719536754930347L;
 
-    public static final String PLAYLIST = "PLAYLIST";
-    public static final String NAVIGATOR = "NAVIGATOR";
-
-    ClearTagAction() {
+    ClearTagNavigatorAction() {
         super(I18nUtils.getString("CLEAR_TAG"), ILocalAudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("CLEAR_TAG"));
     }
@@ -51,17 +48,11 @@ public class ClearTagAction extends AbstractActionOverSelectedObjects<ILocalAudi
 
     @Override
     public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        if (NAVIGATOR.equals(getActionId())) {
-            return !rootSelected && !selection.isEmpty();
-        }
-        return super.isEnabledForNavigationTreeSelection(rootSelected, selection);
+    	return !rootSelected && !selection.isEmpty();
     }
 
     @Override
     public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
-        if (NAVIGATOR.equals(getActionId())) {
-            return !selection.isEmpty();
-        }
-        return super.isEnabledForNavigationTableSelection(selection);
+        return !selection.isEmpty();
     }
 }
