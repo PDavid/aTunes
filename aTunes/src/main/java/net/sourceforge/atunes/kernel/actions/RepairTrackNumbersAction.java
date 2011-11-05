@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
 import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
@@ -32,13 +30,39 @@ public class RepairTrackNumbersAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 4117130815173907225L;
 
-    RepairTrackNumbersAction() {
+    private IPlayListHandler playListHandler;
+    
+    private IRepositoryHandler repositoryHandler;
+    
+    private IPlayerHandler playerHandler;
+    
+    /**
+     * @param playerHandler
+     */
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+
+    public RepairTrackNumbersAction() {
         super(I18nUtils.getString("REPAIR_TRACK_NUMBERS"));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        TagEditionOperations.repairTrackNumbers(getState(), getBean(IPlayListHandler.class), getBean(IRepositoryHandler.class), getBean(IPlayerHandler.class));
+    protected void executeAction() {
+        TagEditionOperations.repairTrackNumbers(getState(), playListHandler, repositoryHandler, playerHandler);
     }
-
 }

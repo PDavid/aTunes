@@ -140,7 +140,7 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
             JMenu repair = new JMenu(I18nUtils.getString("REPAIR"));
             repair.add(Actions.getAction(RepairTrackNumbersAction.class));
             repair.add(Actions.getAction(RepairGenresAction.class));
-            repair.add(Actions.getAction(RepairAlbumNamesAction.class));
+            repair.add(Context.getBean(RepairAlbumNamesAction.class));
             edit.add(player);
             if (!osManager.areMenuEntriesDelegated()) {
             	edit.add(Context.getBean(EditPreferencesAction.class));
