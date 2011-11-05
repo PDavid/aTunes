@@ -20,16 +20,15 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.List;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.SelectorDialog;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
+import net.sourceforge.atunes.model.IMultiFolderSelectionDialogFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -44,22 +43,31 @@ public class ImportToRepositoryAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -5708270585764283210L;
 
-    ImportToRepositoryAction() {
+    private IRepositoryHandler repositoryHandler;
+    
+    private IErrorDialogFactory errorDialogFactory;
+    
+    private IFrame frame;
+    
+    private IMultiFolderSelectionDialogFactory multiFolderSelectionDialogFactory;
+    
+    private ILookAndFeelManager lookAndFeelManager;
+    
+    public ImportToRepositoryAction() {
         super(StringUtils.getString(I18nUtils.getString("IMPORT"), "..."));
         putValue(SHORT_DESCRIPTION, StringUtils.getString(I18nUtils.getString("IMPORT"), "..."));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-    	IRepositoryHandler repositoryHandler = getBean(IRepositoryHandler.class);
+    protected void executeAction() {
         // First check if repository is selected. If not, display a message
         if (repositoryHandler.repositoryIsNull()) {
-        	getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(getBean(IFrame.class), I18nUtils.getString("SELECT_REPOSITORY_BEFORE_IMPORT"));
+        	errorDialogFactory.getDialog().showErrorDialog(frame, I18nUtils.getString("SELECT_REPOSITORY_BEFORE_IMPORT"));
             return;
         }
 
         // Now show dialog to select folders
-        IMultiFolderSelectionDialog dialog = getBean(IMultiFolderSelectionDialog.class);
+        IMultiFolderSelectionDialog dialog = multiFolderSelectionDialogFactory.getDialog();
         dialog.setTitle(I18nUtils.getString("IMPORT"));
         dialog.setText(I18nUtils.getString("SELECT_FOLDERS_TO_IMPORT"));
         dialog.showDialog(null);
@@ -74,8 +82,8 @@ public class ImportToRepositoryAction extends CustomAbstractAction {
                 }
                 // If repository folders are more than one then user must select where to import songs
                 if (foldersList.length > 1) {
-                    SelectorDialog selector = new SelectorDialog(getBean(IFrame.class).getFrame(), I18nUtils.getString("SELECT_REPOSITORY_FOLDER_TO_IMPORT"),
-                            foldersList, null, Context.getBean(ILookAndFeelManager.class).getCurrentLookAndFeel());
+                    SelectorDialog selector = new SelectorDialog(frame.getFrame(), I18nUtils.getString("SELECT_REPOSITORY_FOLDER_TO_IMPORT"),
+                            foldersList, null, lookAndFeelManager.getCurrentLookAndFeel());
                     selector.setVisible(true);
                     path = selector.getSelection();
                     // If user closed dialog then select first entry
@@ -89,5 +97,39 @@ public class ImportToRepositoryAction extends CustomAbstractAction {
             }
         }
     }
-
+    
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+    
+    /**
+     * @param errorDialogFactory
+     */
+    public void setErrorDialogFactory(IErrorDialogFactory errorDialogFactory) {
+		this.errorDialogFactory = errorDialogFactory;
+	}
+    
+    /**
+     * @param multiFolderSelectionDialogFactory
+     */
+    public void setMultiFolderSelectionDialogFactory(IMultiFolderSelectionDialogFactory multiFolderSelectionDialogFactory) {
+		this.multiFolderSelectionDialogFactory = multiFolderSelectionDialogFactory;
+	}
+    
+    /**
+     * @param frame
+     */
+    public void setFrame(IFrame frame) {
+		this.frame = frame;
+	}
+    
+    /**
+     * @param lookAndFeelManager
+     */
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
 }

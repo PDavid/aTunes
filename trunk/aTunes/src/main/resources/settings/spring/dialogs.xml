@@ -16,6 +16,7 @@
 		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
 
+	<bean id="multiFolderSelectionDialogFactory" class="net.sourceforge.atunes.model.MultiFolderSelectionDialogFactory"/>
 	<bean id="multiFolderSelectionDialog" class="net.sourceforge.atunes.gui.views.dialogs.MultiFolderSelectionDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 		<constructor-arg ref="osManager"/>
