@@ -53,7 +53,6 @@ import net.sourceforge.atunes.gui.renderers.ColumnRenderers;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetRowSorter;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
-import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ShowAlbumsInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowArtistsInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowFoldersInNavigatorAction;
@@ -392,11 +391,11 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
         getNavigationTreePanel().showNavigationView(navigationHandler.getView(navigationView));
 
         boolean viewModeSupported = navigationHandler.getView(navigationView).isViewModeSupported();
-        Actions.getAction(ShowAlbumsInNavigatorAction.class).setEnabled(viewModeSupported);
-        Actions.getAction(ShowArtistsInNavigatorAction.class).setEnabled(viewModeSupported);
-        Actions.getAction(ShowFoldersInNavigatorAction.class).setEnabled(viewModeSupported);
-        Actions.getAction(ShowGenresInNavigatorAction.class).setEnabled(viewModeSupported);
-        Actions.getAction(ShowYearsInNavigatorAction.class).setEnabled(viewModeSupported);
+        Context.getBean(ShowAlbumsInNavigatorAction.class).setEnabled(viewModeSupported);
+        Context.getBean(ShowArtistsInNavigatorAction.class).setEnabled(viewModeSupported);
+        Context.getBean(ShowFoldersInNavigatorAction.class).setEnabled(viewModeSupported);
+        Context.getBean(ShowGenresInNavigatorAction.class).setEnabled(viewModeSupported);
+        Context.getBean(ShowYearsInNavigatorAction.class).setEnabled(viewModeSupported);
 
         // Change column set
         boolean useDefaultNavigatorColumns = navigationHandler.getView(navigationView).isUseDefaultNavigatorColumnSet();

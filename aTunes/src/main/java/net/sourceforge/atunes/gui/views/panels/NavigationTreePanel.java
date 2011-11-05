@@ -34,7 +34,6 @@ import javax.swing.TransferHandler;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
-import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.CollapseTreesAction;
 import net.sourceforge.atunes.kernel.actions.ExpandTreesAction;
 import net.sourceforge.atunes.kernel.actions.ShowAlbumsInNavigatorAction;
@@ -74,11 +73,11 @@ public final class NavigationTreePanel extends JPanel implements INavigationTree
      */
     private void addContent(ILookAndFeelManager lookAndFeelManager) {
     	options = new PopUpButton(PopUpButton.BOTTOM_RIGHT, lookAndFeelManager);
-        JRadioButtonMenuItem showArtist = new JRadioButtonMenuItem(Actions.getAction(ShowArtistsInNavigatorAction.class));
-        JRadioButtonMenuItem showAlbum = new JRadioButtonMenuItem(Actions.getAction(ShowAlbumsInNavigatorAction.class));
-        JRadioButtonMenuItem showGenre = new JRadioButtonMenuItem(Actions.getAction(ShowGenresInNavigatorAction.class));
-        JRadioButtonMenuItem showYear = new JRadioButtonMenuItem(Actions.getAction(ShowYearsInNavigatorAction.class));
-        JRadioButtonMenuItem showFolder = new JRadioButtonMenuItem(Actions.getAction(ShowFoldersInNavigatorAction.class));
+        JRadioButtonMenuItem showArtist = new JRadioButtonMenuItem(Context.getBean(ShowArtistsInNavigatorAction.class));
+        JRadioButtonMenuItem showAlbum = new JRadioButtonMenuItem(Context.getBean(ShowAlbumsInNavigatorAction.class));
+        JRadioButtonMenuItem showGenre = new JRadioButtonMenuItem(Context.getBean(ShowGenresInNavigatorAction.class));
+        JRadioButtonMenuItem showYear = new JRadioButtonMenuItem(Context.getBean(ShowYearsInNavigatorAction.class));
+        JRadioButtonMenuItem showFolder = new JRadioButtonMenuItem(Context.getBean(ShowFoldersInNavigatorAction.class));
         ButtonGroup group = new ButtonGroup();
         group.add(showArtist);
         group.add(showAlbum);

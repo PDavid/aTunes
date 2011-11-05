@@ -18,24 +18,23 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.controls.playerControls;
+package net.sourceforge.atunes.model;
 
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.actions.RepeatModeAction;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
-/*
- * based on code from Xtreme Media Player
- */
-public final class RepeatButton extends SecondaryControl {
+public class EqualizerDialogFactory implements IEqualizerDialogFactory, ApplicationContextAware {
 
-    private static final long serialVersionUID = 6007885049773560874L;
-
-    /**
-     * Instantiates a new repeat button.
-     * @param lookAndFeelManager
-     */
-    public RepeatButton(ILookAndFeelManager lookAndFeelManager) {
-        super(Context.getBean(RepeatModeAction.class), lookAndFeelManager);
-    }    
+	private ApplicationContext context;
+	
+	@Override
+	public IEqualizerDialog createDialog() {
+		return this.context.getBean(IEqualizerDialog.class);
+	}
+	
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.context = applicationContext;
+	}
 }

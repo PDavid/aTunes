@@ -21,13 +21,12 @@
 package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.Paint;
-import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.ShuffleImageIcon;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -40,7 +39,7 @@ public class ShuffleModeAction extends ActionWithColorMutableIcon {
 
     private static final long serialVersionUID = 6841858742889010498L;
     
-    ShuffleModeAction() {
+    public ShuffleModeAction() {
         super(I18nUtils.getString("SHUFFLE"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHUFFLE"));
     }
@@ -51,17 +50,17 @@ public class ShuffleModeAction extends ActionWithColorMutableIcon {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    protected void executeAction() {
     	getState().setShuffle((Boolean) getValue(SELECTED_KEY));
     }
     
     @Override
-    public IColorMutableImageIcon getIcon() {
+    public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
     	return new IColorMutableImageIcon() {
 			
 			@Override
 			public ImageIcon getIcon(Paint paint) {
-				return ShuffleImageIcon.getIcon(paint, getBean(ILookAndFeelManager.class).getCurrentLookAndFeel());
+				return ShuffleImageIcon.getIcon(paint, lookAndFeel);
 			}
 		};
     }

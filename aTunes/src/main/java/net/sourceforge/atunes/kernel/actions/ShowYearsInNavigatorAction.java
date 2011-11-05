@@ -21,13 +21,12 @@
 package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.Paint;
-import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.DateImageIcon;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -36,7 +35,16 @@ public class ShowYearsInNavigatorAction extends ActionWithColorMutableIcon {
 
     private static final long serialVersionUID = -1192790723328398881L;
 
-    ShowYearsInNavigatorAction() {
+    private INavigationHandler navigationHandler;
+    
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+    
+    public ShowYearsInNavigatorAction() {
         super(I18nUtils.getString("SHOW_YEARS"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_YEARS"));
     }
@@ -47,22 +55,22 @@ public class ShowYearsInNavigatorAction extends ActionWithColorMutableIcon {
     }
     
     @Override
-    public void actionPerformed(ActionEvent e) {
+    protected void executeAction() {
         if (getState().getViewMode() != ViewMode.YEAR) {
             getState().setViewMode(ViewMode.YEAR);
-            getBean(INavigationHandler.class).refreshCurrentView();
+            navigationHandler.refreshCurrentView();
             getBean(CollapseTreesAction.class).setEnabled(true);
             getBean(ExpandTreesAction.class).setEnabled(true);
         }
     }
 
     @Override
-    public IColorMutableImageIcon getIcon() {
+    public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
     	return new IColorMutableImageIcon() {
 			
 			@Override
 			public ImageIcon getIcon(Paint paint) {
-				return DateImageIcon.getIcon(paint, getBean(ILookAndFeelManager.class).getCurrentLookAndFeel());
+				return DateImageIcon.getIcon(paint, lookAndFeel);
 			}
 		};
     }

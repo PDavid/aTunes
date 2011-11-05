@@ -29,8 +29,8 @@ import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.gui.images.EqualizerImageIcon;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
-import net.sourceforge.atunes.model.IEqualizerDialog;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.IEqualizerDialogFactory;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -43,25 +43,33 @@ public class ShowEqualizerAction extends ActionWithColorMutableIcon {
 
     private static final long serialVersionUID = 2511199136727155747L;
 
-    ShowEqualizerAction() {
+    private IEqualizerDialogFactory equalizerDialogFactory;
+    
+    /**
+     * @param equalizerDialogFactory
+     */
+    public void setEqualizerDialogFactory(IEqualizerDialogFactory equalizerDialogFactory) {
+		this.equalizerDialogFactory = equalizerDialogFactory;
+	}
+    
+    public ShowEqualizerAction() {
         super(I18nUtils.getString("EQUALIZER"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        getBean(IEqualizerDialog.class).showDialog();
+    protected void executeAction() {
+    	equalizerDialogFactory.createDialog().showDialog();
     }
     
     @Override
-    public IColorMutableImageIcon getIcon() {
+    public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
     	return new IColorMutableImageIcon() {
 			
 			@Override
 			public ImageIcon getIcon(Paint paint) {
-				return EqualizerImageIcon.getIcon(paint, getBean(ILookAndFeelManager.class).getCurrentLookAndFeel());
+				return EqualizerImageIcon.getIcon(paint, lookAndFeel);
 			}
 		};
     }
-
 }

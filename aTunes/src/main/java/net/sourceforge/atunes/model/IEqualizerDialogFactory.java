@@ -18,24 +18,13 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.controls.playerControls;
+package net.sourceforge.atunes.model;
 
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.actions.RepeatModeAction;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
+public interface IEqualizerDialogFactory {
 
-/*
- * based on code from Xtreme Media Player
- */
-public final class RepeatButton extends SecondaryControl {
-
-    private static final long serialVersionUID = 6007885049773560874L;
-
-    /**
-     * Instantiates a new repeat button.
-     * @param lookAndFeelManager
-     */
-    public RepeatButton(ILookAndFeelManager lookAndFeelManager) {
-        super(Context.getBean(RepeatModeAction.class), lookAndFeelManager);
-    }    
+	/**
+	 * Creates a new dialog
+	 * @return
+	 */
+	IEqualizerDialog createDialog();
 }

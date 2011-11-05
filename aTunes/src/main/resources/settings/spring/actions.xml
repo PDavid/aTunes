@@ -114,6 +114,7 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.MoveUpAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.MuteAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.NewPlayListAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.NormalizeModeAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ToggleOSDSettingAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.PlayAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectAction"/>
@@ -148,8 +149,13 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.SetPlayListSelectionAsFavoriteArtistAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.SetPlayListSelectionAsFavoriteSongAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShowAboutAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.ShowAlbumsInNavigatorAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.ShowArtistsInNavigatorAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShowContextAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShowCoverNavigatorAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.ShowEqualizerAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.ShowFoldersInNavigatorAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.ShowGenresInNavigatorAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShowLogAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShowNavigationTableAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShowNavigationTreeAction"/>
@@ -159,6 +165,8 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.ShowRadioBrowserAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShowStatsAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShowStatusBarAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.ShowYearsInNavigatorAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.ShuffleModeAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShufflePlayListAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.SynchronizeDeviceWithPlayListAction"/>
