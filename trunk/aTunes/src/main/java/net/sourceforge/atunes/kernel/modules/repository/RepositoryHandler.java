@@ -59,7 +59,7 @@ import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IDeviceHandler;
-import net.sourceforge.atunes.model.IErrorDialog;
+import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.IKernel;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -130,7 +130,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 					SwingUtilities.invokeAndWait(new Runnable() {
 						@Override
 						public void run() {
-							getBean(IErrorDialog.class).showErrorDialog(getFrame(), I18nUtils.getString("ERRORS_IN_IMPORT_PROCESS"));
+							getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(getFrame(), I18nUtils.getString("ERRORS_IN_IMPORT_PROCESS"));
 						}
 					});
 				} catch (InterruptedException e) {
@@ -1140,7 +1140,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         getBean(SelectRepositoryAction.class).setEnabled(enable);
         Actions.getAction(RefreshRepositoryAction.class).setEnabled(enable);
         Actions.getAction(ImportToRepositoryAction.class).setEnabled(enable);
-        Actions.getAction(ExportAction.class).setEnabled(enable);
+        getBean(ExportAction.class).setEnabled(enable);
         getBean(ConnectDeviceAction.class).setEnabled(enable);
         getBean(RipCDAction.class).setEnabled(enable);
         Actions.getAction(RefreshFolderFromNavigatorAction.class).setEnabled(enable);

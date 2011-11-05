@@ -21,7 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.cdripper;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.model.IErrorDialog;
+import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -35,6 +35,6 @@ class ShowErrorDialogRunnable implements Runnable {
 	
     @Override
     public void run() {
-    	Context.getBean(IErrorDialog.class).showErrorDialog(frame, I18nUtils.getString("CDDA2WAV_NOT_FOUND"));
+    	Context.getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(frame, I18nUtils.getString("CDDA2WAV_NOT_FOUND"));
     }
 }

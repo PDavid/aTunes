@@ -29,6 +29,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.IErrorDialog;
+import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IInputDialog;
 
@@ -43,12 +44,14 @@ public class FillDeviceWithRandomSongsActionTest {
 		IDeviceHandler deviceHandler = mock(IDeviceHandler.class);
 		IInputDialog inputDialog = mock(IInputDialog.class);
 		when(inputDialog.getResult()).thenReturn("20");
+		IErrorDialogFactory errorDialogFactory = mock(IErrorDialogFactory.class);
 		IErrorDialog errorDialog = mock(IErrorDialog.class);
+		when(errorDialogFactory.getDialog()).thenReturn(errorDialog);
 		IFrame frame = mock(IFrame.class);
 		
 		sut.setDeviceHandler(deviceHandler);
 		sut.setInputDialog(inputDialog);
-		sut.setErrorDialog(errorDialog);
+		sut.setErrorDialogFactory(errorDialogFactory);
 		sut.setFrame(frame);
 		sut.setFreeMemory("20");
 		
@@ -64,12 +67,14 @@ public class FillDeviceWithRandomSongsActionTest {
 		IDeviceHandler deviceHandler = mock(IDeviceHandler.class);
 		IInputDialog inputDialog = mock(IInputDialog.class);
 		when(inputDialog.getResult()).thenReturn("not a number");
+		IErrorDialogFactory errorDialogFactory = mock(IErrorDialogFactory.class);
 		IErrorDialog errorDialog = mock(IErrorDialog.class);
+		when(errorDialogFactory.getDialog()).thenReturn(errorDialog);
 		IFrame frame = mock(IFrame.class);
 		
 		sut.setDeviceHandler(deviceHandler);
 		sut.setInputDialog(inputDialog);
-		sut.setErrorDialog(errorDialog);
+		sut.setErrorDialogFactory(errorDialogFactory);
 		sut.setFrame(frame);
 		sut.setFreeMemory("20");
 		

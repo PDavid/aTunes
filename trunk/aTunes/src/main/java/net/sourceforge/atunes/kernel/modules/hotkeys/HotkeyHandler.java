@@ -24,7 +24,7 @@ import java.awt.event.InputEvent;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
-import net.sourceforge.atunes.model.IErrorDialog;
+import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IHotkey;
 import net.sourceforge.atunes.model.IHotkeyHandler;
 import net.sourceforge.atunes.model.IHotkeyListener;
@@ -175,7 +175,7 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
                 getState().setEnableHotkeys(false);
 
                 // Show an error message
-                getBean(IErrorDialog.class).showErrorDialog(getFrame(), I18nUtils.getString("HOTKEYS_ACTIVATION_ERROR_MESSAGE"));
+                getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(getFrame(), I18nUtils.getString("HOTKEYS_ACTIVATION_ERROR_MESSAGE"));
                 Logger.error("Hotkeys were not activated successfully");
             }
         }

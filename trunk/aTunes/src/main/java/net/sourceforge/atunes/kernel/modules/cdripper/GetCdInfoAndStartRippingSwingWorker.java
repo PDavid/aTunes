@@ -30,7 +30,7 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.RipCdDialog;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.NoCdListener;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
-import net.sourceforge.atunes.model.IErrorDialog;
+import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
@@ -68,7 +68,7 @@ final class GetCdInfoAndStartRippingSwingWorker extends	SwingWorker<CDInfo, Void
 	                @Override
 	                public void run() {
 	                	GetCdInfoAndStartRippingSwingWorker.this.ripperHandler.indeterminateProgressDialog.hideDialog();
-	                    Context.getBean(IErrorDialog.class).showErrorDialog(frame, I18nUtils.getString("NO_CD_INSERTED"));
+	                    Context.getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(frame, I18nUtils.getString("NO_CD_INSERTED"));
 	                }
 	            });
 	        }

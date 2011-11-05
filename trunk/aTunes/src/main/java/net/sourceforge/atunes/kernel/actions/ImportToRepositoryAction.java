@@ -26,7 +26,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.SelectorDialog;
-import net.sourceforge.atunes.model.IErrorDialog;
+import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
@@ -54,7 +54,7 @@ public class ImportToRepositoryAction extends CustomAbstractAction {
     	IRepositoryHandler repositoryHandler = getBean(IRepositoryHandler.class);
         // First check if repository is selected. If not, display a message
         if (repositoryHandler.repositoryIsNull()) {
-        	getBean(IErrorDialog.class).showErrorDialog(getBean(IFrame.class), I18nUtils.getString("SELECT_REPOSITORY_BEFORE_IMPORT"));
+        	getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(getBean(IFrame.class), I18nUtils.getString("SELECT_REPOSITORY_BEFORE_IMPORT"));
             return;
         }
 

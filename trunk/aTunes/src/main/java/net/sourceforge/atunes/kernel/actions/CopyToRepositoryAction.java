@@ -27,7 +27,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.kernel.modules.device.TransferToRepositoryProcess;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IErrorDialog;
+import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
@@ -48,7 +48,7 @@ public class CopyToRepositoryAction extends AbstractActionOverSelectedObjects<IL
             @Override
             public void run() {
                 if (!ok) {
-                	getBean(IErrorDialog.class).showErrorDialog(getBean(IFrame.class), I18nUtils.getString("ERRORS_IN_COPYING_PROCESS"));
+                	getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(getBean(IFrame.class), I18nUtils.getString("ERRORS_IN_COPYING_PROCESS"));
                 }
                 // Force a refresh of repository to add new songs
                 getBean(IRepositoryHandler.class).refreshRepository();

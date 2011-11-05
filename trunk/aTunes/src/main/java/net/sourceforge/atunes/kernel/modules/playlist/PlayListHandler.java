@@ -48,7 +48,7 @@ import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumnSet;
-import net.sourceforge.atunes.model.IErrorDialog;
+import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.IInputDialog;
@@ -692,7 +692,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
                     process.execute();
                 }
             } else {
-            	getBean(IErrorDialog.class).showErrorDialog(getFrame(), I18nUtils.getString("FILE_NOT_FOUND"));
+            	getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(getFrame(), I18nUtils.getString("FILE_NOT_FOUND"));
             }
         }
     }
