@@ -135,7 +135,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
             treePopupMenu.add(new EditTagMenu(false, this));
             treePopupMenu.add(Context.getBean(EditTitlesAction.class));
             treePopupMenu.add(new JSeparator());
-            treePopupMenu.add(Actions.getAction(RemoveFromDiskAction.class));
+            treePopupMenu.add(Context.getBean(RemoveFromDiskAction.class));
             treePopupMenu.add(new JSeparator());
             treePopupMenu.add(getMenuItemForAction(CopyToDeviceAction.class));
             treePopupMenu.add(new JSeparator());
@@ -164,7 +164,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
             tablePopupMenu.add(new EditTagMenu(false, this));
             tablePopupMenu.add(getMenuItemForAction(ExtractPictureAction.class));
             tablePopupMenu.add(new JSeparator());
-            tablePopupMenu.add(Actions.getAction(RemoveFromDiskAction.class));
+            tablePopupMenu.add(Context.getBean(RemoveFromDiskAction.class));
             tablePopupMenu.add(Actions.getAction(RenameAudioFileInNavigationTableAction.class));
             tablePopupMenu.add(new JSeparator());
             tablePopupMenu.add(getMenuItemForAction(CopyToDeviceAction.class));

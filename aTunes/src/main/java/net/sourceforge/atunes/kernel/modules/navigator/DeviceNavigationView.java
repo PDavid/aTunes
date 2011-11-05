@@ -135,7 +135,7 @@ public final class DeviceNavigationView extends AbstractNavigationView {
             deviceTreeMenu.add(new EditTagMenu(false, this));
             deviceTreeMenu.add(Context.getBean(EditTitlesAction.class));
             deviceTreeMenu.add(new JSeparator());
-            deviceTreeMenu.add(new JMenuItem(Actions.getAction(RemoveFromDiskAction.class)));
+            deviceTreeMenu.add(Context.getBean(RemoveFromDiskAction.class));
             deviceTreeMenu.add(new JSeparator());
             deviceTreeMenu.add(getMenuItemForAction(CopyToRepositoryAction.class));
             deviceTreeMenu.add(Context.getBean(FillDeviceWithRandomSongsAction.class));
@@ -160,7 +160,7 @@ public final class DeviceNavigationView extends AbstractNavigationView {
             deviceTableMenu.add(new EditTagMenu(false, this));
             deviceTableMenu.add(getMenuItemForAction(ExtractPictureAction.class));
             deviceTableMenu.add(new JSeparator());
-            deviceTableMenu.add(new JMenuItem(Actions.getAction(RemoveFromDiskAction.class)));
+            deviceTableMenu.add(Context.getBean(RemoveFromDiskAction.class));
             deviceTableMenu.add(new JSeparator());
             deviceTableMenu.add(getMenuItemForAction(CopyToRepositoryAction.class));
         }
