@@ -106,6 +106,7 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.ImportLovedTracksFromLastFMAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ImportToRepositoryAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.LoadPlayListAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.MarkPodcastListenedAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.MoveAfterCurrentAudioObjectAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.MoveDownAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.MoveToBottomAction"/>

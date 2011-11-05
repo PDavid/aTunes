@@ -137,7 +137,7 @@ public final class PodcastNavigationView extends AbstractNavigationView {
             podcastFeedTreeMenu.add(new JSeparator());
             podcastFeedTreeMenu.add(Context.getBean(AddPodcastFeedAction.class));
             podcastFeedTreeMenu.add(Actions.getAction(RenamePodcastFeedAction.class));
-            podcastFeedTreeMenu.add(Actions.getAction(MarkPodcastListenedAction.class));
+            podcastFeedTreeMenu.add(Context.getBean(MarkPodcastListenedAction.class));
             podcastFeedTreeMenu.add(Actions.getAction(RemovePodcastFeedAction.class));
         }
         return podcastFeedTreeMenu;
