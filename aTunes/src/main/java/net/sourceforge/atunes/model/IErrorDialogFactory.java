@@ -18,23 +18,13 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.cdripper;
+package net.sourceforge.atunes.model;
 
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.model.IErrorDialogFactory;
-import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.utils.I18nUtils;
+public interface IErrorDialogFactory {
 
-class ShowErrorDialogRunnable implements Runnable {
-	
-	private IFrame frame;
-	
-	public ShowErrorDialogRunnable(IFrame frame) {
-		this.frame = frame;
-	}
-	
-    @Override
-    public void run() {
-    	Context.getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(frame, I18nUtils.getString("CDDA2WAV_NOT_FOUND"));
-    }
+	/**
+	 * Gets a new dialog
+	 * @return
+	 */
+	IErrorDialog getDialog();
 }

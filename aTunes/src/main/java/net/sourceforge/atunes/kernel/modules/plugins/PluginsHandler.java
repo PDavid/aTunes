@@ -41,7 +41,7 @@ import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
 import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
 import net.sourceforge.atunes.model.IConfirmationDialogFactory;
 import net.sourceforge.atunes.model.IContextHandler;
-import net.sourceforge.atunes.model.IErrorDialog;
+import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IGeneralPurposePluginsHandler;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -144,14 +144,14 @@ public class PluginsHandler extends AbstractHandler implements PluginListener, I
     	if (problemsLoadingPlugins != null) {
     		for (PluginFolder pluginFolder : problemsLoadingPlugins.keySet()) {
     			// Show a message with detailed information about the error
-    			getBean(IErrorDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_LOAD_ERROR"), problemsLoadingPlugins.get(pluginFolder));
+    			getBean(IErrorDialogFactory.class).getDialog().showExceptionDialog(I18nUtils.getString("PLUGIN_LOAD_ERROR"), problemsLoadingPlugins.get(pluginFolder));
     			
     			// Ask user to remove plugin folder
     			if (getBean(IConfirmationDialogFactory.class).getDialog().showDialog(I18nUtils.getString("PLUGIN_LOAD_ERROR_REMOVE_CONFIRMATION"))) {
     				try {
 						FileUtils.deleteDirectory(pluginFolder);
 					} catch (IOException e) {
-						getBean(IErrorDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_UNINSTALLATION_ERROR"), e);
+						getBean(IErrorDialogFactory.class).getDialog().showExceptionDialog(I18nUtils.getString("PLUGIN_UNINSTALLATION_ERROR"), e);
 					}
     			}
     		}

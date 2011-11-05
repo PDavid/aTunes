@@ -43,7 +43,7 @@ import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.model.IArtistInfo;
 import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IErrorDialog;
+import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILovedTrack;
@@ -100,7 +100,7 @@ public final class LastFmService {
 
 		                @Override
 		                public void run() {
-		                	Context.getBean(IErrorDialog.class).showErrorDialog(frame, I18nUtils.getString("LASTFM_USER_ERROR"));
+		                	Context.getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(frame, I18nUtils.getString("LASTFM_USER_ERROR"));
 		                    // Disable service by deleting password
 		                    state.setLastFmEnabled(false);
 		                }
@@ -133,7 +133,7 @@ public final class LastFmService {
 
 		                @Override
 		                public void run() {
-		                	Context.getBean(IErrorDialog.class).showErrorDialog(frame, I18nUtils.getString("LASTFM_USER_ERROR"));
+		                	Context.getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(frame, I18nUtils.getString("LASTFM_USER_ERROR"));
 		                    // Disable service by deleting password
 		                    state.setLastFmEnabled(false);
 		                }

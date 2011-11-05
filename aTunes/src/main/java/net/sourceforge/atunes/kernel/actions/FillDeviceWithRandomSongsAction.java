@@ -25,7 +25,7 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.model.IDeviceHandler;
-import net.sourceforge.atunes.model.IErrorDialog;
+import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IInputDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -45,7 +45,7 @@ public class FillDeviceWithRandomSongsAction extends CustomAbstractAction {
     
     private IDeviceHandler deviceHandler; 
     
-    private IErrorDialog errorDialog;
+    private IErrorDialogFactory errorDialogFactory;
     
     private IFrame frame;
     
@@ -59,7 +59,7 @@ public class FillDeviceWithRandomSongsAction extends CustomAbstractAction {
         	deviceHandler.fillWithRandomSongs(Long.parseLong(freeMemory.trim()));
         } catch (NumberFormatException e) {
             // User did not enter numerical value. Show error dialog
-        	errorDialog.showErrorDialog(frame, I18nUtils.getString("ERROR_NO_NUMERICAL_VALUE"));
+        	errorDialogFactory.getDialog().showErrorDialog(frame, I18nUtils.getString("ERROR_NO_NUMERICAL_VALUE"));
         }
     }
 
@@ -90,10 +90,10 @@ public class FillDeviceWithRandomSongsAction extends CustomAbstractAction {
 	}
 
 	/**
-	 * @param errorDialog the errorDialog to set
+	 * @param errorDialogerrorDialogFactory the errorDialogFactory to set
 	 */
-	public void setErrorDialog(IErrorDialog errorDialog) {
-		this.errorDialog = errorDialog;
+	public void setErrorDialogFactory(IErrorDialogFactory errorDialogFactory) {
+		this.errorDialogFactory = errorDialogFactory;
 	}
 
 	/**

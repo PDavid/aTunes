@@ -39,7 +39,7 @@ import net.sourceforge.atunes.gui.lookandfeel.system.SystemLookAndFeel;
 import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
-import net.sourceforge.atunes.model.IErrorDialog;
+import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
@@ -253,7 +253,7 @@ public abstract class OperatingSystemAdapter {
 	 */
 	public void manageNoPlayerEngine(IFrame frame) {
 		// By default no management is done, only an error message
-		Context.getBean(IErrorDialog.class).showErrorDialog(frame, I18nUtils.getString("NO_PLAYER_ENGINE"));
+		Context.getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(frame, I18nUtils.getString("NO_PLAYER_ENGINE"));
 	}
 
 	/**

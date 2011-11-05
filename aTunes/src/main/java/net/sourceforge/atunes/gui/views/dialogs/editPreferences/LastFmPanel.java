@@ -38,7 +38,7 @@ import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.actions.AddBannedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.actions.ImportLovedTracksFromLastFMAction;
-import net.sourceforge.atunes.model.IErrorDialog;
+import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
@@ -66,7 +66,7 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
 			        if (loginSuccessful) {
 			        	Context.getBean(IMessageDialogFactory.class).getDialog().showMessage(I18nUtils.getString("LOGIN_SUCCESSFUL"), getPreferenceDialog());
 			        } else {
-			        	Context.getBean(IErrorDialog.class).showErrorDialog(I18nUtils.getString("LOGIN_FAILED"), getPreferenceDialog());
+			        	Context.getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(I18nUtils.getString("LOGIN_FAILED"), getPreferenceDialog());
 			        }
 			    } catch (InterruptedException e) {
 			        Logger.error(e);
