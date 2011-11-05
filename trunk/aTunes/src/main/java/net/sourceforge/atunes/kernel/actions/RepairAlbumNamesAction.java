@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-
 import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
@@ -38,13 +36,39 @@ public class RepairAlbumNamesAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -7828819966696617838L;
 
-    RepairAlbumNamesAction() {
+    private IPlayListHandler playListHandler;
+    
+    private IRepositoryHandler repositoryHandler;
+    
+    private IPlayerHandler playerHandler;
+    
+    /**
+     * @param playerHandler
+     */
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+    
+    public RepairAlbumNamesAction() {
         super(I18nUtils.getString("REPAIR_ALBUM_NAMES"));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        TagEditionOperations.repairAlbumNames(getState(), getBean(IPlayListHandler.class), getBean(IRepositoryHandler.class), getBean(IPlayerHandler.class));
+    protected void executeAction() {
+        TagEditionOperations.repairAlbumNames(getState(), playListHandler, repositoryHandler, playerHandler);
     }
-
 }
