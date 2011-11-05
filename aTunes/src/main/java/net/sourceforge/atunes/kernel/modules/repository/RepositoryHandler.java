@@ -66,6 +66,7 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
+import net.sourceforge.atunes.model.IMultiFolderSelectionDialogFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IProcessListener;
@@ -1065,7 +1066,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
      * @return true, if successful
      */
     private boolean selectRepository(boolean repositoryNotFound) {
-    	IMultiFolderSelectionDialog dialog = getBean(IMultiFolderSelectionDialog.class);
+    	IMultiFolderSelectionDialog dialog = getBean(IMultiFolderSelectionDialogFactory.class).getDialog();
         dialog.setTitle(I18nUtils.getString("SELECT_REPOSITORY"));
         dialog.setText(I18nUtils.getString("SELECT_REPOSITORY_FOLDERS"));
         dialog.showDialog((repository != null && !repositoryNotFound) ? repository.getRepositoryFolders() : null);
