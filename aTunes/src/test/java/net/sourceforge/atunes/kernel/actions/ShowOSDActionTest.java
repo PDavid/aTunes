@@ -20,38 +20,29 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.INotificationsHandler;
 import net.sourceforge.atunes.model.IPlayListHandler;
 
-public class ShowOSDAction extends CustomAbstractAction {
+import org.junit.Test;
 
-    private static final long serialVersionUID = 646318992035897920L;
+public class ShowOSDActionTest {
 
-    private INotificationsHandler notificationsHandler;
-    
-    private IPlayListHandler playListHandler;
-    
-    /**
-     * @param notificationsHandler
-     */
-    public void setNotificationsHandler(INotificationsHandler notificationsHandler) {
-		this.notificationsHandler = notificationsHandler;
+	@Test
+	public void test() {
+		ShowOSDAction sut = new ShowOSDAction();
+		INotificationsHandler notificationsHandler = mock(INotificationsHandler.class);
+		IPlayListHandler playListHandler = mock(IPlayListHandler.class);
+		IAudioObject ao = mock(IAudioObject.class);
+		when(playListHandler.getCurrentAudioObjectFromCurrentPlayList()).thenReturn(ao);
+		sut.setNotificationsHandler(notificationsHandler);
+		sut.setPlayListHandler(playListHandler);
+		
+		sut.executeAction();
+		
+		verify(notificationsHandler).showNotification(ao);
 	}
-    
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
-	}
-
-    @Override
-    protected void executeAction() {
-    	notificationsHandler.showNotification(playListHandler.getCurrentAudioObjectFromCurrentPlayList());
-    }
-
-    @Override
-    public String getCommandName() {
-        return "showOSD";
-    }
 }

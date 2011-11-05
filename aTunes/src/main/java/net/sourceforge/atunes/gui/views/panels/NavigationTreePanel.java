@@ -94,7 +94,7 @@ public final class NavigationTreePanel extends JPanel implements INavigationTree
         options.add(Context.getBean(ExpandTreesAction.class));
         options.add(Context.getBean(CollapseTreesAction.class));
         options.addSeparator();
-        options.add(new JCheckBoxMenuItem(Actions.getAction(ShowNavigationTableAction.class)));
+        options.add(new JCheckBoxMenuItem(Context.getBean(ShowNavigationTableAction.class)));
 
 
     	treeComboBox = new JComboBox();

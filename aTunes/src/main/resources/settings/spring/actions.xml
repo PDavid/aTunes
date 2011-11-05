@@ -139,6 +139,7 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.RepositoryLoadCancelAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RepositoryLoadInBackgroundAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RipCDAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.SavePlayListAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.SearchArtistAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.SearchArtistAtAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.SelectRepositoryAction"/>
@@ -149,6 +150,10 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.ShowContextAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShowCoverNavigatorAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShowLogAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.ShowNavigationTableAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.ShowNavigationTreeAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.ShowOSDAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShowPlayListItemInfoAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShowRadioBrowserAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShowStatsAction"/>

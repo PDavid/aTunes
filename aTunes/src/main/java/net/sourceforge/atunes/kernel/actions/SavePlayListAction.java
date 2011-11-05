@@ -31,7 +31,7 @@ import javax.swing.filechooser.FileFilter;
 
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IConfirmationDialog;
+import net.sourceforge.atunes.model.IConfirmationDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -48,18 +48,47 @@ public class SavePlayListAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -303252911138284095L;
 
-    SavePlayListAction() {
+    private IFrame frame;
+    
+    private IPlayListHandler playListHandler;
+    
+    private IOSManager osManager;
+    
+    private IConfirmationDialogFactory confirmationDialogFactory;
+    
+    /**
+     * @param frame
+     */
+    public void setFrame(IFrame frame) {
+		this.frame = frame;
+	}
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    /**
+     * @param confirmationDialogFactory
+     */
+    public void setConfirmationDialogFactory(IConfirmationDialogFactory confirmationDialogFactory) {
+		this.confirmationDialogFactory = confirmationDialogFactory;
+	}
+    
+    public SavePlayListAction() {
         super(StringUtils.getString(I18nUtils.getString("SAVE"), "..."));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SAVE_PLAYLIST_TOOLTIP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    protected void executeAction() {
         JFileChooser fileChooser = new JFileChooser(getState().getSavePlaylistPath());
         FileFilter filter = PlayListIO.getPlaylistFileFilter();
         fileChooser.setFileFilter(filter);
-        if (fileChooser.showSaveDialog(getBean(IFrame.class).getFrame()) == JFileChooser.APPROVE_OPTION) {
+        if (fileChooser.showSaveDialog(frame.getFrame()) == JFileChooser.APPROVE_OPTION) {
 
             // Get selected file
             File file = fileChooser.getSelectedFile();
@@ -73,15 +102,14 @@ public class SavePlayListAction extends CustomAbstractAction {
 
             // If file does not exist, or exist and overwrite is confirmed, then write file
             if (!file.exists()
-                    || (file.exists() && getBean(IConfirmationDialog.class).showDialog(I18nUtils.getString("OVERWRITE_FILE")))) {
-                PlayListIO.write(getBean(IPlayListHandler.class).getCurrentPlayList(true), file, getBean(IOSManager.class));
+                    || (file.exists() && confirmationDialogFactory.getDialog().showDialog(I18nUtils.getString("OVERWRITE_FILE")))) {
+                PlayListIO.write(playListHandler.getCurrentPlayList(true), file, osManager);
             }
         }
     }
 
     @Override
     public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
-        return !getBean(IPlayListHandler.class).getCurrentPlayList(true).isEmpty();
+        return !playListHandler.getCurrentPlayList(true).isEmpty();
     }
-
 }

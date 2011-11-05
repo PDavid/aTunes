@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
@@ -41,20 +40,56 @@ public class ShowNavigatorTableItemInfoAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -2006569851431046347L;
 
-    ShowNavigatorTableItemInfoAction() {
+    private IAudioObjectPropertiesDialogFactory audioObjectPropertiesDialogFactory;
+    
+    private INavigationHandler navigationHandler;
+    
+    private ILookAndFeelManager lookAndFeelManager;
+    
+    private IPlayerHandler playerHandler;
+    
+    /**
+     * @param audioObjectPropertiesDialogFactory
+     */
+    public void setAudioObjectPropertiesDialogFactory(IAudioObjectPropertiesDialogFactory audioObjectPropertiesDialogFactory) {
+		this.audioObjectPropertiesDialogFactory = audioObjectPropertiesDialogFactory;
+	}
+    
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+    
+    /**
+     * @param lookAndFeelManager
+     */
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+    
+    /**
+     * @param playerHandler
+     */
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
+    
+    public ShowNavigatorTableItemInfoAction() {
         super(I18nUtils.getString("INFO"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("INFO_BUTTON_TOOLTIP"));
         setEnabled(false);
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        getBean(IAudioObjectPropertiesDialogFactory.class).newInstance(getBean(INavigationHandler.class).getSelectedAudioObjectInNavigationTable(), getBean(ILookAndFeelManager.class), getBean(IPlayerHandler.class)).showDialog();
+    protected void executeAction() {
+    	audioObjectPropertiesDialogFactory.newInstance(
+    			navigationHandler.getSelectedAudioObjectInNavigationTable(), lookAndFeelManager, playerHandler).showDialog();
     }
 
     @Override
     public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
-        return selection.size() == 1;
+        return selection != null && selection.size() == 1;
     }
-
 }

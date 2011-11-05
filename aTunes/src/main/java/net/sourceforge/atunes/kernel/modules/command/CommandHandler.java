@@ -28,7 +28,6 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.ShowOSDAction;
@@ -106,7 +105,7 @@ public final class CommandHandler extends AbstractHandler implements ICommandHan
     private void initActions() {
         getBean(PlayNextAudioObjectAction.class);
         getBean(PlayPreviousAudioObjectAction.class);
-        Actions.getAction(ShowOSDAction.class);
+        getBean(ShowOSDAction.class);
     }
 
 }
