@@ -21,6 +21,8 @@
 package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,23 +40,14 @@ public abstract class AbstractActionOverSelectedTreeObjects<T extends ITreeObjec
 	 */
 	private static final long serialVersionUID = -2396109319433549043L;
 
-    private Class<T> objectsClass;
-    
     private ITreeObjectsSource treeObjectsSource;
 
-    public AbstractActionOverSelectedTreeObjects(Class<T> objectsClass) {
-        super();
-        this.objectsClass = objectsClass;
-    }
-
-    public AbstractActionOverSelectedTreeObjects(String name, Class<T> objectsClass) {
+    public AbstractActionOverSelectedTreeObjects(String name) {
         super(name);
-        this.objectsClass = objectsClass;
     }
 
-    public AbstractActionOverSelectedTreeObjects(String name, Icon icon, Class<T> objectsClass) {
+    public AbstractActionOverSelectedTreeObjects(String name, Icon icon) {
         super(name, icon);
-        this.objectsClass = objectsClass;
     }
 
     /**
@@ -104,8 +97,10 @@ public abstract class AbstractActionOverSelectedTreeObjects<T extends ITreeObjec
 
         List<T> selectedTreeObjects = new ArrayList<T>();
 
+        Type type = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+
         for (ITreeObject<? extends IAudioObject> ao : treeObjects) {
-            if (objectsClass.isAssignableFrom(ao.getClass())) {
+            if (type.equals(ao.getClass())) {
                 @SuppressWarnings("unchecked")
                 T processedTreeObject = preprocessObject((T) ao);
                 if (processedTreeObject != null) {
@@ -117,5 +112,4 @@ public abstract class AbstractActionOverSelectedTreeObjects<T extends ITreeObjec
         // Call to perform action
         executeAction(selectedTreeObjects);
     }
-
 }
