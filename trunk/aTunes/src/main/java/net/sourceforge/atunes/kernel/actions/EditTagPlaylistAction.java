@@ -24,10 +24,8 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 
 import javax.swing.KeyStroke;
-import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.model.EditTagSources;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -39,46 +37,27 @@ import net.sourceforge.atunes.utils.Logger;
  * @author fleax
  * 
  */
-public class EditTagAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
+public class EditTagPlaylistAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
     private static final long serialVersionUID = -4310895355731333072L;
 
-    EditTagAction() {
+    EditTagPlaylistAction() {
         super(I18nUtils.getString("EDIT_TAG"), ILocalAudioObject.class);
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("EDIT_TAG"));
     }
 
     @Override
     protected void initialize() {
-        if (EditTagSources.PLAYLIST.toString().equals(getActionId())) {
-            putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_INSERT, 0));
-        }
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_INSERT, 0));
     }
 
     @Override
     protected void executeAction(List<ILocalAudioObject> objects) {
         // Start edit by opening edit dialog
         try {
-            EditTagSources editTagSource = EditTagSources.valueOf(getActionId());
-            getBean(ITagHandler.class).editFiles(editTagSource, objects);
+            getBean(ITagHandler.class).editFiles(EditTagSources.PLAYLIST, objects);
         } catch (IllegalArgumentException iae) {
             Logger.error(iae);
         }
-    }
-
-    @Override
-    public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        if (EditTagSources.NAVIGATOR.toString().equals(getActionId())) {
-            return !rootSelected && !selection.isEmpty();
-        }
-        return super.isEnabledForNavigationTreeSelection(rootSelected, selection);
-    }
-
-    @Override
-    public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
-        if (EditTagSources.NAVIGATOR.toString().equals(getActionId())) {
-            return !selection.isEmpty();
-        }
-        return super.isEnabledForNavigationTableSelection(selection);
     }
 }
