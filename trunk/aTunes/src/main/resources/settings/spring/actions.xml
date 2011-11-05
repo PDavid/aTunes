@@ -160,6 +160,7 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.ShowStatusBarAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShufflePlayListAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.SynchronizeDeviceWithPlayListAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ToggleWindowVisibilityAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.VolumeDownAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.VolumeUpAction"/>

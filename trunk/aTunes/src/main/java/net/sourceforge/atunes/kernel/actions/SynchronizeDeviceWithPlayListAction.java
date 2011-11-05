@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
@@ -54,32 +53,108 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 
 	private IIndeterminateProgressDialog dialog;
 	
-    private final class SynchronizeDeviceWithPlayListSwingWorker extends
-			SwingWorker<Map<String, List<ILocalAudioObject>>, Void> {
+	private static final long serialVersionUID = -1885495996370465881L;
+	
+	private IIndeterminateProgressDialogFactory indeterminateProgressDialogFactory;
+	
+	private IFrame frame;
+	
+	private ILookAndFeelManager lookAndFeelManager;
+	
+	private IMessageDialogFactory messageDialogFactory;
+	
+	private IDeviceHandler deviceHandler;
+	
+	private IPlayListHandler playListHandler;
+	
+	private IRepositoryHandler repositoryHandler;
+	
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+	
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+	
+	/**
+	 * @param deviceHandler
+	 */
+	public void setDeviceHandler(IDeviceHandler deviceHandler) {
+		this.deviceHandler = deviceHandler;
+	}
+	
+	/**
+	 * @param messageDialogFactory
+	 */
+	public void setMessageDialogFactory(IMessageDialogFactory messageDialogFactory) {
+		this.messageDialogFactory = messageDialogFactory;
+	}
+	
+	/**
+	 * @param frame
+	 */
+	public void setFrame(IFrame frame) {
+		this.frame = frame;
+	}
+	
+	/**
+	 * @param indeterminateProgressDialogFactory
+	 */
+	public void setIndeterminateProgressDialogFactory(IIndeterminateProgressDialogFactory indeterminateProgressDialogFactory) {
+		this.indeterminateProgressDialogFactory = indeterminateProgressDialogFactory;
+	}
+	
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+
+    public SynchronizeDeviceWithPlayListAction() {
+        super(I18nUtils.getString("SYNCHRONIZE_DEVICE_WITH_PLAYLIST"));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SYNCHRONIZE_DEVICE_WITH_PLAYLIST"));
+        setEnabled(false);
+    }
+
+    @Override
+    protected void executeAction() {
+        SwingWorker<Map<String, List<ILocalAudioObject>>, Void> worker = new SynchronizeDeviceWithPlayListSwingWorker();
+        worker.execute();
+        
+        SwingUtilities.invokeLater(new Runnable() {
+        	@Override
+        	public void run() {
+        		dialog = indeterminateProgressDialogFactory.newDialog(frame, lookAndFeelManager);
+        		dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
+        		dialog.showDialog();
+        	}
+        });
+    }
+    
+	private void showMessage(final int filesRemoved, final boolean added) {
+	    // Show message
+	    SwingUtilities.invokeLater(new Runnable() {
+	        @Override
+	        public void run() {
+	        	messageDialogFactory.getDialog().showMessage(
+	                    StringUtils.getString(I18nUtils.getString("SYNCHRONIZATION_FINISHED"), " ", I18nUtils.getString("ADDED"), 
+	                    		": ", added ? deviceHandler.getFilesCopiedToDevice() : 0, " ", 
+	                    				I18nUtils.getString("REMOVED"), ": ", filesRemoved), frame);
+	        }
+	    });
+	}
+	
+    private final class SynchronizeDeviceWithPlayListSwingWorker extends SwingWorker<Map<String, List<ILocalAudioObject>>, Void> {
+    	
 		private int filesRemoved = 0;
-		private IProcessListener listener = new IProcessListener() {
-		    @Override
-		    public void processCanceled() {
-		        // Nothing to do
-		    }
-
-		    @Override
-		    public void processFinished(boolean ok) {
-		        showMessage(true);
-		    }
-		};
-
-		protected void showMessage(final boolean added) {
-		    // Show message
-		    SwingUtilities.invokeLater(new Runnable() {
-		        @Override
-		        public void run() {
-		        	getBean(IMessageDialogFactory.class).getDialog().showMessage(
-		                    StringUtils.getString(I18nUtils.getString("SYNCHRONIZATION_FINISHED"), " ", I18nUtils.getString("ADDED"), ": ", added ? getBean(IDeviceHandler.class)
-		                            .getFilesCopiedToDevice() : 0, " ", I18nUtils.getString("REMOVED"), ": ", filesRemoved), getBean(IFrame.class));
-		        }
-		    });
-		}
 
 		@Override
 		protected Map<String, List<ILocalAudioObject>> doInBackground() {
@@ -88,17 +163,17 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 		    LocalAudioObjectFilter filter = new LocalAudioObjectFilter();
 		    if (SynchronizeDeviceWithPlayListAction.this.getState().isAllowRepeatedSongsInDevice()) {
 		        // Repeated songs allowed, filter only if have same artist and album
-		        playListObjects = filter.filterRepeatedObjectsWithAlbums(new PlayListLocalAudioObjectFilter().getObjects(getBean(IPlayListHandler.class).getCurrentPlayList(true)));
+		        playListObjects = filter.filterRepeatedObjectsWithAlbums(new PlayListLocalAudioObjectFilter().getObjects(playListHandler.getCurrentPlayList(true)));
 		    } else {
 		        // Repeated songs not allows, filter even if have different album
-		        playListObjects = filter.filterRepeatedObjects(new PlayListLocalAudioObjectFilter().getObjects(getBean(IPlayListHandler.class).getCurrentPlayList(true)));
+		        playListObjects = filter.filterRepeatedObjects(new PlayListLocalAudioObjectFilter().getObjects(playListHandler.getCurrentPlayList(true)));
 		    }
 
 		    // Get elements present in play list and not in device -> objects to be copied to device
-		    List<ILocalAudioObject> objectsToCopyToDevice = getBean(IDeviceHandler.class).getElementsNotPresentInDevice(playListObjects);
+		    List<ILocalAudioObject> objectsToCopyToDevice = deviceHandler.getElementsNotPresentInDevice(playListObjects);
 
 		    // Get elements present in device and not in play list -> objects to be removed from device
-		    List<ILocalAudioObject> objectsToRemoveFromDevice = getBean(IDeviceHandler.class).getElementsNotPresentInList(playListObjects);
+		    List<ILocalAudioObject> objectsToRemoveFromDevice = deviceHandler.getElementsNotPresentInList(playListObjects);
 
 		    Map<String, List<ILocalAudioObject>> result = new HashMap<String, List<ILocalAudioObject>>();
 		    result.put("ADD", objectsToCopyToDevice);
@@ -116,9 +191,9 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 
 		        // Remove elements from device
 		        final List<ILocalAudioObject> filesToRemove = files.get("REMOVE");
-		        getBean(IRepositoryHandler.class).startTransaction();
-		        getBean(IRepositoryHandler.class).remove(filesToRemove);
-		        getBean(IRepositoryHandler.class).endTransaction();
+		        repositoryHandler.startTransaction();
+		        repositoryHandler.remove(filesToRemove);
+		        repositoryHandler.endTransaction();
 		        SynchronizeDeviceWithPlayListAction.this.setEnabled(false);
 		        new SwingWorker<Void, Void>() {
 		            @Override
@@ -143,37 +218,23 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 		        // Copy elements to device if necessary, otherwise show message and finish
 		        if (!files.get("ADD").isEmpty()) {
 		            // The process will show message when finish
-		        	getBean(IDeviceHandler.class).copyFilesToDevice(files.get("ADD"), listener);
+		        	deviceHandler.copyFilesToDevice(files.get("ADD"), new IProcessListener() {
+						
+						@Override
+						public void processFinished(boolean ok) {
+							showMessage(filesRemoved, true);
+						}
+						
+						@Override
+						public void processCanceled() {
+						}
+					});
 		        } else {
-		            showMessage(false);
+		            showMessage(filesRemoved, false);
 		        }
 		    } catch (Exception e) {
 		        Logger.error(e);
 		    }
 		}
 	}
-
-	private static final long serialVersionUID = -1885495996370465881L;
-
-    public SynchronizeDeviceWithPlayListAction() {
-        super(I18nUtils.getString("SYNCHRONIZE_DEVICE_WITH_PLAYLIST"));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SYNCHRONIZE_DEVICE_WITH_PLAYLIST"));
-        setEnabled(false);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
-        SwingWorker<Map<String, List<ILocalAudioObject>>, Void> worker = new SynchronizeDeviceWithPlayListSwingWorker();
-        worker.execute();
-        
-        SwingUtilities.invokeLater(new Runnable() {
-        	@Override
-        	public void run() {
-        		dialog = getBean(IIndeterminateProgressDialogFactory.class).newDialog(getBean(IFrame.class), getBean(ILookAndFeelManager.class));
-        		dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
-        		dialog.showDialog();
-        	}
-        });
-    }
 }
