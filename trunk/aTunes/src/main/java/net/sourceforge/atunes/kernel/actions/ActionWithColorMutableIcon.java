@@ -20,7 +20,10 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import java.awt.event.ActionEvent;
+
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
@@ -30,21 +33,55 @@ public abstract class ActionWithColorMutableIcon extends CustomAbstractAction  i
 	 * 
 	 */
 	private static final long serialVersionUID = 6248901947210263210L;
-
+	
+	private ILookAndFeelManager lookAndFeelManager;
+	
+	/**
+	 * Creates a new action
+	 * @param text
+	 */
 	public ActionWithColorMutableIcon(String text) {
 		super(text);
+	}
+
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
 		getBean(ILookAndFeelManager.class).addLookAndFeelChangeListener(this);
 		lookAndFeelChanged(); // Initial icon set
+	}
+	
+	/**
+	 * @return
+	 */
+	public ILookAndFeelManager getLookAndFeelManager() {
+		return lookAndFeelManager;
+	}
+	
+	/**
+	 * Returns the current look and feel
+	 * @return
+	 */
+	public ILookAndFeel getLookAndFeel() {
+		return lookAndFeelManager.getCurrentLookAndFeel();
 	}
 
 	@Override
 	public final void lookAndFeelChanged() {
-		putValue(SMALL_ICON, getIcon().getIcon(getBean(ILookAndFeelManager.class).getCurrentLookAndFeel().getPaintForSpecialControls()));
+		putValue(SMALL_ICON, getIcon(getLookAndFeel()).getIcon(getLookAndFeel().getPaintForSpecialControls()));
+	}
+	
+	@Override
+	public final void actionPerformed(ActionEvent e) {
+		super.actionPerformed(e);
 	}
 	
 	/**
-	 * Returns color mutable icon
+	 * Returns color mutable icon for given look and feel
+	 * @param lookAndFeel
 	 * @return
 	 */
-	public abstract IColorMutableImageIcon getIcon();
+	public abstract IColorMutableImageIcon getIcon(ILookAndFeel lookAndFeel);
 }

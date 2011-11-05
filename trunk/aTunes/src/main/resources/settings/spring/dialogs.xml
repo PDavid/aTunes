@@ -5,6 +5,7 @@
 	
 	default-autowire="byName" default-lazy-init="true">
 	
+	<bean id="equalizerDialogFactory" class="net.sourceforge.atunes.model.EqualizerDialogFactory"/>
 	<bean id="equalizerDialog" class="net.sourceforge.atunes.gui.views.dialogs.EqualizerDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 		<constructor-arg ref="lookAndFeelManager"/>		

@@ -21,13 +21,12 @@
 package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.Paint;
-import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.ArtistImageIcon;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -36,6 +35,15 @@ public class ShowArtistsInNavigatorAction extends ActionWithColorMutableIcon {
 
     private static final long serialVersionUID = -6172848158352600345L;
 
+    private INavigationHandler navigationHandler;
+    
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+    
     public ShowArtistsInNavigatorAction() {
         super(I18nUtils.getString("SHOW_ARTISTS"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_ARTISTS"));
@@ -46,24 +54,23 @@ public class ShowArtistsInNavigatorAction extends ActionWithColorMutableIcon {
         putValue(SELECTED_KEY, getState().getViewMode() == ViewMode.ARTIST);
     }
     
-    
     @Override
-    public void actionPerformed(ActionEvent e) {
+    protected void executeAction() {
         if (getState().getViewMode() != ViewMode.ARTIST) {
             getState().setViewMode(ViewMode.ARTIST);
-            getBean(INavigationHandler.class).refreshCurrentView();
+            navigationHandler.refreshCurrentView();
             getBean(CollapseTreesAction.class).setEnabled(true);
             getBean(ExpandTreesAction.class).setEnabled(true);
         }
     }
     
     @Override
-    public IColorMutableImageIcon getIcon() {
+    public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
     	return new IColorMutableImageIcon() {
 			
 			@Override
 			public ImageIcon getIcon(Paint paint) {
-				return ArtistImageIcon.getIcon(paint, getBean(ILookAndFeelManager.class).getCurrentLookAndFeel());
+				return ArtistImageIcon.getIcon(paint, lookAndFeel);
 			}
 		};
     }

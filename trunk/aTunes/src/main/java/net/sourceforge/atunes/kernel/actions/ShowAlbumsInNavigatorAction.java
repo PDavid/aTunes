@@ -21,13 +21,12 @@
 package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.Paint;
-import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.AlbumImageIcon;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -36,6 +35,15 @@ public class ShowAlbumsInNavigatorAction extends ActionWithColorMutableIcon {
 
     private static final long serialVersionUID = -3691606154694473768L;
 
+    private INavigationHandler navigationHandler;
+    
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+    
     public ShowAlbumsInNavigatorAction() {
         super(I18nUtils.getString("SHOW_ALBUMS"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_ALBUMS"));
@@ -47,22 +55,22 @@ public class ShowAlbumsInNavigatorAction extends ActionWithColorMutableIcon {
     }
     
     @Override
-    public void actionPerformed(ActionEvent e) {
+    protected void executeAction() {
         if (getState().getViewMode() != ViewMode.ALBUM) {
             getState().setViewMode(ViewMode.ALBUM);
-            getBean(INavigationHandler.class).refreshCurrentView();
+            navigationHandler.refreshCurrentView();
             getBean(CollapseTreesAction.class).setEnabled(true);
             getBean(ExpandTreesAction.class).setEnabled(true);
         }
     }
 
     @Override
-    public IColorMutableImageIcon getIcon() {
+    public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
     	return new IColorMutableImageIcon() {
 			
 			@Override
 			public ImageIcon getIcon(Paint paint) {
-				return AlbumImageIcon.getIcon(paint, getBean(ILookAndFeelManager.class).getCurrentLookAndFeel());
+				return AlbumImageIcon.getIcon(paint, lookAndFeel);
 			}
 		};
     }
