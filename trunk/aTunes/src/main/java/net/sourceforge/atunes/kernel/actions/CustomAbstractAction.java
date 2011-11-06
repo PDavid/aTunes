@@ -137,19 +137,17 @@ public abstract class CustomAbstractAction extends javax.swing.AbstractAction im
      * Source component that fired this action
      * @return
      */
-    protected Object getSource() {
+    protected final Object getSource() {
 		return source;
 	}
     
     /**
      * Override this method to execute action
      */
-    protected void executeAction() {
-	}
+    protected void executeAction() {}
 
 	@Override
     public String getCommandName() {
         return "";
     }
-
 }
