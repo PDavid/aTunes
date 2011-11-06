@@ -31,6 +31,7 @@ import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
+import net.sourceforge.atunes.model.ISearchDialogFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class SearchArtistAction extends CustomAbstractAction {
@@ -40,6 +41,15 @@ public class SearchArtistAction extends CustomAbstractAction {
     private IDesktop desktop;
     
     private INavigationHandler navigationHandler;
+    
+    private ISearchDialogFactory searchDialogFactory;
+    
+    /**
+     * @param searchDialogFactory
+     */
+    public void setSearchDialogFactory(ISearchDialogFactory searchDialogFactory) {
+		this.searchDialogFactory = searchDialogFactory;
+	}
     
     /**
      * @param desktop
@@ -67,7 +77,7 @@ public class SearchArtistAction extends CustomAbstractAction {
             Artist a = (Artist) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
             ISearch search = SearchFactory.getSearchForName(getState().getDefaultSearch());
             if (search == null) {
-                ISearchDialog dialog = getBean(ISearchDialog.class);
+                ISearchDialog dialog = searchDialogFactory.createDialog();
                 search = navigationHandler.openSearchDialog(dialog, false);
                 if (search != null) {
                     getState().setDefaultSearch(search.toString());

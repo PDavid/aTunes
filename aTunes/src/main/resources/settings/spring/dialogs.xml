@@ -34,6 +34,7 @@
 		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
 
+	<bean id="columnSelectorDialogFactory" class="net.sourceforge.atunes.model.ColumnSelectorDialogFactory"/>
 	<bean id="columnSelectorDialog" class="net.sourceforge.atunes.gui.views.dialogs.ColumnSetSelectorDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 		<constructor-arg ref="lookAndFeelManager"/>
@@ -54,6 +55,7 @@
 		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
 	
+	<bean id="searchDialogFactory" class="net.sourceforge.atunes.model.SearchDialogFactory"/>
 	<bean id="searchDialog" class="net.sourceforge.atunes.gui.views.dialogs.SearchDialog" scope="prototype">
 		<constructor-arg ref="frame"/>	
 		<constructor-arg ref="lookAndFeelManager"/>

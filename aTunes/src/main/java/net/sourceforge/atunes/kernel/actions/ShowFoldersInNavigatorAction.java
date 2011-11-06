@@ -59,8 +59,6 @@ public class ShowFoldersInNavigatorAction extends ActionWithColorMutableIcon {
         if (getState().getViewMode() != ViewMode.FOLDER) {
             getState().setViewMode(ViewMode.FOLDER);
             navigationHandler.refreshCurrentView();
-            getBean(CollapseTreesAction.class).setEnabled(true);
-            getBean(ExpandTreesAction.class).setEnabled(true);
         }
     }
     

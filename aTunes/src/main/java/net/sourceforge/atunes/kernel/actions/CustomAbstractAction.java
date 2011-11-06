@@ -26,7 +26,6 @@ import java.util.List;
 import javax.swing.Icon;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ICommand;
 import net.sourceforge.atunes.model.ICommandHandler;
@@ -153,22 +152,4 @@ public abstract class CustomAbstractAction extends javax.swing.AbstractAction im
         return "";
     }
 
-    /**
-     * Delegate method
-     * @param <T>
-     * @param beanType
-     * @return
-     */
-    protected <T> T getBean(Class<T> beanType) {
-		return Context.getBean(beanType);
-	}
-	
-    /**
-     * Delegate method
-     * @param name
-     * @return
-     */
-    protected Object getBean(String name) {
-		return Context.getBean(name);
-	}
 }

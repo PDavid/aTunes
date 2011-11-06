@@ -59,8 +59,6 @@ public class ShowGenresInNavigatorAction extends ActionWithColorMutableIcon {
         if (getState().getViewMode() != ViewMode.GENRE) {
             getState().setViewMode(ViewMode.GENRE);
             navigationHandler.refreshCurrentView();
-            getBean(CollapseTreesAction.class).setEnabled(true);
-            getBean(ExpandTreesAction.class).setEnabled(true);
         }
     }
     
