@@ -59,8 +59,6 @@ public class ShowArtistsInNavigatorAction extends ActionWithColorMutableIcon {
         if (getState().getViewMode() != ViewMode.ARTIST) {
             getState().setViewMode(ViewMode.ARTIST);
             navigationHandler.refreshCurrentView();
-            getBean(CollapseTreesAction.class).setEnabled(true);
-            getBean(ExpandTreesAction.class).setEnabled(true);
         }
     }
     

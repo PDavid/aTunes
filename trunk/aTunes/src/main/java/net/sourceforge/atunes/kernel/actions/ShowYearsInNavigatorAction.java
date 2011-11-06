@@ -59,8 +59,6 @@ public class ShowYearsInNavigatorAction extends ActionWithColorMutableIcon {
         if (getState().getViewMode() != ViewMode.YEAR) {
             getState().setViewMode(ViewMode.YEAR);
             navigationHandler.refreshCurrentView();
-            getBean(CollapseTreesAction.class).setEnabled(true);
-            getBean(ExpandTreesAction.class).setEnabled(true);
         }
     }
 
