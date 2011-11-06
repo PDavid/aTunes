@@ -17,19 +17,11 @@
 		</constructor-arg>
 	</bean>
 
-
-	<bean id="navigationView" abstract="true" class="net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView">
-		<constructor-arg ref="state" />
-		<constructor-arg ref="navigationHandler"/>
-		<constructor-arg ref="frame"/>
-		<constructor-arg ref="lookAndFeelManager"/>
-		<constructor-arg ref="filterHandler"/>				
-	</bean>
+	<bean id="navigationView" abstract="true" class="net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView"/>
 
 	<bean id="repositoryNavigationView"
 		class="net.sourceforge.atunes.kernel.modules.navigator.RepositoryNavigationView"
 		parent="navigationView">
-
 		<property name="decorators">
 			<list>
 				<ref bean="artistTreeCellDecorator" />
@@ -43,13 +35,11 @@
 				<ref bean="incompleteTagsTreeCellDecorator" />
 			</list>
 		</property>
-
 	</bean>
 
 	<bean id="favoritesNavigationView"
 		class="net.sourceforge.atunes.kernel.modules.navigator.FavoritesNavigationView"
 		parent="navigationView">
-
 		<property name="decorators">
 			<list>
 				<ref bean="artistTreeCellDecorator" />
@@ -59,15 +49,11 @@
 				<ref bean="incompleteTagsTreeCellDecorator" />
 			</list>
 		</property>
-
 	</bean>
-
-
 
 	<bean id="deviceNavigationView"
 		class="net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView"
 		parent="navigationView">
-
 		<property name="decorators">
 			<list>
 				<ref bean="artistTreeCellDecorator" />
@@ -80,40 +66,27 @@
 				<ref bean="incompleteTagsTreeCellDecorator" />
 			</list>
 		</property>
-
 	</bean>
-
-
 
 	<bean id="radioNavigationView"
 		class="net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationView"
 		parent="navigationView">
-		<constructor-arg ref="radioNavigationColumnSet" />
-
 		<property name="decorators">
 			<list>
 				<ref bean="stringTreeCellDecorator" />
 				<ref bean="radioTreeCellDecorator" />
 			</list>
 		</property>
-
 	</bean>
-
 
 	<bean id="podcastNavigationView"
 		class="net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView"
 		parent="navigationView">
-		<constructor-arg ref="podcastNavigationColumnSet" />
-		<constructor-arg ref="podcastFeedHandler"/>
-
 		<property name="decorators">
 			<list>
 				<ref bean="stringTreeCellDecorator" />
 				<ref bean="podcastFeedTreeCellDecorator" />
 			</list>
 		</property>
-
 	</bean>
-
-
 </beans>

@@ -44,7 +44,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellRendererCode;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
@@ -158,19 +157,45 @@ public abstract class AbstractNavigationView implements INavigationView {
 
     /**
      * @param state
+     */
+    public void setState(IState state) {
+		this.state = state;
+	}
+    
+    /**
      * @param navigationHandler
+     */
+    public void setNavigationHandler(INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+    
+    /**
      * @param frame
+     */
+    public void setFrame(IFrame frame) {
+		this.frame = frame;
+	}
+    
+    /**
      * @param lookAndFeelManager
+     */
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+    
+    /**
      * @param filterHandler
      */
-    public AbstractNavigationView(IState state, INavigationHandler navigationHandler, IFrame frame, ILookAndFeelManager lookAndFeelManager, IFilterHandler filterHandler) {
-    	this.state = state;
-    	this.navigationHandler = navigationHandler;
-    	this.frame = frame;
-    	this.treeGeneratorFactory = Context.getBean(ITreeGeneratorFactory.class);
-    	this.lookAndFeelManager = lookAndFeelManager;
-    	this.filterHandler = filterHandler;
-    }
+    public void setFilterHandler(IFilterHandler filterHandler) {
+		this.filterHandler = filterHandler;
+	}
+    
+    /**
+     * @param treeGeneratorFactory
+     */
+    public void setTreeGeneratorFactory(ITreeGeneratorFactory treeGeneratorFactory) {
+		this.treeGeneratorFactory = treeGeneratorFactory;
+	}
     
     @Override
 	public ITreeGeneratorFactory getTreeGeneratorFactory() {

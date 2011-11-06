@@ -56,14 +56,9 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
-import net.sourceforge.atunes.model.IFilterHandler;
-import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -77,23 +72,22 @@ public final class PodcastNavigationView extends AbstractNavigationView {
     private JPopupMenu podcastFeedTableMenu;
 
     /** The column set */
-    private IColumnSet columnSet;
+    private IColumnSet podcastNavigationColumnSet;
     
     private IPodcastFeedHandler podcastFeedHandler;
 
     /**
-     * @param state
-     * @param columnSet
-     * @param navigationHandler
-     * @param frame
      * @param podcastFeedHandler
-     * @param lookAndFeelManager
-     * @param filterHandler 
      */
-    public PodcastNavigationView(IState state, AbstractCustomNavigatorColumnSet columnSet, INavigationHandler navigationHandler, IFrame frame, IPodcastFeedHandler podcastFeedHandler, ILookAndFeelManager lookAndFeelManager, IFilterHandler filterHandler) {
-    	super(state, navigationHandler, frame, lookAndFeelManager, filterHandler);
-    	this.columnSet = columnSet;
-    	this.podcastFeedHandler = podcastFeedHandler;
+    public void setPodcastFeedHandler(IPodcastFeedHandler podcastFeedHandler) {
+		this.podcastFeedHandler = podcastFeedHandler;
+	}
+    
+    /**
+     * @param podcastNavigationColumnSet
+     */
+    public void setPodcastNavigationColumnSet(IColumnSet podcastNavigationColumnSet) {
+		this.podcastNavigationColumnSet = podcastNavigationColumnSet;
 	}
 
     
@@ -288,7 +282,7 @@ public final class PodcastNavigationView extends AbstractNavigationView {
 
     @Override
     public IColumnSet getCustomColumnSet() {
-    	return columnSet;
+    	return podcastNavigationColumnSet;
     }
 
     @Override
