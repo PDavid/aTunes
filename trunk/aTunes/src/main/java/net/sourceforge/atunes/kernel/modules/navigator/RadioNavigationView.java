@@ -53,13 +53,8 @@ import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
-import net.sourceforge.atunes.model.IFilterHandler;
-import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioHandler;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -76,23 +71,17 @@ public final class RadioNavigationView extends AbstractNavigationView {
     private JPopupMenu radioTableMenu;
 
     /** The column set */
-    private IColumnSet columnSet;
+    private IColumnSet radioNavigationColumnSet;
 
     private IRadioHandler radioHandler;
     
     /**
-     * @param state
-     * @param columnSet
-     * @param navigationHandler
-     * @param frame
-     * @param lookAndFeelManager
-     * @param filterHandler 
+     * @param radioNavigationColumnSet
      */
-    public RadioNavigationView(IState state, IColumnSet columnSet, INavigationHandler navigationHandler, IFrame frame, ILookAndFeelManager lookAndFeelManager, IFilterHandler filterHandler) {
-    	super(state, navigationHandler, frame, lookAndFeelManager, filterHandler);
-    	this.columnSet = columnSet;
+    public void setRadioNavigationColumnSet(IColumnSet radioNavigationColumnSet) {
+		this.radioNavigationColumnSet = radioNavigationColumnSet;
 	}
-
+    
     @Override
     public IColorMutableImageIcon getIcon() {
         return new IColorMutableImageIcon() {
@@ -374,7 +363,7 @@ public final class RadioNavigationView extends AbstractNavigationView {
 
     @Override
     public IColumnSet getCustomColumnSet() {
-        return columnSet;
+        return radioNavigationColumnSet;
     }
 
     @Override

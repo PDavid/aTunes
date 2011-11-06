@@ -54,11 +54,6 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IDeviceHandler;
-import net.sourceforge.atunes.model.IFilterHandler;
-import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.model.INavigationHandler;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -76,17 +71,6 @@ public final class DeviceNavigationView extends AbstractNavigationView {
     
     private IDeviceHandler deviceHandler;
 
-    /**
-     * @param state
-     * @param navigationHandler
-     * @param frame
-     * @param lookAndFeelManager
-     * @param filterHandler
-     */
-    public DeviceNavigationView(IState state, INavigationHandler navigationHandler, IFrame frame, ILookAndFeelManager lookAndFeelManager, IFilterHandler filterHandler) {
-    	super(state, navigationHandler, frame, lookAndFeelManager, filterHandler);
-	}
-    
     public void setDeviceHandler(IDeviceHandler deviceHandler) {
 		this.deviceHandler = deviceHandler;
 	}
