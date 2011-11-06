@@ -32,15 +32,33 @@ public class SetFavoriteSongFromNavigatorAction extends AbstractActionOverSelect
 
     private static final long serialVersionUID = 4023700964403110853L;
 
+    private IFavoritesHandler favoritesHandler;
+    
+    private INavigationHandler navigationHandler;
+    
+    /**
+     * @param favoritesHandler
+     */
+    public void setFavoritesHandler(IFavoritesHandler favoritesHandler) {
+		this.favoritesHandler = favoritesHandler;
+	}
+    
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+
     public SetFavoriteSongFromNavigatorAction() {
-        super(I18nUtils.getString("SET_FAVORITE_SONG"), ILocalAudioObject.class);
+        super(I18nUtils.getString("SET_FAVORITE_SONG"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SET_FAVORITE_SONG"));
     }
 
     @Override
     protected void executeAction(List<ILocalAudioObject> objects) {
-    	getBean(IFavoritesHandler.class).toggleFavoriteSongs(objects);
-        getBean(INavigationHandler.class).refreshNavigationTable();
+    	favoritesHandler.toggleFavoriteSongs(objects);
+    	navigationHandler.refreshNavigationTable();
     }
 
     @Override

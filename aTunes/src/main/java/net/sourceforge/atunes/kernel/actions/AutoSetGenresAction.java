@@ -42,14 +42,41 @@ public class AutoSetGenresAction extends AbstractActionOverSelectedObjects<ILoca
 
     private static final long serialVersionUID = 2868302038954563763L;
 
-    AutoSetGenresAction() {
-        super(I18nUtils.getString("AUTO_SET_GENRE"), ILocalAudioObject.class);
+    private IPlayListHandler playListHandler;
+    
+    private IRepositoryHandler repositoryHandler;
+    
+    private IPlayerHandler playerHandler;
+    
+    /**
+     * @param playerHandler
+     */
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
+    
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    public AutoSetGenresAction() {
+        super(I18nUtils.getString("AUTO_SET_GENRE"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("AUTO_SET_GENRE"));
     }
     
     @Override
     protected void executeAction(List<ILocalAudioObject> objects) {
-        TagEditionOperations.editGenre(objects, getState(), getBean(IPlayListHandler.class), getBean(IRepositoryHandler.class), getBean(IPlayerHandler.class));
+        TagEditionOperations.editGenre(objects, getState(), playListHandler, repositoryHandler, playerHandler);
     }
 
     @Override

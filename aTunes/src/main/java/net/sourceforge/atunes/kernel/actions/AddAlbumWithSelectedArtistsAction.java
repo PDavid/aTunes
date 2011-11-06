@@ -40,8 +40,26 @@ public class AddAlbumWithSelectedArtistsAction extends AbstractActionOverSelecte
 
     private static final long serialVersionUID = 242525309967706255L;
 
-    AddAlbumWithSelectedArtistsAction() {
-        super(I18nUtils.getString("ADD_ALBUM_ARTIST_TO_PLAYLIST"), IAudioObject.class);
+    private IRepositoryHandler repositoryHandler;
+    
+    private IPlayListHandler playListHandler;
+    
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    public AddAlbumWithSelectedArtistsAction() {
+        super(I18nUtils.getString("ADD_ALBUM_ARTIST_TO_PLAYLIST"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("ADD_ALBUM_ARTIST_TOOLTIP"));
     }
     
@@ -52,12 +70,11 @@ public class AddAlbumWithSelectedArtistsAction extends AbstractActionOverSelecte
 
     @Override
     protected void executeAction(List<IAudioObject> objects) {
-    	
         // Get selected artists from play list
         List<Artist> selectedArtists = new ArrayList<Artist>();
         for (IAudioObject ao : objects) {
             String artistName = ao.getArtist();
-            Artist a = getBean(IRepositoryHandler.class).getArtist(artistName);
+            Artist a = repositoryHandler.getArtist(artistName);
             if (a != null) {
                 if (!selectedArtists.contains(a)) {
                     selectedArtists.add(a);
@@ -67,7 +84,7 @@ public class AddAlbumWithSelectedArtistsAction extends AbstractActionOverSelecte
 
         // For every artist
         for (Artist artist : selectedArtists) {
-        	getBean(IPlayListHandler.class).showAddArtistDragDialog(artist);
+        	playListHandler.showAddArtistDragDialog(artist);
         }
     }
 }

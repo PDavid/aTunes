@@ -32,8 +32,17 @@ public class RemoveOldPodcastEntryAction extends AbstractActionOverSelectedObjec
 
     private static final long serialVersionUID = -1499729879534990802L;
 
-    RemoveOldPodcastEntryAction() {
-        super(I18nUtils.getString("REMOVE_OLD_PODCAST_ENTRY"), IPodcastFeedEntry.class);
+    private INavigationHandler navigationHandler;
+    
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+    
+    public RemoveOldPodcastEntryAction() {
+        super(I18nUtils.getString("REMOVE_OLD_PODCAST_ENTRY"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_OLD_PODCAST_ENTRY"));
     }
 
@@ -42,7 +51,7 @@ public class RemoveOldPodcastEntryAction extends AbstractActionOverSelectedObjec
         for (IPodcastFeedEntry pfe : objects) {
             pfe.getPodcastFeed().removeEntry(pfe);
         }
-        getBean(INavigationHandler.class).refreshView(PodcastNavigationView.class);
+        navigationHandler.refreshView(PodcastNavigationView.class);
     }
 
     @Override

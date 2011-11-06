@@ -32,14 +32,23 @@ public class AddToPlayListAfterCurrentAudioObjectAction extends AbstractActionOv
 
     private static final long serialVersionUID = 1625697867534974341L;
 
-    AddToPlayListAfterCurrentAudioObjectAction() {
-        super(I18nUtils.getString("ADD_TO_ACTIVE_PLAYLIST_AFTER_CURRENT_AUDIO_OBJECT"), IAudioObject.class);
+    private IPlayListHandler playListHandler;
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    public AddToPlayListAfterCurrentAudioObjectAction() {
+        super(I18nUtils.getString("ADD_TO_ACTIVE_PLAYLIST_AFTER_CURRENT_AUDIO_OBJECT"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("ADD_TO_ACTIVE_PLAYLIST_AFTER_CURRENT_AUDIO_OBJECT"));
     }
     
     @Override
     protected void executeAction(List<IAudioObject> objects) {
-    	getBean(IPlayListHandler.class).addToActivePlayList(objects);
+    	playListHandler.addToActivePlayList(objects);
     }
 
     @Override

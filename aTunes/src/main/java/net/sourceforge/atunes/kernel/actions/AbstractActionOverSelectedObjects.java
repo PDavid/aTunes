@@ -20,17 +20,16 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.Icon;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectsSource;
+import net.sourceforge.atunes.utils.Logger;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -39,27 +38,18 @@ public abstract class AbstractActionOverSelectedObjects<T extends IAudioObject> 
 
     private static final long serialVersionUID = 1673432955671008277L;
 
-    private static Map<Component, IAudioObjectsSource> registeredComponents = new HashMap<Component, IAudioObjectsSource>();
+    private IAudioObjectsSource audioObjectsSource;
 
-    private Class<T> objectsClass;
-
-    public AbstractActionOverSelectedObjects(Class<T> objectsClass) {
-        super();
-        this.objectsClass = objectsClass;
-    }
-
-    public AbstractActionOverSelectedObjects(String name, Class<T> objectsClass) {
+    private Class<?> clazz;
+    
+    public AbstractActionOverSelectedObjects(String name) {
         super(name);
-        this.objectsClass = objectsClass;
+        clazz = (Class<?>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
-    public AbstractActionOverSelectedObjects(String name, Icon icon, Class<T> objectsClass) {
+    public AbstractActionOverSelectedObjects(String name, Icon icon) {
         super(name, icon);
-        this.objectsClass = objectsClass;
-    }
-
-    static final void addRegisteredComponent(Component source, IAudioObjectsSource objectsSource) {
-        registeredComponents.put(source, objectsSource);
+        clazz = (Class<?>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];        
     }
 
     /**
@@ -75,28 +65,33 @@ public abstract class AbstractActionOverSelectedObjects<T extends IAudioObject> 
         return audioObject;
     }
 
+    /**
+     * @param audioObjectsSource
+     */
+    public final void setAudioObjectsSource(IAudioObjectsSource audioObjectsSource) {
+		this.audioObjectsSource = audioObjectsSource;
+	}
+    
     protected abstract void executeAction(List<T> objects);
 
     @Override
     public final void actionPerformed(ActionEvent e) {
-        // Get objects source from registered components
-        Component eventSource = (Component) e.getSource();
-        IAudioObjectsSource objectsSource = registeredComponents.get(eventSource);
+    	Logger.debug("Executing action: ", this.getClass().getName());
 
-        if (objectsSource == null) {
+        if (this.audioObjectsSource == null) {
             return;
         }
 
-        List<IAudioObject> audioObjects = objectsSource.getSelectedAudioObjects();
+        List<IAudioObject> audioObjects = this.audioObjectsSource.getSelectedAudioObjects();
 
         if (audioObjects == null || audioObjects.isEmpty()) {
             return;
         }
 
         List<T> selectedObjects = new ArrayList<T>();
-
+        
         for (IAudioObject ao : audioObjects) {
-            if (objectsClass.isAssignableFrom(ao.getClass())) {
+            if (clazz.isAssignableFrom(ao.getClass())) {
                 @SuppressWarnings("unchecked")
                 T processedAudioObject = preprocessObject((T) ao);
                 if (processedAudioObject != null) {
@@ -116,7 +111,7 @@ public abstract class AbstractActionOverSelectedObjects<T extends IAudioObject> 
         }
 
         for (IAudioObject ao : selection) {
-            if (!(this.objectsClass.isAssignableFrom(ao.getClass()))) {
+            if (!clazz.isAssignableFrom(ao.getClass())) {
                 return false;
             }
         }

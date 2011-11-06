@@ -42,14 +42,41 @@ public class AutoSetTitlesAction extends AbstractActionOverSelectedObjects<ILoca
 
     private static final long serialVersionUID = 7230329972815239426L;
 
-    AutoSetTitlesAction() {
-        super(I18nUtils.getString("AUTO_SET_TITLE"), ILocalAudioObject.class);
+    private IPlayListHandler playListHandler;
+    
+    private IRepositoryHandler repositoryHandler;
+    
+    private IPlayerHandler playerHandler;
+    
+    /**
+     * @param playerHandler
+     */
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
+    
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+
+    public AutoSetTitlesAction() {
+        super(I18nUtils.getString("AUTO_SET_TITLE"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("AUTO_SET_TITLE"));
     }
 
     @Override
     protected void executeAction(List<ILocalAudioObject> objects) {
-        new EditTitlesProcess(objects, getState(), getBean(IPlayListHandler.class), getBean(IRepositoryHandler.class), getBean(IPlayerHandler.class)).execute();
+        new EditTitlesProcess(objects, getState(), playListHandler, repositoryHandler, playerHandler).execute();
     }
 
     @Override

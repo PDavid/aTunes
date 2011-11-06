@@ -23,7 +23,8 @@ package net.sourceforge.atunes.gui.views.menus;
 import javax.swing.JMenu;
 import javax.swing.JSeparator;
 
-import net.sourceforge.atunes.kernel.actions.Actions;
+import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedObjects;
 import net.sourceforge.atunes.kernel.actions.AutoSetCoversAction;
 import net.sourceforge.atunes.kernel.actions.AutoSetGenresAction;
 import net.sourceforge.atunes.kernel.actions.AutoSetLyricsAction;
@@ -44,17 +45,28 @@ public final class EditTagMenu extends JMenu {
 
     public EditTagMenu(boolean playlistMenu, IAudioObjectsSource audioObjectsSource) {
         super(I18nUtils.getString("TAGS"));
-       	add(Actions.getMenuItemForAction(playlistMenu ? EditTagPlaylistAction.class : EditTagNavigatorAction.class, audioObjectsSource));
+        addAction(playlistMenu ? EditTagPlaylistAction.class : EditTagNavigatorAction.class, audioObjectsSource);
         add(new JSeparator());
-        add(Actions.getMenuItemForAction(AutoSetTagFromFolderNamePatternAction.class, audioObjectsSource));
-        add(Actions.getMenuItemForAction(AutoSetTagFromFileNamePatternAction.class, audioObjectsSource));
+        addAction(AutoSetTagFromFolderNamePatternAction.class, audioObjectsSource);
+        addAction(AutoSetTagFromFileNamePatternAction.class, audioObjectsSource);
         add(new JSeparator());
-        add(Actions.getMenuItemForAction(AutoSetLyricsAction.class, audioObjectsSource));
-        add(Actions.getMenuItemForAction(AutoSetTitlesAction.class, audioObjectsSource));
-        add(Actions.getMenuItemForAction(AutoSetTracksAction.class, audioObjectsSource));
-        add(Actions.getMenuItemForAction(AutoSetGenresAction.class, audioObjectsSource));
-        add(Actions.getMenuItemForAction(AutoSetCoversAction.class, audioObjectsSource));
+        addAction(AutoSetLyricsAction.class, audioObjectsSource);
+        addAction(AutoSetTitlesAction.class, audioObjectsSource);
+        addAction(AutoSetTracksAction.class, audioObjectsSource);
+        addAction(AutoSetGenresAction.class, audioObjectsSource);
+        addAction(AutoSetCoversAction.class, audioObjectsSource);
         add(new JSeparator());
-       	add(Actions.getMenuItemForAction(playlistMenu ? ClearTagPlaylistAction.class : ClearTagNavigatorAction.class, audioObjectsSource));
+        addAction(playlistMenu ? ClearTagPlaylistAction.class : ClearTagNavigatorAction.class, audioObjectsSource);
+    }
+    
+    /**
+     * Get and action binded to audio objects source and add to menu
+     * @param actionClass
+     * @param audioObjectsSource
+     */
+    private void addAction(Class<? extends AbstractActionOverSelectedObjects<?>> actionClass, IAudioObjectsSource audioObjectsSource) {
+        AbstractActionOverSelectedObjects<?> action = Context.getBean(actionClass);
+        action.setAudioObjectsSource(audioObjectsSource);
+       	add(action);
     }
 }

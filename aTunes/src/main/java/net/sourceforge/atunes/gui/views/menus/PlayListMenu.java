@@ -32,7 +32,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.actions.Actions;
+import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedObjects;
 import net.sourceforge.atunes.kernel.actions.AddAlbumWithSelectedArtistsAction;
 import net.sourceforge.atunes.kernel.actions.AutoScrollPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ClearPlayListAction;
@@ -106,7 +106,11 @@ public final class PlayListMenu {
         List<Object> objects = new ArrayList<Object>();
         objects.add(Context.getBean(PlayAction.class));
         objects.add(Context.getBean(ShowPlayListItemInfoAction.class));
-        objects.add(Actions.getMenuItemForAction(OpenFolderAction.class, table));
+        
+        OpenFolderAction openFolderAction = Context.getBean(OpenFolderAction.class);
+        openFolderAction.setAudioObjectsSource(table);
+        objects.add(openFolderAction);
+        
         objects.add(new JSeparator());
         objects.add(new EditTagMenu(true, table));
         objects.add(getFavoritesMenu());
@@ -121,9 +125,18 @@ public final class PlayListMenu {
         objects.add(new JSeparator());
         objects.add(getSmartPlayListMenu());
         objects.add(new JSeparator());
-        objects.add(Actions.getMenuItemForAction(CreatePlayListWithSelectedArtistsAction.class, table));
-        objects.add(Actions.getMenuItemForAction(CreatePlayListWithSelectedAlbumsAction.class, table));
-        objects.add(Actions.getMenuItemForAction(AddAlbumWithSelectedArtistsAction.class,table));
+        
+        AbstractActionOverSelectedObjects<IAudioObject> createPlayListWithSelectedArtistsAction = Context.getBean(CreatePlayListWithSelectedArtistsAction.class);
+        createPlayListWithSelectedArtistsAction.setAudioObjectsSource(table);
+        objects.add(createPlayListWithSelectedArtistsAction);
+        
+        AbstractActionOverSelectedObjects<IAudioObject> createPlayListWithSelectedAlbumAction = Context.getBean(CreatePlayListWithSelectedAlbumsAction.class);
+        createPlayListWithSelectedAlbumAction.setAudioObjectsSource(table);
+        objects.add(createPlayListWithSelectedAlbumAction);
+        
+        AbstractActionOverSelectedObjects<IAudioObject> addAlbumWithSelectedArtistsAction = Context.getBean(AddAlbumWithSelectedArtistsAction.class);
+        addAlbumWithSelectedArtistsAction.setAudioObjectsSource(table);
+        objects.add(addAlbumWithSelectedArtistsAction);
         return objects;
     }
     

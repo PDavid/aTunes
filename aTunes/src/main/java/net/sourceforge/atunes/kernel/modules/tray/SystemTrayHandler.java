@@ -46,7 +46,6 @@ import net.sourceforge.atunes.gui.views.controls.ActionTrayIcon;
 import net.sourceforge.atunes.gui.views.controls.JTrayIcon;
 import net.sourceforge.atunes.gui.views.controls.JTrayIconPopupMenu;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ExitAction;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
 import net.sourceforge.atunes.kernel.actions.PlayAction;
@@ -354,7 +353,7 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
      * @return
      */
     private JCheckBoxMenuItem getShuffleCheckBoxMenuItem() {
-        return new JCheckBoxMenuItem(Actions.getAction(ShuffleModeAction.class));
+        return new JCheckBoxMenuItem(getBean(ShuffleModeAction.class));
     }
 
     /**

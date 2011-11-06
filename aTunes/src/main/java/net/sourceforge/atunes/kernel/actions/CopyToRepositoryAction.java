@@ -37,44 +37,52 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 public class CopyToRepositoryAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
-    private class ImportProcessListener implements IProcessListener {
-        private final class ImportProcessFinishedRunnable implements Runnable {
-            private final boolean ok;
-
-            private ImportProcessFinishedRunnable(boolean ok) {
-                this.ok = ok;
-            }
-
-            @Override
-            public void run() {
-                if (!ok) {
-                	getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(getBean(IFrame.class), I18nUtils.getString("ERRORS_IN_COPYING_PROCESS"));
-                }
-                // Force a refresh of repository to add new songs
-                getBean(IRepositoryHandler.class).refreshRepository();
-            }
-        }
-
-        @Override
-        public void processCanceled() { /* Nothing to do */
-        }
-
-        @Override
-        public void processFinished(final boolean ok) {
-            SwingUtilities.invokeLater(new ImportProcessFinishedRunnable(ok));
-        }
-    }
-
     private static final long serialVersionUID = 2416674807979541242L;
 
-    CopyToRepositoryAction() {
-        super(I18nUtils.getString("COPY_TO_REPOSITORY"), ILocalAudioObject.class);
+    private IFrame frame;
+    
+    private IOSManager osManager;
+    
+    private IRepositoryHandler repositoryHandler;
+    
+    private IErrorDialogFactory errorDialogFactory;
+    
+    /**
+     * @param frame
+     */
+    public void setFrame(IFrame frame) {
+		this.frame = frame;
+	}
+    
+    /**
+     * @param osManager
+     */
+    public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
+    
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+    
+    /**
+     * @param errorDialogFactory
+     */
+    public void setErrorDialogFactory(IErrorDialogFactory errorDialogFactory) {
+		this.errorDialogFactory = errorDialogFactory;
+	}
+    
+    public CopyToRepositoryAction() {
+        super(I18nUtils.getString("COPY_TO_REPOSITORY"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("COPY_TO_REPOSITORY"));
     }
 
     @Override
     protected void executeAction(List<ILocalAudioObject> objects) {
-        final TransferToRepositoryProcess importer = new TransferToRepositoryProcess(objects, getState(), getBean(IFrame.class), getBean(IOSManager.class), getBean(IRepositoryHandler.class));
+        final TransferToRepositoryProcess importer = new TransferToRepositoryProcess(objects, getState(), frame, osManager, repositoryHandler);
         importer.addProcessListener(new ImportProcessListener());
         importer.execute();
     }
@@ -87,5 +95,33 @@ public class CopyToRepositoryAction extends AbstractActionOverSelectedObjects<IL
     @Override
     public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
         return !selection.isEmpty();
+    }
+    
+    private class ImportProcessListener implements IProcessListener {
+        private final class ImportProcessFinishedRunnable implements Runnable {
+            private final boolean ok;
+
+            private ImportProcessFinishedRunnable(boolean ok) {
+                this.ok = ok;
+            }
+
+            @Override
+            public void run() {
+                if (!ok) {
+                	errorDialogFactory.getDialog().showErrorDialog(frame, I18nUtils.getString("ERRORS_IN_COPYING_PROCESS"));
+                }
+                // Force a refresh of repository to add new songs
+                repositoryHandler.refreshRepository();
+            }
+        }
+
+        @Override
+        public void processCanceled() { /* Nothing to do */
+        }
+
+        @Override
+        public void processFinished(final boolean ok) {
+            SwingUtilities.invokeLater(new ImportProcessFinishedRunnable(ok));
+        }
     }
 }

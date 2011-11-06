@@ -37,6 +37,7 @@ import javax.swing.tree.DefaultTreeModel;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.RadioImageIcon;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
+import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedObjects;
 import net.sourceforge.atunes.kernel.actions.AddFavoriteRadioAction;
 import net.sourceforge.atunes.kernel.actions.AddRadioAction;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAction;
@@ -128,15 +129,30 @@ public final class RadioNavigationView extends AbstractNavigationView {
     public JPopupMenu getTreePopupMenu() {
         if (radioTreeMenu == null) {
             radioTreeMenu = new JPopupMenu();
-            radioTreeMenu.add(getMenuItemForAction(AddToPlayListAction.class));
-            radioTreeMenu.add(getMenuItemForAction(SetAsPlayListAction.class));
+            AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAction = Context.getBean("addToPlayListFromRadioNavigationView", AddToPlayListAction.class);
+            addToPlayListAction.setAudioObjectsSource(this);
+            radioTreeMenu.add(addToPlayListAction);
+            
+            SetAsPlayListAction setAsPlayListAction = Context.getBean("setAsPlaylistFromRadioNavigationView", SetAsPlayListAction.class);
+            setAsPlayListAction.setAudioObjectsSource(this);
+            radioTreeMenu.add(setAsPlayListAction);
+            
             radioTreeMenu.add(new JSeparator());
             radioTreeMenu.add(Context.getBean(AddRadioAction.class));
             radioTreeMenu.add(Context.getBean(RefreshRadioAction.class));
-            radioTreeMenu.add(getMenuItemForAction(AddFavoriteRadioAction.class));
-            radioTreeMenu.add(getMenuItemForAction(EditRadioAction.class));
+            AbstractActionOverSelectedObjects<Radio> addFavoriteRadioAction = Context.getBean(AddFavoriteRadioAction.class);
+            addFavoriteRadioAction.setAudioObjectsSource(this);
+            radioTreeMenu.add(addFavoriteRadioAction);
+            
+            EditRadioAction editRadioAction = Context.getBean(EditRadioAction.class);
+            editRadioAction.setAudioObjectsSource(this);
+            radioTreeMenu.add(editRadioAction);
+            
             radioTreeMenu.add(Context.getBean(RenameRadioLabelAction.class));
-            radioTreeMenu.add(getMenuItemForAction(RemoveRadioAction.class));
+            
+            RemoveRadioAction removeRadioAction = Context.getBean(RemoveRadioAction.class);
+            removeRadioAction.setAudioObjectsSource(this);
+            radioTreeMenu.add(removeRadioAction);
         }
         return radioTreeMenu;
     }
@@ -145,20 +161,36 @@ public final class RadioNavigationView extends AbstractNavigationView {
     public JPopupMenu getTablePopupMenu() {
         if (radioTableMenu == null) {
             radioTableMenu = new JPopupMenu();
-            radioTableMenu.add(getMenuItemForAction(AddToPlayListAction.class));
-            radioTableMenu.add(getMenuItemForAction(AddToPlayListAfterCurrentAudioObjectAction.class));
-            radioTableMenu.add(getMenuItemForAction(SetAsPlayListAction.class));
+            AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAction = Context.getBean("addToPlayListFromRadioNavigationView", AddToPlayListAction.class);
+            addToPlayListAction.setAudioObjectsSource(this);
+            radioTableMenu.add(addToPlayListAction);
+            AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAfterCurrentAudioObjectAction = Context.getBean("addToPlayListAfterCurrentAudioObjectFromRadioNavigationView", AddToPlayListAfterCurrentAudioObjectAction.class);
+            addToPlayListAfterCurrentAudioObjectAction.setAudioObjectsSource(this);
+            radioTableMenu.add(addToPlayListAfterCurrentAudioObjectAction);
+            
+            SetAsPlayListAction setAsPlayListAction = Context.getBean("setAsPlaylistFromRadioNavigationView", SetAsPlayListAction.class);
+            setAsPlayListAction.setAudioObjectsSource(this);
+            radioTableMenu.add(setAsPlayListAction);
+            
             radioTableMenu.add(Context.getBean(PlayNowAction.class));
             radioTableMenu.add(new JSeparator());
             radioTableMenu.add(new JMenuItem(Context.getBean(ShowNavigatorTableItemInfoAction.class)));
             radioTableMenu.add(new JSeparator());
-            radioTableMenu.add(getMenuItemForAction(AddFavoriteRadioAction.class));
-            radioTableMenu.add(getMenuItemForAction(EditRadioAction.class));
-            radioTableMenu.add(getMenuItemForAction(RemoveRadioAction.class));
+            AbstractActionOverSelectedObjects<Radio> addFavoriteRadioAction = Context.getBean(AddFavoriteRadioAction.class);
+            addFavoriteRadioAction.setAudioObjectsSource(this);
+            radioTableMenu.add(addFavoriteRadioAction);
+            
+            EditRadioAction editRadioAction = Context.getBean(EditRadioAction.class);
+            editRadioAction.setAudioObjectsSource(this);
+            radioTableMenu.add(editRadioAction);
+            
+            RemoveRadioAction removeRadioAction = Context.getBean(RemoveRadioAction.class);
+            removeRadioAction.setAudioObjectsSource(this);
+            radioTableMenu.add(removeRadioAction);
         }
         return radioTableMenu;
     }
-
+    
     @Override
     protected Map<String, ?> getViewData(ViewMode viewMode) {
         Map<String, Object> data = new HashMap<String, Object>();

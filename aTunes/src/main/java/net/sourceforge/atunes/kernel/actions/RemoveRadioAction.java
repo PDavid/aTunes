@@ -33,14 +33,23 @@ public class RemoveRadioAction extends AbstractActionOverSelectedObjects<IRadio>
 
     private static final long serialVersionUID = 8755385947718573969L;
 
-    RemoveRadioAction() {
-        super(I18nUtils.getString("REMOVE_RADIO"), IRadio.class);
+    private IRadioHandler radioHandler;
+    
+    /**
+     * @param radioHandler
+     */
+    public void setRadioHandler(IRadioHandler radioHandler) {
+		this.radioHandler = radioHandler;
+	}
+    
+    public RemoveRadioAction() {
+        super(I18nUtils.getString("REMOVE_RADIO"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_RADIO"));
     }
 
     @Override
     protected void executeAction(List<IRadio> objects) {
-    	getBean(IRadioHandler.class).removeRadios(objects);
+    	radioHandler.removeRadios(objects);
     }
 
     @Override

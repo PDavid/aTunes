@@ -34,8 +34,17 @@ public class AddFavoriteRadioAction extends AbstractActionOverSelectedObjects<Ra
 
     private static final long serialVersionUID = 82199784140877040L;
 
-    AddFavoriteRadioAction() {
-        super(I18nUtils.getString("ADD_FAVORITE_RADIO"), Radio.class);
+    private IRadioHandler radioHandler;
+    
+    /**
+     * @param radioHandler
+     */
+    public void setRadioHandler(IRadioHandler radioHandler) {
+		this.radioHandler = radioHandler;
+	}
+    
+    public AddFavoriteRadioAction() {
+        super(I18nUtils.getString("ADD_FAVORITE_RADIO"));
     }
     
     @Override
@@ -46,7 +55,7 @@ public class AddFavoriteRadioAction extends AbstractActionOverSelectedObjects<Ra
     @Override
     protected void executeAction(List<Radio> objects) {
         for (Radio r : objects) {
-            getBean(IRadioHandler.class).addRadio(r);
+        	radioHandler.addRadio(r);
         }
     }
 

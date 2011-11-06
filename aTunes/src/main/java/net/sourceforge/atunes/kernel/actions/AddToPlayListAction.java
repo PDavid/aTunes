@@ -32,14 +32,23 @@ public class AddToPlayListAction extends AbstractActionOverSelectedObjects<IAudi
 
     private static final long serialVersionUID = 1625697867534974341L;
 
-    AddToPlayListAction() {
-        super(I18nUtils.getString("ADD_TO_PLAYLIST"), IAudioObject.class);
+    private IPlayListHandler playListHandler;
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    public AddToPlayListAction() {
+        super(I18nUtils.getString("ADD_TO_PLAYLIST"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("ADD_TO_PLAYLIST"));
     }
 
     @Override
     protected void executeAction(List<IAudioObject> objects) {
-    	getBean(IPlayListHandler.class).addToPlayList(objects);
+    	playListHandler.addToPlayList(objects);
     }
 
     @Override

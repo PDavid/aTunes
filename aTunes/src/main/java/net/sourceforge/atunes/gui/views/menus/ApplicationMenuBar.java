@@ -31,7 +31,6 @@ import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.AddPodcastFeedAction;
 import net.sourceforge.atunes.kernel.actions.AddRadioAction;
 import net.sourceforge.atunes.kernel.actions.CheckUpdatesAction;
@@ -112,7 +111,7 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
         if (file == null) {
             file = new JMenu(I18nUtils.getString("FILE"));
             file.add(Context.getBean(SelectRepositoryAction.class));
-            file.add(Actions.getAction(RefreshRepositoryAction.class));
+            file.add(Context.getBean(RefreshRepositoryAction.class));
             file.add(new JSeparator());
             file.add(Context.getBean(ImportToRepositoryAction.class));
             file.add(Context.getBean(ExportAction.class));
@@ -138,8 +137,8 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
             player.add(Context.getBean(VolumeDownAction.class));
             player.add(new JCheckBoxMenuItem(Context.getBean(MuteAction.class)));
             JMenu repair = new JMenu(I18nUtils.getString("REPAIR"));
-            repair.add(Actions.getAction(RepairTrackNumbersAction.class));
-            repair.add(Actions.getAction(RepairGenresAction.class));
+            repair.add(Context.getBean(RepairTrackNumbersAction.class));
+            repair.add(Context.getBean(RepairGenresAction.class));
             repair.add(Context.getBean(RepairAlbumNamesAction.class));
             edit.add(player);
             if (!osManager.areMenuEntriesDelegated()) {

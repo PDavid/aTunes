@@ -36,6 +36,7 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
+import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedObjects;
 import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedTreeObjects;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAction;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAfterCurrentAudioObjectAction;
@@ -127,23 +128,46 @@ public class RepositoryNavigationView extends AbstractNavigationView {
     public JPopupMenu getTreePopupMenu() {
         if (treePopupMenu == null) {
             treePopupMenu = new JPopupMenu();
-            treePopupMenu.add(getMenuItemForAction(AddToPlayListAction.class));
-            treePopupMenu.add(getMenuItemForAction(SetAsPlayListAction.class));
+            
+            AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAction = Context.getBean("addToPlayListFromRepositoryNavigationView", AddToPlayListAction.class);
+            addToPlayListAction.setAudioObjectsSource(this);
+            treePopupMenu.add(addToPlayListAction);
+            
+            SetAsPlayListAction setAsPlayListAction = Context.getBean("setAsPlaylistFromRepositoryNavigationView", SetAsPlayListAction.class);
+            setAsPlayListAction.setAudioObjectsSource(this);
+            treePopupMenu.add(setAsPlayListAction);
+            
             treePopupMenu.add(new JSeparator());
-            treePopupMenu.add(getMenuItemForAction(OpenFolderFromNavigatorAction.class));
+            
+            OpenFolderFromNavigatorAction openFolderFromNavigatorAction = Context.getBean("openFolderFromRepositoryNavigationView", OpenFolderFromNavigatorAction.class);
+            openFolderFromNavigatorAction.setAudioObjectsSource(this);
+            treePopupMenu.add(openFolderFromNavigatorAction);
+            
             AbstractActionOverSelectedTreeObjects<Folder> refreshFolderFromNavigatorAction = Context.getBean(RefreshFolderFromNavigatorAction.class);
             refreshFolderFromNavigatorAction.setTreeObjectsSource(this);
             treePopupMenu.add(refreshFolderFromNavigatorAction);
+            
             treePopupMenu.add(new JSeparator());
             treePopupMenu.add(new EditTagMenu(false, this));
             treePopupMenu.add(Context.getBean(EditTitlesAction.class));
             treePopupMenu.add(new JSeparator());
             treePopupMenu.add(Context.getBean(RemoveFromDiskAction.class));
             treePopupMenu.add(new JSeparator());
-            treePopupMenu.add(getMenuItemForAction(CopyToDeviceAction.class));
+            
+            AbstractActionOverSelectedObjects<IAudioObject> copyToDeviceAction = Context.getBean("copyToDeviceFromRepositoryNavigationView", CopyToDeviceAction.class);
+            copyToDeviceAction.setAudioObjectsSource(this);
+            treePopupMenu.add(copyToDeviceAction);
+            
             treePopupMenu.add(new JSeparator());
-            treePopupMenu.add(getMenuItemForAction(SetFavoriteAlbumFromNavigatorAction.class));
-            treePopupMenu.add(getMenuItemForAction(SetFavoriteArtistFromNavigatorAction.class));
+            
+            SetFavoriteAlbumFromNavigatorAction setFavoriteAlbumFromNavigatorAction = Context.getBean(SetFavoriteAlbumFromNavigatorAction.class);
+            setFavoriteAlbumFromNavigatorAction.setAudioObjectsSource(this);
+            treePopupMenu.add(setFavoriteAlbumFromNavigatorAction);
+            
+            SetFavoriteArtistFromNavigatorAction setFavoriteArtistFromNavigatorAction = Context.getBean(SetFavoriteArtistFromNavigatorAction.class);
+            setFavoriteArtistFromNavigatorAction.setAudioObjectsSource(this);
+            treePopupMenu.add(setFavoriteArtistFromNavigatorAction);
+            
             treePopupMenu.add(new JSeparator());
             treePopupMenu.add(Context.getBean(SearchArtistAction.class));
             treePopupMenu.add(Context.getBean(SearchArtistAtAction.class));
@@ -155,24 +179,49 @@ public class RepositoryNavigationView extends AbstractNavigationView {
     public JPopupMenu getTablePopupMenu() {
         if (tablePopupMenu == null) {
             tablePopupMenu = new JPopupMenu();
-            tablePopupMenu.add(getMenuItemForAction(AddToPlayListAction.class));
-            tablePopupMenu.add(getMenuItemForAction(AddToPlayListAfterCurrentAudioObjectAction.class));
-            tablePopupMenu.add(getMenuItemForAction(SetAsPlayListAction.class));
+            
+            AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAction = Context.getBean("addToPlayListFromRepositoryNavigationView", AddToPlayListAction.class);
+            addToPlayListAction.setAudioObjectsSource(this);
+            tablePopupMenu.add(addToPlayListAction);
+            
+            AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAfterCurrentAudioObjectAction = Context.getBean("addToPlayListAfterCurrentAudioObjectFromRepositoryNavigationView", AddToPlayListAfterCurrentAudioObjectAction.class);
+            addToPlayListAfterCurrentAudioObjectAction.setAudioObjectsSource(this);
+            tablePopupMenu.add(addToPlayListAfterCurrentAudioObjectAction);
+            
+            SetAsPlayListAction setAsPlayListAction = Context.getBean("setAsPlaylistFromRepositoryNavigationView", SetAsPlayListAction.class);
+            setAsPlayListAction.setAudioObjectsSource(this);
+            tablePopupMenu.add(setAsPlayListAction);
+            
             tablePopupMenu.add(Context.getBean(PlayNowAction.class));
             tablePopupMenu.add(new JSeparator());
             tablePopupMenu.add(Context.getBean(ShowNavigatorTableItemInfoAction.class));
             tablePopupMenu.add(new JSeparator());
-            tablePopupMenu.add(getMenuItemForAction(OpenFolderFromNavigatorAction.class));
+            
+            OpenFolderFromNavigatorAction openFolderFromNavigatorAction = Context.getBean("openFolderFromRepositoryNavigationView", OpenFolderFromNavigatorAction.class);
+            openFolderFromNavigatorAction.setAudioObjectsSource(this);
+            tablePopupMenu.add(openFolderFromNavigatorAction);
+            
             tablePopupMenu.add(new JSeparator());
             tablePopupMenu.add(new EditTagMenu(false, this));
-            tablePopupMenu.add(getMenuItemForAction(ExtractPictureAction.class));
+            
+            ExtractPictureAction extractPictureAction = Context.getBean("extractPictureFromRepositoryNavigationView", ExtractPictureAction.class);
+            extractPictureAction.setAudioObjectsSource(this);
+            tablePopupMenu.add(extractPictureAction);
+            
             tablePopupMenu.add(new JSeparator());
             tablePopupMenu.add(Context.getBean(RemoveFromDiskAction.class));
             tablePopupMenu.add(Context.getBean(RenameAudioFileInNavigationTableAction.class));
             tablePopupMenu.add(new JSeparator());
-            tablePopupMenu.add(getMenuItemForAction(CopyToDeviceAction.class));
+
+            AbstractActionOverSelectedObjects<IAudioObject> copyToDeviceAction = Context.getBean("copyToDeviceFromRepositoryNavigationView", CopyToDeviceAction.class);
+            copyToDeviceAction.setAudioObjectsSource(this);
+            tablePopupMenu.add(copyToDeviceAction);
+            
             tablePopupMenu.add(new JSeparator());
-            tablePopupMenu.add(getMenuItemForAction(SetFavoriteSongFromNavigatorAction.class));
+            
+            SetFavoriteSongFromNavigatorAction setFavoriteSongFromNavigatorAction = Context.getBean(SetFavoriteSongFromNavigatorAction.class);
+            setFavoriteSongFromNavigatorAction.setAudioObjectsSource(this);
+            tablePopupMenu.add(setFavoriteSongFromNavigatorAction);
         }
         return tablePopupMenu;
     }

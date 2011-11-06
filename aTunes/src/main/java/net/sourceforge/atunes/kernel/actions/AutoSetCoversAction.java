@@ -42,14 +42,41 @@ public class AutoSetCoversAction extends AbstractActionOverSelectedObjects<ILoca
 
     private static final long serialVersionUID = -5997105583422805310L;
 
-    AutoSetCoversAction() {
-        super(I18nUtils.getString("AUTO_SET_COVER"), ILocalAudioObject.class);
+    private IPlayListHandler playListHandler;
+    
+    private IRepositoryHandler repositoryHandler;
+    
+    private IPlayerHandler playerHandler;
+    
+    /**
+     * @param playerHandler
+     */
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+    
+    public AutoSetCoversAction() {
+        super(I18nUtils.getString("AUTO_SET_COVER"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("AUTO_SET_COVER"));
     }
 
     @Override
     protected void executeAction(List<ILocalAudioObject> objects) {
-        TagEditionOperations.editCover(objects, getState(), getBean(IPlayListHandler.class), getBean(IRepositoryHandler.class), getBean(IPlayerHandler.class));
+        TagEditionOperations.editCover(objects, getState(), playListHandler, repositoryHandler, playerHandler);
     }
 
     @Override

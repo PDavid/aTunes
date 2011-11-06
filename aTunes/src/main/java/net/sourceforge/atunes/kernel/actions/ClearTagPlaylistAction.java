@@ -33,13 +33,40 @@ public class ClearTagPlaylistAction extends AbstractActionOverSelectedObjects<IL
 
     private static final long serialVersionUID = 4476719536754930347L;
 
-    ClearTagPlaylistAction() {
-        super(I18nUtils.getString("CLEAR_TAG"), ILocalAudioObject.class);
+    private IPlayListHandler playListHandler;
+    
+    private IRepositoryHandler repositoryHandler;
+    
+    private IPlayerHandler playerHandler;
+    
+    /**
+     * @param playerHandler
+     */
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+    
+    public ClearTagPlaylistAction() {
+        super(I18nUtils.getString("CLEAR_TAG"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("CLEAR_TAG"));
     }
 
     @Override
     protected void executeAction(List<ILocalAudioObject> objects) {
-        new ClearTagsProcess(objects, getState(), getBean(IPlayListHandler.class), getBean(IRepositoryHandler.class), getBean(IPlayerHandler.class)).execute();
+        new ClearTagsProcess(objects, getState(), playListHandler, repositoryHandler, playerHandler).execute();
     }
 }

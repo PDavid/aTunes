@@ -33,17 +33,26 @@ public class EditRadioAction extends AbstractActionOverSelectedObjects<IRadio> {
 
     private static final long serialVersionUID = -922076985505834816L;
 
-    EditRadioAction() {
-        super(I18nUtils.getString("EDIT_RADIO"), IRadio.class);
+    private IRadioHandler radioHandler;
+    
+    /**
+     * @param radioHandler
+     */
+    public void setRadioHandler(IRadioHandler radioHandler) {
+		this.radioHandler = radioHandler;
+	}
+    
+    public EditRadioAction() {
+        super(I18nUtils.getString("EDIT_RADIO"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("EDIT_RADIO"));
     }
 
     @Override
     protected void executeAction(List<IRadio> objects) {
         IRadio radio = objects.get(0); // Guaranteed only one radio
-        IRadio radioEdited = getBean(IRadioHandler.class).editRadio(radio);
+        IRadio radioEdited = radioHandler.editRadio(radio);
         if (radioEdited != null) {
-        	getBean(IRadioHandler.class).replace(radio, radioEdited);
+        	radioHandler.replace(radio, radioEdited);
         }
     }
 

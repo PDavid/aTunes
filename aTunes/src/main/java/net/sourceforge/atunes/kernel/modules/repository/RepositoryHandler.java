@@ -41,7 +41,6 @@ import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.RepositorySelectionInfoDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.ConnectDeviceAction;
 import net.sourceforge.atunes.kernel.actions.ExportAction;
 import net.sourceforge.atunes.kernel.actions.ImportToRepositoryAction;
@@ -1139,12 +1138,12 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
      */
     private void enableRepositoryActions(boolean enable) {
         getBean(SelectRepositoryAction.class).setEnabled(enable);
-        Actions.getAction(RefreshRepositoryAction.class).setEnabled(enable);
-        Actions.getAction(ImportToRepositoryAction.class).setEnabled(enable);
+        getBean(RefreshRepositoryAction.class).setEnabled(enable);
+        getBean(ImportToRepositoryAction.class).setEnabled(enable);
         getBean(ExportAction.class).setEnabled(enable);
         getBean(ConnectDeviceAction.class).setEnabled(enable);
         getBean(RipCDAction.class).setEnabled(enable);
-        Actions.getAction(RefreshFolderFromNavigatorAction.class).setEnabled(enable);
+        getBean(RefreshFolderFromNavigatorAction.class).setEnabled(enable);
     }
 
     /**

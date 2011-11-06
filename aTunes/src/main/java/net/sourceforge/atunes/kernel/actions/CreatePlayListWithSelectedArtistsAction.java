@@ -45,8 +45,26 @@ public class CreatePlayListWithSelectedArtistsAction extends AbstractActionOverS
 
     private static final long serialVersionUID = 242525309967706255L;
 
-    CreatePlayListWithSelectedArtistsAction() {
-        super(I18nUtils.getString("SET_ARTIST_AS_PLAYLIST"), IAudioObject.class);
+    private IRepositoryHandler repositoryHandler;
+    
+    private IPlayListHandler playListHandler;
+    
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    public CreatePlayListWithSelectedArtistsAction() {
+        super(I18nUtils.getString("SET_ARTIST_AS_PLAYLIST"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("ARTIST_BUTTON_TOOLTIP"));
         setEnabled(false);
     }
@@ -57,7 +75,7 @@ public class CreatePlayListWithSelectedArtistsAction extends AbstractActionOverS
         List<Artist> selectedArtists = new ArrayList<Artist>();
         for (IAudioObject ao : objects) {
             String artist = ao.getArtist();
-            Artist a = getBean(IRepositoryHandler.class).getArtist(artist);
+            Artist a = repositoryHandler.getArtist(artist);
             if (a != null) {
                 if (!selectedArtists.contains(a)) {
                     selectedArtists.add(a);
@@ -67,11 +85,11 @@ public class CreatePlayListWithSelectedArtistsAction extends AbstractActionOverS
 
         // For every artist
         for (Artist artist : selectedArtists) {
-            List<ILocalAudioObject> audioObjects = getBean(IRepositoryHandler.class).getAudioFilesForArtists(Collections.singletonMap(artist.getName(), artist));
+            List<ILocalAudioObject> audioObjects = repositoryHandler.getAudioFilesForArtists(Collections.singletonMap(artist.getName(), artist));
             AudioObjectComparator.sort(audioObjects);
 
             // Create a new play list with artist as name and audio objects selected
-            getBean(IPlayListHandler.class).newPlayList(artist.getName(), audioObjects);
+            playListHandler.newPlayList(artist.getName(), audioObjects);
         }
     }
 }

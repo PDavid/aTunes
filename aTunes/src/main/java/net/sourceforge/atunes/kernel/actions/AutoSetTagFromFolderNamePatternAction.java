@@ -24,7 +24,6 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.PatternInputDialog;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.kernel.modules.tags.EditTagFromFolderNamePatternProcess;
@@ -46,26 +45,68 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class AutoSetTagFromFolderNamePatternAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = -1253820711948217089L;
 
+    private IFrame frame;
+    
+    private ILookAndFeelManager lookAndFeelManager;
+    
+    private IPlayListHandler playListHandler;
+    
+    private IRepositoryHandler repositoryHandler;
+    
+    private IPlayerHandler playerHandler;
+    
+    /**
+     * @param frame
+     */
+    public void setFrame(IFrame frame) {
+		this.frame = frame;
+	}
+    
+    /**
+     * @param lookAndFeelManager
+     */
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+    
+    /**
+     * @param playerHandler
+     */
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
+ 
     public AutoSetTagFromFolderNamePatternAction() {
-        super(StringUtils.getString(I18nUtils.getString("AUTO_SET_TAG_FROM_FOLDER_NAME_PATTERN"), "..."), ILocalAudioObject.class);
+        super(StringUtils.getString(I18nUtils.getString("AUTO_SET_TAG_FROM_FOLDER_NAME_PATTERN"), "..."));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("AUTO_SET_TAG_FROM_FOLDER_NAME_PATTERN"));
     }
 
     @Override
     protected void executeAction(List<ILocalAudioObject> objects) {
         // Show pattern input dialog
-        PatternInputDialog inputDialog = new PatternInputDialog(getBean(IFrame.class).getFrame(), false, getState(), Context.getBean(ILookAndFeelManager.class).getCurrentLookAndFeel());
+        PatternInputDialog inputDialog = new PatternInputDialog(frame.getFrame(), false, getState(), lookAndFeelManager.getCurrentLookAndFeel());
         inputDialog.show(AbstractPattern.getRecognitionPatterns(), objects.get(0).getFile().getParentFile().getAbsolutePath());
         String pattern = inputDialog.getResult();
 
         // If user entered a pattern apply to files
         if (pattern != null) {
-            new EditTagFromFolderNamePatternProcess(objects, pattern, getState(), getBean(IPlayListHandler.class), getBean(IRepositoryHandler.class), getBean(IPlayerHandler.class)).execute();
+            new EditTagFromFolderNamePatternProcess(objects, pattern, getState(), playListHandler, repositoryHandler, playerHandler).execute();
         }
     }
 

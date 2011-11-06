@@ -42,14 +42,41 @@ public class AutoSetTracksAction extends AbstractActionOverSelectedObjects<ILoca
 
     private static final long serialVersionUID = 1378739676496602001L;
 
-    AutoSetTracksAction() {
-        super(I18nUtils.getString("AUTO_SET_TRACK_NUMBER"), ILocalAudioObject.class);
+    private IPlayListHandler playListHandler;
+    
+    private IRepositoryHandler repositoryHandler;
+    
+    private IPlayerHandler playerHandler;
+    
+    /**
+     * @param playerHandler
+     */
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
+    
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+
+    public AutoSetTracksAction() {
+        super(I18nUtils.getString("AUTO_SET_TRACK_NUMBER"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("AUTO_SET_TRACK_NUMBER"));
     }
 
     @Override
     protected void executeAction(List<ILocalAudioObject> objects) {
-        TagEditionOperations.editTrackNumber(objects, getState(), getBean(IPlayListHandler.class), getBean(IRepositoryHandler.class), getBean(IPlayerHandler.class));
+        TagEditionOperations.editTrackNumber(objects, getState(), playListHandler, repositoryHandler, playerHandler);
     }
 
     @Override
