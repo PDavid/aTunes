@@ -27,7 +27,6 @@ import java.util.List;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.utils.DesktopUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -40,8 +39,26 @@ public class OpenFolderAction extends AbstractActionOverSelectedObjects<AudioFil
 
     private static final long serialVersionUID = 1682289345922375850L;
 
-    OpenFolderAction() {
-        super(I18nUtils.getString("OPEN_FOLDER"), AudioFile.class);
+    private IOSManager osManager;
+    
+    private IDesktop desktop;
+    
+    /**
+     * @param osManager
+     */
+    public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
+    
+    /**
+     * @param desktop
+     */
+    public void setDesktop(IDesktop desktop) {
+		this.desktop = desktop;
+	}
+    
+    public OpenFolderAction() {
+        super(I18nUtils.getString("OPEN_FOLDER"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("OPEN_FOLDER"));
     }
 
@@ -57,9 +74,8 @@ public class OpenFolderAction extends AbstractActionOverSelectedObjects<AudioFil
         }
 
         // ... then open
-        IDesktop desktop = new DesktopUtils();
         for (File folder : foldersToOpen) {
-        	desktop.openFile(folder, getBean(IOSManager.class));
+        	desktop.openFile(folder, osManager);
         }
     }
 }

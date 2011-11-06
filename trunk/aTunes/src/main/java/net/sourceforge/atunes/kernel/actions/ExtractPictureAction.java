@@ -32,15 +32,24 @@ public class ExtractPictureAction extends AbstractActionOverSelectedObjects<ILoc
 
     private static final long serialVersionUID = -8618297820141610193L;
 
-    ExtractPictureAction() {
-        super(I18nUtils.getString("EXTRACT_PICTURE"), ILocalAudioObject.class);
+    private IFrame frame;
+    
+    /**
+     * @param frame
+     */
+    public void setFrame(IFrame frame) {
+		this.frame = frame;
+	}
+    
+    public ExtractPictureAction() {
+        super(I18nUtils.getString("EXTRACT_PICTURE"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("EXTRACT_PICTURE"));
     }
 
     @Override
     protected void executeAction(List<ILocalAudioObject> objects) {
         // Export only first picture
-        AudioFilePictureUtils.exportPicture(objects.get(0), getBean(IFrame.class).getFrame());
+        AudioFilePictureUtils.exportPicture(objects.get(0), frame.getFrame());
     }
 
     @Override

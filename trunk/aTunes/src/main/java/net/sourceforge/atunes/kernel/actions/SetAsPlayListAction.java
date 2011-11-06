@@ -32,14 +32,22 @@ public class SetAsPlayListAction extends AbstractActionOverSelectedObjects<IAudi
 
     private static final long serialVersionUID = -8993769615827375740L;
 
-    SetAsPlayListAction() {
-        super(I18nUtils.getString("SET_AS_PLAYLIST"), IAudioObject.class);
+    private IPlayListHandler playListHandler;
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    public SetAsPlayListAction() {
+        super(I18nUtils.getString("SET_AS_PLAYLIST"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SET_AS_PLAYLIST"));
     }
 
     @Override
     protected void executeAction(List<IAudioObject> objects) {
-    	IPlayListHandler playListHandler = getBean(IPlayListHandler.class);
         playListHandler.clearPlayList();
         playListHandler.addToPlayList(objects);
     }

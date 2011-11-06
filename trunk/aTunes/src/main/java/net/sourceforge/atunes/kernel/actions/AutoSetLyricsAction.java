@@ -42,14 +42,41 @@ public class AutoSetLyricsAction extends AbstractActionOverSelectedObjects<ILoca
 
     private static final long serialVersionUID = 4778415252933283915L;
 
-    AutoSetLyricsAction() {
-        super(I18nUtils.getString("AUTO_SET_LYRICS"), ILocalAudioObject.class);
+    private IPlayListHandler playListHandler;
+    
+    private IRepositoryHandler repositoryHandler;
+    
+    private IPlayerHandler playerHandler;
+    
+    /**
+     * @param playerHandler
+     */
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
+    
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+
+    public AutoSetLyricsAction() {
+        super(I18nUtils.getString("AUTO_SET_LYRICS"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("AUTO_SET_LYRICS"));
     }
 
     @Override
     protected void executeAction(List<ILocalAudioObject> objects) {
-        TagEditionOperations.addLyrics(objects, getState(), getBean(IPlayListHandler.class), getBean(IRepositoryHandler.class), getBean(IPlayerHandler.class));
+        TagEditionOperations.addLyrics(objects, getState(), playListHandler, repositoryHandler, playerHandler);
     }
 
     @Override

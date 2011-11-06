@@ -38,6 +38,7 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.FavoriteImageIcon;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
+import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedObjects;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAction;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAfterCurrentAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.CopyToDeviceAction;
@@ -133,17 +134,32 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
     public JPopupMenu getTreePopupMenu() {
         if (favoriteTreeMenu == null) {
             favoriteTreeMenu = new JPopupMenu();
-            favoriteTreeMenu.add(getMenuItemForAction(AddToPlayListAction.class));
-            favoriteTreeMenu.add(getMenuItemForAction(SetAsPlayListAction.class));
+            
+            AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAction = Context.getBean("addToPlayListFromFavoritesNavigationView", AddToPlayListAction.class);
+            addToPlayListAction.setAudioObjectsSource(this);
+            favoriteTreeMenu.add(addToPlayListAction);
+            
+            SetAsPlayListAction setAsPlayListAction = Context.getBean("setAsPlaylistFromFavoritesNavigationView", SetAsPlayListAction.class);
+            setAsPlayListAction.setAudioObjectsSource(this);
+            favoriteTreeMenu.add(setAsPlayListAction);
+            
             favoriteTreeMenu.add(new JSeparator());
-            favoriteTreeMenu.add(getMenuItemForAction(OpenFolderFromNavigatorAction.class));
+            
+            OpenFolderFromNavigatorAction openFolderFromNavigatorAction = Context.getBean("openFolderFromFavoritesNavigationView", OpenFolderFromNavigatorAction.class);
+            openFolderFromNavigatorAction.setAudioObjectsSource(this);
+            favoriteTreeMenu.add(openFolderFromNavigatorAction);
+            
             favoriteTreeMenu.add(new JSeparator());
             favoriteTreeMenu.add(new EditTagMenu(false, this));
             favoriteTreeMenu.add(Context.getBean(EditTitlesAction.class));
             favoriteTreeMenu.add(new JSeparator());
             favoriteTreeMenu.add(Context.getBean(RemoveFromDiskAction.class));
             favoriteTreeMenu.add(new JSeparator());
-            favoriteTreeMenu.add(getMenuItemForAction(CopyToDeviceAction.class));
+            
+            AbstractActionOverSelectedObjects<IAudioObject> copyToDeviceAction = Context.getBean("copyToDeviceFromFavoritesNavigationView", CopyToDeviceAction.class);
+            copyToDeviceAction.setAudioObjectsSource(this);
+            favoriteTreeMenu.add(copyToDeviceAction);
+            
             favoriteTreeMenu.add(new JSeparator());
             favoriteTreeMenu.add(Context.getBean(RemoveFromFavoritesAction.class));
             favoriteTreeMenu.add(new JSeparator());
@@ -157,22 +173,45 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
     public JPopupMenu getTablePopupMenu() {
         if (favoriteTableMenu == null) {
             favoriteTableMenu = new JPopupMenu();
-            favoriteTableMenu.add(getMenuItemForAction(AddToPlayListAction.class));
-            favoriteTableMenu.add(getMenuItemForAction(AddToPlayListAfterCurrentAudioObjectAction.class));
-            favoriteTableMenu.add(getMenuItemForAction(SetAsPlayListAction.class));
+            
+            AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAction = Context.getBean("addToPlayListFromFavoritesNavigationView", AddToPlayListAction.class);
+            addToPlayListAction.setAudioObjectsSource(this);
+            favoriteTableMenu.add(addToPlayListAction);
+            
+            AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAfterCurrentAudioObjectAction = Context.getBean("addToPlayListAfterCurrentAudioObjectFromFavoritesNavigationView", AddToPlayListAfterCurrentAudioObjectAction.class);
+            addToPlayListAfterCurrentAudioObjectAction.setAudioObjectsSource(this);
+            favoriteTableMenu.add(addToPlayListAfterCurrentAudioObjectAction);
+            
+            SetAsPlayListAction setAsPlayListAction = Context.getBean("setAsPlaylistFromFavoritesNavigationView", SetAsPlayListAction.class);
+            setAsPlayListAction.setAudioObjectsSource(this);
+            favoriteTableMenu.add(setAsPlayListAction);
+            
             favoriteTableMenu.add(Context.getBean(PlayNowAction.class));
             favoriteTableMenu.add(new JSeparator());
             favoriteTableMenu.add(Context.getBean(ShowNavigatorTableItemInfoAction.class));
             favoriteTableMenu.add(new JSeparator());
-            favoriteTableMenu.add(getMenuItemForAction(OpenFolderFromNavigatorAction.class));
+            
+            OpenFolderFromNavigatorAction openFolderFromNavigatorAction = Context.getBean("openFolderFromFavoritesNavigationView", OpenFolderFromNavigatorAction.class);
+            openFolderFromNavigatorAction.setAudioObjectsSource(this);
+            favoriteTableMenu.add(openFolderFromNavigatorAction);
+            
             favoriteTableMenu.add(new JSeparator());
             favoriteTableMenu.add(new EditTagMenu(false, this));
-            favoriteTableMenu.add(getMenuItemForAction(ExtractPictureAction.class));
+            
+            ExtractPictureAction extractPictureAction = Context.getBean("extractPictureFromFavoritesNavigationView", ExtractPictureAction.class);
+            extractPictureAction.setAudioObjectsSource(this);
+            favoriteTableMenu.add(extractPictureAction);
+            
+            
             favoriteTableMenu.add(new JSeparator());
             favoriteTableMenu.add(Context.getBean(RemoveFromDiskAction.class));
             favoriteTableMenu.add(Context.getBean(RenameAudioFileInNavigationTableAction.class));
             favoriteTableMenu.add(new JSeparator());
-            favoriteTableMenu.add(getMenuItemForAction(CopyToDeviceAction.class));
+            
+            AbstractActionOverSelectedObjects<IAudioObject> copyToDeviceAction = Context.getBean("copyToDeviceFromFavoritesNavigationView", CopyToDeviceAction.class);
+            copyToDeviceAction.setAudioObjectsSource(this);
+            favoriteTableMenu.add(copyToDeviceAction);
+            
             favoriteTableMenu.add(new JSeparator());
             favoriteTableMenu.add(Context.getBean(RemoveFromFavoritesAction.class));
         }

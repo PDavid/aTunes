@@ -39,8 +39,35 @@ public class CopyToDeviceAction extends AbstractActionOverSelectedObjects<IAudio
 
     private static final long serialVersionUID = -7689483210176624995L;
 
-    CopyToDeviceAction() {
-        super(I18nUtils.getString("COPY_TO_DEVICE"), IAudioObject.class);
+    private INavigationHandler navigationHandler;
+    
+    private IDeviceHandler deviceHandler;
+    
+    private IPodcastFeedHandler podcastFeedHandler;
+    
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+    
+    /**
+     * @param deviceHandler
+     */
+    public void setDeviceHandler(IDeviceHandler deviceHandler) {
+		this.deviceHandler = deviceHandler;
+	}
+    
+    /**
+     * @param podcastFeedHandler
+     */
+    public void setPodcastFeedHandler(IPodcastFeedHandler podcastFeedHandler) {
+		this.podcastFeedHandler = podcastFeedHandler;
+	}
+    
+    public CopyToDeviceAction() {
+        super(I18nUtils.getString("COPY_TO_DEVICE"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("COPY_TO_DEVICE"));
     }
 
@@ -49,7 +76,7 @@ public class CopyToDeviceAction extends AbstractActionOverSelectedObjects<IAudio
         if (audioObject instanceof AudioFile) {
             return audioObject;
         } else if (audioObject instanceof IPodcastFeedEntry && ((IPodcastFeedEntry) audioObject).isDownloaded()) {
-            String downloadPath = getBean(IPodcastFeedHandler.class).getDownloadPath((IPodcastFeedEntry) audioObject);
+            String downloadPath = podcastFeedHandler.getDownloadPath((IPodcastFeedEntry) audioObject);
             return new AudioFile(new File(downloadPath));
         }
 
@@ -58,21 +85,21 @@ public class CopyToDeviceAction extends AbstractActionOverSelectedObjects<IAudio
 
     @Override
     protected void executeAction(List<IAudioObject> objects) {
-    	getBean(IDeviceHandler.class).copyFilesToDevice(new LocalAudioObjectFilter().getLocalAudioObjects(objects));
+    	deviceHandler.copyFilesToDevice(new LocalAudioObjectFilter().getLocalAudioObjects(objects));
     }
 
     @Override
     public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        return getBean(IDeviceHandler.class).isDeviceConnected() && !rootSelected && !selection.isEmpty();
+        return deviceHandler.isDeviceConnected() && !rootSelected && !selection.isEmpty();
     }
 
     @Override
     public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
-        if (!getBean(IDeviceHandler.class).isDeviceConnected()) {
+        if (!deviceHandler.isDeviceConnected()) {
             return false;
         }
 
-        if (getBean(INavigationHandler.class).getCurrentView().equals(getBean(INavigationHandler.class).getView(PodcastNavigationView.class))) {
+        if (navigationHandler.getCurrentView().equals(navigationHandler.getView(PodcastNavigationView.class))) {
             for (IAudioObject ao : selection) {
                 if (!((IPodcastFeedEntry) ao).isDownloaded()) {
                     return false;

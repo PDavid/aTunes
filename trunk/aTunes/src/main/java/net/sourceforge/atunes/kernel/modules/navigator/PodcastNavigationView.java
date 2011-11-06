@@ -37,6 +37,7 @@ import javax.swing.tree.TreeSelectionModel;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
+import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedObjects;
 import net.sourceforge.atunes.kernel.actions.AddPodcastFeedAction;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAction;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAfterCurrentAudioObjectAction;
@@ -52,6 +53,7 @@ import net.sourceforge.atunes.kernel.actions.RenamePodcastFeedAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IFilterHandler;
@@ -131,8 +133,14 @@ public final class PodcastNavigationView extends AbstractNavigationView {
     public JPopupMenu getTreePopupMenu() {
         if (podcastFeedTreeMenu == null) {
             podcastFeedTreeMenu = new JPopupMenu();
-            podcastFeedTreeMenu.add(getMenuItemForAction(AddToPlayListAction.class));
-            podcastFeedTreeMenu.add(getMenuItemForAction(SetAsPlayListAction.class));
+            AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAction = Context.getBean("addToPlayListFromPodcastNavigationView", AddToPlayListAction.class);
+            addToPlayListAction.setAudioObjectsSource(this);
+            podcastFeedTreeMenu.add(addToPlayListAction);
+            
+            SetAsPlayListAction setAsPlayListAction = Context.getBean("setAsPlaylistFromPodcastNavigationView", SetAsPlayListAction.class);
+            setAsPlayListAction.setAudioObjectsSource(this);
+            podcastFeedTreeMenu.add(setAsPlayListAction);
+            
             podcastFeedTreeMenu.add(new JSeparator());
             podcastFeedTreeMenu.add(Context.getBean(AddPodcastFeedAction.class));
             podcastFeedTreeMenu.add(Context.getBean(RenamePodcastFeedAction.class));
@@ -146,18 +154,42 @@ public final class PodcastNavigationView extends AbstractNavigationView {
     public JPopupMenu getTablePopupMenu() {
         if (podcastFeedTableMenu == null) {
             podcastFeedTableMenu = new JPopupMenu();
-            podcastFeedTableMenu.add(getMenuItemForAction(AddToPlayListAction.class));
-            podcastFeedTableMenu.add(getMenuItemForAction(AddToPlayListAfterCurrentAudioObjectAction.class));
-            podcastFeedTableMenu.add(getMenuItemForAction(SetAsPlayListAction.class));
+            
+            AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAction = Context.getBean("addToPlayListFromPodcastNavigationView", AddToPlayListAction.class);
+            addToPlayListAction.setAudioObjectsSource(this);
+            podcastFeedTableMenu.add(addToPlayListAction);
+            
+            AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAfterCurrentAudioObjectAction = Context.getBean("addToPlayListAfterCurrentAudioObjectFromPodcastNavigationView", AddToPlayListAfterCurrentAudioObjectAction.class);
+            addToPlayListAfterCurrentAudioObjectAction.setAudioObjectsSource(this);
+            podcastFeedTableMenu.add(addToPlayListAfterCurrentAudioObjectAction);
+            
+            SetAsPlayListAction setAsPlayListAction = Context.getBean("setAsPlaylistFromPodcastNavigationView", SetAsPlayListAction.class);
+            setAsPlayListAction.setAudioObjectsSource(this);
+            podcastFeedTableMenu.add(setAsPlayListAction);
+            
             podcastFeedTableMenu.add(Context.getBean(PlayNowAction.class));
             podcastFeedTableMenu.add(new JSeparator());
             podcastFeedTableMenu.add(Context.getBean(ShowNavigatorTableItemInfoAction.class));
             podcastFeedTableMenu.add(new JSeparator());
-            podcastFeedTableMenu.add(getMenuItemForAction(DownloadPodcastEntryAction.class));
-            podcastFeedTableMenu.add(getMenuItemForAction(RemoveOldPodcastEntryAction.class));
-            podcastFeedTableMenu.add(getMenuItemForAction(MarkPodcastEntryListenedAction.class));
+            
+            AbstractActionOverSelectedObjects<IPodcastFeedEntry> downloadPodcastEntryAction = Context.getBean(DownloadPodcastEntryAction.class);
+            downloadPodcastEntryAction.setAudioObjectsSource(this);
+            podcastFeedTableMenu.add(downloadPodcastEntryAction);
+            
+            RemoveOldPodcastEntryAction removeOldPodcastEntryAction = Context.getBean(RemoveOldPodcastEntryAction.class);
+            removeOldPodcastEntryAction.setAudioObjectsSource(this);
+            podcastFeedTableMenu.add(removeOldPodcastEntryAction);
+            
+            MarkPodcastEntryListenedAction markPodcastEntryListenedAction = Context.getBean(MarkPodcastEntryListenedAction.class);
+            markPodcastEntryListenedAction.setAudioObjectsSource(this);
+            podcastFeedTableMenu.add(markPodcastEntryListenedAction);
+            
             podcastFeedTableMenu.add(new JSeparator());
-            podcastFeedTableMenu.add(getMenuItemForAction(CopyToDeviceAction.class));
+            
+            AbstractActionOverSelectedObjects<IAudioObject> copyToDeviceAction = Context.getBean("copyToDeviceFromPodcastNavigationView", CopyToDeviceAction.class);
+            copyToDeviceAction.setAudioObjectsSource(this);
+            podcastFeedTableMenu.add(copyToDeviceAction);
+            
             podcastFeedTableMenu.add(new JSeparator());
             podcastFeedTableMenu.add(Context.getBean(RemoveFromDiskAction.class));
         }

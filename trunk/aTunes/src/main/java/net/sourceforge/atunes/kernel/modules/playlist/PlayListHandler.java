@@ -38,7 +38,6 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
-import net.sourceforge.atunes.kernel.actions.Actions;
 import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListTableTransferHandler;
@@ -405,7 +404,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
      *            the new play list
      */
     private void setPlayList(PlayList playList) {
-        Actions.getAction(SavePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
+    	getBean(SavePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
         getBean(ShufflePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
         showPlayListInformation(playList);
         if (isActivePlayListVisible()) {
@@ -512,7 +511,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
             playList.setCurrentAudioObjectIndex(selectedAudioObject);
         }
 
-        Actions.getAction(SavePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
+        getBean(SavePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
         getBean(ShufflePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
 
         // Update play list number in status bar
@@ -558,7 +557,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
             playList.setCurrentAudioObjectIndex(0);
 
             // Disable actions
-            Actions.getAction(SavePlayListAction.class).setEnabled(false);
+            getBean(SavePlayListAction.class).setEnabled(false);
             getBean(ShufflePlayListAction.class).setEnabled(false);
 
             // Update audio object number
@@ -865,7 +864,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         getPlayListController().refreshPlayList();
 
         if (currentPlayList.isEmpty()) {
-            Actions.getAction(SavePlayListAction.class).setEnabled(false);
+            getBean(SavePlayListAction.class).setEnabled(false);
             getBean(ShufflePlayListAction.class).setEnabled(false);
             getFrame().getPlayerControls().setShowTicksAndLabels(false);
         }

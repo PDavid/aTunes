@@ -31,8 +31,17 @@ public class MarkPodcastEntryListenedAction extends AbstractActionOverSelectedOb
 
     private static final long serialVersionUID = 1563803489549692850L;
 
-    MarkPodcastEntryListenedAction() {
-        super(I18nUtils.getString("MARK_PODCAST_ENTRY_AS_LISTENED"), IPodcastFeedEntry.class);
+    private INavigationHandler navigationHandler;
+    
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+    
+    public MarkPodcastEntryListenedAction() {
+        super(I18nUtils.getString("MARK_PODCAST_ENTRY_AS_LISTENED"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("MARK_PODCAST_ENTRY_AS_LISTENED"));
     }
 
@@ -41,7 +50,7 @@ public class MarkPodcastEntryListenedAction extends AbstractActionOverSelectedOb
         for (IPodcastFeedEntry pfe : objects) {
             pfe.setListened(true);
         }
-        getBean(INavigationHandler.class).refreshNavigationTable();
+        navigationHandler.refreshNavigationTable();
     }
 
     @Override

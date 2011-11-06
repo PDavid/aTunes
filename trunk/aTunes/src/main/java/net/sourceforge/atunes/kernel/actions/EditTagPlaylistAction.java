@@ -41,8 +41,17 @@ public class EditTagPlaylistAction extends AbstractActionOverSelectedObjects<ILo
 
     private static final long serialVersionUID = -4310895355731333072L;
 
-    EditTagPlaylistAction() {
-        super(I18nUtils.getString("EDIT_TAG"), ILocalAudioObject.class);
+    private ITagHandler tagHandler;
+    
+    /**
+     * @param tagHandler
+     */
+    public void setTagHandler(ITagHandler tagHandler) {
+		this.tagHandler = tagHandler;
+	}
+    
+    public EditTagPlaylistAction() {
+        super(I18nUtils.getString("EDIT_TAG"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("EDIT_TAG"));
     }
 
@@ -55,7 +64,7 @@ public class EditTagPlaylistAction extends AbstractActionOverSelectedObjects<ILo
     protected void executeAction(List<ILocalAudioObject> objects) {
         // Start edit by opening edit dialog
         try {
-            getBean(ITagHandler.class).editFiles(EditTagSources.PLAYLIST, objects);
+        	tagHandler.editFiles(EditTagSources.PLAYLIST, objects);
         } catch (IllegalArgumentException iae) {
             Logger.error(iae);
         }

@@ -28,10 +28,14 @@ import java.util.Set;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.LocalAudioObjectFilter;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * Opens OS file browser with folder of selected elements
@@ -39,13 +43,45 @@ import net.sourceforge.atunes.model.LocalAudioObjectFilter;
  * @author fleax
  * 
  */
-public class OpenFolderFromNavigatorAction extends OpenFolderAction {
+public class OpenFolderFromNavigatorAction extends AbstractActionOverSelectedObjects<AudioFile> {
 
     private static final long serialVersionUID = 8251208528513562627L;
 
+    private INavigationHandler navigationHandler;
+    
+    private IDesktop desktop;
+    
+    private IOSManager osManager;
+    
+    public OpenFolderFromNavigatorAction() {
+        super(I18nUtils.getString("OPEN_FOLDER"));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("OPEN_FOLDER"));
+    }
+    
+    /**
+     * @param osManager
+     */
+    public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
+    
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+    
+    /**
+     * @param desktop
+     */
+    public void setDesktop(IDesktop desktop) {
+		this.desktop = desktop;
+	}
+    
     @Override
     public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
-        List<IAudioObject> filesSelectedInNavigator = getBean(INavigationHandler.class).getFilesSelectedInNavigator();
+        List<IAudioObject> filesSelectedInNavigator = navigationHandler.getFilesSelectedInNavigator();
         return sameParentFile(new LocalAudioObjectFilter().getLocalAudioObjects(filesSelectedInNavigator));
     }
 
@@ -67,5 +103,22 @@ public class OpenFolderFromNavigatorAction extends OpenFolderAction {
             set.add(af.getFile().getParentFile());
         }
         return set.size() == 1;
+    }
+    
+    @Override
+    protected void executeAction(List<AudioFile> objects) {
+        HashSet<File> foldersToOpen = new HashSet<File>();
+
+        // Get folders ...
+        for (AudioFile ao : objects) {
+            if (!foldersToOpen.contains(ao.getFile().getParentFile())) {
+                foldersToOpen.add(ao.getFile().getParentFile());
+            }
+        }
+
+        // ... then open
+        for (File folder : foldersToOpen) {
+        	desktop.openFile(folder, osManager);
+        }
     }
 }

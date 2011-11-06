@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,19 +34,20 @@ import net.sourceforge.atunes.utils.Logger;
 
 public abstract class AbstractActionOverSelectedTreeObjects<T extends ITreeObject<? extends IAudioObject>> extends CustomAbstractAction {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = -2396109319433549043L;
 
     private ITreeObjectsSource treeObjectsSource;
 
+    private Class<?> clazz;
+    
     public AbstractActionOverSelectedTreeObjects(String name) {
         super(name);
+        clazz = (Class<?>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
     public AbstractActionOverSelectedTreeObjects(String name, Icon icon) {
         super(name, icon);
+        clazz = (Class<?>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
     /**
@@ -55,13 +55,6 @@ public abstract class AbstractActionOverSelectedTreeObjects<T extends ITreeObjec
      */
     public void setTreeObjectsSource(ITreeObjectsSource treeObjectsSource) {
 		this.treeObjectsSource = treeObjectsSource;
-	}
-    
-    /**
-     * @return
-     */
-    protected ITreeObjectsSource getTreeObjectsSource() {
-		return treeObjectsSource;
 	}
     
     /**
@@ -83,13 +76,11 @@ public abstract class AbstractActionOverSelectedTreeObjects<T extends ITreeObjec
     public final void actionPerformed(ActionEvent e) {
     	Logger.debug("Executing action: ", this.getClass().getName());
 
-        ITreeObjectsSource objectsSource = getTreeObjectsSource();
-
-        if (objectsSource == null) {
+        if (this.treeObjectsSource == null) {
             return;
         }
 
-        List<ITreeObject<? extends IAudioObject>> treeObjects = objectsSource.getSelectedTreeObjects();
+        List<ITreeObject<? extends IAudioObject>> treeObjects = treeObjectsSource.getSelectedTreeObjects();
 
         if (treeObjects == null || treeObjects.isEmpty()) {
             return;
@@ -97,10 +88,8 @@ public abstract class AbstractActionOverSelectedTreeObjects<T extends ITreeObjec
 
         List<T> selectedTreeObjects = new ArrayList<T>();
 
-        Type type = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-
         for (ITreeObject<? extends IAudioObject> ao : treeObjects) {
-            if (type.equals(ao.getClass())) {
+            if (clazz.isAssignableFrom(ao.getClass())) {
                 @SuppressWarnings("unchecked")
                 T processedTreeObject = preprocessObject((T) ao);
                 if (processedTreeObject != null) {

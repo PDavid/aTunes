@@ -31,8 +31,17 @@ public class DownloadPodcastEntryAction extends AbstractActionOverSelectedObject
 
     private static final long serialVersionUID = 1081237259786604605L;
 
-    DownloadPodcastEntryAction() {
-        super(I18nUtils.getString("DOWNLOAD_PODCAST_ENTRY"), IPodcastFeedEntry.class);
+    private IPodcastFeedHandler podcastFeedHandler;
+    
+    /**
+     * @param podcastFeedHandler
+     */
+    public void setPodcastFeedHandler(IPodcastFeedHandler podcastFeedHandler) {
+		this.podcastFeedHandler = podcastFeedHandler;
+	}
+    
+    public DownloadPodcastEntryAction() {
+        super(I18nUtils.getString("DOWNLOAD_PODCAST_ENTRY"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("DOWNLOAD_PODCAST_ENTRY"));
         setEnabled(false);
     }
@@ -40,14 +49,14 @@ public class DownloadPodcastEntryAction extends AbstractActionOverSelectedObject
     @Override
     protected void executeAction(List<IPodcastFeedEntry> objects) {
         for (IPodcastFeedEntry pfe : objects) {
-        	getBean(IPodcastFeedHandler.class).downloadPodcastFeedEntry(pfe);
+        	podcastFeedHandler.downloadPodcastFeedEntry(pfe);
         }
     }
 
     @Override
     public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
         for (IAudioObject ao : selection) {
-            if (!(ao instanceof IPodcastFeedEntry) || ((IPodcastFeedEntry) ao).isDownloaded() || getBean(IPodcastFeedHandler.class).isDownloading((IPodcastFeedEntry) ao)) {
+            if (!(ao instanceof IPodcastFeedEntry) || ((IPodcastFeedEntry) ao).isDownloaded() || podcastFeedHandler.isDownloading((IPodcastFeedEntry) ao)) {
                 return false;
             }
         }

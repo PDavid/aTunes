@@ -41,8 +41,17 @@ public class EditTagNavigatorAction extends AbstractActionOverSelectedObjects<IL
 
     private static final long serialVersionUID = -4310895355731333072L;
 
-    EditTagNavigatorAction() {
-        super(I18nUtils.getString("EDIT_TAG"), ILocalAudioObject.class);
+    private ITagHandler tagHandler;
+    
+    /**
+     * @param tagHandler
+     */
+    public void setTagHandler(ITagHandler tagHandler) {
+		this.tagHandler = tagHandler;
+	}
+    
+    public EditTagNavigatorAction() {
+        super(I18nUtils.getString("EDIT_TAG"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("EDIT_TAG"));
     }
 
@@ -50,7 +59,7 @@ public class EditTagNavigatorAction extends AbstractActionOverSelectedObjects<IL
     protected void executeAction(List<ILocalAudioObject> objects) {
         // Start edit by opening edit dialog
         try {
-            getBean(ITagHandler.class).editFiles(EditTagSources.NAVIGATOR, objects);
+        	tagHandler.editFiles(EditTagSources.NAVIGATOR, objects);
         } catch (IllegalArgumentException iae) {
             Logger.error(iae);
         }
