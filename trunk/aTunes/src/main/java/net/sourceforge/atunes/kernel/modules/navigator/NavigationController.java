@@ -22,8 +22,6 @@ package net.sourceforge.atunes.kernel.modules.navigator;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -154,7 +152,7 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
     
     private IOSManager osManager;
     
-    private INavigationHandler navigationHandler;
+    INavigationHandler navigationHandler;
     
     private ITaskService taskService;
     
@@ -232,15 +230,6 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
 
         navigationTablePanel.getNavigationTable().addMouseListener(new NavigationTableMouseListener(this, navigationTablePanel, navigationHandler));
         
-        // Add combo listener
-        navigationTreePanel.getTreeComboBox().addItemListener(new ItemListener() {
-			
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				navigationHandler.setNavigationView(e.getItem().getClass().getName());
-			}
-		});
-        
         if (lookAndFeelManager.getCurrentLookAndFeel().customComboBoxRenderersSupported()) {
         	navigationTreePanel.getTreeComboBox().setRenderer(lookAndFeelManager.getCurrentLookAndFeel().getListCellRenderer(new AbstractListCellRendererCode() {
 
@@ -252,6 +241,14 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
         		}
         	}));
         }
+    }
+    
+    /**
+     * Enable navigation tree combo listener
+     */
+    protected void enableNavigationTreeComboListener() {
+        // Add combo listener
+        navigationTreePanel.getTreeComboBox().addItemListener(new NavigationTreeComboListener(navigationHandler));       
     }
 
     @Override
