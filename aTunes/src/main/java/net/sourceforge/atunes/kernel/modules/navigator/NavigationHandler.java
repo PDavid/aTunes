@@ -119,6 +119,8 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
         getNavigationController().setNavigationView(getState().getNavigationView(), false); 
         
         getNavigationController().getNavigationTreePanel().enableDragAndDrop(new TreeNavigationTransferHandler());
+        
+        getNavigationController().enableNavigationTreeComboListener();
     }
 
     @Override
