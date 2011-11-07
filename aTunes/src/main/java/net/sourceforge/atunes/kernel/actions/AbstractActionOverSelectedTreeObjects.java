@@ -58,6 +58,17 @@ public abstract class AbstractActionOverSelectedTreeObjects<T extends ITreeObjec
 	}
     
     /**
+     * Returns if preprocess is needed
+     * 
+     * Default implementation does not need preprocess
+     * 
+     * @return
+     */
+    protected boolean isPreprocessNeeded() {
+    	return false;
+    }
+
+    /**
      * Given a tree object performs a preprocess returning tree object to
      * include in list or null if given tree object must be excluded from list
      * 
@@ -72,7 +83,8 @@ public abstract class AbstractActionOverSelectedTreeObjects<T extends ITreeObjec
 
     protected abstract void executeAction(List<T> objects);
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public final void actionPerformed(ActionEvent e) {
     	Logger.debug("Executing action: ", this.getClass().getName());
 
@@ -90,11 +102,14 @@ public abstract class AbstractActionOverSelectedTreeObjects<T extends ITreeObjec
 
         for (ITreeObject<? extends IAudioObject> ao : treeObjects) {
             if (clazz.isAssignableFrom(ao.getClass())) {
-                @SuppressWarnings("unchecked")
-                T processedTreeObject = preprocessObject((T) ao);
-                if (processedTreeObject != null) {
-                    selectedTreeObjects.add(processedTreeObject);
-                }
+            	if (isPreprocessNeeded()) {
+            		T processedTreeObject = preprocessObject((T) ao);
+            		if (processedTreeObject != null) {
+            			selectedTreeObjects.add(processedTreeObject);
+            		}
+            	} else {
+            		selectedTreeObjects.add((T)ao);
+            	}
             }
         }
 

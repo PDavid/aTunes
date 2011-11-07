@@ -72,6 +72,11 @@ public class CopyToDeviceAction extends AbstractActionOverSelectedObjects<IAudio
     }
 
     @Override
+    protected boolean isPreprocessNeeded() {
+    	return true;
+    }
+    
+    @Override
     protected IAudioObject preprocessObject(IAudioObject audioObject) {
         if (audioObject instanceof AudioFile) {
             return audioObject;

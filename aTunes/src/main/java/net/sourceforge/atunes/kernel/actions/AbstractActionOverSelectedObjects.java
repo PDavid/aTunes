@@ -53,6 +53,17 @@ public abstract class AbstractActionOverSelectedObjects<T extends IAudioObject> 
     }
 
     /**
+     * Returns if preprocess is needed
+     * 
+     * Default implementation does not need preprocess
+     * 
+     * @return
+     */
+    protected boolean isPreprocessNeeded() {
+    	return false;
+    }
+    
+    /**
      * Given an audio object performs a pre-process returning audio object to
      * include in list or null if given audio object must be excluded from list
      * 
@@ -74,7 +85,8 @@ public abstract class AbstractActionOverSelectedObjects<T extends IAudioObject> 
     
     protected abstract void executeAction(List<T> objects);
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public final void actionPerformed(ActionEvent e) {
     	Logger.debug("Executing action: ", this.getClass().getName());
 
@@ -92,11 +104,14 @@ public abstract class AbstractActionOverSelectedObjects<T extends IAudioObject> 
         
         for (IAudioObject ao : audioObjects) {
             if (clazz.isAssignableFrom(ao.getClass())) {
-                @SuppressWarnings("unchecked")
-                T processedAudioObject = preprocessObject((T) ao);
-                if (processedAudioObject != null) {
-                    selectedObjects.add(processedAudioObject);
-                }
+            	if (isPreprocessNeeded()) {
+            		T processedAudioObject = preprocessObject((T) ao);
+            		if (processedAudioObject != null) {
+            			selectedObjects.add(processedAudioObject);
+            		}
+            	} else {
+            		selectedObjects.add((T)ao);
+            	}
             }
         }
 
