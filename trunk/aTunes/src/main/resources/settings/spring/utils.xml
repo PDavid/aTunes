@@ -9,5 +9,8 @@
 	<bean id="clipboard" class="net.sourceforge.atunes.utils.ClipboardFacade"/>
 	<bean id="desktop" class="net.sourceforge.atunes.utils.DesktopUtils"/>
 	
+	<bean id="collatorFactory" class="net.sourceforge.atunes.utils.Collator"/>
+	<bean id="collator" factory-bean="collatorFactory" factory-method="getCollator"/>
+	
 
 </beans>

@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.model;
 
 import java.awt.event.MouseEvent;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.JPopupMenu;
@@ -61,29 +60,28 @@ public interface INavigationView extends IAudioObjectsSource, ITreeObjectsSource
 	public void setDecorators(List<AbstractTreeCellDecorator> decorators);
 
 	/**
-	 * 
 	 * @return the tree popup menu of this view
 	 */
 	public JPopupMenu getTreePopupMenu();
 
+	/**
+	 * @return factory of tree generators for this view
+	 */
 	public ITreeGeneratorFactory getTreeGeneratorFactory();
 
 	/**
-	 * 
 	 * @return the table popup menu of this view
 	 */
 	public JPopupMenu getTablePopupMenu();
 
 	/**
 	 * Returns scroll pane of tree
-	 * 
 	 * @return
 	 */
 	public JScrollPane getTreeScrollPane();
 
 	/**
 	 * Refreshes view
-	 * 
 	 * @param viewMode
 	 * @param treeFilter
 	 */
@@ -91,7 +89,6 @@ public interface INavigationView extends IAudioObjectsSource, ITreeObjectsSource
 
 	/**
 	 * Returns a list of audio object associated to a tree node
-	 * 
 	 * @param node
 	 * @param viewMode
 	 * @param treeFilter
@@ -110,7 +107,6 @@ public interface INavigationView extends IAudioObjectsSource, ITreeObjectsSource
 	/**
 	 * Returns <code>true</code> if the view uses default navigator columns or
 	 * <code>false</code> if defines its own column set
-	 * 
 	 * @return
 	 */
 	public boolean isUseDefaultNavigatorColumnSet();
@@ -125,43 +121,25 @@ public interface INavigationView extends IAudioObjectsSource, ITreeObjectsSource
 
 	/**
 	 * Enables or disables tree popup menu items of this view
-	 * 
 	 * @param e
 	 */
 	public void updateTreePopupMenuWithTreeSelection(MouseEvent e);
 
 	/**
 	 * Enables or disables table popup menu items of this view
-	 * 
 	 * @param table
 	 * @param e
 	 */
 	public void updateTablePopupMenuWithTableSelection(ITable table, MouseEvent e);
 
 	/**
-	 * Returns the default comparator
-	 * 
-	 * @return the default comparator
-	 */
-	public Comparator<String> getDefaultComparator();
-
-	/**
-	 * Returns the integer comparator
-	 * 
-	 * @return the default comparator
-	 */
-	public Comparator<String> getIntegerComparator();
-
-	/**
 	 * Return current view mode
-	 * 
 	 * @return
 	 */
 	public ViewMode getCurrentViewMode();
 
 	/**
 	 * Returns an action to show this view
-	 * 
 	 * @return
 	 */
 	public ActionWithColorMutableIcon getActionToShowView();
@@ -180,19 +158,4 @@ public interface INavigationView extends IAudioObjectsSource, ITreeObjectsSource
 	 * @param artist
 	 */
 	public void selectArtist(ViewMode currentViewMode, String artist);
-
-    /**
-     * The smart comparator ignores a leading "The"
-     * 
-     * @return the smartComparator
-     */
-    public Comparator<String> getSmartComparator();
-    
-    /**
-     * The artist names comparator
-     * @return the artistNamesComparator
-     */
-    public Comparator<String> getArtistNamesComparator();
-
-
 }

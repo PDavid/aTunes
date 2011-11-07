@@ -21,8 +21,6 @@
 package net.sourceforge.atunes.kernel.modules.navigator;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +28,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.INavigationViewSorter;
 import net.sourceforge.atunes.model.ITreeObject;
 
 /**
@@ -50,19 +49,18 @@ public final class RefreshUtils {
      *            the node
      * @param currentFilter
      *            the current filter
-     * @param comparator
+     * @param sorter
      *            the comparator for node sorting
      */
-    static void addFolderNodes(Map<String, ?> folders, DefaultMutableTreeNode node, String currentFilter, Comparator<String> comparator) {
+    static void addFolderNodes(Map<String, ?> folders, DefaultMutableTreeNode node, String currentFilter, INavigationViewSorter sorter) {
         List<String> folderNamesList = new ArrayList<String>(folders.keySet());
-        Collections.sort(folderNamesList, comparator);
-
+        sorter.sort(folderNamesList);
         for (int i = 0; i < folderNamesList.size(); i++) {
             Folder f = (Folder) folders.get(folderNamesList.get(i));
             if (node.isRoot() || currentFilter == null || f.getName().toUpperCase().contains(currentFilter.toUpperCase())) {
                 DefaultMutableTreeNode child = new DefaultMutableTreeNode(f);
                 node.add(child);
-                addFolderNodes(f.getFolders(), child, node.isRoot() ? currentFilter : null, comparator);
+                addFolderNodes(f.getFolders(), child, node.isRoot() ? currentFilter : null, sorter);
             }
         }
     }
