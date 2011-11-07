@@ -18,13 +18,27 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.kernel.modules.navigator;
 
-public interface IColumnSelectorDialogFactory {
+import java.text.Collator;
+import java.util.Collections;
+import java.util.List;
 
+import net.sourceforge.atunes.model.INavigationViewSorter;
+
+public class FolderSorter implements INavigationViewSorter {
+
+	private Collator collator;
+	
 	/**
-	 * Creates a new dialog
-	 * @return
+	 * @param collator
 	 */
-	IColumnSelectorDialog createDialog();
+	public void setCollator(Collator collator) {
+		this.collator = collator;
+	}
+	
+	@Override
+	public void sort(List<String> list) {
+        Collections.sort(list, new DefaultComparator(collator));
+	}
 }

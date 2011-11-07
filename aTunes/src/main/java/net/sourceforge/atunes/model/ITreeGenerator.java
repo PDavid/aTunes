@@ -36,7 +36,6 @@ public interface ITreeGenerator {
 
 	/**
 	 * Builds a tree
-	 * @param state
 	 * @param rootTextKey
 	 * @param view
 	 * @param structure
@@ -46,8 +45,7 @@ public interface ITreeGenerator {
 	 * @param objectsSelected
 	 * @param objectsExpanded
 	 */
-	public void buildTree(IState state, 
-				          String rootTextKey, 
+	public void buildTree(String rootTextKey, 
 						  INavigationView view, 
 						  Map<String, ?> structure, 
 						  String currentFilter, 

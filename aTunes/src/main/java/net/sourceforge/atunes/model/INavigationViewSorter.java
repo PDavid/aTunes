@@ -20,11 +20,19 @@
 
 package net.sourceforge.atunes.model;
 
-public interface IColumnSelectorDialogFactory {
+import java.util.List;
 
+/**
+ * Sorts a list of names according to preferences to show in navigator
+ * @author alex
+ *
+ */
+public interface INavigationViewSorter {
+	
 	/**
-	 * Creates a new dialog
-	 * @return
+	 * Sorts given list
+	 * @param list
 	 */
-	IColumnSelectorDialog createDialog();
+	void sort(List<String> list);
+
 }

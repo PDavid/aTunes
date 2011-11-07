@@ -18,13 +18,21 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.kernel.modules.navigator;
 
-public interface IColumnSelectorDialogFactory {
+import javax.swing.tree.DefaultMutableTreeNode;
 
-	/**
-	 * Creates a new dialog
-	 * @return
-	 */
-	IColumnSelectorDialog createDialog();
+import net.sourceforge.atunes.model.Album;
+
+final class AlbumDefaultMutableTreeNode extends DefaultMutableTreeNode {
+    private static final long serialVersionUID = -1276777390072754207L;
+
+    AlbumDefaultMutableTreeNode(Object userObject) {
+        super(userObject);
+    }
+
+    @Override
+    public String toString() {
+        return ((Album) getUserObject()).getNameAndArtist();
+    }
 }

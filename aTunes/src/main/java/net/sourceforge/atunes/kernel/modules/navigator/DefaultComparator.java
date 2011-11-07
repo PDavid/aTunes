@@ -18,13 +18,24 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.kernel.modules.navigator;
 
-public interface IColumnSelectorDialogFactory {
+import java.text.Collator;
+import java.util.Comparator;
 
+final class DefaultComparator implements Comparator<String> {
+	
+	private Collator collator;
+	
 	/**
-	 * Creates a new dialog
-	 * @return
+	 * @param collator
 	 */
-	IColumnSelectorDialog createDialog();
+	public DefaultComparator(Collator collator) {
+		this.collator = collator;
+	}
+
+	@Override
+	public int compare(String s1, String s2) {
+	    return this.collator.compare(s1.toLowerCase(), s2.toLowerCase());
+	}
 }

@@ -5,6 +5,11 @@
 
 	default-autowire="byName" default-lazy-init="true">
 
+	<bean id="artistSorter" class="net.sourceforge.atunes.kernel.modules.navigator.ArtistSorter"/>
+	<bean id="albumSorter" class="net.sourceforge.atunes.kernel.modules.navigator.AlbumSorter"/>
+	<bean id="folderSorter" class="net.sourceforge.atunes.kernel.modules.navigator.FolderSorter"/>
+	<bean id="yearSorter" class="net.sourceforge.atunes.kernel.modules.navigator.YearSorter"/>
+
 	<bean id="navigationViews" class="java.util.ArrayList">
 		<constructor-arg>
 			<list>

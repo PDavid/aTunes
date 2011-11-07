@@ -18,13 +18,33 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.kernel.modules.navigator;
 
-public interface IColumnSelectorDialogFactory {
+import java.text.Collator;
+import java.util.Comparator;
 
-	/**
-	 * Creates a new dialog
-	 * @return
-	 */
-	IColumnSelectorDialog createDialog();
+/**
+ * Compares strings ignoring leading "the " 
+ * @author alex
+ *
+ */
+final class SmartComparator implements Comparator<String> {
+	
+	private Collator collator;
+
+	public SmartComparator(Collator collator) {
+		this.collator = collator;
+	}
+	
+	private String removeThe(String str) {
+	    if (str.toLowerCase().startsWith("the ") && str.length() > 4) {
+	        return str.substring(4);
+	    }
+	    return str;
+	}
+
+	@Override
+	public int compare(String s1, String s2) {
+	    return this.collator.compare(removeThe(s1).toLowerCase(), removeThe(s2).toLowerCase());
+	}
 }

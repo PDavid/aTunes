@@ -34,8 +34,8 @@ import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.INavigationView;
+import net.sourceforge.atunes.model.INavigationViewSorter;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITreeGenerator;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -47,9 +47,17 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class FolderTreeGenerator implements ITreeGenerator {
 
+	private INavigationViewSorter folderSorter;
+	
+	/**
+	 * @param folderSorter
+	 */
+	public void setFolderSorter(INavigationViewSorter folderSorter) {
+		this.folderSorter = folderSorter;
+	}
+	
 	/**
 	 * Builds tree
-	 * @param state
 	 * @param rootTextKey
 	 * @param view
 	 * @param structure
@@ -60,12 +68,11 @@ public class FolderTreeGenerator implements ITreeGenerator {
 	 * @param objectsExpanded
 	 */
     @SuppressWarnings("unchecked")
-	public void buildTree(IState state, String rootTextKey, INavigationView view, Map<String, ?> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<ITreeObject<? extends IAudioObject>> objectsSelected, List<ITreeObject<? extends IAudioObject>> objectsExpanded) {
-
+	public void buildTree(String rootTextKey, INavigationView view, Map<String, ?> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<ITreeObject<? extends IAudioObject>> objectsSelected, List<ITreeObject<? extends IAudioObject>> objectsExpanded) {
         // Refresh nodes
         root.setUserObject(I18nUtils.getString(rootTextKey));
         root.removeAllChildren();
-        RefreshUtils.addFolderNodes(structure, root, currentFilter, view.getDefaultComparator());
+        RefreshUtils.addFolderNodes(structure, root, currentFilter, folderSorter);
 
         treeModel.reload();
 

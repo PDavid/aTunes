@@ -23,14 +23,10 @@ package net.sourceforge.atunes.kernel.modules.navigator;
 import java.awt.Component;
 import java.awt.Paint;
 import java.awt.event.MouseEvent;
-import java.text.Collator;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -66,35 +62,6 @@ import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.Logger;
 
 public abstract class AbstractNavigationView implements INavigationView {
-
-    private final class ArtistNamesComparator implements Comparator<String> {
-		private final Pattern PATTERN = Pattern.compile("(.*)\\s+(.*?)");
-
-		@Override
-		public int compare(String s1, String s2) {
-		    String[] ss1 = s1.split("[,\\&]");
-		    String[] ss2 = s2.split("[,\\&]");
-		    String d1 = getStringForSorting(s1, ss1);
-		    String d2 = getStringForSorting(s2, ss2);
-		    return getCollator().compare(d1.toLowerCase(), d2.toLowerCase());
-		}
-
-		private String getStringForSorting(String s, String[] ss) {
-		    StringBuilder sb = new StringBuilder();
-		    for (String k : ss) {
-		        Matcher matcher = PATTERN.matcher(k.trim());
-		        String m = s;
-		        String n = "";
-		        if (matcher.matches()) {
-		            m = matcher.group(2);
-		            n = matcher.group(1);
-		        }
-		        sb.append(m);
-		        sb.append(n);
-		    }
-		    return sb.toString();
-		}
-	}
 
     /**
      * Scroll pane used for tree
@@ -420,41 +387,6 @@ public abstract class AbstractNavigationView implements INavigationView {
     }
 
     /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#getDefaultComparator()
-	 */
-    @Override
-	public Comparator<String> getDefaultComparator() {
-        return new Comparator<String>() {
-            @Override
-            public int compare(String s1, String s2) {
-                return getCollator().compare(s1.toLowerCase(), s2.toLowerCase());
-            }
-        };
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#getIntegerComparator()
-	 */
-    @Override
-	public Comparator<String> getIntegerComparator() {
-        return new Comparator<String>() {
-            @Override
-            public int compare(String s1, String s2) {
-            	if (s1 == null || s2 == null) {
-            		return 0;
-            	}
-            	int compare;
-            	try {
-            		compare = Integer.valueOf(s1).compareTo(Integer.valueOf(s2));
-            	} catch (NumberFormatException e) {
-            		compare = 0;
-            	}
-                return compare;
-            }
-        };
-    }
-
-    /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#getCurrentViewMode()
 	 */
     @Override
@@ -598,43 +530,6 @@ public abstract class AbstractNavigationView implements INavigationView {
         });
     }
 
-    /**
-     * @return New collator
-     */
-    protected Collator getCollator() {
-        return Collator.getInstance(state.getLocale().getLocale());
-    }
-
-    /**
-     * The smart comparator ignores a leading "The"
-     * 
-     * @return the smartComparator
-     */
-    @Override
-    public Comparator<String> getSmartComparator() {
-        return new Comparator<String>() {
-            private String removeThe(String str) {
-                if (str.toLowerCase().startsWith("the ") && str.length() > 4) {
-                    return str.substring(4);
-                }
-                return str;
-            }
-
-            @Override
-            public int compare(String s1, String s2) {
-                return getCollator().compare(removeThe(s1).toLowerCase(), removeThe(s2).toLowerCase());
-            }
-        };
-    }
-
-    /**
-     * @return the artistNamesComparator
-     */
-    @Override
-    public Comparator<String> getArtistNamesComparator() {
-        return new ArtistNamesComparator();
-    }
-    
     @Override
     public String toString() {
     	return getTitle();

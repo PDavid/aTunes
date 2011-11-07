@@ -18,13 +18,17 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.kernel.modules.navigator;
 
-public interface IColumnSelectorDialogFactory {
+import java.util.Collections;
+import java.util.List;
 
-	/**
-	 * Creates a new dialog
-	 * @return
-	 */
-	IColumnSelectorDialog createDialog();
+import net.sourceforge.atunes.model.INavigationViewSorter;
+
+public class YearSorter implements INavigationViewSorter {
+
+	@Override
+	public void sort(List<String> list) {
+        Collections.sort(list, new IntegerComparator());
+	}
 }

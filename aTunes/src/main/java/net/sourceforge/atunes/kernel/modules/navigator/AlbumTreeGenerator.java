@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.kernel.modules.navigator;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +32,7 @@ import javax.swing.tree.TreePath;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.INavigationView;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.INavigationViewSorter;
 import net.sourceforge.atunes.model.ITreeGenerator;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -45,22 +44,17 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class AlbumTreeGenerator implements ITreeGenerator {
 
-    protected static final class AlbumDefaultMutableTreeNode extends DefaultMutableTreeNode {
-        private static final long serialVersionUID = -1276777390072754207L;
-
-        private AlbumDefaultMutableTreeNode(Object userObject) {
-            super(userObject);
-        }
-
-        @Override
-        public String toString() {
-            return ((Album) getUserObject()).getNameAndArtist();
-        }
-    }
-    
+	private INavigationViewSorter albumSorter;
+	
+	/**
+	 * @param albumSorter
+	 */
+	public void setAlbumSorter(INavigationViewSorter albumSorter) {
+		this.albumSorter = albumSorter;
+	}
+	
     /**
      * Builds tree
-     * @param state
      * @param rootTextKey
      * @param view
      * @param structure
@@ -70,34 +64,19 @@ public class AlbumTreeGenerator implements ITreeGenerator {
      * @param objectsSelected
      * @param objectsExpanded
      */
-    public void buildTree(IState state, String rootTextKey, INavigationView view, Map<String, ?> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<ITreeObject<? extends IAudioObject>> objectsSelected, List<ITreeObject<? extends IAudioObject>> objectsExpanded) {
+    public void buildTree(String rootTextKey, INavigationView view, Map<String, ?> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<ITreeObject<? extends IAudioObject>> objectsSelected, List<ITreeObject<? extends IAudioObject>> objectsExpanded) {
         // Set root
         root.setUserObject(I18nUtils.getString(rootTextKey));
         root.removeAllChildren();
 
         List<String> albumsNamesList = new ArrayList<String>(structure.keySet());
-        if (state.isUseSmartTagViewSorting()) {
-            Collections.sort(albumsNamesList, view.getSmartComparator());
-        } else {
-            Collections.sort(albumsNamesList, view.getDefaultComparator());
-        }
+        albumSorter.sort(albumsNamesList);
 
         // Nodes to be selected after refresh
         List<DefaultMutableTreeNode> nodesToSelect = new ArrayList<DefaultMutableTreeNode>();
 
-        for (int i = 0; i < albumsNamesList.size(); i++) {
-            Album album = (Album) structure.get(albumsNamesList.get(i));
-            if (currentFilter == null || album.getName().toUpperCase().contains(currentFilter.toUpperCase())) {
-                // Special album node that shows artist name too
-                DefaultMutableTreeNode albumNode = new AlbumDefaultMutableTreeNode(album);
-
-                root.add(albumNode);
-
-                // If node was selected before refreshing...
-                if (objectsSelected.contains(albumNode.getUserObject())) {
-                    nodesToSelect.add(albumNode);
-                }
-            }
+        for (String albumName : albumsNamesList) {
+            buildAlbumNode(structure, currentFilter, root, objectsSelected, nodesToSelect, albumName);
         }
 
         // Reload the tree to refresh content
@@ -106,6 +85,33 @@ public class AlbumTreeGenerator implements ITreeGenerator {
         // Once tree has been refreshed, select previously selected nodes
         NavigationViewHelper.selectNodes(view.getTree(), nodesToSelect);
     }
+
+	/**
+	 * @param structure
+	 * @param currentFilter
+	 * @param root
+	 * @param objectsSelected
+	 * @param nodesToSelect
+	 * @param albumName
+	 */
+	private void buildAlbumNode(Map<String, ?> structure, String currentFilter,
+			DefaultMutableTreeNode root,
+			List<ITreeObject<? extends IAudioObject>> objectsSelected,
+			List<DefaultMutableTreeNode> nodesToSelect, String albumName) {
+		
+		Album album = (Album) structure.get(albumName);
+		if (currentFilter == null || album.getName().toUpperCase().contains(currentFilter.toUpperCase())) {
+		    // Special album node that shows artist name too
+		    DefaultMutableTreeNode albumNode = new AlbumDefaultMutableTreeNode(album);
+
+		    root.add(albumNode);
+
+		    // If node was selected before refreshing...
+		    if (objectsSelected.contains(albumNode.getUserObject())) {
+		        nodesToSelect.add(albumNode);
+		    }
+		}
+	}
 
     @Override
     public void selectAudioObject(JTree tree, IAudioObject audioObject) {

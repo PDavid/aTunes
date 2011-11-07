@@ -18,13 +18,22 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.kernel.modules.navigator;
 
-public interface IColumnSelectorDialogFactory {
+import java.text.Collator;
 
-	/**
-	 * Creates a new dialog
-	 * @return
-	 */
-	IColumnSelectorDialog createDialog();
+import junit.framework.Assert;
+
+import org.junit.Test;
+
+public class SmartComparatorTest {
+
+	@Test
+	public void test() {
+		SmartComparator sut = new SmartComparator(Collator.getInstance());
+		Assert.assertEquals(-1, sut.compare("a", "b"));
+		Assert.assertEquals(1, sut.compare("b", "a"));
+		Assert.assertEquals(0, sut.compare("a", "a"));
+		Assert.assertEquals(-1, sut.compare("the a", "b"));
+	}
 }

@@ -36,7 +36,7 @@ import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.INavigationView;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.INavigationViewSorter;
 import net.sourceforge.atunes.model.ITreeGenerator;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -48,9 +48,17 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class YearTreeGenerator implements ITreeGenerator {
 
+	private INavigationViewSorter yearSorter;
+	
+	/**
+	 * @param yearSorter
+	 */
+	public void setYearSorter(INavigationViewSorter yearSorter) {
+		this.yearSorter = yearSorter;
+	}
+	
 	/**
 	 * Builds tree
-	 * @param state
 	 * @param rootTextKey
 	 * @param view
 	 * @param structure
@@ -60,7 +68,7 @@ public class YearTreeGenerator implements ITreeGenerator {
 	 * @param objectsSelected
 	 * @param objectsExpanded
 	 */
-    public void buildTree(IState state, String rootTextKey, INavigationView view, Map<String, ?> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<ITreeObject<? extends IAudioObject>> objectsSelected, List<ITreeObject<? extends IAudioObject>> objectsExpanded) {
+    public void buildTree(String rootTextKey, INavigationView view, Map<String, ?> structure, String currentFilter, DefaultMutableTreeNode root, DefaultTreeModel treeModel, List<ITreeObject<? extends IAudioObject>> objectsSelected, List<ITreeObject<? extends IAudioObject>> objectsExpanded) {
         // Nodes to be selected after refresh
         List<DefaultMutableTreeNode> nodesToSelect = new ArrayList<DefaultMutableTreeNode>();
         // Nodes to be expanded after refresh
@@ -70,49 +78,11 @@ public class YearTreeGenerator implements ITreeGenerator {
         root.setUserObject(I18nUtils.getString(rootTextKey));
         root.removeAllChildren();
         List<String> yearNamesList = new ArrayList<String>(structure.keySet());
-        Collections.sort(yearNamesList, view.getIntegerComparator());
+        yearSorter.sort(yearNamesList);
 
-        for (int i = 0; i < yearNamesList.size(); i++) {
-            Year year = (Year) structure.get(yearNamesList.get(i));
-            if (currentFilter == null || year.getName().toUpperCase().contains(currentFilter.toUpperCase())) {
-                DefaultMutableTreeNode yearNode = new DefaultMutableTreeNode(year);
-                // If node was selected before refreshing...
-                if (objectsSelected.contains(yearNode.getUserObject())) {
-                    nodesToSelect.add(yearNode);
-                }
-                // If node was expanded before refreshing...
-                if (objectsExpanded.contains(yearNode.getUserObject())) {
-                    nodesToExpand.add(yearNode);
-                }
-                List<String> artistNamesList = new ArrayList<String>(year.getArtistSet());
-                Collections.sort(artistNamesList);
-                Map<String, Artist> yearArtists = year.getArtistObjects();
-                for (int j = 0; j < artistNamesList.size(); j++) {
-                    Artist artist = yearArtists.get(artistNamesList.get(j));
-                    DefaultMutableTreeNode artistNode = new DefaultMutableTreeNode(artist);
-                    List<String> albumNamesList = new ArrayList<String>(artist.getAlbums().keySet());
-                    Collections.sort(albumNamesList);
-                    for (int k = 0; k < albumNamesList.size(); k++) {
-                        Album album = artist.getAlbum(albumNamesList.get(k));
-                        DefaultMutableTreeNode albumNode = new DefaultMutableTreeNode(album);
-                        artistNode.add(albumNode);
-                        yearNode.add(artistNode);
-                        // If node was selected before refreshing...
-                        if (objectsSelected.contains(artistNode.getUserObject())) {
-                            nodesToSelect.add(artistNode);
-                        }
-                        // If node was selected before refreshing...
-                        if (objectsSelected.contains(albumNode.getUserObject())) {
-                            nodesToSelect.add(albumNode);
-                        }
-                        // If node was expanded before refreshing...
-                        if (objectsExpanded.contains(artistNode.getUserObject()) && objectsExpanded.contains(((DefaultMutableTreeNode) artistNode.getParent()).getUserObject())) {
-                            nodesToExpand.add(artistNode);
-                        }
-                    }
-                }
-                root.add(yearNode);
-            }
+        for (String yearName : yearNamesList) {
+            buildYearNode(structure, currentFilter, root, objectsSelected,
+					objectsExpanded, nodesToSelect, nodesToExpand, yearName);
         }
 
         // Reload the tree to refresh content
@@ -124,6 +94,110 @@ public class YearTreeGenerator implements ITreeGenerator {
         // Once tree has been refreshed, select previously selected nodes
         NavigationViewHelper.selectNodes(view.getTree(), nodesToSelect);
     }
+
+	/**
+	 * @param structure
+	 * @param currentFilter
+	 * @param root
+	 * @param objectsSelected
+	 * @param objectsExpanded
+	 * @param nodesToSelect
+	 * @param nodesToExpand
+	 * @param yearName
+	 */
+	private void buildYearNode(Map<String, ?> structure, String currentFilter,
+			DefaultMutableTreeNode root,
+			List<ITreeObject<? extends IAudioObject>> objectsSelected,
+			List<ITreeObject<? extends IAudioObject>> objectsExpanded,
+			List<DefaultMutableTreeNode> nodesToSelect,
+			List<DefaultMutableTreeNode> nodesToExpand, String yearName) {
+		Year year = (Year) structure.get(yearName);
+		if (currentFilter == null || year.getName().toUpperCase().contains(currentFilter.toUpperCase())) {
+		    DefaultMutableTreeNode yearNode = new DefaultMutableTreeNode(year);
+		    // If node was selected before refreshing...
+		    if (objectsSelected.contains(yearNode.getUserObject())) {
+		        nodesToSelect.add(yearNode);
+		    }
+		    // If node was expanded before refreshing...
+		    if (objectsExpanded.contains(yearNode.getUserObject())) {
+		        nodesToExpand.add(yearNode);
+		    }
+		    List<String> artistNamesList = new ArrayList<String>(year.getArtistSet());
+		    Collections.sort(artistNamesList);
+		    Map<String, Artist> yearArtists = year.getArtistObjects();
+		    for (int j = 0; j < artistNamesList.size(); j++) {
+		        buildArtistNode(objectsSelected, objectsExpanded,
+						nodesToSelect, nodesToExpand, yearNode,
+						artistNamesList, yearArtists, j);
+		    }
+		    root.add(yearNode);
+		}
+	}
+
+	/**
+	 * @param objectsSelected
+	 * @param objectsExpanded
+	 * @param nodesToSelect
+	 * @param nodesToExpand
+	 * @param yearNode
+	 * @param artistNamesList
+	 * @param yearArtists
+	 * @param j
+	 */
+	private void buildArtistNode(
+			List<ITreeObject<? extends IAudioObject>> objectsSelected,
+			List<ITreeObject<? extends IAudioObject>> objectsExpanded,
+			List<DefaultMutableTreeNode> nodesToSelect,
+			List<DefaultMutableTreeNode> nodesToExpand,
+			DefaultMutableTreeNode yearNode, List<String> artistNamesList,
+			Map<String, Artist> yearArtists, int j) {
+		Artist artist = yearArtists.get(artistNamesList.get(j));
+		DefaultMutableTreeNode artistNode = new DefaultMutableTreeNode(artist);
+		List<String> albumNamesList = new ArrayList<String>(artist.getAlbums().keySet());
+		Collections.sort(albumNamesList);
+		for (int k = 0; k < albumNamesList.size(); k++) {
+		    buildAlbumNode(objectsSelected, objectsExpanded, nodesToSelect,
+					nodesToExpand, yearNode, artist, artistNode,
+					albumNamesList, k);
+		}
+	}
+
+	/**
+	 * @param objectsSelected
+	 * @param objectsExpanded
+	 * @param nodesToSelect
+	 * @param nodesToExpand
+	 * @param yearNode
+	 * @param artist
+	 * @param artistNode
+	 * @param albumNamesList
+	 * @param k
+	 */
+	private void buildAlbumNode(
+			List<ITreeObject<? extends IAudioObject>> objectsSelected,
+			List<ITreeObject<? extends IAudioObject>> objectsExpanded,
+			List<DefaultMutableTreeNode> nodesToSelect,
+			List<DefaultMutableTreeNode> nodesToExpand,
+			DefaultMutableTreeNode yearNode, Artist artist,
+			DefaultMutableTreeNode artistNode, List<String> albumNamesList,
+			int k) {
+		Album album = artist.getAlbum(albumNamesList.get(k));
+		DefaultMutableTreeNode albumNode = new DefaultMutableTreeNode(album);
+		artistNode.add(albumNode);
+		yearNode.add(artistNode);
+		// If node was selected before refreshing...
+		if (objectsSelected.contains(artistNode.getUserObject())) {
+		    nodesToSelect.add(artistNode);
+		}
+		// If node was selected before refreshing...
+		if (objectsSelected.contains(albumNode.getUserObject())) {
+		    nodesToSelect.add(albumNode);
+		}
+		// If node was expanded before refreshing...
+		if (objectsExpanded.contains(artistNode.getUserObject()) && objectsExpanded.contains(((DefaultMutableTreeNode) artistNode.getParent()).getUserObject())) {
+		    nodesToExpand.add(artistNode);
+		}
+	}
 
     @Override
     public void selectAudioObject(JTree tree, IAudioObject audioObject) {

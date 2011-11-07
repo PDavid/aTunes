@@ -18,13 +18,34 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.utils;
 
-public interface IColumnSelectorDialogFactory {
+import net.sourceforge.atunes.model.IState;
 
+/**
+ * Returns java.text.Collator to use according to state locale
+ * @author alex
+ *
+ */
+public class Collator {
+
+	private IState state;
+	
 	/**
-	 * Creates a new dialog
+	 * @param state
+	 */
+	public void setState(IState state) {
+		this.state = state;
+	}
+	
+	/**
+	 * The Collator to use according to state locale
 	 * @return
 	 */
-	IColumnSelectorDialog createDialog();
+	public java.text.Collator getCollator() {
+		if (state == null || state.getLocale() == null) {
+			return java.text.Collator.getInstance();
+		}
+        return java.text.Collator.getInstance(state.getLocale().getLocale());
+	}
 }
