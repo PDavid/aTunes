@@ -28,14 +28,9 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.Arrays;
-import java.util.concurrent.Future;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -46,7 +41,6 @@ import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.DeviceImageIcon;
 import net.sourceforge.atunes.gui.images.NewImageIcon;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
@@ -77,21 +71,28 @@ import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IUIHandler;
+import net.sourceforge.atunes.model.IWindowListener;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jdesktop.swingx.JXStatusBar;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 /**
  * The standard frame
  */
-abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.sourceforge.atunes.model.IFrame {
+abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.sourceforge.atunes.model.IFrame, ApplicationContextAware {
 
-    private static final long serialVersionUID = 1L;
-
-    private static final int HORIZONTAL_MARGIN = GuiUtils.getComponentWidthForResolution(0.3f);
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5221630053432272337L;
+	
+	private static final int HORIZONTAL_MARGIN = GuiUtils.getComponentWidthForResolution(0.3f);
     private static final int VERTICAL_MARGIN = GuiUtils.getComponentHeightForResolution(0.2f);
     
     private IFrameState frameState;
@@ -112,8 +113,6 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     private PlayerControlsPanel playerControls;
     private JXStatusBar statusBar;
 
-    private WindowAdapter fullFrameStateListener;
-
     protected IState state;
     
     protected IOSManager osManager;
@@ -130,72 +129,48 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     
     private IDesktop desktop;
     
-    /**
-     * Instantiates a new standard frame.
-     */
-    public AbstractSingleFrame() {
-        super();
+    private IUIHandler uiHandler;
+    
+    private IContextPanelsContainer contextPanelsContainer;
+    
+    ITaskService taskService;
+    
+    private ApplicationContext context;
+    
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    	this.context = applicationContext;
     }
-    
-    @Override
-    public void setState(IState state) {
-    	this.state = state;
-    }
-    
-    @Override
-    public void setOsManager(IOSManager osManager) {
-		this.osManager = osManager;
-	}
-    
-    @Override
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
-	}
-    
-    public void setNavigationHandler(INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
-	}
-    
-    /**
-     * @param repositoryHandler
-     */
-    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
-	}
-    
-    /**
-     * @param lookAndFeelManager
-     */
-    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
-	}
-    
-    /**
-     * @return
-     */
-    protected ILookAndFeelManager getLookAndFeelManager() {
-		return lookAndFeelManager;
-	}
-    
-    /**
-     * @param playerHandler
-     */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
-		this.playerHandler = playerHandler;
-	}
-    
-    /**
-     * @param desktop
-     */
-    public void setDesktop(IDesktop desktop) {
-		this.desktop = desktop;
-	}
     
     @Override
     public void create(IFrameState frameState) {
         this.frameState = frameState;
 
-        // Set window location
+        setWindowLocation(frameState);
+
+        // Set OS-dependent frame configuration
+        osManager.setupFrame(this);
+
+        FrameListenersDecorator decorator = new FrameListenersDecorator(this, taskService, state, context.getBeansOfType(IWindowListener.class).values());
+        decorator.decorate();
+
+        // Create frame content
+        setContentPane(getContentPanel());
+
+        // Add menu bar
+        IMenuBar bar = getAppMenuBar();
+        setJMenuBar((JMenuBar) bar);
+
+        // Apply component orientation
+        GuiUtils.applyComponentOrientation(this);
+    }
+
+	/**
+	 * Initializes window location
+	 * @param frameState
+	 */
+	private void setWindowLocation(IFrameState frameState) {
+		// Set window location
         Point windowLocation = null;
         if (frameState.getXPosition() >= 0 && frameState.getYPosition() >= 0) {
             windowLocation = new Point(frameState.getXPosition(), frameState.getYPosition());
@@ -210,95 +185,13 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
         if (windowLocation != null) {
             setLocation(windowLocation);
         }
-
-        // Set OS-dependent frame configuration
-        osManager.setupFrame(this);
-
-        // Set window state listener
-        addWindowStateListener(getWindowStateListener());
-        addWindowFocusListener(getWindowStateListener());
-        addComponentListener(new ComponentAdapter() {
-			
-        	private Future<?> future;
-        	
-			@Override
-			public void componentResized(ComponentEvent event) {				
-				saveState(event);
-			}
-			
-			@Override
-			public void componentMoved(ComponentEvent event) {
-				saveState(event);
-			}
-			
-			private void saveState(final ComponentEvent event) {
-				final int width = AbstractSingleFrame.this.getSize().width;
-				final int height = AbstractSingleFrame.this.getSize().height;
-				
-				if (isVisible() && width != 0 && height != 0) {
-					// Task submitted after canceling previous ones to avoid executing task after each call to component listener
-					if (future != null) {
-						future.cancel(false);
-					}
-					
-					future = Context.getBean(ITaskService.class).submitOnce("Save Frame State", 1, new Runnable() {
-						@Override
-						public void run() {
-							IFrameState state = AbstractSingleFrame.this.state.getFrameState(AbstractSingleFrame.this.getClass());
-							state.setXPosition(event.getComponent().getX());
-							state.setYPosition(event.getComponent().getY());
-							state.setMaximized(AbstractSingleFrame.this.getExtendedState() == java.awt.Frame.MAXIMIZED_BOTH);
-							state.setWindowWidth(width);
-							state.setWindowHeight(height);
-							AbstractSingleFrame.this.state.setFrameState(AbstractSingleFrame.this.getClass(), state);
-						}
-					});
-				}
-			}
-		});
-
-        // Create frame content
-        setContentPane(getContentPanel());
-
-        // Add menu bar
-        IMenuBar bar = getAppMenuBar();
-        setJMenuBar((JMenuBar) bar);
-
-        // Apply component orientation
-        GuiUtils.applyComponentOrientation(this);
-    }
+	}
 
     protected abstract void setupSplitPaneDividerPosition(IFrameState frameState);
 
-    /**
-     * Gets the window state listener.
-     * 
-     * @return the window state listener
-     */
-    private WindowAdapter getWindowStateListener() {
-        if (fullFrameStateListener == null) {
-            fullFrameStateListener = new WindowAdapter() {
-
-                @Override
-                public void windowStateChanged(WindowEvent e) {
-                    if (e.getNewState() == Frame.ICONIFIED) {
-                        if (state.isShowSystemTray()) {
-                            AbstractSingleFrame.this.setVisible(false);
-                        }
-                        Logger.debug("Window Iconified");
-                    } else if (e.getNewState() != Frame.ICONIFIED) {
-                        Logger.debug("Window Deiconified");
-                        Context.getBean(IPlayListHandler.class).scrollPlayList(false);
-                    }
-                }
-            };
-        }
-        return fullFrameStateListener;
-    }
-
     @Override
     public void dispose() {
-        Context.getBean(IUIHandler.class).finish();
+    	uiHandler.finish();
         super.dispose();
     }
 
@@ -306,7 +199,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
      * This method is called from the OSXAdapter
      */
     public void about() {
-        Context.getBean(IUIHandler.class).showAboutDialog();
+    	uiHandler.showAboutDialog();
     }
 
     @Override
@@ -320,7 +213,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     @Override
     public IContextPanelsContainer getContextPanel() {
         if (contextPanel == null) {
-            contextPanel = Context.getBean(IContextPanelsContainer.class);
+            contextPanel = contextPanelsContainer;
             contextPanel.setMinimumSize(getContextPanelMinimumSize());
             contextPanel.setPreferredSize(getContextPanelPreferredSize());
             contextPanel.setMaximumSize(getContextPanelMaximumSize());
@@ -832,4 +725,81 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
      * @return
      */
     protected abstract Dimension getWindowMinimumSize();
+    
+    /**
+     * @param taskService
+     */
+    public void setTaskService(ITaskService taskService) {
+		this.taskService = taskService;
+	}
+    
+    /**
+     * @param contextPanelsContainer
+     */
+    public void setContextPanelsContainer(IContextPanelsContainer contextPanelsContainer) {
+		this.contextPanelsContainer = contextPanelsContainer;
+	}
+    
+    /**
+     * @param uiHandler
+     */
+    public void setUiHandler(IUIHandler uiHandler) {
+		this.uiHandler = uiHandler;
+	}
+    
+    @Override
+    public void setState(IState state) {
+    	this.state = state;
+    }
+    
+    @Override
+    public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
+    
+    @Override
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    public void setNavigationHandler(INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+    
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+    
+    /**
+     * @param lookAndFeelManager
+     */
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+    
+    /**
+     * @return
+     */
+    protected ILookAndFeelManager getLookAndFeelManager() {
+		return lookAndFeelManager;
+	}
+    
+    /**
+     * @param playerHandler
+     */
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
+    
+    /**
+     * @param desktop
+     */
+    public void setDesktop(IDesktop desktop) {
+		this.desktop = desktop;
+	}
+    
+
 }

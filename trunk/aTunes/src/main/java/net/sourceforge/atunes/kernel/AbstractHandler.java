@@ -176,8 +176,13 @@ public abstract class AbstractHandler implements IHandler {
     /**
      * Initializes handler 
      */
-    protected void initHandler() {
-    }
+    protected void initHandler() {}
+    
+    @Override
+    public void windowIconified() {}
+    
+    @Override
+    public void windowDeiconified() {}
 
 	/**
 	 * Delegate method to get beans

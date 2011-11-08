@@ -273,4 +273,11 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
         // Once done graphic changes, repaint the window
         repaint();
     }
+    
+    @Override
+    public void windowIconified() {
+		if (getState().isShowSystemTray()) {
+			getFrame().setVisible(false);
+		}
+    }
 }
