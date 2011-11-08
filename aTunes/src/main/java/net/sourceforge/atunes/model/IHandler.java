@@ -26,7 +26,8 @@ public interface IHandler extends IApplicationLifeCycleListener,
 								  IPlayListEventListener,
 								  IFavoritesListener,
 								  IDeviceListener,
-								  IPlaybackStateListener {
+								  IPlaybackStateListener,
+								  IWindowListener {
 	
 	/**
 	 * Sets state

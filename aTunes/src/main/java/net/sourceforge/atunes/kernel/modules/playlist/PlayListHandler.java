@@ -1418,5 +1418,10 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         String text = StringUtils.getString(strs2);
         getFrame().setRightStatusBarText(text, toolTip);
     }
+    
+    @Override
+    public void windowDeiconified() {
+		scrollPlayList(false);
+    }
 
 }
