@@ -35,5 +35,10 @@ public interface IMenuBar {
 	 * @param newMenu
 	 */
 	public void addMenu(JMenu newMenu);
+	
+	/**
+	 * Initializes menu
+	 */
+	public void initialize();
 
 }

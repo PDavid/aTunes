@@ -46,7 +46,6 @@ import net.sourceforge.atunes.gui.images.NewImageIcon;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomFrame;
 import net.sourceforge.atunes.gui.views.dialogs.UpdateDialog;
-import net.sourceforge.atunes.gui.views.menus.ApplicationMenuBar;
 import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
 import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
@@ -159,6 +158,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
 
         // Add menu bar
         IMenuBar bar = getAppMenuBar();
+        bar.initialize();
         setJMenuBar((JMenuBar) bar);
 
         // Apply component orientation
@@ -204,9 +204,6 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
 
     @Override
     public IMenuBar getAppMenuBar() {
-        if (appMenuBar == null) {
-            appMenuBar = new ApplicationMenuBar(osManager);
-        }
         return appMenuBar;
     }
 
@@ -801,5 +798,10 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
 		this.desktop = desktop;
 	}
     
-
+    /**
+     * @param appMenuBar
+     */
+    public void setAppMenuBar(IMenuBar appMenuBar) {
+		this.appMenuBar = appMenuBar;
+	}
 }
