@@ -92,16 +92,12 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
     private IOSManager osManager;
     
     /**
-     * Instantiates a new application menu bar.
      * @param osManager
-     * @param playerHandler
      */
-    public ApplicationMenuBar(IOSManager osManager) {
-        super();
-        this.osManager = osManager;
-        addMenus();
-    }
-
+    public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
+    
     /**
      * Creates "File" menu
      * 
@@ -259,7 +255,8 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
     /**
      * Adds the menus.
      */
-    private void addMenus() {
+    @Override
+    public void initialize() {
         add(getFileMenu());
         add(getEditMenu());
         add(getViewMenu());
