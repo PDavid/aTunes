@@ -20,250 +20,108 @@
 
 package net.sourceforge.atunes.gui.views.menus;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-
-import javax.swing.Action;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JSeparator;
-import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.actions.AddPodcastFeedAction;
-import net.sourceforge.atunes.kernel.actions.AddRadioAction;
-import net.sourceforge.atunes.kernel.actions.CheckUpdatesAction;
-import net.sourceforge.atunes.kernel.actions.ConnectDeviceAction;
-import net.sourceforge.atunes.kernel.actions.CustomAbstractAction;
-import net.sourceforge.atunes.kernel.actions.CustomSearchAction;
-import net.sourceforge.atunes.kernel.actions.DisconnectDeviceAction;
-import net.sourceforge.atunes.kernel.actions.EditPreferencesAction;
-import net.sourceforge.atunes.kernel.actions.ExitAction;
-import net.sourceforge.atunes.kernel.actions.ExportAction;
-import net.sourceforge.atunes.kernel.actions.FullScreenAction;
-import net.sourceforge.atunes.kernel.actions.GoToWebSiteAction;
-import net.sourceforge.atunes.kernel.actions.GoToWikiAction;
-import net.sourceforge.atunes.kernel.actions.ImportLovedTracksFromLastFMAction;
-import net.sourceforge.atunes.kernel.actions.ImportToRepositoryAction;
-import net.sourceforge.atunes.kernel.actions.MuteAction;
-import net.sourceforge.atunes.kernel.actions.RefreshDeviceAction;
-import net.sourceforge.atunes.kernel.actions.RefreshRepositoryAction;
-import net.sourceforge.atunes.kernel.actions.RepairAlbumNamesAction;
-import net.sourceforge.atunes.kernel.actions.RepairGenresAction;
-import net.sourceforge.atunes.kernel.actions.RepairTrackNumbersAction;
-import net.sourceforge.atunes.kernel.actions.ReportBugOrFeatureRequestAction;
-import net.sourceforge.atunes.kernel.actions.RipCDAction;
-import net.sourceforge.atunes.kernel.actions.SelectRepositoryAction;
-import net.sourceforge.atunes.kernel.actions.ShowAboutAction;
-import net.sourceforge.atunes.kernel.actions.ShowContextAction;
-import net.sourceforge.atunes.kernel.actions.ShowCoverNavigatorAction;
-import net.sourceforge.atunes.kernel.actions.ShowEqualizerAction;
-import net.sourceforge.atunes.kernel.actions.ShowLogAction;
-import net.sourceforge.atunes.kernel.actions.ShowNavigationTreeAction;
-import net.sourceforge.atunes.kernel.actions.ShowRadioBrowserAction;
-import net.sourceforge.atunes.kernel.actions.ShowStatsAction;
-import net.sourceforge.atunes.kernel.actions.ShowStatusBarAction;
-import net.sourceforge.atunes.kernel.actions.ToggleOSDSettingAction;
-import net.sourceforge.atunes.kernel.actions.VolumeDownAction;
-import net.sourceforge.atunes.kernel.actions.VolumeUpAction;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IMenuBar;
-import net.sourceforge.atunes.model.INavigationHandler;
-import net.sourceforge.atunes.model.INavigationView;
-import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.utils.I18nUtils;
+
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 /**
  * The application menu bar.
  */
-public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
+/**
+ * @author alex
+ *
+ */
+public final class ApplicationMenuBar extends JMenuBar implements IMenuBar, ApplicationContextAware {
 
     private static final long serialVersionUID = 234977404080329591L;
 
-    private JMenu file;
-    private JMenu edit;
-    private JMenu view;
-    private JMenu playList;
-    private JMenu tools;
-    private JMenu device;
-    private JMenu help;
+    private JMenu fileMenu;
+    private JMenu editMenu;
+    private JMenu viewMenu;
+    private PlayListMenu playListMenu;
+    private JMenu toolsMenu;
+    private JMenu deviceMenu;
+    private JMenu helpMenu;
     
-    private IOSManager osManager;
+    private ApplicationContext context;
+    
+    /* (non-Javadoc)
+     * @see org.springframework.context.ApplicationContextAware#setApplicationContext(org.springframework.context.ApplicationContext)
+     */
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    	this.context = applicationContext;
+    }
     
     /**
-     * @param osManager
+     * @param fileMenu
      */
-    public void setOsManager(IOSManager osManager) {
-		this.osManager = osManager;
+    public void setFileMenu(JMenu fileMenu) {
+		this.fileMenu = fileMenu;
 	}
     
     /**
-     * Creates "File" menu
-     * 
-     * @return
+     * @param editMenu
      */
-    private JMenu getFileMenu() {
-        if (file == null) {
-            file = new JMenu(I18nUtils.getString("FILE"));
-            file.add(Context.getBean(SelectRepositoryAction.class));
-            file.add(Context.getBean(RefreshRepositoryAction.class));
-            file.add(new JSeparator());
-            file.add(Context.getBean(ImportToRepositoryAction.class));
-            file.add(Context.getBean(ExportAction.class));
-            if (!osManager.areMenuEntriesDelegated()) {
-            	file.add(new JSeparator());
-            	file.add(Context.getBean(ExitAction.class));
-            }
-        }
-        return file;
-    }
-
+    public void setEditMenu(JMenu editMenu) {
+		this.editMenu = editMenu;
+	}
+    
     /**
-     * Creates "Edit" menu
-     * 
-     * @return
+     * @param viewMenu
      */
-    private JMenu getEditMenu() {
-        if (edit == null) {
-            edit = new JMenu(I18nUtils.getString("EDIT"));
-            JMenu player = new JMenu(I18nUtils.getString("VOLUME"));
-            player.add(Context.getBean(ShowEqualizerAction.class));
-            player.add(Context.getBean(VolumeUpAction.class));
-            player.add(Context.getBean(VolumeDownAction.class));
-            player.add(new JCheckBoxMenuItem(Context.getBean(MuteAction.class)));
-            JMenu repair = new JMenu(I18nUtils.getString("REPAIR"));
-            repair.add(Context.getBean(RepairTrackNumbersAction.class));
-            repair.add(Context.getBean(RepairGenresAction.class));
-            repair.add(Context.getBean(RepairAlbumNamesAction.class));
-            edit.add(player);
-            if (!osManager.areMenuEntriesDelegated()) {
-            	edit.add(Context.getBean(EditPreferencesAction.class));
-            }
-            edit.add(new JSeparator());
-            edit.add(repair);
-        }
-        return edit;
-    }
-
+    public void setViewMenu(JMenu viewMenu) {
+		this.viewMenu = viewMenu;
+	}
+    
     /**
-     * Creates "View" menu
-     * 
-     * @return
+     * @param toolsMenu
      */
-    private JMenu getViewMenu() {
-        if (view == null) {
-            view = new JMenu(I18nUtils.getString("VIEW"));
-
-            // Add dinamically actions to show each navigation view loaded
-            int acceleratorIndex = 1;
-            for (INavigationView navigationView : Context.getBean(INavigationHandler.class).getNavigationViews()) {
-            	CustomAbstractAction action = navigationView.getActionToShowView(); 
-        		// The first 9 views will have an accelerator key ALT + index
-        		if (acceleratorIndex < 10) {
-        			action.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_0 + acceleratorIndex, ActionEvent.ALT_MASK));
-        		}
-    			acceleratorIndex++;
-                view.add(action);
-            }
-
-            view.add(new JSeparator());
-            view.add(new JCheckBoxMenuItem(Context.getBean(ShowStatusBarAction.class)));
-            view.add(new JCheckBoxMenuItem(Context.getBean(ShowNavigationTreeAction.class)));
-            view.add(new JCheckBoxMenuItem(Context.getBean(ShowContextAction.class)));
-            view.add(new JCheckBoxMenuItem(Context.getBean(ToggleOSDSettingAction.class)));
-            view.add(new JSeparator());
-            view.add(Context.getBean(FullScreenAction.class));
-        }
-        return view;
-    }
-
+    public void setToolsMenu(JMenu toolsMenu) {
+		this.toolsMenu = toolsMenu;
+	}
+    
     /**
-     * Creates "Playlist" menu
-     * 
-     * @return
+     * @param deviceMenu
      */
-    private JMenu getPlayListMenu() {
-        if (playList == null) {
-            playList = new JMenu(I18nUtils.getString("PLAYLIST"));
-            PlayListMenu.fillMenu(playList, Context.getBean(IFrame.class).getPlayListTable());
-        }
-        return playList;
-    }
-
+    public void setDeviceMenu(JMenu deviceMenu) {
+		this.deviceMenu = deviceMenu;
+	}
+    
+    /* (non-Javadoc)
+     * @see javax.swing.JMenuBar#setHelpMenu(javax.swing.JMenu)
+     */
+    public void setHelpMenu(JMenu helpMenu) {
+		this.helpMenu = helpMenu;
+	}
+    
     /**
-     * Creates "Tools" menu
-     * 
-     * @return
+     * @param playListMenu
      */
-    private JMenu getToolsMenu() {
-        if (tools == null) {
-            tools = new JMenu(I18nUtils.getString("TOOLS"));
-            tools.add(Context.getBean(RipCDAction.class));
-            tools.add(new JSeparator());
-            tools.add(Context.getBean(ShowStatsAction.class));
-            tools.add(Context.getBean(ShowCoverNavigatorAction.class));
-            tools.add(new JSeparator());
-            tools.add(Context.getBean(AddRadioAction.class));
-            tools.add(Context.getBean(ShowRadioBrowserAction.class));
-            tools.add(Context.getBean(AddPodcastFeedAction.class));
-            tools.add(new JSeparator());
-            tools.add(Context.getBean(CustomSearchAction.class));
-            tools.add(new JSeparator());
-            tools.add(Context.getBean(ImportLovedTracksFromLastFMAction.class));
-        }
-        return tools;
-    }
-
-    /**
-     * Creates "Device" menu
-     * 
-     * @return
-     */
-    private JMenu getDeviceMenu() {
-        if (device == null) {
-            device = new JMenu(I18nUtils.getString("DEVICE"));
-            device.add(Context.getBean(ConnectDeviceAction.class));
-            device.add(Context.getBean(RefreshDeviceAction.class));
-            device.add(Context.getBean(DisconnectDeviceAction.class));
-        }
-        return device;
-    }
-
-    /**
-     * Creates "Help" menu
-     * 
-     * @return
-     */
-    private JMenu getCustomHelpMenu() {
-        if (help == null) {
-            help = new JMenu(I18nUtils.getString("HELP"));
-            help.add(Context.getBean(GoToWebSiteAction.class));
-            help.add(Context.getBean(GoToWikiAction.class));
-            help.add(Context.getBean(ReportBugOrFeatureRequestAction.class));
-            help.add(new JSeparator());
-            help.add(Context.getBean(ShowLogAction.class));
-            help.add(Context.getBean(CheckUpdatesAction.class));
-            if (!osManager.areMenuEntriesDelegated()) {
-            	help.add(new JSeparator());
-            	help.add(Context.getBean(ShowAboutAction.class));
-            }
-        }
-        return help;
-    }
-
+    public void setPlayListMenu(PlayListMenu playListMenu) {
+		this.playListMenu = playListMenu;
+	}
+    
     /**
      * Adds the menus.
      */
     @Override
     public void initialize() {
-        add(getFileMenu());
-        add(getEditMenu());
-        add(getViewMenu());
-        add(getPlayListMenu());
-        add(getDeviceMenu());
-        add(getToolsMenu());
-        add(getCustomHelpMenu());
+        add(fileMenu);
+        add(editMenu);
+        add(viewMenu);
+        playListMenu.setFrame(context.getBean(IFrame.class));
+        playListMenu.initialize();
+        add(playListMenu);
+        add(deviceMenu);
+        add(toolsMenu);
+        add(helpMenu);
     }
 
     /* (non-Javadoc)
@@ -273,6 +131,6 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
 	public void addMenu(JMenu newMenu) {
         remove(getComponentCount() - 1);
         add(newMenu);
-        add(getCustomHelpMenu());
+        add(helpMenu);
     }
 }

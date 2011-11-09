@@ -45,7 +45,7 @@ import net.sourceforge.atunes.gui.model.TransferableList;
 import net.sourceforge.atunes.gui.renderers.ColumnRenderers;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetRowSorter;
-import net.sourceforge.atunes.gui.views.menus.PlayListMenu;
+import net.sourceforge.atunes.gui.views.menus.PlayListMenuFiller;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListDragableRow;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListTableModel;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -118,7 +118,7 @@ public final class PlayListTable extends JTable implements IPlayListTable {
 
         // Popup menu
         menu = new JPopupMenu();
-        PlayListMenu.fillPopUpMenu(menu, this);
+        PlayListMenuFiller.fillPopUpMenu(menu, this);
         GuiUtils.applyComponentOrientation(menu);
 
         // Create drag source and set listener
