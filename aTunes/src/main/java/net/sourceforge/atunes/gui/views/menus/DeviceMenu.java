@@ -20,35 +20,53 @@
 
 package net.sourceforge.atunes.gui.views.menus;
 
+import javax.swing.Action;
 import javax.swing.JMenu;
 
-import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class PlayListMenu extends JMenu {
+public class DeviceMenu extends JMenu {
 
 	private static final long serialVersionUID = -3624790857729577320L;
 
-	private IFrame frame;
+	private Action connectDeviceAction;
+	private Action refreshDeviceAction;
+	private Action disconnectDeviceAction;
 	
 	/**
 	 * @param i18nKey
 	 */
-	public PlayListMenu(String i18nKey) {
+	public DeviceMenu(String i18nKey) {
 		super(I18nUtils.getString(i18nKey));
 	}
-
+	
 	/**
-	 * @param frame
+	 * @param connectDeviceAction
 	 */
-	public void setFrame(IFrame frame) {
-		this.frame = frame;
+	public void setConnectDeviceAction(Action connectDeviceAction) {
+		this.connectDeviceAction = connectDeviceAction;
+	}
+	
+	/**
+	 * @param refreshDeviceAction
+	 */
+	public void setRefreshDeviceAction(Action refreshDeviceAction) {
+		this.refreshDeviceAction = refreshDeviceAction;
+	}
+	
+	/**
+	 * @param disconnectDeviceAction
+	 */
+	public void setDisconnectDeviceAction(Action disconnectDeviceAction) {
+		this.disconnectDeviceAction = disconnectDeviceAction;
 	}
 	
 	/**
 	 * Initializes menu
 	 */
 	public void initialize() {
-        PlayListMenuFiller.fillMenu(this, frame);
+        add(connectDeviceAction);
+        add(refreshDeviceAction);
+        add(disconnectDeviceAction);
 	}
 }

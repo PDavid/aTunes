@@ -12,6 +12,27 @@
 	<bean id="frame" factory-bean="frameFactory" factory-method="create"/>
 	
 	<bean id="appMenuBar" class="net.sourceforge.atunes.gui.views.menus.ApplicationMenuBar"/>
+	<bean id="fileMenu" class="net.sourceforge.atunes.gui.views.menus.FileMenu" init-method="initialize">
+		<constructor-arg value="FILE"/>
+	</bean>
+	<bean id="editMenu" class="net.sourceforge.atunes.gui.views.menus.EditMenu" init-method="initialize">
+		<constructor-arg value="EDIT"/>
+	</bean>
+	<bean id="viewMenu" class="net.sourceforge.atunes.gui.views.menus.ViewMenu" init-method="initialize">
+		<constructor-arg value="VIEW"/>
+	</bean>
+	<bean id="toolsMenu" class="net.sourceforge.atunes.gui.views.menus.ToolsMenu" init-method="initialize">
+		<constructor-arg value="TOOLS"/>
+	</bean>
+	<bean id="playListMenu" class="net.sourceforge.atunes.gui.views.menus.PlayListMenu">
+		<constructor-arg value="PLAYLIST"/>
+	</bean>
+	<bean id="deviceMenu" class="net.sourceforge.atunes.gui.views.menus.DeviceMenu" init-method="initialize">
+		<constructor-arg value="DEVICE"/>
+	</bean>
+	<bean id="helpMenu" class="net.sourceforge.atunes.gui.views.menus.HelpMenu" init-method="initialize">
+		<constructor-arg value="HELP"/>
+	</bean>
 	
 	<bean id="contextPanelsContainer" class="net.sourceforge.atunes.gui.views.panels.ContextPanelContainer">
 		<constructor-arg ref="lookAndFeelManager"/>
