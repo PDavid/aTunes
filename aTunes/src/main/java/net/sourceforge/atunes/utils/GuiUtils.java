@@ -117,7 +117,7 @@ public final class GuiUtils {
      * @return
      */
     public static int getDeviceWidth() {
-        return mainDeviceBounds.width;
+        return mainDeviceBounds != null ? mainDeviceBounds.width : 0;
     }
 
     /**
@@ -126,7 +126,7 @@ public final class GuiUtils {
      * @return
      */
     public static int getDeviceHeight() {
-        return mainDeviceBounds.height;
+        return mainDeviceBounds != null ? mainDeviceBounds.height: 0;
     }
 
     /**
@@ -293,8 +293,12 @@ public final class GuiUtils {
      * @return the component width for resolution
      */
     public static int getComponentWidthForResolution(float screenWidthFactor) {
-        int currentScreenWidth = mainDeviceBounds.width > MAX_COMPONENTS_WIDTH ? MAX_COMPONENTS_WIDTH : mainDeviceBounds.width;
-        return (int) (currentScreenWidth * screenWidthFactor);
+    	if (mainDeviceBounds != null) {
+    		int currentScreenWidth = mainDeviceBounds.width > MAX_COMPONENTS_WIDTH ? MAX_COMPONENTS_WIDTH : mainDeviceBounds.width;
+    		return (int) (currentScreenWidth * screenWidthFactor);
+    	} else {
+    		return 0;
+    	}
     }
 
     /**
@@ -319,8 +323,12 @@ public final class GuiUtils {
      * @return the component height for resolution
      */
     public static int getComponentHeightForResolution(float screenHeightFactor) {
-        int currentScreenHeight = mainDeviceBounds.height;
-        return (int) (currentScreenHeight * screenHeightFactor);
+    	if (mainDeviceBounds != null) {
+    		int currentScreenHeight = mainDeviceBounds.height;
+    		return (int) (currentScreenHeight * screenHeightFactor);
+    	} else {
+    		return 0;
+    	}
     }
 
     /**
