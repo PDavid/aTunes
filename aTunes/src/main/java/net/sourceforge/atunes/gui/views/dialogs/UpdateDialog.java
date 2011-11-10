@@ -23,7 +23,6 @@ package net.sourceforge.atunes.gui.views.dialogs;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -41,21 +40,37 @@ import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.model.ApplicationVersion;
 import net.sourceforge.atunes.model.IDesktop;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.IUpdateDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public final class UpdateDialog extends AbstractCustomDialog {
+public final class UpdateDialog extends AbstractCustomDialog implements IUpdateDialog {
 
     private static final long serialVersionUID = -778226654176158965L;
 
+    private IDesktop desktop;
+    
     /**
-     * @param version
-     * @param owner
-     * @param lookAndFeelManager
      * @param desktop
      */
-    public UpdateDialog(ApplicationVersion version, Window owner, ILookAndFeelManager lookAndFeelManager, IDesktop desktop) {
-        super(owner, 400, 150, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
+    public void setDesktop(IDesktop desktop) {
+		this.desktop = desktop;
+	}
+    
+    /**
+     * @param frame
+     * @param lookAndFeelManager
+     */
+    public UpdateDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
+        super(frame, 400, 150, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
+    }
+    
+    /**
+     * Initializes dialog
+     * @param version
+     */
+    public void initialize(ApplicationVersion version) {
         setTitle(I18nUtils.getString("NEW_VERSION_AVAILABLE"));
         setResizable(false);
 
@@ -108,5 +123,9 @@ public final class UpdateDialog extends AbstractCustomDialog {
 
         add(panel);
     }
-
+    
+    @Override
+    public void showDialog() {
+    	setVisible(true);
+    }
 }

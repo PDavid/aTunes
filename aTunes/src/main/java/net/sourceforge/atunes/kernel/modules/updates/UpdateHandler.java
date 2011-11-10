@@ -28,8 +28,6 @@ import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.model.ApplicationVersion;
-import net.sourceforge.atunes.model.IDesktop;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IUpdateHandler;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.NetworkUtils;
@@ -67,7 +65,7 @@ public final class UpdateHandler extends AbstractHandler implements IUpdateHandl
      */
     @Override
     public void checkUpdates(boolean alwaysInDialog, boolean showNoNewVersion) {
-        new CheckUpdatesSwingWorker(this, showNoNewVersion, alwaysInDialog, getState(), getFrame(), getBean(ILookAndFeelManager.class), getBean(IDesktop.class)).execute();
+        new CheckUpdatesSwingWorker(this, showNoNewVersion, alwaysInDialog, getState(), getFrame()).execute();
     }
 
     /**
