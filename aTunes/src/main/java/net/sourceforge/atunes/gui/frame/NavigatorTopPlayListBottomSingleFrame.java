@@ -80,7 +80,7 @@ public final class NavigatorTopPlayListBottomSingleFrame extends MainSplitPaneRi
     
     @Override
     protected JComponent getComponentB() {
-        return getPlayListPanel();
+        return getPlayListPanel().getSwingComponent();
     }
     
     @Override

@@ -35,7 +35,6 @@ import javax.swing.JMenuItem;
 import javax.swing.filechooser.FileFilter;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
@@ -55,6 +54,7 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayListPanel;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
@@ -569,7 +569,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
             } else {
             	getFrame().getPlayerControls().setShowTicksAndLabels(false);
             }
-            getFrame().getPlayListPanel().repaint();
+            getFrame().getPlayListPanel().getSwingComponent().repaint();
 
             // Refresh play list
             getPlayListController().refreshPlayList();
@@ -1204,7 +1204,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 
 	private PlayListController getPlayListController() {
         if (playListController == null) {
-            PlayListPanel panel = null;
+            IPlayListPanel panel = null;
             panel = getFrame().getPlayListPanel();
             playListController = new PlayListController(panel, getState(), getFrame(), this, playerHandler, getBean(IFilterHandler.class));
         }

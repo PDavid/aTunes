@@ -26,17 +26,17 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.views.panels.PlayListTabPanel;
 import net.sourceforge.atunes.kernel.actions.CloseOtherPlaylistsAction;
 import net.sourceforge.atunes.kernel.actions.ClosePlaylistAction;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayListSelectorPanel;
 
 /**
  * The listener interface for receiving playListTab events.
  */
 final class PlayListTabListener implements ActionListener, ItemListener {
 
-    private PlayListTabPanel panel;
+    private IPlayListSelectorPanel panel;
     
     private IPlayListHandler playListHandler;
 
@@ -46,7 +46,7 @@ final class PlayListTabListener implements ActionListener, ItemListener {
      * @param panel
      *            the panel
      */
-    public PlayListTabListener(PlayListTabPanel panel, IPlayListHandler playListHandler) {
+    public PlayListTabListener(IPlayListSelectorPanel panel, IPlayListHandler playListHandler) {
         this.panel = panel;
         this.playListHandler = playListHandler;
     }

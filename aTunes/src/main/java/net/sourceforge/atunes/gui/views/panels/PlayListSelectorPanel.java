@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.gui.views.panels;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -35,29 +36,36 @@ import net.sourceforge.atunes.kernel.actions.NewPlayListAction;
 import net.sourceforge.atunes.kernel.actions.RenamePlaylistAction;
 import net.sourceforge.atunes.kernel.actions.SynchronizeDeviceWithPlayListAction;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.IPlayListSelectorPanel;
 
-public final class PlayListTabPanel extends JPanel {
+public final class PlayListSelectorPanel extends JPanel implements IPlayListSelectorPanel {
 
 	private static final long serialVersionUID = 7382098268271937439L;
 
 	private PopUpButton options;
 	
     private JComboBox playListCombo;
+
+	private ILookAndFeelManager lookAndFeelManager;
     
     /**
      * Instantiates a new play list tab panel.
+     */
+    public PlayListSelectorPanel() {
+        super(new BorderLayout());
+    }
+    
+    /**
      * @param lookAndFeelManager
      */
-    public PlayListTabPanel(ILookAndFeelManager lookAndFeelManager) {
-        super(new BorderLayout());
-        addContent(lookAndFeelManager);
-    }
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
 
     /**
      * Adds the content.
-     * @param lookAndFeelManager 
      */
-    private void addContent(ILookAndFeelManager lookAndFeelManager) {
+    public void initialize() {
     	options = new PopUpButton(PopUpButton.BOTTOM_RIGHT, lookAndFeelManager);
     	playListCombo = new JComboBox();
 
@@ -75,17 +83,24 @@ public final class PlayListTabPanel extends JPanel {
         options.add(Context.getBean(SynchronizeDeviceWithPlayListAction.class));
     }
 
-    /**
-	 * @return the playListCombo
+    /* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.panels.IPlayListSelectorPanel#getPlayListCombo()
 	 */
+	@Override
 	public JComboBox getPlayListCombo() {
 		return playListCombo;
 	}
 	
-	/**
-	 * @return the options
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.gui.views.panels.IPlayListSelectorPanel#getOptions()
 	 */
+	@Override
 	public PopUpButton getOptions() {
 		return options;
+	}
+	
+	@Override
+	public Component getSwingComponent() {
+		return this;
 	}
 }
