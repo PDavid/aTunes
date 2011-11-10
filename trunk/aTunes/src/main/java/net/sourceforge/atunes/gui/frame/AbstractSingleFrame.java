@@ -24,7 +24,6 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,7 +34,6 @@ import java.util.Arrays;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenuBar;
 import javax.swing.JProgressBar;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
@@ -84,14 +82,8 @@ import org.springframework.context.ApplicationContextAware;
  */
 abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.sourceforge.atunes.model.IFrame, ApplicationContextAware {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 5221630053432272337L;
 	
-	private static final int HORIZONTAL_MARGIN = GuiUtils.getComponentWidthForResolution(0.3f);
-    private static final int VERTICAL_MARGIN = GuiUtils.getComponentHeightForResolution(0.2f);
-    
     private IFrameState frameState;
 
     private INavigationTreePanel navigationTreePanel;
@@ -133,7 +125,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     public void create(IFrameState frameState) {
         this.frameState = frameState;
 
-        setWindowLocation(frameState);
+        setLocation(new WindowLocationCalculator().getWindowLocation(frameState));
 
         // Set OS-dependent frame configuration
         osManager.setupFrame(this);
@@ -145,34 +137,19 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
         setContentPane(getContentPanel());
 
         // Add menu bar
-        IMenuBar bar = getAppMenuBar();
-        bar.initialize();
-        setJMenuBar((JMenuBar) bar);
+        addMenuBar();
 
         // Apply component orientation
         GuiUtils.applyComponentOrientation(this);
     }
 
 	/**
-	 * Initializes window location
-	 * @param frameState
+	 * Adds menu bar
 	 */
-	private void setWindowLocation(IFrameState frameState) {
-		// Set window location
-        Point windowLocation = null;
-        if (frameState.getXPosition() >= 0 && frameState.getYPosition() >= 0) {
-            windowLocation = new Point(frameState.getXPosition(), frameState.getYPosition());
-        }
-        
-        if (windowLocation == null) {
-        	// Setting location centered in screen according to default size
-        	Dimension defSize = getDefaultWindowSize();
-            windowLocation = new Point((GuiUtils.getDeviceWidth() - defSize.width) / 2, (GuiUtils.getDeviceHeight() - defSize.height) / 2);
-        }
-        
-        if (windowLocation != null) {
-            setLocation(windowLocation);
-        }
+	private void addMenuBar() {
+		IMenuBar bar = getAppMenuBar();
+        bar.initialize();
+        setJMenuBar(bar.getSwingComponent());
 	}
 
     protected abstract void setupSplitPaneDividerPosition(IFrameState frameState);
@@ -369,7 +346,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
         return statusBarNewPodcastEntriesLabel;
     }
 
-    JLabel getStatusBarNewVersionLabel() {
+    private JLabel getStatusBarNewVersionLabel() {
         if (statusBarNewVersionLabel == null) {
             statusBarNewVersionLabel = new JLabel(NewImageIcon.getIcon(lookAndFeelManager.getCurrentLookAndFeel()));
             statusBarNewVersionLabel.setToolTipText(I18nUtils.getString("NEW_VERSION_AVAILABLE"));
@@ -421,50 +398,12 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (Toolkit.getDefaultToolkit().getScreenSize().width + 15 < getSize().width) {
-                    setWindowSize();
+                    new WindowSizeCalculator().setWindowSize(AbstractSingleFrame.this, state);
                 }
             }
         });
         t.setRepeats(false);
         t.start();
-    }
-
-    /**
-     * Sets the window size.
-     */
-    void setWindowSize() {
-        setMinimumSize(getWindowMinimumSize());
-        if (state.getFrameState(getClass()).isMaximized()) {
-            setWindowSizeMaximized();
-        } else {
-            Dimension dimension = null;
-            if (state.getFrameState(getClass()).getWindowWidth() != 0 && 
-                state.getFrameState(getClass()).getWindowHeight() != 0) {
-                dimension = new Dimension(state.getFrameState(getClass()).getWindowWidth(), 
-                		state.getFrameState(getClass()).getWindowHeight());
-            }
-            if (dimension == null) {
-            	dimension = getDefaultWindowSize();
-            }
-            if (dimension != null) {
-                setSize(dimension);
-            }
-        }
-    }
-    
-    /**
-     * Calculates default window size
-     * @return
-     */
-    private Dimension getDefaultWindowSize() {
-        // Set size always according to main device dimension 
-    	return new Dimension(GuiUtils.getDeviceWidth() - HORIZONTAL_MARGIN, GuiUtils.getDeviceHeight() - VERTICAL_MARGIN);
-    }
-    
-    private final void setWindowSizeMaximized() {
-        Dimension screen = getToolkit().getScreenSize();
-        setSize(screen.width - HORIZONTAL_MARGIN, screen.height - VERTICAL_MARGIN);
-        setExtendedState(Frame.MAXIMIZED_BOTH);
     }
 
     @Override
@@ -597,7 +536,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     public void applicationStarted(IFrameState frameState) {
     	// Setting window size after frame is visible avoids using workarounds to set extended state in Linux
     	// and work both in Windows and Linux
-        setWindowSize();
+    	new WindowSizeCalculator().setWindowSize(AbstractSingleFrame.this, state);
     	setupSplitPaneDividerPosition(frameState);
     }
     
@@ -631,8 +570,6 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
         }
     }
 
-   
-    
     /**
      * Returns minimum size of context panel
      * @return
