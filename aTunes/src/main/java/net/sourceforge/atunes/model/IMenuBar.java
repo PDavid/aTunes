@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.model;
 
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 
 /**
  * A menu bar
@@ -40,5 +41,11 @@ public interface IMenuBar {
 	 * Initializes menu
 	 */
 	public void initialize();
+	
+	/**
+	 * Returns underlying Swing component
+	 * @return
+	 */
+	public JMenuBar getSwingComponent();
 
 }

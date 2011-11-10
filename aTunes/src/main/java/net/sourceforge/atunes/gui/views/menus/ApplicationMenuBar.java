@@ -133,4 +133,9 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar, Appl
         add(newMenu);
         add(helpMenu);
     }
+    
+    @Override
+    public JMenuBar getSwingComponent() {
+    	return this;
+    }
 }
