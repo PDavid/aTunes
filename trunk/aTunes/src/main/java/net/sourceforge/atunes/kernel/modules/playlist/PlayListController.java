@@ -32,6 +32,7 @@ import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayListPanel;
 import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
@@ -60,8 +61,8 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
      * @param playerHandler
      * @param filterHandler
      */
-    PlayListController(PlayListPanel panel, IState state, IFrame frame, IPlayListHandler playListHandler, IPlayerHandler playerHandler, IFilterHandler filterHandler) {
-        super(panel, state);
+    PlayListController(IPlayListPanel panel, IState state, IFrame frame, IPlayListHandler playListHandler, IPlayerHandler playerHandler, IFilterHandler filterHandler) {
+        super((PlayListPanel)panel.getSwingComponent(), state);
         this.frame = frame;
         this.playListHandler = playListHandler;
         this.playerHandler = playerHandler;

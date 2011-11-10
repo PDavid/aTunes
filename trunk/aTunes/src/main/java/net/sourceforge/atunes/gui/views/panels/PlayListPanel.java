@@ -22,6 +22,7 @@ package net.sourceforge.atunes.gui.views.panels;
 
 import java.awt.BorderLayout;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -34,6 +35,8 @@ import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayListPanel;
+import net.sourceforge.atunes.model.IPlayListSelectorPanel;
 import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 
@@ -42,12 +45,12 @@ import net.sourceforge.atunes.model.IRepositoryHandler;
  * 
  * @author fleax
  */
-public final class PlayListPanel extends JPanel {
+public final class PlayListPanel extends JPanel implements IPlayListPanel {
 
     private static final long serialVersionUID = -1886323054505118303L;
 
     /** The play list tab panel. */
-    private PlayListTabPanel playListTabPanel;
+    private IPlayListSelectorPanel playListSelectorPanel;
 
     /** The play list table. */
     private IPlayListTable playListTable;
@@ -59,57 +62,73 @@ public final class PlayListPanel extends JPanel {
     
     private IRepositoryHandler repositoryHandler;
 
+	private ILookAndFeelManager lookAndFeelManager;
+
     /**
      * Instantiates a new play list panel.
+     */
+    public PlayListPanel() {
+        super(new BorderLayout());
+    }
+    
+    /**
      * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+    
+    /**
      * @param lookAndFeelManager
      */
-    public PlayListPanel(IPlayListHandler playListHandler, ILookAndFeelManager lookAndFeelManager, IRepositoryHandler repositoryHandler) {
-        super(new BorderLayout());
-        this.playListHandler = playListHandler;
-        this.repositoryHandler = repositoryHandler;
-        addContent(lookAndFeelManager);
-    }
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
 
     /**
      * Adds the content.
      * @param lookAndFeelManager 
      */
-    private void addContent(ILookAndFeelManager lookAndFeelManager) {
-        playListTabPanel = new PlayListTabPanel(lookAndFeelManager);
+    public void initialize() {
         playListTable = new PlayListTable((IColumnSet) Context.getBean("playlistColumnSet"), playListHandler, lookAndFeelManager, repositoryHandler);
         playListTableScroll = lookAndFeelManager.getCurrentLookAndFeel().getTableScrollPane(playListTable.getSwingComponent());
 
-        add(playListTabPanel, BorderLayout.NORTH);
+        add(playListSelectorPanel.getSwingComponent(), BorderLayout.NORTH);
         add(playListTableScroll, BorderLayout.CENTER);
     }
 
-    /**
-     * Gets the play list table.
-     * 
-     * @return the play list table
-     */
-    public IPlayListTable getPlayListTable() {
+    @Override
+	public IPlayListTable getPlayListTable() {
         return playListTable;
     }
 
-    /**
-     * Gets the play list tab panel.
-     * 
-     * @return the playListTabPanel
-     */
-    public PlayListTabPanel getPlayListTabPanel() {
-        return playListTabPanel;
+    @Override
+	public IPlayListSelectorPanel getPlayListTabPanel() {
+        return playListSelectorPanel;
     }
     
-    /**
-     * Prepares play list for drag and drop operations
-     * @param playListTableTransferHandler
-     */
-    public void enableDragAndDrop(PlayListTableTransferHandler playListTableTransferHandler) {
+    @Override
+	public void setPlayListSelectorPanel(IPlayListSelectorPanel playListSelectorPanel) {
+		this.playListSelectorPanel = playListSelectorPanel;
+	}
+    
+    @Override
+	public void enableDragAndDrop(PlayListTableTransferHandler playListTableTransferHandler) {
         playListTable.setTransferHandler(playListTableTransferHandler);
         playListTableScroll.setTransferHandler(playListTableTransferHandler);
         new PlayListToDeviceDragAndDropListener(Context.getBean(INavigationHandler.class), Context.getBean(IDeviceHandler.class));
+    }
+    
+    @Override
+    public JComponent getSwingComponent() {
+    	return this;
     }
 
 }

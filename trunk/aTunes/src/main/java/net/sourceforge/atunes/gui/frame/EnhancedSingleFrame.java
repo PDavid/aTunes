@@ -80,7 +80,7 @@ public final class EnhancedSingleFrame extends MainSplitPaneLeftSingleFrame impl
     																    PLAYLIST_SPLIT_PANE, 
     																    JSplitPane.VERTICAL_SPLIT, 
     																    getNavigationTablePanel().getSwingComponent(),
-    																    getPlayListPanel()));
+    																    getPlayListPanel().getSwingComponent()));
     }
     
     @Override

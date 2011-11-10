@@ -43,5 +43,7 @@
 	<bean id="navigationTable" class="net.sourceforge.atunes.gui.views.controls.NavigationTable">
 		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
+	<bean id="playListPanel" class="net.sourceforge.atunes.gui.views.panels.PlayListPanel" init-method="initialize"/>
+	<bean id="playListSelectorPanel" class="net.sourceforge.atunes.gui.views.panels.PlayListSelectorPanel" init-method="initialize"/>
 
 </beans>

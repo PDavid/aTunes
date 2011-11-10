@@ -28,7 +28,6 @@ import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JProgressBar;
 
-import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 
 /**
@@ -111,7 +110,7 @@ public interface IFrame {
      * 
      * @return the play list panel
      */
-    public PlayListPanel getPlayListPanel();
+    public IPlayListPanel getPlayListPanel();
 
     /**
      * Gets the play list table.
@@ -325,12 +324,6 @@ public interface IFrame {
 	 * Hides progress bar
 	 */
 	public void hideProgressBar();
-	
-	/**
-	 * Sets play list handler
-	 * @param playListHandler
-	 */
-	public void setPlayListHandler(IPlayListHandler playListHandler);
 	
 	/**
 	 * Sets navigation handler

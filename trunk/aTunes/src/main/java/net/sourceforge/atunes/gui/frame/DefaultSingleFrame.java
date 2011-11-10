@@ -83,7 +83,7 @@ public final class DefaultSingleFrame extends MainSplitPaneLeftSingleFrame imple
     
     @Override
     protected JComponent getComponentB() {
-    	return getPlayListPanel();
+    	return getPlayListPanel().getSwingComponent();
     }
     
     @Override

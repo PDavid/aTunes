@@ -43,7 +43,6 @@ import net.sourceforge.atunes.gui.images.DeviceImageIcon;
 import net.sourceforge.atunes.gui.images.NewImageIcon;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomFrame;
-import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.model.ApplicationVersion;
@@ -56,10 +55,9 @@ import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationTablePanel;
 import net.sourceforge.atunes.model.INavigationTreePanel;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayListPanel;
 import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.model.ITaskService;
@@ -96,17 +94,15 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     private IUpdateDialog updateDialog;
     private JProgressBar progressBar;
     private IMenuBar appMenuBar;
-    private PlayListPanel playListPanel;
+    private IPlayListPanel playListPanel;
     private IContextPanelsContainer contextPanel;
     private PlayerControlsPanel playerControls;
     private JXStatusBar statusBar;
 
     protected IState state;
     protected IOSManager osManager;
-    private IPlayListHandler playListHandler;
     private INavigationHandler navigationHandler;
     private ILookAndFeelManager lookAndFeelManager;
-    private IRepositoryHandler repositoryHandler;
     private IPlayerHandler playerHandler;
     private IUIHandler uiHandler;
     
@@ -251,9 +247,9 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     }
 
     @Override
-    public PlayListPanel getPlayListPanel() {
+    public IPlayListPanel getPlayListPanel() {
         if (playListPanel == null) {
-            playListPanel = new PlayListPanel(playListHandler, lookAndFeelManager, repositoryHandler);
+            playListPanel = context.getBean(IPlayListPanel.class);
             playListPanel.setMinimumSize(getPlayListPanelMinimumSize());
             playListPanel.setPreferredSize(getPlayListPanelPreferredSize());
             playListPanel.setMaximumSize(getPlayListPanelMaximumSize());
@@ -670,20 +666,8 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
 		this.osManager = osManager;
 	}
     
-    @Override
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
-	}
-    
     public void setNavigationHandler(INavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
-	}
-    
-    /**
-     * @param repositoryHandler
-     */
-    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
 	}
     
     /**

@@ -22,12 +22,13 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 
 import java.util.List;
 
-import net.sourceforge.atunes.gui.views.panels.PlayListTabPanel;
+import net.sourceforge.atunes.gui.views.panels.PlayListSelectorPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayListSelectorPanel;
 import net.sourceforge.atunes.model.IState;
 
-final class PlayListTabController extends AbstractSimpleController<PlayListTabPanel> {
+final class PlayListTabController extends AbstractSimpleController<PlayListSelectorPanel> {
 
 	private IPlayListHandler playListHandler;
 	
@@ -37,8 +38,8 @@ final class PlayListTabController extends AbstractSimpleController<PlayListTabPa
      * @param panel
      * @param state
      */
-    PlayListTabController(PlayListTabPanel panel, IState state, IPlayListHandler playListHandler) {
-        super(panel, state);
+    PlayListTabController(IPlayListSelectorPanel panel, IState state, IPlayListHandler playListHandler) {
+        super((PlayListSelectorPanel) panel.getSwingComponent(), state);
         this.playListHandler = playListHandler;
         addBindings();
         addStateBindings();

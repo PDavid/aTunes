@@ -170,7 +170,6 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
 
 		getFrame().setState(getState());
 		getFrame().setOsManager(getOsManager());
-		getFrame().setPlayListHandler(getBean(IPlayListHandler.class));
 		getFrame().setNavigationHandler(getBean(INavigationHandler.class));
         
         IFrameState frameState = getState().getFrameState(getFrame().getClass());
