@@ -50,6 +50,7 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.Logger;
@@ -91,6 +92,8 @@ public class PlayListTableTransferHandler extends TransferHandler {
     private IRepositoryHandler repositoryHandler;
     
     private IRadioHandler radioHandler;
+    
+    private IPlayListTable playListTable;
     
     static {
         try {
@@ -166,7 +169,8 @@ public class PlayListTableTransferHandler extends TransferHandler {
         return false;
     }
 
-    public PlayListTableTransferHandler(IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, INavigationHandler navigationHandler, IRepositoryHandler repositoryHandler, IRadioHandler radioHandler) {
+    public PlayListTableTransferHandler(IPlayListTable playListTable, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, INavigationHandler navigationHandler, IRepositoryHandler repositoryHandler, IRadioHandler radioHandler) {
+    	this.playListTable = playListTable;
     	this.frame = frame;
     	this.osManager = osManager;
     	this.playListHandler = playListHandler;
@@ -232,7 +236,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
                 }
             }
 
-            int dropRow = frame.getPlayListTable().rowAtPoint(support.getDropLocation().getDropPoint());
+            int dropRow = playListTable.rowAtPoint(support.getDropLocation().getDropPoint());
 
             if (!audioObjectsToAdd.isEmpty()) {
                 AudioObjectComparator.sort(audioObjectsToAdd);
@@ -241,7 +245,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
                 if (dropRow == -1) {
                     dropRow = playListHandler.getCurrentPlayList(true).size() - audioObjectsToAdd.size();
                 }
-                frame.getPlayListTable().getSelectionModel().addSelectionInterval(dropRow, dropRow + audioObjectsToAdd.size() - 1);
+                playListTable.getSelectionModel().addSelectionInterval(dropRow, dropRow + audioObjectsToAdd.size() - 1);
             }
         } catch (Exception e) {
             Logger.error(e);
@@ -302,7 +306,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
 
         // Set dragged rows as selected
         for (Integer rowToKeepSelected : rowsToKeepSelected) {
-            frame.getPlayListTable().getSelectionModel().addSelectionInterval(rowToKeepSelected, rowToKeepSelected);
+            playListTable.getSelectionModel().addSelectionInterval(rowToKeepSelected, rowToKeepSelected);
         }
 
         return true;
@@ -361,7 +365,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
                     filesToAdd.addAll(PlayListIO.getFilesFromList(f, repositoryHandler, osManager, radioHandler));
                 }
             }
-            int dropRow = frame.getPlayListTable().rowAtPoint(support.getDropLocation().getDropPoint());
+            int dropRow = playListTable.rowAtPoint(support.getDropLocation().getDropPoint());
 
             if (!filesToAdd.isEmpty()) {
                 AudioObjectComparator.sort(filesToAdd);
@@ -370,7 +374,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
                 if (dropRow == -1) {
                     dropRow = playListHandler.getCurrentPlayList(true).size() - filesToAdd.size();
                 }
-                frame.getPlayListTable().getSelectionModel().addSelectionInterval(dropRow, dropRow + filesToAdd.size() - 1);
+                playListTable.getSelectionModel().addSelectionInterval(dropRow, dropRow + filesToAdd.size() - 1);
             }
             return true;
         }

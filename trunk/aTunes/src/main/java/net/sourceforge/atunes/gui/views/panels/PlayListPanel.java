@@ -26,19 +26,14 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.views.controls.playList.PlayListTable;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListTableTransferHandler;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListToDeviceDragAndDropListener;
-import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
-import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListPanel;
 import net.sourceforge.atunes.model.IPlayListSelectorPanel;
 import net.sourceforge.atunes.model.IPlayListTable;
-import net.sourceforge.atunes.model.IRepositoryHandler;
 
 /**
  * The playlist panel.
@@ -58,32 +53,18 @@ public final class PlayListPanel extends JPanel implements IPlayListPanel {
     /** The play list table scroll. */
     private JScrollPane playListTableScroll;
     
-    private IPlayListHandler playListHandler;
+    private INavigationHandler navigationHandler;
     
-    private IRepositoryHandler repositoryHandler;
+    private IDeviceHandler deviceHandler;
 
 	private ILookAndFeelManager lookAndFeelManager;
-
+	
     /**
      * Instantiates a new play list panel.
      */
     public PlayListPanel() {
         super(new BorderLayout());
     }
-    
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
-	}
-    
-    /**
-     * @param repositoryHandler
-     */
-    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
-	}
     
     /**
      * @param lookAndFeelManager
@@ -93,20 +74,28 @@ public final class PlayListPanel extends JPanel implements IPlayListPanel {
 	}
 
     /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+    
+    /**
+     * @param deviceHandler
+     */
+    public void setDeviceHandler(IDeviceHandler deviceHandler) {
+		this.deviceHandler = deviceHandler;
+	}
+    
+    /**
      * Adds the content.
      * @param lookAndFeelManager 
      */
     public void initialize() {
-        playListTable = new PlayListTable((IColumnSet) Context.getBean("playlistColumnSet"), playListHandler, lookAndFeelManager, repositoryHandler);
         playListTableScroll = lookAndFeelManager.getCurrentLookAndFeel().getTableScrollPane(playListTable.getSwingComponent());
 
         add(playListSelectorPanel.getSwingComponent(), BorderLayout.NORTH);
         add(playListTableScroll, BorderLayout.CENTER);
-    }
-
-    @Override
-	public IPlayListTable getPlayListTable() {
-        return playListTable;
     }
 
     @Override
@@ -123,12 +112,18 @@ public final class PlayListPanel extends JPanel implements IPlayListPanel {
 	public void enableDragAndDrop(PlayListTableTransferHandler playListTableTransferHandler) {
         playListTable.setTransferHandler(playListTableTransferHandler);
         playListTableScroll.setTransferHandler(playListTableTransferHandler);
-        new PlayListToDeviceDragAndDropListener(Context.getBean(INavigationHandler.class), Context.getBean(IDeviceHandler.class));
+        new PlayListToDeviceDragAndDropListener(navigationHandler, deviceHandler);
     }
     
     @Override
     public JComponent getSwingComponent() {
     	return this;
     }
-
+    
+    /**
+     * @param playListTable
+     */
+    public void setPlayListTable(IPlayListTable playListTable) {
+		this.playListTable = playListTable;
+	}
 }

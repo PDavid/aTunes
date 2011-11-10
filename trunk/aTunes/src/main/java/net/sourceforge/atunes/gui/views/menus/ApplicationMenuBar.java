@@ -23,8 +23,8 @@ package net.sourceforge.atunes.gui.views.menus;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
-import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IMenuBar;
+import net.sourceforge.atunes.model.IPlayListTable;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -116,7 +116,7 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar, Appl
         add(fileMenu);
         add(editMenu);
         add(viewMenu);
-        playListMenu.setFrame(context.getBean(IFrame.class));
+        playListMenu.setPlayListTable(context.getBean(IPlayListTable.class));
         playListMenu.initialize();
         add(playListMenu);
         add(deviceMenu);

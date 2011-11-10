@@ -54,7 +54,6 @@ import net.sourceforge.atunes.kernel.actions.SetPlayListSelectionAsFavoriteSongA
 import net.sourceforge.atunes.kernel.actions.ShowPlayListItemInfoAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -85,10 +84,10 @@ public final class PlayListMenuFiller {
      * Fills a menu with play list menu items
      * 
      * @param menu
-     * @param frame
+     * @param table
      */
-    public static void fillMenu(JMenu menu, IFrame frame) {
-        List<Object> objectsToAdd = getComponents(frame.getPlayListTable());
+    public static void fillMenu(JMenu menu, IPlayListTable table) {
+        List<Object> objectsToAdd = getComponents(table);
         for (Object o : objectsToAdd) {
             // Object can be an action or a swing component
             if (o instanceof Action) {

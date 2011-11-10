@@ -22,14 +22,14 @@ package net.sourceforge.atunes.gui.views.menus;
 
 import javax.swing.JMenu;
 
-import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class PlayListMenu extends JMenu {
 
 	private static final long serialVersionUID = -3624790857729577320L;
 
-	private IFrame frame;
+	private IPlayListTable playListTable;
 	
 	/**
 	 * @param i18nKey
@@ -39,16 +39,16 @@ public class PlayListMenu extends JMenu {
 	}
 
 	/**
-	 * @param frame
+	 * @param playListTable
 	 */
-	public void setFrame(IFrame frame) {
-		this.frame = frame;
+	public void setPlayListTable(IPlayListTable playListTable) {
+		this.playListTable = playListTable;
 	}
 	
 	/**
 	 * Initializes menu
 	 */
 	public void initialize() {
-        PlayListMenuFiller.fillMenu(this, frame);
+        PlayListMenuFiller.fillMenu(this, playListTable);
 	}
 }

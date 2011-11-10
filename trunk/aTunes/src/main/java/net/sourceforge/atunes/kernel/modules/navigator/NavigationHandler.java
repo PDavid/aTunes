@@ -45,6 +45,7 @@ import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -104,6 +105,15 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 	private NavigationController navigationController;
 	
 	private IFilterHandler filterHandler;
+	
+	private ITable navigationTable;
+	
+	/**
+	 * @param navigationTable
+	 */
+	public void setNavigationTable(ITable navigationTable) {
+		this.navigationTable = navigationTable;
+	}
 
 	@Override
 	protected void initHandler() {
@@ -272,13 +282,13 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 
 	@Override
 	public IAudioObject getSelectedAudioObjectInNavigationTable() {
-		return getNavigationController().getAudioObjectInNavigationTable(getFrame().getNavigationTable().getSelectedRow());
+		return getNavigationController().getAudioObjectInNavigationTable(navigationTable.getSelectedRow());
 	}
 
 	@Override
 	public List<IAudioObject> getSelectedAudioObjectsInNavigationTable() {
 		List<IAudioObject> result = new ArrayList<IAudioObject>();
-		for (int i = 0; i < getFrame().getNavigationTable().getSelectedRows().length; i++) {
+		for (int i = 0; i < navigationTable.getSelectedRows().length; i++) {
 			result.add(getNavigationController().getAudioObjectInNavigationTable(i));
 		}
 		return result;

@@ -106,20 +106,6 @@ public interface IFrame {
     public PlayerControlsPanel getPlayerControls();
 
     /**
-     * Gets the play list panel.
-     * 
-     * @return the play list panel
-     */
-    public IPlayListPanel getPlayListPanel();
-
-    /**
-     * Gets the play list table.
-     * 
-     * @return the play list table
-     */
-    public IPlayListTable getPlayListTable();
-
-    /**
      * Gets the size.
      * 
      * @return the size
@@ -331,9 +317,4 @@ public interface IFrame {
 	 */
 	public void setNavigationHandler(INavigationHandler navigationHandler);
 
-	/**
-	 * Returns navigation table
-	 * @return
-	 */
-	public ITable getNavigationTable();
 }

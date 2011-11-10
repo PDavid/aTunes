@@ -29,6 +29,7 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -43,8 +44,17 @@ public class PlayAction extends CustomAbstractAction {
     
     private IPlayerHandler playerHandler;
     
+    private IPlayListTable playListTable;
+    
     public void setFrame(IFrame frame) {
 		this.frame = frame;
+	}
+    
+    /**
+     * @param playListTable
+     */
+    public void setPlayListTable(IPlayListTable playListTable) {
+		this.playListTable = playListTable;
 	}
     
     public void setPlayerHandler(IPlayerHandler playerHandler) {
@@ -70,7 +80,7 @@ public class PlayAction extends CustomAbstractAction {
             return;
         }
         
-        int selAudioObject = frame.getPlayListTable().getSelectedRow();
+        int selAudioObject = playListTable.getSelectedRow();
         int currPlayingAudioObject = playListHandler.getIndexOfAudioObject(playerHandler.getAudioObject());
 
         if (selAudioObject != currPlayingAudioObject) {

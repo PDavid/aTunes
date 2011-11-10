@@ -56,10 +56,8 @@ import net.sourceforge.atunes.model.INavigationTablePanel;
 import net.sourceforge.atunes.model.INavigationTreePanel;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListPanel;
-import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.model.IUpdateDialog;
@@ -246,8 +244,11 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
         return playerControls;
     }
 
-    @Override
-    public IPlayListPanel getPlayListPanel() {
+    /**
+     * Get play list panel
+     * @return
+     */
+    protected IPlayListPanel getPlayListPanel() {
         if (playListPanel == null) {
             playListPanel = context.getBean(IPlayListPanel.class);
             playListPanel.setMinimumSize(getPlayListPanelMinimumSize());
@@ -255,16 +256,6 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
             playListPanel.setMaximumSize(getPlayListPanelMaximumSize());
         }
         return playListPanel;
-    }
-
-    @Override
-    public IPlayListTable getPlayListTable() {
-        return getPlayListPanel().getPlayListTable();
-    }
-    
-    @Override
-    public ITable getNavigationTable() {
-    	return getNavigationTablePanel().getNavigationTable();
     }
 
     /**

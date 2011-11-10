@@ -92,6 +92,15 @@ public abstract class AbstractNavigationView implements INavigationView {
 	private ILookAndFeelManager lookAndFeelManager;
 	
 	private IFilterHandler filterHandler;
+	
+	private ITable navigationTable;
+	
+	/**
+	 * @param navigationTable
+	 */
+	public void setNavigationTable(ITable navigationTable) {
+		this.navigationTable = navigationTable;
+	}
 
     @Override
 	public abstract String getTitle();
@@ -208,16 +217,16 @@ public abstract class AbstractNavigationView implements INavigationView {
     @Override
 	public void refreshView(ViewMode viewMode, String treeFilter) {
         // Get selected rows before refresh
-        List<IAudioObject> selectedObjects = ((NavigationTableModel) frame.getNavigationTable().getModel()).getAudioObjectsAt(frame.getNavigationTable().getSelectedRows());
+        List<IAudioObject> selectedObjects = ((NavigationTableModel) navigationTable.getModel()).getAudioObjectsAt(navigationTable.getSelectedRows());
 
         // Call to refresh tree
         refreshTree(viewMode, treeFilter);
 
         // Set the same selected audio objects as before refreshing
         for (IAudioObject audioObject : selectedObjects) {
-            int indexOfAudioObject = ((NavigationTableModel) frame.getNavigationTable().getModel()).getAudioObjects().indexOf(audioObject);
+            int indexOfAudioObject = ((NavigationTableModel) navigationTable.getModel()).getAudioObjects().indexOf(audioObject);
             if (indexOfAudioObject != -1) {
-            	frame.getNavigationTable().addRowSelectionInterval(indexOfAudioObject, indexOfAudioObject);
+            	navigationTable.addRowSelectionInterval(indexOfAudioObject, indexOfAudioObject);
             }
         }
     }
@@ -325,7 +334,7 @@ public abstract class AbstractNavigationView implements INavigationView {
 	 */
     @Override
 	public final void updateTablePopupMenuWithTableSelection(ITable table, MouseEvent e) {
-        updateTablePopupMenuItems(getTablePopupMenu(), ((NavigationTableModel) frame.getNavigationTable().getModel()).getAudioObjectsAt(table.getSelectedRows()));
+        updateTablePopupMenuItems(getTablePopupMenu(), ((NavigationTableModel) navigationTable.getModel()).getAudioObjectsAt(table.getSelectedRows()));
     }
 
     /**
@@ -400,7 +409,7 @@ public abstract class AbstractNavigationView implements INavigationView {
      * @return
      */
     public List<IAudioObject> getSelectedAudioObjects() {
-        List<IAudioObject> selectedInTable = ((NavigationTableModel) frame.getNavigationTable().getModel()).getAudioObjectsAt(frame.getNavigationTable().getSelectedRows());
+        List<IAudioObject> selectedInTable = ((NavigationTableModel) navigationTable.getModel()).getAudioObjectsAt(navigationTable.getSelectedRows());
         if (selectedInTable.isEmpty()) {
             TreePath[] paths = getTree().getSelectionPaths();
             List<IAudioObject> audioObjectsSelected = new ArrayList<IAudioObject>();
