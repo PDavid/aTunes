@@ -55,6 +55,7 @@ import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListPanel;
+import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
@@ -159,6 +160,10 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	private IPlayerHandler playerHandler;
 	
 	private PlayListEventListeners playListEventListeners;
+
+	private IPlayListTable playListTable;
+	
+	private IPlayListPanel playListPanel;
 	
     /**
      * Private constructor.
@@ -166,6 +171,13 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     private PlayListHandler() {
     	playListColumnSet = (IColumnSet) getBean("playlistColumnSet");
     }
+    
+    /**
+     * @param playListPanel
+     */
+    public void setPlayListPanel(IPlayListPanel playListPanel) {
+		this.playListPanel = playListPanel;
+	}
 
     public void setPlayListEventListeners(PlayListEventListeners playListEventListeners) {
 		this.playListEventListeners = playListEventListeners;
@@ -187,7 +199,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     @Override
     public void allHandlersInitialized() {
         // Create drag and drop listener
-    	getFrame().getPlayListPanel().enableDragAndDrop(new PlayListTableTransferHandler(getFrame(), getOsManager(), this, getBean(INavigationHandler.class), getBean(IRepositoryHandler.class), getBean(IRadioHandler.class)));
+    	playListPanel.enableDragAndDrop(new PlayListTableTransferHandler(playListTable, getFrame(), getOsManager(), this, getBean(INavigationHandler.class), getBean(IRepositoryHandler.class), getBean(IRadioHandler.class)));
     }
 
     /**
@@ -384,11 +396,11 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         PlayList newSelectedPlayList = playLists.get(index);
 
         // Set selection interval to none
-        getFrame().getPlayListTable().getSelectionModel().clearSelection();
+        playListTable.getSelectionModel().clearSelection();
 
         setPlayList(newSelectedPlayList);
         // Update table model
-        ((PlayListTableModel) getFrame().getPlayListTable().getModel()).setVisiblePlayList(getCurrentPlayList(true));
+        ((PlayListTableModel) playListTable.getModel()).setVisiblePlayList(getCurrentPlayList(true));
         getPlayListController().refreshPlayList();
 
         // If playlist is active then perform an auto scroll
@@ -541,7 +553,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         setFilter(null);
 
         // Set selection interval to none
-        getFrame().getPlayListTable().getSelectionModel().clearSelection();
+        playListTable.getSelectionModel().clearSelection();
 
         PlayList playList = getCurrentPlayList(true);
         if (!playList.isEmpty()) {
@@ -569,7 +581,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
             } else {
             	getFrame().getPlayerControls().setShowTicksAndLabels(false);
             }
-            getFrame().getPlayListPanel().getSwingComponent().repaint();
+            playListPanel.getSwingComponent().repaint();
 
             // Refresh play list
             getPlayListController().refreshPlayList();
@@ -658,7 +670,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         }
 
         // Update table model
-        ((PlayListTableModel) getFrame().getPlayListTable().getModel()).setVisiblePlayList(getCurrentPlayList(true));
+        ((PlayListTableModel) playListTable.getModel()).setVisiblePlayList(getCurrentPlayList(true));
 
         // Refresh play list
         // For some strange reason, this is needed even if play list is empty
@@ -803,7 +815,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         refreshPlayList();
         
         // Keep selected elements
-        getPlayListController().getComponentControlled().getPlayListTable().getSelectionModel().setSelectionInterval(getCurrentAudioObjectIndexInVisiblePlayList() + 1, getCurrentAudioObjectIndexInVisiblePlayList() + selectedAudioObjects.size());
+        playListTable.getSelectionModel().setSelectionInterval(getCurrentAudioObjectIndexInVisiblePlayList() + 1, getCurrentAudioObjectIndexInVisiblePlayList() + selectedAudioObjects.size());
     }
 
     /* (non-Javadoc)
@@ -970,12 +982,12 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         playLists.add(visiblePlayListIndex, playList);
 
         // Set selection interval to none
-        getFrame().getPlayListTable().getSelectionModel().clearSelection();
+        playListTable.getSelectionModel().clearSelection();
 
         setPlayList(playList);
 
         // Update table model
-        ((PlayListTableModel) getFrame().getPlayListTable().getModel()).setVisiblePlayList(playList);
+        ((PlayListTableModel) playListTable.getModel()).setVisiblePlayList(playList);
         getPlayListController().refreshPlayList();
 
         getPlayListController().scrollPlayList(false);
@@ -1034,7 +1046,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	 */
     @Override
 	public void changeSelectedAudioObjectToIndex(int index) {
-        getFrame().getPlayListTable().changeSelection(index, 0, false, false);
+        playListTable.changeSelection(index, 0, false, false);
     }
 
     /* (non-Javadoc)
@@ -1043,7 +1055,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     @Override
 	public List<IAudioObject> getSelectedAudioObjects() {
         List<IAudioObject> audioObjects = new ArrayList<IAudioObject>();
-        int[] selectedRows = getFrame().getPlayListTable().getSelectedRows();
+        int[] selectedRows = playListTable.getSelectedRows();
         if (selectedRows.length > 0) {
             for (int element : selectedRows) {
                 IAudioObject file = getCurrentPlayList(true).get(element);
@@ -1163,7 +1175,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
      */
     private PlayListTabController getPlayListTabController() {
         if (playListTabController == null) {
-            playListTabController = new PlayListTabController(getFrame().getPlayListPanel().getPlayListTabPanel(), getState(), this);
+            playListTabController = new PlayListTabController(playListPanel.getPlayListTabPanel(), getState(), this);
         }
         return playListTabController;
     }
@@ -1204,9 +1216,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 
 	private PlayListController getPlayListController() {
         if (playListController == null) {
-            IPlayListPanel panel = null;
-            panel = getFrame().getPlayListPanel();
-            playListController = new PlayListController(panel, getState(), getFrame(), this, playerHandler, getBean(IFilterHandler.class));
+            playListController = new PlayListController(playListTable, playListPanel, getState(), this, playerHandler, getBean(IFilterHandler.class));
         }
         return playListController;
     }
@@ -1310,7 +1320,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         }
 
         if (indexes.length > 0) {
-            getFrame().getPlayListPanel().getPlayListTable().getSelectionModel().clearSelection();
+            playListTable.getSelectionModel().clearSelection();
             removeAudioObjects(indexes);
         }
 	}
@@ -1424,4 +1434,10 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 		scrollPlayList(false);
     }
 
+    /**
+     * @param playListTable
+     */
+    public void setPlayListTable(IPlayListTable playListTable) {
+		this.playListTable = playListTable;
+	}
 }

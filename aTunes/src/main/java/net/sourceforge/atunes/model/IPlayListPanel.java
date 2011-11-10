@@ -34,13 +34,6 @@ import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListTableTransferHa
 public interface IPlayListPanel {
 
 	/**
-	 * Gets the play list table.
-	 * 
-	 * @return the play list table
-	 */
-	public IPlayListTable getPlayListTable();
-
-	/**
 	 * Gets the play list tab panel.
 	 * 
 	 * @return the playListTabPanel

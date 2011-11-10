@@ -24,6 +24,7 @@ import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
 import net.sourceforge.atunes.model.IColumnSelectorDialog;
 import net.sourceforge.atunes.model.IColumnSelectorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -43,11 +44,20 @@ public class ArrangePlayListColumnsAction extends CustomAbstractAction {
     
     private IColumnSelectorDialogFactory columnSelectorDialogFactory;
     
+    private IPlayListTable playListTable;
+    
     /**
      * @param columnSelectorDialogFactory
      */
     public void setColumnSelectorDialogFactory(IColumnSelectorDialogFactory columnSelectorDialogFactory) {
 		this.columnSelectorDialogFactory = columnSelectorDialogFactory;
+	}
+    
+    /**
+     * @param playListTable
+     */
+    public void setPlayListTable(IPlayListTable playListTable) {
+		this.playListTable = playListTable;
 	}
     
     /**
@@ -63,7 +73,7 @@ public class ArrangePlayListColumnsAction extends CustomAbstractAction {
     
     @Override
     protected void executeAction() {
-    	AbstractCommonColumnModel model = (AbstractCommonColumnModel) frame.getPlayListTable().getColumnModel();
+    	AbstractCommonColumnModel model = (AbstractCommonColumnModel) playListTable.getColumnModel();
     	
         // Show column selector
     	IColumnSelectorDialog selector = columnSelectorDialogFactory.createDialog();

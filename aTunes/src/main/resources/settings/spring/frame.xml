@@ -45,5 +45,7 @@
 	</bean>
 	<bean id="playListPanel" class="net.sourceforge.atunes.gui.views.panels.PlayListPanel" init-method="initialize"/>
 	<bean id="playListSelectorPanel" class="net.sourceforge.atunes.gui.views.panels.PlayListSelectorPanel" init-method="initialize"/>
+	
+	<bean id="playListTable" class="net.sourceforge.atunes.gui.views.controls.playList.PlayListTable" init-method="initialize"/>
 
 </beans>

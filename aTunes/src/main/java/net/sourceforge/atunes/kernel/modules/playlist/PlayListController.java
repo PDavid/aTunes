@@ -30,7 +30,6 @@ import javax.swing.event.TableModelEvent;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IFilterHandler;
-import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListPanel;
 import net.sourceforge.atunes.model.IPlayListTable;
@@ -43,27 +42,27 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
     /** The visible rect. */
     private Rectangle visibleRect;
     
-    private IFrame frame;
-    
     private IPlayListHandler playListHandler;
     
     private IPlayerHandler playerHandler;
     
     private IFilterHandler filterHandler;
+    
+    private IPlayListTable playListTable;
 
     /**
      * Instantiates a new play list controller.
      * 
+     * @param playListTable
      * @param panel
      * @param state
-     * @param frame
      * @param playListHandler
      * @param playerHandler
      * @param filterHandler
      */
-    PlayListController(IPlayListPanel panel, IState state, IFrame frame, IPlayListHandler playListHandler, IPlayerHandler playerHandler, IFilterHandler filterHandler) {
+    PlayListController(IPlayListTable playListTable, IPlayListPanel panel, IState state, IPlayListHandler playListHandler, IPlayerHandler playerHandler, IFilterHandler filterHandler) {
         super((PlayListPanel)panel.getSwingComponent(), state);
-        this.frame = frame;
+        this.playListTable = playListTable;
         this.playListHandler = playListHandler;
         this.playerHandler = playerHandler;
         this.filterHandler = filterHandler;
@@ -73,16 +72,11 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
 
     @Override
 	public void addBindings() {
-        final IPlayListTable table = getComponentControlled().getPlayListTable();
-
         // Set key listener for table
-        table.addKeyListener(new PlayListKeyListener(playerHandler));
-
-        PlayListListener listener = new PlayListListener(table, this);
-
-        table.addMouseListener(listener);
-
-        table.getSelectionModel().addListSelectionListener(listener);
+    	playListTable.addKeyListener(new PlayListKeyListener(playerHandler));
+        PlayListListener listener = new PlayListListener(playListTable, this);
+        playListTable.addMouseListener(listener);
+        playListTable.getSelectionModel().addListSelectionListener(listener);
     }
 
     private static int arrMin(int[] array) {
@@ -98,20 +92,19 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
      * Delete selection.
      */
     void deleteSelection() {
-    	IPlayListTable table = frame.getPlayListTable();
-        int[] rows = table.getSelectedRows();
+        int[] rows = playListTable.getSelectedRows();
         if (rows.length > 0) {
-        	table.getSelectionModel().clearSelection();
+        	playListTable.getSelectionModel().clearSelection();
             playListHandler.removeAudioObjects(rows);
             
-            int rowCount = table.getRowCount();
+            int rowCount = playListTable.getRowCount();
             if(rowCount > 0) {
                 int newIndex = arrMin(rows);
 
                 if(newIndex >= rowCount)
                     newIndex = rowCount - 1;
 
-                table.getSelectionModel().setSelectionInterval(newIndex, newIndex);
+                playListTable.getSelectionModel().setSelectionInterval(newIndex, newIndex);
             }
         }
     }
@@ -120,11 +113,11 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
      * Move down.
      */
     void moveDown() {
-        int[] rows = getComponentControlled().getPlayListTable().getSelectedRows();
-        if (rows.length > 0 && rows[rows.length - 1] < getComponentControlled().getPlayListTable().getRowCount() - 1) {
+        int[] rows = playListTable.getSelectedRows();
+        if (rows.length > 0 && rows[rows.length - 1] < playListTable.getRowCount() - 1) {
             playListHandler.moveDown(rows);
             refreshPlayList();
-            getComponentControlled().getPlayListTable().getSelectionModel().setSelectionInterval(rows[0] + 1, rows[rows.length - 1] + 1);
+            playListTable.getSelectionModel().setSelectionInterval(rows[0] + 1, rows[rows.length - 1] + 1);
         }
     }
 
@@ -132,12 +125,12 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
      * Move to bottom.
      */
     void moveToBottom() {
-        int[] rows = getComponentControlled().getPlayListTable().getSelectedRows();
-        if (rows.length > 0 && rows[rows.length - 1] < getComponentControlled().getPlayListTable().getRowCount() - 1) {
+        int[] rows = playListTable.getSelectedRows();
+        if (rows.length > 0 && rows[rows.length - 1] < playListTable.getRowCount() - 1) {
             playListHandler.moveToBottom(rows);
             refreshPlayList();
-            getComponentControlled().getPlayListTable().getSelectionModel().setSelectionInterval(getComponentControlled().getPlayListTable().getRowCount() - rows.length,
-                    getComponentControlled().getPlayListTable().getRowCount() - 1);
+            playListTable.getSelectionModel().setSelectionInterval(playListTable.getRowCount() - rows.length,
+                    playListTable.getRowCount() - 1);
         }
     }
 
@@ -145,11 +138,11 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
      * Move to top.
      */
     void moveToTop() {
-        int[] rows = getComponentControlled().getPlayListTable().getSelectedRows();
+        int[] rows = playListTable.getSelectedRows();
         if (rows.length > 0 && rows[0] > 0) {
             playListHandler.moveToTop(rows);
             refreshPlayList();
-            getComponentControlled().getPlayListTable().getSelectionModel().setSelectionInterval(0, rows.length - 1);
+            playListTable.getSelectionModel().setSelectionInterval(0, rows.length - 1);
         }
     }
 
@@ -157,11 +150,11 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
      * Move up.
      */
     void moveUp() {
-        int[] rows = getComponentControlled().getPlayListTable().getSelectedRows();
+        int[] rows = playListTable.getSelectedRows();
         if (rows.length > 0 && rows[0] > 0) {
             playListHandler.moveUp(rows);
             refreshPlayList();
-            getComponentControlled().getPlayListTable().getSelectionModel().setSelectionInterval(rows[0] - 1, rows[rows.length - 1] - 1);
+            playListTable.getSelectionModel().setSelectionInterval(rows[0] - 1, rows[rows.length - 1] - 1);
         }
     }
 
@@ -170,7 +163,7 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
      * 
      */
     void playSelectedAudioObject() {
-        int audioObject = getComponentControlled().getPlayListTable().getSelectedRow();
+        int audioObject = playListTable.getSelectedRow();
         playListHandler.setPositionToPlayInVisiblePlayList(audioObject);
         playerHandler.playCurrentAudioObject(false);
     }
@@ -206,10 +199,10 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
         Logger.debug("Scrolling PlayList");
 
         // Get visible rectangle
-        visibleRect = (Rectangle) getComponentControlled().getPlayListTable().getVisibleRect().clone();
+        visibleRect = (Rectangle) playListTable.getVisibleRect().clone();
 
         // Get cell height
-        int heightOfRow = getComponentControlled().getPlayListTable().getCellRect(audioObject, 0, true).height;
+        int heightOfRow = playListTable.getCellRect(audioObject, 0, true).height;
 
         // Do calculation
         if (visibleRect.height == 0) {
@@ -229,7 +222,7 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
         Timer t = new Timer(250, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                getComponentControlled().getPlayListTable().scrollRectToVisible(visibleRect);
+                playListTable.scrollRectToVisible(visibleRect);
             }
         });
         t.setRepeats(false);
@@ -237,11 +230,11 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
     }
 
     void refreshPlayList() {
-        int[] selectedRows = frame.getPlayListTable().getSelectedRows();
-        ((PlayListTableModel) frame.getPlayListTable().getModel()).refresh(TableModelEvent.UPDATE);
+        int[] selectedRows = playListTable.getSelectedRows();
+        ((PlayListTableModel) playListTable.getModel()).refresh(TableModelEvent.UPDATE);
         // Select previous selected rows
         for (int selectedRow : selectedRows) {
-        	frame.getPlayListTable().getSelectionModel().addSelectionInterval(selectedRow, selectedRow);
+        	playListTable.getSelectionModel().addSelectionInterval(selectedRow, selectedRow);
         }
     }
 

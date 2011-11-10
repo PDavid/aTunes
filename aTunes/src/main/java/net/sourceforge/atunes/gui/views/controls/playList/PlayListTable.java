@@ -73,23 +73,51 @@ public final class PlayListTable extends JTable implements IPlayListTable {
     private DragSource dragSource;
     
     private IPlayListHandler playListHandler;
+    
+    private IColumnSet playlistColumnSet;
+    
+    private ILookAndFeelManager lookAndFeelManager;
+    
+    private IRepositoryHandler repositoryHandler;
 
     /**
-     * Instantiates a new play list table.
-     * @param columnSet
-     * @param playListHandler
-     * @param lookAndFeelManager
-     * @param repositoryHandler 
+     * @param playlistColumnSet
      */
-    public PlayListTable(IColumnSet columnSet, IPlayListHandler playListHandler, ILookAndFeelManager lookAndFeelManager, IRepositoryHandler repositoryHandler) {
-        super();
-        this.playListHandler = playListHandler;
+    public void setPlaylistColumnSet(IColumnSet playlistColumnSet) {
+		this.playlistColumnSet = playlistColumnSet;
+	}
+    
+    /**
+     * @param lookAndFeelManager
+     */
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+    
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    /**
+     * Initializes play list
+     */
+    public void initialize() {
         lookAndFeelManager.getCurrentLookAndFeel().decorateTable(this);
         setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         setDropMode(DropMode.ON);
 
         // Set table model
-        PlayListTableModel model = new PlayListTableModel(columnSet, playListHandler, repositoryHandler);
+        PlayListTableModel model = new PlayListTableModel(playlistColumnSet, playListHandler, repositoryHandler);
         setModel(model);
 
         // Set column model
