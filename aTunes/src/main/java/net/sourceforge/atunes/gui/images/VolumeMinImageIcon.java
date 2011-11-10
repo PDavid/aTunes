@@ -26,6 +26,8 @@ import net.sourceforge.atunes.model.ILookAndFeel;
 
 public class VolumeMinImageIcon {
 	
+	private VolumeMinImageIcon() {}
+	
 	/**
 	 * @param lookAndFeel
 	 * @return

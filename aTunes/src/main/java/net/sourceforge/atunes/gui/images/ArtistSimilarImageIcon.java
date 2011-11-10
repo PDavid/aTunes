@@ -34,6 +34,8 @@ public class ArtistSimilarImageIcon {
 	
 	private static ImageIcon icon;
 	
+	private ArtistSimilarImageIcon() {}
+	
 	/**
 	 * @param lookAndFeel
 	 * @return

@@ -31,6 +31,8 @@ public class ArrowImageIcon {
 	private static final int WIDTH = 12;
 	private static final int HEIGHT = 12;
 	
+	private ArrowImageIcon() {}
+	
 	/**
 	 * @param lookAndFeel
 	 * @return

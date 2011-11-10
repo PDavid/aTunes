@@ -164,11 +164,6 @@ public class Cdparanoia extends AbstractCdToWavConverter {
 
                 String s = null;
                 int tracks = 0;
-                String totalDuration = null;
-                String id = null;
-                //String album = null;
-                //String artist = null;
-                //String title = null;
                 List<String> durations = new ArrayList<String>();
                 List<String> titles = new ArrayList<String>();
                 List<String> artists = new ArrayList<String>();
@@ -214,13 +209,8 @@ public class Cdparanoia extends AbstractCdToWavConverter {
 
                 getCdInfo().setTracks(tracks);
                 getCdInfo().setDurations(durations);
-                getCdInfo().setDuration(totalDuration);
-                getCdInfo().setId(id);
-                //if (album != null && !album.equals(""))
-                //	getCdInfo().setAlbum(album);
-                //
-                //if (artist != null && !artist.equals(""))
-                //	getCdInfo().setArtist(artist);
+                getCdInfo().setDuration(null);
+                getCdInfo().setId(null);
                 getCdInfo().setTitles(titles);
                 getCdInfo().setArtists(artists);
                 getCdInfo().setComposers(composers);

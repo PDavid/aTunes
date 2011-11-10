@@ -26,6 +26,8 @@ import net.sourceforge.atunes.model.ILookAndFeel;
 
 public class VolumeMedImageIcon {
 	
+	private VolumeMedImageIcon() {}
+	
 	/**
 	 * @param lookAndFeel
 	 * @return

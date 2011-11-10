@@ -33,6 +33,8 @@ import net.sourceforge.atunes.model.ILookAndFeel;
 
 public class PreviousImageIcon {
 
+	private PreviousImageIcon() {}
+	
 	/**
 	 * @param size
 	 * @param lookAndFeel 

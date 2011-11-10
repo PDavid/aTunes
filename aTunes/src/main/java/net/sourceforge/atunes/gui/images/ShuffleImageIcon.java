@@ -28,6 +28,8 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.model.ILookAndFeel;
 
 public class ShuffleImageIcon {
+	
+	private ShuffleImageIcon() {}
 
 	/**
 	 * @param color

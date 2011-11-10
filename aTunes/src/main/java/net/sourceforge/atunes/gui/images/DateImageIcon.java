@@ -36,6 +36,8 @@ public class DateImageIcon {
 
 	private static final int SIZE = 18;
 
+	private DateImageIcon() {}
+	
 	/**
 	 * @param lookAndFeel
 	 * @return

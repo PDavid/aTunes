@@ -118,7 +118,7 @@ public class XineEngine extends AbstractPlayerEngine {
     				errorMessage = StringUtils.getString(I18nUtils.getString("FILE_NOT_FOUND"), ": ", audioObjectToPlay.getUrl());
     			} else {
     				// logic from init() of PodcastFeedEntryMPlayerOutputReader
-    				long duration = audioObjectToPlay.getDuration() * 1000;
+    				long duration = audioObjectToPlay.getDuration() * 1000L;
     				setCurrentAudioObjectLength(duration);
     				notifyRadioOrPodcastFeedEntryStarted();
     			}

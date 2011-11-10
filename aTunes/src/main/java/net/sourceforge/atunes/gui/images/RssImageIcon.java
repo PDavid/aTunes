@@ -37,6 +37,8 @@ public class RssImageIcon {
 	
 	private static ImageIcon icon;
 	
+	private RssImageIcon() {}
+	
 	/**
 	 * @param lookAndFeel
 	 * @return

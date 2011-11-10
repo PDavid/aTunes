@@ -33,6 +33,8 @@ import net.sourceforge.atunes.model.ILookAndFeel;
 
 class IconGenerator {
 
+	private IconGenerator() {}
+	
 	/**
 	 * Creates an image icon drawing a list of shapes
 	 * @param width

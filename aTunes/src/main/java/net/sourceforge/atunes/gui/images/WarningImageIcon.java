@@ -33,6 +33,8 @@ public class WarningImageIcon {
 
 	private static final int SIZE = 18;
 
+	private WarningImageIcon() {}
+	
 	/**
 	 * @param lookAndFeel
 	 * @return

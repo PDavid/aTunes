@@ -36,15 +36,14 @@ class WindowListener extends WindowAdapter {
 		this.listeners = listeners;
 	}
 	
-	
 	@Override
 	public void windowStateChanged(WindowEvent e) {
 		if (e.getNewState() == Frame.ICONIFIED) {
 			Logger.debug("Window Iconified");
-			windowIconified();
+			windowIconifiedEvent();
 		} else if (e.getNewState() != Frame.ICONIFIED) {
 			Logger.debug("Window Deiconified");
-			windowDeiconified();
+			windowDeiconifiedEvent();
 		}
 	}
 	
@@ -52,7 +51,7 @@ class WindowListener extends WindowAdapter {
 	 * Called when window is deiconified
 	 * @param path
 	 */
-	private void windowDeiconified() {
+	private void windowDeiconifiedEvent() {
 		for (IWindowListener l : listeners) {
 			l.windowDeiconified();
 		}
@@ -62,7 +61,7 @@ class WindowListener extends WindowAdapter {
 	 * Called when window is iconified
 	 * @param path
 	 */
-	private void windowIconified() {
+	private void windowIconifiedEvent() {
 		for (IWindowListener l : listeners) {
 			l.windowIconified();
 		}

@@ -32,6 +32,8 @@ public class FolderImageIcon {
 
 	private static final int SIZE = 18;
 
+	private FolderImageIcon() {}
+	
 	/**
 	 * @param lookAndFeel
 	 * @return
