@@ -43,14 +43,12 @@ import net.sourceforge.atunes.gui.images.DeviceImageIcon;
 import net.sourceforge.atunes.gui.images.NewImageIcon;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomFrame;
-import net.sourceforge.atunes.gui.views.dialogs.UpdateDialog;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.model.ApplicationVersion;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextPanelsContainer;
-import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMenuBar;
@@ -66,6 +64,7 @@ import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IUIHandler;
+import net.sourceforge.atunes.model.IUpdateDialog;
 import net.sourceforge.atunes.model.IWindowListener;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -94,7 +93,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     private JLabel statusBarDeviceLabel;
     private JLabel statusBarNewPodcastEntriesLabel;
     private JLabel statusBarNewVersionLabel;
-    private UpdateDialog updateDialog;
+    private IUpdateDialog updateDialog;
     private JProgressBar progressBar;
     private IMenuBar appMenuBar;
     private PlayListPanel playListPanel;
@@ -109,7 +108,6 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     private ILookAndFeelManager lookAndFeelManager;
     private IRepositoryHandler repositoryHandler;
     private IPlayerHandler playerHandler;
-    private IDesktop desktop;
     private IUIHandler uiHandler;
     
     private ITaskService taskService;
@@ -353,8 +351,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
             statusBarNewVersionLabel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    updateDialog.setVisible(true);
-                    updateDialog.toFront();
+                    updateDialog.showDialog();
                     showNewVersionInfo(false, null);
                 }
             });
@@ -451,7 +448,8 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
             }
             JXStatusBar.Constraint c = new JXStatusBar.Constraint(JXStatusBar.Constraint.ResizeBehavior.FIXED);
             statusBar.add(getStatusBarNewVersionLabel(), c);
-            updateDialog = new UpdateDialog(version, this.getFrame(), lookAndFeelManager, desktop);
+            updateDialog = context.getBean(IUpdateDialog.class);
+            updateDialog.initialize(version);
         } else {
             statusBar.remove(getStatusBarNewVersionLabel());
             updateDialog = null;
@@ -707,13 +705,6 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
      */
     public void setPlayerHandler(IPlayerHandler playerHandler) {
 		this.playerHandler = playerHandler;
-	}
-    
-    /**
-     * @param desktop
-     */
-    public void setDesktop(IDesktop desktop) {
-		this.desktop = desktop;
 	}
     
     /**

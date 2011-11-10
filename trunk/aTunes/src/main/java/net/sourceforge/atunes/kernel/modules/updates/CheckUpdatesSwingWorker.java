@@ -26,13 +26,11 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.views.dialogs.UpdateDialog;
 import net.sourceforge.atunes.model.ApplicationVersion;
-import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IUpdateDialog;
 import net.sourceforge.atunes.model.IUpdateHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -47,8 +45,6 @@ final class CheckUpdatesSwingWorker extends
 	private final boolean alwaysInDialog;
 	private IState state;
 	private IFrame frame;
-	private ILookAndFeelManager lookAndFeelManager;
-	private IDesktop desktop;
 
 	/**
 	 * @param updateHandler
@@ -56,17 +52,13 @@ final class CheckUpdatesSwingWorker extends
 	 * @param alwaysInDialog
 	 * @param state
 	 * @param frame
-	 * @param lookAndFeelManager
-	 * @param desktop
 	 */
-	CheckUpdatesSwingWorker(IUpdateHandler updateHandler, boolean showNoNewVersion, boolean alwaysInDialog, IState state, IFrame frame, ILookAndFeelManager lookAndFeelManager, IDesktop desktop) {
+	CheckUpdatesSwingWorker(IUpdateHandler updateHandler, boolean showNoNewVersion, boolean alwaysInDialog, IState state, IFrame frame) {
 		this.updateHandler = updateHandler;
 		this.showNoNewVersion = showNoNewVersion;
 		this.alwaysInDialog = alwaysInDialog;
 		this.state = state;
 		this.frame = frame;
-		this.lookAndFeelManager = lookAndFeelManager;
-		this.desktop = desktop;
 	}
 
 	@Override
@@ -80,7 +72,9 @@ final class CheckUpdatesSwingWorker extends
 	        ApplicationVersion version = get();
 	        if (version != null && version.compareTo(Constants.VERSION) == 1) {
 	        	 if (alwaysInDialog || !state.isShowStatusBar()) {
-	                 new UpdateDialog(version, frame.getFrame(), lookAndFeelManager, desktop).setVisible(true);
+	                 IUpdateDialog dialog = Context.getBean(IUpdateDialog.class);
+	                 dialog.initialize(version);
+	                 dialog.showDialog();
 	             } else {
 	                 frame.showNewVersionInfo(true, version);
 	             }
