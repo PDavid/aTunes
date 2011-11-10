@@ -108,15 +108,6 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 	
 	private ITable navigationTable;
 	
-	private INavigationTreePanel navigationTreePanel;
-	
-	/**
-	 * @param navigationTreePanel
-	 */
-	public void setNavigationTreePanel(INavigationTreePanel navigationTreePanel) {
-		this.navigationTreePanel = navigationTreePanel;
-	}
-	
 	/**
 	 * @param navigationTable
 	 */
@@ -248,8 +239,9 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
      */
     private NavigationController getNavigationController() {
         if (navigationController == null) {
+        	INavigationTreePanel treePanel = getFrame().getNavigationTreePanel();
             INavigationTablePanel tablePanel = getFrame().getNavigationTablePanel();
-            navigationController = new NavigationController(navigationTreePanel, tablePanel, getState(), getOsManager(), this, getBean(ITaskService.class), getBean(ILookAndFeelManager.class), getBean(IRepositoryHandler.class), getBean(IFilterHandler.class));
+            navigationController = new NavigationController(treePanel, tablePanel, getState(), getOsManager(), this, getBean(ITaskService.class), getBean(ILookAndFeelManager.class), getBean(IRepositoryHandler.class), getBean(IFilterHandler.class));
         }
         return navigationController;
     }
