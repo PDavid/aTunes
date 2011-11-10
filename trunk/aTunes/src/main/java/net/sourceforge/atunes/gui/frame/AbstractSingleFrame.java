@@ -46,8 +46,6 @@ import net.sourceforge.atunes.gui.images.NewImageIcon;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomFrame;
 import net.sourceforge.atunes.gui.views.dialogs.UpdateDialog;
-import net.sourceforge.atunes.gui.views.panels.NavigationTablePanel;
-import net.sourceforge.atunes.gui.views.panels.NavigationTreePanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
@@ -113,27 +111,17 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     private JXStatusBar statusBar;
 
     protected IState state;
-    
     protected IOSManager osManager;
-    
     private IPlayListHandler playListHandler;
-    
     private INavigationHandler navigationHandler;
-    
     private ILookAndFeelManager lookAndFeelManager;
-    
     private IRepositoryHandler repositoryHandler;
-    
     private IPlayerHandler playerHandler;
-    
     private IDesktop desktop;
-    
     private IUIHandler uiHandler;
     
-    private IContextPanelsContainer contextPanelsContainer;
-    
-    ITaskService taskService;
-    
+    private ITaskService taskService;
+
     private ApplicationContext context;
     
     @Override
@@ -210,7 +198,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     @Override
     public IContextPanelsContainer getContextPanel() {
         if (contextPanel == null) {
-            contextPanel = contextPanelsContainer;
+            contextPanel = context.getBean(IContextPanelsContainer.class);
             contextPanel.setMinimumSize(getContextPanelMinimumSize());
             contextPanel.setPreferredSize(getContextPanelPreferredSize());
             contextPanel.setMaximumSize(getContextPanelMaximumSize());
@@ -260,7 +248,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     @Override
     public INavigationTreePanel getNavigationTreePanel() {
         if (navigationTreePanel == null) {
-            navigationTreePanel = new NavigationTreePanel(lookAndFeelManager);
+            navigationTreePanel = context.getBean(INavigationTreePanel.class);
             navigationTreePanel.setMinimumSize(getNavigationTreePanelMinimumSize());
             navigationTreePanel.setPreferredSize(getNavigationTreePanelPreferredSize());
             navigationTreePanel.setMaximumSize(getNavigationTreePanelMaximumSize());
@@ -271,7 +259,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     @Override
     public INavigationTablePanel getNavigationTablePanel() {
         if (navigationTablePanel == null) {
-            navigationTablePanel = new NavigationTablePanel(lookAndFeelManager);
+            navigationTablePanel = context.getBean(INavigationTablePanel.class);
             navigationTablePanel.setMinimumSize(getNavigationTablePanelMinimumSize());
             navigationTablePanel.setPreferredSize(getNavigationTablePanelPreferredSize());
             navigationTablePanel.setMaximumSize(getNavigationTablePanelMaximumSize());
@@ -728,13 +716,6 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
      */
     public void setTaskService(ITaskService taskService) {
 		this.taskService = taskService;
-	}
-    
-    /**
-     * @param contextPanelsContainer
-     */
-    public void setContextPanelsContainer(IContextPanelsContainer contextPanelsContainer) {
-		this.contextPanelsContainer = contextPanelsContainer;
 	}
     
     /**

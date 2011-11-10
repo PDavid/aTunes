@@ -37,5 +37,13 @@
 	<bean id="contextPanelsContainer" class="net.sourceforge.atunes.gui.views.panels.ContextPanelContainer">
 		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
+	
+	<bean id="navigationTreePanel" class="net.sourceforge.atunes.gui.views.panels.NavigationTreePanel">
+		<constructor-arg ref="lookAndFeelManager"/>
+	</bean>
+	
+	<bean id="navigationTablePanel" class="net.sourceforge.atunes.gui.views.panels.NavigationTablePanel">
+		<constructor-arg ref="lookAndFeelManager"/>
+	</bean>
 
 </beans>
