@@ -143,7 +143,7 @@ public class PointedList<T> implements Serializable {
     public void add(int index, T element) {
         getList().add(index, element);
         if (size() > 1 && this.pointer != null && index <= this.pointer) {
-            this.pointer++;
+            this.pointer = this.pointer + 1;
         }
     }
 
@@ -162,7 +162,7 @@ public class PointedList<T> implements Serializable {
 
         if (this.pointer != null && index < this.pointer) {
             // If position to remove is under pointer, move pointer one position 
-            this.pointer--;
+            this.pointer = this.pointer - 1;
         } else if (this.pointer != null && index == this.pointer && this.pointer == size() - 1) {
             // If pointed and removed object is the last one, update pointer to previous
         	this.pointer = size() - 2;

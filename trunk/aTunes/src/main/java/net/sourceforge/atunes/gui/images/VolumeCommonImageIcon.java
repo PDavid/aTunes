@@ -28,6 +28,7 @@ class VolumeCommonImageIcon {
 	protected static final int WIDTH = 24;
 	protected static final int HEIGHT = 24;
 
+	private VolumeCommonImageIcon() {}
 	
 	static final Polygon getVolumeShape() {
         Polygon volumeShape = new Polygon();

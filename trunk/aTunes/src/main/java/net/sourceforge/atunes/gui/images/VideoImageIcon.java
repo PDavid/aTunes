@@ -36,6 +36,8 @@ public class VideoImageIcon {
 	private static final int WIDTH = 16;
 	private static final int HEIGHT = 16;
 	
+	private VideoImageIcon() {}
+	
 	/**
 	 * @param lookAndFeel
 	 * @return

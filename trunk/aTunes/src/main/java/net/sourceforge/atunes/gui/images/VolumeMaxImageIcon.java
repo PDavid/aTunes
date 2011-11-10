@@ -26,6 +26,8 @@ import net.sourceforge.atunes.model.ILookAndFeel;
 
 public class VolumeMaxImageIcon {
 	
+	private VolumeMaxImageIcon() {}
+	
 	/**
 	 * @param lookAndFeel
 	 * @return

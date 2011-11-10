@@ -33,6 +33,7 @@ import net.sourceforge.atunes.model.ILookAndFeel;
 
 public class StopImageIcon {
 
+	private StopImageIcon() {}
 	/**
 	 * @param size
 	 * @param lookAndFeel 

@@ -31,6 +31,8 @@ public class DownloadImageIcon {
 
 	private static final int SIZE = 18;
 	
+	private DownloadImageIcon() {}
+	
 	/**
 	 * @param paint
 	 * @param lookAndFeel

@@ -40,6 +40,8 @@ public class DeviceImageIcon {
 	
 	private static ImageIcon icon;
 	
+	private DeviceImageIcon() {}
+	
 	/**
 	 * @param lookAndFeel
 	 * @return

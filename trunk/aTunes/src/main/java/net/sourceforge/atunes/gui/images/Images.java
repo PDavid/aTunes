@@ -42,8 +42,7 @@ public final class Images {
     public static final String APP_LOGO_300 = "logo300x300.png";
     public static final String POWERED_BY_LAST_FM = "poweredByLastFm.png";
     
-    private Images() {
-    }
+    private Images() {}
 
     /**
      * Returns an image.

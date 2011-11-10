@@ -99,7 +99,7 @@ public abstract class AbstractColumn implements IColumn {
     public int compareTo(IColumn o) {
         return Integer.valueOf(order).compareTo(o.getOrder());
     }
-
+    
     @Override
 	public int getAlignment() {
         return alignment;
@@ -274,4 +274,26 @@ public abstract class AbstractColumn implements IColumn {
 	public ColumnSort getColumnSort() {
         return columnSort;
     }
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + order;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AbstractColumn other = (AbstractColumn) obj;
+		if (order != other.order)
+			return false;
+		return true;
+	}
 }

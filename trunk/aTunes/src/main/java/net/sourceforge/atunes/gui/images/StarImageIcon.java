@@ -34,6 +34,8 @@ public class StarImageIcon {
 	private static final int STAR_SIZE = 16;
 	private static final int STAR_GAP = 3;
 	
+	private StarImageIcon() {}
+	
 	/**
 	 * @param color
 	 * @param stars

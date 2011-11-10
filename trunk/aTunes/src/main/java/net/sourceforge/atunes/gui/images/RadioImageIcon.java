@@ -38,6 +38,8 @@ public class RadioImageIcon {
 	
 	private static ImageIcon smallImageIcon; // Cached as it's heavily used
 
+	private RadioImageIcon() {}
+	
 	/**
 	 * @param lookAndFeel
 	 * @return

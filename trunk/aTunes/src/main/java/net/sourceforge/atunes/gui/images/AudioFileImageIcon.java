@@ -37,6 +37,8 @@ public class AudioFileImageIcon {
 	private static final int MEDIUM_WIDTH = 70;
 	private static final int MEDIUM_HEIGHT = 70;
 	
+	private AudioFileImageIcon() {}
+	
 	/**
 	 * @param color
 	 * @param lookAndFeel

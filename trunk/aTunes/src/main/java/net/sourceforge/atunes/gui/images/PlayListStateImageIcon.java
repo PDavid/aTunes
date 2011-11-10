@@ -33,6 +33,8 @@ public class PlayListStateImageIcon {
 	private static final int WIDTH = 14;
 	private static final int HEIGHT = 14;
 	
+	private PlayListStateImageIcon() {}
+	
 	/**
 	 * @param color
 	 * @param lookAndFeel

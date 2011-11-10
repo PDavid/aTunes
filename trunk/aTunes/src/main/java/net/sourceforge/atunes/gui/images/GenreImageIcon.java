@@ -33,6 +33,8 @@ public class GenreImageIcon {
 
 	private static final int SIZE = 18;
 	
+	private GenreImageIcon() {}
+	
 	/**
 	 * @param color
 	 * @param lookAndFeel

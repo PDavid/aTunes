@@ -26,6 +26,8 @@ import net.sourceforge.atunes.model.ILookAndFeel;
 
 public class VolumeMuteImageIcon {
 	
+	private VolumeMuteImageIcon() {}
+	
 	/**
 	 * @param lookAndFeel
 	 * @return

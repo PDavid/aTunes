@@ -29,6 +29,8 @@ import net.sourceforge.atunes.model.ILookAndFeel;
 
 public class RepeatImageIcon {
 
+	private RepeatImageIcon() {}
+	
 	/**
 	 * @param color
 	 * @param lookAndFeel

@@ -31,6 +31,8 @@ public class EqualizerImageIcon {
 
 	private static final int SIZE = 18;
 	
+	private EqualizerImageIcon() {}
+	
 	/**
 	 * @param color
 	 * @param lookAndFeel

@@ -35,6 +35,8 @@ public class NormalizationImageIcon {
 
 	private static final int SIZE = 18;
 	
+	private NormalizationImageIcon() {}
+	
 	/**
 	 * @param color
 	 * @param lookAndFeel

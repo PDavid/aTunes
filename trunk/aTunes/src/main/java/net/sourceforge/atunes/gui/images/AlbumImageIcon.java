@@ -35,6 +35,8 @@ public class AlbumImageIcon {
 	
 	private static ImageIcon icon;
 	
+	private AlbumImageIcon() {}
+	
 	/**
 	 * @param lookAndFeel
 	 * @return

@@ -34,6 +34,8 @@ public class NewImageIcon {
 	private static final int SIZE = 18;
 	private static final int STAR_SIZE = 16;
 	
+	private NewImageIcon() {}
+	
 	/**
 	 * @param lookAndFeel
 	 * @return

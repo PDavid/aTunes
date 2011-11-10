@@ -33,6 +33,8 @@ import net.sourceforge.atunes.model.ILookAndFeel;
 
 public class PlayImageIcon {
 
+	private PlayImageIcon() {}
+	
 	/**
 	 * @param size
 	 * @param lookAndFeel

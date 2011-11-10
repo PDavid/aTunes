@@ -34,6 +34,8 @@ public class AlbumFavoriteImageIcon {
 	
 	private static ImageIcon icon;
 	
+	private AlbumFavoriteImageIcon() {}
+	
 	/**
 	 * @param lookAndFeel
 	 * @return
