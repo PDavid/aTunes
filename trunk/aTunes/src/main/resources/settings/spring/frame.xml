@@ -38,11 +38,9 @@
 		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
 	
-	<bean id="navigationTreePanel" class="net.sourceforge.atunes.gui.views.panels.NavigationTreePanel">
-		<constructor-arg ref="lookAndFeelManager"/>
-	</bean>
-	
-	<bean id="navigationTablePanel" class="net.sourceforge.atunes.gui.views.panels.NavigationTablePanel">
+	<bean id="navigationTreePanel" class="net.sourceforge.atunes.gui.views.panels.NavigationTreePanel" init-method="initialize"/>
+	<bean id="navigationTablePanel" class="net.sourceforge.atunes.gui.views.panels.NavigationTablePanel" init-method="initialize"/>
+	<bean id="navigationTable" class="net.sourceforge.atunes.gui.views.controls.NavigationTable">
 		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
 
