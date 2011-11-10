@@ -34,7 +34,6 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.TransferHandler;
-import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.gui.model.TransferableList;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -50,33 +49,19 @@ public final class NavigationTable extends JTable implements DragSourceListener,
      * @param lookAndFeelManager
      */
     public NavigationTable(ILookAndFeelManager lookAndFeelManager) {
-        super();
-        lookAndFeelManager.getCurrentLookAndFeel().decorateTable(this);
-        setDragSource();
-        setDragEnabled(true);
+    	super();
+    	lookAndFeelManager.getCurrentLookAndFeel().decorateTable(this);
+    	setDragSource();
+    	setDragEnabled(true);
+    	setTransferHandler(new TransferHandler() {
 
-        setTransferHandler(new TransferHandler() {
+    		private static final long serialVersionUID = -9033178513246597067L;
 
-            /**
-			 * 
-			 */
-			private static final long serialVersionUID = -9033178513246597067L;
-
-			@Override
-            public int getSourceActions(JComponent c) {
-                return TransferHandler.COPY;
-    }
-        });
-    }
-
-    /**
-     * Instantiates a new drag source table.
-     * @param model
-     * @param lookAndFeelManager
-     */
-    public NavigationTable(TableModel model, ILookAndFeelManager lookAndFeelManager) {
-        this(lookAndFeelManager);
-        setModel(model);
+    		@Override
+    		public int getSourceActions(JComponent c) {
+    			return TransferHandler.COPY;
+    		}
+    	});
     }
 
     @Override

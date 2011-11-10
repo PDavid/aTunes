@@ -23,11 +23,9 @@ package net.sourceforge.atunes.gui.views.panels;
 import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
-import net.sourceforge.atunes.gui.views.controls.NavigationTable;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationTablePanel;
 import net.sourceforge.atunes.model.ITable;
@@ -36,33 +34,43 @@ public final class NavigationTablePanel extends JPanel implements INavigationTab
 
     private static final long serialVersionUID = -2900418193013495812L;
 
-    /** The navigation table. */
-    private NavigationTable navigationTable;
+    private ITable navigationTable;
+
+	private ILookAndFeelManager lookAndFeelManager;
 
     /**
      * Instantiates a new navigation panel.
-     * @param lookAndFeelManager
      */
-    public NavigationTablePanel(ILookAndFeelManager lookAndFeelManager) {
+    public NavigationTablePanel() {
         super(new BorderLayout(), true);
-        addContent(lookAndFeelManager);
     }
-
+    
     /**
      * Adds the content.
      * @param lookAndFeelManager 
      */
-    private void addContent(ILookAndFeelManager lookAndFeelManager) {
-        navigationTable = new NavigationTable(lookAndFeelManager);
+    public void initialize() {
         navigationTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
         // Disable autoresize, as we will control it
         navigationTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        JScrollPane scrollPane2 = lookAndFeelManager.getCurrentLookAndFeel().getTableScrollPane(navigationTable);
-        scrollPane2.setOpaque(false); // for some look and feels
-        add(scrollPane2, BorderLayout.CENTER);
+        add(lookAndFeelManager.getCurrentLookAndFeel().getTableScrollPane(navigationTable.getSwingComponent()), BorderLayout.CENTER);
     }
 
+    /**
+     * @param navigationTable
+     */
+    public void setNavigationTable(ITable navigationTable) {
+		this.navigationTable = navigationTable;
+	}
+    
+    /**
+     * @param lookAndFeelManager
+     */
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+    
     /**
      * Gets the navigation table.
      * 

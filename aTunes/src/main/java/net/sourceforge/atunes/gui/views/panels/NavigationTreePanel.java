@@ -24,6 +24,7 @@ import java.awt.CardLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
+import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComboBox;
@@ -32,16 +33,7 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.TransferHandler;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
-import net.sourceforge.atunes.kernel.actions.CollapseTreesAction;
-import net.sourceforge.atunes.kernel.actions.ExpandTreesAction;
-import net.sourceforge.atunes.kernel.actions.ShowAlbumsInNavigatorAction;
-import net.sourceforge.atunes.kernel.actions.ShowArtistsInNavigatorAction;
-import net.sourceforge.atunes.kernel.actions.ShowFoldersInNavigatorAction;
-import net.sourceforge.atunes.kernel.actions.ShowGenresInNavigatorAction;
-import net.sourceforge.atunes.kernel.actions.ShowNavigationTableAction;
-import net.sourceforge.atunes.kernel.actions.ShowYearsInNavigatorAction;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationTreePanel;
@@ -52,50 +44,105 @@ public final class NavigationTreePanel extends JPanel implements INavigationTree
 
     private static final long serialVersionUID = -2900418193013495812L;
 
-    private PopUpButton options;
-    
     private JComboBox treeComboBox;
     
     private JPanel treePanel;
+
+	private ILookAndFeelManager lookAndFeelManager;
+	
+	private INavigationHandler navigationHandler;
+	
+	private Action showArtistsInNavigatorAction;
+	private Action showAlbumsInNavigatorAction;
+	private Action showGenresInNavigatorAction;
+	private Action showYearsInNavigatorAction;
+	private Action showFoldersInNavigatorAction;
+	private Action expandTreesAction;
+	private Action collapseTreesAction;
+	private Action showNavigationTableAction;
+	
     
     /**
      * Instantiates a new navigation panel.
-     * @param lookAndFeelManager
      */
-    public NavigationTreePanel(ILookAndFeelManager lookAndFeelManager)  {
+    public NavigationTreePanel()  {
         super(new GridBagLayout(), true);
-        addContent(lookAndFeelManager);
     }
 
     /**
-     * Adds the content.
-     * @param lookAndFeelManager 
+     * @param showArtistsInNavigatorAction
      */
-    private void addContent(ILookAndFeelManager lookAndFeelManager) {
-    	options = new PopUpButton(PopUpButton.BOTTOM_RIGHT, lookAndFeelManager);
-        JRadioButtonMenuItem showArtist = new JRadioButtonMenuItem(Context.getBean(ShowArtistsInNavigatorAction.class));
-        JRadioButtonMenuItem showAlbum = new JRadioButtonMenuItem(Context.getBean(ShowAlbumsInNavigatorAction.class));
-        JRadioButtonMenuItem showGenre = new JRadioButtonMenuItem(Context.getBean(ShowGenresInNavigatorAction.class));
-        JRadioButtonMenuItem showYear = new JRadioButtonMenuItem(Context.getBean(ShowYearsInNavigatorAction.class));
-        JRadioButtonMenuItem showFolder = new JRadioButtonMenuItem(Context.getBean(ShowFoldersInNavigatorAction.class));
-        ButtonGroup group = new ButtonGroup();
-        group.add(showArtist);
-        group.add(showAlbum);
-        group.add(showGenre);
-        group.add(showYear);
-        group.add(showFolder);
-        options.add(showArtist);
-        options.add(showAlbum);
-        options.add(showGenre);
-        options.add(showYear);
-        options.add(showFolder);
-        options.add(new JSeparator());
-        options.add(Context.getBean(ExpandTreesAction.class));
-        options.add(Context.getBean(CollapseTreesAction.class));
-        options.addSeparator();
-        options.add(new JCheckBoxMenuItem(Context.getBean(ShowNavigationTableAction.class)));
-
-
+    public void setShowArtistsInNavigatorAction(Action showArtistsInNavigatorAction) {
+		this.showArtistsInNavigatorAction = showArtistsInNavigatorAction;
+	}
+    
+    /**
+     * @param showAlbumsInNavigatorAction
+     */
+    public void setShowAlbumsInNavigatorAction(Action showAlbumsInNavigatorAction) {
+		this.showAlbumsInNavigatorAction = showAlbumsInNavigatorAction;
+	}
+    
+    /**
+     * @param showGenresInNavigatorAction
+     */
+    public void setShowGenresInNavigatorAction(Action showGenresInNavigatorAction) {
+		this.showGenresInNavigatorAction = showGenresInNavigatorAction;
+	}
+    
+    /**
+     * @param showYearsInNavigatorAction
+     */
+    public void setShowYearsInNavigatorAction(Action showYearsInNavigatorAction) {
+		this.showYearsInNavigatorAction = showYearsInNavigatorAction;
+	}
+    
+    /**
+     * @param showFoldersInNavigatorAction
+     */
+    public void setShowFoldersInNavigatorAction(Action showFoldersInNavigatorAction) {
+		this.showFoldersInNavigatorAction = showFoldersInNavigatorAction;
+	}
+    
+    /**
+     * @param expandTreesAction
+     */
+    public void setExpandTreesAction(Action expandTreesAction) {
+		this.expandTreesAction = expandTreesAction;
+	}
+    
+    /**
+     * @param collapseTreesAction
+     */
+    public void setCollapseTreesAction(Action collapseTreesAction) {
+		this.collapseTreesAction = collapseTreesAction;
+	}
+    
+    /**
+     * @param showNavigationTableAction
+     */
+    public void setShowNavigationTableAction(Action showNavigationTableAction) {
+		this.showNavigationTableAction = showNavigationTableAction;
+	}
+    
+    /**
+     * @param lookAndFeelManager
+     */
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+    
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+    
+    /**
+     * Adds the content.
+     */
+    public void initialize() {
     	treeComboBox = new JComboBox();
         treePanel = new JPanel(new CardLayout());
         addTrees();
@@ -103,7 +150,7 @@ public final class NavigationTreePanel extends JPanel implements INavigationTree
         c.gridx = 0;
         c.gridy = 0;
         c.fill = GridBagConstraints.BOTH;
-        add(options, c);
+        add(getOptionsPopUpButton(lookAndFeelManager), c);
         c.gridx = 1;
         c.weightx = 1;
         add(treeComboBox, c);
@@ -114,10 +161,40 @@ public final class NavigationTreePanel extends JPanel implements INavigationTree
         add(treePanel, c);
 
         // Apply component orientation to all popup menus
-        for (INavigationView view : Context.getBean(INavigationHandler.class).getNavigationViews()) {
+        for (INavigationView view : navigationHandler.getNavigationViews()) {
             GuiUtils.applyComponentOrientation(view.getTreePopupMenu());
         }
-       
+    }
+
+	/**
+	 * @param lookAndFeelManager
+	 */
+	private PopUpButton getOptionsPopUpButton(ILookAndFeelManager lookAndFeelManager) {
+		PopUpButton options = new PopUpButton(PopUpButton.BOTTOM_RIGHT, lookAndFeelManager);
+        ButtonGroup group = new ButtonGroup();
+        addRadioButtonMenuItem(showArtistsInNavigatorAction, group, options);
+        addRadioButtonMenuItem(showAlbumsInNavigatorAction, group, options);
+        addRadioButtonMenuItem(showGenresInNavigatorAction, group, options);
+        addRadioButtonMenuItem(showYearsInNavigatorAction, group, options);
+        addRadioButtonMenuItem(showFoldersInNavigatorAction, group, options);
+        options.add(new JSeparator());
+        options.add(expandTreesAction);
+        options.add(collapseTreesAction);
+        options.addSeparator();
+        options.add(new JCheckBoxMenuItem(showNavigationTableAction));
+        return options;
+	}
+    
+    /**
+     * Adds a radio button menu item
+     * @param action
+     * @param group
+     * @param options
+     */
+    private void addRadioButtonMenuItem(Action action, ButtonGroup group, PopUpButton options) {
+    	JRadioButtonMenuItem menuItem = new JRadioButtonMenuItem(action);
+        group.add(menuItem);
+        options.add(menuItem);
     }
 
     /**
@@ -127,32 +204,23 @@ public final class NavigationTreePanel extends JPanel implements INavigationTree
     	treeComboBox.removeAllItems();
     	treePanel.removeAll();
 
-        for (INavigationView view : Context.getBean(INavigationHandler.class).getNavigationViews()) {
+        for (INavigationView view : navigationHandler.getNavigationViews()) {
         	treeComboBox.addItem(view);
         	treePanel.add(view.getClass().getName(), view.getTreeScrollPane());
         }
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.panels.INavigationTreePanel#updateTrees()
-	 */
     @Override
 	public void updateTrees() {
         addTrees();
     }
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.panels.INavigationTreePanel#showNavigationView(net.sourceforge.atunes.model.INavigationView)
-	 */
 	@Override
 	public void showNavigationView(INavigationView view) {		
 		((CardLayout)treePanel.getLayout()).show(treePanel, view.getClass().getName());
 		treeComboBox.setSelectedItem(view);
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.panels.INavigationTreePanel#getTreeComboBox()
-	 */
 	@Override
 	public JComboBox getTreeComboBox() {
 		return treeComboBox;

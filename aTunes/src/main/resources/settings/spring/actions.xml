@@ -109,7 +109,7 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.ClearTagPlaylistAction" scope="prototype"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.CloseOtherPlaylistsAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ClosePlaylistAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.CollapseTreesAction"/>
+	<bean id="collapseTreesAction" class="net.sourceforge.atunes.kernel.actions.CollapseTreesAction"/>
 	<bean id="connectDeviceAction" class="net.sourceforge.atunes.kernel.actions.ConnectDeviceAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.CopyPlayListToDeviceAction">
 		<property name="playListObjectFilter">
@@ -134,7 +134,7 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.EditTitlesAction"/>
 	<bean id="exitAction" class="net.sourceforge.atunes.kernel.actions.ExitAction"/>
 	<bean id="exportAction" class="net.sourceforge.atunes.kernel.actions.ExportAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.ExpandTreesAction"/>
+	<bean id="expandTreesAction" class="net.sourceforge.atunes.kernel.actions.ExpandTreesAction"/>
 	
 	<bean id="extractPictureFromDeviceNavigationView" class="net.sourceforge.atunes.kernel.actions.ExtractPictureAction"/>
 	<bean id="extractPictureFromFavoritesNavigationView" class="net.sourceforge.atunes.kernel.actions.ExtractPictureAction"/>
@@ -210,15 +210,15 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.SetPlayListSelectionAsFavoriteArtistAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.SetPlayListSelectionAsFavoriteSongAction"/>
 	<bean id="showAboutAction" class="net.sourceforge.atunes.kernel.actions.ShowAboutAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.ShowAlbumsInNavigatorAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.ShowArtistsInNavigatorAction"/>
+	<bean id="showAlbumsInNavigatorAction" class="net.sourceforge.atunes.kernel.actions.ShowAlbumsInNavigatorAction"/>
+	<bean id="showArtistsInNavigatorAction" class="net.sourceforge.atunes.kernel.actions.ShowArtistsInNavigatorAction"/>
 	<bean id="showContextAction" class="net.sourceforge.atunes.kernel.actions.ShowContextAction"/>
 	<bean id="showCoverNavigatorAction" class="net.sourceforge.atunes.kernel.actions.ShowCoverNavigatorAction"/>
 	<bean id="showEqualizerAction" class="net.sourceforge.atunes.kernel.actions.ShowEqualizerAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.ShowFoldersInNavigatorAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.ShowGenresInNavigatorAction"/>
+	<bean id="showFoldersInNavigatorAction" class="net.sourceforge.atunes.kernel.actions.ShowFoldersInNavigatorAction"/>
+	<bean id="showGenresInNavigatorAction" class="net.sourceforge.atunes.kernel.actions.ShowGenresInNavigatorAction"/>
 	<bean id="showLogAction" class="net.sourceforge.atunes.kernel.actions.ShowLogAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.ShowNavigationTableAction"/>
+	<bean id="showNavigationTableAction" class="net.sourceforge.atunes.kernel.actions.ShowNavigationTableAction"/>
 	<bean id="showNavigationTreeAction" class="net.sourceforge.atunes.kernel.actions.ShowNavigationTreeAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShowOSDAction"/>
@@ -226,7 +226,7 @@
 	<bean id="showRadioBrowserAction" class="net.sourceforge.atunes.kernel.actions.ShowRadioBrowserAction"/>
 	<bean id="showStatsAction" class="net.sourceforge.atunes.kernel.actions.ShowStatsAction"/>
 	<bean id="showStatusBarAction" class="net.sourceforge.atunes.kernel.actions.ShowStatusBarAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.ShowYearsInNavigatorAction"/>
+	<bean id="showYearsInNavigatorAction" class="net.sourceforge.atunes.kernel.actions.ShowYearsInNavigatorAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShuffleModeAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShufflePlayListAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectAction"/>

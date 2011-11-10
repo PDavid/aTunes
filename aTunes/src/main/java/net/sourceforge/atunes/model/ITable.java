@@ -75,5 +75,9 @@ public interface ITable extends IComponent<JTable> {
 
 	public void repaint();
 
+	public void setSelectionMode(int multipleIntervalSelection);
+
+	public void setAutoResizeMode(int autoResize);
+
 
 }
