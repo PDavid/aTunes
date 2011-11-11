@@ -294,12 +294,6 @@ public interface IFrame {
 	public void updateStatusBarWithObjectBeingPlayed(IAudioObject audioObject);
 
 	/**
-	 * Sets OS manager
-	 * @param osManager
-	 */
-	void setOsManager(IOSManager osManager);
-	
-	/**
 	 * Shows progress bar with given text and determinate or indeterminate
 	 * @param indeterminate
 	 * @param text
@@ -311,10 +305,4 @@ public interface IFrame {
 	 */
 	public void hideProgressBar();
 	
-	/**
-	 * Sets navigation handler
-	 * @param navigationHandler
-	 */
-	public void setNavigationHandler(INavigationHandler navigationHandler);
-
 }
