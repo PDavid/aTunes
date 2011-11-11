@@ -93,7 +93,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     private JProgressBar progressBar;
     private IMenuBar appMenuBar;
     private IPlayListPanel playListPanel;
-    private IContextPanelsContainer contextPanel;
+    private IContextPanelsContainer contextPanelContainer;
     private PlayerControlsPanel playerControls;
     private JXStatusBar statusBar;
 
@@ -166,16 +166,16 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
 
     @Override
     public IContextPanelsContainer getContextPanel() {
-        if (contextPanel == null) {
-            contextPanel = context.getBean(IContextPanelsContainer.class);
-            contextPanel.setMinimumSize(getContextPanelMinimumSize());
-            contextPanel.setPreferredSize(getContextPanelPreferredSize());
-            contextPanel.setMaximumSize(getContextPanelMaximumSize());
+        if (contextPanelContainer == null) {
+            contextPanelContainer = context.getBean(IContextPanelsContainer.class);
+            contextPanelContainer.setMinimumSize(getContextPanelMinimumSize());
+            contextPanelContainer.setPreferredSize(getContextPanelPreferredSize());
+            contextPanelContainer.setMaximumSize(getContextPanelMaximumSize());
             if (!state.isUseContext()) {
-                contextPanel.setVisible(false);
+                contextPanelContainer.setVisible(false);
             }
         }
-        return contextPanel;
+        return contextPanelContainer;
     }
     
     /**
@@ -214,27 +214,39 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
         return leftStatusBar;
     }
 
-    @Override
-    public INavigationTreePanel getNavigationTreePanel() {
-        if (navigationTreePanel == null) {
-            navigationTreePanel = context.getBean(INavigationTreePanel.class);
-            navigationTreePanel.setMinimumSize(getNavigationTreePanelMinimumSize());
-            navigationTreePanel.setPreferredSize(getNavigationTreePanelPreferredSize());
-            navigationTreePanel.setMaximumSize(getNavigationTreePanelMaximumSize());
-        }
+    /**
+     * @return navigation tree panel
+     */
+    protected INavigationTreePanel getNavigationTreePanel() {
         return navigationTreePanel;
     }
+    
+    /**
+     * @param navigationTreePanel
+     */
+    public void setNavigationTreePanel(INavigationTreePanel navigationTreePanel) {
+		this.navigationTreePanel = navigationTreePanel;
+		this.navigationTreePanel.setMinimumSize(getNavigationTreePanelMinimumSize());
+		this.navigationTreePanel.setPreferredSize(getNavigationTreePanelPreferredSize());
+		this.navigationTreePanel.setMaximumSize(getNavigationTreePanelMaximumSize());
+	}
 
-    @Override
-    public INavigationTablePanel getNavigationTablePanel() {
-        if (navigationTablePanel == null) {
-            navigationTablePanel = context.getBean(INavigationTablePanel.class);
-            navigationTablePanel.setMinimumSize(getNavigationTablePanelMinimumSize());
-            navigationTablePanel.setPreferredSize(getNavigationTablePanelPreferredSize());
-            navigationTablePanel.setMaximumSize(getNavigationTablePanelMaximumSize());
-        }
+    /**
+     * @return navigation table panel
+     */
+    protected INavigationTablePanel getNavigationTablePanel() {
         return navigationTablePanel;
     }
+    
+    /**
+     * @param navigationTablePanel
+     */
+    public void setNavigationTablePanel(INavigationTablePanel navigationTablePanel) {
+		this.navigationTablePanel = navigationTablePanel;
+		this.navigationTablePanel.setMinimumSize(getNavigationTablePanelMinimumSize());
+		this.navigationTablePanel.setPreferredSize(getNavigationTablePanelPreferredSize());
+		this.navigationTablePanel.setMaximumSize(getNavigationTablePanelMaximumSize());
+	}
 
     @Override
     public PlayerControlsPanel getPlayerControls() {
