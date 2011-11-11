@@ -39,7 +39,6 @@ import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.IKernel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.IPlayerHandler;
@@ -178,8 +177,6 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
         }
 
 		getFrame().setState(getState());
-		getFrame().setOsManager(getOsManager());
-		getFrame().setNavigationHandler(getBean(INavigationHandler.class));
         
         IFrameState frameState = getState().getFrameState(getFrame().getClass());
         LocaleBean locale = getState().getLocale();

@@ -652,7 +652,6 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     	this.state = state;
     }
     
-    @Override
     public void setOsManager(IOSManager osManager) {
 		this.osManager = osManager;
 	}
