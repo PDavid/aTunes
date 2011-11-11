@@ -18,15 +18,28 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.kernel.modules.navigator;
 
+import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
+import net.sourceforge.atunes.model.IAudioObject;
 
+final class RadioUrlColumn extends AbstractColumn {
+    /**
+	 * 
+	 */
+    private static final long serialVersionUID = -1615880013918017198L;
 
-/**
- * A part of the interface that shows navigation table
- * @author alex
- *
- */
-public interface INavigationTablePanel extends IPanel {
+    RadioUrlColumn(String name, Class<?> columnClass) {
+        super(name, columnClass);
+    }
 
+    @Override
+    protected int ascendingCompare(IAudioObject o1, IAudioObject o2) {
+        return o1.getUrl().compareTo(o2.getUrl());
+    }
+
+    @Override
+    public Object getValueFor(IAudioObject audioObject) {
+        return audioObject.getUrl();
+    }
 }

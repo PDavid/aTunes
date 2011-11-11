@@ -20,42 +20,27 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
-import net.sourceforge.atunes.model.IColumn;
+import net.sourceforge.atunes.model.IAudioObject;
 
-public final class RadioNavigationColumnSet extends AbstractCustomNavigatorColumnSet {
+final class RadioEmptyColumn extends AbstractColumn {
+    /**
+	 * 
+	 */
+    private static final long serialVersionUID = 3613237620716484881L;
 
-    public RadioNavigationColumnSet(String columnSetName) {
-        super(columnSetName);
+    RadioEmptyColumn(String name, Class<?> columnClass) {
+        super(name, columnClass);
     }
 
     @Override
-    protected List<IColumn> getAllowedColumns() {
-        List<IColumn> columns = new ArrayList<IColumn>();
-
-        AbstractColumn property = new RadioEmptyColumn("", Property.class);
-        property.setVisible(true);
-        property.setWidth(20);
-        property.setResizable(false);
-        columns.add(property);
-
-        AbstractColumn name = new RadioNameColumn("NAME", String.class);
-        name.setVisible(true);
-        name.setWidth(150);
-        name.setUsedForFilter(true);
-        columns.add(name);
-
-        AbstractColumn url = new RadioUrlColumn("URL", String.class);
-        url.setVisible(true);
-        url.setWidth(400);
-        url.setUsedForFilter(true);
-        columns.add(url);
-
-        return columns;
+    protected int ascendingCompare(IAudioObject o1, IAudioObject o2) {
+        return 0;
     }
 
+    @Override
+    public Object getValueFor(IAudioObject audioObject) {
+        return Property.NO_PROPERTIES;
+    }
 }

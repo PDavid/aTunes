@@ -48,7 +48,6 @@ import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.model.IAddPodcastFeedDialog;
-import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPodcastFeed;
@@ -57,6 +56,7 @@ import net.sourceforge.atunes.model.IPodcastFeedHandler;
 import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
+import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -112,12 +112,12 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
 	private static final class DeleteDownloadedPodcastFeedEntryWorker extends SwingWorker<Boolean, Void> {
         private final File f;
         private final IPodcastFeedEntry podcastFeedEntry;
-        private IFrame frame;
+        private ITable navigationTable;
 
-        private DeleteDownloadedPodcastFeedEntryWorker(File f, IPodcastFeedEntry podcastFeedEntry, IFrame frame) {
+        private DeleteDownloadedPodcastFeedEntryWorker(File f, IPodcastFeedEntry podcastFeedEntry, ITable navigationTable) {
             this.f = f;
             this.podcastFeedEntry = podcastFeedEntry;
-            this.frame = frame;
+            this.navigationTable = navigationTable;
         }
 
         @Override
@@ -130,7 +130,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
             try {
                 if (get()) {
                     podcastFeedEntry.setDownloaded(false);
-                    frame.getNavigationTablePanel().getNavigationTable().repaint();
+                    navigationTable.repaint();
                 }
             } catch (InterruptedException e) {
                 Logger.error(e);
@@ -293,7 +293,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
 	 */
     @Override
 	public void startPodcastFeedEntryDownloadChecker() {
-        getPodcastFeedEntryDownloadCheckerExecutorService().scheduleWithFixedDelay(new PodcastFeedEntryDownloadChecker(getFrame(), this), 0, 10000, TimeUnit.MILLISECONDS);
+        getPodcastFeedEntryDownloadCheckerExecutorService().scheduleWithFixedDelay(new PodcastFeedEntryDownloadChecker((ITable)getBean("navigationTable"), this), 0, 10000, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -341,7 +341,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
         final IProgressDialog d = (IProgressDialog) getBean("transferDialog");
         d.setTitle(I18nUtils.getString("PODCAST_FEED_ENTRY_DOWNLOAD"));
         d.setIcon(RssImageIcon.getIcon(getBean(ILookAndFeelManager.class).getCurrentLookAndFeel()));
-        final PodcastFeedEntryDownloader downloadPodcastFeedEntry = new PodcastFeedEntryDownloader(podcastFeedEntry, getState().getProxy(), getFrame(), this);
+        final PodcastFeedEntryDownloader downloadPodcastFeedEntry = new PodcastFeedEntryDownloader(podcastFeedEntry, getState().getProxy(), (ITable)getBean("navigationTable"), this);
         synchronized (runningDownloads) {
             runningDownloads.add(downloadPodcastFeedEntry);
         }
@@ -468,7 +468,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
     @Override
 	public void deleteDownloadedPodcastFeedEntry(final IPodcastFeedEntry podcastFeedEntry) {
         File f = new File(getDownloadPath(podcastFeedEntry));
-        new DeleteDownloadedPodcastFeedEntryWorker(f, podcastFeedEntry, getFrame()).execute();
+        new DeleteDownloadedPodcastFeedEntryWorker(f, podcastFeedEntry, (ITable)getBean("navigationTable")).execute();
     }
 
     /* (non-Javadoc)

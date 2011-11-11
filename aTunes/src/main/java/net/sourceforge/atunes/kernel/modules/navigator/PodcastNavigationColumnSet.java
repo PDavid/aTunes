@@ -26,117 +26,9 @@ import java.util.List;
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.kernel.modules.columns.DateColumn;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumn;
-import net.sourceforge.atunes.model.IPodcastFeedEntry;
-import net.sourceforge.atunes.utils.StringUtils;
 
 public class PodcastNavigationColumnSet extends AbstractCustomNavigatorColumnSet {
-
-    private static final class DurationColumn extends AbstractColumn {
-        /**
-		 * 
-		 */
-        private static final long serialVersionUID = -5577224920500040774L;
-
-        private DurationColumn(String name, Class<?> columnClass) {
-            super(name, columnClass);
-        }
-
-        @Override
-        public Object getValueFor(IAudioObject audioObject) {
-            return StringUtils.seconds2String(audioObject.getDuration());
-        }
-
-        @Override
-        protected int ascendingCompare(IAudioObject o1, IAudioObject o2) {
-            return Integer.valueOf(o1.getDuration()).compareTo(Integer.valueOf(o2.getDuration()));
-        }
-    }
-
-    private static final class PodcastEntriesColumn extends AbstractColumn {
-        /**
-		 * 
-		 */
-        private static final long serialVersionUID = -1788596965509543581L;
-
-        private PodcastEntriesColumn(String name, Class<?> columnClass) {
-            super(name, columnClass);
-        }
-
-        @Override
-        public Object getValueFor(IAudioObject audioObject) {
-            return audioObject.getTitleOrFileName();
-        }
-
-        @Override
-        protected int ascendingCompare(IAudioObject o1, IAudioObject o2) {
-            return o1.getTitleOrFileName().compareTo(o2.getTitleOrFileName());
-        }
-    }
-
-    private static final class OldEntryPropertyColumn extends AbstractColumn {
-        /**
-		 * 
-		 */
-        private static final long serialVersionUID = 1L;
-
-        private OldEntryPropertyColumn(String name, Class<?> columnClass) {
-            super(name, columnClass);
-        }
-
-        @Override
-        public Object getValueFor(IAudioObject audioObject) {
-            return ((IPodcastFeedEntry) audioObject).isOld() ? Property.OLD_ENTRY : Property.NO_PROPERTIES;
-        }
-
-        @Override
-        protected int ascendingCompare(IAudioObject o1, IAudioObject o2) {
-            return Boolean.valueOf(((IPodcastFeedEntry) o1).isOld()).compareTo(Boolean.valueOf(((IPodcastFeedEntry) o2).isOld()));
-        }
-    }
-
-    private static final class DownloadedPropertyColumn extends AbstractColumn {
-        /**
-		 * 
-		 */
-        private static final long serialVersionUID = 1L;
-
-        private DownloadedPropertyColumn(String name, Class<?> columnClass) {
-            super(name, columnClass);
-        }
-
-        @Override
-        public Object getValueFor(IAudioObject audioObject) {
-            return ((IPodcastFeedEntry) audioObject).isDownloaded() ? Property.DOWNLOADED_ENTRY : Property.NO_PROPERTIES;
-        }
-
-        @Override
-        protected int ascendingCompare(IAudioObject o1, IAudioObject o2) {
-            return Boolean.valueOf(((IPodcastFeedEntry) o1).isDownloaded()).compareTo(Boolean.valueOf(((IPodcastFeedEntry) o2).isDownloaded()));
-        }
-    }
-
-    private static final class NotListenedPropertyColumn extends AbstractColumn {
-        /**
-		 * 
-		 */
-        private static final long serialVersionUID = 1L;
-
-        private NotListenedPropertyColumn(String name, Class<?> columnClass) {
-            super(name, columnClass);
-        }
-
-        @Override
-        public Object getValueFor(IAudioObject audioObject) {
-            return ((IPodcastFeedEntry) audioObject).isListened() ? Property.NO_PROPERTIES : Property.NOT_LISTENED_ENTRY;
-        }
-
-        @Override
-        protected int ascendingCompare(IAudioObject o1, IAudioObject o2) {
-            return Boolean.valueOf(((IPodcastFeedEntry) o1).isListened()).compareTo(Boolean.valueOf(((IPodcastFeedEntry) o2).isListened()));
-        }
-    }
 
     public PodcastNavigationColumnSet(String columnSetName) {
         super(columnSetName);
@@ -146,19 +38,19 @@ public class PodcastNavigationColumnSet extends AbstractCustomNavigatorColumnSet
     protected List<IColumn> getAllowedColumns() {
         List<IColumn> columns = new ArrayList<IColumn>();
 
-        AbstractColumn property1 = new NotListenedPropertyColumn("", Property.class);
+        AbstractColumn property1 = new PodcastNotListenedPropertyColumn("", Property.class);
         property1.setVisible(true);
         property1.setWidth(20);
         property1.setResizable(false);
         columns.add(property1);
 
-        AbstractColumn property2 = new DownloadedPropertyColumn("", Property.class);
+        AbstractColumn property2 = new PodcastDownloadedPropertyColumn("", Property.class);
         property2.setVisible(true);
         property2.setWidth(20);
         property2.setResizable(false);
         columns.add(property2);
 
-        AbstractColumn property3 = new OldEntryPropertyColumn("", Property.class);
+        AbstractColumn property3 = new PodcastOldEntryPropertyColumn("", Property.class);
         property3.setVisible(true);
         property3.setWidth(20);
         property3.setResizable(false);
@@ -170,7 +62,7 @@ public class PodcastNavigationColumnSet extends AbstractCustomNavigatorColumnSet
         entries.setUsedForFilter(true);
         columns.add(entries);
 
-        AbstractColumn duration = new DurationColumn("DURATION", String.class);
+        AbstractColumn duration = new PodcastDurationColumn("DURATION", String.class);
         duration.setVisible(true);
         duration.setWidth(60);
         duration.setUsedForFilter(true);

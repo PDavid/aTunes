@@ -18,15 +18,29 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.kernel.modules.navigator;
 
+import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
+import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IRadio;
 
+final class RadioNameColumn extends AbstractColumn {
+    /**
+	 * 
+	 */
+    private static final long serialVersionUID = 3613237620716484881L;
 
-/**
- * A part of the interface that shows navigation table
- * @author alex
- *
- */
-public interface INavigationTablePanel extends IPanel {
+    RadioNameColumn(String name, Class<?> columnClass) {
+        super(name, columnClass);
+    }
 
+    @Override
+    public Object getValueFor(IAudioObject audioObject) {
+        return ((IRadio) audioObject).getName();
+    }
+
+    @Override
+    protected int ascendingCompare(IAudioObject o1, IAudioObject o2) {
+        return ((IRadio) o1).getName().compareTo(((IRadio) o2).getName());
+    }
 }

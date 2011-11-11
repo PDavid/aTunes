@@ -34,6 +34,7 @@ import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
@@ -46,15 +47,19 @@ public final class NavigationTreeMouseListener extends MouseAdapter {
     private IState state;
     
     private INavigationHandler navigationHandler;
+    
+    private ITable navigationTable;
 
     /**
      * Instantiates a new navigation tree mouse listener.
      * @param controller
+     * @param navigationTable
      * @param state
      * @param navigationHandler
      */
-    public NavigationTreeMouseListener(NavigationController controller, IState state, INavigationHandler navigationHandler) {
+    public NavigationTreeMouseListener(NavigationController controller, ITable navigationTable, IState state, INavigationHandler navigationHandler) {
         this.controller = controller;
+        this.navigationTable = navigationTable;
         this.state = state;
         this.navigationHandler = navigationHandler;
     }
@@ -113,7 +118,7 @@ public final class NavigationTreeMouseListener extends MouseAdapter {
         }
         
         // When clicking in tree, table selection must be cleared
-        controller.getNavigationTablePanel().getNavigationTable().getSelectionModel().clearSelection();
+        navigationTable.getSelectionModel().clearSelection();
     }
 
     @Override

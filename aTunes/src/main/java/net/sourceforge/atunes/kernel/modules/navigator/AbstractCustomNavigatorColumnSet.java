@@ -26,6 +26,7 @@ import java.util.Map;
 import net.sourceforge.atunes.gui.model.NavigationTableColumnModel;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.model.ColumnBean;
+import net.sourceforge.atunes.model.ITable;
 
 /**
  * Custom column set to be used by navigation views that use custom columns
@@ -35,6 +36,8 @@ import net.sourceforge.atunes.model.ColumnBean;
  */
 public abstract class AbstractCustomNavigatorColumnSet extends AbstractColumnSet {
 
+	private ITable navigationTable;
+	
     /**
      * Name of column set. Used to store and retrieve settings
      */
@@ -42,11 +45,19 @@ public abstract class AbstractCustomNavigatorColumnSet extends AbstractColumnSet
     
     /**
      * Default constructor
+     * @param columnSetName
      */
     public AbstractCustomNavigatorColumnSet(String columnSetName) {
         super();
         this.columnSetName = columnSetName;
     }
+    
+    /**
+     * @param navigationTable
+     */
+    public void setNavigationTable(ITable navigationTable) {
+		this.navigationTable = navigationTable;
+	}
 
     @Override
     protected void setColumnsConfiguration(Map<String, ColumnBean> columnsConfiguration) {
@@ -69,6 +80,6 @@ public abstract class AbstractCustomNavigatorColumnSet extends AbstractColumnSet
 
     @Override
     protected void refreshColumns() {
-        ((NavigationTableColumnModel) frame.getNavigationTablePanel().getNavigationTable().getColumnModel()).arrangeColumns(false);
+        ((NavigationTableColumnModel) navigationTable.getColumnModel()).arrangeColumns(false);
     }    
 }
