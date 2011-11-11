@@ -29,12 +29,4 @@ package net.sourceforge.atunes.model;
  */
 public interface INavigationTablePanel extends IPanel {
 
-	/**
-	 * Gets the navigation table.
-	 * 
-	 * @return the navigation table
-	 */
-	public ITable getNavigationTable();
-
-
 }

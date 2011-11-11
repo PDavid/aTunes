@@ -65,7 +65,6 @@ import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
-import net.sourceforge.atunes.model.INavigationTablePanel;
 import net.sourceforge.atunes.model.INavigationTreePanel;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IOSManager;
@@ -73,6 +72,7 @@ import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.Logger;
@@ -124,7 +124,6 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
 	}
 
     private INavigationTreePanel navigationTreePanel;
-    private INavigationTablePanel navigationTablePanel;
 
     /** The current extended tool tip content. */
     private volatile Object currentExtendedToolTipContent;
@@ -160,21 +159,23 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
     
     private IFilterHandler filterHandler;
     
+    private ITable navigationTable;
+    
     /**
      * Instantiates a new navigation controller.
      * @param treePanel
-     * @param tablePanel
+     * @param navigationTable
      * @param state
      * @param osManager
      * @param navigationHandler
      * @param taskService
      * @param lookAndFeelManager
      * @param repositoryHandler
-     * @param filterHandler 
+     * @param filterHandler
      */
-    NavigationController(INavigationTreePanel treePanel, INavigationTablePanel tablePanel, IState state, IOSManager osManager, INavigationHandler navigationHandler, ITaskService taskService, ILookAndFeelManager lookAndFeelManager, IRepositoryHandler repositoryHandler, IFilterHandler filterHandler) {
+    NavigationController(INavigationTreePanel treePanel, ITable navigationTable, IState state, IOSManager osManager, INavigationHandler navigationHandler, ITaskService taskService, ILookAndFeelManager lookAndFeelManager, IRepositoryHandler repositoryHandler, IFilterHandler filterHandler) {
         this.navigationTreePanel = treePanel;
-        this.navigationTablePanel = tablePanel;
+        this.navigationTable = navigationTable;
         this.state = state;
         this.osManager = osManager;
         this.navigationHandler = navigationHandler;
@@ -190,22 +191,18 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
         return navigationTreePanel;
     }
 
-    protected INavigationTablePanel getNavigationTablePanel() {
-        return navigationTablePanel;
-    }
-
     @Override
     public void addBindings() {
         NavigationTableModel model = new NavigationTableModel();
-        navigationTablePanel.getNavigationTable().setModel(model);
-        columnModel = new NavigationTableColumnModel(navigationTablePanel.getNavigationTable(), state, navigationHandler, taskService, lookAndFeelManager.getCurrentLookAndFeel());
-        navigationTablePanel.getNavigationTable().setColumnModel(columnModel);
-        ColumnRenderers.addRenderers(navigationTablePanel.getNavigationTable().getSwingComponent(), columnModel, lookAndFeelManager.getCurrentLookAndFeel());
+        navigationTable.setModel(model);
+        columnModel = new NavigationTableColumnModel(navigationTable, state, navigationHandler, taskService, lookAndFeelManager.getCurrentLookAndFeel());
+        navigationTable.setColumnModel(columnModel);
+        ColumnRenderers.addRenderers(navigationTable.getSwingComponent(), columnModel, lookAndFeelManager.getCurrentLookAndFeel());
 
-        new ColumnSetRowSorter(navigationTablePanel.getNavigationTable().getSwingComponent(), model, columnModel);
+        new ColumnSetRowSorter(navigationTable.getSwingComponent(), model, columnModel);
 
         // Bind column set popup menu
-        columnSetPopupMenu = new ColumnSetPopupMenu(navigationTablePanel.getNavigationTable().getSwingComponent(), columnModel);
+        columnSetPopupMenu = new ColumnSetPopupMenu(navigationTable.getSwingComponent(), columnModel);
 
         // Add tree selection listeners to all views
         for (INavigationView view : navigationHandler.getNavigationViews()) {
@@ -219,7 +216,7 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
 
         // Add tree mouse listeners to all views
         // Add tree tool tip listener to all views
-        NavigationTreeMouseListener treeMouseListener = new NavigationTreeMouseListener(this, state, navigationHandler);
+        NavigationTreeMouseListener treeMouseListener = new NavigationTreeMouseListener(this, navigationTable, state, navigationHandler);
         NavigationTreeToolTipListener tooltipListener = new NavigationTreeToolTipListener(this, state, navigationHandler);
         for (INavigationView view : navigationHandler.getNavigationViews()) {
             view.getTree().addMouseListener(treeMouseListener);
@@ -228,7 +225,7 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
             view.getTreeScrollPane().addMouseWheelListener(tooltipListener);
         }
 
-        navigationTablePanel.getNavigationTable().addMouseListener(new NavigationTableMouseListener(this, navigationTablePanel, navigationHandler));
+        navigationTable.addMouseListener(new NavigationTableMouseListener(this, navigationTable, navigationHandler));
         
         if (lookAndFeelManager.getCurrentLookAndFeel().customComboBoxRenderersSupported()) {
         	navigationTreePanel.getTreeComboBox().setRenderer(lookAndFeelManager.getCurrentLookAndFeel().getListCellRenderer(new AbstractListCellRendererCode() {
@@ -284,8 +281,8 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
     public List<IAudioObject> getFilesSelectedInNavigator() {
         List<IAudioObject> files = new ArrayList<IAudioObject>();
         if (getPopupMenuCaller() instanceof JTable) {
-            int[] rows = navigationTablePanel.getNavigationTable().getSelectedRows();
-            files.addAll(((NavigationTableModel) navigationTablePanel.getNavigationTable().getModel()).getAudioObjectsAt(rows));
+            int[] rows = navigationTable.getSelectedRows();
+            files.addAll(((NavigationTableModel) navigationTable.getModel()).getAudioObjectsAt(rows));
         } else if (getPopupMenuCaller() instanceof JTree) {
             TreePath[] paths = navigationHandler.getCurrentView().getTree().getSelectionPaths();
             for (TreePath path : paths) {
@@ -317,7 +314,7 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
      * @return the song in navigation table
      */
     public IAudioObject getAudioObjectInNavigationTable(int row) {
-        return ((NavigationTableModel) navigationTablePanel.getNavigationTable().getModel()).getAudioObjectAt(row);
+        return ((NavigationTableModel) navigationTable.getModel()).getAudioObjectAt(row);
     }
 
     /**
@@ -352,7 +349,7 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
      * Refresh table.
      */
     public void refreshTable() {
-        ((NavigationTableModel) navigationTablePanel.getNavigationTable().getModel()).refresh(TableModelEvent.UPDATE);
+        ((NavigationTableModel) navigationTable.getModel()).refresh(TableModelEvent.UPDATE);
     }
 
     /**
@@ -403,8 +400,8 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
             columnSet = navigationHandler.getView(navigationView).getCustomColumnSet();
         }
 
-        ((NavigationTableModel) navigationTablePanel.getNavigationTable().getModel()).setColumnSet(columnSet);
-        ((NavigationTableColumnModel) navigationTablePanel.getNavigationTable().getColumnModel()).setColumnSet(columnSet);
+        ((NavigationTableModel) navigationTable.getModel()).setColumnSet(columnSet);
+        ((NavigationTableColumnModel) navigationTable.getColumnModel()).setColumnSet(columnSet);
 
         navigationHandler.refreshCurrentView();
 
@@ -414,7 +411,7 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
         JTree tree = navigationHandler.getCurrentView().getTree();
 
         if (tree.getSelectionPath() != null) {
-            ((NavigationTableModel) navigationTablePanel.getNavigationTable().getModel()).setSongs(getAudioObjectsForTreeNode(navigationView, (DefaultMutableTreeNode) (tree
+            ((NavigationTableModel) navigationTable.getModel()).setSongs(getAudioObjectsForTreeNode(navigationView, (DefaultMutableTreeNode) (tree
                     .getSelectionPath().getLastPathComponent())));
         }
     }
@@ -457,7 +454,7 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
             // Filter objects
             audioObjects = filterNavigationTable(audioObjects);
 
-            ((NavigationTableModel) navigationTablePanel.getNavigationTable().getModel()).setSongs(audioObjects);
+            ((NavigationTableModel) navigationTable.getModel()).setSongs(audioObjects);
         }
     }
 

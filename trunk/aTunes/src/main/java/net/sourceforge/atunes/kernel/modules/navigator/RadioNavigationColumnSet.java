@@ -25,74 +25,9 @@ import java.util.List;
 
 import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumn;
-import net.sourceforge.atunes.model.IRadio;
 
 public final class RadioNavigationColumnSet extends AbstractCustomNavigatorColumnSet {
-
-    private static final class UrlColumn extends AbstractColumn {
-        /**
-		 * 
-		 */
-        private static final long serialVersionUID = -1615880013918017198L;
-
-        private UrlColumn(String name, Class<?> columnClass) {
-            super(name, columnClass);
-        }
-
-        @Override
-        protected int ascendingCompare(IAudioObject o1, IAudioObject o2) {
-            return o1.getUrl().compareTo(o2.getUrl());
-        }
-
-        @Override
-        public Object getValueFor(IAudioObject audioObject) {
-            return audioObject.getUrl();
-        }
-    }
-
-    private static final class NameColumn extends AbstractColumn {
-        /**
-		 * 
-		 */
-        private static final long serialVersionUID = 3613237620716484881L;
-
-        private NameColumn(String name, Class<?> columnClass) {
-            super(name, columnClass);
-        }
-
-        @Override
-        public Object getValueFor(IAudioObject audioObject) {
-            return ((IRadio) audioObject).getName();
-        }
-
-        @Override
-        protected int ascendingCompare(IAudioObject o1, IAudioObject o2) {
-            return ((IRadio) o1).getName().compareTo(((IRadio) o2).getName());
-        }
-    }
-
-    private static final class EmptyColumn extends AbstractColumn {
-        /**
-		 * 
-		 */
-        private static final long serialVersionUID = 3613237620716484881L;
-
-        private EmptyColumn(String name, Class<?> columnClass) {
-            super(name, columnClass);
-        }
-
-        @Override
-        protected int ascendingCompare(IAudioObject o1, IAudioObject o2) {
-            return 0;
-        }
-
-        @Override
-        public Object getValueFor(IAudioObject audioObject) {
-            return Property.NO_PROPERTIES;
-        }
-    }
 
     public RadioNavigationColumnSet(String columnSetName) {
         super(columnSetName);
@@ -102,19 +37,19 @@ public final class RadioNavigationColumnSet extends AbstractCustomNavigatorColum
     protected List<IColumn> getAllowedColumns() {
         List<IColumn> columns = new ArrayList<IColumn>();
 
-        AbstractColumn property = new EmptyColumn("", Property.class);
+        AbstractColumn property = new RadioEmptyColumn("", Property.class);
         property.setVisible(true);
         property.setWidth(20);
         property.setResizable(false);
         columns.add(property);
 
-        AbstractColumn name = new NameColumn("NAME", String.class);
+        AbstractColumn name = new RadioNameColumn("NAME", String.class);
         name.setVisible(true);
         name.setWidth(150);
         name.setUsedForFilter(true);
         columns.add(name);
 
-        AbstractColumn url = new UrlColumn("URL", String.class);
+        AbstractColumn url = new RadioUrlColumn("URL", String.class);
         url.setVisible(true);
         url.setWidth(400);
         url.setUsedForFilter(true);

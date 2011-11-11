@@ -28,9 +28,9 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.model.NavigationTableModel;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
-import net.sourceforge.atunes.model.INavigationTablePanel;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
@@ -39,20 +39,19 @@ import net.sourceforge.atunes.utils.GuiUtils;
 public final class NavigationTableMouseListener extends MouseAdapter {
 
     private NavigationController controller;
-    private INavigationTablePanel panel;
+    private ITable navigationTable;
     private INavigationHandler navigationHandler;
 
     /**
      * Instantiates a new navigation table mouse listener.
      * 
      * @param controller
-     *            the controller
-     * @param panel
-     *            the panel
+     * @param navigationTable
+     * @param navigationHandler
      */
-    public NavigationTableMouseListener(NavigationController controller, INavigationTablePanel panel, INavigationHandler navigationHandler) {
+    public NavigationTableMouseListener(NavigationController controller, ITable navigationTable, INavigationHandler navigationHandler) {
         this.controller = controller;
-        this.panel = panel;
+        this.navigationTable = navigationTable;
         this.navigationHandler = navigationHandler;
     }
 
@@ -61,9 +60,9 @@ public final class NavigationTableMouseListener extends MouseAdapter {
         INavigationView currentView = navigationHandler.getCurrentView();
 
         if (GuiUtils.isSecondaryMouseButton(event)) {
-            controller.setPopupMenuCaller(panel.getNavigationTable().getSwingComponent());
-            int[] rowsSelected = panel.getNavigationTable().getSelectedRows();
-            int selected = panel.getNavigationTable().rowAtPoint(event.getPoint());
+            controller.setPopupMenuCaller(navigationTable.getSwingComponent());
+            int[] rowsSelected = navigationTable.getSelectedRows();
+            int selected = navigationTable.rowAtPoint(event.getPoint());
             boolean found = false;
             int i = 0;
             while (!found && i < rowsSelected.length) {
@@ -73,18 +72,18 @@ public final class NavigationTableMouseListener extends MouseAdapter {
                 i++;
             }
             if (!found) {
-                panel.getNavigationTable().getSelectionModel().setSelectionInterval(selected, selected);
+                navigationTable.getSelectionModel().setSelectionInterval(selected, selected);
             }
 
             // Enable or disable actions of popup
-            currentView.updateTablePopupMenuWithTableSelection(panel.getNavigationTable(), event);
+            currentView.updateTablePopupMenuWithTableSelection(navigationTable, event);
 
             // Show popup
             currentView.getTablePopupMenu().show(controller.getPopupMenuCaller(), event.getX(), event.getY());
         } else {
             if (event.getClickCount() == 2) {
-                int[] selRow = panel.getNavigationTable().getSelectedRows();
-                List<IAudioObject> songs = ((NavigationTableModel) panel.getNavigationTable().getModel()).getAudioObjectsAt(selRow);
+                int[] selRow = navigationTable.getSelectedRows();
+                List<IAudioObject> songs = ((NavigationTableModel) navigationTable.getModel()).getAudioObjectsAt(selRow);
                 if (songs != null && songs.size() >= 1) {
                 	Context.getBean(IPlayListHandler.class).addToPlayList(songs);
                 }

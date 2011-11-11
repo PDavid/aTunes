@@ -28,9 +28,9 @@ import java.util.Map.Entry;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
+import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.utils.Logger;
 
 /**
@@ -38,18 +38,18 @@ import net.sourceforge.atunes.utils.Logger;
  */
 public class PodcastFeedEntryDownloadChecker implements Runnable {
 
-	private IFrame frame;
+	private ITable navigationTable;
 	
 	private IPodcastFeedHandler podcastFeedHandler;
 	
     private static final class SetDownloadedRunnable implements Runnable {
     	
         private final Map<IPodcastFeedEntry, Boolean> downloaded;
-        private IFrame frame;
+        private ITable navigationTable;
 
-        private SetDownloadedRunnable(Map<IPodcastFeedEntry, Boolean> downloaded, IFrame frame) {
+        private SetDownloadedRunnable(Map<IPodcastFeedEntry, Boolean> downloaded, ITable navigationTable) {
             this.downloaded = downloaded;
-            this.frame = frame;
+            this.navigationTable = navigationTable;
         }
 
         @Override
@@ -57,7 +57,7 @@ public class PodcastFeedEntryDownloadChecker implements Runnable {
             for (Entry<IPodcastFeedEntry, Boolean> entry : downloaded.entrySet()) {
                 entry.getKey().setDownloaded(entry.getValue());
             }
-            frame.getNavigationTablePanel().getNavigationTable().repaint();
+            navigationTable.repaint();
         }
     }
 
@@ -77,8 +77,8 @@ public class PodcastFeedEntryDownloadChecker implements Runnable {
         }
     }
 
-    public PodcastFeedEntryDownloadChecker(IFrame frame, IPodcastFeedHandler podcastFeedHandler) {
-    	this.frame = frame;
+    public PodcastFeedEntryDownloadChecker(ITable navigationTable, IPodcastFeedHandler podcastFeedHandler) {
+    	this.navigationTable = navigationTable;
     	this.podcastFeedHandler = podcastFeedHandler;
 	}
     
@@ -96,6 +96,6 @@ public class PodcastFeedEntryDownloadChecker implements Runnable {
         for (Entry<IPodcastFeedEntry, File> entry : files.entrySet()) {
             downloaded.put(entry.getKey(), entry.getValue().exists() && !podcastFeedHandler.isDownloading(entry.getKey()));
         }
-        SwingUtilities.invokeLater(new SetDownloadedRunnable(downloaded, frame));
+        SwingUtilities.invokeLater(new SetDownloadedRunnable(downloaded, navigationTable));
     }
 }
