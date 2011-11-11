@@ -37,7 +37,6 @@ import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
-import net.sourceforge.atunes.model.INavigationTablePanel;
 import net.sourceforge.atunes.model.INavigationTreePanel;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IPluginsHandler;
@@ -239,8 +238,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
      */
     private NavigationController getNavigationController() {
         if (navigationController == null) {
-        	INavigationTreePanel treePanel = getFrame().getNavigationTreePanel();
-            navigationController = new NavigationController(treePanel, (ITable)getBean("navigationTable"), getState(), getOsManager(), this, getBean(ITaskService.class), getBean(ILookAndFeelManager.class), getBean(IRepositoryHandler.class), getBean(IFilterHandler.class));
+            navigationController = new NavigationController(getBean(INavigationTreePanel.class), (ITable)getBean("navigationTable"), getState(), getOsManager(), this, getBean(ITaskService.class), getBean(ILookAndFeelManager.class), getBean(IRepositoryHandler.class), getBean(IFilterHandler.class));
         }
         return navigationController;
     }

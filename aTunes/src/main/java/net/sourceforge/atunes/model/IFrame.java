@@ -85,20 +85,6 @@ public interface IFrame {
     public Point getLocation();
 
     /**
-     * Gets the navigation tree panel.
-     * 
-     * @return the navigation tree panel
-     */
-    public INavigationTreePanel getNavigationTreePanel();
-
-    /**
-     * Gets the navigation table panel.
-     * 
-     * @return the navigation table panel
-     */
-    public INavigationTablePanel getNavigationTablePanel();
-
-    /**
      * Gets the player controls.
      * 
      * @return the player controls
