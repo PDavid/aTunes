@@ -25,12 +25,10 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
-import javax.swing.JComponent;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JToggleButton;
@@ -76,7 +74,7 @@ public final class PlayerControlsPanel extends JPanel {
 	/**
 	 * Minimum width of progress bar to be shown at bottom
 	 */
-	private static final int PROGRESS_BAR_BOTTOM_MINIMUM_SIZE = 300;
+	static final int PROGRESS_BAR_BOTTOM_MINIMUM_SIZE = 300;
 
     private SecondaryControl equalizerButton;
     private SecondaryToggleControl normalizeButton;
@@ -116,10 +114,10 @@ public final class PlayerControlsPanel extends JPanel {
     private void addContent() {
     	JPanel topProgressSliderContainer = new JPanel(new BorderLayout());
     	JPanel bottomProgressSliderContainer = new JPanel(new BorderLayout());
-    	bottomProgressSliderContainer.addComponentListener(new BottomProgressSliderPanelComponentAdapter(bottomProgressSliderContainer, topProgressSliderContainer));
-    	
         progressSlider = new ProgressSlider();
-        JPanel mainControls = getMainControlsPanel();
+    	bottomProgressSliderContainer.addComponentListener(new PlayerControlsPanelBottomProgressSliderPanelComponentAdapter(progressSlider, bottomProgressSliderContainer, topProgressSliderContainer));
+
+    	JPanel mainControls = getMainControlsPanel();
         JPanel secondaryControls = getSecondaryControls();
         filterPanel = Context.getBean(IFilterPanel.class);
         
@@ -170,17 +168,14 @@ public final class PlayerControlsPanel extends JPanel {
     public void setProgress(long time, long remainingTime) {
         progressSlider.setProgress(time, remainingTime);
     }
-
-    public MuteButton getVolumeButton() {
-        return volumeButton;
-    }
-
-    public JSlider getVolumeSlider() {
-        return volumeSlider;
-    }
-
-    protected static void setButton(JPanel panel, JComponent b, GridBagConstraints c) {
-        panel.add(b, c);
+    
+    /**
+     * Updates volume controls with the volume level
+     * @param volume
+     */
+    public void setVolume(int volume) {
+        volumeSlider.setValue(volume);
+        volumeButton.updateIcon(state);
     }
 
     public void setPlaying(boolean playing) {
@@ -248,11 +243,28 @@ public final class PlayerControlsPanel extends JPanel {
         c.gridx = getSecondaryControls().getComponentCount();
         c.gridy = 0;
         c.insets = new Insets(0, 1, 0, 0);
-        JToggleButton button = new SecondaryToggleControl(action);
+        JButton button = new SecondaryControl(action);
+        button.setPreferredSize((Dimension)Context.getBean("secondaryControlSize"));
         getSecondaryControls().add(button, c);
         getSecondaryControls().repaint();
     }
-    
+
+    /**
+     * Adds a secondary toggle control
+     * 
+     * @param button
+     */
+    public void addSecondaryToggleControl(Action action) {
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = getSecondaryControls().getComponentCount();
+        c.gridy = 0;
+        c.insets = new Insets(0, 1, 0, 0);
+        JToggleButton button = new SecondaryToggleControl(action);
+        button.setPreferredSize((Dimension)Context.getBean("secondaryControlSize"));
+        getSecondaryControls().add(button, c);
+        getSecondaryControls().repaint();
+    }
+
     /**
      * Hides or shows advanced controls
      * @param show
@@ -261,35 +273,4 @@ public final class PlayerControlsPanel extends JPanel {
     	equalizerButton.setVisible(show);
     	normalizeButton.setVisible(show);
     }
-
-	private final class BottomProgressSliderPanelComponentAdapter extends ComponentAdapter {
-		
-		private final JPanel bottomProgressSliderPanel;
-		private final JPanel topProgressSliderPanel;
-		private Boolean showProgressOnTop = null;
-
-		private BottomProgressSliderPanelComponentAdapter(JPanel bottomProgressSliderPanel, JPanel topProgressSliderPanel) {
-			this.bottomProgressSliderPanel = bottomProgressSliderPanel;
-			this.topProgressSliderPanel = topProgressSliderPanel;
-		}
-
-		@Override
-		public void componentResized(ComponentEvent e) {
-			boolean showOnTop = bottomProgressSliderPanel.getWidth() < PROGRESS_BAR_BOTTOM_MINIMUM_SIZE;
-
-			if (showProgressOnTop == null || showProgressOnTop != showOnTop) {
-				if (showOnTop) {
-					bottomProgressSliderPanel.remove(progressSlider);
-					progressSlider.setLayout();
-					topProgressSliderPanel.add(progressSlider, BorderLayout.CENTER);
-				} else {
-					topProgressSliderPanel.remove(progressSlider);
-					progressSlider.setLayout();
-					bottomProgressSliderPanel.add(progressSlider, BorderLayout.CENTER);
-				}
-				showProgressOnTop = showOnTop;
-			}
-		}
-	}
-
 }
