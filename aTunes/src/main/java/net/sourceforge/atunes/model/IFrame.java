@@ -48,13 +48,6 @@ public interface IFrame {
     public IMenuBar getAppMenuBar();
 
     /**
-     * Gets the context information panel.
-     * 
-     * @return the context information panel
-     */
-    public IContextPanelsContainer getContextPanel();
-
-    /**
      * Gets the extended state.
      * 
      * @return the extended state

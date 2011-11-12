@@ -164,8 +164,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
         return appMenuBar;
     }
 
-    @Override
-    public IContextPanelsContainer getContextPanel() {
+    protected IContextPanelsContainer getContextPanel() {
         if (contextPanelContainer == null) {
             contextPanelContainer = context.getBean(IContextPanelsContainer.class);
             contextPanelContainer.setMinimumSize(getContextPanelMinimumSize());
