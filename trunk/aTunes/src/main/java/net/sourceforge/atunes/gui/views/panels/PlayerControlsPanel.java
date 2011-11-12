@@ -49,6 +49,7 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.ShuffleButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
+import net.sourceforge.atunes.model.IFilterPanel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
@@ -65,45 +66,20 @@ public final class PlayerControlsPanel extends JPanel {
 
     private static final long serialVersionUID = -8647737014195638177L;
 
-    /************************************************ PANEL CONSTANTS ******************************************************/
-
-    /**
-     * Size of main controls by standard layout (not Substance)
+    /** 
+     * Height of progress bar when has no ticks 
      */
-    public static final Dimension PLAY_PREVIOUS_NEXT_BUTTONS_SIZE = new Dimension(40, 40);
-    
-    /**
-     * Size of main controls by standard layout (not Substance)
-     */
-    public static final Dimension DEFAULT_BUTTONS_SIZE = new Dimension(34, 34);
-
-    /** Size of play / pause button */
-    public static final Dimension PLAY_BUTTON_SIZE = Context.getBean(ILookAndFeelManager.class).getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? new Dimension(45, 45)
-            : PLAY_PREVIOUS_NEXT_BUTTONS_SIZE;
-
-    /** Size of previous and next buttons */
-    public static final Dimension PREVIOUS_NEXT_BUTTONS_SIZE = Context.getBean(ILookAndFeelManager.class).getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? new Dimension(62, 30)
-            : PLAY_PREVIOUS_NEXT_BUTTONS_SIZE;
-
-    /** Size of stop and mute buttons */
-    public static final Dimension STOP_MUTE_BUTTONS_SIZE = Context.getBean(ILookAndFeelManager.class).getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? new Dimension(30, 26)
-            : DEFAULT_BUTTONS_SIZE;
-
-    /** Size of shuffle, repeat, ... buttons */
-    public static final Dimension OTHER_BUTTONS_SIZE = new Dimension(30, 30);
-
-    /** Height of progress bar when has no ticks */
     private static final int PROGRESS_BAR_NO_TICKS_HEIGHT = 26;
 
-    /** Height of progress bar when has ticks */
+    /** 
+     * Height of progress bar when has ticks 
+     */
     private static final int PROGRESS_BAR_TICKS_HEIGHT = 40;
     
 	/**
 	 * Minimum width of progress bar to be shown at bottom
 	 */
 	private static final int PROGRESS_BAR_BOTTOM_MINIMUM_SIZE = 300;
-
-    /************************************************ PANEL CONSTANTS ******************************************************/
 
     private ShuffleButton shuffleButton;
     private RepeatButton repeatButton;
@@ -118,7 +94,7 @@ public final class PlayerControlsPanel extends JPanel {
     private boolean playing;
     private ProgressSlider progressSlider;
     private JPanel secondaryControls;
-    private FilterPanel filterPanel;
+    private IFilterPanel filterPanel;
 
     private IState state;
     
@@ -151,7 +127,7 @@ public final class PlayerControlsPanel extends JPanel {
         progressSlider = new ProgressSlider();
         JPanel mainControls = getMainControlsPanel();
         JPanel secondaryControls = getSecondaryControls();
-        filterPanel = new FilterPanel(state, lookAndFeelManager);
+        filterPanel = Context.getBean(IFilterPanel.class);
         
         GridBagConstraints c = new GridBagConstraints();
         
@@ -190,7 +166,7 @@ public final class PlayerControlsPanel extends JPanel {
         c.weighty = 0;
         c.insets = new Insets(0, 0, 0, 10);
         c.fill = GridBagConstraints.HORIZONTAL;
-        add(filterPanel, c);
+        add(filterPanel.getSwingComponent(), c);
     }
 
     public ProgressSlider getProgressSlider() {
@@ -209,14 +185,6 @@ public final class PlayerControlsPanel extends JPanel {
         return volumeSlider;
     }
 
-    public NormalizationButton getNormalizeButton() {
-        return normalizeButton;
-    }
-
-    public boolean isPlaying() {
-        return playing;
-    }
-
     protected static void setButton(JPanel panel, JComponent b, GridBagConstraints c) {
         panel.add(b, c);
     }
@@ -233,11 +201,11 @@ public final class PlayerControlsPanel extends JPanel {
     }
 
     private JPanel getMainControlsPanel() {
-        previousButton = new PreviousButton(PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
-        playButton = new PlayPauseButton(PLAY_BUTTON_SIZE, lookAndFeelManager);
-        stopButton = new StopButton(STOP_MUTE_BUTTONS_SIZE, lookAndFeelManager);
-        nextButton = new NextButton(PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
-        volumeButton = new MuteButton(STOP_MUTE_BUTTONS_SIZE, state, lookAndFeelManager, Context.getBean(MuteAction.class));
+        previousButton = new PreviousButton(PlayerControlsSize.PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
+        playButton = new PlayPauseButton(PlayerControlsSize.PLAY_BUTTON_SIZE, lookAndFeelManager);
+        stopButton = new StopButton(PlayerControlsSize.STOP_MUTE_BUTTONS_SIZE, lookAndFeelManager);
+        nextButton = new NextButton(PlayerControlsSize.PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
+        volumeButton = new MuteButton(PlayerControlsSize.STOP_MUTE_BUTTONS_SIZE, state, lookAndFeelManager, Context.getBean(MuteAction.class));
         volumeButton.setText("");
         volumeSlider = new VolumeSlider(state, playerHandler);
         JPanel panel = getPanelWithPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider, lookAndFeelManager);
@@ -348,10 +316,10 @@ public final class PlayerControlsPanel extends JPanel {
 
     private JPanel getSecondaryControls() {
         if (secondaryControls == null) {
-            shuffleButton = new ShuffleButton(lookAndFeelManager);
-            repeatButton = new RepeatButton(lookAndFeelManager);
-            karaokeButton = new EqualizerButton(lookAndFeelManager, playerHandler);
-            normalizeButton = new NormalizationButton(lookAndFeelManager, playerHandler);
+            shuffleButton = new ShuffleButton(lookAndFeelManager, PlayerControlsSize.OTHER_BUTTONS_SIZE);
+            repeatButton = new RepeatButton(lookAndFeelManager, PlayerControlsSize.OTHER_BUTTONS_SIZE);
+            karaokeButton = new EqualizerButton(lookAndFeelManager, playerHandler, PlayerControlsSize.OTHER_BUTTONS_SIZE);
+            normalizeButton = new NormalizationButton(lookAndFeelManager, playerHandler, PlayerControlsSize.OTHER_BUTTONS_SIZE);
 
             secondaryControls = new JPanel(new GridBagLayout());
             GridBagConstraints c = new GridBagConstraints();
@@ -380,7 +348,7 @@ public final class PlayerControlsPanel extends JPanel {
         c.gridx = getSecondaryControls().getComponentCount();
         c.gridy = 0;
         c.insets = new Insets(0, 1, 0, 0);
-        JToggleButton button = new SecondaryControl(action, lookAndFeelManager);
+        JToggleButton button = new SecondaryControl(action, lookAndFeelManager, PlayerControlsSize.OTHER_BUTTONS_SIZE);
         getSecondaryControls().add(button, c);
         getSecondaryControls().repaint();
     }
@@ -394,13 +362,6 @@ public final class PlayerControlsPanel extends JPanel {
     	normalizeButton.setVisible(show);
     }
 
-	/**
-	 * @return the filterPanel
-	 */
-	public FilterPanel getFilterPanel() {
-		return filterPanel;
-	}
-	
 	private final class BottomProgressSliderPanelComponentAdapter extends ComponentAdapter {
 		
 		private final JPanel bottomProgressSliderPanel;

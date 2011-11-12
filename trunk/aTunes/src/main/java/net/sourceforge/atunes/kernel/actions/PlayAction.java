@@ -27,7 +27,7 @@ import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IFilterPanel;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.IPlayerHandler;
@@ -38,16 +38,19 @@ public class PlayAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -1122746023245126869L;
 
-    private IFrame frame;
+    private IFilterPanel filterPanel;
     
     private IPlayListHandler playListHandler;
     
     private IPlayerHandler playerHandler;
     
     private IPlayListTable playListTable;
-    
-    public void setFrame(IFrame frame) {
-		this.frame = frame;
+
+    /**
+     * @param filterPanel
+     */
+    public void setFilterPanel(IFilterPanel filterPanel) {
+		this.filterPanel = filterPanel;
 	}
     
     /**
@@ -74,7 +77,7 @@ public class PlayAction extends CustomAbstractAction {
     @Override
     protected void executeAction() {
         // disable enter key when focus is on filter text field (so event is not fired from PLAY/PAUSE button)
-        if (frame.getPlayerControls().getFilterPanel().getFilterTextField().isFocusOwner()
+        if (filterPanel.getFilterTextField().isFocusOwner()
                 && getSource() != null && !(getSource().getClass().equals(PlayPauseButton.class))) {
         	Logger.debug("Skipping play action");
             return;

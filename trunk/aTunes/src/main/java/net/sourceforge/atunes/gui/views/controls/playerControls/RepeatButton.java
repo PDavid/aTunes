@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.gui.views.controls.playerControls;
 
+import java.awt.Dimension;
+
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.actions.RepeatModeAction;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -34,8 +36,9 @@ public final class RepeatButton extends SecondaryControl {
     /**
      * Instantiates a new repeat button.
      * @param lookAndFeelManager
+     * @param preferredSize
      */
-    public RepeatButton(ILookAndFeelManager lookAndFeelManager) {
-        super(Context.getBean(RepeatModeAction.class), lookAndFeelManager);
+    public RepeatButton(ILookAndFeelManager lookAndFeelManager, Dimension preferredSize) {
+        super(Context.getBean(RepeatModeAction.class), lookAndFeelManager, preferredSize);
     }    
 }

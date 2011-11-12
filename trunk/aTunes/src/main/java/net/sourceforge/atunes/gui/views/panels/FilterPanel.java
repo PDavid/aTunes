@@ -35,12 +35,13 @@ import javax.swing.JTextField;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.gui.views.controls.LookAndFeelAwareButton;
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
+import net.sourceforge.atunes.model.IFilterPanel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class FilterPanel extends JPanel {
+public class FilterPanel extends JPanel implements IFilterPanel {
 
     private static final long serialVersionUID = 1801321624657098000L;
 
@@ -51,18 +52,34 @@ public class FilterPanel extends JPanel {
     private boolean filterApplied;
 
     private IState state;
+    private ILookAndFeelManager lookAndFeelManager;
     
     /**
      * @param state
      * @param lookAndFeelManager
      */
-    public FilterPanel(IState state, ILookAndFeelManager lookAndFeelManager) {
+    public FilterPanel() {
         super(new BorderLayout());
-        this.state = state;
-        addContent(lookAndFeelManager);
     }
+    
+    /**
+     * @param state
+     */
+    public void setState(IState state) {
+		this.state = state;
+	}
+    
+    /**
+     * @param lookAndFeelManager
+     */
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
 
-    private void addContent(final ILookAndFeelManager lookAndFeelManager) {
+    /**
+     * Initializes panel
+     */
+    public void initialize() {
         filterButton = new PopUpButton(state.isShowPlayerControlsOnTop() ? PopUpButton.BOTTOM_RIGHT : PopUpButton.TOP_RIGHT, lookAndFeelManager);
         filterTextField = new CustomTextField(12);
         filterTextField.setText(StringUtils.getString(I18nUtils.getString("FILTER"), "..."));
@@ -124,27 +141,39 @@ public class FilterPanel extends JPanel {
     /**
      * @return the filterButton
      */
-    public PopUpButton getFilterButton() {
+    @Override
+	public PopUpButton getFilterButton() {
         return filterButton;
     }
 
     /**
      * @return the filterTextField
      */
-    public JTextField getFilterTextField() {
+    @Override
+	public JTextField getFilterTextField() {
         return filterTextField;
     }
 
 	/**
 	 * @return the clearButton
 	 */
+	@Override
 	public JButton getClearButton() {
 		return clearButton;
 	}
 
+	/**
+	 * Called to update filter panel
+	 * @param filterApplied
+	 */
+	@Override
 	public void setFilterApplied(boolean filterApplied) {
 		this.filterApplied = filterApplied;
 		this.clearButton.repaint();
 	}
-
+	
+	@Override
+	public JPanel getSwingComponent() {
+		return this;
+	}
 }

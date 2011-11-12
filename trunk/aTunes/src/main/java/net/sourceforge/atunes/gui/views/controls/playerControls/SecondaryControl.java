@@ -20,10 +20,11 @@
 
 package net.sourceforge.atunes.gui.views.controls.playerControls;
 
+import java.awt.Dimension;
+
 import javax.swing.Action;
 import javax.swing.JToggleButton;
 
-import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 public class SecondaryControl extends JToggleButton {
@@ -36,11 +37,12 @@ public class SecondaryControl extends JToggleButton {
     /**
      * @param a
      * @param lookAndFeelManager
+     * @param preferredSize
      */
-    public SecondaryControl(Action a, ILookAndFeelManager lookAndFeelManager) {
+    public SecondaryControl(Action a, ILookAndFeelManager lookAndFeelManager, Dimension preferredSize) {
         super(a);
         setText(null);
-        setPreferredSize(PlayerControlsPanel.OTHER_BUTTONS_SIZE);
+        setPreferredSize(preferredSize);
         setFocusable(false);
         lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(this);
     }
