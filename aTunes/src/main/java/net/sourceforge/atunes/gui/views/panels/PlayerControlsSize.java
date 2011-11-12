@@ -49,7 +49,4 @@ public class PlayerControlsSize {
     public static final Dimension STOP_MUTE_BUTTONS_SIZE = Context.getBean(ILookAndFeelManager.class).getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? new Dimension(30, 26)
             : DEFAULT_BUTTONS_SIZE;
 
-    /** Size of shuffle, repeat, ... buttons */
-    public static final Dimension OTHER_BUTTONS_SIZE = new Dimension(30, 30);
-
 }

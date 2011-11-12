@@ -20,29 +20,41 @@
 
 package net.sourceforge.atunes.gui.views.controls.playerControls;
 
-import java.awt.Dimension;
+import javax.swing.Action;
 
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.actions.NormalizeModeAction;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.PlayerEngineCapability;
 
 /*
  * based on code from Xtreme Media Player
  */
-public final class NormalizationButton extends SecondaryControl {
+public final class NormalizationButton extends SecondaryToggleControl {
 
     private static final long serialVersionUID = 6007885049773560874L;
 
+    private IPlayerHandler playerHandler;
+    
+    /**
+     * @param playerHandler
+     */
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
+    
     /**
      * Instantiates a new Normalize button.
      * @param lookAndFeelManager
      * @param playerHandler
      * @param preferredSize
      */
-    public NormalizationButton(ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler, Dimension preferredSize) {
-        super(Context.getBean(NormalizeModeAction.class), lookAndFeelManager, preferredSize);
+    public NormalizationButton(Action a) {
+        super(a);
+    }
+    
+    /**
+     * Initializes control
+     */
+    public void initialize() {
         if (!playerHandler.supportsCapability(PlayerEngineCapability.NORMALIZATION)) {
             setVisible(false);
         }

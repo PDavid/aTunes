@@ -158,7 +158,7 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.MoveUpAction"/>
 	<bean id="muteAction" class="net.sourceforge.atunes.kernel.actions.MuteAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.NewPlayListAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.NormalizeModeAction"/>
+	<bean id="normalizeModeAction" class="net.sourceforge.atunes.kernel.actions.NormalizeModeAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.OpenFolderAction"/>
 	
 	<bean id="openFolderFromDeviceNavigationView" class="net.sourceforge.atunes.kernel.actions.OpenFolderFromNavigatorAction"/>
@@ -187,7 +187,7 @@
 	<bean id="repairAlbumNamesAction" class="net.sourceforge.atunes.kernel.actions.RepairAlbumNamesAction"/>
 	<bean id="repairGenresAction" class="net.sourceforge.atunes.kernel.actions.RepairGenresAction"/>
 	<bean id="repairTrackNumbersAction" class="net.sourceforge.atunes.kernel.actions.RepairTrackNumbersAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.RepeatModeAction"/>
+	<bean id="repeatModeAction" class="net.sourceforge.atunes.kernel.actions.RepeatModeAction"/>
 	<bean id="reportBugOrFeatureRequestAction" class="net.sourceforge.atunes.kernel.actions.ReportBugOrFeatureRequestAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RepositoryLoadCancelAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RepositoryLoadInBackgroundAction"/>
@@ -227,7 +227,7 @@
 	<bean id="showStatsAction" class="net.sourceforge.atunes.kernel.actions.ShowStatsAction"/>
 	<bean id="showStatusBarAction" class="net.sourceforge.atunes.kernel.actions.ShowStatusBarAction"/>
 	<bean id="showYearsInNavigatorAction" class="net.sourceforge.atunes.kernel.actions.ShowYearsInNavigatorAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.ShuffleModeAction"/>
+	<bean id="shuffleModeAction" class="net.sourceforge.atunes.kernel.actions.ShuffleModeAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShufflePlayListAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.SynchronizeDeviceWithPlayListAction"/>

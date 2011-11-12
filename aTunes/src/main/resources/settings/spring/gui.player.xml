@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+	default-autowire="byName" default-lazy-init="true">
+
+	<bean class="net.sourceforge.atunes.gui.views.panels.SecondaryPlayerControlsBuilder" scope="prototype"/>
+
+	<bean id="secondaryControlSize" class="java.awt.Dimension">
+		<constructor-arg value="30"/>
+		<constructor-arg value="30"/>
+	</bean>
+	
+	<bean id="shuffleButton" class="net.sourceforge.atunes.gui.views.controls.playerControls.SecondaryToggleControl">
+		<constructor-arg>
+			<ref bean="shuffleModeAction"/>
+		</constructor-arg>
+		<property name="preferredSize" ref="secondaryControlSize"/>
+	</bean>
+	<bean id="repeatButton" class="net.sourceforge.atunes.gui.views.controls.playerControls.SecondaryToggleControl">
+		<constructor-arg>
+			<ref bean="repeatModeAction"/>
+		</constructor-arg>
+		<property name="preferredSize" ref="secondaryControlSize"/>
+	</bean>
+	<bean id="normalizeButton" class="net.sourceforge.atunes.gui.views.controls.playerControls.NormalizationButton" init-method="initialize">
+		<constructor-arg>
+			<ref bean="normalizeModeAction"/>
+		</constructor-arg>
+		<property name="preferredSize" ref="secondaryControlSize"/>
+	</bean>
+	<bean id="equalizerButton" class="net.sourceforge.atunes.gui.views.controls.playerControls.EqualizerButton" init-method="initialize">
+		<constructor-arg>
+			<ref bean="showEqualizerAction"/>
+		</constructor-arg>
+		<property name="preferredSize" ref="secondaryControlSize"/>
+	</bean>
+
+</beans>

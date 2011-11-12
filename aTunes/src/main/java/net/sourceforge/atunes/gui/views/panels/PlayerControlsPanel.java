@@ -36,16 +36,13 @@ import javax.swing.JSlider;
 import javax.swing.JToggleButton;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.views.controls.playerControls.EqualizerButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.NextButton;
-import net.sourceforge.atunes.gui.views.controls.playerControls.NormalizationButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PreviousButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.ProgressSlider;
-import net.sourceforge.atunes.gui.views.controls.playerControls.RepeatButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.SecondaryControl;
-import net.sourceforge.atunes.gui.views.controls.playerControls.ShuffleButton;
+import net.sourceforge.atunes.gui.views.controls.playerControls.SecondaryToggleControl;
 import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
@@ -81,17 +78,14 @@ public final class PlayerControlsPanel extends JPanel {
 	 */
 	private static final int PROGRESS_BAR_BOTTOM_MINIMUM_SIZE = 300;
 
-    private ShuffleButton shuffleButton;
-    private RepeatButton repeatButton;
-    private EqualizerButton karaokeButton;
-    private NormalizationButton normalizeButton;
+    private SecondaryControl equalizerButton;
+    private SecondaryToggleControl normalizeButton;
     private PreviousButton previousButton;
     private PlayPauseButton playButton;
     private StopButton stopButton;
     private NextButton nextButton;
     private MuteButton volumeButton;
     private VolumeSlider volumeSlider;
-    private boolean playing;
     private ProgressSlider progressSlider;
     private JPanel secondaryControls;
     private IFilterPanel filterPanel;
@@ -190,7 +184,6 @@ public final class PlayerControlsPanel extends JPanel {
     }
 
     public void setPlaying(boolean playing) {
-        this.playing = playing;
         playButton.setPlaying(playing);
     }
 
@@ -228,112 +221,19 @@ public final class PlayerControlsPanel extends JPanel {
      * @return
      */
     public static JPanel getPanelWithPlayerControls(StopButton stopButton, PreviousButton previousButton, PlayPauseButton playButton, NextButton nextButton, MuteButton volumeButton, JSlider volumeSlider, ILookAndFeelManager lookAndFeelManager) {
-        return lookAndFeelManager.getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? 
-        		getCustomPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider) : 
-        		getStandardPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider);
-    }
-
-    /**
-     * Returns custom panel with controls (used by Substance LAF)
-     * 
-     * @param stopButton
-     * @param previousButton
-     * @param playButton
-     * @param nextButton
-     * @param volumeButton
-     * @param volumeSlider
-     * @return
-     */
-    private static JPanel getCustomPlayerControls(StopButton stopButton, PreviousButton previousButton, PlayPauseButton playButton, NextButton nextButton, MuteButton volumeButton, JSlider volumeSlider) {
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.setOpaque(false);
-
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 0;
-        c.fill = GridBagConstraints.NONE;
-        setButton(panel, stopButton, c);
-        c.gridx = 1;
-        c.insets = new Insets(0, -6, 0, 0);
-        setButton(panel, previousButton, c);
-        c.gridx = 2;
-        c.insets = new Insets(-1, -16, 0, 0);
-        setButton(panel, playButton, c);
-        c.gridx = 3;
-        c.insets = new Insets(0, -16, 0, 0);
-        setButton(panel, nextButton, c);
-        if (volumeButton != null && volumeSlider != null) {
-            c.gridx = 4;
-            c.insets = new Insets(0, -7, 0, 0);
-            panel.add(volumeButton, c);
-            c.gridx = 5;
-            c.weightx = 0;
-            c.fill = GridBagConstraints.NONE;
-            c.insets = new Insets(0, -1, 3, 0);
-            panel.add(volumeSlider, c);
+        if (lookAndFeelManager.getCurrentLookAndFeel().isCustomPlayerControlsSupported()) { 
+        	return new CustomPlayerControlsBuilder().getCustomPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider);
+        } else {
+        	return new StandardPlayerControlsBuilder().getStandardPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider);
         }
-        return panel;
-    }
-
-    /**
-     * Returns standard panel with controls
-     * 
-     * @param stopButton
-     * @param previousButton
-     * @param playButton
-     * @param nextButton
-     * @param volumeButton
-     * @param volumeSlider
-     * @return
-     */
-    private static JPanel getStandardPlayerControls(StopButton stopButton, PreviousButton previousButton, PlayPauseButton playButton, NextButton nextButton, MuteButton volumeButton, JSlider volumeSlider) {
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.setOpaque(false);
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 0;
-        c.fill = GridBagConstraints.NONE;
-        setButton(panel, stopButton, c);
-        c.gridx = 1;
-        setButton(panel, previousButton, c);
-        c.gridx = 2;
-        setButton(panel, playButton, c);
-        c.gridx = 3;
-        setButton(panel, nextButton, c);
-        if (volumeButton != null && volumeSlider != null) {
-            c.gridx = 4;
-            panel.add(volumeButton, c);
-            c.gridx = 5;
-            c.weightx = 0;
-            c.fill = GridBagConstraints.NONE;
-            c.insets = new Insets(0, 5, 0, 0);
-            panel.add(volumeSlider, c);
-        }
-        return panel;
     }
 
     private JPanel getSecondaryControls() {
         if (secondaryControls == null) {
-            shuffleButton = new ShuffleButton(lookAndFeelManager, PlayerControlsSize.OTHER_BUTTONS_SIZE);
-            repeatButton = new RepeatButton(lookAndFeelManager, PlayerControlsSize.OTHER_BUTTONS_SIZE);
-            karaokeButton = new EqualizerButton(lookAndFeelManager, playerHandler, PlayerControlsSize.OTHER_BUTTONS_SIZE);
-            normalizeButton = new NormalizationButton(lookAndFeelManager, playerHandler, PlayerControlsSize.OTHER_BUTTONS_SIZE);
+            equalizerButton = (SecondaryControl)Context.getBean("equalizerButton");
+            normalizeButton = (SecondaryToggleControl)Context.getBean("normalizeButton");
 
-            secondaryControls = new JPanel(new GridBagLayout());
-            GridBagConstraints c = new GridBagConstraints();
-            c.gridx = 0;
-            c.gridy = 0;
-            c.insets = new Insets(0, 5, 0, 0);
-            secondaryControls.add(shuffleButton, c);
-            c.gridx = 1;
-            c.insets = new Insets(0, 1, 0, 0);
-            secondaryControls.add(repeatButton, c);
-            c.gridx = 2;
-            secondaryControls.add(karaokeButton, c);
-            c.gridx = 3;
-            secondaryControls.add(normalizeButton, c);
+            secondaryControls = Context.getBean(SecondaryPlayerControlsBuilder.class).getSecondaryControls();
         }
         return secondaryControls;
     }
@@ -348,7 +248,7 @@ public final class PlayerControlsPanel extends JPanel {
         c.gridx = getSecondaryControls().getComponentCount();
         c.gridy = 0;
         c.insets = new Insets(0, 1, 0, 0);
-        JToggleButton button = new SecondaryControl(action, lookAndFeelManager, PlayerControlsSize.OTHER_BUTTONS_SIZE);
+        JToggleButton button = new SecondaryToggleControl(action);
         getSecondaryControls().add(button, c);
         getSecondaryControls().repaint();
     }
@@ -358,7 +258,7 @@ public final class PlayerControlsPanel extends JPanel {
      * @param show
      */
     public void showAdvancedPlayerControls(boolean show) {
-    	karaokeButton.setVisible(show);
+    	equalizerButton.setVisible(show);
     	normalizeButton.setVisible(show);
     }
 
