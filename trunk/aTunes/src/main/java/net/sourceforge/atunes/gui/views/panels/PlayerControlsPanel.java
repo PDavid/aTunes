@@ -45,6 +45,7 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
 import net.sourceforge.atunes.model.IFilterPanel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.IPlayerControlsPanel;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IProgressSlider;
 import net.sourceforge.atunes.model.IState;
@@ -57,7 +58,7 @@ import net.sourceforge.atunes.utils.GuiUtils;
  * @author alex
  *
  */
-public final class PlayerControlsPanel extends JPanel {
+public final class PlayerControlsPanel extends JPanel implements IPlayerControlsPanel {
 
     private static final long serialVersionUID = -8647737014195638177L;
 
@@ -71,11 +72,6 @@ public final class PlayerControlsPanel extends JPanel {
      */
     private static final int PROGRESS_BAR_TICKS_HEIGHT = 40;
     
-	/**
-	 * Minimum width of progress bar to be shown at bottom
-	 */
-	static final int PROGRESS_BAR_BOTTOM_MINIMUM_SIZE = 300;
-
     private SecondaryControl equalizerButton;
     private SecondaryToggleControl normalizeButton;
     private PreviousButton previousButton;
@@ -96,22 +92,36 @@ public final class PlayerControlsPanel extends JPanel {
     
     /**
      * Instantiates a new player controls panel.
+     */
+    public PlayerControlsPanel() {
+        super(new GridBagLayout());
+    }
+    
+    /**
      * @param state
+     */
+    public void setState(IState state) {
+		this.state = state;
+	}
+    
+    /**
      * @param lookAndFeelManager
      */
-    public PlayerControlsPanel(IState state, ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler) {
-        super(new GridBagLayout());
-        this.state = state;
-        this.lookAndFeelManager = lookAndFeelManager;
-        this.playerHandler = playerHandler;
-        addContent();
-        GuiUtils.applyComponentOrientation(this);
-    }
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+    
+    /**
+     * @param playerHandler
+     */
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
 
     /**
      * Adds the content.
      */
-    private void addContent() {
+    public void initialize() {
     	JPanel topProgressSliderContainer = new JPanel(new BorderLayout());
     	JPanel bottomProgressSliderContainer = new JPanel(new BorderLayout());
     	progressSlider = Context.getBean(IProgressSlider.class);
@@ -159,13 +169,17 @@ public final class PlayerControlsPanel extends JPanel {
         c.insets = new Insets(0, 0, 0, 10);
         c.fill = GridBagConstraints.HORIZONTAL;
         add(filterPanel.getSwingComponent(), c);
+        
+        GuiUtils.applyComponentOrientation(this);
     }
 
-    public IProgressSlider getProgressSlider() {
+    @Override
+	public IProgressSlider getProgressSlider() {
         return progressSlider;
     }
 
-    public void setProgress(long time, long remainingTime) {
+    @Override
+	public void setProgress(long time, long remainingTime) {
         progressSlider.setProgress(time, remainingTime);
     }
     
@@ -173,16 +187,19 @@ public final class PlayerControlsPanel extends JPanel {
      * Updates volume controls with the volume level
      * @param volume
      */
-    public void setVolume(int volume) {
+    @Override
+	public void setVolume(int volume) {
         volumeSlider.setValue(volume);
         volumeButton.updateIcon(state);
     }
 
-    public void setPlaying(boolean playing) {
+    @Override
+	public void setPlaying(boolean playing) {
         playButton.setPlaying(playing);
     }
 
-    public void setShowTicksAndLabels(boolean showTicks) {
+    @Override
+	public void setShowTicksAndLabels(boolean showTicks) {
         getProgressSlider().setShowTicksAndLabels(showTicks);
         getProgressSlider().setPreferredSize(new Dimension(getProgressSlider().getPreferredSize().width, showTicks ? PROGRESS_BAR_TICKS_HEIGHT : PROGRESS_BAR_NO_TICKS_HEIGHT));
     }
@@ -237,7 +254,8 @@ public final class PlayerControlsPanel extends JPanel {
      * 
      * @param button
      */
-    public void addSecondaryControl(Action action) {
+    @Override
+	public void addSecondaryControl(Action action) {
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = getSecondaryControls().getComponentCount();
         c.gridy = 0;
@@ -253,7 +271,8 @@ public final class PlayerControlsPanel extends JPanel {
      * 
      * @param button
      */
-    public void addSecondaryToggleControl(Action action) {
+    @Override
+	public void addSecondaryToggleControl(Action action) {
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = getSecondaryControls().getComponentCount();
         c.gridy = 0;
@@ -268,8 +287,14 @@ public final class PlayerControlsPanel extends JPanel {
      * Hides or shows advanced controls
      * @param show
      */
-    public void showAdvancedPlayerControls(boolean show) {
+    @Override
+	public void showAdvancedPlayerControls(boolean show) {
     	equalizerButton.setVisible(show);
     	normalizeButton.setVisible(show);
     }
+
+	@Override
+	public JPanel getSwingComponent() {
+		return this;
+	}
 }

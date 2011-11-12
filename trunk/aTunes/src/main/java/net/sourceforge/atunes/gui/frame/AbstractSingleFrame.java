@@ -43,7 +43,6 @@ import net.sourceforge.atunes.gui.images.DeviceImageIcon;
 import net.sourceforge.atunes.gui.images.NewImageIcon;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomFrame;
-import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.model.ApplicationVersion;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -56,6 +55,7 @@ import net.sourceforge.atunes.model.INavigationTablePanel;
 import net.sourceforge.atunes.model.INavigationTreePanel;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListPanel;
+import net.sourceforge.atunes.model.IPlayerControlsPanel;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITaskService;
@@ -94,7 +94,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     private IMenuBar appMenuBar;
     private IPlayListPanel playListPanel;
     private IContextPanelsContainer contextPanelContainer;
-    private PlayerControlsPanel playerControls;
+    private IPlayerControlsPanel playerControls;
     private JXStatusBar statusBar;
 
     protected IState state;
@@ -248,13 +248,19 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
 		this.navigationTablePanel.setMaximumSize(getNavigationTablePanelMaximumSize());
 	}
 
-    @Override
-    public PlayerControlsPanel getPlayerControls() {
-        if (playerControls == null) {
-            playerControls = new PlayerControlsPanel(state, lookAndFeelManager, playerHandler);
-        }
+    /**
+     * @return player controls panel
+     */
+    protected IPlayerControlsPanel getPlayerControls() {
         return playerControls;
     }
+    
+    /**
+     * @param playerControls
+     */
+    public void setPlayerControls(IPlayerControlsPanel playerControls) {
+		this.playerControls = playerControls;
+	}
 
     /**
      * Get play list panel

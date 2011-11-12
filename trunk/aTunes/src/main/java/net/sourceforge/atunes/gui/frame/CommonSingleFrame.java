@@ -106,7 +106,7 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
 
         c.gridy = state.isShowPlayerControlsOnTop() ? 0 : 1;
         c.weighty = 0;
-        panel.add(getPlayerControls(), c);
+        panel.add(getPlayerControls().getSwingComponent(), c);
 
         
         

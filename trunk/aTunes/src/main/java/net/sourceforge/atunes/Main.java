@@ -92,9 +92,9 @@ public final class Main {
     
     private void start(List<String> arguments) {
         // For detecting Swing threading violations
-        if (applicationArguments.isDebug()) {
-            RepaintManager.setCurrentManager(new CheckThreadViolationRepaintManager());
-        }
+//        if (applicationArguments.isDebug()) {
+//            RepaintManager.setCurrentManager(new CheckThreadViolationRepaintManager());
+//        }
 
         // Set log4j properties
         Logger.loadProperties(applicationArguments.isDebug(), osManager);
