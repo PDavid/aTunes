@@ -18,10 +18,9 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.notify.libnotify;
+package net.sourceforge.atunes.kernel.modules.notify;
 
-import net.sourceforge.atunes.kernel.modules.notify.CommonNotificationEngine;
-import net.sourceforge.atunes.kernel.modules.notify.libnotify.Notify.NotifyNotification;
+import net.sourceforge.atunes.kernel.modules.notify.Notify.NotifyNotification;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;

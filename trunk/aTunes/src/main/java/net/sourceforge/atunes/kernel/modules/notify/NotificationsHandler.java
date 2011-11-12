@@ -30,9 +30,6 @@ import java.util.Map;
 import java.util.Set;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.modules.notify.classic.DefaultNotifications;
-import net.sourceforge.atunes.kernel.modules.notify.growl.GrowlNotificationEngine;
-import net.sourceforge.atunes.kernel.modules.notify.libnotify.LibnotifyNotificationEngine;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
