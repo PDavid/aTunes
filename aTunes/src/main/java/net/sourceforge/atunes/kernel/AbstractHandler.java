@@ -21,9 +21,6 @@
 package net.sourceforge.atunes.kernel;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListAudioObject;
@@ -33,7 +30,6 @@ import net.sourceforge.atunes.model.IHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.PlaybackState;
-import net.sourceforge.atunes.utils.Logger;
 
 public abstract class AbstractHandler implements IHandler {
 
@@ -50,31 +46,41 @@ public abstract class AbstractHandler implements IHandler {
 	protected IState getState() {
 		return state;
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see net.sourceforge.atunes.model.IHandler#setState(net.sourceforge.atunes.model.IState)
+	 */
+	@Override
 	public void setState(IState state) {
 		this.state = state;
 	}
 	
+	/**
+	 * @param osManager
+	 */
 	public void setOsManager(IOSManager osManager) {
 		this.osManager = osManager;
 	}
 	
+	/**
+	 * @return os manager
+	 */
 	protected IOSManager getOsManager() {
 		return osManager;
 	}
 	
+	/**
+	 * @return the frame
+	 */
 	protected IFrame getFrame() {
 		return frame;
 	}
 	
+	/**
+	 * @param frame
+	 */
 	public void setFrame(IFrame frame) {
 		this.frame = frame;
-	}
-	
-	public static void setFrameForHandlers(IFrame frame) {
-		for (AbstractHandler handler : Context.getBeans(AbstractHandler.class)) {
-			handler.setFrame(frame);
-		}
 	}
 	
     /**
@@ -90,44 +96,8 @@ public abstract class AbstractHandler implements IHandler {
     /**
      * Code to be executed when all handlers have been initialized
      */
-    public void allHandlersInitialized() {
-    	// Does nothing by default
-    }
+    public void allHandlersInitialized() {}
 
-    /**
-     * Creates and registers all defined handlers
-     * @param state
-     */
-    static void registerAndInitializeHandlers(IState state) {
-
-        ExecutorService executorService = Executors.newFixedThreadPool(3);
-        // Register handlers
-        for (AbstractHandler handler : Context.getBeans(AbstractHandler.class)) {
-            Runnable task = handler.getPreviousInitializationTask();
-            if (task != null) {
-                executorService.submit(task);
-            }
-        }
-
-        // Initialize handlers
-        for (final AbstractHandler handler : Context.getBeans(AbstractHandler.class)) {
-            executorService.submit(new Runnable() {
-            	@Override
-            	public void run() {
-            		handler.initHandler();
-            	}
-            });
-        }
-
-        executorService.shutdown();
-        
-        try {
-			executorService.awaitTermination(100, TimeUnit.SECONDS);
-		} catch (InterruptedException e) {
-			Logger.error(e);
-		}
-    }
-    
     @Override
     public void favoritesChanged() {}
     

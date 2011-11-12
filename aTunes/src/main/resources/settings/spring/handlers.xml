@@ -5,6 +5,7 @@
 	
 	default-autowire="byName" default-lazy-init="true" default-init-method="registerHandler">
 	
+	<bean class="net.sourceforge.atunes.kernel.HandlerInitializer"/>
 	
 	<bean id="updateHandler" class="net.sourceforge.atunes.kernel.modules.updates.UpdateHandler">
 		<property name="updatesURL" value="http://www.atunes.org/latest.xml"></property>

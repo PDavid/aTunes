@@ -83,7 +83,7 @@ public final class Kernel implements IKernel, ApplicationContextAware {
         
         initializeProxy();
         initializeUI();
-        AbstractHandler.registerAndInitializeHandlers(state);
+        context.getBean(HandlerInitializer.class).registerAndInitializeHandlers(state);
         createUI();
 
         // Call user interaction
@@ -117,7 +117,7 @@ public final class Kernel implements IKernel, ApplicationContextAware {
                 public void run() {
                     context.getBean(ILookAndFeelManager.class).setLookAndFeel(context.getBean(ApplicationArguments.class), state.getLookAndFeel(), state, context.getBean(IOSManager.class));
 
-                    AbstractHandler.setFrameForHandlers(context.getBean(IFrame.class));
+                    context.getBean(HandlerInitializer.class).setFrameForHandlers(context.getBean(IFrame.class));
                 }
             });
         } catch (InvocationTargetException e) {
