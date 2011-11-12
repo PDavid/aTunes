@@ -18,14 +18,13 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.notify.growl;
+package net.sourceforge.atunes.kernel.modules.notify;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.notify.CommonNotificationEngine;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;

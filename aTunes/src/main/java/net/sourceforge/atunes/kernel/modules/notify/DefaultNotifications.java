@@ -18,13 +18,12 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.notify.classic;
+package net.sourceforge.atunes.kernel.modules.notify;
 
 import javax.swing.JDialog;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.dialogs.OSDDialog;
-import net.sourceforge.atunes.kernel.modules.notify.CommonNotificationEngine;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
