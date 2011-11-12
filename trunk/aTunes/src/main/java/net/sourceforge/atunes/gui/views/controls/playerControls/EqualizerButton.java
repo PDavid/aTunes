@@ -20,11 +20,8 @@
 
 package net.sourceforge.atunes.gui.views.controls.playerControls;
 
-import java.awt.Dimension;
+import javax.swing.Action;
 
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.actions.ShowEqualizerAction;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.PlayerEngineCapability;
 
@@ -32,14 +29,27 @@ public final class EqualizerButton extends SecondaryControl {
 
     private static final long serialVersionUID = 6007885049773560874L;
 
+    private IPlayerHandler playerHandler;
+    
+    /**
+     * @param playerHandler
+     */
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
+    
     /**
      * Instantiates a new equalizer button.
-     * @param lookAndFeelManager
-     * @param playerHandler
-     * @param preferredSize
+     * @param a
      */
-    public EqualizerButton(ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler, Dimension preferredSize) {
-        super(Context.getBean(ShowEqualizerAction.class), lookAndFeelManager, preferredSize);
+    public EqualizerButton(Action a) {
+        super(a);
+    }
+    
+    /**
+     * Initializes control
+     */
+    public void initialize() {
         if (!playerHandler.supportsCapability(PlayerEngineCapability.EQUALIZER)) {
             setVisible(false);
         }

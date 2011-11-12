@@ -49,6 +49,7 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.NextButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PreviousButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.SecondaryControl;
+import net.sourceforge.atunes.gui.views.controls.playerControls.SecondaryToggleControl;
 import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsSize;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -223,7 +224,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 
     @Override
     public void putClientProperties(JComponent c) {
-        if (c instanceof SecondaryControl || c instanceof MuteButton || c instanceof StopButton) {
+        if (c instanceof SecondaryToggleControl || c instanceof SecondaryControl || c instanceof MuteButton || c instanceof StopButton) {
             c.putClientProperty(org.pushingpixels.substance.api.SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, new RoundRectButtonShaper());
         } else if (c instanceof NextButton) {
             c.putClientProperty(org.pushingpixels.substance.api.SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY,
