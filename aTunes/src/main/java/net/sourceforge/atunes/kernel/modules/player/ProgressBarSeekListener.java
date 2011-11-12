@@ -23,17 +23,17 @@ package net.sourceforge.atunes.kernel.modules.player;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import net.sourceforge.atunes.gui.views.controls.playerControls.ProgressSlider;
 import net.sourceforge.atunes.model.IPlayerHandler;
+import net.sourceforge.atunes.model.IProgressSlider;
 
 
 public class ProgressBarSeekListener extends MouseAdapter {
 
-	private ProgressSlider progressBar;
+	private IProgressSlider progressBar;
 	
 	private IPlayerHandler playerHandler;
 	
-	public ProgressBarSeekListener(ProgressSlider progressBar, IPlayerHandler playerHandler) {
+	public ProgressBarSeekListener(IProgressSlider progressBar, IPlayerHandler playerHandler) {
 		super();
 		this.progressBar = progressBar;
 		this.playerHandler = playerHandler;

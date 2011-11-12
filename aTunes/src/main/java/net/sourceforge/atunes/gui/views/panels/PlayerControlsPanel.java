@@ -38,7 +38,6 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.NextButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PreviousButton;
-import net.sourceforge.atunes.gui.views.controls.playerControls.ProgressSlider;
 import net.sourceforge.atunes.gui.views.controls.playerControls.SecondaryControl;
 import net.sourceforge.atunes.gui.views.controls.playerControls.SecondaryToggleControl;
 import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
@@ -47,6 +46,7 @@ import net.sourceforge.atunes.kernel.actions.MuteAction;
 import net.sourceforge.atunes.model.IFilterPanel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayerHandler;
+import net.sourceforge.atunes.model.IProgressSlider;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
 
@@ -84,7 +84,7 @@ public final class PlayerControlsPanel extends JPanel {
     private NextButton nextButton;
     private MuteButton volumeButton;
     private VolumeSlider volumeSlider;
-    private ProgressSlider progressSlider;
+    private IProgressSlider progressSlider;
     private JPanel secondaryControls;
     private IFilterPanel filterPanel;
 
@@ -114,7 +114,7 @@ public final class PlayerControlsPanel extends JPanel {
     private void addContent() {
     	JPanel topProgressSliderContainer = new JPanel(new BorderLayout());
     	JPanel bottomProgressSliderContainer = new JPanel(new BorderLayout());
-        progressSlider = new ProgressSlider();
+    	progressSlider = Context.getBean(IProgressSlider.class);
     	bottomProgressSliderContainer.addComponentListener(new PlayerControlsPanelBottomProgressSliderPanelComponentAdapter(progressSlider, bottomProgressSliderContainer, topProgressSliderContainer));
 
     	JPanel mainControls = getMainControlsPanel();
@@ -161,7 +161,7 @@ public final class PlayerControlsPanel extends JPanel {
         add(filterPanel.getSwingComponent(), c);
     }
 
-    public ProgressSlider getProgressSlider() {
+    public IProgressSlider getProgressSlider() {
         return progressSlider;
     }
 
@@ -183,8 +183,7 @@ public final class PlayerControlsPanel extends JPanel {
     }
 
     public void setShowTicksAndLabels(boolean showTicks) {
-        getProgressSlider().setPaintLabels(showTicks);
-        getProgressSlider().setPaintTicks(showTicks);
+        getProgressSlider().setShowTicksAndLabels(showTicks);
         getProgressSlider().setPreferredSize(new Dimension(getProgressSlider().getPreferredSize().width, showTicks ? PROGRESS_BAR_TICKS_HEIGHT : PROGRESS_BAR_NO_TICKS_HEIGHT));
     }
 

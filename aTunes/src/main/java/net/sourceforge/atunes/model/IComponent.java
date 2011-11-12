@@ -21,6 +21,8 @@
 package net.sourceforge.atunes.model;
 
 import java.awt.Dimension;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
 
 import javax.swing.JComponent;
 
@@ -67,4 +69,37 @@ public interface IComponent<T extends JComponent> {
 	 */
 	public boolean isVisible();
 	
+	/**
+	 * Enables or disables component
+	 * @param b
+	 */
+	public void setEnabled(boolean b);
+	
+	/**
+	 * Returns if enabled
+	 * @return
+	 */
+	public boolean isEnabled();
+	
+	/**
+	 * @param seekListener
+	 */
+	public void addMouseListener(MouseListener seekListener);
+
+	/**
+	 * @param keyListener
+	 */
+	public void addKeyListener(KeyListener keyListener);
+	
+	/**
+	 * @param b
+	 */
+	public void setOpaque(boolean b);
+	
+	/**
+	 * @return
+	 */
+	public Dimension getPreferredSize();
+
+
 }

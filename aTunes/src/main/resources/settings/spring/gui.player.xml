@@ -4,6 +4,10 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
 	default-autowire="byName" default-lazy-init="true">
 
+	<bean id="progressSlider" class="net.sourceforge.atunes.gui.views.controls.playerControls.ProgressSlider" scope="prototype"/>
+
+
+
 	<bean class="net.sourceforge.atunes.gui.views.panels.SecondaryPlayerControlsBuilder" scope="prototype"/>
 
 	<bean id="secondaryControlSize" class="java.awt.Dimension">

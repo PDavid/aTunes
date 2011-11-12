@@ -30,4 +30,5 @@ import javax.swing.JPanel;
  */
 public interface IPanel extends IComponent<JPanel> {
 
+	
 }
