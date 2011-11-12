@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.gui.views.controls.playerControls;
 
+import java.awt.Dimension;
+
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.actions.NormalizeModeAction;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -37,9 +39,10 @@ public final class NormalizationButton extends SecondaryControl {
      * Instantiates a new Normalize button.
      * @param lookAndFeelManager
      * @param playerHandler
+     * @param preferredSize
      */
-    public NormalizationButton(ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler) {
-        super(Context.getBean(NormalizeModeAction.class), lookAndFeelManager);
+    public NormalizationButton(ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler, Dimension preferredSize) {
+        super(Context.getBean(NormalizeModeAction.class), lookAndFeelManager, preferredSize);
         if (!playerHandler.supportsCapability(PlayerEngineCapability.NORMALIZATION)) {
             setVisible(false);
         }

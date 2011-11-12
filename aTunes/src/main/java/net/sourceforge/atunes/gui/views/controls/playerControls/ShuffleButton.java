@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.gui.views.controls.playerControls;
 
+import java.awt.Dimension;
+
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.actions.ShuffleModeAction;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -34,9 +36,9 @@ public final class ShuffleButton extends SecondaryControl {
     /**
      * Instantiates a new shuffle button.
      * @param lookAndFeelManager
+     * @param preferredSize
      */
-    public ShuffleButton(ILookAndFeelManager lookAndFeelManager) {
-        super(Context.getBean(ShuffleModeAction.class), lookAndFeelManager);
+    public ShuffleButton(ILookAndFeelManager lookAndFeelManager, Dimension preferredSize) {
+        super(Context.getBean(ShuffleModeAction.class), lookAndFeelManager, preferredSize);
     }    
-    
 }

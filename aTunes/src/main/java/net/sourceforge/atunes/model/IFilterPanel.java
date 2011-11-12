@@ -18,33 +18,39 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.controls.playerControls;
+package net.sourceforge.atunes.model;
 
-import java.awt.Dimension;
+import javax.swing.JButton;
+import javax.swing.JTextField;
 
-import javax.swing.Action;
-import javax.swing.JToggleButton;
+import net.sourceforge.atunes.gui.views.controls.PopUpButton;
 
-import net.sourceforge.atunes.model.ILookAndFeelManager;
+/**
+ * A panel to let user filter objects
+ * @author alex
+ *
+ */
+public interface IFilterPanel extends IPanel {
 
-public class SecondaryControl extends JToggleButton {
-
-    /**
-	 * 
+	/**
+	 * @return the filterButton
 	 */
-    private static final long serialVersionUID = -124604413114002586L;
+	public PopUpButton getFilterButton();
 
-    /**
-     * @param a
-     * @param lookAndFeelManager
-     * @param preferredSize
-     */
-    public SecondaryControl(Action a, ILookAndFeelManager lookAndFeelManager, Dimension preferredSize) {
-        super(a);
-        setText(null);
-        setPreferredSize(preferredSize);
-        setFocusable(false);
-        lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(this);
-    }
+	/**
+	 * @return the filterTextField
+	 */
+	public JTextField getFilterTextField();
+
+	/**
+	 * @return the clearButton
+	 */
+	public JButton getClearButton();
+
+	/**
+	 * Called to update filter panel
+	 * @param filterApplied
+	 */
+	public void setFilterApplied(boolean filterApplied);
 
 }

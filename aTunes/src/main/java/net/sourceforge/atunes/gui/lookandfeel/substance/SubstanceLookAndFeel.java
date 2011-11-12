@@ -50,7 +50,7 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PreviousButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.SecondaryControl;
 import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
-import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
+import net.sourceforge.atunes.gui.views.panels.PlayerControlsSize;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -227,14 +227,14 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
             c.putClientProperty(org.pushingpixels.substance.api.SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, new RoundRectButtonShaper());
         } else if (c instanceof NextButton) {
             c.putClientProperty(org.pushingpixels.substance.api.SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY,
-                    GuiUtils.getComponentOrientation().isLeftToRight() ? new LeftConcaveButtonShaper(PlayerControlsPanel.PLAY_BUTTON_SIZE.height) : new RightConcaveButtonShaper(
-                            PlayerControlsPanel.PLAY_BUTTON_SIZE.height));
+                    GuiUtils.getComponentOrientation().isLeftToRight() ? new LeftConcaveButtonShaper(PlayerControlsSize.PLAY_BUTTON_SIZE.height) : new RightConcaveButtonShaper(
+                    		PlayerControlsSize.PLAY_BUTTON_SIZE.height));
         } else if (c instanceof PlayPauseButton) {
             c.putClientProperty(org.pushingpixels.substance.api.SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY, new CircleButtonShaper());
         } else if (c instanceof PreviousButton) {
             c.putClientProperty(org.pushingpixels.substance.api.SubstanceLookAndFeel.BUTTON_SHAPER_PROPERTY,
-                    GuiUtils.getComponentOrientation().isLeftToRight() ? new RightConcaveButtonShaper(PlayerControlsPanel.PLAY_BUTTON_SIZE.height) : new LeftConcaveButtonShaper(
-                            PlayerControlsPanel.PLAY_BUTTON_SIZE.height));
+                    GuiUtils.getComponentOrientation().isLeftToRight() ? new RightConcaveButtonShaper(PlayerControlsSize.PLAY_BUTTON_SIZE.height) : new LeftConcaveButtonShaper(
+                    		PlayerControlsSize.PLAY_BUTTON_SIZE.height));
         }
     }
 

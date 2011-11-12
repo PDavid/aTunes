@@ -26,6 +26,7 @@ import java.util.Map;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IFilterHandler;
+import net.sourceforge.atunes.model.IFilterPanel;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.Logger;
@@ -56,7 +57,7 @@ public final class FilterHandler extends AbstractHandler implements IFilterHandl
      * Text used as filter
      */
     private String currentFilterText;
-
+    
     /**
      * Adds a new filter
      * 
@@ -131,7 +132,7 @@ public final class FilterHandler extends AbstractHandler implements IFilterHandl
      */
     private FilterController getToolBarFilterController() {
         if (toolBarFilterController == null) {
-            toolBarFilterController = new FilterController(getFrame().getPlayerControls().getFilterPanel(), getState(), this);
+            toolBarFilterController = new FilterController(getBean(IFilterPanel.class), getState(), this);
         }
         return toolBarFilterController;
     }
