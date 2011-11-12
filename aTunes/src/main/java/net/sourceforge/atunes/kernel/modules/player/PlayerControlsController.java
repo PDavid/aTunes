@@ -27,6 +27,7 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPlayerControlsPanel;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IState;
@@ -43,8 +44,8 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
      * @param state
      * @param playerHandler
      */
-    PlayerControlsController(PlayerControlsPanel panel, IState state, IPlayerHandler playerHandler) {
-        super(panel, state);
+    PlayerControlsController(IPlayerControlsPanel panel, IState state, IPlayerHandler playerHandler) {
+        super((PlayerControlsPanel) panel.getSwingComponent(), state);
         this.playerHandler = playerHandler;
         addBindings();
         addStateBindings();

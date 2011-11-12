@@ -37,6 +37,7 @@ import net.sourceforge.atunes.model.IEqualizer;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlaybackStateListener;
+import net.sourceforge.atunes.model.IPlayerControlsPanel;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.IState;
@@ -461,7 +462,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
      */
     private PlayerControlsController getPlayerControlsController() {
         if (playerControlsController == null) {
-            playerControlsController = new PlayerControlsController(getFrame().getPlayerControls(), getState(), this);
+            playerControlsController = new PlayerControlsController(getBean(IPlayerControlsPanel.class), getState(), this);
         }
         return playerControlsController;
     }

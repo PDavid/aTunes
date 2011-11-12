@@ -56,6 +56,7 @@ import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListPanel;
 import net.sourceforge.atunes.model.IPlayListTable;
+import net.sourceforge.atunes.model.IPlayerControlsPanel;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
@@ -577,9 +578,9 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 
             // hide the ticks and labels
             if (!getState().isStopPlayerOnPlayListClear()) {
-            	getFrame().getPlayerControls().getProgressSlider().setEnabled(false);
+            	getBean(IPlayerControlsPanel.class).getProgressSlider().setEnabled(false);
             } else {
-            	getFrame().getPlayerControls().setShowTicksAndLabels(false);
+            	getBean(IPlayerControlsPanel.class).setShowTicksAndLabels(false);
             }
             playListPanel.getSwingComponent().repaint();
 
@@ -878,7 +879,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         if (currentPlayList.isEmpty()) {
             getBean(SavePlayListAction.class).setEnabled(false);
             getBean(ShufflePlayListAction.class).setEnabled(false);
-            getFrame().getPlayerControls().setShowTicksAndLabels(false);
+            getBean(IPlayerControlsPanel.class).setShowTicksAndLabels(false);
         }
         showPlayListInformation(currentPlayList);
         Logger.info(StringUtils.getString(rows.length, " objects removed from play list"));

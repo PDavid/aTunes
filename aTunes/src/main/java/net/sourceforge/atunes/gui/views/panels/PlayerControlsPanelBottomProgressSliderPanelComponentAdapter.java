@@ -35,6 +35,11 @@ import net.sourceforge.atunes.model.IProgressSlider;
  */
 final class PlayerControlsPanelBottomProgressSliderPanelComponentAdapter extends ComponentAdapter {
 	
+	/**
+	 * Minimum width of progress bar to be shown at bottom
+	 */
+	private static final int PROGRESS_BAR_BOTTOM_MINIMUM_SIZE = 300;
+
 	private final IProgressSlider progressSlider;
 	private final JPanel bottomProgressSliderPanel;
 	private final JPanel topProgressSliderPanel;
@@ -48,7 +53,7 @@ final class PlayerControlsPanelBottomProgressSliderPanelComponentAdapter extends
 
 	@Override
 	public void componentResized(ComponentEvent e) {
-		boolean showOnTop = bottomProgressSliderPanel.getWidth() < PlayerControlsPanel.PROGRESS_BAR_BOTTOM_MINIMUM_SIZE;
+		boolean showOnTop = bottomProgressSliderPanel.getWidth() < PROGRESS_BAR_BOTTOM_MINIMUM_SIZE;
 
 		if (showProgressOnTop == null || showProgressOnTop != showOnTop) {
 			if (showOnTop) {

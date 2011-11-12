@@ -28,8 +28,6 @@ import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JProgressBar;
 
-import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
-
 /**
  * The interface for all frames
  */
@@ -83,13 +81,6 @@ public interface IFrame {
      * @return the location
      */
     public Point getLocation();
-
-    /**
-     * Gets the player controls.
-     * 
-     * @return the player controls
-     */
-    public PlayerControlsPanel getPlayerControls();
 
     /**
      * Gets the size.

@@ -23,7 +23,7 @@ package net.sourceforge.atunes.api;
 import javax.swing.Action;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IPlayerControlsPanel;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -40,6 +40,6 @@ public final class PlayerControlsApi {
      * @param button
      */
     public static void addSecondaryControl(Action action) {
-        Context.getBean(IFrame.class).getPlayerControls().addSecondaryControl(action);
+        Context.getBean(IPlayerControlsPanel.class).addSecondaryControl(action);
     }
 }
