@@ -26,7 +26,7 @@ import java.awt.event.ComponentEvent;
 
 import javax.swing.JPanel;
 
-import net.sourceforge.atunes.gui.views.controls.playerControls.ProgressSlider;
+import net.sourceforge.atunes.model.IProgressSlider;
 
 /**
  * Controls size of player controls panel to move slider on top of controls or not
@@ -35,12 +35,12 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.ProgressSlider;
  */
 final class PlayerControlsPanelBottomProgressSliderPanelComponentAdapter extends ComponentAdapter {
 	
-	private final ProgressSlider progressSlider;
+	private final IProgressSlider progressSlider;
 	private final JPanel bottomProgressSliderPanel;
 	private final JPanel topProgressSliderPanel;
 	private Boolean showProgressOnTop = null;
 
-	PlayerControlsPanelBottomProgressSliderPanelComponentAdapter(ProgressSlider progressSlider, JPanel bottomProgressSliderPanel, JPanel topProgressSliderPanel) {
+	PlayerControlsPanelBottomProgressSliderPanelComponentAdapter(IProgressSlider progressSlider, JPanel bottomProgressSliderPanel, JPanel topProgressSliderPanel) {
 		this.progressSlider = progressSlider;
 		this.bottomProgressSliderPanel = bottomProgressSliderPanel;
 		this.topProgressSliderPanel = topProgressSliderPanel;
@@ -52,13 +52,13 @@ final class PlayerControlsPanelBottomProgressSliderPanelComponentAdapter extends
 
 		if (showProgressOnTop == null || showProgressOnTop != showOnTop) {
 			if (showOnTop) {
-				bottomProgressSliderPanel.remove(progressSlider);
+				bottomProgressSliderPanel.remove(progressSlider.getSwingComponent());
 				progressSlider.setLayout();
-				topProgressSliderPanel.add(progressSlider, BorderLayout.CENTER);
+				topProgressSliderPanel.add(progressSlider.getSwingComponent(), BorderLayout.CENTER);
 			} else {
-				topProgressSliderPanel.remove(progressSlider);
+				topProgressSliderPanel.remove(progressSlider.getSwingComponent());
 				progressSlider.setLayout();
-				bottomProgressSliderPanel.add(progressSlider, BorderLayout.CENTER);
+				bottomProgressSliderPanel.add(progressSlider.getSwingComponent(), BorderLayout.CENTER);
 			}
 			showProgressOnTop = showOnTop;
 		}

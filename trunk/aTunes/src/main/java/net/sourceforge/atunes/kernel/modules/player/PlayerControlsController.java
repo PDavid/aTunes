@@ -21,13 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.player;
 
 import java.awt.EventQueue;
-import java.awt.Font;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
 
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
@@ -37,17 +31,8 @@ import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.Logger;
-import net.sourceforge.atunes.utils.StringUtils;
 
 final class PlayerControlsController extends AbstractSimpleController<PlayerControlsPanel> {
-
-    private static final int SECONDS_10 = 10000;
-    private static final int SECONDS_30 = 30000;
-    private static final int MINUTES_1 = 60000;
-    private static final int MINUTES_2 = 120000;
-    private static final int MINUTES_5 = 300000;
-    private static final int MINUTES_10 = 600000;
-    private static final int MINUTES_30 = 1800000;
 
     private IPlayerHandler playerHandler;
     
@@ -81,7 +66,7 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
         Logger.debug(Long.toString(length));
 
         getComponentControlled().getProgressSlider().setMaximum((int) length);
-        setupProgressTicks(length);
+        getComponentControlled().getProgressSlider().setupProgressTicks(length);
     }
 
     /**
@@ -157,88 +142,6 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
         return floatPercent;
     }
 
-    /**
-     * Setup ticks spacing
-     * 
-     * @param length
-     */
-    private void setupProgressTicks(long length) {
-
-        int minorTickSpacing = SECONDS_10;
-        int majorTickSpacing = SECONDS_30;
-
-        if (length > MINUTES_10 && length <= MINUTES_30) {
-            minorTickSpacing = SECONDS_30;
-            majorTickSpacing = MINUTES_1;
-
-        } else if (length > MINUTES_30) {
-            minorTickSpacing = MINUTES_1;
-            majorTickSpacing = MINUTES_5;
-        }
-
-        //avoid NullPointerException 
-        getComponentControlled().getProgressSlider().setLabelTable(null);
-
-        getComponentControlled().getProgressSlider().setPaintTicks(getState().isShowTicks());
-        getComponentControlled().getProgressSlider().setMajorTickSpacing(majorTickSpacing);
-        getComponentControlled().getProgressSlider().setMinorTickSpacing(minorTickSpacing);
-
-        setupTicksLabels(length);
-
-    }
-
-    /**
-     * Setup ticks labels
-     * 
-     * @param length
-     */
-    private void setupTicksLabels(long length) {
-        Map<Integer, JLabel> ticksLabels = new HashMap<Integer, JLabel>();
-
-        for (int k = 0; k < length; k++) {
-
-            if (length < MINUTES_1) {
-                if (k % SECONDS_10 == 0 && k != 0) {
-                    ticksLabels.put(k, getLabelForDuration(k));
-                }
-
-            } else if (length > MINUTES_1 && length <= MINUTES_10) {
-                if (k % MINUTES_1 == 0 && k != 0) {
-                    ticksLabels.put(k, getLabelForDuration(k));
-                }
-
-            } else if (length > MINUTES_10 && length <= MINUTES_30) {
-                if (k % MINUTES_2 == 0 && k != 0) {
-                    ticksLabels.put(k, getLabelForDuration(k));
-                }
-
-            } else {
-                if (k % MINUTES_10 == 0 && k != 0) {
-                    ticksLabels.put(k, getLabelForDuration(k));
-                }
-            }
-        }
-        getComponentControlled().getProgressSlider().setPaintLabels(getState().isShowTicks() && ticksLabels.size() > 0);
-        if (ticksLabels.size() > 0) {
-        	getComponentControlled().getProgressSlider().setLabelTable(new Hashtable<Integer, JLabel>(ticksLabels));
-        }
-
-    }
-
-    /**
-     * Get label for duration
-     * 
-     * @param duration
-     * @return the label for duration
-     */
-    private JLabel getLabelForDuration(int unit) {
-        String duration = StringUtils.milliseconds2String(unit);
-        JLabel label = new JLabel(duration, SwingConstants.CENTER);
-        Font currentFont = label.getFont();
-        label.setFont(new Font(currentFont.getFontName(), currentFont.getStyle(), Math.max(currentFont.getSize() - 3, 7)));
-        return label;
-    }    
-    
     /**
      * Updates controls when playing given audio object
      * @param audioObject

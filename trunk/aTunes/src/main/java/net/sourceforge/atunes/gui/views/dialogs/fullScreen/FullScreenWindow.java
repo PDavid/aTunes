@@ -66,7 +66,6 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.NextButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PreviousButton;
-import net.sourceforge.atunes.gui.views.controls.playerControls.ProgressSlider;
 import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
@@ -80,6 +79,7 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
+import net.sourceforge.atunes.model.IProgressSlider;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -129,7 +129,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
     /** The text label 2 */
     private JLabel textLabel2;
 
-    private ProgressSlider progressSlider;
+    private IProgressSlider progressSlider;
     
     /** The options. */
     private JPopupMenu options;
@@ -428,7 +428,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         textLabel2.setFont(lookAndFeelManager.getCurrentLookAndFeel().getContextInformationBigFont());
         textLabel2.setForeground(Color.WHITE);
 
-        progressSlider = new ProgressSlider();
+        progressSlider = Context.getBean(IProgressSlider.class);
         ProgressBarSeekListener seekListener = new ProgressBarSeekListener(progressSlider, playerHandler);
         progressSlider.addMouseListener(seekListener);        
         progressSlider.addKeyListener(keyAdapter);
@@ -457,7 +457,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 
         c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
-        controlsPanel.add(progressSlider, c);
+        controlsPanel.add(progressSlider.getSwingComponent(), c);
 
         JPanel buttonsPanel = PlayerControlsPanel.getPanelWithPlayerControls(stopButton, previousButton, playButton, nextButton, muteButton, volumeSlider, lookAndFeelManager);
 
