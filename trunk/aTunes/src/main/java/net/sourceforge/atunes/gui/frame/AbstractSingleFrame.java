@@ -56,7 +56,6 @@ import net.sourceforge.atunes.model.INavigationTreePanel;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListPanel;
 import net.sourceforge.atunes.model.IPlayerControlsPanel;
-import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IUIHandler;
@@ -101,7 +100,6 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     protected IOSManager osManager;
     private INavigationHandler navigationHandler;
     private ILookAndFeelManager lookAndFeelManager;
-    private IPlayerHandler playerHandler;
     private IUIHandler uiHandler;
     
     private ITaskService taskService;
@@ -689,13 +687,6 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
      */
     protected ILookAndFeelManager getLookAndFeelManager() {
 		return lookAndFeelManager;
-	}
-    
-    /**
-     * @param playerHandler
-     */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
-		this.playerHandler = playerHandler;
 	}
     
     /**
