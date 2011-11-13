@@ -28,7 +28,6 @@ import java.util.TreeSet;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -204,14 +203,6 @@ public class Album implements Serializable, ITreeObject<ILocalAudioObject>, Comp
     @Override
     public boolean isExtendedToolTipSupported() {
         return true;
-    }
-
-    @Override
-    public void setExtendedToolTip(ExtendedToolTip toolTip) {
-        toolTip.setLine1(name);
-        toolTip.setLine2(artist.getName());
-        int songNumber = getAudioFiles().size();
-        toolTip.setLine3(StringUtils.getString(songNumber, " ", (songNumber > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG"))));
     }
 
     @Override

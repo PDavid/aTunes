@@ -27,7 +27,6 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
@@ -382,10 +381,6 @@ public final class Radio implements IRadio {
     @Override
     public boolean isExtendedToolTipSupported() {
         return false;
-    }
-
-    @Override
-    public void setExtendedToolTip(ExtendedToolTip toolTip) {
     }
 
     @Override

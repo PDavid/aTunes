@@ -20,8 +20,8 @@
 
 package net.sourceforge.atunes;
 
-import net.sourceforge.atunes.kernel.modules.updates.VersionType;
 import net.sourceforge.atunes.model.ApplicationVersion;
+import net.sourceforge.atunes.model.ApplicationVersion.VersionType;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.StringUtils;
 

@@ -22,7 +22,6 @@ package net.sourceforge.atunes.model;
 
 import java.beans.ConstructorProperties;
 
-import net.sourceforge.atunes.kernel.modules.updates.VersionType;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -33,6 +32,15 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class ApplicationVersion implements Comparable<ApplicationVersion> {
 
+	/**
+	 * Type of version: beta, release candidate or final
+	 * @author alex
+	 *
+	 */
+	public enum VersionType {
+	    BETA, RELEASE_CANDIDATE, FINAL
+	}
+	
     /** Release date of version. */
     private String date;
 

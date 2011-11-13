@@ -30,7 +30,6 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -177,15 +176,6 @@ public class Artist implements Serializable, ITreeObject<ILocalAudioObject>, Com
     @Override
     public boolean isExtendedToolTipSupported() {
         return true;
-    }
-
-    @Override
-    public void setExtendedToolTip(ExtendedToolTip toolTip) {
-        toolTip.setLine1(name);
-        int albumNumber = getAlbums().size();
-        toolTip.setLine2(StringUtils.getString(albumNumber, " ", (albumNumber > 1 ? I18nUtils.getString("ALBUMS") : I18nUtils.getString("ALBUM"))));
-        Integer timesPlayed = Context.getBean(IStatisticsHandler.class).getArtistTimesPlayed(this);
-        toolTip.setLine3(StringUtils.getString(I18nUtils.getString("TIMES_PLAYED"), ": ", timesPlayed));
     }
 
     @Override

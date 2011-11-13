@@ -24,8 +24,6 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
-
 import org.commonjukebox.plugins.model.PluginApi;
 
 /**
@@ -55,13 +53,6 @@ public interface ITreeObject<T extends IAudioObject> {
      * @return
      */
     public boolean isExtendedToolTipSupported();
-
-    /**
-     * Fills tool tip with object data
-     * 
-     * @param toolTip
-     */
-    public void setExtendedToolTip(ExtendedToolTip toolTip);
 
     /**
      * Returns <code>true</code> if this object supports image in extended tool

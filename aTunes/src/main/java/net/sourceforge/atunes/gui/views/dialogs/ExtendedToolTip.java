@@ -32,12 +32,22 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
+import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
+import net.sourceforge.atunes.kernel.modules.repository.data.Year;
+import net.sourceforge.atunes.model.Album;
+import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPodcastFeed;
+import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.ITreeObject;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
+import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * The Class ExtendedToolTip. This is a special window shown as tooltip for
@@ -172,11 +182,103 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
         // Picture is set asynchronously 
         setImage(null);
         if (obj instanceof ITreeObject) {
-            ((ITreeObject<? extends IAudioObject>) obj).setExtendedToolTip(this);
+        	setExtendedToolTipFromTreeObject((ITreeObject<? extends IAudioObject>) obj);
         }
     }
 
     /**
+     * Fills tool tip from tree object
+     * @param object
+     */
+    private void setExtendedToolTipFromTreeObject(ITreeObject<? extends IAudioObject> object) {
+    	if (object instanceof Album) {
+    		setFromAlbum(object);
+    	} else if (object instanceof IPodcastFeed) {
+    		setFromPodcast(object);
+    	} else if (object instanceof Folder) {
+    		setFromFolder(object);
+    	} else if (object instanceof Genre) {
+    		setFromGenre(object);
+    	} else if (object instanceof Year) {
+    		setFromYear(object);
+    	} else if (object instanceof Artist) {
+    		setFromArtist(object);
+    	}
+	}
+
+	/**
+	 * @param object
+	 */
+	private void setFromArtist(ITreeObject<? extends IAudioObject> object) {
+		Artist a = (Artist) object;
+		setLine1(a.getName());
+		int albumNumber = a.getAlbums().size();
+		setLine2(StringUtils.getString(albumNumber, " ", (albumNumber > 1 ? I18nUtils.getString("ALBUMS") : I18nUtils.getString("ALBUM"))));
+		setLine3(StringUtils.getString(I18nUtils.getString("TIMES_PLAYED"), ": ", Context.getBean(IStatisticsHandler.class).getArtistTimesPlayed(a)));
+	}
+
+	/**
+	 * @param object
+	 */
+	private void setFromYear(ITreeObject<? extends IAudioObject> object) {
+		Year y = (Year) object;
+		setLine1(y.getName());
+		int artistNumber = y.getArtistSet().size();
+		setLine2(StringUtils.getString(artistNumber, " ", (artistNumber > 1 ? I18nUtils.getString("ARTISTS") : I18nUtils.getString("ARTIST"))));
+		int songs = y.size();
+		setLine3(StringUtils.getString(songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG"))));
+	}
+
+	/**
+	 * @param object
+	 */
+	private void setFromGenre(ITreeObject<? extends IAudioObject> object) {
+		Genre g = (Genre) object;
+		setLine1(g.getName());
+		int artistNumber = g.getArtistSet().size();
+		setLine2(StringUtils.getString(artistNumber, " ", (artistNumber > 1 ? I18nUtils.getString("ARTISTS") : I18nUtils.getString("ARTIST"))));
+		int songs = g.size();
+		setLine3(StringUtils.getString(songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG"))));
+	}
+
+	/**
+	 * @param object
+	 */
+	private void setFromFolder(ITreeObject<? extends IAudioObject> object) {
+		Folder f = (Folder) object;
+		setLine1(f.getName());
+		int folderNumber = f.getFolders().size();
+		if (folderNumber > 0) {
+		    setLine2(StringUtils.getString(folderNumber, " ", (folderNumber > 1 ? I18nUtils.getString("FOLDERS") : I18nUtils.getString("FOLDER"))));
+		} else {
+		    setLine2(null);
+		}
+		int songs = f.getAudioObjects().size();
+		setLine3(StringUtils.getString(songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG"))));
+	}
+
+	/**
+	 * @param object
+	 */
+	private void setFromPodcast(ITreeObject<? extends IAudioObject> object) {
+		IPodcastFeed p = (IPodcastFeed) object;
+		setLine1(p.getName());
+		setLine2(StringUtils.getString(I18nUtils.getString("PODCAST_ENTRIES"), ": ", p.getPodcastFeedEntries().size()));
+		setLine3(StringUtils.getString(I18nUtils.getString("NEW_PODCAST_ENTRIES_TOOLTIP"), ": ", p.getNewEntriesCount()));
+	}
+
+	/**
+	 * @param object
+	 */
+	private void setFromAlbum(ITreeObject<? extends IAudioObject> object) {
+		Album a = (Album) object;
+		setLine1(a.getName());
+		setLine2(a.getArtist().getName());
+		int songNumber = a.size();
+		setLine3(StringUtils.getString(songNumber, " ", (songNumber > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG"))));
+	}
+
+	/**
      * Returns image to be shown in extended tool tip for given object
      * 
      * @param obj
@@ -198,5 +300,4 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
     public void setSizeToFitImage(boolean image) {
         setSize(image ? IMAGE_DIMENSION : NO_IMAGE_DIMENSION);
     }
-
 }
