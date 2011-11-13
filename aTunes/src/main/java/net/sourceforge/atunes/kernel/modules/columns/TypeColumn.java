@@ -65,9 +65,4 @@ public class TypeColumn extends AbstractColumn {
     public String getHeaderText() {
         return "";
     }
-    
-    @Override
-    public boolean isPlayListExclusive() {
-        return true;
-    }
 }

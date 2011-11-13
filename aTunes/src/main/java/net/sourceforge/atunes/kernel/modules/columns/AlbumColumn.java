@@ -22,25 +22,35 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import javax.swing.SwingConstants;
 
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 
-public class AlbumColumn extends AbstractColumn {
+public class AlbumColumn extends AbstractColumn implements ApplicationContextAware {
 
     private static final long serialVersionUID = -6162621108007788707L;
 
-    private IFavoritesHandler favoritesHandler;
-
     private IColorMutableImageIcon albumFavoriteIcon;
     
+    private ApplicationContext context;
+    
+    private IFavoritesHandler favoritesHandler;
+
     public AlbumColumn() {
         super("ALBUM", TextAndIcon.class);
         setVisible(true);
         setUsedForFilter(true);
-        this.favoritesHandler = Context.getBean(IFavoritesHandler.class);
         this.albumFavoriteIcon = (IColorMutableImageIcon) Context.getBean("albumFavoriteIcon");
+    }
+    
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext)throws BeansException {
+    	this.context = applicationContext;
     }
 
     @Override
@@ -56,7 +66,7 @@ public class AlbumColumn extends AbstractColumn {
 
     @Override
     public Object getValueFor(IAudioObject audioObject) {
-    	if (favoritesHandler.getFavoriteAlbumsInfo().containsKey(audioObject.getAlbum())) {
+    	if (getFavoritesHandler().getFavoriteAlbumsInfo().containsKey(audioObject.getAlbum())) {
             return new TextAndIcon(audioObject.getAlbum(), albumFavoriteIcon, SwingConstants.LEFT);
     	} else {
     		return new TextAndIcon(audioObject.getAlbum(), null, SwingConstants.LEFT);
@@ -66,5 +76,15 @@ public class AlbumColumn extends AbstractColumn {
     @Override
     public String getValueForFilter(IAudioObject audioObject) {
         return audioObject.getAlbum();
+    }
+    
+    /**
+     * @return favorites handler
+     */
+    private IFavoritesHandler getFavoritesHandler() {
+    	if (favoritesHandler == null) {
+    		favoritesHandler = context.getBean(IFavoritesHandler.class);
+    	}
+    	return favoritesHandler;
     }
 }

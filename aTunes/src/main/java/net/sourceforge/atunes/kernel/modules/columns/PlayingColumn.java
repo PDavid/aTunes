@@ -53,10 +53,4 @@ public class PlayingColumn extends AbstractColumn {
     public String getHeaderText() {
         return "";
     }
-
-    @Override
-    public boolean isPlayListExclusive() {
-        return true;
-    }
-
 }

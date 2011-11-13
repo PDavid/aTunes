@@ -35,9 +35,22 @@ import net.sourceforge.atunes.model.ISearchHandler;
  */
 public final class SearchResultsColumnSet extends AbstractColumnSet {
 
+	private List<IColumn> allowedColumns;
+	
+	/**
+	 * @param allowedColumns
+	 */
+	public void setAllowedColumns(List<IColumn> allowedColumns) {
+		this.allowedColumns = allowedColumns;
+		int order = 0;
+		for (IColumn column : this.allowedColumns) {
+			column.setOrder(order++);
+		}
+	}
+
     @Override
     protected List<IColumn> getAllowedColumns() {
-        return Columns.getColumns(false);
+        return allowedColumns;
     }
 
     @Override

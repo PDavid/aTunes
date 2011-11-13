@@ -37,6 +37,19 @@ public final class NavigatorColumnSet extends AbstractColumnSet {
 
 	private ITable navigationTable;
 	
+	private List<IColumn> allowedColumns;
+	
+	/**
+	 * @param allowedColumns
+	 */
+	public void setAllowedColumns(List<IColumn> allowedColumns) {
+		this.allowedColumns = allowedColumns;
+		int order = 0;
+		for (IColumn column : this.allowedColumns) {
+			column.setOrder(order++);
+		}
+	}
+	
 	/**
 	 * @param navigationTable
 	 */
@@ -46,7 +59,7 @@ public final class NavigatorColumnSet extends AbstractColumnSet {
 	
     @Override
     protected List<IColumn> getAllowedColumns() {
-        return Columns.getColumns(false);
+        return allowedColumns;
     }
 
     @Override

@@ -44,13 +44,11 @@ public abstract class AbstractCustomNavigatorColumnSet extends AbstractColumnSet
     private String columnSetName;
     
     /**
-     * Default constructor
      * @param columnSetName
      */
-    public AbstractCustomNavigatorColumnSet(String columnSetName) {
-        super();
-        this.columnSetName = columnSetName;
-    }
+    public void setColumnSetName(String columnSetName) {
+		this.columnSetName = columnSetName;
+	}
     
     /**
      * @param navigationTable

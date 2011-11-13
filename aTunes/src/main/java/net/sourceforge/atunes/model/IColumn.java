@@ -109,14 +109,6 @@ public interface IColumn extends Serializable, Comparable<IColumn> {
 	public Object getValueFor(IAudioObject audioObject);
 
 	/**
-	 * Returns if this column can be shown only in play list. By default
-	 * <code>false</code>
-	 * 
-	 * @return
-	 */
-	public boolean isPlayListExclusive();
-
-	/**
 	 * Gets the width.
 	 * 
 	 * @return the width

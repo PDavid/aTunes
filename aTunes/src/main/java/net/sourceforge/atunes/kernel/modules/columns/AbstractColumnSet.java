@@ -73,8 +73,6 @@ public abstract class AbstractColumnSet implements IColumnSet {
 		this.frame = frame;
 	}
 
-
-
     /**
      * Gets the available columns.
      * 
