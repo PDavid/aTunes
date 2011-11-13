@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+	default-autowire="byName" default-lazy-init="true">
+
+    <bean id="audioObjectGenericImageFactory" class="net.sourceforge.atunes.gui.images.AudioObjectGenericImage" autowire="byType"/>
+    
+	<bean class="net.sourceforge.atunes.gui.images.LocalAudioObjectSmallColorMutableImageIcon"/>
+	<bean class="net.sourceforge.atunes.gui.images.LocalAudioObjectMediumColorMutableImageIcon"/>
+	<bean class="net.sourceforge.atunes.gui.images.LocalAudioObjectBigColorMutableImageIcon"/>
+	<bean class="net.sourceforge.atunes.gui.images.PodcastFeedEntrySmallColorMutableImageIcon"/>
+	<bean class="net.sourceforge.atunes.gui.images.PodcastFeedEntryMediumColorMutableImageIcon"/>
+	<bean class="net.sourceforge.atunes.gui.images.PodcastFeedEntryBigColorMutableImageIcon"/>
+	<bean class="net.sourceforge.atunes.gui.images.RadioSmallColorMutableImageIcon"/>
+	<bean class="net.sourceforge.atunes.gui.images.RadioMediumColorMutableImageIcon"/>
+	<bean class="net.sourceforge.atunes.gui.images.RadioBigColorMutableImageIcon"/>
+	
+	<bean id="artistFavoriteIcon" class="net.sourceforge.atunes.gui.images.ArtistFavoriteColorMutableImageIcon"/>
+
+</beans>

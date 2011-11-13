@@ -25,6 +25,7 @@
 		<config>src/main/resources/settings/spring/genres.xml</config>
 		<config>src/main/resources/settings/spring/gui.xml</config>
 		<config>src/main/resources/settings/spring/gui.player.xml</config>
+		<config>src/main/resources/settings/spring/gui.icons.xml</config>
 	</configs>
 	<configSets>
 		<configSet>
@@ -50,6 +51,7 @@
 				<config>src/main/resources/settings/spring/genres.xml</config>
 				<config>src/main/resources/settings/spring/gui.xml</config>
 				<config>src/main/resources/settings/spring/gui.player.xml</config>
+				<config>src/main/resources/settings/spring/gui.icons.xml</config>
 			</configs>
 		</configSet>
 	</configSets>
