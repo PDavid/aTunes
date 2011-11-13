@@ -59,6 +59,27 @@ public abstract class AbstractColumnSet implements IColumnSet {
 	
     protected IFrame frame;
     
+	private List<IColumn> allowedColumns;
+	
+	/**
+	 * @param allowedColumns
+	 */
+	public final void setAllowedColumns(List<IColumn> allowedColumns) {
+		this.allowedColumns = allowedColumns;
+		int order = 0;
+		for (IColumn column : this.allowedColumns) {
+			column.setOrder(order++);
+		}
+	}
+	
+    /**
+     * Returns a list of columns allowed to be used in this column set
+     * @return
+     */
+    protected final List<IColumn> getAllowedColumns() {
+        return allowedColumns;
+    }
+    
     public AbstractColumnSet() {
         ColumnSets.registerColumnSet(this);
     }
@@ -101,13 +122,6 @@ public abstract class AbstractColumnSet implements IColumnSet {
         }
         return availableColumns;
     }
-
-    /**
-     * Returns a list of columns allowed to be used in this column set
-     * 
-     * @return
-     */
-    protected abstract List<IColumn> getAllowedColumns();
 
     @Override
 	public final void saveColumnSet() {

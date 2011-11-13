@@ -20,12 +20,10 @@
 
 package net.sourceforge.atunes.kernel.modules.columns;
 
-import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.gui.model.NavigationTableColumnModel;
 import net.sourceforge.atunes.model.ColumnBean;
-import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.ITable;
 
 /**
@@ -37,19 +35,6 @@ public final class NavigatorColumnSet extends AbstractColumnSet {
 
 	private ITable navigationTable;
 	
-	private List<IColumn> allowedColumns;
-	
-	/**
-	 * @param allowedColumns
-	 */
-	public void setAllowedColumns(List<IColumn> allowedColumns) {
-		this.allowedColumns = allowedColumns;
-		int order = 0;
-		for (IColumn column : this.allowedColumns) {
-			column.setOrder(order++);
-		}
-	}
-	
 	/**
 	 * @param navigationTable
 	 */
@@ -57,11 +42,6 @@ public final class NavigatorColumnSet extends AbstractColumnSet {
 		this.navigationTable = navigationTable;
 	}
 	
-    @Override
-    protected List<IColumn> getAllowedColumns() {
-        return allowedColumns;
-    }
-
     @Override
     protected Map<String, ColumnBean> getColumnsConfiguration() {
         return state.getNavigatorColumns();

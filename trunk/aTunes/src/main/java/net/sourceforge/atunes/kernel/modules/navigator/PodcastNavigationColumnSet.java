@@ -30,9 +30,10 @@ import net.sourceforge.atunes.model.IColumn;
 
 public class PodcastNavigationColumnSet extends AbstractCustomNavigatorColumnSet {
 
-    @Override
-    protected List<IColumn> getAllowedColumns() {
-        List<IColumn> columns = new ArrayList<IColumn>();
+	public PodcastNavigationColumnSet() {
+		super();
+
+		List<IColumn> columns = new ArrayList<IColumn>();
 
         AbstractColumn property1 = new PodcastNotListenedPropertyColumn("", Property.class);
         property1.setVisible(true);
@@ -69,7 +70,7 @@ public class PodcastNavigationColumnSet extends AbstractCustomNavigatorColumnSet
         date.setUsedForFilter(true);
         columns.add(date);
 
-        return columns;
+        setAllowedColumns(columns);
     }
 
 }

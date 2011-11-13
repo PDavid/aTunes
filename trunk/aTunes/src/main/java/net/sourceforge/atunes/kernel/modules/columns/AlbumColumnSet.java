@@ -33,24 +33,6 @@ import net.sourceforge.atunes.model.IColumn;
  */
 public final class AlbumColumnSet extends AbstractColumnSet {
 	
-	private List<IColumn> allowedColumns;
-	
-	/**
-	 * @param allowedColumns
-	 */
-	public void setAllowedColumns(List<IColumn> allowedColumns) {
-		this.allowedColumns = allowedColumns;
-		int order = 0;
-		for (IColumn column : this.allowedColumns) {
-			column.setOrder(order++);
-		}
-	}
-	
-    @Override
-    protected List<IColumn> getAllowedColumns() {
-        return allowedColumns;
-    }
-
     @Override
     protected Map<String, ColumnBean> getColumnsConfiguration() {
     	return state.getAlbumsColumns();

@@ -29,9 +29,10 @@ import net.sourceforge.atunes.model.IColumn;
 
 public final class RadioNavigationColumnSet extends AbstractCustomNavigatorColumnSet {
 
-    @Override
-    protected List<IColumn> getAllowedColumns() {
-        List<IColumn> columns = new ArrayList<IColumn>();
+	public RadioNavigationColumnSet() {
+		super();
+
+		List<IColumn> columns = new ArrayList<IColumn>();
 
         AbstractColumn property = new RadioEmptyColumn("", Property.class);
         property.setVisible(true);
@@ -50,8 +51,8 @@ public final class RadioNavigationColumnSet extends AbstractCustomNavigatorColum
         url.setWidth(400);
         url.setUsedForFilter(true);
         columns.add(url);
-
-        return columns;
+        
+        setAllowedColumns(columns);
     }
 
 }
