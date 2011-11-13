@@ -20,12 +20,10 @@
 
 package net.sourceforge.atunes.kernel.modules.columns;
 
-import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.ColumnBean;
-import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.ISearchHandler;
 
 /**
@@ -34,24 +32,6 @@ import net.sourceforge.atunes.model.ISearchHandler;
  * @author fleax
  */
 public final class SearchResultsColumnSet extends AbstractColumnSet {
-
-	private List<IColumn> allowedColumns;
-	
-	/**
-	 * @param allowedColumns
-	 */
-	public void setAllowedColumns(List<IColumn> allowedColumns) {
-		this.allowedColumns = allowedColumns;
-		int order = 0;
-		for (IColumn column : this.allowedColumns) {
-			column.setOrder(order++);
-		}
-	}
-
-    @Override
-    protected List<IColumn> getAllowedColumns() {
-        return allowedColumns;
-    }
 
     @Override
     protected Map<String, ColumnBean> getColumnsConfiguration() {

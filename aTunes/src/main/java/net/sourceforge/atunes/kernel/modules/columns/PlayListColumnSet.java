@@ -37,19 +37,6 @@ public final class PlayListColumnSet extends AbstractColumnSet {
 
 	private IPlayListTable playListTable;
 	
-	private List<IColumn> allowedColumns;
-	
-	/**
-	 * @param allowedColumns
-	 */
-	public void setAllowedColumns(List<IColumn> allowedColumns) {
-		this.allowedColumns = allowedColumns;
-		int order = 0;
-		for (IColumn column : this.allowedColumns) {
-			column.setOrder(order++);
-		}
-	}
-
 	/**
 	 * @param playListTable
 	 */
@@ -57,11 +44,6 @@ public final class PlayListColumnSet extends AbstractColumnSet {
 		this.playListTable = playListTable;
 	}
 	
-    @Override
-    protected List<IColumn> getAllowedColumns() {
-        return allowedColumns;
-    }
-
     @Override
     protected Map<String, ColumnBean> getColumnsConfiguration() {
         return state.getColumns();
