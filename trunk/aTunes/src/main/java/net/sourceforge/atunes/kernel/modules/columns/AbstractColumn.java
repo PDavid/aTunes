@@ -153,11 +153,6 @@ public abstract class AbstractColumn implements IColumn {
     }
 
     @Override
-	public boolean isPlayListExclusive() {
-        return false;
-    }
-
-    @Override
 	public int getWidth() {
         return width;
     }

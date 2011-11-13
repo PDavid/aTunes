@@ -2,30 +2,123 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
-
 	default-autowire="byName" default-lazy-init="true">
 
-	<bean id="columnSet"
-		class="net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet"
-		abstract="true" />
+	<bean id="columnSet" class="net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet" abstract="true" />
 		
-	<bean id="navigatorColumnSet" parent="columnSet"
-		class="net.sourceforge.atunes.kernel.modules.columns.NavigatorColumnSet" />
-	<bean id="playlistColumnSet" parent="columnSet"
-		class="net.sourceforge.atunes.kernel.modules.columns.PlayListColumnSet" />
-	<bean id="albumColumnSet" parent="columnSet"
-		class="net.sourceforge.atunes.kernel.modules.columns.AlbumColumnSet" />
-	<bean id="searchResultsColumnSet" parent="columnSet"
-		class="net.sourceforge.atunes.kernel.modules.columns.SearchResultsColumnSet" />
-
-	<bean id="podcastNavigationColumnSet" parent="columnSet"
-		class="net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationColumnSet">
-		<constructor-arg value="PodcastNavigationView" />
+	<bean id="navigatorColumnSet" parent="columnSet" class="net.sourceforge.atunes.kernel.modules.columns.NavigatorColumnSet">
+		<property name="allowedColumns" ref="noPlaylistColumnSetColumns"/>
+	</bean>
+	
+	<bean id="playlistColumnSet" parent="columnSet" class="net.sourceforge.atunes.kernel.modules.columns.PlayListColumnSet">
+		<property name="allowedColumns" ref="playlistColumnSetColumns"/>
+	</bean>
+	
+	<bean id="albumColumnSet" parent="columnSet" class="net.sourceforge.atunes.kernel.modules.columns.AlbumColumnSet">
+		<property name="allowedColumns" ref="albumColumnSetColumns"/>
+	</bean>
+	
+	<bean id="searchResultsColumnSet" parent="columnSet" class="net.sourceforge.atunes.kernel.modules.columns.SearchResultsColumnSet">
+		<property name="allowedColumns" ref="noPlaylistColumnSetColumns"/>
 	</bean>
 
-	<bean id="radioNavigationColumnSet" parent="columnSet"
-		class="net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationColumnSet">
-		<constructor-arg value="RadioNavigationView" />
+	<bean id="podcastNavigationColumnSet" parent="columnSet" class="net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationColumnSet">
+		<property name="columnSetName" value="PodcastNavigationView" />
 	</bean>
+
+	<bean id="radioNavigationColumnSet" parent="columnSet" class="net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationColumnSet">
+		<property name="columnSetName" value="RadioNavigationView" />
+	</bean>
+	
+	<bean id="noPlaylistColumnSetColumns" class="java.util.ArrayList" scope="prototype">
+		<constructor-arg>
+			<list>
+				<ref bean="favoriteColumn"/>
+				<ref bean="trackColumn"/>
+				<ref bean="titleColumn"/>
+				<ref bean="artistColumn"/>
+				<ref bean="albumColumn"/>
+				<ref bean="albumArtistColumn"/>
+				<ref bean="composerColumn"/>
+				<ref bean="genreColumn"/>
+				<ref bean="yearColumn"/>
+				<ref bean="dateColumn"/>
+				<ref bean="lengthColumn"/>
+				<ref bean="scoreColumn"/>
+				<ref bean="fileNameColumn"/>
+				<ref bean="pathColumn"/>
+				<ref bean="sizeColumn"/>
+				<ref bean="bitrateColumn"/>
+				<ref bean="frequencyColumn"/>
+				<ref bean="timesPlayerColumn"/>
+				<ref bean="discNumberColumn"/>
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="playlistColumnSetColumns" class="java.util.ArrayList">
+		<constructor-arg>
+			<list>
+				<ref bean="playingColumn"/>
+				<ref bean="favoriteColumn"/>
+				<ref bean="typeColumn"/>
+				<ref bean="trackColumn"/>
+				<ref bean="titleColumn"/>
+				<ref bean="artistColumn"/>
+				<ref bean="albumColumn"/>
+				<ref bean="albumArtistColumn"/>
+				<ref bean="composerColumn"/>
+				<ref bean="genreColumn"/>
+				<ref bean="yearColumn"/>
+				<ref bean="dateColumn"/>
+				<ref bean="lengthColumn"/>
+				<ref bean="scoreColumn"/>
+				<ref bean="fileNameColumn"/>
+				<ref bean="pathColumn"/>
+				<ref bean="sizeColumn"/>
+				<ref bean="bitrateColumn"/>
+				<ref bean="frequencyColumn"/>
+				<ref bean="timesPlayerColumn"/>
+				<ref bean="discNumberColumn"/>
+			</list>
+		</constructor-arg>
+	</bean>
+	
+	
+	<bean id="albumColumnSetColumns" class="java.util.ArrayList">
+		<constructor-arg>
+			<list>
+				<ref bean="typeColumn"/>
+				<ref bean="albumColumn"/>
+				<ref bean="artistColumn"/>
+				<ref bean="albumArtistColumn"/>
+				<ref bean="genreColumn"/>
+				<ref bean="yearColumn"/>
+				<ref bean="discNumberColumn"/>
+			</list>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="playingColumn" class="net.sourceforge.atunes.kernel.modules.columns.PlayingColumn" scope="prototype"/>
+    <bean id="favoriteColumn" class="net.sourceforge.atunes.kernel.modules.columns.FavoriteColumn" scope="prototype"/>
+    <bean id="typeColumn" class="net.sourceforge.atunes.kernel.modules.columns.TypeColumn" scope="prototype"/>
+    <bean id="trackColumn" class="net.sourceforge.atunes.kernel.modules.columns.TrackColumn" scope="prototype"/>
+    <bean id="titleColumn" class="net.sourceforge.atunes.kernel.modules.columns.TitleColumn" scope="prototype"/>
+    <bean id="artistColumn" class="net.sourceforge.atunes.kernel.modules.columns.ArtistColumn" scope="prototype"/>
+    <bean id="albumColumn" class="net.sourceforge.atunes.kernel.modules.columns.AlbumColumn" scope="prototype"/>
+    <bean id="albumArtistColumn" class="net.sourceforge.atunes.kernel.modules.columns.AlbumArtistColumn" scope="prototype"/>
+    <bean id="composerColumn" class="net.sourceforge.atunes.kernel.modules.columns.ComposerColumn" scope="prototype"/>
+    <bean id="genreColumn" class="net.sourceforge.atunes.kernel.modules.columns.GenreColumn" scope="prototype"/>
+    <bean id="yearColumn" class="net.sourceforge.atunes.kernel.modules.columns.YearColumn" scope="prototype"/>
+    <bean id="dateColumn" class="net.sourceforge.atunes.kernel.modules.columns.DateColumn" scope="prototype"/>
+    <bean id="lengthColumn" class="net.sourceforge.atunes.kernel.modules.columns.LengthColumn" scope="prototype"/>
+    <bean id="scoreColumn" class="net.sourceforge.atunes.kernel.modules.columns.ScoreColumn" scope="prototype"/>
+    <bean id="fileNameColumn" class="net.sourceforge.atunes.kernel.modules.columns.FileNameColumn" scope="prototype"/>
+    <bean id="pathColumn" class="net.sourceforge.atunes.kernel.modules.columns.PathColumn" scope="prototype"/>
+    <bean id="sizeColumn" class="net.sourceforge.atunes.kernel.modules.columns.SizeColumn" scope="prototype"/>
+    <bean id="bitrateColumn" class="net.sourceforge.atunes.kernel.modules.columns.BitrateColumn" scope="prototype"/>
+    <bean id="frequencyColumn" class="net.sourceforge.atunes.kernel.modules.columns.FrequencyColumn" scope="prototype"/>
+    <bean id="timesPlayerColumn" class="net.sourceforge.atunes.kernel.modules.columns.TimesPlayedColumn" scope="prototype"/>
+    <bean id="discNumberColumn" class="net.sourceforge.atunes.kernel.modules.columns.DiscNumberColumn" scope="prototype"/>
 
 </beans>

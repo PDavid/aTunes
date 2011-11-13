@@ -30,10 +30,6 @@ import net.sourceforge.atunes.model.IColumn;
 
 public class PodcastNavigationColumnSet extends AbstractCustomNavigatorColumnSet {
 
-    public PodcastNavigationColumnSet(String columnSetName) {
-        super(columnSetName);
-    }
-
     @Override
     protected List<IColumn> getAllowedColumns() {
         List<IColumn> columns = new ArrayList<IColumn>();
