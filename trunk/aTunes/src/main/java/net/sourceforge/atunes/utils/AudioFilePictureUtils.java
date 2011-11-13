@@ -51,9 +51,9 @@ import org.jaudiotagger.tag.datatype.Artwork;
 // TODO: Refactor to add @PluginApi
 public final class AudioFilePictureUtils {
 
-    private AudioFilePictureUtils() {
+	private AudioFilePictureUtils() {
     }
-
+    
     /**
      * Export picture.
      * 
@@ -240,7 +240,7 @@ public final class AudioFilePictureUtils {
      * 
      * @return true, if checks if is valid picture
      */
-    public static boolean isValidPicture(File file) {
+    static boolean isValidPicture(File file) {
         return file.getName().toUpperCase().endsWith("JPG") || file.getName().toUpperCase().endsWith("JPEG") || file.getName().toUpperCase().endsWith("PNG");
     }
 
