@@ -92,8 +92,7 @@ final class PlayListMode {
             return this.playList.get(previousIndex);
         }
 
-        IAudioObject previousAudioObject = playList.getPointedList().moveToPreviousObject();
-        return previousAudioObject;
+        return playList.getPointedList().moveToPreviousObject();
     }
 
     IAudioObject moveToNextAudioObject() {
@@ -120,8 +119,7 @@ final class PlayListMode {
             return this.playList.get(nextIndex);
         }
 
-        IAudioObject nextAudioObject = playList.getPointedList().moveToNextObject();
-        return nextAudioObject;
+        return playList.getPointedList().moveToNextObject();
     }
 
     IAudioObject getPreviousAudioObject(int index) {
