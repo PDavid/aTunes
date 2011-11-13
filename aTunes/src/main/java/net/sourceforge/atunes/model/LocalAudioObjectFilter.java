@@ -54,13 +54,7 @@ public class LocalAudioObjectFilter {
      * @return
      */
     public List<ILocalAudioObject> filterRepeatedObjects(List<ILocalAudioObject> list) {
-    	return filterWithHash(list, new IHashCalculator() {
-    		@Override
-    		public int getHash(ILocalAudioObject lao) {
-    			return (lao.getAlbumArtist() != null && !lao.getAlbumArtist().trim().equals("") ? lao.getAlbumArtist() : lao.getArtist()).hashCode() * 
-    					lao.getTitle().hashCode();
-    		}
-    	});
+    	return filterWithHash(list, new RepeatedObjectsHashCalculator());
     }
     
     /**
@@ -70,14 +64,7 @@ public class LocalAudioObjectFilter {
      * @return
      */
     public List<ILocalAudioObject> filterRepeatedObjectsWithAlbums(List<ILocalAudioObject> list) {
-    	return filterWithHash(list, new IHashCalculator() {
-    		@Override
-    		public int getHash(ILocalAudioObject lao) {
-    			return (lao.getAlbumArtist() != null && !lao.getAlbumArtist().trim().equals("") ? lao.getAlbumArtist() : lao.getArtist()).hashCode() * 
-    					lao.getAlbum().hashCode() * 
-    					lao.getTitle().hashCode();
-    		}
-    	});
+    	return filterWithHash(list, new RepeatedObjectsWithAlbumsHashCalculator());
     }
 
     /**
@@ -102,7 +89,37 @@ public class LocalAudioObjectFilter {
         return result;
     }
     
-    private interface IHashCalculator {
+    /**
+     * Calculates a hash of an audio object using artist, album and title
+     * @author alex
+     *
+     */
+    private static final class RepeatedObjectsWithAlbumsHashCalculator implements IHashCalculator {
+    	
+		@Override
+		public int getHash(ILocalAudioObject lao) {
+			return (lao.getAlbumArtist() != null && !lao.getAlbumArtist().trim().equals("") ? 
+					lao.getAlbumArtist() : lao.getArtist())
+					.hashCode() * lao.getAlbum().hashCode() * lao.getTitle().hashCode();
+		}
+	}
+
+	/**
+     * Calculates a hash of an audio object using artist and title
+     * @author alex
+     *
+     */
+    private static final class RepeatedObjectsHashCalculator implements IHashCalculator {
+    	
+		@Override
+		public int getHash(ILocalAudioObject lao) {
+			return (lao.getAlbumArtist() != null && !lao.getAlbumArtist().trim().equals("") ? 
+					lao.getAlbumArtist() : lao.getArtist())
+					.hashCode() * lao.getTitle().hashCode();
+		}
+	}
+
+	private interface IHashCalculator {
     	/**
     	 * Gets hash for a lao
     	 * @param lao
