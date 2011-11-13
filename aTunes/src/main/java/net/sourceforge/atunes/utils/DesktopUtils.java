@@ -27,9 +27,10 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.concurrent.Callable;
 
-import javax.swing.SwingWorker;
-
+import net.sourceforge.atunes.model.IBackgroundWorker;
+import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ISearch;
@@ -42,6 +43,61 @@ import org.commonjukebox.plugins.model.PluginApi;
 @PluginApi
 public final class DesktopUtils implements IDesktop {
 
+	/**
+	 * Calls desktop to open a file
+	 * @author alex
+	 *
+	 */
+	private static final class OpenFile implements Callable<Void> {
+		private final File fileToOpen;
+
+		private OpenFile(File fileToOpen) {
+			this.fileToOpen = fileToOpen;
+		}
+
+		@Override
+		public Void call() {
+			try {
+				Desktop.getDesktop().open(fileToOpen);
+			} catch (IOException e) {
+				Logger.error(e);
+			}
+			return null;
+		}
+	}
+
+	/**
+	 * Calls desktop to open a browser
+	 * @author alex
+	 *
+	 */
+	private static final class OpenBrowser implements Callable<Void> {
+		private final URI uri;
+
+		private OpenBrowser(URI uri) {
+			this.uri = uri;
+		}
+
+		@Override
+		public Void call() {
+			try {
+				Desktop.getDesktop().browse(uri);
+			} catch (IOException e) {
+				Logger.error(e);
+			}
+			return null;
+		}
+	}
+
+	private IBackgroundWorkerFactory backgroundWorkerFactory;
+	
+	/**
+	 * @param backgroundWorkerFactory
+	 */
+	public void setBackgroundWorkerFactory(IBackgroundWorkerFactory backgroundWorkerFactory) {
+		this.backgroundWorkerFactory = backgroundWorkerFactory;
+	}
+	
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.utils.IDesktop#openSearch(net.sourceforge.atunes.model.ISearch, java.lang.String)
 	 */
@@ -90,17 +146,9 @@ public final class DesktopUtils implements IDesktop {
             } else {
                 fileToOpen = file;
             }
-            new SwingWorker<Void, Void>() {
-                @Override
-                protected Void doInBackground() throws Exception {
-                    try {
-                    	Desktop.getDesktop().open(fileToOpen);
-                    } catch (IOException e) {
-                        Logger.error(e);
-                    }
-                    return null;
-                }
-            }.execute();
+            IBackgroundWorker<Void> backgroundWorker = backgroundWorkerFactory.getWorker();
+            backgroundWorker.setBackgroundActions(new OpenFile(fileToOpen));
+            backgroundWorker.execute();
         }
     }
     
@@ -127,17 +175,9 @@ public final class DesktopUtils implements IDesktop {
      */
     private void browse(final URI uri) {
     	if (isDesktopSupported()) {
-    		new SwingWorker<Void, Void>() {
-    			@Override
-    			protected Void doInBackground() throws Exception {
-    				try {
-    					Desktop.getDesktop().browse(uri);
-    				} catch (IOException e) {
-    					Logger.error(e);
-    				}
-    				return null;
-    			}
-    		}.execute();
+            IBackgroundWorker<Void> backgroundWorker = backgroundWorkerFactory.getWorker();
+            backgroundWorker.setBackgroundActions(new OpenBrowser(uri));
+            backgroundWorker.execute();
     	}
     }
 }

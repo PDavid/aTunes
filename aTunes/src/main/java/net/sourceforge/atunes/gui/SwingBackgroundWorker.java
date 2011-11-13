@@ -80,8 +80,10 @@ public class SwingBackgroundWorker<T> implements IBackgroundWorker<T> {
 				} catch (ExecutionException e) {
 					Logger.error(e);
 				}
-				graphicalActionsWhenDone.call(backgroundResult);
-				Logger.debug("Running finish actions completed");
+				if (graphicalActionsWhenDone != null) {
+					graphicalActionsWhenDone.call(backgroundResult);
+					Logger.debug("Running finish actions completed");
+				}
 			}
 			
 		}.execute();
