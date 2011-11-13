@@ -41,6 +41,7 @@ import javax.swing.event.PopupMenuListener;
 
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.IPopUpButton;
 import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
@@ -48,7 +49,7 @@ import net.sourceforge.atunes.utils.GuiUtils;
  * 
  * @author fleax
  */
-public class PopUpButton extends JButton {
+public class PopUpButton extends JButton implements IPopUpButton {
 
     private static final long serialVersionUID = 5193978267971626102L;
 

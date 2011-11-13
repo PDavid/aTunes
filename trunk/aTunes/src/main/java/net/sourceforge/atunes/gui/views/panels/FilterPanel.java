@@ -37,6 +37,7 @@ import net.sourceforge.atunes.gui.views.controls.LookAndFeelAwareButton;
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
 import net.sourceforge.atunes.model.IFilterPanel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.IPopUpButton;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -142,7 +143,7 @@ public class FilterPanel extends JPanel implements IFilterPanel {
      * @return the filterButton
      */
     @Override
-	public PopUpButton getFilterButton() {
+	public IPopUpButton getFilterButton() {
         return filterButton;
     }
 

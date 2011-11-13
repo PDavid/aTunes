@@ -23,7 +23,6 @@ package net.sourceforge.atunes.model;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 
-import net.sourceforge.atunes.gui.views.controls.PopUpButton;
 
 /**
  * A panel to let user filter objects
@@ -35,7 +34,7 @@ public interface IFilterPanel extends IPanel {
 	/**
 	 * @return the filterButton
 	 */
-	public PopUpButton getFilterButton();
+	public IPopUpButton getFilterButton();
 
 	/**
 	 * @return the filterTextField

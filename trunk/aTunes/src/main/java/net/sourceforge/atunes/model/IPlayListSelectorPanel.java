@@ -24,7 +24,6 @@ import java.awt.Component;
 
 import javax.swing.JComboBox;
 
-import net.sourceforge.atunes.gui.views.controls.PopUpButton;
 
 /**
  * A panel to select play lists
@@ -41,7 +40,7 @@ public interface IPlayListSelectorPanel {
 	/**
 	 * @return the options
 	 */
-	public PopUpButton getOptions();
+	public IPopUpButton getOptions();
 
 	/**
 	 * Returns Swing component
