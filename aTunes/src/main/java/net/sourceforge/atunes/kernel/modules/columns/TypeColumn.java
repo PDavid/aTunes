@@ -20,22 +20,13 @@
 
 package net.sourceforge.atunes.kernel.modules.columns;
 
-import java.awt.Paint;
-
-import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
-import net.sourceforge.atunes.gui.images.RadioImageIcon;
-import net.sourceforge.atunes.gui.images.RssImageIcon;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IAudioObjectGenericImageFactory;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
-import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.model.IPodcastFeedEntry;
-import net.sourceforge.atunes.model.IRadio;
 
 public class TypeColumn extends AbstractColumn {
 
@@ -43,6 +34,8 @@ public class TypeColumn extends AbstractColumn {
      * 
      */
     private static final long serialVersionUID = -3060341777429113749L;
+    
+    private IAudioObjectGenericImageFactory audioObjectGenericImageFactory;
 
     public TypeColumn() {
         super("TYPE", IColorMutableImageIcon.class);
@@ -50,6 +43,7 @@ public class TypeColumn extends AbstractColumn {
         setWidth(20);
         setVisible(true);
         setAlignment(SwingConstants.CENTER);
+        this.audioObjectGenericImageFactory = Context.getBean(IAudioObjectGenericImageFactory.class);
     }
 
     @Override
@@ -64,32 +58,7 @@ public class TypeColumn extends AbstractColumn {
 
     @Override
     public Object getValueFor(IAudioObject audioObject) {
-    	final ILookAndFeel lookAndFeel = Context.getBean(ILookAndFeelManager.class).getCurrentLookAndFeel();
-        if (audioObject instanceof AudioFile) {
-            return new IColorMutableImageIcon() {
-            	@Override
-            	public ImageIcon getIcon(Paint paint) {
-            		return AudioFileImageIcon.getSmallImageIcon(paint, lookAndFeel);
-            	}
-            };
-        } else if (audioObject instanceof IRadio) {
-            return new IColorMutableImageIcon() {
-            	@Override
-            	public ImageIcon getIcon(Paint paint) {
-            		return RadioImageIcon.getSmallIcon(paint, lookAndFeel);
-            	}
-            };
-        } else if (audioObject instanceof IPodcastFeedEntry) {
-            return new IColorMutableImageIcon() {
-				
-				@Override
-				public ImageIcon getIcon(Paint paint) {
-					return RssImageIcon.getSmallIcon(paint, lookAndFeel);
-				}
-			};
-        } else {
-            return null;
-        }
+    	return this.audioObjectGenericImageFactory.getGenericImage(audioObject, GenericImageSize.SMALL);
     }
 
     @Override
