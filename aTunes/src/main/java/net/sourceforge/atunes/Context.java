@@ -44,6 +44,7 @@ public class Context {
 				"/settings/spring/dialogs.xml", 
 				"/settings/spring/genres.xml", 
 				"/settings/spring/gui.xml", 
+				"/settings/spring/gui.icons.xml",
 				"/settings/spring/gui.player.xml", 
 				"/settings/spring/handlers.xml", 
 				"/settings/spring/lookandfeel.xml", 

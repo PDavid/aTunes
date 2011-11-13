@@ -11,16 +11,5 @@
 	
 	<bean id="collatorFactory" class="net.sourceforge.atunes.utils.Collator"/>
 	<bean id="collator" factory-bean="collatorFactory" factory-method="getCollator"/>
-	
-	<bean id="audioObjectGenericImageFactory" class="net.sourceforge.atunes.gui.images.AudioObjectGenericImage" autowire="byType"/>
-	<bean class="net.sourceforge.atunes.gui.images.LocalAudioObjectSmallColorMutableImageIcon"/>
-	<bean class="net.sourceforge.atunes.gui.images.LocalAudioObjectMediumColorMutableImageIcon"/>
-	<bean class="net.sourceforge.atunes.gui.images.LocalAudioObjectBigColorMutableImageIcon"/>
-	<bean class="net.sourceforge.atunes.gui.images.PodcastFeedEntrySmallColorMutableImageIcon"/>
-	<bean class="net.sourceforge.atunes.gui.images.PodcastFeedEntryMediumColorMutableImageIcon"/>
-	<bean class="net.sourceforge.atunes.gui.images.PodcastFeedEntryBigColorMutableImageIcon"/>
-	<bean class="net.sourceforge.atunes.gui.images.RadioSmallColorMutableImageIcon"/>
-	<bean class="net.sourceforge.atunes.gui.images.RadioMediumColorMutableImageIcon"/>
-	<bean class="net.sourceforge.atunes.gui.images.RadioBigColorMutableImageIcon"/>
 
 </beans>

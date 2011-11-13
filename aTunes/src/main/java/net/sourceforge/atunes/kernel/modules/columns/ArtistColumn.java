@@ -20,29 +20,29 @@
 
 package net.sourceforge.atunes.kernel.modules.columns;
 
-import java.awt.Paint;
-
-import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.images.ArtistFavoriteImageIcon;
 import net.sourceforge.atunes.model.ColumnSort;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IFavoritesHandler;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 public class ArtistColumn extends AbstractColumn {
 
-    
     private static final long serialVersionUID = 8144686293055648148L;
 
+    private IFavoritesHandler favoritesHandler;
+    
+    private IColorMutableImageIcon artistFavoriteIcon;
+    
     public ArtistColumn() {
         super("ARTIST", TextAndIcon.class);
         setVisible(true);
         setUsedForFilter(true);
         setColumnSort(ColumnSort.ASCENDING); // Column sets are ordered by default by this column
+        this.favoritesHandler = Context.getBean(IFavoritesHandler.class);
+        this.artistFavoriteIcon = (IColorMutableImageIcon) Context.getBean("artistFavoriteIcon");
     }
 
     @Override
@@ -61,15 +61,11 @@ public class ArtistColumn extends AbstractColumn {
 
     @Override
     public Object getValueFor(IAudioObject audioObject) {
-        // Return artist
-        return new TextAndIcon(audioObject.getArtist(), 
-        		!Context.getBean(IFavoritesHandler.class).getFavoriteArtistsInfo().containsKey(audioObject.getArtist()) ? null : new IColorMutableImageIcon() {
-					
-					@Override
-					public ImageIcon getIcon(Paint paint) {
-						return ArtistFavoriteImageIcon.getIcon(paint, Context.getBean(ILookAndFeelManager.class).getCurrentLookAndFeel());
-					}
-				}, SwingConstants.LEFT);
+    	if (favoritesHandler.getFavoriteArtistsInfo().containsKey(audioObject.getArtist())) {
+            return new TextAndIcon(audioObject.getArtist(), artistFavoriteIcon, SwingConstants.LEFT);
+    	} else {
+    		return new TextAndIcon(audioObject.getArtist(), null, SwingConstants.LEFT);
+    	}
     }
 
     @Override
