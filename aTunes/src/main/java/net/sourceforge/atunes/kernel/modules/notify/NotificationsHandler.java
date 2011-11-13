@@ -31,12 +31,14 @@ import java.util.Set;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IAudioObjectGenericImageFactory;
 import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INotificationEngine;
 import net.sourceforge.atunes.model.INotificationsHandler;
 import net.sourceforge.atunes.model.IPlaybackStateListener;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITemporalDiskStorage;
 import net.sourceforge.atunes.model.PlaybackState;
 
 public final class NotificationsHandler extends AbstractHandler implements IPlaybackStateListener, INotificationsHandler {
@@ -44,6 +46,25 @@ public final class NotificationsHandler extends AbstractHandler implements IPlay
     private static Map<String, INotificationEngine> engines = new HashMap<String, INotificationEngine>();
     
     private INotificationEngine defaultEngine;
+    
+    private IAudioObjectGenericImageFactory audioObjectGenericImageFactory;
+    
+    private ITemporalDiskStorage temporalDiskStorage;
+    
+    /**
+     * @param temporalDiskStorage
+     */
+    public void setTemporalDiskStorage(ITemporalDiskStorage temporalDiskStorage) {
+		this.temporalDiskStorage = temporalDiskStorage;
+	}
+    
+    /**
+     * @param audioObjectGenericImageFactory
+     */
+    public void setAudioObjectGenericImageFactory(
+			IAudioObjectGenericImageFactory audioObjectGenericImageFactory) {
+		this.audioObjectGenericImageFactory = audioObjectGenericImageFactory;
+	}
     
     /**
      * Adds a new notification engine
@@ -78,11 +99,11 @@ public final class NotificationsHandler extends AbstractHandler implements IPlay
     
     @Override
     protected void initHandler() {
-    	defaultEngine = new DefaultNotifications(getState(), getOsManager(), getBean(ILookAndFeelManager.class));
+    	defaultEngine = new DefaultNotifications(getState(), getOsManager(), getBean(ILookAndFeelManager.class), audioObjectGenericImageFactory, temporalDiskStorage);
     	// Add here any new notification engine
     	addNotificationEngine(defaultEngine);
-    	addNotificationEngine(new LibnotifyNotificationEngine(getOsManager(), getBean(ILookAndFeelManager.class)));
-    	addNotificationEngine(new GrowlNotificationEngine(getOsManager(), getBean(ILookAndFeelManager.class)));
+    	addNotificationEngine(new LibnotifyNotificationEngine(getOsManager(), audioObjectGenericImageFactory, temporalDiskStorage));
+    	addNotificationEngine(new GrowlNotificationEngine(getOsManager(), audioObjectGenericImageFactory, temporalDiskStorage));
 
     	// Load available engines
     	for (INotificationEngine engine : engines.values()) {

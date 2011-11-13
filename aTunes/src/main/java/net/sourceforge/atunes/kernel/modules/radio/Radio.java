@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.radio;
 
-import java.awt.Paint;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -28,13 +27,9 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.images.RadioImageIcon;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
-import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IColorMutableImageIcon;
-import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.ImageSize;
@@ -406,39 +401,6 @@ public final class Radio implements IRadio {
     @Override
     public ImageIcon getImage(ImageSize imageSize, IOSManager osManager) {
         return null;
-    }
-
-    @Override
-    public IColorMutableImageIcon getGenericImage(GenericImageSize imageSize, final ILookAndFeel lookAndFeel) {
-        switch (imageSize) {
-        case SMALL: {
-        	return new IColorMutableImageIcon() {
-				@Override
-				public ImageIcon getIcon(Paint paint) {
-		            return RadioImageIcon.getSmallIcon(paint, lookAndFeel);
-				}
-			};
-        }
-        case MEDIUM: {
-        	return new IColorMutableImageIcon() {
-				@Override
-				public ImageIcon getIcon(Paint paint) {
-		            return RadioImageIcon.getIcon(paint, lookAndFeel);
-				}
-			};
-        }
-        case BIG: {
-        	return new IColorMutableImageIcon() {
-				@Override
-				public ImageIcon getIcon(Paint paint) {
-		            return RadioImageIcon.getBigIcon(paint, lookAndFeel);
-				}
-			};
-        }
-        default: {
-            throw new IllegalArgumentException("unknown image size");
-        }
-        }
     }
 
 	/* (non-Javadoc)

@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.repository.data;
 
-import java.awt.Paint;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -28,17 +27,13 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
 import net.sourceforge.atunes.kernel.modules.repository.ImageCache;
 import net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectValidator;
 import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
 import net.sourceforge.atunes.kernel.modules.tags.TagDetector;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
-import net.sourceforge.atunes.model.GenericImageSize;
-import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.ImageSize;
@@ -494,39 +489,6 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
         }
 
         return result;
-    }
-
-    @Override
-    public IColorMutableImageIcon getGenericImage(GenericImageSize imageSize, final ILookAndFeel lookAndFeel) {
-        switch (imageSize) {
-        case SMALL: {
-        	return new IColorMutableImageIcon() {
-        		@Override
-        		public ImageIcon getIcon(Paint paint) {
-        			return AudioFileImageIcon.getSmallImageIcon(paint, lookAndFeel);
-        		}
-        	};         
-        }
-        case MEDIUM: {
-        	return new IColorMutableImageIcon() {
-        		@Override
-        		public ImageIcon getIcon(Paint paint) {
-        			return AudioFileImageIcon.getMediumImage(paint, lookAndFeel);
-        		}
-        	};         
-        }
-        case BIG: {
-        	return new IColorMutableImageIcon() {
-        		@Override
-        		public ImageIcon getIcon(Paint paint) {
-        			return AudioFileImageIcon.getMediumImage(paint, lookAndFeel);
-        		}
-        	};         
-        }
-        default: {
-            throw new IllegalArgumentException("unknown image size");
-        }
-        }
     }
 
     /**

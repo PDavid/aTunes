@@ -35,7 +35,7 @@ import net.sourceforge.atunes.gui.views.dialogs.OSDDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.IAudioObjectGenericImageFactory;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ImageSize;
@@ -47,7 +47,7 @@ final class OSDDialogController extends AbstractSimpleController<OSDDialog> {
     private Point location;
     private Timer timer;
     private IOSManager osManager;
-    private ILookAndFeelManager lookAndFeelManager;
+    private IAudioObjectGenericImageFactory audioObjectGenericImageFactory;
 
     /**
      * Instantiates a new oSD dialog controller.
@@ -57,10 +57,10 @@ final class OSDDialogController extends AbstractSimpleController<OSDDialog> {
      * @param osManager
      * @param lookAndFeelManager
      */
-    OSDDialogController(OSDDialog dialogControlled, IState state, IOSManager osManager, ILookAndFeelManager lookAndFeelManager) {
+    OSDDialogController(OSDDialog dialogControlled, IState state, IOSManager osManager, IAudioObjectGenericImageFactory audioObjectGenericImageFactory) {
         super(dialogControlled, state);
         addBindings();
-        this.lookAndFeelManager = lookAndFeelManager;
+        this.audioObjectGenericImageFactory = audioObjectGenericImageFactory;
         this.osManager = osManager;
         windowFader = new WindowFader(dialogControlled, 50);
     }
@@ -124,7 +124,7 @@ final class OSDDialogController extends AbstractSimpleController<OSDDialog> {
 
         ImageIcon i = audioObject.getImage(ImageSize.SIZE_MAX, osManager);
         if (i == null) {
-            i = audioObject.getGenericImage(GenericImageSize.MEDIUM, lookAndFeelManager.getCurrentLookAndFeel()).getIcon(null);
+            i = audioObjectGenericImageFactory.getGenericImage(audioObject, GenericImageSize.MEDIUM).getIcon(null);
             getComponentControlled().setShadowBorder(false);
         }
         getComponentControlled().setImage(i);
