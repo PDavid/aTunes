@@ -26,11 +26,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.swing.ImageIcon;
-
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -139,11 +136,6 @@ public class Year implements Serializable, ITreeObject<ILocalAudioObject> {
     @Override
     public boolean isExtendedToolTipSupported() {
         return true;
-    }
-
-    @Override
-    public ImageIcon getExtendedToolTipImage(IOSManager osManager) {
-        return null;
     }
 
     @Override

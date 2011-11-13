@@ -172,7 +172,6 @@ public class Album implements Serializable, ITreeObject<ILocalAudioObject>, Comp
     public ImageIcon getPicture(ImageSize imageSize, IOSManager osManager) {
         return getAudioFiles().first().getImage(imageSize, osManager);
     }
-
     
     /**
      * Removes a song from this album.
@@ -203,11 +202,6 @@ public class Album implements Serializable, ITreeObject<ILocalAudioObject>, Comp
     @Override
     public boolean isExtendedToolTipSupported() {
         return true;
-    }
-
-    @Override
-    public ImageIcon getExtendedToolTipImage(IOSManager osManager) {
-        return getPicture(ImageSize.SIZE_MAX, osManager);
     }
 
     @Override
