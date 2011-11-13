@@ -20,36 +20,34 @@
 
 package net.sourceforge.atunes.model;
 
-import javax.swing.JButton;
-import javax.swing.JTextField;
+import java.awt.Component;
+import java.awt.event.ActionListener;
 
 
 /**
- * A panel to let user filter objects
+ * A graphical component: a button and a popup: when button is clicked popup is displayed
  * @author alex
  *
  */
-public interface IFilterPanel extends IPanel {
+public interface IPopUpButton {
 
 	/**
-	 * @return the filterButton
+	 * Adds a component to popup
+	 * @param component
+	 * @return
 	 */
-	public IPopUpButton getFilterButton();
+	Component add(Component component);
+	
+	/**
+	 * Removes a component from popup
+	 * @param component
+	 */
+	void remove(Component component);
 
 	/**
-	 * @return the filterTextField
+	 * Adds a listener when popup opens
+	 * @param listener
 	 */
-	public JTextField getFilterTextField();
-
-	/**
-	 * @return the clearButton
-	 */
-	public JButton getClearButton();
-
-	/**
-	 * Called to update filter panel
-	 * @param filterApplied
-	 */
-	public void setFilterApplied(boolean filterApplied);
+	void addActionListener(ActionListener listener);
 
 }

@@ -37,6 +37,7 @@ import net.sourceforge.atunes.kernel.actions.RenamePlaylistAction;
 import net.sourceforge.atunes.kernel.actions.SynchronizeDeviceWithPlayListAction;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListSelectorPanel;
+import net.sourceforge.atunes.model.IPopUpButton;
 
 public final class PlayListSelectorPanel extends JPanel implements IPlayListSelectorPanel {
 
@@ -95,7 +96,7 @@ public final class PlayListSelectorPanel extends JPanel implements IPlayListSele
 	 * @see net.sourceforge.atunes.gui.views.panels.IPlayListSelectorPanel#getOptions()
 	 */
 	@Override
-	public PopUpButton getOptions() {
+	public IPopUpButton getOptions() {
 		return options;
 	}
 	
