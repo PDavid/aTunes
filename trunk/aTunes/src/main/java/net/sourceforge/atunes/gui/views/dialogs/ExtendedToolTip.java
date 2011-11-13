@@ -41,7 +41,6 @@ import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.ITreeObject;
@@ -277,20 +276,6 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
 		int songNumber = a.size();
 		setLine3(StringUtils.getString(songNumber, " ", (songNumber > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG"))));
 	}
-
-	/**
-     * Returns image to be shown in extended tool tip for given object
-     * 
-     * @param obj
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-	public static ImageIcon getImage(Object obj, IOSManager osManager) {
-        if (obj instanceof ITreeObject) {
-            return ((ITreeObject<? extends IAudioObject>) obj).getExtendedToolTipImage(osManager);
-        }
-        return null;
-    }
 
     /**
      * Adjust size of extended tool tip if it's going to show an image or not

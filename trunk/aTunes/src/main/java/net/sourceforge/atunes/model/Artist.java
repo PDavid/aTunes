@@ -20,16 +20,12 @@
 
 package net.sourceforge.atunes.model;
 
-import java.awt.Image;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.ImageIcon;
-
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -176,15 +172,6 @@ public class Artist implements Serializable, ITreeObject<ILocalAudioObject>, Com
     @Override
     public boolean isExtendedToolTipSupported() {
         return true;
-    }
-
-    @Override
-    public ImageIcon getExtendedToolTipImage(IOSManager osManager) {
-        Image img = Context.getBean(IWebServicesHandler.class).getArtistImage(name);
-        if (img != null) {
-            return new ImageIcon(img);
-        }
-        return null;
     }
 
     @Override

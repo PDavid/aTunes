@@ -27,8 +27,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.ImageIcon;
-
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -279,11 +277,6 @@ public class Folder implements Serializable, ITreeObject<ILocalAudioObject> {
     @Override
     public boolean isExtendedToolTipSupported() {
         return true;
-    }
-
-    @Override
-    public ImageIcon getExtendedToolTipImage(IOSManager osManager) {
-        return null;
     }
 
     @Override

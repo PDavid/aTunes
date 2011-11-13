@@ -22,8 +22,6 @@ package net.sourceforge.atunes.model;
 
 import java.util.List;
 
-import javax.swing.ImageIcon;
-
 import org.commonjukebox.plugins.model.PluginApi;
 
 /**
@@ -62,14 +60,6 @@ public interface ITreeObject<T extends IAudioObject> {
      */
     public boolean isExtendedToolTipImageSupported();
 
-    /**
-     * Returns image to be shown in extended tool tip
-     * 
-     * @param osManager
-     * @return
-     */
-    public ImageIcon getExtendedToolTipImage(IOSManager osManager);
-    
 	/**
 	 * Returns number of audio objects
 	 * @return

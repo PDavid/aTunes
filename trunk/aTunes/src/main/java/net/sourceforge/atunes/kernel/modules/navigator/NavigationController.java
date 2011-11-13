@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -56,6 +57,8 @@ import net.sourceforge.atunes.kernel.actions.ShowArtistsInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowFoldersInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowGenresInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowYearsInNavigatorAction;
+import net.sourceforge.atunes.model.Album;
+import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumn;
@@ -75,13 +78,16 @@ import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.ITreeObject;
+import net.sourceforge.atunes.model.IWebServicesHandler;
+import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.Logger;
 
 final class NavigationController implements IAudioFilesRemovedListener, IController {
 
     private final class ExtendedToolTipActionListener implements ActionListener {
-		private final class GetAndSetImageSwingWorker extends
-				SwingWorker<ImageIcon, Void> {
+    	
+		private final class GetAndSetImageSwingWorker extends SwingWorker<ImageIcon, Void> {
+			
 			private final Object currentObject;
 
 			private IOSManager osManager;
@@ -94,7 +100,19 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
 			@Override
 			protected ImageIcon doInBackground() throws Exception {
 			    // Get image for albums
-			    return ExtendedToolTip.getImage(currentObject, osManager);
+		        if (currentObject instanceof ITreeObject) {
+		        	if (currentObject instanceof Artist) {
+		        		Artist a = (Artist) currentObject;
+		                Image img = Context.getBean(IWebServicesHandler.class).getArtistImage(a.getName());
+		                if (img != null) {
+		                    return new ImageIcon(img);
+		                }
+		                return null;
+		        	} else if (currentObject instanceof Album) {
+		        		return ((Album)currentObject).getPicture(ImageSize.SIZE_MAX, osManager);
+		        	}
+		        }
+		        return null;
 			}
 
 			@Override

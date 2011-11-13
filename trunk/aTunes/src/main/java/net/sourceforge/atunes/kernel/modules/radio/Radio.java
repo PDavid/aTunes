@@ -384,11 +384,6 @@ public final class Radio implements IRadio {
     }
 
     @Override
-    public ImageIcon getExtendedToolTipImage(IOSManager osManager) {
-        return null;
-    }
-
-    @Override
     public boolean isExtendedToolTipImageSupported() {
         return false;
     }
