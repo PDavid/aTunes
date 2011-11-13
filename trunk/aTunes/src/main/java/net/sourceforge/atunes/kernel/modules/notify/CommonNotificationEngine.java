@@ -25,10 +25,9 @@ import java.util.UUID;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.IAudioObjectGenericImageFactory;
 import net.sourceforge.atunes.model.INotificationEngine;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ITemporalDiskStorage;
@@ -41,13 +40,17 @@ public abstract class CommonNotificationEngine implements INotificationEngine {
 
 	private Boolean available;
 	
-	private ILookAndFeelManager lookAndFeelManager;
+	private IAudioObjectGenericImageFactory audioObjectGenericImageFactory;
+	
+	private ITemporalDiskStorage diskStorage;
 	
 	/**
-	 * @param lookAndFeelManager
+	 * @param audioObjectGenericImageFactory
+	 * @param diskStorage
 	 */
-	public CommonNotificationEngine(ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
+	public CommonNotificationEngine(IAudioObjectGenericImageFactory audioObjectGenericImageFactory, ITemporalDiskStorage diskStorage) {
+		this.audioObjectGenericImageFactory = audioObjectGenericImageFactory;
+		this.diskStorage = diskStorage;
 	}
 	
 	/**
@@ -69,9 +72,9 @@ public abstract class CommonNotificationEngine implements INotificationEngine {
 	protected final String getTemporalImage(IAudioObject audioObject, IOSManager osManager) {
 		ImageIcon imageForAudioObject = audioObject.getImage(ImageSize.SIZE_200, osManager);
 		if (imageForAudioObject == null) {
-			imageForAudioObject = audioObject.getGenericImage(GenericImageSize.MEDIUM, lookAndFeelManager.getCurrentLookAndFeel()).getIcon(null);
+			imageForAudioObject = audioObjectGenericImageFactory.getGenericImage(audioObject, GenericImageSize.MEDIUM).getIcon(null);
 		}
-		return Context.getBean(ITemporalDiskStorage.class).addImage(ImageUtils.toBufferedImage(imageForAudioObject.getImage()), UUID.randomUUID().toString()).getAbsolutePath();
+		return diskStorage.addImage(ImageUtils.toBufferedImage(imageForAudioObject.getImage()), UUID.randomUUID().toString()).getAbsolutePath();
 	}
 	
 	/**
@@ -80,6 +83,13 @@ public abstract class CommonNotificationEngine implements INotificationEngine {
 	 */
 	protected final void removeTemporalImage(String path) {
 		FileUtils.deleteQuietly(new File(path));
+	}
+	
+	/**
+	 * @return audio object generic image factory
+	 */
+	protected final IAudioObjectGenericImageFactory getAudioObjectGenericImageFactory() {
+		return audioObjectGenericImageFactory;
 	}
 	
 	/**

@@ -28,6 +28,7 @@ import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IAudioObjectGenericImageFactory;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
@@ -44,10 +45,19 @@ public class AudioObjectContextPanel extends AbstractContextPanel {
 
     private static final long serialVersionUID = -7910261492394049289L;
 
+    private IAudioObjectGenericImageFactory audioObjectGenericImageFactory;
+    
+    /**
+     * @param audioObjectGenericImageFactory
+     */
+    public void setAudioObjectGenericImageFactory(IAudioObjectGenericImageFactory audioObjectGenericImageFactory) {
+		this.audioObjectGenericImageFactory = audioObjectGenericImageFactory;
+	}
+    
     @Override
     public IColorMutableImageIcon getContextPanelIcon(final IAudioObject audioObject) {
         if (audioObject != null) {
-            return audioObject.getGenericImage(GenericImageSize.SMALL, getLookAndFeel());
+            return audioObjectGenericImageFactory.getGenericImage(audioObject, GenericImageSize.SMALL);
         } else {
         	return new IColorMutableImageIcon() {
         		@Override

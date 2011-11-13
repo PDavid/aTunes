@@ -22,9 +22,6 @@ package net.sourceforge.atunes;
 
 import java.util.List;
 
-import javax.swing.RepaintManager;
-
-import net.sourceforge.atunes.gui.debug.CheckThreadViolationRepaintManager;
 import net.sourceforge.atunes.model.IKernel;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.Logger;

@@ -20,17 +20,12 @@
 
 package net.sourceforge.atunes.kernel.modules.podcast;
 
-import java.awt.Paint;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.images.RssImageIcon;
-import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IColorMutableImageIcon;
-import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
@@ -339,39 +334,6 @@ public final class PodcastFeedEntry implements IPodcastFeedEntry {
     @Override
     public ImageIcon getImage(ImageSize imageSize, IOSManager osManager) {
         return null;
-    }
-
-    @Override
-    public IColorMutableImageIcon getGenericImage(GenericImageSize imageSize, final ILookAndFeel lookAndFeel) {
-        switch (imageSize) {
-        case SMALL: {
-        	return new IColorMutableImageIcon() {				
-				@Override
-				public ImageIcon getIcon(Paint paint) {
-		            return RssImageIcon.getSmallIcon(paint, lookAndFeel);
-				}
-			};
-        }
-        case MEDIUM: {
-            return new IColorMutableImageIcon() {
-            	@Override
-            	public ImageIcon getIcon(Paint paint) {
-            		return RssImageIcon.getIcon(paint, lookAndFeel);
-            	}
-            };
-        }
-        case BIG: {
-            return new IColorMutableImageIcon() {
-            	@Override
-            	public ImageIcon getIcon(Paint paint) {
-            		return RssImageIcon.getBigIcon(paint, lookAndFeel);
-            	}
-            };
-        }
-        default: {
-            throw new IllegalArgumentException("unknown image size");
-        }
-        }
     }
 
 	@Override

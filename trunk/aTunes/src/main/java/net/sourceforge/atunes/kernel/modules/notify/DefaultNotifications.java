@@ -25,9 +25,11 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.dialogs.OSDDialog;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IAudioObjectGenericImageFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITemporalDiskStorage;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class DefaultNotifications extends CommonNotificationEngine {
@@ -52,12 +54,15 @@ public class DefaultNotifications extends CommonNotificationEngine {
 	private ILookAndFeelManager lookAndFeelManager;
 	
 	/**
-	 * 
 	 * @param state
 	 * @param osManager
+	 * @param lookAndFeelManager
+	 * @param audioObjectGenericImageFactory
+	 * @param diskStorage
 	 */
-	public DefaultNotifications(IState state, IOSManager osManager, ILookAndFeelManager lookAndFeelManager) {
-		super(lookAndFeelManager);
+	public DefaultNotifications(IState state, IOSManager osManager, ILookAndFeelManager lookAndFeelManager, 
+			IAudioObjectGenericImageFactory audioObjectGenericImageFactory, ITemporalDiskStorage diskStorage) {
+		super(audioObjectGenericImageFactory, diskStorage);
 		this.state = state;
 		this.osManager = osManager;
 		this.lookAndFeelManager = lookAndFeelManager;
@@ -73,7 +78,7 @@ public class DefaultNotifications extends CommonNotificationEngine {
             JDialog.setDefaultLookAndFeelDecorated(false);
             osdDialog = new OSDDialog(state.getOsdWidth(), lookAndFeelManager.getCurrentLookAndFeel());
             JDialog.setDefaultLookAndFeelDecorated(lookAndFeelManager.getCurrentLookAndFeel().isDialogUndecorated());
-            osdDialogController = new OSDDialogController(osdDialog, state, osManager, lookAndFeelManager);
+            osdDialogController = new OSDDialogController(osdDialog, state, osManager, getAudioObjectGenericImageFactory());
         }
         return osdDialogController;
     }
