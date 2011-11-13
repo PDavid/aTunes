@@ -312,8 +312,7 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
      * @return
      */
     private JMenuItem getStopMenuItem() {
-        JMenuItem stop = new JMenuItem(getBean(StopCurrentAudioObjectAction.class));
-        return stop;
+        return new JMenuItem(getBean(StopCurrentAudioObjectAction.class));
     }
 
     /**
@@ -322,8 +321,7 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
      * @return
      */
     private JMenuItem getPreviousMenuItem() {
-        JMenuItem previous = new JMenuItem(getBean(PlayPreviousAudioObjectAction.class));
-        return previous;
+        return new JMenuItem(getBean(PlayPreviousAudioObjectAction.class));
     }
 
     /**
@@ -332,8 +330,7 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
      * @return
      */
     private JMenuItem getNextMenuItem() {
-        JMenuItem next = new JMenuItem(getBean(PlayNextAudioObjectAction.class));
-        return next;
+        return new JMenuItem(getBean(PlayNextAudioObjectAction.class));
     }
 
     /**
