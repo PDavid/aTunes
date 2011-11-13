@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -48,10 +47,11 @@ import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.Repository;
-import net.sourceforge.atunes.utils.AudioFilePictureUtils;
+import net.sourceforge.atunes.utils.DirectoryFileFilter;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.Timer;
+import net.sourceforge.atunes.utils.ValidPicturesFileFilter;
 
 /**
  * Class for loading audio files into repository.
@@ -452,14 +452,7 @@ public class RepositoryLoader extends Thread {
 	 */
 	private List<File> processPictures(File dir) {
         // Get Pictures
-        File[] pictures = dir.listFiles(new FileFilter() {
-			
-			@Override
-			public boolean accept(File pathname) {
-				return AudioFilePictureUtils.isValidPicture(pathname);
-			}
-		});
-        
+        File[] pictures = dir.listFiles(new ValidPicturesFileFilter());
         return pictures != null && pictures.length > 0 ? Arrays.asList(pictures) : null;
 	}
 	
@@ -470,13 +463,7 @@ public class RepositoryLoader extends Thread {
 	 */
 	private void processDirectories(File dir, File relativeTo) {
         // Directories
-        File[] dirs = dir.listFiles(new FileFilter() {
-			
-			@Override
-			public boolean accept(File pathname) {
-				return pathname.isDirectory();
-			}
-		});
+        File[] dirs = dir.listFiles(new DirectoryFileFilter());
         
         // Process directories
         if (dirs != null) {
