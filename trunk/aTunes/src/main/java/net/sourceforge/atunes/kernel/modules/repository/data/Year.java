@@ -28,7 +28,6 @@ import java.util.Set;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
@@ -140,15 +139,6 @@ public class Year implements Serializable, ITreeObject<ILocalAudioObject> {
     @Override
     public boolean isExtendedToolTipSupported() {
         return true;
-    }
-
-    @Override
-    public void setExtendedToolTip(ExtendedToolTip toolTip) {
-        toolTip.setLine1(getName());
-        int artistNumber = getArtistSet().size();
-        toolTip.setLine2(StringUtils.getString(artistNumber, " ", (artistNumber > 1 ? I18nUtils.getString("ARTISTS") : I18nUtils.getString("ARTIST"))));
-        int songs = size();
-        toolTip.setLine3(StringUtils.getString(songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG"))));
     }
 
     @Override

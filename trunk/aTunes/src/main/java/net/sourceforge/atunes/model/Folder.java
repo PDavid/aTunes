@@ -29,7 +29,6 @@ import java.util.Map;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -280,19 +279,6 @@ public class Folder implements Serializable, ITreeObject<ILocalAudioObject> {
     @Override
     public boolean isExtendedToolTipSupported() {
         return true;
-    }
-
-    @Override
-    public void setExtendedToolTip(ExtendedToolTip toolTip) {
-        toolTip.setLine1(name);
-        int folderNumber = getFolders().size();
-        if (folderNumber > 0) {
-            toolTip.setLine2(StringUtils.getString(folderNumber, " ", (folderNumber > 1 ? I18nUtils.getString("FOLDERS") : I18nUtils.getString("FOLDER"))));
-        } else {
-            toolTip.setLine2(null);
-        }
-        int songs = getAudioObjects().size();
-        toolTip.setLine3(StringUtils.getString(songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG"))));
     }
 
     @Override
