@@ -22,8 +22,8 @@ package net.sourceforge.atunes.kernel.modules.os;
 
 import java.io.File;
 
-import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.Cdda2wav;
-import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.Cdparanoia;
+import net.sourceforge.atunes.kernel.modules.cdripper.Cdda2wav;
+import net.sourceforge.atunes.kernel.modules.cdripper.Cdparanoia;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.kernel.modules.hotkeys.X11Hotkeys;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;

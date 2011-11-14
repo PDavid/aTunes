@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.cdripper.encoders;
+package net.sourceforge.atunes.kernel.modules.cdripper;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -35,41 +35,38 @@ import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
- * The Class FlacEncoder.
+ * The Class Mp4Encoder.
  */
-public class FlacEncoder extends AbstractEncoder {
+public class Mp4Encoder extends AbstractEncoder {
 
     /** The format name of this encoder */
-    public static final String FORMAT_NAME = "FLAC";
-    public static final String FLAC = "flac";
+    public static final String FORMAT_NAME = "FAAC_MP4";
+    public static final String OGGENC = "faac";
     public static final String OUTPUT = "-o";
-    public static final String FORCE = "-f";
-    public static final String ADD_TAG = "-t";
-    public static final String APPEND = "-a";
-    public static final String TITLE = "TITLE=";
-    public static final String ARTIST = "ARTIST=";
-    public static final String ALBUM = "ALBUM=";
-    public static final String TRACK = "TRACKNUMBER=";
+    public static final String WRAP = "-w";
+    public static final String TITLE = "--title";
+    public static final String ARTIST = "--artist";
+    public static final String ALBUM = "--album";
     public static final String QUALITY = "-q";
-    public static final String VERSION = "--version";
-    static final String[] FLAC_QUALITY = { "-0", "-1", "-2", "-3", "-4", "-5", "-6", "-7", "-8" };
-    static final String DEFAULT_FLAC_QUALITY = "-5";
+    public static final String VERSION = "--help";
+    static final String[] MP4_QUALITY = { "50", "100", "150", "200", "250", "300", "350", "400", "450", "500" };
 
-    private Process process;
+    static final String DEFAULT_MP4_QUALITY = "200";
+
+    private Process p;
     
     private IOSManager osManager;
 
     /**
-     * Test the presence of the flac encoder flac.
-     * 
+     * Test the presence of the ogg encoder oggenc.
      * @param osManager
-     * @return Returns true if flac was found, false otherwise.
+     * @return Returns true if oggenc was found, false otherwise.
      */
     public static boolean testTool(IOSManager osManager) {
-        // Test for flac
+        // Test for faac
         BufferedReader stdInput = null;
         try {
-            Process p = new ProcessBuilder(StringUtils.getString(osManager.getExternalToolsPath(), FLAC), VERSION).start(); 
+            Process p = new ProcessBuilder(StringUtils.getString(osManager.getExternalToolsPath(), OGGENC)).start();
             stdInput = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
             String line = null;
@@ -78,7 +75,7 @@ public class FlacEncoder extends AbstractEncoder {
             }
 
             int code = p.waitFor();
-            if (code != 0) {
+            if (code != 1) {
                 return false;
             }
             return true;
@@ -91,8 +88,8 @@ public class FlacEncoder extends AbstractEncoder {
         }
     }
 
-    public FlacEncoder(IOSManager osManager) {
-    	super("flac", FLAC_QUALITY, DEFAULT_FLAC_QUALITY, FORMAT_NAME);
+    public Mp4Encoder(IOSManager osManager) {
+    	super("m4a", MP4_QUALITY, DEFAULT_MP4_QUALITY, FORMAT_NAME);
     	this.osManager = osManager;
 	}
     
@@ -101,12 +98,12 @@ public class FlacEncoder extends AbstractEncoder {
      * 
      * @param wavFile
      *            The filename and path of the wav file that should be encoded
+     * @param mp4File
+     *            The name of the new file to be created
      * @param title
      *            The title of the song (only title, not artist and album)
      * @param trackNumber
      *            The track number of the song
-     * @param file
-     *            the ogg file
      * @param artist
      *            the artist
      * @param composer
@@ -115,80 +112,82 @@ public class FlacEncoder extends AbstractEncoder {
      * @return Returns true if encoding was successfull, false otherwise.
      */
     @Override
-    public boolean encode(File wavFile, File file, String title, int trackNumber, String artist, String composer) {
-        Logger.info(StringUtils.getString("Flac encoding process started... ", wavFile.getName(), " -> ", file.getName()));
+    public boolean encode(File wavFile, File mp4File, String title, int trackNumber, String artist, String composer) {
+        Logger.info(StringUtils.getString("Mp4 encoding process started... ", wavFile.getName(), " -> ", mp4File.getName()));
         BufferedReader stdInput = null;
         try {
-            // Encode the file using FLAC. We could pass the infos for the tag, but 
-            // FLAC is very difficult with special characters so we don't use it.
             List<String> command = new ArrayList<String>();
-            command.add(StringUtils.getString(osManager.getExternalToolsPath(), FLAC));
-            command.add(getQuality());
-            command.add(FORCE);
-            command.add(wavFile.getAbsolutePath());
+            command.add(StringUtils.getString(osManager.getExternalToolsPath(), OGGENC));
             command.add(OUTPUT);
-            command.add(file.getAbsolutePath());
-            process = new ProcessBuilder(command).start();
-            stdInput = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-
+            command.add(mp4File.getAbsolutePath());
+            command.add(QUALITY);
+            command.add(getQuality());
+            command.add(WRAP);
+            command.add(wavFile.getAbsolutePath());
+            p = new ProcessBuilder(command).start();
+            stdInput = new BufferedReader(new InputStreamReader(p.getErrorStream()));
             String s = null;
             int percent = -1;
-            int aux = 0;
+
             // Read progress
             while ((s = stdInput.readLine()) != null) {
-                int index = s.indexOf('%');
-                if (getListener() != null && s.contains("% complete, ratio")) {
-                	aux = Integer.parseInt(s.substring(index - 2, index).trim());
-                	if (aux != percent) {
-                		percent = aux;
-                		final int percentHelp = percent;
-                		SwingUtilities.invokeLater(new Runnable() {
-                			@Override
-                			public void run() {
-                				getListener().notifyProgress(percentHelp);
-                			}
-                		});
-                	}
+                if (getListener() != null) {
+                    if (s.matches(".*(...%).*")) {
+                        // Percent values can be for example 0.3% or 0,3%, so be careful with "." and ","
+                        int decimalPointPosition = s.indexOf('%');
+                        int aux = Integer.parseInt((s.substring(s.indexOf('(') + 1, decimalPointPosition).trim()));
+                        if (aux != percent) {
+                            percent = aux;
+                            final int percentHelp = percent;
+                            SwingUtilities.invokeLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                	getListener().notifyProgress(percentHelp);
+                                }
+                            });
+                        }
+                    } else if (s.startsWith("Done")) {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                            	getListener().notifyProgress(100);
+                            }
+                        });
+                    }
                 }
             }
 
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    getListener().notifyProgress(100);
-                }
-            });
-
-            int code = process.waitFor();
+            int code = p.waitFor();
             if (code != 0) {
                 Logger.error(StringUtils.getString("Process returned code ", code));
                 return false;
             }
 
             // Gather the info and write the tag
-            boolean tagOk = setTag(file, title, trackNumber, artist, composer);
+            boolean tagOk = setTag(mp4File, title, trackNumber, artist, composer);
             
             if (!tagOk) {
             	return false;
             }
-            
+
             Logger.info("Encoded ok!!");
             return true;
 
+        } catch (InterruptedException e) {
+            Logger.error(StringUtils.getString("Process execution caused exception ", e));
+            return false;
         } catch (IOException e) {
             Logger.error(StringUtils.getString("Process execution caused exception ", e));
             return false;
-        } catch (InterruptedException e) {
-        	return false;
-		} finally {
+        } finally {
             ClosingUtils.close(stdInput);
         }
     }
 
     @Override
     public void stop() {
-        if (process != null) {
-            process.destroy();
+        if (p != null) {
+            p.destroy();
         }
     }
 }

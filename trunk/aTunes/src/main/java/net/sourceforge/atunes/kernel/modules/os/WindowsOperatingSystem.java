@@ -26,8 +26,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
-import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.Cdda2wav;
+import net.sourceforge.atunes.kernel.modules.cdripper.AbstractCdToWavConverter;
+import net.sourceforge.atunes.kernel.modules.cdripper.Cdda2wav;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.kernel.modules.hotkeys.WindowsHotkeys;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;

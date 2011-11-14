@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model;
+package net.sourceforge.atunes.kernel.modules.cdripper;
 
 import java.io.Serializable;
 import java.util.List;

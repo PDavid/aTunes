@@ -25,7 +25,7 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
+import net.sourceforge.atunes.kernel.modules.cdripper.AbstractCdToWavConverter;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 

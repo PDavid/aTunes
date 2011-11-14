@@ -18,11 +18,10 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.cdripper.encoders;
+package net.sourceforge.atunes.kernel.modules.cdripper;
 
 import java.io.File;
 
-import net.sourceforge.atunes.kernel.modules.cdripper.ProgressListener;
 
 /**
  * The Interface Encoder.

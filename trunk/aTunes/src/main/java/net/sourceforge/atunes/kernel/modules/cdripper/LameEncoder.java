@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.cdripper.encoders;
+package net.sourceforge.atunes.kernel.modules.cdripper;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -35,37 +35,41 @@ import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
- * The Class NeroAacEncoder.
+ * The Class LameEncoder.
  */
-public class NeroAacEncoder extends AbstractEncoder {
+public class LameEncoder extends AbstractEncoder {
 
     /** The format name of this encoder */
-    public static final String FORMAT_NAME = "Nero_AAC";
-    public static final String NERO_AAC = "neroAacEnc";
-    public static final String IGNORE_LENGTH = "-ignorelength";
-    public static final String INPUT = "-if";
-    public static final String OUTPUT = "-of";
-    //public static final String WRAP = "-w";
-    public static final String QUALITY = "-q";
-    public static final String VERSION = "-help";
-    static final String[] NERO_AAC_QUALITY = { "0.3", "0.4", "0.5", "0.6", "0.7", "0.8", "0.9", "1.0" };
-    static final String DEFAULT_NERO_AAC_QUALITY = "0.4";
+    public static final String FORMAT_NAME = "MP3";
+    public static final String LAME = "lame";
+    public static final String QUALITY = "-b";
+    public static final String PRESET = "--preset";
+    public static final String TITLE = "--tt";
+    public static final String ARTIST = "--ta";
+    public static final String ALBUM = "--tl";
+    public static final String TRACK = "--tn";
+    public static final String VERSION = "--version";
+    static final String[] MP3_QUALITIES = { "insane", "extreme", "medium", "standard", "128", "160", "192", "224", "256", "320" };
+    static final String MP3_DEFAULT_QUALITY = "medium";
 
     private Process p;
 
     private IOSManager osManager;
     
     /**
-     * Test the presence of the ogg encoder oggenc.
+     * Test the presence of the mp3 encoder lame.
      * 
      * @param osManager
-     * @return Returns true if oggenc was found, false otherwise.
+     * @return Returns true if lame was found, false otherwise.
      */
     public static boolean testTool(IOSManager osManager) {
-        // Test for Nero Aac encoder
+        if (osManager.isWindows()) {
+            return true;
+        }
+
         BufferedReader stdInput = null;
         try {
-            Process p = new ProcessBuilder(StringUtils.getString(osManager.getExternalToolsPath(), NERO_AAC), VERSION).start();
+            Process p = new ProcessBuilder(StringUtils.getString(osManager.getExternalToolsPath(), LAME), VERSION).start();
             stdInput = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
             String line = null;
@@ -79,27 +83,25 @@ public class NeroAacEncoder extends AbstractEncoder {
             }
             return true;
         } catch (IOException e) {
-        	Logger.error(e);
             return false;
         } catch (InterruptedException e) {
-        	Logger.error(e);
-        	return false;
+            return false;
 		} finally {
             ClosingUtils.close(stdInput);
         }
     }
-    
-    public NeroAacEncoder(IOSManager osManager) {
-    	super("m4a", NERO_AAC_QUALITY, DEFAULT_NERO_AAC_QUALITY, FORMAT_NAME);
+
+    public LameEncoder(IOSManager osManager) {
+    	super("mp3", MP3_QUALITIES, MP3_DEFAULT_QUALITY, FORMAT_NAME);
     	this.osManager = osManager;
 	}
-
+    
     /**
      * Encode the wav file and tags it using entagged.
      * 
      * @param wavFile
      *            The filename and path of the wav file that should be encoded
-     * @param mp4File
+     * @param mp3File
      *            The name of the new file to be created
      * @param title
      *            The title of the song (only title, not artist and album)
@@ -113,36 +115,54 @@ public class NeroAacEncoder extends AbstractEncoder {
      * @return Returns true if encoding was successfull, false otherwise.
      */
     @Override
-    public boolean encode(File wavFile, File mp4File, String title, int trackNumber, String artist, String composer) {
-        Logger.info(StringUtils.getString("Mp4 encoding process started... ", wavFile.getName(), " -> ", mp4File.getName()));
+    public boolean encode(File wavFile, File mp3File, String title, int trackNumber, String artist, String composer) {
+        Logger.info(StringUtils.getString("Mp3 encoding process started... ", wavFile.getName(), " -> ", mp3File.getName()));
         BufferedReader stdInput = null;
         try {
+            // Prepare and execute the lame command
             List<String> command = new ArrayList<String>();
-            command.add(StringUtils.getString(osManager.getExternalToolsPath(), NERO_AAC));
-            command.add(QUALITY);
+            command.add(StringUtils.getString(osManager.getExternalToolsPath(), LAME));
+            // Presets don't need the -b option, but --preset, so check if preset is used
+            if (getQuality().contains("insane") || getQuality().contains("extreme") || getQuality().contains("medium") || getQuality().contains("standard")) {
+                command.add(PRESET);
+            } else {
+                command.add(QUALITY);
+            }
             command.add(getQuality());
-            //command.add(IGNORE_LENGTH);
-            command.add(INPUT);
+
             command.add(wavFile.getAbsolutePath());
-            command.add(OUTPUT);
-            command.add(mp4File.getAbsolutePath());
+            command.add(mp3File.getAbsolutePath());
             p = new ProcessBuilder(command).start();
             stdInput = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-
-            // Required to avoid deadlook under Windows
-            String line = null;
-            while ((line = stdInput.readLine()) != null) {
-            	Logger.debug(line);
-                // Enable indeterminate progress bar
+            String s = null;
+            int percent = -1;
+            while ((s = stdInput.readLine()) != null) {
                 if (getListener() != null) {
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                        	getListener().notifyProgress(-1);
+                    if (s.matches(".*\\(..%\\).*")) {
+                        int aux = Integer.parseInt((s.substring(s.indexOf('(') + 1, s.indexOf('%'))).trim());
+                        if (aux != percent) {
+                            percent = aux;
+                            final int percentHelp = percent;
+
+                            SwingUtilities.invokeLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                	getListener().notifyProgress(percentHelp);
+                                }
+                            });
                         }
-                    });
+                    } else if (s.matches(".*\\(100%\\).*") && percent != 100) {
+                    	percent = 100;
+                    	SwingUtilities.invokeLater(new Runnable() {
+                    		@Override
+                    		public void run() {
+                    			getListener().notifyProgress(100);
+                    		}
+                    	});
+                    }
                 }
             }
+
             int code = p.waitFor();
             if (code != 0) {
                 Logger.error(StringUtils.getString("Process returned code ", code));
@@ -150,7 +170,7 @@ public class NeroAacEncoder extends AbstractEncoder {
             }
 
             // Gather the info and write the tag
-            boolean tagOk = setTag(mp4File, title, trackNumber, artist, composer);
+            boolean tagOk = setTag(mp3File, title, trackNumber, artist, composer);
             
             if (!tagOk) {
             	return false;
@@ -158,11 +178,15 @@ public class NeroAacEncoder extends AbstractEncoder {
 
             Logger.info("Encoded ok!!");
             return true;
-
-        } catch (Exception e) {
+        } catch (IOException e) {
             Logger.error(StringUtils.getString("Process execution caused exception ", e));
+            Logger.error(e);
             return false;
-        } finally {
+        } catch (InterruptedException e) {
+            Logger.error(StringUtils.getString("Process execution caused exception ", e));
+            Logger.error(e);
+            return false;
+		} finally {
             ClosingUtils.close(stdInput);
         }
     }
