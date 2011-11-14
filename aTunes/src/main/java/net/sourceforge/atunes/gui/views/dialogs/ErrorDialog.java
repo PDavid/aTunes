@@ -40,20 +40,36 @@ import org.jdesktop.swingx.error.ErrorInfo;
  */
 public class ErrorDialog implements IErrorDialog {
 
-    /* (non-Javadoc)
+    /**
+     * A runnable wrapping a call to show an error message
+     * @author alex
+     *
+     */
+    private static final class ShowMessageDialogRunnable implements Runnable {
+    	
+		private final String message;
+		private final IFrame frame;
+
+		private ShowMessageDialogRunnable(String message, IFrame frame) {
+			this.message = message;
+			this.frame = frame;
+		}
+
+		@Override
+		public void run() {
+			JOptionPane.showMessageDialog(frame.getFrame(), message, I18nUtils.getString("ERROR"), JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	/* (non-Javadoc)
 	 * @see net.sourceforge.atunes.gui.views.dialogs.IErrorDialog#showErrorDialog(net.sourceforge.atunes.model.IFrame, java.lang.String)
 	 */
     @Override
 	public void showErrorDialog(final IFrame frame, final String message) {
     	if (SwingUtilities.isEventDispatchThread()) {
-    		JOptionPane.showMessageDialog(frame.getFrame(), message, I18nUtils.getString("ERROR"), JOptionPane.ERROR_MESSAGE);
+    		new ShowMessageDialogRunnable(message, frame).run();
     	} else {
-    		SwingUtilities.invokeLater(new Runnable() {
-    			@Override
-    			public void run() {
-    				JOptionPane.showMessageDialog(frame.getFrame(), message, I18nUtils.getString("ERROR"), JOptionPane.ERROR_MESSAGE);
-    			}
-    		});
+    		SwingUtilities.invokeLater(new ShowMessageDialogRunnable(message, frame));
     	}
     }
 
