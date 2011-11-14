@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.context;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -35,7 +34,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTree;
-import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
@@ -78,50 +76,22 @@ public abstract class AbstractContextPanel implements IContextPanel {
     
     // BEGIN OF METHODS TO BE IMPLEMENTED BY CONCRETE CONTEXT PANELS
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#getContextPanelName()
-	 */
     @Override
 	public abstract String getContextPanelName();
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#getContextPanelTitle(net.sourceforge.atunes.model.IAudioObject)
-	 */
     @Override
 	public abstract String getContextPanelTitle(IAudioObject audioObject);
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#getContextPanelIcon(net.sourceforge.atunes.model.IAudioObject)
-	 */
     @Override
 	public abstract IColorMutableImageIcon getContextPanelIcon(IAudioObject audioObject);
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#isPanelVisibleForAudioObject(net.sourceforge.atunes.model.IAudioObject)
-	 */
     @Override
 	public abstract boolean isPanelVisibleForAudioObject(IAudioObject audioObject);
 
     // END OF METHODS TO BE IMPLEMENTED BY CONCRETE CONTEXT PANELS
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#updateContextPanel(net.sourceforge.atunes.model.IAudioObject, boolean)
-	 */
     @Override
 	public final void updateContextPanel(final IAudioObject audioObject, final boolean forceUpdate) {
-        if (!EventQueue.isDispatchThread()) {
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    updateContextPanelEDT(audioObject, forceUpdate);
-                }
-            });
-        } else {
-            updateContextPanelEDT(audioObject, forceUpdate);
-        }
-    }
-
-    private void updateContextPanelEDT(IAudioObject audioObject, boolean forceUpdate) {
         // If the AudioObject is the same as used before to update panel then do nothing if forceUpdate is false
         if (!forceUpdate && this.audioObject != null && this.audioObject.equals(audioObject)) {
             return;
@@ -136,9 +106,6 @@ public abstract class AbstractContextPanel implements IContextPanel {
         this.audioObject = audioObject;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#clearContextPanel()
-	 */
     @Override
 	public final void clearContextPanel() {
         Logger.debug("Clearing panel: ", getContextPanelName());
@@ -148,26 +115,10 @@ public abstract class AbstractContextPanel implements IContextPanel {
         audioObject = null;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#getUIComponent(net.sourceforge.atunes.model.ILookAndFeel)
-	 */
     @Override
 	public final Component getUIComponent(ILookAndFeel lookAndFeel) {
     	if (component == null) {
-    		JPanel panel = new JPanel(new GridBagLayout()) {
-    			/**
-				 * 
-				 */
-				private static final long serialVersionUID = 1L;
-
-				@Override
-    			public Dimension getPreferredSize() {
-    				Dimension d = super.getPreferredSize();
-    				// Override horizontal preferred width to avoid excessive width of some components
-    				d.width = 200;
-    				return d;
-    			}
-    		};
+    		JPanel panel = new ContextPanelContainer(new GridBagLayout());
     		panel.setOpaque(false);
     		GridBagConstraints c = new GridBagConstraints();
     		c.gridx = 0;
@@ -177,33 +128,7 @@ public abstract class AbstractContextPanel implements IContextPanel {
     		c.insets = new Insets(10, 10, 10, 10);
     		int numberOfContents = getContents().size();
     		for (IContextPanelContent content : getContents()) {
-    			Component componentToAdd = content.getComponent();
-    			if (componentToAdd instanceof JComponent) {
-    				((JComponent) componentToAdd).setOpaque(false);
-    			}
-    			if (content.isScrollNeeded()) {
-    				JScrollPane scroll = null;
-    		    	if (componentToAdd instanceof JTable) {
-    		    		scroll = lookAndFeel.getTableScrollPane((JTable)componentToAdd);
-    		    	} else if (componentToAdd instanceof JTree) {
-    		    		scroll = lookAndFeel.getTreeScrollPane((JTree)componentToAdd);
-    		    	} else if (componentToAdd instanceof JList) {
-    		    		scroll = lookAndFeel.getListScrollPane((JList)componentToAdd);
-    		    	} else {
-    		    		scroll = lookAndFeel.getScrollPane(componentToAdd);
-    		    	}
-    				// Set a minimum height
-    				scroll.setMinimumSize(new Dimension(0, 200));
-    				componentToAdd = scroll;
-    			}
-    			content.setParentPanel(panel);
-    			if (c.gridy == numberOfContents - 1) {
-    				// Last component will fill also vertically
-    				c.weighty = 1;
-    				c.fill = GridBagConstraints.BOTH;
-    			}
-    			panel.add(componentToAdd, c);
-    			c.gridy++;
+    			addContextPanelContent(lookAndFeel, panel, c, numberOfContents, content);
     		}
     		JScrollPane scrollPane = lookAndFeel.getScrollPane(panel);
     		scrollPane.getVerticalScrollBar().setUnitIncrement(50);
@@ -212,25 +137,62 @@ public abstract class AbstractContextPanel implements IContextPanel {
     	return component;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#getTitle()
+	/**
+	 * @param lookAndFeel
+	 * @param panel
+	 * @param c
+	 * @param numberOfContents
+	 * @param content
 	 */
+	private void addContextPanelContent(ILookAndFeel lookAndFeel, JPanel panel, GridBagConstraints c, int numberOfContents, IContextPanelContent content) {
+		Component componentToAdd = content.getComponent();
+		if (componentToAdd instanceof JComponent) {
+			((JComponent) componentToAdd).setOpaque(false);
+		}
+		if (content.isScrollNeeded()) {
+			componentToAdd = getContentWithScroll(lookAndFeel, componentToAdd);
+		}
+		content.setParentPanel(panel);
+		if (c.gridy == numberOfContents - 1) {
+			// Last component will fill also vertically
+			c.weighty = 1;
+			c.fill = GridBagConstraints.BOTH;
+		}
+		panel.add(componentToAdd, c);
+		c.gridy++;
+	}
+
+	/**
+	 * @param lookAndFeel
+	 * @param componentToAdd
+	 * @return
+	 */
+	private JScrollPane getContentWithScroll(ILookAndFeel lookAndFeel, Component componentToAdd) {
+		JScrollPane scroll = null;
+		if (componentToAdd instanceof JTable) {
+			scroll = lookAndFeel.getTableScrollPane((JTable)componentToAdd);
+		} else if (componentToAdd instanceof JTree) {
+			scroll = lookAndFeel.getTreeScrollPane((JTree)componentToAdd);
+		} else if (componentToAdd instanceof JList) {
+			scroll = lookAndFeel.getListScrollPane((JList)componentToAdd);
+		} else {
+			scroll = lookAndFeel.getScrollPane(componentToAdd);
+		}
+		// Set a minimum height
+		scroll.setMinimumSize(new Dimension(0, 200));
+		return scroll;
+	}
+
     @Override
 	public final String getTitle() {
         return getContextPanelTitle(contextHandler.getCurrentAudioObject());
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#getIcon()
-	 */
     @Override
 	public final IColorMutableImageIcon getIcon() {
         return getContextPanelIcon(contextHandler.getCurrentAudioObject());
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#isEnabled()
-	 */
     @Override
 	public final boolean isEnabled() {
         if (contextHandler.getCurrentAudioObject() == null) {
@@ -239,9 +201,6 @@ public abstract class AbstractContextPanel implements IContextPanel {
         return true;
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#isVisible()
-	 */
     @Override
 	public final boolean isVisible() {
         if (contextHandler.getCurrentAudioObject() == null) {
@@ -250,9 +209,6 @@ public abstract class AbstractContextPanel implements IContextPanel {
         return isPanelVisibleForAudioObject(contextHandler.getCurrentAudioObject());
     }
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#getOptions()
-	 */
 	@Override
 	public List<Component> getOptions() {
 		List<Component> components = new ArrayList<Component>();
@@ -265,9 +221,6 @@ public abstract class AbstractContextPanel implements IContextPanel {
 		return components;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -276,9 +229,6 @@ public abstract class AbstractContextPanel implements IContextPanel {
 		return result;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -310,37 +260,25 @@ public abstract class AbstractContextPanel implements IContextPanel {
 		return state;
 	}
 	
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#setState(net.sourceforge.atunes.model.IState)
-	 */
 	@Override
 	public void setState(IState state) {
 		this.state = state;
 	}
 	
-    private final List<IContextPanelContent> getContents() {
+    final List<IContextPanelContent> getContents() {
     	return contents;
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#setContents(java.util.List)
-	 */
     @Override
 	public final void setContents(List<IContextPanelContent> contents) {
 		this.contents = contents;
 	}
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#setContextHandler(net.sourceforge.atunes.model.IContextHandler)
-	 */
     @Override
 	public void setContextHandler(IContextHandler contextHandler) {
 		this.contextHandler = contextHandler;
 	}
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanel#setLookAndFeel(net.sourceforge.atunes.model.ILookAndFeel)
-	 */
     @Override
 	public void setLookAndFeel(ILookAndFeel lookAndFeel) {
 		this.lookAndFeel = lookAndFeel;
