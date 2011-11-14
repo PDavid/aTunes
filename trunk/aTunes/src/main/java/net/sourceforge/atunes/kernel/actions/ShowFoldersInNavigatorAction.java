@@ -20,11 +20,9 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.Paint;
 
-import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.images.FolderImageIcon;
+import net.sourceforge.atunes.gui.images.FolderColorMutableIcon;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -64,13 +62,6 @@ public class ShowFoldersInNavigatorAction extends ActionWithColorMutableIcon {
     
     @Override
     public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
-    	return new IColorMutableImageIcon() {
-			
-			@Override
-			public ImageIcon getIcon(Paint paint) {
-				return FolderImageIcon.getIcon(paint, lookAndFeel);
-			}
-		};
+    	return new FolderColorMutableIcon(lookAndFeel);
     }
-
 }

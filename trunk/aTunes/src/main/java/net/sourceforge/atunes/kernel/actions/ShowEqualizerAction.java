@@ -20,14 +20,12 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.Paint;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.gui.images.EqualizerImageIcon;
+import net.sourceforge.atunes.gui.images.EqualizerColorMutableIcon;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IEqualizerDialogFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -64,12 +62,6 @@ public class ShowEqualizerAction extends ActionWithColorMutableIcon {
     
     @Override
     public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
-    	return new IColorMutableImageIcon() {
-			
-			@Override
-			public ImageIcon getIcon(Paint paint) {
-				return EqualizerImageIcon.getIcon(paint, lookAndFeel);
-			}
-		};
+    	return new EqualizerColorMutableIcon(lookAndFeel);
     }
 }
