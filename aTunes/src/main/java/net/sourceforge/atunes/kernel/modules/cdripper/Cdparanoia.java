@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav;
+package net.sourceforge.atunes.kernel.modules.cdripper;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -30,7 +30,6 @@ import java.util.StringTokenizer;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;

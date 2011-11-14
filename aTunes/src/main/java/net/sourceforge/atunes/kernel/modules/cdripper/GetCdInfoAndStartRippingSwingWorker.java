@@ -28,8 +28,6 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.RipCdDialog;
-import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.NoCdListener;
-import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;

@@ -42,7 +42,7 @@ import javax.swing.table.AbstractTableModel;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
-import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
+import net.sourceforge.atunes.kernel.modules.cdripper.CDInfo;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;

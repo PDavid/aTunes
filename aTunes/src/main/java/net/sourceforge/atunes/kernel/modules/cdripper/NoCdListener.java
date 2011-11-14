@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav;
+package net.sourceforge.atunes.kernel.modules.cdripper;
 
 /**
  * The listener interface for receiving noCd events. The class that is

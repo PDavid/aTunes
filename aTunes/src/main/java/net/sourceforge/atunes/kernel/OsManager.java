@@ -29,7 +29,7 @@ import java.util.Properties;
 import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
+import net.sourceforge.atunes.kernel.modules.cdripper.AbstractCdToWavConverter;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.kernel.modules.os.LinuxOperatingSystem;
 import net.sourceforge.atunes.kernel.modules.os.OperatingSystemAdapter;

@@ -29,10 +29,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.AbstractCdToWavConverter;
-import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.NoCdListener;
-import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
-import net.sourceforge.atunes.kernel.modules.cdripper.encoders.Encoder;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IOSManager;
@@ -42,67 +38,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 class CdRipper {
 
-    private final class EncodeFileRunnable implements Runnable {
-		private final int trackNumber;
-		private final List<String> artistNames;
-		private final List<String> composerNames;
-		private final boolean ripResultFinal;
-		private final File resultFileTemp;
-		private final File infFileTemp;
-		private final List<String> titles;
-		private final File wavFileTemp;
-
-		private EncodeFileRunnable(int trackNumber, List<String> artistNames,
-				List<String> composerNames, boolean ripResultFinal,
-				File resultFileTemp, File infFileTemp, List<String> titles,
-				File wavFileTemp) {
-			this.trackNumber = trackNumber;
-			this.artistNames = artistNames;
-			this.composerNames = composerNames;
-			this.ripResultFinal = ripResultFinal;
-			this.resultFileTemp = resultFileTemp;
-			this.infFileTemp = infFileTemp;
-			this.titles = titles;
-			this.wavFileTemp = wavFileTemp;
-		}
-
-		@Override
-		public void run() {
-		    if (!interrupted && ripResultFinal && encoder != null) {
-		        if (!encoder.encode(wavFileTemp, resultFileTemp,
-		                (titles != null && titles.size() >= trackNumber ? titles.get(trackNumber - 1) : null), trackNumber,
-		                artistNames.size() > trackNumber - 1 ? artistNames.get(trackNumber - 1) : Artist.getUnknownArtist(),
-		                composerNames.size() > trackNumber - 1 ? composerNames.get(trackNumber - 1) : "")) {
-		        	Logger.error("Encoding unsuccessful");
-		        }
-
-		        Logger.info("Deleting wav file...");
-		        if (!wavFileTemp.delete()) {
-		        	Logger.error(StringUtils.getString(wavFileTemp, " not deleted"));
-		        }
-		        if (!infFileTemp.delete()) {
-		        	Logger.error(StringUtils.getString(infFileTemp, " not deleted"));
-		        }
-
-		        if (interrupted && resultFileTemp != null) {
-		            if (!resultFileTemp.delete()) {
-		            	Logger.error(StringUtils.getString(resultFileTemp, " not deleted"));
-		            }
-		        }
-		    } else if (interrupted) {		    	
-		        if (!wavFileTemp.delete()) {
-		        	Logger.error(StringUtils.getString(wavFileTemp, " not deleted"));
-		        }
-		        if (!infFileTemp.delete()) {
-		        	Logger.error(StringUtils.getString(infFileTemp, " not deleted"));
-		        }
-		    } else if (!ripResultFinal) {
-		    	Logger.error(StringUtils.getString("Rip failed. Skipping track ", trackNumber, "..."));
-		    }
-		}
-	}
-
-	static final String ARTIST_PATTERN = "%A";
+    static final String ARTIST_PATTERN = "%A";
     static final String ALBUM_PATTERN = "%L";
     static final String TITLE_PATTERN = "%T";
     static final String TRACK_NUMBER = "%N";
@@ -129,6 +65,20 @@ class CdRipper {
         cdToWavConverter = AbstractCdToWavConverter.createNewConverterForOS(osManager);
     }
 
+    /**
+     * @return if process has been interrupted
+     */
+    protected boolean isInterrupted() {
+    	return interrupted;
+    }
+    
+    /**
+     * @return encoder used
+     */
+    protected Encoder getEncoder() {
+		return encoder;
+	}
+    
     /**
      * Check folder.
      * 
@@ -219,70 +169,90 @@ class CdRipper {
             });
         }
 
-        File wavFile = null;
         File resultFile = null;
 
         for (int i = 0; i < tracks.size(); i++) {
-            if (!interrupted) {
-                final int trackNumber = tracks.get(i);
-                wavFile = new File(StringUtils.getString(folder.getAbsolutePath(), "/track", trackNumber, ".wav"));
-                final boolean ripResultFinal;
-
-                if (encoder != null) {
-                    resultFile = new File(StringUtils.getString(folder.getAbsolutePath(), '/', getFileName(titles, trackNumber, extension)));
-                }
-                final File resultFileTemp = resultFile;
-                final File wavFileTemp = wavFile;
-                final File infFileTemp = new File(StringUtils.getString(folder.getAbsolutePath(), "/track", trackNumber, ".inf"));
-
-                boolean ripResult = false;
-                if (!interrupted) {
-                    if (useParanoia) {
-                        ripResult = cdToWavConverter.cdda2wav(trackNumber, wavFile, true);
-                    } else {
-                        ripResult = cdToWavConverter.cdda2wav(trackNumber, wavFile);
-                    }
-                }
-                ripResultFinal = ripResult;
-
-                /*
-                 * Start encoding process, we use a thread so encoding and
-                 * ripping can happen in parallel. This allows to import CD's
-                 * faster.
-                 */
-                Runnable encodeFile = new EncodeFileRunnable(trackNumber, artistNames, composerNames,
-						ripResultFinal, resultFileTemp, infFileTemp, titles,
-						wavFileTemp);
-
-                executorService.execute(encodeFile);
-                /*
-                 * If it is the last track that is ripped, wait for encoder to
-                 * finish. This allows the progress dialog to stay visible.
-                 */
-                if (i == tracks.size() - 1) {
-                    executorService.shutdown();
-                    try {
-                        executorService.awaitTermination(100, TimeUnit.MINUTES);
-                    } catch (InterruptedException e) {
-                    	Logger.error(e);
-                    }
-                }
-
-                if (listener != null) {
-                    final int iHelp = i;
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            listener.notifyProgress(iHelp + 1);
-                        }
-                    });
-                }
-            }
+            resultFile = ripTrack(tracks, titles, folder, artistNames,
+					composerNames, useParanoia, extension, resultFile, i);
         }
         long t1 = System.currentTimeMillis();
         Logger.info(StringUtils.getString("Process finished in ", (t1 - t0) / 1000.0, " seconds"));
         return true;
     }
+
+	/**
+	 * @param tracks
+	 * @param titles
+	 * @param folder
+	 * @param artistNames
+	 * @param composerNames
+	 * @param useParanoia
+	 * @param extension
+	 * @param resultFile
+	 * @param i
+	 * @return
+	 */
+	private File ripTrack(List<Integer> tracks, final List<String> titles,
+			File folder, final List<String> artistNames,
+			final List<String> composerNames, boolean useParanoia,
+			String extension, File resultFile, int i) {
+		if (!interrupted) {
+		    final int trackNumber = tracks.get(i);
+		    File wavFile = new File(StringUtils.getString(folder.getAbsolutePath(), "/track", trackNumber, ".wav"));
+		    final boolean ripResultFinal;
+
+		    if (encoder != null) {
+		        resultFile = new File(StringUtils.getString(folder.getAbsolutePath(), '/', getFileName(titles, trackNumber, extension)));
+		    }
+		    final File resultFileTemp = resultFile;
+		    final File wavFileTemp = wavFile;
+		    final File infFileTemp = new File(StringUtils.getString(folder.getAbsolutePath(), "/track", trackNumber, ".inf"));
+
+		    boolean ripResult = false;
+		    if (!interrupted) {
+		        if (useParanoia) {
+		            ripResult = cdToWavConverter.cdda2wav(trackNumber, wavFile, true);
+		        } else {
+		            ripResult = cdToWavConverter.cdda2wav(trackNumber, wavFile);
+		        }
+		    }
+		    ripResultFinal = ripResult;
+
+		    /*
+		     * Start encoding process, we use a thread so encoding and
+		     * ripping can happen in parallel. This allows to import CD's
+		     * faster.
+		     */
+		    Runnable encodeFile = new EncodeFileRunnable(this, trackNumber, artistNames, composerNames,
+					ripResultFinal, resultFileTemp, infFileTemp, titles,
+					wavFileTemp);
+
+		    executorService.execute(encodeFile);
+		    /*
+		     * If it is the last track that is ripped, wait for encoder to
+		     * finish. This allows the progress dialog to stay visible.
+		     */
+		    if (i == tracks.size() - 1) {
+		        executorService.shutdown();
+		        try {
+		            executorService.awaitTermination(100, TimeUnit.MINUTES);
+		        } catch (InterruptedException e) {
+		        	Logger.error(e);
+		        }
+		    }
+
+		    if (listener != null) {
+		        final int iHelp = i;
+		        SwingUtilities.invokeLater(new Runnable() {
+		            @Override
+		            public void run() {
+		                listener.notifyProgress(iHelp + 1);
+		            }
+		        });
+		    }
+		}
+		return resultFile;
+	}
 
     /**
      * Sets the album.

@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.cdripper.encoders;
+package net.sourceforge.atunes.kernel.modules.cdripper;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -35,38 +35,37 @@ import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
- * The Class Mp4Encoder.
+ * The Class NeroAacEncoder.
  */
-public class Mp4Encoder extends AbstractEncoder {
+public class NeroAacEncoder extends AbstractEncoder {
 
     /** The format name of this encoder */
-    public static final String FORMAT_NAME = "FAAC_MP4";
-    public static final String OGGENC = "faac";
-    public static final String OUTPUT = "-o";
-    public static final String WRAP = "-w";
-    public static final String TITLE = "--title";
-    public static final String ARTIST = "--artist";
-    public static final String ALBUM = "--album";
+    public static final String FORMAT_NAME = "Nero_AAC";
+    public static final String NERO_AAC = "neroAacEnc";
+    public static final String IGNORE_LENGTH = "-ignorelength";
+    public static final String INPUT = "-if";
+    public static final String OUTPUT = "-of";
+    //public static final String WRAP = "-w";
     public static final String QUALITY = "-q";
-    public static final String VERSION = "--help";
-    static final String[] MP4_QUALITY = { "50", "100", "150", "200", "250", "300", "350", "400", "450", "500" };
-
-    static final String DEFAULT_MP4_QUALITY = "200";
+    public static final String VERSION = "-help";
+    static final String[] NERO_AAC_QUALITY = { "0.3", "0.4", "0.5", "0.6", "0.7", "0.8", "0.9", "1.0" };
+    static final String DEFAULT_NERO_AAC_QUALITY = "0.4";
 
     private Process p;
-    
-    private IOSManager osManager;
 
+    private IOSManager osManager;
+    
     /**
      * Test the presence of the ogg encoder oggenc.
+     * 
      * @param osManager
      * @return Returns true if oggenc was found, false otherwise.
      */
     public static boolean testTool(IOSManager osManager) {
-        // Test for faac
+        // Test for Nero Aac encoder
         BufferedReader stdInput = null;
         try {
-            Process p = new ProcessBuilder(StringUtils.getString(osManager.getExternalToolsPath(), OGGENC)).start();
+            Process p = new ProcessBuilder(StringUtils.getString(osManager.getExternalToolsPath(), NERO_AAC), VERSION).start();
             stdInput = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
             String line = null;
@@ -75,24 +74,26 @@ public class Mp4Encoder extends AbstractEncoder {
             }
 
             int code = p.waitFor();
-            if (code != 1) {
+            if (code != 0) {
                 return false;
             }
             return true;
         } catch (IOException e) {
+        	Logger.error(e);
             return false;
         } catch (InterruptedException e) {
+        	Logger.error(e);
         	return false;
 		} finally {
             ClosingUtils.close(stdInput);
         }
     }
-
-    public Mp4Encoder(IOSManager osManager) {
-    	super("m4a", MP4_QUALITY, DEFAULT_MP4_QUALITY, FORMAT_NAME);
+    
+    public NeroAacEncoder(IOSManager osManager) {
+    	super("m4a", NERO_AAC_QUALITY, DEFAULT_NERO_AAC_QUALITY, FORMAT_NAME);
     	this.osManager = osManager;
 	}
-    
+
     /**
      * Encode the wav file and tags it using entagged.
      * 
@@ -117,46 +118,31 @@ public class Mp4Encoder extends AbstractEncoder {
         BufferedReader stdInput = null;
         try {
             List<String> command = new ArrayList<String>();
-            command.add(StringUtils.getString(osManager.getExternalToolsPath(), OGGENC));
-            command.add(OUTPUT);
-            command.add(mp4File.getAbsolutePath());
+            command.add(StringUtils.getString(osManager.getExternalToolsPath(), NERO_AAC));
             command.add(QUALITY);
             command.add(getQuality());
-            command.add(WRAP);
+            //command.add(IGNORE_LENGTH);
+            command.add(INPUT);
             command.add(wavFile.getAbsolutePath());
+            command.add(OUTPUT);
+            command.add(mp4File.getAbsolutePath());
             p = new ProcessBuilder(command).start();
             stdInput = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-            String s = null;
-            int percent = -1;
 
-            // Read progress
-            while ((s = stdInput.readLine()) != null) {
+            // Required to avoid deadlook under Windows
+            String line = null;
+            while ((line = stdInput.readLine()) != null) {
+            	Logger.debug(line);
+                // Enable indeterminate progress bar
                 if (getListener() != null) {
-                    if (s.matches(".*(...%).*")) {
-                        // Percent values can be for example 0.3% or 0,3%, so be careful with "." and ","
-                        int decimalPointPosition = s.indexOf('%');
-                        int aux = Integer.parseInt((s.substring(s.indexOf('(') + 1, decimalPointPosition).trim()));
-                        if (aux != percent) {
-                            percent = aux;
-                            final int percentHelp = percent;
-                            SwingUtilities.invokeLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                	getListener().notifyProgress(percentHelp);
-                                }
-                            });
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                        	getListener().notifyProgress(-1);
                         }
-                    } else if (s.startsWith("Done")) {
-                        SwingUtilities.invokeLater(new Runnable() {
-                            @Override
-                            public void run() {
-                            	getListener().notifyProgress(100);
-                            }
-                        });
-                    }
+                    });
                 }
             }
-
             int code = p.waitFor();
             if (code != 0) {
                 Logger.error(StringUtils.getString("Process returned code ", code));
@@ -173,10 +159,7 @@ public class Mp4Encoder extends AbstractEncoder {
             Logger.info("Encoded ok!!");
             return true;
 
-        } catch (InterruptedException e) {
-            Logger.error(StringUtils.getString("Process execution caused exception ", e));
-            return false;
-        } catch (IOException e) {
+        } catch (Exception e) {
             Logger.error(StringUtils.getString("Process execution caused exception ", e));
             return false;
         } finally {

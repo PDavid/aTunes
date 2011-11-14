@@ -25,8 +25,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.Cdda2wav;
-import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.Cdparanoia;
+import net.sourceforge.atunes.kernel.modules.cdripper.Cdda2wav;
+import net.sourceforge.atunes.kernel.modules.cdripper.Cdparanoia;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.model.IFrame;

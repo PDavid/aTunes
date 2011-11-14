@@ -18,13 +18,11 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav;
+package net.sourceforge.atunes.kernel.modules.cdripper;
 
 import java.io.File;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.cdripper.ProgressListener;
-import net.sourceforge.atunes.kernel.modules.cdripper.cdda2wav.model.CDInfo;
 import net.sourceforge.atunes.model.IOSManager;
 
 /**
