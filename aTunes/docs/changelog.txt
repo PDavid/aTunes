@@ -14,6 +14,7 @@ aTunes 2.1.1
 - FIX: Hotkeys reset after application restart [ 3421011 ]
 - FIX: Last.fm cache initialized several times
 - FIX: Context panel update called twice
+- FIX: Not enough space for remaining time in progress slider
 
 
 aTunes 2.1.0
