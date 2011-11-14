@@ -64,8 +64,6 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
         super(new GridBagLayout());
         time = new JLabel();
         time.setHorizontalAlignment(SwingConstants.CENTER);
-        // Set enough width to allow more than three digits
-        time.setPreferredSize(new Dimension(40, 10));
 
         progressBar = new JSlider();
         progressBar.setToolTipText(I18nUtils.getString("CLICK_TO_SEEK"));
@@ -75,8 +73,6 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
         
         remainingTime = new JLabel();
         remainingTime.setHorizontalAlignment(SwingConstants.CENTER);
-        // Set enough width to allow more than three digits
-        remainingTime.setPreferredSize(new Dimension(40, 10));
         setOpaque(false);
 
         setLayout();
@@ -110,19 +106,20 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
+        c.weightx = 0.1;
         c.insets = new Insets(2, 10, 0, 0);
         c.weighty = 1;
-        c.fill = GridBagConstraints.VERTICAL;
+        c.fill = GridBagConstraints.BOTH;
         add(time, c);
         c.gridx = 1;
-        c.weightx = 1;
+        c.weightx = 0.8;
         c.insets = new Insets(0, 5, 0, 5);
         c.fill = GridBagConstraints.HORIZONTAL;
         add(progressBar, c);
         c.gridx = 2;
-        c.weightx = 0;
-        c.insets = new Insets(2, 0, 0, 5);
-        c.fill = GridBagConstraints.VERTICAL;
+        c.weightx = 0.1;
+        c.insets = new Insets(2, 5, 0, 5);
+        c.fill = GridBagConstraints.BOTH;
         add(remainingTime, c);
 
     }
