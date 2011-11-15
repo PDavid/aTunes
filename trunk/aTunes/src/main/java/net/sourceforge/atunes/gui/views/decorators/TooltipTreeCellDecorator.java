@@ -27,15 +27,13 @@ import javax.swing.JLabel;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITreeObject;
 
 public class TooltipTreeCellDecorator extends AbstractTreeCellDecorator {
 
     @SuppressWarnings("unchecked")
 	@Override
-    public Component decorateTreeCellComponent(IState state, Component component, Object userObject, boolean isSelected, ILookAndFeel lookAndFeel) {
+    public Component decorateTreeCellComponent(Component component, Object userObject, boolean isSelected) {
         if (!state.isShowExtendedTooltip() || !ExtendedToolTip.canObjectBeShownInExtendedToolTip(userObject)) {
             if (userObject instanceof ITreeObject) {
                 ((JLabel) component).setToolTipText(((ITreeObject<? extends IAudioObject>) userObject).getToolTip());

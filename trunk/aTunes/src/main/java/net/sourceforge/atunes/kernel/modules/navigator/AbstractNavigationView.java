@@ -49,7 +49,6 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IFilterHandler;
-import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -79,8 +78,6 @@ public abstract class AbstractNavigationView implements INavigationView {
     private IState state;
     
     private INavigationHandler navigationHandler;
-    
-    private IFrame frame;
     
     /**
      * Decorators used in view
@@ -123,7 +120,6 @@ public abstract class AbstractNavigationView implements INavigationView {
     	return decorators;
     }
     
-    @Override
 	public void setDecorators(List<AbstractTreeCellDecorator> decorators) {
 		this.decorators = decorators;
 	}
@@ -143,13 +139,6 @@ public abstract class AbstractNavigationView implements INavigationView {
      */
     public void setNavigationHandler(INavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
-	}
-    
-    /**
-     * @param frame
-     */
-    public void setFrame(IFrame frame) {
-		this.frame = frame;
 	}
     
     /**
@@ -532,7 +521,7 @@ public abstract class AbstractNavigationView implements INavigationView {
             @Override
             public JComponent getComponent(JComponent superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
                 for (AbstractTreeCellDecorator decorator : getTreeCellDecorators()) {
-                    decorator.decorateTreeCellComponent(getState(), superComponent, ((DefaultMutableTreeNode) value).getUserObject(), isSelected, lookAndFeelManager.getCurrentLookAndFeel());
+                    decorator.decorateTreeCellComponent(superComponent, ((DefaultMutableTreeNode) value).getUserObject(), isSelected);
                 }
                 return superComponent;
             }

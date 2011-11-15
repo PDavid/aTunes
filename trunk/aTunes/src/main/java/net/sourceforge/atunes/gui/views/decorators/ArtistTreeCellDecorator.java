@@ -29,27 +29,28 @@ import net.sourceforge.atunes.gui.images.ArtistImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IFavoritesHandler;
-import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.IState;
 
 public class ArtistTreeCellDecorator extends AbstractTreeCellDecorator {
 
 	private IFavoritesHandler favoritesHandler;
 
     @Override
-    public Component decorateTreeCellComponent(IState state, Component component, Object userObject, boolean isSelected, ILookAndFeel lookAndFeel) {
+    public Component decorateTreeCellComponent(Component component, Object userObject, boolean isSelected) {
         if (userObject instanceof Artist) {
-            if (!state.isShowFavoritesInNavigator() || !favoritesHandler.getFavoriteArtistsInfo().containsValue(userObject)) {
-          		((JLabel) component).setIcon(ArtistImageIcon.getIcon(lookAndFeel.getPaintForColorMutableIcon(component, isSelected), lookAndFeel));
+        	Artist artist = (Artist) userObject;
+            if (!state.isShowFavoritesInNavigator() || !favoritesHandler.getFavoriteArtistsInfo().containsKey(artist.getName())) {
+          		((JLabel) component).setIcon(ArtistImageIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected), getLookAndFeel()));
             } else {
-                ((JLabel) component).setIcon(ArtistFavoriteImageIcon.getIcon(lookAndFeel.getPaintForColorMutableIcon(component, isSelected), lookAndFeel));
+                ((JLabel) component).setIcon(ArtistFavoriteImageIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected), getLookAndFeel()));
             }
         }
         return component;
     }
     
+    /**
+     * @param favoritesHandler
+     */
     public void setFavoritesHandler(IFavoritesHandler favoritesHandler) {
 		this.favoritesHandler = favoritesHandler;
 	}
-
 }
