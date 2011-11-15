@@ -34,7 +34,7 @@
 		<constructor-arg value="HELP"/>
 	</bean>
 	
-	<bean id="contextPanelsContainer" class="net.sourceforge.atunes.gui.views.panels.ContextPanelContainer">
+	<bean id="contextPanelsContainer" class="net.sourceforge.atunes.gui.views.panels.context.ContextPanelContainer">
 		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
 	

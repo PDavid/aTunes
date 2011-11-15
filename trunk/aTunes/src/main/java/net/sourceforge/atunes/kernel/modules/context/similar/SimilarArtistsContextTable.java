@@ -31,11 +31,10 @@ import java.awt.dnd.DragSourceListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JComponent;
-import javax.swing.TransferHandler;
 import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.gui.model.TransferableList;
+import net.sourceforge.atunes.gui.views.CopyTransferHandler;
 import net.sourceforge.atunes.kernel.modules.context.ContextTable;
 import net.sourceforge.atunes.kernel.modules.draganddrop.DragableArtist;
 import net.sourceforge.atunes.model.IArtistInfo;
@@ -62,18 +61,7 @@ public final class SimilarArtistsContextTable extends ContextTable implements Dr
         setDragSource();
         setDragEnabled(true);
 
-        setTransferHandler(new TransferHandler() {
-
-            /**
-			 * 
-			 */
-			private static final long serialVersionUID = -3748127907759271591L;
-
-			@Override
-            public int getSourceActions(JComponent c) {
-                return TransferHandler.COPY;
-    }
-        });
+        setTransferHandler(new CopyTransferHandler());
     }
 
     /**
