@@ -216,8 +216,6 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 
     @Override
     public void applicationStateChanged(IState newState) {
-        // TODO: Remove refreshing explicitly radio view
-        refreshView(RadioNavigationView.class);
         refreshCurrentView();
     }
 
