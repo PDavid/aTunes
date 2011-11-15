@@ -34,6 +34,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.model.IAlbumInfo;
@@ -90,7 +91,7 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent {
             if (image != null) {
                 ImageIcon imageIcon = ImageUtils.resize(new ImageIcon(image), Constants.ALBUM_IMAGE_SIZE.getSize(), Constants.ALBUM_IMAGE_SIZE.getSize());
                 albumCoverLabel.setIcon(imageIcon);
-                albumCoverLabel.setBorder(new DropShadowBorder());
+                albumCoverLabel.setBorder(Context.getBean(DropShadowBorder.class));
             }
         }
     }

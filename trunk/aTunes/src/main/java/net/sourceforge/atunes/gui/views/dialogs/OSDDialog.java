@@ -29,6 +29,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -196,7 +197,7 @@ public final class OSDDialog extends AbstractCustomWindow {
      * @param shadowBorder
      */
     public void setShadowBorder(boolean shadowBorder) {
-        image.setBorder(shadowBorder ? new DropShadowBorder() : null);
+        image.setBorder(shadowBorder ? Context.getBean(DropShadowBorder.class) : null);
     }
 
 }

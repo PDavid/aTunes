@@ -97,7 +97,7 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
         }
         if (result.containsKey(AudioObjectBasicInfoDataSource.OUTPUT_AUDIO_OBJECT)) {
             if (result.get(AudioObjectBasicInfoDataSource.OUTPUT_AUDIO_OBJECT) instanceof ILocalAudioObject && image != null) {
-                audioObjectImage.setBorder(new DropShadowBorder());
+                audioObjectImage.setBorder(Context.getBean(DropShadowBorder.class));
             } else {
                 audioObjectImage.setBorder(null);
             }

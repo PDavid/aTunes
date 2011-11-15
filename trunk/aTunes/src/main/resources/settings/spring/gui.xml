@@ -50,4 +50,6 @@
 
 	<bean id="filterPanel" class="net.sourceforge.atunes.gui.views.panels.FilterPanel" init-method="initialize"/>	
 	
+	<!--  This object can be reused across all components with this border -->
+	<bean id="shadowBorder" class="org.jdesktop.swingx.border.DropShadowBorder"/>
 </beans>

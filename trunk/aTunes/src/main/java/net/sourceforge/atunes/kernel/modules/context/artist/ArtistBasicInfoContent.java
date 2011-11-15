@@ -34,6 +34,7 @@ import javax.swing.JPanel;
 import javax.swing.text.StyleConstants;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.CustomTextPane;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
@@ -77,7 +78,7 @@ public class ArtistBasicInfoContent extends AbstractContextPanelContent {
         Image artistImage = (Image) result.get(ArtistInfoDataSource.OUTPUT_IMAGE);
         if (artistImage != null) {
             artistImageLabel.setIcon(ImageUtils.scaleImageBicubic(artistImage, Constants.ARTIST_IMAGE_SIZE, Constants.ARTIST_IMAGE_SIZE));
-            artistImageLabel.setBorder(new DropShadowBorder());
+            artistImageLabel.setBorder(Context.getBean(DropShadowBorder.class));
         }
         String artistName = (String) result.get(ArtistInfoDataSource.OUTPUT_ARTIST_NAME);
         String artistUrl = (String) result.get(ArtistInfoDataSource.OUTPUT_ARTIST_URL);

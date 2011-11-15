@@ -41,6 +41,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorFrame;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.GetCoversProcess;
@@ -216,7 +217,7 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
             coverLabel.setPreferredSize(new Dimension(Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize(), Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize()));
             coverLabel.setBorder(BorderFactory.createLineBorder(GuiUtils.getBorderColor()));
         } else {
-            coverLabel.setBorder(new DropShadowBorder());
+            coverLabel.setBorder(Context.getBean(DropShadowBorder.class));
         }
 
         JLabel label = new JLabel(album.getName(), SwingConstants.CENTER);
