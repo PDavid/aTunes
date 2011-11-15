@@ -43,6 +43,10 @@ import org.pushingpixels.substance.api.shaper.ClassicButtonShaper;
 abstract class CustomSubstanceSkin extends org.pushingpixels.substance.api.SubstanceSkin implements ICustomSubstanceSkin {
 
 	private Color highlightColor;
+	
+	private Color colorMutableIcon;
+	
+	private Color colorForDisabledSpecialControl;
 
 	/**
 	 * @param activeScheme
@@ -84,8 +88,11 @@ abstract class CustomSubstanceSkin extends org.pushingpixels.substance.api.Subst
     	if (isSelected) {
     		return component.getForeground();    		
     	} else {
-    		Color c = highlightColor.darker();    		
-    		return new Color(c.getRed(), c.getGreen(), c.getBlue(), 200);
+    		if (colorMutableIcon == null) {
+        		Color c = highlightColor.darker();    		
+        		colorMutableIcon = new Color(c.getRed(), c.getGreen(), c.getBlue(), 200);
+    		}
+    		return colorMutableIcon;
     	}
 	}
 	
@@ -96,7 +103,10 @@ abstract class CustomSubstanceSkin extends org.pushingpixels.substance.api.Subst
 
     @Override
 	public Paint getPaintForDisabledSpecialControls() {
-		Color c = highlightColor.darker();    		
-		return new Color(c.getRed(), c.getGreen(), c.getBlue(), 140);
+    	if (colorForDisabledSpecialControl == null) {
+    		Color c = highlightColor.darker();    		
+    		colorForDisabledSpecialControl = new Color(c.getRed(), c.getGreen(), c.getBlue(), 140);
+    	}
+    	return colorForDisabledSpecialControl;
 	}
 }
