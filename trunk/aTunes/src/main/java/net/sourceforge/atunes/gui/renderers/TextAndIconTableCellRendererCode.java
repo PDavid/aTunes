@@ -26,7 +26,7 @@ import javax.swing.JTable;
 
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
-import net.sourceforge.atunes.kernel.modules.columns.TextAndIcon;
+import net.sourceforge.atunes.gui.model.TextAndIcon;
 import net.sourceforge.atunes.model.ILookAndFeel;
 
 public class TextAndIconTableCellRendererCode extends AbstractTableCellRendererCode {

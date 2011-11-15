@@ -23,9 +23,9 @@ package net.sourceforge.atunes.kernel.modules.navigator;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.kernel.modules.columns.DateColumn;
+import net.sourceforge.atunes.model.AudioObjectProperty;
 import net.sourceforge.atunes.model.IColumn;
 
 public class PodcastNavigationColumnSet extends AbstractCustomNavigatorColumnSet {
@@ -35,19 +35,19 @@ public class PodcastNavigationColumnSet extends AbstractCustomNavigatorColumnSet
 
 		List<IColumn> columns = new ArrayList<IColumn>();
 
-        AbstractColumn property1 = new PodcastNotListenedPropertyColumn("", Property.class);
+        AbstractColumn property1 = new PodcastNotListenedPropertyColumn("", AudioObjectProperty.class);
         property1.setVisible(true);
         property1.setWidth(20);
         property1.setResizable(false);
         columns.add(property1);
 
-        AbstractColumn property2 = new PodcastDownloadedPropertyColumn("", Property.class);
+        AbstractColumn property2 = new PodcastDownloadedPropertyColumn("", AudioObjectProperty.class);
         property2.setVisible(true);
         property2.setWidth(20);
         property2.setResizable(false);
         columns.add(property2);
 
-        AbstractColumn property3 = new PodcastOldEntryPropertyColumn("", Property.class);
+        AbstractColumn property3 = new PodcastOldEntryPropertyColumn("", AudioObjectProperty.class);
         property3.setVisible(true);
         property3.setWidth(20);
         property3.setResizable(false);

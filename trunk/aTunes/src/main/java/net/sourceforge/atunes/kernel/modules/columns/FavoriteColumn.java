@@ -20,22 +20,26 @@
 
 package net.sourceforge.atunes.kernel.modules.columns;
 
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
+import net.sourceforge.atunes.model.AudioObjectProperty;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
 
-public class FavoriteColumn extends AbstractColumn {
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
-    /**
-     * 
-     */
+public class FavoriteColumn extends AbstractColumn implements ApplicationContextAware {
+
     private static final long serialVersionUID = -4652512586792166062L;
+    
+    private ApplicationContext context;
+    
+    private IFavoritesHandler favoritesHandler;
 
     public FavoriteColumn() {
-        super("FAVORITES", Property.class);
+        super("FAVORITES", AudioObjectProperty.class);
         setResizable(false);
         setWidth(20);
         setVisible(true);
@@ -60,11 +64,23 @@ public class FavoriteColumn extends AbstractColumn {
         if (audioObject instanceof IPodcastFeedEntry) {
             return null;
         }
-        return Context.getBean(IFavoritesHandler.class).getFavoriteSongsInfo().containsValue(audioObject) ? Property.FAVORITE : null;
+        return getFavoritesHandler().getFavoriteSongsInfo().containsValue(audioObject) ? AudioObjectProperty.FAVORITE : null;
     }
 
     @Override
     public String getHeaderText() {
         return "";
     }
+    
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    	this.context = applicationContext;
+    }
+    
+    private IFavoritesHandler getFavoritesHandler() {
+    	if (favoritesHandler == null) {
+    		favoritesHandler = context.getBean(IFavoritesHandler.class);
+    	}
+		return favoritesHandler;
+	}
 }

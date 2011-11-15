@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.columns;
+package net.sourceforge.atunes.gui.model;
 
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 

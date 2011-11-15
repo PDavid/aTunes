@@ -36,32 +36,6 @@ import net.sourceforge.atunes.model.IAudioObject;
  */
 public final class NavigationTableModel extends AbstractColumnSetTableModel {
 
-    /**
-     * Enum for properties
-     */
-    public enum Property {
-        /**
-         * No properties
-         */
-        NO_PROPERTIES,
-        /**
-         * Favorite
-         */
-        FAVORITE,
-        /**
-         * Not listened
-         */
-        NOT_LISTENED_ENTRY,
-        /**
-         * Downloaded
-         */
-        DOWNLOADED_ENTRY,
-        /**
-         * Old entry
-         */
-        OLD_ENTRY;
-    }
-
     /** The songs. */
     private List<? extends IAudioObject> audioObjects;
 

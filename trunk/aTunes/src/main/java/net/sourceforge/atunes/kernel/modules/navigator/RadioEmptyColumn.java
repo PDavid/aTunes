@@ -20,8 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
-import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
+import net.sourceforge.atunes.model.AudioObjectProperty;
 import net.sourceforge.atunes.model.IAudioObject;
 
 final class RadioEmptyColumn extends AbstractColumn {
@@ -41,6 +41,6 @@ final class RadioEmptyColumn extends AbstractColumn {
 
     @Override
     public Object getValueFor(IAudioObject audioObject) {
-        return Property.NO_PROPERTIES;
+        return AudioObjectProperty.NO_PROPERTIES;
     }
 }

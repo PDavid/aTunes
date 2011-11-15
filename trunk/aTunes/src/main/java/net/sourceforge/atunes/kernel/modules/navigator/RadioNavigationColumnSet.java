@@ -23,8 +23,8 @@ package net.sourceforge.atunes.kernel.modules.navigator;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
+import net.sourceforge.atunes.model.AudioObjectProperty;
 import net.sourceforge.atunes.model.IColumn;
 
 public final class RadioNavigationColumnSet extends AbstractCustomNavigatorColumnSet {
@@ -34,7 +34,7 @@ public final class RadioNavigationColumnSet extends AbstractCustomNavigatorColum
 
 		List<IColumn> columns = new ArrayList<IColumn>();
 
-        AbstractColumn property = new RadioEmptyColumn("", Property.class);
+        AbstractColumn property = new RadioEmptyColumn("", AudioObjectProperty.class);
         property.setVisible(true);
         property.setWidth(20);
         property.setResizable(false);

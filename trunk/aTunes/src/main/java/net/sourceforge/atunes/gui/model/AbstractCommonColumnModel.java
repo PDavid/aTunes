@@ -37,14 +37,13 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.gui.renderers.ColorMutableTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.ImageIconTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.IntegerTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.PropertyTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.StringTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.TextAndIconTableCellRendererCode;
-import net.sourceforge.atunes.kernel.modules.columns.TextAndIcon;
+import net.sourceforge.atunes.model.AudioObjectProperty;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IColumnSet;
@@ -382,7 +381,7 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
             return new StringTableCellRendererCode(this, lookAndFeel);
         } else if (clazz.equals(TextAndIcon.class)) {
             return new TextAndIconTableCellRendererCode(this, lookAndFeel);
-        } else if (clazz.equals(Property.class)) {
+        } else if (clazz.equals(AudioObjectProperty.class)) {
             return new PropertyTableCellRendererCode(lookAndFeel);
         } else if (clazz.equals(IColorMutableImageIcon.class)) {
         	return new ColorMutableTableCellRendererCode(this, lookAndFeel);

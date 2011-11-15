@@ -26,9 +26,9 @@ import javax.swing.JTable;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
-import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
-import net.sourceforge.atunes.kernel.modules.columns.TextAndIcon;
+import net.sourceforge.atunes.gui.model.TextAndIcon;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.model.AudioObjectProperty;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectStatistics;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
@@ -73,7 +73,7 @@ public final class ColumnRenderers {
         jtable.setDefaultRenderer(TextAndIcon.class, lookAndFeel.getTableCellRenderer(model.getRendererCodeFor(TextAndIcon.class)));
 
         // Property renderer
-        jtable.setDefaultRenderer(Property.class, lookAndFeel.getTableCellRenderer(model.getRendererCodeFor(Property.class)));
+        jtable.setDefaultRenderer(AudioObjectProperty.class, lookAndFeel.getTableCellRenderer(model.getRendererCodeFor(AudioObjectProperty.class)));
         
         // ColorMutableImageIcon
         jtable.setDefaultRenderer(IColorMutableImageIcon.class, lookAndFeel.getTableCellRenderer(model.getRendererCodeFor(IColorMutableImageIcon.class)));

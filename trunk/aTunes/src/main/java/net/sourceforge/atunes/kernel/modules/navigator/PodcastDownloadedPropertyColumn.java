@@ -20,8 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
-import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
+import net.sourceforge.atunes.model.AudioObjectProperty;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 
@@ -37,7 +37,7 @@ final class PodcastDownloadedPropertyColumn extends AbstractColumn {
 
     @Override
     public Object getValueFor(IAudioObject audioObject) {
-        return ((IPodcastFeedEntry) audioObject).isDownloaded() ? Property.DOWNLOADED_ENTRY : Property.NO_PROPERTIES;
+        return ((IPodcastFeedEntry) audioObject).isDownloaded() ? AudioObjectProperty.DOWNLOADED_ENTRY : AudioObjectProperty.NO_PROPERTIES;
     }
 
     @Override
