@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.gui.model.TextAndIcon;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IFavoritesHandler;
@@ -45,7 +45,6 @@ public class AlbumColumn extends AbstractColumn implements ApplicationContextAwa
         super("ALBUM", TextAndIcon.class);
         setVisible(true);
         setUsedForFilter(true);
-        this.albumFavoriteIcon = (IColorMutableImageIcon) Context.getBean("albumFavoriteIcon");
     }
     
     @Override
@@ -87,4 +86,11 @@ public class AlbumColumn extends AbstractColumn implements ApplicationContextAwa
     	}
     	return favoritesHandler;
     }
+    
+    /**
+     * @param albumFavoriteIcon
+     */
+    public void setAlbumFavoriteIcon(IColorMutableImageIcon albumFavoriteIcon) {
+		this.albumFavoriteIcon = albumFavoriteIcon;
+	}
 }

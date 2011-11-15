@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectGenericImageFactory;
@@ -30,12 +29,16 @@ import net.sourceforge.atunes.model.IColorMutableImageIcon;
 
 public class TypeColumn extends AbstractColumn {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = -3060341777429113749L;
     
     private IAudioObjectGenericImageFactory audioObjectGenericImageFactory;
+    
+    /**
+     * @param audioObjectGenericImageFactory
+     */
+    public void setAudioObjectGenericImageFactory(IAudioObjectGenericImageFactory audioObjectGenericImageFactory) {
+		this.audioObjectGenericImageFactory = audioObjectGenericImageFactory;
+	}
 
     public TypeColumn() {
         super("TYPE", IColorMutableImageIcon.class);
@@ -43,7 +46,6 @@ public class TypeColumn extends AbstractColumn {
         setWidth(20);
         setVisible(true);
         setAlignment(SwingConstants.CENTER);
-        this.audioObjectGenericImageFactory = Context.getBean(IAudioObjectGenericImageFactory.class);
     }
 
     @Override

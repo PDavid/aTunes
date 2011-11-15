@@ -29,7 +29,7 @@ import net.sourceforge.atunes.gui.images.DownloadImageIcon;
 import net.sourceforge.atunes.gui.images.FavoriteImageIcon;
 import net.sourceforge.atunes.gui.images.NewImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.gui.model.NavigationTableModel.Property;
+import net.sourceforge.atunes.model.AudioObjectProperty;
 import net.sourceforge.atunes.model.ILookAndFeel;
 
 public class PropertyTableCellRendererCode extends AbstractTableCellRendererCode {
@@ -41,12 +41,12 @@ public class PropertyTableCellRendererCode extends AbstractTableCellRendererCode
 	@Override
     public JComponent getComponent(JComponent comp, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         ImageIcon icon = null;
-        Property val = (Property) value;
-        if (val == Property.FAVORITE) {
+        AudioObjectProperty val = (AudioObjectProperty) value;
+        if (val == AudioObjectProperty.FAVORITE) {
             icon = FavoriteImageIcon.getIcon(lookAndFeel.getPaintForColorMutableIcon(comp, isSelected), lookAndFeel);
-        } else if (val == Property.NOT_LISTENED_ENTRY) {
+        } else if (val == AudioObjectProperty.NOT_LISTENED_ENTRY) {
             icon = NewImageIcon.getIcon(lookAndFeel.getPaintForColorMutableIcon(comp, isSelected), lookAndFeel);
-        } else if (val == Property.DOWNLOADED_ENTRY) {
+        } else if (val == AudioObjectProperty.DOWNLOADED_ENTRY) {
             icon = DownloadImageIcon.getIcon(lookAndFeel.getPaintForColorMutableIcon(comp, isSelected), lookAndFeel);
         }
         ((JLabel) comp).setIcon(icon);

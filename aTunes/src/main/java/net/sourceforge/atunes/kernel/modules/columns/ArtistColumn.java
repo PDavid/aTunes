@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.gui.model.TextAndIcon;
 import net.sourceforge.atunes.model.ColumnSort;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
@@ -47,7 +47,6 @@ public class ArtistColumn extends AbstractColumn implements ApplicationContextAw
         setVisible(true);
         setUsedForFilter(true);
         setColumnSort(ColumnSort.ASCENDING); // Column sets are ordered by default by this column
-        this.artistFavoriteIcon = (IColorMutableImageIcon) Context.getBean("artistFavoriteIcon");
     }
     
     @Override
@@ -92,4 +91,11 @@ public class ArtistColumn extends AbstractColumn implements ApplicationContextAw
     	}
     	return favoritesHandler;
     }
+    
+    /**
+     * @param artistFavoriteIcon
+     */
+    public void setArtistFavoriteIcon(IColorMutableImageIcon artistFavoriteIcon) {
+		this.artistFavoriteIcon = artistFavoriteIcon;
+	}
 }

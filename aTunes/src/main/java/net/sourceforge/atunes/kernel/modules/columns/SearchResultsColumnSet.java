@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import java.util.Map;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.ColumnBean;
 import net.sourceforge.atunes.model.ISearchHandler;
 
@@ -33,6 +32,15 @@ import net.sourceforge.atunes.model.ISearchHandler;
  */
 public final class SearchResultsColumnSet extends AbstractColumnSet {
 
+	private ISearchHandler searchHandler;
+	
+	/**
+	 * @param searchHandler
+	 */
+	public void setSearchHandler(ISearchHandler searchHandler) {
+		this.searchHandler = searchHandler;
+	}
+	
     @Override
     protected Map<String, ColumnBean> getColumnsConfiguration() {
         return state.getSearchResultsColumns();
@@ -45,6 +53,6 @@ public final class SearchResultsColumnSet extends AbstractColumnSet {
 
     @Override
     protected void refreshColumns() {
-    	Context.getBean(ISearchHandler.class).refreshSearchResultColumns();
+    	searchHandler.refreshSearchResultColumns();
     }
 }

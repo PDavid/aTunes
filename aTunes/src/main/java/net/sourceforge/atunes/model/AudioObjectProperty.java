@@ -18,29 +18,30 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.navigator;
+package net.sourceforge.atunes.model;
 
-import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
-import net.sourceforge.atunes.model.AudioObjectProperty;
-import net.sourceforge.atunes.model.IAudioObject;
-
-final class RadioEmptyColumn extends AbstractColumn {
+/**
+ * Enum for properties available for several types of audio object
+ */
+public enum AudioObjectProperty {
     /**
-	 * 
-	 */
-    private static final long serialVersionUID = 3613237620716484881L;
-
-    RadioEmptyColumn(String name, Class<?> columnClass) {
-        super(name, columnClass);
-    }
-
-    @Override
-    protected int ascendingCompare(IAudioObject o1, IAudioObject o2) {
-        return 0;
-    }
-
-    @Override
-    public Object getValueFor(IAudioObject audioObject) {
-        return AudioObjectProperty.NO_PROPERTIES;
-    }
+     * No properties
+     */
+    NO_PROPERTIES,
+    /**
+     * Favorite
+     */
+    FAVORITE,
+    /**
+     * Not listened
+     */
+    NOT_LISTENED_ENTRY,
+    /**
+     * Downloaded
+     */
+    DOWNLOADED_ENTRY,
+    /**
+     * Old entry
+     */
+    OLD_ENTRY;
 }

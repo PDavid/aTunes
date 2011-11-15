@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectStatistics;
@@ -31,10 +30,18 @@ import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 
 public class TimesPlayedColumn extends AbstractColumn {
-
     
     private static final long serialVersionUID = 7879150472122090859L;
 
+    private IStatisticsHandler statisticsHandler;
+    
+    /**
+     * @param statisticsHandler
+     */
+    public void setStatisticsHandler(IStatisticsHandler statisticsHandler) {
+		this.statisticsHandler = statisticsHandler;
+	}
+    
     public TimesPlayedColumn() {
         super("TIMES_PLAYED", String.class);
         setWidth(100);
@@ -47,11 +54,11 @@ public class TimesPlayedColumn extends AbstractColumn {
         int times1 = 0;
         int times2 = 0;
         if (ao1 instanceof AudioFile) {
-            IAudioObjectStatistics stats1 = Context.getBean(IStatisticsHandler.class).getAudioObjectStatistics(ao1);
+            IAudioObjectStatistics stats1 = statisticsHandler.getAudioObjectStatistics(ao1);
             times1 = stats1 != null ? stats1.getTimesPlayed() : 0;
         }
         if (ao2 instanceof AudioFile) {
-            IAudioObjectStatistics stats2 = Context.getBean(IStatisticsHandler.class).getAudioObjectStatistics(ao2);
+            IAudioObjectStatistics stats2 = statisticsHandler.getAudioObjectStatistics(ao2);
             times2 = stats2 != null ? stats2.getTimesPlayed() : 0;
         }
         return ((Integer) times1).compareTo(times2);
@@ -66,11 +73,10 @@ public class TimesPlayedColumn extends AbstractColumn {
             return "";
         }
         // Return times played
-        IAudioObjectStatistics stats = Context.getBean(IStatisticsHandler.class).getAudioObjectStatistics(audioObject);
+        IAudioObjectStatistics stats = statisticsHandler.getAudioObjectStatistics(audioObject);
         if (stats != null && stats.getTimesPlayed() > 0) {
             return Integer.toString(stats.getTimesPlayed());
         }
         return "";
     }
-
 }

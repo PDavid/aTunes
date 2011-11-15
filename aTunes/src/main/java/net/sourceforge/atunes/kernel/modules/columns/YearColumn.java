@@ -52,5 +52,4 @@ public class YearColumn extends AbstractColumn {
     public String getValueForFilter(IAudioObject audioObject) {
         return audioObject.getYear();
     }
-
 }
