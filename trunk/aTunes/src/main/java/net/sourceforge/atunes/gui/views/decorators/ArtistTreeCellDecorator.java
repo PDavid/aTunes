@@ -39,9 +39,9 @@ public class ArtistTreeCellDecorator extends AbstractTreeCellDecorator {
         if (userObject instanceof Artist) {
         	Artist artist = (Artist) userObject;
             if (!state.isShowFavoritesInNavigator() || !favoritesHandler.getFavoriteArtistsInfo().containsKey(artist.getName())) {
-          		((JLabel) component).setIcon(ArtistImageIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected), getLookAndFeel()));
+          		((JLabel) component).setIcon(ArtistImageIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
             } else {
-                ((JLabel) component).setIcon(ArtistFavoriteImageIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected), getLookAndFeel()));
+                ((JLabel) component).setIcon(ArtistFavoriteImageIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
             }
         }
         return component;

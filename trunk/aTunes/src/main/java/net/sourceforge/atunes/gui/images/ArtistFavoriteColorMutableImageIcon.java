@@ -25,21 +25,11 @@ import java.awt.Paint;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 public final class ArtistFavoriteColorMutableImageIcon implements IColorMutableImageIcon {
 	
-	private ILookAndFeelManager lookAndFeelManager;
-	
-	/**
-	 * @param lookAndFeelManager
-	 */
-	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
-	}
-	
 	@Override
 	public ImageIcon getIcon(Paint paint) {
-		return ArtistFavoriteImageIcon.getIcon(paint, lookAndFeelManager.getCurrentLookAndFeel());
+		return ArtistFavoriteImageIcon.getIcon(paint);
 	}
 }

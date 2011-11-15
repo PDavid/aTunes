@@ -24,17 +24,19 @@ import java.awt.Paint;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.utils.Logger;
 
 public class ArtistImageIcon {
 
 	private static final int WIDTH = 16;
 	private static final int HEIGHT = 16;
 	
-	private static ImageIcon icon;
+	private static Map<Paint, ImageIcon> cachedIcons = new HashMap<Paint, ImageIcon>();
 	
 	private ArtistImageIcon() {}
 	
@@ -42,9 +44,11 @@ public class ArtistImageIcon {
 	 * @param lookAndFeel 
 	 * @return
 	 */
-	public static ImageIcon getIcon(ILookAndFeel lookAndFeel) {
+	public static ImageIcon getIcon(Paint c) {
+		ImageIcon icon = cachedIcons.get(c);
 		if (icon == null) {
-			icon = getIcon(null, lookAndFeel);	
+			icon = generateIcon(c);
+			cachedIcons.put(c, icon);
 		}
 		return icon;
 	}
@@ -54,9 +58,10 @@ public class ArtistImageIcon {
 	 * @param lookAndFeel
 	 * @return
 	 */
-	public static ImageIcon getIcon(Paint color, ILookAndFeel lookAndFeel) {
+	private static ImageIcon generateIcon(Paint color) {
+		Logger.debug("Creating icon: ArtistImageIcon with color: ", color);
 		Rectangle clip = new Rectangle(2, 1, WIDTH - 4, HEIGHT - 2);
-		return IconGenerator.generateIcon(color, clip, WIDTH, HEIGHT, lookAndFeel, getArtistIconArea(0));
+		return IconGenerator.generateIcon(color, clip, WIDTH, HEIGHT, getArtistIconArea(0));
 	}
 	
 	protected static Area getArtistIconArea(int distanceFromCenter) {

@@ -68,7 +68,7 @@ public class ShowArtistsInNavigatorAction extends ActionWithColorMutableIcon {
 			
 			@Override
 			public ImageIcon getIcon(Paint paint) {
-				return ArtistImageIcon.getIcon(paint, lookAndFeel);
+				return ArtistImageIcon.getIcon(paint);
 			}
 		};
     }

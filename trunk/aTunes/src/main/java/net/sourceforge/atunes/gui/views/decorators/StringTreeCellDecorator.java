@@ -49,7 +49,7 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator {
             } else if (text.equals(I18nUtils.getString("DEVICE"))) {
                 label.setIcon(DeviceImageIcon.getIcon(color, getLookAndFeel()));
             } else if (text.equals(I18nUtils.getString("ARTISTS"))) {
-                label.setIcon(ArtistImageIcon.getIcon(color, getLookAndFeel()));
+                label.setIcon(ArtistImageIcon.getIcon(color));
             } else if (text.equals(I18nUtils.getString("ALBUMS"))) {
                 label.setIcon(AlbumImageIcon.getIcon(color, getLookAndFeel()));
             } else if (text.equals(I18nUtils.getString("SONGS"))) {
