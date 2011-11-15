@@ -31,11 +31,10 @@ import java.awt.dnd.DragSourceListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JComponent;
 import javax.swing.JTable;
-import javax.swing.TransferHandler;
 
 import net.sourceforge.atunes.gui.model.TransferableList;
+import net.sourceforge.atunes.gui.views.CopyTransferHandler;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.ITable;
 
@@ -53,15 +52,7 @@ public final class NavigationTable extends JTable implements DragSourceListener,
     	lookAndFeelManager.getCurrentLookAndFeel().decorateTable(this);
     	setDragSource();
     	setDragEnabled(true);
-    	setTransferHandler(new TransferHandler() {
-
-    		private static final long serialVersionUID = -9033178513246597067L;
-
-    		@Override
-    		public int getSourceActions(JComponent c) {
-    			return TransferHandler.COPY;
-    		}
-    	});
+    	setTransferHandler(new CopyTransferHandler());
     }
 
     @Override

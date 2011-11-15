@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.panels;
+package net.sourceforge.atunes.gui.views.panels.context;
 
 import java.awt.CardLayout;
 import java.awt.Component;
@@ -29,13 +29,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.gui.lookandfeel.AbstractListCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
 import net.sourceforge.atunes.model.IContextPanel;
 import net.sourceforge.atunes.model.IContextPanelsContainer;
@@ -96,15 +92,7 @@ public final class ContextPanelContainer extends JPanel implements IContextPanel
         add(container, c);
         
 		if (lookAndFeelManager.getCurrentLookAndFeel().customComboBoxRenderersSupported()) {
-			contextSelector.setRenderer(lookAndFeelManager.getCurrentLookAndFeel().getListCellRenderer(new AbstractListCellRendererCode() {
-
-				@Override
-				public JComponent getComponent(JComponent superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-					((JLabel)superComponent).setIcon(((IContextPanel)value).getIcon().getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForColorMutableIcon(superComponent, isSelected || cellHasFocus)));
-					((JLabel)superComponent).setText(((IContextPanel)value).getTitle());
-					return superComponent;
-				}
-			}));
+			contextSelector.setRenderer(lookAndFeelManager.getCurrentLookAndFeel().getListCellRenderer(new ContextSelectorListCellRendererCode(lookAndFeelManager)));
 		}
     }
 
@@ -113,9 +101,6 @@ public final class ContextPanelContainer extends JPanel implements IContextPanel
     	return this;
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.panels.IContextPanelsContainer#updateContextTabs()
-	 */
     @Override
 	public void updateContextPanels() {
     	IContextPanel selectedPanel = contextSelector.getSelectedItem() != null ? (IContextPanel) contextSelector.getSelectedItem() : null;
@@ -133,27 +118,18 @@ public final class ContextPanelContainer extends JPanel implements IContextPanel
         ((CardLayout)container.getLayout()).show(container, selectedPanel != null ? selectedPanel.getContextPanelName() : visiblePanels.get(0).getContextPanelName());
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.panels.IContextPanelsContainer#addContextPanel(net.sourceforge.atunes.model.IContextPanel)
-	 */
     @Override
 	public void addContextPanel(IContextPanel panel) {
         panels.add(panel);
         updateContextPanels();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.panels.IContextPanelsContainer#removeContextPanel(net.sourceforge.atunes.model.IContextPanel)
-	 */
     @Override
 	public void removeContextPanel(IContextPanel panel) {
         panels.remove(panel);
         updateContextPanels();
     }
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.panels.IContextPanelsContainer#showContextPanel(net.sourceforge.atunes.model.IContextPanel)
-	 */
 	@Override
 	public void showContextPanel(IContextPanel panel) {
 		final IContextPanel source = panel != null ? panel : visiblePanels.get(0);
@@ -175,9 +151,6 @@ public final class ContextPanelContainer extends JPanel implements IContextPanel
 		}
 	}
 	
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.panels.IContextPanelsContainer#getSelectedContextTab()
-	 */
     @Override
 	public IContextPanel getSelectedContextPanel() {
     	return (IContextPanel) contextSelector.getSelectedItem();
