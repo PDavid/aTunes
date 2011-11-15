@@ -21,23 +21,13 @@
 package net.sourceforge.atunes.gui.renderers;
 
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JTable;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
 import net.sourceforge.atunes.gui.model.TextAndIcon;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.AudioObjectProperty;
-import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IAudioObjectStatistics;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IStatisticsHandler;
-import net.sourceforge.atunes.utils.I18nUtils;
-
-import org.joda.time.format.DateTimeFormat;
 
 /**
  * Common renderers for columns
@@ -78,58 +68,4 @@ public final class ColumnRenderers {
         // ColorMutableImageIcon
         jtable.setDefaultRenderer(IColorMutableImageIcon.class, lookAndFeel.getTableCellRenderer(model.getRendererCodeFor(IColorMutableImageIcon.class)));
     }
-
-    /**
-     * Sets font for given label and row
-     * @param playListHandler
-     * @param label
-     * @param row
-     * @param lookAndFeel
-     */
-    static void setFontForRow(IPlayListHandler playListHandler, JLabel label, int row, ILookAndFeel lookAndFeel) {
-    	if (playListHandler.isCurrentVisibleRowPlaying(row)) {
-    		if (lookAndFeel.getPlayListSelectedItemFont() != null) {
-    			label.setFont(lookAndFeel.getPlayListSelectedItemFont());
-    		} else if (lookAndFeel.getPlayListFont() != null) {
-                label.setFont(lookAndFeel.getPlayListFont());
-    		}
-    	}
-    }
-
-    /**
-     * Builds a String to use as Tool Tip for an AudioObject.
-     * 
-     * @param audioObject
-     *            the audio object
-     * 
-     * @return the tool tip for audio object
-     */
-    static String getToolTipForAudioObject(IAudioObject audioObject) {
-        if (audioObject instanceof AudioFile) {
-            // Get information
-            IAudioObjectStatistics stats = Context.getBean(IStatisticsHandler.class).getAudioObjectStatistics(audioObject);
-
-            // Build string
-            StringBuilder sb = new StringBuilder();
-            sb.append(audioObject.getTitleOrFileName()).append(" - ");
-            sb.append(audioObject.getArtist()).append(" - ");
-
-            // If stats is null -> never played
-            if (stats == null) {
-                sb.append(I18nUtils.getString("SONG_NEVER_PLAYED"));
-            } else {
-                sb.append(I18nUtils.getString("LAST_DATE_PLAYED"));
-                sb.append(": ");
-                sb.append(DateTimeFormat.shortDateTime().print(stats.getLastPlayed()));
-                sb.append(" - ");
-                sb.append(I18nUtils.getString("TIMES_PLAYED"));
-                sb.append(": ");
-                sb.append(stats.getTimesPlayed());
-            }
-            return sb.toString();
-        }
-        return audioObject.getTitleOrFileName();
-
-    }
-
 }
