@@ -23,19 +23,43 @@ package net.sourceforge.atunes.gui.lookandfeel;
 import java.awt.Component;
 
 import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IState;
 
 public abstract class AbstractTreeCellDecorator {
 	
+	protected IState state;
+	
+	protected ILookAndFeelManager lookAndFeelManager;
+	
+	/**
+	 * @param state
+	 */
+	public void setState(IState state) {
+		this.state = state;
+	}
+	
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+	
+	/**
+	 * @return current look and feel
+	 */
+	protected ILookAndFeel getLookAndFeel() {
+		return lookAndFeelManager.getCurrentLookAndFeel();
+	}
+	
     /**
      * Decorates a tree cell component in some way given the user object
-     * @param state
      * @param component
      * @param userObject
      * @param isSelected
-     * @param lookAndFeel
      * @return
      */
-    public abstract Component decorateTreeCellComponent(IState state, Component component, Object userObject, boolean isSelected, ILookAndFeel lookAndFeel);
+    public abstract Component decorateTreeCellComponent(Component component, Object userObject, boolean isSelected);
 
 }

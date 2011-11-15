@@ -28,7 +28,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.kernel.actions.ActionWithColorMutableIcon;
 
 public interface INavigationView extends IAudioObjectsSource, ITreeObjectsSource {
@@ -52,12 +51,6 @@ public interface INavigationView extends IAudioObjectsSource, ITreeObjectsSource
 	 * @return the JTree that contains this view
 	 */
 	public JTree getTree();
-
-	/**
-	 * Sets decorators
-	 * @param decorators
-	 */
-	public void setDecorators(List<AbstractTreeCellDecorator> decorators);
 
 	/**
 	 * @return the tree popup menu of this view
