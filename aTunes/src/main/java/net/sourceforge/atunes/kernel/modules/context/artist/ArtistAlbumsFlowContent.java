@@ -31,6 +31,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.ScrollableFlowPanel;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.model.IAlbumInfo;
@@ -43,7 +44,7 @@ import org.jdesktop.swingx.border.DropShadowBorder;
 public class ArtistAlbumsFlowContent extends AbstractContextPanelContent {
 
     private ScrollableFlowPanel coversPanel;
-
+    
     @Override
     public Component getComponent() {
         coversPanel = new ScrollableFlowPanel();
@@ -99,7 +100,7 @@ public class ArtistAlbumsFlowContent extends AbstractContextPanelContent {
             coverLabel.setPreferredSize(new Dimension(Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT));
             coverLabel.setBorder(BorderFactory.createLineBorder(GuiUtils.getBorderColor()));
         } else {
-            coverLabel.setBorder(new DropShadowBorder());
+            coverLabel.setBorder(Context.getBean(DropShadowBorder.class));
         }
 
         coverLabel.addMouseListener(new CoverMouseAdapter(album, coverLabel, getDesktop()));

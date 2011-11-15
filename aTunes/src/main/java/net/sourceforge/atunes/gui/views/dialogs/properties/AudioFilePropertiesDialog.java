@@ -36,6 +36,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
@@ -159,7 +160,7 @@ final class AudioFilePropertiesDialog extends AudioObjectPropertiesDialog {
         JPanel panel = new JPanel(new GridBagLayout());
 
         pictureLabel = new JLabel();
-        pictureLabel.setBorder(new DropShadowBorder());
+        pictureLabel.setBorder(Context.getBean(DropShadowBorder.class));
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;

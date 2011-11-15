@@ -36,6 +36,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.event.TableModelEvent;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -75,7 +76,7 @@ class ContextTableRowPanelFactory {
 
         JLabel imageLabel = new JLabel(image);
         imageLabel.setOpaque(false);
-        imageLabel.setBorder(image != null ? new DropShadowBorder() : null);
+        imageLabel.setBorder(image != null ? Context.getBean(DropShadowBorder.class) : null);
         JLabel textLabel = new JLabel(text);
         textLabel.setOpaque(false);
         textLabel.setVerticalAlignment(SwingConstants.TOP);
