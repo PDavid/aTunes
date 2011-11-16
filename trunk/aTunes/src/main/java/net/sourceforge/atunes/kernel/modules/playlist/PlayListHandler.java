@@ -23,10 +23,8 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -34,7 +32,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.filechooser.FileFilter;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
@@ -74,34 +71,6 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class PlayListHandler extends AbstractHandler implements IPlayListHandler {
 
-    private static final class RowListComparator implements Comparator<Integer>, Serializable {
-        /**
-		 * 
-		 */
-		private static final long serialVersionUID = -1389171859618293326L;
-		
-		private final boolean up;
-
-        private RowListComparator(boolean up) {
-            this.up = up;
-        }
-
-        @Override
-        public int compare(Integer o1, Integer o2) {
-            return (up ? 1 : -1) * o1.compareTo(o2);
-        }
-    }
-
-    private static class PreviousInitializationTaskRunnable implements Runnable {
-        @Override
-        public void run() {
-            playListsRetrievedFromCache = Context.getBean(IStateHandler.class).retrievePlayListsCache();
-            if (playListsRetrievedFromCache == null) {
-            	playListsRetrievedFromCache = ListOfPlayLists.getEmptyPlayList(Context.getBean(IState.class));
-            }
-        }
-    }
-
     /**
      * The play list counter used when creating new play lists with default
      * name.
@@ -121,7 +90,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     private PlayList nonFilteredPlayList;
 
     /** Play lists stored */
-    private static ListOfPlayLists playListsRetrievedFromCache;
+    static ListOfPlayLists playListsRetrievedFromCache;
     
     private Future<?> persistPlayListFuture;
 
@@ -167,11 +136,11 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	private IPlayListPanel playListPanel;
 	
     /**
-     * Private constructor.
+     * @param playListColumnSet
      */
-    private PlayListHandler() {
-    	playListColumnSet = (IColumnSet) getBean("playlistColumnSet");
-    }
+    public void setPlayListColumnSet(IColumnSet playListColumnSet) {
+		this.playListColumnSet = playListColumnSet;
+	}
     
     /**
      * @param playListPanel

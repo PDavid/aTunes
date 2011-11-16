@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.controls.playList;
+package net.sourceforge.atunes.gui.views.controls;
 
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragGestureEvent;
@@ -43,8 +43,6 @@ import javax.swing.ListSelectionModel;
 import net.sourceforge.atunes.gui.model.PlayListColumnModel;
 import net.sourceforge.atunes.gui.model.TransferableList;
 import net.sourceforge.atunes.gui.renderers.ColumnRenderers;
-import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
-import net.sourceforge.atunes.gui.views.controls.ColumnSetRowSorter;
 import net.sourceforge.atunes.gui.views.menus.PlayListMenuFiller;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListDragableRow;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListTableModel;
@@ -74,17 +72,17 @@ public final class PlayListTable extends JTable implements IPlayListTable {
     
     private IPlayListHandler playListHandler;
     
-    private IColumnSet playlistColumnSet;
+    private IColumnSet playListColumnSet;
     
     private ILookAndFeelManager lookAndFeelManager;
     
     private IRepositoryHandler repositoryHandler;
 
     /**
-     * @param playlistColumnSet
+     * @param playListColumnSet
      */
-    public void setPlaylistColumnSet(IColumnSet playlistColumnSet) {
-		this.playlistColumnSet = playlistColumnSet;
+    public void setPlayListColumnSet(IColumnSet playListColumnSet) {
+		this.playListColumnSet = playListColumnSet;
 	}
     
     /**
@@ -117,7 +115,7 @@ public final class PlayListTable extends JTable implements IPlayListTable {
         setDropMode(DropMode.ON);
 
         // Set table model
-        PlayListTableModel model = new PlayListTableModel(playlistColumnSet, playListHandler, repositoryHandler);
+        PlayListTableModel model = new PlayListTableModel(playListColumnSet, playListHandler, repositoryHandler);
         setModel(model);
 
         // Set column model

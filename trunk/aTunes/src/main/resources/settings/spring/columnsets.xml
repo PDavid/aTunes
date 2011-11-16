@@ -10,7 +10,7 @@
 		<property name="allowedColumns" ref="noPlaylistColumnSetColumns"/>
 	</bean>
 	
-	<bean id="playlistColumnSet" parent="columnSet" class="net.sourceforge.atunes.kernel.modules.columns.PlayListColumnSet">
+	<bean id="playListColumnSet" parent="columnSet" class="net.sourceforge.atunes.kernel.modules.columns.PlayListColumnSet">
 		<property name="allowedColumns" ref="playlistColumnSetColumns"/>
 	</bean>
 	
