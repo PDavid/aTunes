@@ -33,27 +33,48 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IStateHandler;
+import net.sourceforge.atunes.model.IStatistics;
+import net.sourceforge.atunes.model.IStatisticsAlbum;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.RankList;
 
 public final class StatisticsHandler extends AbstractHandler implements IStatisticsHandler {
 
-    private Statistics statistics;
+    private IStatistics statistics;
     
     private StatsDialogController controller;
+    
+    private IStateHandler stateHandler;
+    
+    private IRepositoryHandler repositoryHandler;
+    
+    private ITaskService taskService;
+    
+    /**
+     * @param taskService
+     */
+    public void setTaskService(ITaskService taskService) {
+		this.taskService = taskService;
+	}
+    
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+    
+    /**
+     * @param stateHandler
+     */
+    public void setStateHandler(IStateHandler stateHandler) {
+		this.stateHandler = stateHandler;
+	}
 
     @Override
     protected Runnable getPreviousInitializationTask() {
-        return new Runnable() {
-            @Override
-            public void run() {
-                statistics = getBean(IStateHandler.class).retrieveStatisticsCache();
-                if (statistics == null) {
-                	statistics = new Statistics();
-                }
-            }
-        };
+        return new StatisticsLoadTask(this, stateHandler);
     }
 
     /**
@@ -66,10 +87,10 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
      */
     private void fillStats(IAudioObject audioObject) {
         String songPath = audioObject.getUrl();
-        if (getBean(IRepositoryHandler.class).getFile(songPath) != null) {
+        if (repositoryHandler.getFile(songPath) != null) {
             statistics.setTotalPlays(statistics.getTotalPlays() + 1);
 
-            AudioObjectStats stats = statistics.getAudioFilesStats().get(songPath);
+            IAudioObjectStatistics stats = statistics.getAudioFilesStats().get(songPath);
             if (stats == null) {
                 stats = new AudioObjectStats();
                 statistics.getAudioFilesStats().put(songPath, stats);
@@ -80,7 +101,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
 
             String artist = audioObject.getArtist();
 
-            Artist a = getBean(IRepositoryHandler.class).getArtist(artist);
+            Artist a = repositoryHandler.getArtist(artist);
 
             // Unknown artist -> don't fill artist stats
             if (a == null) {
@@ -98,7 +119,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
                 return;
             }
 
-            StatisticsAlbum statisticsAlbum = new StatisticsAlbum(artist, album);
+            IStatisticsAlbum statisticsAlbum = new StatisticsAlbum(artist, album);
             statistics.getAlbumsRanking().addItem(statisticsAlbum);
         }
     }
@@ -118,11 +139,11 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
 
     @Override
     public List<Album> getMostPlayedAlbums(int n) {
-        List<StatisticsAlbum> statisticsAlbums = statistics.getAlbumsRanking().getNFirstElements(n);
+        List<IStatisticsAlbum> statisticsAlbums = statistics.getAlbumsRanking().getNFirstElements(n);
         if (statisticsAlbums != null) {
             List<Album> albums = new ArrayList<Album>();
-            for (StatisticsAlbum statisticAlbum : statisticsAlbums) {
-            	Artist artist = getBean(IRepositoryHandler.class).getArtist(statisticAlbum.getArtist());
+            for (IStatisticsAlbum statisticAlbum : statisticsAlbums) {
+            	Artist artist = repositoryHandler.getArtist(statisticAlbum.getArtist());
             	if (artist != null) {
             		Album album = artist.getAlbum(statisticAlbum.getAlbum());
             		if (album != null) {
@@ -146,7 +167,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
         if (artistsNames != null) {
             List<Artist> artists = new ArrayList<Artist>();
             for (String artistName : artistsNames) {
-                artists.add(getBean(IRepositoryHandler.class).getArtist(artistName));
+                artists.add(repositoryHandler.getArtist(artistName));
             }
             return artists;
         }
@@ -164,13 +185,27 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
         if (audioFilesUrls != null) {
             List<IAudioObject> audioFiles = new ArrayList<IAudioObject>();
             for (String audioFileUrl : audioFilesUrls) {
-                audioFiles.add(getBean(IRepositoryHandler.class).getFileIfLoaded(audioFileUrl));
+                audioFiles.add(repositoryHandler.getFileIfLoaded(audioFileUrl));
             }
             return audioFiles;
         }
         return null;
     }
 
+    /**
+     * @return
+     */
+    IStatistics getStatistics() {
+		return statistics;
+	}
+    
+    /**
+     * @param statistics
+     */
+    void setStatistics(IStatistics statistics) {
+		this.statistics = statistics;
+	}
+    
     @Override
     public List<Integer> getMostPlayedAudioObjectsCount(int n) {
         return statistics.getAudioFilesRanking().getNFirstElementCounts(n);
@@ -188,7 +223,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
 
     @Override
     public List<IAudioObject> getUnplayedAudioObjects() {
-        List<IAudioObject> unplayedAudioFiles = new ArrayList<IAudioObject>(getBean(IRepositoryHandler.class).getAudioFilesList());
+        List<IAudioObject> unplayedAudioFiles = new ArrayList<IAudioObject>(repositoryHandler.getAudioFilesList());
         unplayedAudioFiles.removeAll(statistics.getAudioFilesRanking().getNFirstElements(-1));
         return unplayedAudioFiles;
     }
@@ -206,28 +241,14 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
     	}
     }
 
-    /**
-     * Stores statistics
-     * 
-     */
-    private void storeStatistics() {
-    	getBean(ITaskService.class).submitNow("Persist statistics", new Runnable() {
-    		
-            @Override
-            public void run() {
-            	getBean(IStateHandler.class).persistStatisticsCache(statistics);
-            };
-        });
-    }
-
     @Override
     public void replaceArtist(String oldArtist, String newArtist) {
         // Update artist ranking
         statistics.getArtistsRanking().replaceItem(oldArtist, newArtist);
 
         // Update album ranking
-        RankList<StatisticsAlbum> albumsRanking = statistics.getAlbumsRanking();
-        for (StatisticsAlbum album : albumsRanking.getOrder()) {
+        RankList<IStatisticsAlbum> albumsRanking = statistics.getAlbumsRanking();
+        for (IStatisticsAlbum album : albumsRanking.getOrder()) {
             if (album.getArtist().equals(oldArtist)) {
                 statistics.getAlbumsRanking().replaceItem(album, new StatisticsAlbum(newArtist, album.getAlbum()));
             }
@@ -237,8 +258,8 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
 
     @Override
     public void replaceAlbum(String artist, String oldAlbum, String newAlbum) {
-        RankList<StatisticsAlbum> albumsRanking = statistics.getAlbumsRanking();
-        for (StatisticsAlbum album : albumsRanking.getOrder()) {
+        RankList<IStatisticsAlbum> albumsRanking = statistics.getAlbumsRanking();
+        for (IStatisticsAlbum album : albumsRanking.getOrder()) {
             if (album.getArtist().equals(artist) && album.getAlbum().equals(oldAlbum)) {
                 statistics.getAlbumsRanking().replaceItem(album, new StatisticsAlbum(artist, newAlbum));
             }
@@ -258,9 +279,16 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
     @Override
     public void showStatistics() {
 		if (controller == null) {
-			controller = new StatsDialogController(new StatsDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class)), getState(), this, getBean(ILookAndFeelManager.class), getBean(IRepositoryHandler.class)); 
+			controller = new StatsDialogController(new StatsDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class)), getState(), this, getBean(ILookAndFeelManager.class), repositoryHandler); 
 		}
 		controller.showStats();
 	}
+    
+    /**
+     * Stores statistics
+     */
+    private void storeStatistics() {
+    	new StoreStatistics(taskService, stateHandler, this).storeStatistics();
+    }
 	
 }

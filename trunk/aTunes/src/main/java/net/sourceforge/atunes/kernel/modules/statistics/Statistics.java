@@ -26,9 +26,11 @@ import java.util.Map;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectStatistics;
+import net.sourceforge.atunes.model.IStatistics;
+import net.sourceforge.atunes.model.IStatisticsAlbum;
 import net.sourceforge.atunes.utils.RankList;
 
-public class Statistics implements Serializable {
+public class Statistics implements Serializable, IStatistics {
 
     private static final long serialVersionUID = -3603927907730394505L;
 
@@ -36,19 +38,19 @@ public class Statistics implements Serializable {
     private int differentAudioFilesPlayed;
     /** The audio files ranking. The ranking contains URL of every audio file */
     private RankList<String> audioFilesRanking;
-    private RankList<StatisticsAlbum> albumsRanking;
+    private RankList<IStatisticsAlbum> albumsRanking;
     /** The artists ranking. The ranking contains names of artists */
     private RankList<String> artistsRanking;
-    private Map<String, AudioObjectStats> audioFilesStats;
+    private Map<String, IAudioObjectStatistics> audioFilesStats;
 
     /**
      * Instantiates a new repository stats.
      */
     public Statistics() {
         audioFilesRanking = new RankList<String>();
-        albumsRanking = new RankList<StatisticsAlbum>();
+        albumsRanking = new RankList<IStatisticsAlbum>();
         artistsRanking = new RankList<String>();
-        audioFilesStats = new HashMap<String, AudioObjectStats>();
+        audioFilesStats = new HashMap<String, IAudioObjectStatistics>();
     }
 
     /**
@@ -56,7 +58,8 @@ public class Statistics implements Serializable {
      * 
      * @return the albums ranking
      */
-    public RankList<StatisticsAlbum> getAlbumsRanking() {
+    @Override
+	public RankList<IStatisticsAlbum> getAlbumsRanking() {
         return albumsRanking;
     }
 
@@ -65,7 +68,8 @@ public class Statistics implements Serializable {
      * 
      * @return the artists ranking
      */
-    public RankList<String> getArtistsRanking() {
+    @Override
+	public RankList<String> getArtistsRanking() {
         return artistsRanking;
     }
 
@@ -74,7 +78,8 @@ public class Statistics implements Serializable {
      * 
      * @return the different audio files played
      */
-    public int getDifferentAudioFilesPlayed() {
+    @Override
+	public int getDifferentAudioFilesPlayed() {
         return differentAudioFilesPlayed;
     }
 
@@ -83,7 +88,8 @@ public class Statistics implements Serializable {
      * 
      * @return the audio files ranking
      */
-    public RankList<String> getAudioFilesRanking() {
+    @Override
+	public RankList<String> getAudioFilesRanking() {
         return audioFilesRanking;
     }
 
@@ -92,7 +98,8 @@ public class Statistics implements Serializable {
      * 
      * @return the audio files stats
      */
-    public Map<String, AudioObjectStats> getAudioFilesStats() {
+    @Override
+	public Map<String, IAudioObjectStatistics> getAudioFilesStats() {
         return audioFilesStats;
     }
 
@@ -104,7 +111,8 @@ public class Statistics implements Serializable {
      * 
      * @return the stats for file
      */
-    public IAudioObjectStatistics getStatsForAudioFile(IAudioObject audioFile) {
+    @Override
+	public IAudioObjectStatistics getStatsForAudioFile(IAudioObject audioFile) {
         if (audioFile != null) {
             return audioFilesStats.get(audioFile.getUrl());
         }
@@ -116,7 +124,8 @@ public class Statistics implements Serializable {
      * 
      * @return the total plays
      */
-    public int getTotalPlays() {
+    @Override
+	public int getTotalPlays() {
         return totalPlays;
     }
 
@@ -126,7 +135,8 @@ public class Statistics implements Serializable {
      * @param differentAudioFilesPlayed
      *            the new different audio files played
      */
-    public void setDifferentAudioFilesPlayed(int differentAudioFilesPlayed) {
+    @Override
+	public void setDifferentAudioFilesPlayed(int differentAudioFilesPlayed) {
         this.differentAudioFilesPlayed = differentAudioFilesPlayed;
     }
 
@@ -136,7 +146,8 @@ public class Statistics implements Serializable {
      * @param audioFilesStats
      *            the audio files stats
      */
-    public void setAudioFilesStats(Map<String, AudioObjectStats> audioFilesStats) {
+    @Override
+	public void setAudioFilesStats(Map<String, IAudioObjectStatistics> audioFilesStats) {
         this.audioFilesStats = audioFilesStats;
     }
 
@@ -146,8 +157,8 @@ public class Statistics implements Serializable {
      * @param totalPlays
      *            the new total plays
      */
-    public void setTotalPlays(int totalPlays) {
+    @Override
+	public void setTotalPlays(int totalPlays) {
         this.totalPlays = totalPlays;
     }
-
 }

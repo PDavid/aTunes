@@ -23,7 +23,6 @@ package net.sourceforge.atunes.model;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.playlist.ListOfPlayLists;
-import net.sourceforge.atunes.kernel.modules.statistics.Statistics;
 
 /**
  * Responsible of managing application state
@@ -46,7 +45,7 @@ public interface IStateHandler extends IHandler {
 	 * @param statistics
 	 *            Statistics that should be persisted
 	 */
-	public void persistStatisticsCache(Statistics statistics);
+	public void persistStatisticsCache(IStatistics statistics);
 
 	/**
 	 * Stores play lists definition
@@ -109,7 +108,7 @@ public interface IStateHandler extends IHandler {
 	 * 
 	 * @return The retrieved favorites
 	 */
-	public Statistics retrieveStatisticsCache();
+	public IStatistics retrieveStatisticsCache();
 
 	/**
 	 * Reads playlists cache.
