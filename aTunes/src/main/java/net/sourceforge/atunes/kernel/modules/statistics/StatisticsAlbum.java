@@ -22,7 +22,14 @@ package net.sourceforge.atunes.kernel.modules.statistics;
 
 import java.io.Serializable;
 
-public class StatisticsAlbum implements Serializable {
+import net.sourceforge.atunes.model.IStatisticsAlbum;
+
+/**
+ * Represents an album of an artist. Used to associate to statistics
+ * @author alex
+ *
+ */
+public class StatisticsAlbum implements Serializable, IStatisticsAlbum {
 
     private static final long serialVersionUID = -5304107353617114945L;
 
@@ -30,8 +37,7 @@ public class StatisticsAlbum implements Serializable {
 
     private String album;
 
-    protected StatisticsAlbum(String artist, String album) {
-        super();
+    public StatisticsAlbum(String artist, String album) {
         this.artist = artist;
         this.album = album;
     }
@@ -39,7 +45,8 @@ public class StatisticsAlbum implements Serializable {
     /**
      * @return the artist
      */
-    protected String getArtist() {
+    @Override
+	public String getArtist() {
         return artist;
     }
 
@@ -47,14 +54,16 @@ public class StatisticsAlbum implements Serializable {
      * @param artist
      *            the artist to set
      */
-    protected void setArtist(String artist) {
+    @Override
+	public void setArtist(String artist) {
         this.artist = artist;
     }
 
     /**
      * @return the album
      */
-    protected String getAlbum() {
+    @Override
+	public String getAlbum() {
         return album;
     }
 
@@ -62,7 +71,8 @@ public class StatisticsAlbum implements Serializable {
      * @param album
      *            the album to set
      */
-    protected void setAlbum(String album) {
+    @Override
+	public void setAlbum(String album) {
         this.album = album;
     }
 

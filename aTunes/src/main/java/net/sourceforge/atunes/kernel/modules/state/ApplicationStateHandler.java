@@ -37,7 +37,6 @@ import net.sourceforge.atunes.kernel.StateChangeListeners;
 import net.sourceforge.atunes.kernel.modules.playlist.ListOfPlayLists;
 import net.sourceforge.atunes.kernel.modules.repository.exception.InconsistentRepositoryException;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites;
-import net.sourceforge.atunes.kernel.modules.statistics.Statistics;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFavorites;
@@ -51,6 +50,7 @@ import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IStateHandler;
+import net.sourceforge.atunes.model.IStatistics;
 import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -96,7 +96,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#persistStatisticsCache(net.sourceforge.atunes.kernel.modules.statistics.Statistics)
 	 */
     @Override
-	public void persistStatisticsCache(Statistics statistics) {
+	public void persistStatisticsCache(IStatistics statistics) {
         ObjectOutputStream stream = null;
         try {
             stream = new ObjectOutputStream(new FileOutputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.CACHE_STATISTICS_NAME)));
@@ -296,12 +296,12 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#retrieveStatisticsCache()
 	 */
     @Override
-	public Statistics retrieveStatisticsCache() {
+	public IStatistics retrieveStatisticsCache() {
         ObjectInputStream stream = null;
         try {
             stream = new ObjectInputStream(new FileInputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.CACHE_STATISTICS_NAME)));
             Logger.info("Reading serialized statistics cache");
-            return (Statistics) stream.readObject();
+            return (IStatistics) stream.readObject();
         } catch (InvalidClassException e) {
             Logger.error(e);
         } catch (ClassCastException e) {
@@ -311,7 +311,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
             if (getState().isSaveRepositoryAsXml()) {
                 try {
                     Logger.info("Reading xml statistics cache");
-                    return (Statistics) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_STATISTICS_NAME));
+                    return (IStatistics) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_STATISTICS_NAME));
                 } catch (IOException e1) {
                     Logger.info("No xml statistics info found");
                 }
@@ -321,7 +321,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
             if (getState().isSaveRepositoryAsXml()) {
                 try {
                     Logger.info("Reading xml statistics cache");
-                    return (Statistics) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_STATISTICS_NAME));
+                    return (IStatistics) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_STATISTICS_NAME));
                 } catch (IOException e1) {
                     Logger.info("No xml statistics info found");
                 }
