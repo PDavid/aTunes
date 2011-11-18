@@ -61,11 +61,11 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
      * 
      * @param repository
      *            the repository
-     * @param audioFile
+     * @param audioObject
      *            the audio file
      */
-    private void fillStats(IAudioObject audioFile) {
-        String songPath = audioFile.getUrl();
+    private void fillStats(IAudioObject audioObject) {
+        String songPath = audioObject.getUrl();
         if (getBean(IRepositoryHandler.class).getFile(songPath) != null) {
             statistics.setTotalPlays(statistics.getTotalPlays() + 1);
 
@@ -76,9 +76,9 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
                 statistics.setDifferentAudioFilesPlayed(statistics.getDifferentAudioFilesPlayed() + 1);
             }
             stats.increaseStatistics();
-            statistics.getAudioFilesRanking().addItem(audioFile.getUrl());
+            statistics.getAudioFilesRanking().addItem(audioObject.getUrl());
 
-            String artist = audioFile.getArtist();
+            String artist = audioObject.getArtist();
 
             Artist a = getBean(IRepositoryHandler.class).getArtist(artist);
 
@@ -89,7 +89,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
 
             statistics.getArtistsRanking().addItem(a.getName());
 
-            String album = audioFile.getAlbum();
+            String album = audioObject.getAlbum();
 
             Album alb = a.getAlbum(album);
 
@@ -195,13 +195,15 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
 
     @Override
     public void updateAudioObjectStatistics(IAudioObject audioObject) {
-        fillStats(audioObject);
-        // Store stats
-        storeStatistics();
-        // Update dialog if visible
-        if (controller != null && controller.getComponentControlled().isVisible()) {
-            controller.updateStats();
-        }
+    	if (audioObject != null) {
+    		fillStats(audioObject);
+    		// Store stats
+    		storeStatistics();
+    		// Update dialog if visible
+    		if (controller != null && controller.getComponentControlled().isVisible()) {
+    			controller.updateStats();
+    		}
+    	}
     }
 
     /**
