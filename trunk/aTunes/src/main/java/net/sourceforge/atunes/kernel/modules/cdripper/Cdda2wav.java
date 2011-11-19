@@ -310,7 +310,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
             // Check if we have either a data CD or no CD inserted at all
             // If this is the case we must check the other devices
             try {
-                if (getCdInfo().getTracks() == 0 || cdLoaded == false) {
+                if (getCdInfo().getTracks() == 0 || !cdLoaded) {
                     devCounter = devCounter + 1;
                     // Go to next drive
                     devices.remove(0);
@@ -328,9 +328,9 @@ public class Cdda2wav extends AbstractCdToWavConverter {
                 setCdInfo(cdRecursive);
             }
             // If no tracks are found, assuming no CD inserted.
-            if (cdLoaded == false || getCdInfo().getTracks() == 0) {
+            if (!cdLoaded || getCdInfo().getTracks() == 0) {
                 // Only print no CD dialog once
-                if (doNotRepeatNoCdDialog == true) {
+                if (doNotRepeatNoCdDialog) {
                     notifyNoCd();
                 }
                 doNotRepeatNoCdDialog = false;
