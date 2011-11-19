@@ -212,18 +212,7 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
         // Active autocompletion of albums
         AutoCompleteDecorator.decorate(getComponentControlled().getAlbumTextField());
 
-        getComponentControlled().setTitleSelected(false);
-        getComponentControlled().setCoverSelected(false);
-        getComponentControlled().setAlbumArtistSelected(false);
-        getComponentControlled().setArtistSelected(false);
-        getComponentControlled().setTrackNumberSelected(false);
-        getComponentControlled().setDiscNumberSelected(false);
-        getComponentControlled().setYearSelected(false);
-        getComponentControlled().setGenreSelected(false);
-        getComponentControlled().setCommentSelected(false);
-        getComponentControlled().setLyricsSelected(false);
-        getComponentControlled().setAlbumSelected(false);
-        getComponentControlled().setComposerSelected(false);
+        setFieldsUnselected();
 
         // Check if at least one audio file supports internal pictures
         boolean supportsInternalPicture = false;
@@ -234,43 +223,7 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
             }
         }
 
-        if (audioFiles.size() == 1) {
-            getComponentControlled().getTitleCheckBox().setEnabled(false);
-            getComponentControlled().getAlbumArtistCheckBox().setEnabled(false);
-            getComponentControlled().getArtistCheckBox().setEnabled(false);
-            getComponentControlled().getTrackNumberCheckBox().setEnabled(false);
-            getComponentControlled().getYearCheckBox().setEnabled(false);
-            getComponentControlled().getDiscNumberCheckBox().setEnabled(false);
-            getComponentControlled().getGenreCheckBox().setEnabled(false);
-            getComponentControlled().getCommentCheckBox().setEnabled(false);
-            getComponentControlled().getLyricsCheckBox().setEnabled(false);
-            getComponentControlled().getAlbumCheckBox().setEnabled(false);
-            getComponentControlled().getComposerCheckBox().setEnabled(false);
-            getComponentControlled().getCoverCheckBox().setEnabled(false);
-            getComponentControlled().getCoverCheckBox().setEnabled(false);
-
-            if (supportsInternalPicture) {
-                getEditTagDialog().getOkButton().setEnabled(false);
-                getComponentControlled().getCoverCheckBox().setSelected(true);
-
-                new GetInsidePictureSwingWorker(audioFiles).execute();
-            }
-
-        } else {
-            getComponentControlled().getTitleCheckBox().setEnabled(true);
-            getComponentControlled().getAlbumArtistCheckBox().setEnabled(true);
-            getComponentControlled().getArtistCheckBox().setEnabled(true);
-            getComponentControlled().getTrackNumberCheckBox().setEnabled(true);
-            getComponentControlled().getYearCheckBox().setEnabled(true);
-            getComponentControlled().getDiscNumberCheckBox().setEnabled(true);
-            getComponentControlled().getGenreCheckBox().setEnabled(true);
-            getComponentControlled().getCommentCheckBox().setEnabled(true);
-            getComponentControlled().getLyricsCheckBox().setEnabled(true);
-            getComponentControlled().getAlbumCheckBox().setEnabled(true);
-            getComponentControlled().getComposerCheckBox().setEnabled(true);
-            getComponentControlled().getCoverCheckBox().setEnabled(true);
-            getComponentControlled().getCoverCheckBox().setEnabled(supportsInternalPicture);
-        }
+        enableOrDisableCheckBoxes(audioFiles, supportsInternalPicture);
 
         Set<String> titles = new HashSet<String>();
         Set<Integer> trackNumbers = new HashSet<Integer>();
@@ -300,95 +253,17 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
             }
         }
 
-        if (titles.size() == 1 && !titles.contains("")) {
-            getComponentControlled().getTitleTextField().setText(titles.iterator().next());
-            getComponentControlled().setTitleSelected(true);
-        } else {
-            getComponentControlled().getTitleTextField().setText("");
-            getComponentControlled().setTitleSelected(audioFiles.size() == 1);
-        }
-
-        if (trackNumbers.size() == 1 && !trackNumbers.contains(0)) {
-            getComponentControlled().getTrackNumberTextField().setText(trackNumbers.iterator().next().toString());
-            getComponentControlled().setTrackNumberSelected(true);
-        } else {
-            getComponentControlled().getTrackNumberTextField().setText("");
-            getComponentControlled().setTrackNumberSelected(audioFiles.size() == 1);
-        }
-
-        if (discNumbers.size() == 1 && !discNumbers.contains(0)) {
-            getComponentControlled().getDiscNumberTextField().setText(discNumbers.iterator().next().toString());
-            getComponentControlled().setDiscNumberSelected(true);
-        } else {
-            getComponentControlled().getDiscNumberTextField().setText("");
-            getComponentControlled().setDiscNumberSelected(audioFiles.size() == 1);
-        }
-
-        if (artists.size() == 1 && !artists.contains("")) {
-            getComponentControlled().getArtistTextField().getEditor().setItem(artists.iterator().next());
-            getComponentControlled().setArtistSelected(true);
-        } else {
-            getComponentControlled().getArtistTextField().getEditor().setItem("");
-            getComponentControlled().setArtistSelected(audioFiles.size() == 1);
-        }
-
-        if (albums.size() == 1 && !albums.contains("")) {
-            getComponentControlled().getAlbumTextField().getEditor().setItem(albums.iterator().next());
-            getComponentControlled().setAlbumSelected(true);
-        } else {
-            getComponentControlled().getAlbumTextField().getEditor().setItem("");
-            getComponentControlled().setAlbumSelected(audioFiles.size() == 1);
-        }
-
-        if (years.size() == 1 && !years.contains(0)) {
-            getComponentControlled().getYearTextField().setText(String.valueOf(years.iterator().next()));
-            getComponentControlled().setYearSelected(true);
-        } else {
-            getComponentControlled().getYearTextField().setText("");
-            getComponentControlled().setYearSelected(audioFiles.size() == 1);
-        }
-
-        if (comments.size() == 1 && !comments.contains("")) {
-            getComponentControlled().getCommentTextArea().setText(comments.iterator().next());
-            getComponentControlled().getCommentTextArea().setCaretPosition(0);
-            getComponentControlled().setCommentSelected(true);
-        } else {
-            getComponentControlled().getCommentTextArea().setText("");
-            getComponentControlled().setCommentSelected(audioFiles.size() == 1);
-        }
-
-        if (genres.size() == 1 && !genres.contains("")) {
-            getComponentControlled().getGenreComboBox().getEditor().setItem(genres.iterator().next());
-            getComponentControlled().setGenreSelected(true);
-        } else {
-            getComponentControlled().getGenreComboBox().getEditor().setItem("");
-            getComponentControlled().setGenreSelected(audioFiles.size() == 1);
-        }
-
-        if (lyrics.size() == 1 && !lyrics.contains("")) {
-            getComponentControlled().getLyricsTextArea().setText(lyrics.iterator().next());
-            getComponentControlled().getLyricsTextArea().setCaretPosition(0);
-            getComponentControlled().setLyricsSelected(true);
-        } else {
-            getComponentControlled().getLyricsTextArea().setText("");
-            getComponentControlled().setLyricsSelected(audioFiles.size() == 1);
-        }
-
-        if (composers.size() == 1 && !composers.contains("")) {
-            getComponentControlled().getComposerTextField().setText(composers.iterator().next());
-            getComponentControlled().setComposerSelected(true);
-        } else {
-            getComponentControlled().getComposerTextField().setText("");
-            getComponentControlled().setComposerSelected(audioFiles.size() == 1);
-        }
-
-        if (albumArtists.size() == 1 && !albumArtists.contains("")) {
-            getComponentControlled().getAlbumArtistTextField().setText(albumArtists.iterator().next());
-            getComponentControlled().setAlbumArtistSelected(true);
-        } else {
-            getComponentControlled().getAlbumArtistTextField().setText("");
-            getComponentControlled().setAlbumArtistSelected(audioFiles.size() == 1);
-        }
+        prepareTitle(audioFiles, titles);
+        prepareTrackNumbers(audioFiles, trackNumbers);
+        prepareDiscNumbers(audioFiles, discNumbers);
+        prepareArtists(audioFiles, artists);
+        prepareAlbums(audioFiles, albums);
+        prepareYears(audioFiles, years);
+        prepareComments(audioFiles, comments);
+        prepareGenres(audioFiles, genres);
+        prepareLyrics(audioFiles, lyrics);
+        prepareComposers(audioFiles, composers);
+        prepareAlbumArtists(audioFiles, albumArtists);
 
         // If there is only one file add a help to complete title from file name
         if (audioFiles.size() == 1) {
@@ -411,6 +286,221 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
         getComponentControlled().setVisible(true);
 
     }
+
+	/**
+	 * @param audioFiles
+	 * @param supportsInternalPicture
+	 */
+	private void enableOrDisableCheckBoxes(final List<ILocalAudioObject> audioFiles, boolean supportsInternalPicture) {
+		boolean enable = audioFiles.size() > 1; 
+			
+        getComponentControlled().getTitleCheckBox().setEnabled(enable);
+        getComponentControlled().getAlbumArtistCheckBox().setEnabled(enable);
+        getComponentControlled().getArtistCheckBox().setEnabled(enable);
+        getComponentControlled().getTrackNumberCheckBox().setEnabled(enable);
+        getComponentControlled().getYearCheckBox().setEnabled(enable);
+        getComponentControlled().getDiscNumberCheckBox().setEnabled(enable);
+        getComponentControlled().getGenreCheckBox().setEnabled(enable);
+        getComponentControlled().getCommentCheckBox().setEnabled(enable);
+        getComponentControlled().getLyricsCheckBox().setEnabled(enable);
+        getComponentControlled().getAlbumCheckBox().setEnabled(enable);
+        getComponentControlled().getComposerCheckBox().setEnabled(enable);
+        getComponentControlled().getCoverCheckBox().setEnabled(enable && supportsInternalPicture);
+        
+		if (audioFiles.size() == 1) {
+            if (supportsInternalPicture) {
+                getEditTagDialog().getOkButton().setEnabled(false);
+                getComponentControlled().getCoverCheckBox().setSelected(true);
+
+                new GetInsidePictureSwingWorker(audioFiles).execute();
+            }
+        }
+	}
+
+	/**
+	 * @param audioFiles
+	 * @param albumArtists
+	 */
+	private void prepareAlbumArtists(final List<ILocalAudioObject> audioFiles,
+			Set<String> albumArtists) {
+		if (albumArtists.size() == 1 && !albumArtists.contains("")) {
+            getComponentControlled().getAlbumArtistTextField().setText(albumArtists.iterator().next());
+            getComponentControlled().setAlbumArtistSelected(true);
+        } else {
+            getComponentControlled().getAlbumArtistTextField().setText("");
+            getComponentControlled().setAlbumArtistSelected(audioFiles.size() == 1);
+        }
+	}
+
+	/**
+	 * @param audioFiles
+	 * @param composers
+	 */
+	private void prepareComposers(final List<ILocalAudioObject> audioFiles,
+			Set<String> composers) {
+		if (composers.size() == 1 && !composers.contains("")) {
+            getComponentControlled().getComposerTextField().setText(composers.iterator().next());
+            getComponentControlled().setComposerSelected(true);
+        } else {
+            getComponentControlled().getComposerTextField().setText("");
+            getComponentControlled().setComposerSelected(audioFiles.size() == 1);
+        }
+	}
+
+	/**
+	 * @param audioFiles
+	 * @param lyrics
+	 */
+	private void prepareLyrics(final List<ILocalAudioObject> audioFiles,
+			Set<String> lyrics) {
+		if (lyrics.size() == 1 && !lyrics.contains("")) {
+            getComponentControlled().getLyricsTextArea().setText(lyrics.iterator().next());
+            getComponentControlled().getLyricsTextArea().setCaretPosition(0);
+            getComponentControlled().setLyricsSelected(true);
+        } else {
+            getComponentControlled().getLyricsTextArea().setText("");
+            getComponentControlled().setLyricsSelected(audioFiles.size() == 1);
+        }
+	}
+
+	/**
+	 * @param audioFiles
+	 * @param genres
+	 */
+	private void prepareGenres(final List<ILocalAudioObject> audioFiles,
+			Set<String> genres) {
+		if (genres.size() == 1 && !genres.contains("")) {
+            getComponentControlled().getGenreComboBox().getEditor().setItem(genres.iterator().next());
+            getComponentControlled().setGenreSelected(true);
+        } else {
+            getComponentControlled().getGenreComboBox().getEditor().setItem("");
+            getComponentControlled().setGenreSelected(audioFiles.size() == 1);
+        }
+	}
+
+	/**
+	 * @param audioFiles
+	 * @param comments
+	 */
+	private void prepareComments(final List<ILocalAudioObject> audioFiles,
+			Set<String> comments) {
+		if (comments.size() == 1 && !comments.contains("")) {
+            getComponentControlled().getCommentTextArea().setText(comments.iterator().next());
+            getComponentControlled().getCommentTextArea().setCaretPosition(0);
+            getComponentControlled().setCommentSelected(true);
+        } else {
+            getComponentControlled().getCommentTextArea().setText("");
+            getComponentControlled().setCommentSelected(audioFiles.size() == 1);
+        }
+	}
+
+	/**
+	 * @param audioFiles
+	 * @param years
+	 */
+	private void prepareYears(final List<ILocalAudioObject> audioFiles,
+			Set<Integer> years) {
+		if (years.size() == 1 && !years.contains(0)) {
+            getComponentControlled().getYearTextField().setText(String.valueOf(years.iterator().next()));
+            getComponentControlled().setYearSelected(true);
+        } else {
+            getComponentControlled().getYearTextField().setText("");
+            getComponentControlled().setYearSelected(audioFiles.size() == 1);
+        }
+	}
+
+	/**
+	 * @param audioFiles
+	 * @param albums
+	 */
+	private void prepareAlbums(final List<ILocalAudioObject> audioFiles,
+			Set<String> albums) {
+		if (albums.size() == 1 && !albums.contains("")) {
+            getComponentControlled().getAlbumTextField().getEditor().setItem(albums.iterator().next());
+            getComponentControlled().setAlbumSelected(true);
+        } else {
+            getComponentControlled().getAlbumTextField().getEditor().setItem("");
+            getComponentControlled().setAlbumSelected(audioFiles.size() == 1);
+        }
+	}
+
+	/**
+	 * @param audioFiles
+	 * @param artists
+	 */
+	private void prepareArtists(final List<ILocalAudioObject> audioFiles,
+			Set<String> artists) {
+		if (artists.size() == 1 && !artists.contains("")) {
+            getComponentControlled().getArtistTextField().getEditor().setItem(artists.iterator().next());
+            getComponentControlled().setArtistSelected(true);
+        } else {
+            getComponentControlled().getArtistTextField().getEditor().setItem("");
+            getComponentControlled().setArtistSelected(audioFiles.size() == 1);
+        }
+	}
+
+	/**
+	 * @param audioFiles
+	 * @param discNumbers
+	 */
+	private void prepareDiscNumbers(final List<ILocalAudioObject> audioFiles,
+			Set<Integer> discNumbers) {
+		if (discNumbers.size() == 1 && !discNumbers.contains(0)) {
+            getComponentControlled().getDiscNumberTextField().setText(discNumbers.iterator().next().toString());
+            getComponentControlled().setDiscNumberSelected(true);
+        } else {
+            getComponentControlled().getDiscNumberTextField().setText("");
+            getComponentControlled().setDiscNumberSelected(audioFiles.size() == 1);
+        }
+	}
+
+	/**
+	 * @param audioFiles
+	 * @param trackNumbers
+	 */
+	private void prepareTrackNumbers(final List<ILocalAudioObject> audioFiles,
+			Set<Integer> trackNumbers) {
+		if (trackNumbers.size() == 1 && !trackNumbers.contains(0)) {
+            getComponentControlled().getTrackNumberTextField().setText(trackNumbers.iterator().next().toString());
+            getComponentControlled().setTrackNumberSelected(true);
+        } else {
+            getComponentControlled().getTrackNumberTextField().setText("");
+            getComponentControlled().setTrackNumberSelected(audioFiles.size() == 1);
+        }
+	}
+
+	/**
+	 * @param audioFiles
+	 * @param titles
+	 */
+	private void prepareTitle(final List<ILocalAudioObject> audioFiles,
+			Set<String> titles) {
+		if (titles.size() == 1 && !titles.contains("")) {
+            getComponentControlled().getTitleTextField().setText(titles.iterator().next());
+            getComponentControlled().setTitleSelected(true);
+        } else {
+            getComponentControlled().getTitleTextField().setText("");
+            getComponentControlled().setTitleSelected(audioFiles.size() == 1);
+        }
+	}
+
+	/**
+	 * 
+	 */
+	private void setFieldsUnselected() {
+		getComponentControlled().setTitleSelected(false);
+        getComponentControlled().setCoverSelected(false);
+        getComponentControlled().setAlbumArtistSelected(false);
+        getComponentControlled().setArtistSelected(false);
+        getComponentControlled().setTrackNumberSelected(false);
+        getComponentControlled().setDiscNumberSelected(false);
+        getComponentControlled().setYearSelected(false);
+        getComponentControlled().setGenreSelected(false);
+        getComponentControlled().setCommentSelected(false);
+        getComponentControlled().setLyricsSelected(false);
+        getComponentControlled().setAlbumSelected(false);
+        getComponentControlled().setComposerSelected(false);
+	}
 
     EditTagDialog getDialog() {
         return getComponentControlled();
