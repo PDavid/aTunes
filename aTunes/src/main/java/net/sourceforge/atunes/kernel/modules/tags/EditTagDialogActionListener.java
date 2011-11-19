@@ -23,9 +23,7 @@ package net.sourceforge.atunes.kernel.modules.tags;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +43,10 @@ import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.Logger;
+
+import org.apache.sanselan.ImageFormat;
+import org.apache.sanselan.ImageWriteException;
+import org.apache.sanselan.Sanselan;
 
 /**
  * The listener interface for receiving editTagDialogAction events.
@@ -143,18 +145,20 @@ public final class EditTagDialogActionListener implements ActionListener {
             int fileChooserState = fc.showOpenDialog(dialog);
             if (fileChooserState == JFileChooser.APPROVE_OPTION) {
                 File file = fc.getSelectedFile();
+                
                 try {
+                	// Read image and scale using ImageIO as Sanselan can't read JPEG files
                     BufferedImage bi = ImageIO.read(file);
                     BufferedImage bi2 = ImageUtils.scaleBufferedImageBicubic(bi, Constants.DIALOG_LARGE_IMAGE_WIDTH, Constants.DIALOG_LARGE_IMAGE_HEIGHT);
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    ByteArrayOutputStream byteArrayOutputStream2 = new ByteArrayOutputStream();
-                    ImageInfo imageInfo = new ImageInfo();
-                    imageInfo.setInput(new FileInputStream(file));
-                    ImageIO.write(bi, imageInfo.getFormatName(), byteArrayOutputStream);
-                    ImageIO.write(bi2, imageInfo.getFormatName(), byteArrayOutputStream2);
-                    controller.setNewCover(byteArrayOutputStream.toByteArray());
-                    dialog.getCover().setIcon(new ImageIcon(byteArrayOutputStream2.toByteArray()));
+                    
+                    // Write as PNG
+                    controller.setNewCover(Sanselan.writeImageToBytes(bi, ImageFormat.IMAGE_FORMAT_PNG, null));
+                    dialog.getCover().setIcon(new ImageIcon(Sanselan.writeImageToBytes(bi2, ImageFormat.IMAGE_FORMAT_PNG, null)));
                     controller.setCoverEdited(true);
+                } catch (ImageWriteException ex) {
+                    controller.setNewCover(null);
+                    controller.setCoverEdited(false);
+                    Logger.error(ex);
                 } catch (IOException ex) {
                     controller.setNewCover(null);
                     controller.setCoverEdited(false);
