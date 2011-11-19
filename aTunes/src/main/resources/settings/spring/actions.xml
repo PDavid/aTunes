@@ -165,10 +165,10 @@
 	<bean id="openFolderFromFavoritesNavigationView" class="net.sourceforge.atunes.kernel.actions.OpenFolderFromNavigatorAction"/>
 	<bean id="openFolderFromRepositoryNavigationView" class="net.sourceforge.atunes.kernel.actions.OpenFolderFromNavigatorAction"/>
 	
-	<bean class="net.sourceforge.atunes.kernel.actions.PlayAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectAction"/>
+	<bean id="playAction" class="net.sourceforge.atunes.kernel.actions.PlayAction"/>
+	<bean id="nextAction" class="net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.PlayNowAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectAction"/>
+	<bean id="previousAction" class="net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectAction"/>
 	<bean id="refreshDeviceAction" class="net.sourceforge.atunes.kernel.actions.RefreshDeviceAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RefreshFolderFromNavigatorAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RefreshRadioAction"/>
@@ -229,7 +229,7 @@
 	<bean id="showYearsInNavigatorAction" class="net.sourceforge.atunes.kernel.actions.ShowYearsInNavigatorAction"/>
 	<bean id="shuffleModeAction" class="net.sourceforge.atunes.kernel.actions.ShuffleModeAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShufflePlayListAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectAction"/>
+	<bean id="stopAction" class="net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.SynchronizeDeviceWithPlayListAction"/>
 	<bean id="toggleOSDSettingAction" class="net.sourceforge.atunes.kernel.actions.ToggleOSDSettingAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ToggleWindowVisibilityAction"/>
