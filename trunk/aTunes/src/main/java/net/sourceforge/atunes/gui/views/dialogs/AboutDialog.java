@@ -41,6 +41,8 @@ import javax.swing.JTextArea;
 import javax.swing.Timer;
 import javax.swing.table.AbstractTableModel;
 
+import org.joda.time.DateMidnight;
+
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
@@ -348,7 +350,7 @@ public final class AboutDialog extends AbstractCustomDialog implements IAboutDia
      * @return the license text
      */
     private String getLicenseText() {
-        return StringUtils.getString("Copyright (C) 2006-2010  The aTunes Team\n\n", "This program is free software; you can redistribute it and/or ",
+        return StringUtils.getString("Copyright (C) 2006-", DateMidnight.now().year().get(), "  The aTunes Team\n\n", "This program is free software; you can redistribute it and/or ",
                 "modify it under the terms of the GNU General Public License ", "as published by the Free Software Foundation; either version 2 ",
                 "of the License, or (at your option) any later version.\n\n", "This program is distributed in the hope that it will be useful, ",
                 "but WITHOUT ANY WARRANTY; without even the implied warranty of ", "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the ",
