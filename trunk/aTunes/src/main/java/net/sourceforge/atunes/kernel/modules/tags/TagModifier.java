@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.tags;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -35,6 +34,7 @@ import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
+import org.apache.sanselan.Sanselan;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.audio.exceptions.CannotWriteException;
 import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
@@ -203,9 +203,7 @@ public final class TagModifier {
                     artwork.setDescription("cover");
                     artwork.setPictureType(PictureTypes.DEFAULT_ID);
                     artwork.setLinked(false);
-                    ImageInfo imageInfo = new ImageInfo();
-                    imageInfo.setInput(new ByteArrayInputStream(cover));
-                    artwork.setMimeType(imageInfo.getMimeType());
+                    artwork.setMimeType(Sanselan.getImageInfo(cover).getMimeType());
                     newTag.setField(newTag.createField(artwork));
                 }
             }
