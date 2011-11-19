@@ -20,29 +20,16 @@
 
 package net.sourceforge.atunes.kernel.modules.player.mplayer;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
-import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IPodcastFeedEntry;
-import net.sourceforge.atunes.model.IPodcastFeedHandler;
-import net.sourceforge.atunes.model.IProxy;
-import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.PlayerEngineCapability;
 import net.sourceforge.atunes.utils.ClosingUtils;
-import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.Logger;
 
 /**
@@ -50,24 +37,8 @@ import net.sourceforge.atunes.utils.Logger;
  */
 public class MPlayerEngine extends AbstractPlayerEngine {
 
-
-
-    /** Argument to not display more information than needed. */
-    private static final String QUIET = "-quiet";
-    /** Argument to control mplayer through commands. */
-    private static final String SLAVE = "-slave";
-    /** Argument to pass mplayer a play list. */
-    private static final String PLAYLIST = "-playlist";
-    /** Arguments to filter audio output. */
-    private static final String AUDIO_FILTER = "-af";
-    private static final String VOLUME_NORM = "volnorm";
-    private static final String EQUALIZER = "equalizer=";
-    private static final String CACHE = "-cache";
-    private static final String CACHE_SIZE = "500";
-    private static final String CACHE_MIN = "-cache-min";
-    private static final String CACHE_FILL_SIZE_IN_PERCENT = "7.0";
-    private static final String PREFER_IPV4 = "-prefer-ipv4";
-
+	private MPlayerProcessBuilder processBuilder;
+	
     private Process process;
     private MPlayerCommandWriter commandWriter;
     private AbstractMPlayerOutputReader mPlayerOutputReader;
@@ -81,6 +52,13 @@ public class MPlayerEngine extends AbstractPlayerEngine {
     	super.setOsManager(osManager);
     	commandWriter = MPlayerCommandWriter.newCommandWriter(null, osManager);
     }
+    
+    /**
+     * @param processBuilder
+     */
+    public void setProcessBuilder(MPlayerProcessBuilder processBuilder) {
+		this.processBuilder = processBuilder;
+	}
     
     @Override
     public boolean isEngineAvailable() {
@@ -144,7 +122,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
             commandWriter.sendStopCommand();
 
             // Start the play process
-            process = getProcess(audioObjectToPlay);
+            process = processBuilder.getProcess(audioObjectToPlay);
             
             if (process != null) {
             	commandWriter = MPlayerCommandWriter.newCommandWriter(process, getOsManager());
@@ -264,124 +242,6 @@ public class MPlayerEngine extends AbstractPlayerEngine {
         // If is paused, volume will be sent to mplayer when user resumes playback
         if (!isPaused() && !isMuteEnabled()) {
             commandWriter.sendVolumeCommand(volume);
-        }
-    }
-
-    /**
-     * Returns a mplayer process to play an audiofile.
-     * 
-     * @param audioObject
-     *            audio object which should be played
-     * 
-     * @return mplayer process
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    private Process getProcess(IAudioObject audioObject) throws IOException {
-
-        ProcessBuilder pb = new ProcessBuilder();
-        List<String> command = new ArrayList<String>();
-
-        boolean isRemoteAudio = !(audioObject instanceof ILocalAudioObject || (audioObject instanceof IPodcastFeedEntry
-                && getState().isUseDownloadedPodcastFeedEntries() && ((IPodcastFeedEntry) audioObject).isDownloaded()));
-
-        command.add(getOsManager().getPlayerEngineCommand(this));
-        command.addAll(getOsManager().getPlayerEngineParameters(this));
-        command.add(QUIET);
-        command.add(SLAVE);
-
-        // PREFER_IPV4 for radios and podcast entries
-        if (isRemoteAudio) {
-            command.add(PREFER_IPV4);
-        }
-
-        // If a radio has a playlist url add playlist command
-        if (audioObject instanceof IRadio && ((IRadio) audioObject).hasPlaylistUrl(ExtendedProxy.getProxy(getState().getProxy()))) {
-            command.add(PLAYLIST);
-        }
-
-        // url
-        boolean shortPathName = getState().isUseShortPathNames() && getOsManager().usesShortPathNames() && audioObject instanceof AudioFile;
-        String url;
-        if (audioObject instanceof IPodcastFeedEntry && !isRemoteAudio) {
-            url = Context.getBean(IPodcastFeedHandler.class).getDownloadPath((IPodcastFeedEntry) audioObject);
-            if (getState().isUseShortPathNames() && getOsManager().usesShortPathNames()) {
-                shortPathName = true;
-            }
-        } else {
-            url = audioObject.getUrl();
-        }
-        
-        if (url == null) {
-        	handlePlayerEngineError(new FileNotFoundException(audioObject.getTitleOrFileName()));
-        	return null;
-        } else {
-
-        	if (shortPathName) {
-        		String shortPath = FileNameUtils.getShortPathNameW(url, getOsManager());
-        		command.add(shortPath != null && !shortPath.isEmpty() ? shortPath : url);
-        	} else {
-        		if (url.startsWith("http")) {
-
-        			// proxy
-        			StringBuilder proxy = new StringBuilder();
-        			IProxy proxyBean = getState().getProxy();
-        			if (proxyBean != null && proxyBean.getType().equals(IProxy.HTTP_PROXY)) {
-        				//String user = proxyBean.getUser();
-        				//String password = proxyBean.getPassword();
-        				String proxyUrl = proxyBean.getUrl();
-        				int port = proxyBean.getPort();
-
-        				proxy.append("http_proxy://");
-        				//proxy.append(!user.isEmpty() ? user : "");
-        				//proxy.append(!user.isEmpty() && !password.isEmpty() ? ":" : "");
-        				//proxy.append(!user.isEmpty() && !password.isEmpty() ? password : "");
-        				//proxy.append(!user.isEmpty() ? "@" : "");
-        				proxy.append(proxyUrl);
-        				proxy.append(port != 0 ? ":" : "");
-        				proxy.append(port != 0 ? port : "");
-        				proxy.append("/");
-        			}
-        			proxy.append(url);
-
-        			command.add(proxy.toString());
-        		} else {
-        			command.add(url);
-        		}
-        	}
-
-        	// Cache for radios and podcast entries
-        	if (isRemoteAudio) {
-        		command.add(CACHE);
-        		command.add(CACHE_SIZE);
-        		command.add(CACHE_MIN);
-        		command.add(CACHE_FILL_SIZE_IN_PERCENT);
-        	}
-
-
-        	// normalization
-        	if (isSoundNormalizationEnabled()) {
-        		command.add(AUDIO_FILTER);
-        		command.add(VOLUME_NORM);
-        	}
-
-        	// Build equalizer command. Mplayer uses 10 bands
-        	if (audioObject instanceof ILocalAudioObject && getEqualizer().getEqualizerValues() != null) {
-        		float[] equalizer = getEqualizer().getEqualizerValues();
-        		command.add(AUDIO_FILTER);
-        		StringBuilder eqString = new StringBuilder(EQUALIZER);
-        		for (int i = 0; i <= 9; i++) {
-        			eqString.append(equalizer[i]);
-        			if (i < 9) {
-        				eqString.append(":");
-        			}
-        		}
-        		command.add(eqString.toString());
-        	}
-
-        	Logger.debug((Object[]) command.toArray(new String[command.size()]));
-        	return pb.command(command).start();
         }
     }
 

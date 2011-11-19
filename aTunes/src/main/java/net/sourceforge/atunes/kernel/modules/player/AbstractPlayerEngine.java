@@ -494,16 +494,6 @@ public abstract class AbstractPlayerEngine {
     }
 
     /**
-     * Checks if sound normalization is enabled (<code>true</code>) or not (
-     * <code>false</code>)
-     * 
-     * @return <code>true</code> if sound normalization is enabled
-     */
-    protected final boolean isSoundNormalizationEnabled() {
-        return state.isUseNormalisation();
-    }
-
-    /**
      * Kills player resources
      */
     protected abstract void killPlayer();
