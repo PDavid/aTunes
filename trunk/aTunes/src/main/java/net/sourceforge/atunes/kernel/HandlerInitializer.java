@@ -35,6 +35,20 @@ import org.springframework.context.ApplicationContextAware;
 
 public class HandlerInitializer implements ApplicationContextAware {
 	
+	private static final class InitHandlerRunnable implements Runnable {
+		
+		private final AbstractHandler handler;
+
+		private InitHandlerRunnable(AbstractHandler handler) {
+			this.handler = handler;
+		}
+
+		@Override
+		public void run() {
+			handler.initHandler();
+		}
+	}
+
 	private Collection<AbstractHandler> handlers;
 
     /**
@@ -54,12 +68,7 @@ public class HandlerInitializer implements ApplicationContextAware {
 
         // Initialize handlers
         for (final AbstractHandler handler : handlers) {
-            executorService.submit(new Runnable() {
-            	@Override
-            	public void run() {
-            		handler.initHandler();
-            	}
-            });
+            executorService.submit(new InitHandlerRunnable(handler));
         }
 
         executorService.shutdown();

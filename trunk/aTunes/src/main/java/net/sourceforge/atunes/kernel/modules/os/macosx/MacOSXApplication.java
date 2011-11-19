@@ -20,22 +20,11 @@
 
 package net.sourceforge.atunes.kernel.modules.os.macosx;
 
-import java.awt.MenuItem;
 import java.awt.PopupMenu;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import javax.swing.AbstractAction;
-
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.actions.CustomAbstractAction;
-import net.sourceforge.atunes.kernel.actions.PlayAction;
-import net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectAction;
-import net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectAction;
-import net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectAction;
 import net.sourceforge.atunes.utils.ReflectionUtils;
 
 /**
@@ -46,7 +35,16 @@ import net.sourceforge.atunes.utils.ReflectionUtils;
 public class MacOSXApplication implements IMacOSXApplication {
 
 	private Object application;
-
+	
+	private MacOSXDockMenu macOsDockMenu;
+	
+	/**
+	 * @param dockMenu
+	 */
+	public void setMacOsDockMenu(MacOSXDockMenu dockMenu) {
+		this.macOsDockMenu = dockMenu;
+	}
+	
 	@Override
 	public boolean initialize()  {
 		application = ReflectionUtils.newInstance("com.apple.eawt.Application");
@@ -84,7 +82,7 @@ public class MacOSXApplication implements IMacOSXApplication {
 
 	@Override
 	public void addDockIconMenu() {
-    	ReflectionUtils.invoke(application, ReflectionUtils.getMethod(application.getClass(), "setDockMenu", PopupMenu.class), getDockMenu());
+    	ReflectionUtils.invoke(application, ReflectionUtils.getMethod(application.getClass(), "setDockMenu", PopupMenu.class), macOsDockMenu.getDockMenu());
     }
     
     /**
@@ -100,34 +98,4 @@ public class MacOSXApplication implements IMacOSXApplication {
             ReflectionUtils.invoke(application, method, osxAdapterProxy);
     	}
     }
-    
-    /**
-     * Returns menu for dock icon
-     * @return
-     */
-    private PopupMenu getDockMenu() {
-    	PopupMenu menu = new PopupMenu();
-    	menu.add(getMenuItemForContextAction(PlayAction.class));
-    	menu.add(getMenuItemForContextAction(StopCurrentAudioObjectAction.class));
-    	menu.add(getMenuItemForContextAction(PlayPreviousAudioObjectAction.class));
-    	menu.add(getMenuItemForContextAction(PlayNextAudioObjectAction.class));
-    	return menu;
-    }
-    
-    /**
-     * Returns a MenuItem that executes given action class
-     * @param clazz
-     * @return
-     */
-    private MenuItem getMenuItemForContextAction(final Class<? extends CustomAbstractAction> clazz) {
-    	MenuItem menuItem = new MenuItem((String)Context.getBean(clazz).getValue(AbstractAction.NAME));
-    	menuItem.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Context.getBean(clazz).actionPerformed(null);
-			}
-		});
-    	return menuItem;
-    }    
 }
