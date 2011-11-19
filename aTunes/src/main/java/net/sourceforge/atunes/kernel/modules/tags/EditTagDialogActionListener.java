@@ -75,102 +75,144 @@ public final class EditTagDialogActionListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == dialog.getOkButton()) {
-            controller.editTag();
-            controller.clear();
-            dialog.setVisible(false);
+            processOkAction();
         } else if (e.getSource() == dialog.getNextButton()) {
-            controller.editTag();
-            controller.clear();
-            // get the index of the first selected song in the play list
-            List<IAudioObject> selectedFiles = playListHandler.getSelectedAudioObjects();
-            IAudioObject currentSelectedSong = selectedFiles.get(0);
-            int currentSelectedSongIndex = playListHandler.getIndexOfAudioObject(currentSelectedSong);
-
-            // get the LocalAudioObject of the next song in the play list after the first selection
-            //nextFile.add((AudioFile)playListHandler.getAudioObjectAtIndexRelativeToCurrentlyPlaying(++currentSelectedSongIndex - playListHandler.getCurrentAudioObjectIndexInVisiblePlayList()));
-
-            List<ILocalAudioObject> nextFile = new ArrayList<ILocalAudioObject>();
-            boolean validAudioFile = false;
-            int length = playListHandler.getCurrentPlayList(true).size();
-            // Before moving down check if we need to jump an audio object like a radio stream
-            while (validAudioFile == false) {
-                // Reaching the end of the playlist
-                if (length < currentSelectedSongIndex + 2) {
-                    break;
-                }
-                playListHandler.changeSelectedAudioObjectToIndex(++currentSelectedSongIndex);
-                selectedFiles.clear();
-                selectedFiles.add(playListHandler.getSelectedAudioObjects().get(0));
-                validAudioFile = LocalAudioObjectValidator.isValidAudioFile(selectedFiles.get(0).getUrl());
-            }
-            if (validAudioFile) {
-                nextFile.add((AudioFile) selectedFiles.get(0));
-                controller.editFiles(nextFile);
-            }
+            processNextAction();
         } else if (e.getSource() == dialog.getPrevButton()) {
-            controller.editTag();
-            controller.clear();
-
-            // get the index of the first selected song in the play list
-            List<IAudioObject> selectedFiles = playListHandler.getSelectedAudioObjects();
-            IAudioObject currentSelectedSong = selectedFiles.get(0);
-            int currentSelectedSongIndex = playListHandler.getIndexOfAudioObject(currentSelectedSong);
-
-            List<ILocalAudioObject> prevFile = new ArrayList<ILocalAudioObject>();
-            boolean validAudioFile = false;
-            // Before moving down check if we need to jump an audio object like a radio stream
-            while (validAudioFile == false) {
-                playListHandler.changeSelectedAudioObjectToIndex(--currentSelectedSongIndex);
-                selectedFiles.clear();
-                selectedFiles.add(playListHandler.getSelectedAudioObjects().get(0));
-                validAudioFile = LocalAudioObjectValidator.isValidAudioFile(selectedFiles.get(0).getUrl());
-                // Reaching the begin of the playlist
-                if (currentSelectedSongIndex == -1) {
-                    // Set to false to make tag edit dialog disappear 
-                    validAudioFile = false;
-                    break;
-                }
-            }
-            if (validAudioFile) {
-                prevFile.add((ILocalAudioObject) selectedFiles.get(0));
-                controller.editFiles(prevFile);
-            }
+            processPreviousAction();
         } else if (e.getSource() == dialog.getCancelButton()) {
-            dialog.setVisible(false);
-            controller.clear();
+            processCancelAction();
         } else if (e.getSource() == dialog.getCoverButton()) {
-            JFileChooser fc = new JFileChooser();
-            fc.setFileFilter(new ImagesFileFiler());
-            fc.setCurrentDirectory(getCommonDirectoryForAudioFiles());
-            int fileChooserState = fc.showOpenDialog(dialog);
-            if (fileChooserState == JFileChooser.APPROVE_OPTION) {
-                File file = fc.getSelectedFile();
-                
-                try {
-                	// Read image and scale using ImageIO as Sanselan can't read JPEG files
-                    BufferedImage bi = ImageIO.read(file);
-                    BufferedImage bi2 = ImageUtils.scaleBufferedImageBicubic(bi, Constants.DIALOG_LARGE_IMAGE_WIDTH, Constants.DIALOG_LARGE_IMAGE_HEIGHT);
-                    
-                    // Write as PNG
-                    controller.setNewCover(Sanselan.writeImageToBytes(bi, ImageFormat.IMAGE_FORMAT_PNG, null));
-                    dialog.getCover().setIcon(new ImageIcon(Sanselan.writeImageToBytes(bi2, ImageFormat.IMAGE_FORMAT_PNG, null)));
-                    controller.setCoverEdited(true);
-                } catch (ImageWriteException ex) {
-                    controller.setNewCover(null);
-                    controller.setCoverEdited(false);
-                    Logger.error(ex);
-                } catch (IOException ex) {
-                    controller.setNewCover(null);
-                    controller.setCoverEdited(false);
-                    Logger.error(ex);
-                }
-            }
+            processSelectCover();
         } else if (e.getSource() == dialog.getRemoveCoverButton()) {
-            dialog.getCover().setIcon(null);
-            controller.setNewCover(null);
-            controller.setCoverEdited(true);
+            processRemoveCover();
         }
     }
+
+	/**
+	 * 
+	 */
+	private void processRemoveCover() {
+		dialog.getCover().setIcon(null);
+		controller.setNewCover(null);
+		controller.setCoverEdited(true);
+	}
+
+	/**
+	 * 
+	 */
+	private void processSelectCover() {
+		JFileChooser fc = new JFileChooser();
+		fc.setFileFilter(new ImagesFileFiler());
+		fc.setCurrentDirectory(getCommonDirectoryForAudioFiles());
+		int fileChooserState = fc.showOpenDialog(dialog);
+		if (fileChooserState == JFileChooser.APPROVE_OPTION) {
+		    File file = fc.getSelectedFile();
+		    
+		    try {
+		    	// Read image and scale using ImageIO as Sanselan can't read JPEG files
+		        BufferedImage bi = ImageIO.read(file);
+		        BufferedImage bi2 = ImageUtils.scaleBufferedImageBicubic(bi, Constants.DIALOG_LARGE_IMAGE_WIDTH, Constants.DIALOG_LARGE_IMAGE_HEIGHT);
+		        
+		        // Write as PNG
+		        controller.setNewCover(Sanselan.writeImageToBytes(bi, ImageFormat.IMAGE_FORMAT_PNG, null));
+		        dialog.getCover().setIcon(new ImageIcon(Sanselan.writeImageToBytes(bi2, ImageFormat.IMAGE_FORMAT_PNG, null)));
+		        controller.setCoverEdited(true);
+		    } catch (ImageWriteException ex) {
+		        controller.setNewCover(null);
+		        controller.setCoverEdited(false);
+		        Logger.error(ex);
+		    } catch (IOException ex) {
+		        controller.setNewCover(null);
+		        controller.setCoverEdited(false);
+		        Logger.error(ex);
+		    }
+		}
+	}
+
+	/**
+	 * 
+	 */
+	private void processCancelAction() {
+		dialog.setVisible(false);
+		controller.clear();
+	}
+
+	/**
+	 * 
+	 */
+	private void processPreviousAction() {
+		controller.editTag();
+		controller.clear();
+
+		// get the index of the first selected song in the play list
+		List<IAudioObject> selectedFiles = playListHandler.getSelectedAudioObjects();
+		IAudioObject currentSelectedSong = selectedFiles.get(0);
+		int currentSelectedSongIndex = playListHandler.getIndexOfAudioObject(currentSelectedSong);
+
+		List<ILocalAudioObject> prevFile = new ArrayList<ILocalAudioObject>();
+		boolean validAudioFile = false;
+		// Before moving down check if we need to jump an audio object like a radio stream
+		while (!validAudioFile) {
+		    playListHandler.changeSelectedAudioObjectToIndex(--currentSelectedSongIndex);
+		    selectedFiles.clear();
+		    selectedFiles.add(playListHandler.getSelectedAudioObjects().get(0));
+		    validAudioFile = LocalAudioObjectValidator.isValidAudioFile(selectedFiles.get(0).getUrl());
+		    // Reaching the begin of the playlist
+		    if (currentSelectedSongIndex == -1) {
+		        // Set to false to make tag edit dialog disappear 
+		        validAudioFile = false;
+		        break;
+		    }
+		}
+		if (validAudioFile) {
+		    prevFile.add((ILocalAudioObject) selectedFiles.get(0));
+		    controller.editFiles(prevFile);
+		}
+	}
+
+	/**
+	 * 
+	 */
+	private void processNextAction() {
+		controller.editTag();
+		controller.clear();
+		// get the index of the first selected song in the play list
+		List<IAudioObject> selectedFiles = playListHandler.getSelectedAudioObjects();
+		IAudioObject currentSelectedSong = selectedFiles.get(0);
+		int currentSelectedSongIndex = playListHandler.getIndexOfAudioObject(currentSelectedSong);
+
+		// get the LocalAudioObject of the next song in the play list after the first selection
+		//nextFile.add((AudioFile)playListHandler.getAudioObjectAtIndexRelativeToCurrentlyPlaying(++currentSelectedSongIndex - playListHandler.getCurrentAudioObjectIndexInVisiblePlayList()));
+
+		List<ILocalAudioObject> nextFile = new ArrayList<ILocalAudioObject>();
+		boolean validAudioFile = false;
+		int length = playListHandler.getCurrentPlayList(true).size();
+		// Before moving down check if we need to jump an audio object like a radio stream
+		while (!validAudioFile) {
+		    // Reaching the end of the playlist
+		    if (length < currentSelectedSongIndex + 2) {
+		        break;
+		    }
+		    playListHandler.changeSelectedAudioObjectToIndex(++currentSelectedSongIndex);
+		    selectedFiles.clear();
+		    selectedFiles.add(playListHandler.getSelectedAudioObjects().get(0));
+		    validAudioFile = LocalAudioObjectValidator.isValidAudioFile(selectedFiles.get(0).getUrl());
+		}
+		if (validAudioFile) {
+		    nextFile.add((AudioFile) selectedFiles.get(0));
+		    controller.editFiles(nextFile);
+		}
+	}
+
+	/**
+	 * 
+	 */
+	private void processOkAction() {
+		controller.editTag();
+		controller.clear();
+		dialog.setVisible(false);
+	}
 
     /**
      * Returns the common parent directory of the audio files or

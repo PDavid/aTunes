@@ -162,7 +162,7 @@ public final class RadioHandler extends AbstractHandler implements IRadioHandler
     @Override
 	public List<IRadio> getRadioPresets() {
         // Check if new stations were added and set false if yes
-        if (noNewStations == true) {
+        if (noNewStations) {
             noNewStations = presetRadios.containsAll(retrievedPresetRadios);
             retrievedPresetRadios.removeAll(presetRadios);
         } else {
