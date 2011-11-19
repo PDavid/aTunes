@@ -12,7 +12,13 @@
 		<property name="presets" ref="equalizerPresets"/>
 	</bean>
 	
-	<bean id="mplayerEngine" class="net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine"/>
+	<bean id="mplayerEngine" class="net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine">
+		<property name="processBuilder" ref="mplayerProcessBuilder"/>
+	</bean>
+	<bean id="mplayerProcessBuilder" class="net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerProcessBuilder">
+		<property name="engine" ref="mplayerEngine"/>
+	</bean>
+	
 	<bean id="xineEngine" class="net.sourceforge.atunes.kernel.modules.player.xine.XineEngine"/>
 	<bean id="engines" class="java.util.ArrayList">
 		<constructor-arg>
