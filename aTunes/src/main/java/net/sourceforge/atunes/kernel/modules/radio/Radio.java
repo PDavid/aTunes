@@ -30,6 +30,7 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IProxy;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.NetworkUtils;
@@ -126,8 +127,8 @@ public final class Radio implements IRadio {
     }
 
     @Override
-    public List<Radio> getAudioObjects() {
-        List<Radio> songs = new ArrayList<Radio>();
+    public List<IRadio> getAudioObjects() {
+        List<IRadio> songs = new ArrayList<IRadio>();
         songs.add(this);
         return songs;
     }
@@ -212,7 +213,7 @@ public final class Radio implements IRadio {
 	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#hasPlaylistUrl(net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy)
 	 */
     @Override
-	public boolean hasPlaylistUrl(ExtendedProxy proxy) {
+	public boolean hasPlaylistUrl(IProxy proxy) {
         // First check based on URL end (extension)
         for (String pl : PLAYLISTS) {
             if (url.trim().toLowerCase().endsWith(pl)) {
@@ -223,7 +224,7 @@ public final class Radio implements IRadio {
         // WORKAROUND: If URL has no extension, then try to get from content
         // Just read first bytes to avoid starting read a non playlist url
         try {
-            String radioContent = NetworkUtils.readURL(NetworkUtils.getConnection(url, proxy), 100);
+            String radioContent = NetworkUtils.readURL(NetworkUtils.getConnection(url, ExtendedProxy.getProxy(proxy)), 100);
             for (String pl : PLAYLISTS) {
                 if (radioContent.trim().toLowerCase().contains(pl)) {
                     return true;

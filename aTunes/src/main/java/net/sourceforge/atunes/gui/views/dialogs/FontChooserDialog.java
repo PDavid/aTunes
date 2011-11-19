@@ -32,8 +32,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.beans.ConstructorProperties;
-import java.io.Serializable;
 import java.util.Locale;
 
 import javax.swing.JButton;
@@ -48,96 +46,12 @@ import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.kernel.modules.state.beans.FontBean;
+import net.sourceforge.atunes.model.FontSettings;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class FontChooserDialog extends AbstractCustomDialog {
-
-    public static class FontSettings implements Serializable {
-
-        /**
-		 * 
-		 */
-		private static final long serialVersionUID = -8438133427543514976L;
-		private FontBean font;
-        private boolean useFontSmoothing;
-        private boolean useFontSmoothingSettingsFromOs;
-
-        @ConstructorProperties( { "font", "useFontSmoothing", "useFontSmoothingSettingsFromOs" })
-        public FontSettings(FontBean font, boolean useFontSmoothing, boolean useFontSmoothingSettingsFromOs) {
-            super();
-            this.font = font;
-            this.useFontSmoothing = useFontSmoothing;
-            this.useFontSmoothingSettingsFromOs = useFontSmoothingSettingsFromOs;
-        }
-
-        public FontSettings() {
-        }
-
-        void setFont(FontBean font) {
-            this.font = font;
-        }
-
-        public FontBean getFont() {
-            return font;
-        }
-
-        void setUseFontSmoothing(boolean useFontSmoothing) {
-            this.useFontSmoothing = useFontSmoothing;
-        }
-
-        public boolean isUseFontSmoothing() {
-            return useFontSmoothing;
-        }
-
-        void setUseFontSmoothingSettingsFromOs(boolean useFontSmoothingSettingsFromOs) {
-            this.useFontSmoothingSettingsFromOs = useFontSmoothingSettingsFromOs;
-        }
-
-        public boolean isUseFontSmoothingSettingsFromOs() {
-            return useFontSmoothingSettingsFromOs;
-        }
-
-        @Override
-        public int hashCode() {
-            final int prime = 31;
-            int result = 1;
-            result = prime * result + ((font == null) ? 0 : font.hashCode());
-            result = prime * result + (useFontSmoothing ? 1231 : 1237);
-            result = prime * result + (useFontSmoothingSettingsFromOs ? 1231 : 1237);
-            return result;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) {
-                return true;
-            }
-            if (obj == null) {
-                return false;
-            }
-            if (getClass() != obj.getClass()) {
-                return false;
-            }
-            FontSettings other = (FontSettings) obj;
-            if (font == null) {
-                if (other.font != null) {
-                    return false;
-                }
-            } else if (!font.equals(other.font)) {
-                return false;
-            }
-            if (useFontSmoothing != other.useFontSmoothing) {
-                return false;
-            }
-            if (useFontSmoothingSettingsFromOs != other.useFontSmoothingSettingsFromOs) {
-                return false;
-            }
-            return true;
-        }
-
-    }
 
     private static final long serialVersionUID = 2941323406891892062L;
 
@@ -197,7 +111,7 @@ public final class FontChooserDialog extends AbstractCustomDialog {
                 updatePreview();
             }
         });
-        fontSizeList.setSelectedValue(fontSettings.font.getSize(), true);
+        fontSizeList.setSelectedValue(fontSettings.getFont().getSize(), true);
         useFontSmoothingCheckbox = new JCheckBox(I18nUtils.getString("USE_FONT_SMOOTHING"));
         useFontSmoothingCheckbox.setSelected(fontSettings.isUseFontSmoothing());
         useFontSmoothingCheckbox.addItemListener(new ItemListener() {

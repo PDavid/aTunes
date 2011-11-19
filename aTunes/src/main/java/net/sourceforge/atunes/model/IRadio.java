@@ -22,15 +22,12 @@ package net.sourceforge.atunes.model;
 
 import java.io.Serializable;
 
-import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
-import net.sourceforge.atunes.kernel.modules.radio.Radio;
-
 /**
  * A radio station
  * @author alex
  *
  */
-public interface IRadio extends IAudioObject, Serializable, ITreeObject<Radio>, Comparable<IRadio> {
+public interface IRadio extends IAudioObject, Serializable, ITreeObject<IRadio>, Comparable<IRadio> {
 
 	/**
 	 * Delete song info.
@@ -46,10 +43,10 @@ public interface IRadio extends IAudioObject, Serializable, ITreeObject<Radio>, 
 
 	/**
 	 * Checks for playlist url.
-	 * 
-	 * @return true, if successful
+	 * @param proxy
+	 * @return
 	 */
-	public boolean hasPlaylistUrl(ExtendedProxy proxy);
+	public boolean hasPlaylistUrl(IProxy proxy);
 
 	/**
 	 * Checks if is removed.
