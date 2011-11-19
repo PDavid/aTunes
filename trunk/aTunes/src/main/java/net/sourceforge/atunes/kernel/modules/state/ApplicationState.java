@@ -29,7 +29,6 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.frame.FrameState;
-import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeysConfig;
 import net.sourceforge.atunes.kernel.modules.navigator.RepositoryNavigationView;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
@@ -39,6 +38,7 @@ import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
 import net.sourceforge.atunes.kernel.modules.tags.TagAttribute;
 import net.sourceforge.atunes.model.ArtistViewMode;
 import net.sourceforge.atunes.model.ColumnBean;
+import net.sourceforge.atunes.model.FontSettings;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.IHotkeysConfig;

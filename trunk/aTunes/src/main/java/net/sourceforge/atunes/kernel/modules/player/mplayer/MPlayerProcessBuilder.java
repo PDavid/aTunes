@@ -26,7 +26,6 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
@@ -192,7 +191,7 @@ public class MPlayerProcessBuilder {
         }
         
         // If a radio has a playlist url add playlist command
-        if (audioObject instanceof IRadio && ((IRadio) audioObject).hasPlaylistUrl(ExtendedProxy.getProxy(state.getProxy()))) {
+        if (audioObject instanceof IRadio && ((IRadio) audioObject).hasPlaylistUrl(state.getProxy())) {
             command.add(MPlayerConstants.PLAYLIST);
         }
 	}

@@ -23,7 +23,6 @@ package net.sourceforge.atunes.model;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeysConfig;
 import net.sourceforge.atunes.kernel.modules.state.beans.ColorBean;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
