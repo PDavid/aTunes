@@ -96,7 +96,7 @@ public final class NavigationTableColumnModel extends AbstractCommonColumnModel 
             // Check incomplete tags if necessary
             if (state.isHighlightIncompleteTagElements()) {
                 IAudioObject audioObject = navigationHandler.getAudioObjectInNavigationTable(row);
-                if (IncompleteTagsChecker.hasIncompleteTags(audioObject, state)) {
+                if (IncompleteTagsChecker.hasIncompleteTags(audioObject, state.getHighlightIncompleteTagFoldersAttributes())) {
                     ((JLabel) c).setForeground(Color.red);
                 } else {
                 	// Only Substance doesn't need this workaround

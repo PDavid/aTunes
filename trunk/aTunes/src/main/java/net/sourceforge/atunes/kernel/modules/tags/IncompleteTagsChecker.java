@@ -35,9 +35,7 @@ import net.sourceforge.atunes.model.ITreeObject;
 
 public final class IncompleteTagsChecker {
 
-    private IncompleteTagsChecker() {
-
-    }
+    private IncompleteTagsChecker() {}
 
     /**
      * Returns a list with default attributes to highlight folders
@@ -80,61 +78,152 @@ public final class IncompleteTagsChecker {
 
     /**
      * Returns true if audio file has filled all enabled attributes
-     * 
      * @param audioFile
-     * @param state
+     * @param tagAttributesToCheck
      * @return
      */
-    private static boolean hasTagAttributesFilled(AudioFile audioFile, IState state) {
+    private static boolean hasTagAttributesFilled(AudioFile audioFile, List<TagAttribute> tagAttributesToCheck) {
         if (audioFile.getTag() == null) {
             return false;
         }
 
-        for (TagAttribute ta : state.getHighlightIncompleteTagFoldersAttributes()) {
-            if (ta == TagAttribute.TITLE && audioFile.getTitle().isEmpty()) {
-                return false;
+        for (TagAttribute ta : tagAttributesToCheck) {
+            boolean filled = analyzeAttribute(audioFile, ta);
+            if (!filled) {
+            	return false;
             }
-
-            if (ta == TagAttribute.ARTIST && Artist.isUnknownArtist(audioFile.getArtist())) {
-                return false;
-            }
-
-            if (ta == TagAttribute.ALBUM && Album.isUnknownAlbum(audioFile.getAlbum())) {
-                return false;
-            }
-
-            if (ta == TagAttribute.YEAR && audioFile.getYear().isEmpty()) {
-                return false;
-            }
-
-            if (ta == TagAttribute.COMMENT && (audioFile.getComment().isEmpty())) {
-                return false;
-            }
-
-            if (ta == TagAttribute.GENRE && Genre.isUnknownGenre(audioFile.getGenre())) {
-                return false;
-            }
-
-            if (ta == TagAttribute.LYRICS && audioFile.getLyrics().isEmpty()) {
-                return false;
-            }
-
-            if (ta == TagAttribute.COMPOSER && audioFile.getComposer().isEmpty()) {
-                return false;
-            }
-
-            if (ta == TagAttribute.ALBUM_ARTIST && audioFile.getAlbumArtist().isEmpty()) {
-                return false;
-            }
-
-            if (ta == TagAttribute.TRACK && audioFile.getTrackNumber() <= 0) {
-                return false;
-            }
-
         }
 
         return true;
     }
+
+	/**
+	 * @param audioFile
+	 * @param ta
+	 * @return if attribute is filled
+	 */
+	private static boolean analyzeAttribute(AudioFile audioFile, TagAttribute ta) {
+		return checkTitle(audioFile, ta) && 
+		       checkArtist(audioFile, ta) &&
+		       checkAlbum(audioFile, ta) &&
+		       checkYear(audioFile, ta) &&
+		       checkComment(audioFile, ta) &&
+		       checkGenre(audioFile, ta) &&
+		       checkLyrics(audioFile, ta) &&
+		       checkComposer(audioFile, ta) &&
+		       checkAlbumArtist(audioFile, ta) &&
+		       checkTrack(audioFile, ta);
+	}
+
+	/**
+	 * @param audioFile
+	 * @param ta
+	 */
+	private static boolean checkTrack(AudioFile audioFile, TagAttribute ta) {
+		if (ta == TagAttribute.TRACK && audioFile.getTrackNumber() <= 0) {
+		    return false;
+		}
+		return true;
+	}
+
+	/**
+	 * @param audioFile
+	 * @param ta
+	 */
+	private static boolean checkAlbumArtist(AudioFile audioFile, TagAttribute ta) {
+		if (ta == TagAttribute.ALBUM_ARTIST && audioFile.getAlbumArtist().isEmpty()) {
+		    return false;
+		}
+		return true;
+	}
+
+	/**
+	 * @param audioFile
+	 * @param ta
+	 */
+	private static boolean checkComposer(AudioFile audioFile, TagAttribute ta) {
+		if (ta == TagAttribute.COMPOSER && audioFile.getComposer().isEmpty()) {
+		    return false;
+		}
+		return true;
+	}
+
+	/**
+	 * @param audioFile
+	 * @param ta
+	 */
+	private static boolean checkLyrics(AudioFile audioFile, TagAttribute ta) {
+		if (ta == TagAttribute.LYRICS && audioFile.getLyrics().isEmpty()) {
+		    return false;
+		}
+		return true;
+	}
+
+	/**
+	 * @param audioFile
+	 * @param ta
+	 */
+	private static boolean checkGenre(AudioFile audioFile, TagAttribute ta) {
+		if (ta == TagAttribute.GENRE && Genre.isUnknownGenre(audioFile.getGenre())) {
+		    return false;
+		}
+		return true;
+	}
+
+	/**
+	 * @param audioFile
+	 * @param ta
+	 */
+	private static boolean checkComment(AudioFile audioFile, TagAttribute ta) {
+		if (ta == TagAttribute.COMMENT && (audioFile.getComment().isEmpty())) {
+		    return false;
+		}
+		return true;
+	}
+
+	/**
+	 * @param audioFile
+	 * @param ta
+	 */
+	private static boolean checkYear(AudioFile audioFile, TagAttribute ta) {
+		if (ta == TagAttribute.YEAR && audioFile.getYear().isEmpty()) {
+		    return false;
+		}
+		return true;
+	}
+
+	/**
+	 * @param audioFile
+	 * @param ta
+	 */
+	private static boolean checkAlbum(AudioFile audioFile, TagAttribute ta) {
+		if (ta == TagAttribute.ALBUM && Album.isUnknownAlbum(audioFile.getAlbum())) {
+		    return false;
+		}
+		return true;
+	}
+
+	/**
+	 * @param audioFile
+	 * @param ta
+	 */
+	private static boolean checkArtist(AudioFile audioFile, TagAttribute ta) {
+		if (ta == TagAttribute.ARTIST && Artist.isUnknownArtist(audioFile.getArtist())) {
+		    return false;
+		}
+		return true;
+	}
+
+	/**
+	 * @param audioFile
+	 * @param ta
+	 */
+	private static boolean checkTitle(AudioFile audioFile, TagAttribute ta) {
+		if (ta == TagAttribute.TITLE && audioFile.getTitle().isEmpty()) {
+		    return false;
+		}
+		return true;
+	}
 
     /**
      * Returns <code>true</code> if tree object contains audio objects with
@@ -145,8 +234,9 @@ public final class IncompleteTagsChecker {
      * @return
      */
     public static boolean hasIncompleteTags(ITreeObject<? extends IAudioObject> treeObject, IState state) {
+    	List<TagAttribute> tagAttributes = state.getHighlightIncompleteTagFoldersAttributes();
         for (IAudioObject f : treeObject.getAudioObjects()) {
-            if (hasIncompleteTags(f, state)) {
+            if (hasIncompleteTags(f, tagAttributes)) {
                 return true;
             }
         }
@@ -155,16 +245,14 @@ public final class IncompleteTagsChecker {
 
     /**
      * Returns <code>true</code> if object has incomplete tag tags
-     * 
      * @param audioObject
-     * @param state
+     * @param tagAttributes
      * @return
      */
-    public static boolean hasIncompleteTags(IAudioObject audioObject, IState state) {
+    public static boolean hasIncompleteTags(IAudioObject audioObject, List<TagAttribute> tagAttributes) {
         if (audioObject instanceof AudioFile) {
-            return !hasTagAttributesFilled((AudioFile) audioObject, state);
+            return !hasTagAttributesFilled((AudioFile) audioObject, tagAttributes);
         }
         return false;
     }
-
 }
