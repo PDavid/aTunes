@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import javax.swing.SwingUtilities;
 
@@ -41,26 +40,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class Cdda2wav extends AbstractCdToWavConverter {
 
-    // Define cdda2wav command strings
-    private static final String CDDA2WAV_COMMAND_STRING = "cdda2wav";
-    private static final String ICEDAX_COMMAND_STRING = "icedax";
-    // private static final String CDDA2WAV_COMMAND_STRING_SOLARIS = "/usr/bin/cdda2wav.bin";
-    // private static final String ICEDAX_COMMAND_STRING_SOLARIS = "";
-    private static final String SCAN_BUS = "-scanbus";
-    private static final String SCANDEVICES = "--devices";
-    private static final String ATA = "dev=ATA";
-    private static final String DEVICE = "-D";
-    private static final String LIST_TRACKS = "-J";
-    private static final String GUI = "-g";
-    private static final String NO_INFO_FILE = "-H";
-    private static final String CDDB = "--cddb=1";
-    private static final String PARANOIA = "-paranoia";
-    private static final String TRACKS = "-t";
-    private static final String VERBOSE = "-verbose-level=summary,toc,sectors,titles";
-    private static final String VERSION = "--version";
-    private static final String WAVFORMAT = "-output-format=wav";
-
-    private static String converterCommand = CDDA2WAV_COMMAND_STRING;
+    private static String converterCommand = Cdda2wavConstants.CDDA2WAV_COMMAND_STRING;
 
     private int devNumber;
     private CDInfo cdRecursive;
@@ -88,7 +68,11 @@ public class Cdda2wav extends AbstractCdToWavConverter {
      */
     public Cdda2wav(IOSManager osManager) {
     	this.osManager = osManager;
-        device = doScanBus().get(0);
+    	Cdda2wavScanBus scanBus = new Cdda2wavScanBus(converterCommand, osManager);
+        this.devices = scanBus.doScanBus();
+        this.devNumber = this.devices.size();
+        this.device = this.devNumber > 0 ? devices.get(0) : null;
+        this.ata = scanBus.isAta();
     }
 
     /**
@@ -111,14 +95,14 @@ public class Cdda2wav extends AbstractCdToWavConverter {
         BufferedReader stdInput2 = null;
         try {
             // If user adds cdda2wav while aTunes is running it will be detected even if icedax was used. 
-            converterCommand = CDDA2WAV_COMMAND_STRING;
-            Process p = new ProcessBuilder(StringUtils.getString(osManager.getExternalToolsPath(), converterCommand), VERSION).start();
+            converterCommand = Cdda2wavConstants.CDDA2WAV_COMMAND_STRING;
+            Process p = new ProcessBuilder(StringUtils.getString(osManager.getExternalToolsPath(), converterCommand), Cdda2wavConstants.VERSION).start();
             stdInput = new BufferedReader(new InputStreamReader(p.getErrorStream()));
             String line = null;
             while ((line = stdInput.readLine()) != null) {
                 // On some Linux distributions we have a symlink to icedax so detect it.
                 if (line.contains("icedax")) {
-                    converterCommand = ICEDAX_COMMAND_STRING;
+                    converterCommand = Cdda2wavConstants.ICEDAX_COMMAND_STRING;
                 }
             }
             int code = p.waitFor();
@@ -129,8 +113,8 @@ public class Cdda2wav extends AbstractCdToWavConverter {
         } catch (IOException e) {
             // cdda2wav is not present. Maybe we have more luck with icedax.
             try {
-                converterCommand = ICEDAX_COMMAND_STRING;
-                Process icedaxCheck = new ProcessBuilder(StringUtils.getString(osManager.getExternalToolsPath(), converterCommand), VERSION).start();
+                converterCommand = Cdda2wavConstants.ICEDAX_COMMAND_STRING;
+                Process icedaxCheck = new ProcessBuilder(StringUtils.getString(osManager.getExternalToolsPath(), converterCommand), Cdda2wavConstants.VERSION).start();
                 stdInput2 = new BufferedReader(new InputStreamReader(icedaxCheck.getInputStream()));
 
                 String line = null;
@@ -180,19 +164,19 @@ public class Cdda2wav extends AbstractCdToWavConverter {
             if (device != null) {
                 // When -scanbus dev=ATA is used we use another syntax
                 if (ata) {
-                    String devATA = StringUtils.getString(ATA, ":", getDriveId());
+                    String devATA = StringUtils.getString(Cdda2wavConstants.ATA, ":", getDriveId());
                     command.add(devATA);
                 } else {
-                    command.add(DEVICE);
+                    command.add(Cdda2wavConstants.DEVICE);
                     command.add(getDriveId());
                 }
             }
-            command.add(WAVFORMAT);
-            command.add(StringUtils.getString(TRACKS, track));
-            command.add(NO_INFO_FILE);
+            command.add(Cdda2wavConstants.WAVFORMAT);
+            command.add(StringUtils.getString(Cdda2wavConstants.TRACKS, track));
+            command.add(Cdda2wavConstants.NO_INFO_FILE);
             if (useParanoia) {
                 Logger.info("Using paranoia mode");
-                command.add(PARANOIA);
+                command.add(Cdda2wavConstants.PARANOIA);
             }
             command.add(fileName.getAbsolutePath());
 
@@ -247,222 +231,6 @@ public class Cdda2wav extends AbstractCdToWavConverter {
         return cdda2wav(track, fileName);
     }
 
-    /**
-     * Tests for present CD drives. Various methods are tried to improve
-     * detection rate.
-     * 
-     * @return Returns an List of the found devices, either in the cdda2wav
-     *         format (for example 1,0,0) or how the OS calls it (for example
-     *         /dev/hdc). Please keep in mind that for now when using the
-     *         dev=ATA method, cdda2wav/icedax will need to use another command
-     *         than if the other methods are used. For now, this indicated by
-     *         the boolean variable ata which however can not accessed from the
-     *         outside for now. True if dev=ATA is used.
-     */
-    private List<String> doScanBus() {
-        Logger.info(StringUtils.getString("Scanning bus using ", converterCommand));
-
-        // When icedax is used, try the --devices method, otherwise leave it as the maintainer 
-        // of cdda2wav does not seem to like this method.
-        if (converterCommand.equals(ICEDAX_COMMAND_STRING)) {
-            BufferedReader stdInput = null;
-            try {
-                List<String> command = new ArrayList<String>();
-                command.add(StringUtils.getString(osManager.getExternalToolsPath(), converterCommand));
-                command.add(SCANDEVICES);
-                command.add(NO_INFO_FILE);
-
-                Logger.debug((Object[]) command.toArray(new String[command.size()]));
-
-                setProcess(new ProcessBuilder(command).start());
-                stdInput = new BufferedReader(new InputStreamReader(getProcess().getInputStream()));
-
-                // read the output from the command
-                String s = null;
-                // Search for the dev='...' lines to know what the OS calls the CD-Rom devices
-                while ((s = stdInput.readLine()) != null) {
-                    if (s.contains("dev=") && !s.contains("dev=help")) {
-                        String line = s.trim();
-                        java.util.StringTokenizer getDeviceOSName = new java.util.StringTokenizer(line, "'");
-                        // The first part is not interesting, we look for the second token, thus the next line
-                        getDeviceOSName.nextToken();
-                        String id = getDeviceOSName.nextToken();
-                        id = id.replace("\t", "");
-                        // Write found device to list
-                        devNumber = devNumber + 1;
-                        devices.add(id);
-                    }
-                }
-
-                int code = getProcess().waitFor();
-                if (code != 0) {
-                    Logger.error(StringUtils.getString("Process returned code ", code));
-                    // Do not return null. Application hangs otherwise
-                    // return null;
-                }
-
-                Logger.info(StringUtils.getString("Found ", devices.size(), " devices with --device method"));
-            } catch (IOException e) {
-                Logger.error(StringUtils.getString("Process execution caused exception ", e));
-                return null;
-            } catch (InterruptedException e) {
-                Logger.error(StringUtils.getString("Process execution caused exception ", e));
-                return null;
-            } finally {
-                ClosingUtils.close(stdInput);
-            }
-        }
-        // Regular cdda2wav command
-        if (devices.size() == 0) {
-            BufferedReader stdInput = null;
-            try {
-                List<String> command = new ArrayList<String>();
-                command.add(StringUtils.getString(osManager.getExternalToolsPath(), converterCommand));
-                command.add(SCAN_BUS);
-                command.add(NO_INFO_FILE);
-
-                Logger.debug((Object[]) command.toArray(new String[command.size()]));
-
-                setProcess(new ProcessBuilder(command).start());
-                // Icedax and cdda2wav seem to behave differently
-                if ((osManager.isLinux() && !converterCommand.equals(ICEDAX_COMMAND_STRING)) || osManager.isWindows()) {
-                    stdInput = new BufferedReader(new InputStreamReader(getProcess().getErrorStream()));
-                } else {
-                    stdInput = new BufferedReader(new InputStreamReader(getProcess().getInputStream()));
-                }
-
-                // read the output from the command
-                String s = null;
-                devNumber = 0;
-                while ((s = stdInput.readLine()) != null) {
-                    if (s.contains("CD-ROM")) {
-                        String line = s.trim();
-                        String id = null;
-                        // Icedax and cdda2wav seem to behave differently
-                        if ((osManager.isLinux() && !converterCommand.equals(ICEDAX_COMMAND_STRING)) || osManager.isWindows()) {
-                            // Workaround: Neither of this solutions work on all machines, but first one usually throws an exception
-                            // so we know we should try the second one.
-                            try {
-                                id = line.substring(0, line.indexOf("\t"));
-                                id = id.replace("\t", "");
-                            } catch (Exception e) {
-                                id = line.substring(0, line.indexOf(' '));
-                                id = id.replace(" ", "");
-                            }
-                        } else {
-                            id = line.substring(0, line.indexOf("\t"));
-                            id = id.replace("\t", "");
-                        }
-                        devNumber = devNumber + 1;
-
-                        if (osManager.isSolaris()) {
-                            /* we need to munge the BTL notation into cXtYdZ */
-                            String devPath = null;
-                            Scanner munge = new Scanner(id).useDelimiter(",");
-                            devPath = "/dev/rdsk/c" + munge.nextInt();
-                            devPath = devPath + "t" + munge.nextInt();
-                            devPath = devPath + "d" + munge.nextInt();
-                            devPath = devPath + "s2";
-                            Logger.info("device found is " + devPath);
-                            devices.add(devPath);
-                        } else {
-                            devices.add(id);
-                        }
-                    }
-                }
-
-                int code = getProcess().waitFor();
-                if (code != 0) {
-                    Logger.error(StringUtils.getString("Process returned code ", code));
-                    // Do not return null. Application hangs otherwise
-                    // return null;
-                }
-                Logger.info(StringUtils.getString("Found ", devices.size(), " devices with scanbus method"));
-
-            } catch (IOException e) {
-                Logger.error(StringUtils.getString("Process execution caused exception: ", e.getMessage()));
-                Logger.error(e);
-            } catch (InterruptedException e) {
-                Logger.error(StringUtils.getString("Process execution caused exception: ", e.getMessage()));
-                Logger.error(e);
-			} finally {
-                ClosingUtils.close(stdInput);
-            }
-        }
-        // On some Linux machines -scanbus does not give any CDROM, so lets try it with -scanbus dev=ATA:
-        if (devices.size() == 0) {
-            BufferedReader stdInput = null;
-            try {
-                List<String> command = new ArrayList<String>();
-                command.add(StringUtils.getString(osManager.getExternalToolsPath(), converterCommand));
-                command.add(SCAN_BUS);
-                command.add(ATA);
-                command.add(NO_INFO_FILE);
-
-                Logger.debug((Object[]) command.toArray(new String[command.size()]));
-
-                setProcess(new ProcessBuilder(command).start());
-                // Icedax and cdda2wav seem to behave differently
-                if ((osManager.isLinux() && !converterCommand.equals(ICEDAX_COMMAND_STRING)) || osManager.isWindows()) {
-                    stdInput = new BufferedReader(new InputStreamReader(getProcess().getErrorStream()));
-                } else {
-                    stdInput = new BufferedReader(new InputStreamReader(getProcess().getInputStream()));
-                }
-
-                // Read the output from the command
-                String s = null;
-                devNumber = 0;
-                while ((s = stdInput.readLine()) != null) {
-                    if (s.contains("CD-ROM")) {
-                        String line = s.trim();
-                        String id = null;
-                        // Icedax and cdda2wav seem to behave differently
-                        if (osManager.isLinux() && !converterCommand.equals(ICEDAX_COMMAND_STRING)) {
-                            // Workaround: Neither of this solutions work on all machines, but first one usually throws an exception
-                            // so we know we should try the second one.
-                            try {
-                                id = line.substring(0, line.indexOf("\t"));
-                                id = id.replace("\t", "");
-                            } catch (Exception e) {
-                                id = line.substring(0, line.indexOf(' '));
-                                id = id.replace(" ", "");
-                            }
-                        } else {
-                            id = line.substring(0, line.indexOf("\t"));
-                            id = id.replace("\t", "");
-                        }
-                        devNumber = devNumber + 1;
-                        devices.add(id);
-                        ata = true;
-                    }
-                }
-
-                int code = getProcess().waitFor();
-                if (code != 0) {
-                    Logger.error(StringUtils.getString("Process returned code ", code));
-                    // Do not return null. Application hangs otherwise
-                    // return null;
-                }
-                Logger.info(StringUtils.getString("Found ", devices.size(), " devices with '-scanbus dev=ATA' method"));
-                // This is needed to avoid hanging. devNumber is checked further and exits if it equals to zero.
-                // Please always check if devNumber is null and exit/give notification if this is the case.
-                if (devices.size() == 0) {
-                    devices.add(null);
-                }
-                return devices;
-            } catch (IOException e) {
-                Logger.error(StringUtils.getString("Process execution caused exception ", e));
-                return null;
-            } catch (InterruptedException e) {
-                Logger.error(StringUtils.getString("Process execution caused exception ", e));
-                return null;
-            } finally {
-                ClosingUtils.close(stdInput);
-            }
-        }
-
-        return devices;
-    }
 
     /**
      * <p>
@@ -502,18 +270,18 @@ public class Cdda2wav extends AbstractCdToWavConverter {
             if (device != null) {
                 // If -scanbus dev=ATA method finds something, we need to use a different syntax
                 if (ata) {
-                    String devATA = StringUtils.getString(ATA, ":", getDriveId());
+                    String devATA = StringUtils.getString(Cdda2wavConstants.ATA, ":", getDriveId());
                     command.add(devATA);
                 } else {
-                    command.add(DEVICE);
+                    command.add(Cdda2wavConstants.DEVICE);
                     command.add(getDriveId());
                 }
             }
-            command.add(LIST_TRACKS);
-            command.add(VERBOSE);
-            command.add(GUI);
-            command.add(NO_INFO_FILE);
-            command.add(CDDB);
+            command.add(Cdda2wavConstants.LIST_TRACKS);
+            command.add(Cdda2wavConstants.VERBOSE);
+            command.add(Cdda2wavConstants.GUI);
+            command.add(Cdda2wavConstants.NO_INFO_FILE);
+            command.add(Cdda2wavConstants.CDDB);
 
             Logger.debug((Object[]) command.toArray(new String[command.size()]));
 
@@ -569,14 +337,6 @@ public class Cdda2wav extends AbstractCdToWavConverter {
                 return null;
             }
 
-            //  The following is commented because it always returns an error under Windows.
-
-            //	int code = getProcess().waitFor();
-
-            //	if (code != 0) {
-            //		Logger.error("Process returned code " + code);
-            //		return null;
-            //	}
             Logger.info(StringUtils.getString("CD info: ", getCdInfo()));
             return getCdInfo();
 
