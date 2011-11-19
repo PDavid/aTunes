@@ -256,8 +256,6 @@ public final class AboutDialog extends AbstractCustomDialog implements IAboutDia
      * @return
      */
     private JPanel getContent(ILookAndFeel lookAndFeel) {
-        JPanel panel = new JPanel(new GridBagLayout());
-
         UrlLabel title = new UrlLabel(desktop, StringUtils.getString(Constants.APP_NAME, " ", Constants.VERSION.toString()), Constants.APP_WEB);
         title.setFont(lookAndFeel.getAboutBigFont());
         title.setFocusPainted(false);
@@ -291,6 +289,21 @@ public final class AboutDialog extends AbstractCustomDialog implements IAboutDia
         tabbedPane.addTab(I18nUtils.getString("LICENSE"), license);
         tabbedPane.addTab(I18nUtils.getString("PROPERTIES"), propertiesScrollPane);
 
+        return createPanel(title, description, icon, contributors, close, tabbedPane);
+    }
+
+	/**
+	 * @param title
+	 * @param description
+	 * @param icon
+	 * @param contributors
+	 * @param close
+	 * @param tabbedPane
+	 * @return
+	 */
+	private JPanel createPanel(UrlLabel title, JLabel description, JLabel icon,
+			UrlLabel contributors, JButton close, JTabbedPane tabbedPane) {
+		JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 1;
         c.gridy = 0;
@@ -326,9 +339,8 @@ public final class AboutDialog extends AbstractCustomDialog implements IAboutDia
         c.weighty = 0;
         c.insets = new Insets(0, 20, 10, 20);
         panel.add(close, c);
-
-        return panel;
-    }
+		return panel;
+	}
 
     /**
      * Gets the license text.
