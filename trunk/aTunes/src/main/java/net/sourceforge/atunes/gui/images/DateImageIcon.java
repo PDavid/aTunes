@@ -21,44 +21,35 @@
 package net.sourceforge.atunes.gui.images;
 
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Paint;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.CachedIconFactory;
 
-public class DateImageIcon {
+public class DateImageIcon extends CachedIconFactory {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3113996469467317328L;
+	
 	private static final int SIZE = 18;
 
-	private DateImageIcon() {}
-	
-	/**
-	 * @param lookAndFeel
-	 * @return
-	 */
-	public static ImageIcon getIcon(ILookAndFeel lookAndFeel) {
-		return getIcon(null, lookAndFeel);
-	}
-	
-	/**
-	 * @param color
-	 * @param lookAndFeel
-	 * @return
-	 */
-	public static ImageIcon getIcon(Paint color, ILookAndFeel lookAndFeel) {
+	@Override
+	protected ImageIcon createIcon(Color color) {
 		Rectangle r = new Rectangle(1, 2, 16, 14);
 		Rectangle r2 = new Rectangle(2, 5, 14, 10);
 
 		BufferedImage bi = new BufferedImage(SIZE, SIZE, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D g = bi.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setPaint(color != null ? color : lookAndFeel.getPaintForSpecialControls());
+        g.setPaint(color);
 
         g.fill(r);
         
@@ -73,5 +64,4 @@ public class DateImageIcon {
         g.dispose();
         return new ImageIcon(bi);
 	}
-
 }

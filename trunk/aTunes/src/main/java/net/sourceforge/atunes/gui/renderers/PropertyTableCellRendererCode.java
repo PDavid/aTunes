@@ -25,11 +25,13 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.DownloadImageIcon;
 import net.sourceforge.atunes.gui.images.FavoriteImageIcon;
 import net.sourceforge.atunes.gui.images.NewImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.model.AudioObjectProperty;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 
 public class PropertyTableCellRendererCode extends AbstractTableCellRendererCode {
@@ -47,7 +49,7 @@ public class PropertyTableCellRendererCode extends AbstractTableCellRendererCode
         } else if (val == AudioObjectProperty.NOT_LISTENED_ENTRY) {
             icon = NewImageIcon.getIcon(lookAndFeel.getPaintForColorMutableIcon(comp, isSelected), lookAndFeel);
         } else if (val == AudioObjectProperty.DOWNLOADED_ENTRY) {
-            icon = DownloadImageIcon.getIcon(lookAndFeel.getPaintForColorMutableIcon(comp, isSelected), lookAndFeel);
+            icon = Context.getBean("downloadIcon", CachedIconFactory.class).getIcon(lookAndFeel.getPaintForColorMutableIcon(comp, isSelected));
         }
         ((JLabel) comp).setIcon(icon);
         ((JLabel) comp).setText(null);

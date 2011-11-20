@@ -25,7 +25,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
 
-import net.sourceforge.atunes.gui.images.EqualizerColorMutableIcon;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IEqualizerDialogFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -42,6 +42,15 @@ public class ShowEqualizerAction extends ActionWithColorMutableIcon {
     private static final long serialVersionUID = 2511199136727155747L;
 
     private IEqualizerDialogFactory equalizerDialogFactory;
+    
+    private CachedIconFactory equalizerIcon;
+    
+    /**
+     * @param equalizerIcon
+     */
+    public void setEqualizerIcon(CachedIconFactory equalizerIcon) {
+		this.equalizerIcon = equalizerIcon;
+	}
     
     /**
      * @param equalizerDialogFactory
@@ -62,6 +71,6 @@ public class ShowEqualizerAction extends ActionWithColorMutableIcon {
     
     @Override
     public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
-    	return new EqualizerColorMutableIcon(lookAndFeel);
+    	return equalizerIcon.getColorMutableIcon();
     }
 }

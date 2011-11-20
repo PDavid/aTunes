@@ -24,4 +24,8 @@
 	<bean id="artistSimilarIcon" class="net.sourceforge.atunes.gui.images.ArtistSimilarImageIcon"/>		
 	<bean id="audioFileMediumIcon" class="net.sourceforge.atunes.gui.images.AudioFileImageMediumIcon"/>
 	<bean id="audioFileSmallIcon" class="net.sourceforge.atunes.gui.images.AudioFileImageSmallIcon"/>
+	<bean id="dateIcon" class="net.sourceforge.atunes.gui.images.DateImageIcon"/>
+	<bean id="deviceIcon" class="net.sourceforge.atunes.gui.images.DeviceImageIcon"/>
+	<bean id="downloadIcon" class="net.sourceforge.atunes.gui.images.DownloadImageIcon"/>
+	<bean id="equalizerIcon" class="net.sourceforge.atunes.gui.images.EqualizerImageIcon"/>
 </beans>

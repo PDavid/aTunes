@@ -39,12 +39,12 @@ import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
-import net.sourceforge.atunes.gui.images.DeviceImageIcon;
 import net.sourceforge.atunes.gui.images.NewImageIcon;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomFrame;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.model.ApplicationVersion;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextPanelsContainer;
 import net.sourceforge.atunes.model.IFrameState;
@@ -326,7 +326,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
      */
     private JLabel getStatusBarDeviceLabel() {
         if (statusBarDeviceLabel == null) {
-            statusBarDeviceLabel = new JLabel(DeviceImageIcon.getIcon(lookAndFeelManager.getCurrentLookAndFeel()));
+            statusBarDeviceLabel = new JLabel(context.getBean("deviceIcon", CachedIconFactory.class).getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls()));
         }
         return statusBarDeviceLabel;
     }
