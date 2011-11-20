@@ -23,9 +23,9 @@ package net.sourceforge.atunes.kernel.modules.columns;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.model.TextAndIcon;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.ColumnSort;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 
 import org.springframework.beans.BeansException;
@@ -36,7 +36,7 @@ public class ArtistColumn extends AbstractColumn implements ApplicationContextAw
 
     private static final long serialVersionUID = 8144686293055648148L;
 
-    private IColorMutableImageIcon artistFavoriteIcon;
+    private CachedIconFactory artistFavoriteIcon;
 
     private ApplicationContext context;
     
@@ -71,7 +71,7 @@ public class ArtistColumn extends AbstractColumn implements ApplicationContextAw
     @Override
     public Object getValueFor(IAudioObject audioObject) {
     	if (getFavoritesHandler().getFavoriteArtistsInfo().containsKey(audioObject.getArtist())) {
-            return new TextAndIcon(audioObject.getArtist(), artistFavoriteIcon, SwingConstants.LEFT);
+            return new TextAndIcon(audioObject.getArtist(), artistFavoriteIcon.getColorMutableIcon(), SwingConstants.LEFT);
     	} else {
     		return new TextAndIcon(audioObject.getArtist(), null, SwingConstants.LEFT);
     	}
@@ -95,7 +95,7 @@ public class ArtistColumn extends AbstractColumn implements ApplicationContextAw
     /**
      * @param artistFavoriteIcon
      */
-    public void setArtistFavoriteIcon(IColorMutableImageIcon artistFavoriteIcon) {
+    public void setArtistFavoriteIcon(CachedIconFactory artistFavoriteIcon) {
 		this.artistFavoriteIcon = artistFavoriteIcon;
 	}
 }

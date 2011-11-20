@@ -22,7 +22,6 @@ package net.sourceforge.atunes.gui.lookandfeel.substance;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Paint;
 
 import org.pushingpixels.substance.api.ComponentState;
 import org.pushingpixels.substance.api.DecorationAreaType;

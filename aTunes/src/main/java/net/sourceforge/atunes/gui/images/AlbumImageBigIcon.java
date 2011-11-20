@@ -24,12 +24,19 @@ import java.awt.Color;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.CachedIconFactory;
 
-public final class ArtistFavoriteColorMutableImageIcon implements IColorMutableImageIcon {
+public class AlbumImageBigIcon extends CachedIconFactory {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7647875468552959504L;
 	
+	private static final int BIG_SIZE = 90;
+
 	@Override
-	public ImageIcon getIcon(Color paint) {
-		return ArtistFavoriteImageIcon.getIcon(paint);
+	protected ImageIcon createIcon(Color color) {
+        return IconGenerator.generateIcon(color, BIG_SIZE, BIG_SIZE, AlbumImageIcon.getIconArea(BIG_SIZE, BIG_SIZE, 0, 0));
 	}
 }

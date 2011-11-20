@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.model;
+package net.sourceforge.atunes.model;
 
 import java.awt.Color;
 import java.io.Serializable;
@@ -27,9 +27,6 @@ import java.util.Map;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.IColorMutableImageIcon;
-import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.Logger;
 
 /**

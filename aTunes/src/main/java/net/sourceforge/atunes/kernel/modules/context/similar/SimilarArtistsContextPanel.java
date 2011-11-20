@@ -20,13 +20,9 @@
 
 package net.sourceforge.atunes.kernel.modules.context.similar;
 
-import java.awt.Color;
-
-import javax.swing.ImageIcon;
-
-import net.sourceforge.atunes.gui.images.ArtistSimilarImageIcon;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -40,15 +36,19 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * 
  */
 public class SimilarArtistsContextPanel extends AbstractContextPanel {
+	
+	private CachedIconFactory artistSimilarIcon;
+	
+	/**
+	 * @param artistSimilarIcon
+	 */
+	public void setArtistSimilarIcon(CachedIconFactory artistSimilarIcon) {
+		this.artistSimilarIcon = artistSimilarIcon;
+	}
 
     @Override
     public IColorMutableImageIcon getContextPanelIcon(IAudioObject audioObject) {
-        return new IColorMutableImageIcon() {
-        	@Override
-        	public ImageIcon getIcon(Color paint) {
-                return ArtistSimilarImageIcon.getIcon(paint, getLookAndFeel());
-        	}
-        };
+    	return artistSimilarIcon.getColorMutableIcon();
     }
 
     @Override

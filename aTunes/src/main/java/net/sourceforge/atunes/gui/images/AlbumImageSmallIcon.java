@@ -21,27 +21,22 @@
 package net.sourceforge.atunes.gui.images;
 
 import java.awt.Color;
-import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.model.CachedIconFactory;
 
-public class ArtistSimilarImageIcon extends CachedIconFactory {
+public class AlbumImageSmallIcon extends CachedIconFactory {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 2194637429534374433L;
+	private static final long serialVersionUID = 2262229990261535398L;
 	
-	private static final int WIDTH = 16;
-	private static final int HEIGHT = 16;
-	
-	@Override
+	private static final int SIZE = 16;
+
+	 @Override
 	protected ImageIcon createIcon(Color color) {
-		Rectangle s = new Rectangle(WIDTH - 6, 5, 6, 2);
-		Rectangle s2 = new Rectangle (WIDTH - 4, 3, 2, 6);
-		Rectangle clip = new Rectangle(0, 1, WIDTH, HEIGHT - 2);
-		return IconGenerator.generateIcon(color, clip, WIDTH, HEIGHT, ArtistImageIcon.getArtistIconArea(-2), s, s2);
+        return IconGenerator.generateIcon(color, SIZE, SIZE, AlbumImageIcon.getIconArea(SIZE, SIZE, 0, 0));
 	}
 }

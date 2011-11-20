@@ -16,9 +16,11 @@
 	<bean class="net.sourceforge.atunes.gui.images.RadioMediumColorMutableImageIcon"/>
 	<bean class="net.sourceforge.atunes.gui.images.RadioBigColorMutableImageIcon"/>
 	
-	<bean id="artistFavoriteIcon" class="net.sourceforge.atunes.gui.images.ArtistFavoriteColorMutableImageIcon"/>
-	
 	<bean id="artistImageIcon" class="net.sourceforge.atunes.gui.images.ArtistImageIcon"/>
 	<bean id="albumFavoriteIcon" class="net.sourceforge.atunes.gui.images.AlbumFavoriteImageIcon"/>
+	<bean id="albumSmallIcon" class="net.sourceforge.atunes.gui.images.AlbumImageSmallIcon"/>
+	<bean id="albumBigIcon" class="net.sourceforge.atunes.gui.images.AlbumImageBigIcon"/>
+	<bean id="artistFavoriteIcon" class="net.sourceforge.atunes.gui.images.ArtistFavoriteImageIcon"/>
+	<bean id="artistSimilarIcon" class="net.sourceforge.atunes.gui.images.ArtistSimilarImageIcon"/>		
 
 </beans>

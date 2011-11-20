@@ -25,7 +25,6 @@ import java.awt.Component;
 
 import javax.swing.JLabel;
 
-import net.sourceforge.atunes.gui.images.AlbumImageIcon;
 import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
 import net.sourceforge.atunes.gui.images.DeviceImageIcon;
 import net.sourceforge.atunes.gui.images.FavoriteImageIcon;
@@ -33,12 +32,21 @@ import net.sourceforge.atunes.gui.images.FolderImageIcon;
 import net.sourceforge.atunes.gui.images.RadioImageIcon;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
-import net.sourceforge.atunes.gui.model.CachedIconFactory;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class StringTreeCellDecorator extends AbstractTreeCellDecorator {
 	
 	private CachedIconFactory artistImageIcon;
+	
+	private CachedIconFactory albumSmallIcon;
+	
+	/**
+	 * @param albumSmallIcon
+	 */
+	public void setAlbumSmallIcon(CachedIconFactory albumSmallIcon) {
+		this.albumSmallIcon = albumSmallIcon;
+	}
 	
 	/**
 	 * @param artistImageIcon
@@ -60,7 +68,7 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator {
             } else if (text.equals(I18nUtils.getString("ARTISTS"))) {
                 label.setIcon(artistImageIcon.getIcon(color));
             } else if (text.equals(I18nUtils.getString("ALBUMS"))) {
-                label.setIcon(AlbumImageIcon.getIcon(color, getLookAndFeel()));
+                label.setIcon(albumSmallIcon.getIcon(color));
             } else if (text.equals(I18nUtils.getString("SONGS"))) {
                 label.setIcon(AudioFileImageIcon.getSmallImageIcon(color, getLookAndFeel()));
             } else if (text.equals(I18nUtils.getString("FAVORITES"))) {

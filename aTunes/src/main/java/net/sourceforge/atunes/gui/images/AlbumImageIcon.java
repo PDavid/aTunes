@@ -20,51 +20,10 @@
 
 package net.sourceforge.atunes.gui.images;
 
-import java.awt.Paint;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 
-import javax.swing.ImageIcon;
-
-import net.sourceforge.atunes.model.ILookAndFeel;
-
-public class AlbumImageIcon {
-
-	private static final int SIZE = 16;
-	private static final int BIG_SIZE = 90;
-	
-	private static ImageIcon icon;
-	
-	private AlbumImageIcon() {}
-	
-	/**
-	 * @param lookAndFeel
-	 * @return
-	 */
-	public static ImageIcon getIcon(ILookAndFeel lookAndFeel) {
-		if (icon == null) {
-			icon = getIcon(null, lookAndFeel);	
-		}
-		return icon;
-	}
-	
-	/**
-	 * @param color
-	 * @param lookAndFeel
-	 * @return
-	 */
-	public static ImageIcon getIcon(Paint color, ILookAndFeel lookAndFeel) {
-        return IconGenerator.generateIcon(color, SIZE, SIZE, lookAndFeel, getIconArea(SIZE, SIZE, 0, 0));
-	}
-
-	/**
-	 * @param color
-	 * @param lookAndFeel
-	 * @return
-	 */
-	public static ImageIcon getBigIcon(Paint color, ILookAndFeel lookAndFeel) {
-        return IconGenerator.generateIcon(color, BIG_SIZE, BIG_SIZE, lookAndFeel, getIconArea(BIG_SIZE, BIG_SIZE, 0, 0));
-	}
+class AlbumImageIcon {
 
 	/**
 	 * @param width

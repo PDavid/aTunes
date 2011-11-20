@@ -27,10 +27,15 @@ import java.awt.geom.Ellipse2D;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.model.CachedIconFactory;
+import net.sourceforge.atunes.model.CachedIconFactory;
 
 public class ArtistImageIcon extends CachedIconFactory {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9026267553013591250L;
+	
 	private static final int WIDTH = 16;
 	private static final int HEIGHT = 16;
 
