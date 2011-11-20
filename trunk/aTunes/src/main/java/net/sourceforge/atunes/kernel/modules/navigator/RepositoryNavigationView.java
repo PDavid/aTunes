@@ -20,11 +20,9 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
-import java.awt.Color;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.ImageIcon;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.JTree;
@@ -33,7 +31,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
 import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedObjects;
@@ -56,6 +53,7 @@ import net.sourceforge.atunes.kernel.actions.SetFavoriteArtistFromNavigatorActio
 import net.sourceforge.atunes.kernel.actions.SetFavoriteSongFromNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
@@ -76,15 +74,18 @@ public class RepositoryNavigationView extends AbstractNavigationView {
     
     private IRepositoryHandler repositoryHandler;
 
+    private CachedIconFactory audioFileSmallIcon;
+    
+    /**
+     * @param audioFileSmallIcon
+     */
+    public void setAudioFileSmallIcon(CachedIconFactory audioFileSmallIcon) {
+		this.audioFileSmallIcon = audioFileSmallIcon;
+	}
+    
     @Override
-    public IColorMutableImageIcon getIcon() {    	
-        return new IColorMutableImageIcon() {
-			
-			@Override
-			public ImageIcon getIcon(Color paint) {
-				return AudioFileImageIcon.getSmallImageIcon(paint, getLookAndFeelManager().getCurrentLookAndFeel());
-			}
-		};
+    public IColorMutableImageIcon getIcon() {    
+    	return audioFileSmallIcon.getColorMutableIcon();
     }
 
     @Override

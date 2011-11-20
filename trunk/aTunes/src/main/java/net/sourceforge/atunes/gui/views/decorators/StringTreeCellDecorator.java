@@ -25,7 +25,7 @@ import java.awt.Component;
 
 import javax.swing.JLabel;
 
-import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
+import net.sourceforge.atunes.gui.images.AudioFileImageMediumIcon;
 import net.sourceforge.atunes.gui.images.DeviceImageIcon;
 import net.sourceforge.atunes.gui.images.FavoriteImageIcon;
 import net.sourceforge.atunes.gui.images.FolderImageIcon;
@@ -40,6 +40,15 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator {
 	private CachedIconFactory artistImageIcon;
 	
 	private CachedIconFactory albumSmallIcon;
+	
+	private CachedIconFactory audioFileSmallIcon;
+	
+	/**
+	 * @param audioFileSmallIcon
+	 */
+	public void setAudioFileSmallIcon(CachedIconFactory audioFileSmallIcon) {
+		this.audioFileSmallIcon = audioFileSmallIcon;
+	}
 	
 	/**
 	 * @param albumSmallIcon
@@ -62,7 +71,7 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator {
             JLabel label = (JLabel) component;
             Color color = getLookAndFeel().getPaintForColorMutableIcon(label, isSelected);
             if (text.equals(I18nUtils.getString("REPOSITORY"))) {
-                label.setIcon(AudioFileImageIcon.getSmallImageIcon(color, getLookAndFeel()));
+                label.setIcon(audioFileSmallIcon.getIcon(color));
             } else if (text.equals(I18nUtils.getString("DEVICE"))) {
                 label.setIcon(DeviceImageIcon.getIcon(color, getLookAndFeel()));
             } else if (text.equals(I18nUtils.getString("ARTISTS"))) {
@@ -70,7 +79,7 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator {
             } else if (text.equals(I18nUtils.getString("ALBUMS"))) {
                 label.setIcon(albumSmallIcon.getIcon(color));
             } else if (text.equals(I18nUtils.getString("SONGS"))) {
-                label.setIcon(AudioFileImageIcon.getSmallImageIcon(color, getLookAndFeel()));
+                label.setIcon(audioFileSmallIcon.getIcon(color));
             } else if (text.equals(I18nUtils.getString("FAVORITES"))) {
                 label.setIcon(FavoriteImageIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(label, isSelected), getLookAndFeel()));
             } else if (text.equals(I18nUtils.getString("PODCAST_FEEDS"))) {
