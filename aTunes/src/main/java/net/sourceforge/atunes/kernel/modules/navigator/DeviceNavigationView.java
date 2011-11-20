@@ -50,6 +50,7 @@ import net.sourceforge.atunes.kernel.actions.SearchArtistAction;
 import net.sourceforge.atunes.kernel.actions.SearchArtistAtAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
@@ -70,6 +71,15 @@ public final class DeviceNavigationView extends AbstractNavigationView {
     private JPopupMenu deviceTableMenu;
     
     private IDeviceHandler deviceHandler;
+    
+    private CachedIconFactory deviceIcon;
+    
+    /**
+     * @param deviceIcon
+     */
+    public void setDeviceIcon(CachedIconFactory deviceIcon) {
+		this.deviceIcon = deviceIcon;
+	}
 
     public void setDeviceHandler(IDeviceHandler deviceHandler) {
 		this.deviceHandler = deviceHandler;
@@ -77,13 +87,7 @@ public final class DeviceNavigationView extends AbstractNavigationView {
     
     @Override
     public IColorMutableImageIcon getIcon() {
-        return new IColorMutableImageIcon() {
-			
-			@Override
-			public ImageIcon getIcon(Color paint) {
-				return DeviceImageIcon.getIcon(paint, getLookAndFeelManager().getCurrentLookAndFeel());
-			}
-		};
+    	return deviceIcon.getColorMutableIcon();
     }
 
     @Override

@@ -43,6 +43,15 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator {
 	
 	private CachedIconFactory audioFileSmallIcon;
 	
+	private CachedIconFactory deviceIcon;
+	
+	/**
+	 * @param deviceIcon
+	 */
+	public void setDeviceIcon(CachedIconFactory deviceIcon) {
+		this.deviceIcon = deviceIcon;
+	}
+	
 	/**
 	 * @param audioFileSmallIcon
 	 */
@@ -73,7 +82,7 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator {
             if (text.equals(I18nUtils.getString("REPOSITORY"))) {
                 label.setIcon(audioFileSmallIcon.getIcon(color));
             } else if (text.equals(I18nUtils.getString("DEVICE"))) {
-                label.setIcon(DeviceImageIcon.getIcon(color, getLookAndFeel()));
+                label.setIcon(deviceIcon.getIcon(color));
             } else if (text.equals(I18nUtils.getString("ARTISTS"))) {
                 label.setIcon(artistImageIcon.getIcon(color));
             } else if (text.equals(I18nUtils.getString("ALBUMS"))) {

@@ -20,25 +20,24 @@
 
 package net.sourceforge.atunes.gui.images;
 
-import java.awt.Paint;
+import java.awt.Color;
 import java.awt.Polygon;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.CachedIconFactory;
 
-public class DownloadImageIcon {
+public class DownloadImageIcon extends CachedIconFactory {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7668377655244896662L;
+	
 	private static final int SIZE = 18;
 	
-	private DownloadImageIcon() {}
-	
-	/**
-	 * @param paint
-	 * @param lookAndFeel
-	 * @return
-	 */
-	public static ImageIcon getIcon(Paint paint, ILookAndFeel lookAndFeel) {
+	@Override
+	protected ImageIcon createIcon(Color color) {
         Polygon a = new Polygon();
         a.addPoint(7, 4);
         a.addPoint(11, 4);
@@ -47,14 +46,6 @@ public class DownloadImageIcon {
         a.addPoint(9, 15);
         a.addPoint(4, 11);
         a.addPoint(7, 11);
-		return IconGenerator.generateIcon(paint, SIZE, SIZE, lookAndFeel, a);
-	}
-
-	/**
-	 * @param lookAndFeel
-	 * @return
-	 */
-	public static ImageIcon getIcon(ILookAndFeel lookAndFeel) {
-		return getIcon(null, lookAndFeel);
+		return IconGenerator.generateIcon(color, SIZE, SIZE, a);
 	}
 }

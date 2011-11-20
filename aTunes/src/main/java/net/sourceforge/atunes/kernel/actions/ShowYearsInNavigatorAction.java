@@ -25,6 +25,7 @@ import java.awt.Color;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.DateImageIcon;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -36,6 +37,15 @@ public class ShowYearsInNavigatorAction extends ActionWithColorMutableIcon {
     private static final long serialVersionUID = -1192790723328398881L;
 
     private INavigationHandler navigationHandler;
+    
+    private CachedIconFactory dateIcon;
+    
+    /**
+     * @param dateIcon
+     */
+    public void setDateIcon(CachedIconFactory dateIcon) {
+		this.dateIcon = dateIcon;
+	}
     
     /**
      * @param navigationHandler
@@ -65,12 +75,6 @@ public class ShowYearsInNavigatorAction extends ActionWithColorMutableIcon {
 
     @Override
     public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
-    	return new IColorMutableImageIcon() {
-			
-			@Override
-			public ImageIcon getIcon(Color paint) {
-				return DateImageIcon.getIcon(paint, lookAndFeel);
-			}
-		};
+    	return dateIcon.getColorMutableIcon();
     }
 }

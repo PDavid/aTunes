@@ -21,8 +21,8 @@
 package net.sourceforge.atunes.gui.images;
 
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Paint;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
@@ -31,34 +31,20 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.CachedIconFactory;
 
-public class DeviceImageIcon {
+public class DeviceImageIcon extends CachedIconFactory {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3899061042448834823L;
+	
 	private static final int WIDTH = 16;
 	private static final int HEIGHT = 16;
 	
-	private static ImageIcon icon;
-	
-	private DeviceImageIcon() {}
-	
-	/**
-	 * @param lookAndFeel
-	 * @return
-	 */
-	public static ImageIcon getIcon(ILookAndFeel lookAndFeel) {
-		if (icon == null) {
-			icon = getIcon(null, lookAndFeel);	
-		}
-		return icon;
-	}
-	
-	/**
-	 * @param color
-	 * @param lookAndFeel
-	 * @return
-	 */
-	public static ImageIcon getIcon(Paint color, ILookAndFeel lookAndFeel) {
+	@Override
+	protected ImageIcon createIcon(Color color) {
 		int marginX = 3;
 		int marginY = 1;
 		int arc = 4;
@@ -71,7 +57,7 @@ public class DeviceImageIcon {
 		BufferedImage bi = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D g = bi.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setPaint(color != null ? color : lookAndFeel.getPaintForSpecialControls());
+        g.setPaint(color);
         
        	g.fill(new RoundRectangle2D.Float(marginX, marginY, WIDTH - 2 * marginX, HEIGHT - 2 * marginY, arc, arc));
        	g.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
