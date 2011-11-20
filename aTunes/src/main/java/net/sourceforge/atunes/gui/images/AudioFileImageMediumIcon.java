@@ -20,51 +20,27 @@
 
 package net.sourceforge.atunes.gui.images;
 
-import java.awt.Paint;
+import java.awt.Color;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.Ellipse2D;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.CachedIconFactory;
 
-public class AudioFileImageIcon {
+public class AudioFileImageMediumIcon extends CachedIconFactory {
 
-	private static final int SMALL_WIDTH = 16;
-	private static final int SMALL_HEIGHT = 16;
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7954539546729244861L;
+	
 	private static final int MEDIUM_WIDTH = 70;
 	private static final int MEDIUM_HEIGHT = 70;
-	
-	private AudioFileImageIcon() {}
-	
-	/**
-	 * @param color
-	 * @param lookAndFeel
-	 * @return
-	 */
-	private static ImageIcon getSmallImage(Paint color, ILookAndFeel lookAndFeel) {
-		Ellipse2D.Float e1 = new Ellipse2D.Float(1, 11, 6, 3);
-		Ellipse2D.Float e2 = new Ellipse2D.Float(8, 10, 6, 3);
-		
-		Rectangle r1 = new Rectangle(5, 4, 2, 8);
-		Rectangle r2 = new Rectangle(12, 3, 2, 8);
-		Polygon r3 = new Polygon();
-		r3.addPoint(5, 4);
-		r3.addPoint(5, 7);
-		r3.addPoint(14, 4);
-		r3.addPoint(14, 2);		
-		
-		return IconGenerator.generateIcon(color, SMALL_WIDTH, SMALL_HEIGHT, lookAndFeel, e1, e2, r1, r2, r3);
-	}
 
-	/**
-	 * @param color
-	 * @param lookAndFeel
-	 * @return
-	 */
-	public static ImageIcon getMediumImage(Paint color, ILookAndFeel lookAndFeel) {
+	@Override
+	protected ImageIcon createIcon(Color color) {
 		Ellipse2D.Float e1 = new Ellipse2D.Float(4, 44, 24, 12);
 		Ellipse2D.Float e2 = new Ellipse2D.Float(32, 40, 24, 12);
 		
@@ -77,15 +53,6 @@ public class AudioFileImageIcon {
 		r3.addPoint(56, 8);		
 		
 		// This icon must be opaque since with this size shapes overlap is visible using alpha
-		return IconGenerator.generateIcon(color, MEDIUM_WIDTH, MEDIUM_HEIGHT, lookAndFeel, e1, e2, r1, r2, r3);
-	}
-
-	/**
-	 * @param color
-	 * @param lookAndFeel
-	 * @return
-	 */
-	public static ImageIcon getSmallImageIcon(Paint color, ILookAndFeel lookAndFeel) {
-		return getSmallImage(color, lookAndFeel);
+		return IconGenerator.generateIcon(color, MEDIUM_WIDTH, MEDIUM_HEIGHT, e1, e2, r1, r2, r3);
 	}
 }

@@ -20,12 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.context.audioobject;
 
-import java.awt.Color;
-
-import javax.swing.ImageIcon;
-
-import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectGenericImageFactory;
@@ -47,6 +43,15 @@ public class AudioObjectContextPanel extends AbstractContextPanel {
 
     private IAudioObjectGenericImageFactory audioObjectGenericImageFactory;
     
+    private CachedIconFactory audioFileSmallIcon;
+    
+    /**
+     * @param audioFileSmallIcon
+     */
+    public void setAudioFileSmallIcon(CachedIconFactory audioFileSmallIcon) {
+		this.audioFileSmallIcon = audioFileSmallIcon;
+	}
+    
     /**
      * @param audioObjectGenericImageFactory
      */
@@ -59,12 +64,7 @@ public class AudioObjectContextPanel extends AbstractContextPanel {
         if (audioObject != null) {
             return audioObjectGenericImageFactory.getGenericImage(audioObject, GenericImageSize.SMALL);
         } else {
-        	return new IColorMutableImageIcon() {
-        		@Override
-        		public ImageIcon getIcon(Color paint) {
-        			return AudioFileImageIcon.getSmallImageIcon(paint, getLookAndFeel());
-        		}
-        	};
+        	return audioFileSmallIcon.getColorMutableIcon();
         }
     }
 

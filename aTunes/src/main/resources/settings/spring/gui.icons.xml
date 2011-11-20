@@ -4,11 +4,11 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
 	default-autowire="byName" default-lazy-init="true">
 
-    <bean id="audioObjectGenericImageFactory" class="net.sourceforge.atunes.gui.images.AudioObjectGenericImage" autowire="byType"/>
+    <bean id="audioObjectGenericImageFactory" class="net.sourceforge.atunes.gui.images.AudioObjectGenericImage" autowire="byType">
+    	<property name="audioFileMediumIcon" ref="audioFileMediumIcon"/>
+    	<property name="audioFileSmallIcon" ref="audioFileSmallIcon"/>
+    </bean>
     
-	<bean class="net.sourceforge.atunes.gui.images.LocalAudioObjectSmallColorMutableImageIcon"/>
-	<bean class="net.sourceforge.atunes.gui.images.LocalAudioObjectMediumColorMutableImageIcon"/>
-	<bean class="net.sourceforge.atunes.gui.images.LocalAudioObjectBigColorMutableImageIcon"/>
 	<bean class="net.sourceforge.atunes.gui.images.PodcastFeedEntrySmallColorMutableImageIcon"/>
 	<bean class="net.sourceforge.atunes.gui.images.PodcastFeedEntryMediumColorMutableImageIcon"/>
 	<bean class="net.sourceforge.atunes.gui.images.PodcastFeedEntryBigColorMutableImageIcon"/>
@@ -22,5 +22,6 @@
 	<bean id="albumBigIcon" class="net.sourceforge.atunes.gui.images.AlbumImageBigIcon"/>
 	<bean id="artistFavoriteIcon" class="net.sourceforge.atunes.gui.images.ArtistFavoriteImageIcon"/>
 	<bean id="artistSimilarIcon" class="net.sourceforge.atunes.gui.images.ArtistSimilarImageIcon"/>		
-
+	<bean id="audioFileMediumIcon" class="net.sourceforge.atunes.gui.images.AudioFileImageMediumIcon"/>
+	<bean id="audioFileSmallIcon" class="net.sourceforge.atunes.gui.images.AudioFileImageSmallIcon"/>
 </beans>

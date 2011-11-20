@@ -21,25 +21,37 @@
 package net.sourceforge.atunes.gui.images;
 
 import java.awt.Color;
+import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.awt.geom.Ellipse2D;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.IColorMutableImageIcon;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.CachedIconFactory;
 
-public final class LocalAudioObjectMediumColorMutableImageIcon implements IColorMutableImageIcon {
-	
-	private ILookAndFeelManager lookAndFeelManager;
-	
+public class AudioFileImageSmallIcon extends CachedIconFactory {
+
 	/**
-	 * @param lookAndFeelManager
+	 * 
 	 */
-	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
-	}
+	private static final long serialVersionUID = 4256539676766817966L;
 	
+	private static final int SMALL_WIDTH = 16;
+	private static final int SMALL_HEIGHT = 16;
+
 	@Override
-	public ImageIcon getIcon(Color paint) {
-		return AudioFileImageIcon.getMediumImage(paint, lookAndFeelManager.getCurrentLookAndFeel());
+	protected ImageIcon createIcon(Color color) {
+		Ellipse2D.Float e1 = new Ellipse2D.Float(1, 11, 6, 3);
+		Ellipse2D.Float e2 = new Ellipse2D.Float(8, 10, 6, 3);
+		
+		Rectangle r1 = new Rectangle(5, 4, 2, 8);
+		Rectangle r2 = new Rectangle(12, 3, 2, 8);
+		Polygon r3 = new Polygon();
+		r3.addPoint(5, 4);
+		r3.addPoint(5, 7);
+		r3.addPoint(14, 4);
+		r3.addPoint(14, 2);		
+		
+		return IconGenerator.generateIcon(color, SMALL_WIDTH, SMALL_HEIGHT, e1, e2, r1, r2, r3);
 	}
 }

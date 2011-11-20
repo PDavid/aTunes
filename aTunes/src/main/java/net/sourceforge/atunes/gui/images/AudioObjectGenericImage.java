@@ -22,6 +22,7 @@ package net.sourceforge.atunes.gui.images;
 
 
 
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectGenericImageFactory;
@@ -37,9 +38,8 @@ import net.sourceforge.atunes.model.IRadio;
  */
 public class AudioObjectGenericImage implements IAudioObjectGenericImageFactory {
 
-	private LocalAudioObjectSmallColorMutableImageIcon localAudioObjectSmallIcon;
-	private LocalAudioObjectMediumColorMutableImageIcon localAudioObjectMediumIcon;
-	private LocalAudioObjectBigColorMutableImageIcon localAudioObjectBigIcon;
+	private CachedIconFactory audioFileSmallIcon;
+	private CachedIconFactory audioFileMediumIcon;
 	
 	private PodcastFeedEntrySmallColorMutableImageIcon podcastFeedEntrySmallIcon;
 	private PodcastFeedEntryMediumColorMutableImageIcon podcastFeedEntryMediumIcon;
@@ -75,9 +75,9 @@ public class AudioObjectGenericImage implements IAudioObjectGenericImageFactory 
 	 */
 	private IColorMutableImageIcon getLocalAudioObjectIcon(GenericImageSize imageSize) {
 		switch (imageSize) {
-		case SMALL:  return localAudioObjectSmallIcon;         
-		case MEDIUM: return localAudioObjectMediumIcon;     
-		case BIG:    return localAudioObjectBigIcon;     
+		case SMALL:  return audioFileSmallIcon.getColorMutableIcon();         
+		case MEDIUM: return audioFileMediumIcon.getColorMutableIcon();     
+		case BIG:    return audioFileMediumIcon.getColorMutableIcon();     
 		}
 		return null;
 	}
@@ -109,24 +109,17 @@ public class AudioObjectGenericImage implements IAudioObjectGenericImageFactory 
 	}
 	
 	/**
-	 * @param localAudioObjectBigIcon
+	 * @param audioFileMediumIcon
 	 */
-	public void setLocalAudioObjectBigIcon(LocalAudioObjectBigColorMutableImageIcon localAudioObjectBigIcon) {
-		this.localAudioObjectBigIcon = localAudioObjectBigIcon;
+	public void setAudioFileMediumIcon(CachedIconFactory audioFileMediumIcon) {
+		this.audioFileMediumIcon = audioFileMediumIcon;
 	}
 	
 	/**
-	 * @param localAudioObjectMediumIcon
+	 * @param audioFileSmallIcon
 	 */
-	public void setLocalAudioObjectMediumIcon(LocalAudioObjectMediumColorMutableImageIcon localAudioObjectMediumIcon) {
-		this.localAudioObjectMediumIcon = localAudioObjectMediumIcon;
-	}
-	
-	/**
-	 * @param localAudioObjectSmallIcon
-	 */
-	public void setLocalAudioObjectSmallIcon(LocalAudioObjectSmallColorMutableImageIcon localAudioObjectSmallIcon) {
-		this.localAudioObjectSmallIcon = localAudioObjectSmallIcon;
+	public void setAudioFileSmallIcon(CachedIconFactory audioFileSmallIcon) {
+		this.audioFileSmallIcon = audioFileSmallIcon;
 	}
 	
 	/**
