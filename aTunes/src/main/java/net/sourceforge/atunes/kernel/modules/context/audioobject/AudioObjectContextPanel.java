@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.context.audioobject;
 
-import java.awt.Paint;
+import java.awt.Color;
 
 import javax.swing.ImageIcon;
 
@@ -61,7 +61,7 @@ public class AudioObjectContextPanel extends AbstractContextPanel {
         } else {
         	return new IColorMutableImageIcon() {
         		@Override
-        		public ImageIcon getIcon(Paint paint) {
+        		public ImageIcon getIcon(Color paint) {
         			return AudioFileImageIcon.getSmallImageIcon(paint, getLookAndFeel());
         		}
         	};

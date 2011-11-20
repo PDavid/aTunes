@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.gui.images;
 
-import java.awt.Paint;
+import java.awt.Color;
 
 import javax.swing.ImageIcon;
 
@@ -29,7 +29,7 @@ import net.sourceforge.atunes.model.IColorMutableImageIcon;
 public final class ArtistFavoriteColorMutableImageIcon implements IColorMutableImageIcon {
 	
 	@Override
-	public ImageIcon getIcon(Paint paint) {
+	public ImageIcon getIcon(Color paint) {
 		return ArtistFavoriteImageIcon.getIcon(paint);
 	}
 }

@@ -18,28 +18,29 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.images;
+package net.sourceforge.atunes.gui.model;
 
-import java.awt.Paint;
+import java.awt.Color;
 
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 
-public final class AlbumFavoriteColorMutableImageIcon implements IColorMutableImageIcon {
+/**
+ * A color mutable icon wrapping a CachedIconFactory
+ * @author alex
+ *
+ */
+final class ColorMutableIconFromCachedIconFactory implements IColorMutableImageIcon {
 	
-	private ILookAndFeelManager lookAndFeelManager;
+	private CachedIconFactory iconFactory;
 	
-	/**
-	 * @param lookAndFeelManager
-	 */
-	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
+	public ColorMutableIconFromCachedIconFactory(CachedIconFactory iconFactory) {
+		this.iconFactory = iconFactory;
 	}
 	
 	@Override
-	public ImageIcon getIcon(Paint paint) {
-		return AlbumFavoriteImageIcon.getIcon(paint, lookAndFeelManager.getCurrentLookAndFeel());
+	public ImageIcon getIcon(Color paint) {
+		return iconFactory.getIcon(paint);
 	}
 }

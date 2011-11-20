@@ -39,7 +39,7 @@ public class CustomTwilightSkin extends TwilightSkin implements ICustomSubstance
 	}
 	
 	@Override
-	public Paint getPaintForColorMutableIcon(Component component, boolean isSelected) {
+	public Color getPaintForColorMutableIcon(Component component, boolean isSelected) {
     	if (isSelected) {
     		return component.getForeground();    		
     	} else {
@@ -49,13 +49,13 @@ public class CustomTwilightSkin extends TwilightSkin implements ICustomSubstance
 	}
 	
 	@Override
-	public Paint getPaintForSpecialControls() {
+	public Color getPaintForSpecialControls() {
 		Color c = org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin().getActiveColorScheme(DecorationAreaType.HEADER).getUltraLightColor();    		
 		return new Color(c.getRed(), c.getGreen(), c.getBlue(), 200);
 	}
 	
 	@Override
-	public Paint getPaintForDisabledSpecialControls() {
+	public Color getPaintForDisabledSpecialControls() {
 		Color c = org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin().getActiveColorScheme(DecorationAreaType.HEADER).getUltraLightColor();    		
 		return new Color(c.getRed(), c.getGreen(), c.getBlue(), 150);
 	}

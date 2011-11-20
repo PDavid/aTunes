@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
-import java.awt.Paint;
+import java.awt.Color;
 import java.util.List;
 import java.util.Map;
 
@@ -81,7 +81,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
         return new IColorMutableImageIcon() {
 			
 			@Override
-			public ImageIcon getIcon(Paint paint) {
+			public ImageIcon getIcon(Color paint) {
 				return AudioFileImageIcon.getSmallImageIcon(paint, getLookAndFeelManager().getCurrentLookAndFeel());
 			}
 		};

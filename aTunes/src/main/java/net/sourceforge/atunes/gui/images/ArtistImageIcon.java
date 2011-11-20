@@ -20,46 +20,22 @@
 
 package net.sourceforge.atunes.gui.images;
 
-import java.awt.Paint;
+import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.utils.Logger;
+import net.sourceforge.atunes.gui.model.CachedIconFactory;
 
-public class ArtistImageIcon {
+public class ArtistImageIcon extends CachedIconFactory {
 
 	private static final int WIDTH = 16;
 	private static final int HEIGHT = 16;
-	
-	private static Map<Paint, ImageIcon> cachedIcons = new HashMap<Paint, ImageIcon>();
-	
-	private ArtistImageIcon() {}
-	
-	/**
-	 * @param lookAndFeel 
-	 * @return
-	 */
-	public static ImageIcon getIcon(Paint c) {
-		ImageIcon icon = cachedIcons.get(c);
-		if (icon == null) {
-			icon = generateIcon(c);
-			cachedIcons.put(c, icon);
-		}
-		return icon;
-	}
-	
-	/**
-	 * @param color
-	 * @param lookAndFeel
-	 * @return
-	 */
-	private static ImageIcon generateIcon(Paint color) {
-		Logger.debug("Creating icon: ArtistImageIcon with color: ", color);
+
+	@Override
+	protected ImageIcon createIcon(Color color) {
 		Rectangle clip = new Rectangle(2, 1, WIDTH - 4, HEIGHT - 2);
 		return IconGenerator.generateIcon(color, clip, WIDTH, HEIGHT, getArtistIconArea(0));
 	}

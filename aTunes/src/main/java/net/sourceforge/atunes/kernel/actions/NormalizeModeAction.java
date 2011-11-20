@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.Paint;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -94,7 +94,7 @@ public class NormalizeModeAction extends ActionWithColorMutableIcon {
     	return new IColorMutableImageIcon() {
 			
 			@Override
-			public ImageIcon getIcon(Paint paint) {
+			public ImageIcon getIcon(Color paint) {
 				return  NormalizationImageIcon.getIcon(paint, lookAndFeel);
 			}
 		};

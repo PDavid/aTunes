@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.gui.images;
 
-import java.awt.Paint;
+import java.awt.Color;
 
 import javax.swing.ImageIcon;
 
@@ -39,7 +39,7 @@ public final class RadioMediumColorMutableImageIcon implements IColorMutableImag
 	}
 	
 	@Override
-	public ImageIcon getIcon(Paint paint) {
+	public ImageIcon getIcon(Color paint) {
 		return RadioImageIcon.getIcon(paint, lookAndFeelManager.getCurrentLookAndFeel());
 	}
 }

@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.gui.lookandfeel.substance;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Paint;
 
@@ -31,18 +32,18 @@ interface ICustomSubstanceSkin {
 	 * @param isSelected
 	 * @return
 	 */
-	public Paint getPaintForColorMutableIcon(Component component, boolean isSelected);
+	public Color getPaintForColorMutableIcon(Component component, boolean isSelected);
 	
 	/**
 	 * Returns paint to be used with certain controls (player controls)
 	 * @return
 	 */
-	public Paint getPaintForSpecialControls();
+	public Color getPaintForSpecialControls();
 
 	/**
 	 * Returns paint to be used with certain controls (player controls) when disabled
 	 * @return
 	 */
-	public Paint getPaintForDisabledSpecialControls();
+	public Color getPaintForDisabledSpecialControls();
 
 }

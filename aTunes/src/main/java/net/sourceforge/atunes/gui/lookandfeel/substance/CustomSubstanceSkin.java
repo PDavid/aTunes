@@ -84,7 +84,7 @@ abstract class CustomSubstanceSkin extends org.pushingpixels.substance.api.Subst
 	}
 	
     @Override
-	public Paint getPaintForColorMutableIcon(Component component, boolean isSelected) {
+	public Color getPaintForColorMutableIcon(Component component, boolean isSelected) {
     	if (isSelected) {
     		return component.getForeground();    		
     	} else {
@@ -97,12 +97,12 @@ abstract class CustomSubstanceSkin extends org.pushingpixels.substance.api.Subst
 	}
 	
     @Override
-	public Paint getPaintForSpecialControls() {
+	public Color getPaintForSpecialControls() {
 		return highlightColor.darker();    		
 	}
 
     @Override
-	public Paint getPaintForDisabledSpecialControls() {
+	public Color getPaintForDisabledSpecialControls() {
     	if (colorForDisabledSpecialControl == null) {
     		Color c = highlightColor.darker();    		
     		colorForDisabledSpecialControl = new Color(c.getRed(), c.getGreen(), c.getBlue(), 140);

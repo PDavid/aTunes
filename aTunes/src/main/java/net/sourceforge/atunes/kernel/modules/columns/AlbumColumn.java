@@ -22,9 +22,9 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import javax.swing.SwingConstants;
 
+import net.sourceforge.atunes.gui.model.CachedIconFactory;
 import net.sourceforge.atunes.gui.model.TextAndIcon;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 
 import org.springframework.beans.BeansException;
@@ -35,7 +35,7 @@ public class AlbumColumn extends AbstractColumn implements ApplicationContextAwa
 
     private static final long serialVersionUID = -6162621108007788707L;
 
-    private IColorMutableImageIcon albumFavoriteIcon;
+    private CachedIconFactory albumFavoriteIcon;
     
     private ApplicationContext context;
     
@@ -66,7 +66,7 @@ public class AlbumColumn extends AbstractColumn implements ApplicationContextAwa
     @Override
     public Object getValueFor(IAudioObject audioObject) {
     	if (getFavoritesHandler().getFavoriteAlbumsInfo().containsKey(audioObject.getAlbum())) {
-            return new TextAndIcon(audioObject.getAlbum(), albumFavoriteIcon, SwingConstants.LEFT);
+            return new TextAndIcon(audioObject.getAlbum(), albumFavoriteIcon.getColorMutableIcon(), SwingConstants.LEFT);
     	} else {
     		return new TextAndIcon(audioObject.getAlbum(), null, SwingConstants.LEFT);
     	}
@@ -90,7 +90,7 @@ public class AlbumColumn extends AbstractColumn implements ApplicationContextAwa
     /**
      * @param albumFavoriteIcon
      */
-    public void setAlbumFavoriteIcon(IColorMutableImageIcon albumFavoriteIcon) {
+    public void setAlbumFavoriteIcon(CachedIconFactory albumFavoriteIcon) {
 		this.albumFavoriteIcon = albumFavoriteIcon;
 	}
 }

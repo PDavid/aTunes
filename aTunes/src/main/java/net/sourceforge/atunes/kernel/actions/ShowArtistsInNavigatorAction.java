@@ -20,11 +20,7 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.Paint;
-
-import javax.swing.ImageIcon;
-
-import net.sourceforge.atunes.gui.images.ArtistImageIcon;
+import net.sourceforge.atunes.gui.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -36,6 +32,15 @@ public class ShowArtistsInNavigatorAction extends ActionWithColorMutableIcon {
     private static final long serialVersionUID = -6172848158352600345L;
 
     private INavigationHandler navigationHandler;
+    
+    private CachedIconFactory artistImageIcon;
+    
+    /**
+     * @param artistImageIcon
+     */
+    public void setArtistImageIcon(CachedIconFactory artistImageIcon) {
+		this.artistImageIcon = artistImageIcon;
+	}
     
     /**
      * @param navigationHandler
@@ -65,13 +70,7 @@ public class ShowArtistsInNavigatorAction extends ActionWithColorMutableIcon {
     
     @Override
     public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
-    	return new IColorMutableImageIcon() {
-			
-			@Override
-			public ImageIcon getIcon(Paint paint) {
-				return ArtistImageIcon.getIcon(paint);
-			}
-		};
+    	return artistImageIcon.getColorMutableIcon();
     }
 
 }

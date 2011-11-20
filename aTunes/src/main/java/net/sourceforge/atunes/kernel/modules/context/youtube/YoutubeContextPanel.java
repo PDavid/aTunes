@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.context.youtube;
 
-import java.awt.Paint;
+import java.awt.Color;
 
 import javax.swing.ImageIcon;
 
@@ -43,7 +43,7 @@ public class YoutubeContextPanel extends AbstractContextPanel {
     public IColorMutableImageIcon getContextPanelIcon(IAudioObject audioObject) {
         return new IColorMutableImageIcon() {
         	@Override
-        	public ImageIcon getIcon(Paint paint) {
+        	public ImageIcon getIcon(Color paint) {
                 return VideoImageIcon.getIcon(paint, getLookAndFeel());
         	}
         };

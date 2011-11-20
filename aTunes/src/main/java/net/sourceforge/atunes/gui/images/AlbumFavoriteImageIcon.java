@@ -20,40 +20,21 @@
 
 package net.sourceforge.atunes.gui.images;
 
-import java.awt.Paint;
+import java.awt.Color;
 import java.awt.geom.Area;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.gui.model.CachedIconFactory;
 
-public class AlbumFavoriteImageIcon {
+public class AlbumFavoriteImageIcon extends CachedIconFactory {
 
 	private static final int WIDTH = 26;
 	private static final int HEIGHT = 16;
-	
-	private static ImageIcon icon;
-	
-	private AlbumFavoriteImageIcon() {}
-	
-	/**
-	 * @param lookAndFeel
-	 * @return
-	 */
-	public static ImageIcon getIcon(ILookAndFeel lookAndFeel) {
-		if (icon == null) {
-			icon = getIcon(null, lookAndFeel);	
-		}
-		return icon;
-	}
-	
-	/**
-	 * @param color
-	 * @param lookAndFeel
-	 * @return
-	 */
-	public static ImageIcon getIcon(Paint color, ILookAndFeel lookAndFeel) {
+
+	@Override
+	protected ImageIcon createIcon(Color color) {
 		Area heart = FavoriteImageIcon.getIconArea(10, 10, WIDTH - 10, 1);
-		return IconGenerator.generateIcon(color, WIDTH, HEIGHT, lookAndFeel, AlbumImageIcon.getIconArea(HEIGHT, HEIGHT, 0, 0), heart);
+		return IconGenerator.generateIcon(color, null, WIDTH, HEIGHT, AlbumImageIcon.getIconArea(HEIGHT, HEIGHT, 0, 0), heart);
 	}
 }

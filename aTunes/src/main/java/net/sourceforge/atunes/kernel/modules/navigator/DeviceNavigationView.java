@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
-import java.awt.Paint;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -80,7 +80,7 @@ public final class DeviceNavigationView extends AbstractNavigationView {
         return new IColorMutableImageIcon() {
 			
 			@Override
-			public ImageIcon getIcon(Paint paint) {
+			public ImageIcon getIcon(Color paint) {
 				return DeviceImageIcon.getIcon(paint, getLookAndFeelManager().getCurrentLookAndFeel());
 			}
 		};
