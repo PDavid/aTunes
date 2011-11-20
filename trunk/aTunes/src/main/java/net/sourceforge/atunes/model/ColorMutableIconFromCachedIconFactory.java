@@ -18,13 +18,12 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.model;
+package net.sourceforge.atunes.model;
 
 import java.awt.Color;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.IColorMutableImageIcon;
 
 /**
  * A color mutable icon wrapping a CachedIconFactory

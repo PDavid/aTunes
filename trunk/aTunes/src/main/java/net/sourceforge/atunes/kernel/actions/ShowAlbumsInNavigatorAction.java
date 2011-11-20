@@ -20,11 +20,7 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.Color;
-
-import javax.swing.ImageIcon;
-
-import net.sourceforge.atunes.gui.images.AlbumImageIcon;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -36,6 +32,15 @@ public class ShowAlbumsInNavigatorAction extends ActionWithColorMutableIcon {
     private static final long serialVersionUID = -3691606154694473768L;
 
     private INavigationHandler navigationHandler;
+    
+    private CachedIconFactory albumSmallIcon;
+    
+    /**
+     * @param albumSmallIcon
+     */
+    public void setAlbumSmallIcon(CachedIconFactory albumSmallIcon) {
+		this.albumSmallIcon = albumSmallIcon;
+	}
     
     /**
      * @param navigationHandler
@@ -65,12 +70,6 @@ public class ShowAlbumsInNavigatorAction extends ActionWithColorMutableIcon {
 
     @Override
     public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
-    	return new IColorMutableImageIcon() {
-			
-			@Override
-			public ImageIcon getIcon(Color paint) {
-				return AlbumImageIcon.getIcon(paint, lookAndFeel);
-			}
-		};
+    	return albumSmallIcon.getColorMutableIcon();
     }
 }

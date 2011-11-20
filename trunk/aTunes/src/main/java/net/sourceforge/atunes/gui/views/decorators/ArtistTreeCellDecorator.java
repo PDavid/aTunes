@@ -24,17 +24,18 @@ import java.awt.Component;
 
 import javax.swing.JLabel;
 
-import net.sourceforge.atunes.gui.images.ArtistFavoriteImageIcon;
-import net.sourceforge.atunes.gui.images.ArtistImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 
 public class ArtistTreeCellDecorator extends AbstractTreeCellDecorator {
 
 	private IFavoritesHandler favoritesHandler;
 	
-	private ArtistImageIcon artistImageIcon;
+	private CachedIconFactory artistImageIcon;
+	
+	private CachedIconFactory artistFavoriteIcon;
 	
     @Override
     public Component decorateTreeCellComponent(Component component, Object userObject, boolean isSelected) {
@@ -43,7 +44,7 @@ public class ArtistTreeCellDecorator extends AbstractTreeCellDecorator {
             if (!state.isShowFavoritesInNavigator() || !favoritesHandler.getFavoriteArtistsInfo().containsKey(artist.getName())) {
           		((JLabel) component).setIcon(artistImageIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
             } else {
-                ((JLabel) component).setIcon(ArtistFavoriteImageIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
+                ((JLabel) component).setIcon(artistFavoriteIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
             }
         }
         return component;
@@ -59,7 +60,14 @@ public class ArtistTreeCellDecorator extends AbstractTreeCellDecorator {
     /**
      * @param artistImageIcon
      */
-    public void setArtistImageIcon(ArtistImageIcon artistImageIcon) {
+    public void setArtistImageIcon(CachedIconFactory artistImageIcon) {
 		this.artistImageIcon = artistImageIcon;
+	}
+    
+    /**
+     * @param artistFavoriteIcon
+     */
+    public void setArtistFavoriteIcon(CachedIconFactory artistFavoriteIcon) {
+		this.artistFavoriteIcon = artistFavoriteIcon;
 	}
 }

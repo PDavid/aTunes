@@ -25,16 +25,21 @@ import java.awt.geom.Area;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.model.CachedIconFactory;
+import net.sourceforge.atunes.model.CachedIconFactory;
 
 public class AlbumFavoriteImageIcon extends CachedIconFactory {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7933546099983043598L;
+	
 	private static final int WIDTH = 26;
 	private static final int HEIGHT = 16;
 
 	@Override
 	protected ImageIcon createIcon(Color color) {
 		Area heart = FavoriteImageIcon.getIconArea(10, 10, WIDTH - 10, 1);
-		return IconGenerator.generateIcon(color, null, WIDTH, HEIGHT, AlbumImageIcon.getIconArea(HEIGHT, HEIGHT, 0, 0), heart);
+		return IconGenerator.generateIcon(color, WIDTH, HEIGHT, AlbumImageIcon.getIconArea(HEIGHT, HEIGHT, 0, 0), heart);
 	}
 }

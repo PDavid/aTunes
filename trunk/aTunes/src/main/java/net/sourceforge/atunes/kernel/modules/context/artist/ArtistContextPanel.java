@@ -20,9 +20,9 @@
 
 package net.sourceforge.atunes.kernel.modules.context.artist;
 
-import net.sourceforge.atunes.gui.model.CachedIconFactory;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILocalAudioObject;

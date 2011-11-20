@@ -24,10 +24,9 @@ import java.awt.Component;
 
 import javax.swing.JLabel;
 
-import net.sourceforge.atunes.gui.images.AlbumImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
-import net.sourceforge.atunes.gui.model.CachedIconFactory;
 import net.sourceforge.atunes.model.Album;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 
 public class AlbumTreeCellDecorator extends AbstractTreeCellDecorator {
@@ -35,6 +34,8 @@ public class AlbumTreeCellDecorator extends AbstractTreeCellDecorator {
 	private IFavoritesHandler favoritesHandler;
 	
 	private CachedIconFactory albumFavoriteIcon;
+	
+	private CachedIconFactory albumSmallIcon;
 
 	/**
 	 * @param albumFavoriteIcon
@@ -43,11 +44,18 @@ public class AlbumTreeCellDecorator extends AbstractTreeCellDecorator {
 		this.albumFavoriteIcon = albumFavoriteIcon;
 	}
 	
+	/**
+	 * @param albumSmallIcon
+	 */
+	public void setAlbumSmallIcon(CachedIconFactory albumSmallIcon) {
+		this.albumSmallIcon = albumSmallIcon;
+	}
+	
     @Override
     public Component decorateTreeCellComponent(Component component, Object userObject, boolean isSelected) {
         if (userObject instanceof Album) {
             if (!state.isShowFavoritesInNavigator() || !favoritesHandler.getFavoriteAlbumsInfo().containsValue(userObject)) {
-                ((JLabel) component).setIcon(AlbumImageIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected), getLookAndFeel()));
+                ((JLabel) component).setIcon(albumSmallIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
             } else {
                 ((JLabel) component).setIcon(albumFavoriteIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
             }

@@ -23,7 +23,6 @@ package net.sourceforge.atunes.gui.lookandfeel.substance;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.Paint;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;

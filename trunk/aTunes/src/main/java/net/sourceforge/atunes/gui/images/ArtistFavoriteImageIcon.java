@@ -20,47 +20,27 @@
 
 package net.sourceforge.atunes.gui.images;
 
-import java.awt.Paint;
+import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.geom.Area;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.utils.Logger;
+import net.sourceforge.atunes.model.CachedIconFactory;
 
-public class ArtistFavoriteImageIcon {
+public class ArtistFavoriteImageIcon extends CachedIconFactory {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5699311532940378979L;
+	
 	private static final int WIDTH = 26;
 	private static final int HEIGHT = 16;
-	
-	private static Map<Paint, ImageIcon> cachedIcons = new HashMap<Paint, ImageIcon>();
 
-	private ArtistFavoriteImageIcon() {}
-	
-	/**
-	 * @param lookAndFeel 
-	 * @return
-	 */
-	public static ImageIcon getIcon(Paint c) {
-		ImageIcon icon = cachedIcons.get(c);
-		if (icon == null) {
-			icon = generateIcon(c);
-			cachedIcons.put(c, icon);
-		}
-		return icon;
-	}
-
-	/**
-	 * @param color
-	 * @param lookAndFeel
-	 * @return
-	 */
-	private static ImageIcon generateIcon(Paint color) {
-		Logger.debug("Creating icon: ArtistFavoriteImageIcon with color: ", color);
+	@Override
+	protected ImageIcon createIcon(Color color) {
 		Rectangle clip = new Rectangle(0, 1, WIDTH, HEIGHT - 2);
-		
 		Area heart = FavoriteImageIcon.getIconArea(10, 10, WIDTH - 10, 1);
 		return IconGenerator.generateIcon(color, clip, WIDTH, HEIGHT, ArtistImageIcon.getArtistIconArea(0), heart);
 	}

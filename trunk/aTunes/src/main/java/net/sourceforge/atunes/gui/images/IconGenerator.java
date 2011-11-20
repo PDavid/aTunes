@@ -74,6 +74,18 @@ class IconGenerator {
 	}
 
 	/**
+	 * Creates an image icon drawing a list of shapes and a paint
+	 * @param paint
+	 * @param width
+	 * @param height
+	 * @param shapes
+	 * @return
+	 */
+	protected static final ImageIcon generateIcon(Paint paint, int width, int height, Shape... shapes) {
+        return generateIcon(paint, null, width, height, shapes);
+	}
+
+	/**
 	 * Creates an image icon drawing a list of shapes and applying a crop with clip provided
 	 * @param paint
 	 * @param clip

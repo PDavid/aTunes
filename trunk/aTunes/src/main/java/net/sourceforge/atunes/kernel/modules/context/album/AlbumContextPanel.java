@@ -20,14 +20,10 @@
 
 package net.sourceforge.atunes.kernel.modules.context.album;
 
-import java.awt.Color;
-
-import javax.swing.ImageIcon;
-
-import net.sourceforge.atunes.gui.images.AlbumImageIcon;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -43,15 +39,19 @@ import net.sourceforge.atunes.utils.I18nUtils;
 public class AlbumContextPanel extends AbstractContextPanel {
 
     private static final long serialVersionUID = -7910261492394049289L;
+    
+    private CachedIconFactory albumSmallIcon;
+    
+    /**
+     * @param albumSmallIcon
+     */
+    public void setAlbumSmallIcon(CachedIconFactory albumSmallIcon) {
+		this.albumSmallIcon = albumSmallIcon;
+	}
 
     @Override
     public IColorMutableImageIcon getContextPanelIcon(IAudioObject audioObject) {
-        return new IColorMutableImageIcon() {
-        	@Override
-        	public ImageIcon getIcon(Color paint) {
-        		return AlbumImageIcon.getIcon(paint, getLookAndFeel());
-        	}
-        };
+    	return albumSmallIcon.getColorMutableIcon();
     }
 
     @Override
