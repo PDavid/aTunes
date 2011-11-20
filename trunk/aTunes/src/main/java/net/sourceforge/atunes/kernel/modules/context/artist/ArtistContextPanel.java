@@ -20,11 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.context.artist;
 
-import java.awt.Paint;
-
-import javax.swing.ImageIcon;
-
-import net.sourceforge.atunes.gui.images.ArtistImageIcon;
+import net.sourceforge.atunes.gui.model.CachedIconFactory;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -42,15 +38,19 @@ import net.sourceforge.atunes.utils.I18nUtils;
 public class ArtistContextPanel extends AbstractContextPanel {
 
     private static final long serialVersionUID = -7910261492394049289L;
+    
+    private CachedIconFactory artistImageIcon;
+    
+    /**
+     * @param artistImageIcon
+     */
+    public void setArtistImageIcon(CachedIconFactory artistImageIcon) {
+		this.artistImageIcon = artistImageIcon;
+	}
 
 	@Override
 	public IColorMutableImageIcon getContextPanelIcon(IAudioObject audioObject) {
-        return new IColorMutableImageIcon() {
-        	@Override
-        	public ImageIcon getIcon(Paint paint) {
-                return ArtistImageIcon.getIcon(paint);
-        	}
-        };
+		return artistImageIcon.getColorMutableIcon();
     }
 
     @Override

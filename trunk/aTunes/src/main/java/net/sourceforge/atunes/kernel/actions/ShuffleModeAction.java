@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.Paint;
+import java.awt.Color;
 
 import javax.swing.ImageIcon;
 
@@ -60,7 +60,7 @@ public class ShuffleModeAction extends ActionWithColorMutableIcon {
     	return new IColorMutableImageIcon() {
 			
 			@Override
-			public ImageIcon getIcon(Paint paint) {
+			public ImageIcon getIcon(Color paint) {
 				return ShuffleImageIcon.getIcon(paint, lookAndFeel);
 			}
 		};

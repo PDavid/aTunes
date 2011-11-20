@@ -64,7 +64,7 @@ public class MacOSXLookAndFeel extends SystemLookAndFeel {
 	 * Returns paint to be used with certain controls (player controls)
 	 * @return
 	 */
-	public Paint getPaintForSpecialControls() {
+	public Color getPaintForSpecialControls() {
 		return new Color(20, 20, 20, 180); 
 	}
 	

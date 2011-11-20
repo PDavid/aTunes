@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
-import java.awt.Paint;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -87,7 +87,7 @@ public final class RadioNavigationView extends AbstractNavigationView {
         return new IColorMutableImageIcon() {
 			
 			@Override
-			public ImageIcon getIcon(Paint paint) {
+			public ImageIcon getIcon(Color paint) {
 				return RadioImageIcon.getSmallIcon(paint, getLookAndFeelManager().getCurrentLookAndFeel());
 			}
 		};

@@ -20,13 +20,12 @@
 
 package net.sourceforge.atunes.gui.views.decorators;
 
+import java.awt.Color;
 import java.awt.Component;
-import java.awt.Paint;
 
 import javax.swing.JLabel;
 
 import net.sourceforge.atunes.gui.images.AlbumImageIcon;
-import net.sourceforge.atunes.gui.images.ArtistImageIcon;
 import net.sourceforge.atunes.gui.images.AudioFileImageIcon;
 import net.sourceforge.atunes.gui.images.DeviceImageIcon;
 import net.sourceforge.atunes.gui.images.FavoriteImageIcon;
@@ -34,22 +33,32 @@ import net.sourceforge.atunes.gui.images.FolderImageIcon;
 import net.sourceforge.atunes.gui.images.RadioImageIcon;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
+import net.sourceforge.atunes.gui.model.CachedIconFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class StringTreeCellDecorator extends AbstractTreeCellDecorator {
+	
+	private CachedIconFactory artistImageIcon;
+	
+	/**
+	 * @param artistImageIcon
+	 */
+	public void setArtistImageIcon(CachedIconFactory artistImageIcon) {
+		this.artistImageIcon = artistImageIcon;
+	}
 
     @Override
     public Component decorateTreeCellComponent(Component component, Object userObject, boolean isSelected) {
         if (userObject instanceof String && component instanceof JLabel) {
             String text = ((String) userObject);
             JLabel label = (JLabel) component;
-            Paint color = getLookAndFeel().getPaintForColorMutableIcon(label, isSelected);
+            Color color = getLookAndFeel().getPaintForColorMutableIcon(label, isSelected);
             if (text.equals(I18nUtils.getString("REPOSITORY"))) {
                 label.setIcon(AudioFileImageIcon.getSmallImageIcon(color, getLookAndFeel()));
             } else if (text.equals(I18nUtils.getString("DEVICE"))) {
                 label.setIcon(DeviceImageIcon.getIcon(color, getLookAndFeel()));
             } else if (text.equals(I18nUtils.getString("ARTISTS"))) {
-                label.setIcon(ArtistImageIcon.getIcon(color));
+                label.setIcon(artistImageIcon.getIcon(color));
             } else if (text.equals(I18nUtils.getString("ALBUMS"))) {
                 label.setIcon(AlbumImageIcon.getIcon(color, getLookAndFeel()));
             } else if (text.equals(I18nUtils.getString("SONGS"))) {

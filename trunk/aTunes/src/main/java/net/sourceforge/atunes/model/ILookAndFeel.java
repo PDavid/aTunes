@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.model;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -170,13 +171,13 @@ public interface ILookAndFeel {
 	 * Returns paint to be used with certain controls (player controls)
 	 * @return
 	 */
-	public Paint getPaintForSpecialControls();
+	public Color getPaintForSpecialControls();
 
 	/**
 	 * Returns paint to be used with certain controls (player controls) when disabled
 	 * @return
 	 */
-	public Paint getPaintForDisabledSpecialControls();
+	public Color getPaintForDisabledSpecialControls();
 
 	/**
 	 * Returns paint to be used to draw a color mutable icon in given component
@@ -184,7 +185,7 @@ public interface ILookAndFeel {
 	 * @param isSelected
 	 * @return
 	 */
-	public Paint getPaintForColorMutableIcon(Component c, boolean isSelected);
+	public Color getPaintForColorMutableIcon(Component c, boolean isSelected);
 
 	/**
 	 * Returns size to be used with PopUpButton

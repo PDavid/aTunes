@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.gui.images;
 
-import java.awt.Paint;
+import java.awt.Color;
 
 import javax.swing.ImageIcon;
 
@@ -39,7 +39,7 @@ public final class LocalAudioObjectSmallColorMutableImageIcon implements IColorM
 	}
 	
 	@Override
-	public ImageIcon getIcon(Paint paint) {
+	public ImageIcon getIcon(Color paint) {
 		return AudioFileImageIcon.getSmallImageIcon(paint, lookAndFeelManager.getCurrentLookAndFeel());
 	}
 }

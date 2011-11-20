@@ -20,8 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
+import java.awt.Color;
 import java.awt.Component;
-import java.awt.Paint;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -498,7 +498,7 @@ public abstract class AbstractNavigationView implements INavigationView {
     				return new IColorMutableImageIcon() {
 						
 						@Override
-						public ImageIcon getIcon(Paint paint) {
+						public ImageIcon getIcon(Color paint) {
 							return AbstractNavigationView.this.getIcon().getIcon(paint);
 						}
 					};

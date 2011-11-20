@@ -33,13 +33,15 @@ import net.sourceforge.atunes.model.IFavoritesHandler;
 public class ArtistTreeCellDecorator extends AbstractTreeCellDecorator {
 
 	private IFavoritesHandler favoritesHandler;
-
+	
+	private ArtistImageIcon artistImageIcon;
+	
     @Override
     public Component decorateTreeCellComponent(Component component, Object userObject, boolean isSelected) {
         if (userObject instanceof Artist) {
         	Artist artist = (Artist) userObject;
             if (!state.isShowFavoritesInNavigator() || !favoritesHandler.getFavoriteArtistsInfo().containsKey(artist.getName())) {
-          		((JLabel) component).setIcon(ArtistImageIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
+          		((JLabel) component).setIcon(artistImageIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
             } else {
                 ((JLabel) component).setIcon(ArtistFavoriteImageIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
             }
@@ -52,5 +54,12 @@ public class ArtistTreeCellDecorator extends AbstractTreeCellDecorator {
      */
     public void setFavoritesHandler(IFavoritesHandler favoritesHandler) {
 		this.favoritesHandler = favoritesHandler;
+	}
+    
+    /**
+     * @param artistImageIcon
+     */
+    public void setArtistImageIcon(ArtistImageIcon artistImageIcon) {
+		this.artistImageIcon = artistImageIcon;
 	}
 }

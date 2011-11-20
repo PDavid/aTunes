@@ -17,6 +17,8 @@
 	<bean class="net.sourceforge.atunes.gui.images.RadioBigColorMutableImageIcon"/>
 	
 	<bean id="artistFavoriteIcon" class="net.sourceforge.atunes.gui.images.ArtistFavoriteColorMutableImageIcon"/>
-	<bean id="albumFavoriteIcon" class="net.sourceforge.atunes.gui.images.AlbumFavoriteColorMutableImageIcon"/>
+	
+	<bean id="artistImageIcon" class="net.sourceforge.atunes.gui.images.ArtistImageIcon"/>
+	<bean id="albumFavoriteIcon" class="net.sourceforge.atunes.gui.images.AlbumFavoriteImageIcon"/>
 
 </beans>

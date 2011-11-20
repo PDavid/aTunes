@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.gui.model;
 
-import java.awt.Paint;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -119,7 +119,7 @@ public final class AlbumTableModel extends AbstractColumnSetTableModel {
         } else if (getColumn(columnIndex) instanceof TypeColumn){
         	return new IColorMutableImageIcon() {
         	@Override
-        	public ImageIcon getIcon(Paint paint) {
+        	public ImageIcon getIcon(Color paint) {
         		return AlbumImageIcon.getIcon(paint, lookAndFeel);
         	}
         };

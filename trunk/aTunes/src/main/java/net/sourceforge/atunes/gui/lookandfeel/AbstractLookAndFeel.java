@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.gui.lookandfeel;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -239,17 +240,17 @@ public abstract class AbstractLookAndFeel implements ILookAndFeel {
     }
 
 	@Override
-	public Paint getPaintForSpecialControls() {
+	public Color getPaintForSpecialControls() {
 		return UIManager.getColor("Label.foreground"); 
 	}
 	
 	@Override
-	public Paint getPaintForDisabledSpecialControls() {
+	public Color getPaintForDisabledSpecialControls() {
 		return UIManager.getColor("Label.foreground"); 
 	}	
 
 	@Override
-	public Paint getPaintForColorMutableIcon(Component c, boolean isSelected) {
+	public Color getPaintForColorMutableIcon(Component c, boolean isSelected) {
 		return isSelected ? UIManager.getColor("Tree.selectionForeground") : UIManager.getColor("Label.foreground");	
 	}
 

@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.context.album;
 
-import java.awt.Paint;
+import java.awt.Color;
 
 import javax.swing.ImageIcon;
 
@@ -48,7 +48,7 @@ public class AlbumContextPanel extends AbstractContextPanel {
     public IColorMutableImageIcon getContextPanelIcon(IAudioObject audioObject) {
         return new IColorMutableImageIcon() {
         	@Override
-        	public ImageIcon getIcon(Paint paint) {
+        	public ImageIcon getIcon(Color paint) {
         		return AlbumImageIcon.getIcon(paint, getLookAndFeel());
         	}
         };

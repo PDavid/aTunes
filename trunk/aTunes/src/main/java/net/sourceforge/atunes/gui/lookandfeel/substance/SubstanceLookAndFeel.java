@@ -260,7 +260,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
     }        
     
     @Override
-    public Paint getPaintForSpecialControls() {
+    public Color getPaintForSpecialControls() {
     	if (org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin() instanceof ICustomSubstanceSkin) {
     		return ((ICustomSubstanceSkin)org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin()).getPaintForSpecialControls();
     	} else {
@@ -270,7 +270,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
     }
 
     @Override
-    public Paint getPaintForDisabledSpecialControls() {
+    public Color getPaintForDisabledSpecialControls() {
     	if (org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin() instanceof ICustomSubstanceSkin) {
     		return ((ICustomSubstanceSkin)org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin()).getPaintForDisabledSpecialControls();
     	} else {
@@ -280,7 +280,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
     }
 
     @Override
-    public Paint getPaintForColorMutableIcon(Component component, boolean isSelected) {
+    public Color getPaintForColorMutableIcon(Component component, boolean isSelected) {
     	if (org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin() instanceof ICustomSubstanceSkin) {
     		return ((ICustomSubstanceSkin)org.pushingpixels.substance.api.SubstanceLookAndFeel.getCurrentSkin()).getPaintForColorMutableIcon(component, isSelected);
     	} else {

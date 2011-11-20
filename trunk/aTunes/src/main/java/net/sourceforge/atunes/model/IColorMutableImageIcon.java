@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.model;
 
-import java.awt.Paint;
+import java.awt.Color;
 
 import javax.swing.ImageIcon;
 
@@ -36,5 +36,5 @@ public interface IColorMutableImageIcon {
 	 * @param paint
 	 * @return
 	 */
-	public ImageIcon getIcon(Paint paint);
+	public ImageIcon getIcon(Color paint);
 }
