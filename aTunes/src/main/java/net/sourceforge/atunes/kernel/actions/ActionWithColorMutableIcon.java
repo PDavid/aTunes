@@ -50,7 +50,12 @@ public abstract class ActionWithColorMutableIcon extends CustomAbstractAction  i
 	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 		this.lookAndFeelManager.addLookAndFeelChangeListener(this);
-		lookAndFeelChanged(); // Initial icon set
+	}
+
+	@Override
+	protected void initialize() {
+		super.initialize();
+		lookAndFeelChanged(); // Initialize icon
 	}
 	
 	/**

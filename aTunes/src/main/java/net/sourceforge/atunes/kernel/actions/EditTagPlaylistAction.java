@@ -57,6 +57,7 @@ public class EditTagPlaylistAction extends AbstractActionOverSelectedObjects<ILo
 
     @Override
     protected void initialize() {
+    	super.initialize();
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_INSERT, 0));
     }
 

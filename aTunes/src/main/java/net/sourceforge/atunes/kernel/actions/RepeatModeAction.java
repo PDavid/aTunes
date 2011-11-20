@@ -46,6 +46,7 @@ public class RepeatModeAction extends ActionWithColorMutableIcon {
     
     @Override
     protected void initialize() {
+    	super.initialize();
         putValue(SELECTED_KEY, getState().isRepeat());
     }
 

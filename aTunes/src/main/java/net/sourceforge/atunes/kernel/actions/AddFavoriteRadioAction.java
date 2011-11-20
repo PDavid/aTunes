@@ -49,6 +49,7 @@ public class AddFavoriteRadioAction extends AbstractActionOverSelectedObjects<Ra
     
     @Override
     protected void initialize() {
+    	super.initialize();
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("RADIO_VIEW_TOOLTIP"));
     }
 

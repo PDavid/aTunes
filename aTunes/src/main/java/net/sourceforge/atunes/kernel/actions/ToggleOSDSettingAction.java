@@ -39,6 +39,7 @@ public class ToggleOSDSettingAction extends CustomAbstractAction {
     
     @Override
     protected void initialize() {
+    	super.initialize();
         putValue(SELECTED_KEY, getState().isShowOSD());
     }
 

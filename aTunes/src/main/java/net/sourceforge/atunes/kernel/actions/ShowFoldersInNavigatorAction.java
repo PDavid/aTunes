@@ -49,6 +49,7 @@ public class ShowFoldersInNavigatorAction extends ActionWithColorMutableIcon {
 
     @Override
     protected void initialize() {
+    	super.initialize();
         putValue(SELECTED_KEY, getState().getViewMode() == ViewMode.FOLDER);
     }
     
