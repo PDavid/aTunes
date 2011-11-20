@@ -68,6 +68,7 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
     
     @Override
     protected void initialize() {
+    	super.initialize();
         setEnabled(getState().isLastFmEnabled());
     }
 

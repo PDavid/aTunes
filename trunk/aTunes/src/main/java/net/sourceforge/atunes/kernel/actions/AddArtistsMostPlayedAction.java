@@ -65,6 +65,7 @@ public class AddArtistsMostPlayedAction extends CustomAbstractAction {
     
     @Override
     protected void initialize() {
+    	super.initialize();
         putValue(NAME, I18nUtils.getString(i18nKey));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString(i18nKey));
     }

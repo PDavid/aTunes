@@ -69,6 +69,7 @@ public class NormalizeModeAction extends ActionWithColorMutableIcon {
     
     @Override
     protected void initialize() {
+    	super.initialize();
         putValue(SELECTED_KEY, getState().isUseNormalisation());
         if (getState().isUseNormalisation()) {
             timer.start();

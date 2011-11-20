@@ -65,6 +65,7 @@ public class AddAlbumWithSelectedArtistsAction extends AbstractActionOverSelecte
     
     @Override
     protected void initialize() {
+    	super.initialize();
         setEnabled(false);
     }
 

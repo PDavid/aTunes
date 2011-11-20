@@ -49,6 +49,7 @@ public class ShowContextAction extends CustomAbstractAction {
 
     @Override
     protected void initialize() {
+    	super.initialize();
         putValue(SELECTED_KEY, getState().isUseContext());
     }
     
