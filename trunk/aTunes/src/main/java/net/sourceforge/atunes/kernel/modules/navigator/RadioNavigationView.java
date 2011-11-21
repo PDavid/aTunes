@@ -20,13 +20,11 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
@@ -35,7 +33,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.images.RadioImageIcon;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedObjects;
 import net.sourceforge.atunes.kernel.actions.AddFavoriteRadioAction;
@@ -50,6 +47,7 @@ import net.sourceforge.atunes.kernel.actions.RenameRadioLabelAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
@@ -75,6 +73,15 @@ public final class RadioNavigationView extends AbstractNavigationView {
 
     private IRadioHandler radioHandler;
     
+    private CachedIconFactory radioSmallIcon;
+    
+    /**
+     * @param radioSmallIcon
+     */
+    public void setRadioSmallIcon(CachedIconFactory radioSmallIcon) {
+		this.radioSmallIcon = radioSmallIcon;
+	}
+    
     /**
      * @param radioNavigationColumnSet
      */
@@ -84,13 +91,7 @@ public final class RadioNavigationView extends AbstractNavigationView {
     
     @Override
     public IColorMutableImageIcon getIcon() {
-        return new IColorMutableImageIcon() {
-			
-			@Override
-			public ImageIcon getIcon(Color paint) {
-				return RadioImageIcon.getSmallIcon(paint, getLookAndFeelManager().getCurrentLookAndFeel());
-			}
-		};
+    	return radioSmallIcon.getColorMutableIcon();
     }
 
     @Override

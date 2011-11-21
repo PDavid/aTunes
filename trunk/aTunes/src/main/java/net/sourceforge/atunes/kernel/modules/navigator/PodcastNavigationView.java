@@ -20,13 +20,11 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.ImageIcon;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.JTree;
@@ -35,7 +33,6 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedObjects;
 import net.sourceforge.atunes.kernel.actions.AddPodcastFeedAction;
@@ -53,6 +50,7 @@ import net.sourceforge.atunes.kernel.actions.RenamePodcastFeedAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
@@ -75,6 +73,15 @@ public final class PodcastNavigationView extends AbstractNavigationView {
     private IColumnSet podcastNavigationColumnSet;
     
     private IPodcastFeedHandler podcastFeedHandler;
+    
+    private CachedIconFactory rssSmallIcon;
+    
+    /**
+     * @param rssSmallIcon
+     */
+    public void setRssSmallIcon(CachedIconFactory rssSmallIcon) {
+		this.rssSmallIcon = rssSmallIcon;
+	}
 
     /**
      * @param podcastFeedHandler
@@ -93,13 +100,7 @@ public final class PodcastNavigationView extends AbstractNavigationView {
     
     @Override
     public IColorMutableImageIcon getIcon() {
-        return new IColorMutableImageIcon() {
-			
-			@Override
-			public ImageIcon getIcon(Color paint) {
-				return RssImageIcon.getSmallIcon(paint, getLookAndFeelManager().getCurrentLookAndFeel());
-			}
-		};
+    	return rssSmallIcon.getColorMutableIcon();
     }
 
     @Override

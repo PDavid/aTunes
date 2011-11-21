@@ -40,14 +40,14 @@ public class AudioObjectGenericImage implements IAudioObjectGenericImageFactory 
 
 	private CachedIconFactory audioFileSmallIcon;
 	private CachedIconFactory audioFileMediumIcon;
+
+	private CachedIconFactory rssSmallIcon;
+	private CachedIconFactory rssMediumIcon;
+	private CachedIconFactory rssBigIcon;
 	
-	private PodcastFeedEntrySmallColorMutableImageIcon podcastFeedEntrySmallIcon;
-	private PodcastFeedEntryMediumColorMutableImageIcon podcastFeedEntryMediumIcon;
-	private PodcastFeedEntryBigColorMutableImageIcon podcastFeedEntryBigIcon;
-	
-	private RadioSmallColorMutableImageIcon radioSmallIcon;
-	private RadioMediumColorMutableImageIcon radioMediumIcon;
-	private RadioBigColorMutableImageIcon radioBigIcon;
+	private CachedIconFactory radioSmallIcon;
+	private CachedIconFactory radioMediumIcon;
+	private CachedIconFactory radioBigIcon;
 	
     /**
      * Returns a generic image for given audio object.
@@ -88,9 +88,9 @@ public class AudioObjectGenericImage implements IAudioObjectGenericImageFactory 
 	 */
 	private IColorMutableImageIcon getPodcastFeedEntryIcon(GenericImageSize imageSize) {
 		switch (imageSize) {
-		case SMALL:  return podcastFeedEntrySmallIcon;
-		case MEDIUM: return podcastFeedEntryMediumIcon;
-		case BIG:    return podcastFeedEntryBigIcon;
+		case SMALL:  return rssSmallIcon.getColorMutableIcon();
+		case MEDIUM: return rssMediumIcon.getColorMutableIcon();
+		case BIG:    return rssBigIcon.getColorMutableIcon();
 		}
 		return null;
 	}
@@ -101,9 +101,9 @@ public class AudioObjectGenericImage implements IAudioObjectGenericImageFactory 
 	 */
 	private IColorMutableImageIcon getRadioIcon(GenericImageSize imageSize) {
 		switch (imageSize) {
-		case SMALL:  return radioSmallIcon;
-		case MEDIUM: return radioMediumIcon;
-		case BIG:    return radioBigIcon;
+		case SMALL:  return radioSmallIcon.getColorMutableIcon();
+		case MEDIUM: return radioMediumIcon.getColorMutableIcon();
+		case BIG:    return radioBigIcon.getColorMutableIcon();
 		}
 		return null;
 	}
@@ -121,46 +121,46 @@ public class AudioObjectGenericImage implements IAudioObjectGenericImageFactory 
 	public void setAudioFileSmallIcon(CachedIconFactory audioFileSmallIcon) {
 		this.audioFileSmallIcon = audioFileSmallIcon;
 	}
-	
+
 	/**
-	 * @param podcastFeedEntryBigIcon
+	 * @param rssSmallIcon
 	 */
-	public void setPodcastFeedEntryBigIcon(PodcastFeedEntryBigColorMutableImageIcon podcastFeedEntryBigIcon) {
-		this.podcastFeedEntryBigIcon = podcastFeedEntryBigIcon;
+	public void setRssSmallIcon(CachedIconFactory rssSmallIcon) {
+		this.rssSmallIcon = rssSmallIcon;
 	}
 	
 	/**
-	 * @param podcastFeedEntryMediumIcon
+	 * @param rssMediumIcon
 	 */
-	public void setPodcastFeedEntryMediumIcon(PodcastFeedEntryMediumColorMutableImageIcon podcastFeedEntryMediumIcon) {
-		this.podcastFeedEntryMediumIcon = podcastFeedEntryMediumIcon;
+	public void setRssMediumIcon(CachedIconFactory rssMediumIcon) {
+		this.rssMediumIcon = rssMediumIcon;
 	}
 	
 	/**
-	 * @param podcastFeedEntrySmallIcon
+	 * @param rssBigIcon
 	 */
-	public void setPodcastFeedEntrySmallIcon(PodcastFeedEntrySmallColorMutableImageIcon podcastFeedEntrySmallIcon) {
-		this.podcastFeedEntrySmallIcon = podcastFeedEntrySmallIcon;
+	public void setRssBigIcon(CachedIconFactory rssBigIcon) {
+		this.rssBigIcon = rssBigIcon;
 	}
 	
 	/**
 	 * @param radioBigIcon
 	 */
-	public void setRadioBigIcon(RadioBigColorMutableImageIcon radioBigIcon) {
+	public void setRadioBigIcon(CachedIconFactory radioBigIcon) {
 		this.radioBigIcon = radioBigIcon;
 	}
 	
 	/**
 	 * @param radioMediumIcon
 	 */
-	public void setRadioMediumIcon(RadioMediumColorMutableImageIcon radioMediumIcon) {
+	public void setRadioMediumIcon(CachedIconFactory radioMediumIcon) {
 		this.radioMediumIcon = radioMediumIcon;
 	}
 	
 	/**
 	 * @param radioSmallIcon
 	 */
-	public void setRadioSmallIcon(RadioSmallColorMutableImageIcon radioSmallIcon) {
+	public void setRadioSmallIcon(CachedIconFactory radioSmallIcon) {
 		this.radioSmallIcon = radioSmallIcon;
 	}
 }

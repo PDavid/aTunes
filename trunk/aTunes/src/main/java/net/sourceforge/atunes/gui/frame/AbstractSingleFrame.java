@@ -39,7 +39,6 @@ import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
-import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomFrame;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.model.ApplicationVersion;
@@ -332,7 +331,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
 
     private JLabel getStatusBarNewPodcastEntriesLabel() {
         if (statusBarNewPodcastEntriesLabel == null) {
-            statusBarNewPodcastEntriesLabel = new JLabel(RssImageIcon.getSmallIcon(lookAndFeelManager.getCurrentLookAndFeel()));
+            statusBarNewPodcastEntriesLabel = new JLabel(context.getBean("rssSmallIcon", CachedIconFactory.class).getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls()));
             statusBarNewPodcastEntriesLabel.setToolTipText(I18nUtils.getString("NEW_PODCAST_ENTRIES"));
             statusBarNewPodcastEntriesLabel.addMouseListener(new MouseAdapter() {
                 @Override

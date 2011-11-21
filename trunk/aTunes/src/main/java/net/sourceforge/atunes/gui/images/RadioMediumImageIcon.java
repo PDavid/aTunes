@@ -24,22 +24,18 @@ import java.awt.Color;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.IColorMutableImageIcon;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.CachedIconFactory;
 
-public final class RadioSmallColorMutableImageIcon implements IColorMutableImageIcon {
-	
-	private ILookAndFeelManager lookAndFeelManager;
-	
+public class RadioMediumImageIcon extends CachedIconFactory {
+
 	/**
-	 * @param lookAndFeelManager
+	 * 
 	 */
-	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
-	}
-	
+	private static final long serialVersionUID = 4164270831164079255L;
+	private static final int MEDIUM_SIZE = 70;
+
 	@Override
-	public ImageIcon getIcon(Color paint) {
-		return RadioImageIcon.getSmallIcon(paint, lookAndFeelManager.getCurrentLookAndFeel());
-	}
+	protected ImageIcon createIcon(Color color) {
+		return RadioImageIcon.getIcon(color, MEDIUM_SIZE, MEDIUM_SIZE);
+	}	
 }
