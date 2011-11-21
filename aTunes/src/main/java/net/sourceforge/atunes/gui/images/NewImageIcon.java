@@ -20,37 +20,28 @@
 
 package net.sourceforge.atunes.gui.images;
 
-import java.awt.Paint;
+import java.awt.Color;
 import java.awt.Shape;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.CachedIconFactory;
 
 import org.jdesktop.swingx.geom.Star2D;
 
-public class NewImageIcon {
+public class NewImageIcon extends CachedIconFactory {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4433286891763946857L;
+	
 	private static final int SIZE = 18;
 	private static final int STAR_SIZE = 16;
 	
-	private NewImageIcon() {}
-	
-	/**
-	 * @param lookAndFeel
-	 * @return
-	 */
-	public static ImageIcon getIcon(ILookAndFeel lookAndFeel) {
-		return getIcon(null, lookAndFeel);
-	}
-	
-	/**
-	 * @param color
-	 * @param lookAndFeel 
-	 * @return
-	 */
-	public static ImageIcon getIcon(Paint color, ILookAndFeel lookAndFeel) {
+	@Override
+	protected ImageIcon createIcon(Color color) {
 		Shape star = new Star2D(SIZE / 2, SIZE / 2, STAR_SIZE - 12, STAR_SIZE - 8, 9);
-        return IconGenerator.generateIcon(color, SIZE, SIZE, lookAndFeel, star);
+        return IconGenerator.generateIcon(color, SIZE, SIZE, star);
 	}
 }

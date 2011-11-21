@@ -20,34 +20,25 @@
 
 package net.sourceforge.atunes.gui.images;
 
-import java.awt.Paint;
+import java.awt.Color;
 import java.awt.Polygon;
 import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.CachedIconFactory;
 
-public class FolderImageIcon {
+public class FolderImageIcon extends CachedIconFactory {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -827295313871199188L;
+	
 	private static final int SIZE = 18;
 
-	private FolderImageIcon() {}
-	
-	/**
-	 * @param lookAndFeel
-	 * @return
-	 */
-	public static ImageIcon getIcon(ILookAndFeel lookAndFeel) {
-		return getIcon(null, lookAndFeel);
-	}
-	
-	/**
-	 * @param color
-	 * @param lookAndFeel
-	 * @return
-	 */
-	public static ImageIcon getIcon(Paint color, ILookAndFeel lookAndFeel) {
+	@Override
+	protected ImageIcon createIcon(Color color) {
 		RoundRectangle2D r = new RoundRectangle2D.Float(2, 5, 14, 10, 4, 4);
 		Polygon p = new Polygon();
 		p.addPoint(2, 8);
@@ -57,7 +48,7 @@ public class FolderImageIcon {
 		p.addPoint(10, 5);
 		p.addPoint(10, 8);
 		
-		return IconGenerator.generateIcon(color, SIZE, SIZE, lookAndFeel, r, p);
+		return IconGenerator.generateIcon(color, SIZE, SIZE, r, p);
 	}
 
 }

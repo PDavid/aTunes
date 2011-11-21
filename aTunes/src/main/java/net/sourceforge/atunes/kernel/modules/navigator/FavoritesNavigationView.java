@@ -55,6 +55,7 @@ import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
@@ -78,6 +79,15 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
     private IFavoritesHandler favoritesHandler;
     
     private IRepositoryHandler repositoryHandler;
+    
+    private CachedIconFactory favoriteIcon;
+    
+    /**
+     * @param favoriteIcon
+     */
+    public void setFavoriteIcon(CachedIconFactory favoriteIcon) {
+		this.favoriteIcon = favoriteIcon;
+	}
 
     public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
@@ -85,13 +95,7 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
     
     @Override
     public IColorMutableImageIcon getIcon() {
-        return new IColorMutableImageIcon() {
-			
-			@Override
-			public ImageIcon getIcon(Color paint) {
-				return FavoriteImageIcon.getIcon(paint, getLookAndFeelManager().getCurrentLookAndFeel());
-			}
-		};
+    	return favoriteIcon.getColorMutableIcon();
     }
 
     @Override
