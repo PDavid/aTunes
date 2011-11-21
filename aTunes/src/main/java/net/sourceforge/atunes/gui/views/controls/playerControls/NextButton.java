@@ -22,11 +22,11 @@ package net.sourceforge.atunes.gui.views.controls.playerControls;
 
 import java.awt.Dimension;
 
+import javax.swing.Action;
 import javax.swing.JButton;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.images.NextImageIcon;
-import net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectAction;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -34,8 +34,6 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
 public final class NextButton extends JButton implements ILookAndFeelChangeListener {
 
     private static final long serialVersionUID = -4939372038840047335L;
-
-    private Dimension size;
 
 	private ILookAndFeel lookAndFeel;
     
@@ -46,22 +44,21 @@ public final class NextButton extends JButton implements ILookAndFeelChangeListe
      * @param lookAndFeelManager
      */
     public NextButton(Dimension size, ILookAndFeelManager lookAndFeelManager) {
-        super(Context.getBean(PlayNextAudioObjectAction.class));
-        this.size = size;
+        super(Context.getBean("nextAction", Action.class));
         this.lookAndFeel = lookAndFeelManager.getCurrentLookAndFeel();
         setPreferredSize(size);
         setMinimumSize(size);
         setMaximumSize(size);
         setFocusable(false);
         setText(null);
-        setIcon(NextImageIcon.getIcon(size, lookAndFeelManager.getCurrentLookAndFeel()));
+        setIcon(Context.getBean("nextIcon", CachedIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls()));
         lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(this);
         lookAndFeelManager.addLookAndFeelChangeListener(this);
     }    
     
     @Override
     public void lookAndFeelChanged() {
-        setIcon(NextImageIcon.getIcon(size, lookAndFeel));
+        setIcon(Context.getBean("nextIcon", CachedIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls()));
     }
     
     

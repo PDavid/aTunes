@@ -20,12 +20,10 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.ImageIcon;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.JTree;
@@ -33,7 +31,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.images.DeviceImageIcon;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
 import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedObjects;

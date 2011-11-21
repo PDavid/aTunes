@@ -23,13 +23,13 @@ package net.sourceforge.atunes.gui.views.controls.playerControls;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 
+import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.PauseImageIcon;
 import net.sourceforge.atunes.gui.images.PlayImageIcon;
-import net.sourceforge.atunes.kernel.actions.PlayAction;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -43,7 +43,7 @@ public final class PlayPauseButton extends JButton implements ILookAndFeelChange
     private Dimension size;
 
 	private ILookAndFeel lookAndFeel;
-    
+	
     /**
      * Instantiates a new play pause button.
      * 
@@ -51,7 +51,7 @@ public final class PlayPauseButton extends JButton implements ILookAndFeelChange
      * @param lookAndFeelManager
      */
     public PlayPauseButton(Dimension size, ILookAndFeelManager lookAndFeelManager) {
-        super(Context.getBean(PlayAction.class));
+        super(Context.getBean("playAction", Action.class));
         // Force size of button
         this.size = size;
         this.lookAndFeel = lookAndFeelManager.getCurrentLookAndFeel();
@@ -107,9 +107,13 @@ public final class PlayPauseButton extends JButton implements ILookAndFeelChange
     
     private void setIcon() {
     	if (playing) {
-    		setIcon(PauseImageIcon.getIcon(size, lookAndFeel));
+    		PauseImageIcon icon = Context.getBean("pauseIcon", PauseImageIcon.class);
+    		icon.setSize(size);
+    		setIcon(icon.getIcon(lookAndFeel.getPaintForSpecialControls()));
     	} else {
-    		setIcon(PlayImageIcon.getIcon(size, lookAndFeel));
+    		PlayImageIcon icon = Context.getBean("playIcon", PlayImageIcon.class);
+    		icon.setSize(size);
+    		setIcon(icon.getIcon(lookAndFeel.getPaintForSpecialControls()));
     	}
     }
 

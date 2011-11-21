@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.gui.model;
 
-import java.awt.Paint;
+import java.awt.Color;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -30,10 +30,10 @@ import javax.swing.SwingConstants;
 import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.images.PlayListStateImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.StringTableCellRendererCode;
 import net.sourceforge.atunes.gui.renderers.TextAndIconTableCellRendererCode;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -168,14 +168,14 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
      * @param lookAndFeel
      * @return
      */
-    private ImageIcon getPlayStateIcon(Paint color, PlayState state, ILookAndFeel lookAndFeel) {
+    private ImageIcon getPlayStateIcon(Color color, PlayState state, ILookAndFeel lookAndFeel) {
         switch (state) {
         case PLAYING:
-            return PlayListStateImageIcon.getPlayIcon(color, lookAndFeel);
+            return Context.getBean("playListPlayStateIcon", CachedIconFactory.class).getIcon(color);
         case STOPPED:
-            return PlayListStateImageIcon.getStopIcon(color, lookAndFeel);
+            return Context.getBean("playListStopStateIcon", CachedIconFactory.class).getIcon(color);
         case PAUSED:
-            return PlayListStateImageIcon.getPauseIcon(color, lookAndFeel);
+            return Context.getBean("playListPauseStateIcon", CachedIconFactory.class).getIcon(color);
         case NONE:
             return null;
         default:

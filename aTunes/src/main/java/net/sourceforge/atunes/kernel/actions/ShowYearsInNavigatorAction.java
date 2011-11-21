@@ -20,11 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.Color;
-
-import javax.swing.ImageIcon;
-
-import net.sourceforge.atunes.gui.images.DateImageIcon;
 import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILookAndFeel;

@@ -21,49 +21,24 @@
 package net.sourceforge.atunes.gui.images;
 
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
+import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.model.CachedIconFactory;
 
-public class PlayImageIcon extends CachedIconFactory {
+public class PlayListStopStateImageIcon extends CachedIconFactory {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -5783942087625423176L;
-
-	private Dimension size;
+	private static final long serialVersionUID = -8435203720752628074L;
 	
-	/**
-	 * @param size
-	 */
-	public void setSize(Dimension size) {
-		this.size = size;
-	}
+	private static final int WIDTH = 14;
+	private static final int HEIGHT = 14;
 	
 	@Override
 	protected ImageIcon createIcon(Color color) {
-		Polygon playShape = new Polygon();
-        playShape.addPoint(- size.width / 5, - size.height / 4);
-        playShape.addPoint(- size.width / 5, size.height / 4);
-        playShape.addPoint(size.width / 6,  0);        
-
-		BufferedImage bi = new BufferedImage(size.width, size.height, BufferedImage.TYPE_4BYTE_ABGR);
-        Graphics2D g2 = bi.createGraphics();
-    	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    	g2.setPaint(color);
-    	g2.translate(size.getWidth() * 4/7, size.getHeight() / 2);    	
-		
-   		g2.fill(playShape);
-    	g2.dispose();
-
-    	return new ImageIcon(bi);
+		return IconGenerator.generateIcon(color, WIDTH, HEIGHT, new Rectangle(4, 4, 8, 8));
 	}
-
 }

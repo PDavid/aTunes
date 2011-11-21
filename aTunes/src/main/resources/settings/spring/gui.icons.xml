@@ -32,4 +32,19 @@
 	<bean id="folderIcon" class="net.sourceforge.atunes.gui.images.FolderImageIcon"/>
 	<bean id="genreIcon" class="net.sourceforge.atunes.gui.images.GenreImageIcon"/>
 	<bean id="newIcon" class="net.sourceforge.atunes.gui.images.NewImageIcon"/>
+	<bean id="nextIcon" class="net.sourceforge.atunes.gui.images.NextImageIcon">
+		<property name="size">
+			<bean class="net.sourceforge.atunes.gui.views.panels.PlayerControlsSize" factory-method="getPreviousNextButtonsSize"/>
+		</property>
+	</bean>
+	<bean id="nextTrayIcon" class="net.sourceforge.atunes.gui.images.NextTrayImageIcon"/>
+	<bean id="normalizationIcon" class="net.sourceforge.atunes.gui.images.NormalizationImageIcon"/>
+	<bean id="pauseIcon" class="net.sourceforge.atunes.gui.images.PauseImageIcon"/>
+	<bean id="pauseTrayIcon" class="net.sourceforge.atunes.gui.images.PauseTrayImageIcon"/>
+	<bean id="playIcon" class="net.sourceforge.atunes.gui.images.PlayImageIcon"/>
+	<bean id="playTrayIcon" class="net.sourceforge.atunes.gui.images.PlayTrayImageIcon"/>
+	<bean id="playListPauseStateIcon" class="net.sourceforge.atunes.gui.images.PlayListPauseStateImageIcon"/>
+	<bean id="playListPlayStateIcon" class="net.sourceforge.atunes.gui.images.PlayListPlayStateImageIcon"/>
+	<bean id="playListStopStateIcon" class="net.sourceforge.atunes.gui.images.PlayListStopStateImageIcon"/>
+	
 </beans>

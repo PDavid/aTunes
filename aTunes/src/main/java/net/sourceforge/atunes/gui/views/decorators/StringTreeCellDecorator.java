@@ -25,10 +25,6 @@ import java.awt.Component;
 
 import javax.swing.JLabel;
 
-import net.sourceforge.atunes.gui.images.AudioFileImageMediumIcon;
-import net.sourceforge.atunes.gui.images.DeviceImageIcon;
-import net.sourceforge.atunes.gui.images.FavoriteImageIcon;
-import net.sourceforge.atunes.gui.images.FolderImageIcon;
 import net.sourceforge.atunes.gui.images.RadioImageIcon;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;

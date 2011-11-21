@@ -22,22 +22,19 @@ package net.sourceforge.atunes.gui.images;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.model.CachedIconFactory;
 
-public class NextImageIcon extends CachedIconFactory {
+public class NextTrayImageIcon extends CachedIconFactory {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 8652785174826761169L;
-	
+	private static final long serialVersionUID = -3084039028140767126L;
+
 	private Dimension size;
 	
 	/**
@@ -46,25 +43,23 @@ public class NextImageIcon extends CachedIconFactory {
 	public void setSize(Dimension size) {
 		this.size = size;
 	}
-
+	
 	@Override
 	protected ImageIcon createIcon(Color color) {
-		Polygon nextShape = new Polygon();
-        nextShape.addPoint(- size.width / 5, - size.height / 6);
-        nextShape.addPoint(- size.width / 5, size.height / 6);
-        nextShape.addPoint(0,  0);        
+		// Optimized for low sizes
+		int horizontalFactor = 10;
+		int verticalFactor = 5;
+		Polygon s1 = new Polygon();
+		s1.addPoint(size.width / horizontalFactor, size.height / verticalFactor);
+		s1.addPoint(size.width / horizontalFactor, size.height - size.height / verticalFactor);
+		s1.addPoint(size.width / 2 - size.width / horizontalFactor, size.height / 2);
 
-		BufferedImage bi = new BufferedImage(size.width, size.height, BufferedImage.TYPE_4BYTE_ABGR);
-        Graphics2D g2 = bi.createGraphics();
-    	g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    	g2.setPaint(color);
-		g2.translate(size.getWidth() / (double) 2 + size.width / (double) 16, size.getHeight() / (double) 2 );    	
-		
-   		g2.fill(nextShape);
-   		g2.translate(size.width / 5, 0);
-   		g2.fill(nextShape);
-    	g2.dispose();
+		Polygon s2 = new Polygon();
+		s2.addPoint(size.width / 2 + size.width / horizontalFactor, size.height / verticalFactor);
+		s2.addPoint(size.width / 2 + size.width / horizontalFactor, size.height - size.height / verticalFactor);
+		s2.addPoint(size.width / 2 + size.width / 2 - size.width / horizontalFactor, size.height / 2);
 
-    	return new ImageIcon(bi);
+		return IconGenerator.generateIcon(color, size.width, size.height, s1, s2);
 	}
+
 }

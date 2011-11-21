@@ -39,7 +39,6 @@ import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
-import net.sourceforge.atunes.gui.images.NewImageIcon;
 import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomFrame;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
