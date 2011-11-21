@@ -22,11 +22,8 @@ package net.sourceforge.atunes.gui.views.controls.playerControls;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.gui.images.VolumeMaxImageIcon;
-import net.sourceforge.atunes.gui.images.VolumeMedImageIcon;
-import net.sourceforge.atunes.gui.images.VolumeMinImageIcon;
-import net.sourceforge.atunes.gui.images.VolumeMuteImageIcon;
-import net.sourceforge.atunes.gui.images.VolumeZeroImageIcon;
+import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IState;
 
@@ -70,17 +67,17 @@ public class VolumeIcon {
      */
     public ImageIcon getVolumeIcon() {
         if (state.isMuteEnabled()) {
-            return VolumeMuteImageIcon.getIcon(lookAndFeel);
+            return Context.getBean("volumeMuteIcon", CachedIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls());
         } else {
             int volume = state.getVolume();
             if (volume > 80) {
-                return VolumeMaxImageIcon.getIcon(lookAndFeel);
+                return Context.getBean("volumeMaxIcon", CachedIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls());
             } else if (volume > 40) {
-            	return VolumeMedImageIcon.getIcon(lookAndFeel);
+            	return Context.getBean("volumeMedIcon", CachedIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls());
             } else if (volume > 5) {
-            	return VolumeMinImageIcon.getIcon(lookAndFeel);
+            	return Context.getBean("volumeMinIcon", CachedIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls());
             } else {
-            	return VolumeZeroImageIcon.getIcon(lookAndFeel);
+            	return Context.getBean("volumeZeroIcon", CachedIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls());
             }
         }
     }

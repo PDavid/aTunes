@@ -20,21 +20,22 @@
 
 package net.sourceforge.atunes.gui.images;
 
+import java.awt.Color;
+
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.CachedIconFactory;
 
-public class VolumeMaxImageIcon {
-	
-	private VolumeMaxImageIcon() {}
+public class VolumeMaxImageIcon extends CachedIconFactory {
 	
 	/**
-	 * @param lookAndFeel
-	 * @return
+	 * 
 	 */
-	public static ImageIcon getIcon(ILookAndFeel lookAndFeel) {
-        return IconGenerator.generateIcon(VolumeCommonImageIcon.WIDTH, VolumeCommonImageIcon.HEIGHT,
-        		lookAndFeel,
+	private static final long serialVersionUID = -7383483794211874250L;
+
+	@Override
+	protected ImageIcon createIcon(Color color) {
+        return IconGenerator.generateIcon(color, VolumeCommonImageIcon.WIDTH, VolumeCommonImageIcon.HEIGHT,
         		VolumeCommonImageIcon.getVolumeShape(), 
         		VolumeCommonImageIcon.getVolumeLevel1(),
         		VolumeCommonImageIcon.getVolumeLevel2(),
