@@ -31,10 +31,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import net.sourceforge.atunes.gui.images.RadioImageIcon;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IRadio;
@@ -56,7 +57,7 @@ public final class RadioDialog extends AbstractCustomDialog implements IRadioDia
 
     /** The radio. */
     private Radio result;
-
+    
     /**
      * Instantiates a new radio dialog for adding a new radio
      * 
@@ -141,7 +142,7 @@ public final class RadioDialog extends AbstractCustomDialog implements IRadioDia
         c.gridheight = 2;
         c.fill = GridBagConstraints.NONE;
         c.weightx = -1;
-        panel.add(new JLabel(RadioImageIcon.getIcon(lookAndFeel)), c);
+        panel.add(new JLabel(Context.getBean("radioMediumIcon", CachedIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls())), c);
 
         JPanel auxPanel = new JPanel();
         auxPanel.add(okButton);

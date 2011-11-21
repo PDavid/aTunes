@@ -28,10 +28,9 @@ import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.images.RadioImageIcon;
-import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectStatistics;
 import net.sourceforge.atunes.model.IContextInformationSource;
@@ -92,6 +91,24 @@ public class AudioObjectBasicInfoDataSource implements IContextInformationSource
     private IOSManager osManager;
     
     private ILookAndFeelManager lookAndFeelManager;
+    
+    private CachedIconFactory rssMediumIcon;
+    
+    private CachedIconFactory radioMediumIcon;
+    
+    /**
+     * @param radioMediumIcon
+     */
+    public void setRadioMediumIcon(CachedIconFactory radioMediumIcon) {
+		this.radioMediumIcon = radioMediumIcon;
+	}
+    
+    /**
+     * @param rssMediumIcon
+     */
+    public void setRssMediumIcon(CachedIconFactory rssMediumIcon) {
+		this.rssMediumIcon = rssMediumIcon;
+	}
 
     @Override
     public Map<String, ?> getData(Map<String, ?> parameters) {
@@ -131,9 +148,9 @@ public class AudioObjectBasicInfoDataSource implements IContextInformationSource
             }
             return localImage;
         } else if (audioObject instanceof IRadio) {
-            return RadioImageIcon.getIcon(lookAndFeelManager.getCurrentLookAndFeel());
+            return radioMediumIcon.getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls());
         } else if (audioObject instanceof IPodcastFeedEntry) {
-            return RssImageIcon.getIcon(lookAndFeelManager.getCurrentLookAndFeel());
+            return rssMediumIcon.getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls());
         }
         return null;
     }

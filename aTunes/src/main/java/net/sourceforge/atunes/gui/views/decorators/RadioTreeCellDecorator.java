@@ -24,16 +24,25 @@ import java.awt.Component;
 
 import javax.swing.JLabel;
 
-import net.sourceforge.atunes.gui.images.RadioImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IRadio;
 
 public class RadioTreeCellDecorator extends AbstractTreeCellDecorator {
+	
+	private CachedIconFactory radioSmallIcon;
+	
+	/**
+	 * @param radioSmallIcon
+	 */
+	public void setRadioSmallIcon(CachedIconFactory radioSmallIcon) {
+		this.radioSmallIcon = radioSmallIcon;
+	}
 
     @Override
     public Component decorateTreeCellComponent(Component component, Object userObject, boolean isSelected) {
         if (userObject instanceof IRadio && component instanceof JLabel) {
-            ((JLabel) component).setIcon(RadioImageIcon.getSmallIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected), getLookAndFeel()));
+            ((JLabel) component).setIcon(radioSmallIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
         }
         return component;
     }

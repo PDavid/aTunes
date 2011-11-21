@@ -4,18 +4,8 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
 	default-autowire="byName" default-lazy-init="true">
 
-    <bean id="audioObjectGenericImageFactory" class="net.sourceforge.atunes.gui.images.AudioObjectGenericImage" autowire="byType">
-    	<property name="audioFileMediumIcon" ref="audioFileMediumIcon"/>
-    	<property name="audioFileSmallIcon" ref="audioFileSmallIcon"/>
-    </bean>
+    <bean id="audioObjectGenericImageFactory" class="net.sourceforge.atunes.gui.images.AudioObjectGenericImage"/>
     
-	<bean class="net.sourceforge.atunes.gui.images.PodcastFeedEntrySmallColorMutableImageIcon"/>
-	<bean class="net.sourceforge.atunes.gui.images.PodcastFeedEntryMediumColorMutableImageIcon"/>
-	<bean class="net.sourceforge.atunes.gui.images.PodcastFeedEntryBigColorMutableImageIcon"/>
-	<bean class="net.sourceforge.atunes.gui.images.RadioSmallColorMutableImageIcon"/>
-	<bean class="net.sourceforge.atunes.gui.images.RadioMediumColorMutableImageIcon"/>
-	<bean class="net.sourceforge.atunes.gui.images.RadioBigColorMutableImageIcon"/>
-	
 	<bean id="artistImageIcon" class="net.sourceforge.atunes.gui.images.ArtistImageIcon"/>
 	<bean id="albumFavoriteIcon" class="net.sourceforge.atunes.gui.images.AlbumFavoriteImageIcon"/>
 	<bean id="albumSmallIcon" class="net.sourceforge.atunes.gui.images.AlbumImageSmallIcon"/>
@@ -46,5 +36,11 @@
 	<bean id="playListPauseStateIcon" class="net.sourceforge.atunes.gui.images.PlayListPauseStateImageIcon"/>
 	<bean id="playListPlayStateIcon" class="net.sourceforge.atunes.gui.images.PlayListPlayStateImageIcon"/>
 	<bean id="playListStopStateIcon" class="net.sourceforge.atunes.gui.images.PlayListStopStateImageIcon"/>
+	<bean id="rssSmallIcon" class="net.sourceforge.atunes.gui.images.RssSmallImageIcon"/>
+	<bean id="rssMediumIcon" class="net.sourceforge.atunes.gui.images.RssMediumImageIcon"/>
+	<bean id="rssBigIcon" class="net.sourceforge.atunes.gui.images.RssBigImageIcon"/>
+	<bean id="radioSmallIcon" class="net.sourceforge.atunes.gui.images.RadioSmallImageIcon"/>
+	<bean id="radioMediumIcon" class="net.sourceforge.atunes.gui.images.RadioMediumImageIcon"/>
+	<bean id="radioBigIcon" class="net.sourceforge.atunes.gui.images.RadioBigImageIcon"/>
 	
 </beans>

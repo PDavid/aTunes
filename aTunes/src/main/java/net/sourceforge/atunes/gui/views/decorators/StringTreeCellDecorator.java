@@ -25,8 +25,6 @@ import java.awt.Component;
 
 import javax.swing.JLabel;
 
-import net.sourceforge.atunes.gui.images.RadioImageIcon;
-import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -44,6 +42,24 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator {
 	private CachedIconFactory favoriteIcon;
 	
 	private CachedIconFactory folderIcon;
+	
+	private CachedIconFactory rssSmallIcon;
+	
+	private CachedIconFactory radioSmallIcon;
+	
+	/**
+	 * @param radioSmallIcon
+	 */
+	public void setRadioSmallIcon(CachedIconFactory radioSmallIcon) {
+		this.radioSmallIcon = radioSmallIcon;
+	}
+	
+	/**
+	 * @param rssSmallIcon
+	 */
+	public void setRssSmallIcon(CachedIconFactory rssSmallIcon) {
+		this.rssSmallIcon = rssSmallIcon;
+	}
 	
 	/**
 	 * @param folderIcon
@@ -106,9 +122,9 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator {
             } else if (text.equals(I18nUtils.getString("FAVORITES"))) {
                 label.setIcon(favoriteIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(label, isSelected)));
             } else if (text.equals(I18nUtils.getString("PODCAST_FEEDS"))) {
-                label.setIcon(RssImageIcon.getSmallIcon(getLookAndFeel().getPaintForColorMutableIcon(label, isSelected), getLookAndFeel()));
+                label.setIcon(rssSmallIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(label, isSelected)));
             } else if (text.equals(I18nUtils.getString("RADIO"))) {
-                label.setIcon(RadioImageIcon.getSmallIcon(getLookAndFeel().getPaintForColorMutableIcon(label, isSelected), getLookAndFeel()));
+                label.setIcon(radioSmallIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(label, isSelected)));
             } else {
                 // For radio view
                 label.setIcon(folderIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(label, isSelected)));

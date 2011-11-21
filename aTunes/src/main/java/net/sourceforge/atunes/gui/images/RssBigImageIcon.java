@@ -24,22 +24,19 @@ import java.awt.Color;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.IColorMutableImageIcon;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.CachedIconFactory;
 
-public final class PodcastFeedEntrySmallColorMutableImageIcon implements IColorMutableImageIcon {
-	
-	private ILookAndFeelManager lookAndFeelManager;
-	
+public class RssBigImageIcon extends CachedIconFactory {
+
 	/**
-	 * @param lookAndFeelManager
+	 * 
 	 */
-	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
-	}
+	private static final long serialVersionUID = -5252653280730093615L;
+	
+	private static final int BIG_SIZE = 300;
 	
 	@Override
-	public ImageIcon getIcon(Color paint) {
-	    return RssImageIcon.getSmallIcon(paint, lookAndFeelManager.getCurrentLookAndFeel());
+	protected ImageIcon createIcon(Color color) {
+		return IconGenerator.generateIcon(color, BIG_SIZE, BIG_SIZE, RssImageIcon.getIconArea(BIG_SIZE));
 	}
 }

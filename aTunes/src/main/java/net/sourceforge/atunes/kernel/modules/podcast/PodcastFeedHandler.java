@@ -33,20 +33,17 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-import javax.swing.SwingWorker;
-
 import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAddPodcastFeedDialog;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -109,38 +106,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
 		}
 	}
 
-	private static final class DeleteDownloadedPodcastFeedEntryWorker extends SwingWorker<Boolean, Void> {
-        private final File f;
-        private final IPodcastFeedEntry podcastFeedEntry;
-        private ITable navigationTable;
-
-        private DeleteDownloadedPodcastFeedEntryWorker(File f, IPodcastFeedEntry podcastFeedEntry, ITable navigationTable) {
-            this.f = f;
-            this.podcastFeedEntry = podcastFeedEntry;
-            this.navigationTable = navigationTable;
-        }
-
-        @Override
-        protected Boolean doInBackground() {
-            return f.delete();
-        }
-
-        @Override
-        protected void done() {
-            try {
-                if (get()) {
-                    podcastFeedEntry.setDownloaded(false);
-                    navigationTable.repaint();
-                }
-            } catch (InterruptedException e) {
-                Logger.error(e);
-            } catch (ExecutionException e) {
-                Logger.error(e);
-            }
-        }
-    }
-
-    public static final long DEFAULT_PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL = 180;
+	public static final long DEFAULT_PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL = 180;
 
     private List<IPodcastFeed> podcastFeeds;
 
@@ -163,6 +129,15 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
     private ScheduledExecutorService podcastFeedEntryDownloadCheckerExecutorService;
     
     private ScheduledFuture<?> scheduledPodcastFeedEntryRetrieverFuture;
+    
+    private CachedIconFactory rssMediumIcon;
+    
+    /**
+     * @param rssMediumIcon
+     */
+    public void setRssMediumIcon(CachedIconFactory rssMediumIcon) {
+		this.rssMediumIcon = rssMediumIcon;
+	}
 
     @Override
     public void allHandlersInitialized() {
@@ -340,7 +315,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
         }
         final IProgressDialog d = (IProgressDialog) getBean("transferDialog");
         d.setTitle(I18nUtils.getString("PODCAST_FEED_ENTRY_DOWNLOAD"));
-        d.setIcon(RssImageIcon.getIcon(getBean(ILookAndFeelManager.class).getCurrentLookAndFeel()));
+        d.setIcon(rssMediumIcon.getIcon(getBean(ILookAndFeelManager.class).getCurrentLookAndFeel().getPaintForSpecialControls()));
         final PodcastFeedEntryDownloader downloadPodcastFeedEntry = new PodcastFeedEntryDownloader(podcastFeedEntry, getState().getProxy(), (ITable)getBean("navigationTable"), this);
         synchronized (runningDownloads) {
             runningDownloads.add(downloadPodcastFeedEntry);

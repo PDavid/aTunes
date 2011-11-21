@@ -410,7 +410,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         muteButton.addMouseListener(clickListener);
         volumeSlider.addMouseListener(clickListener);
 
-        covers = new CoverFlow(lookAndFeelManager.getCurrentLookAndFeel());
+        covers = new CoverFlow();
         Dimension coverSize = new Dimension(GuiUtils.getDeviceWidth(), GuiUtils.getDeviceHeight() * 5 / 7);
         covers.setMinimumSize(coverSize);
         covers.setMaximumSize(coverSize);

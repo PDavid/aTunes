@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.gui.images;
 
+import java.awt.Color;
 import java.awt.Paint;
 import java.awt.Polygon;
 import java.awt.Rectangle;
@@ -28,7 +29,20 @@ import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.ImageIcon;
 
-public class RadioImageIcon {
+import net.sourceforge.atunes.model.CachedIconFactory;
+
+public class RadioSmallImageIcon extends CachedIconFactory {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5260159326225128248L;
+	private static final int SMALL_SIZE = 16;
+
+	@Override
+	protected ImageIcon createIcon(Color color) {
+		return getSmallIcon(color, SMALL_SIZE, SMALL_SIZE);
+	}
 
 	/**
 	 * @param color
@@ -36,14 +50,14 @@ public class RadioImageIcon {
 	 * @param h
 	 * @return
 	 */
-	protected static ImageIcon getIcon(Paint color, int w, int h) {
+	private static ImageIcon getSmallIcon(Paint color, int w, int h) {
 		int marginX = w / 10;
 		int marginTopY = h / 2;
 		int marginBottomY = h / 10;
 		int arc = 4;
 		Area a = new Area(new RoundRectangle2D.Float(marginX, marginTopY, w - 2 * marginX, h - marginTopY - marginBottomY, arc, arc));
 
-		int antennaWidth = w / 12;
+		int antennaWidth = w / 9;
 		Polygon p = new Polygon();
 		p.addPoint(marginX + antennaWidth, marginBottomY);
 		p.addPoint(marginX + 2 * antennaWidth, marginBottomY);
@@ -52,7 +66,7 @@ public class RadioImageIcon {
 		
 		a.add(new Area(p));
 		
-		int insideMargin = w / 16;
+		int insideMargin = w / 8;
 		marginX = marginX + insideMargin;
 		marginBottomY = marginBottomY + 2 * insideMargin;
 		marginTopY = marginTopY + insideMargin;
@@ -60,5 +74,4 @@ public class RadioImageIcon {
 		
         return IconGenerator.generateIcon(color, w, h, a);
 	}
-
 }

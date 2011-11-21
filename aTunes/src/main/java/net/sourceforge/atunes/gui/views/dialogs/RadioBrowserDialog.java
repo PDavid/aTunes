@@ -33,8 +33,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 
-import net.sourceforge.atunes.gui.images.RadioImageIcon;
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -85,7 +86,7 @@ public final class RadioBrowserDialog extends AbstractCustomDialog {
         treeTable = new JXTreeTable();
         treeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JPanel topPanel = new JPanel(new BorderLayout(10, 0));
-        radioIcon = new JLabel(RadioImageIcon.getIcon(lookAndFeel));
+        radioIcon = new JLabel(Context.getBean("radioMediumIcon", CachedIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls()));
         browserInstructions = new JLabel(I18nUtils.getString("RADIO_BROWSER_INSTRUCTIONS"));
         closeButton = new JButton(I18nUtils.getString("CLOSE"));
         closeButton.addActionListener(new ActionListener() {

@@ -24,16 +24,25 @@ import java.awt.Component;
 
 import javax.swing.JLabel;
 
-import net.sourceforge.atunes.gui.images.RssImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IPodcastFeed;
 
 public class PodcastFeedTreeCellDecorator extends AbstractTreeCellDecorator {
+	
+	private CachedIconFactory rssSmallIcon;
+	
+	/**
+	 * @param rssSmallIcon
+	 */
+	public void setRssSmallIcon(CachedIconFactory rssSmallIcon) {
+		this.rssSmallIcon = rssSmallIcon;
+	}
 
     @Override
     public Component decorateTreeCellComponent(Component component, Object userObject, boolean isSelected) {
         if (userObject instanceof IPodcastFeed) {
-            ((JLabel) component).setIcon(RssImageIcon.getSmallIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected), getLookAndFeel()));
+            ((JLabel) component).setIcon(rssSmallIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
         }
         return component;
     }
