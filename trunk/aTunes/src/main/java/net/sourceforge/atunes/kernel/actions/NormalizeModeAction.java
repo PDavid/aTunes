@@ -20,15 +20,13 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
-import net.sourceforge.atunes.gui.images.NormalizationImageIcon;
 import net.sourceforge.atunes.gui.images.WarningImageIcon;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IPlayerHandler;
@@ -36,11 +34,35 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 public class NormalizeModeAction extends ActionWithColorMutableIcon {
 
-    private static final long serialVersionUID = 6993968558006979367L;
+    private final class WarningActionListener implements ActionListener {
+    	
+		boolean showWarning;
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+		    if (showWarning) {
+		        putValue(SMALL_ICON, normalizationIcon.getIcon(getLookAndFeel().getPaintForSpecialControls()));
+		    } else {
+		        putValue(SMALL_ICON, WarningImageIcon.getIcon(getLookAndFeel().getPaintForSpecialControls(), getLookAndFeel()));
+		    }
+		    showWarning = !showWarning;
+		}
+	}
+
+	private static final long serialVersionUID = 6993968558006979367L;
 
     private Timer timer;
     
     private IPlayerHandler playerHandler;
+    
+    private CachedIconFactory normalizationIcon;
+    
+    /**
+     * @param normalizationIcon
+     */
+    public void setNormalizationIcon(CachedIconFactory normalizationIcon) {
+		this.normalizationIcon = normalizationIcon;
+	}
     
     /**
      * @param playerHandler
@@ -52,25 +74,13 @@ public class NormalizeModeAction extends ActionWithColorMutableIcon {
     public NormalizeModeAction() {
         super(I18nUtils.getString("NORMALIZE"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("NORMALIZE"));
-        timer = new Timer(1000, new ActionListener() {
-            boolean showWarning;
-
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                if (showWarning) {
-                    putValue(SMALL_ICON, NormalizationImageIcon.getIcon(getLookAndFeel().getPaintForSpecialControls(), getLookAndFeel()));
-                } else {
-                    putValue(SMALL_ICON, WarningImageIcon.getIcon(getLookAndFeel().getPaintForSpecialControls(), getLookAndFeel()));
-                }
-                showWarning = !showWarning;
-            }
-        });
     }
     
     @Override
     protected void initialize() {
     	super.initialize();
         putValue(SELECTED_KEY, getState().isUseNormalisation());
+        timer = new Timer(1000, new WarningActionListener());
         if (getState().isUseNormalisation()) {
             timer.start();
         }
@@ -83,7 +93,7 @@ public class NormalizeModeAction extends ActionWithColorMutableIcon {
         playerHandler.applyNormalization();
         if (timer.isRunning()) {
             timer.stop();
-            putValue(SMALL_ICON, NormalizationImageIcon.getIcon(getLookAndFeel().getPaintForSpecialControls(), getLookAndFeel()));
+            putValue(SMALL_ICON, normalizationIcon.getIcon(getLookAndFeel().getPaintForSpecialControls()));
         } else {
             timer.start();
         }
@@ -91,13 +101,6 @@ public class NormalizeModeAction extends ActionWithColorMutableIcon {
     
     @Override
     public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
-    	return new IColorMutableImageIcon() {
-			
-			@Override
-			public ImageIcon getIcon(Color paint) {
-				return  NormalizationImageIcon.getIcon(paint, lookAndFeel);
-			}
-		};
+    	return normalizationIcon.getColorMutableIcon();
     }
-
 }

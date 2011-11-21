@@ -20,49 +20,29 @@
 
 package net.sourceforge.atunes.gui.images;
 
-import java.awt.Paint;
+import java.awt.Color;
 import java.awt.Polygon;
-import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.CachedIconFactory;
 
-public class PlayListStateImageIcon {
+public class PlayListPlayStateImageIcon extends CachedIconFactory {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 339808425000579713L;
+	
 	private static final int WIDTH = 14;
 	private static final int HEIGHT = 14;
 	
-	private PlayListStateImageIcon() {}
-	
-	/**
-	 * @param color
-	 * @param lookAndFeel
-	 * @return
-	 */
-	public static ImageIcon getStopIcon(Paint color, ILookAndFeel lookAndFeel) {
-		return IconGenerator.generateIcon(color, WIDTH, HEIGHT, lookAndFeel, new Rectangle(4, 4, 8, 8));
-	}
-
-	/**
-	 * @param color
-	 * @param lookAndFeel
-	 * @return
-	 */
-	public static ImageIcon getPlayIcon(Paint color, ILookAndFeel lookAndFeel) {
+	@Override
+	protected ImageIcon createIcon(Color color) {
 		Polygon shape = new Polygon();
 		shape.addPoint(3, 3);
 		shape.addPoint(3, 11);
 		shape.addPoint(11, 7);
-		return IconGenerator.generateIcon(color, WIDTH, HEIGHT, lookAndFeel, shape);
-	}
-
-	/**
-	 * @param color
-	 * @param lookAndFeel
-	 * @return
-	 */
-	public static ImageIcon getPauseIcon(Paint color, ILookAndFeel lookAndFeel) {
-		return IconGenerator.generateIcon(color, WIDTH, HEIGHT, lookAndFeel, new Rectangle(3, 3, 3, 8), new Rectangle(8, 3, 3, 8));
+		return IconGenerator.generateIcon(color, WIDTH, HEIGHT, shape);
 	}
 }
