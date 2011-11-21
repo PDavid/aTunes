@@ -20,13 +20,9 @@
 
 package net.sourceforge.atunes.kernel.modules.context.youtube;
 
-import java.awt.Color;
-
-import javax.swing.ImageIcon;
-
-import net.sourceforge.atunes.gui.images.VideoImageIcon;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IRadio;
@@ -39,14 +35,18 @@ import net.sourceforge.atunes.model.IRadio;
  */
 public class YoutubeContextPanel extends AbstractContextPanel {
 
+	private CachedIconFactory videoIcon;
+	
+	/**
+	 * @param videoIcon
+	 */
+	public void setVideoIcon(CachedIconFactory videoIcon) {
+		this.videoIcon = videoIcon;
+	}
+	
     @Override
     public IColorMutableImageIcon getContextPanelIcon(IAudioObject audioObject) {
-        return new IColorMutableImageIcon() {
-        	@Override
-        	public ImageIcon getIcon(Color paint) {
-                return VideoImageIcon.getIcon(paint, getLookAndFeel());
-        	}
-        };
+    	return videoIcon.getColorMutableIcon();
     }
 
     @Override

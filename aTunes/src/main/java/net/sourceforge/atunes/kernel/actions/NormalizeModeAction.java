@@ -25,7 +25,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
-import net.sourceforge.atunes.gui.images.WarningImageIcon;
 import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -43,7 +42,7 @@ public class NormalizeModeAction extends ActionWithColorMutableIcon {
 		    if (showWarning) {
 		        putValue(SMALL_ICON, normalizationIcon.getIcon(getLookAndFeel().getPaintForSpecialControls()));
 		    } else {
-		        putValue(SMALL_ICON, WarningImageIcon.getIcon(getLookAndFeel().getPaintForSpecialControls(), getLookAndFeel()));
+		        putValue(SMALL_ICON, warningIcon.getIcon(getLookAndFeel().getPaintForSpecialControls()));
 		    }
 		    showWarning = !showWarning;
 		}
@@ -56,6 +55,15 @@ public class NormalizeModeAction extends ActionWithColorMutableIcon {
     private IPlayerHandler playerHandler;
     
     private CachedIconFactory normalizationIcon;
+    
+    private CachedIconFactory warningIcon;
+    
+    /**
+     * @param warningIcon
+     */
+    public void setWarningIcon(CachedIconFactory warningIcon) {
+		this.warningIcon = warningIcon;
+	}
     
     /**
      * @param normalizationIcon

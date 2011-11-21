@@ -22,18 +22,17 @@ package net.sourceforge.atunes.gui.images;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.CachedIconFactory;
 
-public class VolumeMinImageIcon {
-	
-	private VolumeMinImageIcon() {}
+public class VolumeMinImageIcon extends CachedIconFactory {
 	
 	/**
-	 * @param lookAndFeel
-	 * @return
+	 * 
 	 */
-	public static ImageIcon getIcon(ILookAndFeel lookAndFeel) {
-        return IconGenerator.generateIcon(VolumeCommonImageIcon.WIDTH, VolumeCommonImageIcon.HEIGHT, lookAndFeel, 
+	private static final long serialVersionUID = 8503926503297530102L;
+
+	protected ImageIcon createIcon(java.awt.Color color) {
+        return IconGenerator.generateIcon(color, VolumeCommonImageIcon.WIDTH, VolumeCommonImageIcon.HEIGHT,  
         		VolumeCommonImageIcon.getVolumeShape(), VolumeCommonImageIcon.getVolumeLevel1()); 
 	}
 	

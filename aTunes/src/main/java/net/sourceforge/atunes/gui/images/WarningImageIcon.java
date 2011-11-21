@@ -20,35 +20,26 @@
 
 package net.sourceforge.atunes.gui.images;
 
-import java.awt.Paint;
+import java.awt.Color;
 import java.awt.Polygon;
 import java.awt.geom.Area;
 import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.CachedIconFactory;
 
-public class WarningImageIcon {
+public class WarningImageIcon extends CachedIconFactory {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3768203239923923944L;
+	
 	private static final int SIZE = 18;
 
-	private WarningImageIcon() {}
-	
-	/**
-	 * @param lookAndFeel
-	 * @return
-	 */
-	public static ImageIcon getIcon(ILookAndFeel lookAndFeel) {
-		return getIcon(null, lookAndFeel);
-	}
-	
-	/**
-	 * @param color
-	 * @param lookAndFeel
-	 * @return
-	 */
-	public static ImageIcon getIcon(Paint color, ILookAndFeel lookAndFeel) {
+	@Override
+	protected ImageIcon createIcon(Color color) {
 		Polygon p = new Polygon();
 		p.addPoint(9, 2);
 		p.addPoint(2, 16);
@@ -58,7 +49,6 @@ public class WarningImageIcon {
 		a.subtract(new Area(new RoundRectangle2D.Float(8, 6, 2, 5, 4, 4)));
 		a.subtract(new Area(new RoundRectangle2D.Float(8, 12, 2, 2, 4, 4)));
 		
-		return IconGenerator.generateIcon(color, SIZE, SIZE, lookAndFeel, a);
+		return IconGenerator.generateIcon(color, SIZE, SIZE, a);
 	}
-
 }

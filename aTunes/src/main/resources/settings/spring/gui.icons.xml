@@ -43,4 +43,11 @@
 	<bean id="radioMediumIcon" class="net.sourceforge.atunes.gui.images.RadioMediumImageIcon"/>
 	<bean id="radioBigIcon" class="net.sourceforge.atunes.gui.images.RadioBigImageIcon"/>
 	
+	<bean id="videoIcon" class="net.sourceforge.atunes.gui.images.VideoImageIcon"/>
+	<bean id="volumeMaxIcon" class="net.sourceforge.atunes.gui.images.VolumeMaxImageIcon"/>
+	<bean id="volumeMedIcon" class="net.sourceforge.atunes.gui.images.VolumeMedImageIcon"/>
+	<bean id="volumeMinIcon" class="net.sourceforge.atunes.gui.images.VolumeMinImageIcon"/>
+	<bean id="volumeMuteIcon" class="net.sourceforge.atunes.gui.images.VolumeMuteImageIcon"/>
+	<bean id="volumeZeroIcon" class="net.sourceforge.atunes.gui.images.VolumeZeroImageIcon"/>
+	<bean id="warningIcon" class="net.sourceforge.atunes.gui.images.WarningImageIcon"/>
 </beans>
