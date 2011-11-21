@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 
 
-import net.sourceforge.atunes.gui.images.FolderColorMutableIcon;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -34,6 +34,15 @@ public class ShowFoldersInNavigatorAction extends ActionWithColorMutableIcon {
     private static final long serialVersionUID = -3422236983060989235L;
 
     private INavigationHandler navigationHandler;
+    
+    private CachedIconFactory folderIcon;
+    
+    /**
+     * @param folderIcon
+     */
+    public void setFolderIcon(CachedIconFactory folderIcon) {
+		this.folderIcon = folderIcon;
+	}
     
     /**
      * @param navigationHandler
@@ -63,6 +72,6 @@ public class ShowFoldersInNavigatorAction extends ActionWithColorMutableIcon {
     
     @Override
     public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
-    	return new FolderColorMutableIcon(lookAndFeel);
+    	return folderIcon.getColorMutableIcon();
     }
 }

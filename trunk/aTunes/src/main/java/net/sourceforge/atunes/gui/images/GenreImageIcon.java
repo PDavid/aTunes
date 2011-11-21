@@ -20,28 +20,26 @@
 
 package net.sourceforge.atunes.gui.images;
 
-import java.awt.Paint;
+import java.awt.Color;
 import java.awt.Polygon;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.CachedIconFactory;
 
-public class GenreImageIcon {
+public class GenreImageIcon extends CachedIconFactory {
 
-	private static final int SIZE = 18;
-	
-	private GenreImageIcon() {}
-	
 	/**
-	 * @param color
-	 * @param lookAndFeel
-	 * @return
+	 * 
 	 */
-	public static ImageIcon getIcon(Paint color, ILookAndFeel lookAndFeel) {
-		
+	private static final long serialVersionUID = -939539268509387704L;
+	
+	private static final int SIZE = 18;
+
+	@Override
+	protected ImageIcon createIcon(Color color) {
 		Ellipse2D e1 = new Ellipse2D.Float(2, 10, 7, 7);
 		Ellipse2D e2 = new Ellipse2D.Float(6, 8, 5, 5);
 		Polygon p = new Polygon();
@@ -61,14 +59,6 @@ public class GenreImageIcon {
 		a.add(new Area(p));
 		a.subtract(new Area(e3));
 		
-		return IconGenerator.generateIcon(color, SIZE, SIZE, lookAndFeel, a);
-	}
-
-	/**
-	 * @param lookAndFeel
-	 * @return
-	 */
-	public static ImageIcon getIcon(ILookAndFeel lookAndFeel) {
-		return getIcon(null, lookAndFeel);
+		return IconGenerator.generateIcon(color, SIZE, SIZE, a);
 	}
 }

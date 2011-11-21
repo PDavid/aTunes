@@ -20,11 +20,7 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.Color;
-
-import javax.swing.ImageIcon;
-
-import net.sourceforge.atunes.gui.images.GenreImageIcon;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -36,6 +32,15 @@ public class ShowGenresInNavigatorAction extends ActionWithColorMutableIcon {
     private static final long serialVersionUID = 8717980405436543347L;
 
     private INavigationHandler navigationHandler;
+    
+    private CachedIconFactory genreIcon;
+    
+    /**
+     * @param genreIcon
+     */
+    public void setGenreIcon(CachedIconFactory genreIcon) {
+		this.genreIcon = genreIcon;
+	}
     
     /**
      * @param navigationHandler
@@ -65,13 +70,7 @@ public class ShowGenresInNavigatorAction extends ActionWithColorMutableIcon {
     
     @Override
     public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
-    	return new IColorMutableImageIcon() {
-			
-			@Override
-			public ImageIcon getIcon(Color paint) {
-				return GenreImageIcon.getIcon(paint, lookAndFeel);
-			}
-		};
+    	return genreIcon.getColorMutableIcon();
     }
 
 }

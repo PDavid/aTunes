@@ -348,7 +348,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
 
     private JLabel getStatusBarNewVersionLabel() {
         if (statusBarNewVersionLabel == null) {
-            statusBarNewVersionLabel = new JLabel(NewImageIcon.getIcon(lookAndFeelManager.getCurrentLookAndFeel()));
+            statusBarNewVersionLabel = new JLabel(context.getBean("newIcon", CachedIconFactory.class).getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls()));
             statusBarNewVersionLabel.setToolTipText(I18nUtils.getString("NEW_VERSION_AVAILABLE"));
             statusBarNewVersionLabel.addMouseListener(new MouseAdapter() {
                 @Override

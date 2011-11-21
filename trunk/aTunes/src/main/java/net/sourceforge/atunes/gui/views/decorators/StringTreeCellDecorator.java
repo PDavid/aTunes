@@ -45,6 +45,24 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator {
 	
 	private CachedIconFactory deviceIcon;
 	
+	private CachedIconFactory favoriteIcon;
+	
+	private CachedIconFactory folderIcon;
+	
+	/**
+	 * @param folderIcon
+	 */
+	public void setFolderIcon(CachedIconFactory folderIcon) {
+		this.folderIcon = folderIcon;
+	}
+	
+	/**
+	 * @param favoriteIcon
+	 */
+	public void setFavoriteIcon(CachedIconFactory favoriteIcon) {
+		this.favoriteIcon = favoriteIcon;
+	}
+	
 	/**
 	 * @param deviceIcon
 	 */
@@ -90,14 +108,14 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator {
             } else if (text.equals(I18nUtils.getString("SONGS"))) {
                 label.setIcon(audioFileSmallIcon.getIcon(color));
             } else if (text.equals(I18nUtils.getString("FAVORITES"))) {
-                label.setIcon(FavoriteImageIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(label, isSelected), getLookAndFeel()));
+                label.setIcon(favoriteIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(label, isSelected)));
             } else if (text.equals(I18nUtils.getString("PODCAST_FEEDS"))) {
                 label.setIcon(RssImageIcon.getSmallIcon(getLookAndFeel().getPaintForColorMutableIcon(label, isSelected), getLookAndFeel()));
             } else if (text.equals(I18nUtils.getString("RADIO"))) {
                 label.setIcon(RadioImageIcon.getSmallIcon(getLookAndFeel().getPaintForColorMutableIcon(label, isSelected), getLookAndFeel()));
             } else {
                 // For radio view
-                label.setIcon(FolderImageIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(label, isSelected), getLookAndFeel()));
+                label.setIcon(folderIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(label, isSelected)));
             }
 
             label.setToolTipText(null);

@@ -20,41 +20,27 @@
 
 package net.sourceforge.atunes.gui.images;
 
-import java.awt.Paint;
+import java.awt.Color;
 import java.awt.geom.Area;
 import java.awt.geom.CubicCurve2D;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.CachedIconFactory;
 
-public class FavoriteImageIcon {
+public class FavoriteImageIcon extends CachedIconFactory {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5339165880272983721L;
+	
 	private static final int WIDTH = 16;
 	private static final int HEIGHT = 16;
-	
-	private static ImageIcon icon;
-	
-	private FavoriteImageIcon() {}
-	
-	/**
-	 * @param lookAndFeel
-	 * @return
-	 */
-	public static ImageIcon getIcon(ILookAndFeel lookAndFeel) {
-		if (icon == null) {
-			icon = getIcon(null, lookAndFeel);	
-		}
-		return icon;
-	}
-	
-	/**
-	 * @param color
-	 * @param lookAndFeel
-	 * @return
-	 */
-	public static ImageIcon getIcon(Paint color, ILookAndFeel lookAndFeel) {
-        return IconGenerator.generateIcon(color, WIDTH, HEIGHT, lookAndFeel, getIconArea(WIDTH, HEIGHT, 0, 0));
+
+	@Override
+	protected ImageIcon createIcon(Color color) {
+        return IconGenerator.generateIcon(color, WIDTH, HEIGHT, getIconArea(WIDTH, HEIGHT, 0, 0));
 	}
 	
 	protected static Area getIconArea(int width, int height, int xAxis, int yAxis) {
