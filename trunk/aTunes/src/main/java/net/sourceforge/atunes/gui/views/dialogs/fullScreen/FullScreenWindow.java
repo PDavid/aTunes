@@ -399,7 +399,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         playButton = new PlayPauseButton(PlayerControlsSize.PLAY_BUTTON_SIZE, lookAndFeelManager);
         stopButton = new StopButton(PlayerControlsSize.STOP_MUTE_BUTTONS_SIZE, lookAndFeelManager);
         nextButton = new NextButton(PlayerControlsSize.PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
-        muteButton = new MuteButton(PlayerControlsSize.STOP_MUTE_BUTTONS_SIZE, state, lookAndFeelManager, Context.getBean(MuteAction.class));
+        muteButton = Context.getBean("volumeButton", MuteButton.class);
         muteButton.setText("");
         volumeSlider = new VolumeSlider(state, playerHandler);
 

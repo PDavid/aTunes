@@ -25,7 +25,6 @@ import java.awt.Dimension;
 import javax.swing.JToggleButton;
 
 import net.sourceforge.atunes.kernel.actions.MuteAction;
-import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IState;
@@ -36,7 +35,9 @@ public final class MuteButton extends JToggleButton implements ILookAndFeelChang
 
     private IState state;
     
-    private ILookAndFeel lookAndFeel;
+    private ILookAndFeelManager lookAndFeelManager;
+    
+    private VolumeIconCalculator volumeIconCalculator;
     
     /**
      * Instantiates a new mute button.
@@ -46,20 +47,38 @@ public final class MuteButton extends JToggleButton implements ILookAndFeelChang
      * @param lookAndFeelManager
      * @param muteAction
      */
-    public MuteButton(Dimension size, IState state, ILookAndFeelManager lookAndFeelManager, MuteAction muteAction) {
+    public MuteButton(Dimension size, MuteAction muteAction) {
         super(muteAction);
-        this.state = state;
-        this.lookAndFeel = lookAndFeelManager.getCurrentLookAndFeel();
 
         // Force size
         setPreferredSize(size);
         setMinimumSize(size);
         setMaximumSize(size);
         setFocusable(false);
-
-        lookAndFeel.putClientProperties(this);
-        lookAndFeelManager.addLookAndFeelChangeListener(this);
     }
+    
+    /**
+     * @param lookAndFeelManager
+     */
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+		this.lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(this);
+		this.lookAndFeelManager.addLookAndFeelChangeListener(this);
+	}
+    
+    /**
+     * @param state
+     */
+    public void setState(IState state) {
+		this.state = state;
+	}
+    
+    /**
+     * @param volumeIconCalculator
+     */
+    public void setVolumeIconCalculator(VolumeIconCalculator volumeIconCalculator) {
+		this.volumeIconCalculator = volumeIconCalculator;
+	}
     
     @Override
     public void lookAndFeelChanged() {
@@ -71,6 +90,6 @@ public final class MuteButton extends JToggleButton implements ILookAndFeelChang
      * @param state
      */
     public void updateIcon(IState state) {
-    	setIcon(new VolumeIcon(state, lookAndFeel).getVolumeIcon());
+    	setIcon(volumeIconCalculator.getVolumeIcon());
     }
 }

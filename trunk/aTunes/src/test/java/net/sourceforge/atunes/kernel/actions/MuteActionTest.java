@@ -24,29 +24,59 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.awt.Color;
+
 import javax.swing.AbstractAction;
 
+import net.sourceforge.atunes.gui.images.VolumeMaxImageIcon;
+import net.sourceforge.atunes.gui.images.VolumeMedImageIcon;
+import net.sourceforge.atunes.gui.images.VolumeMinImageIcon;
+import net.sourceforge.atunes.gui.images.VolumeMuteImageIcon;
+import net.sourceforge.atunes.gui.images.VolumeZeroImageIcon;
+import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeIconCalculator;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class MuteActionTest {
+	
+	private MuteAction sut;
+	
+	private IPlayerHandler playerHandler;
+	
+	private IState state;
+	
+	@Before
+	public void init() {
+		sut = new MuteAction();
+		playerHandler = mock(IPlayerHandler.class);
+		ILookAndFeelManager lookAndFeelManager = mock(ILookAndFeelManager.class);
+		state = mock(IState.class);
+		ILookAndFeel lookAndFeel = mock(ILookAndFeel.class);
+		when(lookAndFeel.getPaintForSpecialControls()).thenReturn(Color.red);
+		when(lookAndFeelManager.getCurrentLookAndFeel()).thenReturn(lookAndFeel);
+		sut.setPlayerHandler(playerHandler);
+		sut.setState(state);
+		
+		VolumeIconCalculator iconCalculator = new VolumeIconCalculator();
+		iconCalculator.setState(state);
+		iconCalculator.setLookAndFeelManager(lookAndFeelManager);
+		iconCalculator.setVolumeMaxIcon(new VolumeMaxImageIcon());
+		iconCalculator.setVolumeMedIcon(new VolumeMedImageIcon());
+		iconCalculator.setVolumeMinIcon(new VolumeMinImageIcon());
+		iconCalculator.setVolumeMuteIcon(new VolumeMuteImageIcon());
+		iconCalculator.setVolumeZeroIcon(new VolumeZeroImageIcon());
+		
+		sut.setVolumeIconCalculator(iconCalculator);
+	}
 
 	@Test
 	public void testMute() {
-		MuteAction sut = new MuteAction();
-		IPlayerHandler playerHandler = mock(IPlayerHandler.class);
-		ILookAndFeelManager lookAndFeelManager = mock(ILookAndFeelManager.class);
-		IState state = mock(IState.class);
 		when(state.isMuteEnabled()).thenReturn(true);
-		ILookAndFeel lookAndFeel = mock(ILookAndFeel.class);
-		when(lookAndFeelManager.getCurrentLookAndFeel()).thenReturn(lookAndFeel);
-		sut.setPlayerHandler(playerHandler);
-		sut.setLookAndFeelManager(lookAndFeelManager);
-		sut.setState(state);
 		sut.putValue(AbstractAction.SELECTED_KEY, true);
 		
 		sut.executeAction();
@@ -56,16 +86,7 @@ public class MuteActionTest {
 
 	@Test
 	public void testNoMute() {
-		MuteAction sut = new MuteAction();
-		IPlayerHandler playerHandler = mock(IPlayerHandler.class);
-		ILookAndFeelManager lookAndFeelManager = mock(ILookAndFeelManager.class);
-		IState state = mock(IState.class);
 		when(state.isMuteEnabled()).thenReturn(false);
-		ILookAndFeel lookAndFeel = mock(ILookAndFeel.class);
-		when(lookAndFeelManager.getCurrentLookAndFeel()).thenReturn(lookAndFeel);
-		sut.setPlayerHandler(playerHandler);
-		sut.setLookAndFeelManager(lookAndFeelManager);
-		sut.setState(state);
 		sut.putValue(AbstractAction.SELECTED_KEY, false);
 		
 		sut.executeAction();
