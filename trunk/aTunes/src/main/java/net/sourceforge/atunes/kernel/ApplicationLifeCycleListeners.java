@@ -45,6 +45,24 @@ import org.springframework.context.ApplicationContextAware;
  */
 public class ApplicationLifeCycleListeners implements ApplicationContextAware {
 
+	private static final class DoUserInteractionRunnable implements Runnable {
+		
+		private final Map<Integer, IApplicationLifeCycleListener> requests;
+		private final Integer req;
+
+		private DoUserInteractionRunnable(
+				Map<Integer, IApplicationLifeCycleListener> requests,
+				Integer req) {
+			this.requests = requests;
+			this.req = req;
+		}
+
+		@Override
+		public void run() {
+			requests.get(req).doUserInteraction();
+		}
+	}
+
 	private Collection<IApplicationLifeCycleListener> listeners;
 
 	protected void setListeners(Collection<IApplicationLifeCycleListener> listeners) {
@@ -113,12 +131,7 @@ public class ApplicationLifeCycleListeners implements ApplicationContextAware {
     	for (final Integer req: order) {
     		if (req != -1) {
     			try {
-    				SwingUtilities.invokeAndWait(new Runnable() {
-    					@Override
-    					public void run() {
-    						requests.get(req).doUserInteraction();
-    					}
-    				});
+    				SwingUtilities.invokeAndWait(new DoUserInteractionRunnable(requests, req));
     			} catch (InterruptedException e) {
     				Logger.error(e);
     			} catch (InvocationTargetException e) {

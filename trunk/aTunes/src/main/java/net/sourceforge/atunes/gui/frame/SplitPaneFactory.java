@@ -35,6 +35,24 @@ import net.sourceforge.atunes.gui.views.controls.CustomSplitPane;
  */
 class SplitPaneFactory {
 	
+	private static final class StoreFrameStateWhenDividerLocationChangeListener
+			implements PropertyChangeListener {
+		private final AbstractSingleFrame frame;
+		private final String splitPaneId;
+
+		private StoreFrameStateWhenDividerLocationChangeListener(
+				AbstractSingleFrame frame, String splitPaneId) {
+			this.frame = frame;
+			this.splitPaneId = splitPaneId;
+		}
+
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+		    frame.getFrameState().putSplitPaneDividerPos(splitPaneId, (Integer) evt.getNewValue());
+		    frame.storeFrameState();
+		}
+	}
+
 	/**
 	 * Creates a new navigator split pane for a frame with a split pane id
 	 * @param frame
@@ -55,14 +73,7 @@ class SplitPaneFactory {
     	CustomSplitPane navigatorSplitPane = new CustomSplitPane(orientation);
     	navigatorSplitPane.setLeftComponent(left);
     	navigatorSplitPane.setRightComponent(right);
-    	navigatorSplitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
-
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                frame.getFrameState().putSplitPaneDividerPos(splitPaneId, (Integer) evt.getNewValue());
-                frame.storeFrameState();
-            }
-        });
+    	navigatorSplitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new StoreFrameStateWhenDividerLocationChangeListener(frame, splitPaneId));
         return navigatorSplitPane;
 	}
 }
