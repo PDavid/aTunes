@@ -71,31 +71,31 @@ public class WindowsHotkeys extends AbstractHotkeys implements com.melloware.jin
     public void onIntellitype(int command) {
         switch (command) {
         case JIntellitypeConstants.APPCOMMAND_MEDIA_NEXTTRACK: {
-            getHotkeyListener().onHotKey(HotkeyHandler.HOTKEY_NEXT);
+            getHotkeyListener().onHotKey(HotkeyConstants.HOTKEY_NEXT);
             break;
         }
         case JIntellitypeConstants.APPCOMMAND_MEDIA_PREVIOUSTRACK: {
-            getHotkeyListener().onHotKey(HotkeyHandler.HOTKEY_PREVIOUS);
+            getHotkeyListener().onHotKey(HotkeyConstants.HOTKEY_PREVIOUS);
             break;
         }
         case JIntellitypeConstants.APPCOMMAND_MEDIA_PLAY_PAUSE: {
-            getHotkeyListener().onHotKey(HotkeyHandler.HOTKEY_PAUSE);
+            getHotkeyListener().onHotKey(HotkeyConstants.HOTKEY_PAUSE);
             break;
         }
         case JIntellitypeConstants.APPCOMMAND_MEDIA_STOP: {
-            getHotkeyListener().onHotKey(HotkeyHandler.HOTKEY_STOP);
+            getHotkeyListener().onHotKey(HotkeyConstants.HOTKEY_STOP);
             break;
         }
         case JIntellitypeConstants.APPCOMMAND_VOLUME_UP: {
-            getHotkeyListener().onHotKey(HotkeyHandler.HOTKEY_VOLUME_UP);
+            getHotkeyListener().onHotKey(HotkeyConstants.HOTKEY_VOLUME_UP);
             break;
         }
         case JIntellitypeConstants.APPCOMMAND_VOLUME_DOWN: {
-            getHotkeyListener().onHotKey(HotkeyHandler.HOTKEY_VOLUME_DOWN);
+            getHotkeyListener().onHotKey(HotkeyConstants.HOTKEY_VOLUME_DOWN);
             break;
         }
         case JIntellitypeConstants.APPCOMMAND_VOLUME_MUTE: {
-            getHotkeyListener().onHotKey(HotkeyHandler.HOTKEY_MUTE);
+            getHotkeyListener().onHotKey(HotkeyConstants.HOTKEY_MUTE);
             break;
         }
         default: {
