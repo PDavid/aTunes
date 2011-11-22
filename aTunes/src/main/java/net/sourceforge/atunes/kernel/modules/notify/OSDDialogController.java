@@ -36,6 +36,7 @@ import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectGenericImageFactory;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ImageSize;
@@ -48,21 +49,23 @@ final class OSDDialogController extends AbstractSimpleController<OSDDialog> {
     private Timer timer;
     private IOSManager osManager;
     private IAudioObjectGenericImageFactory audioObjectGenericImageFactory;
+    private ILookAndFeelManager lookAndFeelManager;
 
     /**
      * Instantiates a new oSD dialog controller.
-     * 
      * @param dialogControlled
      * @param state
      * @param osManager
+     * @param audioObjectGenericImageFactory
      * @param lookAndFeelManager
      */
-    OSDDialogController(OSDDialog dialogControlled, IState state, IOSManager osManager, IAudioObjectGenericImageFactory audioObjectGenericImageFactory) {
+    OSDDialogController(OSDDialog dialogControlled, IState state, IOSManager osManager, IAudioObjectGenericImageFactory audioObjectGenericImageFactory, ILookAndFeelManager lookAndFeelManager) {
         super(dialogControlled, state);
         addBindings();
         this.audioObjectGenericImageFactory = audioObjectGenericImageFactory;
         this.osManager = osManager;
-        windowFader = new WindowFader(dialogControlled, 50);
+        this.windowFader = new WindowFader(dialogControlled, 50);
+        this.lookAndFeelManager = lookAndFeelManager;
     }
 
     @Override
@@ -124,7 +127,7 @@ final class OSDDialogController extends AbstractSimpleController<OSDDialog> {
 
         ImageIcon i = audioObject.getImage(ImageSize.SIZE_MAX, osManager);
         if (i == null) {
-            i = audioObjectGenericImageFactory.getGenericImage(audioObject, GenericImageSize.MEDIUM).getIcon(null);
+            i = audioObjectGenericImageFactory.getGenericImage(audioObject, GenericImageSize.MEDIUM).getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls());
             getComponentControlled().setShadowBorder(false);
         }
         getComponentControlled().setImage(i);

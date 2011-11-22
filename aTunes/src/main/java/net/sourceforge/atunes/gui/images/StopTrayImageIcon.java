@@ -20,31 +20,35 @@
 
 package net.sourceforge.atunes.gui.images;
 
-import java.awt.Paint;
-import java.awt.geom.Area;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 
-import org.jdesktop.swingx.geom.Star2D;
+import net.sourceforge.atunes.model.CachedIconFactory;
 
-public class StarImageIcon {
+public class StopTrayImageIcon extends CachedIconFactory {
 
-	private static final int STAR_SIZE = 16;
-	private static final int STAR_GAP = 3;
-	
-	private StarImageIcon() {}
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2286594851677924981L;
+
+	private Dimension size;
 	
 	/**
-	 * @param color
-	 * @param stars
-	 * @return
+	 * @param size
 	 */
-	static ImageIcon getIcon(Paint color, int stars) {
-		Area a = new Area();
-		for (int i = 0; i < stars; i++) {
-			a.add(new Area(new Star2D((STAR_SIZE + STAR_GAP) * i + STAR_SIZE / 2, STAR_SIZE / 2, STAR_SIZE - 12, STAR_SIZE - 6, 5)));
-		}
-
-        return IconGenerator.generateIcon(color, STAR_SIZE * stars + STAR_GAP * (stars - 1), STAR_SIZE, a);
+	public void setSize(Dimension size) {
+		this.size = size;
+	}
+	
+	@Override
+	protected ImageIcon createIcon(Color color) {
+		// Optimized for low sizes
+		int factor = 5;
+		Rectangle r = new Rectangle(size.width / factor, size.height / factor, size.width - 2 * size.width / factor, size.height - 2 * size.height / factor);
+		return IconGenerator.generateIcon(color, size.width, size.height, r);
 	}
 }

@@ -20,31 +20,21 @@
 
 package net.sourceforge.atunes.gui.images;
 
-import java.awt.Paint;
-import java.awt.geom.Area;
+import java.awt.Color;
 
 import javax.swing.ImageIcon;
 
-import org.jdesktop.swingx.geom.Star2D;
+import net.sourceforge.atunes.model.CachedIconFactory;
 
-public class StarImageIcon {
+public class Star2ImageIcon extends CachedIconFactory {
 
-	private static final int STAR_SIZE = 16;
-	private static final int STAR_GAP = 3;
-	
-	private StarImageIcon() {}
-	
 	/**
-	 * @param color
-	 * @param stars
-	 * @return
+	 * 
 	 */
-	static ImageIcon getIcon(Paint color, int stars) {
-		Area a = new Area();
-		for (int i = 0; i < stars; i++) {
-			a.add(new Area(new Star2D((STAR_SIZE + STAR_GAP) * i + STAR_SIZE / 2, STAR_SIZE / 2, STAR_SIZE - 12, STAR_SIZE - 6, 5)));
-		}
+	private static final long serialVersionUID = 1105224226210897790L;
 
-        return IconGenerator.generateIcon(color, STAR_SIZE * stars + STAR_GAP * (stars - 1), STAR_SIZE, a);
+	@Override
+	protected ImageIcon createIcon(Color color) {
+		return StarImageIcon.getIcon(color, 2);
 	}
 }

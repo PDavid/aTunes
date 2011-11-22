@@ -29,9 +29,9 @@ import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
-import net.sourceforge.atunes.gui.images.StarImageIcon;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractListCellRendererCode;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
@@ -40,6 +40,32 @@ public class ScoreColumn extends AbstractColumn {
     private static final long serialVersionUID = -2673502888298485650L;
     
     private ILookAndFeelManager lookAndFeelManager;
+    
+    private CachedIconFactory star1Icon;
+    private CachedIconFactory star2Icon;
+    private CachedIconFactory star3Icon;
+    private CachedIconFactory star4Icon;
+    private CachedIconFactory star5Icon;
+    
+    public void setStar1Icon(CachedIconFactory star1Icon) {
+		this.star1Icon = star1Icon;
+	}
+    
+    public void setStar2Icon(CachedIconFactory star2Icon) {
+		this.star2Icon = star2Icon;
+	}
+    
+    public void setStar3Icon(CachedIconFactory star3Icon) {
+		this.star3Icon = star3Icon;
+	}
+    
+    public void setStar4Icon(CachedIconFactory star4Icon) {
+		this.star4Icon = star4Icon;
+	}
+    
+    public void setStar5Icon(CachedIconFactory star5Icon) {
+		this.star5Icon = star5Icon;
+	}
     
     /**
      * @param lookAndFeelManager
@@ -106,12 +132,24 @@ public class ScoreColumn extends AbstractColumn {
      */
     private void setLabel(JLabel label, int score) {
         label.setText(null);
-        if (score == 0) {
-            label.setIcon(null);
-        } else {
-        	// TODO: ICONOS Sacar a un renderer
-            label.setIcon(StarImageIcon.getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForColorMutableIcon(label, false), score, lookAndFeelManager.getCurrentLookAndFeel()));
-        }
+        CachedIconFactory icon = getIcon(score);
+    	// TODO: ICONOS Sacar a un renderer
+        label.setIcon(icon != null ? icon.getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForColorMutableIcon(label, false)) : null);
     }
-
+    
+    /**
+     * Returns icon for score
+     * @param score
+     * @return
+     */
+    private CachedIconFactory getIcon(int score) {
+    	switch (score) {
+			case 1: return star1Icon;
+			case 2: return star2Icon;
+			case 3: return star3Icon;
+			case 4: return star4Icon;
+			case 5: return star5Icon;
+		}
+    	return null;
+    }
 }
