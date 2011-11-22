@@ -39,5 +39,17 @@
 		</constructor-arg>
 		<property name="preferredSize" ref="secondaryControlSize"/>
 	</bean>
+	
+	
+	
+	
+	<bean id="volumeButton" class="net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton">
+		<constructor-arg>
+			<bean class="net.sourceforge.atunes.gui.views.panels.PlayerControlsSize" factory-method="getStopMuteButtonsSize"/>
+		</constructor-arg>
+		<constructor-arg ref="muteAction"/>
+	</bean>
+	
+	<bean id="volumeIconCalculator" class="net.sourceforge.atunes.gui.views.controls.playerControls.VolumeIconCalculator"/>
 
 </beans>
