@@ -20,23 +20,22 @@
 
 package net.sourceforge.atunes.gui.images;
 
-import java.awt.Paint;
+import java.awt.Color;
 import java.awt.Polygon;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.CachedIconFactory;
 
-public class ShuffleImageIcon {
+public class ShuffleImageIcon extends CachedIconFactory {
 	
-	private ShuffleImageIcon() {}
-
 	/**
-	 * @param color
-	 * @param lookAndFeel
-	 * @return
+	 * 
 	 */
-	public static ImageIcon getIcon(Paint color, ILookAndFeel lookAndFeel) {
+	private static final long serialVersionUID = -1198259736200930392L;
+
+	@Override
+	protected ImageIcon createIcon(Color color) {
 		Polygon p = new Polygon();
 		p.addPoint(2, 3);
 		p.addPoint(12, 3);
@@ -61,7 +60,6 @@ public class ShuffleImageIcon {
 		p4.addPoint(6, 11);
 		p4.addPoint(6, 17);
 
-		
-		return IconGenerator.generateIcon(color, 18, 18, lookAndFeel, p, p3, p4);
+		return IconGenerator.generateIcon(color, 18, 18, p, p3, p4);
 	}
 }

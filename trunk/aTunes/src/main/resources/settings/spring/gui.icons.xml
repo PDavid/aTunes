@@ -36,13 +36,31 @@
 	<bean id="playListPauseStateIcon" class="net.sourceforge.atunes.gui.images.PlayListPauseStateImageIcon"/>
 	<bean id="playListPlayStateIcon" class="net.sourceforge.atunes.gui.images.PlayListPlayStateImageIcon"/>
 	<bean id="playListStopStateIcon" class="net.sourceforge.atunes.gui.images.PlayListStopStateImageIcon"/>
+	<bean id="previousIcon" class="net.sourceforge.atunes.gui.images.PreviousImageIcon">
+		<property name="size">
+			<bean class="net.sourceforge.atunes.gui.views.panels.PlayerControlsSize" factory-method="getPreviousNextButtonsSize"/>
+		</property>
+	</bean>
+	<bean id="previousTrayIcon" class="net.sourceforge.atunes.gui.images.PreviousTrayImageIcon"/>
+	<bean id="repeatIcon" class="net.sourceforge.atunes.gui.images.RepeatImageIcon"/>
 	<bean id="rssSmallIcon" class="net.sourceforge.atunes.gui.images.RssSmallImageIcon"/>
 	<bean id="rssMediumIcon" class="net.sourceforge.atunes.gui.images.RssMediumImageIcon"/>
 	<bean id="rssBigIcon" class="net.sourceforge.atunes.gui.images.RssBigImageIcon"/>
 	<bean id="radioSmallIcon" class="net.sourceforge.atunes.gui.images.RadioSmallImageIcon"/>
 	<bean id="radioMediumIcon" class="net.sourceforge.atunes.gui.images.RadioMediumImageIcon"/>
 	<bean id="radioBigIcon" class="net.sourceforge.atunes.gui.images.RadioBigImageIcon"/>
-	
+	<bean id="shuffleIcon" class="net.sourceforge.atunes.gui.images.ShuffleImageIcon"/>
+	<bean id="star1Icon" class="net.sourceforge.atunes.gui.images.Star1ImageIcon"/>
+	<bean id="star2Icon" class="net.sourceforge.atunes.gui.images.Star2ImageIcon"/>
+	<bean id="star3Icon" class="net.sourceforge.atunes.gui.images.Star3ImageIcon"/>
+	<bean id="star4Icon" class="net.sourceforge.atunes.gui.images.Star4ImageIcon"/>
+	<bean id="star5Icon" class="net.sourceforge.atunes.gui.images.Star5ImageIcon"/>
+	<bean id="stopIcon" class="net.sourceforge.atunes.gui.images.StopImageIcon">
+		<property name="size">
+			<bean class="net.sourceforge.atunes.gui.views.panels.PlayerControlsSize" factory-method="getStopMuteButtonsSize"/>
+		</property>
+	</bean>
+	<bean id="stopTrayIcon" class="net.sourceforge.atunes.gui.images.StopTrayImageIcon"/>
 	<bean id="videoIcon" class="net.sourceforge.atunes.gui.images.VideoImageIcon"/>
 	<bean id="volumeMaxIcon" class="net.sourceforge.atunes.gui.images.VolumeMaxImageIcon"/>
 	<bean id="volumeMedIcon" class="net.sourceforge.atunes.gui.images.VolumeMedImageIcon"/>

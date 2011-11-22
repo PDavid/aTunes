@@ -52,4 +52,8 @@ public class PlayerControlsSize {
     public static Dimension getPreviousNextButtonsSize() {
     	return PREVIOUS_NEXT_BUTTONS_SIZE;
     }
+    
+    public static Dimension getStopMuteButtonsSize() {
+		return STOP_MUTE_BUTTONS_SIZE;
+	}
 }

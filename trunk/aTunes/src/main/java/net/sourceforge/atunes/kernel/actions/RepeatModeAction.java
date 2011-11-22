@@ -20,11 +20,7 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.Color;
-
-import javax.swing.ImageIcon;
-
-import net.sourceforge.atunes.gui.images.RepeatImageIcon;
+import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -39,6 +35,15 @@ public class RepeatModeAction extends ActionWithColorMutableIcon {
 
     private static final long serialVersionUID = 2032609750151412458L;
 
+    private CachedIconFactory repeatIcon;
+    
+    /**
+     * @param repeatIcon
+     */
+    public void setRepeatIcon(CachedIconFactory repeatIcon) {
+		this.repeatIcon = repeatIcon;
+	}
+    
     public RepeatModeAction() {
         super(I18nUtils.getString("REPEAT"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("REPEAT"));
@@ -57,12 +62,6 @@ public class RepeatModeAction extends ActionWithColorMutableIcon {
     
     @Override
     public IColorMutableImageIcon getIcon(final ILookAndFeel lookAndFeel) {
-	return new IColorMutableImageIcon() {
-			
-			@Override
-			public ImageIcon getIcon(Color paint) {
-				return RepeatImageIcon.getIcon(paint, lookAndFeel);
-			}
-		};
+    	return repeatIcon.getColorMutableIcon();
     }
 }

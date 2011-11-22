@@ -20,23 +20,22 @@
 
 package net.sourceforge.atunes.gui.images;
 
-import java.awt.Paint;
+import java.awt.Color;
 import java.awt.Polygon;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.CachedIconFactory;
 
-public class RepeatImageIcon {
+public class RepeatImageIcon extends CachedIconFactory {
 
-	private RepeatImageIcon() {}
-	
 	/**
-	 * @param color
-	 * @param lookAndFeel
-	 * @return
+	 * 
 	 */
-	public static ImageIcon getIcon(Paint color, ILookAndFeel lookAndFeel) {
+	private static final long serialVersionUID = 2210195660630167447L;
+	
+	@Override
+	protected ImageIcon createIcon(Color color) {
 		Polygon p = new Polygon();
 		p.addPoint(2, 5);
 		p.addPoint(2, 3);
@@ -60,6 +59,6 @@ public class RepeatImageIcon {
 		p4.addPoint(7, 17);
 
 		
-		return IconGenerator.generateIcon(color, 18, 18, lookAndFeel, p, p3, p4);
+		return IconGenerator.generateIcon(color, 18, 18, p, p3, p4);
 	}
 }

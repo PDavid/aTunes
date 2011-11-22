@@ -25,8 +25,6 @@ import java.awt.geom.Area;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.ILookAndFeel;
-
 import org.jdesktop.swingx.geom.Star2D;
 
 public class StarImageIcon {
@@ -39,15 +37,14 @@ public class StarImageIcon {
 	/**
 	 * @param color
 	 * @param stars
-	 * @param lookAndFeel
 	 * @return
 	 */
-	public static ImageIcon getIcon(Paint color, int stars, ILookAndFeel lookAndFeel) {
+	static ImageIcon getIcon(Paint color, int stars) {
 		Area a = new Area();
 		for (int i = 0; i < stars; i++) {
 			a.add(new Area(new Star2D((STAR_SIZE + STAR_GAP) * i + STAR_SIZE / 2, STAR_SIZE / 2, STAR_SIZE - 12, STAR_SIZE - 6, 5)));
 		}
 
-        return IconGenerator.generateIcon(color, STAR_SIZE * stars + STAR_GAP * (stars - 1), STAR_SIZE, lookAndFeel, a);
+        return IconGenerator.generateIcon(color, STAR_SIZE * stars + STAR_GAP * (stars - 1), STAR_SIZE, a);
 	}
 }

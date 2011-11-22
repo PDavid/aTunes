@@ -40,8 +40,8 @@ import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.images.NextTrayImageIcon;
 import net.sourceforge.atunes.gui.images.PauseTrayImageIcon;
 import net.sourceforge.atunes.gui.images.PlayTrayImageIcon;
-import net.sourceforge.atunes.gui.images.PreviousImageIcon;
-import net.sourceforge.atunes.gui.images.StopImageIcon;
+import net.sourceforge.atunes.gui.images.PreviousTrayImageIcon;
+import net.sourceforge.atunes.gui.images.StopTrayImageIcon;
 import net.sourceforge.atunes.gui.views.controls.ActionTrayIcon;
 import net.sourceforge.atunes.gui.views.controls.JTrayIcon;
 import net.sourceforge.atunes.gui.views.controls.JTrayIconPopupMenu;
@@ -58,7 +58,6 @@ import net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.ToggleOSDSettingAction;
 import net.sourceforge.atunes.kernel.actions.ToggleWindowVisibilityAction;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ISystemTrayHandler;
 import net.sourceforge.atunes.model.PlaybackState;
@@ -86,13 +85,25 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
     
     private boolean playing;
 
-    private ILookAndFeelManager lookAndFeelManager;
-    
     private NextTrayImageIcon nextTrayIcon;
-    
     private PauseTrayImageIcon pauseTrayIcon;
-    
     private PlayTrayImageIcon playTrayIcon;
+    private PreviousTrayImageIcon previousTrayIcon;
+    private StopTrayImageIcon stopTrayIcon;
+    
+    /**
+     * @param stopTrayIcon
+     */
+    public void setStopTrayIcon(StopTrayImageIcon stopTrayIcon) {
+		this.stopTrayIcon = stopTrayIcon;
+	}
+    
+    /**
+     * @param previousTrayIcon
+     */
+    public void setPreviousTrayIcon(PreviousTrayImageIcon previousTrayIcon) {
+		this.previousTrayIcon = previousTrayIcon;
+	}
     
     /**
      * @param playTrayIcon
@@ -117,7 +128,6 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
     
     @Override
     public void allHandlersInitialized() {
-    	this.lookAndFeelManager = getBean(ILookAndFeelManager.class);
     	if (getOsManager().areTrayIconsSupported()) {
     		// System tray player
     		if (getState().isShowTrayPlayer()) {
@@ -312,7 +322,8 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
      */
     private void setTrayPlayerIconsColor(Color color) {
     	if (trayPlayerVisible) {
-    		getStopTrayIcon().setImage(StopImageIcon.getTrayIcon(color, tray.getTrayIconSize(), lookAndFeelManager.getCurrentLookAndFeel()).getImage());
+    		stopTrayIcon.setSize(tray.getTrayIconSize());
+    		getStopTrayIcon().setImage(stopTrayIcon.getIcon(color).getImage());
     		if (playing) {
     			pauseTrayIcon.setSize(tray.getTrayIconSize());
     			getPlayTrayIcon().setImage(pauseTrayIcon.getIcon(color).getImage());
@@ -322,7 +333,8 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
     		}
     		nextTrayIcon.setSize(tray.getTrayIconSize());
     		getNextTrayIcon().setImage(nextTrayIcon.getIcon(color).getImage());
-    		getPreviousTrayIcon().setImage(PreviousImageIcon.getTrayIcon(color, tray.getTrayIconSize(), lookAndFeelManager.getCurrentLookAndFeel()).getImage());
+    		previousTrayIcon.setSize(tray.getTrayIconSize());
+    		getPreviousTrayIcon().setImage(previousTrayIcon.getIcon(color).getImage());
     	}
 	}
 
@@ -459,7 +471,8 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
     private TrayIcon getStopTrayIcon() {
         if (stopIcon == null) {
         	Color color = getState().getTrayPlayerIconsColor().getColor();
-        	Image icon = StopImageIcon.getTrayIcon(color, tray.getTrayIconSize(), lookAndFeelManager.getCurrentLookAndFeel()).getImage();
+        	stopTrayIcon.setSize(tray.getTrayIconSize());
+        	Image icon = stopTrayIcon.getIcon(color).getImage();
             stopIcon = new ActionTrayIcon(icon, getBean(StopCurrentAudioObjectAction.class));
         }
         return stopIcon;
@@ -488,7 +501,8 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
     private TrayIcon getPreviousTrayIcon() {
     	if (previousIcon == null) {
     		Color color = getState().getTrayPlayerIconsColor().getColor();
-    		Image icon = PreviousImageIcon.getTrayIcon(color, tray.getTrayIconSize(), lookAndFeelManager.getCurrentLookAndFeel()).getImage();
+    		previousTrayIcon.setSize(tray.getTrayIconSize());
+    		Image icon = previousTrayIcon.getIcon(color).getImage();
     		previousIcon = new ActionTrayIcon(icon, getBean(PlayPreviousAudioObjectAction.class));
     	}
         return previousIcon;

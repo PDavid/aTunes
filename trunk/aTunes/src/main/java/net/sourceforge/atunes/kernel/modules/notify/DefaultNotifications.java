@@ -78,7 +78,7 @@ public class DefaultNotifications extends CommonNotificationEngine {
             JDialog.setDefaultLookAndFeelDecorated(false);
             osdDialog = new OSDDialog(state.getOsdWidth(), lookAndFeelManager.getCurrentLookAndFeel());
             JDialog.setDefaultLookAndFeelDecorated(lookAndFeelManager.getCurrentLookAndFeel().isDialogUndecorated());
-            osdDialogController = new OSDDialogController(osdDialog, state, osManager, getAudioObjectGenericImageFactory());
+            osdDialogController = new OSDDialogController(osdDialog, state, osManager, getAudioObjectGenericImageFactory(), lookAndFeelManager);
         }
         return osdDialogController;
     }
