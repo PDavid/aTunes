@@ -21,14 +21,13 @@
 package net.sourceforge.atunes.kernel.modules.updates;
 
 import java.io.IOException;
-import java.net.URLConnection;
 import java.net.UnknownHostException;
 
 import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.model.ApplicationVersion;
-import net.sourceforge.atunes.model.ApplicationVersion.VersionType;
+import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IUpdateHandler;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.NetworkUtils;
@@ -36,7 +35,6 @@ import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.XMLUtils;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * Handler for updates
@@ -47,15 +45,41 @@ public final class UpdateHandler extends AbstractHandler implements IUpdateHandl
      * Url to look for new version. 
      */
     private String updatesURL;
+    
+    private ApplicationArguments applicationArguments;
+    
+    private ITaskService taskService;
+    
+    /**
+     * @param taskService
+     */
+    public void setTaskService(ITaskService taskService) {
+		this.taskService = taskService;
+	}
+    
+    /**
+     * @param applicationArguments
+     */
+    public void setApplicationArguments(ApplicationArguments applicationArguments) {
+		this.applicationArguments = applicationArguments;
+	}
 
+    /**
+     * @param updatesURL
+     */
     public final void setUpdatesURL(String updatesURL) {
 		this.updatesURL = updatesURL;
 	}
     
     @Override
     public void allHandlersInitialized() {
-        if (!getBean(ApplicationArguments.class).isNoUpdate()) {
-            checkUpdates(false, false);
+        if (!applicationArguments.isNoUpdate()) {
+        	taskService.submitOnce("Check updates", 5, new Runnable() {
+        		@Override
+        		public void run() {
+        			checkUpdates(false, false);
+        		}
+        	});
         }
     }
 
@@ -81,33 +105,31 @@ public final class UpdateHandler extends AbstractHandler implements IUpdateHandl
     public ApplicationVersion getLastVersion() {
         ApplicationVersion result = null;
         try {
-            ExtendedProxy proxy = ExtendedProxy.getProxy(getState().getProxy());
-            URLConnection connection = NetworkUtils.getConnection(updatesURL, proxy);
-            Document xml = XMLUtils.getXMLDocument(NetworkUtils.readURL(connection));
+            Document xml = getVersionXml();
 
             // Check if xml is not null: if URL is not found response is a HTTP 200 code, as current hosting system
             // returns a valid html page reporting the real HTTP 404 code
             if (xml == null) {
-                throw new IOException(StringUtils.getString("Could not connect to ", updatesURL));
+                throw new IOException(StringUtils.getString("Failled to retrieve xml from ", updatesURL));
             }
 
             // Parse xml document
-            Element element = (Element) xml.getElementsByTagName("latest").item(0);
-            String date = XMLUtils.getChildElementContent(element, "date");
-            int major = Integer.parseInt(XMLUtils.getChildElementContent(element, "majorNumber"));
-            int minor = Integer.parseInt(XMLUtils.getChildElementContent(element, "minorNumber"));
-            int revision = Integer.parseInt(XMLUtils.getChildElementContent(element, "revisionNumber"));
-            String url = element.getAttribute("url");
-
-            result = new ApplicationVersion(date, major, minor, revision, VersionType.FINAL, "", url);
+            result = new VersionXmlParser().getApplicationVersionFromXml(xml);
 
         } catch (UnknownHostException uhe) {
             Logger.error("Could not connect to www.atunes.org");
         } catch (IOException e) {
             Logger.error("Could not connect to www.atunes.org");
-        } catch (Exception e) {
-            Logger.error(e);
         }
         return result;
     }
+
+	/**
+	 * @return xml document retrieved from update url
+	 * @throws UnknownHostException
+	 * @throws IOException
+	 */
+	private Document getVersionXml() throws UnknownHostException, IOException {
+		return  XMLUtils.getXMLDocument(NetworkUtils.readURL(NetworkUtils.getConnection(updatesURL, ExtendedProxy.getProxy(getState().getProxy()))));
+	}
 }
