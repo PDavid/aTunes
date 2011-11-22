@@ -38,18 +38,20 @@ import org.pushingpixels.substance.internal.colorscheme.TintColorScheme;
 
 public final class SubstanceATunesDarkSkin extends SubstanceSkin {
 
+	private static final class CustomDarkGrayColorScheme extends DarkGrayColorScheme {
+		@Override
+		public Color getForegroundColor() {
+			return new Color(200, 200, 200);
+		}
+	}
+
 	/**
 	 * Creates a new skin.
 	 */
 	public SubstanceATunesDarkSkin() {
 
 		SubstanceColorScheme activeScheme = new TintColorScheme(new EbonyColorScheme(), 0.1f);
-		SubstanceColorScheme defaultScheme = new TintColorScheme(new DarkGrayColorScheme() {
-			@Override
-			public Color getForegroundColor() {
-				return new Color(200, 200, 200);
-			}
-		}, 0.1f);
+		SubstanceColorScheme defaultScheme = new TintColorScheme(new CustomDarkGrayColorScheme(), 0.1f);
 		SubstanceColorScheme disabledScheme = new TintColorScheme(new DarkGrayColorScheme(), 0.5f);
 
 		// the default theme bundle
