@@ -24,10 +24,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -40,10 +38,11 @@ import net.sourceforge.atunes.model.IPlaybackStateListener;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITemporalDiskStorage;
 import net.sourceforge.atunes.model.PlaybackState;
+import net.sourceforge.atunes.utils.Logger;
 
 public final class NotificationsHandler extends AbstractHandler implements IPlaybackStateListener, INotificationsHandler {
 
-    private static Map<String, INotificationEngine> engines = new HashMap<String, INotificationEngine>();
+    private Map<String, INotificationEngine> engines;
     
     private INotificationEngine defaultEngine;
     
@@ -61,28 +60,37 @@ public final class NotificationsHandler extends AbstractHandler implements IPlay
     /**
      * @param audioObjectGenericImageFactory
      */
-    public void setAudioObjectGenericImageFactory(
-			IAudioObjectGenericImageFactory audioObjectGenericImageFactory) {
+    public void setAudioObjectGenericImageFactory(IAudioObjectGenericImageFactory audioObjectGenericImageFactory) {
 		this.audioObjectGenericImageFactory = audioObjectGenericImageFactory;
 	}
     
+    private Map<String, INotificationEngine> getEngines() {
+    	if (engines == null) {
+    		Logger.debug("Initializing notification engines");
+    		engines = new HashMap<String, INotificationEngine>();
+        	// Add here any new notification engine
+        	addNotificationEngine(engines, getDefaultEngine());
+        	addNotificationEngine(engines, new LibnotifyNotificationEngine(getOsManager(), audioObjectGenericImageFactory, temporalDiskStorage));
+        	addNotificationEngine(engines, new GrowlNotificationEngine(getOsManager(), audioObjectGenericImageFactory, temporalDiskStorage));
+    	}
+    	return engines;
+    }
+    
     /**
-     * Adds a new notification engine
+     * Adds a new notification engine to map of notifications
      * @param engine
      */
-    private void addNotificationEngine(INotificationEngine engine) {
-   		engines.put(engine.getName(), engine);
+    private void addNotificationEngine(Map<String, INotificationEngine> engines, INotificationEngine engine) {
+    	engines.put(engine.getName(), engine);
     }
 
-    private static Set<String> availableEngines = new HashSet<String>();
-    
     /**
      * @return notification engine to use
      */
     private INotificationEngine getNotificationEngine() {
-    	INotificationEngine engine = engines.get(getState().getNotificationEngine());
+    	INotificationEngine engine = getEngines().get(getState().getNotificationEngine());
     	if (engine == null) {
-    		engine = defaultEngine;
+    		engine = getDefaultEngine();
     	}
     	return engine;
     }
@@ -96,31 +104,7 @@ public final class NotificationsHandler extends AbstractHandler implements IPlay
     public void applicationStateChanged(IState newState) {
     	getNotificationEngine().updateNotification(newState);
     }
-    
-    @Override
-    protected void initHandler() {
-    	defaultEngine = new DefaultNotifications(getState(), getOsManager(), getBean(ILookAndFeelManager.class), audioObjectGenericImageFactory, temporalDiskStorage);
-    	// Add here any new notification engine
-    	addNotificationEngine(defaultEngine);
-    	addNotificationEngine(new LibnotifyNotificationEngine(getOsManager(), audioObjectGenericImageFactory, temporalDiskStorage));
-    	addNotificationEngine(new GrowlNotificationEngine(getOsManager(), audioObjectGenericImageFactory, temporalDiskStorage));
 
-    	// Load available engines
-    	for (INotificationEngine engine : engines.values()) {
-    		addAvailableNoticationEngine(engine);
-    	}
-    };
-
-    /**
-     * Adds a new notification engine available
-     * @param engine
-     */
-    private void addAvailableNoticationEngine(INotificationEngine engine) {
-    	if (engine.isEngineAvailable()) {
-    		availableEngines.add(engine.getName());
-    	}
-    }
-    
     @Override
 	public void showNotification(IAudioObject audioObject) {
     	// only show notification if not in full screen
@@ -139,13 +123,13 @@ public final class NotificationsHandler extends AbstractHandler implements IPlay
     
 	@Override
 	public List<String> getNotificationEngines() {
-		List<String> names = new ArrayList<String>(engines.keySet());
+		List<String> names = new ArrayList<String>(getEngines().keySet());
 		Collections.sort(names, new Comparator<String>() {
 			@Override
 			public int compare(String o1, String o2) {
-				if (o1.equals(defaultEngine.getName())) {
+				if (o1.equals(getDefaultEngine().getName())) {
 					return -1;
-				} else if (o2.equals(defaultEngine.getName())) {
+				} else if (o2.equals(getDefaultEngine().getName())) {
 					return 1;
 				}
 				return o1.compareTo(o2);
@@ -156,11 +140,14 @@ public final class NotificationsHandler extends AbstractHandler implements IPlay
 
 	@Override
 	public INotificationEngine getNotificationEngine(String name) {
-		return engines.get(name);
+		return getEngines().get(name);
 	}
 	
 	@Override
 	public INotificationEngine getDefaultEngine() {
+		if (defaultEngine == null) {
+	    	defaultEngine = new DefaultNotifications(getState(), getOsManager(), getBean(ILookAndFeelManager.class), audioObjectGenericImageFactory, temporalDiskStorage);
+		}
 		return defaultEngine;
 	}
 }
