@@ -21,12 +21,9 @@
 package net.sourceforge.atunes.utils;
 
 import java.awt.Image;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -35,6 +32,7 @@ import javax.imageio.ImageIO;
 
 import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 
+import org.apache.commons.io.IOUtils;
 import org.commonjukebox.plugins.model.PluginApi;
 
 /**
@@ -114,48 +112,6 @@ public final class NetworkUtils {
     }
 
     /**
-     * Sends a HTTP-Post query to a given URLConnection and reads and returns
-     * the answer.
-     * 
-     * @param connection
-     *            A URLConnection
-     * @param post
-     *            The HTTP-Post query
-     * 
-     * @return The answer of the query
-     * 
-     * @throws IOException
-     *             If an IO exception occurs
-     */
-    public static String readPostURL(HttpURLConnection connection, String post) throws IOException {
-        DataOutputStream writer = null;
-        InputStream input = null;
-        try {
-            OutputStream out = null;
-            out = connection.getOutputStream();
-            writer = new DataOutputStream(out);
-            writer.writeBytes(post);
-            writer.flush();
-
-            if (connection.getResponseCode() != 200) {
-                throw new IOException("Invalid HTTP return code");
-            }
-
-            StringBuilder builder = new StringBuilder();
-            input = connection.getInputStream();
-            byte[] array = new byte[1024];
-            int read;
-            while ((read = input.read(array)) > 0) {
-                builder.append(new String(array, 0, read, "UTF-8"));
-            }
-            return builder.toString();
-        } finally {
-            ClosingUtils.close(writer);
-            ClosingUtils.close(input);
-        }
-    }
-
-    /**
      * Reads a String from a given URLConnection.
      * 
      * @param connection
@@ -169,14 +125,8 @@ public final class NetworkUtils {
     public static String readURL(URLConnection connection) throws IOException {
         InputStream input = null;
         try {
-            StringBuilder builder = new StringBuilder();
             input = connection.getInputStream();
-            byte[] array = new byte[1024];
-            int read;
-            while ((read = input.read(array)) > 0) {
-                builder.append(new String(array, 0, read, "UTF-8"));
-            }
-            return builder.toString();
+            return IOUtils.toString(input);            
         } finally {
             ClosingUtils.close(input);
         }
@@ -200,9 +150,7 @@ public final class NetworkUtils {
         InputStream input = null;
         try {
             input = connection.getInputStream();
-            byte[] array = new byte[n];
-            int read = input.read(array);
-            return new String(array, 0, read, "UTF-8");
+            return IOUtils.toString(input);
         } finally {
             ClosingUtils.close(input);
         }
@@ -224,14 +172,8 @@ public final class NetworkUtils {
     public static String readURL(URLConnection connection, String charset) throws IOException {
         InputStream input = null;
         try {
-            StringBuilder builder = new StringBuilder();
             input = connection.getInputStream();
-            byte[] array = new byte[1024];
-            int read;
-            while ((read = input.read(array)) > 0) {
-                builder.append(new String(array, 0, read, charset));
-            }
-            return builder.toString();
+            return IOUtils.toString(input, charset);
         } finally {
             ClosingUtils.close(input);
         }
