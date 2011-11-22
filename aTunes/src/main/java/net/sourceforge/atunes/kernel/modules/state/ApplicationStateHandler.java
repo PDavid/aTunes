@@ -63,6 +63,17 @@ import net.sourceforge.atunes.utils.XMLUtils;
  * caches.
  */
 public final class ApplicationStateHandler extends AbstractHandler implements IStateHandler {
+	
+	/**
+	 * After all handlers have been initialized it's possible to persist play list, not before (to prevent saved play lists to be stored again)
+	 */
+	private boolean playListPersistAllowed = false;
+	
+	@Override
+	public void allHandlersInitialized() {
+		super.allHandlersInitialized();
+		playListPersistAllowed = true;
+	}
 
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#persistFavoritesCache(net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites)
@@ -125,13 +136,17 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	 */
     @Override
 	public void persistPlayListsDefinition(ListOfPlayLists listOfPlayLists) {
-        try {
-            XMLUtils.writeObjectToFile(listOfPlayLists, StringUtils.getString(getUserConfigFolder(), "/", Constants.PLAYLISTS_FILE));
-            Logger.info("Playlists definition saved");
-        } catch (IOException e) {
-            Logger.error("Could not persist playlists definition");
-            Logger.debug(e);
-        }
+    	if (!playListPersistAllowed) {
+    		Logger.debug("Persist play list definition not allowed yet");
+    	} else {
+    		try {
+    			XMLUtils.writeObjectToFile(listOfPlayLists, StringUtils.getString(getUserConfigFolder(), "/", Constants.PLAYLISTS_FILE));
+    			Logger.info("Playlists definition saved");
+    		} catch (IOException e) {
+    			Logger.error("Could not persist playlists definition");
+    			Logger.debug(e);
+    		}
+    	}
     }
 
     /* (non-Javadoc)
