@@ -64,8 +64,6 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
  
     @Override
     public void applicationStarted() {
-        getFrame().setVisible(true);
-    	
     	IState state = getState();
     	IFrameState frameState = state.getFrameState(getFrame().getClass());
     	getFrame().applicationStarted(frameState);
@@ -75,6 +73,11 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
         if (!getState().isShowSystemTray() && getOsManager().isClosingMainWindowClosesApplication()) {
         	getFrame().setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         }        
+    }
+    
+    @Override
+    public void allHandlersInitialized() {
+        getFrame().setVisible(true);
     }
 
     /* (non-Javadoc)
