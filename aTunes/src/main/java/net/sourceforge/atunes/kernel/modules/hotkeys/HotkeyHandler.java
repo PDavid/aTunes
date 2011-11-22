@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.hotkeys;
 
-import java.awt.event.InputEvent;
-
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
@@ -44,58 +42,23 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class HotkeyHandler extends AbstractHandler implements IHotkeyListener, IHotkeyHandler {
 
-    private static final int RIGHT_ARROW = 39;
-    private static final int LEFT_ARROW = 37;
-    private static final int UP_ARROW = 38;
-    private static final int DOWN_ARROW = 40;
-
-    public static final int HOTKEY_NEXT = 1;
-    public static final int HOTKEY_PREVIOUS = 2;
-    public static final int HOTKEY_VOLUME_UP = 3;
-    public static final int HOTKEY_VOLUME_DOWN = 4;
-    public static final int HOTKEY_PAUSE = 5;
-    public static final int HOTKEY_STOP = 6;
-    public static final int HOTKEY_TOGGLE_WINDOW_VISIBILITY = 7;
-    public static final int HOTKEY_MUTE = 8;
-    public static final int HOTKEY_SHOW_OSD = 9;
-
     private boolean supported;
     private boolean enabled;
     private AbstractHotkeys hotkeys;
     private IHotkeysConfig hotkeysConfig;
 
-    private static final HotkeysConfig DEFAULT_HOTKEYS_CONFIG;
-    static {
-        // Create Hotkey objects
-        DEFAULT_HOTKEYS_CONFIG = new HotkeysConfig();
-        DEFAULT_HOTKEYS_CONFIG.putHotkey(new Hotkey(HOTKEY_NEXT, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK, RIGHT_ARROW, I18nUtils.getString("NEXT")));
-        DEFAULT_HOTKEYS_CONFIG.putHotkey(new Hotkey(HOTKEY_PREVIOUS, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK, LEFT_ARROW, I18nUtils.getString("PREVIOUS")));
-        DEFAULT_HOTKEYS_CONFIG.putHotkey(new Hotkey(HOTKEY_VOLUME_UP, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK, UP_ARROW, I18nUtils.getString("VOLUME_UP")));
-        DEFAULT_HOTKEYS_CONFIG.putHotkey(new Hotkey(HOTKEY_VOLUME_DOWN, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK, DOWN_ARROW, I18nUtils.getString("VOLUME_DOWN")));
-        DEFAULT_HOTKEYS_CONFIG.putHotkey(new Hotkey(HOTKEY_PAUSE, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK, 'P', I18nUtils.getString("PAUSE")));
-        DEFAULT_HOTKEYS_CONFIG.putHotkey(new Hotkey(HOTKEY_STOP, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK, 'S', I18nUtils.getString("STOP")));
-        DEFAULT_HOTKEYS_CONFIG.putHotkey(new Hotkey(HOTKEY_TOGGLE_WINDOW_VISIBILITY, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK, 'W', I18nUtils
-                .getString("TOGGLE_WINDOW_VISIBILITY")));
-        DEFAULT_HOTKEYS_CONFIG.putHotkey(new Hotkey(HOTKEY_MUTE, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK, 'M', I18nUtils.getString("MUTE")));
-        DEFAULT_HOTKEYS_CONFIG.putHotkey(new Hotkey(HOTKEY_SHOW_OSD, InputEvent.CTRL_DOWN_MASK + InputEvent.ALT_DOWN_MASK, 'I', I18nUtils.getString("SHOW_OSD")));
-    }
-
     @Override
-    protected void initHandler() {
+    public void allHandlersInitialized() {
         hotkeys = AbstractHotkeys.createInstance(this, getBean(IOSManager.class));
         HotkeysConfig hc = getState().getHotkeysConfig();
-        hotkeysConfig = hc != null ? hc : DEFAULT_HOTKEYS_CONFIG;
+        hotkeysConfig = hc != null ? hc : new DefaultHotkeysConfig();
         if (hotkeys != null) {
             supported = true;
         } else {
             supported = false;
             Logger.info("Hotkeys are not supported");
         }
-    }
 
-    @Override
-    public void allHandlersInitialized() {
-        // Hotkeys
         if (getState().isEnableHotkeys()) {
             enableHotkeys(getState().getHotkeysConfig());
         } else {
@@ -103,17 +66,11 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
         }
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.hotkeys.IHotkeysHandler#areHotkeysSupported()
-	 */
     @Override
 	public boolean areHotkeysSupported() {
         return supported;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.hotkeys.IHotkeysHandler#disableHotkeys()
-	 */
     @Override
 	public void disableHotkeys() {
         if (areHotkeysSupported() && enabled) {
@@ -125,27 +82,21 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
         }
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.hotkeys.IHotkeysHandler#enableHotkeys(net.sourceforge.atunes.model.IHotkeysConfig)
-	 */
     @Override
 	public void enableHotkeys(IHotkeysConfig hc) {
         disableHotkeys();
         if (hc == null) {
-            this.hotkeysConfig = DEFAULT_HOTKEYS_CONFIG;
+            this.hotkeysConfig = new DefaultHotkeysConfig();
         } else {
             this.hotkeysConfig = hc;
         }
         registerAndActivateHotkeys();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.hotkeys.IHotkeysHandler#getDefaultHotkeysConfiguration()
-	 */
     @Override
 	public IHotkeysConfig getDefaultHotkeysConfiguration() {
         HotkeysConfig config = new HotkeysConfig();
-        for (IHotkey hotkey : DEFAULT_HOTKEYS_CONFIG) {
+        for (IHotkey hotkey : new DefaultHotkeysConfig()) {
             config.putHotkey(new Hotkey(hotkey.getId(), hotkey.getMod(), hotkey.getKey(), hotkey.getDescription()));
         }
         return config;
@@ -182,7 +133,7 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
     }
 
     /**
-     * Clean up hotkey ressources.
+     * Clean up hotkey resources.
      */
     public void applicationFinish() {
         if (areHotkeysSupported()) {
@@ -190,9 +141,6 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
         }
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.hotkeys.IHotkeysHandler#getHotkeysConfig()
-	 */
     @Override
 	public IHotkeysConfig getHotkeysConfig() {
         HotkeysConfig config = new HotkeysConfig();
@@ -202,46 +150,43 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
         return config;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.hotkeys.IHotkeysHandler#onHotKey(int)
-	 */
 	@Override
     public void onHotKey(final int id) {
         Logger.debug("Hotkey ", id);
         switch (id) {
-        case HOTKEY_NEXT: {
+        case HotkeyConstants.HOTKEY_NEXT: {
             getBean(IPlayerHandler.class).playNextAudioObject();
             break;
         }
-        case HOTKEY_PREVIOUS: {
+        case HotkeyConstants.HOTKEY_PREVIOUS: {
             getBean(IPlayerHandler.class).playPreviousAudioObject();
             break;
         }
-        case HOTKEY_VOLUME_UP: {
+        case HotkeyConstants.HOTKEY_VOLUME_UP: {
             getBean(IPlayerHandler.class).volumeUp();
             break;
         }
-        case HOTKEY_VOLUME_DOWN: {
+        case HotkeyConstants.HOTKEY_VOLUME_DOWN: {
             getBean(IPlayerHandler.class).volumeDown();
             break;
         }
-        case HOTKEY_PAUSE: {
+        case HotkeyConstants.HOTKEY_PAUSE: {
             getBean(IPlayerHandler.class).playCurrentAudioObject(true);
             break;
         }
-        case HOTKEY_STOP: {
+        case HotkeyConstants.HOTKEY_STOP: {
             getBean(IPlayerHandler.class).stopCurrentAudioObject(true);
             break;
         }
-        case HOTKEY_TOGGLE_WINDOW_VISIBILITY: {
+        case HotkeyConstants.HOTKEY_TOGGLE_WINDOW_VISIBILITY: {
             getBean(IUIHandler.class).toggleWindowVisibility();
             break;
         }
-        case HOTKEY_MUTE: {
+        case HotkeyConstants.HOTKEY_MUTE: {
             getBean(MuteAction.class).switchState();
             break;
         }
-        case HOTKEY_SHOW_OSD: {
+        case HotkeyConstants.HOTKEY_SHOW_OSD: {
             getBean(INotificationsHandler.class).showNotification(getBean(IPlayListHandler.class).getCurrentAudioObjectFromCurrentPlayList());
             break;
         }
