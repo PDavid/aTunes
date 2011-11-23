@@ -50,6 +50,12 @@ public final class NotificationsHandler extends AbstractHandler implements IPlay
     
     private ITemporalDiskStorage temporalDiskStorage;
     
+    private ILookAndFeelManager lookAndFeelManager;
+    
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+    
     /**
      * @param temporalDiskStorage
      */
@@ -70,8 +76,8 @@ public final class NotificationsHandler extends AbstractHandler implements IPlay
     		engines = new HashMap<String, INotificationEngine>();
         	// Add here any new notification engine
         	addNotificationEngine(engines, getDefaultEngine());
-        	addNotificationEngine(engines, new LibnotifyNotificationEngine(getOsManager(), audioObjectGenericImageFactory, temporalDiskStorage));
-        	addNotificationEngine(engines, new GrowlNotificationEngine(getOsManager(), audioObjectGenericImageFactory, temporalDiskStorage));
+        	addNotificationEngine(engines, new LibnotifyNotificationEngine(getOsManager(), audioObjectGenericImageFactory, temporalDiskStorage, lookAndFeelManager));
+        	addNotificationEngine(engines, new GrowlNotificationEngine(getOsManager(), audioObjectGenericImageFactory, temporalDiskStorage, lookAndFeelManager));
     	}
     	return engines;
     }

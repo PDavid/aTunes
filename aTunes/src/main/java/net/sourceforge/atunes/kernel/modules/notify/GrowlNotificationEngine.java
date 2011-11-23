@@ -27,6 +27,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectGenericImageFactory;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITemporalDiskStorage;
@@ -42,14 +43,14 @@ public class GrowlNotificationEngine extends CommonNotificationEngine {
 	private static final String GROWLNOTIFY = "/usr/local/bin/growlnotify";
 
 	private IOSManager osManager;
-
+	
 	/**
 	 * @param osManager
 	 * @param lookAndFeelManager
 	 */
 	public GrowlNotificationEngine(IOSManager osManager,
-			IAudioObjectGenericImageFactory audioObjectGenericImageFactory, ITemporalDiskStorage diskStorage) {
-		super(audioObjectGenericImageFactory, diskStorage);
+			IAudioObjectGenericImageFactory audioObjectGenericImageFactory, ITemporalDiskStorage diskStorage, ILookAndFeelManager lookAndFeelManager) {
+		super(audioObjectGenericImageFactory, diskStorage, lookAndFeelManager);
 		this.osManager = osManager;
 	}
 	
