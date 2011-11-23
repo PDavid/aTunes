@@ -62,7 +62,7 @@ public class DefaultNotifications extends CommonNotificationEngine {
 	 */
 	public DefaultNotifications(IState state, IOSManager osManager, ILookAndFeelManager lookAndFeelManager, 
 			IAudioObjectGenericImageFactory audioObjectGenericImageFactory, ITemporalDiskStorage diskStorage) {
-		super(audioObjectGenericImageFactory, diskStorage);
+		super(audioObjectGenericImageFactory, diskStorage, lookAndFeelManager);
 		this.state = state;
 		this.osManager = osManager;
 		this.lookAndFeelManager = lookAndFeelManager;

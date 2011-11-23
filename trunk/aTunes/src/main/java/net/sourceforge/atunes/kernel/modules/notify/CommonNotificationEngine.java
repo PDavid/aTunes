@@ -28,6 +28,7 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectGenericImageFactory;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INotificationEngine;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ITemporalDiskStorage;
@@ -44,13 +45,17 @@ public abstract class CommonNotificationEngine implements INotificationEngine {
 	
 	private ITemporalDiskStorage diskStorage;
 	
+	private ILookAndFeelManager lookAndFeelManager;
+	
 	/**
 	 * @param audioObjectGenericImageFactory
 	 * @param diskStorage
+	 * @param lookAndFeelManager
 	 */
-	public CommonNotificationEngine(IAudioObjectGenericImageFactory audioObjectGenericImageFactory, ITemporalDiskStorage diskStorage) {
+	public CommonNotificationEngine(IAudioObjectGenericImageFactory audioObjectGenericImageFactory, ITemporalDiskStorage diskStorage, ILookAndFeelManager lookAndFeelManager) {
 		this.audioObjectGenericImageFactory = audioObjectGenericImageFactory;
 		this.diskStorage = diskStorage;
+		this.lookAndFeelManager = lookAndFeelManager;
 	}
 	
 	/**
@@ -72,7 +77,7 @@ public abstract class CommonNotificationEngine implements INotificationEngine {
 	protected final String getTemporalImage(IAudioObject audioObject, IOSManager osManager) {
 		ImageIcon imageForAudioObject = audioObject.getImage(ImageSize.SIZE_200, osManager);
 		if (imageForAudioObject == null) {
-			imageForAudioObject = audioObjectGenericImageFactory.getGenericImage(audioObject, GenericImageSize.MEDIUM).getIcon(null);
+			imageForAudioObject = audioObjectGenericImageFactory.getGenericImage(audioObject, GenericImageSize.MEDIUM).getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls());
 		}
 		return diskStorage.addImage(ImageUtils.toBufferedImage(imageForAudioObject.getImage()), UUID.randomUUID().toString()).getAbsolutePath();
 	}
