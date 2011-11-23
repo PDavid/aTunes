@@ -33,16 +33,14 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.dialogs.RadioBrowserDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationView;
-import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
-import net.sourceforge.atunes.model.IProxy;
+import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioDialog;
 import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.utils.Logger;
-import net.sourceforge.atunes.utils.NetworkUtils;
 import net.sourceforge.atunes.utils.XMLUtils;
 
 /**
@@ -53,12 +51,11 @@ import net.sourceforge.atunes.utils.XMLUtils;
 public final class RadioHandler extends AbstractHandler implements IRadioHandler {
 
     private final class RetrieveRadiosSwingWorker extends SwingWorker<List<Radio>, Void> {
-        private final IProxy proxy = RadioHandler.this.getState().getProxy();
 
         @SuppressWarnings("unchecked")
         @Override
         protected List<Radio> doInBackground() throws Exception {
-            String xml = NetworkUtils.readURL(NetworkUtils.getConnection(Constants.RADIO_LIST_DOWNLOAD, ExtendedProxy.getProxy(proxy)));
+            String xml = networkHandler.readURL(networkHandler.getConnection(Constants.RADIO_LIST_DOWNLOAD));
             return (List<Radio>) XMLUtils.readObjectFromString(xml);
         }
 
@@ -94,6 +91,15 @@ public final class RadioHandler extends AbstractHandler implements IRadioHandler
      * Flag indicating if radio information must be stored to disk
      */
     private boolean radioListDirty = false;
+    
+    private INetworkHandler networkHandler;
+    
+    /**
+     * @param networkHandler
+     */
+    public void setNetworkHandler(INetworkHandler networkHandler) {
+		this.networkHandler = networkHandler;
+	}
 
     @Override
 	public void addRadio() {
@@ -248,10 +254,10 @@ public final class RadioHandler extends AbstractHandler implements IRadioHandler
 	@SuppressWarnings("unchecked")
     public List<Radio> retrieveRadiosForBrowser() throws IOException {
         try {
-            String xml = NetworkUtils.readURL(NetworkUtils.getConnection(Constants.RADIO_LIST_DOWNLOAD_COMMON_JUKEBOX, ExtendedProxy.getProxy(getState().getProxy())));
+            String xml = networkHandler.readURL(networkHandler.getConnection(Constants.RADIO_LIST_DOWNLOAD_COMMON_JUKEBOX));
             return (List<Radio>) XMLUtils.readObjectFromString(xml);
         } catch (Exception e) {
-            String xml = NetworkUtils.readURL(NetworkUtils.getConnection(Constants.RADIO_LIST_DOWNLOAD, ExtendedProxy.getProxy(getState().getProxy())));
+            String xml = networkHandler.readURL(networkHandler.getConnection(Constants.RADIO_LIST_DOWNLOAD));
             return (List<Radio>) XMLUtils.readObjectFromString(xml);
         }
     }

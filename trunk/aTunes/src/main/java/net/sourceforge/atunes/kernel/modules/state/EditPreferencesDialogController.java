@@ -56,6 +56,7 @@ import net.sourceforge.atunes.model.IHotkeyHandler;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.INotificationsHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayerHandler;
@@ -87,10 +88,12 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
      * @param pluginsHandler
      * @param applicationArguments
      * @param desktop
+     * @param networkHandler
      */
     EditPreferencesDialogController(EditPreferencesDialog dialog, IState state, IOSManager osManager, IFrame frame, StateChangeListeners stateChangeListeners, 
     		ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler, IHotkeyHandler hotkeyHandler, 
-    		INotificationsHandler notificationsHandler, IPluginsHandler pluginsHandler, ApplicationArguments applicationArguments, IDesktop desktop) {
+    		INotificationsHandler notificationsHandler, IPluginsHandler pluginsHandler, ApplicationArguments applicationArguments, IDesktop desktop,
+    		INetworkHandler networkHandler) {
         super(dialog, state);
         this.stateChangeListeners = stateChangeListeners;
         this.lookAndFeelManager = lookAndFeelManager;
@@ -102,7 +105,7 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
         panels.add(new PlayListPrefPanel());
         panels.add(new OSDPanel(notificationsHandler, desktop)); 
         panels.add(new ContextPanel(lookAndFeelManager.getCurrentLookAndFeel(), desktop)); 
-        panels.add(new InternetPanel()); 
+        panels.add(new InternetPanel(networkHandler)); 
         panels.add(new LastFmPanel()); 
         panels.add(new DevicePanel(osManager, lookAndFeelManager.getCurrentLookAndFeel())); 
         panels.add(new RadioPanel()); 

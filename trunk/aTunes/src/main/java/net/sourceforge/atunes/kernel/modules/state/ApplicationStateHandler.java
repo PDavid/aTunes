@@ -42,6 +42,7 @@ import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFavorites;
 import net.sourceforge.atunes.model.IHotkeyHandler;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.INotificationsHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPluginsHandler;
@@ -68,6 +69,72 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	 * After all handlers have been initialized it's possible to persist play list, not before (to prevent saved play lists to be stored again)
 	 */
 	private boolean playListPersistAllowed = false;
+	private ILookAndFeelManager lookAndFeelManager;
+	private IPlayerHandler playerHandler;
+	private IHotkeyHandler hotkeyHandler;
+	private INotificationsHandler notificationsHandler;
+	private IPluginsHandler pluginsHandler;
+	private ApplicationArguments applicationArguments;
+	private IDesktop desktop;
+	private INetworkHandler networkHandler;
+	
+	/**
+	 * @param networkHandler
+	 */
+	public void setNetworkHandler(INetworkHandler networkHandler) {
+		this.networkHandler = networkHandler;
+	}
+	
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+	
+	/**
+	 * @param playerHandler
+	 */
+	public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
+	
+	/**
+	 * @param hotkeyHandler
+	 */
+	public void setHotkeyHandler(IHotkeyHandler hotkeyHandler) {
+		this.hotkeyHandler = hotkeyHandler;
+	}
+	
+	/**
+	 * @param notificationsHandler
+	 */
+	public void setNotificationsHandler(
+			INotificationsHandler notificationsHandler) {
+		this.notificationsHandler = notificationsHandler;
+	}
+	
+	/**
+	 * @param pluginsHandler
+	 */
+	public void setPluginsHandler(IPluginsHandler pluginsHandler) {
+		this.pluginsHandler = pluginsHandler;
+	}
+	
+	/**
+	 * @param applicationArguments
+	 */
+	public void setApplicationArguments(
+			ApplicationArguments applicationArguments) {
+		this.applicationArguments = applicationArguments;
+	}
+	
+	/**
+	 * @param desktop
+	 */
+	public void setDesktop(IDesktop desktop) {
+		this.desktop = desktop;
+	}
 	
 	@Override
 	public void allHandlersInitialized() {
@@ -539,9 +606,9 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	 */
     @Override
 	public void editPreferences() {
-    	EditPreferencesDialog dialog = new EditPreferencesDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class));
-    	new EditPreferencesDialogController(dialog, getState(), getOsManager(), getFrame(), getBean(StateChangeListeners.class), getBean(ILookAndFeelManager.class), 
-    			getBean(IPlayerHandler.class), getBean(IHotkeyHandler.class), getBean(INotificationsHandler.class), 
-    			getBean(IPluginsHandler.class), getBean(ApplicationArguments.class), getBean(IDesktop.class)).start();
+    	EditPreferencesDialog dialog = new EditPreferencesDialog(getFrame().getFrame(), lookAndFeelManager);
+    	new EditPreferencesDialogController(dialog, getState(), getOsManager(), getFrame(), getBean(StateChangeListeners.class), lookAndFeelManager, 
+    			playerHandler, hotkeyHandler, notificationsHandler, 
+    			pluginsHandler, applicationArguments, desktop, networkHandler).start();
     }
 }

@@ -33,7 +33,6 @@ import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmAlbum;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmAlbumList;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmArtistTopTracks;
@@ -47,6 +46,7 @@ import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILovedTrack;
+import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ISimilarArtistsInfo;
 import net.sourceforge.atunes.model.IState;
@@ -55,7 +55,6 @@ import net.sourceforge.atunes.model.ITrackInfo;
 import net.sourceforge.atunes.utils.CryptoUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
-import net.sourceforge.atunes.utils.NetworkUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -160,10 +159,11 @@ public final class LastFmService {
     private static final String VARIOUS_ARTISTS = "Various Artists";
     private static final int MIN_DURATION_TO_SUBMIT = 30;
     private static final int MAX_SUBMISSIONS = 50;
-    private ExtendedProxy proxy;
     private String user;
     private String password;
     private LastFmCache lastFmCache;
+    
+    private INetworkHandler networkHandler;
     
     private IState state;
     
@@ -177,11 +177,13 @@ public final class LastFmService {
      * @param state
      * @param osManager
      * @param frame
+     * @param networkHandler
      */
-    public LastFmService(IState state, IOSManager osManager, IFrame frame) {
+    public LastFmService(IState state, IOSManager osManager, IFrame frame, INetworkHandler networkHandler) {
     	this.state = state;
     	this.frame = frame;
     	this.osManager = osManager;
+    	this.networkHandler = networkHandler;
     	updateService();
     }
     
@@ -197,17 +199,10 @@ public final class LastFmService {
      * Updates service after a configuration change
      */
     public void updateService() {
-        try {
-            this.proxy = ExtendedProxy.getProxy(state.getProxy());
-        } catch (Exception e) {
-            Logger.error(e);
-        }
-
         this.user = state.getLastFmUser();
         this.password = state.getLastFmPassword();
         
         Caller.getInstance().setCache(null);
-        Caller.getInstance().setProxy(proxy);
         Caller.getInstance().setUserAgent(CLIENT_ID);    	
     }
 
@@ -374,7 +369,7 @@ public final class LastFmService {
             // Try to retrieve from cache
             img = getCache().retrieveAlbumCover(album);
             if (img == null && album.getBigCoverURL() != null && !album.getBigCoverURL().isEmpty()) {
-                img = NetworkUtils.getImage(NetworkUtils.getConnection(album.getBigCoverURL(), proxy));
+                img = networkHandler.getImage(networkHandler.getConnection(album.getBigCoverURL()));
                 getCache().storeAlbumCover(album, new ImageIcon(img));
             }
 
@@ -405,7 +400,7 @@ public final class LastFmService {
 
                 // if not then get from artist info
                 if (img == null) {
-                    img = NetworkUtils.getImage(NetworkUtils.getConnection(artist.getImageUrl(), proxy));
+                    img = networkHandler.getImage(networkHandler.getConnection(artist.getImageUrl()));
                 }
 
                 getCache().storeArtistThumbImage(artist, new ImageIcon(img));
@@ -441,7 +436,7 @@ public final class LastFmService {
             if (img == null) {
                 String similarUrl = getSimilarArtists(artistName).getPicture();
                 if (!similarUrl.trim().isEmpty()) {
-                    img = NetworkUtils.getImage(NetworkUtils.getConnection(similarUrl, proxy));
+                    img = networkHandler.getImage(networkHandler.getConnection(similarUrl));
                 }
             }
 
@@ -495,7 +490,7 @@ public final class LastFmService {
                 Set<ImageSize> sizes = imageList.get(0).availableSizes();
                 // Try to get the given size
                 if (sizes.contains(size)) {
-                    return NetworkUtils.getImage(NetworkUtils.getConnection(imageList.get(0).getImageURL(size), proxy));
+                    return networkHandler.getImage(networkHandler.getConnection(imageList.get(0).getImageURL(size)));
                 }
             }
         } catch (IOException e) {
@@ -590,7 +585,7 @@ public final class LastFmService {
      * @return the wiki url
      */
     public String getWikiURL(String artist) {
-        return ARTIST_WIKI_URL.replace(ARTIST_WILDCARD, NetworkUtils.encodeString(artist)).replace(LANGUAGE_WILDCARD,
+        return ARTIST_WIKI_URL.replace(ARTIST_WILDCARD, networkHandler.encodeString(artist)).replace(LANGUAGE_WILDCARD,
                 state.getLocale().getLocale().getLanguage());
     }
 
@@ -756,7 +751,7 @@ public final class LastFmService {
     public List<ILovedTrack> getLovedTracks() {
         if (this.user != null) {
             try {
-                return LastFmLovedTracks.getLovedTracks(this.user, null, proxy);
+                return LastFmLovedTracks.getLovedTracks(this.user, null, networkHandler);
             } catch (Exception e) {
                 Logger.error(e);
             }

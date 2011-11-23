@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.proxy;
+package net.sourceforge.atunes.kernel.modules.network;
 
 import java.io.IOException;
 import java.net.Authenticator;
@@ -31,7 +31,7 @@ import net.sourceforge.atunes.model.IProxy;
 /**
  * The Class CustomProxy.
  */
-public class ExtendedProxy extends java.net.Proxy {
+class ExtendedProxy extends java.net.Proxy {
 
     /** The url. */
     private String url;

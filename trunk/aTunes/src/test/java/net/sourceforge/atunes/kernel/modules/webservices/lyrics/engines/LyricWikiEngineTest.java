@@ -20,9 +20,13 @@
 
 package net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines;
 
+import static org.mockito.Mockito.mock;
+
 import java.util.UUID;
 
+import net.sourceforge.atunes.kernel.modules.network.NetworkHandler;
 import net.sourceforge.atunes.model.ILyrics;
+import net.sourceforge.atunes.model.IState;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -34,7 +38,9 @@ public class LyricWikiEngineTest {
 
     @Before
     public void init() {
-        testedObject = new LyricWikiEngine(null);
+    	NetworkHandler networkHandler = new NetworkHandler();
+    	networkHandler.setState(mock(IState.class));
+        testedObject = new LyricWikiEngine(networkHandler);
     }
 
     @Test

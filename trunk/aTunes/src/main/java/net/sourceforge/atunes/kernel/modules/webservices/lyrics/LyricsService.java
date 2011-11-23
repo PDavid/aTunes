@@ -27,12 +27,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
+import net.sourceforge.atunes.kernel.modules.network.NetworkHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.AbstractLyricsEngine;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsEngineInfo;
 import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.model.ILyricsEngineInfo;
 import net.sourceforge.atunes.model.ILyricsService;
+import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IProxy;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateChangeListener;
@@ -50,17 +51,26 @@ public final class LyricsService implements IStateChangeListener, ILyricsService
     private List<AbstractLyricsEngine> lyricsEngines;
 
     private IState state;
+
+    private INetworkHandler networkHandler;
     
     /**
-	 * @param state
-	 */
-	public LyricsService(IState state) {
+     * @param networkHandler
+     */
+    public void setNetworkHandler(INetworkHandler networkHandler) {
+		this.networkHandler = networkHandler;
+	}
+    
+    /**
+     * @param state
+     */
+    public void setState(IState state) {
 		this.state = state;
-    }
-
+	}
+    
     @Override
 	public void updateService() {
-        this.lyricsEngines = loadEngines(state.getProxy());
+        this.lyricsEngines = loadEngines();
     }
     
     private synchronized LyricsCache getLyricsCache() {
@@ -148,18 +158,9 @@ public final class LyricsService implements IStateChangeListener, ILyricsService
      * 
      * @return the lyrics engines
      */
-    private List<AbstractLyricsEngine> loadEngines(IProxy proxy) {
+    private List<AbstractLyricsEngine> loadEngines() {
         List<ILyricsEngineInfo> lyricsEnginesInfo = state.getLyricsEnginesInfo();
         boolean enginesModified = false;
-
-        ExtendedProxy p = null;
-        try {
-            if (proxy != null) {
-                p = ExtendedProxy.getProxy(proxy);
-            }
-        } catch (Exception e) {
-            Logger.error(e);
-        }
 
         boolean loadDefault = false;
         if (lyricsEnginesInfo != null) {
@@ -193,8 +194,8 @@ public final class LyricsService implements IStateChangeListener, ILyricsService
             if (lyricsEngineInfo.isEnabled()) {
                 try {
                     Class<?> clazz = Class.forName(lyricsEngineInfo.getClazz());
-                    Constructor<?> constructor = clazz.getConstructor(ExtendedProxy.class);
-                    result.add((AbstractLyricsEngine) constructor.newInstance(p));
+                    Constructor<?> constructor = clazz.getConstructor(NetworkHandler.class);
+                    result.add((AbstractLyricsEngine) constructor.newInstance(networkHandler));
                 } catch (ClassNotFoundException e) {
                 	enginesToUnload.add(lyricsEngineInfo);
                 	logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
@@ -256,7 +257,7 @@ public final class LyricsService implements IStateChangeListener, ILyricsService
             if (lyricsEngineInfo.isEnabled()) {
                 try {
                     Class<?> clazz = Class.forName(lyricsEngineInfo.getClazz());
-                    Constructor<?> constructor = clazz.getConstructor(ExtendedProxy.class);
+                    Constructor<?> constructor = clazz.getConstructor();
                     result.add((AbstractLyricsEngine) constructor.newInstance(p));
                 } catch (ClassNotFoundException e) {
                     Logger.error(e);

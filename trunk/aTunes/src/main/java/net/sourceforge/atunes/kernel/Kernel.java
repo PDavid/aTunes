@@ -22,13 +22,11 @@ package net.sourceforge.atunes.kernel;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.UnknownHostException;
 
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.model.ICommandHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IKernel;
@@ -81,7 +79,6 @@ public final class Kernel implements IKernel, ApplicationContextAware {
 
         new LanguageSelector().setLanguage(state);
         
-        initializeProxy();
         initializeUI();
         context.getBean(HandlerInitializer.class).registerAndInitializeHandlers(state);
         createUI();
@@ -89,20 +86,6 @@ public final class Kernel implements IKernel, ApplicationContextAware {
         // Call user interaction
         context.getBean(ApplicationLifeCycleListeners.class).doUserInteraction(
         		context.getBean(ApplicationLifeCycleListeners.class).getUserInteractionRequests());
-    }
-    
-    /**
-     * Initializes proxy
-     */
-    private void initializeProxy() {
-        Logger.debug("Initializing proxy");
-        try {
-            ExtendedProxy.initProxy(ExtendedProxy.getProxy(state.getProxy()));
-        } catch (UnknownHostException e) {
-            Logger.error(e);
-        } catch (IOException e) {
-            Logger.error(e);
-        }
     }
     
     /**

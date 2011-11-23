@@ -22,6 +22,7 @@ package net.sourceforge.atunes.model;
 
 import java.io.Serializable;
 
+
 /**
  * A radio station
  * @author alex
@@ -43,10 +44,11 @@ public interface IRadio extends IAudioObject, Serializable, ITreeObject<IRadio>,
 
 	/**
 	 * Checks for playlist url.
+	 * @param networkHandler
 	 * @param proxy
 	 * @return
 	 */
-	public boolean hasPlaylistUrl(IProxy proxy);
+	public boolean hasPlaylistUrl(INetworkHandler networkHandler, IProxy proxy);
 
 	/**
 	 * Checks if is removed.

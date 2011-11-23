@@ -24,10 +24,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLovedTrack;
 import net.sourceforge.atunes.model.ILovedTrack;
-import net.sourceforge.atunes.utils.NetworkUtils;
+import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -65,11 +64,11 @@ public final class LastFmLovedTracks {
      * 
      * @param user
      * @param params
-     * @param proxy
+     * @param networkHandler
      * @return
      * @throws IOException
      */
-    static List<ILovedTrack> getLovedTracks(String user, String params, ExtendedProxy proxy) throws IOException {
+    static List<ILovedTrack> getLovedTracks(String user, String params, INetworkHandler networkHandler) throws IOException {
         List<ILovedTrack> result = new ArrayList<ILovedTrack>();
         String url = LOVED_TRACKS_BASE_URL.replace(USER_WILDCARD, user);
         // If params is not null then concatenate string
@@ -77,7 +76,7 @@ public final class LastFmLovedTracks {
             url = StringUtils.getString(url, "?", params);
         }
         // Get content
-        String content = NetworkUtils.readURL(NetworkUtils.getConnection(url, proxy));
+        String content = networkHandler.readURL(networkHandler.getConnection(url));
 
         // Start parsing page
         int cursor = 0;
@@ -127,7 +126,7 @@ public final class LastFmLovedTracks {
                 int paramStart = link.indexOf('?');
                 link = link.substring(paramStart + 1, link.indexOf('"', paramStart));
                 link = StringUtils.unescapeHTML(link, 0);
-                result.addAll(getLovedTracks(user, link, proxy));
+                result.addAll(getLovedTracks(user, link, networkHandler));
             }
         }
         return result;

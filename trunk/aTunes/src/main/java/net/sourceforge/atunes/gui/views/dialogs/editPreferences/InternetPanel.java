@@ -35,13 +35,12 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
-import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
+import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IProxy;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.Logger;
 
 /**
  * The preferences panel for internet settings.
@@ -61,12 +60,16 @@ public final class InternetPanel extends AbstractPreferencesPanel {
     private JTextField proxyUser;
     private JLabel proxyPasswordLabel;
     private JPasswordField proxyPassword;
+    
+    private INetworkHandler networkHandler;
 
     /**
      * Instantiates a new internet panel.
      */
-    public InternetPanel() {
+    public InternetPanel(INetworkHandler networkHandler) {
         super(I18nUtils.getString("INTERNET"));
+        
+        this.networkHandler = networkHandler;
 
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1;
@@ -214,13 +217,7 @@ public final class InternetPanel extends AbstractPreferencesPanel {
     public boolean applyPreferences(IState state) {
         IProxy proxy = getProxy();
         state.setProxy(proxy);
-        try {
-            ExtendedProxy.initProxy(ExtendedProxy.getProxy(proxy));
-        } catch (UnknownHostException e) {
-            Logger.error(e);
-        } catch (IOException e) {
-            Logger.error(e);
-        }
+        networkHandler.updateProxy(proxy);
         return false;
     }
 
