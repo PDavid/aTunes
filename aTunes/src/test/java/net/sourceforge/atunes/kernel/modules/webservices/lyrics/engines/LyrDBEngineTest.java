@@ -20,13 +20,19 @@
 
 package net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines;
 
+import static org.mockito.Mockito.mock;
+import net.sourceforge.atunes.kernel.modules.network.NetworkHandler;
+import net.sourceforge.atunes.model.IState;
+
 import org.junit.Before;
 
 public class LyrDBEngineTest extends AbstractLyricEngineTest {
 
     @Before
     public void init() {
-        testedObject = new LyrDBEngine(null);
+    	NetworkHandler networkHandler = new NetworkHandler();
+    	networkHandler.setState(mock(IState.class));
+        testedObject = new LyrDBEngine(networkHandler);
         engineUrl = "lyrdb.com";
         artist = "The Beatles";
         song = "Yesterday";

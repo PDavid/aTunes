@@ -28,18 +28,17 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
-import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.model.FeedType;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
-import net.sourceforge.atunes.utils.NetworkUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.XMLUtils;
 
@@ -71,24 +70,36 @@ public class PodcastFeedEntryRetriever implements Runnable {
     private IFrame frame;
     
     private INavigationHandler navigationHandler;
+    
+    private INetworkHandler networkHandler;
 
-    public PodcastFeedEntryRetriever(List<IPodcastFeed> podcastFeeds, IState state, IFrame frame, INavigationHandler navigationHandler) {
+    /**
+     * @param podcastFeeds
+     * @param state
+     * @param frame
+     * @param navigationHandler
+     * @param networkHandler
+     */
+    public PodcastFeedEntryRetriever(List<IPodcastFeed> podcastFeeds, IState state, IFrame frame, INavigationHandler navigationHandler, INetworkHandler networkHandler) {
         this.podcastFeeds = podcastFeeds;
         this.state = state;
         this.frame = frame;
         this.navigationHandler = navigationHandler;
+        this.networkHandler = networkHandler;
     }
 
     /**
      * Retrieves Podcast Feed Entries and refreshes view
+     * @param removePodcastFeedEntriesRemovedFromPodcastFeed
+     * @return
      */
-    public List<IPodcastFeed> retrievePodcastFeedEntries(final boolean removePodcastFeedEntriesRemovedFromPodcastFeed, ExtendedProxy proxy) {
+    public List<IPodcastFeed> retrievePodcastFeedEntries(final boolean removePodcastFeedEntriesRemovedFromPodcastFeed) {
 
         final List<IPodcastFeed> podcastFeedsWithNewEntries = new ArrayList<IPodcastFeed>();
 
         for (final IPodcastFeed podcastFeed : podcastFeeds) {
             try {
-                Document feedXml = XMLUtils.getXMLDocument(NetworkUtils.readURL(NetworkUtils.getConnection(podcastFeed.getUrl(), proxy)));
+                Document feedXml = XMLUtils.getXMLDocument(networkHandler.readURL(networkHandler.getConnection(podcastFeed.getUrl())));
 
                 if (feedXml != null) {
 
@@ -256,15 +267,10 @@ public class PodcastFeedEntryRetriever implements Runnable {
 
     @Override
     public void run() {
-        try {
-            boolean removePodcastFeedEntriesRemovedFromPodcastFeed = state.isRemovePodcastFeedEntriesRemovedFromPodcastFeed();
-            ExtendedProxy proxy = ExtendedProxy.getProxy(state.getProxy());
-            List<IPodcastFeed> podcastFeedsWithNewEntries = retrievePodcastFeedEntries(removePodcastFeedEntriesRemovedFromPodcastFeed, proxy);
-            // If there are new entries show a message and refresh view
-            showMessage(podcastFeedsWithNewEntries);
-            refreshView();
-        } catch (IOException e) {
-            Logger.error(StringUtils.getString("Could not retrieve podcast feed entries : ", e));
-        }
+    	boolean removePodcastFeedEntriesRemovedFromPodcastFeed = state.isRemovePodcastFeedEntriesRemovedFromPodcastFeed();
+    	List<IPodcastFeed> podcastFeedsWithNewEntries = retrievePodcastFeedEntries(removePodcastFeedEntriesRemovedFromPodcastFeed);
+    	// If there are new entries show a message and refresh view
+    	showMessage(podcastFeedsWithNewEntries);
+    	refreshView();
     }
 }

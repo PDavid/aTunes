@@ -20,11 +20,15 @@
 
 package net.sourceforge.atunes.kernel.modules.podcast;
 
+import static org.mockito.Mockito.mock;
+
 import java.util.Arrays;
 import java.util.List;
 
 import junit.framework.Assert;
+import net.sourceforge.atunes.kernel.modules.network.NetworkHandler;
 import net.sourceforge.atunes.model.IPodcastFeed;
+import net.sourceforge.atunes.model.IState;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -41,9 +45,11 @@ public class PodcastFeedEntryRetrieverTest {
 
     @Test
     public void testRetrievePodcastFeedEntries() {
-
-        PodcastFeedEntryRetriever podcastFeedEntryRetriever = new PodcastFeedEntryRetriever(Arrays.asList(testedObject), null, null, null);
-        List<IPodcastFeed> podcastFeedsWithNewEntries = podcastFeedEntryRetriever.retrievePodcastFeedEntries(true, null);
+    	NetworkHandler networkHandler = new NetworkHandler();
+    	networkHandler.setState(mock(IState.class));
+    	
+        PodcastFeedEntryRetriever podcastFeedEntryRetriever = new PodcastFeedEntryRetriever(Arrays.asList(testedObject), null, null, null, networkHandler);
+        List<IPodcastFeed> podcastFeedsWithNewEntries = podcastFeedEntryRetriever.retrievePodcastFeedEntries(true);
 
         Assert.assertEquals("RadioTux GNU/Linux", testedObject.getName());
         Assert.assertEquals(1, podcastFeedsWithNewEntries.size());

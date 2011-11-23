@@ -27,13 +27,12 @@ import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.Logger;
-import net.sourceforge.atunes.utils.NetworkUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.XMLUtils;
 
@@ -71,31 +70,17 @@ public final class YoutubeService {
     private static final String SEARCH_URL = StringUtils.getString("http://gdata.youtube.com/feeds/api/videos?vq=", QUERY_STRING_WILDCARD, "&max-results=", Integer
             .toString(MAX_RESULTS), "&start-index=", START_INDEX_WILDCARD);
 
-    /**
-     * The proxy
-     */
-    private ExtendedProxy proxy;
-    
     private IState state;
-
-    public YoutubeService(IState state) {
-    	this.state = state;
-    	updateService();
-    }
-
+    
+    private INetworkHandler networkHandler;
+    
     /**
-     * Updates service after a configuration change
+     * @param state
+     * @param networkHandler
      */
-    public void updateService() {
-        ExtendedProxy proxy = null;
-        try {
-            if (state.getProxy() != null) {
-                proxy = ExtendedProxy.getProxy(state.getProxy());
-            }
-        } catch (Exception e) {
-            Logger.error(e);
-        }
-        this.proxy = proxy;
+    public YoutubeService(IState state, INetworkHandler networkHandler) {
+    	this.state = state;
+    	this.networkHandler = networkHandler;
     }
 
     /**
@@ -109,14 +94,14 @@ public final class YoutubeService {
      */
     public List<YoutubeResultEntry> searchInYoutube(String searchString, int startIndex) {
         try {
-            String searchStringEncoded = NetworkUtils.encodeString(searchString);
+            String searchStringEncoded = networkHandler.encodeString(searchString);
             searchStringEncoded = searchStringEncoded.replaceAll("\\+", "%20");
 
             //construct search url
             String url = SEARCH_URL.replaceAll(QUERY_STRING_WILDCARD, searchStringEncoded).replaceAll(START_INDEX_WILDCARD, Integer.toString(startIndex));
 
             //get the XML dom; very very nice API, I like it.		
-            Document xml = XMLUtils.getXMLDocument(NetworkUtils.readURL(NetworkUtils.getConnection(url, proxy)));
+            Document xml = XMLUtils.getXMLDocument(networkHandler.readURL(networkHandler.getConnection(url)));
 
             if (xml == null) {
                 return Collections.emptyList();
@@ -162,7 +147,7 @@ public final class YoutubeService {
                     Node tn = thumbnails.item(index);
                     if (tn != null) {
                         String tnUrl = ((Element) tn).getAttribute("url");
-                        Image image = NetworkUtils.getImage(NetworkUtils.getConnection(tnUrl, proxy));
+                        Image image = networkHandler.getImage(networkHandler.getConnection(tnUrl));
                         entry.setImage(ImageUtils.scaleImageBicubic(image, Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT));
                     }
                 }
@@ -198,7 +183,7 @@ public final class YoutubeService {
      */
     public String getDirectUrlToBeAbleToPlaySong(String url) {
         try {
-            String response = NetworkUtils.readURL(NetworkUtils.getConnection(url, proxy));
+            String response = networkHandler.readURL(networkHandler.getConnection(url));
             //now try to construct the download url from youtube
             int ind = response.indexOf("swfArgs");
             response = response.substring(ind + 1, response.length());

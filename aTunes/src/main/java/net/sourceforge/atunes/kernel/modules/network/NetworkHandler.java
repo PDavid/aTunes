@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.utils;
+package net.sourceforge.atunes.kernel.modules.network;
 
 import java.awt.Image;
 import java.io.IOException;
@@ -27,22 +27,49 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.net.UnknownHostException;
 
 import javax.imageio.ImageIO;
 
-import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
+import net.sourceforge.atunes.kernel.AbstractHandler;
+import net.sourceforge.atunes.model.INetworkHandler;
+import net.sourceforge.atunes.model.IProxy;
+import net.sourceforge.atunes.utils.ClosingUtils;
+import net.sourceforge.atunes.utils.Logger;
 
 import org.apache.commons.io.IOUtils;
-import org.commonjukebox.plugins.model.PluginApi;
+
+import de.umass.lastfm.Caller;
 
 /**
- * Utility methods for network access.
+ * Responsible of handling network connections
+ * @author alex
+ *
  */
-@PluginApi
-public final class NetworkUtils {
+public class NetworkHandler extends AbstractHandler implements INetworkHandler {
 
-    private NetworkUtils() {
-    }
+	@Override
+	protected void initHandler() {
+		updateProxy(getState().getProxy());
+	}
+	
+	/**
+	 * @param proxy
+	 */
+	@Override
+	public void updateProxy(IProxy proxy) {
+        try {
+    		ExtendedProxy extendedProxy = ExtendedProxy.getProxy(proxy);
+            ExtendedProxy.initProxy(extendedProxy);
+            
+            // Necessary for last.fm
+            Caller.getInstance().setProxy(extendedProxy);
+        } catch (UnknownHostException e) {
+            Logger.error(e);
+        } catch (IOException e) {
+            Logger.error(e);
+        }
+	}
 
     /**
      * Encodes a string in a format suitable to send a http request.
@@ -52,7 +79,8 @@ public final class NetworkUtils {
      * 
      * @return A suitable encoded String
      */
-    public static String encodeString(String s) {
+    @Override
+	public String encodeString(String s) {
         try {
             return URLEncoder.encode(s, "UTF-8");
         } catch (UnsupportedEncodingException e) {
@@ -61,24 +89,25 @@ public final class NetworkUtils {
     }
 
     /**
-     * Returns a HttpURLConnection specified by a given URL and Proxy.
+     * Returns a HttpURLConnection specified by a given URL
      * 
      * @param urlString
      *            A URL as String
-     * @param proxy
-     *            A proxy
      * 
      * @return A HttpURLConnection
      * 
      * @throws IOException
      *             If an IO exception occurs
      */
-    public static URLConnection getConnection(String urlString, ExtendedProxy proxy) throws IOException {
+    @Override
+	public URLConnection getConnection(String urlString) throws IOException {
         Logger.debug("Opening Connection With: ", urlString);
 
         URL url = new URL(urlString);
 
         URLConnection connection;
+        
+        ExtendedProxy proxy = ExtendedProxy.getProxy(getState().getProxy());
         if (proxy == null) {
             connection = url.openConnection();
         } else {
@@ -101,7 +130,8 @@ public final class NetworkUtils {
      * @throws IOException
      *             If an IO exception occurs
      */
-    public static Image getImage(URLConnection connection) throws IOException {
+    @Override
+	public Image getImage(URLConnection connection) throws IOException {
         InputStream input = null;
         try {
             input = connection.getInputStream();
@@ -110,7 +140,7 @@ public final class NetworkUtils {
             ClosingUtils.close(input);
         }
     }
-
+    
     /**
      * Reads a String from a given URLConnection.
      * 
@@ -122,35 +152,12 @@ public final class NetworkUtils {
      * @throws IOException
      *             If an IO exception occurs
      */
-    public static String readURL(URLConnection connection) throws IOException {
+    @Override
+	public String readURL(URLConnection connection) throws IOException {
         InputStream input = null;
         try {
             input = connection.getInputStream();
             return IOUtils.toString(input);            
-        } finally {
-            ClosingUtils.close(input);
-        }
-    }
-
-    /**
-     * Reads a String of n bytes from a given URLConnection.
-     * 
-     * @param connection
-     *            A URLConnection
-     * 
-     * @param n
-     *            Number of bytes
-     * 
-     * @return A String read from a given URLConnection
-     * 
-     * @throws IOException
-     *             If an IO exception occurs
-     */
-    public static String readURL(URLConnection connection, int n) throws IOException {
-        InputStream input = null;
-        try {
-            input = connection.getInputStream();
-            return IOUtils.toString(input);
         } finally {
             ClosingUtils.close(input);
         }
@@ -169,7 +176,8 @@ public final class NetworkUtils {
      * @throws IOException
      *             If an IO exception occurs
      */
-    public static String readURL(URLConnection connection, String charset) throws IOException {
+    @Override
+	public String readURL(URLConnection connection, String charset) throws IOException {
         InputStream input = null;
         try {
             input = connection.getInputStream();

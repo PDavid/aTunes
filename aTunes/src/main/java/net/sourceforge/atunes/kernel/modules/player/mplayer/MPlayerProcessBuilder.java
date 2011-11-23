@@ -28,6 +28,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
@@ -46,6 +47,15 @@ public class MPlayerProcessBuilder {
 	private IPodcastFeedHandler podcastFeedHandler;
 	
 	private MPlayerEngine engine;
+	
+	private INetworkHandler networkHandler;
+	
+	/**
+	 * @param networkHandler
+	 */
+	public void setNetworkHandler(INetworkHandler networkHandler) {
+		this.networkHandler = networkHandler;
+	}
 	
 	/**
 	 * @param podcastFeedHandler
@@ -191,7 +201,7 @@ public class MPlayerProcessBuilder {
         }
         
         // If a radio has a playlist url add playlist command
-        if (audioObject instanceof IRadio && ((IRadio) audioObject).hasPlaylistUrl(state.getProxy())) {
+        if (audioObject instanceof IRadio && ((IRadio) audioObject).hasPlaylistUrl(networkHandler, state.getProxy())) {
             command.add(MPlayerConstants.PLAYLIST);
         }
 	}

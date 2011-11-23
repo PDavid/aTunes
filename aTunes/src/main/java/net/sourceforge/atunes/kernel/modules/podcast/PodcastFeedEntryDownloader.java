@@ -32,14 +32,13 @@ import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
+import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
 import net.sourceforge.atunes.model.IProxy;
 import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
-import net.sourceforge.atunes.utils.NetworkUtils;
 
 /**
  * The podcast feed entry downloader downloads podcast feed entries from the
@@ -60,37 +59,39 @@ public class PodcastFeedEntryDownloader extends SwingWorker<Boolean, Void> {
     private ITable navigationTable;
     
     private IPodcastFeedHandler podcastFeedHandler;
+    
+    private INetworkHandler networkHandler;
 
     /**
      * Instantiates a new podcast feed entry downloader.
      * 
      * @param podcastFeedEntry
-     * @param proxy
      * @param navigationTable
      * @param podcastFeedHandler
+     * @param networkHandler
      */
-    public PodcastFeedEntryDownloader(IPodcastFeedEntry podcastFeedEntry, IProxy proxy, ITable navigationTable, IPodcastFeedHandler podcastFeedHandler) {
+    public PodcastFeedEntryDownloader(IPodcastFeedEntry podcastFeedEntry, ITable navigationTable, IPodcastFeedHandler podcastFeedHandler, INetworkHandler networkHandler) {
         this.podcastFeedEntry = podcastFeedEntry;
-        this.proxy = proxy;
         this.navigationTable = navigationTable;
         this.podcastFeedHandler = podcastFeedHandler;
+        this.networkHandler = networkHandler;
     }
 
     @Override
     protected Boolean doInBackground() throws Exception {
 
-        Logger.info("Downloading PodcastEntry: " + podcastFeedEntry.getUrl());
+        Logger.info("Downloading PodcastEntry: ", podcastFeedEntry.getUrl());
 
         OutputStream out = null;
         InputStream in = null;
 
         String podcastFeedEntryFileName = podcastFeedHandler.getDownloadPath(podcastFeedEntry);
-        Logger.info("Downloading to: " + podcastFeedEntryFileName);
+        Logger.info("Downloading to: ", podcastFeedEntryFileName);
         File localFile = new File(podcastFeedEntryFileName);
 
         try {
             out = new BufferedOutputStream(new FileOutputStream(localFile));
-            URLConnection conn = NetworkUtils.getConnection(podcastFeedEntry.getUrl(), ExtendedProxy.getProxy(proxy));
+            URLConnection conn = networkHandler.getConnection(podcastFeedEntry.getUrl());
             in = conn.getInputStream();
             setTotalBytes(conn.getContentLength());
 
@@ -112,7 +113,7 @@ public class PodcastFeedEntryDownloader extends SwingWorker<Boolean, Void> {
             setFailed(true);
             return false;
         } catch (IOException e) {
-            Logger.info("Connection to " + podcastFeedEntry.getUrl() + " failed");
+            Logger.info("Connection to ", podcastFeedEntry.getUrl(), " failed");
             setFailed(true);
             return false;
         } finally {

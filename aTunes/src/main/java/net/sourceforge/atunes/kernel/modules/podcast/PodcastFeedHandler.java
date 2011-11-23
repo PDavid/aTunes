@@ -47,6 +47,7 @@ import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAddPodcastFeedDialog;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
@@ -131,6 +132,15 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
     private ScheduledFuture<?> scheduledPodcastFeedEntryRetrieverFuture;
     
     private CachedIconFactory rssMediumIcon;
+    
+    private INetworkHandler networkHandler;
+    
+    /**
+     * @param networkHandler
+     */
+    public void setNetworkHandler(INetworkHandler networkHandler) {
+		this.networkHandler = networkHandler;
+	}
     
     /**
      * @param rssMediumIcon
@@ -294,7 +304,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
         if (scheduledPodcastFeedEntryRetrieverFuture != null) {
             scheduledPodcastFeedEntryRetrieverFuture.cancel(true);
         }
-        scheduledPodcastFeedEntryRetrieverFuture = getBean(ITaskService.class).submitPeriodically("Periodically Retrieve Podcast Feed Entries", newRetrievalInterval, newRetrievalInterval, new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame(), getBean(INavigationHandler.class)));
+        scheduledPodcastFeedEntryRetrieverFuture = getBean(ITaskService.class).submitPeriodically("Periodically Retrieve Podcast Feed Entries", newRetrievalInterval, newRetrievalInterval, new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame(), getBean(INavigationHandler.class), networkHandler));
     }
 
     /* (non-Javadoc)
@@ -302,7 +312,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
 	 */
     @Override
 	public void retrievePodcastFeedEntries() {
-    	getBean(ITaskService.class).submitNow("Retrieve Podcast Feed Entries", new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame(), getBean(INavigationHandler.class)));
+    	getBean(ITaskService.class).submitNow("Retrieve Podcast Feed Entries", new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame(), getBean(INavigationHandler.class), networkHandler));
     }
 
     /* (non-Javadoc)
@@ -316,7 +326,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
         final IProgressDialog d = (IProgressDialog) getBean("transferDialog");
         d.setTitle(I18nUtils.getString("PODCAST_FEED_ENTRY_DOWNLOAD"));
         d.setIcon(rssMediumIcon.getIcon(getBean(ILookAndFeelManager.class).getCurrentLookAndFeel().getPaintForSpecialControls()));
-        final PodcastFeedEntryDownloader downloadPodcastFeedEntry = new PodcastFeedEntryDownloader(podcastFeedEntry, getState().getProxy(), (ITable)getBean("navigationTable"), this);
+        final PodcastFeedEntryDownloader downloadPodcastFeedEntry = new PodcastFeedEntryDownloader(podcastFeedEntry, (ITable)getBean("navigationTable"), this, networkHandler);
         synchronized (runningDownloads) {
             runningDownloads.add(downloadPodcastFeedEntry);
         }

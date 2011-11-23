@@ -46,8 +46,6 @@ public class WebServicesHandler extends AbstractHandler implements IWebServicesH
 	
 	private ILyricsService lyricsService;
 	
-	private YoutubeService youtubeService;
-	
 	private ITaskService taskService;
 	
 	public final void setLastFmService(LastFmService lastFmService) {
@@ -56,10 +54,6 @@ public class WebServicesHandler extends AbstractHandler implements IWebServicesH
 	
 	public final void setLyricsService(ILyricsService lyricsService) {
 		this.lyricsService = lyricsService;
-	}
-	
-	public final void setYoutubeService(YoutubeService youtubeService) {
-		this.youtubeService = youtubeService;
 	}
 	
 	public void setTaskService(ITaskService taskService) {
@@ -81,7 +75,6 @@ public class WebServicesHandler extends AbstractHandler implements IWebServicesH
 	public void applicationStateChanged(IState newState) {
         lastFmService.updateService();
         lyricsService.updateService();
-        youtubeService.updateService();
 	}
 
 	@Override

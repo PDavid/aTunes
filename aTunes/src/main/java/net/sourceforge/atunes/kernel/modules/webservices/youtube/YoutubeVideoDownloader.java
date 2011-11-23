@@ -31,13 +31,12 @@ import java.util.List;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
+import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IProxy;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
-import net.sourceforge.atunes.utils.NetworkUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -87,14 +86,17 @@ public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
     
     private YoutubeService youtubeService;
     
+    private INetworkHandler networkHandler;
+    
     /**
      * Creates a new downloader
-     * 
      * @param entry
      * @param file
      * @param proxy
+     * @param youtubeService
+     * @param networkHandler
      */
-    public YoutubeVideoDownloader(YoutubeResultEntry entry, File file, IProxy proxy, YoutubeService youtubeService) {
+    public YoutubeVideoDownloader(YoutubeResultEntry entry, File file, IProxy proxy, YoutubeService youtubeService, INetworkHandler networkHandler) {
         this.entry = entry;
         this.youtubeService = youtubeService;
         File f = file;
@@ -114,6 +116,7 @@ public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
             }
         });
         this.proxy = proxy;
+        this.networkHandler = networkHandler;
         this.progressDialog.showDialog();
     }
 
@@ -123,7 +126,7 @@ public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
         InputStream input = null;
         FileOutputStream fout = null;
         try {
-            URLConnection connection = NetworkUtils.getConnection(url, ExtendedProxy.getProxy(proxy));
+            URLConnection connection = networkHandler.getConnection(url);
             publish(StringUtils.getString(TOTAL, Integer.toString(connection.getContentLength())));
             input = connection.getInputStream();
 

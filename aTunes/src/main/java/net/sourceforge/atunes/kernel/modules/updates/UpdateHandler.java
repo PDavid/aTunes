@@ -25,12 +25,11 @@ import java.net.UnknownHostException;
 
 import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.model.ApplicationVersion;
+import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IUpdateHandler;
 import net.sourceforge.atunes.utils.Logger;
-import net.sourceforge.atunes.utils.NetworkUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.XMLUtils;
 
@@ -49,6 +48,15 @@ public final class UpdateHandler extends AbstractHandler implements IUpdateHandl
     private ApplicationArguments applicationArguments;
     
     private ITaskService taskService;
+    
+    private INetworkHandler networkHandler;
+    
+    /**
+     * @param networkHandler
+     */
+    public void setNetworkHandler(INetworkHandler networkHandler) {
+		this.networkHandler = networkHandler;
+	}
     
     /**
      * @param taskService
@@ -130,6 +138,6 @@ public final class UpdateHandler extends AbstractHandler implements IUpdateHandl
 	 * @throws IOException
 	 */
 	private Document getVersionXml() throws UnknownHostException, IOException {
-		return  XMLUtils.getXMLDocument(NetworkUtils.readURL(NetworkUtils.getConnection(updatesURL, ExtendedProxy.getProxy(getState().getProxy()))));
+		return  XMLUtils.getXMLDocument(networkHandler.readURL(networkHandler.getConnection(updatesURL)));
 	}
 }

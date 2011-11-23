@@ -27,13 +27,12 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IProxy;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.ImageSize;
-import net.sourceforge.atunes.utils.NetworkUtils;
 
 import org.commonjukebox.plugins.model.PluginApi;
 import org.joda.time.base.BaseDateTime;
@@ -209,11 +208,8 @@ public final class Radio implements IRadio {
         return null;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#hasPlaylistUrl(net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy)
-	 */
     @Override
-	public boolean hasPlaylistUrl(IProxy proxy) {
+	public boolean hasPlaylistUrl(INetworkHandler networkHandler, IProxy proxy) {
         // First check based on URL end (extension)
         for (String pl : PLAYLISTS) {
             if (url.trim().toLowerCase().endsWith(pl)) {
@@ -222,9 +218,8 @@ public final class Radio implements IRadio {
         }
 
         // WORKAROUND: If URL has no extension, then try to get from content
-        // Just read first bytes to avoid starting read a non playlist url
         try {
-            String radioContent = NetworkUtils.readURL(NetworkUtils.getConnection(url, ExtendedProxy.getProxy(proxy)), 100);
+            String radioContent = networkHandler.readURL(networkHandler.getConnection(url));
             for (String pl : PLAYLISTS) {
                 if (radioContent.trim().toLowerCase().contains(pl)) {
                     return true;

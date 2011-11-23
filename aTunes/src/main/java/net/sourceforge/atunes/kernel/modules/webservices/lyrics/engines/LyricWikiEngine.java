@@ -26,11 +26,10 @@ import java.util.List;
 
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
-import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.model.ILyrics;
+import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.utils.Logger;
-import net.sourceforge.atunes.utils.NetworkUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -54,8 +53,11 @@ public class LyricWikiEngine extends AbstractLyricsEngine {
     private static final String LYRICS_ELEMENT_ATTRIBUTE_VALUE = "lyricbox";
     private static final String RESPONSE_ENCODING = "UTF-8";
 
-    public LyricWikiEngine(ExtendedProxy proxy) {
-        super(proxy);
+    /**
+     * @param networkHandler
+     */
+    public LyricWikiEngine(INetworkHandler networkHandler) {
+        super(networkHandler);
     }
 
     /**
@@ -94,8 +96,8 @@ public class LyricWikiEngine extends AbstractLyricsEngine {
         String formattedArtist = getStringForWikiURL(artist);
         String formattedTitle = getStringForWikiURL(title);
 
-        queryString = queryString.replace(ARTIST_PATTERN, NetworkUtils.encodeString(formattedArtist));
-        queryString = queryString.replace(TITLE_PATTERN, NetworkUtils.encodeString(formattedTitle));
+        queryString = queryString.replace(ARTIST_PATTERN, encodeString(formattedArtist));
+        queryString = queryString.replace(TITLE_PATTERN, encodeString(formattedTitle));
 
         return queryString;
     }

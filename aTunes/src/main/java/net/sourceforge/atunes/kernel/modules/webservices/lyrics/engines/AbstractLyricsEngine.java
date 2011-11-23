@@ -24,19 +24,21 @@ import java.io.IOException;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
 
-import net.sourceforge.atunes.kernel.modules.proxy.ExtendedProxy;
 import net.sourceforge.atunes.model.ILyrics;
-import net.sourceforge.atunes.utils.NetworkUtils;
+import net.sourceforge.atunes.model.INetworkHandler;
 
 /**
  * The base class for lyrics engines.
  */
 public abstract class AbstractLyricsEngine {
 
-    private ExtendedProxy proxy;
-
-    public AbstractLyricsEngine(ExtendedProxy proxy) {
-        this.proxy = proxy;
+    private INetworkHandler networkHandler;
+    
+    /**
+     * @param networkHandler
+     */
+    public AbstractLyricsEngine(INetworkHandler networkHandler) {
+        this.networkHandler = networkHandler;
     }
 
     /**
@@ -47,8 +49,8 @@ public abstract class AbstractLyricsEngine {
      * 
      * @return the string
      */
-    protected final static String encodeString(String str) {
-        return NetworkUtils.encodeString(str);
+    protected final String encodeString(String str) {
+        return networkHandler.encodeString(str);
     }
 
     /**
@@ -65,7 +67,7 @@ public abstract class AbstractLyricsEngine {
      *             Signals that an I/O exception has occurred.
      */
     protected final URLConnection getConnection(String url) throws UnknownHostException, IOException {
-        return NetworkUtils.getConnection(url, proxy);
+        return networkHandler.getConnection(url);
     }
 
     /**
@@ -81,8 +83,8 @@ public abstract class AbstractLyricsEngine {
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    protected final static String readURL(URLConnection connection, String charset) throws IOException {
-        return NetworkUtils.readURL(connection, charset);
+    protected final String readURL(URLConnection connection, String charset) throws IOException {
+        return networkHandler.readURL(connection, charset);
     }
 
     /**
