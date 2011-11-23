@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.network;
 
 import java.io.IOException;
 import java.net.Authenticator;
-import java.net.PasswordAuthentication;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -74,12 +73,7 @@ class ExtendedProxy extends java.net.Proxy {
 
     public static void initProxy(final ExtendedProxy proxy) {
         if (proxy != null) {
-            Authenticator.setDefault(new Authenticator() {
-                @Override
-                protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(proxy.getUser(), proxy.getPassword().toCharArray());
-                }
-            });
+            Authenticator.setDefault(new ProxyAuthenticator(proxy));
         } else {
             Authenticator.setDefault(null);
         }
