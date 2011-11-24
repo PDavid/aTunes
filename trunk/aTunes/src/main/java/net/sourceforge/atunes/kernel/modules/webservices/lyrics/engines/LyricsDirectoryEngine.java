@@ -28,7 +28,6 @@ import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.model.ILyrics;
-import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -40,13 +39,6 @@ public class LyricsDirectoryEngine extends AbstractLyricsEngine {
     private static final String WE_ARE_CURRENTLY_UNABLE_TO_SHOW_YOU_THE_LYRICS = "We are currently unable to show you the lyrics";
 	private static final String BASE_URL = "http://www.lyricsdir.com/";
     private static final String CHARSET = "UTF-8";
-
-    /**
-     * @param networkHandler
-     */
-    public LyricsDirectoryEngine(INetworkHandler networkHandler) {
-        super(networkHandler);
-    }
 
     @Override
     public ILyrics getLyricsFor(String artist, String title) {

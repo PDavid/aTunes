@@ -25,7 +25,6 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService;
-import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.model.IArtistInfo;

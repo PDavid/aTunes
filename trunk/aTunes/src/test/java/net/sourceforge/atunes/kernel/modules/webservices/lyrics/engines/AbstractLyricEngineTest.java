@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines;
 
 import java.util.UUID;
 
-import net.sourceforge.atunes.kernel.modules.network.NetworkHandler;
 import net.sourceforge.atunes.model.ILyrics;
 
 import org.junit.Assert;

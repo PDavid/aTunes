@@ -33,14 +33,14 @@ import net.sourceforge.atunes.model.INetworkHandler;
 public abstract class AbstractLyricsEngine {
 
     private INetworkHandler networkHandler;
-    
+
     /**
      * @param networkHandler
      */
-    public AbstractLyricsEngine(INetworkHandler networkHandler) {
-        this.networkHandler = networkHandler;
-    }
-
+    public void setNetworkHandler(INetworkHandler networkHandler) {
+		this.networkHandler = networkHandler;
+	}
+    
     /**
      * Encode string.
      * 

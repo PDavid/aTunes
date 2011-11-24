@@ -32,7 +32,8 @@ public class LyrDBEngineTest extends AbstractLyricEngineTest {
     public void init() {
     	NetworkHandler networkHandler = new NetworkHandler();
     	networkHandler.setState(mock(IState.class));
-        testedObject = new LyrDBEngine(networkHandler);
+        testedObject = new LyrDBEngine();
+        testedObject.setNetworkHandler(networkHandler);
         engineUrl = "lyrdb.com";
         artist = "The Beatles";
         song = "Yesterday";
