@@ -28,7 +28,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -69,7 +68,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
     /**
      * Data flavor of a list of objects dragged from inside application
      */
-    private static DataFlavor internalDataFlavor;
+    private DataFlavor internalDataFlavor;
 
     /**
      * Mime type of a list or URIs
@@ -79,7 +78,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
     /**
      * Data flavor of a list of URIs dragged from outside application
      */
-    private static DataFlavor uriListFlavor;
+    private DataFlavor uriListFlavor;
 
     private IFrame frame;
     
@@ -95,21 +94,42 @@ public class PlayListTableTransferHandler extends TransferHandler {
     
     private IPlayListTable playListTable;
     
-    static {
-        try {
-            internalDataFlavor = new DataFlavor(TransferableList.mimeType);
-            uriListFlavor = new DataFlavor(URI_LIST_MIME_TYPE);
-        } catch (ClassNotFoundException e) {
-            Logger.error(e);
-        }
+    /**
+     * @return Data flavor of a list of objects dragged from inside application
+     */
+    private DataFlavor getInternalDataFlavor() {
+    	if (internalDataFlavor == null) {
+    		try {
+				internalDataFlavor = new DataFlavor(TransferableList.mimeType);
+			} catch (ClassNotFoundException e) {
+				Logger.error(e);
+			}
+    	}
+    	return internalDataFlavor;
     }
+    
+    /**
+     * @return Data flavor of a list of URIs dragged from outside application
+     * @throws ClassNotFoundException
+     */
+    private DataFlavor getUriListFlavor() {
+    	if (uriListFlavor == null) {
+    		try {
+				uriListFlavor = new DataFlavor(URI_LIST_MIME_TYPE);
+			} catch (ClassNotFoundException e) {
+				Logger.error(e);
+			}
+    	}
+    	return uriListFlavor;
+    }
+    
 
     @Override
     public boolean canImport(TransferSupport support) {
         // Check if internal data flavor is supported
-        if (support.getTransferable().isDataFlavorSupported(internalDataFlavor)) {
+        if (support.getTransferable().isDataFlavorSupported(getInternalDataFlavor())) {
             try {
-                List<?> listOfObjectsDragged = (List<?>) support.getTransferable().getTransferData(internalDataFlavor);
+                List<?> listOfObjectsDragged = (List<?>) support.getTransferable().getTransferData(getInternalDataFlavor());
                 if (listOfObjectsDragged == null || listOfObjectsDragged.isEmpty()) {
                     return false;
                 }
@@ -160,9 +180,9 @@ public class PlayListTableTransferHandler extends TransferHandler {
         return false;
     }
 
-    private static boolean hasURIListFlavor(DataFlavor[] flavors) {
+    private boolean hasURIListFlavor(DataFlavor[] flavors) {
         for (DataFlavor flavor : flavors) {
-            if (uriListFlavor.equals(flavor)) {
+            if (getUriListFlavor().equals(flavor)) {
                 return true;
             }
         }
@@ -185,7 +205,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
             return false;
         }
 
-        if (support.getTransferable().isDataFlavorSupported(internalDataFlavor)) {
+        if (support.getTransferable().isDataFlavorSupported(getInternalDataFlavor())) {
             return processInternalImport(support);
         }
 
@@ -203,7 +223,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
     private boolean processInternalImport(TransferSupport support) {
         try {
             List<IAudioObject> audioObjectsToAdd = new ArrayList<IAudioObject>();
-            List<?> listOfObjectsDragged = (List<?>) support.getTransferable().getTransferData(internalDataFlavor);
+            List<?> listOfObjectsDragged = (List<?>) support.getTransferable().getTransferData(getInternalDataFlavor());
             if (listOfObjectsDragged == null || listOfObjectsDragged.isEmpty()) {
                 return false;
             }
@@ -275,12 +295,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
 
         // sort rows in reverse order if necessary: if target row index is greater than original row position we need to reverse rows to move them without change the order		
         final boolean needReverseRows = rowsDragged.get(0).getRowPosition() < targetRow;
-        Collections.sort(rowsDragged, new Comparator<PlayListDragableRow>() {
-            @Override
-            public int compare(PlayListDragableRow o1, PlayListDragableRow o2) {
-                return (needReverseRows ? -1 : 1) * Integer.valueOf(o1.getRowPosition()).compareTo(Integer.valueOf(o2.getRowPosition()));
-            }
-        });
+        Collections.sort(rowsDragged, new PlayListDragableRowComparator(needReverseRows));
         // get first row index
         int baseRow = (needReverseRows ? rowsDragged.get(rowsDragged.size() - 1) : rowsDragged.get(0)).getRowPosition();
 
@@ -342,7 +357,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
                 files = (List<File>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
                 // External drag and drop for Linux
             } else if (hasURIListFlavor(support.getDataFlavors())) {
-                files = textURIListToFileList((String) support.getTransferable().getTransferData(uriListFlavor));
+                files = textURIListToFileList((String) support.getTransferable().getTransferData(getUriListFlavor()));
             } else if (hasStringFlavor(support.getDataFlavors())) {
                 String str = ((String) support.getTransferable().getTransferData(DataFlavor.stringFlavor));
                 Logger.info(str);
