@@ -37,7 +37,6 @@ import javax.xml.parsers.SAXParserFactory;
 
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.model.ILyrics;
-import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -71,13 +70,6 @@ public class WinampcnEngine extends AbstractLyricsEngine {
 
     private static final String QUERY_URL = "http://www.winampcn.com/lyrictransfer/get.aspx?song=%1&artist=%2&lsong=%3";
     private static final String LYRC_URL = "http://www.winampcn.com/lyrictransfer/lrc.aspx?id=%1&ti=%2";
-
-    /**
-     * @param networkHandler
-     */
-    public WinampcnEngine(INetworkHandler networkHandler) {
-        super(networkHandler);
-    }
 
     @Override
     public ILyrics getLyricsFor(String artist, String title) {

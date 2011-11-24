@@ -28,7 +28,6 @@ import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.model.ILyrics;
-import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -52,13 +51,6 @@ public class LyricWikiEngine extends AbstractLyricsEngine {
     private static final String LYRICS_ELEMENT_ATTRIBUTE = "class";
     private static final String LYRICS_ELEMENT_ATTRIBUTE_VALUE = "lyricbox";
     private static final String RESPONSE_ENCODING = "UTF-8";
-
-    /**
-     * @param networkHandler
-     */
-    public LyricWikiEngine(INetworkHandler networkHandler) {
-        super(networkHandler);
-    }
 
     /**
      * Artists and songs with spaces are replaced with an underscore "_" and the

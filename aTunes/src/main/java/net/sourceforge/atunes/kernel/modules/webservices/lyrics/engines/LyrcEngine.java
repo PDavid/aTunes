@@ -29,7 +29,6 @@ import java.util.StringTokenizer;
 
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.model.ILyrics;
-import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -49,14 +48,6 @@ public class LyrcEngine extends AbstractLyricsEngine {
 
     /** The lyrics adding url. */
     private static final String ADD_LYRICS_URL = StringUtils.getString("http://www.lyrc.com.ar/en/add/add.php?tema=", SONG_WILDCARD, "&grupo=", ARTIST_WILDCARD);
-
-    /**
-     * @param proxy
-     * @param networkHandler
-     */
-    public LyrcEngine(INetworkHandler networkHandler) {
-        super(networkHandler);
-    }
 
     /**
      * Returns if a string is composed only by letters.

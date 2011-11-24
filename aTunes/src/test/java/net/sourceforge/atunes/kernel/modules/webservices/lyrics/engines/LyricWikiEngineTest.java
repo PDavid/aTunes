@@ -40,7 +40,8 @@ public class LyricWikiEngineTest {
     public void init() {
     	NetworkHandler networkHandler = new NetworkHandler();
     	networkHandler.setState(mock(IState.class));
-        testedObject = new LyricWikiEngine(networkHandler);
+        testedObject = new LyricWikiEngine();
+        testedObject.setNetworkHandler(networkHandler);
     }
 
     @Test

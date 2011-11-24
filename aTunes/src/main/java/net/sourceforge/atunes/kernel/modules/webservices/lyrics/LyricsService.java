@@ -27,25 +27,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.network.NetworkHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.AbstractLyricsEngine;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines.LyricsEngineInfo;
 import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.model.ILyricsEngineInfo;
 import net.sourceforge.atunes.model.ILyricsService;
 import net.sourceforge.atunes.model.INetworkHandler;
-import net.sourceforge.atunes.model.IProxy;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.IStateChangeListener;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public final class LyricsService implements IStateChangeListener, ILyricsService {
+public final class LyricsService implements ILyricsService {
 
     private List<LyricsEngineInfo> defaultLyricsEngines;
 
     /** Cache */
-    private static LyricsCache lyricsCache;
+    private LyricsCache lyricsCache;
 
     /** Contains a list of LyricsEngine to get lyrics. */
     private List<AbstractLyricsEngine> lyricsEngines;
@@ -73,7 +70,7 @@ public final class LyricsService implements IStateChangeListener, ILyricsService
         this.lyricsEngines = loadEngines();
     }
     
-    private synchronized LyricsCache getLyricsCache() {
+    private LyricsCache getLyricsCache() {
     	if (lyricsCache == null) {
     		Logger.debug("Initializing LyricsCache");
     		lyricsCache = new LyricsCache();
@@ -118,6 +115,8 @@ public final class LyricsService implements IStateChangeListener, ILyricsService
         return lyric;
     }
     
+    
+    
     /**
      * Applies several common string manipulation to improve lyrics
      * @param lyrics
@@ -143,14 +142,6 @@ public final class LyricsService implements IStateChangeListener, ILyricsService
             }
         }
         return result;
-    }
-
-    /**
-     * @param lyricsEngines
-     *            the lyricsEngines to set
-     */
-    private void setLyricsEngines(List<AbstractLyricsEngine> lyricsEngines) {
-        this.lyricsEngines = lyricsEngines;
     }
 
     /**
@@ -194,8 +185,10 @@ public final class LyricsService implements IStateChangeListener, ILyricsService
             if (lyricsEngineInfo.isEnabled()) {
                 try {
                     Class<?> clazz = Class.forName(lyricsEngineInfo.getClazz());
-                    Constructor<?> constructor = clazz.getConstructor(NetworkHandler.class);
-                    result.add((AbstractLyricsEngine) constructor.newInstance(networkHandler));
+                    Constructor<?> constructor = clazz.getConstructor();
+                    AbstractLyricsEngine engine = (AbstractLyricsEngine) constructor.newInstance();
+                    engine.setNetworkHandler(networkHandler);
+                    result.add(engine);
                 } catch (ClassNotFoundException e) {
                 	enginesToUnload.add(lyricsEngineInfo);
                 	logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
@@ -243,50 +236,9 @@ public final class LyricsService implements IStateChangeListener, ILyricsService
     	Logger.error(StringUtils.getString("Error was: ", e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
     }
  
-    /**
-     * Sets the lyric engines for the lyrics service
-     * 
-     * @param lyricsEnginesInfo
-     *            the lyrics engines info
-     */
-    private void setLyricsEngines(IProxy p, List<ILyricsEngineInfo> lyricsEnginesInfo) {
-        List<AbstractLyricsEngine> result = new ArrayList<AbstractLyricsEngine>();
-
-        // Get engines
-        for (ILyricsEngineInfo lyricsEngineInfo : lyricsEnginesInfo) {
-            if (lyricsEngineInfo.isEnabled()) {
-                try {
-                    Class<?> clazz = Class.forName(lyricsEngineInfo.getClazz());
-                    Constructor<?> constructor = clazz.getConstructor();
-                    result.add((AbstractLyricsEngine) constructor.newInstance(p));
-                } catch (ClassNotFoundException e) {
-                    Logger.error(e);
-                } catch (InstantiationException e) {
-                    Logger.error(e);
-                } catch (IllegalAccessException e) {
-                    Logger.error(e);
-                } catch (SecurityException e) {
-                    Logger.error(e);
-                } catch (NoSuchMethodException e) {
-                    Logger.error(e);
-                } catch (IllegalArgumentException e) {
-                    Logger.error(e);
-                } catch (InvocationTargetException e) {
-                    Logger.error(e);
-                }
-            }
-        }
-        setLyricsEngines(result);
-    }
-
     @Override
 	public boolean clearCache() {
         return getLyricsCache().clearCache();
-    }
-
-    @Override
-    public void applicationStateChanged(IState newState) {
-        setLyricsEngines(newState.getProxy(), newState.getLyricsEnginesInfo());
     }
 
     @Override
