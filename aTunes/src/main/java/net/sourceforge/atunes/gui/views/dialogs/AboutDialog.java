@@ -67,7 +67,7 @@ public final class AboutDialog extends AbstractCustomDialog implements IAboutDia
 
         @Override
         public void actionPerformed(ActionEvent e) {
-        	tableModel.refreshData();
+        	tableModel.fireTableDataChanged();
         }
 
     });
