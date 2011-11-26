@@ -25,7 +25,7 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.modules.repository.processes.ExportFilesProcess;
+import net.sourceforge.atunes.kernel.modules.repository.ExportFilesProcess;
 import net.sourceforge.atunes.model.IConfirmationDialogFactory;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IExportOptionsDialog;

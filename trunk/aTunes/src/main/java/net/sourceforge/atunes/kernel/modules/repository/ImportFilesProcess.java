@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.repository.processes;
+package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.io.File;
 import java.io.IOException;

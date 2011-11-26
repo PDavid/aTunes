@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.repository;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -38,7 +37,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.ApplicationArguments;
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.RepositorySelectionInfoDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.actions.ConnectDeviceAction;
@@ -50,7 +48,6 @@ import net.sourceforge.atunes.kernel.actions.RipCDAction;
 import net.sourceforge.atunes.kernel.actions.SelectRepositoryAction;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
-import net.sourceforge.atunes.kernel.modules.repository.processes.ImportFilesProcess;
 import net.sourceforge.atunes.kernel.modules.search.searchableobjects.RepositorySearchableObject;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
@@ -60,26 +57,20 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFavoritesHandler;
-import net.sourceforge.atunes.model.IKernel;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
 import net.sourceforge.atunes.model.IMultiFolderSelectionDialogFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
-import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.model.IRepositoryLoaderListener;
 import net.sourceforge.atunes.model.IRepositoryProgressDialog;
-import net.sourceforge.atunes.model.IReviewImportDialog;
 import net.sourceforge.atunes.model.ISearchHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.IStatisticsHandler;
-import net.sourceforge.atunes.model.ITagAttributesReviewed;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.model.Repository;
@@ -111,191 +102,15 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	
 	private INavigationHandler navigationHandler;
 	
-	private final class ImportFilesProcessListener implements IProcessListener {
-		private final ImportFilesProcess process;
-
-		private ImportFilesProcessListener(ImportFilesProcess process) {
-			this.process = process;
-		}
-
-		@Override
-		public void processCanceled() {
-			// Nothing to do, files copied will be removed before calling this method 
-		}
-
-		@Override
-		public void processFinished(final boolean ok) {
-			if (!ok) {
-				try {
-					SwingUtilities.invokeAndWait(new Runnable() {
-						@Override
-						public void run() {
-							getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(getFrame(), I18nUtils.getString("ERRORS_IN_IMPORT_PROCESS"));
-						}
-					});
-				} catch (InterruptedException e) {
-					// Do nothing
-				} catch (InvocationTargetException e) {
-					// Do nothing
-				}
-			} else {
-				// If import is ok then add files to repository
-				addFilesAndRefresh(process.getFilesTransferred());
-			}
-		}
-	}
-
-
-
-    private final class ImportFoldersSwingWorker extends
-			SwingWorker<List<ILocalAudioObject>, Void> {
-    	
-		private final class ImportFoldersLoaderListener implements
-				IRepositoryLoaderListener {
-			private int filesLoaded = 0;
-			private int totalFiles;
-
-			@Override
-			public void notifyRemainingTime(long time) {
-			}
-
-			@Override
-			public void notifyReadProgress() {
-			}
-
-			@Override
-			public void notifyFinishRefresh(RepositoryLoader loader) {
-			}
-			
-			@Override
-			public void notifyCurrentAlbum(String artist, String album) {
-			}
-
-			@Override
-			public void notifyFinishRead(RepositoryLoader loader) {
-			    progressDialog.hideDialog();
-			}
-
-			@Override
-			public void notifyFilesInRepository(final int files) {
-			    this.totalFiles = files;
-			    SwingUtilities.invokeLater(new Runnable() {
-			        @Override
-			        public void run() {
-			            progressDialog.setTotalProgress(files);
-			        }
-			    });
-			}
-
-			@Override
-			public void notifyFileLoaded() {
-			    this.filesLoaded++;
-			    SwingUtilities.invokeLater(new Runnable() {
-			        @Override
-			        public void run() {
-			            progressDialog.setCurrentProgress(filesLoaded);
-			            progressDialog.setProgressBarValue((int) (filesLoaded * 100.0 / totalFiles));
-			        }
-			    });
-			}
-
-			@Override
-			public void notifyCurrentPath(String path) {
-			}
-		}
-
-		private final List<File> folders;
-		private final String path;
-		private final IProgressDialog progressDialog;
-
-		private ImportFoldersSwingWorker(List<File> folders, String path,
-				IProgressDialog progressDialog) {
-			this.folders = folders;
-			this.path = path;
-			this.progressDialog = progressDialog;
-		}
-
-		@Override
-		protected List<ILocalAudioObject> doInBackground() throws Exception {
-		    return RepositoryLoader.getSongsForFolders(folders, new ImportFoldersLoaderListener());
-		}
-
-		@Override
-		protected void done() {
-		    super.done();
-
-		    try {
-		        final List<ILocalAudioObject> filesToLoad = get();
-
-		        ITagAttributesReviewed tagAttributesReviewed = null;
-		        // Review tags if selected in settings
-		        if (RepositoryHandler.this.getState().isReviewTagsBeforeImport()) {
-		            IReviewImportDialog reviewImportDialog = getBean(IReviewImportDialog.class);
-		            reviewImportDialog.showDialog(folders, filesToLoad);
-		            if (reviewImportDialog.isDialogCancelled()) {
-		                return;
-		            }
-		            tagAttributesReviewed = reviewImportDialog.getResult();
-		        }
-
-		        final ImportFilesProcess process = new ImportFilesProcess(filesToLoad, folders, path, tagAttributesReviewed, RepositoryHandler.this.getState(), RepositoryHandler.this.getFrame(), getOsManager());
-		        process.addProcessListener(new ImportFilesProcessListener(process));
-		        process.execute();
-
-		    } catch (InterruptedException e) {
-		        Logger.error(e);
-		    } catch (ExecutionException e) {
-		        Logger.error(e);
-		    }
-		}
-	}
-    
-    private static final class RefreshFoldersSwingWorker extends SwingWorker<Void, Void> {
-    	
-    	private IRepositoryHandler repositoryHandler;
-    	
-    	private IRepository repository;
-    	
-    	private List<Folder> folders;
-    	
-    	private IStatisticsHandler statisticsHandler;
-    	
-    	private IOSManager osManager;
-
-		private IState state;
-    	
-    	public RefreshFoldersSwingWorker(IRepositoryHandler repositoryHandler, IRepository repository, List<Folder> folders, IStatisticsHandler statisticsHandler, IOSManager osManager,IState state) {
-    		this.repositoryHandler = repositoryHandler;
-    		this.repository = repository;
-    		this.folders = folders;
-    		this.statisticsHandler = statisticsHandler;
-    		this.osManager = osManager;
-    		this.state = state;
-		}
-    	
-    	@Override
-    	protected Void doInBackground() throws Exception {
-    		repositoryHandler.startTransaction();
-            RepositoryLoader.refreshFolders(state, repository, folders, statisticsHandler, osManager, repositoryHandler);
-            repositoryHandler.endTransaction();
-    		return null;
-    	}
-    	
-    	@Override
-    	protected void done() {
-    		super.done();
-    		repositoryHandler.notifyFinishRefresh(null);
-    	}
-    }
-
-    private static class ExitRunnable implements Runnable {
-        @Override
-        public void run() {
-        	Context.getBean(IKernel.class).finish();
-        }
-    }
-    
-    private Repository repository;
+	private ISearchHandler searchHandler;
+	
+	private IErrorDialogFactory errorDialogFactory;
+	
+	private IStateHandler stateHandler;
+	
+	private IDeviceHandler deviceHandler;
+	
+	private Repository repository;
     private int filesLoaded;
     private RepositoryLoader currentLoader;
     private boolean backgroundLoad = false;
@@ -305,20 +120,94 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     private List<IAudioFilesRemovedListener> audioFilesRemovedListeners = new ArrayList<IAudioFilesRemovedListener>();
 
     private IRepositoryProgressDialog progressDialog;
+    
+    private IMessageDialogFactory messageDialogFactory;
+    
+    private IMultiFolderSelectionDialogFactory multiFolderSelectionDialogFactory;
+    
+    private ILookAndFeelManager lookAndFeelManager;
 
-    private MouseListener progressBarMouseAdapter = new MouseAdapter() {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            backgroundLoad = false;
-            currentLoader.setPriority(Thread.MAX_PRIORITY);
-            getFrame().hideProgressBar();
-            if (progressDialog != null) {
-                progressDialog.showProgressDialog();
-            }
-            getFrame().getProgressBar().removeMouseListener(progressBarMouseAdapter);
-        };
-    };
+	private ITaskService taskService;
 
+	private IFavoritesHandler favoritesHandler;
+    
+	/**
+	 * @param taskService
+	 */
+	public void setTaskService(ITaskService taskService) {
+		this.taskService = taskService;
+	}
+	
+	/**
+	 * @param favoritesHandler
+	 */
+	public void setFavoritesHandler(IFavoritesHandler favoritesHandler) {
+		this.favoritesHandler = favoritesHandler;
+	}
+	
+    /**
+     * @param multiFolderSelectionDialogFactory
+     */
+    public void setMultiFolderSelectionDialogFactory(IMultiFolderSelectionDialogFactory multiFolderSelectionDialogFactory) {
+		this.multiFolderSelectionDialogFactory = multiFolderSelectionDialogFactory;
+	}
+    
+    /**
+     * @param deviceHandler
+     */
+    public void setDeviceHandler(IDeviceHandler deviceHandler) {
+		this.deviceHandler = deviceHandler;
+	}
+    
+    /**
+     * @param lookAndFeelManager
+     */
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+    
+    /**
+     * @param messageDialogFactory
+     */
+    public void setMessageDialogFactory(IMessageDialogFactory messageDialogFactory) {
+		this.messageDialogFactory = messageDialogFactory;
+	}
+    
+    /**
+     * @param stateHandler
+     */
+    public void setStateHandler(IStateHandler stateHandler) {
+		this.stateHandler = stateHandler;
+	}
+    
+    /**
+     * @param searchHandler
+     */
+    public void setSearchHandler(ISearchHandler searchHandler) {
+		this.searchHandler = searchHandler;
+	}
+
+	/**
+	 * @param errorDialogFactory
+	 */
+	public void setErrorDialogFactory(IErrorDialogFactory errorDialogFactory) {
+		this.errorDialogFactory = errorDialogFactory;
+	}
+	
+	/**
+	 * @param statisticsHandler
+	 */
+	public void setStatisticsHandler(IStatisticsHandler statisticsHandler) {
+		this.statisticsHandler = statisticsHandler;
+	}
+	
+	/**
+	 * @param navigationHandler
+	 */
+	public void setNavigationHandler(INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+	
     @Override
     public void applicationStateChanged(IState newState) {
     	if (caseSensitiveTrees != newState.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
@@ -332,14 +221,8 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         // Add itself as listener
     	caseSensitiveTrees = getState().isKeyAlwaysCaseSensitiveInRepositoryStructure();
         addAudioFilesRemovedListener(this);
-        statisticsHandler = getBean(IStatisticsHandler.class);
-        navigationHandler = getBean(INavigationHandler.class);
     }
 
-    @Override
-    public void applicationStarted() {
-    }
-    
     @Override
     public void allHandlersInitialized() {
         applyRepositoryFromCache();
@@ -347,8 +230,8 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         if (repository == null) {
     		applyRepository();
     	}
-        getBean(ISearchHandler.class).registerSearchableObject(RepositorySearchableObject.getInstance());
-        repositoryRefresher = new RepositoryAutoRefresher(RepositoryHandler.this, getState());
+        searchHandler.registerSearchableObject(RepositorySearchableObject.getInstance());
+        repositoryRefresher = new RepositoryAutoRefresher(this, getState());
     }
     
     @Override
@@ -415,7 +298,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         if (repository != null) {
             // Only store repository if it's dirty
             if (repository.transactionPending()) {
-            	getBean(IStateHandler.class).persistRepositoryCache(repository, true);
+            	stateHandler.persistRepositoryCache(repository, true);
             } else {
                 Logger.info("Repository is clean");
             }
@@ -798,7 +681,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
                         Logger.error(e);
                     }
                 }
-                repositoryRetrievedFromCache = getBean(IStateHandler.class).retrieveRepositoryCache();
+                repositoryRetrievedFromCache = stateHandler.retrieveRepositoryCache();
             }
         };
     }
@@ -847,13 +730,13 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     private void askUserForRepository(final IRepository rep) {
         Object selection;
         do {
-            selection = getBean(IMessageDialogFactory.class).getDialog().
+            selection = messageDialogFactory.getDialog().
             	showMessage(getFrame(), StringUtils.getString(I18nUtils.getString("REPOSITORY_NOT_FOUND"), ": ", rep.getRepositoryFolders().get(0)),
                     I18nUtils.getString("REPOSITORY_NOT_FOUND"), JOptionPane.WARNING_MESSAGE,
                     new String[] { I18nUtils.getString("RETRY"), I18nUtils.getString("SELECT_REPOSITORY"), I18nUtils.getString("EXIT") });
 
             if (selection.equals(I18nUtils.getString("EXIT"))) {
-                SwingUtilities.invokeLater(new ExitRunnable());
+                SwingUtilities.invokeLater(new ExitWhenRepositoryNotFoundRunnable());
             }
         } while (I18nUtils.getString("RETRY").equals(selection) && !rep.exists());
     }
@@ -874,10 +757,10 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
             for (String f : lastRepositoryFolders) {
                 foldersToRead.add(new File(f));
             }
-            getBean(IMessageDialogFactory.class).getDialog().showMessage(I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"), getFrame());
+            messageDialogFactory.getDialog().showMessage(I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"), getFrame());
             retrieve(foldersToRead);
         } else {
-        	RepositorySelectionInfoDialog dialog = new RepositorySelectionInfoDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class));
+        	RepositorySelectionInfoDialog dialog = new RepositorySelectionInfoDialog(getFrame().getFrame(), lookAndFeelManager);
         	dialog.setVisible(true);
         	if (dialog.userAccepted()) {
         		selectRepository();
@@ -974,7 +857,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         }
 
         for (ILocalAudioObject fileToRemove : filesToRemove) {
-            RepositoryLoader.deleteFile(fileToRemove, getOsManager(), this, getBean(IDeviceHandler.class));
+            RepositoryLoader.deleteFile(fileToRemove, getOsManager(), this, deviceHandler);
         }
 
         // Notify listeners
@@ -995,7 +878,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         if (succeeded) {
         	renameFile(audioFile, file, newFile);
             navigationHandler.repositoryReloaded();
-            getBean(IStatisticsHandler.class).updateFileName(audioFile, file.getAbsolutePath(), newFile.getAbsolutePath());
+            statisticsHandler.updateFileName(audioFile, file.getAbsolutePath(), newFile.getAbsolutePath());
         }
     }
     
@@ -1065,7 +948,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
      * @return true, if successful
      */
     private boolean selectRepository(boolean repositoryNotFound) {
-    	IMultiFolderSelectionDialog dialog = getBean(IMultiFolderSelectionDialogFactory.class).getDialog();
+    	IMultiFolderSelectionDialog dialog = multiFolderSelectionDialogFactory.getDialog();
         dialog.setTitle(I18nUtils.getString("SELECT_REPOSITORY"));
         dialog.setText(I18nUtils.getString("SELECT_REPOSITORY_FOLDERS"));
         dialog.showDialog((repository != null && !repositoryNotFound) ? repository.getRepositoryFolders() : null);
@@ -1095,7 +978,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     	progressDialog.setTitle(StringUtils.getString(I18nUtils.getString("READING_FILES_TO_IMPORT"), "..."));
         progressDialog.disableCancelButton();
         progressDialog.showDialog();
-        SwingWorker<List<ILocalAudioObject>, Void> worker = new ImportFoldersSwingWorker(folders, path, progressDialog);
+        SwingWorker<List<ILocalAudioObject>, Void> worker = new ImportFoldersSwingWorker(this, folders, path, progressDialog, getFrame(), getState(), errorDialogFactory, getOsManager());
         worker.execute();
     }
 
@@ -1125,7 +1008,18 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
                 progressDialog.hideProgressDialog();
             }
             getFrame().showProgressBar(false, StringUtils.getString(I18nUtils.getString("LOADING"), "..."));
-            getFrame().getProgressBar().addMouseListener(progressBarMouseAdapter);
+            getFrame().getProgressBar().addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    backgroundLoad = false;
+                    currentLoader.setPriority(Thread.MAX_PRIORITY);
+                    getFrame().hideProgressBar();
+                    if (progressDialog != null) {
+                        progressDialog.showProgressDialog();
+                    }
+                    getFrame().getProgressBar().removeMouseListener(this);
+                };
+            });
         }
 
     }
@@ -1207,14 +1101,14 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 
 	@Override
 	public void repositoryChanged(final IRepository repository) {
-		getBean(ITaskService.class).submitNow("Persist Repository Cache", new Runnable() {
+		taskService.submitNow("Persist Repository Cache", new Runnable() {
 			@Override
 			public void run() {
-				getBean(IStateHandler.class).persistRepositoryCache(repository, true);
+				stateHandler.persistRepositoryCache(repository, true);
 			}
 		});
 		
-		getBean(IFavoritesHandler.class).updateFavorites(repository);
+		favoritesHandler.updateFavorites(repository);
 	}
 
 	/* (non-Javadoc)
