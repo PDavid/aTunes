@@ -36,6 +36,34 @@ import net.sourceforge.atunes.utils.Logger;
  */
 public class SwingBackgroundWorker<T> implements IBackgroundWorker<T> {
 
+	private final class BackgroundSwingWorker extends SwingWorker<T, Void> {
+		
+		protected T doInBackground() {
+			Logger.debug("Running background actions");
+			try {
+				return backgroundActions.call();
+			} catch (Exception e) {
+				Logger.error(e);
+			}
+			return null;
+		}
+
+		protected void done() {
+			T backgroundResult = null;
+			try {
+				backgroundResult = get();
+			} catch (InterruptedException e) {
+				Logger.error(e);
+			} catch (ExecutionException e) {
+				Logger.error(e);
+			}
+			if (graphicalActionsWhenDone != null) {
+				graphicalActionsWhenDone.call(backgroundResult);
+				Logger.debug("Running finish actions completed");
+			}
+		}
+	}
+
 	private Callable<T> backgroundActions;
 	
 	private Runnable graphicalActionsAfterStart;
@@ -59,34 +87,7 @@ public class SwingBackgroundWorker<T> implements IBackgroundWorker<T> {
 	
 	@Override
 	public void execute() {
-		new SwingWorker<T, Void>() {
-			
-			protected T doInBackground() {
-				Logger.debug("Running background actions");
-				try {
-					return backgroundActions.call();
-				} catch (Exception e) {
-					Logger.error(e);
-				}
-				return null;
-			}
-			
-			protected void done() {
-				T backgroundResult = null;
-				try {
-					backgroundResult = get();
-				} catch (InterruptedException e) {
-					Logger.error(e);
-				} catch (ExecutionException e) {
-					Logger.error(e);
-				}
-				if (graphicalActionsWhenDone != null) {
-					graphicalActionsWhenDone.call(backgroundResult);
-					Logger.debug("Running finish actions completed");
-				}
-			}
-			
-		}.execute();
+		new BackgroundSwingWorker().execute();
 		
 		if (graphicalActionsAfterStart != null) {
 			SwingUtilities.invokeLater(graphicalActionsAfterStart);
