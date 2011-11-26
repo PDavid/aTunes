@@ -57,35 +57,59 @@ final class EncodeFileRunnable implements Runnable {
 	@Override
 	public void run() {
 	    if (!ripper.isInterrupted() && ripResultFinal && ripper.getEncoder() != null) {
-	        if (!ripper.getEncoder().encode(wavFileTemp, resultFileTemp,
-	                (titles != null && titles.size() >= trackNumber ? titles.get(trackNumber - 1) : null), trackNumber,
-	                artistNames.size() > trackNumber - 1 ? artistNames.get(trackNumber - 1) : Artist.getUnknownArtist(),
-	                composerNames.size() > trackNumber - 1 ? composerNames.get(trackNumber - 1) : "")) {
+	        if (!callToEncode()) {
 	        	Logger.error("Encoding unsuccessful");
 	        }
 
 	        Logger.info("Deleting wav file...");
-	        if (!wavFileTemp.delete()) {
-	        	Logger.error(StringUtils.getString(wavFileTemp, " not deleted"));
-	        }
-	        if (!infFileTemp.delete()) {
-	        	Logger.error(StringUtils.getString(infFileTemp, " not deleted"));
-	        }
+	        deleteWavFileTemp();
+	        deleteInfFileTemp();
 
 	        if (ripper.isInterrupted() && resultFileTemp != null) {
-	            if (!resultFileTemp.delete()) {
-	            	Logger.error(StringUtils.getString(resultFileTemp, " not deleted"));
-	            }
+	            deleteResultFileTemp();
 	        }
 	    } else if (ripper.isInterrupted()) {		    	
-	        if (!wavFileTemp.delete()) {
-	        	Logger.error(StringUtils.getString(wavFileTemp, " not deleted"));
-	        }
-	        if (!infFileTemp.delete()) {
-	        	Logger.error(StringUtils.getString(infFileTemp, " not deleted"));
-	        }
+	        deleteWavFileTemp();
+	        deleteInfFileTemp();
 	    } else if (!ripResultFinal) {
 	    	Logger.error(StringUtils.getString("Rip failed. Skipping track ", trackNumber, "..."));
 	    }
+	}
+
+	/**
+	 * @return
+	 */
+	private boolean callToEncode() {
+		return ripper.getEncoder().encode(wavFileTemp, resultFileTemp,
+		        (titles != null && titles.size() >= trackNumber ? titles.get(trackNumber - 1) : null), trackNumber,
+		        artistNames.size() > trackNumber - 1 ? artistNames.get(trackNumber - 1) : Artist.getUnknownArtist(),
+		        composerNames.size() > trackNumber - 1 ? composerNames.get(trackNumber - 1) : "");
+	}
+
+	/**
+	 * 
+	 */
+	private void deleteResultFileTemp() {
+		if (!resultFileTemp.delete()) {
+			Logger.error(StringUtils.getString(resultFileTemp, " not deleted"));
+		}
+	}
+
+	/**
+	 * 
+	 */
+	private void deleteInfFileTemp() {
+		if (!infFileTemp.delete()) {
+			Logger.error(StringUtils.getString(infFileTemp, " not deleted"));
+		}
+	}
+
+	/**
+	 * 
+	 */
+	private void deleteWavFileTemp() {
+		if (!wavFileTemp.delete()) {
+			Logger.error(StringUtils.getString(wavFileTemp, " not deleted"));
+		}
 	}
 }
