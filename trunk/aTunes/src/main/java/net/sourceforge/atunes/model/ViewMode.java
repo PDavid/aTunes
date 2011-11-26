@@ -34,14 +34,23 @@ public enum ViewMode {
      */
     public Map<String, ?> getDataForView(Repository repository) {
 		if (repository != null) {
-			switch (this) {
-			case YEAR: return repository.getYearStructure();
-			case GENRE: return repository.getGenreStructure();
-			case FOLDER : return repository.getFolderStructure();
-			case ALBUM : return repository.getAlbumStructure();
-			case ARTIST : return repository.getArtistStructure();
-			}
+			return getStructure(repository);
+		} else {
+			return Collections.emptyMap();
 		}
-		return Collections.emptyMap();
     }
+
+	/**
+	 * @param repository
+	 */
+	private Map<String, ?> getStructure(Repository repository) {
+		switch (this) {
+		case YEAR: return repository.getYearStructure();
+		case GENRE: return repository.getGenreStructure();
+		case FOLDER : return repository.getFolderStructure();
+		case ALBUM : return repository.getAlbumStructure();
+		case ARTIST : return repository.getArtistStructure();
+		default: return null;
+		}
+	}
 }

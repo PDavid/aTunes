@@ -109,30 +109,39 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator {
             String text = ((String) userObject);
             JLabel label = (JLabel) component;
             Color color = getLookAndFeel().getPaintForColorMutableIcon(label, isSelected);
-            if (text.equals(I18nUtils.getString("REPOSITORY"))) {
-                label.setIcon(audioFileSmallIcon.getIcon(color));
-            } else if (text.equals(I18nUtils.getString("DEVICE"))) {
-                label.setIcon(deviceIcon.getIcon(color));
-            } else if (text.equals(I18nUtils.getString("ARTISTS"))) {
-                label.setIcon(artistImageIcon.getIcon(color));
-            } else if (text.equals(I18nUtils.getString("ALBUMS"))) {
-                label.setIcon(albumSmallIcon.getIcon(color));
-            } else if (text.equals(I18nUtils.getString("SONGS"))) {
-                label.setIcon(audioFileSmallIcon.getIcon(color));
-            } else if (text.equals(I18nUtils.getString("FAVORITES"))) {
-                label.setIcon(favoriteIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(label, isSelected)));
-            } else if (text.equals(I18nUtils.getString("PODCAST_FEEDS"))) {
-                label.setIcon(rssSmallIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(label, isSelected)));
-            } else if (text.equals(I18nUtils.getString("RADIO"))) {
-                label.setIcon(radioSmallIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(label, isSelected)));
-            } else {
-                // For radio view
-                label.setIcon(folderIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(label, isSelected)));
-            }
-
+            label.setIcon(getIcon(text, label, color).getIcon(color));
             label.setToolTipText(null);
         }
         return component;
     }
 
+	/**
+	 * Returns icon to use depending on text
+	 * @param text
+	 * @param label
+	 * @param color
+	 * @return 
+	 */
+	private CachedIconFactory getIcon(String text, JLabel label, Color color) {
+		if (text.equals(I18nUtils.getString("REPOSITORY"))) {
+		    return audioFileSmallIcon;
+		} else if (text.equals(I18nUtils.getString("DEVICE"))) {
+		    return deviceIcon;
+		} else if (text.equals(I18nUtils.getString("ARTISTS"))) {
+		    return artistImageIcon;
+		} else if (text.equals(I18nUtils.getString("ALBUMS"))) {
+		    return albumSmallIcon;
+		} else if (text.equals(I18nUtils.getString("SONGS"))) {
+		    return audioFileSmallIcon;
+		} else if (text.equals(I18nUtils.getString("FAVORITES"))) {
+		    return favoriteIcon;
+		} else if (text.equals(I18nUtils.getString("PODCAST_FEEDS"))) {
+		    return rssSmallIcon;
+		} else if (text.equals(I18nUtils.getString("RADIO"))) {
+		    return radioSmallIcon;
+		} else {
+		    // For radio view
+		    return folderIcon;
+		}
+	}
 }
