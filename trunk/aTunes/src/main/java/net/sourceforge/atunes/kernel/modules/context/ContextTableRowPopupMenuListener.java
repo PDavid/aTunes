@@ -25,20 +25,20 @@ import java.util.List;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
-final class ContextTableRowPopupMenuListener implements PopupMenuListener {
+final class ContextTableRowPopupMenuListener<T> implements PopupMenuListener {
 	
-	private final List<ContextTableAction<?>> actions;
+	private final List<ContextTableAction<T>> actions;
 	private final ContextTable table;
 
 	ContextTableRowPopupMenuListener(
-			List<ContextTableAction<?>> actions, ContextTable table) {
+			List<ContextTableAction<T>> actions, ContextTable table) {
 		this.actions = actions;
 		this.table = table;
 	}
 
 	@Override
 	public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-		for (ContextTableAction action : actions) {
+		for (ContextTableAction<T> action : actions) {
 			int row = table.getSelectedRow();
 			action.setEnabled(row != -1 && action.isEnabledForObject(action.getSelectedObject(row)));
 		}
