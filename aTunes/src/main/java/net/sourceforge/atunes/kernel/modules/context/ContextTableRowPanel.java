@@ -102,8 +102,8 @@ public abstract class ContextTableRowPanel<T> extends AbstractTableCellRendererC
 		     int imageMaxWidth, 
 		     int imageMaxHeight,
 		     boolean hasFocus) {
-	
-		return ContextTableRowPanelFactory.getPanelForTableRenderer(this, table, image, text, backgroundColor, foregroundColor, imageMaxWidth, imageMaxHeight, hasFocus);
+		
+		return new ContextTableRowPanelFactory<T>().getPanelForTableRenderer(this.getActions(), table, image, text, backgroundColor, foregroundColor, imageMaxWidth, imageMaxHeight, hasFocus);
 	}
 	
     @Override

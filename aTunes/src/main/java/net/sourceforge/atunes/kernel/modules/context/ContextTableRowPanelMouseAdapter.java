@@ -20,35 +20,34 @@
 
 package net.sourceforge.atunes.kernel.modules.context;
 
-import java.util.List;
+import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
+import javax.swing.JPanel;
+import javax.swing.event.TableModelEvent;
 
-final class ContextTableRowPopupMenuListener<T> implements PopupMenuListener {
-	
-	private final List<ContextTableAction<T>> actions;
+import net.sourceforge.atunes.gui.views.controls.PopUpButton;
+
+final class ContextTableRowPanelMouseAdapter extends MouseAdapter {
+	private final JPanel panel;
 	private final ContextTable table;
+	private final PopUpButton button;
 
-	ContextTableRowPopupMenuListener(
-			List<ContextTableAction<T>> actions, ContextTable table) {
-		this.actions = actions;
+	ContextTableRowPanelMouseAdapter(JPanel panel,
+			ContextTable table, PopUpButton button) {
+		this.panel = panel;
 		this.table = table;
+		this.button = button;
 	}
 
 	@Override
-	public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-		for (ContextTableAction<T> action : actions) {
-			int row = table.getSelectedRow();
-			action.setEnabled(row != -1 && action.isEnabledForObject(action.getSelectedObject(row)));
+	public void mouseExited(MouseEvent e) {
+		Rectangle bounds = panel.getBounds();
+		bounds.setLocation(0, 0);
+		if (!bounds.contains(e.getPoint())) {
+			button.hideMenu();
+			table.tableChanged(new TableModelEvent(table.getModel(), -1, -1, TableModelEvent.ALL_COLUMNS, TableModelEvent.UPDATE));
 		}
-	}
-
-	@Override
-	public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-	}
-
-	@Override
-	public void popupMenuCanceled(PopupMenuEvent e) {
 	}
 }
