@@ -304,18 +304,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
             }
 
             // Execute command after last access to repository
-            String command = getState().getCommandAfterAccessRepository();
-            if (command != null && !command.trim().isEmpty()) {
-                try {
-                    Process p = Runtime.getRuntime().exec(command);
-                    // Wait process to end
-                    p.waitFor();
-                    int rc = p.exitValue();
-                    Logger.info(StringUtils.getString("Command '", command, "' return code: ", rc));
-                } catch (Exception e) {
-                    Logger.error(e);
-                }
-            }
+            new LoadRepositoryCommandExecutor().execute(getState().getCommandAfterAccessRepository());
         }
         
         ImageCache.shutdown();
@@ -665,26 +654,15 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 
     @Override
     protected Runnable getPreviousInitializationTask() {
-        return new Runnable() {
-            @Override
-            public void run() {
-                // This is the first access to repository, so execute the command defined by user
-                String command = getState().getCommandBeforeAccessRepository();
-                if (command != null && !command.trim().equals("")) {
-                    try {
-                        Process p = Runtime.getRuntime().exec(command);
-                        // Wait process to end
-                        p.waitFor();
-                        int rc = p.exitValue();
-                        Logger.info(StringUtils.getString("Command '", command, "' return code: ", rc));
-                    } catch (Exception e) {
-                        Logger.error(e);
-                    }
-                }
-                repositoryRetrievedFromCache = stateHandler.retrieveRepositoryCache();
-            }
-        };
+        return new PreviousInitializationTask(getState(), this, stateHandler);
     }
+    
+    /**
+     * @param repositoryRetrievedFromCache
+     */
+    void setRepositoryRetrievedFromCache(Repository repositoryRetrievedFromCache) {
+		this.repositoryRetrievedFromCache = repositoryRetrievedFromCache;
+	}
 
     /**
      * Sets the repository from the one read from cache
