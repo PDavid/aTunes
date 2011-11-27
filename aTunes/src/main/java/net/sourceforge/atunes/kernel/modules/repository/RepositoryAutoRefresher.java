@@ -53,7 +53,7 @@ class RepositoryAutoRefresher extends Thread {
         try {
             while (true) {
                 Thread.sleep(state.getAutoRepositoryRefreshTime() * 60000L);
-                if (!handler.repositoryIsNull() && !handler.isLoaderWorking()) {
+                if (!handler.isRepositoryVoid() && !handler.isLoaderWorking()) {
                     Logger.info(StringUtils.getString("Checking for repository changes... (", new DateTime().toString(), ')'));
                     int filesLoaded = handler.getAudioFilesList().size();
                     int newFilesCount = RepositoryLoader.countFilesInRepository(handler.getRepository());

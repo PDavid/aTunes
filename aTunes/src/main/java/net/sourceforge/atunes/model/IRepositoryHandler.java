@@ -239,11 +239,11 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 	public void rename(ILocalAudioObject audioFile, String name);
 
 	/**
-	 * Repository is null.
+	 * Returns if Repository is void (not yet loaded or selected)
 	 * 
-	 * @return true, if successful
+	 * @return
 	 */
-	public boolean repositoryIsNull();
+	public boolean isRepositoryVoid();
 
 	/**
 	 * Select repository.
