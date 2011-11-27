@@ -39,7 +39,7 @@ public class ScoreColumn extends AbstractColumn {
 
     private static final long serialVersionUID = -2673502888298485650L;
     
-    private ILookAndFeelManager lookAndFeelManager;
+    private transient ILookAndFeelManager lookAndFeelManager;
     
     private CachedIconFactory star1Icon;
     private CachedIconFactory star2Icon;
@@ -89,7 +89,7 @@ public class ScoreColumn extends AbstractColumn {
 
             @Override
             public JComponent getComponent(JComponent superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                setLabel((JLabel) superComponent, (Integer) value);
+                setLabel((JLabel) superComponent, value);
                 return superComponent;
             }
         }));
@@ -103,7 +103,7 @@ public class ScoreColumn extends AbstractColumn {
 
             @Override
             public JComponent getComponent(JComponent superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                setLabel((JLabel) superComponent, (Integer) value);
+                setLabel((JLabel) superComponent, value);
                 return superComponent;
             }
         });
@@ -130,9 +130,9 @@ public class ScoreColumn extends AbstractColumn {
      * @param label
      * @param score
      */
-    private void setLabel(JLabel label, int score) {
+    private void setLabel(JLabel label, Object score) {
         label.setText(null);
-        CachedIconFactory icon = getIcon(score);
+        CachedIconFactory icon = score != null ? getIcon((Integer)score) : null;
     	// TODO: ICONOS Sacar a un renderer
         label.setIcon(icon != null ? icon.getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForColorMutableIcon(label, false)) : null);
     }
