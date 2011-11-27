@@ -170,7 +170,7 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.PlayNowAction"/>
 	<bean id="previousAction" class="net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectAction"/>
 	<bean id="refreshDeviceAction" class="net.sourceforge.atunes.kernel.actions.RefreshDeviceAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.RefreshFolderFromNavigatorAction"/>
+	<bean id="refreshFolderFromNavigatorAction" class="net.sourceforge.atunes.kernel.actions.RefreshFolderFromNavigatorAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RefreshRadioAction"/>
 	<bean id="refreshRepositoryAction" class="net.sourceforge.atunes.kernel.actions.RefreshRepositoryAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RemoveFromDiskAction"/>

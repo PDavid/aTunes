@@ -33,6 +33,8 @@ import net.sourceforge.atunes.model.IStatisticsHandler;
 
 final class RefreshFoldersSwingWorker extends SwingWorker<Void, Void> {
 	
+	private RepositoryReader repositoryReader;
+	
 	private IRepositoryHandler repositoryHandler;
 	
 	private IRepository repository;
@@ -45,7 +47,8 @@ final class RefreshFoldersSwingWorker extends SwingWorker<Void, Void> {
 
 	private IState state;
 	
-	public RefreshFoldersSwingWorker(IRepositoryHandler repositoryHandler, IRepository repository, List<Folder> folders, IStatisticsHandler statisticsHandler, IOSManager osManager,IState state) {
+	public RefreshFoldersSwingWorker(RepositoryReader repositoryReader, IRepositoryHandler repositoryHandler, IRepository repository, List<Folder> folders, IStatisticsHandler statisticsHandler, IOSManager osManager,IState state) {
+		this.repositoryReader = repositoryReader;
 		this.repositoryHandler = repositoryHandler;
 		this.repository = repository;
 		this.folders = folders;
@@ -65,6 +68,6 @@ final class RefreshFoldersSwingWorker extends SwingWorker<Void, Void> {
 	@Override
 	protected void done() {
 		super.done();
-		repositoryHandler.notifyFinishRefresh(null);
+		repositoryReader.notifyFinishRefresh(null);
 	}
 }

@@ -70,19 +70,21 @@ public class RepositoryLoader extends Thread {
 	private long startReadTime;
 	private String fastRepositoryPath;
 	private int fastFirstChar;
-	private IRepositoryHandler repositoryHandler;
 	private IState state;
+	
+	private RepositoryTransaction transaction;
 
 	/**
 	 * Instantiates a new repository loader.
-	 * @param repositoryHandler
+	 * @param state
+	 * @param transaction
 	 * @param folders
 	 * @param oldRepository
 	 * @param repository
 	 * @param refresh
 	 */
-	public RepositoryLoader(IState state, IRepositoryHandler repositoryHandler, List<File> folders, Repository oldRepository, IRepository repository, boolean refresh) {
-		this.repositoryHandler = repositoryHandler;
+	public RepositoryLoader(IState state, RepositoryTransaction transaction, List<File> folders, Repository oldRepository, IRepository repository, boolean refresh) {
+		this.transaction = transaction;
 		this.refresh = refresh;
 		this.folders = folders;
 		this.oldRepository = oldRepository;
@@ -559,7 +561,7 @@ public class RepositoryLoader extends Thread {
 	 * Notify finish.
 	 */
 	private void notifyFinish() {
-		repositoryHandler.endTransaction();
+		transaction.finishTransaction();
 		
 		ImageCache.getImageCache().clearCache();
 
@@ -586,8 +588,6 @@ public class RepositoryLoader extends Thread {
 	@Override
 	public void run() {
 		Logger.info("Starting repository read");
-		
-		repositoryHandler.startTransaction();
 		
 		Timer timer = new Timer();
 		timer.start();

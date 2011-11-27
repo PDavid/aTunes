@@ -90,10 +90,13 @@ public interface IStateHandler extends IHandler {
 	 * @param repository
 	 *            The retrieved repository
 	 */
+	public void persistRepositoryCache(IRepository repository, boolean asXmlIfEnabled);
 
-	public void persistRepositoryCache(IRepository repository,
-			boolean asXmlIfEnabled);
-
+	/**
+	 * Stores device cache for a device ID
+	 * @param deviceId
+	 * @param deviceRepository
+	 */
 	public void persistDeviceCache(String deviceId, IRepository deviceRepository);
 
 	/**

@@ -28,7 +28,7 @@ import java.util.Map;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 
-public interface IRepositoryHandler extends IHandler, IRepositoryLoaderListener, IAudioFilesRemovedListener, IRepositoryListener {
+public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener, IRepositoryListener {
 
 	/**
 	 * Adds the given files to repository and refresh.
@@ -244,16 +244,6 @@ public interface IRepositoryHandler extends IHandler, IRepositoryLoaderListener,
 	 * @return true, if successful
 	 */
 	public boolean repositoryIsNull();
-
-	/**
-	 * Retrieve.
-	 * 
-	 * @param folders
-	 *            the folders
-	 * 
-	 * @return true, if successful
-	 */
-	public boolean retrieve(List<File> folders);
 
 	/**
 	 * Select repository.
