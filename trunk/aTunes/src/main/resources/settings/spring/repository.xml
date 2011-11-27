@@ -9,5 +9,7 @@
 	<bean id="repositoryActions" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryActionsHelper"/>
 	
 	<bean id="showRepositoryDataHelper" class="net.sourceforge.atunes.kernel.modules.repository.ShowRepositoryDataHelper"/>
+	
+	<bean id="voidRepository" class="net.sourceforge.atunes.kernel.modules.repository.VoidRepository" scope="prototype"/>
 
 </beans>

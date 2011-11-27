@@ -61,7 +61,7 @@ public class ImportToRepositoryAction extends CustomAbstractAction {
     @Override
     protected void executeAction() {
         // First check if repository is selected. If not, display a message
-        if (repositoryHandler.repositoryIsNull()) {
+        if (repositoryHandler.isRepositoryVoid()) {
         	errorDialogFactory.getDialog().showErrorDialog(frame, I18nUtils.getString("SELECT_REPOSITORY_BEFORE_IMPORT"));
             return;
         }
