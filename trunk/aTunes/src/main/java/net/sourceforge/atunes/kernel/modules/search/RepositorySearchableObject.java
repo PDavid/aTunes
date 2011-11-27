@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.search.searchableobjects;
+package net.sourceforge.atunes.kernel.modules.search;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,8 +27,6 @@ import java.util.List;
 
 import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.search.RawSearchResult;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
@@ -41,31 +39,34 @@ import org.apache.lucene.store.SimpleFSDirectory;
 
 public final class RepositorySearchableObject extends AbstractCommonAudioFileSearchableObject {
 
-    /**
-     * Singleton instance of this class
-     */
-    private static RepositorySearchableObject instance;
-
     private FSDirectory indexDirectory;
-
+    
+    private IOSManager osManager;
+    
+    private ApplicationArguments applicationArguments;
+    
+    private IRepositoryHandler repositoryHandler;
+    
     /**
-     * Default constructor
+     * @param osManager
      */
-    private RepositorySearchableObject() {
-        // Nothing to do
-    }
-
+    public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
+    
     /**
-     * Returns singleton instance of RepositorySearchableObject
-     * 
-     * @return
+     * @param applicationArguments
      */
-    public static RepositorySearchableObject getInstance() {
-        if (instance == null) {
-            instance = new RepositorySearchableObject();
-        }
-        return instance;
-    }
+    public void setApplicationArguments(ApplicationArguments applicationArguments) {
+		this.applicationArguments = applicationArguments;
+	}
+    
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
 
     @Override
     public String getSearchableObjectName() {
@@ -75,7 +76,7 @@ public final class RepositorySearchableObject extends AbstractCommonAudioFileSea
     @Override
     public FSDirectory getIndexDirectory() throws IOException {
         if (indexDirectory == null) {
-            indexDirectory = new SimpleFSDirectory(new File(StringUtils.getString(Context.getBean(IOSManager.class).getUserConfigFolder(Context.getBean(ApplicationArguments.class).isDebug()), "/", Constants.REPOSITORY_INDEX_DIR)));
+            indexDirectory = new SimpleFSDirectory(new File(StringUtils.getString(osManager.getUserConfigFolder(applicationArguments.isDebug()), "/", Constants.REPOSITORY_INDEX_DIR)));
         }
         return indexDirectory;
     }
@@ -84,7 +85,7 @@ public final class RepositorySearchableObject extends AbstractCommonAudioFileSea
     public List<IAudioObject> getSearchResult(List<RawSearchResult> rawSearchResults) {
         List<IAudioObject> result = new ArrayList<IAudioObject>();
         for (RawSearchResult rawSearchResult : rawSearchResults) {
-        	ILocalAudioObject audioFile = Context.getBean(IRepositoryHandler.class).getFileIfLoaded(rawSearchResult.getDocument().get("url"));
+        	ILocalAudioObject audioFile = repositoryHandler.getFileIfLoaded(rawSearchResult.getDocument().get("url"));
             if (audioFile != null) {
                 result.add(audioFile);
             }
@@ -94,7 +95,6 @@ public final class RepositorySearchableObject extends AbstractCommonAudioFileSea
 
     @Override
     public List<IAudioObject> getElementsToIndex() {
-        return new ArrayList<IAudioObject>(Context.getBean(IRepositoryHandler.class).getAudioFilesList());
+        return new ArrayList<IAudioObject>(repositoryHandler.getAudioFilesList());
     }
-
 }

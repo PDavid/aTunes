@@ -32,7 +32,7 @@ import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.FavoritesListeners;
 import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.actions.RemoveLovedSongInLastFmAction;
-import net.sourceforge.atunes.kernel.modules.search.searchableobjects.FavoritesSearchableObject;
+import net.sourceforge.atunes.kernel.modules.search.FavoritesSearchableObject;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioFilesRemovedListener;

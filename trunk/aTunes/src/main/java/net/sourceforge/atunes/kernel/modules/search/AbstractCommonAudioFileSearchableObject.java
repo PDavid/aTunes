@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.search.searchableobjects;
+package net.sourceforge.atunes.kernel.modules.search;
 
 import java.util.ArrayList;
 import java.util.List;
