@@ -24,7 +24,6 @@ import java.io.File;
 import java.util.List;
 
 import net.sourceforge.atunes.gui.views.dialogs.SelectorDialog;
-import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
@@ -45,8 +44,6 @@ public class ImportToRepositoryAction extends CustomAbstractAction {
 
     private IRepositoryHandler repositoryHandler;
     
-    private IErrorDialogFactory errorDialogFactory;
-    
     private IFrame frame;
     
     private IMultiFolderSelectionDialogFactory multiFolderSelectionDialogFactory;
@@ -56,16 +53,11 @@ public class ImportToRepositoryAction extends CustomAbstractAction {
     public ImportToRepositoryAction() {
         super(StringUtils.getString(I18nUtils.getString("IMPORT"), "..."));
         putValue(SHORT_DESCRIPTION, StringUtils.getString(I18nUtils.getString("IMPORT"), "..."));
+        setEnabled(false); // Initially disabled, will be enabled when repository is loaded
     }
 
     @Override
     protected void executeAction() {
-        // First check if repository is selected. If not, display a message
-        if (repositoryHandler.isRepositoryVoid()) {
-        	errorDialogFactory.getDialog().showErrorDialog(frame, I18nUtils.getString("SELECT_REPOSITORY_BEFORE_IMPORT"));
-            return;
-        }
-
         // Now show dialog to select folders
         IMultiFolderSelectionDialog dialog = multiFolderSelectionDialogFactory.getDialog();
         dialog.setTitle(I18nUtils.getString("IMPORT"));
@@ -103,13 +95,6 @@ public class ImportToRepositoryAction extends CustomAbstractAction {
      */
     public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
-	}
-    
-    /**
-     * @param errorDialogFactory
-     */
-    public void setErrorDialogFactory(IErrorDialogFactory errorDialogFactory) {
-		this.errorDialogFactory = errorDialogFactory;
 	}
     
     /**

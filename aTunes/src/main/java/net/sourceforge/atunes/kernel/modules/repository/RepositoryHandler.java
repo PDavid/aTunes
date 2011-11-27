@@ -515,8 +515,12 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     	endTransaction();
 	}
 
-    @Override
-	public boolean isRepositoryVoid() {
+	
+	/**
+	 * Returns if Repository is void (not yet loaded or selected)
+	 * @return
+	 */
+	private boolean isRepositoryVoid() {
         return repository instanceof VoidRepository;
     }
 
