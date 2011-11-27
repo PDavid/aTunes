@@ -23,12 +23,11 @@ package net.sourceforge.atunes.model;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
+import javax.swing.Action;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
-
-import net.sourceforge.atunes.kernel.actions.ActionWithColorMutableIcon;
 
 public interface INavigationView extends IAudioObjectsSource, ITreeObjectsSource {
 
@@ -135,15 +134,14 @@ public interface INavigationView extends IAudioObjectsSource, ITreeObjectsSource
 	 * Returns an action to show this view
 	 * @return
 	 */
-	public ActionWithColorMutableIcon getActionToShowView();
+	public Action getActionToShowView();
 
 	/**
 	 * Requests view to select given audio object
 	 * @param currentViewMode
 	 * @param audioObject
 	 */
-	public void selectAudioObject(ViewMode currentViewMode,
-			IAudioObject audioObject);
+	public void selectAudioObject(ViewMode currentViewMode, IAudioObject audioObject);
 
 	/**
 	 * Requests view to select given artist
