@@ -203,12 +203,21 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 		this.navigationHandler = navigationHandler;
 	}
 	
+	/**
+	 * @param repositoryRefresher
+	 */
+	public void setRepositoryRefresher(RepositoryAutoRefresher repositoryRefresher) {
+		this.repositoryRefresher = repositoryRefresher;
+	}
+	
     @Override
     public void applicationStateChanged(IState newState) {
     	if (caseSensitiveTrees != newState.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
     		caseSensitiveTrees = getState().isKeyAlwaysCaseSensitiveInRepositoryStructure();
     		refreshRepository();
     	}
+    	// Reschedule repository refresher
+    	repositoryRefresher.start();
     }
 
     @Override
@@ -225,7 +234,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     public void allHandlersInitialized() {
     	repositoryReader.applyRepositoryFromCache();
         searchHandler.registerSearchableObject(repositorySearchableObject);
-        repositoryRefresher = new RepositoryAutoRefresher(this, getState());
+        repositoryRefresher.start();
     }
     
     @Override
@@ -277,9 +286,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
      * Finish.
      */
     public void applicationFinish() {
-        if (repositoryRefresher != null) {
-            repositoryRefresher.interrupt();
-        }
+        repositoryRefresher.stop();
         if (!isRepositoryVoid()) {
             // Only store repository if it's dirty
             if (transactionPending()) {
@@ -352,15 +359,6 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     @Override
 	public String getPathForNewAudioFilesRipped() {
         return StringUtils.getString(getRepositoryPath(), getOsManager().getFileSeparator(), Album.getUnknownAlbum(), " - ", DateUtils.toPathString(new DateTime()));
-    }
-
-    /**
-     * Gets the repository.
-     * 
-     * @return the repository
-     */
-    IRepository getRepository() {
-        return repository;
     }
 
     @Override

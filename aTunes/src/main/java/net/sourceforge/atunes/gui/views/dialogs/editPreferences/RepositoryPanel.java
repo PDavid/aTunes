@@ -55,7 +55,7 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
      * application finish)
      */
     private JTextField commandAfterAccessRepository;
-
+    
     /**
      * Instantiates a new repository panel.
      */
@@ -105,6 +105,7 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
     @Override
     public boolean applyPreferences(IState state) {
         state.setAutoRepositoryRefreshTime((Integer) refreshTime.getSelectedItem());
+        
         state.setSaveRepositoryAsXml(saveRepositoryAsXml.isSelected());
         state.setCommandBeforeAccessRepository(commandBeforeAccessRepository.getText());
         state.setCommandAfterAccessRepository(commandAfterAccessRepository.getText());

@@ -20,54 +20,73 @@
 
 package net.sourceforge.atunes.kernel.modules.repository;
 
+import java.util.concurrent.ScheduledFuture;
+
+import net.sourceforge.atunes.kernel.TaskService;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.joda.time.DateTime;
 
-class RepositoryAutoRefresher extends Thread {
+/**
+ * Calls refresh automatically
+ * @author alex
+ *
+ */
+public class RepositoryAutoRefresher implements Runnable {
 
-    private RepositoryHandler handler;
+	private TaskService taskService;
+	
+	private IState state;
+	
+	private RepositoryHandler repositoryHandler;
+	
+	private ScheduledFuture<?> task;
+	
+	/**
+	 * @param state
+	 */
+	public void setState(IState state) {
+		this.state = state;
+	}
+	
+	/**
+	 * @param taskService
+	 */
+	public void setTaskService(TaskService taskService) {
+		this.taskService = taskService;
+	}
+	
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(RepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+	
+    public void start() {
+    	stop();
+    	if (state.getAutoRepositoryRefreshTime() > 0) {
+    		Logger.info("Repository will refresh automatically every ", state.getAutoRepositoryRefreshTime(), " minutes");
+    		task = taskService.submitPeriodically("RepositoryAutoRefresher", 30, state.getAutoRepositoryRefreshTime() * 60L, this);
+    	} else {
+    		Logger.info("Repository will not refresh automatically");
+    	}
+    }
     
-    private IState state;
-
-    /**
-     * Instantiates a new repository auto refresher.
-     * 
-     * @param repositoryHandler
-     *            the repository handler
-     */
-    public RepositoryAutoRefresher(RepositoryHandler repositoryHandler, IState state) {
-        super();
-        this.handler = repositoryHandler;
-        this.state = state;
-        setPriority(Thread.MIN_PRIORITY);
-        if (state.getAutoRepositoryRefreshTime() != 0) {
-            start();
-        }
+    public void stop() {
+    	if (task != null) {
+    		Logger.info("Cancelling previous pending task for automatically refresh repository");
+    		task.cancel(true);
+    	}
     }
 
     @Override
     public void run() {
-        try {
-            while (true) {
-                Thread.sleep(state.getAutoRepositoryRefreshTime() * 60000L);
-                if (!handler.isRepositoryVoid() && !handler.isLoaderWorking()) {
-                    Logger.info(StringUtils.getString("Checking for repository changes... (", new DateTime().toString(), ')'));
-                    int filesLoaded = handler.getAudioFilesList().size();
-                    int newFilesCount = RepositoryLoader.countFilesInRepository(handler.getRepository());
-                    if (filesLoaded != newFilesCount) {
-                    	handler.refreshRepository();
-                    }
-                }
-                // If it has been disabled exit
-                if (state.getAutoRepositoryRefreshTime() == 0) {
-                    break;
-                }
-            }
-        } catch (Exception e) {
-            return;
+        if (!repositoryHandler.isRepositoryVoid() && !repositoryHandler.isLoaderWorking()) {
+            Logger.info(StringUtils.getString("Automatically refreshing repository... (", new DateTime().toString(), ')'));
+            repositoryHandler.refreshRepository();
         }
     }
 }
