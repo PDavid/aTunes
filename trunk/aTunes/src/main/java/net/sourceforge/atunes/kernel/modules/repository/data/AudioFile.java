@@ -29,7 +29,6 @@ import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.kernel.modules.repository.ImageCache;
 import net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectValidator;
-import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
 import net.sourceforge.atunes.kernel.modules.tags.TagDetector;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
@@ -311,10 +310,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
     @Override
     public int getTrackNumber() {
         if (tag != null) {
-            if (tag instanceof DefaultTag) {
-                return ((DefaultTag) tag).getTrackNumber() > 0 ? ((DefaultTag) tag).getTrackNumber() : 0;
-            }
-            return 0;
+        	return tag.getTrackNumber();
         }
         return 0;
     }
