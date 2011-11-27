@@ -51,7 +51,6 @@ import net.sourceforge.atunes.model.ISearchableObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.IStatisticsHandler;
-import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.DateUtils;
@@ -93,8 +92,6 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     /** Listeners notified when an audio file is removed */
     private List<IAudioFilesRemovedListener> audioFilesRemovedListeners = new ArrayList<IAudioFilesRemovedListener>();
 
-	private ITaskService taskService;
-
 	private IFavoritesHandler favoritesHandler;
 	
 	private RepositoryTransaction transaction;
@@ -104,6 +101,15 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	private ShowRepositoryDataHelper showRepositoryDataHelper;
 	
 	private ISearchableObject repositorySearchableObject;
+	
+	private PersistRepositoryTask persistRepositoryTask;
+	
+	/**
+	 * @param persistRepositoryTask
+	 */
+	public void setPersistRepositoryTask(PersistRepositoryTask persistRepositoryTask) {
+		this.persistRepositoryTask = persistRepositoryTask;
+	}
 	
 	/**
 	 * @param repositorySearchableObject
@@ -147,13 +153,6 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 		this.repositoryReader = repositoryReader;
 	}
     
-	/**
-	 * @param taskService
-	 */
-	public void setTaskService(ITaskService taskService) {
-		this.taskService = taskService;
-	}
-	
 	/**
 	 * @param favoritesHandler
 	 */
@@ -577,13 +576,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     
 	@Override
 	public void repositoryChanged(final IRepository repository) {
-		taskService.submitNow("Persist Repository Cache", new Runnable() {
-			@Override
-			public void run() {
-				stateHandler.persistRepositoryCache(repository, true);
-			}
-		});
-		
+		persistRepositoryTask.persist(repository);
 		favoritesHandler.updateFavorites(repository);
 	}
 
