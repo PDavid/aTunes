@@ -101,22 +101,6 @@ public interface IRepository {
 	public void setListener(IRepositoryListener listener);
 
 	/**
-	 * Starts a transaction to change repository
-	 */
-	public void startTransaction();
-
-	/**
-	 * Ends a transaction to change repository
-	 */
-	public void endTransaction();
-
-	/**
-	 * Returns true if there is a repository transaction not finished
-	 * @return
-	 */
-	public boolean transactionPending();
-
-	/**
 	 * Count files.
 	 * 
 	 * @return the int

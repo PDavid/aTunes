@@ -31,9 +31,7 @@ import java.util.Map;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.kernel.modules.repository.exception.InconsistentRepositoryException;
-import net.sourceforge.atunes.utils.Logger;
 
-import org.joda.time.DateTime;
 
 public class Repository implements Serializable, IRepository {
 
@@ -84,11 +82,6 @@ public class Repository implements Serializable, IRepository {
      */
     private transient IRepositoryListener listener;
     
-    /**
-     * Current transaction
-     */
-    private transient RepositoryTransaction transaction;
-
     /**
      * State
      */
@@ -219,60 +212,6 @@ public class Repository implements Serializable, IRepository {
 	}
 	
 	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#startTransaction()
-	 */
-	@Override
-	public void startTransaction() {
-		this.transaction = new RepositoryTransaction(this, listener);
-	}
-	
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#endTransaction()
-	 */
-	@Override
-	public void endTransaction() {
-		if (this.transaction != null) {
-			this.transaction.finishTransaction();
-		}
-	}
-	
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#transactionPending()
-	 */
-	@Override
-	public boolean transactionPending() {
-		return this.transaction != null && this.transaction.isPending();
-	}
-	
-	public static final class RepositoryTransaction {
-		
-		private IRepository repository;
-		private IRepositoryListener listener;
-		private volatile boolean pending;
-		
-		private RepositoryTransaction(IRepository repository, IRepositoryListener listener) {
-			this.repository = repository;
-			this.listener = listener;
-			this.pending = true;
-			Logger.debug("Creating new repository transaction: ", new DateTime().toString());
-		}
-		
-		public void finishTransaction() {
-			if (listener != null) {
-				listener.repositoryChanged(this.repository);
-			}
-			this.pending = false;
-			Logger.debug("Finished repository transaction: ", new DateTime().toString());
-		}
-		
-		public boolean isPending() {
-			return this.pending;
-		}
-	}
-	
-    //------------------------------------------ FILE OPERATIONS ------------------------------------- //
-    
-    /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.model.IRepository#countFiles()
 	 */
     @Override

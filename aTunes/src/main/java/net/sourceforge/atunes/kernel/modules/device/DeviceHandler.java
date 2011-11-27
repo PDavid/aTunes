@@ -48,6 +48,7 @@ import net.sourceforge.atunes.kernel.actions.RefreshDeviceAction;
 import net.sourceforge.atunes.kernel.actions.SynchronizeDeviceWithPlayListAction;
 import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader;
+import net.sourceforge.atunes.kernel.modules.repository.RepositoryTransaction;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -461,7 +462,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
         Logger.info("Refreshing device");
         Repository oldDeviceRepository = deviceRepository;
         deviceRepository = new Repository(oldDeviceRepository.getRepositoryFolders(), null, getState());
-        currentLoader = new RepositoryLoader(getState(), getBean(IRepositoryHandler.class), oldDeviceRepository.getRepositoryFolders(), oldDeviceRepository, deviceRepository, true);
+        currentLoader = new RepositoryLoader(getState(), new RepositoryTransaction(deviceRepository, null), oldDeviceRepository.getRepositoryFolders(), oldDeviceRepository, deviceRepository, true);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.start();
     }
@@ -492,7 +493,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
         List<File> folders = new ArrayList<File>();
         folders.add(path);
         deviceRepository = new Repository(folders, null, getState());
-        currentLoader = new RepositoryLoader(getState(), getBean(IRepositoryHandler.class), folders, null, deviceRepository, false);
+        currentLoader = new RepositoryLoader(getState(), new RepositoryTransaction(deviceRepository, null), folders, null, deviceRepository, false);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.start();
     }

@@ -27,13 +27,13 @@ final class PreviousInitializationTask implements Runnable {
 	
 	private IState state;
 	
-	private RepositoryHandler repositoryHandler;
+	private RepositoryReader repositoryReader;
 	
 	private IStateHandler stateHandler;
 	
-	PreviousInitializationTask(IState state, RepositoryHandler repositoryHandler, IStateHandler stateHandler) {
+	PreviousInitializationTask(IState state, RepositoryReader repositoryReader, IStateHandler stateHandler) {
 		this.state = state;
-		this.repositoryHandler = repositoryHandler;
+		this.repositoryReader = repositoryReader;
 		this.stateHandler = stateHandler;
 	}
 	
@@ -41,6 +41,6 @@ final class PreviousInitializationTask implements Runnable {
 	public void run() {
 	    // This is the first access to repository, so execute the command defined by user
 	    new LoadRepositoryCommandExecutor().execute(state.getCommandBeforeAccessRepository());
-	    repositoryHandler.setRepositoryRetrievedFromCache(stateHandler.retrieveRepositoryCache());
+	    repositoryReader.setRepositoryRetrievedFromCache(stateHandler.retrieveRepositoryCache());
 	}
 }
