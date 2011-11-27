@@ -239,13 +239,6 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 	public void rename(ILocalAudioObject audioFile, String name);
 
 	/**
-	 * Returns if Repository is void (not yet loaded or selected)
-	 * 
-	 * @return
-	 */
-	public boolean isRepositoryVoid();
-
-	/**
 	 * Select repository.
 	 * 
 	 * @return true, if successful

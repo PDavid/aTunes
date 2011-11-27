@@ -50,6 +50,7 @@ public class RefreshRepositoryAction extends CustomAbstractAction {
         super(I18nUtils.getString("REFRESH_REPOSITORY"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("REFRESH_REPOSITORY"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
+        setEnabled(false); // Disabled until select repository
     }
 
     @Override

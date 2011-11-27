@@ -67,6 +67,7 @@ public class ExportAction extends CustomAbstractAction {
     public ExportAction() {
         super(StringUtils.getString(I18nUtils.getString("EXPORT"), "..."));
         putValue(SHORT_DESCRIPTION, StringUtils.getString(I18nUtils.getString("EXPORT"), "..."));
+        setEnabled(false); // Initially false, will be enabled after load repository
     }
 
     @Override
