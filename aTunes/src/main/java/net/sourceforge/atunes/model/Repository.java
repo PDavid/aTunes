@@ -78,29 +78,22 @@ public class Repository implements Serializable, IRepository {
     private RepositoryStructure<Year> yearStructure;
     
     /**
-     * Object to be notified when this repository becomes dirty
-     */
-    private transient IRepositoryListener listener;
-    
-    /**
      * State
      */
     private transient IState state;
     
     /**
      * Instantiates a new repository.
-     * 
      * @param folders
-     *            the folders
+     * @param state
      */
-    public Repository(List<File> folders, IRepositoryListener listener, IState state) {
+    public Repository(List<File> folders, IState state) {
         this.folders = folders;
         this.filesStructure = new RepositoryStructure<ILocalAudioObject>();
         this.artistsStructure = new RepositoryStructure<Artist>();
         this.foldersStructure = new RepositoryStructure<Folder>();
         this.genresStructure = new RepositoryStructure<Genre>();
         this.yearStructure = new RepositoryStructure<Year>();
-        this.listener = listener;
         this.state = state;
     }
 
@@ -202,14 +195,6 @@ public class Repository implements Serializable, IRepository {
                 throw new InconsistentRepositoryException();
         }
     }
-
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#setListener(net.sourceforge.atunes.model.IRepositoryListener)
-	 */
-	@Override
-	public void setListener(IRepositoryListener listener) {
-		this.listener = listener;
-	}
 	
 	/* (non-Javadoc)
 	 * @see net.sourceforge.atunes.model.IRepository#countFiles()
@@ -266,7 +251,8 @@ public class Repository implements Serializable, IRepository {
      * Access artist structure
      * @return
      */
-    Map<String, Artist> getArtistStructure() {
+	@Override
+    public Map<String, Artist> getArtistStructure() {
         return artistsStructure.getStructure();
     }
     
@@ -332,7 +318,8 @@ public class Repository implements Serializable, IRepository {
      * Access album structure
      * @return
      */
-    Map<String, Album> getAlbumStructure() {
+	@Override
+    public Map<String, Album> getAlbumStructure() {
         Map<String, Album> albumsStructure = new HashMap<String, Album>();
         Collection<Artist> artistCollection = getArtists();
         for (Artist artist : artistCollection) {
@@ -349,7 +336,8 @@ public class Repository implements Serializable, IRepository {
      * Access folder structure
      * @return
      */
-    Map<String, Folder> getFolderStructure() {
+	@Override
+    public Map<String, Folder> getFolderStructure() {
         return foldersStructure.getStructure();
     }
 
@@ -384,7 +372,8 @@ public class Repository implements Serializable, IRepository {
      * Returns genre structure
      * @return
      */
-    Map<String, Genre> getGenreStructure() {
+	@Override
+    public Map<String, Genre> getGenreStructure() {
         return genresStructure.getStructure();
     }
 
@@ -440,7 +429,8 @@ public class Repository implements Serializable, IRepository {
      * Structure
      * @return
      */
-    Map<String, Year> getYearStructure() {
+	@Override
+    public Map<String, Year> getYearStructure() {
         return yearStructure.getStructure();
     }
 
@@ -476,6 +466,4 @@ public class Repository implements Serializable, IRepository {
 	public void removeYear(Year year) {
     	yearStructure.remove(year.getName());
     }
-
-
 }

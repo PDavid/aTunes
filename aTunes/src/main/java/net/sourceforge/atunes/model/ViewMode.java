@@ -32,7 +32,7 @@ public enum ViewMode {
      * @param repository
      * @return
      */
-    public Map<String, ?> getDataForView(Repository repository) {
+    public Map<String, ?> getDataForView(IRepository repository) {
 		if (repository != null) {
 			return getStructure(repository);
 		} else {
@@ -43,7 +43,7 @@ public enum ViewMode {
 	/**
 	 * @param repository
 	 */
-	private Map<String, ?> getStructure(Repository repository) {
+	private Map<String, ?> getStructure(IRepository repository) {
 		switch (this) {
 		case YEAR: return repository.getYearStructure();
 		case GENRE: return repository.getGenreStructure();

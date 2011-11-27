@@ -23,6 +23,7 @@ package net.sourceforge.atunes.model;
 import java.io.File;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
@@ -97,8 +98,6 @@ public interface IRepository {
 	 * @throws InconsistentRepositoryException
 	 */
 	public void validateRepository() throws InconsistentRepositoryException;
-
-	public void setListener(IRepositoryListener listener);
 
 	/**
 	 * Count files.
@@ -245,5 +244,35 @@ public interface IRepository {
 	 * @param year
 	 */
 	public void removeYear(Year year);
+
+	/**
+	 * Returns data organized by years
+	 * @return
+	 */
+	public Map<String, ?> getYearStructure();
+
+	/**
+	 * Returns data organized by genre
+	 * @return
+	 */
+	public Map<String, ?> getGenreStructure();
+
+	/**
+	 * Returns data organized by folder
+	 * @return
+	 */
+	public Map<String, ?> getFolderStructure();
+
+	/**
+	 * Returns data organized by folder
+	 * @return
+	 */
+	public Map<String, ?> getAlbumStructure();
+
+	/**
+	 * Returns data organized by artist
+	 * @return
+	 */
+	public Map<String, ?> getArtistStructure();
 
 }

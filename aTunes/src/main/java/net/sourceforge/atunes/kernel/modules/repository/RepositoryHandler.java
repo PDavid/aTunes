@@ -85,7 +85,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	
 	private IDeviceHandler deviceHandler;
 	
-	private Repository repository;
+	private IRepository repository;
 	
     private RepositoryAutoRefresher repositoryRefresher;
     

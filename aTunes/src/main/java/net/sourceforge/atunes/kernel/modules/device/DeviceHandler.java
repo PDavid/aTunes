@@ -461,7 +461,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
     	getFrame().showProgressBar(true, null);
         Logger.info("Refreshing device");
         Repository oldDeviceRepository = deviceRepository;
-        deviceRepository = new Repository(oldDeviceRepository.getRepositoryFolders(), null, getState());
+        deviceRepository = new Repository(oldDeviceRepository.getRepositoryFolders(), getState());
         currentLoader = new RepositoryLoader(getState(), new RepositoryTransaction(deviceRepository, null), oldDeviceRepository.getRepositoryFolders(), oldDeviceRepository, deviceRepository, true);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.start();
@@ -492,7 +492,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 
         List<File> folders = new ArrayList<File>();
         folders.add(path);
-        deviceRepository = new Repository(folders, null, getState());
+        deviceRepository = new Repository(folders, getState());
         currentLoader = new RepositoryLoader(getState(), new RepositoryTransaction(deviceRepository, null), folders, null, deviceRepository, false);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.start();

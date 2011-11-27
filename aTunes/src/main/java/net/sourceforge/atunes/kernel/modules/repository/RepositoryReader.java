@@ -236,7 +236,6 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 
     private void applyExistingRepository(Repository rep) {
         repository = rep;
-        repository.setListener(repositoryHandler);
         repositoryReadCompleted();
     }
 
@@ -315,7 +314,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
     private void readRepository(List<File> folders) {
         backgroundLoad = false;
         Repository oldRepository = repository;
-        repository = new Repository(folders, repositoryHandler, state);
+        repository = new Repository(folders, state);
         repositoryHandler.setRepository(repository);
         currentLoader = new RepositoryLoader(state, new RepositoryTransaction(repository, repositoryHandler), folders, oldRepository, repository, false);
         currentLoader.addRepositoryLoaderListener(this);
@@ -439,7 +438,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
         Logger.info("Refreshing repository");
         filesLoaded = 0;
         Repository oldRepository = repository;
-        repository = new Repository(oldRepository.getRepositoryFolders(), repositoryHandler, state);
+        repository = new Repository(oldRepository.getRepositoryFolders(), state);
         repositoryHandler.setRepository(repository);
         currentLoader = new RepositoryLoader(state, new RepositoryTransaction(repository, repositoryHandler), oldRepository.getRepositoryFolders(), oldRepository, repository, true);
         currentLoader.addRepositoryLoaderListener(this);
