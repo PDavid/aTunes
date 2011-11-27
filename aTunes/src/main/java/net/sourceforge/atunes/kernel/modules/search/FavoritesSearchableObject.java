@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.search.searchableobjects;
+package net.sourceforge.atunes.kernel.modules.search;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,9 +28,8 @@ import java.util.List;
 import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.search.RawSearchResult;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IDeviceHandler;
+import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -39,19 +38,19 @@ import net.sourceforge.atunes.utils.StringUtils;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.SimpleFSDirectory;
 
-public final class DeviceSearchableObject extends AbstractCommonAudioFileSearchableObject {
+public final class FavoritesSearchableObject extends AbstractCommonAudioFileSearchableObject {
 
     /**
      * Singleton instance of this class
      */
-    private static DeviceSearchableObject instance = new DeviceSearchableObject();
+    private static FavoritesSearchableObject instance = new FavoritesSearchableObject();
 
     private FSDirectory indexDirectory;
 
     /**
      * Default constructor
      */
-    private DeviceSearchableObject() {
+    private FavoritesSearchableObject() {
         // Nothing to do
     }
 
@@ -60,19 +59,19 @@ public final class DeviceSearchableObject extends AbstractCommonAudioFileSearcha
      * 
      * @return
      */
-    public static DeviceSearchableObject getInstance() {
+    public static FavoritesSearchableObject getInstance() {
         return instance;
     }
 
     @Override
     public String getSearchableObjectName() {
-        return I18nUtils.getString("DEVICE");
+        return I18nUtils.getString("FAVORITES");
     }
 
     @Override
-    public synchronized FSDirectory getIndexDirectory() throws IOException {
+    public FSDirectory getIndexDirectory() throws IOException {
         if (indexDirectory == null) {
-            indexDirectory = new SimpleFSDirectory(new File(StringUtils.getString(Context.getBean(IOSManager.class).getUserConfigFolder(Context.getBean(ApplicationArguments.class).isDebug()), "/", Constants.DEVICE_INDEX_DIR)));
+            indexDirectory = new SimpleFSDirectory(new File(StringUtils.getString(Context.getBean(IOSManager.class).getUserConfigFolder(Context.getBean(ApplicationArguments.class).isDebug()), "/", Constants.FAVORITES_INDEX_DIR)));
         }
         return indexDirectory;
     }
@@ -81,7 +80,7 @@ public final class DeviceSearchableObject extends AbstractCommonAudioFileSearcha
     public List<IAudioObject> getSearchResult(List<RawSearchResult> rawSearchResults) {
         List<IAudioObject> result = new ArrayList<IAudioObject>();
         for (RawSearchResult rawSearchResult : rawSearchResults) {
-        	ILocalAudioObject audioFile = Context.getBean(IDeviceHandler.class).getFileIfLoaded(rawSearchResult.getDocument().get("url"));
+        	ILocalAudioObject audioFile = Context.getBean(IFavoritesHandler.class).getFavoriteSongsMap().get(rawSearchResult.getDocument().get("url"));
             if (audioFile != null) {
                 result.add(audioFile);
             }
@@ -91,7 +90,7 @@ public final class DeviceSearchableObject extends AbstractCommonAudioFileSearcha
 
     @Override
     public List<IAudioObject> getElementsToIndex() {
-        return new ArrayList<IAudioObject>(Context.getBean(IDeviceHandler.class).getAudioFilesList());
+        return new ArrayList<IAudioObject>(Context.getBean(IFavoritesHandler.class).getFavoriteSongsMap().values());
     }
 
 }

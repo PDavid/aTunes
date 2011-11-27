@@ -34,7 +34,6 @@ import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
-import net.sourceforge.atunes.kernel.modules.search.searchableobjects.RepositorySearchableObject;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.Folder;
@@ -48,6 +47,7 @@ import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ISearchHandler;
+import net.sourceforge.atunes.model.ISearchableObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.IStatisticsHandler;
@@ -102,6 +102,15 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	private RepositoryActionsHelper repositoryActions;
 	
 	private ShowRepositoryDataHelper showRepositoryDataHelper;
+	
+	private ISearchableObject repositorySearchableObject;
+	
+	/**
+	 * @param repositorySearchableObject
+	 */
+	public void setRepositorySearchableObject(ISearchableObject repositorySearchableObject) {
+		this.repositorySearchableObject = repositorySearchableObject;
+	}
 	
 	/**
 	 * @param voidRepository
@@ -215,7 +224,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     @Override
     public void allHandlersInitialized() {
     	repositoryReader.applyRepositoryFromCache();
-        searchHandler.registerSearchableObject(RepositorySearchableObject.getInstance());
+        searchHandler.registerSearchableObject(repositorySearchableObject);
         repositoryRefresher = new RepositoryAutoRefresher(this, getState());
     }
     
