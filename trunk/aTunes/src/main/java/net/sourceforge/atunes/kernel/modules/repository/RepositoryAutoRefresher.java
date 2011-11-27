@@ -84,7 +84,7 @@ public class RepositoryAutoRefresher implements Runnable {
 
     @Override
     public void run() {
-        if (!repositoryHandler.isRepositoryVoid() && !repositoryHandler.isLoaderWorking()) {
+        if (!repositoryHandler.isLoaderWorking()) {
             Logger.info(StringUtils.getString("Automatically refreshing repository... (", new DateTime().toString(), ')'));
             repositoryHandler.refreshRepository();
         }
