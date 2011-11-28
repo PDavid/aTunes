@@ -317,4 +317,22 @@ public final class StringUtils {
         seconds = seconds % 60;
         return getString(minutes, ":", (seconds < 10 ? "0" : ""), seconds);
     }
+    
+    /**
+     * Returns true if first string is equals to any of others, false if null
+     * @param string
+     * @param strings
+     * @return
+     */
+    public static boolean equalsToStrings(String string, String... strings) {
+    	if (string == null) {
+    		return false;
+    	}
+    	for (String s: strings) {
+    		if (string.equals(s)) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
 }
