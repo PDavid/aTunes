@@ -14,5 +14,7 @@
 	<bean id="persistRepositoryTask" class="net.sourceforge.atunes.kernel.modules.repository.PersistRepositoryTask"/>
 	<bean id="addFilesTask" class="net.sourceforge.atunes.kernel.modules.repository.AddFilesTask" scope="prototype"/>
 	
+	<bean id="localAudioObjectFactory" class="net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectFactory"/>
+	
 
 </beans>

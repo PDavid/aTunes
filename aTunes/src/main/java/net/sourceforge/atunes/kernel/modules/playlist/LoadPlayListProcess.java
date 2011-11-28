@@ -28,6 +28,7 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.process.AbstractProcess;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -41,12 +42,22 @@ class LoadPlayListProcess extends AbstractProcess {
     private IRepositoryHandler repositoryHandler;
     
     private IRadioHandler radioHandler;
+    
+    private ILocalAudioObjectFactory localAudioObjectFactory;
 
-    LoadPlayListProcess(List<String> filenamesToLoad, IState state, IRepositoryHandler repositoryHandler, IRadioHandler radioHandler) {
+    /**
+     * @param filenamesToLoad
+     * @param state
+     * @param repositoryHandler
+     * @param radioHandler
+     * @param localAudioObjectFactory
+     */
+    LoadPlayListProcess(List<String> filenamesToLoad, IState state, IRepositoryHandler repositoryHandler, IRadioHandler radioHandler, ILocalAudioObjectFactory localAudioObjectFactory) {
     	super(state);
         this.filenamesToLoad = filenamesToLoad;
         this.repositoryHandler = repositoryHandler;
         this.radioHandler = radioHandler;
+        this.localAudioObjectFactory = localAudioObjectFactory;
     }
 
     @Override
@@ -68,7 +79,7 @@ class LoadPlayListProcess extends AbstractProcess {
     protected boolean runProcess() {
         final List<IAudioObject> songsLoaded = new ArrayList<IAudioObject>();
         for (int i = 0; i < filenamesToLoad.size() && !isCanceled(); i++) {
-            songsLoaded.add(PlayListIO.getAudioFileOrCreate(repositoryHandler, filenamesToLoad.get(i), radioHandler));
+            songsLoaded.add(PlayListIO.getAudioFileOrCreate(repositoryHandler, filenamesToLoad.get(i), radioHandler, localAudioObjectFactory));
             setCurrentProgress(i + 1);
         }
         // If canceled loaded files are added anyway

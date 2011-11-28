@@ -29,6 +29,7 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -88,8 +89,12 @@ public class Mp4Encoder extends AbstractEncoder {
         }
     }
 
-    public Mp4Encoder(IOSManager osManager) {
-    	super("m4a", MP4_QUALITY, DEFAULT_MP4_QUALITY, FORMAT_NAME);
+    /**
+     * @param osManager
+     * @param localAudioObjectFactory
+     */
+    public Mp4Encoder(IOSManager osManager, ILocalAudioObjectFactory localAudioObjectFactory) {
+    	super("m4a", MP4_QUALITY, DEFAULT_MP4_QUALITY, FORMAT_NAME, localAudioObjectFactory);
     	this.osManager = osManager;
 	}
     

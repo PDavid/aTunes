@@ -22,10 +22,10 @@ package net.sourceforge.atunes.kernel.modules.cdripper;
 
 import java.io.File;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.tags.TagFactory;
 import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -51,18 +51,22 @@ public abstract class AbstractEncoder implements Encoder {
 	private String defaultQuality;
 
 	private String formatName;
+	
+	private ILocalAudioObjectFactory localAudioObjectFactory;
 
 	/**
 	 * @param extensionOfEncodedFiles
 	 * @param availableQualities
 	 * @param defaultQuality
 	 * @param formatName
+	 * @param localAudioObjectFactory
 	 */
-	public AbstractEncoder(String extensionOfEncodedFiles, String[] availableQualities, String defaultQuality, String formatName) {
+	public AbstractEncoder(String extensionOfEncodedFiles, String[] availableQualities, String defaultQuality, String formatName, ILocalAudioObjectFactory localAudioObjectFactory) {
 		this.extensionOfEncodedFiles = extensionOfEncodedFiles;
 		this.availableQualities = availableQualities;
 		this.defaultQuality = defaultQuality;
 		this.formatName = formatName;
+		this.localAudioObjectFactory = localAudioObjectFactory;
 	}
 	
 	public final String getExtensionOfEncodedFiles() {
@@ -145,11 +149,12 @@ public abstract class AbstractEncoder implements Encoder {
      * @param trackNumber
      * @param artist
      * @param composer
+     * @param localAudioObjectFactory
      * @return
      */
     final boolean setTag(File file, String title, int trackNumber, String artist, String composer) {
         try {
-            ILocalAudioObject audiofile = new AudioFile(file);
+            ILocalAudioObject audiofile = localAudioObjectFactory.getLocalAudioObject(file);
             ITag tag = TagFactory.getNewTag();
 
             tag.setAlbum(getAlbum());

@@ -29,13 +29,13 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.kernel.PlaybackStateListeners;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IEqualizer;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -115,6 +115,15 @@ public abstract class AbstractPlayerEngine {
     protected IPlayerHandler playerHandler;
     
     protected PlayListEventListeners playListEventListeners;
+    
+    private ILocalAudioObjectFactory localAudioObjectFactory;
+    
+    /**
+     * @param localAudioObjectFactory
+     */
+    public void setLocalAudioObjectFactory(ILocalAudioObjectFactory localAudioObjectFactory) {
+		this.localAudioObjectFactory = localAudioObjectFactory;
+	}
     
     /**
      * A thread invoking play in engine
@@ -619,9 +628,9 @@ public abstract class AbstractPlayerEngine {
 	        	temporalDiskStorage.removeFile(lastFileCached);
 	        }
 
-	        File tempFile = temporalDiskStorage.addFile(((AudioFile) audioObject).getFile());
+	        File tempFile = temporalDiskStorage.addFile(((ILocalAudioObject) audioObject).getFile());
 	        if (tempFile != null) {
-	            audioObjectToPlay = new AudioFile(tempFile);
+	        	audioObjectToPlay = localAudioObjectFactory.getLocalAudioObject(tempFile);
 	            lastFileCached = tempFile;
 	        } else {
 	            lastFileCached = null;
@@ -652,7 +661,7 @@ public abstract class AbstractPlayerEngine {
 		}
 
 		// Send Now Playing info to Last.fm
-		if (audioObject instanceof AudioFile) {
+		if (audioObject instanceof ILocalAudioObject) {
 			Context.getBean(IWebServicesHandler.class).submitNowPlayingInfo(audioObject);
 		}
 

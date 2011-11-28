@@ -57,6 +57,7 @@ import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFileSelectionDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IProcessListener;
@@ -85,6 +86,15 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
      */
     private int filesCopiedToDevice;
     private boolean caseSensitiveTrees;
+    
+    private ILocalAudioObjectFactory localAudioObjectFactory;
+    
+    /**
+     * @param localAudioObjectFactory
+     */
+    public void setLocalAudioObjectFactory(ILocalAudioObjectFactory localAudioObjectFactory) {
+		this.localAudioObjectFactory = localAudioObjectFactory;
+	}
 
     @Override
     protected void initHandler() {
@@ -462,7 +472,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
         Logger.info("Refreshing device");
         Repository oldDeviceRepository = deviceRepository;
         deviceRepository = new Repository(oldDeviceRepository.getRepositoryFolders(), getState());
-        currentLoader = new RepositoryLoader(getState(), new RepositoryTransaction(deviceRepository, null), oldDeviceRepository.getRepositoryFolders(), oldDeviceRepository, deviceRepository, true);
+        currentLoader = new RepositoryLoader(getState(), new RepositoryTransaction(deviceRepository, null), oldDeviceRepository.getRepositoryFolders(), oldDeviceRepository, deviceRepository, true, localAudioObjectFactory);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.start();
     }
@@ -493,7 +503,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
         List<File> folders = new ArrayList<File>();
         folders.add(path);
         deviceRepository = new Repository(folders, getState());
-        currentLoader = new RepositoryLoader(getState(), new RepositoryTransaction(deviceRepository, null), folders, null, deviceRepository, false);
+        currentLoader = new RepositoryLoader(getState(), new RepositoryTransaction(deviceRepository, null), folders, null, deviceRepository, false, localAudioObjectFactory);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.start();
     }

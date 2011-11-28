@@ -48,6 +48,7 @@ import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.IInputDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -93,6 +94,8 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     static ListOfPlayLists playListsRetrievedFromCache;
     
     private Future<?> persistPlayListFuture;
+    
+    private ILocalAudioObjectFactory localAudioObjectFactory;
 
     /**
      * Filter for play list
@@ -169,7 +172,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     @Override
     public void allHandlersInitialized() {
         // Create drag and drop listener
-    	playListPanel.enableDragAndDrop(new PlayListTableTransferHandler(playListTable, getFrame(), getOsManager(), this, getBean(INavigationHandler.class), getBean(IRepositoryHandler.class), getBean(IRadioHandler.class)));
+    	playListPanel.enableDragAndDrop(new PlayListTableTransferHandler(playListTable, getFrame(), getOsManager(), this, getBean(INavigationHandler.class), getBean(IRepositoryHandler.class), getBean(IRadioHandler.class), localAudioObjectFactory));
     }
 
     /**
@@ -669,7 +672,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
                 List<String> filesToLoad = PlayListIO.read(file, getOsManager());
                 // Background loading - but only when returned array is not null (Progress dialog hangs otherwise)
                 if (filesToLoad != null) {
-                    LoadPlayListProcess process = new LoadPlayListProcess(filesToLoad, getState(), getBean(IRepositoryHandler.class), getBean(IRadioHandler.class));
+                    LoadPlayListProcess process = new LoadPlayListProcess(filesToLoad, getState(), getBean(IRepositoryHandler.class), getBean(IRadioHandler.class), localAudioObjectFactory);
                     process.execute();
                 }
             } else {
@@ -1356,46 +1359,14 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         int podcastFeedEntries = new PlayListPodcastFeedEntryFilter().getObjects(playList).size();
         int audioObjects = playList.size();
 
-        Object[] strs = new Object[20];
-        strs[0] = I18nUtils.getString("PLAYLIST");
-        strs[1] = ": ";
-        strs[2] = audioObjects;
-        strs[3] = " ";
-        strs[4] = I18nUtils.getString("SONGS");
-        strs[5] = " (";
-        strs[6] = playList.getLength();
-        strs[7] = ") ";
-        strs[8] = " - ";
-        strs[9] = audioFiles;
-        strs[10] = " ";
-        strs[11] = I18nUtils.getString("SONGS");
-        strs[12] = " / ";
-        strs[13] = radios;
-        strs[14] = " ";
-        strs[15] = I18nUtils.getString("RADIOS");
-        strs[16] = " / ";
-        strs[17] = podcastFeedEntries;
-        strs[18] = " ";
         // Check if differenciation is required (needed by some slavic languages)
-        if (I18nUtils.getString("PODCAST_ENTRIES_COUNTER").isEmpty()) {
-            strs[19] = I18nUtils.getString("PODCAST_ENTRIES");
-        } else {
-            strs[19] = I18nUtils.getString("PODCAST_ENTRIES_COUNTER");
-        }
+        String toolTip = StringUtils.getString(I18nUtils.getString("PLAYLIST"), ": ", audioObjects, " ", I18nUtils.getString("SONGS"), " (",
+        		playList.getLength(), ") ", " - ", audioFiles, " ", I18nUtils.getString("SONGS"), " / ", radios, " ", I18nUtils.getString("RADIOS"),
+        		" / ", podcastFeedEntries, " ", (I18nUtils.getString("PODCAST_ENTRIES_COUNTER").isEmpty() ? I18nUtils.getString("PODCAST_ENTRIES") : I18nUtils.getString("PODCAST_ENTRIES_COUNTER")));
 
-        Object[] strs2 = new Object[9];
-        strs2[0] = I18nUtils.getString("PLAYLIST");
-        strs2[1] = ": ";
-        strs2[2] = audioObjects;
-        strs2[3] = " - ";
-        strs2[4] = audioFiles;
-        strs2[5] = " / ";
-        strs2[6] = radios;
-        strs2[7] = " / ";
-        strs2[8] = podcastFeedEntries;
+        
+        String text = StringUtils.getString(I18nUtils.getString("PLAYLIST"), ": ", audioObjects, " - ", audioFiles, " / ", radios, " / ", podcastFeedEntries);
 
-        String toolTip = StringUtils.getString(strs);
-        String text = StringUtils.getString(strs2);
         getFrame().setRightStatusBarText(text, toolTip);
     }
     
@@ -1410,4 +1381,10 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     public void setPlayListTable(IPlayListTable playListTable) {
 		this.playListTable = playListTable;
 	}
+    
+    public void setLocalAudioObjectFactory(
+			ILocalAudioObjectFactory localAudioObjectFactory) {
+		this.localAudioObjectFactory = localAudioObjectFactory;
+	}
+
 }

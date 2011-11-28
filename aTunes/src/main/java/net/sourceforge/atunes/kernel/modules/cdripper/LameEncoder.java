@@ -29,6 +29,7 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -91,8 +92,12 @@ public class LameEncoder extends AbstractEncoder {
         }
     }
 
-    public LameEncoder(IOSManager osManager) {
-    	super("mp3", MP3_QUALITIES, MP3_DEFAULT_QUALITY, FORMAT_NAME);
+    /**
+     * @param osManager
+     * @param localAudioObjectFactory
+     */
+    public LameEncoder(IOSManager osManager, ILocalAudioObjectFactory localAudioObjectFactory) {
+    	super("mp3", MP3_QUALITIES, MP3_DEFAULT_QUALITY, FORMAT_NAME, localAudioObjectFactory);
     	this.osManager = osManager;
 	}
     
