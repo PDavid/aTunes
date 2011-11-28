@@ -4,6 +4,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
 	default-autowire="byName" default-lazy-init="true">
 	
+	<bean id="repositoryInitializationTask" class="net.sourceforge.atunes.kernel.modules.repository.PreviousInitializationTask" scope="prototype"/>
 	<bean id="repositoryReader" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryReader"/>
 	<bean id="repositoryActions" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryActionsHelper"/>
 	<bean id="showRepositoryDataHelper" class="net.sourceforge.atunes.kernel.modules.repository.ShowRepositoryDataHelper"/>
