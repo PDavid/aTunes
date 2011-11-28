@@ -27,7 +27,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.ApplicationArguments;
@@ -248,30 +247,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 
     @Override
 	public void addFilesAndRefresh(final List<File> files) {
-    	SwingUtilities.invokeLater(new Runnable() {
-    		@Override
-    		public void run() {
-    			getFrame().showProgressBar(true, StringUtils.getString(I18nUtils.getString("REFRESHING"), "..."));
-    		}
-    	});
-        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
-            @Override
-            protected Void doInBackground() {
-            	startTransaction();
-                RepositoryLoader.addToRepository(RepositoryHandler.this.getState(), repository, files);
-                endTransaction();
-                return null;
-            }
-
-            @Override
-            protected void done() {
-            	getFrame().hideProgressBar();
-            	showRepositoryDataHelper.showRepositoryAudioFileNumber(getAudioFilesList().size(), getRepositoryTotalSize(), repository.getTotalDurationInSeconds());
-                navigationHandler.repositoryReloaded();
-                Logger.info("Repository refresh done");
-            }
-        };
-        worker.execute();
+    	getBean(AddFilesTask.class).execute(repository, files);
     }
 
     @Override
