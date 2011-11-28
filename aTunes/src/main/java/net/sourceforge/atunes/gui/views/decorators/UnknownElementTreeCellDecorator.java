@@ -30,17 +30,25 @@ import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.utils.StringUtils;
 
 public class UnknownElementTreeCellDecorator extends AbstractTreeCellDecorator {
 
+	private String unknownArtist;
+	private String unknownAlbum;
+	private String unknownGenre;
+	private String unknownYear;
+	
+	public UnknownElementTreeCellDecorator() {
+		this.unknownAlbum = Album.getUnknownAlbum();
+		this.unknownArtist = Artist.getUnknownArtist();
+		this.unknownGenre = Genre.getUnknownGenre();
+		this.unknownYear = Year.getUnknownYear();
+	}
+	
     @Override
     public Component decorateTreeCellComponent(Component component, Object userObject, boolean isSelected) {
-        if (userObject.toString() != null &&
-            (Artist.isUnknownArtist(userObject.toString()) || 
-             Album.isUnknownAlbum(userObject.toString()) || 
-             Genre.isUnknownGenre(userObject.toString()) || 
-             Year.isUnknownYear(userObject.toString()))) {
-        	
+    	if (StringUtils.equalsToStrings(userObject.toString(), unknownAlbum, unknownArtist, unknownGenre, unknownYear)) {
         	((JLabel) component).setForeground(ColorDefinitions.GENERAL_UNKNOWN_ELEMENT_FOREGROUND_COLOR);
         }
         return component;
