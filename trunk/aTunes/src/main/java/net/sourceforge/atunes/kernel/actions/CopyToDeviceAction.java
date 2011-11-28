@@ -26,9 +26,10 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IDeviceHandler;
+import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
@@ -44,6 +45,15 @@ public class CopyToDeviceAction extends AbstractActionOverSelectedObjects<IAudio
     private IDeviceHandler deviceHandler;
     
     private IPodcastFeedHandler podcastFeedHandler;
+    
+    private ILocalAudioObjectFactory localAudioObjectFactory;
+    
+    /**
+     * @param localAudioObjectFactory
+     */
+    public void setLocalAudioObjectFactory(ILocalAudioObjectFactory localAudioObjectFactory) {
+		this.localAudioObjectFactory = localAudioObjectFactory;
+	}
     
     /**
      * @param navigationHandler
@@ -78,13 +88,12 @@ public class CopyToDeviceAction extends AbstractActionOverSelectedObjects<IAudio
     
     @Override
     protected IAudioObject preprocessObject(IAudioObject audioObject) {
-        if (audioObject instanceof AudioFile) {
+        if (audioObject instanceof ILocalAudioObject) {
             return audioObject;
         } else if (audioObject instanceof IPodcastFeedEntry && ((IPodcastFeedEntry) audioObject).isDownloaded()) {
             String downloadPath = podcastFeedHandler.getDownloadPath((IPodcastFeedEntry) audioObject);
-            return new AudioFile(new File(downloadPath));
+            return localAudioObjectFactory.getLocalAudioObject(new File(downloadPath));
         }
-
         return null;
     }
 

@@ -25,6 +25,7 @@ import java.util.List;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.model.Folder;
+import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -47,7 +48,19 @@ final class RefreshFoldersSwingWorker extends SwingWorker<Void, Void> {
 
 	private IState state;
 	
-	public RefreshFoldersSwingWorker(RepositoryReader repositoryReader, IRepositoryHandler repositoryHandler, IRepository repository, List<Folder> folders, IStatisticsHandler statisticsHandler, IOSManager osManager,IState state) {
+	private ILocalAudioObjectFactory localAudioObjectFactory;
+	
+	/**
+	 * @param repositoryReader
+	 * @param repositoryHandler
+	 * @param repository
+	 * @param folders
+	 * @param statisticsHandler
+	 * @param osManager
+	 * @param state
+	 * @param localAudioObjectFactory
+	 */
+	public RefreshFoldersSwingWorker(RepositoryReader repositoryReader, IRepositoryHandler repositoryHandler, IRepository repository, List<Folder> folders, IStatisticsHandler statisticsHandler, IOSManager osManager,IState state, ILocalAudioObjectFactory localAudioObjectFactory) {
 		this.repositoryReader = repositoryReader;
 		this.repositoryHandler = repositoryHandler;
 		this.repository = repository;
@@ -55,12 +68,13 @@ final class RefreshFoldersSwingWorker extends SwingWorker<Void, Void> {
 		this.statisticsHandler = statisticsHandler;
 		this.osManager = osManager;
 		this.state = state;
+		this.localAudioObjectFactory = localAudioObjectFactory;
 	}
 	
 	@Override
 	protected Void doInBackground() throws Exception {
 		repositoryHandler.startTransaction();
-        RepositoryLoader.refreshFolders(state, repository, folders, statisticsHandler, osManager, repositoryHandler);
+        RepositoryLoader.refreshFolders(state, repository, folders, statisticsHandler, osManager, repositoryHandler, localAudioObjectFactory);
         repositoryHandler.endTransaction();
 		return null;
 	}

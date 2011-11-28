@@ -32,8 +32,8 @@ import java.util.List;
 import javax.swing.filechooser.FileFilter;
 
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IRadioHandler;
@@ -80,13 +80,13 @@ public final class PlayListIO {
      * @param repositoryHandler
      * @param fileNames
      * @param radioHandler
-     * 
+     * @param localAudioObjectFactory
      * @return the audio objects from file names list
      */
-    public static List<IAudioObject> getAudioObjectsFromFileNamesList(IRepositoryHandler repositoryHandler, List<String> fileNames, IRadioHandler radioHandler) {
+    public static List<IAudioObject> getAudioObjectsFromFileNamesList(IRepositoryHandler repositoryHandler, List<String> fileNames, IRadioHandler radioHandler, ILocalAudioObjectFactory localAudioObjectFactory) {
         List<IAudioObject> result = new ArrayList<IAudioObject>();
         for (String fileName : fileNames) {
-            result.add(getAudioFileOrCreate(repositoryHandler, fileName, radioHandler));
+            result.add(getAudioFileOrCreate(repositoryHandler, fileName, radioHandler, localAudioObjectFactory));
         }
         return result;
     }
@@ -98,9 +98,10 @@ public final class PlayListIO {
      * @param repositoryHandler
      * @param resourceName
      * @param radioHandler
+     * @param localAudioObjectFactory
      * @return
      */
-    static IAudioObject getAudioFileOrCreate(IRepositoryHandler repositoryHandler, String resourceName, IRadioHandler radioHandler) {
+    static IAudioObject getAudioFileOrCreate(IRepositoryHandler repositoryHandler, String resourceName, IRadioHandler radioHandler, ILocalAudioObjectFactory localAudioObjectFactory) {
         IAudioObject ao = null;
 
         // It's an online radio
@@ -117,7 +118,7 @@ public final class PlayListIO {
         ao = repositoryHandler.getFileIfLoaded(resourceName);
         if (ao == null) {
             // If LocalAudioObject is not previously loaded in application then create a new AudioFile
-            ao = new AudioFile(new File(resourceName));
+            ao = localAudioObjectFactory.getLocalAudioObject(new File(resourceName));
         }
         return ao;
     }
@@ -129,11 +130,12 @@ public final class PlayListIO {
      * @param repositoryHandler
      * @param osManager
      * @param radioHandler
+     * @param localAudioObjectFactory
      * @return
      */
-    public static List<IAudioObject> getFilesFromList(File file, IRepositoryHandler repositoryHandler, IOSManager osManager, IRadioHandler radioHandler) {
+    public static List<IAudioObject> getFilesFromList(File file, IRepositoryHandler repositoryHandler, IOSManager osManager, IRadioHandler radioHandler, ILocalAudioObjectFactory localAudioObjectFactory) {
         List<String> list = read(file, osManager);
-        return getAudioObjectsFromFileNamesList(repositoryHandler, list, radioHandler);
+        return getAudioObjectsFromFileNamesList(repositoryHandler, list, radioHandler, localAudioObjectFactory);
     }
 
     /**

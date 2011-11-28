@@ -29,6 +29,7 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -58,7 +59,7 @@ public class FlacEncoder extends AbstractEncoder {
     private Process process;
     
     private IOSManager osManager;
-
+    
     /**
      * Test the presence of the flac encoder flac.
      * 
@@ -91,8 +92,12 @@ public class FlacEncoder extends AbstractEncoder {
         }
     }
 
-    public FlacEncoder(IOSManager osManager) {
-    	super("flac", FLAC_QUALITY, DEFAULT_FLAC_QUALITY, FORMAT_NAME);
+    /**
+     * @param osManager
+     * @param localAudioObjectFactory
+     */
+    public FlacEncoder(IOSManager osManager, ILocalAudioObjectFactory localAudioObjectFactory) {
+    	super("flac", FLAC_QUALITY, DEFAULT_FLAC_QUALITY, FORMAT_NAME, localAudioObjectFactory);
     	this.osManager = osManager;
 	}
     

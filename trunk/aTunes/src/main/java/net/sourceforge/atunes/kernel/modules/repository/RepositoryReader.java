@@ -36,6 +36,7 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.RepositorySelectionInfoDialog;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
@@ -91,6 +92,15 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	private RepositoryActionsHelper repositoryActions;
 	
 	private ShowRepositoryDataHelper showRepositoryDataHelper;
+	
+	private ILocalAudioObjectFactory localAudioObjectFactory;
+	
+	/**
+	 * @param localAudioObjectFactory
+	 */
+	public void setLocalAudioObjectFactory(ILocalAudioObjectFactory localAudioObjectFactory) {
+		this.localAudioObjectFactory = localAudioObjectFactory;
+	}
 	
 	/**
 	 * @param showRepositoryDataHelper
@@ -316,7 +326,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
         Repository oldRepository = repository;
         repository = new Repository(folders, state);
         repositoryHandler.setRepository(repository);
-        currentLoader = new RepositoryLoader(state, new RepositoryTransaction(repository, repositoryHandler), folders, oldRepository, repository, false);
+        currentLoader = new RepositoryLoader(state, new RepositoryTransaction(repository, repositoryHandler), folders, oldRepository, repository, false, localAudioObjectFactory);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.start();
     }
@@ -440,7 +450,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
         Repository oldRepository = repository;
         repository = new Repository(oldRepository.getRepositoryFolders(), state);
         repositoryHandler.setRepository(repository);
-        currentLoader = new RepositoryLoader(state, new RepositoryTransaction(repository, repositoryHandler), oldRepository.getRepositoryFolders(), oldRepository, repository, true);
+        currentLoader = new RepositoryLoader(state, new RepositoryTransaction(repository, repositoryHandler), oldRepository.getRepositoryFolders(), oldRepository, repository, true, localAudioObjectFactory);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.start();
     }

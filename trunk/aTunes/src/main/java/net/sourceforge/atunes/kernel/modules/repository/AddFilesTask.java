@@ -27,6 +27,7 @@ import java.util.concurrent.Callable;
 import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -48,6 +49,15 @@ public class AddFilesTask {
 	private INavigationHandler navigationHandler;
 
 	private IBackgroundWorkerFactory backgroundWorkerFactory;
+	
+	private ILocalAudioObjectFactory localAudioObjectFactory;
+	
+	/**
+	 * @param localAudioObjectFactory
+	 */
+	public void setLocalAudioObjectFactory(ILocalAudioObjectFactory localAudioObjectFactory) {
+		this.localAudioObjectFactory = localAudioObjectFactory;
+	}
 
 	/**
 	 * @param backgroundWorkerFactory
@@ -113,7 +123,7 @@ public class AddFilesTask {
 			@Override
 			public Void call() throws Exception {
 				repositoryHandler.startTransaction();
-				RepositoryLoader.addToRepository(state, repository, files);
+				RepositoryLoader.addToRepository(state, repository, files, localAudioObjectFactory);
 				repositoryHandler.endTransaction();
 				return null;
 			}

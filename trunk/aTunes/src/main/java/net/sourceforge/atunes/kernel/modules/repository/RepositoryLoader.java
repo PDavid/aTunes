@@ -31,7 +31,6 @@ import java.util.StringTokenizer;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.model.Album;
@@ -39,6 +38,7 @@ import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -71,6 +71,7 @@ public class RepositoryLoader extends Thread {
 	private String fastRepositoryPath;
 	private int fastFirstChar;
 	private IState state;
+	private ILocalAudioObjectFactory localAudioObjectFactory;
 	
 	private RepositoryTransaction transaction;
 
@@ -82,26 +83,27 @@ public class RepositoryLoader extends Thread {
 	 * @param oldRepository
 	 * @param repository
 	 * @param refresh
+	 * @param localAudioObjectFactory
 	 */
-	public RepositoryLoader(IState state, RepositoryTransaction transaction, List<File> folders, Repository oldRepository, IRepository repository, boolean refresh) {
+	public RepositoryLoader(IState state, RepositoryTransaction transaction, List<File> folders, Repository oldRepository, IRepository repository, boolean refresh, ILocalAudioObjectFactory localAudioObjectFactory) {
 		this.transaction = transaction;
 		this.refresh = refresh;
 		this.folders = folders;
 		this.oldRepository = oldRepository;
 		this.repository = repository;
 		this.state = state;
+		this.localAudioObjectFactory = localAudioObjectFactory;
 		setPriority(Thread.MAX_PRIORITY);
 	}
 
 	/**
 	 * Add files to repository.
-	 * 
+	 * @param state
 	 * @param rep
-	 *            Repository to which files should be added
 	 * @param files
-	 *            Files to add
+	 * @param localAudioObjectFactory
 	 */
-	static void addToRepository(IState state, IRepository rep, List<File> files) {
+	static void addToRepository(IState state, IRepository rep, List<File> files, ILocalAudioObjectFactory localAudioObjectFactory) {
 		// Get folders where files are
 		Set<File> folders = new HashSet<File>();
 		for (File file : files) {
@@ -130,11 +132,10 @@ public class RepositoryLoader extends Thread {
 			RepositoryFiller filler = new RepositoryFiller(rep, state);
 			for (File f : files) {
 				if (f.getParentFile().equals(folder)) {
-					AudioFile audioFile = null;
-					audioFile = new AudioFile(f);
-					audioFile.setExternalPictures(pictures);
+					ILocalAudioObject audioObject = localAudioObjectFactory.getLocalAudioObject(f);
+					audioObject.setExternalPictures(pictures);
 
-					String pathToFile = audioFile.getUrl().replace('\\', '/');
+					String pathToFile = audioObject.getUrl().replace('\\', '/');
 					int lastChar = pathToFile.lastIndexOf('/') + 1;
 					String relativePath;
 					if (firstChar < lastChar) {
@@ -143,7 +144,7 @@ public class RepositoryLoader extends Thread {
 						relativePath = ".";
 					}
 
-					filler.addAudioFile(audioFile, getRepositoryFolderContaining(rep, folder), relativePath);
+					filler.addAudioFile(audioObject, getRepositoryFolderContaining(rep, folder), relativePath);
 				}
 			}
 		}		
@@ -214,13 +215,11 @@ public class RepositoryLoader extends Thread {
 	 * Gets the songs for dir.
 	 * 
 	 * @param folder
-	 *            the dir
-	 * 
 	 * @param listener
-	 * 
-	 * @return the songs for dir
+	 * @param localAudioObjectFactory
+	 * @return
 	 */
-	public static List<ILocalAudioObject> getSongsForFolder(File folder, IRepositoryLoaderListener listener) {
+	public static List<ILocalAudioObject> getSongsForFolder(File folder, IRepositoryLoaderListener listener, ILocalAudioObjectFactory localAudioObjectFactory) {
 		List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
 
 		File[] list = folder.listFiles();
@@ -232,17 +231,16 @@ public class RepositoryLoader extends Thread {
 				if (LocalAudioObjectValidator.isValidAudioFile(element)) {
 					files.add(element);
 				} else if (element.isDirectory()) {
-					result.addAll(getSongsForFolder(element, listener));
+					result.addAll(getSongsForFolder(element, listener, localAudioObjectFactory));
 				} else if (element.getName().toUpperCase().endsWith("JPG")) {
 					pictures.add(element);
 				}
 			}
 
 			for (int i = 0; i < files.size(); i++) {
-				AudioFile mp3 = null;
-				mp3 = new AudioFile(files.get(i));
-				mp3.setExternalPictures(pictures);
-				result.add(mp3);
+				ILocalAudioObject audioObject = localAudioObjectFactory.getLocalAudioObject(files.get(i));
+				audioObject.setExternalPictures(pictures);
+				result.add(audioObject);
 				if (listener != null) {
 					listener.notifyFileLoaded();
 				}
@@ -256,10 +254,10 @@ public class RepositoryLoader extends Thread {
 	 * 
 	 * @param folders
 	 * @param listener
+	 * @param localAudioObjectFactory
 	 * @return
 	 */
-	public static List<ILocalAudioObject> getSongsForFolders(List<File> folders,
-			IRepositoryLoaderListener listener) {
+	public static List<ILocalAudioObject> getSongsForFolders(List<File> folders, IRepositoryLoaderListener listener, ILocalAudioObjectFactory localAudioObjectFactory) {
 		int filesCount = 0;
 		for (File folder : folders) {
 			filesCount = filesCount + countFiles(folder);
@@ -269,7 +267,7 @@ public class RepositoryLoader extends Thread {
 		}
 		List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
 		for (File folder : folders) {
-			result.addAll(getSongsForFolder(folder, listener));
+			result.addAll(getSongsForFolder(folder, listener, localAudioObjectFactory));
 		}
 		if (listener != null) {
 			listener.notifyFinishRead(null);
@@ -534,13 +532,13 @@ public class RepositoryLoader extends Thread {
 		// don't read file again
 
 		if (oldRepository == null) {
-			audio = new AudioFile(audiofile);
+			audio = localAudioObjectFactory.getLocalAudioObject(audiofile);
 		} else {
 			ILocalAudioObject oldAudioFile = oldRepository.getFile(audiofile.getAbsolutePath());
 			if (oldAudioFile != null && oldAudioFile.isUpToDate()) {
 				audio = oldAudioFile;
 			} else {
-				audio = new AudioFile(audiofile);
+				audio = localAudioObjectFactory.getLocalAudioObject(audiofile);
 			}
 		}
 
@@ -759,13 +757,15 @@ public class RepositoryLoader extends Thread {
 
 	/**
 	 * Refreshes folder
+	 * @param state
 	 * @param repository
 	 * @param folders
 	 * @param statisticsHandler
 	 * @param osManager
 	 * @param repositoryHandler
+	 * @param localAudioObjectFactory
 	 */
-	public static void refreshFolders(IState state, IRepository repository, List<Folder> folders, IStatisticsHandler statisticsHandler, IOSManager osManager, IRepositoryHandler repositoryHandler) {
+	public static void refreshFolders(IState state, IRepository repository, List<Folder> folders, IStatisticsHandler statisticsHandler, IOSManager osManager, IRepositoryHandler repositoryHandler, ILocalAudioObjectFactory localAudioObjectFactory) {
 		repositoryHandler.startTransaction();
 		
 		for (Folder folder : folders) {
@@ -782,11 +782,11 @@ public class RepositoryLoader extends Thread {
 			}
 
 			// Add new files
-			List<ILocalAudioObject> allObjects = getSongsForFolder(folder.getFolderPath(osManager), null);
+			List<ILocalAudioObject> allObjects = getSongsForFolder(folder.getFolderPath(osManager), null, localAudioObjectFactory);
 			for (ILocalAudioObject ao : allObjects) {
 				if (repository.getFile(ao.getFile().getAbsolutePath()) == null) {
 					Logger.debug("Adding file: ", ao.getFile().getAbsolutePath());
-					addToRepository(state, repository, Collections.singletonList(ao.getFile()));
+					addToRepository(state, repository, Collections.singletonList(ao.getFile()), localAudioObjectFactory);
 				}
 			}
 		}

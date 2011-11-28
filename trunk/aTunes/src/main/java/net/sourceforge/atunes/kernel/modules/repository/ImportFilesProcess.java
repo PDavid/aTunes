@@ -27,12 +27,12 @@ import java.util.List;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.process.AbstractAudioFileTransferProcess;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
 import net.sourceforge.atunes.kernel.modules.tags.TagFactory;
 import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITag;
@@ -59,6 +59,8 @@ public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
 
     /** Set of audio files whose tag must be written */
     private HashSet<ILocalAudioObject> filesToChangeTag;
+    
+    private ILocalAudioObjectFactory localAudioObjectFactory;
 
     /**
      * Imports songs to the repository
@@ -69,14 +71,14 @@ public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
      *            Path to where the files should be exported
      * @param tagAttributesReviewed
      *            Set of changes to be made on tags
-     * @param state
-     * @param frame
+     * @param localAudioObjectFactory
      */
-    public ImportFilesProcess(List<ILocalAudioObject> filesToImport, List<File> folders, String path, ITagAttributesReviewed tagAttributesReviewed, IState state, IFrame frame, IOSManager osManager) {
+    public ImportFilesProcess(List<ILocalAudioObject> filesToImport, List<File> folders, String path, ITagAttributesReviewed tagAttributesReviewed, IState state, IFrame frame, IOSManager osManager, ILocalAudioObjectFactory localAudioObjectFactory) {
         super(filesToImport, state, frame, osManager);
         this.folders = folders;
         this.path = path;
         this.filesToChangeTag = new HashSet<ILocalAudioObject>();
+        this.localAudioObjectFactory = localAudioObjectFactory;
         for (ILocalAudioObject fileToImport : filesToImport) {
             // Replace tags (in memory) before import audio files if necessary
             replaceTag(fileToImport, tagAttributesReviewed);
@@ -143,7 +145,7 @@ public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
 
         // Change tag if necessary after import
         if (!getState().isApplyChangesToSourceFilesBeforeImport()) {
-            changeTag(file, new AudioFile(destFile));
+            changeTag(file, localAudioObjectFactory.getLocalAudioObject(destFile));
         }
 
         return destFile;

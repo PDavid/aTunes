@@ -29,6 +29,7 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -94,8 +95,12 @@ public class OggEncoder extends AbstractEncoder {
         }
     }
 
-    public OggEncoder(IOSManager osManager) {
-    	super("ogg", OGG_QUALITIES, DEFAULT_OGG_QUALITY, FORMAT_NAME);
+    /**
+     * @param osManager
+     * @param localAudioObjectFactory
+     */
+    public OggEncoder(IOSManager osManager, ILocalAudioObjectFactory localAudioObjectFactory) {
+    	super("ogg", OGG_QUALITIES, DEFAULT_OGG_QUALITY, FORMAT_NAME, localAudioObjectFactory);
     	this.osManager = osManager;
 	}
     

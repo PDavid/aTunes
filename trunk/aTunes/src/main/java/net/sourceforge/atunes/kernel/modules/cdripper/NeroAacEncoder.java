@@ -29,6 +29,7 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -89,8 +90,12 @@ public class NeroAacEncoder extends AbstractEncoder {
         }
     }
     
-    public NeroAacEncoder(IOSManager osManager) {
-    	super("m4a", NERO_AAC_QUALITY, DEFAULT_NERO_AAC_QUALITY, FORMAT_NAME);
+    /**
+     * @param osManager
+     * @param localAudioObjectFactory
+     */
+    public NeroAacEncoder(IOSManager osManager, ILocalAudioObjectFactory localAudioObjectFactory) {
+    	super("m4a", NERO_AAC_QUALITY, DEFAULT_NERO_AAC_QUALITY, FORMAT_NAME, localAudioObjectFactory);
     	this.osManager = osManager;
 	}
 
