@@ -11,6 +11,7 @@
 	<bean id="repositorySearchableObject" class="net.sourceforge.atunes.kernel.modules.search.RepositorySearchableObject"/>
 	<bean id="repositoryRefresher" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryAutoRefresher"/>
 	<bean id="persistRepositoryTask" class="net.sourceforge.atunes.kernel.modules.repository.PersistRepositoryTask"/>
+	<bean id="addFilesTask" class="net.sourceforge.atunes.kernel.modules.repository.AddFilesTask" scope="prototype"/>
 	
 
 </beans>
