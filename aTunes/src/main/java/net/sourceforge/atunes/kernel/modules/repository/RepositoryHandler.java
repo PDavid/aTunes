@@ -401,10 +401,9 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     	repositoryReader.notifyCancel();
     }
 
-
     @Override
     protected Runnable getPreviousInitializationTask() {
-        return new PreviousInitializationTask(getState(), repositoryReader, stateHandler);
+        return getBean(PreviousInitializationTask.class);
     }
     
     @Override

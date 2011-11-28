@@ -23,17 +23,29 @@ package net.sourceforge.atunes.kernel.modules.repository;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
 
-final class PreviousInitializationTask implements Runnable {
+public final class PreviousInitializationTask implements Runnable {
 	
 	private IState state;
 	
 	private RepositoryReader repositoryReader;
 	
 	private IStateHandler stateHandler;
-	
-	PreviousInitializationTask(IState state, RepositoryReader repositoryReader, IStateHandler stateHandler) {
+
+	/**
+	 * @param state
+	 */
+	public void setState(IState state) {
 		this.state = state;
+	}
+	
+	public void setRepositoryReader(RepositoryReader repositoryReader) {
 		this.repositoryReader = repositoryReader;
+	}
+	
+	/**
+	 * @param stateHandler
+	 */
+	public void setStateHandler(IStateHandler stateHandler) {
 		this.stateHandler = stateHandler;
 	}
 	
