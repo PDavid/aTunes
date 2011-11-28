@@ -21,8 +21,8 @@
 package net.sourceforge.atunes.kernel.modules.columns;
 
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
 
@@ -41,11 +41,11 @@ public class PathColumn extends AbstractColumn {
     protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
         String p1 = "";
         String p2 = "";
-        if (ao1 instanceof AudioFile) {
-            p1 = ((AudioFile) ao1).getFile().getParentFile().getAbsolutePath();
+        if (ao1 instanceof ILocalAudioObject) {
+            p1 = ((ILocalAudioObject) ao1).getFile().getParentFile().getAbsolutePath();
         }
-        if (ao2 instanceof AudioFile) {
-            p2 = ((AudioFile) ao2).getFile().getParentFile().getAbsolutePath();
+        if (ao2 instanceof ILocalAudioObject) {
+            p2 = ((ILocalAudioObject) ao2).getFile().getParentFile().getAbsolutePath();
         }
         return p1.compareTo(p2);
     }
@@ -58,6 +58,6 @@ public class PathColumn extends AbstractColumn {
         if (audioObject instanceof IPodcastFeedEntry) {
             return ((IPodcastFeedEntry) audioObject).getUrl();
         }
-        return ((AudioFile) audioObject).getFile().getParentFile().getAbsolutePath();
+        return ((ILocalAudioObject) audioObject).getFile().getParentFile().getAbsolutePath();
     }
 }

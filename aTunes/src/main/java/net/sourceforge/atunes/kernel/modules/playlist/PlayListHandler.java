@@ -626,7 +626,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         // If play list is not empty
         // TODO: Do this for all play lists
         // Check that at least first entry exists. This is to avoid loading a play list that contains audio object deleted or moved
-        if (lastPlayList.size() > 0 && (lastPlayList.get(0) instanceof IRadio || lastPlayList.get(0) instanceof IPodcastFeedEntry || lastPlayList.get(0) instanceof AudioFile)) {
+        if (lastPlayList.size() > 0 && (lastPlayList.get(0) instanceof IRadio || lastPlayList.get(0) instanceof IPodcastFeedEntry || lastPlayList.get(0) instanceof ILocalAudioObject)) {
 
         	// When possible, take audio objects from Repository instead of from PlayList stored.
         	// This way we prevent to have duplicated objects in PlayList for same audio object, one of PlayList and one of Repository

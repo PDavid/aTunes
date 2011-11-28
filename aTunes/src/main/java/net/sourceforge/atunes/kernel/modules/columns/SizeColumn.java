@@ -22,8 +22,8 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -44,11 +44,11 @@ public class SizeColumn extends AbstractColumn {
     protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
         long l1 = 0;
         long l2 = 0;
-        if (ao1 instanceof AudioFile) {
-            l1 = ((AudioFile) ao1).getFile().length();
+        if (ao1 instanceof ILocalAudioObject) {
+            l1 = ((ILocalAudioObject) ao1).getFile().length();
         }
-        if (ao2 instanceof AudioFile) {
-            l2 = ((AudioFile) ao2).getFile().length();
+        if (ao2 instanceof ILocalAudioObject) {
+            l2 = ((ILocalAudioObject) ao2).getFile().length();
         }
         return Long.valueOf(l1).compareTo(l2);
     }
@@ -61,7 +61,7 @@ public class SizeColumn extends AbstractColumn {
         if (audioObject instanceof IPodcastFeedEntry) {
             return "";
         }
-        return StringUtils.fromByteToMegaOrGiga(((AudioFile) audioObject).getFile().length());
+        return StringUtils.fromByteToMegaOrGiga(((ILocalAudioObject) audioObject).getFile().length());
     }
 
 }

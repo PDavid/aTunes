@@ -37,7 +37,6 @@ import javax.swing.text.StyleConstants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.CustomTextPane;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.EditTagSources;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -97,7 +96,7 @@ public class LyricsContent extends AbstractContextPanelContent {
                 if (lyricsSourceUrl != null && !lyricsSourceUrl.trim().isEmpty()) {
                 	getDesktop().openURL(lyricsSourceUrl);
                 } else {
-                    if (audioObject instanceof AudioFile) {
+                    if (audioObject instanceof ILocalAudioObject) {
                     	Context.getBean(ITagHandler.class).editFiles(EditTagSources.NAVIGATOR, Arrays.asList((ILocalAudioObject) audioObject));                        
                     }
                 }

@@ -21,10 +21,10 @@
 package net.sourceforge.atunes.kernel.modules.context.youtube;
 
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRadio;
 
 /**
@@ -61,7 +61,7 @@ public class YoutubeContextPanel extends AbstractContextPanel {
 
     @Override
     public boolean isPanelVisibleForAudioObject(IAudioObject audioObject) {
-        return (audioObject instanceof AudioFile) || (audioObject instanceof IRadio && ((IRadio) audioObject).isSongInfoAvailable());
+        return (audioObject instanceof ILocalAudioObject) || (audioObject instanceof IRadio && ((IRadio) audioObject).isSongInfoAvailable());
     }
 
 }

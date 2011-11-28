@@ -29,7 +29,6 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectStatistics;
@@ -117,7 +116,7 @@ public class AudioObjectBasicInfoDataSource implements IContextInformationSource
             IAudioObject audioObject = (IAudioObject) parameters.get(INPUT_AUDIO_OBJECT);
             result.put(OUTPUT_AUDIO_OBJECT, audioObject);
             result.put(OUTPUT_IMAGE, getImage(audioObject));
-            if (audioObject instanceof AudioFile) {
+            if (audioObject instanceof ILocalAudioObject) {
                 result.put(OUTPUT_TITLE, audioObject.getTitleOrFileName());
                 result.put(OUTPUT_ARTIST, audioObject.getArtist());
                 result.put(OUTPUT_LASTPLAYDATE, getLastPlayDate(audioObject));
@@ -138,7 +137,7 @@ public class AudioObjectBasicInfoDataSource implements IContextInformationSource
      * @return
      */
     private ImageIcon getImage(IAudioObject audioObject) {
-        if (audioObject instanceof AudioFile) {
+        if (audioObject instanceof ILocalAudioObject) {
             ImageIcon localImage = audioObject.getImage(Constants.ALBUM_IMAGE_SIZE, osManager);
             if (localImage == null) {
                 Image image = webServicesHandler.getAlbumImage(audioObject.getArtist(), audioObject.getAlbum());

@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.tags;
 
 import java.io.IOException;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.Logger;
 
 import org.jaudiotagger.audio.AudioHeader;
@@ -49,7 +49,7 @@ public final class TagDetector {
      *            File to be read
      * @return reference to jaudiotagger file
      */
-    public static void readInformation(AudioFile file, boolean readAudioProperties) {
+    public static void readInformation(ILocalAudioObject file, boolean readAudioProperties) {
         Logger.debug(file);
 
         // Read file

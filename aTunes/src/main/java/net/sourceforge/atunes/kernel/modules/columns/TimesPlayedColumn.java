@@ -22,9 +22,9 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectStatistics;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IStatisticsHandler;
@@ -33,7 +33,7 @@ public class TimesPlayedColumn extends AbstractColumn {
     
     private static final long serialVersionUID = 7879150472122090859L;
 
-    private IStatisticsHandler statisticsHandler;
+    private transient IStatisticsHandler statisticsHandler;
     
     /**
      * @param statisticsHandler
@@ -53,11 +53,11 @@ public class TimesPlayedColumn extends AbstractColumn {
     protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
         int times1 = 0;
         int times2 = 0;
-        if (ao1 instanceof AudioFile) {
+        if (ao1 instanceof ILocalAudioObject) {
             IAudioObjectStatistics stats1 = statisticsHandler.getAudioObjectStatistics(ao1);
             times1 = stats1 != null ? stats1.getTimesPlayed() : 0;
         }
-        if (ao2 instanceof AudioFile) {
+        if (ao2 instanceof ILocalAudioObject) {
             IAudioObjectStatistics stats2 = statisticsHandler.getAudioObjectStatistics(ao2);
             times2 = stats2 != null ? stats2.getTimesPlayed() : 0;
         }
