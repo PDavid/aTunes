@@ -33,7 +33,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 
@@ -98,7 +97,7 @@ public final class AudioFilePictureUtils {
      * @param osManager
      * @return
      */
-    public static ImageIcon getExternalPicture(AudioFile file, int width, int height, IOSManager osManager) {
+    public static ImageIcon getExternalPicture(ILocalAudioObject file, int width, int height, IOSManager osManager) {
         return getExternalPicture(file, 0, width, height, osManager);
     }
 
@@ -112,7 +111,7 @@ public final class AudioFilePictureUtils {
      * @param osManager
      * @return
      */
-    private static ImageIcon getExternalPicture(AudioFile file, int index, int width, int height, IOSManager osManager) {
+    private static ImageIcon getExternalPicture(ILocalAudioObject file, int index, int width, int height, IOSManager osManager) {
         // Try first to get picture with file name "ARTIST_ALBUM_COVER" pattern
         String coverFileName = getFileNameForCover(file, osManager);
         ImageIcon image = null;
@@ -211,7 +210,7 @@ public final class AudioFilePictureUtils {
      * @param osManager
      * @return
      */
-    public static ImageIcon[] getPicturesForFile(AudioFile file, int width, int height, IOSManager osManager) {
+    public static ImageIcon[] getPicturesForFile(ILocalAudioObject file, int width, int height, IOSManager osManager) {
         int size = 0;
         ImageIcon image = getInsidePicture(file, width, height);
         if (image != null) {

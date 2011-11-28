@@ -36,9 +36,9 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.Cover3D;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
@@ -68,8 +68,8 @@ public final class CoverFlow extends JPanel {
 		        image = Context.getBean("radioBigIcon", CachedIconFactory.class).getIcon(Color.WHITE).getImage();
 		    } else if (audioObject instanceof IPodcastFeedEntry) {
 		        image = Context.getBean("rssBigIcon", CachedIconFactory.class).getIcon(Color.WHITE).getImage();
-		    } else {
-	    		image = getPicture((AudioFile) audioObject, osManager);
+		    } else if (image instanceof ILocalAudioObject){
+	    		image = getPicture((ILocalAudioObject)audioObject, osManager);
 		    }
 		    
 	        if (cover != null) {
@@ -165,7 +165,7 @@ public final class CoverFlow extends JPanel {
      * @param osManager
      * @return
      */
-    protected Image getPicture(AudioFile audioFile, IOSManager osManager) {
+    protected Image getPicture(ILocalAudioObject audioFile, IOSManager osManager) {
     	Image result = Context.getBean(IWebServicesHandler.class).getAlbumImage(audioFile.getArtist(), audioFile.getAlbum());
         if (result == null) {
             ImageIcon[] pictures = AudioFilePictureUtils.getPicturesForFile(audioFile, -1, -1, osManager);

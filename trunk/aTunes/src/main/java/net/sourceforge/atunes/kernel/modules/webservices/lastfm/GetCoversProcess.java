@@ -29,9 +29,9 @@ import java.util.List;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.process.AbstractProcess;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
@@ -82,7 +82,7 @@ public class GetCoversProcess extends AbstractProcess {
                 Image albumImage = webServicesHandler.getAlbumImage(artist.getName(), album.getName());
                 if (albumImage != null) {
                     try {
-                        ImageUtils.writeImageToFile(albumImage, AudioFilePictureUtils.getFileNameForCover((AudioFile)album.getAudioObjects().get(0), osManager));
+                        ImageUtils.writeImageToFile(albumImage, AudioFilePictureUtils.getFileNameForCover((ILocalAudioObject)album.getAudioObjects().get(0), osManager));
                     } catch (IOException e1) {
                         Logger.error(StringUtils.getString("Error writing image for artist: ", artist.getName(), " album: ", album.getName(),
                                 " Error: ", e1.getMessage()));
@@ -114,7 +114,7 @@ public class GetCoversProcess extends AbstractProcess {
      * @return true, if checks for cover downloaded
      */
     public boolean hasCoverDownloaded(Album album) {
-        return new File(AudioFilePictureUtils.getFileNameForCover(((AudioFile)album.getAudioObjects().get(0)), osManager)).exists();
+        return new File(AudioFilePictureUtils.getFileNameForCover(((ILocalAudioObject)album.getAudioObjects().get(0)), osManager)).exists();
     }
 
 

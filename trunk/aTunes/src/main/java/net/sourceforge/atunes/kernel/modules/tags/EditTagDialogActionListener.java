@@ -200,7 +200,7 @@ public final class EditTagDialogActionListener implements ActionListener {
 		    validAudioFile = LocalAudioObjectValidator.isValidAudioFile(selectedFiles.get(0).getUrl());
 		}
 		if (validAudioFile) {
-		    nextFile.add((AudioFile) selectedFiles.get(0));
+		    nextFile.add((ILocalAudioObject) selectedFiles.get(0));
 		    controller.editFiles(nextFile);
 		}
 	}

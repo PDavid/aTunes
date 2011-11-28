@@ -23,8 +23,8 @@ package net.sourceforge.atunes.kernel.modules.search;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ISearchHandler;
 import net.sourceforge.atunes.model.ISearchableObject;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -116,8 +116,8 @@ public abstract class AbstractCommonAudioFileSearchableObject implements ISearch
 
     @Override
     public Document getDocumentForElement(IAudioObject audioObject) {
-    	if (audioObject instanceof AudioFile) {
-    		AudioFile audioFile = (AudioFile) audioObject;
+    	if (audioObject instanceof ILocalAudioObject) {
+    		ILocalAudioObject audioFile = (ILocalAudioObject) audioObject;
 
     		Document d = new Document();
 

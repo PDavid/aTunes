@@ -105,6 +105,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
      * @param picture
      *            the picture
      */
+    @Override
     public void addExternalPicture(File picture) {
         if (externalPictures == null) {
             externalPictures = new ArrayList<File>();
@@ -193,6 +194,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
      * 
      * @return the external pictures
      */
+    @Override
     public List<File> getExternalPictures() {
         return externalPictures;
     }

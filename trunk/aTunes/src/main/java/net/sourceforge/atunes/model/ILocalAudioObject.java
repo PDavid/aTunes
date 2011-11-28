@@ -30,13 +30,13 @@ public interface ILocalAudioObject extends IAudioObject, Comparable<ILocalAudioO
 	 * Returns file containing audio object
 	 * @return
 	 */
-	public File getFile();
+	File getFile();
 
 	/**
 	 * Returns true if audio object information is updated
 	 * @return
 	 */
-	public boolean isUpToDate();
+	boolean isUpToDate();
 	
     /**
      * Sets the external pictures.
@@ -44,7 +44,7 @@ public interface ILocalAudioObject extends IAudioObject, Comparable<ILocalAudioO
      * @param externalPictures
      *            the new external pictures
      */
-    public void setExternalPictures(List<File> externalPictures);
+    void setExternalPictures(List<File> externalPictures);
     
     /**
      * Adds the external picture.
@@ -52,14 +52,26 @@ public interface ILocalAudioObject extends IAudioObject, Comparable<ILocalAudioO
      * @param picture
      *            the picture
      */
-    public void addExternalPicture(File picture);
+    void addExternalPicture(File picture);
+    
+    /**
+     * Returns number of external pictures
+     * @return
+     */
+    public int getExternalPicturesCount();
+    
+    /**
+     * Returns external pictures list
+     * @return
+     */
+    List<File> getExternalPictures();
     
     /**
      * Gets the tag.
      * 
      * @return the tag
      */
-    public ITag getTag();
+    ITag getTag();
     
     /**
      * Sets the tag.
@@ -67,38 +79,56 @@ public interface ILocalAudioObject extends IAudioObject, Comparable<ILocalAudioO
      * @param tag
      *            the new tag
      */
-    public void setTag(ITag tag);
+    void setTag(ITag tag);
     
     /**
      * Gets the name without extension.
      * 
      * @return the name without extension
      */
-    public String getNameWithoutExtension();
+    String getNameWithoutExtension();
     
     /**
      * Refresh tag.
      */
-    public void refreshTag();
+    void refreshTag();
 
     /**
      * Sets the file of this audio file
      * 
      * @param file
      */
-    public void setFile(File file);
+    void setFile(File file);
 
     /**
      * Checks if the tag of this audio file does support internal images
      * 
      * @return if the tag of this audio file does support internal images
      */
-    public boolean supportsInternalPicture();
+    boolean supportsInternalPicture();
     
     /**
      * Checks for internal picture.
      * 
      * @return true, if successful
      */
-    public boolean hasInternalPicture();
+    boolean hasInternalPicture();
+
+	/**
+	 * Sets duration
+	 * @param trackLength
+	 */
+	void setDuration(int trackLength);
+
+	/**
+	 * Set bitrate
+	 * @param bitRateAsNumber
+	 */
+	void setBitrate(long bitRateAsNumber);
+
+	/**
+	 * Set frequency
+	 * @param sampleRateAsNumber
+	 */
+	void setFrequency(int sampleRateAsNumber);
 }

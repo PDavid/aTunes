@@ -28,7 +28,6 @@ import java.util.Set;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -43,7 +42,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class OpenFolderFromNavigatorAction extends AbstractActionOverSelectedObjects<AudioFile> {
+public class OpenFolderFromNavigatorAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
     private static final long serialVersionUID = 8251208528513562627L;
 
@@ -106,11 +105,11 @@ public class OpenFolderFromNavigatorAction extends AbstractActionOverSelectedObj
     }
     
     @Override
-    protected void executeAction(List<AudioFile> objects) {
+    protected void executeAction(List<ILocalAudioObject> objects) {
         HashSet<File> foldersToOpen = new HashSet<File>();
 
         // Get folders ...
-        for (AudioFile ao : objects) {
+        for (ILocalAudioObject ao : objects) {
             if (!foldersToOpen.contains(ao.getFile().getParentFile())) {
                 foldersToOpen.add(ao.getFile().getParentFile());
             }

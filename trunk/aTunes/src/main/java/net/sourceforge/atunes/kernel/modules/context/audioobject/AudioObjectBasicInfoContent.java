@@ -39,7 +39,6 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.actions.AddBannedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -114,8 +113,8 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
         }
 
         // TODO: Allow these options for radios where song information is available
-        Context.getBean(AddLovedSongInLastFMAction.class).setEnabled(getState().isLastFmEnabled() && result.get(AudioObjectBasicInfoDataSource.OUTPUT_AUDIO_OBJECT) instanceof AudioFile);
-        Context.getBean(AddBannedSongInLastFMAction.class).setEnabled(getState().isLastFmEnabled() && result.get(AudioObjectBasicInfoDataSource.OUTPUT_AUDIO_OBJECT) instanceof AudioFile);
+        Context.getBean(AddLovedSongInLastFMAction.class).setEnabled(getState().isLastFmEnabled() && result.get(AudioObjectBasicInfoDataSource.OUTPUT_AUDIO_OBJECT) instanceof ILocalAudioObject);
+        Context.getBean(AddBannedSongInLastFMAction.class).setEnabled(getState().isLastFmEnabled() && result.get(AudioObjectBasicInfoDataSource.OUTPUT_AUDIO_OBJECT) instanceof ILocalAudioObject);
     }
 
     @Override

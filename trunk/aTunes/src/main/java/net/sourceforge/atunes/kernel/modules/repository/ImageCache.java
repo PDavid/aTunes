@@ -84,7 +84,7 @@ public class ImageCache extends AbstractCache {
         return false;
     }
 
-    public synchronized ImageIcon retrieveImage(AudioFile audioFile, ImageSize imageSize) {
+    public synchronized ImageIcon retrieveImage(ILocalAudioObject audioFile, ImageSize imageSize) {
         Element element = getCache().get(id(audioFile, imageSize));
         if (element != null) {
             return (ImageIcon) element.getValue();
@@ -97,7 +97,7 @@ public class ImageCache extends AbstractCache {
         return (audioFile.getUrl() + imageSize.toString()).hashCode();
     }
 
-    public synchronized void storeImage(AudioFile audioFile, ImageSize imageSize, ImageIcon cover) {
+    public synchronized void storeImage(ILocalAudioObject audioFile, ImageSize imageSize, ImageIcon cover) {
         if (audioFile == null || imageSize == null || cover == null) {
             return;
         }

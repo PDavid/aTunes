@@ -21,11 +21,11 @@
 package net.sourceforge.atunes.gui.views.dialogs.properties;
 
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialog;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -54,8 +54,8 @@ public class AudioObjectPropertiesDialogFactory implements IAudioObjectPropertie
     		dialog = new PodcastFeedEntryPropertiesDialog((IPodcastFeedEntry) a, frame, state, lookAndFeelManager);
     	} else if (a instanceof IRadio) {
     		dialog = new RadioPropertiesDialog((Radio) a, frame, lookAndFeelManager);
-    	} else if (a instanceof AudioFile) {
-    		dialog = new AudioFilePropertiesDialog((AudioFile) a, state, frame, osManager, playListHandler, lookAndFeelManager, repositoryHandler, playerHandler);
+    	} else if (a instanceof ILocalAudioObject) {
+    		dialog = new LocalAudioObjectPropertiesDialog((ILocalAudioObject) a, state, frame, osManager, playListHandler, lookAndFeelManager, repositoryHandler, playerHandler);
     	}
     	if (dialog != null) {
     		dialog.setAudioObject(a);

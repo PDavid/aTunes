@@ -39,7 +39,6 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.tags.EditTagDialogController;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -58,7 +57,7 @@ import org.jdesktop.swingx.border.DropShadowBorder;
 /**
  * The properties dialog for audio files
  */
-final class AudioFilePropertiesDialog extends AudioObjectPropertiesDialog {
+final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertiesDialog {
 
     private final class FillPictureSwingWorker extends SwingWorker<ImageIcon, Void> {
         @Override
@@ -124,7 +123,7 @@ final class AudioFilePropertiesDialog extends AudioObjectPropertiesDialog {
      * @param repositoryHandler
      * @param playerHandler
      */
-    AudioFilePropertiesDialog(AudioFile file, IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, ILookAndFeelManager lookAndFeelManager, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
+    LocalAudioObjectPropertiesDialog(ILocalAudioObject file, IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, ILookAndFeelManager lookAndFeelManager, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
         super(getTitleText(file), frame, lookAndFeelManager);
         this.file = file;
         this.state = state;
@@ -148,7 +147,7 @@ final class AudioFilePropertiesDialog extends AudioObjectPropertiesDialog {
      * 
      * @return title for dialog
      */
-    private static String getTitleText(AudioFile file) {
+    private static String getTitleText(ILocalAudioObject file) {
         return StringUtils.getString(I18nUtils.getString("INFO_OF_FILE"), " ", file.getFile().getName());
     }
 

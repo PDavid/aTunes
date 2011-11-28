@@ -31,10 +31,10 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.PlaybackStateListeners;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine.SubmissionState;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IEqualizer;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlaybackStateListener;
 import net.sourceforge.atunes.model.IPlayerControlsPanel;
@@ -417,8 +417,8 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     		Logger.debug("Playback state changed to:", newState);
 
     		if (newState == PlaybackState.PLAY_FINISHED || newState == PlaybackState.PLAY_INTERRUPTED || newState == PlaybackState.STOPPED) {
-    			if (playerEngine != null && playerEngine.getSubmissionState() == SubmissionState.PENDING && currentAudioObject instanceof AudioFile) {
-    				getBean(IWebServicesHandler.class).submit((AudioFile) currentAudioObject, getCurrentAudioObjectPlayedTime() / 1000);
+    			if (playerEngine != null && playerEngine.getSubmissionState() == SubmissionState.PENDING && currentAudioObject instanceof ILocalAudioObject) {
+    				getBean(IWebServicesHandler.class).submit((ILocalAudioObject) currentAudioObject, getCurrentAudioObjectPlayedTime() / 1000);
     				getBean(IStatisticsHandler.class).updateAudioObjectStatistics(currentAudioObject);
     				playerEngine.setSubmissionState(SubmissionState.SUBMITTED);
     			}
