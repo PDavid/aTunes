@@ -418,7 +418,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     
     @Override
 	public void refreshFile(ILocalAudioObject file) {
-        RepositoryLoader.refreshFile(getState(), repository, file, statisticsHandler);
+        RepositoryLoader.refreshFile(getState(), repository, file, statisticsHandler, localAudioObjectFactory);
     }
 
     @Override
