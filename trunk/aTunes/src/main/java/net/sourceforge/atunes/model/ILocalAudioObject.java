@@ -89,11 +89,6 @@ public interface ILocalAudioObject extends IAudioObject, Comparable<ILocalAudioO
     String getNameWithoutExtension();
     
     /**
-     * Refresh tag.
-     */
-    void refreshTag();
-
-    /**
      * Sets the file of this audio file
      * 
      * @param file
@@ -131,4 +126,10 @@ public interface ILocalAudioObject extends IAudioObject, Comparable<ILocalAudioO
 	 * @param sampleRateAsNumber
 	 */
 	void setFrequency(int sampleRateAsNumber);
+
+	/**
+	 * Set when object is read
+	 * @param currentTimeMillis
+	 */
+	void setReadTime(long currentTimeMillis);
 }

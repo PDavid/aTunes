@@ -36,7 +36,6 @@ import javax.swing.filechooser.FileFilter;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 import net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectValidator;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;

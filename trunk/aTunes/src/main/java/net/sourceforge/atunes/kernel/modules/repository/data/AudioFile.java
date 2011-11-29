@@ -29,7 +29,6 @@ import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.kernel.modules.repository.ImageCache;
 import net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectValidator;
-import net.sourceforge.atunes.kernel.modules.tags.TagDetector;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -66,7 +65,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
     private String filePath;
 
     /**
-     * Instantiates a new audio file. File is read
+     * Instantiates a new audio file
      * 
      * @param file
      *            the file
@@ -76,27 +75,13 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
     }
 
     /**
-     * Instantiates a new audio file. File is NOT read
+     * Instantiates a new audio file
      * 
      * @param fileName
      *            the file name
      */
     public AudioFile(String fileName) {
     	this.filePath = fileName;
-    }
-
-    /**
-     * Reads a file
-     * 
-     * @param file
-     *            the file
-     */
-    private void readFile() {
-        // Don't read from formats not supported by Jaudiotagger
-        if (!LocalAudioObjectValidator.isValidAudioFile(filePath, Format.APE, Format.MPC)) {
-            readInformation(true);
-        }
-        this.readTime = System.currentTimeMillis();
     }
 
     /**
@@ -113,13 +98,6 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
         if (!externalPictures.contains(picture)) {
             externalPictures.add(0, picture);
         }
-    }
-
-    /**
-     * Delete tags.
-     */
-    private void deleteTags() {
-        tag = null;
     }
 
     @Override
@@ -365,13 +343,6 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
     }
 
     /**
-     * Introspect tags. Get the tag for the file.
-     */
-    private void readInformation(boolean readAudioProperties) {
-        TagDetector.readInformation(this, readAudioProperties);
-    }
-
-    /**
      * Checks if is up to date.
      * 
      * @return true, if is up to date
@@ -381,15 +352,6 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
             return false;
         }
         return readTime > getFile().lastModified();
-    }
-
-    /**
-     * Refresh tag.
-     */
-    public void refreshTag() {
-        deleteTags();
-        readInformation(false);
-        readTime = System.currentTimeMillis();
     }
 
     /**
@@ -409,12 +371,12 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
      * @param file
      *            the file of this audio file
      */
+    @Override
     public void setFile(File file) {
         if (file == null) {
             throw new IllegalArgumentException();
         }
         this.filePath = file.getAbsolutePath();
-        readFile();
     }
     
     /**
@@ -514,5 +476,13 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
 	@Override
 	public String getAudioObjectDescription() {
 		return StringUtils.getString(getTitleOrFileName(), " - ", getArtist(), " (", StringUtils.seconds2String(getDuration()), ")");
+	}
+	
+	/**
+	 * Updates time when object if read
+	 * @param readTime
+	 */
+	public void setReadTime(long readTime) {
+		this.readTime = readTime;
 	}
 }

@@ -37,7 +37,6 @@ import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListTableTransferHandler;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;

@@ -35,4 +35,11 @@ public interface ILocalAudioObjectFactory {
 	 * @return
 	 */
 	ILocalAudioObject getLocalAudioObject(File file);
+	
+	/**
+	 * Refreshes audio object
+	 * @param audioObject
+	 * @return
+	 */
+	ILocalAudioObject refreshAudioObject(ILocalAudioObject audioObject);
 }

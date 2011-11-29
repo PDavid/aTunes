@@ -23,6 +23,8 @@ package net.sourceforge.atunes.kernel.modules.repository;
 import java.io.File;
 
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
+import net.sourceforge.atunes.kernel.modules.repository.data.Format;
+import net.sourceforge.atunes.kernel.modules.tags.TagDetector;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 
@@ -30,7 +32,38 @@ public class LocalAudioObjectFactory implements ILocalAudioObjectFactory {
 	
 	@Override
 	public ILocalAudioObject getLocalAudioObject(File file) {
-		return new AudioFile(file);
+		ILocalAudioObject audioObject = new AudioFile(file);
+		readAudioObject(audioObject);
+		return audioObject;
 	}
-
+	
+	@Override
+	public ILocalAudioObject refreshAudioObject(ILocalAudioObject audioObject) {
+        audioObject.setTag(null);
+        readInformation(audioObject, false);
+        audioObject.setReadTime(System.currentTimeMillis());
+        return audioObject;
+	}
+	
+    /**
+     * Reads a file
+     * @param audioObject
+     */
+    private void readAudioObject(ILocalAudioObject audioObject) {
+        // Don't read from formats not supported by Jaudiotagger
+        if (!LocalAudioObjectValidator.isValidAudioFile(audioObject.getUrl(), Format.APE, Format.MPC)) {
+            readInformation(audioObject, true);
+        }
+        audioObject.setReadTime(System.currentTimeMillis());
+    }
+    
+    /**
+     * Introspect tags. Get the tag for the file.
+     * @param audioObject
+     * @param readAudioProperties
+     */
+    private void readInformation(ILocalAudioObject audioObject, boolean readAudioProperties) {
+        TagDetector.readInformation(audioObject, readAudioProperties);
+    }
+    
 }

@@ -278,18 +278,19 @@ public class RepositoryLoader extends Thread {
 	/**
 	 * Refresh file
 	 * 
+	 * @param state
 	 * @param repository
-	 *            the repository
 	 * @param file
-	 *            the file
+	 * @param statisticsHandler
+	 * @param localAudioObjectFactory
 	 */
-	static void refreshFile(IState state, IRepository repository, ILocalAudioObject file, IStatisticsHandler statisticsHandler) {
+	static void refreshFile(IState state, IRepository repository, ILocalAudioObject file, IStatisticsHandler statisticsHandler, ILocalAudioObjectFactory localAudioObjectFactory) {
 		try {
 			// Get old tag
 			ITag oldTag = file.getTag();
 			
 			// Update tag
-			file.refreshTag();		
+			localAudioObjectFactory.refreshAudioObject(file);
 			
 			// Update repository
 			new RepositoryFiller(repository, state).refreshAudioFile(file, oldTag);
@@ -774,7 +775,7 @@ public class RepositoryLoader extends Thread {
 			for (ILocalAudioObject ao : aos) {
 				if (ao.getFile().exists()) {
 					Logger.debug("Refreshing file: ", ao.getFile().getAbsolutePath());
-					refreshFile(state, repository, ao, statisticsHandler);
+					refreshFile(state, repository, ao, statisticsHandler, localAudioObjectFactory);
 				} else {
 					Logger.debug("Removing file: ", ao.getFile().getAbsolutePath());
 					repositoryHandler.remove(Collections.singletonList(ao));
