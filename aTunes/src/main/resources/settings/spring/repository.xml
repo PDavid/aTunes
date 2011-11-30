@@ -15,6 +15,7 @@
 	<bean id="addFilesTask" class="net.sourceforge.atunes.kernel.modules.repository.AddFilesTask" scope="prototype"/>
 	
 	<bean id="localAudioObjectFactory" class="net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectFactory"/>
+	<bean id="localAudioObjectReader" class="net.sourceforge.atunes.kernel.modules.tags.TagReader"/>
 	
 
 </beans>

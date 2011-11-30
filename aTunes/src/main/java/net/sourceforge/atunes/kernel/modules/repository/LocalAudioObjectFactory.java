@@ -24,11 +24,20 @@ import java.io.File;
 
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 import net.sourceforge.atunes.kernel.modules.repository.data.Format;
-import net.sourceforge.atunes.kernel.modules.tags.TagDetector;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
+import net.sourceforge.atunes.model.ILocalAudioObjectReader;
 
 public class LocalAudioObjectFactory implements ILocalAudioObjectFactory {
+	
+	private ILocalAudioObjectReader localAudioObjectReader;
+	
+	/**
+	 * @param localAudioObjectReader
+	 */
+	public void setLocalAudioObjectReader(ILocalAudioObjectReader localAudioObjectReader) {
+		this.localAudioObjectReader = localAudioObjectReader;
+	}
 	
 	@Override
 	public ILocalAudioObject getLocalAudioObject(File file) {
@@ -63,7 +72,7 @@ public class LocalAudioObjectFactory implements ILocalAudioObjectFactory {
      * @param readAudioProperties
      */
     private void readInformation(ILocalAudioObject audioObject, boolean readAudioProperties) {
-        TagDetector.readInformation(audioObject, readAudioProperties);
+    	localAudioObjectReader.readAudioObject(audioObject, readAudioProperties);
     }
     
 }

@@ -20,15 +20,20 @@
 
 package net.sourceforge.atunes.kernel.modules.tags;
 
+import java.io.File;
 import java.io.IOException;
 
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectReader;
 import net.sourceforge.atunes.utils.Logger;
 
+import org.jaudiotagger.audio.AudioFile;
+import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.AudioHeader;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
 import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
+import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagException;
 
 /**
@@ -36,62 +41,72 @@ import org.jaudiotagger.tag.TagException;
  * 
  * @author fleax
  */
-public final class TagDetector {
+public final class TagReader implements ILocalAudioObjectReader {
 
-    private TagDetector() {
-
-    }
-
-    /**
-     * Calls appropriate tag reader and sends tag to LocalAudioObject class.
-     * 
-     * @param file
-     *            File to be read
-     * @return reference to jaudiotagger file
-     */
-    public static void readInformation(ILocalAudioObject file, boolean readAudioProperties) {
-        Logger.debug(file);
-
-        // Read file
-    	org.jaudiotagger.audio.AudioFile f = null;
-		try {
-			f = org.jaudiotagger.audio.AudioFileIO.read(file.getFile());
-		} catch (CannotReadException e) {
-            Logger.error(e);
-		} catch (IOException e) {
-			Logger.error(e);
-		} catch (TagException e) {
-			Logger.error(e);
-		} catch (ReadOnlyFileException e) {
-			Logger.error(e);
-		} catch (InvalidAudioFrameException e) {
-			Logger.error(e);
-		}
-    	
+	@Override
+	public void readAudioObject(ILocalAudioObject ao, boolean readAudioProperties) {
+    	AudioFile f = getAudioFile(ao.getFile());
 		if (f != null) {
 			// Set audio properties
-			try {
-				if (readAudioProperties) {
-					AudioHeader header = f.getAudioHeader();
-					if (header != null) {
-						file.setDuration(header.getTrackLength());
-						file.setBitrate(header.getBitRateAsNumber());
-						file.setFrequency(header.getSampleRateAsNumber());
-					}
-				}
-			} catch (Exception e) {
-				Logger.error(e.getMessage());
-			}
-
+			setAudioProperties(ao, readAudioProperties, f);
 			// Set tag
-			try {
-				org.jaudiotagger.tag.Tag tag = f.getTag();
-				if (tag != null) {
-					file.setTag(new DefaultTag(tag));
-				}
-			} catch (Exception e) {
-				Logger.error(e.getMessage());
-			}
+			setTag(ao, f);
 		}
     }
+
+	/**
+	 * @param ao
+	 * @param f
+	 */
+	private void setTag(ILocalAudioObject ao, AudioFile f) {
+		Tag tag = f.getTag();
+		if (tag != null) {
+			ao.setTag(new DefaultTag(tag));
+		}
+	}
+
+	/**
+	 * Reads audio properties
+	 * @param ao
+	 * @param readAudioProperties
+	 * @param f
+	 */
+	private void setAudioProperties(ILocalAudioObject ao, boolean readAudioProperties, AudioFile f) {
+		if (readAudioProperties) {
+			AudioHeader header = f.getAudioHeader();
+			if (header != null) {
+				ao.setDuration(header.getTrackLength());
+				ao.setBitrate(header.getBitRateAsNumber());
+				ao.setFrequency(header.getSampleRateAsNumber());
+			}
+		}
+	}
+	
+	/**
+	 * Reads file with jaudiotagger
+	 * @param file
+	 * @return
+	 */
+	private AudioFile getAudioFile(File file) {
+    	AudioFile audioFile = null;
+		try {
+			audioFile = AudioFileIO.read(file);
+		} catch (CannotReadException e) {
+			Logger.error(file.getAbsolutePath());
+            Logger.error(e);
+		} catch (IOException e) {
+			Logger.error(file.getAbsolutePath());
+			Logger.error(e);
+		} catch (TagException e) {
+			Logger.error(file.getAbsolutePath());
+			Logger.error(e);
+		} catch (ReadOnlyFileException e) {
+			Logger.error(file.getAbsolutePath());
+			Logger.error(e);
+		} catch (InvalidAudioFrameException e) {
+			Logger.error(file.getAbsolutePath());
+			Logger.error(e);
+		}
+		return audioFile;
+	}
 }
