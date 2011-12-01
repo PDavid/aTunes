@@ -68,7 +68,7 @@ public final class CoverFlow extends JPanel {
 		        image = Context.getBean("radioBigIcon", CachedIconFactory.class).getIcon(Color.WHITE).getImage();
 		    } else if (audioObject instanceof IPodcastFeedEntry) {
 		        image = Context.getBean("rssBigIcon", CachedIconFactory.class).getIcon(Color.WHITE).getImage();
-		    } else if (image instanceof ILocalAudioObject){
+		    } else if (audioObject instanceof ILocalAudioObject){
 	    		image = getPicture((ILocalAudioObject)audioObject, osManager);
 		    }
 		    
