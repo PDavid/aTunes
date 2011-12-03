@@ -51,6 +51,15 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
     
     private ITaskService taskService;
     
+    private ILookAndFeelManager lookAndFeelManager;
+    
+    /**
+     * @param lookAndFeelManager
+     */
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+    
     /**
      * @param taskService
      */
@@ -87,42 +96,95 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
      */
     private void fillStats(IAudioObject audioObject) {
         String songPath = audioObject.getUrl();
-        if (repositoryHandler.getFile(songPath) != null) {
-            statistics.setTotalPlays(statistics.getTotalPlays() + 1);
-
-            IAudioObjectStatistics stats = statistics.getAudioFilesStats().get(songPath);
-            if (stats == null) {
-                stats = new AudioObjectStats();
-                statistics.getAudioFilesStats().put(songPath, stats);
-                statistics.setDifferentAudioFilesPlayed(statistics.getDifferentAudioFilesPlayed() + 1);
-            }
-            stats.increaseStatistics();
-            statistics.getAudioFilesRanking().addItem(audioObject.getUrl());
-
-            String artist = audioObject.getArtist();
-
-            Artist a = repositoryHandler.getArtist(artist);
-
-            // Unknown artist -> don't fill artist stats
-            if (a == null || Artist.isUnknownArtist(a.getName())) {
-                return;
-            }
-
-            statistics.getArtistsRanking().addItem(a.getName());
-
-            String album = audioObject.getAlbum();
-
-            Album alb = a.getAlbum(album);
-
-            // Unknown album -> don't fill album stats
-            if (alb == null || Album.isUnknownAlbum(alb.getName())) {
-                return;
-            }
-
-            IStatisticsAlbum statisticsAlbum = new StatisticsAlbum(artist, album);
-            statistics.getAlbumsRanking().addItem(statisticsAlbum);
+        if (audioObjectInRepository(songPath)) {
+            updateStatistics(audioObject, songPath);
         }
     }
+
+	/**
+	 * Updates statistics for audio object
+	 * @param audioObject
+	 * @param songPath
+	 */
+	private void updateStatistics(IAudioObject audioObject, String songPath) {
+		statistics.setTotalPlays(statistics.getTotalPlays() + 1);
+
+		IAudioObjectStatistics stats = getOrCreateAudioObjectStatistics(songPath);
+		stats.increaseStatistics();
+		
+		updateAudioObjectRanking(songPath);
+
+		String artist = audioObject.getArtist();
+		Artist a = repositoryHandler.getArtist(artist);
+
+		updateArtistRanking(a);
+		updateAlbumRanking(audioObject, artist, a);
+	}
+
+	/**
+	 * Returns audio object statistics or create a new one
+	 * @param songPath
+	 * @return
+	 */
+	private IAudioObjectStatistics getOrCreateAudioObjectStatistics(String songPath) {
+		IAudioObjectStatistics stats = statistics.getAudioFilesStats().get(songPath);
+		if (stats == null) {
+		    stats = new AudioObjectStats();
+		    statistics.getAudioFilesStats().put(songPath, stats);
+		    statistics.setDifferentAudioFilesPlayed(statistics.getDifferentAudioFilesPlayed() + 1);
+		}
+		return stats;
+	}
+
+	/**
+	 * Updates audio object ranking
+	 * @param songPath
+	 */
+	private void updateAudioObjectRanking(String songPath) {
+		statistics.getAudioFilesRanking().addItem(songPath);
+	}
+
+	/**
+	 * Updates album ranking
+	 * @param audioObject
+	 * @param artist
+	 * @param a
+	 */
+	private void updateAlbumRanking(IAudioObject audioObject, String artist, Artist a) {
+		String album = audioObject.getAlbum();
+
+		Album alb = a.getAlbum(album);
+
+		// Unknown album -> don't fill album stats
+		if (alb == null || Album.isUnknownAlbum(alb.getName())) {
+		    return;
+		}
+
+		IStatisticsAlbum statisticsAlbum = new StatisticsAlbum(artist, album);
+		statistics.getAlbumsRanking().addItem(statisticsAlbum);
+	}
+
+	/**
+	 * Updates artist ranking
+	 * @param a
+	 */
+	private void updateArtistRanking(Artist a) {
+		// Unknown artist -> don't fill artist stats
+		if (a == null || Artist.isUnknownArtist(a.getName())) {
+		    return;
+		}
+
+		statistics.getArtistsRanking().addItem(a.getName());
+	}
+
+	/**
+	 * Returns if audio object is in repository
+	 * @param audioObjectPath
+	 * @return
+	 */
+	private boolean audioObjectInRepository(String audioObjectPath) {
+		return repositoryHandler.getFile(audioObjectPath) != null;
+	}
 
     @Override
     public int getArtistTimesPlayed(Artist artist) {
@@ -279,7 +341,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
     @Override
     public void showStatistics() {
 		if (controller == null) {
-			controller = new StatsDialogController(new StatsDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class)), getState(), this, getBean(ILookAndFeelManager.class), repositoryHandler); 
+			controller = new StatsDialogController(new StatsDialog(getFrame().getFrame(), lookAndFeelManager), getState(), this, lookAndFeelManager, repositoryHandler); 
 		}
 		controller.showStats();
 	}
@@ -290,5 +352,4 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
     private void storeStatistics() {
     	new StoreStatistics(taskService, stateHandler, this).storeStatistics();
     }
-	
 }
