@@ -26,8 +26,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -205,29 +203,23 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
                 try {
                     Class<?> encoderClass = Class.forName(encoderName);
                     if (Encoder.class.isAssignableFrom(encoderClass)) {
-                        Method testToolMethod = encoderClass.getMethod("testTool");
-                        Boolean encoderAvailable = (Boolean) testToolMethod.invoke(null);
-                        if (encoderAvailable) {
-                            Encoder instancedEncoder = (Encoder) encoderClass.newInstance();
+                        Encoder instancedEncoder = (Encoder) encoderClass.newInstance();
+                        if (instancedEncoder.testEncoder()) {
                             availableEncoders.put(instancedEncoder.getFormatName(), instancedEncoder);
                         }
                     } else {
-                        Logger.error(encoderClass + " is not a subtype of " + Encoder.class);
+                        Logger.error(encoderClass.getName(), " is not a subtype of ", Encoder.class.getName());
                     }
                 } catch (ClassNotFoundException e) {
                     Logger.error(e);
-                } catch (NoSuchMethodException e) {
-                    Logger.error(e);
                 } catch (IllegalAccessException e) {
-                    Logger.error(e);
-                } catch (InvocationTargetException e) {
                     Logger.error(e);
                 } catch (InstantiationException e) {
                     Logger.error(e);
                 }
             }
 
-            Logger.info(StringUtils.getString("Available encoders: ", availableEncoders.keySet()));
+            Logger.info("Available encoders: ", availableEncoders.keySet());
         }
         return availableEncoders;
     }

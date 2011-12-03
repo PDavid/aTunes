@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.cdripper;
 
 import java.io.File;
 
-import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -70,18 +69,19 @@ public class WavEncoder extends AbstractEncoder {
     }
 
     /**
-     * @param localAudioObjectFactory
+     * Creates a new wav encoder
      */
-    public WavEncoder(ILocalAudioObjectFactory localAudioObjectFactory) {
-    	super("wav", new String[0], "", FORMAT_NAME, localAudioObjectFactory);
+    public WavEncoder() {
+    	super("wav", new String[0], "", FORMAT_NAME);
     }
  
     @Override
     public void stop() {
         // do nothing
     }
-
-    public static boolean testTool() {
+    
+    @Override
+    public boolean testEncoder() {
         // This encoder is always available
         return true;
     }

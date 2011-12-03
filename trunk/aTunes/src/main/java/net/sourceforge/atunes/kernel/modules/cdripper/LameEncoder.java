@@ -29,8 +29,6 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -55,22 +53,22 @@ public class LameEncoder extends AbstractEncoder {
 
     private Process p;
 
-    private IOSManager osManager;
-    
     /**
-     * Test the presence of the mp3 encoder lame.
-     * 
-     * @param osManager
-     * @return Returns true if lame was found, false otherwise.
+     * Creates a new lame encoder
      */
-    public static boolean testTool(IOSManager osManager) {
-        if (osManager.isWindows()) {
+    public LameEncoder() {
+    	super("mp3", MP3_QUALITIES, MP3_DEFAULT_QUALITY, FORMAT_NAME);
+	}
+    
+    @Override
+    public boolean testEncoder() {
+        if (getOsManager().isWindows()) {
             return true;
         }
 
         BufferedReader stdInput = null;
         try {
-            Process p = new ProcessBuilder(StringUtils.getString(osManager.getExternalToolsPath(), LAME), VERSION).start();
+            Process p = new ProcessBuilder(StringUtils.getString(getOsManager().getExternalToolsPath(), LAME), VERSION).start();
             stdInput = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
             String line = null;
@@ -92,15 +90,6 @@ public class LameEncoder extends AbstractEncoder {
         }
     }
 
-    /**
-     * @param osManager
-     * @param localAudioObjectFactory
-     */
-    public LameEncoder(IOSManager osManager, ILocalAudioObjectFactory localAudioObjectFactory) {
-    	super("mp3", MP3_QUALITIES, MP3_DEFAULT_QUALITY, FORMAT_NAME, localAudioObjectFactory);
-    	this.osManager = osManager;
-	}
-    
     /**
      * Encode the wav file and tags it using entagged.
      * 
@@ -126,7 +115,7 @@ public class LameEncoder extends AbstractEncoder {
         try {
             // Prepare and execute the lame command
             List<String> command = new ArrayList<String>();
-            command.add(StringUtils.getString(osManager.getExternalToolsPath(), LAME));
+            command.add(StringUtils.getString(getOsManager().getExternalToolsPath(), LAME));
             // Presets don't need the -b option, but --preset, so check if preset is used
             if (getQuality().contains("insane") || getQuality().contains("extreme") || getQuality().contains("medium") || getQuality().contains("standard")) {
                 command.add(PRESET);
