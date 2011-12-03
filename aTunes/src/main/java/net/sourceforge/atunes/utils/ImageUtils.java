@@ -131,8 +131,7 @@ public final class ImageUtils {
             return GraphicsUtilities.createThumbnail(toBufferedImage(image), calculatedWidth, calculatedHeight);
         }
     }
-
-
+    
     /**
      * Scales an image with Bilinear algorithm (faster than bicubic)
      * 
@@ -179,6 +178,10 @@ public final class ImageUtils {
      * @return the buffered image
      */
     public static BufferedImage toBufferedImage(Image img) {
+    	if (img instanceof BufferedImage) {
+    		return (BufferedImage) img;
+    	}
+    	
         BufferedImage bufferedImage;
         try {
             Image image = img;
