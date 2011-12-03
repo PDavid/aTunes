@@ -91,12 +91,12 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
         // The order of entries is used to determine default encoder. 
         // First entry is default encoder, if it's not available then second entry is default encoder...  
         allEncoders = new ArrayList<String>();
-        allEncoders.add("net.sourceforge.atunes.kernel.modules.cdripper.encoders.OggEncoder");
-        allEncoders.add("net.sourceforge.atunes.kernel.modules.cdripper.encoders.LameEncoder");
-        allEncoders.add("net.sourceforge.atunes.kernel.modules.cdripper.encoders.Mp4Encoder");
-        allEncoders.add("net.sourceforge.atunes.kernel.modules.cdripper.encoders.NeroAacEncoder");
-        allEncoders.add("net.sourceforge.atunes.kernel.modules.cdripper.encoders.FlacEncoder");
-        allEncoders.add("net.sourceforge.atunes.kernel.modules.cdripper.encoders.WavEncoder");
+        allEncoders.add("net.sourceforge.atunes.kernel.modules.cdripper.OggEncoder");
+        allEncoders.add("net.sourceforge.atunes.kernel.modules.cdripper.LameEncoder");
+        allEncoders.add("net.sourceforge.atunes.kernel.modules.cdripper.Mp4Encoder");
+        allEncoders.add("net.sourceforge.atunes.kernel.modules.cdripper.NeroAacEncoder");
+        allEncoders.add("net.sourceforge.atunes.kernel.modules.cdripper.FlacEncoder");
+        allEncoders.add("net.sourceforge.atunes.kernel.modules.cdripper.WavEncoder");
     }
 
     @Override
@@ -204,6 +204,7 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
                     Class<?> encoderClass = Class.forName(encoderName);
                     if (Encoder.class.isAssignableFrom(encoderClass)) {
                         Encoder instancedEncoder = (Encoder) encoderClass.newInstance();
+                        ((AbstractEncoder)instancedEncoder).setOsManager(getOsManager());
                         if (instancedEncoder.testEncoder()) {
                             availableEncoders.put(instancedEncoder.getFormatName(), instancedEncoder);
                         }
