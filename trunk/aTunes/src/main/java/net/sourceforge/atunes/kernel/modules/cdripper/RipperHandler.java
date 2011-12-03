@@ -31,14 +31,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.gui.views.dialogs.RipCdDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
+import net.sourceforge.atunes.kernel.TaskService;
 import net.sourceforge.atunes.kernel.actions.RipCDAction;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
@@ -64,7 +63,8 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
     volatile boolean interrupted;
     private boolean folderCreated;
     IAlbumInfo albumInfo;
-    private ExecutorService executorService = Executors.newSingleThreadExecutor();
+    
+    private TaskService taskService;
     
     IIndeterminateProgressDialog indeterminateProgressDialog;
     
@@ -99,6 +99,13 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
         allEncoders.add("net.sourceforge.atunes.kernel.modules.cdripper.WavEncoder");
     }
 
+    /**
+     * @param taskService
+     */
+    public void setTaskService(TaskService taskService) {
+		this.taskService = taskService;
+	}
+    
     @Override
     public void applicationStarted() {
     	this.repositoryHandler = getBean(IRepositoryHandler.class);
@@ -342,7 +349,7 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
                     }
                 }
             };
-            executorService.submit(deleter);
+            taskService.submitNow("Delete files after import", deleter);
         } else {
             addFilesToRepositoryAndRefresh(filesImported, folder);
         }
