@@ -57,6 +57,9 @@ public class RankList<T> implements Serializable {
      *            the obj
      */
     public void addItem(T obj) {
+    	if (obj == null) {
+    		return;
+    	}
         if (order.contains(obj)) {
             Integer previousCount = count.get(obj);
             count.put(obj, previousCount + 1);

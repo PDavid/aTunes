@@ -104,7 +104,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
             Artist a = repositoryHandler.getArtist(artist);
 
             // Unknown artist -> don't fill artist stats
-            if (a == null) {
+            if (a == null || Artist.isUnknownArtist(a.getName())) {
                 return;
             }
 
@@ -115,7 +115,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
             Album alb = a.getAlbum(album);
 
             // Unknown album -> don't fill album stats
-            if (alb == null) {
+            if (alb == null || Album.isUnknownAlbum(alb.getName())) {
                 return;
             }
 
