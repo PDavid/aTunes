@@ -79,6 +79,7 @@ public class RankListTest {
     @Before
     public void init() {
         testedObject = new RankList<DummyObject>();
+        testedObject.addItem(null);
         o1 = new DummyObject("a");
         testedObject.addItem(o1);
         testedObject.addItem(o1);

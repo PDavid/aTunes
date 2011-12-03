@@ -15,6 +15,7 @@ aTunes 2.1.1
 - FIX: Last.fm cache initialized several times
 - FIX: Context panel update called twice
 - FIX: Not enough space for remaining time in progress slider
+- FIX: NPE updating statistics [ 3415186 ]
 
 
 aTunes 2.1.0
