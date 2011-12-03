@@ -16,6 +16,7 @@ aTunes 2.1.1
 - FIX: Context panel update called twice
 - FIX: Not enough space for remaining time in progress slider
 - FIX: NPE updating statistics [ 3415186 ]
+- FIX: Only WAV encoder can be selected when importing CD [ 3446197 ]
 
 
 aTunes 2.1.0

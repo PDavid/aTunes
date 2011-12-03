@@ -29,8 +29,6 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -58,19 +56,19 @@ public class FlacEncoder extends AbstractEncoder {
 
     private Process process;
     
-    private IOSManager osManager;
-    
     /**
-     * Test the presence of the flac encoder flac.
-     * 
-     * @param osManager
-     * @return Returns true if flac was found, false otherwise.
+     * Creates a new FlacEncoder
      */
-    public static boolean testTool(IOSManager osManager) {
+    public FlacEncoder() {
+    	super("flac", FLAC_QUALITY, DEFAULT_FLAC_QUALITY, FORMAT_NAME);
+	}
+    
+    @Override
+    public boolean testEncoder() {
         // Test for flac
         BufferedReader stdInput = null;
         try {
-            Process p = new ProcessBuilder(StringUtils.getString(osManager.getExternalToolsPath(), FLAC), VERSION).start(); 
+            Process p = new ProcessBuilder(StringUtils.getString(getOsManager().getExternalToolsPath(), FLAC), VERSION).start(); 
             stdInput = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
             String line = null;
@@ -92,15 +90,6 @@ public class FlacEncoder extends AbstractEncoder {
         }
     }
 
-    /**
-     * @param osManager
-     * @param localAudioObjectFactory
-     */
-    public FlacEncoder(IOSManager osManager, ILocalAudioObjectFactory localAudioObjectFactory) {
-    	super("flac", FLAC_QUALITY, DEFAULT_FLAC_QUALITY, FORMAT_NAME, localAudioObjectFactory);
-    	this.osManager = osManager;
-	}
-    
     /**
      * Encode the wav file and tags it using entagged.
      * 
@@ -127,7 +116,7 @@ public class FlacEncoder extends AbstractEncoder {
             // Encode the file using FLAC. We could pass the infos for the tag, but 
             // FLAC is very difficult with special characters so we don't use it.
             List<String> command = new ArrayList<String>();
-            command.add(StringUtils.getString(osManager.getExternalToolsPath(), FLAC));
+            command.add(StringUtils.getString(getOsManager().getExternalToolsPath(), FLAC));
             command.add(getQuality());
             command.add(FORCE);
             command.add(wavFile.getAbsolutePath());

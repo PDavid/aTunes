@@ -26,6 +26,7 @@ import net.sourceforge.atunes.kernel.modules.tags.TagFactory;
 import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -53,19 +54,40 @@ public abstract class AbstractEncoder implements Encoder {
 	private String formatName;
 	
 	private ILocalAudioObjectFactory localAudioObjectFactory;
+	
+	private IOSManager osManager;
 
 	/**
 	 * @param extensionOfEncodedFiles
 	 * @param availableQualities
 	 * @param defaultQuality
 	 * @param formatName
-	 * @param localAudioObjectFactory
 	 */
-	public AbstractEncoder(String extensionOfEncodedFiles, String[] availableQualities, String defaultQuality, String formatName, ILocalAudioObjectFactory localAudioObjectFactory) {
+	public AbstractEncoder(String extensionOfEncodedFiles, String[] availableQualities, String defaultQuality, String formatName) {
 		this.extensionOfEncodedFiles = extensionOfEncodedFiles;
 		this.availableQualities = availableQualities;
 		this.defaultQuality = defaultQuality;
 		this.formatName = formatName;
+	}
+	
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
+	
+	/**
+	 * @return os manager
+	 */
+	public IOSManager getOsManager() {
+		return osManager;
+	}
+	
+	/**
+	 * @param localAudioObjectFactory
+	 */
+	public void setLocalAudioObjectFactory(ILocalAudioObjectFactory localAudioObjectFactory) {
 		this.localAudioObjectFactory = localAudioObjectFactory;
 	}
 	

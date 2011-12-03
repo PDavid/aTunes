@@ -29,8 +29,6 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -55,19 +53,20 @@ public class Mp4Encoder extends AbstractEncoder {
     static final String DEFAULT_MP4_QUALITY = "200";
 
     private Process p;
-    
-    private IOSManager osManager;
 
     /**
-     * Test the presence of the ogg encoder oggenc.
-     * @param osManager
-     * @return Returns true if oggenc was found, false otherwise.
+     * Creates a new mp4 encoder
      */
-    public static boolean testTool(IOSManager osManager) {
+    public Mp4Encoder() {
+    	super("m4a", MP4_QUALITY, DEFAULT_MP4_QUALITY, FORMAT_NAME);
+	}
+
+    @Override
+    public boolean testEncoder() {
         // Test for faac
         BufferedReader stdInput = null;
         try {
-            Process p = new ProcessBuilder(StringUtils.getString(osManager.getExternalToolsPath(), OGGENC)).start();
+            Process p = new ProcessBuilder(StringUtils.getString(getOsManager().getExternalToolsPath(), OGGENC)).start();
             stdInput = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
             String line = null;
@@ -89,15 +88,6 @@ public class Mp4Encoder extends AbstractEncoder {
         }
     }
 
-    /**
-     * @param osManager
-     * @param localAudioObjectFactory
-     */
-    public Mp4Encoder(IOSManager osManager, ILocalAudioObjectFactory localAudioObjectFactory) {
-    	super("m4a", MP4_QUALITY, DEFAULT_MP4_QUALITY, FORMAT_NAME, localAudioObjectFactory);
-    	this.osManager = osManager;
-	}
-    
     /**
      * Encode the wav file and tags it using entagged.
      * 
@@ -122,7 +112,7 @@ public class Mp4Encoder extends AbstractEncoder {
         BufferedReader stdInput = null;
         try {
             List<String> command = new ArrayList<String>();
-            command.add(StringUtils.getString(osManager.getExternalToolsPath(), OGGENC));
+            command.add(StringUtils.getString(getOsManager().getExternalToolsPath(), OGGENC));
             command.add(OUTPUT);
             command.add(mp4File.getAbsolutePath());
             command.add(QUALITY);

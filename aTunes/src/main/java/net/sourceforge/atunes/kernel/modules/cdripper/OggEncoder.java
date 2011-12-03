@@ -29,8 +29,6 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -56,24 +54,17 @@ public class OggEncoder extends AbstractEncoder {
     static final String DEFAULT_OGG_QUALITY = "5";
 
     private Process p;
-    
-    private IOSManager osManager;
 
-    /**
-     * Test the presence of the ogg encoder oggenc.
-     * @param osManager
-     * 
-     * @return Returns true if oggenc was found, false otherwise.
-     */
-    public static boolean testTool(IOSManager osManager) {
-        if (osManager.isWindows()) {
+    @Override
+    public boolean testEncoder() {
+        if (getOsManager().isWindows()) {
             return true;
         }
 
         BufferedReader stdInput = null;
         // Test for oggenc
         try {
-            Process p = new ProcessBuilder(StringUtils.getString(osManager.getExternalToolsPath(), OGGENC), VERSION).start();
+            Process p = new ProcessBuilder(StringUtils.getString(getOsManager().getExternalToolsPath(), OGGENC), VERSION).start();
             stdInput = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
             String line = null;
@@ -96,12 +87,10 @@ public class OggEncoder extends AbstractEncoder {
     }
 
     /**
-     * @param osManager
-     * @param localAudioObjectFactory
+     * Creates a new ogg encoder
      */
-    public OggEncoder(IOSManager osManager, ILocalAudioObjectFactory localAudioObjectFactory) {
-    	super("ogg", OGG_QUALITIES, DEFAULT_OGG_QUALITY, FORMAT_NAME, localAudioObjectFactory);
-    	this.osManager = osManager;
+    public OggEncoder() {
+    	super("ogg", OGG_QUALITIES, DEFAULT_OGG_QUALITY, FORMAT_NAME);
 	}
     
     /**
@@ -131,7 +120,7 @@ public class OggEncoder extends AbstractEncoder {
             // Encode the file using oggenc. We could pass the infos for the tag, but 
             // oggenc is very difficult with special characters so we don't use it.
             List<String> command = new ArrayList<String>();
-            command.add(StringUtils.getString(osManager.getExternalToolsPath(), OGGENC));
+            command.add(StringUtils.getString(getOsManager().getExternalToolsPath(), OGGENC));
             command.add(wavFile.getAbsolutePath());
             command.add(OUTPUT);
             command.add(oggFile.getAbsolutePath());

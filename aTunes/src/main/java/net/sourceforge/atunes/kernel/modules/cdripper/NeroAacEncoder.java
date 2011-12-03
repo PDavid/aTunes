@@ -29,8 +29,6 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -54,19 +52,12 @@ public class NeroAacEncoder extends AbstractEncoder {
 
     private Process p;
 
-    private IOSManager osManager;
-    
-    /**
-     * Test the presence of the ogg encoder oggenc.
-     * 
-     * @param osManager
-     * @return Returns true if oggenc was found, false otherwise.
-     */
-    public static boolean testTool(IOSManager osManager) {
+    @Override
+    public boolean testEncoder() {
         // Test for Nero Aac encoder
         BufferedReader stdInput = null;
         try {
-            Process p = new ProcessBuilder(StringUtils.getString(osManager.getExternalToolsPath(), NERO_AAC), VERSION).start();
+            Process p = new ProcessBuilder(StringUtils.getString(getOsManager().getExternalToolsPath(), NERO_AAC), VERSION).start();
             stdInput = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
             String line = null;
@@ -91,12 +82,10 @@ public class NeroAacEncoder extends AbstractEncoder {
     }
     
     /**
-     * @param osManager
-     * @param localAudioObjectFactory
+     * Creates a new nero aac encoder
      */
-    public NeroAacEncoder(IOSManager osManager, ILocalAudioObjectFactory localAudioObjectFactory) {
-    	super("m4a", NERO_AAC_QUALITY, DEFAULT_NERO_AAC_QUALITY, FORMAT_NAME, localAudioObjectFactory);
-    	this.osManager = osManager;
+    public NeroAacEncoder() {
+    	super("m4a", NERO_AAC_QUALITY, DEFAULT_NERO_AAC_QUALITY, FORMAT_NAME);
 	}
 
     /**
@@ -123,7 +112,7 @@ public class NeroAacEncoder extends AbstractEncoder {
         BufferedReader stdInput = null;
         try {
             List<String> command = new ArrayList<String>();
-            command.add(StringUtils.getString(osManager.getExternalToolsPath(), NERO_AAC));
+            command.add(StringUtils.getString(getOsManager().getExternalToolsPath(), NERO_AAC));
             command.add(QUALITY);
             command.add(getQuality());
             //command.add(IGNORE_LENGTH);
