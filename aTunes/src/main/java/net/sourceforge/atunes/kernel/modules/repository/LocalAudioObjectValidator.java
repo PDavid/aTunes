@@ -36,8 +36,20 @@ public class LocalAudioObjectValidator {
      * 
      * @return true, if is valid audio file
      */
+    public static boolean isValidAudioFile(String file) {
+        return isValidAudioFile(new File(file));
+    }
+
+    /**
+     * Checks if is valid audio file.
+     * 
+     * @param file
+     *            the file
+     * 
+     * @return true, if is valid audio file
+     */
     public static boolean isValidAudioFile(File file) {
-        return !file.isDirectory() && isOneOfTheseFormats(file.getName(), LocalAudioObjectFormat.values());
+        return file != null && file.exists() && !file.isDirectory() && isOneOfTheseFormats(file.getName(), LocalAudioObjectFormat.values());
     }
     
     /**
@@ -59,20 +71,4 @@ public class LocalAudioObjectValidator {
         }
         return false;
     }
-
-    /**
-     * Checks if is valid audio file.
-     * 
-     * @param file
-     *            the file
-     * 
-     * @return true, if is valid audio file
-     */
-    public static boolean isValidAudioFile(String file) {
-        File f = new File(file);
-        return f.exists() && isValidAudioFile(f);
-    }
-
-
-
 }
