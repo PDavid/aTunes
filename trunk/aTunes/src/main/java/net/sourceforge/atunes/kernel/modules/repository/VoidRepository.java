@@ -28,12 +28,12 @@ import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
-import net.sourceforge.atunes.kernel.modules.repository.exception.InconsistentRepositoryException;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.InconsistentRepositoryException;
 
 /**
  * A repository used before repository is loaded or selected, it does nothing
