@@ -35,9 +35,9 @@ import javax.swing.filechooser.FileFilter;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
-import net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -55,20 +55,21 @@ public final class EditTagDialogActionListener implements ActionListener {
     private EditTagDialogController controller;
     private EditTagDialog dialog;
     private IPlayListHandler playListHandler;
+    private ILocalAudioObjectValidator localAudioObjectValidator;
     
 
     /**
      * Instantiates a new edits the tag dialog action listener.
-     * 
      * @param controller
-     *            the controller
      * @param dialog
-     *            the dialog
+     * @param playListHandler
+     * @param localAudioObjectValidator
      */
-    public EditTagDialogActionListener(EditTagDialogController controller, EditTagDialog dialog, IPlayListHandler playListHandler) {
+    public EditTagDialogActionListener(EditTagDialogController controller, EditTagDialog dialog, IPlayListHandler playListHandler, ILocalAudioObjectValidator localAudioObjectValidator) {
         this.controller = controller;
         this.dialog = dialog;
         this.playListHandler = playListHandler;
+        this.localAudioObjectValidator = localAudioObjectValidator;
     }
 
     @Override
@@ -156,7 +157,7 @@ public final class EditTagDialogActionListener implements ActionListener {
 		    playListHandler.changeSelectedAudioObjectToIndex(--currentSelectedSongIndex);
 		    selectedFiles.clear();
 		    selectedFiles.add(playListHandler.getSelectedAudioObjects().get(0));
-		    validAudioFile = LocalAudioObjectValidator.isValidAudioFile(selectedFiles.get(0).getUrl());
+		    validAudioFile = localAudioObjectValidator.isValidAudioFile(selectedFiles.get(0).getUrl());
 		    // Reaching the begin of the playlist
 		    if (currentSelectedSongIndex == -1) {
 		        // Set to false to make tag edit dialog disappear 
@@ -196,7 +197,7 @@ public final class EditTagDialogActionListener implements ActionListener {
 		    playListHandler.changeSelectedAudioObjectToIndex(++currentSelectedSongIndex);
 		    selectedFiles.clear();
 		    selectedFiles.add(playListHandler.getSelectedAudioObjects().get(0));
-		    validAudioFile = LocalAudioObjectValidator.isValidAudioFile(selectedFiles.get(0).getUrl());
+		    validAudioFile = localAudioObjectValidator.isValidAudioFile(selectedFiles.get(0).getUrl());
 		}
 		if (validAudioFile) {
 		    nextFile.add((ILocalAudioObject) selectedFiles.get(0));

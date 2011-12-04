@@ -48,6 +48,7 @@ import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.IInputDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
+import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -137,6 +138,42 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	
 	private IPlayListPanel playListPanel;
 	
+	private ILocalAudioObjectValidator localAudioObjectValidator;
+	
+	private INavigationHandler navigationHandler;
+	
+	private IRepositoryHandler repositoryHandler;
+	
+	private IRadioHandler radioHandler;
+	
+	/**
+	 * @param radioHandler
+	 */
+	public void setRadioHandler(IRadioHandler radioHandler) {
+		this.radioHandler = radioHandler;
+	}
+	
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+	
+	/**
+	 * @param navigationHandler
+	 */
+	public void setNavigationHandler(INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+	
+	/**
+	 * @param localAudioObjectValidator
+	 */
+	public void setLocalAudioObjectValidator(ILocalAudioObjectValidator localAudioObjectValidator) {
+		this.localAudioObjectValidator = localAudioObjectValidator;
+	}
+	
     /**
      * @param playListColumnSet
      */
@@ -171,7 +208,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     @Override
     public void allHandlersInitialized() {
         // Create drag and drop listener
-    	playListPanel.enableDragAndDrop(new PlayListTableTransferHandler(playListTable, getFrame(), getOsManager(), this, getBean(INavigationHandler.class), getBean(IRepositoryHandler.class), getBean(IRadioHandler.class), localAudioObjectFactory));
+    	playListPanel.enableDragAndDrop(new PlayListTableTransferHandler(playListTable, getFrame(), getOsManager(), this, navigationHandler, repositoryHandler, radioHandler, localAudioObjectFactory, localAudioObjectValidator));
     }
 
     /**

@@ -27,6 +27,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -47,6 +48,15 @@ public class AutoSetCoversAction extends AbstractActionOverSelectedObjects<ILoca
     private IRepositoryHandler repositoryHandler;
     
     private IPlayerHandler playerHandler;
+    
+    private ILocalAudioObjectValidator localAudioObjectValidator;
+    
+    /**
+     * @param localAudioObjectValidator
+     */
+    public void setLocalAudioObjectValidator(ILocalAudioObjectValidator localAudioObjectValidator) {
+		this.localAudioObjectValidator = localAudioObjectValidator;
+	}
     
     /**
      * @param playerHandler
@@ -76,7 +86,7 @@ public class AutoSetCoversAction extends AbstractActionOverSelectedObjects<ILoca
 
     @Override
     protected void executeAction(List<ILocalAudioObject> objects) {
-        TagEditionOperations.editCover(objects, getState(), playListHandler, repositoryHandler, playerHandler);
+        TagEditionOperations.editCover(objects, getState(), playListHandler, repositoryHandler, playerHandler, localAudioObjectValidator);
     }
 
     @Override

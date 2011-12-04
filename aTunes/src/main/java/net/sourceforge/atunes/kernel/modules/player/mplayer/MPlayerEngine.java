@@ -27,6 +27,7 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.PlayerEngineCapability;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -46,6 +47,15 @@ public class MPlayerEngine extends AbstractPlayerEngine {
     private MPlayerPositionThread mPlayerPositionThread;
     /** The current fade away process running */
     private FadeAwayRunnable currentFadeAwayRunnable = null;
+    
+    private ILocalAudioObjectValidator localAudioObjectValidator;
+    
+    /**
+     * @param localAudioObjectValidator
+     */
+    public void setLocalAudioObjectValidator(ILocalAudioObjectValidator localAudioObjectValidator) {
+		this.localAudioObjectValidator = localAudioObjectValidator;
+	}
 
     @Override
     public void setOsManager(IOSManager osManager) {
@@ -128,7 +138,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
             	commandWriter = MPlayerCommandWriter.newCommandWriter(process, getOsManager());
             	// Output reader needs original audio object, specially when cacheFilesBeforePlaying is true, as
             	// statistics must be applied over original audio object, not the cached one
-            	mPlayerOutputReader = AbstractMPlayerOutputReader.newInstance(this, process, audioObject, getState(), getFrame(), playListHandler);
+            	mPlayerOutputReader = AbstractMPlayerOutputReader.newInstance(this, process, audioObject, getState(), getFrame(), playListHandler, localAudioObjectValidator);
             	mPlayerErrorReader = new MPlayerErrorReader(this, process, mPlayerOutputReader, audioObjectToPlay);
             	mPlayerOutputReader.start();
             	mPlayerErrorReader.start();

@@ -35,8 +35,6 @@ import java.util.Set;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
-import org.apache.sanselan.ImageWriteException;
-
 import net.sourceforge.atunes.gui.views.dialogs.RipCdDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.TaskService;
@@ -54,6 +52,8 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
+
+import org.apache.sanselan.ImageWriteException;
 
 public final class RipperHandler extends AbstractHandler implements IRipperHandler {
 

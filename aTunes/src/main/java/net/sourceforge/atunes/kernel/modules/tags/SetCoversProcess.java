@@ -35,6 +35,7 @@ import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -48,19 +49,22 @@ import net.sourceforge.atunes.utils.ImageUtils;
  */
 public class SetCoversProcess extends AbstractChangeTagProcess {
 
+	private ILocalAudioObjectValidator localAudioObjectValidator;
+	
     private Map<ILocalAudioObject, Image> filesAndCovers;
 
     /**
      * Instantiates a new sets the covers process.
-     * 
      * @param files
      * @param state
      * @param playListHandler
      * @param repositoryHandler
      * @param playerHandler
+     * @param localAudioObjectValidator
      */
-    SetCoversProcess(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
+    SetCoversProcess(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler, ILocalAudioObjectValidator localAudioObjectValidator) {
         super(files, state, playListHandler, repositoryHandler, playerHandler);
+        this.localAudioObjectValidator = localAudioObjectValidator;
     }
 
     @Override
@@ -76,7 +80,7 @@ public class SetCoversProcess extends AbstractChangeTagProcess {
         newTag.setInternalImage(true);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ImageIO.write(bufferedCover, "PNG", byteArrayOutputStream);
-        TagModifier.setInfo(file, newTag, true, byteArrayOutputStream.toByteArray());
+        TagModifier.setInfo(file, newTag, true, byteArrayOutputStream.toByteArray(), localAudioObjectValidator);
     }
 
     /**

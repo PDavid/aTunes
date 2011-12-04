@@ -25,12 +25,12 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectValidator;
-import net.sourceforge.atunes.model.LocalAudioObjectFormat;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.ITag;
+import net.sourceforge.atunes.model.LocalAudioObjectFormat;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -138,29 +138,23 @@ public final class TagModifier {
     
     /**
      * Writes tag to audiofile using JAudiotagger.
-     * 
      * @param file
-     *            File to which the tags should be written
      * @param tag
-     *            Tag to be written
+     * @param localAudioObjectValidator
      */
-    public static void setInfo(ILocalAudioObject file, ITag tag) {
-        setInfo(file, tag, false, null);
+    public static void setInfo(ILocalAudioObject file, ITag tag, ILocalAudioObjectValidator localAudioObjectValidator) {
+        setInfo(file, tag, false, null, localAudioObjectValidator);
     }
 
     /**
      * Writes tag to audio file using JAudiotagger.
-     * 
      * @param file
-     *            File to which the tags should be written
      * @param tag
-     *            Tag to be written
      * @param shouldEditCover
-     *            if the cover should be edited
      * @param cover
-     *            cover data as byte array
+     * @param localAudioObjectValidator
      */
-    static void setInfo(ILocalAudioObject file, ITag tag, boolean shouldEditCover, byte[] cover) {
+    static void setInfo(ILocalAudioObject file, ITag tag, boolean shouldEditCover, byte[] cover, ILocalAudioObjectValidator localAudioObjectValidator) {
         // Be sure file is writable before setting info
         setWritable(file);
 
@@ -180,7 +174,7 @@ public final class TagModifier {
             org.jaudiotagger.audio.AudioFile audioFile = org.jaudiotagger.audio.AudioFileIO.read(file.getFile());
             org.jaudiotagger.tag.Tag newTag = audioFile.getTagOrCreateAndSetDefault();
 
-            if (LocalAudioObjectValidator.isOneOfTheseFormats(file.getFile().getName(), LocalAudioObjectFormat.MP3)) {
+            if (localAudioObjectValidator.isOneOfTheseFormats(file.getFile().getName(), LocalAudioObjectFormat.MP3)) {
                 org.jaudiotagger.audio.mp3.MP3File mp3file = (org.jaudiotagger.audio.mp3.MP3File) audioFile;
                 if (mp3file.hasID3v1Tag() && !mp3file.hasID3v2Tag()) {
                     deleteTags(file);
@@ -209,7 +203,7 @@ public final class TagModifier {
             }
 
             // Workaround for mp4 files - strings outside genre list might not be written otherwise
-            if (LocalAudioObjectValidator.isOneOfTheseFormats(file.getFile().getName(), LocalAudioObjectFormat.MP4_1, LocalAudioObjectFormat.MP4_2)) {
+            if (localAudioObjectValidator.isOneOfTheseFormats(file.getFile().getName(), LocalAudioObjectFormat.MP4_1, LocalAudioObjectFormat.MP4_2)) {
                 newTag.deleteField(FieldKey.GENRE);
             }
 

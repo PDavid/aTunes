@@ -39,6 +39,7 @@ import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
+import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -57,11 +58,11 @@ import net.sourceforge.atunes.utils.Timer;
  */
 public class RepositoryLoader extends Thread {
 
-	private static FileFilter validAudioFileFilter =  new FileFilter() {
+	private FileFilter validAudioFileFilter =  new FileFilter() {
 		
 		@Override
 		public boolean accept(File pathname) {
-			return LocalAudioObjectValidator.isValidAudioFile(pathname);
+			return localAudioObjectValidator.isValidAudioFile(pathname);
 		}
 	};
 
@@ -80,6 +81,7 @@ public class RepositoryLoader extends Thread {
 	private int fastFirstChar;
 	private IState state;
 	private ILocalAudioObjectFactory localAudioObjectFactory;
+	private ILocalAudioObjectValidator localAudioObjectValidator;
 	
 	private RepositoryTransaction transaction;
 
@@ -92,8 +94,9 @@ public class RepositoryLoader extends Thread {
 	 * @param repository
 	 * @param refresh
 	 * @param localAudioObjectFactory
+	 * @param localAudioObjectValidator
 	 */
-	public RepositoryLoader(IState state, RepositoryTransaction transaction, List<File> folders, Repository oldRepository, IRepository repository, boolean refresh, ILocalAudioObjectFactory localAudioObjectFactory) {
+	public RepositoryLoader(IState state, RepositoryTransaction transaction, List<File> folders, Repository oldRepository, IRepository repository, boolean refresh, ILocalAudioObjectFactory localAudioObjectFactory, ILocalAudioObjectValidator localAudioObjectValidator) {
 		this.transaction = transaction;
 		this.refresh = refresh;
 		this.folders = folders;
@@ -101,6 +104,7 @@ public class RepositoryLoader extends Thread {
 		this.repository = repository;
 		this.state = state;
 		this.localAudioObjectFactory = localAudioObjectFactory;
+		this.localAudioObjectValidator = localAudioObjectValidator;
 		setPriority(Thread.MAX_PRIORITY);
 	}
 
@@ -151,21 +155,20 @@ public class RepositoryLoader extends Thread {
 	 * Count files.
 	 * 
 	 * @param dir
-	 *            the dir
-	 * 
-	 * @return the int
+	 * @param localAudioObjectValidator
+	 * @return
 	 */
-	private static int countFiles(File dir) {
+	private static int countFiles(File dir, ILocalAudioObjectValidator localAudioObjectValidator) {
 		int files = 0;
 		File[] list = dir.listFiles();
 		if (list == null) {
 			return files;
 		}
 		for (File element : list) {
-			if (LocalAudioObjectValidator.isValidAudioFile(element)) {
+			if (localAudioObjectValidator.isValidAudioFile(element)) {
 				files++;
 			} else if (element.isDirectory()) {
-				files = files + countFiles(element);
+				files = files + countFiles(element, localAudioObjectValidator);
 			}
 		}
 		return files;
@@ -175,14 +178,13 @@ public class RepositoryLoader extends Thread {
 	 * Count files in repository.
 	 * 
 	 * @param rep
-	 *            the rep
-	 * 
-	 * @return the int
+	 * @param localAudioObjectValidator
+	 * @return
 	 */
-	static int countFilesInRepository(IRepository rep) {
+	static int countFilesInRepository(IRepository rep, ILocalAudioObjectValidator localAudioObjectValidator) {
 		int files = 0;
 		for (File dir : rep.getRepositoryFolders()) {
-			files = files + countFiles(dir);
+			files = files + countFiles(dir, localAudioObjectValidator);
 		}
 		return files;
 	}
@@ -210,13 +212,13 @@ public class RepositoryLoader extends Thread {
 
 	/**
 	 * Gets the songs for dir.
-	 * 
 	 * @param folder
 	 * @param listener
 	 * @param localAudioObjectFactory
+	 * @param localAudioObjectValidator
 	 * @return
 	 */
-	public static List<ILocalAudioObject> getSongsForFolder(File folder, IRepositoryLoaderListener listener, ILocalAudioObjectFactory localAudioObjectFactory) {
+	public static List<ILocalAudioObject> getSongsForFolder(File folder, IRepositoryLoaderListener listener, ILocalAudioObjectFactory localAudioObjectFactory, ILocalAudioObjectValidator localAudioObjectValidator) {
 		List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
 
 		File[] list = folder.listFiles();
@@ -224,10 +226,10 @@ public class RepositoryLoader extends Thread {
 		if (list != null) {
 			// First find audio and files
 			for (File element : list) {
-				if (LocalAudioObjectValidator.isValidAudioFile(element)) {
+				if (localAudioObjectValidator.isValidAudioFile(element)) {
 					files.add(element);
 				} else if (element.isDirectory()) {
-					result.addAll(getSongsForFolder(element, listener, localAudioObjectFactory));
+					result.addAll(getSongsForFolder(element, listener, localAudioObjectFactory, localAudioObjectValidator));
 				}
 			}
 
@@ -244,23 +246,23 @@ public class RepositoryLoader extends Thread {
 
 	/**
 	 * Gets the songs of a list of folders. Used in import
-	 * 
 	 * @param folders
 	 * @param listener
 	 * @param localAudioObjectFactory
+	 * @param localAudioObjectValidator
 	 * @return
 	 */
-	public static List<ILocalAudioObject> getSongsForFolders(List<File> folders, IRepositoryLoaderListener listener, ILocalAudioObjectFactory localAudioObjectFactory) {
+	public static List<ILocalAudioObject> getSongsForFolders(List<File> folders, IRepositoryLoaderListener listener, ILocalAudioObjectFactory localAudioObjectFactory, ILocalAudioObjectValidator localAudioObjectValidator) {
 		int filesCount = 0;
 		for (File folder : folders) {
-			filesCount = filesCount + countFiles(folder);
+			filesCount = filesCount + countFiles(folder, localAudioObjectValidator);
 		}
 		if (listener != null) {
 			listener.notifyFilesInRepository(filesCount);
 		}
 		List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
 		for (File folder : folders) {
-			result.addAll(getSongsForFolder(folder, listener, localAudioObjectFactory));
+			result.addAll(getSongsForFolder(folder, listener, localAudioObjectFactory, localAudioObjectValidator));
 		}
 		if (listener != null) {
 			listener.notifyFinishRead(null);
@@ -350,7 +352,7 @@ public class RepositoryLoader extends Thread {
 				return files;
 			}
 			for (File element : list) {
-				if (LocalAudioObjectValidator.isValidAudioFile(element)) {
+				if (localAudioObjectValidator.isValidAudioFile(element)) {
 					files++;
 				} else if (element.isDirectory()) {
 					files = files + countFilesInDir(element);
@@ -712,8 +714,9 @@ public class RepositoryLoader extends Thread {
 	 * @param osManager
 	 * @param repositoryHandler
 	 * @param localAudioObjectFactory
+	 * @param localAudioObjectValidator
 	 */
-	public static void refreshFolders(IState state, IRepository repository, List<Folder> folders, IStatisticsHandler statisticsHandler, IOSManager osManager, IRepositoryHandler repositoryHandler, ILocalAudioObjectFactory localAudioObjectFactory) {
+	public static void refreshFolders(IState state, IRepository repository, List<Folder> folders, IStatisticsHandler statisticsHandler, IOSManager osManager, IRepositoryHandler repositoryHandler, ILocalAudioObjectFactory localAudioObjectFactory, ILocalAudioObjectValidator localAudioObjectValidator) {
 		repositoryHandler.startTransaction();
 		
 		for (Folder folder : folders) {
@@ -730,7 +733,7 @@ public class RepositoryLoader extends Thread {
 			}
 
 			// Add new files
-			List<ILocalAudioObject> allObjects = getSongsForFolder(folder.getFolderPath(osManager), null, localAudioObjectFactory);
+			List<ILocalAudioObject> allObjects = getSongsForFolder(folder.getFolderPath(osManager), null, localAudioObjectFactory, localAudioObjectValidator);
 			for (ILocalAudioObject ao : allObjects) {
 				if (repository.getFile(ao.getFile().getAbsolutePath()) == null) {
 					Logger.debug("Adding file: ", ao.getFile().getAbsolutePath());

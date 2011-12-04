@@ -33,6 +33,7 @@ import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
+import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITag;
@@ -61,24 +62,28 @@ public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
     private HashSet<ILocalAudioObject> filesToChangeTag;
     
     private ILocalAudioObjectFactory localAudioObjectFactory;
+    
+    private ILocalAudioObjectValidator localAudioObjectValidator;
 
     /**
      * Imports songs to the repository
-     * 
      * @param filesToImport
-     *            List with songs to export
+     * @param folders
      * @param path
-     *            Path to where the files should be exported
      * @param tagAttributesReviewed
-     *            Set of changes to be made on tags
+     * @param state
+     * @param frame
+     * @param osManager
      * @param localAudioObjectFactory
+     * @param localAudioObjectValidator
      */
-    public ImportFilesProcess(List<ILocalAudioObject> filesToImport, List<File> folders, String path, ITagAttributesReviewed tagAttributesReviewed, IState state, IFrame frame, IOSManager osManager, ILocalAudioObjectFactory localAudioObjectFactory) {
+    public ImportFilesProcess(List<ILocalAudioObject> filesToImport, List<File> folders, String path, ITagAttributesReviewed tagAttributesReviewed, IState state, IFrame frame, IOSManager osManager, ILocalAudioObjectFactory localAudioObjectFactory, ILocalAudioObjectValidator localAudioObjectValidator) {
         super(filesToImport, state, frame, osManager);
         this.folders = folders;
         this.path = path;
         this.filesToChangeTag = new HashSet<ILocalAudioObject>();
         this.localAudioObjectFactory = localAudioObjectFactory;
+        this.localAudioObjectValidator = localAudioObjectValidator;
         for (ILocalAudioObject fileToImport : filesToImport) {
             // Replace tags (in memory) before import audio files if necessary
             replaceTag(fileToImport, tagAttributesReviewed);
@@ -192,7 +197,7 @@ public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
      */
     private void changeTag(ILocalAudioObject sourceFile, ILocalAudioObject destFile) {
         if (filesToChangeTag.contains(sourceFile)) {
-            TagModifier.setInfo(destFile, sourceFile.getTag());
+            TagModifier.setInfo(destFile, sourceFile.getTag(), localAudioObjectValidator);
         }
     }
 

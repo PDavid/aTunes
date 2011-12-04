@@ -43,6 +43,7 @@ import net.sourceforge.atunes.kernel.modules.tags.EditTagDialogController;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -114,6 +115,8 @@ final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertiesDialog
     
     private IAudioObjectImageLocator audioObjectImageLocator;
     
+    private ILocalAudioObjectValidator localAudioObjectValidator;
+    
     /**
      * Instantiates a new audio file properties dialog.
      * @param file
@@ -125,8 +128,9 @@ final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertiesDialog
      * @param repositoryHandler
      * @param playerHandler
      * @param audioObjectImageLocator
+     * @param localAudioObjectValidator
      */
-    LocalAudioObjectPropertiesDialog(ILocalAudioObject file, IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, ILookAndFeelManager lookAndFeelManager, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler, IAudioObjectImageLocator audioObjectImageLocator) {
+    LocalAudioObjectPropertiesDialog(ILocalAudioObject file, IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, ILookAndFeelManager lookAndFeelManager, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler, IAudioObjectImageLocator audioObjectImageLocator, ILocalAudioObjectValidator localAudioObjectValidator) {
         super(getTitleText(file), frame, lookAndFeelManager);
         this.file = file;
         this.state = state;
@@ -136,6 +140,7 @@ final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertiesDialog
         this.repositoryHandler = repositoryHandler;
         this.playerHandler = playerHandler;
         this.audioObjectImageLocator = audioObjectImageLocator;
+        this.localAudioObjectValidator = localAudioObjectValidator;
         setAudioObject(file);
         addContent(lookAndFeelManager);
 
@@ -254,7 +259,7 @@ final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertiesDialog
         editTagsButton.setText(I18nUtils.getString("EDIT_TAG"));
         editTagsButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                EditTagDialogController ctl = new EditTagDialogController(new EditTagDialog(frame.getFrame(), false, iLookAndFeelManager), state, osManager, playListHandler, repositoryHandler, playerHandler);
+                EditTagDialogController ctl = new EditTagDialogController(new EditTagDialog(frame.getFrame(), false, iLookAndFeelManager), state, osManager, playListHandler, repositoryHandler, playerHandler, localAudioObjectValidator);
                 ctl.editFiles(java.util.Collections.singletonList(file));
             }
         });

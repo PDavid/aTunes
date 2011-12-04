@@ -29,6 +29,8 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -58,7 +60,7 @@ public class Mp4Encoder extends AbstractEncoder {
      * Creates a new mp4 encoder
      */
     public Mp4Encoder() {
-    	super("m4a", MP4_QUALITY, DEFAULT_MP4_QUALITY, FORMAT_NAME);
+    	super("m4a", MP4_QUALITY, DEFAULT_MP4_QUALITY, FORMAT_NAME, Context.getBean(ILocalAudioObjectValidator.class));
 	}
 
     @Override

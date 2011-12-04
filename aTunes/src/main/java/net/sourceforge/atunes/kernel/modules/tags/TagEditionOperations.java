@@ -30,6 +30,7 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.IConfirmationDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -94,15 +95,15 @@ public final class TagEditionOperations {
 
     /**
      * Sets covers
-     * 
      * @param files
      * @param state
      * @param playListHandler
      * @param repositoryHandler
      * @param playerHandler
+     * @param localAudioObjectValidator
      */
-    public static void editCover(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
-        SetCoversProcess process = new SetCoversProcess(files, state, playListHandler, repositoryHandler, playerHandler);
+    public static void editCover(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler, ILocalAudioObjectValidator localAudioObjectValidator) {
+        SetCoversProcess process = new SetCoversProcess(files, state, playListHandler, repositoryHandler, playerHandler, localAudioObjectValidator);
         process.execute();
     }
 

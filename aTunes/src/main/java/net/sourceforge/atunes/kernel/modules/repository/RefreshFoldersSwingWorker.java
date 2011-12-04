@@ -26,6 +26,7 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
+import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -50,6 +51,8 @@ final class RefreshFoldersSwingWorker extends SwingWorker<Void, Void> {
 	
 	private ILocalAudioObjectFactory localAudioObjectFactory;
 	
+	private ILocalAudioObjectValidator localAudioObjectValidator;
+	
 	/**
 	 * @param repositoryReader
 	 * @param repositoryHandler
@@ -59,8 +62,9 @@ final class RefreshFoldersSwingWorker extends SwingWorker<Void, Void> {
 	 * @param osManager
 	 * @param state
 	 * @param localAudioObjectFactory
+	 * @param localAudioObjectValidator
 	 */
-	public RefreshFoldersSwingWorker(RepositoryReader repositoryReader, IRepositoryHandler repositoryHandler, IRepository repository, List<Folder> folders, IStatisticsHandler statisticsHandler, IOSManager osManager,IState state, ILocalAudioObjectFactory localAudioObjectFactory) {
+	public RefreshFoldersSwingWorker(RepositoryReader repositoryReader, IRepositoryHandler repositoryHandler, IRepository repository, List<Folder> folders, IStatisticsHandler statisticsHandler, IOSManager osManager,IState state, ILocalAudioObjectFactory localAudioObjectFactory, ILocalAudioObjectValidator localAudioObjectValidator) {
 		this.repositoryReader = repositoryReader;
 		this.repositoryHandler = repositoryHandler;
 		this.repository = repository;
@@ -74,7 +78,7 @@ final class RefreshFoldersSwingWorker extends SwingWorker<Void, Void> {
 	@Override
 	protected Void doInBackground() throws Exception {
 		repositoryHandler.startTransaction();
-        RepositoryLoader.refreshFolders(state, repository, folders, statisticsHandler, osManager, repositoryHandler, localAudioObjectFactory);
+        RepositoryLoader.refreshFolders(state, repository, folders, statisticsHandler, osManager, repositoryHandler, localAudioObjectFactory, localAudioObjectValidator);
         repositoryHandler.endTransaction();
 		return null;
 	}

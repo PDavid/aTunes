@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.tags;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -39,17 +37,17 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.autocomplete.AutoCompleteDecorator;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
-import net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectValidator;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
-import net.sourceforge.atunes.model.LocalAudioObjectFormat;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITag;
+import net.sourceforge.atunes.model.LocalAudioObjectFormat;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -88,38 +86,6 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
         }
     }
 
-    private static final class TitleTextFieldKeyAdapter extends KeyAdapter {
-        private final JTextField textField;
-        private final String fileName;
-        private int lenght = 0;
-
-        private TitleTextFieldKeyAdapter(JTextField textField, String fileName) {
-            this.textField = textField;
-            this.fileName = fileName;
-        }
-
-        @Override
-        public void keyTyped(KeyEvent e) {
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    String text = textField.getText();
-
-                    // User added a char
-                    if (text.length() > lenght && text.length() >= 3) {
-                        int index = fileName.indexOf(text);
-                        if (index != -1) {
-                            textField.setText(fileName.substring(index));
-                            textField.setSelectionStart(text.length());
-                            textField.setSelectionEnd(textField.getText().length());
-                        }
-                    }
-                    lenght = text.length();
-                }
-            });
-        }
-    }
-
     /** The audio files editing. */
     private List<ILocalAudioObject> audioFilesEditing;
     private byte[] newCover;
@@ -132,6 +98,8 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
     private IRepositoryHandler repositoryHandler;
     
     private IPlayerHandler playerHandler;
+    
+    private ILocalAudioObjectValidator localAudioObjectValidator;
 
     /**
      * Instantiates a new edits the tag dialog controller.
@@ -141,13 +109,15 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
      * @param playListHandler
      * @param repositoryHandler
      * @param playerHandler
+     * @param localAudioObjectValidator
      */
-    public EditTagDialogController(EditTagDialog dialog, IState state, IOSManager osManager, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
+    public EditTagDialogController(EditTagDialog dialog, IState state, IOSManager osManager, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler, ILocalAudioObjectValidator localAudioObjectValidator) {
         super(dialog, state);
         this.osManager = osManager;
         this.playListHandler = playListHandler;
         this.repositoryHandler = repositoryHandler;
         this.playerHandler = playerHandler;
+        this.localAudioObjectValidator = localAudioObjectValidator;
         addBindings();
         addStateBindings();
     }
@@ -161,7 +131,7 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
         // Add autocompletion
         AutoCompleteDecorator.decorate(getComponentControlled().getGenreComboBox());
 
-        EditTagDialogActionListener actionListener = new EditTagDialogActionListener(this, getComponentControlled(), playListHandler);
+        EditTagDialogActionListener actionListener = new EditTagDialogActionListener(this, getComponentControlled(), playListHandler, localAudioObjectValidator);
         getComponentControlled().getOkButton().addActionListener(actionListener);
         getComponentControlled().getCancelButton().addActionListener(actionListener);
 
@@ -178,7 +148,7 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
      * @return
      */
     private final boolean supportsInternalPicture(ILocalAudioObject audioObject) {
-        return LocalAudioObjectValidator.isOneOfTheseFormats(audioObject.getUrl(), LocalAudioObjectFormat.FLAC, LocalAudioObjectFormat.MP3, LocalAudioObjectFormat.MP4_1, LocalAudioObjectFormat.MP4_2, LocalAudioObjectFormat.OGG, LocalAudioObjectFormat.WMA);
+        return localAudioObjectValidator.isOneOfTheseFormats(audioObject.getUrl(), LocalAudioObjectFormat.FLAC, LocalAudioObjectFormat.MP3, LocalAudioObjectFormat.MP4_1, LocalAudioObjectFormat.MP4_2, LocalAudioObjectFormat.OGG, LocalAudioObjectFormat.WMA);
     }
 
 
@@ -579,7 +549,7 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
             editTagInfo.put("COVER", newCover);
         }
 
-        EditTagsProcess process = new EditTagsProcess(new ArrayList<ILocalAudioObject>(audioFilesEditing), editTagInfo, getState(), playListHandler, repositoryHandler, playerHandler);
+        EditTagsProcess process = new EditTagsProcess(new ArrayList<ILocalAudioObject>(audioFilesEditing), editTagInfo, getState(), playListHandler, repositoryHandler, playerHandler, localAudioObjectValidator);
         process.execute();
     }
 
