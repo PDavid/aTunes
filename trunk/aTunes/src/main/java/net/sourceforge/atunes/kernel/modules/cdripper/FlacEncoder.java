@@ -29,6 +29,8 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -60,7 +62,7 @@ public class FlacEncoder extends AbstractEncoder {
      * Creates a new FlacEncoder
      */
     public FlacEncoder() {
-    	super("flac", FLAC_QUALITY, DEFAULT_FLAC_QUALITY, FORMAT_NAME);
+    	super("flac", FLAC_QUALITY, DEFAULT_FLAC_QUALITY, FORMAT_NAME, Context.getBean(ILocalAudioObjectValidator.class));
 	}
     
     @Override

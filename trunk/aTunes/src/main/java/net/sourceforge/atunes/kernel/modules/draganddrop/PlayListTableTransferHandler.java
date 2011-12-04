@@ -39,12 +39,12 @@ import net.sourceforge.atunes.api.RepositoryApi;
 import net.sourceforge.atunes.gui.model.TransferableList;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
 import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
-import net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectValidator;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
+import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -95,6 +95,8 @@ public class PlayListTableTransferHandler extends TransferHandler {
     
     private ILocalAudioObjectFactory localAudioObjectFactory;
     
+    private ILocalAudioObjectValidator localAudioObjectValidator;
+    
     /**
      * @param playListTable
      * @param frame
@@ -104,8 +106,9 @@ public class PlayListTableTransferHandler extends TransferHandler {
      * @param repositoryHandler
      * @param radioHandler
      * @param localAudioObjectFactory
+     * @param localAudioObjectValidator
      */
-    public PlayListTableTransferHandler(IPlayListTable playListTable, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, INavigationHandler navigationHandler, IRepositoryHandler repositoryHandler, IRadioHandler radioHandler, ILocalAudioObjectFactory localAudioObjectFactory) {
+    public PlayListTableTransferHandler(IPlayListTable playListTable, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, INavigationHandler navigationHandler, IRepositoryHandler repositoryHandler, IRadioHandler radioHandler, ILocalAudioObjectFactory localAudioObjectFactory, ILocalAudioObjectValidator localAudioObjectValidator) {
     	this.playListTable = playListTable;
     	this.frame = frame;
     	this.osManager = osManager;
@@ -114,6 +117,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
     	this.repositoryHandler = repositoryHandler;
     	this.radioHandler = radioHandler;
     	this.localAudioObjectFactory = localAudioObjectFactory;
+    	this.localAudioObjectValidator = localAudioObjectValidator;
 	}
     
     /**
@@ -384,8 +388,8 @@ public class PlayListTableTransferHandler extends TransferHandler {
             List<IAudioObject> filesToAdd = new ArrayList<IAudioObject>();
             for (File f : files) {
                 if (f.isDirectory()) {
-                    filesToAdd.addAll(RepositoryLoader.getSongsForFolder(f, null, localAudioObjectFactory));
-                } else if (LocalAudioObjectValidator.isValidAudioFile(f)) {
+                    filesToAdd.addAll(RepositoryLoader.getSongsForFolder(f, null, localAudioObjectFactory, localAudioObjectValidator));
+                } else if (localAudioObjectValidator.isValidAudioFile(f)) {
                     filesToAdd.add(localAudioObjectFactory.getLocalAudioObject(f));
                 } else if (f.getName().toLowerCase().endsWith("m3u")) {
                     filesToAdd.addAll(PlayListIO.getFilesFromList(f, repositoryHandler, osManager, radioHandler, localAudioObjectFactory));

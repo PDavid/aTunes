@@ -27,6 +27,7 @@ import net.sourceforge.atunes.model.IAudioObjectPropertiesDialog;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -50,6 +51,8 @@ public class AudioObjectPropertiesDialogFactory implements IAudioObjectPropertie
 	
 	private IAudioObjectImageLocator audioObjectImageLocator;
 	
+	private ILocalAudioObjectValidator localAudioObjectValidator;
+	
     @Override
 	public IAudioObjectPropertiesDialog newInstance(IAudioObject a, ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler) {
     	AudioObjectPropertiesDialog dialog = null;
@@ -58,7 +61,7 @@ public class AudioObjectPropertiesDialogFactory implements IAudioObjectPropertie
     	} else if (a instanceof IRadio) {
     		dialog = new RadioPropertiesDialog((Radio) a, frame, lookAndFeelManager);
     	} else if (a instanceof ILocalAudioObject) {
-    		dialog = new LocalAudioObjectPropertiesDialog((ILocalAudioObject) a, state, frame, osManager, playListHandler, lookAndFeelManager, repositoryHandler, playerHandler, audioObjectImageLocator);
+    		dialog = new LocalAudioObjectPropertiesDialog((ILocalAudioObject) a, state, frame, osManager, playListHandler, lookAndFeelManager, repositoryHandler, playerHandler, audioObjectImageLocator, localAudioObjectValidator);
     	}
     	if (dialog != null) {
     		dialog.setAudioObject(a);
@@ -66,6 +69,13 @@ public class AudioObjectPropertiesDialogFactory implements IAudioObjectPropertie
     	return dialog;
     }
 
+    /**
+     * @param localAudioObjectValidator
+     */
+    public void setLocalAudioObjectValidator(ILocalAudioObjectValidator localAudioObjectValidator) {
+		this.localAudioObjectValidator = localAudioObjectValidator;
+	}
+    
 	@Override
 	public void setFrame(IFrame frame) {
 		this.frame = frame;

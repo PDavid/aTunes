@@ -20,9 +20,9 @@
 
 package net.sourceforge.atunes.kernel.modules.player.mplayer;
 
-import net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectValidator;
-import net.sourceforge.atunes.model.LocalAudioObjectFormat;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
+import net.sourceforge.atunes.model.LocalAudioObjectFormat;
 import net.sourceforge.atunes.utils.Logger;
 
 class AudioFileMPlayerOutputReader extends AbstractMPlayerOutputReader {
@@ -35,17 +35,15 @@ class AudioFileMPlayerOutputReader extends AbstractMPlayerOutputReader {
      * Instantiates a new audio file m player output reader.
      * 
      * @param engine
-     *            the engine
      * @param process
-     *            the process
      * @param audioFile
-     *            the audio file
+     * @param localAudioObjectValidator
      */
-    AudioFileMPlayerOutputReader(MPlayerEngine engine, Process process, ILocalAudioObject audioFile) {
+    AudioFileMPlayerOutputReader(MPlayerEngine engine, Process process, ILocalAudioObject audioFile, ILocalAudioObjectValidator localAudioObjectValidator) {
         super(engine, process);
         this.audioFile = audioFile;
         // Check audio file type only once and use calculated value in read method
-        this.isMp3File = LocalAudioObjectValidator.isOneOfTheseFormats(audioFile.getFile().getName(), LocalAudioObjectFormat.MP3);
+        this.isMp3File = localAudioObjectValidator.isOneOfTheseFormats(audioFile.getFile().getName(), LocalAudioObjectFormat.MP3);
     }
 
     @Override

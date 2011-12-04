@@ -58,6 +58,7 @@ import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFileSelectionDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
+import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IProcessListener;
@@ -72,6 +73,10 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
+/**
+ * @author alex
+ *
+ */
 public final class DeviceHandler extends AbstractHandler implements IDeviceHandler {
 
     private Repository deviceRepository;
@@ -88,6 +93,12 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
     private boolean caseSensitiveTrees;
     
     private ILocalAudioObjectFactory localAudioObjectFactory;
+    
+    private ILocalAudioObjectValidator localAudioObjectValidator;
+    
+    public void setLocalAudioObjectValidator(ILocalAudioObjectValidator localAudioObjectValidator) {
+		this.localAudioObjectValidator = localAudioObjectValidator;
+	}
     
     /**
      * @param localAudioObjectFactory
@@ -472,7 +483,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
         Logger.info("Refreshing device");
         Repository oldDeviceRepository = deviceRepository;
         deviceRepository = new Repository(oldDeviceRepository.getRepositoryFolders(), getState());
-        currentLoader = new RepositoryLoader(getState(), new RepositoryTransaction(deviceRepository, null), oldDeviceRepository.getRepositoryFolders(), oldDeviceRepository, deviceRepository, true, localAudioObjectFactory);
+        currentLoader = new RepositoryLoader(getState(), new RepositoryTransaction(deviceRepository, null), oldDeviceRepository.getRepositoryFolders(), oldDeviceRepository, deviceRepository, true, localAudioObjectFactory, localAudioObjectValidator);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.start();
     }
@@ -503,7 +514,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
         List<File> folders = new ArrayList<File>();
         folders.add(path);
         deviceRepository = new Repository(folders, getState());
-        currentLoader = new RepositoryLoader(getState(), new RepositoryTransaction(deviceRepository, null), folders, null, deviceRepository, false, localAudioObjectFactory);
+        currentLoader = new RepositoryLoader(getState(), new RepositoryTransaction(deviceRepository, null), folders, null, deviceRepository, false, localAudioObjectFactory, localAudioObjectValidator);
         currentLoader.addRepositoryLoaderListener(this);
         currentLoader.start();
     }

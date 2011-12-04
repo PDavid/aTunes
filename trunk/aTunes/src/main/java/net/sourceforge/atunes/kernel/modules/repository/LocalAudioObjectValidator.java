@@ -22,11 +22,12 @@ package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.io.File;
 
+import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.LocalAudioObjectFormat;
 
 import org.apache.commons.io.FilenameUtils;
 
-public class LocalAudioObjectValidator {
+public class LocalAudioObjectValidator implements ILocalAudioObjectValidator {
 
     /**
      * Checks if is valid audio file.
@@ -36,7 +37,8 @@ public class LocalAudioObjectValidator {
      * 
      * @return true, if is valid audio file
      */
-    public static boolean isValidAudioFile(String file) {
+    @Override
+	public boolean isValidAudioFile(String file) {
         return isValidAudioFile(new File(file));
     }
 
@@ -48,7 +50,8 @@ public class LocalAudioObjectValidator {
      * 
      * @return true, if is valid audio file
      */
-    public static boolean isValidAudioFile(File file) {
+    @Override
+	public boolean isValidAudioFile(File file) {
         return file != null && file.exists() && !file.isDirectory() && isOneOfTheseFormats(file.getName(), LocalAudioObjectFormat.values());
     }
     
@@ -59,7 +62,8 @@ public class LocalAudioObjectValidator {
      * @param formats
      * @return if the file is a valid audio file
      */
-    public static boolean isOneOfTheseFormats(String fileName, LocalAudioObjectFormat... formats) {
+    @Override
+	public boolean isOneOfTheseFormats(String fileName, LocalAudioObjectFormat... formats) {
     	if (fileName == null) {
     		return false;
     	}

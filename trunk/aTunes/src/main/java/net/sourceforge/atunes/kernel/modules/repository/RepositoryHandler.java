@@ -42,6 +42,7 @@ import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
+import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IRepository;
@@ -105,6 +106,15 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	private PersistRepositoryTask persistRepositoryTask;
 	
 	private ILocalAudioObjectFactory localAudioObjectFactory;
+	
+	private ILocalAudioObjectValidator localAudioObjectValidator;
+	
+	/**
+	 * @param localAudioObjectValidator
+	 */
+	public void setLocalAudioObjectValidator(ILocalAudioObjectValidator localAudioObjectValidator) {
+		this.localAudioObjectValidator = localAudioObjectValidator;
+	}
 	
 	/**
 	 * @param localAudioObjectFactory
@@ -418,7 +428,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	public void refreshFolders(List<Folder> folders) {
     	getFrame().showProgressBar(true, StringUtils.getString(I18nUtils.getString("REFRESHING"), "..."));
     	repositoryActions.enableRepositoryActions(false);
-    	new RefreshFoldersSwingWorker(repositoryReader, this, repository, folders, statisticsHandler, getOsManager(), getState(), localAudioObjectFactory).execute();
+    	new RefreshFoldersSwingWorker(repositoryReader, this, repository, folders, statisticsHandler, getOsManager(), getState(), localAudioObjectFactory, localAudioObjectValidator).execute();
     }
 
     @Override
@@ -516,7 +526,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     	progressDialog.setTitle(StringUtils.getString(I18nUtils.getString("READING_FILES_TO_IMPORT"), "..."));
         progressDialog.disableCancelButton();
         progressDialog.showDialog();
-        SwingWorker<List<ILocalAudioObject>, Void> worker = new ImportFoldersSwingWorker(this, folders, path, progressDialog, getFrame(), getState(), errorDialogFactory, getOsManager(), localAudioObjectFactory);
+        SwingWorker<List<ILocalAudioObject>, Void> worker = new ImportFoldersSwingWorker(this, folders, path, progressDialog, getFrame(), getState(), errorDialogFactory, getOsManager(), localAudioObjectFactory, localAudioObjectValidator);
         worker.execute();
     }
 

@@ -30,6 +30,7 @@ import net.sourceforge.atunes.kernel.modules.tags.EditTagFromFileNamePatternProc
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
@@ -56,6 +57,15 @@ public class AutoSetTagFromFileNamePatternAction extends AbstractActionOverSelec
     private IRepositoryHandler repositoryHandler;
     
     private IPlayerHandler playerHandler;
+    
+    private ILocalAudioObjectValidator localAudioObjectValidator;
+    
+    /**
+     * @param localAudioObjectValidator
+     */
+    public void setLocalAudioObjectValidator(ILocalAudioObjectValidator localAudioObjectValidator) {
+		this.localAudioObjectValidator = localAudioObjectValidator;
+	}
     
     /**
      * @param frame
@@ -106,7 +116,7 @@ public class AutoSetTagFromFileNamePatternAction extends AbstractActionOverSelec
 
         // If user entered a pattern apply to files
         if (pattern != null) {
-            new EditTagFromFileNamePatternProcess(objects, pattern, getState(), playListHandler, repositoryHandler, playerHandler).execute();
+            new EditTagFromFileNamePatternProcess(objects, pattern, getState(), playListHandler, repositoryHandler, playerHandler, localAudioObjectValidator).execute();
         }
     }
 

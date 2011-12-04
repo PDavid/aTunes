@@ -26,6 +26,7 @@ import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -43,18 +44,20 @@ public class EditTagFromFileNamePatternProcess extends AbstractChangeTagProcess 
 
     /** The files and tags. */
     private Map<ILocalAudioObject, EditTagInfo> filesAndTags;
+    
+    private ILocalAudioObjectValidator localAudioObjectValidator;
 
     /**
      * Instantiates a new change titles process.
-     * 
      * @param files
      * @param pattern
      * @param state
      * @param playListHandler
      * @param repositoryHandler
      * @param playerHandler
+     * @param localAudioObjectValidator
      */
-    public EditTagFromFileNamePatternProcess(List<ILocalAudioObject> files, String pattern, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
+    public EditTagFromFileNamePatternProcess(List<ILocalAudioObject> files, String pattern, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler, ILocalAudioObjectValidator localAudioObjectValidator) {
         super(files, state, playListHandler, repositoryHandler, playerHandler);
         this.pattern = pattern;
     }
@@ -74,6 +77,6 @@ public class EditTagFromFileNamePatternProcess extends AbstractChangeTagProcess 
 
     @Override
     protected void changeTag(ILocalAudioObject file) {
-        TagModifier.setInfo(file, TagFactory.getNewTag(file, filesAndTags.get(file)));
+        TagModifier.setInfo(file, TagFactory.getNewTag(file, filesAndTags.get(file)), localAudioObjectValidator);
     }
 }

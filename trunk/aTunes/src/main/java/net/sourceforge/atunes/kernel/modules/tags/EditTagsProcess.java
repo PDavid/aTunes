@@ -24,6 +24,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.repository.ImageCache;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -36,21 +37,24 @@ import net.sourceforge.atunes.model.ITag;
 public class EditTagsProcess extends AbstractChangeTagProcess {
 
     private EditTagInfo editTagInfo;
+    
+    private ILocalAudioObjectValidator localAudioObjectValidator;
 
     /**
      * Process for writing tag to files. Receives AudioFiles to be written and
      * new properties (meta-information)
-     * 
      * @param audioFilesToEdit
      * @param editTagInfo
      * @param state
      * @param playListHandler
      * @param repositoryHandler
      * @param playerHandler
+     * @param localAudioObjectValidator
      */
-    public EditTagsProcess(List<ILocalAudioObject> audioFilesToEdit, EditTagInfo editTagInfo, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
+    public EditTagsProcess(List<ILocalAudioObject> audioFilesToEdit, EditTagInfo editTagInfo, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler, ILocalAudioObjectValidator localAudioObjectValidator) {
         super(audioFilesToEdit, state, playListHandler, repositoryHandler, playerHandler);
         this.editTagInfo = editTagInfo;
+        this.localAudioObjectValidator = localAudioObjectValidator;
     }
 
     @Override
@@ -67,7 +71,7 @@ public class EditTagsProcess extends AbstractChangeTagProcess {
             }
             newTag.setInternalImage((oldTag != null && oldTag.hasInternalImage() && !shouldEditCover) || (shouldEditCover && cover != null));
         }
-        TagModifier.setInfo(audioFile, newTag, shouldEditCover, c);
+        TagModifier.setInfo(audioFile, newTag, shouldEditCover, c, localAudioObjectValidator);
         ImageCache.getImageCache().clear(audioFile);
     }
 }

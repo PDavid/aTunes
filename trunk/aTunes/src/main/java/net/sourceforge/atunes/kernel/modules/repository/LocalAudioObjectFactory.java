@@ -23,14 +23,24 @@ package net.sourceforge.atunes.kernel.modules.repository;
 import java.io.File;
 
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.model.LocalAudioObjectFormat;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.ILocalAudioObjectReader;
+import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
+import net.sourceforge.atunes.model.LocalAudioObjectFormat;
 
 public class LocalAudioObjectFactory implements ILocalAudioObjectFactory {
 	
 	private ILocalAudioObjectReader localAudioObjectReader;
+	
+	private ILocalAudioObjectValidator localAudioObjectValidator;
+	
+	/**
+	 * @param localAudioObjectValidator
+	 */
+	public void setLocalAudioObjectValidator(ILocalAudioObjectValidator localAudioObjectValidator) {
+		this.localAudioObjectValidator = localAudioObjectValidator;
+	}
 	
 	/**
 	 * @param localAudioObjectReader
@@ -60,7 +70,7 @@ public class LocalAudioObjectFactory implements ILocalAudioObjectFactory {
      */
     private void readAudioObject(ILocalAudioObject audioObject) {
         // Don't read from formats not supported by Jaudiotagger
-        if (!LocalAudioObjectValidator.isOneOfTheseFormats(audioObject.getUrl(), LocalAudioObjectFormat.APE, LocalAudioObjectFormat.MPC)) {
+        if (!localAudioObjectValidator.isOneOfTheseFormats(audioObject.getUrl(), LocalAudioObjectFormat.APE, LocalAudioObjectFormat.MPC)) {
             readInformation(audioObject, true);
         }
         audioObject.setReadTime(System.currentTimeMillis());
