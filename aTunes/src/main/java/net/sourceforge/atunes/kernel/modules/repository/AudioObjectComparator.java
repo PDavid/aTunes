@@ -20,9 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.repository;
 
-import java.io.Serializable;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
@@ -33,16 +31,12 @@ import net.sourceforge.atunes.model.IAudioObject;
  * @author fleax
  * 
  */
-public class AudioObjectComparator implements Comparator<IAudioObject>, Serializable {
+public class AudioObjectComparator implements IAudioObjectComparator {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = -1297150534262349691L;
 
 	@Override
     public int compare(IAudioObject a1, IAudioObject a2) {
-
         // Sort by album artist
         int c1 = a1.getAlbumArtist().compareTo(a2.getAlbumArtist());
         if (c1 != 0) {
@@ -82,8 +76,8 @@ public class AudioObjectComparator implements Comparator<IAudioObject>, Serializ
      * 
      * @param audioObjects
      */
-    public static void sort(List<? extends IAudioObject> audioObjects) {
-        Collections.sort(audioObjects, new AudioObjectComparator());
+    @Override
+	public void sort(List<? extends IAudioObject> audioObjects) {
+        Collections.sort(audioObjects, this);
     }
-
 }

@@ -37,6 +37,7 @@ import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListTableTransferHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IAudioObjectComparator;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
@@ -96,6 +97,8 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     private Future<?> persistPlayListFuture;
     
     private ILocalAudioObjectFactory localAudioObjectFactory;
+    
+    private IAudioObjectComparator audioObjectComparator;
 
     /**
      * Filter for play list
@@ -208,7 +211,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     @Override
     public void allHandlersInitialized() {
         // Create drag and drop listener
-    	playListPanel.enableDragAndDrop(new PlayListTableTransferHandler(playListTable, getFrame(), getOsManager(), this, navigationHandler, repositoryHandler, radioHandler, localAudioObjectFactory, localAudioObjectValidator));
+    	playListPanel.enableDragAndDrop(new PlayListTableTransferHandler(playListTable, getFrame(), getOsManager(), this, navigationHandler, repositoryHandler, radioHandler, localAudioObjectFactory, localAudioObjectValidator, audioObjectComparator));
     }
 
     /**
@@ -1421,6 +1424,13 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     public void setLocalAudioObjectFactory(
 			ILocalAudioObjectFactory localAudioObjectFactory) {
 		this.localAudioObjectFactory = localAudioObjectFactory;
+	}
+    
+    /**
+     * @param audioObjectComparator
+     */
+    public void setAudioObjectComparator(IAudioObjectComparator audioObjectComparator) {
+		this.audioObjectComparator = audioObjectComparator;
 	}
 
 }

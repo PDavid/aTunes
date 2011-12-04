@@ -35,6 +35,7 @@ import net.sourceforge.atunes.gui.model.SearchResultColumnModel;
 import net.sourceforge.atunes.gui.views.dialogs.CustomSearchDialog;
 import net.sourceforge.atunes.gui.views.dialogs.SearchResultsDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
+import net.sourceforge.atunes.kernel.modules.repository.IAudioObjectComparator;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -66,8 +67,8 @@ public final class SearchHandler extends AbstractHandler implements ISearchHandl
     /** Dummy lucene field to retrieve all elements. */
     private static final String INDEX_FIELD_DUMMY = "dummy";
 
-    private final class RefreshSearchIndexSwingWorker extends
-			SwingWorker<Void, Void> {
+    private final class RefreshSearchIndexSwingWorker extends SwingWorker<Void, Void> {
+    	
 		private final ISearchableObject searchableObject;
 		private IndexWriter indexWriter;
 
@@ -171,7 +172,16 @@ public final class SearchHandler extends AbstractHandler implements ISearchHandl
 	private CustomSearchController customSearchController;
 
 	private SearchResultsController searchResultsController;
+	
+	private IAudioObjectComparator audioObjectComparator;
     
+	/**
+	 * @param audioObjectComparator
+	 */
+	public void setAudioObjectComparator(IAudioObjectComparator audioObjectComparator) {
+		this.audioObjectComparator = audioObjectComparator;
+	}
+	
     /**
      * Gets the custom search controller.
      * 
@@ -191,7 +201,7 @@ public final class SearchHandler extends AbstractHandler implements ISearchHandl
      */
     private SearchResultsController getSearchResultsController() {
         if (searchResultsController == null) {
-            searchResultsController = new SearchResultsController(new SearchResultsDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class)), getState(), getBean(IPlayListHandler.class), getBean(ILookAndFeelManager.class), getBean(IPlayerHandler.class));
+            searchResultsController = new SearchResultsController(new SearchResultsDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class)), getState(), getBean(IPlayListHandler.class), getBean(ILookAndFeelManager.class), getBean(IPlayerHandler.class), audioObjectComparator);
         }
         return searchResultsController;
     }

@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
+import net.sourceforge.atunes.kernel.modules.repository.IAudioObjectComparator;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -49,6 +49,15 @@ public class CreatePlayListWithSelectedAlbumsAction extends AbstractActionOverSe
     private IRepositoryHandler repositoryHandler;
     
     private IPlayListHandler playListHandler;
+    
+    private IAudioObjectComparator audioObjectComparator;
+    
+    /**
+     * @param audioObjectComparator
+     */
+    public void setAudioObjectComparator(IAudioObjectComparator audioObjectComparator) {
+		this.audioObjectComparator = audioObjectComparator;
+	}
     
     /**
      * @param repositoryHandler
@@ -86,13 +95,20 @@ public class CreatePlayListWithSelectedAlbumsAction extends AbstractActionOverSe
             }
         }
 
-        // Create one play list for each album
+		// Create one play list for each album
+        createPlayLists(selectedAlbums);
+    }
+
+	/**
+	 * @param selectedAlbums
+	 */
+	private void createPlayLists(List<Album> selectedAlbums) {
         for (Album album : selectedAlbums) {
             List<ILocalAudioObject> audioObjects = repositoryHandler.getAudioFilesForAlbums(Collections.singletonMap(album.getName(), album));
-            AudioObjectComparator.sort(audioObjects);
+            audioObjectComparator.sort(audioObjects);
 
             // Create a new play list with album as name and audio objects
             playListHandler.newPlayList(album.getName(), audioObjects);
         }
-    }
+	}
 }
