@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.utils;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
-import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.model.Artist;
 
 public class UnknownObjectCheck {
@@ -41,7 +39,7 @@ public class UnknownObjectCheck {
      * @return
      */
     public static boolean isUnknownArtist(Artist artist) {
-        return artist.getName().equalsIgnoreCase(getUnknownArtist());
+        return artist != null && artist.getName().equalsIgnoreCase(getUnknownArtist());
     }
 
     /**
@@ -85,15 +83,6 @@ public class UnknownObjectCheck {
      * 
      * @return
      */
-    public boolean isUnknownGenre(Genre genre) {
-        return genre.getName().equalsIgnoreCase(getUnknownGenre());
-    }
-
-    /**
-     * Return <code>true</code> if this genre is unknown
-     * 
-     * @return
-     */
     public static boolean isUnknownGenre(String genre) {
         return getUnknownGenre().equalsIgnoreCase(genre);
     }
@@ -112,21 +101,7 @@ public class UnknownObjectCheck {
      * 
      * @return
      */
-    public boolean isUnknownYear(Year year) {
-        return year.getName().equalsIgnoreCase(getUnknownYear());
-    }
-
-    /**
-     * Return <code>true</code> if year is unknown
-     * 
-     * @return
-     */
     public static boolean isUnknownYear(String year) {
-        return year.isEmpty() || getUnknownYear().equalsIgnoreCase(year);
+        return getUnknownYear().equalsIgnoreCase(year);
     }
-
-
-
-
-
 }
