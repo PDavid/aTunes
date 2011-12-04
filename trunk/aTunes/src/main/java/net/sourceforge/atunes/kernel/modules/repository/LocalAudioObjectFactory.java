@@ -60,7 +60,7 @@ public class LocalAudioObjectFactory implements ILocalAudioObjectFactory {
      */
     private void readAudioObject(ILocalAudioObject audioObject) {
         // Don't read from formats not supported by Jaudiotagger
-        if (!LocalAudioObjectValidator.isValidAudioFile(audioObject.getUrl(), LocalAudioObjectFormat.APE, LocalAudioObjectFormat.MPC)) {
+        if (!LocalAudioObjectValidator.isOneOfTheseFormats(audioObject.getUrl(), LocalAudioObjectFormat.APE, LocalAudioObjectFormat.MPC)) {
             readInformation(audioObject, true);
         }
         audioObject.setReadTime(System.currentTimeMillis());

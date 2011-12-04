@@ -24,6 +24,8 @@ import java.io.File;
 
 import net.sourceforge.atunes.model.LocalAudioObjectFormat;
 
+import org.apache.commons.io.FilenameUtils;
+
 public class LocalAudioObjectValidator {
 
     /**
@@ -35,9 +37,7 @@ public class LocalAudioObjectValidator {
      * @return true, if is valid audio file
      */
     public static boolean isValidAudioFile(File file) {
-        return !file.isDirectory()
-                && isValidAudioFile(file.getName(), LocalAudioObjectFormat.MP3, LocalAudioObjectFormat.OGG, LocalAudioObjectFormat.MP4_1, LocalAudioObjectFormat.MP4_2, LocalAudioObjectFormat.WAV, LocalAudioObjectFormat.WMA, LocalAudioObjectFormat.FLAC, LocalAudioObjectFormat.REAL_1, LocalAudioObjectFormat.REAL_2, LocalAudioObjectFormat.APE,
-                        LocalAudioObjectFormat.MPC);
+        return !file.isDirectory() && isOneOfTheseFormats(file.getName(), LocalAudioObjectFormat.values());
     }
     
     /**
@@ -47,10 +47,13 @@ public class LocalAudioObjectValidator {
      * @param formats
      * @return if the file is a valid audio file
      */
-    public static boolean isValidAudioFile(String fileName, LocalAudioObjectFormat... formats) {
-        String path = fileName.toLowerCase();
+    public static boolean isOneOfTheseFormats(String fileName, LocalAudioObjectFormat... formats) {
+    	if (fileName == null) {
+    		return false;
+    	}
+        String extension = FilenameUtils.getExtension(fileName);
         for (LocalAudioObjectFormat format : formats) {
-            if (path.endsWith(format.getExtension())) {
+            if (extension.equalsIgnoreCase(format.getExtension())) {
                 return true;
             }
         }
