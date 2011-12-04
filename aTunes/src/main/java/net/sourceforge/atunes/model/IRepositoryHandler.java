@@ -38,19 +38,6 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 	 */
 	public void addFilesAndRefresh(final List<File> files);
 
-	/**
-	 * Adds the external picture for album.
-	 * 
-	 * @param artistName
-	 *            the artist name
-	 * @param albumName
-	 *            the album name
-	 * @param picture
-	 *            the picture
-	 */
-	public void addExternalPictureForAlbum(String artistName, String albumName,
-			File picture);
-
 	public List<File> getFolders();
 
 	/**

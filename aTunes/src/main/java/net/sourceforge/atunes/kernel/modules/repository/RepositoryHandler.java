@@ -260,13 +260,6 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     	getBean(AddFilesTask.class).execute(repository, files);
     }
 
-    @Override
-	public void addExternalPictureForAlbum(String artistName, String albumName, File picture) {
-    	startTransaction();
-        RepositoryLoader.addExternalPictureForAlbum(repository, artistName, albumName, picture);
-        endTransaction();
-    }
-
     /**
      * Finish.
      */

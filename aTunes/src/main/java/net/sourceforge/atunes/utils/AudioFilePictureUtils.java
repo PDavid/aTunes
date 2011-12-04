@@ -118,9 +118,6 @@ public final class AudioFilePictureUtils {
         ImageIcon image = null;
         if (coverFileName != null && new File(coverFileName).exists()) {
             image = new ImageIcon(coverFileName);
-        } else if (file != null && file.getExternalPictures() != null && file.getExternalPictures().size() > index) {
-            File firstPicture = file.getExternalPictures().get(index);
-            image = new ImageIcon(firstPicture.getAbsolutePath());
         }
         if (image != null) {
             if (width == -1 || height == -1) {
@@ -200,48 +197,6 @@ public final class AudioFilePictureUtils {
         	Logger.error(e);
             return null;
         }
-    }
-
-    /**
-     * Returns all pictures associated to an audio file.
-     * 
-     * @param file
-     * @param width
-     * @param height
-     * @param osManager
-     * @return
-     */
-    public static ImageIcon[] getPicturesForFile(ILocalAudioObject file, int width, int height, IOSManager osManager) {
-        int size = 0;
-        ImageIcon image = getInsidePicture(file, width, height);
-        if (image != null) {
-            size++;
-        }
-        size = size + file.getExternalPicturesCount();
-
-        ImageIcon[] result = new ImageIcon[size];
-        int firstExternalIndex = 0;
-        if (image != null) {
-            result[0] = image;
-            firstExternalIndex++;
-        }
-        for (int i = firstExternalIndex; i < size; i++) {
-            result[i] = getExternalPicture(file, i, width, height, osManager);
-        }
-
-        return result;
-    }
-
-    /**
-     * Returns true if file represents a valid picture (jpg or png).
-     * 
-     * @param file
-     *            the file
-     * 
-     * @return true, if checks if is valid picture
-     */
-    static boolean isValidPicture(File file) {
-        return file.getName().toUpperCase().endsWith("JPG") || file.getName().toUpperCase().endsWith("JPEG") || file.getName().toUpperCase().endsWith("PNG");
     }
 
     /**

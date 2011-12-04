@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -51,7 +50,6 @@ import net.sourceforge.atunes.utils.DirectoryFileFilter;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.Timer;
-import net.sourceforge.atunes.utils.ValidPicturesFileFilter;
 
 /**
  * Class for loading audio files into repository.
@@ -119,21 +117,10 @@ public class RepositoryLoader extends Thread {
 			}
 			int firstChar = repositoryPath.length() + 1;
 
-			File[] list = folder.listFiles();
-			List<File> pictures = new ArrayList<File>();
-			if (list != null) {
-				for (File element : list) {
-					if (element.getName().toUpperCase().endsWith("JPG")) {
-						pictures.add(element);
-					}
-				}
-			}
-
 			RepositoryFiller filler = new RepositoryFiller(rep, state);
 			for (File f : files) {
 				if (f.getParentFile().equals(folder)) {
 					ILocalAudioObject audioObject = localAudioObjectFactory.getLocalAudioObject(f);
-					audioObject.setExternalPictures(pictures);
 
 					String pathToFile = audioObject.getUrl().replace('\\', '/');
 					int lastChar = pathToFile.lastIndexOf('/') + 1;
@@ -223,23 +210,19 @@ public class RepositoryLoader extends Thread {
 		List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
 
 		File[] list = folder.listFiles();
-		List<File> pictures = new ArrayList<File>();
 		List<File> files = new ArrayList<File>();
 		if (list != null) {
-			// First find pictures, audio and files
+			// First find audio and files
 			for (File element : list) {
 				if (LocalAudioObjectValidator.isValidAudioFile(element)) {
 					files.add(element);
 				} else if (element.isDirectory()) {
 					result.addAll(getSongsForFolder(element, listener, localAudioObjectFactory));
-				} else if (element.getName().toUpperCase().endsWith("JPG")) {
-					pictures.add(element);
 				}
 			}
 
 			for (int i = 0; i < files.size(); i++) {
 				ILocalAudioObject audioObject = localAudioObjectFactory.getLocalAudioObject(files.get(i));
-				audioObject.setExternalPictures(pictures);
 				result.add(audioObject);
 				if (listener != null) {
 					listener.notifyFileLoaded();
@@ -438,24 +421,10 @@ public class RepositoryLoader extends Thread {
             // Process directories
             processDirectories(dir, relativeTo);
             
-            // Get pictures
-            List<File> picturesList = processPictures(dir);
-            
             // Process audio files
-            processAudioFiles(dir, picturesList, relativeTo);            
+            processAudioFiles(dir, relativeTo);            
         }
     }
-	
-	/**
-	 * Finds pictures in a folder
-	 * @param dir
-	 * @return
-	 */
-	private List<File> processPictures(File dir) {
-        // Get Pictures
-        File[] pictures = dir.listFiles(new ValidPicturesFileFilter());
-        return pictures != null && pictures.length > 0 ? Arrays.asList(pictures) : null;
-	}
 	
 	/**
 	 * Process directory
@@ -477,10 +446,9 @@ public class RepositoryLoader extends Thread {
 	/**
 	 * Process audio files in a directory
 	 * @param dir
-	 * @param picturesList
 	 * @param relativeTo
 	 */
-	private void processAudioFiles( File dir, List<File> picturesList, File relativeTo) {
+	private void processAudioFiles(File dir, File relativeTo) {
         // Get audio files
         File[] audiofiles = dir.listFiles(LocalAudioObjectValidator.validAudioFileFilter());
         
@@ -503,7 +471,7 @@ public class RepositoryLoader extends Thread {
         	RepositoryFiller filler = new RepositoryFiller(repository, state);
         	for (File audiofile : audiofiles) {
         		if (!interrupt) {
-        			processAudioFile(audiofile, picturesList, filler, relativeTo, relativePath);
+        			processAudioFile(audiofile, filler, relativeTo, relativePath);
         		}
         	}
         	
@@ -520,12 +488,11 @@ public class RepositoryLoader extends Thread {
 	/**
 	 * Processes a single audio file
 	 * @param audiofile
-	 * @param picturesList
 	 * @param filler
 	 * @param relativeTo
 	 * @param relativePath
 	 */
-	private void processAudioFile(File audiofile, List<File> picturesList, RepositoryFiller filler, File relativeTo, String relativePath) {
+	private void processAudioFile(File audiofile, RepositoryFiller filler, File relativeTo, String relativePath) {
 		ILocalAudioObject audio = null;
 
 		// If a previous repository exists, check if file already was loaded.
@@ -543,7 +510,6 @@ public class RepositoryLoader extends Thread {
 			}
 		}
 
-		audio.setExternalPictures(picturesList);
 		if (!refresh && listener != null) {
 			listener.notifyFileLoaded();
 		}
@@ -614,35 +580,6 @@ public class RepositoryLoader extends Thread {
 	 */
 	Repository getOldRepository() {
 		return oldRepository;
-	}
-
-	/**
-	 * Adds the external picture for album.
-	 * 
-	 * @param artistName
-	 *            the artist name
-	 * @param albumName
-	 *            the album name
-	 * @param picture
-	 *            the picture
-	 */
-	static void addExternalPictureForAlbum(IRepository repository,
-			String artistName, String albumName, File picture) {
-		if (repository != null) {
-			Artist artist = repository.getArtist(artistName);
-			if (artist == null) {
-				return;
-			}
-			Album album = artist.getAlbum(albumName);
-			if (album == null) {
-				return;
-			}
-
-			List<ILocalAudioObject> audioFiles = album.getAudioObjects();
-			for (ILocalAudioObject af : audioFiles) {
-				af.addExternalPicture(picture);
-			}
-		}
 	}
 
 	/**

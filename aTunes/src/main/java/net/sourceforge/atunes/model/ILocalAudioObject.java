@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.model;
 
 import java.io.File;
-import java.util.List;
 
 
 public interface ILocalAudioObject extends IAudioObject, Comparable<ILocalAudioObject> {
@@ -38,34 +37,6 @@ public interface ILocalAudioObject extends IAudioObject, Comparable<ILocalAudioO
 	 */
 	boolean isUpToDate();
 	
-    /**
-     * Sets the external pictures.
-     * 
-     * @param externalPictures
-     *            the new external pictures
-     */
-    void setExternalPictures(List<File> externalPictures);
-    
-    /**
-     * Adds the external picture.
-     * 
-     * @param picture
-     *            the picture
-     */
-    void addExternalPicture(File picture);
-    
-    /**
-     * Returns number of external pictures
-     * @return
-     */
-    public int getExternalPicturesCount();
-    
-    /**
-     * Returns external pictures list
-     * @return
-     */
-    List<File> getExternalPictures();
-    
     /**
      * Gets the tag.
      * 
