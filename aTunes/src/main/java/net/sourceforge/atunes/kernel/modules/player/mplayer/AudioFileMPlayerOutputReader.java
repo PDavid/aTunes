@@ -45,7 +45,7 @@ class AudioFileMPlayerOutputReader extends AbstractMPlayerOutputReader {
         super(engine, process);
         this.audioFile = audioFile;
         // Check audio file type only once and use calculated value in read method
-        this.isMp3File = LocalAudioObjectValidator.isValidAudioFile(audioFile.getFile().getName(), LocalAudioObjectFormat.MP3);
+        this.isMp3File = LocalAudioObjectValidator.isOneOfTheseFormats(audioFile.getFile().getName(), LocalAudioObjectFormat.MP3);
     }
 
     @Override

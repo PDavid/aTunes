@@ -178,7 +178,7 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
      * @return
      */
     private final boolean supportsInternalPicture(ILocalAudioObject audioObject) {
-        return LocalAudioObjectValidator.isValidAudioFile(audioObject.getUrl(), LocalAudioObjectFormat.FLAC, LocalAudioObjectFormat.MP3, LocalAudioObjectFormat.MP4_1, LocalAudioObjectFormat.MP4_2, LocalAudioObjectFormat.OGG, LocalAudioObjectFormat.WMA);
+        return LocalAudioObjectValidator.isOneOfTheseFormats(audioObject.getUrl(), LocalAudioObjectFormat.FLAC, LocalAudioObjectFormat.MP3, LocalAudioObjectFormat.MP4_1, LocalAudioObjectFormat.MP4_2, LocalAudioObjectFormat.OGG, LocalAudioObjectFormat.WMA);
     }
 
 
