@@ -30,7 +30,6 @@ import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
-import net.sourceforge.atunes.kernel.modules.repository.exception.InconsistentRepositoryException;
 
 
 public class Repository implements Serializable, IRepository {

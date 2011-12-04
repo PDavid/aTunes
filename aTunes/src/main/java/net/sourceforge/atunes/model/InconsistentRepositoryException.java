@@ -18,9 +18,10 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.repository.exception;
+package net.sourceforge.atunes.model;
 
 /**
+ * Thrown when repository data is inconsistent
  * @author Laurent Cathala
  */
 public class InconsistentRepositoryException extends Exception {
