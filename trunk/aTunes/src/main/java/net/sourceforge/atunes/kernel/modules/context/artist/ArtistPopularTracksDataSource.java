@@ -23,11 +23,11 @@ package net.sourceforge.atunes.kernel.modules.context.artist;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextInformationSource;
 import net.sourceforge.atunes.model.IWebServicesHandler;
+import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 /**
  * Data Source for artist popular tracks
@@ -63,7 +63,7 @@ public class ArtistPopularTracksDataSource implements IContextInformationSource 
     }
 
     private IArtistTopTracks getTopTracks(IAudioObject audioObject) {
-    	if (!Artist.isUnknownArtist(audioObject.getArtist())) {
+    	if (!UnknownObjectCheck.isUnknownArtist(audioObject.getArtist())) {
     		return webServicesHandler.getTopTracks(audioObject.getArtist());
     	}
     	return null;

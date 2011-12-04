@@ -196,24 +196,6 @@ public class Album implements Serializable, ITreeObject<ILocalAudioObject>, Comp
         return true;
     }
 
-    /**
-     * Return unknown album text
-     * 
-     * @return
-     */
-    public static String getUnknownAlbum() {
-        return I18nUtils.getString("UNKNOWN_ALBUM");
-    }
-
-    /**
-     * Return <code>true</code> if this album is unknown
-     * 
-     * @return
-     */
-    public static boolean isUnknownAlbum(String album) {
-        return getUnknownAlbum().equalsIgnoreCase(album);
-    }
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;

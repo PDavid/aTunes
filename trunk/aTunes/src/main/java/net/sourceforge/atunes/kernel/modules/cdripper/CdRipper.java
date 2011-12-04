@@ -29,12 +29,11 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
+import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 class CdRipper {
 
@@ -262,7 +261,7 @@ class CdRipper {
      */
     void setAlbum(String album) {
         if (album == null || album.equals("")) {
-            this.album = Album.getUnknownAlbum();
+            this.album = UnknownObjectCheck.getUnknownAlbum();
         } else {
             this.album = album;
         }
@@ -279,7 +278,7 @@ class CdRipper {
      */
     void setArtist(String artist) {
         if (artist == null || artist.equals("")) {
-            this.artist = Artist.getUnknownArtist();
+            this.artist = UnknownObjectCheck.getUnknownArtist();
         } else {
             this.artist = artist;
         }

@@ -142,33 +142,6 @@ public class Genre implements Serializable, ITreeObject<ILocalAudioObject> {
     }
 
     /**
-     * Return unknown genre text
-     * 
-     * @return
-     */
-    public static String getUnknownGenre() {
-        return I18nUtils.getString("UNKNOWN_GENRE");
-    }
-
-    /**
-     * Return <code>true</code> if this genre is unknown
-     * 
-     * @return
-     */
-    public boolean isUnknownGenre() {
-        return getName().equalsIgnoreCase(getUnknownGenre());
-    }
-
-    /**
-     * Return <code>true</code> if this genre is unknown
-     * 
-     * @return
-     */
-    public static boolean isUnknownGenre(String genre) {
-        return getUnknownGenre().equalsIgnoreCase(genre);
-    }
-
-    /**
      * Returns an structure of artists and albums containing songs of this genre
      * 
      * @return the artists

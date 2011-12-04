@@ -23,9 +23,9 @@ package net.sourceforge.atunes.kernel.modules.cdripper;
 import java.io.File;
 import java.util.List;
 
-import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
+import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 final class EncodeFileRunnable implements Runnable {
 	
@@ -82,7 +82,7 @@ final class EncodeFileRunnable implements Runnable {
 	private boolean callToEncode() {
 		return ripper.getEncoder().encode(wavFileTemp, resultFileTemp,
 		        (titles != null && titles.size() >= trackNumber ? titles.get(trackNumber - 1) : null), trackNumber,
-		        artistNames.size() > trackNumber - 1 ? artistNames.get(trackNumber - 1) : Artist.getUnknownArtist(),
+		        artistNames.size() > trackNumber - 1 ? artistNames.get(trackNumber - 1) : UnknownObjectCheck.getUnknownArtist(),
 		        composerNames.size() > trackNumber - 1 ? composerNames.get(trackNumber - 1) : "");
 	}
 

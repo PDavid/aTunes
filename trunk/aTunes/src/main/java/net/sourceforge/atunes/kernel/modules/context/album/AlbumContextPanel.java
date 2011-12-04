@@ -21,14 +21,13 @@
 package net.sourceforge.atunes.kernel.modules.context.album;
 
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 /**
  * Context panel to show album information
@@ -67,7 +66,7 @@ public class AlbumContextPanel extends AbstractContextPanel {
     @Override
     public boolean isPanelVisibleForAudioObject(IAudioObject audioObject) {
         // Avoid unknown artist or album
-        if (Artist.isUnknownArtist(audioObject.getArtist()) || Album.isUnknownAlbum(audioObject.getAlbum())) {
+        if (UnknownObjectCheck.isUnknownArtist(audioObject.getArtist()) || UnknownObjectCheck.isUnknownAlbum(audioObject.getAlbum())) {
             return false;
         }
 

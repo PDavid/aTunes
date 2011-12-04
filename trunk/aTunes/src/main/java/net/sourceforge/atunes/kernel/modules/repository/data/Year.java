@@ -31,6 +31,7 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
+import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 /**
  * This class represents a year, with a set of artist of this year.
@@ -96,7 +97,7 @@ public class Year implements Serializable, ITreeObject<ILocalAudioObject> {
      */
     public String getName() {
         if (year.isEmpty()) {
-            return getUnknownYear();
+            return UnknownObjectCheck.getUnknownYear();
         }
         return year;
     }
@@ -141,33 +142,6 @@ public class Year implements Serializable, ITreeObject<ILocalAudioObject> {
     @Override
     public boolean isExtendedToolTipImageSupported() {
         return false;
-    }
-
-    /**
-     * Return unknown year text
-     * 
-     * @return
-     */
-    public static String getUnknownYear() {
-        return I18nUtils.getString("UNKNOWN_YEAR");
-    }
-
-    /**
-     * Return <code>true</code> if year is unknown
-     * 
-     * @return
-     */
-    public boolean isUnknownYear() {
-        return getName().equalsIgnoreCase(getUnknownYear());
-    }
-
-    /**
-     * Return <code>true</code> if year is unknown
-     * 
-     * @return
-     */
-    public static boolean isUnknownYear(String year) {
-        return year.isEmpty() || getUnknownYear().equalsIgnoreCase(year);
     }
 
     /**

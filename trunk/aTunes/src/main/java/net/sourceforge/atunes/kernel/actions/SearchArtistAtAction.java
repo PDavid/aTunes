@@ -33,6 +33,7 @@ import net.sourceforge.atunes.model.ISearchDialog;
 import net.sourceforge.atunes.model.ISearchDialogFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
+import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 public class SearchArtistAtAction extends CustomAbstractAction {
 
@@ -93,7 +94,7 @@ public class SearchArtistAtAction extends CustomAbstractAction {
         }
 
         for (DefaultMutableTreeNode node : selection) {
-            if (!(node.getUserObject() instanceof Artist) || ((Artist) node.getUserObject()).isUnknownArtist()) {
+            if (!(node.getUserObject() instanceof Artist) || UnknownObjectCheck.isUnknownArtist((Artist) node.getUserObject())) {
                 return false;
             }
         }

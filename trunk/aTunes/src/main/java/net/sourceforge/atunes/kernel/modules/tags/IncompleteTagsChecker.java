@@ -25,13 +25,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITreeObject;
+import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 public final class IncompleteTagsChecker {
 
@@ -164,7 +162,7 @@ public final class IncompleteTagsChecker {
 	 * @param ta
 	 */
 	private static boolean checkGenre(ILocalAudioObject ILocalAudioObject, TagAttribute ta) {
-		if (ta == TagAttribute.GENRE && Genre.isUnknownGenre(ILocalAudioObject.getGenre())) {
+		if (ta == TagAttribute.GENRE && UnknownObjectCheck.isUnknownGenre(ILocalAudioObject.getGenre())) {
 		    return false;
 		}
 		return true;
@@ -197,7 +195,7 @@ public final class IncompleteTagsChecker {
 	 * @param ta
 	 */
 	private static boolean checkAlbum(ILocalAudioObject ILocalAudioObject, TagAttribute ta) {
-		if (ta == TagAttribute.ALBUM && Album.isUnknownAlbum(ILocalAudioObject.getAlbum())) {
+		if (ta == TagAttribute.ALBUM && UnknownObjectCheck.isUnknownAlbum(ILocalAudioObject.getAlbum())) {
 		    return false;
 		}
 		return true;
@@ -208,7 +206,7 @@ public final class IncompleteTagsChecker {
 	 * @param ta
 	 */
 	private static boolean checkArtist(ILocalAudioObject ILocalAudioObject, TagAttribute ta) {
-		if (ta == TagAttribute.ARTIST && Artist.isUnknownArtist(ILocalAudioObject.getArtist())) {
+		if (ta == TagAttribute.ARTIST && UnknownObjectCheck.isUnknownArtist(ILocalAudioObject.getArtist())) {
 		    return false;
 		}
 		return true;

@@ -27,13 +27,13 @@ import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
+import net.sourceforge.atunes.utils.UnknownObjectCheck;
 import net.sourceforge.atunes.utils.XMLUtils;
 
 import org.w3c.dom.Document;
@@ -224,7 +224,7 @@ public final class YoutubeService {
         StringBuilder builder = new StringBuilder();
 
         // Add artist if it's not unknown
-        if (!Artist.isUnknownArtist(ao.getArtist())) {
+        if (!UnknownObjectCheck.isUnknownArtist(ao.getArtist())) {
             builder.append(ao.getArtist());
         }
 
