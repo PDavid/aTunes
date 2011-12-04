@@ -38,7 +38,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import net.sourceforge.atunes.api.RepositoryApi;
 import net.sourceforge.atunes.gui.model.TransferableList;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
-import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
+import net.sourceforge.atunes.kernel.modules.repository.IAudioObjectComparator;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -97,6 +97,8 @@ public class PlayListTableTransferHandler extends TransferHandler {
     
     private ILocalAudioObjectValidator localAudioObjectValidator;
     
+    private IAudioObjectComparator audioObjectComparator;
+    
     /**
      * @param playListTable
      * @param frame
@@ -107,8 +109,9 @@ public class PlayListTableTransferHandler extends TransferHandler {
      * @param radioHandler
      * @param localAudioObjectFactory
      * @param localAudioObjectValidator
+     * @param audioObjectComparator
      */
-    public PlayListTableTransferHandler(IPlayListTable playListTable, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, INavigationHandler navigationHandler, IRepositoryHandler repositoryHandler, IRadioHandler radioHandler, ILocalAudioObjectFactory localAudioObjectFactory, ILocalAudioObjectValidator localAudioObjectValidator) {
+    public PlayListTableTransferHandler(IPlayListTable playListTable, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, INavigationHandler navigationHandler, IRepositoryHandler repositoryHandler, IRadioHandler radioHandler, ILocalAudioObjectFactory localAudioObjectFactory, ILocalAudioObjectValidator localAudioObjectValidator, IAudioObjectComparator audioObjectComparator) {
     	this.playListTable = playListTable;
     	this.frame = frame;
     	this.osManager = osManager;
@@ -118,6 +121,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
     	this.radioHandler = radioHandler;
     	this.localAudioObjectFactory = localAudioObjectFactory;
     	this.localAudioObjectValidator = localAudioObjectValidator;
+    	this.audioObjectComparator = audioObjectComparator;
 	}
     
     /**
@@ -275,7 +279,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
             int dropRow = playListTable.rowAtPoint(support.getDropLocation().getDropPoint());
 
             if (!audioObjectsToAdd.isEmpty()) {
-                AudioObjectComparator.sort(audioObjectsToAdd);
+            	audioObjectComparator.sort(audioObjectsToAdd);
                 playListHandler.addToPlayList(dropRow, audioObjectsToAdd, true);
                 // Keep selected rows: if drop row is the bottom of play list (-1) then select last row
                 if (dropRow == -1) {
@@ -398,7 +402,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
             int dropRow = playListTable.rowAtPoint(support.getDropLocation().getDropPoint());
 
             if (!filesToAdd.isEmpty()) {
-                AudioObjectComparator.sort(filesToAdd);
+            	audioObjectComparator.sort(filesToAdd);
                 playListHandler.addToPlayList(dropRow, filesToAdd, true);
                 // Keep selected rows: if drop row is the bottom of play list (-1) then select last row
                 if (dropRow == -1) {

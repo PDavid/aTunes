@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
+import net.sourceforge.atunes.kernel.modules.repository.IAudioObjectComparator;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -41,11 +41,28 @@ public final class SmartPlayListHandler extends AbstractHandler implements ISmar
     private IStatisticsHandler statisticsHandler;
     private IPlayListHandler playListHandler;
     
-    @Override
-    protected void initHandler() {
-    	statisticsHandler = getBean(IStatisticsHandler.class);
-    	playListHandler = getBean(IPlayListHandler.class);
-    }
+    private IAudioObjectComparator audioObjectComparator;
+    
+    /**
+     * @param audioObjectComparator
+     */
+    public void setaudioObjectComparator(IAudioObjectComparator audioObjectComparator) {
+		this.audioObjectComparator = audioObjectComparator;
+	}
+    
+    /**
+     * @param statisticsHandler
+     */
+    public void setStatisticsHandler(IStatisticsHandler statisticsHandler) {
+		this.statisticsHandler = statisticsHandler;
+	}
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
     
     @Override
 	public void addAlbumsMostPlayed(int n) {
@@ -61,7 +78,7 @@ public final class SmartPlayListHandler extends AbstractHandler implements ISmar
         }
 
         // Sort
-        AudioObjectComparator.sort(songsSelected);
+        audioObjectComparator.sort(songsSelected);
 
         // Add to playlist
         playListHandler.addToPlayList(songsSelected);
@@ -81,7 +98,7 @@ public final class SmartPlayListHandler extends AbstractHandler implements ISmar
         }
 
         // Sort
-        AudioObjectComparator.sort(songsSelected);
+        audioObjectComparator.sort(songsSelected);
 
         // Add to playlist
         playListHandler.addToPlayList(songsSelected);
@@ -108,7 +125,7 @@ public final class SmartPlayListHandler extends AbstractHandler implements ISmar
         }
 
         // Sort
-        AudioObjectComparator.sort(songsSelected);
+        audioObjectComparator.sort(songsSelected);
 
         // Add to playlist
         playListHandler.addToPlayList(songsSelected);
@@ -120,7 +137,7 @@ public final class SmartPlayListHandler extends AbstractHandler implements ISmar
         List<IAudioObject> songsSelected = statisticsHandler.getMostPlayedAudioObjects(n);
 
         // Sort
-        AudioObjectComparator.sort(songsSelected);
+        audioObjectComparator.sort(songsSelected);
 
         // Add to playlist
         playListHandler.addToPlayList(songsSelected);
@@ -136,7 +153,7 @@ public final class SmartPlayListHandler extends AbstractHandler implements ISmar
         int count = Math.min(unplayedSongs.size(), n);
         if (count > 0) {
             List<IAudioObject> audioObjects = new ArrayList<IAudioObject>(unplayedSongs.subList(0, count));
-            AudioObjectComparator.sort(audioObjects);
+            audioObjectComparator.sort(audioObjects);
             playListHandler.addToPlayList(audioObjects);
         }
     }

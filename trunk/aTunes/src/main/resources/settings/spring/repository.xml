@@ -20,5 +20,7 @@
 	
 	<bean id="audioObjectImageLocator" class="net.sourceforge.atunes.kernel.modules.repository.AudioObjectImageLocator"/>
 	
+	<bean id="audioObjectComparator" class="net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator"/>
+	
 
 </beans>

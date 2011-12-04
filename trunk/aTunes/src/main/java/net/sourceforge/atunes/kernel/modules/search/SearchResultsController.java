@@ -34,7 +34,7 @@ import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetRowSorter;
 import net.sourceforge.atunes.gui.views.dialogs.SearchResultsDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
-import net.sourceforge.atunes.kernel.modules.repository.AudioObjectComparator;
+import net.sourceforge.atunes.kernel.modules.repository.IAudioObjectComparator;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialogFactory;
 import net.sourceforge.atunes.model.IColumn;
@@ -60,19 +60,23 @@ final class SearchResultsController extends AbstractSimpleController<SearchResul
     
     private IPlayerHandler playerHandler;
     
+    private IAudioObjectComparator audioObjectComparator;
+    
     /**
      * @param dialog
      * @param state
      * @param playListHandler
      * @param lookAndFeelManager
      * @param playerHandler
+     * @param audioObjectComparator
      */
-    SearchResultsController(SearchResultsDialog dialog, IState state, IPlayListHandler playListHandler, ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler) {
+    SearchResultsController(SearchResultsDialog dialog, IState state, IPlayListHandler playListHandler, ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler, IAudioObjectComparator audioObjectComparator) {
         super(dialog, state);
         this.columnSet = (IColumnSet) Context.getBean("searchResultsColumnSet");
         this.playListHandler = playListHandler;
         this.lookAndFeelManager = lookAndFeelManager;
         this.playerHandler = playerHandler;
+        this.audioObjectComparator = audioObjectComparator;
         addBindings();
     }
 
@@ -93,7 +97,7 @@ final class SearchResultsController extends AbstractSimpleController<SearchResul
         if (sortedColumn != null) {
             Collections.sort(resultsList, sortedColumn.getComparator(false));
         } else {
-            AudioObjectComparator.sort(resultsList);
+        	audioObjectComparator.sort(resultsList);
         }
 
         tableModel.setResults(resultsList);
