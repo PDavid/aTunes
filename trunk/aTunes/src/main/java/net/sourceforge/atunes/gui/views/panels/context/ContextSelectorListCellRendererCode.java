@@ -38,8 +38,10 @@ final class ContextSelectorListCellRendererCode extends AbstractListCellRenderer
 
 	@Override
 	public JComponent getComponent(JComponent superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-		((JLabel)superComponent).setIcon(((IContextPanel)value).getIcon().getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForColorMutableIcon(superComponent, isSelected || cellHasFocus)));
-		((JLabel)superComponent).setText(((IContextPanel)value).getTitle());
+		if (value != null) {
+			((JLabel)superComponent).setIcon(((IContextPanel)value).getIcon().getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForColorMutableIcon(superComponent, isSelected || cellHasFocus)));
+			((JLabel)superComponent).setText(((IContextPanel)value).getTitle());
+		}
 		return superComponent;
 	}
 }
