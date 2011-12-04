@@ -40,6 +40,7 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 import net.sourceforge.atunes.kernel.modules.tags.EditTagDialogController;
+import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -62,7 +63,7 @@ final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertiesDialog
     private final class FillPictureSwingWorker extends SwingWorker<ImageIcon, Void> {
         @Override
         protected ImageIcon doInBackground() throws Exception {
-            return file.getImage(Constants.DIALOG_IMAGE_SIZE, osManager);
+            return audioObjectImageLocator.getImage(file, Constants.DIALOG_IMAGE_SIZE);
         }
 
         @Override
@@ -111,9 +112,10 @@ final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertiesDialog
     
     private IPlayerHandler playerHandler;
     
+    private IAudioObjectImageLocator audioObjectImageLocator;
+    
     /**
      * Instantiates a new audio file properties dialog.
-     * 
      * @param file
      * @param state
      * @param frame
@@ -122,8 +124,9 @@ final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertiesDialog
      * @param lookAndFeelManager
      * @param repositoryHandler
      * @param playerHandler
+     * @param audioObjectImageLocator
      */
-    LocalAudioObjectPropertiesDialog(ILocalAudioObject file, IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, ILookAndFeelManager lookAndFeelManager, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
+    LocalAudioObjectPropertiesDialog(ILocalAudioObject file, IState state, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, ILookAndFeelManager lookAndFeelManager, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler, IAudioObjectImageLocator audioObjectImageLocator) {
         super(getTitleText(file), frame, lookAndFeelManager);
         this.file = file;
         this.state = state;
@@ -132,6 +135,7 @@ final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertiesDialog
         this.playListHandler = playListHandler;
         this.repositoryHandler = repositoryHandler;
         this.playerHandler = playerHandler;
+        this.audioObjectImageLocator = audioObjectImageLocator;
         setAudioObject(file);
         addContent(lookAndFeelManager);
 

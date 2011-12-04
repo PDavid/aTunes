@@ -36,8 +36,8 @@ import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectGenericImageFactory;
+import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -47,25 +47,25 @@ final class OSDDialogController extends AbstractSimpleController<OSDDialog> {
     private WindowFader windowFader;
     private Point location;
     private Timer timer;
-    private IOSManager osManager;
     private IAudioObjectGenericImageFactory audioObjectGenericImageFactory;
     private ILookAndFeelManager lookAndFeelManager;
+    private IAudioObjectImageLocator audioObjectImageLocator;
 
     /**
      * Instantiates a new oSD dialog controller.
      * @param dialogControlled
      * @param state
-     * @param osManager
      * @param audioObjectGenericImageFactory
      * @param lookAndFeelManager
+     * @param audioObjectImageLocator
      */
-    OSDDialogController(OSDDialog dialogControlled, IState state, IOSManager osManager, IAudioObjectGenericImageFactory audioObjectGenericImageFactory, ILookAndFeelManager lookAndFeelManager) {
+    OSDDialogController(OSDDialog dialogControlled, IState state, IAudioObjectGenericImageFactory audioObjectGenericImageFactory, ILookAndFeelManager lookAndFeelManager, IAudioObjectImageLocator audioObjectImageLocator) {
         super(dialogControlled, state);
         addBindings();
         this.audioObjectGenericImageFactory = audioObjectGenericImageFactory;
-        this.osManager = osManager;
         this.windowFader = new WindowFader(dialogControlled, 50);
         this.lookAndFeelManager = lookAndFeelManager;
+        this.audioObjectImageLocator = audioObjectImageLocator;
     }
 
     @Override
@@ -125,7 +125,7 @@ final class OSDDialogController extends AbstractSimpleController<OSDDialog> {
         // By default OSD image has shadow, unless it's a generic image
         getComponentControlled().setShadowBorder(true);
 
-        ImageIcon i = audioObject.getImage(ImageSize.SIZE_MAX, osManager);
+        ImageIcon i = audioObjectImageLocator.getImage(audioObject, ImageSize.SIZE_MAX);
         if (i == null) {
             i = audioObjectGenericImageFactory.getGenericImage(audioObject, GenericImageSize.MEDIUM).getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls());
             getComponentControlled().setShadowBorder(false);

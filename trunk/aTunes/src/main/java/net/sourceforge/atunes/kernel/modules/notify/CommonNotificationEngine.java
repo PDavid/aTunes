@@ -28,6 +28,7 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectGenericImageFactory;
+import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INotificationEngine;
 import net.sourceforge.atunes.model.IOSManager;
@@ -47,15 +48,19 @@ public abstract class CommonNotificationEngine implements INotificationEngine {
 	
 	private ILookAndFeelManager lookAndFeelManager;
 	
+	private IAudioObjectImageLocator audioObjectImageLocator;
+	
 	/**
 	 * @param audioObjectGenericImageFactory
 	 * @param diskStorage
 	 * @param lookAndFeelManager
+	 * @param audioObjectImageLocator
 	 */
-	public CommonNotificationEngine(IAudioObjectGenericImageFactory audioObjectGenericImageFactory, ITemporalDiskStorage diskStorage, ILookAndFeelManager lookAndFeelManager) {
+	public CommonNotificationEngine(IAudioObjectGenericImageFactory audioObjectGenericImageFactory, ITemporalDiskStorage diskStorage, ILookAndFeelManager lookAndFeelManager, IAudioObjectImageLocator audioObjectImageLocator) {
 		this.audioObjectGenericImageFactory = audioObjectGenericImageFactory;
 		this.diskStorage = diskStorage;
 		this.lookAndFeelManager = lookAndFeelManager;
+		this.audioObjectImageLocator = audioObjectImageLocator;
 	}
 	
 	/**
@@ -75,7 +80,7 @@ public abstract class CommonNotificationEngine implements INotificationEngine {
 	 * @return
 	 */
 	protected final String getTemporalImage(IAudioObject audioObject, IOSManager osManager) {
-		ImageIcon imageForAudioObject = audioObject.getImage(ImageSize.SIZE_200, osManager);
+		ImageIcon imageForAudioObject = audioObjectImageLocator.getImage(audioObject, ImageSize.SIZE_200);
 		if (imageForAudioObject == null) {
 			imageForAudioObject = audioObjectGenericImageFactory.getGenericImage(audioObject, GenericImageSize.MEDIUM).getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls());
 		}

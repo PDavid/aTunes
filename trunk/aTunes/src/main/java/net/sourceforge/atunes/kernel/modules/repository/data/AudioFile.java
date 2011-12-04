@@ -23,17 +23,11 @@ package net.sourceforge.atunes.kernel.modules.repository.data;
 import java.io.File;
 import java.io.Serializable;
 
-import javax.swing.ImageIcon;
-
-import net.sourceforge.atunes.kernel.modules.repository.ImageCache;
 import net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectValidator;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ITag;
-import net.sourceforge.atunes.model.ImageSize;
-import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -375,31 +369,6 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
             return tag.getDiscNumber();
         }
         return 0;
-    }
-
-    /* (non-Javadoc)
-     * @see net.sourceforge.atunes.model.IAudioObject#getImage(net.sourceforge.atunes.model.ImageSize, net.sourceforge.atunes.model.IOSManager)
-     */
-    @Override
-    public ImageIcon getImage(ImageSize imageSize, IOSManager osManager) {
-        ImageIcon result = null;
-
-        result = ImageCache.getImageCache().retrieveImage(this, imageSize);
-
-        if (result == null) {
-            result = AudioFilePictureUtils.getInsidePicture(this, imageSize.getSize(), imageSize.getSize());
-            if (result == null) {
-                result = AudioFilePictureUtils.getExternalPicture(this, imageSize.getSize(), imageSize.getSize(), osManager);
-            }
-        } else {
-            return result;
-        }
-
-        if (result != null) {
-        	ImageCache.getImageCache().storeImage(this, imageSize, result);
-        }
-
-        return result;
     }
 
     /**

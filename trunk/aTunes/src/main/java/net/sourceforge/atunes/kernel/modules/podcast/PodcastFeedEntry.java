@@ -23,13 +23,9 @@ package net.sourceforge.atunes.kernel.modules.podcast;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.ImageIcon;
-
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
-import net.sourceforge.atunes.model.ImageSize;
 
 import org.joda.time.DateTime;
 import org.joda.time.base.BaseDateTime;
@@ -329,11 +325,6 @@ public final class PodcastFeedEntry implements IPodcastFeedEntry {
     @Override
     public int getDiscNumber() {
         return 0;
-    }
-
-    @Override
-    public ImageIcon getImage(ImageSize imageSize, IOSManager osManager) {
-        return null;
     }
 
 	@Override

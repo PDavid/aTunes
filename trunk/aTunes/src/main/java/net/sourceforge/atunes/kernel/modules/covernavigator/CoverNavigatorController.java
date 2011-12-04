@@ -47,6 +47,7 @@ import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.GetCoversProcess;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.model.IState;
@@ -60,16 +61,15 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
     private static final int COVER_PANEL_HEIGHT = Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize() + 40;
     
     private IOSManager osManager;
-
+    
+    private IAudioObjectImageLocator audioObjectImageLocator;
+    
     private final class GenerateAndShowAlbumPanelsSwingWorker extends SwingWorker<Void, IntermediateResult> {
     	
 		private final Artist artistSelected;
 		
-		private IOSManager osManager;
-
-		private GenerateAndShowAlbumPanelsSwingWorker(Artist artistSelected, IOSManager osManager) {
+		private GenerateAndShowAlbumPanelsSwingWorker(Artist artistSelected) {
 			this.artistSelected = artistSelected;
-			this.osManager = osManager;
 		}
 
 		@Override
@@ -80,7 +80,7 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
 
 		    int coversAdded = 0;
 		    for (Album album : albums) {
-		        ImageIcon cover = album.getPicture(Constants.COVER_NAVIGATOR_IMAGE_SIZE, osManager);
+		        ImageIcon cover = audioObjectImageLocator.getImage(album, Constants.COVER_NAVIGATOR_IMAGE_SIZE);
 		        publish(new IntermediateResult(album, cover));
 		        coversAdded++;
 		    }
@@ -174,10 +174,12 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
      * @param frame
      * @param state
      * @param osManager
+     * @param audioObjectImageLocator
      */
-    public CoverNavigatorController(CoverNavigatorFrame frame, IState state, IOSManager osManager) {
+    public CoverNavigatorController(CoverNavigatorFrame frame, IState state, IOSManager osManager, IAudioObjectImageLocator audioObjectImageLocator) {
         super(frame, state);
         this.osManager = osManager;
+        this.audioObjectImageLocator = audioObjectImageLocator;
         addBindings();
     }
 
@@ -247,7 +249,7 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
         getComponentControlled().getCoversButton().setEnabled(false);
         getComponentControlled().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-        SwingWorker<Void, IntermediateResult> generateAndShowAlbumPanels = new GenerateAndShowAlbumPanelsSwingWorker(artistSelected, osManager);
+        SwingWorker<Void, IntermediateResult> generateAndShowAlbumPanels = new GenerateAndShowAlbumPanelsSwingWorker(artistSelected);
         generateAndShowAlbumPanels.execute();
     }
 

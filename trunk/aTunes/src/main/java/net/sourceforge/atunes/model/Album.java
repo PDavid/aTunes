@@ -26,8 +26,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
 
-import javax.swing.ImageIcon;
-
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -162,17 +160,6 @@ public class Album implements Serializable, ITreeObject<ILocalAudioObject>, Comp
         return StringUtils.getString(name, " (", artist, ")");
     }
 
-    /**
-     * Returns a picture of this album, with a given size.
-     * 
-     * @param imageSize
-     * @param osManager
-     * @return
-     */
-    public ImageIcon getPicture(ImageSize imageSize, IOSManager osManager) {
-        return getAudioFiles().first().getImage(imageSize, osManager);
-    }
-    
     /**
      * Removes a song from this album.
      * 
