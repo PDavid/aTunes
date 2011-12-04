@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -56,6 +57,15 @@ import net.sourceforge.atunes.utils.Timer;
  */
 public class RepositoryLoader extends Thread {
 
+	private static FileFilter validAudioFileFilter =  new FileFilter() {
+		
+		@Override
+		public boolean accept(File pathname) {
+			return LocalAudioObjectValidator.isValidAudioFile(pathname);
+		}
+	};
+
+	
 	// Some attributes to speed up populate info process
 	private IRepositoryLoaderListener listener;
 	private List<File> folders;
@@ -450,7 +460,7 @@ public class RepositoryLoader extends Thread {
 	 */
 	private void processAudioFiles(File dir, File relativeTo) {
         // Get audio files
-        File[] audiofiles = dir.listFiles(LocalAudioObjectValidator.validAudioFileFilter());
+        File[] audiofiles = dir.listFiles(validAudioFileFilter);
         
         String pathToFile = dir.getAbsolutePath().replace('\\', '/');
 

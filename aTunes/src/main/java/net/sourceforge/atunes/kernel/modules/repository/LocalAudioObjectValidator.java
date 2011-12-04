@@ -21,9 +21,8 @@
 package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.io.File;
-import java.io.FileFilter;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.Format;
+import net.sourceforge.atunes.model.LocalAudioObjectFormat;
 
 public class LocalAudioObjectValidator {
 
@@ -37,18 +36,8 @@ public class LocalAudioObjectValidator {
      */
     public static boolean isValidAudioFile(File file) {
         return !file.isDirectory()
-                && isValidAudioFile(file.getName(), Format.MP3, Format.OGG, Format.MP4_1, Format.MP4_2, Format.WAV, Format.WMA, Format.FLAC, Format.REAL_1, Format.REAL_2, Format.APE,
-                        Format.MPC);
-    }
-    
-    public static FileFilter validAudioFileFilter() {
-    	return new FileFilter() {
-			
-			@Override
-			public boolean accept(File pathname) {
-				return isValidAudioFile(pathname);
-			}
-		};
+                && isValidAudioFile(file.getName(), LocalAudioObjectFormat.MP3, LocalAudioObjectFormat.OGG, LocalAudioObjectFormat.MP4_1, LocalAudioObjectFormat.MP4_2, LocalAudioObjectFormat.WAV, LocalAudioObjectFormat.WMA, LocalAudioObjectFormat.FLAC, LocalAudioObjectFormat.REAL_1, LocalAudioObjectFormat.REAL_2, LocalAudioObjectFormat.APE,
+                        LocalAudioObjectFormat.MPC);
     }
     
     /**
@@ -58,9 +47,9 @@ public class LocalAudioObjectValidator {
      * @param formats
      * @return if the file is a valid audio file
      */
-    public static boolean isValidAudioFile(String fileName, Format... formats) {
+    public static boolean isValidAudioFile(String fileName, LocalAudioObjectFormat... formats) {
         String path = fileName.toLowerCase();
-        for (Format format : formats) {
+        for (LocalAudioObjectFormat format : formats) {
             if (path.endsWith(format.getExtension())) {
                 return true;
             }

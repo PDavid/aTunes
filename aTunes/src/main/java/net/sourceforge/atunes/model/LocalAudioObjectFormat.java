@@ -18,15 +18,32 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.repository.data;
+package net.sourceforge.atunes.model;
 
-public enum Format {
+/**
+ * Formats for local audio objects supported by application
+ * @author alex
+ *
+ */
+public enum LocalAudioObjectFormat {
 
-    MP3("mp3"), OGG("ogg"), MP4_1("m4a"), MP4_2("mp4"), WAV("wav"), WMA("wma"), FLAC("flac"), APE("ape"), MPC("mpc"), REAL_1("ra"), REAL_2("rm"), MPPLUS("mp+"), MAC("mac");
+    MP3("mp3"), 
+    OGG("ogg"), 
+    MP4_1("m4a"), 
+    MP4_2("mp4"), 
+    WAV("wav"), 
+    WMA("wma"), 
+    FLAC("flac"), 
+    APE("ape"), 
+    MPC("mpc"), 
+    REAL_1("ra"), 
+    REAL_2("rm"), 
+    MPPLUS("mp+"), 
+    MAC("mac");
 
     private String extension;
 
-    private Format(String extension) {
+    private LocalAudioObjectFormat(String extension) {
         this.extension = extension;
     }
 

@@ -40,9 +40,9 @@ import net.sourceforge.atunes.gui.autocomplete.AutoCompleteDecorator;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectValidator;
-import net.sourceforge.atunes.kernel.modules.repository.data.Format;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.LocalAudioObjectFormat;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -178,7 +178,7 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
      * @return
      */
     private final boolean supportsInternalPicture(ILocalAudioObject audioObject) {
-        return LocalAudioObjectValidator.isValidAudioFile(audioObject.getUrl(), Format.FLAC, Format.MP3, Format.MP4_1, Format.MP4_2, Format.OGG, Format.WMA);
+        return LocalAudioObjectValidator.isValidAudioFile(audioObject.getUrl(), LocalAudioObjectFormat.FLAC, LocalAudioObjectFormat.MP3, LocalAudioObjectFormat.MP4_1, LocalAudioObjectFormat.MP4_2, LocalAudioObjectFormat.OGG, LocalAudioObjectFormat.WMA);
     }
 
 

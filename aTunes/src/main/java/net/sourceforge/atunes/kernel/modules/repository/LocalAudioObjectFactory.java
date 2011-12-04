@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.modules.repository;
 import java.io.File;
 
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.data.Format;
+import net.sourceforge.atunes.model.LocalAudioObjectFormat;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.ILocalAudioObjectReader;
@@ -60,7 +60,7 @@ public class LocalAudioObjectFactory implements ILocalAudioObjectFactory {
      */
     private void readAudioObject(ILocalAudioObject audioObject) {
         // Don't read from formats not supported by Jaudiotagger
-        if (!LocalAudioObjectValidator.isValidAudioFile(audioObject.getUrl(), Format.APE, Format.MPC)) {
+        if (!LocalAudioObjectValidator.isValidAudioFile(audioObject.getUrl(), LocalAudioObjectFormat.APE, LocalAudioObjectFormat.MPC)) {
             readInformation(audioObject, true);
         }
         audioObject.setReadTime(System.currentTimeMillis());
