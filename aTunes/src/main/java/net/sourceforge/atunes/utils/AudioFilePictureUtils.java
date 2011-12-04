@@ -36,6 +36,7 @@ import javax.swing.filechooser.FileFilter;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 
+import org.apache.sanselan.ImageWriteException;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.tag.datatype.Artwork;
 
@@ -255,8 +256,9 @@ public final class AudioFilePictureUtils {
      *             the file not found exception
      * @throws IOException
      *             Signals that an I/O exception has occurred.
+     * @throws ImageWriteException 
      */
-    private static void savePictureToFile(ILocalAudioObject song, File file) throws FileNotFoundException, IOException {
+    private static void savePictureToFile(ILocalAudioObject song, File file) throws FileNotFoundException, IOException, ImageWriteException {
         ImageIcon image = getInsidePicture(song, -1, -1);
         ImageUtils.writeImageToFile(image.getImage(), file.getAbsolutePath());
     }

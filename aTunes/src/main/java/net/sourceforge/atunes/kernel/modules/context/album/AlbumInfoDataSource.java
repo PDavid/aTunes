@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import org.apache.sanselan.ImageWriteException;
+
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -220,7 +222,9 @@ public class AlbumInfoDataSource implements IContextInformationSource {
                     repositoryHandler.addExternalPictureForAlbum(file.getArtist(), file.getAlbum(), imageFile);
                 } catch (IOException e) {
                     Logger.error(e);
-                }
+                } catch (ImageWriteException e) {
+                    Logger.error(e);
+				}
             }
         }
     }

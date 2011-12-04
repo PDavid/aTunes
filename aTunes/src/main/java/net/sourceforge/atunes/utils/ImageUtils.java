@@ -20,17 +20,19 @@
 
 package net.sourceforge.atunes.utils;
 
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.io.FileOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+import org.apache.sanselan.ImageFormat;
+import org.apache.sanselan.ImageWriteException;
+import org.apache.sanselan.Sanselan;
 import org.commonjukebox.plugins.model.PluginApi;
 import org.jdesktop.swingx.graphics.GraphicsUtilities;
 
@@ -70,6 +72,7 @@ public final class ImageUtils {
         int maxSize = (image.getIconWidth() > image.getIconHeight()) ? image.getIconWidth() : image.getIconHeight();
         int newWidth = (int) ((float) image.getIconWidth() / (float) maxSize * width);
         int newHeight = (int) ((float) image.getIconHeight() / (float) maxSize * height);
+        
         return ImageUtils.scaleImageBicubic(image.getImage(), newWidth, newHeight);
     }
 
@@ -133,43 +136,6 @@ public final class ImageUtils {
     }
     
     /**
-     * Scales an image with Bilinear algorithm (faster than bicubic)
-     * 
-     * @param image
-     *            the image
-     * @param width
-     *            the width
-     * @param height
-     *            the height
-     * 
-     * @return the image icon
-     */
-    public static ImageIcon scaleImageBilinear(Image image, int width, int height) {
-        if (image == null) {
-            return null;
-        }
-
-        double thumbRatio = (double) width / (double) height;
-        int imageWidth = image.getWidth(null);
-        int imageHeight = image.getHeight(null);
-        double imageRatio = (double) imageWidth / (double) imageHeight;
-        int calculatedWidth = width;
-        int calculatedHeight = height;
-        if (thumbRatio < imageRatio) {
-            calculatedHeight = (int) (width / imageRatio);
-        } else {
-            calculatedWidth = (int) (height * imageRatio);
-        }
-
-        BufferedImage thumbImage = new BufferedImage(calculatedWidth, calculatedHeight, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D graphics2D = thumbImage.createGraphics();
-        graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        graphics2D.drawImage(image, 0, 0, calculatedWidth, calculatedHeight, null);
-        graphics2D.dispose();
-        return new ImageIcon(thumbImage);
-    }
-
-    /**
      * Gets a BufferedImage from an Image object.
      * 
      * @param image
@@ -178,25 +144,13 @@ public final class ImageUtils {
      * @return the buffered image
      */
     public static BufferedImage toBufferedImage(Image img) {
+    	if (img == null) {
+    		return null;
+    	}
     	if (img instanceof BufferedImage) {
     		return (BufferedImage) img;
     	}
-    	
-        BufferedImage bufferedImage;
-        try {
-            Image image = img;
-            bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-            Graphics2D g = bufferedImage.createGraphics();
-            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-            g.drawImage(image, 0, 0, null);
-            g.dispose();
-        } catch (IllegalArgumentException e) {
-            Logger.info("Maybe picture file with wrong ending?");
-            Logger.error(e);
-            return null;
-        }
-
-        return bufferedImage;
+    	return GraphicsUtilities.convertToBufferedImage(img);    	
     }
 
     /**
@@ -209,23 +163,17 @@ public final class ImageUtils {
      * 
      * @throws IOException
      *             If an IO exception occurs
+     * @throws ImageWriteException 
      */
-    public static void writeImageToFile(Image image, String fileName) throws IOException {
+    public static void writeImageToFile(Image image, String fileName) throws IOException, ImageWriteException {
         if (image == null) {
             return;
         }
-
-        ImageIcon img = new ImageIcon(image);
-
-        BufferedImage buf = new BufferedImage(img.getIconWidth(), img.getIconHeight(), BufferedImage.TYPE_INT_BGR);
-        Graphics g = buf.createGraphics();
-        g.drawImage(image, 0, 0, null);
         String fileNameWithExtension = fileName;
-        if (!fileName.toUpperCase().endsWith(StringUtils.getString(".", ImageUtils.FILES_EXTENSION).toUpperCase())) {
-            fileNameWithExtension = StringUtils.getString(fileName, ".", ImageUtils.FILES_EXTENSION);
+        if (!fileName.toUpperCase().endsWith(StringUtils.getString(".", FILES_EXTENSION).toUpperCase())) {
+            fileNameWithExtension = StringUtils.getString(fileName, ".", FILES_EXTENSION);
         }
-
-        ImageIO.write(buf, ImageUtils.FILES_EXTENSION, new FileOutputStream(fileNameWithExtension));
+        Sanselan.writeImage(toBufferedImage(image), new File(fileNameWithExtension), ImageFormat.IMAGE_FORMAT_PNG, Collections.emptyMap());
     }
 
 }
