@@ -34,16 +34,16 @@ import javax.swing.ScrollPaneConstants;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
-import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
-import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.ITreeObject;
+import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -196,9 +196,9 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
     		setFromPodcast(object);
     	} else if (object instanceof Folder) {
     		setFromFolder(object);
-    	} else if (object instanceof Genre) {
+    	} else if (object instanceof IGenre) {
     		setFromGenre(object);
-    	} else if (object instanceof Year) {
+    	} else if (object instanceof IYear) {
     		setFromYear(object);
     	} else if (object instanceof Artist) {
     		setFromArtist(object);
@@ -220,7 +220,7 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
 	 * @param object
 	 */
 	private void setFromYear(ITreeObject<? extends IAudioObject> object) {
-		Year y = (Year) object;
+		IYear y = (IYear) object;
 		setLine1(y.getName());
 		int artistNumber = y.getArtistSet().size();
 		setLine2(StringUtils.getString(artistNumber, " ", (artistNumber > 1 ? I18nUtils.getString("ARTISTS") : I18nUtils.getString("ARTIST"))));
@@ -232,7 +232,7 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
 	 * @param object
 	 */
 	private void setFromGenre(ITreeObject<? extends IAudioObject> object) {
-		Genre g = (Genre) object;
+		IGenre g = (IGenre) object;
 		setLine1(g.getName());
 		int artistNumber = g.getArtistSet().size();
 		setLine2(StringUtils.getString(artistNumber, " ", (artistNumber > 1 ? I18nUtils.getString("ARTISTS") : I18nUtils.getString("ARTIST"))));

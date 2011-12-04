@@ -31,12 +31,11 @@ import java.util.StringTokenizer;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
-import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IDeviceHandler;
+import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
@@ -47,6 +46,7 @@ import net.sourceforge.atunes.model.IRepositoryLoaderListener;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.ITag;
+import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.utils.DirectoryFileFilter;
 import net.sourceforge.atunes.utils.Logger;
@@ -645,18 +645,18 @@ public class RepositoryLoader extends Thread {
 			}
 
 			// Remove from genre structure
-			Genre g = repositoryHandler.getGenre(genre);
+			IGenre g = repositoryHandler.getGenre(genre);
 			if (g != null) {
-				g.removeAudioFile(file);
+				g.removeAudioObject(file);
 				if (g.size() <= 1) {
 					repositoryHandler.removeGenre(g);
 				}
 			}
 
 			// Remove from year structure
-			Year y = repositoryHandler.getYear(year);
+			IYear y = repositoryHandler.getYear(year);
 			if (y != null) {
-				y.removeAudioFile(file);
+				y.removeAudioObject(file);
 				if (y.size() <= 1) {
 					repositoryHandler.removeYear(y);
 				}

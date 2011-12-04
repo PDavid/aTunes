@@ -46,13 +46,13 @@ import net.sourceforge.atunes.kernel.actions.RemoveFromDiskAction;
 import net.sourceforge.atunes.kernel.actions.SearchArtistAction;
 import net.sourceforge.atunes.kernel.actions.SearchArtistAtAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
-import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.ITreeObject;
+import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -210,7 +210,7 @@ public final class DeviceNavigationView extends AbstractNavigationView {
         root.removeAllChildren();
 
         // Build tree
-        getTreeGeneratorFactory().getTreeGenerator(viewMode).buildTree("DEVICE", this, (Map<String, Year>) getViewData(viewMode), treeFilter, root, treeModel, objectsSelected, objectsExpanded);
+        getTreeGeneratorFactory().getTreeGenerator(viewMode).buildTree("DEVICE", this, (Map<String, IYear>) getViewData(viewMode), treeFilter, root, treeModel, objectsSelected, objectsExpanded);
 
         
         // Expand nodes

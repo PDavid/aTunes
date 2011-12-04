@@ -20,13 +20,13 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IYear;
 
-class YearAudioObjectSelector extends AudioObjectSelector<Year, IAudioObject> {
+class YearAudioObjectSelector extends AudioObjectSelector<IYear, IAudioObject> {
 
 	@Override
-	boolean equals(Year year, IAudioObject audioObject) {
+	boolean equals(IYear year, IAudioObject audioObject) {
 		return year.getName().equals(audioObject.getYear());
 	}
 

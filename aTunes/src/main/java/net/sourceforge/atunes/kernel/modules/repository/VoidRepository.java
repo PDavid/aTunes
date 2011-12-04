@@ -26,13 +26,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
-import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.Folder;
+import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.model.InconsistentRepositoryException;
 
 /**
@@ -145,40 +145,40 @@ public class VoidRepository implements IRepository {
 	}
 
 	@Override
-	public Collection<Genre> getGenres() {
+	public Collection<IGenre> getGenres() {
 		return null;
 	}
 
 	@Override
-	public Genre getGenre(String genre) {
+	public IGenre getGenre(String genre) {
 		return null;
 	}
 
 	@Override
-	public Genre putGenre(String genreName) {
+	public IGenre putGenre(IGenre genre) {
 		return null;
 	}
 
 	@Override
-	public void removeGenre(Genre genre) {}
+	public void removeGenre(IGenre genre) {}
 
 	@Override
-	public Year getYear(String year) {
+	public IYear getYear(String year) {
 		return null;
 	}
 
 	@Override
-	public Collection<Year> getYears() {
+	public Collection<IYear> getYears() {
 		return null;
 	}
 
 	@Override
-	public Year putYear(Year year) {
+	public IYear putYear(IYear year) {
 		return null;
 	}
 
 	@Override
-	public void removeYear(Year year) {}
+	public void removeYear(IYear year) {}
 
 	@Override
 	public Map<String, ?> getYearStructure() {
