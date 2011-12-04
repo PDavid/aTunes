@@ -67,13 +67,6 @@ public interface ILocalAudioObject extends IAudioObject, Comparable<ILocalAudioO
     void setFile(File file);
 
     /**
-     * Checks if the tag of this audio file does support internal images
-     * 
-     * @return if the tag of this audio file does support internal images
-     */
-    boolean supportsInternalPicture();
-    
-    /**
      * Checks for internal picture.
      * 
      * @return true, if successful

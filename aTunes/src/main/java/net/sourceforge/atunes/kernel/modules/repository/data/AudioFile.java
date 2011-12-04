@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.repository.data;
 import java.io.File;
 import java.io.Serializable;
 
-import net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectValidator;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -286,16 +285,6 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
     @Override
     public final boolean hasInternalPicture() {
         return tag != null && tag.hasInternalImage();
-    }
-
-    /**
-     * Checks if the tag of this audio file does support internal images
-     * 
-     * @return if the tag of this audio file does support internal images
-     */
-    @Override
-    public final boolean supportsInternalPicture() {
-        return LocalAudioObjectValidator.isValidAudioFile(filePath, Format.FLAC, Format.MP3, Format.MP4_1, Format.MP4_2, Format.OGG, Format.WMA);
     }
 
     /**
