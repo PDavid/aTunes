@@ -25,8 +25,8 @@ import java.awt.Component;
 import javax.swing.JLabel;
 
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
-import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.model.CachedIconFactory;
+import net.sourceforge.atunes.model.IYear;
 
 public class YearTreeCellDecorator extends AbstractTreeCellDecorator {
 
@@ -41,7 +41,7 @@ public class YearTreeCellDecorator extends AbstractTreeCellDecorator {
 	
     @Override
     public Component decorateTreeCellComponent(Component component, Object userObject, boolean isSelected) {
-        if (userObject instanceof Year) {
+        if (userObject instanceof IYear) {
             ((JLabel) component).setIcon(dateIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
         }
         return component;

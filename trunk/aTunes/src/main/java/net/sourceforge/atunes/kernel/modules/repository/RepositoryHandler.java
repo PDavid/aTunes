@@ -31,8 +31,6 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
-import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.Folder;
@@ -40,6 +38,7 @@ import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
 import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFavoritesHandler;
+import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
@@ -52,6 +51,7 @@ import net.sourceforge.atunes.model.ISearchableObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.IStatisticsHandler;
+import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.DateUtils;
@@ -326,12 +326,12 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     }
 
     @Override
-	public Genre getGenre(String genre) {
+	public IGenre getGenre(String genre) {
     	return repository.getGenre(genre);
     }
     
     @Override
-	public void removeGenre(Genre genre) {
+	public void removeGenre(IGenre genre) {
     	repository.removeGenre(genre);
     }
     
@@ -604,12 +604,12 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	}
 
 	@Override
-	public Year getYear(String year) {
+	public IYear getYear(String year) {
 		return repository.getYear(year);
 	}
 
 	@Override
-	public void removeYear(Year year) {
+	public void removeYear(IYear year) {
 		repository.removeYear(year);
 	}
 

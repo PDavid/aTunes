@@ -31,7 +31,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -39,6 +38,7 @@ import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.INavigationViewSorter;
 import net.sourceforge.atunes.model.ITreeGenerator;
 import net.sourceforge.atunes.model.ITreeObject;
+import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -111,7 +111,7 @@ public class YearTreeGenerator implements ITreeGenerator {
 			List<ITreeObject<? extends IAudioObject>> objectsExpanded,
 			List<DefaultMutableTreeNode> nodesToSelect,
 			List<DefaultMutableTreeNode> nodesToExpand, String yearName) {
-		Year year = (Year) structure.get(yearName);
+		IYear year = (IYear) structure.get(yearName);
 		if (currentFilter == null || year.getName().toUpperCase().contains(currentFilter.toUpperCase())) {
 		    DefaultMutableTreeNode yearNode = new DefaultMutableTreeNode(year);
 		    // If node was selected before refreshing...

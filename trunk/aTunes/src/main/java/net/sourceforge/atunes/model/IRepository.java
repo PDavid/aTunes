@@ -25,9 +25,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
-import net.sourceforge.atunes.kernel.modules.repository.data.Year;
-
 public interface IRepository {
 
 	/**
@@ -196,53 +193,53 @@ public interface IRepository {
 	 * Returns all genres
 	 * @return
 	 */
-	public Collection<Genre> getGenres();
+	public Collection<IGenre> getGenres();
 
 	/**
 	 * Returns genre given by name or null
 	 * @param artistName
 	 * @return
 	 */
-	public Genre getGenre(String genre);
+	public IGenre getGenre(String genre);
 
 	/**
 	 * Adds a genre to repository
-	 * @param genreName
+	 * @param genre
 	 * @return created genre
 	 */
-	public Genre putGenre(String genreName);
+	public IGenre putGenre(IGenre genre);
 
 	/**
 	 * Removes genre from repository
 	 * @param artist
 	 */
-	public void removeGenre(Genre genre);
+	public void removeGenre(IGenre genre);
 
 	/**
 	 * Returns year
 	 * @param year
 	 * @return
 	 */
-	public Year getYear(String year);
+	public IYear getYear(String year);
 
 	/**
 	 * Gets all years
 	 * @return
 	 */
-	public Collection<Year> getYears();
+	public Collection<IYear> getYears();
 
 	/**
 	 * Puts a year
 	 * @param year
 	 * @return
 	 */
-	public Year putYear(Year year);
+	public IYear putYear(IYear year);
 
 	/**
 	 * Removes a year
 	 * @param year
 	 */
-	public void removeYear(Year year);
+	public void removeYear(IYear year);
 
 	/**
 	 * Returns data organized by years

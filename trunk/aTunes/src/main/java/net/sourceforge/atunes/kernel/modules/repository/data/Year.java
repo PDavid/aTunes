@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.repository.data;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +27,7 @@ import java.util.Set;
 
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ITreeObject;
+import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.UnknownObjectCheck;
@@ -36,7 +35,7 @@ import net.sourceforge.atunes.utils.UnknownObjectCheck;
 /**
  * This class represents a year, with a set of artist of this year.
  */
-public class Year implements Serializable, ITreeObject<ILocalAudioObject> {
+public class Year implements IYear {
 
     private static final long serialVersionUID = -8560986690062265343L;
 
@@ -54,7 +53,7 @@ public class Year implements Serializable, ITreeObject<ILocalAudioObject> {
      */
     public Year(String year) {
         this.year = year;
-        audioFiles = new ArrayList<ILocalAudioObject>();
+        this.audioFiles = new ArrayList<ILocalAudioObject>();
     }
 
     /**
@@ -63,7 +62,8 @@ public class Year implements Serializable, ITreeObject<ILocalAudioObject> {
      * @param a
      *            the a
      */
-    public void addAudioFile(ILocalAudioObject a) {
+    @Override
+	public void addAudioObject(ILocalAudioObject a) {
         audioFiles.add(a);
     }
 
@@ -83,11 +83,7 @@ public class Year implements Serializable, ITreeObject<ILocalAudioObject> {
      */
     @Override
     public List<ILocalAudioObject> getAudioObjects() {
-        List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
-        for (ILocalAudioObject song : audioFiles) {
-            result.add(song);
-        }
-        return result;
+        return new ArrayList<ILocalAudioObject>(audioFiles);
     }
 
     /**
@@ -95,7 +91,8 @@ public class Year implements Serializable, ITreeObject<ILocalAudioObject> {
      * 
      * @return the year
      */
-    public String getName() {
+    @Override
+	public String getName() {
         if (year.isEmpty()) {
             return UnknownObjectCheck.getUnknownYear();
         }
@@ -113,7 +110,8 @@ public class Year implements Serializable, ITreeObject<ILocalAudioObject> {
      * @param a
      *            the a
      */
-    public void removeAudioFile(ILocalAudioObject a) {
+    @Override
+	public void removeAudioObject(ILocalAudioObject a) {
         audioFiles.remove(a);
     }
 
@@ -149,14 +147,16 @@ public class Year implements Serializable, ITreeObject<ILocalAudioObject> {
      * 
      * @return the artists
      */
-    public Map<String, Artist> getArtistObjects() {
+    @Override
+	public Map<String, Artist> getArtistObjects() {
     	return new ArtistStructureBuilder().getArtistObjects(audioFiles);
     }
 
     /**
      * Returns all artists of this year
      */
-    public Set<String> getArtistSet() {
+    @Override
+	public Set<String> getArtistSet() {
     	return new ArtistStructureBuilder().getArtistSet(audioFiles);
     }
     

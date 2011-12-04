@@ -28,10 +28,12 @@ import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ArtistViewMode;
 import net.sourceforge.atunes.model.Folder;
+import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITag;
+import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 /**
@@ -153,11 +155,11 @@ final class RepositoryFiller {
      */
     private void addToGenreStructure(ILocalAudioObject audioFile) {
     	String genre = audioFile.getGenre();
-    	Genre genreObject = repository.getGenre(genre);
+    	IGenre genreObject = repository.getGenre(genre);
     	if (genreObject == null) {
-    		genreObject = repository.putGenre(genre);
+    		genreObject = repository.putGenre(new Genre(genre));
     	}
-    	genreObject.addAudioFile(audioFile);
+    	genreObject.addAudioObject(audioFile);
     }
 
     /**
@@ -169,13 +171,13 @@ final class RepositoryFiller {
     private void addToYearStructure(ILocalAudioObject audioFile) {
     	String year = audioFile.getYear();
 
-    	Year yearObject = repository.getYear(year);
+    	IYear yearObject = repository.getYear(year);
     	if (yearObject == null) {
     		yearObject = new Year(year);
     		repository.putYear(yearObject);
     	}
 
-    	yearObject.addAudioFile(audioFile);
+    	yearObject.addAudioObject(audioFile);
     }
 
     /**
@@ -293,9 +295,9 @@ final class RepositoryFiller {
 			genre = UnknownObjectCheck.getUnknownGenre();
 		}
 
-		Genre g = repository.getGenre(genre);
+		IGenre g = repository.getGenre(genre);
 		if (g != null) {
-			g.removeAudioFile(file);
+			g.removeAudioObject(file);
 
 			if (g.size() <= 1) {
 				repository.removeGenre(g);
@@ -318,9 +320,9 @@ final class RepositoryFiller {
 		}
 
 		// Remove from year structure if necessary
-		Year y = repository.getYear(year);
+		IYear y = repository.getYear(year);
 		if (y != null) {
-			y.removeAudioFile(file);
+			y.removeAudioObject(file);
 
 			if (y.size() <= 1) {
 				repository.removeYear(y);

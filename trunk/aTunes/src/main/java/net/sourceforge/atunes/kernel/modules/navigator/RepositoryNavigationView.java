@@ -52,7 +52,6 @@ import net.sourceforge.atunes.kernel.actions.SetFavoriteAlbumFromNavigatorAction
 import net.sourceforge.atunes.kernel.actions.SetFavoriteArtistFromNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.SetFavoriteSongFromNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
-import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -60,6 +59,7 @@ import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ITreeObject;
+import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -241,7 +241,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
         List<ITreeObject<? extends IAudioObject>> objectsExpanded = getTreeObjectsExpanded(tree, root);
         
         // Build treeN
-        getTreeGeneratorFactory().getTreeGenerator(viewMode).buildTree("REPOSITORY", this, (Map<String, Year>) getViewData(viewMode), treeFilter, root, treeModel, objectsSelected, objectsExpanded);
+        getTreeGeneratorFactory().getTreeGenerator(viewMode).buildTree("REPOSITORY", this, (Map<String, IYear>) getViewData(viewMode), treeFilter, root, treeModel, objectsSelected, objectsExpanded);
         
         getTree().expandRow(0);
     }

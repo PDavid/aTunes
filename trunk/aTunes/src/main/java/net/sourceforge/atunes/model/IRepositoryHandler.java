@@ -25,9 +25,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
-import net.sourceforge.atunes.kernel.modules.repository.data.Year;
-
 public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener, IRepositoryListener {
 
 	/**
@@ -72,13 +69,13 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 	 * @param genre
 	 * @return
 	 */
-	public Genre getGenre(String genre);
+	public IGenre getGenre(String genre);
 
 	/**
 	 * Removes genre
 	 * @param genre
 	 */
-	public void removeGenre(Genre genre);
+	public void removeGenre(IGenre genre);
 
 	/**
 	 * Gets the file if loaded.
@@ -288,13 +285,13 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 	 * @return
 	 * @see net.sourceforge.atunes.model.Repository#getYear(java.lang.String)
 	 */
-	public Year getYear(String year);
+	public IYear getYear(String year);
 
 	/**
 	 * @param year
 	 * @see net.sourceforge.atunes.model.Repository#removeYear(net.sourceforge.atunes.kernel.modules.repository.data.Year)
 	 */
-	public void removeYear(Year year);
+	public void removeYear(IYear year);
 
 	/**
 	 * @param file

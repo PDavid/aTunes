@@ -31,10 +31,10 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.INavigationViewSorter;
 import net.sourceforge.atunes.model.ITreeGenerator;
@@ -122,7 +122,7 @@ public class GenreTreeGenerator implements ITreeGenerator {
 			List<DefaultMutableTreeNode> nodesToSelect,
 			List<DefaultMutableTreeNode> nodesToExpand, String genreName) {
 		
-		Genre genre = (Genre) structure.get(genreName);
+		IGenre genre = (IGenre) structure.get(genreName);
 		if (currentFilter == null || genre.getName().toUpperCase().contains(currentFilter.toUpperCase())) {
 		    DefaultMutableTreeNode genreNode = new DefaultMutableTreeNode(genre);
 		    // If node was selected before refreshing...

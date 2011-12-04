@@ -28,9 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
-import net.sourceforge.atunes.kernel.modules.repository.data.Year;
-
 
 public class Repository implements Serializable, IRepository {
 
@@ -69,12 +66,12 @@ public class Repository implements Serializable, IRepository {
     /**
      * Genres structure
      */
-    private RepositoryStructure<Genre> genresStructure;
+    private RepositoryStructure<IGenre> genresStructure;
     
     /**
      *  Year structure
      */
-    private RepositoryStructure<Year> yearStructure;
+    private RepositoryStructure<IYear> yearStructure;
     
     /**
      * State
@@ -91,8 +88,8 @@ public class Repository implements Serializable, IRepository {
         this.filesStructure = new RepositoryStructure<ILocalAudioObject>();
         this.artistsStructure = new RepositoryStructure<Artist>();
         this.foldersStructure = new RepositoryStructure<Folder>();
-        this.genresStructure = new RepositoryStructure<Genre>();
-        this.yearStructure = new RepositoryStructure<Year>();
+        this.genresStructure = new RepositoryStructure<IGenre>();
+        this.yearStructure = new RepositoryStructure<IYear>();
         this.state = state;
     }
 
@@ -372,7 +369,7 @@ public class Repository implements Serializable, IRepository {
      * @return
      */
 	@Override
-    public Map<String, Genre> getGenreStructure() {
+    public Map<String, IGenre> getGenreStructure() {
         return genresStructure.getStructure();
     }
 
@@ -380,7 +377,7 @@ public class Repository implements Serializable, IRepository {
 	 * @see net.sourceforge.atunes.model.IRepository#getGenres()
 	 */
     @Override
-	public Collection<Genre> getGenres() {
+	public Collection<IGenre> getGenres() {
     	return genresStructure.getAll();
     }
     
@@ -388,7 +385,7 @@ public class Repository implements Serializable, IRepository {
 	 * @see net.sourceforge.atunes.model.IRepository#getGenre(java.lang.String)
 	 */
     @Override
-	public Genre getGenre(String genre) {
+	public IGenre getGenre(String genre) {
     	if (state.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
     		return genresStructure.get(genre);
     	} else {
@@ -396,16 +393,12 @@ public class Repository implements Serializable, IRepository {
     	}
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#putGenre(java.lang.String)
-	 */
     @Override
-	public Genre putGenre(String genreName) {
-    	Genre genre = new Genre(genreName);
+	public IGenre putGenre(IGenre genre) {
     	if (state.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
-    		genresStructure.put(genreName, genre);
+    		genresStructure.put(genre.getName(), genre);
     	} else {
-    		genresStructure.put(genreName.toLowerCase(), genre);
+    		genresStructure.put(genre.getName().toLowerCase(), genre);
     	}
     	return genre;
     }
@@ -414,7 +407,7 @@ public class Repository implements Serializable, IRepository {
 	 * @see net.sourceforge.atunes.model.IRepository#removeGenre(net.sourceforge.atunes.kernel.modules.repository.data.Genre)
 	 */
     @Override
-	public void removeGenre(Genre genre) {
+	public void removeGenre(IGenre genre) {
     	if (state.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
     		genresStructure.remove(genre.getName());
     	} else {
@@ -429,7 +422,7 @@ public class Repository implements Serializable, IRepository {
      * @return
      */
 	@Override
-    public Map<String, Year> getYearStructure() {
+    public Map<String, IYear> getYearStructure() {
         return yearStructure.getStructure();
     }
 
@@ -437,7 +430,7 @@ public class Repository implements Serializable, IRepository {
 	 * @see net.sourceforge.atunes.model.IRepository#getYear(java.lang.String)
 	 */
     @Override
-	public Year getYear(String year) {
+	public IYear getYear(String year) {
     	return yearStructure.get(year);
     }
     
@@ -445,7 +438,7 @@ public class Repository implements Serializable, IRepository {
 	 * @see net.sourceforge.atunes.model.IRepository#getYears()
 	 */
     @Override
-	public Collection<Year> getYears() {
+	public Collection<IYear> getYears() {
     	return yearStructure.getAll();
     }
     
@@ -453,7 +446,7 @@ public class Repository implements Serializable, IRepository {
 	 * @see net.sourceforge.atunes.model.IRepository#putYear(net.sourceforge.atunes.kernel.modules.repository.data.Year)
 	 */
     @Override
-	public Year putYear(Year year) {
+	public IYear putYear(IYear year) {
     	yearStructure.put(year.getName(), year);
     	return year;
     }
@@ -462,7 +455,7 @@ public class Repository implements Serializable, IRepository {
 	 * @see net.sourceforge.atunes.model.IRepository#removeYear(net.sourceforge.atunes.kernel.modules.repository.data.Year)
 	 */
     @Override
-	public void removeYear(Year year) {
+	public void removeYear(IYear year) {
     	yearStructure.remove(year.getName());
     }
 }
