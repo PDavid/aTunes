@@ -25,14 +25,10 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.ImageIcon;
-
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.INetworkHandler;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IProxy;
 import net.sourceforge.atunes.model.IRadio;
-import net.sourceforge.atunes.model.ImageSize;
 
 import org.commonjukebox.plugins.model.PluginApi;
 import org.joda.time.base.BaseDateTime;
@@ -382,11 +378,6 @@ public final class Radio implements IRadio {
     @Override
     public boolean isExtendedToolTipImageSupported() {
         return false;
-    }
-
-    @Override
-    public ImageIcon getImage(ImageSize imageSize, IOSManager osManager) {
-        return null;
     }
 
 	/* (non-Javadoc)

@@ -30,6 +30,7 @@ import java.util.Map;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectGenericImageFactory;
+import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INotificationEngine;
@@ -51,6 +52,15 @@ public final class NotificationsHandler extends AbstractHandler implements IPlay
     private ITemporalDiskStorage temporalDiskStorage;
     
     private ILookAndFeelManager lookAndFeelManager;
+    
+    private IAudioObjectImageLocator audioObjectImageLocator;
+    
+    /**
+     * @param audioObjectImageLocator
+     */
+    public void setAudioObjectImageLocator(IAudioObjectImageLocator audioObjectImageLocator) {
+		this.audioObjectImageLocator = audioObjectImageLocator;
+	}
     
     public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
@@ -76,8 +86,8 @@ public final class NotificationsHandler extends AbstractHandler implements IPlay
     		engines = new HashMap<String, INotificationEngine>();
         	// Add here any new notification engine
         	addNotificationEngine(engines, getDefaultEngine());
-        	addNotificationEngine(engines, new LibnotifyNotificationEngine(getOsManager(), audioObjectGenericImageFactory, temporalDiskStorage, lookAndFeelManager));
-        	addNotificationEngine(engines, new GrowlNotificationEngine(getOsManager(), audioObjectGenericImageFactory, temporalDiskStorage, lookAndFeelManager));
+        	addNotificationEngine(engines, new LibnotifyNotificationEngine(getOsManager(), audioObjectGenericImageFactory, temporalDiskStorage, lookAndFeelManager, audioObjectImageLocator));
+        	addNotificationEngine(engines, new GrowlNotificationEngine(getOsManager(), audioObjectGenericImageFactory, temporalDiskStorage, lookAndFeelManager, audioObjectImageLocator));
     	}
     	return engines;
     }
@@ -152,7 +162,7 @@ public final class NotificationsHandler extends AbstractHandler implements IPlay
 	@Override
 	public INotificationEngine getDefaultEngine() {
 		if (defaultEngine == null) {
-	    	defaultEngine = new DefaultNotifications(getState(), getOsManager(), getBean(ILookAndFeelManager.class), audioObjectGenericImageFactory, temporalDiskStorage);
+	    	defaultEngine = new DefaultNotifications(getState(), getBean(ILookAndFeelManager.class), audioObjectGenericImageFactory, temporalDiskStorage, audioObjectImageLocator);
 		}
 		return defaultEngine;
 	}

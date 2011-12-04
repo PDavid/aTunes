@@ -28,15 +28,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import org.apache.sanselan.ImageWriteException;
-
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IContextInformationSource;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.model.ImageSize;
@@ -44,6 +42,8 @@ import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.Logger;
+
+import org.apache.sanselan.ImageWriteException;
 
 /**
  * Data Source for basic album object information Retrieves basic information
@@ -83,9 +83,9 @@ public class AlbumInfoDataSource implements IContextInformationSource {
     
     private IWebServicesHandler webServicesHandler;
     
-    private IRepositoryHandler repositoryHandler;
-    
     private IOSManager osManager;
+    
+    private IAudioObjectImageLocator audioObjectImageLocator;
     
     @Override
     public Map<String, ?> getData(Map<String, ?> parameters) {
@@ -197,7 +197,7 @@ public class AlbumInfoDataSource implements IContextInformationSource {
                 savePicture(image, (ILocalAudioObject) audioObject);
             }
         } else {
-            image = audioObject.getImage(ImageSize.SIZE_MAX, osManager).getImage();
+            image = audioObjectImageLocator.getImage(audioObject, ImageSize.SIZE_MAX).getImage();
         }
         return image;
     }
@@ -264,8 +264,10 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 		this.webServicesHandler = webServicesHandler;
 	}
     
-    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
+    /**
+     * @param audioObjectImageLocator
+     */
+    public void setAudioObjectImageLocator(IAudioObjectImageLocator audioObjectImageLocator) {
+		this.audioObjectImageLocator = audioObjectImageLocator;
 	}
-
 }

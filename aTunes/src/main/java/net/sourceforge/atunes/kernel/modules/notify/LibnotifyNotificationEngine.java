@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.notify;
 import net.sourceforge.atunes.kernel.modules.notify.Notify.NotifyNotification;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectGenericImageFactory;
+import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
@@ -59,8 +60,8 @@ public class LibnotifyNotificationEngine extends CommonNotificationEngine {
      * @param diskStorage
      */
     public LibnotifyNotificationEngine(IOSManager osManager, 
-    		IAudioObjectGenericImageFactory audioObjectGenericImageFactory, ITemporalDiskStorage diskStorage, ILookAndFeelManager lookAndFeelManager) {
-    	super(audioObjectGenericImageFactory, diskStorage, lookAndFeelManager);
+    		IAudioObjectGenericImageFactory audioObjectGenericImageFactory, ITemporalDiskStorage diskStorage, ILookAndFeelManager lookAndFeelManager, IAudioObjectImageLocator audioObjectImageLocator) {
+    	super(audioObjectGenericImageFactory, diskStorage, lookAndFeelManager, audioObjectImageLocator);
     	this.osManager = osManager;
     }
 

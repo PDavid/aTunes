@@ -22,6 +22,7 @@ package net.sourceforge.atunes.gui.views.dialogs.properties;
 
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialog;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
@@ -47,6 +48,8 @@ public class AudioObjectPropertiesDialogFactory implements IAudioObjectPropertie
 	
 	private IRepositoryHandler repositoryHandler;
 	
+	private IAudioObjectImageLocator audioObjectImageLocator;
+	
     @Override
 	public IAudioObjectPropertiesDialog newInstance(IAudioObject a, ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler) {
     	AudioObjectPropertiesDialog dialog = null;
@@ -55,7 +58,7 @@ public class AudioObjectPropertiesDialogFactory implements IAudioObjectPropertie
     	} else if (a instanceof IRadio) {
     		dialog = new RadioPropertiesDialog((Radio) a, frame, lookAndFeelManager);
     	} else if (a instanceof ILocalAudioObject) {
-    		dialog = new LocalAudioObjectPropertiesDialog((ILocalAudioObject) a, state, frame, osManager, playListHandler, lookAndFeelManager, repositoryHandler, playerHandler);
+    		dialog = new LocalAudioObjectPropertiesDialog((ILocalAudioObject) a, state, frame, osManager, playListHandler, lookAndFeelManager, repositoryHandler, playerHandler, audioObjectImageLocator);
     	}
     	if (dialog != null) {
     		dialog.setAudioObject(a);
@@ -63,25 +66,16 @@ public class AudioObjectPropertiesDialogFactory implements IAudioObjectPropertie
     	return dialog;
     }
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.properties.IAudioObjectPropertiesDialogFactory#setFrame(net.sourceforge.atunes.model.IFrame)
-	 */
 	@Override
 	public void setFrame(IFrame frame) {
 		this.frame = frame;
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.properties.IAudioObjectPropertiesDialogFactory#setState(net.sourceforge.atunes.model.IState)
-	 */
 	@Override
 	public void setState(IState state) {
 		this.state = state;
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.properties.IAudioObjectPropertiesDialogFactory#setOsManager(net.sourceforge.atunes.model.IOSManager)
-	 */
 	@Override
 	public void setOsManager(IOSManager osManager) {
 		this.osManager = osManager;
@@ -94,5 +88,12 @@ public class AudioObjectPropertiesDialogFactory implements IAudioObjectPropertie
 	
 	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
+	}
+	
+	/**
+	 * @param audioObjectImageLocator
+	 */
+	public void setAudioObjectImageLocator(IAudioObjectImageLocator audioObjectImageLocator) {
+		this.audioObjectImageLocator = audioObjectImageLocator;
 	}
 }

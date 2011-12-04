@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.model;
 
-import javax.swing.ImageIcon;
-
 import org.commonjukebox.plugins.model.PluginApi;
 import org.joda.time.base.BaseDateTime;
 
@@ -179,15 +177,6 @@ public interface IAudioObject {
      */
     public int getDiscNumber();
 
-    /**
-     * Returns a image for this audio object.
-     * 
-     * @param imageSize
-     * @param osManager
-     * @return the image or <code>null</code> if no such image is available
-     */
-    public ImageIcon getImage(ImageSize imageSize, IOSManager osManager);
-    
     /**
      * A human-readable text describing this object
      * @return

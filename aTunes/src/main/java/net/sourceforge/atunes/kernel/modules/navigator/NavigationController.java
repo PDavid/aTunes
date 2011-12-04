@@ -61,6 +61,7 @@ import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IController;
@@ -70,7 +71,6 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationTreePanel;
 import net.sourceforge.atunes.model.INavigationView;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
@@ -90,11 +90,8 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
 			
 			private final Object currentObject;
 
-			private IOSManager osManager;
-			
-			private GetAndSetImageSwingWorker(Object currentObject, IOSManager osManager) {
+			private GetAndSetImageSwingWorker(Object currentObject) {
 				this.currentObject = currentObject;
-				this.osManager = osManager;
 			}
 
 			@Override
@@ -109,7 +106,7 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
 		                }
 		                return null;
 		        	} else if (currentObject instanceof Album) {
-		        		return ((Album)currentObject).getPicture(ImageSize.SIZE_MAX, osManager);
+		        		return audioObjectImageLocator.getImage((Album)currentObject, ImageSize.SIZE_MAX);
 		        	}
 		        }
 		        return null;
@@ -135,7 +132,7 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
             getExtendedToolTip().setVisible(true);
 
             final Object currentObject = currentExtendedToolTipContent;
-            SwingWorker<ImageIcon, Void> getAndSetImage = new GetAndSetImageSwingWorker(currentObject, osManager);
+            SwingWorker<ImageIcon, Void> getAndSetImage = new GetAndSetImageSwingWorker(currentObject);
             getAndSetImage.execute();
 
         }
@@ -167,8 +164,6 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
     
     private IColumnSet navigatorColumnSet;
     
-    private IOSManager osManager;
-    
     INavigationHandler navigationHandler;
     
     private ITaskService taskService;
@@ -179,27 +174,29 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
     
     private ITable navigationTable;
     
+    private IAudioObjectImageLocator audioObjectImageLocator;
+    
     /**
      * Instantiates a new navigation controller.
      * @param treePanel
      * @param navigationTable
      * @param state
-     * @param osManager
      * @param navigationHandler
      * @param taskService
      * @param lookAndFeelManager
      * @param repositoryHandler
      * @param filterHandler
+     * @param audioObjectImageLocator
      */
-    NavigationController(INavigationTreePanel treePanel, ITable navigationTable, IState state, IOSManager osManager, INavigationHandler navigationHandler, ITaskService taskService, ILookAndFeelManager lookAndFeelManager, IRepositoryHandler repositoryHandler, IFilterHandler filterHandler) {
+    NavigationController(INavigationTreePanel treePanel, ITable navigationTable, IState state, INavigationHandler navigationHandler, ITaskService taskService, ILookAndFeelManager lookAndFeelManager, IRepositoryHandler repositoryHandler, IFilterHandler filterHandler, IAudioObjectImageLocator audioObjectImageLocator) {
         this.navigationTreePanel = treePanel;
         this.navigationTable = navigationTable;
         this.state = state;
-        this.osManager = osManager;
         this.navigationHandler = navigationHandler;
         this.taskService = taskService;
         this.lookAndFeelManager = lookAndFeelManager;
         this.filterHandler = filterHandler;
+        this.audioObjectImageLocator = audioObjectImageLocator;
         addBindings();
         repositoryHandler.addAudioFilesRemovedListener(this);
         this.navigatorColumnSet = (IColumnSet) Context.getBean("navigatorColumnSet");

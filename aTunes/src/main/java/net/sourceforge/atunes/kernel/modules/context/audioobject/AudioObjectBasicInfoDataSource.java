@@ -31,11 +31,11 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IAudioObjectStatistics;
 import net.sourceforge.atunes.model.IContextInformationSource;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IStatisticsHandler;
@@ -87,13 +87,20 @@ public class AudioObjectBasicInfoDataSource implements IContextInformationSource
     
     private IWebServicesHandler webServicesHandler;
     
-    private IOSManager osManager;
-    
     private ILookAndFeelManager lookAndFeelManager;
     
     private CachedIconFactory rssMediumIcon;
     
     private CachedIconFactory radioMediumIcon;
+    
+    private IAudioObjectImageLocator audioObjectImageLocator;
+    
+    /**
+     * @param audioObjectImageLocator
+     */
+    public void setAudioObjectImageLocator(IAudioObjectImageLocator audioObjectImageLocator) {
+		this.audioObjectImageLocator = audioObjectImageLocator;
+	}
     
     /**
      * @param radioMediumIcon
@@ -138,7 +145,7 @@ public class AudioObjectBasicInfoDataSource implements IContextInformationSource
      */
     private ImageIcon getImage(IAudioObject audioObject) {
         if (audioObject instanceof ILocalAudioObject) {
-            ImageIcon localImage = audioObject.getImage(Constants.ALBUM_IMAGE_SIZE, osManager);
+            ImageIcon localImage = audioObjectImageLocator.getImage(audioObject, Constants.ALBUM_IMAGE_SIZE);
             if (localImage == null) {
                 Image image = webServicesHandler.getAlbumImage(audioObject.getArtist(), audioObject.getAlbum());
                 if (image != null) {
@@ -178,10 +185,6 @@ public class AudioObjectBasicInfoDataSource implements IContextInformationSource
     
     public final void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
-	}
-    
-    public void setOsManager(IOSManager osManager) {
-		this.osManager = osManager;
 	}
     
     public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {

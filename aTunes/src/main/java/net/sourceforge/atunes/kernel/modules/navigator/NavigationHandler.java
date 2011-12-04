@@ -33,6 +33,7 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.draganddrop.TreeNavigationTransferHandler;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -106,6 +107,15 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 	private IFilterHandler filterHandler;
 	
 	private ITable navigationTable;
+	
+	private IAudioObjectImageLocator audioObjectImageLocator;
+	
+	/**
+	 * @param audioObjectImageLocator
+	 */
+	public void setAudioObjectImageLocator(IAudioObjectImageLocator audioObjectImageLocator) {
+		this.audioObjectImageLocator = audioObjectImageLocator;
+	}
 	
 	/**
 	 * @param navigationTable
@@ -236,7 +246,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
      */
     private NavigationController getNavigationController() {
         if (navigationController == null) {
-            navigationController = new NavigationController(getBean(INavigationTreePanel.class), (ITable)getBean("navigationTable"), getState(), getOsManager(), this, getBean(ITaskService.class), getBean(ILookAndFeelManager.class), getBean(IRepositoryHandler.class), getBean(IFilterHandler.class));
+            navigationController = new NavigationController(getBean(INavigationTreePanel.class), (ITable)getBean("navigationTable"), getState(), this, getBean(ITaskService.class), getBean(ILookAndFeelManager.class), getBean(IRepositoryHandler.class), getBean(IFilterHandler.class), audioObjectImageLocator);
         }
         return navigationController;
     }

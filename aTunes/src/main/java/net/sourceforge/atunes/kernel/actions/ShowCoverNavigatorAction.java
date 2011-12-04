@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorFrame;
 import net.sourceforge.atunes.kernel.modules.covernavigator.CoverNavigatorController;
+import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
@@ -45,6 +46,15 @@ public class ShowCoverNavigatorAction extends CustomAbstractAction {
     private ILookAndFeelManager lookAndFeelManager;
     
     private IOSManager osManager;
+    
+    private IAudioObjectImageLocator audioObjectImageLocator;
+    
+    /**
+     * @param audioObjectImageLocator
+     */
+    public void setAudioObjectImageLocator(IAudioObjectImageLocator audioObjectImageLocator) {
+		this.audioObjectImageLocator = audioObjectImageLocator;
+	}
     
     /**
      * @param repositoryHandler
@@ -84,7 +94,7 @@ public class ShowCoverNavigatorAction extends CustomAbstractAction {
         CoverNavigatorFrame coverNavigator = new CoverNavigatorFrame(repositoryHandler.getArtists(), 
         															 frame.getFrame(),
         															 lookAndFeelManager);
-        new CoverNavigatorController(coverNavigator, getState(), osManager);
+        new CoverNavigatorController(coverNavigator, getState(), osManager, audioObjectImageLocator);
         coverNavigator.setVisible(true);
     }
 
