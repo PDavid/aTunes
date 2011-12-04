@@ -26,7 +26,7 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectValidator;
-import net.sourceforge.atunes.kernel.modules.repository.data.Format;
+import net.sourceforge.atunes.model.LocalAudioObjectFormat;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
@@ -180,7 +180,7 @@ public final class TagModifier {
             org.jaudiotagger.audio.AudioFile audioFile = org.jaudiotagger.audio.AudioFileIO.read(file.getFile());
             org.jaudiotagger.tag.Tag newTag = audioFile.getTagOrCreateAndSetDefault();
 
-            if (LocalAudioObjectValidator.isValidAudioFile(file.getFile().getName(), Format.MP3)) {
+            if (LocalAudioObjectValidator.isValidAudioFile(file.getFile().getName(), LocalAudioObjectFormat.MP3)) {
                 org.jaudiotagger.audio.mp3.MP3File mp3file = (org.jaudiotagger.audio.mp3.MP3File) audioFile;
                 if (mp3file.hasID3v1Tag() && !mp3file.hasID3v2Tag()) {
                     deleteTags(file);
@@ -209,7 +209,7 @@ public final class TagModifier {
             }
 
             // Workaround for mp4 files - strings outside genre list might not be written otherwise
-            if (LocalAudioObjectValidator.isValidAudioFile(file.getFile().getName(), Format.MP4_1, Format.MP4_2)) {
+            if (LocalAudioObjectValidator.isValidAudioFile(file.getFile().getName(), LocalAudioObjectFormat.MP4_1, LocalAudioObjectFormat.MP4_2)) {
                 newTag.deleteField(FieldKey.GENRE);
             }
 
