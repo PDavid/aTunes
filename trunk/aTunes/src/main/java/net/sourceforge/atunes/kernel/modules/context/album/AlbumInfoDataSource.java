@@ -218,8 +218,6 @@ public class AlbumInfoDataSource implements IContextInformationSource {
                 // Save picture
                 try {
                     ImageUtils.writeImageToFile(img, imageFileName);
-                    // Add picture to songs of album
-                    repositoryHandler.addExternalPictureForAlbum(file.getArtist(), file.getAlbum(), imageFile);
                 } catch (IOException e) {
                     Logger.error(e);
                 } catch (ImageWriteException e) {

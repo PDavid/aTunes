@@ -168,10 +168,14 @@ public final class CoverFlow extends JPanel {
     protected Image getPicture(ILocalAudioObject audioFile, IOSManager osManager) {
     	Image result = Context.getBean(IWebServicesHandler.class).getAlbumImage(audioFile.getArtist(), audioFile.getAlbum());
         if (result == null) {
-            ImageIcon[] pictures = AudioFilePictureUtils.getPicturesForFile(audioFile, -1, -1, osManager);
-            if (pictures != null && pictures.length > 0) {
-                result = pictures[0].getImage();
-            }
+        	// Get inside picture
+        	ImageIcon icon = AudioFilePictureUtils.getInsidePicture(audioFile, -1, -1);
+        	result = icon != null ? icon.getImage() : null;
+        }
+        if (result == null) {
+        	// Get external picture
+        	ImageIcon icon = AudioFilePictureUtils.getExternalPicture(audioFile, -1, -1, osManager);
+        	result = icon != null ? icon.getImage() : null;
         }
         if (result == null) {
             result = Images.getImage(Images.APP_LOGO_300).getImage();

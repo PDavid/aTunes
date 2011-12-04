@@ -2,6 +2,8 @@ aTunes 2.2.0
 ------------
 - Allow truncate playlist when copying to device [ patch by deathgorepain ]
 - New options to organize artist view, using artist and / or album artist tag fields [ patch by Laurent Cathala ]
+- Removed external pictures support, only pictures exported with application are supported
+- Improved performance of Full Screen Mode
 
 aTunes 2.1.1
 ------------

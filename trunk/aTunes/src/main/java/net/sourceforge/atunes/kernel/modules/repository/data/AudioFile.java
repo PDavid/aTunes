@@ -22,8 +22,6 @@ package net.sourceforge.atunes.kernel.modules.repository.data;
 
 import java.io.File;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.ImageIcon;
 
@@ -54,7 +52,6 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
     private static final long serialVersionUID = -1139001443603556703L;
 
     private ITag tag;
-    private List<File> externalPictures;
     private int duration;
 	private long bitrate;
     private int frequency;
@@ -82,22 +79,6 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
      */
     public AudioFile(String fileName) {
     	this.filePath = fileName;
-    }
-
-    /**
-     * Adds the external picture.
-     * 
-     * @param picture
-     *            the picture
-     */
-    @Override
-    public void addExternalPicture(File picture) {
-        if (externalPictures == null) {
-            externalPictures = new ArrayList<File>();
-        }
-        if (!externalPictures.contains(picture)) {
-            externalPictures.add(0, picture);
-        }
     }
 
     @Override
@@ -165,25 +146,6 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
     @Override
     public int getDuration() {
         return duration;
-    }
-
-    /**
-     * Gets the external pictures.
-     * 
-     * @return the external pictures
-     */
-    @Override
-    public List<File> getExternalPictures() {
-        return externalPictures;
-    }
-
-    /**
-     * Gets the external pictures count.
-     * 
-     * @return the external pictures count
-     */
-    public int getExternalPicturesCount() {
-        return externalPictures != null ? externalPictures.size() : 0;
     }
 
     /**
@@ -352,17 +314,6 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
             return false;
         }
         return readTime > getFile().lastModified();
-    }
-
-    /**
-     * Sets the external pictures.
-     * 
-     * @param externalPictures
-     *            the new external pictures
-     */
-    @Override
-    public void setExternalPictures(List<File> externalPictures) {
-        this.externalPictures = externalPictures;
     }
 
     /**
