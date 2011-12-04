@@ -39,6 +39,8 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.autocomplete.AutoCompleteDecorator;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
+import net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectValidator;
+import net.sourceforge.atunes.kernel.modules.repository.data.Format;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -171,6 +173,16 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
     }
 
     /**
+     * Checks if the tag of this audio file does support internal images
+     * @param audioObject
+     * @return
+     */
+    private final boolean supportsInternalPicture(ILocalAudioObject audioObject) {
+        return LocalAudioObjectValidator.isValidAudioFile(audioObject.getUrl(), Format.FLAC, Format.MP3, Format.MP4_1, Format.MP4_2, Format.OGG, Format.WMA);
+    }
+
+
+    /**
      * Edits the files.
      * 
      * @param audioFiles
@@ -217,7 +229,7 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
         // Check if at least one audio file supports internal pictures
         boolean supportsInternalPicture = false;
         for (ILocalAudioObject af : audioFilesEditing) {
-            if (af.supportsInternalPicture()) {
+            if (supportsInternalPicture(af)) {
                 supportsInternalPicture = true;
                 break;
             }
