@@ -27,7 +27,6 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.IConfirmationDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
@@ -37,6 +36,7 @@ import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -254,7 +254,7 @@ public final class TagEditionOperations {
     	return Collections2.filter(audioFiles, new Predicate<ILocalAudioObject>() {
     		@Override
     		public boolean apply(ILocalAudioObject ao) {
-    			return ao.getAlbum() == null || Album.isUnknownAlbum(ao.getAlbum()) || ao.getAlbum().isEmpty();
+    			return ao.getAlbum() == null || UnknownObjectCheck.isUnknownAlbum(ao.getAlbum()) || ao.getAlbum().isEmpty();
     		}
 		});
     }

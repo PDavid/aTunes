@@ -21,13 +21,13 @@
 package net.sourceforge.atunes.kernel.modules.context.similar;
 
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
-import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 /**
  * Panel to show similar artists
@@ -64,7 +64,7 @@ public class SimilarArtistsContextPanel extends AbstractContextPanel {
     @Override
     public boolean isPanelVisibleForAudioObject(IAudioObject audioObject) {
         // Avoid unknown artist or album
-        if (Artist.isUnknownArtist(audioObject.getArtist())) {
+        if (UnknownObjectCheck.isUnknownArtist(audioObject.getArtist())) {
             return false;
         }
 

@@ -43,12 +43,12 @@ import javax.swing.table.AbstractTableModel;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.cdripper.CDInfo;
-import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
+import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 /**
  * The dialog for ripping cds
@@ -136,7 +136,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
                     if (cdInfo.getArtist() != null) {
                         return cdInfo.getArtist();
                     }
-                    return Artist.getUnknownArtist();
+                    return UnknownObjectCheck.getUnknownArtist();
                 }
                 return artistNames.get(rowIndex);
             } else if (columnIndex == 4) {
@@ -639,7 +639,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
                 if (cdInfo.getArtist() != null && !cdInfo.getArtist().trim().equals("")) {
                     names.add(cdInfo.getArtist());
                 } else {
-                    names.add(Artist.getUnknownArtist());
+                    names.add(UnknownObjectCheck.getUnknownArtist());
                 }
             }
         }

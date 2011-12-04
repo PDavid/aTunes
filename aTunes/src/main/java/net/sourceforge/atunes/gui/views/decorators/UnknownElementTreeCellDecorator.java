@@ -26,11 +26,8 @@ import javax.swing.JLabel;
 
 import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellDecorator;
-import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
-import net.sourceforge.atunes.kernel.modules.repository.data.Year;
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.utils.StringUtils;
+import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 public class UnknownElementTreeCellDecorator extends AbstractTreeCellDecorator {
 
@@ -40,10 +37,10 @@ public class UnknownElementTreeCellDecorator extends AbstractTreeCellDecorator {
 	private String unknownYear;
 	
 	public UnknownElementTreeCellDecorator() {
-		this.unknownAlbum = Album.getUnknownAlbum();
-		this.unknownArtist = Artist.getUnknownArtist();
-		this.unknownGenre = Genre.getUnknownGenre();
-		this.unknownYear = Year.getUnknownYear();
+		this.unknownAlbum = UnknownObjectCheck.getUnknownAlbum();
+		this.unknownArtist = UnknownObjectCheck.getUnknownArtist();
+		this.unknownGenre = UnknownObjectCheck.getUnknownGenre();
+		this.unknownYear = UnknownObjectCheck.getUnknownYear();
 	}
 	
     @Override

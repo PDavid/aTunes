@@ -31,8 +31,6 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
@@ -43,6 +41,7 @@ import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.ImageUtils;
+import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 /**
  * The Class SetGenresProcess.
@@ -98,7 +97,7 @@ public class SetCoversProcess extends AbstractChangeTagProcess {
 
         IWebServicesHandler  webServicesHandler = Context.getBean(IWebServicesHandler.class);
         for (ILocalAudioObject f : files) {
-            if (!Artist.isUnknownArtist(f.getArtist()) && !Album.isUnknownAlbum(f.getAlbum())) {
+            if (!UnknownObjectCheck.isUnknownArtist(f.getArtist()) && !UnknownObjectCheck.isUnknownAlbum(f.getAlbum())) {
                 Image cover = null;
                 int cacheKey = f.getArtist().hashCode() + f.getAlbum().hashCode();
                 if (coverCache.containsKey(cacheKey)) {

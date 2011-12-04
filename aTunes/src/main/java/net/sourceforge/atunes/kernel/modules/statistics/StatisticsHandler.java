@@ -38,6 +38,7 @@ import net.sourceforge.atunes.model.IStatisticsAlbum;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.RankList;
+import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 public final class StatisticsHandler extends AbstractHandler implements IStatisticsHandler {
 
@@ -156,7 +157,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
 		Album alb = a.getAlbum(album);
 
 		// Unknown album -> don't fill album stats
-		if (alb == null || Album.isUnknownAlbum(alb.getName())) {
+		if (alb == null || UnknownObjectCheck.isUnknownAlbum(alb.getName())) {
 		    return;
 		}
 
@@ -170,7 +171,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
 	 */
 	private void updateArtistRanking(Artist a) {
 		// Unknown artist -> don't fill artist stats
-		if (a == null || Artist.isUnknownArtist(a.getName())) {
+		if (a == null || UnknownObjectCheck.isUnknownArtist(a.getName())) {
 		    return;
 		}
 

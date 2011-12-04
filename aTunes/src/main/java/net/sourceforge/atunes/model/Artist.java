@@ -179,33 +179,6 @@ public class Artist implements Serializable, ITreeObject<ILocalAudioObject>, Com
         return true;
     }
 
-    /**
-     * Return unknown artist text
-     * 
-     * @return
-     */
-    public static String getUnknownArtist() {
-        return I18nUtils.getString("UNKNOWN_ARTIST");
-    }
-
-    /**
-     * Return <code>true</code> if this artist is unknown
-     * 
-     * @return
-     */
-    public boolean isUnknownArtist() {
-        return getName().equalsIgnoreCase(getUnknownArtist());
-    }
-
-    /**
-     * Return <code>true</code> if this artist is unknown
-     * 
-     * @return
-     */
-    public static boolean isUnknownArtist(String artist) {
-        return getUnknownArtist().equalsIgnoreCase(artist);
-    }
-    
 	/**
 	 * Returns true if artist has no audio files
 	 * @return

@@ -35,6 +35,7 @@ import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ISimilarArtistsInfo;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.ImageUtils;
+import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 /**
  * Similar artists data source
@@ -76,7 +77,7 @@ public class SimilarArtistsDataSource implements IContextInformationSource {
      * @param audioObject
      */
     private ISimilarArtistsInfo getSimilarArtists(IAudioObject audioObject) {
-        if (!Artist.isUnknownArtist(audioObject.getArtist())) {
+        if (!UnknownObjectCheck.isUnknownArtist(audioObject.getArtist())) {
             ISimilarArtistsInfo artists = webServicesHandler.getSimilarArtists(audioObject.getArtist());
             if (artists != null) {
             	Set<String> artistNamesSet = new HashSet<String>();

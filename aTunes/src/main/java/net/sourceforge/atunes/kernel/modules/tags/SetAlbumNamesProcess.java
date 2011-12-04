@@ -22,12 +22,12 @@ package net.sourceforge.atunes.kernel.modules.tags;
 
 import java.util.Collection;
 
-import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 /**
  * The Class SetAlbumNamesProcess.
@@ -49,7 +49,7 @@ public class SetAlbumNamesProcess extends AbstractChangeTagProcess {
 
     @Override
     protected void changeTag(ILocalAudioObject file) {
-        if (Album.isUnknownAlbum(file.getAlbum())) {
+        if (UnknownObjectCheck.isUnknownAlbum(file.getAlbum())) {
             // Take name from folder
             String albumName = file.getFile().getParentFile().getName();
             TagModifier.setAlbum(file, albumName);

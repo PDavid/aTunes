@@ -59,6 +59,7 @@ import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
+import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 import org.apache.commons.io.FilenameUtils;
 import org.joda.time.DateTime;
@@ -346,7 +347,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 
     @Override
 	public String getPathForNewAudioFilesRipped() {
-        return StringUtils.getString(getRepositoryPath(), getOsManager().getFileSeparator(), Album.getUnknownAlbum(), " - ", DateUtils.toPathString(new DateTime()));
+        return StringUtils.getString(getRepositoryPath(), getOsManager().getFileSeparator(), UnknownObjectCheck.getUnknownAlbum(), " - ", DateUtils.toPathString(new DateTime()));
     }
 
     @Override

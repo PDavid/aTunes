@@ -56,6 +56,7 @@ import net.sourceforge.atunes.utils.CryptoUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
+import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -805,7 +806,7 @@ public final class LastFmService {
      * @return
      */
     private boolean checkArtist(IAudioObject ao) {
-        if (net.sourceforge.atunes.model.Artist.isUnknownArtist(ao.getArtist())) {
+        if (UnknownObjectCheck.isUnknownArtist(ao.getArtist())) {
             Logger.debug("Don't submit to Last.fm: Unknown artist");
             return false;
         }
@@ -857,8 +858,8 @@ public final class LastFmService {
      */
     public String getTitleForFile(ILocalAudioObject f) {
         // If has valid artist name, album name, and track number...
-        if (!net.sourceforge.atunes.model.Artist.isUnknownArtist(f.getArtist())
-                && !net.sourceforge.atunes.model.Album.isUnknownAlbum(f.getAlbum()) && f.getTrackNumber() > 0) {
+        if (!UnknownObjectCheck.isUnknownArtist(f.getArtist())
+                && !UnknownObjectCheck.isUnknownAlbum(f.getAlbum()) && f.getTrackNumber() > 0) {
             // Find album
             IAlbumInfo albumRetrieved = getAlbum(f.getArtist(), f.getAlbum());
             if (albumRetrieved != null && albumRetrieved.getTracks().size() >= f.getTrackNumber()) {
@@ -877,8 +878,8 @@ public final class LastFmService {
      */
     public int getTrackNumberForFile(ILocalAudioObject f) {
         // If has valid artist name, album name and title
-        if (!net.sourceforge.atunes.model.Artist.isUnknownArtist(f.getArtist())
-                && !net.sourceforge.atunes.model.Album.isUnknownAlbum(f.getAlbum()) && !StringUtils.isEmpty(f.getTitle())) {
+        if (!UnknownObjectCheck.isUnknownArtist(f.getArtist())
+                && !UnknownObjectCheck.isUnknownAlbum(f.getAlbum()) && !StringUtils.isEmpty(f.getTitle())) {
             // Find album
             IAlbumInfo albumRetrieved = getAlbum(f.getArtist(), f.getAlbum());
             if (albumRetrieved != null) {

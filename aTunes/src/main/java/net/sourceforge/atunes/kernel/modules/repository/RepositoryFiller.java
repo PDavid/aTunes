@@ -32,6 +32,7 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITag;
+import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 /**
  * A class responsible of load repository structure
@@ -230,10 +231,10 @@ final class RepositoryFiller {
 			album = oldTag.getAlbum();
 		}
 		if (artist == null || artist.equals("")) {
-			artist = Artist.getUnknownArtist();
+			artist = UnknownObjectCheck.getUnknownArtist();
 		}
 		if (album == null || album.equals("")) {
-			album = Album.getUnknownAlbum();
+			album = UnknownObjectCheck.getUnknownAlbum();
 		}
 		
 		boolean albumArtistPresent = true;
@@ -289,7 +290,7 @@ final class RepositoryFiller {
 			genre = oldTag.getGenre();
 		}
 		if (genre == null || genre.equals("")) {
-			genre = Genre.getUnknownGenre();
+			genre = UnknownObjectCheck.getUnknownGenre();
 		}
 
 		Genre g = repository.getGenre(genre);
@@ -313,7 +314,7 @@ final class RepositoryFiller {
 			year = oldTag.getYear() > 0 ? Integer.toString(oldTag.getYear()) : "";
 		}
 		if (year == null || year.equals("")) {
-			year = Year.getUnknownYear();
+			year = UnknownObjectCheck.getUnknownYear();
 		}
 
 		// Remove from year structure if necessary

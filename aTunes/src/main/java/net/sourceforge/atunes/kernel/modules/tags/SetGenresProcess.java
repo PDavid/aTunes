@@ -27,13 +27,13 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
+import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 /**
  * The Class SetGenresProcess.
@@ -85,7 +85,7 @@ public class SetGenresProcess extends AbstractChangeTagProcess {
         
         IWebServicesHandler webServicesHandler = Context.getBean(IWebServicesHandler.class);
         for (ILocalAudioObject f : files) {
-            if (!Artist.isUnknownArtist(f.getArtist())) {
+            if (!UnknownObjectCheck.isUnknownArtist(f.getArtist())) {
                 String tag = null;
                 if (tagCache.containsKey(f.getArtist())) {
                     tag = tagCache.get(f.getArtist());

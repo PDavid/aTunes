@@ -23,11 +23,10 @@ package net.sourceforge.atunes.kernel.modules.repository.data;
 import java.io.File;
 import java.io.Serializable;
 
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.utils.StringUtils;
+import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 import org.commonjukebox.plugins.model.PluginApi;
 import org.joda.time.base.BaseDateTime;
@@ -88,7 +87,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
         if (tag != null && tag.getAlbum() != null && !tag.getAlbum().isEmpty()) {
             album = tag.getAlbum();
         } else {
-            album = Album.getUnknownAlbum();
+            album = UnknownObjectCheck.getUnknownAlbum();
         }
         return album;
     }
@@ -99,14 +98,14 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
         if (tag != null && tag.getAlbumArtist() != null && !tag.getAlbumArtist().isEmpty()) {
             albumArtist = tag.getAlbumArtist();
         } else {
-            albumArtist = Artist.getUnknownArtist();
+            albumArtist = UnknownObjectCheck.getUnknownArtist();
         }
         return albumArtist;
     }
 
     @Override
     public String getAlbumArtistOrArtist() {
-        return getAlbumArtist().isEmpty() || getAlbumArtist().equals(Artist.getUnknownArtist()) ? getArtist() : getAlbumArtist();
+        return getAlbumArtist().isEmpty() || getAlbumArtist().equals(UnknownObjectCheck.getUnknownArtist()) ? getArtist() : getAlbumArtist();
     }
 
     @Override
@@ -115,7 +114,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
         if (tag != null && tag.getArtist() != null && !tag.getArtist().isEmpty()) {
             artist = tag.getArtist();
         } else {
-            artist = Artist.getUnknownArtist();
+            artist = UnknownObjectCheck.getUnknownArtist();
         }
         return artist;
     }
@@ -161,7 +160,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
         if (tag != null && tag.getGenre() != null && !tag.getGenre().isEmpty()) {
             return tag.getGenre();
         }
-        return Genre.getUnknownGenre();
+        return UnknownObjectCheck.getUnknownGenre();
     }
 
     @Override
