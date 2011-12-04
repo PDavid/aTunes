@@ -27,6 +27,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.sanselan.ImageWriteException;
+
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.process.AbstractProcess;
 import net.sourceforge.atunes.model.Album;
@@ -84,9 +86,10 @@ public class GetCoversProcess extends AbstractProcess {
                     try {
                         ImageUtils.writeImageToFile(albumImage, AudioFilePictureUtils.getFileNameForCover((ILocalAudioObject)album.getAudioObjects().get(0), osManager));
                     } catch (IOException e1) {
-                        Logger.error(StringUtils.getString("Error writing image for artist: ", artist.getName(), " album: ", album.getName(),
-                                " Error: ", e1.getMessage()));
-                    }
+                        Logger.error(StringUtils.getString("Error writing image for artist: ", artist.getName(), " album: ", album.getName(), " Error: ", e1.getMessage()));
+                    } catch (ImageWriteException e) {
+                        Logger.error(StringUtils.getString("Error writing image for artist: ", artist.getName(), " album: ", album.getName(), " Error: ", e.getMessage()));
+					}
                 }
             }
             coversRetrieved++;
