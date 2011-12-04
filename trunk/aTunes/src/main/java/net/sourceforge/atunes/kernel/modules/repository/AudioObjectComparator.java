@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IAudioObjectComparator;
 
 /**
  * Default comparator used to sort audio objects

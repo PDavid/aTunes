@@ -18,13 +18,12 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.repository;
+package net.sourceforge.atunes.model;
 
 import java.io.Serializable;
 import java.util.Comparator;
 import java.util.List;
 
-import net.sourceforge.atunes.model.IAudioObject;
 
 /**
  * Interface for comparing audio objects
