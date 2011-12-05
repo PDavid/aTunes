@@ -80,7 +80,7 @@ public final class Kernel implements IKernel, ApplicationContextAware {
         new LanguageSelector().setLanguage(state);
         
         initializeUI();
-        context.getBean(HandlerInitializer.class).registerAndInitializeHandlers(state);
+        context.getBean(HandlerInitializer.class).initializeHandlers(state);
         createUI();
 
         // Call user interaction
