@@ -21,13 +21,9 @@
 package net.sourceforge.atunes.kernel;
 
 import java.util.Collection;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.utils.Logger;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -35,49 +31,24 @@ import org.springframework.context.ApplicationContextAware;
 
 public class HandlerInitializer implements ApplicationContextAware {
 	
-	private static final class InitHandlerRunnable implements Runnable {
-		
-		private final AbstractHandler handler;
-
-		private InitHandlerRunnable(AbstractHandler handler) {
-			this.handler = handler;
-		}
-
-		@Override
-		public void run() {
-			handler.initHandler();
-		}
-	}
-
 	private Collection<AbstractHandler> handlers;
 
     /**
-     * Creates and registers all defined handlers
+     * initializes all defined handlers
      * @param state
      */
-    void registerAndInitializeHandlers(IState state) {
-
-        ExecutorService executorService = Executors.newFixedThreadPool(3);
-        // Register handlers
+    void initializeHandlers(IState state) {
         for (AbstractHandler handler : handlers) {
             Runnable task = handler.getPreviousInitializationTask();
             if (task != null) {
-                executorService.submit(task);
+                task.run();
             }
         }
 
         // Initialize handlers
         for (final AbstractHandler handler : handlers) {
-            executorService.submit(new InitHandlerRunnable(handler));
+            handler.initHandler();
         }
-
-        executorService.shutdown();
-        
-        try {
-			executorService.awaitTermination(100, TimeUnit.SECONDS);
-		} catch (InterruptedException e) {
-			Logger.error(e);
-		}
     }
 
 	void setFrameForHandlers(IFrame frame) {
