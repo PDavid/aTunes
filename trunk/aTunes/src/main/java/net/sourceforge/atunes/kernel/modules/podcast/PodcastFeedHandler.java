@@ -33,9 +33,7 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
@@ -82,11 +80,6 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
     
     /** The running downloads. */
     private volatile List<PodcastFeedEntryDownloader> runningDownloads = Collections.synchronizedList(new ArrayList<PodcastFeedEntryDownloader>());
-    
-    /**
-     * Podcast Feed Entry download checker
-     */
-    private ScheduledExecutorService podcastFeedEntryDownloadCheckerExecutorService;
     
     private ScheduledFuture<?> scheduledPodcastFeedEntryRetrieverFuture;
     
@@ -205,7 +198,6 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
                 new File(getDownloadPath(podcastFeedEntryDownloader.getPodcastFeedEntry())).deleteOnExit();
             }
         }
-        getPodcastFeedEntryDownloadCheckerExecutorService().shutdownNow();
         if (podcastFeedsDirty) {
         	stateHandler.persistPodcastFeedCache(getPodcastFeeds());
         } else {
@@ -274,12 +266,9 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
         schedulePodcastFeedEntryRetriever(retrievalInterval);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#startPodcastFeedEntryDownloadChecker()
-	 */
     @Override
 	public void startPodcastFeedEntryDownloadChecker() {
-        getPodcastFeedEntryDownloadCheckerExecutorService().scheduleWithFixedDelay(new PodcastFeedEntryDownloadChecker((ITable)getBean("navigationTable"), this), 0, 10000, TimeUnit.MILLISECONDS);
+    	taskService.submitPeriodically("PodcastFeedEntryDownloadChecker", 30, 30, new PodcastFeedEntryDownloadChecker((ITable)getBean("navigationTable"), this));
     }
 
     /**
@@ -485,15 +474,4 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
 		}
 		return podcastFeedEntryDownloaderExecutorService;
 	}
-
-	/**
-	 * @return the podcastFeedEntryDownloadCheckerExecutorService
-	 */
-	private ScheduledExecutorService getPodcastFeedEntryDownloadCheckerExecutorService() {
-		if (podcastFeedEntryDownloadCheckerExecutorService == null) {
-			podcastFeedEntryDownloadCheckerExecutorService = Executors.newScheduledThreadPool(1);
-		}
-		return podcastFeedEntryDownloadCheckerExecutorService;
-	}
-
 }
