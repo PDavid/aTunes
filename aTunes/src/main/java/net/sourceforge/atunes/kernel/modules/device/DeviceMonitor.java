@@ -23,42 +23,70 @@ package net.sourceforge.atunes.kernel.modules.device;
 import java.io.File;
 import java.util.concurrent.ScheduledFuture;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.DeviceListeners;
 import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.Logger;
+import net.sourceforge.atunes.utils.StringUtils;
 
-final class DeviceMonitor {
+public final class DeviceMonitor implements Runnable {
 
-    private static int DELAY = 5;
+    private int delayInSeconds;
     
-    private static ScheduledFuture<?> future;
+    private ScheduledFuture<?> future;
     
-    private static IDeviceHandler deviceHandler;
+    private IDeviceHandler deviceHandler;
+    
+    private IState state;
+    
+    private ITaskService taskService;
+    
+    private DeviceListeners deviceListeners;
+    
+    /**
+     * @param deviceListeners
+     */
+    public void setDeviceListeners(DeviceListeners deviceListeners) {
+		this.deviceListeners = deviceListeners;
+	}
+    
+    /**
+     * @param taskService
+     */
+    public void setTaskService(ITaskService taskService) {
+		this.taskService = taskService;
+	}
+    
+    /**
+     * @param state
+     */
+    public void setState(IState state) {
+		this.state = state;
+	}
+    
+    /**
+     * @param deviceHandler
+     */
+    public void setDeviceHandler(IDeviceHandler deviceHandler) {
+		this.deviceHandler = deviceHandler;
+	}
+
+    public void setDelayInSeconds(int delay) {
+		this.delayInSeconds = delay;
+	}
     
     /**
      * Start monitor.
-     * @param state
-     * @param taskService
-     * @param handler
      */
-    static void startMonitor(final IState state, ITaskService taskService, IDeviceHandler handler) {
-    	deviceHandler = handler;
-    	future = taskService.submitPeriodically("Device Monitor", DELAY, DELAY, new Runnable() {
-    		@Override
-    		public void run() {
-    			checkConnection(state);
-    			checkDisconnection();
-    		}
-    	});
+    void startMonitor() {
+    	future = taskService.submitPeriodically("Device Monitor", delayInSeconds, delayInSeconds, this);
     }
     
     /**
      * Stops monitor
      */
-    static void stopMonitor() {
+    void stopMonitor() {
     	future.cancel(true);
     }
     
@@ -66,15 +94,21 @@ final class DeviceMonitor {
      * Returns if monitor is running
      * @return
      */
-    static boolean isMonitorRunning() {
+    boolean isMonitorRunning() {
     	return future != null;
     }
 
+	@Override
+	public void run() {
+		checkConnection();
+		checkDisconnection();
+	}
+	
     /**
      * Checks if device has been disconnected, returning true if so, false otherwise
      * @return
      */
-    protected static boolean checkDisconnection() {
+    private boolean checkDisconnection() {
         if (!deviceHandler.isDeviceConnected()) {
             return false;
         }
@@ -82,7 +116,7 @@ final class DeviceMonitor {
         File deviceLocationFile = new File(deviceHandler.getDeviceLocation());
         if (!deviceLocationFile.exists()) {
             Logger.info("Device disconnected");
-            Context.getBean(DeviceListeners.class).deviceDisconnected(deviceLocationFile.getAbsolutePath());
+            deviceListeners.deviceDisconnected(deviceLocationFile.getAbsolutePath());
             return true;
         }
         return false;
@@ -93,13 +127,13 @@ final class DeviceMonitor {
      * @param deviceLocation
      * @return
      */
-    private static boolean checkConnection(IState state) {
+    private boolean checkConnection() {
     	String deviceLocation = state.getDefaultDeviceLocation();
-        if (deviceLocation != null && !deviceLocation.equals("")) {
+        if (!StringUtils.isEmpty(deviceLocation)) {
             File deviceLocationFile = new File(deviceLocation);
             if (!deviceHandler.isDeviceConnected() && deviceLocationFile.exists()) {
             	Logger.info("Device connected");
-            	Context.getBean(DeviceListeners.class).deviceConnected(deviceLocationFile.getAbsolutePath());
+            	deviceListeners.deviceConnected(deviceLocationFile.getAbsolutePath());
             	return true;
             }
         }
