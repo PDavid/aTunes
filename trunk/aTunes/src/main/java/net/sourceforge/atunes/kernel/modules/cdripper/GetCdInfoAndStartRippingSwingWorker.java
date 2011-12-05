@@ -56,32 +56,33 @@ final class GetCdInfoAndStartRippingSwingWorker extends	SwingWorker<CDInfo, Void
 	    if (!this.ripperHandler.testTools()) {
 	        return null;
 	    }
-	    this.ripperHandler.ripper = new CdRipper(osManager);
-	    this.ripperHandler.ripper.setNoCdListener(new NoCdListener() {
+	    CdRipper ripper = new CdRipper(osManager);
+	    ripper.setNoCdListener(new NoCdListener() {
 	        @Override
 	        public void noCd() {
 	            Logger.error("No cd inserted");
-	            GetCdInfoAndStartRippingSwingWorker.this.ripperHandler.interrupted = true;
+	            GetCdInfoAndStartRippingSwingWorker.this.ripperHandler.setInterrupted(true);
 	            SwingUtilities.invokeLater(new Runnable() {
 	                @Override
 	                public void run() {
-	                	GetCdInfoAndStartRippingSwingWorker.this.ripperHandler.indeterminateProgressDialog.hideDialog();
+	                	GetCdInfoAndStartRippingSwingWorker.this.ripperHandler.getIndeterminateProgressDialog().hideDialog();
 	                    Context.getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(frame, I18nUtils.getString("NO_CD_INSERTED"));
 	                }
 	            });
 	        }
 	    });
-	    return this.ripperHandler.ripper.getCDInfo();
+	    this.ripperHandler.setRipper(ripper);
+	    return ripper.getCDInfo();
 	}
 
 	@Override
 	protected void done() {
-		this.ripperHandler.indeterminateProgressDialog.hideDialog();
+		this.ripperHandler.getIndeterminateProgressDialog().hideDialog();
 	    CDInfo cdInfo;
 	    try {
 	        cdInfo = get();
 	        if (cdInfo != null) {
-	        	this.ripperHandler.getRipCdDialogController().showCdInfo(cdInfo, this.ripperHandler.repositoryHandler.getPathForNewAudioFilesRipped(), this.ripperHandler.repositoryHandler.getRepositoryPath());
+	        	this.ripperHandler.getRipCdDialogController().showCdInfo(cdInfo, this.ripperHandler.getRepositoryHandler().getPathForNewAudioFilesRipped(), this.ripperHandler.getRepositoryHandler().getRepositoryPath());
 	            if (!this.ripperHandler.getRipCdDialogController().isCancelled()) {
 	                String artist = this.ripperHandler.getRipCdDialogController().getArtist();
 	                String album = this.ripperHandler.getRipCdDialogController().getAlbum();

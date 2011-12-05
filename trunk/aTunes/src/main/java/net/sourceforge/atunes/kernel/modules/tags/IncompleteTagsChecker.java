@@ -76,17 +76,17 @@ public final class IncompleteTagsChecker {
 
     /**
      * Returns true if audio file has filled all enabled attributes
-     * @param ILocalAudioObject
+     * @param localAudioObject
      * @param tagAttributesToCheck
      * @return
      */
-    private static boolean hasTagAttributesFilled(ILocalAudioObject ILocalAudioObject, List<TagAttribute> tagAttributesToCheck) {
-        if (ILocalAudioObject.getTag() == null) {
+    private static boolean hasTagAttributesFilled(ILocalAudioObject localAudioObject, List<TagAttribute> tagAttributesToCheck) {
+        if (localAudioObject.getTag() == null) {
             return false;
         }
 
         for (TagAttribute ta : tagAttributesToCheck) {
-            boolean filled = analyzeAttribute(ILocalAudioObject, ta);
+            boolean filled = analyzeAttribute(localAudioObject, ta);
             if (!filled) {
             	return false;
             }
@@ -96,128 +96,128 @@ public final class IncompleteTagsChecker {
     }
 
 	/**
-	 * @param ILocalAudioObject
+	 * @param localAudioObject
 	 * @param ta
 	 * @return if attribute is filled
 	 */
-	private static boolean analyzeAttribute(ILocalAudioObject ILocalAudioObject, TagAttribute ta) {
-		return checkTitle(ILocalAudioObject, ta) && 
-		       checkArtist(ILocalAudioObject, ta) &&
-		       checkAlbum(ILocalAudioObject, ta) &&
-		       checkYear(ILocalAudioObject, ta) &&
-		       checkComment(ILocalAudioObject, ta) &&
-		       checkGenre(ILocalAudioObject, ta) &&
-		       checkLyrics(ILocalAudioObject, ta) &&
-		       checkComposer(ILocalAudioObject, ta) &&
-		       checkAlbumArtist(ILocalAudioObject, ta) &&
-		       checkTrack(ILocalAudioObject, ta);
+	private static boolean analyzeAttribute(ILocalAudioObject localAudioObject, TagAttribute ta) {
+		return checkTitle(localAudioObject, ta) && 
+		       checkArtist(localAudioObject, ta) &&
+		       checkAlbum(localAudioObject, ta) &&
+		       checkYear(localAudioObject, ta) &&
+		       checkComment(localAudioObject, ta) &&
+		       checkGenre(localAudioObject, ta) &&
+		       checkLyrics(localAudioObject, ta) &&
+		       checkComposer(localAudioObject, ta) &&
+		       checkAlbumArtist(localAudioObject, ta) &&
+		       checkTrack(localAudioObject, ta);
 	}
 
 	/**
-	 * @param ILocalAudioObject
+	 * @param localAudioObject
 	 * @param ta
 	 */
-	private static boolean checkTrack(ILocalAudioObject ILocalAudioObject, TagAttribute ta) {
-		if (ta == TagAttribute.TRACK && ILocalAudioObject.getTrackNumber() <= 0) {
+	private static boolean checkTrack(ILocalAudioObject localAudioObject, TagAttribute ta) {
+		if (ta == TagAttribute.TRACK && localAudioObject.getTrackNumber() <= 0) {
 		    return false;
 		}
 		return true;
 	}
 
 	/**
-	 * @param ILocalAudioObject
+	 * @param localAudioObject
 	 * @param ta
 	 */
-	private static boolean checkAlbumArtist(ILocalAudioObject ILocalAudioObject, TagAttribute ta) {
-		if (ta == TagAttribute.ALBUM_ARTIST && ILocalAudioObject.getAlbumArtist().isEmpty()) {
+	private static boolean checkAlbumArtist(ILocalAudioObject localAudioObject, TagAttribute ta) {
+		if (ta == TagAttribute.ALBUM_ARTIST && localAudioObject.getAlbumArtist().isEmpty()) {
 		    return false;
 		}
 		return true;
 	}
 
 	/**
-	 * @param ILocalAudioObject
+	 * @param localAudioObject
 	 * @param ta
 	 */
-	private static boolean checkComposer(ILocalAudioObject ILocalAudioObject, TagAttribute ta) {
-		if (ta == TagAttribute.COMPOSER && ILocalAudioObject.getComposer().isEmpty()) {
+	private static boolean checkComposer(ILocalAudioObject localAudioObject, TagAttribute ta) {
+		if (ta == TagAttribute.COMPOSER && localAudioObject.getComposer().isEmpty()) {
 		    return false;
 		}
 		return true;
 	}
 
 	/**
-	 * @param ILocalAudioObject
+	 * @param localAudioObject
 	 * @param ta
 	 */
-	private static boolean checkLyrics(ILocalAudioObject ILocalAudioObject, TagAttribute ta) {
-		if (ta == TagAttribute.LYRICS && ILocalAudioObject.getLyrics().isEmpty()) {
+	private static boolean checkLyrics(ILocalAudioObject localAudioObject, TagAttribute ta) {
+		if (ta == TagAttribute.LYRICS && localAudioObject.getLyrics().isEmpty()) {
 		    return false;
 		}
 		return true;
 	}
 
 	/**
-	 * @param ILocalAudioObject
+	 * @param localAudioObject
 	 * @param ta
 	 */
-	private static boolean checkGenre(ILocalAudioObject ILocalAudioObject, TagAttribute ta) {
-		if (ta == TagAttribute.GENRE && UnknownObjectCheck.isUnknownGenre(ILocalAudioObject.getGenre())) {
+	private static boolean checkGenre(ILocalAudioObject localAudioObject, TagAttribute ta) {
+		if (ta == TagAttribute.GENRE && UnknownObjectCheck.isUnknownGenre(localAudioObject.getGenre())) {
 		    return false;
 		}
 		return true;
 	}
 
 	/**
-	 * @param ILocalAudioObject
+	 * @param localAudioObject
 	 * @param ta
 	 */
-	private static boolean checkComment(ILocalAudioObject ILocalAudioObject, TagAttribute ta) {
-		if (ta == TagAttribute.COMMENT && (ILocalAudioObject.getComment().isEmpty())) {
+	private static boolean checkComment(ILocalAudioObject localAudioObject, TagAttribute ta) {
+		if (ta == TagAttribute.COMMENT && (localAudioObject.getComment().isEmpty())) {
 		    return false;
 		}
 		return true;
 	}
 
 	/**
-	 * @param ILocalAudioObject
+	 * @param localAudioObject
 	 * @param ta
 	 */
-	private static boolean checkYear(ILocalAudioObject ILocalAudioObject, TagAttribute ta) {
-		if (ta == TagAttribute.YEAR && ILocalAudioObject.getYear().isEmpty()) {
+	private static boolean checkYear(ILocalAudioObject localAudioObject, TagAttribute ta) {
+		if (ta == TagAttribute.YEAR && localAudioObject.getYear().isEmpty()) {
 		    return false;
 		}
 		return true;
 	}
 
 	/**
-	 * @param ILocalAudioObject
+	 * @param localAudioObject
 	 * @param ta
 	 */
-	private static boolean checkAlbum(ILocalAudioObject ILocalAudioObject, TagAttribute ta) {
-		if (ta == TagAttribute.ALBUM && UnknownObjectCheck.isUnknownAlbum(ILocalAudioObject.getAlbum())) {
+	private static boolean checkAlbum(ILocalAudioObject localAudioObject, TagAttribute ta) {
+		if (ta == TagAttribute.ALBUM && UnknownObjectCheck.isUnknownAlbum(localAudioObject.getAlbum())) {
 		    return false;
 		}
 		return true;
 	}
 
 	/**
-	 * @param ILocalAudioObject
+	 * @param localAudioObject
 	 * @param ta
 	 */
-	private static boolean checkArtist(ILocalAudioObject ILocalAudioObject, TagAttribute ta) {
-		if (ta == TagAttribute.ARTIST && UnknownObjectCheck.isUnknownArtist(ILocalAudioObject.getArtist())) {
+	private static boolean checkArtist(ILocalAudioObject localAudioObject, TagAttribute ta) {
+		if (ta == TagAttribute.ARTIST && UnknownObjectCheck.isUnknownArtist(localAudioObject.getArtist())) {
 		    return false;
 		}
 		return true;
 	}
 
 	/**
-	 * @param ILocalAudioObject
+	 * @param localAudioObject
 	 * @param ta
 	 */
-	private static boolean checkTitle(ILocalAudioObject ILocalAudioObject, TagAttribute ta) {
-		if (ta == TagAttribute.TITLE && ILocalAudioObject.getTitle().isEmpty()) {
+	private static boolean checkTitle(ILocalAudioObject localAudioObject, TagAttribute ta) {
+		if (ta == TagAttribute.TITLE && localAudioObject.getTitle().isEmpty()) {
 		    return false;
 		}
 		return true;
