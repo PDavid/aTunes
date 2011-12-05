@@ -75,7 +75,7 @@ public final class XMLUtils {
     private XMLUtils() {
     }
 
-    private static ThreadLocal<XPath> xPath;
+    private static volatile ThreadLocal<XPath> xPath;
 
     /**
      * Evaluates a XPath expression from a XML node, returning a Node object.

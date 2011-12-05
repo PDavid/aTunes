@@ -72,7 +72,7 @@ public final class LookAndFeelManager implements PluginListener, ILookAndFeelMan
     /**
      * Look and Feel change listeners
      */
-    private static List<ILookAndFeelChangeListener> changeListeners;
+    private List<ILookAndFeelChangeListener> changeListeners;
 
     public LookAndFeelManager(IOSManager osManager) {
         lookAndFeels = osManager.getLookAndFeels();
@@ -279,7 +279,7 @@ public final class LookAndFeelManager implements PluginListener, ILookAndFeelMan
 	/**
 	 * @return the changeListeners
 	 */
-	protected static List<ILookAndFeelChangeListener> getChangeListeners() {
+	protected List<ILookAndFeelChangeListener> getChangeListeners() {
 		if (changeListeners == null) {
 			changeListeners = new ArrayList<ILookAndFeelChangeListener>();
 		}
