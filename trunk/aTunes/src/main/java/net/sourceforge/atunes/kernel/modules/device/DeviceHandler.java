@@ -65,7 +65,6 @@ import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
-import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -96,6 +95,15 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
     
     private ILocalAudioObjectValidator localAudioObjectValidator;
     
+    private DeviceMonitor deviceMonitor;
+    
+    /**
+     * @param deviceMonitor
+     */
+    public void setDeviceMonitor(DeviceMonitor deviceMonitor) {
+		this.deviceMonitor = deviceMonitor;
+	}
+    
     public void setLocalAudioObjectValidator(ILocalAudioObjectValidator localAudioObjectValidator) {
 		this.localAudioObjectValidator = localAudioObjectValidator;
 	}
@@ -117,7 +125,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
     public void allHandlersInitialized() {
     	if (isDefaultDeviceLocationConfigured(getState())) { 
     		// Start device monitor if necessary
-    		DeviceMonitor.startMonitor(getState(), getBean(ITaskService.class), this);
+    		deviceMonitor.startMonitor();
     	}
     }
     
@@ -128,10 +136,10 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
     		refreshDevice();
     	}
     	
-    	if (isDefaultDeviceLocationConfigured(newState) && !DeviceMonitor.isMonitorRunning()) {
-    		DeviceMonitor.startMonitor(getState(), getBean(ITaskService.class), this);
-    	} else if (!isDefaultDeviceLocationConfigured(newState) && DeviceMonitor.isMonitorRunning()) {
-    		DeviceMonitor.stopMonitor();
+    	if (isDefaultDeviceLocationConfigured(newState) && !deviceMonitor.isMonitorRunning()) {
+    		deviceMonitor.startMonitor();
+    	} else if (!isDefaultDeviceLocationConfigured(newState) && deviceMonitor.isMonitorRunning()) {
+    		deviceMonitor.stopMonitor();
     	}
     }
     
@@ -309,7 +317,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 			        	getFrame().showProgressBar(true, null);
 			            DeviceHandler.this.retrieveDevice(new File(location));
 			        } else {
-			        	DeviceMonitor.stopMonitor();
+			        	deviceMonitor.stopMonitor();
 			        }
 				}
 			});
