@@ -92,7 +92,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     private PlayList nonFilteredPlayList;
 
     /** Play lists stored */
-    static ListOfPlayLists playListsRetrievedFromCache;
+    ListOfPlayLists playListsRetrievedFromCache;
     
     private Future<?> persistPlayListFuture;
     
@@ -635,7 +635,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 
     @Override
     protected Runnable getPreviousInitializationTask() {
-        return new PreviousInitializationTaskRunnable();
+        return new PreviousInitializationTaskRunnable(this);
     }
 
 	private void setPlayLists() {

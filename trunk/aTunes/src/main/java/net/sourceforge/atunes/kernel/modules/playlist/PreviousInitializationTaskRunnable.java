@@ -25,11 +25,18 @@ import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
 
 class PreviousInitializationTaskRunnable implements Runnable {
+	
+	private PlayListHandler playListHandler;
+	
+	public PreviousInitializationTaskRunnable(PlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+	
     @Override
     public void run() {
-        PlayListHandler.playListsRetrievedFromCache = Context.getBean(IStateHandler.class).retrievePlayListsCache();
-        if (PlayListHandler.playListsRetrievedFromCache == null) {
-        	PlayListHandler.playListsRetrievedFromCache = ListOfPlayLists.getEmptyPlayList(Context.getBean(IState.class));
+    	playListHandler.playListsRetrievedFromCache = Context.getBean(IStateHandler.class).retrievePlayListsCache();
+        if (playListHandler.playListsRetrievedFromCache == null) {
+        	playListHandler.playListsRetrievedFromCache = ListOfPlayLists.getEmptyPlayList(Context.getBean(IState.class));
         }
     }
 }

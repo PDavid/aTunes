@@ -540,7 +540,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
             progressDialog = null;
         }
         navigationHandler.repositoryReloaded();
-        showRepositoryDataHelper.showRepositoryAudioFileNumber(repository.getFiles().size(), repository.getTotalSizeInBytes(), repository != null ? repository.getTotalDurationInSeconds() : 0);
+        showRepositoryDataHelper.showRepositoryAudioFileNumber(repository.getFiles().size(), repository.getTotalSizeInBytes(), repository.getTotalDurationInSeconds());
 
         currentLoader = null;
     }
