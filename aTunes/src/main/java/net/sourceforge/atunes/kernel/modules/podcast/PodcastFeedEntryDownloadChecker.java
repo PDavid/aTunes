@@ -84,18 +84,20 @@ public class PodcastFeedEntryDownloadChecker implements Runnable {
     
     @Override
     public void run() {
-        final Map<IPodcastFeedEntry, File> files = new HashMap<IPodcastFeedEntry, File>();
-        try {
-            SwingUtilities.invokeAndWait(new GetPodcastFeedEntriesFilesRunnable(files));
-        } catch (InterruptedException e) {
-            return;
-        } catch (InvocationTargetException e) {
-            Logger.error(e);
-        }
-        final Map<IPodcastFeedEntry, Boolean> downloaded = new HashMap<IPodcastFeedEntry, Boolean>();
-        for (Entry<IPodcastFeedEntry, File> entry : files.entrySet()) {
-            downloaded.put(entry.getKey(), entry.getValue().exists() && !podcastFeedHandler.isDownloading(entry.getKey()));
-        }
-        SwingUtilities.invokeLater(new SetDownloadedRunnable(downloaded, navigationTable));
+    	if (!podcastFeedHandler.getPodcastFeeds().isEmpty()) {
+    		final Map<IPodcastFeedEntry, File> files = new HashMap<IPodcastFeedEntry, File>();
+    		try {
+    			SwingUtilities.invokeAndWait(new GetPodcastFeedEntriesFilesRunnable(files));
+    		} catch (InterruptedException e) {
+    			return;
+    		} catch (InvocationTargetException e) {
+    			Logger.error(e);
+    		}
+    		final Map<IPodcastFeedEntry, Boolean> downloaded = new HashMap<IPodcastFeedEntry, Boolean>();
+    		for (Entry<IPodcastFeedEntry, File> entry : files.entrySet()) {
+    			downloaded.put(entry.getKey(), entry.getValue().exists() && !podcastFeedHandler.isDownloading(entry.getKey()));
+    		}
+    		SwingUtilities.invokeLater(new SetDownloadedRunnable(downloaded, navigationTable));
+    	}
     }
 }
