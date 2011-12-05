@@ -22,8 +22,6 @@ package net.sourceforge.atunes.kernel.modules.podcast;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -66,48 +64,9 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class PodcastFeedHandler extends AbstractHandler implements IPodcastFeedHandler {
 
-    private static final Comparator<IPodcastFeed> COMPARATOR = new Comparator<IPodcastFeed>() {
-        @Override
-        public int compare(IPodcastFeed o1, IPodcastFeed o2) {
-            return o1.getName().compareToIgnoreCase(o2.getName());
-        }
-    };
+    private final Comparator<IPodcastFeed> COMPARATOR = new PodcastFeedComparator();
 	
-    private final class DownloadPodcastFeedEntryPropertyChangeListener
-			implements PropertyChangeListener {
-		private final IPodcastFeedEntry podcastFeedEntry;
-		private final IProgressDialog d;
-		private final PodcastFeedEntryDownloader downloadPodcastFeedEntry;
-
-		private DownloadPodcastFeedEntryPropertyChangeListener(
-				IPodcastFeedEntry podcastFeedEntry, IProgressDialog d,
-				PodcastFeedEntryDownloader downloadPodcastFeedEntry) {
-			this.podcastFeedEntry = podcastFeedEntry;
-			this.d = d;
-			this.downloadPodcastFeedEntry = downloadPodcastFeedEntry;
-		}
-
-		@Override
-		public void propertyChange(PropertyChangeEvent evt) {
-		    if (evt.getPropertyName().equals("progress")) {
-		        d.setProgressBarValue((Integer) evt.getNewValue());
-		        if ((Integer) evt.getNewValue() == 100) {
-		            d.hideDialog();
-		            synchronized (runningDownloads) {
-		                runningDownloads.remove(downloadPodcastFeedEntry);
-		            }
-		        }
-		    } else if (evt.getPropertyName().equals("byteProgress")) {
-		        d.setCurrentProgress((Long) evt.getNewValue());
-		    } else if (evt.getPropertyName().equals("totalBytes")) {
-		        d.setTotalProgress((Long) evt.getNewValue());
-		    } else if (evt.getPropertyName().equals("failed")) {
-		        cancelDownloading(podcastFeedEntry, d, downloadPodcastFeedEntry);
-		    }
-		}
-	}
-
-	public static final long DEFAULT_PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL = 180;
+    public static final long DEFAULT_PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL = 180;
 
     private List<IPodcastFeed> podcastFeeds;
 
@@ -134,6 +93,48 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
     private CachedIconFactory rssMediumIcon;
     
     private INetworkHandler networkHandler;
+    
+    private INavigationHandler navigationHandler;
+    
+    private IStateHandler stateHandler;
+    
+    private ITaskService taskService;
+    
+    private ILookAndFeelManager lookAndFeelManager;
+    
+    private ApplicationArguments applicationArguments;
+    
+    /**
+     * @param applicationArguments
+     */
+    public void setApplicationArguments(ApplicationArguments applicationArguments) {
+		this.applicationArguments = applicationArguments;
+	}
+    
+    /**
+     * @param lookAndFeelManager
+     */
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+    
+    /**
+     * @param taskService
+     */
+    public void setTaskService(ITaskService taskService) {
+		this.taskService = taskService;
+	}
+    
+    public void setStateHandler(IStateHandler stateHandler) {
+		this.stateHandler = stateHandler;
+	}
+    
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
     
     /**
      * @param networkHandler
@@ -165,7 +166,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
         IPodcastFeed podcastFeed = dialog.getPodcastFeed(); 
         if (podcastFeed != null) {
             addPodcastFeed(podcastFeed);
-            getBean(INavigationHandler.class).refreshView(PodcastNavigationView.class);
+            navigationHandler.refreshView(PodcastNavigationView.class);
             retrievePodcastFeedEntries();
         }
     }
@@ -206,7 +207,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
         }
         getPodcastFeedEntryDownloadCheckerExecutorService().shutdownNow();
         if (podcastFeedsDirty) {
-        	getBean(IStateHandler.class).persistPodcastFeedCache(getPodcastFeeds());
+        	stateHandler.persistPodcastFeedCache(getPodcastFeeds());
         } else {
             Logger.info("Podcast list is clean");
         }
@@ -218,7 +219,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
         return new Runnable() {
             @Override
             public void run() {
-                podcastFeeds = getBean(IStateHandler.class).retrievePodcastFeedCache();
+                podcastFeeds = stateHandler.retrievePodcastFeedCache();
                 if (podcastFeeds == null) {
                 	/*
                      * java.util.concurrent.CopyOnWriteArrayList instead of e.g.
@@ -258,7 +259,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
         Logger.info("Removing podcast feed");
         getPodcastFeeds().remove(podcastFeed);
         podcastFeedsDirty = true;
-        getBean(INavigationHandler.class).refreshView(PodcastNavigationView.class);
+        navigationHandler.refreshView(PodcastNavigationView.class);
     }
 
     /* (non-Javadoc)
@@ -304,7 +305,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
         if (scheduledPodcastFeedEntryRetrieverFuture != null) {
             scheduledPodcastFeedEntryRetrieverFuture.cancel(true);
         }
-        scheduledPodcastFeedEntryRetrieverFuture = getBean(ITaskService.class).submitPeriodically("Periodically Retrieve Podcast Feed Entries", newRetrievalInterval, newRetrievalInterval, new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame(), getBean(INavigationHandler.class), networkHandler));
+        scheduledPodcastFeedEntryRetrieverFuture = taskService.submitPeriodically("Periodically Retrieve Podcast Feed Entries", newRetrievalInterval, newRetrievalInterval, new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame(), navigationHandler, networkHandler));
     }
 
     /* (non-Javadoc)
@@ -312,7 +313,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
 	 */
     @Override
 	public void retrievePodcastFeedEntries() {
-    	getBean(ITaskService.class).submitNow("Retrieve Podcast Feed Entries", new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame(), getBean(INavigationHandler.class), networkHandler));
+    	taskService.submitNow("Retrieve Podcast Feed Entries", new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame(), navigationHandler, networkHandler));
     }
 
     /* (non-Javadoc)
@@ -325,13 +326,12 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
         }
         final IProgressDialog d = (IProgressDialog) getBean("transferDialog");
         d.setTitle(I18nUtils.getString("PODCAST_FEED_ENTRY_DOWNLOAD"));
-        d.setIcon(rssMediumIcon.getIcon(getBean(ILookAndFeelManager.class).getCurrentLookAndFeel().getPaintForSpecialControls()));
+        d.setIcon(rssMediumIcon.getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls()));
         final PodcastFeedEntryDownloader downloadPodcastFeedEntry = new PodcastFeedEntryDownloader(podcastFeedEntry, (ITable)getBean("navigationTable"), this, networkHandler);
         synchronized (runningDownloads) {
             runningDownloads.add(downloadPodcastFeedEntry);
         }
-        downloadPodcastFeedEntry.addPropertyChangeListener(new DownloadPodcastFeedEntryPropertyChangeListener(podcastFeedEntry, d,
-				downloadPodcastFeedEntry));
+        downloadPodcastFeedEntry.addPropertyChangeListener(new DownloadPodcastFeedEntryPropertyChangeListener(this, podcastFeedEntry, d, downloadPodcastFeedEntry, runningDownloads));
         d.addCancelButtonActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -391,7 +391,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
 	public String getDownloadPath(IPodcastFeedEntry podcastFeedEntry) {
         String path = getState().getPodcastFeedEntryDownloadPath();
         if (path == null || path.isEmpty()) {
-            path = StringUtils.getString(getOsManager().getUserConfigFolder(getBean(ApplicationArguments.class).isDebug()), "/", Constants.DEFAULT_PODCAST_FEED_ENTRY_DOWNLOAD_DIR);
+            path = StringUtils.getString(getOsManager().getUserConfigFolder(applicationArguments.isDebug()), "/", Constants.DEFAULT_PODCAST_FEED_ENTRY_DOWNLOAD_DIR);
         }
         File podcastFeedsDownloadFolder = new File(path);
 
