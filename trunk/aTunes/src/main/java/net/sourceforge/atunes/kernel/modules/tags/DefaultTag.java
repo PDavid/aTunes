@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.tags;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.utils.DateUtils;
+import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jaudiotagger.tag.FieldKey;
 import org.joda.time.DateMidnight;
@@ -162,7 +163,7 @@ public class DefaultTag extends AbstractTag {
         // If genre is a number mapping a known style, use this style
         try {
             int number = Integer.parseInt(result);
-            if (number >= 0 && Context.getBean(Genres.class).getGenreForCode(number) != "") {
+            if (number >= 0 && !StringUtils.isEmpty(Context.getBean(Genres.class).getGenreForCode(number))) {
                 result = Context.getBean(Genres.class).getGenreForCode(Integer.parseInt(result));
             }
         } catch (NumberFormatException e) {
