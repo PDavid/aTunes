@@ -48,7 +48,6 @@ final class LanguageSelector {
             I18nUtils.setLocale(null);
             state.setLocale(new LocaleBean(I18nUtils.getSelectedLocale()));
         }
-        Locale locale = state.getLocale().getLocale();
-        Locale.setDefault(locale);
+        Locale.setDefault(state.getLocale().getLocale());
     }
 }
