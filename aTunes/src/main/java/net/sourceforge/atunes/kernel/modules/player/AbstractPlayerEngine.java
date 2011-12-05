@@ -98,25 +98,32 @@ public abstract class AbstractPlayerEngine {
     /**
      * Equalizer used
      */
-    protected IEqualizer equalizer;
+    private IEqualizer equalizer;
     
-    protected IState state;
+    private IState state;
     
-    protected IFrame frame;
+    private IFrame frame;
     
-    protected IOSManager osManager;
+    private IOSManager osManager;
     
-    protected IPlayListHandler playListHandler;
+    private IPlayListHandler playListHandler;
     
-    protected INavigationHandler navigationHandler;
+    private INavigationHandler navigationHandler;
     
-    protected ITemporalDiskStorage temporalDiskStorage;
+    private ITemporalDiskStorage temporalDiskStorage;
     
-    protected IPlayerHandler playerHandler;
+    private IPlayerHandler playerHandler;
     
-    protected PlayListEventListeners playListEventListeners;
+    private PlayListEventListeners playListEventListeners;
     
     private ILocalAudioObjectFactory localAudioObjectFactory;
+    
+    /**
+     * @return
+     */
+    public IPlayListHandler getPlayListHandler() {
+		return playListHandler;
+	}
     
     /**
      * @param localAudioObjectFactory

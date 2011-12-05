@@ -57,7 +57,7 @@ final class FillSongTitlesSwingWorker extends SwingWorker<IAlbumInfo, Void> {
 	protected void done() {
 	    try {
 	        if (get() != null) {
-	            this.ripperHandler.albumInfo = get();
+	            this.ripperHandler.setAlbumInfo(get());
 	            List<String> trackNames = new ArrayList<String>();
 	            for (ITrackInfo trackInfo : get().getTracks()) {
 	                trackNames.add(trackInfo.getTitle());

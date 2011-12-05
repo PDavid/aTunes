@@ -25,24 +25,17 @@ package net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines;
  * 
  * tanacetum@gmail.com
  */
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * A lyrics engine which retrieve lyrics from www.winamp.cn.
@@ -97,18 +90,18 @@ public class WinampcnEngine extends AbstractLyricsEngine {
      * @return
      */
     private String getMostPopularLyrcUrl(String xml) {
-        List<LyrcCandidate> lyrcCandidates = new LyrcXMLParser().parse(xml);
-        LyrcCandidate tmp = null;
-        for (LyrcCandidate candidate : lyrcCandidates) {
+        List<WinampcnEngineLyrcCandidate> lyrcCandidates = new WinampcnEngineLyrcXMLParser().parse(xml);
+        WinampcnEngineLyrcCandidate tmp = null;
+        for (WinampcnEngineLyrcCandidate candidate : lyrcCandidates) {
             if (tmp == null) {
                 tmp = candidate;
             } else {
-                tmp = candidate.downloadCount > tmp.downloadCount ? candidate : tmp;
+                tmp = candidate.getDownloadCount() > tmp.getDownloadCount() ? candidate : tmp;
             }
         }
 
         if (tmp != null) {
-            return LYRC_URL.replace("%1", String.valueOf(tmp.id)).replace("%2", encodeUrl(tmp.songName));
+            return LYRC_URL.replace("%1", String.valueOf(tmp.getId())).replace("%2", encodeUrl(tmp.getSongName()));
         }
 
         return null;
@@ -149,38 +142,5 @@ public class WinampcnEngine extends AbstractLyricsEngine {
     @Override
     public String getUrlForAddingNewLyrics(String artist, String title) {
         return "";
-    }
-
-    private static class LyrcCandidate {
-        int id;
-        int downloadCount;
-        String songName;
-        //String albumName;
-    }
-
-    private static class LyrcXMLParser extends DefaultHandler {
-        List<LyrcCandidate> lyrcs = new ArrayList<LyrcCandidate>();
-
-        @Override
-        public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-            if (qName.equals("LyricUrl")) {
-                LyrcCandidate lyrc = new LyrcCandidate();
-                lyrc.id = Integer.parseInt(attributes.getValue("id"));
-                lyrc.songName = attributes.getValue("SongName");
-                lyrc.downloadCount = Integer.parseInt(attributes.getValue("downloadtimes"));
-                //lyrc.albumName = attributes.getValue("album");
-                lyrcs.add(lyrc);
-            }
-        }
-
-        public List<LyrcCandidate> parse(String xml) {
-            try {
-                SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
-                parser.parse(new ByteArrayInputStream(xml.getBytes("gbk")), this);
-            } catch (Exception e) {
-                Logger.error("Cannot parse lyrics list from winampcn: " + e.getMessage());
-            }
-            return this.lyrcs;
-        }
     }
 }

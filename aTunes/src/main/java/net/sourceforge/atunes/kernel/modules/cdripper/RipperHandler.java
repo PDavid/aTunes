@@ -61,16 +61,16 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
             StringUtils.getString(CdRipper.ARTIST_PATTERN, " - ", CdRipper.ALBUM_PATTERN, " - ", CdRipper.TRACK_NUMBER, " - ", CdRipper.TITLE_PATTERN),
             StringUtils.getString(CdRipper.ARTIST_PATTERN, " - ", CdRipper.TITLE_PATTERN) };
 
-    CdRipper ripper;
-    volatile boolean interrupted;
+    private CdRipper ripper;
+    private volatile boolean interrupted;
     private boolean folderCreated;
-    IAlbumInfo albumInfo;
+    private IAlbumInfo albumInfo;
     
     private TaskService taskService;
     
-    IIndeterminateProgressDialog indeterminateProgressDialog;
+    private IIndeterminateProgressDialog indeterminateProgressDialog;
     
-    IRepositoryHandler repositoryHandler;
+    private IRepositoryHandler repositoryHandler;
 
     /**
      * Map of available encoders in the system: key is format name, value is
@@ -100,7 +100,46 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
         allEncoders.add("net.sourceforge.atunes.kernel.modules.cdripper.FlacEncoder");
         allEncoders.add("net.sourceforge.atunes.kernel.modules.cdripper.WavEncoder");
     }
+    
+    /**
+     * @return
+     */
+    IRepositoryHandler getRepositoryHandler() {
+		return repositoryHandler;
+	}
+    
+    /**
+     * @param interrupted
+     */
+    void setInterrupted(boolean interrupted) {
+		this.interrupted = interrupted;
+	}
+    
+    /**
+     * @return
+     */
+    IIndeterminateProgressDialog getIndeterminateProgressDialog() {
+		return indeterminateProgressDialog;
+	}
+    
+    /**
+     * @param ripper
+     */
+    void setRipper(CdRipper ripper) {
+		this.ripper = ripper;
+	}
+    
+    CdRipper getRipper() {
+		return ripper;
+	}
 
+    /**
+     * @param albumInfo
+     */
+    void setAlbumInfo(IAlbumInfo albumInfo) {
+		this.albumInfo = albumInfo;
+	}
+    
     /**
      * @param taskService
      */
