@@ -25,7 +25,7 @@ import java.util.Map;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ITag;
 
-public class TagFactory {
+class TagFactory {
 
     /**
      * Gets the new tag from file tag and given properties
