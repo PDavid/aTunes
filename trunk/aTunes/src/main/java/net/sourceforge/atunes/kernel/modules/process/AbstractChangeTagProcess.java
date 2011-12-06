@@ -18,20 +18,19 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.tags;
+package net.sourceforge.atunes.kernel.modules.process;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.process.AbstractProcess;
+import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
+import net.sourceforge.atunes.model.IChangeTagsProcess;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.Logger;
 
 /**
  * This class represents a process which performs changes in tag of a set of
@@ -40,12 +39,12 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public abstract class AbstractChangeTagProcess extends AbstractProcess {
+public abstract class AbstractChangeTagProcess extends AbstractProcess implements IChangeTagsProcess {
 
     /**
      * List of LocalAudioObject objects to change
      */
-    private List<ILocalAudioObject> filesToChange;
+    private Collection<ILocalAudioObject> filesToChange;
     
     private IPlayListHandler playListHandler;
     
@@ -54,21 +53,25 @@ public abstract class AbstractChangeTagProcess extends AbstractProcess {
     private IPlayerHandler playerHandler;
 
     /**
-     * Constructor, initialized with AudioFiles to be changed
-     * 
-     * @param filesToChange
-     * @param state
-     * @param playListHandler
-     * @param repositoryHandler
      * @param playerHandler
      */
-    protected AbstractChangeTagProcess(Collection<ILocalAudioObject> filesToChange, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
-    	super(state);
-        this.filesToChange = new ArrayList<ILocalAudioObject>(filesToChange);
-        this.playListHandler = playListHandler;
-        this.repositoryHandler = repositoryHandler;
-        this.playerHandler = playerHandler;
-    }
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
 
     @Override
     public String getProgressDialogTitle() {
@@ -87,15 +90,19 @@ public abstract class AbstractChangeTagProcess extends AbstractProcess {
         repositoryHandler.startTransaction();
         boolean errors = false;
         try {
-            for (int i = 0; i < this.filesToChange.size() && !isCanceled(); i++) {
-                // Change every AudioFile
-                changeTag(this.filesToChange.get(i));
-                // Reread every file after being writen
-                repositoryHandler.refreshFile(this.filesToChange.get(i));
-                setCurrentProgress(i + 1);
+        	int i = 0;
+        	for (ILocalAudioObject lao : this.filesToChange) {
+        		if (!isCanceled()) {
+        			// Change every AudioFile
+        			changeTag(lao);
+        			// Reread every file after being writen
+        			repositoryHandler.refreshFile(lao);
+        			setCurrentProgress(i + 1);
+        			i++;
+        		}
             }
-        } catch (Exception e) {
-            addErrorLog(e);
+        } catch (IOException e) {
+        	Logger.error(e);
             errors = true;
         }
         // Refresh swing components
@@ -130,7 +137,7 @@ public abstract class AbstractChangeTagProcess extends AbstractProcess {
     /**
      * @return the filesToChange
      */
-    protected List<ILocalAudioObject> getFilesToChange() {
+    protected Collection<ILocalAudioObject> getFilesToChange() {
         return filesToChange;
     }
 
@@ -138,7 +145,8 @@ public abstract class AbstractChangeTagProcess extends AbstractProcess {
      * @param filesToChange
      *            the filesToChange to set
      */
-    protected void setFilesToChange(List<ILocalAudioObject> filesToChange) {
+    @Override
+	public void setFilesToChange(Collection<ILocalAudioObject> filesToChange) {
         this.filesToChange = filesToChange;
     }
 }

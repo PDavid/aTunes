@@ -31,7 +31,6 @@ import net.sourceforge.atunes.gui.images.AlbumImageSmallIcon;
 import net.sourceforge.atunes.kernel.modules.columns.TypeColumn;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.ILookAndFeel;
 
 /**
  * The Class AlbumTableModel.
@@ -43,19 +42,7 @@ public final class AlbumTableModel extends AbstractColumnSetTableModel {
    
     /** The albums. */
     private List<Album> albums;
-	private ILookAndFeel lookAndFeel;
     
-
-    /**
-     * Instantiates a new navigation table model.
-     * 
-     * @param lookAndFeel
-     */
-    public AlbumTableModel(ILookAndFeel lookAndFeel) {
-        super();
-        this.lookAndFeel = lookAndFeel;
-    }
-
     /*
      * (non-Javadoc)
      * 

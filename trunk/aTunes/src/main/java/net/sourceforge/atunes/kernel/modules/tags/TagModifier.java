@@ -21,7 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.tags;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Collection;
 
 import javax.swing.SwingUtilities;
 
@@ -67,7 +67,7 @@ public final class TagModifier {
      * @param file
      *            the file
      */
-    static void deleteTags(ILocalAudioObject file) {
+    public static void deleteTags(ILocalAudioObject file) {
         // Be sure file is writable before setting info
         setWritable(file);
         try {
@@ -96,7 +96,7 @@ public final class TagModifier {
      * @param playListHandler
      * @param playerHandler
      */
-    static void refreshAfterTagModify(final List<ILocalAudioObject> audioFilesEditing, IPlayListHandler playListHandler, IPlayerHandler playerHandler) {
+    public static void refreshAfterTagModify(final Collection<ILocalAudioObject> audioFilesEditing, IPlayListHandler playListHandler, IPlayerHandler playerHandler) {
         SwingUtilities.invokeLater(new RefreshTagAfterModifyRunnable(audioFilesEditing, playListHandler, playerHandler));
     }
 
@@ -108,7 +108,7 @@ public final class TagModifier {
      * @param album
      *            Album of file
      */
-    static void setAlbum(ILocalAudioObject file, final String album) {
+    public static void setAlbum(ILocalAudioObject file, final String album) {
     	modifyTag(file, new ITagModification() {
 
     		@Override
@@ -126,7 +126,7 @@ public final class TagModifier {
      * @param genre
      *            Genre of file
      */
-    static void setGenre(ILocalAudioObject file, final String genre) {
+    public static void setGenre(ILocalAudioObject file, final String genre) {
     	modifyTag(file, new ITagModification() {
 
     		@Override
@@ -154,7 +154,7 @@ public final class TagModifier {
      * @param cover
      * @param localAudioObjectValidator
      */
-    static void setInfo(ILocalAudioObject file, ITag tag, boolean shouldEditCover, byte[] cover, ILocalAudioObjectValidator localAudioObjectValidator) {
+    public static void setInfo(ILocalAudioObject file, ITag tag, boolean shouldEditCover, byte[] cover, ILocalAudioObjectValidator localAudioObjectValidator) {
         // Be sure file is writable before setting info
         setWritable(file);
 
@@ -286,7 +286,7 @@ public final class TagModifier {
      * @param lyrics
      *            the lyrics
      */
-    static void setLyrics(ILocalAudioObject file, final String lyrics) {
+    public static void setLyrics(ILocalAudioObject file, final String lyrics) {
     	modifyTag(file, new ITagModification() {
 			
 			@Override
@@ -304,7 +304,7 @@ public final class TagModifier {
      * @param newTitle
      *            New title
      */
-    static void setTitles(ILocalAudioObject file, final String newTitle) {
+    public static void setTitles(ILocalAudioObject file, final String newTitle) {
     	modifyTag(file, new ITagModification() {
 			
 			@Override
@@ -322,7 +322,7 @@ public final class TagModifier {
      * @param track
      *            Track number
      */
-    static void setTrackNumber(ILocalAudioObject file, final Integer track) {
+    public static void setTrackNumber(ILocalAudioObject file, final Integer track) {
     	modifyTag(file, new ITagModification() {
 			
 			@Override

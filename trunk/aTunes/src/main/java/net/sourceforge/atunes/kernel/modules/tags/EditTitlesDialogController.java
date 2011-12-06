@@ -27,11 +27,10 @@ import java.util.Map;
 
 import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
+import net.sourceforge.atunes.kernel.modules.process.EditTitlesProcess;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IState;
 
 final class EditTitlesDialogController extends AbstractSimpleController<EditTitlesDialog> {
@@ -39,24 +38,27 @@ final class EditTitlesDialogController extends AbstractSimpleController<EditTitl
     private List<ILocalAudioObject> filesToEdit;
     private Album album;
     private EditTitlesTableModel model;
-    private IPlayListHandler playListHandler;
-    private IRepositoryHandler repositoryHandler;
-    private IPlayerHandler playerHandler;
+    private IProcessFactory processFactory;
+    
+    /**
+     * @param processFactory
+     */
+    public void setProcessFactory(IProcessFactory processFactory) {
+		this.processFactory = processFactory;
+	}
 
     /**
      * Instantiates a new edits the titles dialog controller.
-     * 
      * @param dialog
      * @param state
      * @param playListHandler
      * @param repositoryHandler
      * @param playerHandler
+     * @param processFactory
      */
-    EditTitlesDialogController(EditTitlesDialog dialog, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
+    EditTitlesDialogController(EditTitlesDialog dialog, IState state, IProcessFactory processFactory) {
         super(dialog, state);
-        this.playListHandler = playListHandler;
-        this.repositoryHandler = repositoryHandler;
-        this.playerHandler = playerHandler;
+        this.processFactory = processFactory;
         addBindings();
     }
 
@@ -73,7 +75,8 @@ final class EditTitlesDialogController extends AbstractSimpleController<EditTitl
      */
     protected void editFiles() {
         Map<ILocalAudioObject, String> filesAndTitles = ((EditTitlesTableModel) getComponentControlled().getTable().getModel()).getNewValues();
-        EditTitlesProcess process = new EditTitlesProcess(new ArrayList<ILocalAudioObject>(filesAndTitles.keySet()), getState(), playListHandler, repositoryHandler, playerHandler);
+        EditTitlesProcess process = (EditTitlesProcess) processFactory.getProcessByName("editTitlesProcess");
+        process.setFilesToChange(new ArrayList<ILocalAudioObject>(filesAndTitles.keySet()));
         process.setFilesAndTitles(filesAndTitles);
         process.execute();
     }

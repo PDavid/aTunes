@@ -20,12 +20,18 @@
 
 package net.sourceforge.atunes.kernel.modules.podcast;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import net.sourceforge.atunes.model.IPodcastFeed;
 
-final class PodcastFeedComparator implements
-		Comparator<IPodcastFeed> {
+final class PodcastFeedComparator implements Comparator<IPodcastFeed>, Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3053627941518479804L;
+
 	@Override
     public int compare(IPodcastFeed o1, IPodcastFeed o2) {
         return o1.getName().compareToIgnoreCase(o2.getName());

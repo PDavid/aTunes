@@ -18,18 +18,14 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.tags;
+package net.sourceforge.atunes.kernel.modules.process;
 
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 
 /**
@@ -40,19 +36,15 @@ public class EditTitlesProcess extends AbstractChangeTagProcess {
     /** The files and titles. */
     private Map<ILocalAudioObject, String> filesAndTitles;
 
+    private IWebServicesHandler webServicesHandler;
+    
     /**
-     * Instantiates a new change titles process.
-     * 
-     * @param files
-     * @param state
-     * @param playListHandler
-     * @param repositoryHandler
-     * @param playerHandler
+     * @param webServicesHandler
      */
-    public EditTitlesProcess(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
-        super(files, state, playListHandler, repositoryHandler, playerHandler);
-    }
-
+    public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+		this.webServicesHandler = webServicesHandler;
+	}
+    
     @Override
     protected void retrieveInformationBeforeChangeTags() {
         super.retrieveInformationBeforeChangeTags();
@@ -84,11 +76,10 @@ public class EditTitlesProcess extends AbstractChangeTagProcess {
      * @return the titles for files
      */
 
-    public Map<ILocalAudioObject, String> getTitlesForFiles(List<ILocalAudioObject> files) {
+    public Map<ILocalAudioObject, String> getTitlesForFiles(Collection<ILocalAudioObject> files) {
         Map<ILocalAudioObject, String> result = new HashMap<ILocalAudioObject, String>();
 
         // For each file
-        IWebServicesHandler webServicesHandler = Context.getBean(IWebServicesHandler.class);
         for (ILocalAudioObject f : files) {
             String title = webServicesHandler.getTitleForAudioObject(f);
             if (title != null) {

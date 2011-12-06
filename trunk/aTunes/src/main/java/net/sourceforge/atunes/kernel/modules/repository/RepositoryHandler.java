@@ -43,6 +43,7 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -109,6 +110,15 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	private ILocalAudioObjectFactory localAudioObjectFactory;
 	
 	private ILocalAudioObjectValidator localAudioObjectValidator;
+	
+	private IProcessFactory processFactory;
+	
+	/**
+	 * @param processFactory
+	 */
+	public void setProcessFactory(IProcessFactory processFactory) {
+		this.processFactory = processFactory;
+	}
 	
 	/**
 	 * @param localAudioObjectValidator
@@ -527,7 +537,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     	progressDialog.setTitle(StringUtils.getString(I18nUtils.getString("READING_FILES_TO_IMPORT"), "..."));
         progressDialog.disableCancelButton();
         progressDialog.showDialog();
-        SwingWorker<List<ILocalAudioObject>, Void> worker = new ImportFoldersSwingWorker(this, folders, path, progressDialog, getFrame(), getState(), errorDialogFactory, getOsManager(), localAudioObjectFactory, localAudioObjectValidator);
+        SwingWorker<List<ILocalAudioObject>, Void> worker = new ImportFoldersSwingWorker(this, folders, path, progressDialog, getFrame(), getState(), errorDialogFactory, localAudioObjectFactory, localAudioObjectValidator, processFactory);
         worker.execute();
     }
 

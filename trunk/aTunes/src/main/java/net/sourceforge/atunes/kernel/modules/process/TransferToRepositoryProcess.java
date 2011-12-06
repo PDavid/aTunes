@@ -18,26 +18,21 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.device;
+package net.sourceforge.atunes.kernel.modules.process;
 
-import java.util.List;
-
-import net.sourceforge.atunes.kernel.modules.process.AbstractAudioFileTransferProcess;
-import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class TransferToRepositoryProcess extends AbstractAudioFileTransferProcess {
+public class TransferToRepositoryProcess extends AbstractLocalAudioObjectTransferProcess {
 
 	private IRepositoryHandler repositoryHandler;
 	
-    public TransferToRepositoryProcess(List<ILocalAudioObject> files, IState state, IFrame frame, IOSManager osManager, IRepositoryHandler repositoryHandler) {
-    	super(files, state, frame, osManager);
-    	this.repositoryHandler = repositoryHandler;
-    }
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
 
     @Override
     public String getProgressDialogTitle() {

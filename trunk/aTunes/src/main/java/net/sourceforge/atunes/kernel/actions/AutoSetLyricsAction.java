@@ -27,9 +27,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -42,33 +40,15 @@ public class AutoSetLyricsAction extends AbstractActionOverSelectedObjects<ILoca
 
     private static final long serialVersionUID = 4778415252933283915L;
 
-    private IPlayListHandler playListHandler;
-    
-    private IRepositoryHandler repositoryHandler;
-    
-    private IPlayerHandler playerHandler;
-    
-    /**
-     * @param playerHandler
-     */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
-		this.playerHandler = playerHandler;
-	}
-    
-    /**
-     * @param repositoryHandler
-     */
-    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
-	}
-    
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
-	}
+    private IProcessFactory processFactory;
 
+    /**
+     * @param processFactory
+     */
+    public void setProcessFactory(IProcessFactory processFactory) {
+		this.processFactory = processFactory;
+	}
+    
     public AutoSetLyricsAction() {
         super(I18nUtils.getString("AUTO_SET_LYRICS"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("AUTO_SET_LYRICS"));
@@ -76,7 +56,7 @@ public class AutoSetLyricsAction extends AbstractActionOverSelectedObjects<ILoca
 
     @Override
     protected void executeAction(List<ILocalAudioObject> objects) {
-        TagEditionOperations.addLyrics(objects, getState(), playListHandler, repositoryHandler, playerHandler);
+        TagEditionOperations.addLyrics(objects, processFactory);
     }
 
     @Override

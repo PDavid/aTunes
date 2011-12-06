@@ -44,11 +44,11 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorFrame;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
-import net.sourceforge.atunes.kernel.modules.webservices.lastfm.GetCoversProcess;
+import net.sourceforge.atunes.kernel.modules.process.GetCoversProcess;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
-import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.GuiUtils;
@@ -60,9 +60,9 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
     private static final int COVER_PANEL_WIDTH = Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize() + 20;
     private static final int COVER_PANEL_HEIGHT = Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize() + 40;
     
-    private IOSManager osManager;
-    
     private IAudioObjectImageLocator audioObjectImageLocator;
+    
+    private IProcessFactory processFactory;
     
     private final class GenerateAndShowAlbumPanelsSwingWorker extends SwingWorker<Void, IntermediateResult> {
     	
@@ -141,45 +141,25 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
 		public void actionPerformed(ActionEvent e) {
 		    Artist selectedArtist = (Artist) frame.getList().getSelectedValue();
 		    if (selectedArtist != null) {
-		        GetCoversProcess process = new GetCoversProcess(selectedArtist, getComponentControlled(), getState(), osManager);
+		        GetCoversProcess process = (GetCoversProcess) processFactory.getProcessByName("getCoversProcess");
+		        process.setArtist(selectedArtist);
 		        process.addProcessListener(new GetCoversProcessListener());
 		        process.execute();
 		    }
 		}
 	}
 
-	private static class IntermediateResult {
-
-        private Album album;
-        private ImageIcon cover;
-
-        public IntermediateResult(Album album, ImageIcon cover) {
-            this.album = album;
-            this.cover = cover;
-        }
-
-        public Album getAlbum() {
-            return album;
-        }
-
-        public ImageIcon getCover() {
-            return cover;
-        }
-
-    }
-
-    /**
+	/**
      * Instantiates a new cover navigator controller.
-     * 
      * @param frame
      * @param state
-     * @param osManager
      * @param audioObjectImageLocator
+     * @param processFactory
      */
-    public CoverNavigatorController(CoverNavigatorFrame frame, IState state, IOSManager osManager, IAudioObjectImageLocator audioObjectImageLocator) {
+    public CoverNavigatorController(CoverNavigatorFrame frame, IState state, IAudioObjectImageLocator audioObjectImageLocator, IProcessFactory processFactory) {
         super(frame, state);
-        this.osManager = osManager;
         this.audioObjectImageLocator = audioObjectImageLocator;
+        this.processFactory = processFactory;
         addBindings();
     }
 

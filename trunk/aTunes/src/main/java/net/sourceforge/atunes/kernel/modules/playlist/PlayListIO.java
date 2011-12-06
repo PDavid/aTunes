@@ -101,7 +101,7 @@ public final class PlayListIO {
      * @param localAudioObjectFactory
      * @return
      */
-    static IAudioObject getAudioFileOrCreate(IRepositoryHandler repositoryHandler, String resourceName, IRadioHandler radioHandler, ILocalAudioObjectFactory localAudioObjectFactory) {
+    public static IAudioObject getAudioFileOrCreate(IRepositoryHandler repositoryHandler, String resourceName, IRadioHandler radioHandler, ILocalAudioObjectFactory localAudioObjectFactory) {
         IAudioObject ao = null;
 
         // It's an online radio

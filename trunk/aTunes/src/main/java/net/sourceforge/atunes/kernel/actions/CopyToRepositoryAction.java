@@ -25,12 +25,12 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.kernel.modules.device.TransferToRepositoryProcess;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.ILocalAudioObjectTransferProcess;
+import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -41,24 +41,24 @@ public class CopyToRepositoryAction extends AbstractActionOverSelectedObjects<IL
 
     private IFrame frame;
     
-    private IOSManager osManager;
-    
     private IRepositoryHandler repositoryHandler;
     
     private IErrorDialogFactory errorDialogFactory;
+    
+    private IProcessFactory processFactory;
+    
+    /**
+     * @param processFactory
+     */
+    public void setProcessFactory(IProcessFactory processFactory) {
+		this.processFactory = processFactory;
+	}
     
     /**
      * @param frame
      */
     public void setFrame(IFrame frame) {
 		this.frame = frame;
-	}
-    
-    /**
-     * @param osManager
-     */
-    public void setOsManager(IOSManager osManager) {
-		this.osManager = osManager;
 	}
     
     /**
@@ -82,7 +82,8 @@ public class CopyToRepositoryAction extends AbstractActionOverSelectedObjects<IL
 
     @Override
     protected void executeAction(List<ILocalAudioObject> objects) {
-        final TransferToRepositoryProcess importer = new TransferToRepositoryProcess(objects, getState(), frame, osManager, repositoryHandler);
+        ILocalAudioObjectTransferProcess importer = (ILocalAudioObjectTransferProcess) processFactory.getProcessByName("transferToRepositoryProcess");
+        importer.setFilesToTransfer(objects);
         importer.addProcessListener(new ImportProcessListener());
         importer.execute();
     }

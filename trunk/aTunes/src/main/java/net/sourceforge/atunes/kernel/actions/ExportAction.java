@@ -25,16 +25,16 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.modules.repository.ExportFilesProcess;
 import net.sourceforge.atunes.model.IConfirmationDialogFactory;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IExportOptionsDialog;
 import net.sourceforge.atunes.model.IExportOptionsDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectTransferProcess;
 import net.sourceforge.atunes.model.INavigationHandler;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.model.LocalAudioObjectFilter;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -62,7 +62,7 @@ public class ExportAction extends CustomAbstractAction {
     
     private IFrame frame;
     
-    private IOSManager osManager;
+    private IProcessFactory processFactory;
     
     public ExportAction() {
         super(StringUtils.getString(I18nUtils.getString("EXPORT"), "..."));
@@ -102,7 +102,9 @@ public class ExportAction extends CustomAbstractAction {
                         songs = filter.getLocalAudioObjects(playListHandler.getSelectedAudioObjects());
                     }
 
-                    ExportFilesProcess process = new ExportFilesProcess(songs, path, getState(), frame, osManager);
+                    ILocalAudioObjectTransferProcess process = (ILocalAudioObjectTransferProcess) processFactory.getProcessByName("exportFilesProcess");
+                    process.setDestination(path);
+                    process.setFilesToTransfer(songs);
                     ExportProcessListener listener = new ExportProcessListener();
                     listener.setErrorDialogFactory(errorDialogFactory);
                     listener.setFrame(frame);
@@ -199,10 +201,9 @@ public class ExportAction extends CustomAbstractAction {
 	}
     
     /**
-     * @param osManager
+     * @param processFactory
      */
-    public void setOsManager(IOSManager osManager) {
-		this.osManager = osManager;
+    public void setProcessFactory(IProcessFactory processFactory) {
+		this.processFactory = processFactory;
 	}
-
 }

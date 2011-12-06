@@ -21,8 +21,7 @@
 package net.sourceforge.atunes.kernel.actions;
 
 import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
-import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
+import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -35,24 +34,15 @@ public class RepairGenresAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -7789897583007508598L;
 
-    private IPlayListHandler playListHandler;
+    private IProcessFactory processFactory;
     
     private IRepositoryHandler repositoryHandler;
-    
-    private IPlayerHandler playerHandler;
-    
+
     /**
-     * @param playerHandler
+     * @param processFactory
      */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
-		this.playerHandler = playerHandler;
-	}
-    
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
+    public void setProcessFactory(IProcessFactory processFactory) {
+		this.processFactory = processFactory;
 	}
     
     /**
@@ -68,7 +58,7 @@ public class RepairGenresAction extends CustomAbstractAction {
 
     @Override
     protected void executeAction() {
-        TagEditionOperations.repairGenres(getState(), playListHandler, repositoryHandler, playerHandler);
+        TagEditionOperations.repairGenres(processFactory, repositoryHandler);
     }
 
 }

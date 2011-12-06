@@ -26,15 +26,12 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.gui.views.dialogs.PatternInputDialog;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
-import net.sourceforge.atunes.kernel.modules.tags.EditTagFromFileNamePatternProcess;
+import net.sourceforge.atunes.kernel.modules.process.EditTagFromFileNamePatternProcess;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -52,19 +49,13 @@ public class AutoSetTagFromFileNamePatternAction extends AbstractActionOverSelec
     
     private ILookAndFeelManager lookAndFeelManager;
     
-    private IPlayListHandler playListHandler;
-    
-    private IRepositoryHandler repositoryHandler;
-    
-    private IPlayerHandler playerHandler;
-    
-    private ILocalAudioObjectValidator localAudioObjectValidator;
+    private IProcessFactory processFactory;
     
     /**
-     * @param localAudioObjectValidator
+     * @param processFactory
      */
-    public void setLocalAudioObjectValidator(ILocalAudioObjectValidator localAudioObjectValidator) {
-		this.localAudioObjectValidator = localAudioObjectValidator;
+    public void setProcessFactory(IProcessFactory processFactory) {
+		this.processFactory = processFactory;
 	}
     
     /**
@@ -81,27 +72,6 @@ public class AutoSetTagFromFileNamePatternAction extends AbstractActionOverSelec
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
     
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
-	}
-    
-    /**
-     * @param repositoryHandler
-     */
-    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
-	}
-    
-    /**
-     * @param playerHandler
-     */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
-		this.playerHandler = playerHandler;
-	}
-    
     public AutoSetTagFromFileNamePatternAction() {
         super(StringUtils.getString(I18nUtils.getString("AUTO_SET_TAG_FROM_FILE_NAME_PATTERN"), "..."));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("AUTO_SET_TAG_FROM_FILE_NAME_PATTERN"));
@@ -116,7 +86,10 @@ public class AutoSetTagFromFileNamePatternAction extends AbstractActionOverSelec
 
         // If user entered a pattern apply to files
         if (pattern != null) {
-            new EditTagFromFileNamePatternProcess(objects, pattern, getState(), playListHandler, repositoryHandler, playerHandler, localAudioObjectValidator).execute();
+        	EditTagFromFileNamePatternProcess process = (EditTagFromFileNamePatternProcess) processFactory.getProcessByName("editTagFromFileNamePatternProcess");
+        	process.setFilesToChange(objects);
+        	process.setPattern(pattern);
+            process.execute();
         }
     }
 

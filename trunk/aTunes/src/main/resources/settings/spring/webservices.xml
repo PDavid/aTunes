@@ -47,10 +47,6 @@
 		</property>
 	</bean>
 
-	<bean id="youtubeService"
-		class="net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService">
-		<constructor-arg ref="state" />
-		<constructor-arg ref="networkHandler"/>
-	</bean>
+	<bean id="youtubeService" class="net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService"/>
 
 </beans>

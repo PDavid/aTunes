@@ -35,7 +35,6 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
-import net.sourceforge.atunes.model.IProxy;
 import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -53,8 +52,6 @@ public class PodcastFeedEntryDownloader extends SwingWorker<Boolean, Void> {
     private volatile long totalBytes;
     private volatile long byteProgress;
     private volatile boolean failed;
-    
-    private IProxy proxy;
     
     private ITable navigationTable;
     

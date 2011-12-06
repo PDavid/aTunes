@@ -18,17 +18,14 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.tags;
+package net.sourceforge.atunes.kernel.modules.process;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
+import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.model.IState;
 
 /**
  * The Class SetTrackNumberProcess.
@@ -39,18 +36,12 @@ public class SetTrackNumberProcess extends AbstractChangeTagProcess {
     private Map<ILocalAudioObject, Integer> filesAndTracks;
 
     /**
-     * Instantiates a new sets the track number process.
-     * 
      * @param filesAndTracks
-     * @param state
-     * @param playListHandler
-     * @param repositoryHandler
-     * @param playerHandler
      */
-    SetTrackNumberProcess(Map<ILocalAudioObject, Integer> filesAndTracks, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
-        super(new ArrayList<ILocalAudioObject>(filesAndTracks.keySet()), state, playListHandler, repositoryHandler, playerHandler);
-        this.filesAndTracks = filesAndTracks;
-    }
+    public void setFilesAndTracks(Map<ILocalAudioObject, Integer> filesAndTracks) {
+    	setFilesToChange(new ArrayList<ILocalAudioObject>(filesAndTracks.keySet()));
+		this.filesAndTracks = filesAndTracks;
+	}
 
     @Override
     protected void changeTag(ILocalAudioObject file) throws IOException {

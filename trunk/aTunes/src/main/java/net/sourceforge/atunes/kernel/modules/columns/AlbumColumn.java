@@ -37,9 +37,9 @@ public class AlbumColumn extends AbstractColumn implements ApplicationContextAwa
 
     private CachedIconFactory albumFavoriteIcon;
     
-    private ApplicationContext context;
+    private transient ApplicationContext context;
     
-    private IFavoritesHandler favoritesHandler;
+    private transient IFavoritesHandler favoritesHandler;
 
     public AlbumColumn() {
         super("ALBUM", TextAndIcon.class);

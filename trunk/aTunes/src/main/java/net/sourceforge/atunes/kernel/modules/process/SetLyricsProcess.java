@@ -18,18 +18,13 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.tags;
+package net.sourceforge.atunes.kernel.modules.process;
 
 import java.io.IOException;
-import java.util.List;
 
-import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILyrics;
-import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 
 /**
@@ -37,25 +32,20 @@ import net.sourceforge.atunes.model.IWebServicesHandler;
  */
 public class SetLyricsProcess extends AbstractChangeTagProcess {
 
-    /**
-     * Writes lyrics to files if any is found. Context handler is used for
-     * finding lyrics
-     * 
-     * @param files
-     * @param state
-     * @param playListHandler
-     * @param repositoryHandler
-     * @param playerHandler
-     */
-    SetLyricsProcess(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
-        super(files, state, playListHandler, repositoryHandler, playerHandler);
-    }
-
+	private IWebServicesHandler webServicesHandler;
+	
+	/**
+	 * @param webServicesHandler
+	 */
+	public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+		this.webServicesHandler = webServicesHandler;
+	}
+	
     @Override
     protected void changeTag(ILocalAudioObject file) throws IOException {
         // Check if no lyrics is present and we have enough info for a query
         if (file.getLyrics().isEmpty() && !file.getArtist().isEmpty() && !file.getTitle().isEmpty()) {
-            ILyrics lyrics = Context.getBean(IWebServicesHandler.class).getLyrics(file.getArtist(), file.getTitle());
+            ILyrics lyrics = webServicesHandler.getLyrics(file.getArtist(), file.getTitle());
             String lyricsString = lyrics != null ? lyrics.getLyrics().trim() : "";
             if (!lyricsString.isEmpty()) {
                 TagModifier.setLyrics(file, lyricsString);

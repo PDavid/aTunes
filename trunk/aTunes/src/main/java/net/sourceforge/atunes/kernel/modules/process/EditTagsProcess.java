@@ -18,44 +18,40 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.tags;
-
-import java.util.List;
+package net.sourceforge.atunes.kernel.modules.process;
 
 import net.sourceforge.atunes.kernel.modules.repository.ImageCache;
+import net.sourceforge.atunes.kernel.modules.tags.EditTagInfo;
+import net.sourceforge.atunes.kernel.modules.tags.TagFactory;
+import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
-import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITag;
 
 /**
  * The Class EditTagsProcess.
+ * Process for writing tag to files. Receives AudioFiles to be written and
+ * new properties (meta-information)
  */
 public class EditTagsProcess extends AbstractChangeTagProcess {
 
     private EditTagInfo editTagInfo;
     
     private ILocalAudioObjectValidator localAudioObjectValidator;
-
+    
     /**
-     * Process for writing tag to files. Receives AudioFiles to be written and
-     * new properties (meta-information)
-     * @param audioFilesToEdit
-     * @param editTagInfo
-     * @param state
-     * @param playListHandler
-     * @param repositoryHandler
-     * @param playerHandler
      * @param localAudioObjectValidator
      */
-    public EditTagsProcess(List<ILocalAudioObject> audioFilesToEdit, EditTagInfo editTagInfo, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler, ILocalAudioObjectValidator localAudioObjectValidator) {
-        super(audioFilesToEdit, state, playListHandler, repositoryHandler, playerHandler);
-        this.editTagInfo = editTagInfo;
-        this.localAudioObjectValidator = localAudioObjectValidator;
-    }
+    public void setLocalAudioObjectValidator(ILocalAudioObjectValidator localAudioObjectValidator) {
+		this.localAudioObjectValidator = localAudioObjectValidator;
+	}
+    
+    /**
+     * @param editTagInfo
+     */
+    public void setEditTagInfo(EditTagInfo editTagInfo) {
+		this.editTagInfo = editTagInfo;
+	}
 
     @Override
     protected void changeTag(ILocalAudioObject audioFile) {

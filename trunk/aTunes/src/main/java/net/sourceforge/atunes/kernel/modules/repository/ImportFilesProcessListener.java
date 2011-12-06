@@ -24,6 +24,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.kernel.modules.process.ImportFilesProcess;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IProcessListener;

@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.tags;
 
-import java.util.List;
+import java.util.Collection;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
@@ -32,11 +32,11 @@ import net.sourceforge.atunes.model.IUIHandler;
 
 final class RefreshTagAfterModifyRunnable implements Runnable {
 	
-	private List<ILocalAudioObject> audioFilesEditing;
+	private Collection<ILocalAudioObject> audioFilesEditing;
 	private IPlayListHandler playListHandler;
 	private IPlayerHandler playerHandler;
 
-	RefreshTagAfterModifyRunnable(List<ILocalAudioObject> audioFilesEditing, IPlayListHandler playListHandler, IPlayerHandler playerHandler) {
+	RefreshTagAfterModifyRunnable(Collection<ILocalAudioObject> audioFilesEditing, IPlayListHandler playListHandler, IPlayerHandler playerHandler) {
 		this.audioFilesEditing = audioFilesEditing;
 		this.playListHandler = playListHandler;
 		this.playerHandler = playerHandler;
@@ -46,19 +46,19 @@ final class RefreshTagAfterModifyRunnable implements Runnable {
 	public void run() {
 	    // update Swing components if necessary
 	    boolean playListContainsRefreshedFile = false;
-	    for (int i = 0; i < audioFilesEditing.size(); i++) {
-	        if (playListHandler.getCurrentPlayList(true).contains(audioFilesEditing.get(i))) {
+	    for (ILocalAudioObject lao : this.audioFilesEditing) {
+	        if (playListHandler.getCurrentPlayList(true).contains(lao)) {
 	            playListContainsRefreshedFile = true;
 	        }
 
 	        // Changed current playing song
 	        if (playListHandler.getCurrentAudioObjectFromCurrentPlayList() != null
-	                && playListHandler.getCurrentAudioObjectFromCurrentPlayList().equals(audioFilesEditing.get(i))) {
+	                && playListHandler.getCurrentAudioObjectFromCurrentPlayList().equals(lao)) {
 	        	
-	        	Context.getBean(PlayListEventListeners.class).selectedAudioObjectHasChanged(audioFilesEditing.get(i));
+	        	Context.getBean(PlayListEventListeners.class).selectedAudioObjectHasChanged(lao);
 
 	            if (playerHandler.isEnginePlaying()) {
-	                Context.getBean(IUIHandler.class).updateTitleBar(audioFilesEditing.get(i));
+	                Context.getBean(IUIHandler.class).updateTitleBar(lao);
 	            }
 	        }
 	    }

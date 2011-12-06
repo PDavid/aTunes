@@ -20,10 +20,15 @@
 
 package net.sourceforge.atunes.kernel.modules.draganddrop;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
-final class PlayListDragableRowComparator implements Comparator<PlayListDragableRow> {
+final class PlayListDragableRowComparator implements Comparator<PlayListDragableRow>, Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2196123391276254494L;
 	private final boolean needReverseRows;
 
 	PlayListDragableRowComparator(boolean needReverseRows) {

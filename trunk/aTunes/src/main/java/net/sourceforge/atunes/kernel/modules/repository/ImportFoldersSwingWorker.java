@@ -27,12 +27,13 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.kernel.modules.process.ImportFilesProcess;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
-import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IReviewImportDialog;
@@ -49,9 +50,9 @@ final class ImportFoldersSwingWorker extends SwingWorker<List<ILocalAudioObject>
 	private final IFrame frame;
 	private final IState state;
 	private final IErrorDialogFactory errorDialogFactory;
-	private final IOSManager osManager;
 	private final ILocalAudioObjectFactory localAudioObjectFactory;
 	private final ILocalAudioObjectValidator localAudioObjectValidator;
+	private final IProcessFactory processFactory;
 
 	/**
 	 * @param repositoryHandler
@@ -61,11 +62,11 @@ final class ImportFoldersSwingWorker extends SwingWorker<List<ILocalAudioObject>
 	 * @param frame
 	 * @param state
 	 * @param errorDialogFactory
-	 * @param osManager
 	 * @param localAudioObjectFactory
 	 * @param localAudioObjectValidator
+	 * @param processFactory
 	 */
-	public ImportFoldersSwingWorker(IRepositoryHandler repositoryHandler, List<File> folders, String path, IProgressDialog progressDialog, IFrame frame, IState state, IErrorDialogFactory errorDialogFactory, IOSManager osManager, ILocalAudioObjectFactory localAudioObjectFactory, ILocalAudioObjectValidator localAudioObjectValidator) {
+	public ImportFoldersSwingWorker(IRepositoryHandler repositoryHandler, List<File> folders, String path, IProgressDialog progressDialog, IFrame frame, IState state, IErrorDialogFactory errorDialogFactory, ILocalAudioObjectFactory localAudioObjectFactory, ILocalAudioObjectValidator localAudioObjectValidator, IProcessFactory processFactory) {
 		this.repositoryHandler = repositoryHandler;
 		this.folders = folders;
 		this.path = path;
@@ -73,9 +74,9 @@ final class ImportFoldersSwingWorker extends SwingWorker<List<ILocalAudioObject>
 		this.frame = frame;
 		this.state = state;
 		this.errorDialogFactory = errorDialogFactory;
-		this.osManager = osManager;
 		this.localAudioObjectFactory = localAudioObjectFactory;
 		this.localAudioObjectValidator = localAudioObjectValidator;
+		this.processFactory = processFactory;
 	}
 
 	@Override
@@ -101,7 +102,11 @@ final class ImportFoldersSwingWorker extends SwingWorker<List<ILocalAudioObject>
 	            tagAttributesReviewed = reviewImportDialog.getResult();
 	        }
 
-	        final ImportFilesProcess process = new ImportFilesProcess(filesToLoad, folders, path, tagAttributesReviewed, state, frame, osManager, localAudioObjectFactory, localAudioObjectValidator);
+	        ImportFilesProcess process = (ImportFilesProcess) processFactory.getProcessByName("importFilesProcess");
+	        process.setFilesToTransfer(filesToLoad);
+	        process.setFolders(folders);
+	        process.setDestination(path);
+	        process.initialize(tagAttributesReviewed);
 	        process.addProcessListener(new ImportFilesProcessListener(process, repositoryHandler, frame, errorDialogFactory));
 	        process.execute();
 

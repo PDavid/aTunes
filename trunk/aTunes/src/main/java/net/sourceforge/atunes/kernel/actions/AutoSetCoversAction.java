@@ -27,10 +27,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
-import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -43,40 +40,13 @@ public class AutoSetCoversAction extends AbstractActionOverSelectedObjects<ILoca
 
     private static final long serialVersionUID = -5997105583422805310L;
 
-    private IPlayListHandler playListHandler;
-    
-    private IRepositoryHandler repositoryHandler;
-    
-    private IPlayerHandler playerHandler;
-    
-    private ILocalAudioObjectValidator localAudioObjectValidator;
+    private IProcessFactory processFactory;
     
     /**
-     * @param localAudioObjectValidator
+     * @param processFactory
      */
-    public void setLocalAudioObjectValidator(ILocalAudioObjectValidator localAudioObjectValidator) {
-		this.localAudioObjectValidator = localAudioObjectValidator;
-	}
-    
-    /**
-     * @param playerHandler
-     */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
-		this.playerHandler = playerHandler;
-	}
-    
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
-	}
-    
-    /**
-     * @param repositoryHandler
-     */
-    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
+    public void setProcessFactory(IProcessFactory processFactory) {
+		this.processFactory = processFactory;
 	}
     
     public AutoSetCoversAction() {
@@ -86,7 +56,7 @@ public class AutoSetCoversAction extends AbstractActionOverSelectedObjects<ILoca
 
     @Override
     protected void executeAction(List<ILocalAudioObject> objects) {
-        TagEditionOperations.editCover(objects, getState(), playListHandler, repositoryHandler, playerHandler, localAudioObjectValidator);
+        TagEditionOperations.editCover(objects, processFactory);
     }
 
     @Override

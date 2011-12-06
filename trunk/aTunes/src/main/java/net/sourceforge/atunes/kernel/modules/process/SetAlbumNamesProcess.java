@@ -18,34 +18,16 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.tags;
+package net.sourceforge.atunes.kernel.modules.process;
 
-import java.util.Collection;
-
+import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 /**
  * The Class SetAlbumNamesProcess.
  */
 public class SetAlbumNamesProcess extends AbstractChangeTagProcess {
-
-    /**
-     * Instantiates a new sets the album names process.
-     * 
-     * @param files
-     * @param state
-     * @param playListHandler
-     * @param repositoryHandler
-     * @param playerHandler
-     */
-    SetAlbumNamesProcess(Collection<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
-        super(files, state, playListHandler, repositoryHandler, playerHandler);
-    }
 
     @Override
     protected void changeTag(ILocalAudioObject file) {

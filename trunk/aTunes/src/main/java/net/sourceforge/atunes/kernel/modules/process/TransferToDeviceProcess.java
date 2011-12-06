@@ -18,18 +18,13 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.device;
+package net.sourceforge.atunes.kernel.modules.process;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.process.AbstractAudioFileTransferProcess;
-import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -38,30 +33,11 @@ import org.apache.commons.io.FileUtils;
 /**
  * Transfer files to a partition/device and checks if filename is valid.
  */
-public class TransferToDeviceProcess extends AbstractAudioFileTransferProcess {
-
-    private String path;
-
-    /**
-     * @param collection
-     * @param path
-     * @param state
-     * @param frame
-     * @param osManager
-     */
-    public TransferToDeviceProcess(Collection<ILocalAudioObject> collection, String path, IState state, IFrame frame, IOSManager osManager) {
-        super(collection, state, frame, osManager);
-        this.path = path;
-    }
+public class TransferToDeviceProcess extends AbstractLocalAudioObjectTransferProcess {
 
     @Override
     public String getProgressDialogTitle() {
         return I18nUtils.getString("COPYING_TO_DEVICE");
-    }
-
-    @Override
-    protected String getDestination() {
-        return this.path;
     }
 
     @Override

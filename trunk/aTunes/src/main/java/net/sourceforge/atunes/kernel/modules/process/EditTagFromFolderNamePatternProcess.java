@@ -18,27 +18,25 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.tags;
+package net.sourceforge.atunes.kernel.modules.process;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
+import net.sourceforge.atunes.kernel.modules.tags.EditTagInfo;
+import net.sourceforge.atunes.kernel.modules.tags.TagFactory;
+import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
-import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.model.IState;
 
 /**
- * The Class EditTagFromFileNamePatternProcess.
+ * The Class EditTagFromFolderNamePatternProcess.
  */
-public class EditTagFromFileNamePatternProcess extends AbstractChangeTagProcess {
+public class EditTagFromFolderNamePatternProcess extends AbstractChangeTagProcess {
 
     /**
-     * Pattern used to get tag from file name
+     * Pattern used to get tag from folder name
      */
     private String pattern;
 
@@ -48,27 +46,26 @@ public class EditTagFromFileNamePatternProcess extends AbstractChangeTagProcess 
     private ILocalAudioObjectValidator localAudioObjectValidator;
 
     /**
-     * Instantiates a new change titles process.
-     * @param files
-     * @param pattern
-     * @param state
-     * @param playListHandler
-     * @param repositoryHandler
-     * @param playerHandler
      * @param localAudioObjectValidator
      */
-    public EditTagFromFileNamePatternProcess(List<ILocalAudioObject> files, String pattern, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler, ILocalAudioObjectValidator localAudioObjectValidator) {
-        super(files, state, playListHandler, repositoryHandler, playerHandler);
-        this.pattern = pattern;
-    }
-
+    public void setLocalAudioObjectValidator(ILocalAudioObjectValidator localAudioObjectValidator) {
+		this.localAudioObjectValidator = localAudioObjectValidator;
+	}
+    
+    /**
+     * @param pattern
+     */
+    public void setPattern(String pattern) {
+		this.pattern = pattern;
+	}
+    
     @Override
     protected void retrieveInformationBeforeChangeTags() {
         super.retrieveInformationBeforeChangeTags();
         if (filesAndTags == null) {
             filesAndTags = new HashMap<ILocalAudioObject, EditTagInfo>();
             for (ILocalAudioObject file : getFilesToChange()) {
-                Map<String, String> matches = AbstractPattern.getPatternMatches(pattern, file.getNameWithoutExtension(), false);
+                Map<String, String> matches = AbstractPattern.getPatternMatches(pattern, file.getFile().getParentFile().getAbsolutePath(), true);
                 EditTagInfo editTagInfo = AbstractPattern.getEditTagInfoFromMatches(matches);
                 filesAndTags.put(file, editTagInfo);
             }
