@@ -20,11 +20,18 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
-import net.sourceforge.atunes.model.IPlayListHandler;
+import java.util.Collection;
+
+import net.sourceforge.atunes.model.IChangeTagsProcess;
+import net.sourceforge.atunes.model.IConfirmationDialogFactory;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.UnknownObjectCheck;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 
 /**
  * This action invokes process to repair album names in repository
@@ -36,24 +43,24 @@ public class RepairAlbumNamesAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -7828819966696617838L;
 
-    private IPlayListHandler playListHandler;
-    
     private IRepositoryHandler repositoryHandler;
     
     private IProcessFactory processFactory;
+    
+    private IConfirmationDialogFactory confirmationDialogFactory;
+    
+    /**
+     * @param confirmationDialogFactory
+     */
+    public void setConfirmationDialogFactory(IConfirmationDialogFactory confirmationDialogFactory) {
+		this.confirmationDialogFactory = confirmationDialogFactory;
+	}
     
     /**
      * @param processFactory
      */
     public void setProcessFactory(IProcessFactory processFactory) {
 		this.processFactory = processFactory;
-	}
-    
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
 	}
     
     /**
@@ -69,6 +76,26 @@ public class RepairAlbumNamesAction extends CustomAbstractAction {
 
     @Override
     protected void executeAction() {
-        TagEditionOperations.repairAlbumNames(playListHandler, repositoryHandler, processFactory);
+        // Show confirmation dialog
+        if (confirmationDialogFactory.getDialog().showDialog(I18nUtils.getString("REPAIR_ALBUM_NAMES_MESSAGE"))) {
+            // Call album name edit
+        	IChangeTagsProcess process = (IChangeTagsProcess) processFactory.getProcessByName("setAlbumNamesProcess");
+        	process.setFilesToChange(getFilesWithEmptyAlbum(repositoryHandler.getAudioFilesList()));
+            process.execute();
+        }
+    }
+    
+    /**
+     * Returns files without album
+     * @param audioFiles
+     * @return
+     */
+    private Collection<ILocalAudioObject> getFilesWithEmptyAlbum(Collection<ILocalAudioObject> audioFiles) {
+    	return Collections2.filter(audioFiles, new Predicate<ILocalAudioObject>() {
+    		@Override
+    		public boolean apply(ILocalAudioObject ao) {
+    			return ao.getAlbum() == null || UnknownObjectCheck.isUnknownAlbum(ao.getAlbum()) || ao.getAlbum().isEmpty();
+    		}
+		});
     }
 }

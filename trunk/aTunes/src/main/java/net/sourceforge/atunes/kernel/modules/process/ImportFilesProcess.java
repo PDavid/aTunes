@@ -24,9 +24,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.regex.Pattern;
 
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
 import net.sourceforge.atunes.kernel.modules.tags.TagFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
@@ -45,6 +44,8 @@ import org.apache.commons.io.FileUtils;
  */
 public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess {
 
+	private static final Pattern NUMBER_SEPARATOR_PATTERN = Pattern.compile("[^0-9]+");
+	
     /**
      * Folders to import
      */
@@ -56,6 +57,15 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
     private ILocalAudioObjectFactory localAudioObjectFactory;
     
     private ITagHandler tagHandler;
+    
+    private IWebServicesHandler webServicesHandler;
+    
+    /**
+     * @param webServicesHandler
+     */
+    public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+		this.webServicesHandler = webServicesHandler;
+	}
     
     /**
      * @param tagHandler
@@ -222,7 +232,7 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
      */
     private void setTrackNumber(ILocalAudioObject fileToImport) {
         if (getState().isSetTrackNumbersWhenImporting() && fileToImport.getTrackNumber() < 1) {
-        	int newTrackNumber = TagEditionOperations.getTrackNumber(fileToImport);
+        	int newTrackNumber = getTrackNumber(fileToImport);
         	if (newTrackNumber > 0) {
         		if (fileToImport.getTag() == null) {
         			fileToImport.setTag(TagFactory.getNewTag());
@@ -234,6 +244,42 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
         	}
         }
     }
+    
+    /**
+     * Returns track number for a given audio file
+     * 
+     * @param audioFile
+     * @return
+     */
+    private int getTrackNumber(ILocalAudioObject audioFile) {
+        // Try to get a number from file name
+        String fileName = audioFile.getNameWithoutExtension();
+        String[] aux = NUMBER_SEPARATOR_PATTERN.split(fileName);
+        int trackNumber = 0;
+        int i = 0;
+        while (trackNumber == 0 && i < aux.length) {
+            String token = aux[i];
+            try {
+                trackNumber = Integer.parseInt(token);
+                // If trackNumber >= 1000 maybe it's not a track number (year?) 
+                if (trackNumber >= 1000) {
+                    trackNumber = 0;
+                }
+            } catch (NumberFormatException e) {
+                // Ok, it's not a valid number, skip it
+            }
+            i++;
+        }
+
+        // If trackNumber could not be retrieved from file name, try to get from last.fm
+        // To get this, titles must match
+        if (trackNumber == 0) {
+            trackNumber = webServicesHandler.getTrackNumber(audioFile);
+        }
+
+        return trackNumber;
+    }
+
 
     /**
      * Changes title of a file. LocalAudioObject is added to list of files to change
@@ -243,7 +289,7 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
      */
     private void setTitle(ILocalAudioObject fileToImport) {
         if (getState().isSetTitlesWhenImporting()) {
-            String newTitle = Context.getBean(IWebServicesHandler.class).getTitleForAudioObject(fileToImport);
+            String newTitle = webServicesHandler.getTitleForAudioObject(fileToImport);
             if (newTitle != null) {
                 if (fileToImport.getTag() == null) {
                     fileToImport.setTag(TagFactory.getNewTag());
