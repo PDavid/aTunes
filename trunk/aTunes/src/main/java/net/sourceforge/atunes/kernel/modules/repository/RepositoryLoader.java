@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.SwingUtilities;
@@ -92,40 +91,6 @@ public class RepositoryLoader extends Thread {
 		this.localAudioObjectFactory = localAudioObjectFactory;
 		this.localAudioObjectValidator = localAudioObjectValidator;
 		setPriority(Thread.MAX_PRIORITY);
-	}
-
-	/**
-	 * Gets the songs for dir.
-	 * @param folder
-	 * @param listener
-	 * @param localAudioObjectFactory
-	 * @param localAudioObjectValidator
-	 * @return
-	 */
-	public static List<ILocalAudioObject> getSongsForFolder(File folder, IRepositoryLoaderListener listener, ILocalAudioObjectFactory localAudioObjectFactory, ILocalAudioObjectValidator localAudioObjectValidator) {
-		List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
-
-		File[] list = folder.listFiles();
-		List<File> files = new ArrayList<File>();
-		if (list != null) {
-			// First find audio and files
-			for (File element : list) {
-				if (localAudioObjectValidator.isValidAudioFile(element)) {
-					files.add(element);
-				} else if (element.isDirectory()) {
-					result.addAll(getSongsForFolder(element, listener, localAudioObjectFactory, localAudioObjectValidator));
-				}
-			}
-
-			for (int i = 0; i < files.size(); i++) {
-				ILocalAudioObject audioObject = localAudioObjectFactory.getLocalAudioObject(files.get(i));
-				result.add(audioObject);
-				if (listener != null) {
-					listener.notifyFileLoaded();
-				}
-			}
-		}
-		return result;
 	}
 
 	/**
