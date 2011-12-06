@@ -26,9 +26,7 @@ import java.util.Map;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.kernel.modules.tags.EditTagInfo;
 import net.sourceforge.atunes.kernel.modules.tags.TagFactory;
-import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 
 /**
  * The Class EditTagFromFolderNamePatternProcess.
@@ -42,15 +40,6 @@ public class EditTagFromFolderNamePatternProcess extends AbstractChangeTagProces
 
     /** The files and tags. */
     private Map<ILocalAudioObject, EditTagInfo> filesAndTags;
-    
-    private ILocalAudioObjectValidator localAudioObjectValidator;
-
-    /**
-     * @param localAudioObjectValidator
-     */
-    public void setLocalAudioObjectValidator(ILocalAudioObjectValidator localAudioObjectValidator) {
-		this.localAudioObjectValidator = localAudioObjectValidator;
-	}
     
     /**
      * @param pattern
@@ -74,6 +63,6 @@ public class EditTagFromFolderNamePatternProcess extends AbstractChangeTagProces
 
     @Override
     protected void changeTag(ILocalAudioObject file) {
-        TagModifier.setInfo(file, TagFactory.getNewTag(file, filesAndTags.get(file)), localAudioObjectValidator);
+        getTagHandler().setTag(file, TagFactory.getNewTag(file, filesAndTags.get(file)));
     }
 }

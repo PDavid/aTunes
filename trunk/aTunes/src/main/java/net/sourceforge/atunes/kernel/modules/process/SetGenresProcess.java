@@ -25,7 +25,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.UnknownObjectCheck;
@@ -57,7 +56,7 @@ public class SetGenresProcess extends AbstractChangeTagProcess {
         String genre = this.filesAndGenres.get(file);
         // If file has already genre setted, avoid
         if (!file.getGenre().equals(genre)) {
-            TagModifier.setGenre(file, genre);
+            getTagHandler().setGenre(file, genre);
         }
     }
 

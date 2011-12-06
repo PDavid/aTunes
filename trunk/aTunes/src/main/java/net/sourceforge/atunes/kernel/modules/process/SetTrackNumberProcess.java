@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
 /**
@@ -45,6 +44,6 @@ public class SetTrackNumberProcess extends AbstractChangeTagProcess {
 
     @Override
     protected void changeTag(ILocalAudioObject file) throws IOException {
-        TagModifier.setTrackNumber(file, filesAndTracks.get(file));
+        getTagHandler().setTrackNumber(file, filesAndTracks.get(file));
     }
 }

@@ -23,12 +23,10 @@ package net.sourceforge.atunes.kernel.modules.process;
 import java.io.IOException;
 import java.util.Collection;
 
-import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.model.IChangeTagsProcess;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -46,26 +44,17 @@ public abstract class AbstractChangeTagProcess extends AbstractProcess implement
      */
     private Collection<ILocalAudioObject> filesToChange;
     
-    private IPlayListHandler playListHandler;
-    
     private IRepositoryHandler repositoryHandler;
     
-    private IPlayerHandler playerHandler;
+    private ITagHandler tagHandler;
+    
+    /**
+     * @param tagHandler
+     */
+    public void setTagHandler(ITagHandler tagHandler) {
+		this.tagHandler = tagHandler;
+	}
 
-    /**
-     * @param playerHandler
-     */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
-		this.playerHandler = playerHandler;
-	}
-    
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
-	}
-    
     /**
      * @param repositoryHandler
      */
@@ -106,7 +95,7 @@ public abstract class AbstractChangeTagProcess extends AbstractProcess implement
             errors = true;
         }
         // Refresh swing components
-        TagModifier.refreshAfterTagModify(filesToChange, playListHandler, playerHandler);
+        tagHandler.refreshAfterTagModify(filesToChange);
 
         repositoryHandler.endTransaction();
         
@@ -117,6 +106,14 @@ public abstract class AbstractChangeTagProcess extends AbstractProcess implement
     protected void runCancel() {
         // Change tag has no possible cancel operation
     }
+    
+    /**
+     * Access tag handler
+     * @return
+     */
+    protected ITagHandler getTagHandler() {
+		return tagHandler;
+	}
 
     /**
      * Code to change tag of an AudioFile

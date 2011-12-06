@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.process;
 
-import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
 /**
@@ -30,7 +29,7 @@ public class ClearTagsProcess extends AbstractChangeTagProcess {
 
     @Override
     protected void changeTag(ILocalAudioObject file) {
-        TagModifier.deleteTags(file);
+        getTagHandler().deleteTags(file);
     }
 
 }

@@ -30,7 +30,7 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
+import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -59,7 +59,7 @@ public class LameEncoder extends AbstractEncoder {
      * Creates a new lame encoder
      */
     public LameEncoder() {
-    	super("mp3", MP3_QUALITIES, MP3_DEFAULT_QUALITY, FORMAT_NAME, Context.getBean(ILocalAudioObjectValidator.class));
+    	super("mp3", MP3_QUALITIES, MP3_DEFAULT_QUALITY, FORMAT_NAME, Context.getBean(ITagHandler.class));
 	}
     
     @Override

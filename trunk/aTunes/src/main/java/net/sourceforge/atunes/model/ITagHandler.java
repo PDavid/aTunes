@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.model;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -34,12 +35,75 @@ public interface ITagHandler extends IHandler {
 	 * @param source
 	 * @param list
 	 */
-	public void editFiles(EditTagSources source, List<ILocalAudioObject> list);
+	void editFiles(EditTagSources source, List<ILocalAudioObject> list);
 
 	/**
 	 * Edits all elements of an album
 	 * @param a
 	 */
-	public void editFiles(Album a);
+	void editFiles(Album a);
+
+	/**
+	 * Sets tag to audio object
+	 * @param audioObject
+	 * @param tag
+	 */
+	void setTag(ILocalAudioObject audioObject, ITag tag);
+	
+	/**
+	 * Sets tags to audio object and optionally cover
+	 * @param audioObject
+	 * @param tag
+	 * @param editCover
+	 * @param cover
+	 */
+	void setTag(ILocalAudioObject audioObject, ITag tag, boolean editCover, byte[] cover);
+
+	/**
+	 * Refreshes after change tags of fiven audio objects
+	 * @param audioObjectsChanged
+	 */
+	void refreshAfterTagModify(Collection<ILocalAudioObject> audioObjectsChanged);
+
+	/**
+	 * Removes tag from given file
+	 * @param file
+	 */
+	void deleteTags(ILocalAudioObject file);
+
+	/**
+	 * Sets title to audio object
+	 * @param audioObject
+	 * @param newTitle
+	 */
+	void setTitle(ILocalAudioObject audioObject, String newTitle);
+
+	/**
+	 * Sets album to audio object
+	 * @param audioObject
+	 * @param albumName
+	 */
+	void setAlbum(ILocalAudioObject audioObject, String albumName);
+
+	/**
+	 * Sets genre to audio object
+	 * @param audioObject
+	 * @param genre
+	 */
+	void setGenre(ILocalAudioObject audioObject, String genre);
+
+	/**
+	 * Sets lyrics to audio object
+	 * @param audioObject
+	 * @param lyricsString
+	 */
+	void setLyrics(ILocalAudioObject audioObject, String lyricsString);
+
+	/**
+	 * Sets track number to audio object
+	 * @param audioObject
+	 * @param integer
+	 */
+	void setTrackNumber(ILocalAudioObject audioObject, Integer integer);
 
 }

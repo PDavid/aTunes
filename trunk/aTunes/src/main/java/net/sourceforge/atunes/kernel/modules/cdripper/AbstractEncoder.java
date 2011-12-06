@@ -23,12 +23,11 @@ package net.sourceforge.atunes.kernel.modules.cdripper;
 import java.io.File;
 
 import net.sourceforge.atunes.kernel.modules.tags.TagFactory;
-import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
-import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ITag;
+import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -58,21 +57,21 @@ public abstract class AbstractEncoder implements Encoder {
 	
 	private IOSManager osManager;
 	
-	private ILocalAudioObjectValidator localAudioObjectValidator;
+	private ITagHandler tagHandler;
 
 	/**
 	 * @param extensionOfEncodedFiles
 	 * @param availableQualities
 	 * @param defaultQuality
 	 * @param formatName
-	 * @param localAudioObjectValidator
+	 * @param tagHandler
 	 */
-	public AbstractEncoder(String extensionOfEncodedFiles, String[] availableQualities, String defaultQuality, String formatName, ILocalAudioObjectValidator localAudioObjectValidator) {
+	public AbstractEncoder(String extensionOfEncodedFiles, String[] availableQualities, String defaultQuality, String formatName, ITagHandler tagHandler) {
 		this.extensionOfEncodedFiles = extensionOfEncodedFiles;
 		this.availableQualities = availableQualities;
 		this.defaultQuality = defaultQuality;
 		this.formatName = formatName;
-		this.localAudioObjectValidator = localAudioObjectValidator;
+		this.tagHandler = tagHandler;
 	}
 	
 	/**
@@ -193,7 +192,7 @@ public abstract class AbstractEncoder implements Encoder {
             tag.setComposer(composer);
             tag.setTrackNumber(trackNumber);
 
-            TagModifier.setInfo(audiofile, tag, localAudioObjectValidator);
+            tagHandler.setTag(audiofile, tag);
 
             return true;
         } catch (Exception e) {

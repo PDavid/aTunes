@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.process;
 
-import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
@@ -34,7 +33,7 @@ public class SetAlbumNamesProcess extends AbstractChangeTagProcess {
         if (UnknownObjectCheck.isUnknownAlbum(file.getAlbum())) {
             // Take name from folder
             String albumName = file.getFile().getParentFile().getName();
-            TagModifier.setAlbum(file, albumName);
+            getTagHandler().setAlbum(file, albumName);
         }
     }
 }

@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.tags;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,8 +34,10 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.ITagHandler;
 
 public class TagHandler extends AbstractHandler implements ITagHandler {
@@ -48,6 +51,15 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 	private ILocalAudioObjectValidator localAudioObjectValidator;
 	
 	private IProcessFactory processFactory;
+	
+	private IPlayerHandler playerHandler;
+	
+	/**
+	 * @param playerHandler
+	 */
+	public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
 	
 	/**
 	 * @param processFactory
@@ -115,4 +127,48 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 		new EditTitlesDialogController(new EditTitlesDialog(getFrame().getFrame(), lookAndFeelManager), getState(), processFactory).editFiles(a);
 	}
 	
+	@Override
+	public void setTag(ILocalAudioObject audioObject, ITag tag) {
+		new TagModifier().setInfo(audioObject, tag, localAudioObjectValidator);
+	}
+	
+	@Override
+	public void refreshAfterTagModify(Collection<ILocalAudioObject> audioObjectsChanged) {
+		new TagModifier().refreshAfterTagModify(audioObjectsChanged, playListHandler, playerHandler);
+	}
+
+	@Override
+	public void deleteTags(ILocalAudioObject audioObject) {
+		new TagModifier().deleteTags(audioObject);
+	}
+	
+	@Override
+	public void setTag(ILocalAudioObject audioObject, ITag tag, boolean editCover, byte[] cover) {
+		new TagModifier().setInfo(audioObject, tag, editCover, cover, localAudioObjectValidator);
+	}
+	
+	@Override
+	public void setTitle(ILocalAudioObject audioObject, String newTitle) {
+		new TagModifier().setTitles(audioObject, newTitle);
+	}
+	
+	@Override
+	public void setAlbum(ILocalAudioObject audioObject, String albumName) {
+		new TagModifier().setAlbum(audioObject, albumName);
+	}
+	
+	@Override
+	public void setGenre(ILocalAudioObject audioObject, String genre) {
+		new TagModifier().setGenre(audioObject, genre);
+	}
+	
+	@Override
+	public void setLyrics(ILocalAudioObject audioObject, String lyricsString) {
+		new TagModifier().setLyrics(audioObject, lyricsString);
+	}
+	
+	@Override
+	public void setTrackNumber(ILocalAudioObject audioObject, Integer integer) {
+		new TagModifier().setTrackNumber(audioObject, integer);
+	}
 }

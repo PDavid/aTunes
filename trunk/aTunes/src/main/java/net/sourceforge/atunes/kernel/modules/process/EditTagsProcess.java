@@ -23,9 +23,7 @@ package net.sourceforge.atunes.kernel.modules.process;
 import net.sourceforge.atunes.kernel.modules.repository.ImageCache;
 import net.sourceforge.atunes.kernel.modules.tags.EditTagInfo;
 import net.sourceforge.atunes.kernel.modules.tags.TagFactory;
-import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.ITag;
 
 /**
@@ -36,15 +34,6 @@ import net.sourceforge.atunes.model.ITag;
 public class EditTagsProcess extends AbstractChangeTagProcess {
 
     private EditTagInfo editTagInfo;
-    
-    private ILocalAudioObjectValidator localAudioObjectValidator;
-    
-    /**
-     * @param localAudioObjectValidator
-     */
-    public void setLocalAudioObjectValidator(ILocalAudioObjectValidator localAudioObjectValidator) {
-		this.localAudioObjectValidator = localAudioObjectValidator;
-	}
     
     /**
      * @param editTagInfo
@@ -67,7 +56,7 @@ public class EditTagsProcess extends AbstractChangeTagProcess {
             }
             newTag.setInternalImage((oldTag != null && oldTag.hasInternalImage() && !shouldEditCover) || (shouldEditCover && cover != null));
         }
-        TagModifier.setInfo(audioFile, newTag, shouldEditCover, c, localAudioObjectValidator);
+        getTagHandler().setTag(audioFile, newTag, shouldEditCover, c);
         ImageCache.getImageCache().clear(audioFile);
     }
 }

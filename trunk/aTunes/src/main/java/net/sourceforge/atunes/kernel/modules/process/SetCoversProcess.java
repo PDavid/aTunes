@@ -32,10 +32,8 @@ import javax.imageio.ImageIO;
 
 import net.sourceforge.atunes.kernel.modules.tags.EditTagInfo;
 import net.sourceforge.atunes.kernel.modules.tags.TagFactory;
-import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -46,8 +44,6 @@ import net.sourceforge.atunes.utils.UnknownObjectCheck;
  */
 public class SetCoversProcess extends AbstractChangeTagProcess {
 
-	private ILocalAudioObjectValidator localAudioObjectValidator;
-	
     private Map<ILocalAudioObject, Image> filesAndCovers;
     
     private IWebServicesHandler webServicesHandler;
@@ -59,13 +55,6 @@ public class SetCoversProcess extends AbstractChangeTagProcess {
 		this.webServicesHandler = webServicesHandler;
 	}
     
-    /**
-     * @param localAudioObjectValidator
-     */
-    public void setLocalAudioObjectValidator(ILocalAudioObjectValidator localAudioObjectValidator) {
-		this.localAudioObjectValidator = localAudioObjectValidator;
-	}
-
     @Override
     protected void retrieveInformationBeforeChangeTags() {
         super.retrieveInformationBeforeChangeTags();
@@ -79,7 +68,7 @@ public class SetCoversProcess extends AbstractChangeTagProcess {
         newTag.setInternalImage(true);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ImageIO.write(bufferedCover, "PNG", byteArrayOutputStream);
-        TagModifier.setInfo(file, newTag, true, byteArrayOutputStream.toByteArray(), localAudioObjectValidator);
+        getTagHandler().setTag(file, newTag, true, byteArrayOutputStream.toByteArray());
     }
 
     /**

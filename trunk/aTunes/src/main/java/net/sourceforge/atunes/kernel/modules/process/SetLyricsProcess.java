@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.process;
 
 import java.io.IOException;
 
-import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.model.IWebServicesHandler;
@@ -48,7 +47,7 @@ public class SetLyricsProcess extends AbstractChangeTagProcess {
             ILyrics lyrics = webServicesHandler.getLyrics(file.getArtist(), file.getTitle());
             String lyricsString = lyrics != null ? lyrics.getLyrics().trim() : "";
             if (!lyricsString.isEmpty()) {
-                TagModifier.setLyrics(file, lyricsString);
+                getTagHandler().setLyrics(file, lyricsString);
             }
         }
     }
