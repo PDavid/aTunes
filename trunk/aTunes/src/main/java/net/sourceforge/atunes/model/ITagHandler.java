@@ -22,6 +22,7 @@ package net.sourceforge.atunes.model;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Responsible of tag edition
@@ -105,5 +106,19 @@ public interface ITagHandler extends IHandler {
 	 * @param integer
 	 */
 	void setTrackNumber(ILocalAudioObject audioObject, Integer integer);
+
+	/**
+	 * Creates a new empty tag
+	 * @return
+	 */
+	ITag getNewTag();
+
+	/**
+	 * Creates a new tag with given tag information
+	 * @param file
+	 * @param tagInformation
+	 * @return
+	 */
+	ITag getNewTag(ILocalAudioObject file, Map<String, Object> tagInformation);
 
 }

@@ -26,7 +26,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import net.sourceforge.atunes.kernel.modules.tags.TagFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.ITag;
@@ -235,7 +234,7 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
         	int newTrackNumber = getTrackNumber(fileToImport);
         	if (newTrackNumber > 0) {
         		if (fileToImport.getTag() == null) {
-        			fileToImport.setTag(TagFactory.getNewTag());
+        			fileToImport.setTag(tagHandler.getNewTag());
         		}
         		fileToImport.getTag().setTrackNumber(newTrackNumber);
         		if (!filesToChangeTag.contains(fileToImport)) {
@@ -292,7 +291,7 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
             String newTitle = webServicesHandler.getTitleForAudioObject(fileToImport);
             if (newTitle != null) {
                 if (fileToImport.getTag() == null) {
-                    fileToImport.setTag(TagFactory.getNewTag());
+                    fileToImport.setTag(tagHandler.getNewTag());
                 }
                 fileToImport.getTag().setTitle(newTitle);
                 if (!filesToChangeTag.contains(fileToImport)) {

@@ -20,31 +20,28 @@
 
 package net.sourceforge.atunes.kernel.modules.tags;
 
+import java.util.Map;
+
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ITag;
 
 public class TagFactory {
 
     /**
-     * Gets the new tag.
-     * 
+     * Gets the new tag from file tag and given properties
      * @param file
-     *            the file
-     * @param editTagInfo
-     *            the edit tag info
-     * 
-     * @return the new tag
+     * @param tagInformation
+     * @return
      */
-    public static ITag getNewTag(ILocalAudioObject file, EditTagInfo editTagInfo) {
-        return new DefaultTag().setTagFromProperties(editTagInfo, file.getTag());
+    public ITag getNewTag(ILocalAudioObject file, Map<String, Object> tagInformation) {
+        return new DefaultTag().setTagFromProperties(file.getTag(), tagInformation);
     }
 
     /**
      * Creates a new empty tag
      * @return
      */
-    public static ITag getNewTag() {
+    public ITag getNewTag() {
     	return new DefaultTag();
     }
-
 }

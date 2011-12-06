@@ -20,9 +20,9 @@
 
 package net.sourceforge.atunes.kernel.modules.process;
 
+import java.util.Map;
+
 import net.sourceforge.atunes.kernel.modules.repository.ImageCache;
-import net.sourceforge.atunes.kernel.modules.tags.EditTagInfo;
-import net.sourceforge.atunes.kernel.modules.tags.TagFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ITag;
 
@@ -33,22 +33,22 @@ import net.sourceforge.atunes.model.ITag;
  */
 public class EditTagsProcess extends AbstractChangeTagProcess {
 
-    private EditTagInfo editTagInfo;
+    private Map<String, Object> editTagInfo;
     
     /**
      * @param editTagInfo
      */
-    public void setEditTagInfo(EditTagInfo editTagInfo) {
+    public void setEditTagInfo(Map<String, Object> editTagInfo) {
 		this.editTagInfo = editTagInfo;
 	}
 
     @Override
     protected void changeTag(ILocalAudioObject audioFile) {
-        ITag newTag = TagFactory.getNewTag(audioFile, editTagInfo);
+        ITag newTag = getTagHandler().getNewTag(audioFile, editTagInfo);
         ITag oldTag = audioFile.getTag();
 
         byte[] c = null;
-        boolean shouldEditCover = editTagInfo.isTagEdited("COVER");
+        boolean shouldEditCover = editTagInfo.containsKey("COVER");
         if (shouldEditCover) {
             Object cover = editTagInfo.get("COVER");
             if (cover != null) {

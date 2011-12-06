@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.tags;
 
+import java.util.Map;
+
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.utils.DateUtils;
@@ -173,18 +175,18 @@ public class DefaultTag extends AbstractTag {
     }
 
     @Override
-    public ITag setTagFromProperties(EditTagInfo editTagInfo, ITag oldTag) {
-        setTitleFromProperties(editTagInfo, oldTag);
-        setArtistFromProperties(editTagInfo, oldTag);
-        setAlbumFromProperties(editTagInfo, oldTag);
-        setYearFromProperties(editTagInfo, oldTag);
-        setCommentFromProperties(editTagInfo, oldTag);
-        setTrackNumberFromProperties(editTagInfo, oldTag);
-        setDiscNumberFromProperties(editTagInfo, oldTag);
-        setGenreFromProperties(editTagInfo, oldTag);
-        setLyricsFromProperties(editTagInfo, oldTag);
-        setComposerFromProperties(editTagInfo, oldTag);
-        setAlbumArtistFromProperties(editTagInfo, oldTag);
+    public ITag setTagFromProperties(ITag tag, Map<String, Object> properties) {
+        setTitleFromProperties(properties, tag);
+        setArtistFromProperties(properties, tag);
+        setAlbumFromProperties(properties, tag);
+        setYearFromProperties(properties, tag);
+        setCommentFromProperties(properties, tag);
+        setTrackNumberFromProperties(properties, tag);
+        setDiscNumberFromProperties(properties, tag);
+        setGenreFromProperties(properties, tag);
+        setLyricsFromProperties(properties, tag);
+        setComposerFromProperties(properties, tag);
+        setAlbumArtistFromProperties(properties, tag);
         return this;
     }
 
@@ -192,9 +194,8 @@ public class DefaultTag extends AbstractTag {
 	 * @param editTagInfo
 	 * @param oldTag
 	 */
-	private void setAlbumArtistFromProperties(EditTagInfo editTagInfo,
-			ITag oldTag) {
-		if (editTagInfo.isTagEdited("ALBUM_ARTIST")) {
+	private void setAlbumArtistFromProperties(Map<String, Object> editTagInfo, ITag oldTag) {
+		if (editTagInfo.containsKey("ALBUM_ARTIST")) {
             setAlbumArtist((String) editTagInfo.get("ALBUM_ARTIST"));
         } else {
             setAlbumArtist(oldTag != null ? oldTag.getAlbumArtist() : null);
@@ -205,8 +206,8 @@ public class DefaultTag extends AbstractTag {
 	 * @param editTagInfo
 	 * @param oldTag
 	 */
-	private void setComposerFromProperties(EditTagInfo editTagInfo, ITag oldTag) {
-		if (editTagInfo.isTagEdited("COMPOSER")) {
+	private void setComposerFromProperties(Map<String, Object> editTagInfo, ITag oldTag) {
+		if (editTagInfo.containsKey("COMPOSER")) {
             setComposer((String) editTagInfo.get("COMPOSER"));
         } else {
             setComposer(oldTag != null ? oldTag.getComposer() : null);
@@ -217,8 +218,8 @@ public class DefaultTag extends AbstractTag {
 	 * @param editTagInfo
 	 * @param oldTag
 	 */
-	private void setLyricsFromProperties(EditTagInfo editTagInfo, ITag oldTag) {
-		if (editTagInfo.isTagEdited("LYRICS")) {
+	private void setLyricsFromProperties(Map<String, Object> editTagInfo, ITag oldTag) {
+		if (editTagInfo.containsKey("LYRICS")) {
             setLyrics((String) editTagInfo.get("LYRICS"));
         } else {
             setLyrics(oldTag != null ? oldTag.getLyrics() : null);
@@ -229,8 +230,8 @@ public class DefaultTag extends AbstractTag {
 	 * @param editTagInfo
 	 * @param oldTag
 	 */
-	private void setGenreFromProperties(EditTagInfo editTagInfo, ITag oldTag) {
-		if (editTagInfo.isTagEdited("GENRE")) {
+	private void setGenreFromProperties(Map<String, Object> editTagInfo, ITag oldTag) {
+		if (editTagInfo.containsKey("GENRE")) {
             String genreString = (String) editTagInfo.get("GENRE");
             if (genreString == null) {
                 setGenre("");
@@ -246,9 +247,9 @@ public class DefaultTag extends AbstractTag {
 	 * @param editTagInfo
 	 * @param oldTag
 	 */
-	private void setDiscNumberFromProperties(EditTagInfo editTagInfo,
+	private void setDiscNumberFromProperties(Map<String, Object> editTagInfo,
 			ITag oldTag) {
-		if (editTagInfo.isTagEdited("DISC_NUMBER")) {
+		if (editTagInfo.containsKey("DISC_NUMBER")) {
             try {
                 setDiscNumber(Integer.parseInt((String) editTagInfo.get("DISC_NUMBER")));
             } catch (NumberFormatException ex) {
@@ -263,9 +264,9 @@ public class DefaultTag extends AbstractTag {
 	 * @param editTagInfo
 	 * @param oldTag
 	 */
-	private void setTrackNumberFromProperties(EditTagInfo editTagInfo,
+	private void setTrackNumberFromProperties(Map<String, Object> editTagInfo,
 			ITag oldTag) {
-		if (editTagInfo.isTagEdited("TRACK")) {
+		if (editTagInfo.containsKey("TRACK")) {
             try {
                 setTrackNumber(Integer.parseInt((String) editTagInfo.get("TRACK")));
             } catch (NumberFormatException ex) {
@@ -280,8 +281,8 @@ public class DefaultTag extends AbstractTag {
 	 * @param editTagInfo
 	 * @param oldTag
 	 */
-	private void setCommentFromProperties(EditTagInfo editTagInfo, ITag oldTag) {
-		if (editTagInfo.isTagEdited("COMMENT")) {
+	private void setCommentFromProperties(Map<String, Object> editTagInfo, ITag oldTag) {
+		if (editTagInfo.containsKey("COMMENT")) {
             setComment((String) editTagInfo.get("COMMENT"));
         } else {
             setComment(oldTag != null ? oldTag.getComment() : null);
@@ -292,8 +293,8 @@ public class DefaultTag extends AbstractTag {
 	 * @param editTagInfo
 	 * @param oldTag
 	 */
-	private void setYearFromProperties(EditTagInfo editTagInfo, ITag oldTag) {
-		if (editTagInfo.isTagEdited("YEAR")) {
+	private void setYearFromProperties(Map<String, Object> editTagInfo, ITag oldTag) {
+		if (editTagInfo.containsKey("YEAR")) {
             try {
                 setYear(Integer.parseInt((String) editTagInfo.get("YEAR")));
             } catch (NumberFormatException ex) {
@@ -308,8 +309,8 @@ public class DefaultTag extends AbstractTag {
 	 * @param editTagInfo
 	 * @param oldTag
 	 */
-	private void setAlbumFromProperties(EditTagInfo editTagInfo, ITag oldTag) {
-		if (editTagInfo.isTagEdited("ALBUM")) {
+	private void setAlbumFromProperties(Map<String, Object> editTagInfo, ITag oldTag) {
+		if (editTagInfo.containsKey("ALBUM")) {
             setAlbum((String) editTagInfo.get("ALBUM"));
         } else {
             setAlbum(oldTag != null ? oldTag.getAlbum() : null);
@@ -320,8 +321,8 @@ public class DefaultTag extends AbstractTag {
 	 * @param editTagInfo
 	 * @param oldTag
 	 */
-	private void setArtistFromProperties(EditTagInfo editTagInfo, ITag oldTag) {
-		if (editTagInfo.isTagEdited("ARTIST")) {
+	private void setArtistFromProperties(Map<String, Object> editTagInfo, ITag oldTag) {
+		if (editTagInfo.containsKey("ARTIST")) {
             setArtist((String) editTagInfo.get("ARTIST"));
         } else {
             setArtist(oldTag != null ? oldTag.getArtist() : null);
@@ -332,8 +333,8 @@ public class DefaultTag extends AbstractTag {
 	 * @param editTagInfo
 	 * @param oldTag
 	 */
-	private void setTitleFromProperties(EditTagInfo editTagInfo, ITag oldTag) {
-		if (editTagInfo.isTagEdited("TITLE")) {
+	private void setTitleFromProperties(Map<String, Object> editTagInfo, ITag oldTag) {
+		if (editTagInfo.containsKey("TITLE")) {
             setTitle((String) editTagInfo.get("TITLE"));
         } else {
             setTitle(oldTag != null ? oldTag.getTitle() : null);
