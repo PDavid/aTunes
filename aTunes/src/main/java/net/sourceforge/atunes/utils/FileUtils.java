@@ -18,30 +18,36 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.tags;
+package net.sourceforge.atunes.utils;
 
-import java.util.Map;
+import java.io.File;
+import java.io.FileNotFoundException;
 
-import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ITag;
-
-class TagFactory {
-
-    /**
-     * Gets the new tag from file tag and given properties
-     * @param file
-     * @param tagInformation
-     * @return
-     */
-    public ITag getNewTag(ILocalAudioObject file, Map<String, Object> tagInformation) {
-        return new DefaultTag().setTagFromProperties(file.getTag(), tagInformation);
-    }
+/**
+ * File utilities
+ * @author alex
+ *
+ */
+public class FileUtils {
 
     /**
-     * Creates a new empty tag
-     * @return
+     * Sets write permissions if is not writable.
+     * @throws FileNotFoundException 
      */
-    public ITag getNewTag() {
-    	return new DefaultTag();
+    public static void setWritable(File file) throws FileNotFoundException {
+    	if (file == null) {
+    		throw new IllegalArgumentException("File is null");
+    	} else if (!file.exists()) {
+    		throw new FileNotFoundException(file.getAbsolutePath());
+    	}
+        // Set write permission on file
+        if (!file.canWrite()) {
+            file.setWritable(true);
+        }
+        // Set write permission on parent
+        if (!file.getParentFile().canWrite()) {
+            file.getParentFile().setWritable(true);
+    	}
     }
+
 }

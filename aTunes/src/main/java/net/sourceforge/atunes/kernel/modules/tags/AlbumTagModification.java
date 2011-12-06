@@ -20,28 +20,20 @@
 
 package net.sourceforge.atunes.kernel.modules.tags;
 
-import java.util.Map;
+import org.jaudiotagger.tag.FieldDataInvalidException;
+import org.jaudiotagger.tag.FieldKey;
+import org.jaudiotagger.tag.KeyNotFoundException;
+import org.jaudiotagger.tag.Tag;
 
-import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ITag;
+final class AlbumTagModification implements ITagModification {
+	private final String album;
 
-class TagFactory {
+	AlbumTagModification(String album) {
+		this.album = album;
+	}
 
-    /**
-     * Gets the new tag from file tag and given properties
-     * @param file
-     * @param tagInformation
-     * @return
-     */
-    public ITag getNewTag(ILocalAudioObject file, Map<String, Object> tagInformation) {
-        return new DefaultTag().setTagFromProperties(file.getTag(), tagInformation);
-    }
-
-    /**
-     * Creates a new empty tag
-     * @return
-     */
-    public ITag getNewTag() {
-    	return new DefaultTag();
-    }
+	@Override
+	public void modify(Tag tag) throws KeyNotFoundException, FieldDataInvalidException {
+		tag.setField(FieldKey.ALBUM, album);
+	}
 }

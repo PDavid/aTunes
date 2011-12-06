@@ -31,6 +31,7 @@ import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.LocalAudioObjectFormat;
+import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -42,7 +43,6 @@ import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
 import org.jaudiotagger.tag.FieldDataInvalidException;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.KeyNotFoundException;
-import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagException;
 import org.jaudiotagger.tag.datatype.Artwork;
 import org.jaudiotagger.tag.reference.PictureTypes;
@@ -66,9 +66,9 @@ final class TagModifier {
      *            the file
      */
     public void deleteTags(ILocalAudioObject file) {
-        // Be sure file is writable before setting info
-        setWritable(file);
         try {
+            // Be sure file is writable before setting info
+            FileUtils.setWritable(file.getFile());
             org.jaudiotagger.audio.AudioFileIO.delete(org.jaudiotagger.audio.AudioFileIO.read(file.getFile()));
         } catch (IOException e) {
         	reportWriteError(file, e);
@@ -107,13 +107,7 @@ final class TagModifier {
      *            Album of file
      */
     public void setAlbum(ILocalAudioObject file, final String album) {
-    	modifyTag(file, new ITagModification() {
-
-    		@Override
-    		public void modify(Tag tag) throws KeyNotFoundException, FieldDataInvalidException {
-    			tag.setField(FieldKey.ALBUM, album);
-    		}
-    	});
+    	modifyTag(file, new AlbumTagModification(album));
     }
 
     /**
@@ -125,13 +119,7 @@ final class TagModifier {
      *            Genre of file
      */
     public void setGenre(ILocalAudioObject file, final String genre) {
-    	modifyTag(file, new ITagModification() {
-
-    		@Override
-    		public void modify(Tag tag) throws KeyNotFoundException, FieldDataInvalidException {
-    			tag.setField(tag.createField(FieldKey.GENRE, genre));
-    		}
-    	});
+    	modifyTag(file, new GenreTagModification(genre));
     }
     
     /**
@@ -153,8 +141,6 @@ final class TagModifier {
      * @param localAudioObjectValidator
      */
     public void setInfo(ILocalAudioObject file, ITag tag, boolean shouldEditCover, byte[] cover, ILocalAudioObjectValidator localAudioObjectValidator) {
-        // Be sure file is writable before setting info
-        setWritable(file);
 
         String title = tag.getTitle();
         String album = tag.getAlbum();
@@ -169,6 +155,9 @@ final class TagModifier {
         String albumArtist = tag.getAlbumArtist();
 
         try {
+            // Be sure file is writable before setting info
+            FileUtils.setWritable(file.getFile());
+
             org.jaudiotagger.audio.AudioFile audioFile = org.jaudiotagger.audio.AudioFileIO.read(file.getFile());
             org.jaudiotagger.tag.Tag newTag = audioFile.getTagOrCreateAndSetDefault();
 
@@ -285,13 +274,7 @@ final class TagModifier {
      *            the lyrics
      */
     public void setLyrics(ILocalAudioObject file, final String lyrics) {
-    	modifyTag(file, new ITagModification() {
-			
-			@Override
-			public void modify(Tag tag) throws KeyNotFoundException, FieldDataInvalidException {
-				tag.setField(tag.createField(FieldKey.LYRICS, lyrics));
-			}
-		});
+    	modifyTag(file, new LyricsTagModification(lyrics));
     }
 
     /**
@@ -303,13 +286,7 @@ final class TagModifier {
      *            New title
      */
     public void setTitles(ILocalAudioObject file, final String newTitle) {
-    	modifyTag(file, new ITagModification() {
-			
-			@Override
-			public void modify(Tag tag) throws KeyNotFoundException, FieldDataInvalidException {
-	            tag.setField(FieldKey.TITLE, newTitle);
-			}
-		});
+    	modifyTag(file, new TitleTagModification(newTitle));
     }
 
     /**
@@ -321,13 +298,7 @@ final class TagModifier {
      *            Track number
      */
     public void setTrackNumber(ILocalAudioObject file, final Integer track) {
-    	modifyTag(file, new ITagModification() {
-			
-			@Override
-			public void modify(Tag tag) throws KeyNotFoundException, FieldDataInvalidException {
-				tag.setField(FieldKey.TRACK, track.toString());
-			}
-		});
+    	modifyTag(file, new TrackNumberTagModification(track));
     }
 
     /**
@@ -337,8 +308,8 @@ final class TagModifier {
      */
     private void modifyTag(ILocalAudioObject file, ITagModification modification) {
         // Be sure file is writable before setting info
-        setWritable(file);
         try {
+            FileUtils.setWritable(file.getFile());
             org.jaudiotagger.audio.AudioFile audioFile = org.jaudiotagger.audio.AudioFileIO.read(file.getFile());
             org.jaudiotagger.tag.Tag newTag = audioFile.getTagOrCreateAndSetDefault();
             modification.modify(newTag);
@@ -379,19 +350,5 @@ final class TagModifier {
      */
     private final void reportWriteFieldError(ILocalAudioObject file, FieldKey fieldKey, String fieldValue, Exception e) {
     	Logger.error(StringUtils.getString("Could not edit tag field ", fieldKey.name(), " with value \"", fieldValue, "\" for file: ", file.getUrl(), " Error: ", e));
-    }
-
-    /**
-     * Sets write permissions if is not writable.
-     */
-    private void setWritable(ILocalAudioObject file) {
-        // Set write permission on file
-        if (!file.getFile().canWrite()) {
-            file.getFile().setWritable(true);
-        }
-        // Set write permission on parent
-        if (!file.getFile().getParentFile().canWrite()) {
-            file.getFile().getParentFile().setWritable(true);
-        }
     }
 }
