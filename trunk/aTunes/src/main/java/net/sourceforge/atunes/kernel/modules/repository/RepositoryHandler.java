@@ -35,7 +35,6 @@ import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
-import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.IGenre;
@@ -84,8 +83,6 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	
 	private IStateHandler stateHandler;
 	
-	private IDeviceHandler deviceHandler;
-	
 	private IRepository repository;
 	
 	private VoidRepository voidRepository;
@@ -112,6 +109,33 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	private ILocalAudioObjectValidator localAudioObjectValidator;
 	
 	private IProcessFactory processFactory;
+	
+	private LocalAudioObjectRefresher localAudioObjectRefresher;
+	
+	private FolderRefresher folderRefresher;
+	
+	private RepositoryRemover repositoryRemover;
+	
+	/**
+	 * @param repositoryRemover
+	 */
+	public void setRepositoryRemover(RepositoryRemover repositoryRemover) {
+		this.repositoryRemover = repositoryRemover;
+	}
+	
+	/**
+	 * @param folderRefresher
+	 */
+	public void setFolderRefresher(FolderRefresher folderRefresher) {
+		this.folderRefresher = folderRefresher;
+	}
+	
+	/**
+	 * @param localAudioObjectRefresher
+	 */
+	public void setLocalAudioObjectRefresher(LocalAudioObjectRefresher localAudioObjectRefresher) {
+		this.localAudioObjectRefresher = localAudioObjectRefresher;
+	}
 	
 	/**
 	 * @param processFactory
@@ -190,13 +214,6 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 		this.favoritesHandler = favoritesHandler;
 	}
 	
-    /**
-     * @param deviceHandler
-     */
-    public void setDeviceHandler(IDeviceHandler deviceHandler) {
-		this.deviceHandler = deviceHandler;
-	}
-    
     /**
      * @param stateHandler
      */
@@ -432,14 +449,14 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     
     @Override
 	public void refreshFile(ILocalAudioObject file) {
-        RepositoryLoader.refreshFile(getState(), repository, file, statisticsHandler, localAudioObjectFactory);
+    	localAudioObjectRefresher.refreshFile(repository, file);
     }
 
     @Override
 	public void refreshFolders(List<Folder> folders) {
     	getFrame().showProgressBar(true, StringUtils.getString(I18nUtils.getString("REFRESHING"), "..."));
     	repositoryActions.enableRepositoryActions(false);
-    	new RefreshFoldersSwingWorker(repositoryReader, this, repository, folders, statisticsHandler, getOsManager(), getState(), localAudioObjectFactory, localAudioObjectValidator).execute();
+    	new RefreshFoldersSwingWorker(repositoryReader, this, repository, folders, folderRefresher).execute();
     }
 
     @Override
@@ -476,7 +493,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         }
 
         for (ILocalAudioObject fileToRemove : filesToRemove) {
-            RepositoryLoader.deleteFile(fileToRemove, getOsManager(), this, deviceHandler);
+            repositoryRemover.deleteFile(fileToRemove);
         }
 
         // Notify listeners
