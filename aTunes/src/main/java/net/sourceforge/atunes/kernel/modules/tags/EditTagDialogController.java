@@ -22,8 +22,10 @@ package net.sourceforge.atunes.kernel.modules.tags;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
@@ -506,7 +508,7 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
         getComponentControlled().setVisible(true);
 
         // Build editor props
-        EditTagInfo editTagInfo = new EditTagInfo();
+        Map<String, Object> editTagInfo = new HashMap<String, Object>();
 
         if (!getComponentControlled().getTitleCheckBox().isEnabled() || getComponentControlled().getTitleCheckBox().isSelected()) {
             editTagInfo.put("TITLE", getComponentControlled().getTitleTextField().getText());

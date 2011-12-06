@@ -20,28 +20,26 @@
 
 package net.sourceforge.atunes.kernel.modules.tags;
 
-import java.util.Map;
-
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ITag;
 
-public class TagFactory {
-
-    /**
-     * Gets the new tag from file tag and given properties
-     * @param file
-     * @param tagInformation
-     * @return
-     */
-    public ITag getNewTag(ILocalAudioObject file, Map<String, Object> tagInformation) {
-        return new DefaultTag().setTagFromProperties(file.getTag(), tagInformation);
+final class DiscNumberTagAttributeReviewed extends AbstractTagAttributeReviewed {
+    DiscNumberTagAttributeReviewed(String name) {
+        super(name);
     }
 
-    /**
-     * Creates a new empty tag
-     * @return
-     */
-    public ITag getNewTag() {
-    	return new DefaultTag();
+    @Override
+    String getValue(ILocalAudioObject audioFile) {
+        return audioFile.getDiscNumber() > 0 ? String.valueOf(audioFile.getDiscNumber()) : "";
+    }
+
+    @Override
+    ITag changeTag(ITag tag, String value) {
+        try {
+            tag.setDiscNumber(Integer.parseInt(value));
+        } catch (NumberFormatException e) {
+            tag.setDiscNumber(0);
+        }
+        return tag;
     }
 }

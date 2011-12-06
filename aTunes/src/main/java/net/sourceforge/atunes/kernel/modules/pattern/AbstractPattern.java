@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.sourceforge.atunes.kernel.modules.tags.EditTagInfo;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -273,14 +272,14 @@ public abstract class AbstractPattern {
     }
 
     /**
-     * Returns a EditTagInfo object from a map of matches. Every attribute is
+     * Returns a map object from a map of matches. Every attribute is
      * filled with the matched value if found in map
      * 
      * @param matches
      * @return
      */
-    public static EditTagInfo getEditTagInfoFromMatches(Map<String, String> matches) {
-        EditTagInfo tagInfo = new EditTagInfo();
+    public static Map<String, Object> getEditTagInfoFromMatches(Map<String, String> matches) {
+        Map<String, Object> tagInfo = new HashMap<String, Object>();
         for (Entry<String, String> entry : matches.entrySet()) {
             tagInfo.put(entry.getKey(), entry.getValue());
         }

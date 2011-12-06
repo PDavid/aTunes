@@ -24,8 +24,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
-import net.sourceforge.atunes.kernel.modules.tags.EditTagInfo;
-import net.sourceforge.atunes.kernel.modules.tags.TagFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
 /**
@@ -39,7 +37,7 @@ public class EditTagFromFileNamePatternProcess extends AbstractChangeTagProcess 
     private String pattern;
 
     /** The files and tags. */
-    private Map<ILocalAudioObject, EditTagInfo> filesAndTags;
+    private Map<ILocalAudioObject, Map<String, Object>> filesAndTags;
     
     /**
      * @param pattern
@@ -52,10 +50,10 @@ public class EditTagFromFileNamePatternProcess extends AbstractChangeTagProcess 
     protected void retrieveInformationBeforeChangeTags() {
         super.retrieveInformationBeforeChangeTags();
         if (filesAndTags == null) {
-            filesAndTags = new HashMap<ILocalAudioObject, EditTagInfo>();
+            filesAndTags = new HashMap<ILocalAudioObject, Map<String, Object>>();
             for (ILocalAudioObject file : getFilesToChange()) {
                 Map<String, String> matches = AbstractPattern.getPatternMatches(pattern, file.getNameWithoutExtension(), false);
-                EditTagInfo editTagInfo = AbstractPattern.getEditTagInfoFromMatches(matches);
+                Map<String, Object> editTagInfo = AbstractPattern.getEditTagInfoFromMatches(matches);
                 filesAndTags.put(file, editTagInfo);
             }
         }
@@ -63,6 +61,6 @@ public class EditTagFromFileNamePatternProcess extends AbstractChangeTagProcess 
 
     @Override
     protected void changeTag(ILocalAudioObject file) {
-        getTagHandler().setTag(file, TagFactory.getNewTag(file, filesAndTags.get(file)));
+        getTagHandler().setTag(file, getTagHandler().getNewTag(file, filesAndTags.get(file)));
     }
 }

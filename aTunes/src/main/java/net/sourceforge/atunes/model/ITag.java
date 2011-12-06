@@ -21,8 +21,7 @@
 package net.sourceforge.atunes.model;
 
 import java.io.Serializable;
-
-import net.sourceforge.atunes.kernel.modules.tags.EditTagInfo;
+import java.util.Map;
 
 import org.joda.time.base.BaseDateTime;
 
@@ -84,13 +83,11 @@ public interface ITag extends Serializable {
 
 	/**
 	 * Sets the tag from properties.
-	 * 
+	 * @param tag
 	 * @param properties
-	 *            the properties
-	 * 
-	 * @return the tag from properties
+	 * @return
 	 */
-	public ITag setTagFromProperties(EditTagInfo editTagInfo, ITag oldTag);
+	public ITag setTagFromProperties(ITag tag, Map<String, Object> properties);
 
 	/**
 	 * Gets the title.

@@ -171,4 +171,14 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 	public void setTrackNumber(ILocalAudioObject audioObject, Integer integer) {
 		new TagModifier().setTrackNumber(audioObject, integer);
 	}
+
+	@Override
+	public ITag getNewTag() {
+		return new TagFactory().getNewTag();
+	}
+	
+	@Override
+	public ITag getNewTag(ILocalAudioObject file, Map<String, Object> tagInformation) {
+		return new TagFactory().getNewTag(file, tagInformation);
+	}
 }
