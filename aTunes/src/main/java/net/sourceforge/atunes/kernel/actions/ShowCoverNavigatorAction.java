@@ -25,7 +25,7 @@ import net.sourceforge.atunes.kernel.modules.covernavigator.CoverNavigatorContro
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -45,9 +45,16 @@ public class ShowCoverNavigatorAction extends CustomAbstractAction {
     
     private ILookAndFeelManager lookAndFeelManager;
     
-    private IOSManager osManager;
-    
     private IAudioObjectImageLocator audioObjectImageLocator;
+    
+    private IProcessFactory processFactory;
+    
+    /**
+     * @param processFactory
+     */
+    public void setProcessFactory(IProcessFactory processFactory) {
+		this.processFactory = processFactory;
+	}
     
     /**
      * @param audioObjectImageLocator
@@ -77,13 +84,6 @@ public class ShowCoverNavigatorAction extends CustomAbstractAction {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
     
-    /**
-     * @param osManager
-     */
-    public void setOsManager(IOSManager osManager) {
-		this.osManager = osManager;
-	}
-    
     public ShowCoverNavigatorAction() {
         super(I18nUtils.getString("COVER_NAVIGATOR"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("COVER_NAVIGATOR"));
@@ -94,7 +94,7 @@ public class ShowCoverNavigatorAction extends CustomAbstractAction {
         CoverNavigatorFrame coverNavigator = new CoverNavigatorFrame(repositoryHandler.getArtists(), 
         															 frame.getFrame(),
         															 lookAndFeelManager);
-        new CoverNavigatorController(coverNavigator, getState(), osManager, audioObjectImageLocator);
+        new CoverNavigatorController(coverNavigator, getState(), audioObjectImageLocator, processFactory);
         coverNavigator.setVisible(true);
     }
 

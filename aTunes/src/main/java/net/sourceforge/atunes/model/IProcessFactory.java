@@ -18,25 +18,20 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.draganddrop;
+package net.sourceforge.atunes.model;
 
-import java.io.Serializable;
-import java.util.Comparator;
-
-final class PlayListDragableRowComparator implements Comparator<PlayListDragableRow>, Serializable {
+/**
+ * Returns instances of processes given a unique process name
+ * @author alex
+ *
+ */
+public interface IProcessFactory {
 	
 	/**
-	 * 
+	 * Returns process instance for given process name
+	 * @param processName
+	 * @return
 	 */
-	private static final long serialVersionUID = 2196123391276254494L;
-	private final boolean needReverseRows;
+	IProcess getProcessByName(String processName);
 
-	PlayListDragableRowComparator(boolean needReverseRows) {
-		this.needReverseRows = needReverseRows;
-	}
-
-	@Override
-	public int compare(PlayListDragableRow o1, PlayListDragableRow o2) {
-	    return (needReverseRows ? -1 : 1) * Integer.valueOf(o1.getRowPosition()).compareTo(Integer.valueOf(o2.getRowPosition()));
-	}
 }

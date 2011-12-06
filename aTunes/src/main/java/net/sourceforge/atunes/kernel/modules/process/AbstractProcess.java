@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.process;
 
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -29,6 +28,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.model.IProcess;
 import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IState;
@@ -46,37 +46,7 @@ import net.sourceforge.atunes.utils.Logger;
  * @author fleax
  * 
  */
-public abstract class AbstractProcess {
-
-    private final class ProcessRunnable implements Runnable {
-		@Override
-		public void run() {
-		    // Show progress dialog
-		    showProgressDialog();
-
-		    // Run process code
-		    boolean ok = runProcess();
-
-		    // Process finished: hide progress dialog
-		    hideProgressDialog();
-
-		    // If process has been canceled then execute cancel code
-		    if (canceled) {
-		        runCancel();
-		    }
-
-		    // Notify all listeners
-		    if (listeners != null && !listeners.isEmpty()) {
-		        for (IProcessListener listener : listeners) {
-		            if (canceled) {
-		                listener.processCanceled();
-		            } else {
-		                listener.processFinished(ok);
-		            }
-		        }
-		    }
-		}
-	}
+public abstract class AbstractProcess implements Runnable, IProcess {
 
     /**
      * List of listeners notified when Process ends or is canceled
@@ -100,17 +70,14 @@ public abstract class AbstractProcess {
     private IProgressDialog progressDialog;
 
     /**
-     * The Swing component owner of this process. Needed to set owner of
-     * progress dialog. Can be null
-     */
-    private Window owner;
-    
-    /**
      * State of app
      */
     private IState state;
 
-    public AbstractProcess(IState state) {
+    /**
+     * @param state
+     */
+    public void setState(IState state) {
 		this.state = state;
 	}
     
@@ -123,7 +90,8 @@ public abstract class AbstractProcess {
      * 
      * @param listener
      */
-    public final void addProcessListener(IProcessListener listener) {
+    @Override
+	public final void addProcessListener(IProcessListener listener) {
         if (listeners == null) {
             listeners = new CopyOnWriteArrayList<IProcessListener>();
         }
@@ -135,7 +103,8 @@ public abstract class AbstractProcess {
      * 
      * @param listener
      */
-    public final void removeProcessListener(IProcessListener listener) {
+    @Override
+	public final void removeProcessListener(IProcessListener listener) {
         if (listeners != null) {
             listeners.remove(listener);
         }
@@ -161,45 +130,19 @@ public abstract class AbstractProcess {
     /**
      * Executes this process
      */
-    public final void execute() {
+    @Override
+	public final void execute() {
         // Add a debug log entry
-        addDebugLog(this.getClass().getName());
+        Logger.debug(this.getClass().getName());
 
         // Get size of this process
         this.processSize = getProcessSize();
 
         // Create new thread to run process
-        Thread t = new Thread(new ProcessRunnable());
+        Thread t = new Thread(this);
 
         // Run...
         t.start();
-    }
-
-    /**
-     * Adds a information log
-     * 
-     * @param o
-     */
-    protected final void addInfoLog(Object o) {
-        Logger.info(o);
-    }
-
-    /**
-     * Adds a debug log
-     * 
-     * @param o
-     */
-    protected final void addDebugLog(Object... o) {
-        Logger.debug(o);
-    }
-
-    /**
-     * Adds an error log
-     * 
-     * @param o
-     */
-    protected final void addErrorLog(Object o) {
-        Logger.error(o);
     }
 
     /**
@@ -229,7 +172,7 @@ public abstract class AbstractProcess {
     /**
      * Shows progress dialog
      */
-    final void showProgressDialog() {
+    private final void showProgressDialog() {
         try {
             SwingUtilities.invokeAndWait(new Runnable() {
                 @Override
@@ -249,7 +192,7 @@ public abstract class AbstractProcess {
     /**
      * Hide progress dialog
      */
-    final void hideProgressDialog() {
+    private final void hideProgressDialog() {
         try {
             SwingUtilities.invokeAndWait(new Runnable() {
                 public void run() {
@@ -279,16 +222,6 @@ public abstract class AbstractProcess {
         } catch (Exception e) {
             Logger.error(e);
         }
-    }
-
-    /**
-     * Component owner of this process
-     * 
-     * @param owner
-     *            the owner to set
-     */
-    protected void setOwner(Window owner) {
-        this.owner = owner;
     }
 
     /**
@@ -325,10 +258,32 @@ public abstract class AbstractProcess {
         return canceled;
     }
 
-    /**
-     * @return the owner
-     */
-    protected Window getOwner() {
-        return owner;
-    }
+	@Override
+	public final void run() {
+	    // Show progress dialog
+	    showProgressDialog();
+
+	    // Run process code
+	    boolean ok = runProcess();
+
+	    // Process finished: hide progress dialog
+	    hideProgressDialog();
+
+	    // If process has been canceled then execute cancel code
+	    if (canceled) {
+	        runCancel();
+	    }
+
+	    // Notify all listeners
+	    if (listeners != null && !listeners.isEmpty()) {
+	        for (IProcessListener listener : listeners) {
+	            if (canceled) {
+	                listener.processCanceled();
+	            } else {
+	                listener.processFinished(ok);
+	            }
+	        }
+	    }
+	}
+
 }

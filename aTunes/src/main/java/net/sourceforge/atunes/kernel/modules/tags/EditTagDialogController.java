@@ -37,13 +37,14 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.autocomplete.AutoCompleteDecorator;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
+import net.sourceforge.atunes.kernel.modules.process.EditTagsProcess;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
+import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITag;
@@ -97,9 +98,9 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
     
     private IRepositoryHandler repositoryHandler;
     
-    private IPlayerHandler playerHandler;
-    
     private ILocalAudioObjectValidator localAudioObjectValidator;
+    
+    private IProcessFactory processFactory;
 
     /**
      * Instantiates a new edits the tag dialog controller.
@@ -108,16 +109,16 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
      * @param osManager
      * @param playListHandler
      * @param repositoryHandler
-     * @param playerHandler
      * @param localAudioObjectValidator
+     * @param processFactory
      */
-    public EditTagDialogController(EditTagDialog dialog, IState state, IOSManager osManager, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler, ILocalAudioObjectValidator localAudioObjectValidator) {
+    public EditTagDialogController(EditTagDialog dialog, IState state, IOSManager osManager, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, ILocalAudioObjectValidator localAudioObjectValidator, IProcessFactory processFactory) {
         super(dialog, state);
         this.osManager = osManager;
         this.playListHandler = playListHandler;
         this.repositoryHandler = repositoryHandler;
-        this.playerHandler = playerHandler;
         this.localAudioObjectValidator = localAudioObjectValidator;
+        this.processFactory = processFactory;
         addBindings();
         addStateBindings();
     }
@@ -549,7 +550,9 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
             editTagInfo.put("COVER", newCover);
         }
 
-        EditTagsProcess process = new EditTagsProcess(new ArrayList<ILocalAudioObject>(audioFilesEditing), editTagInfo, getState(), playListHandler, repositoryHandler, playerHandler, localAudioObjectValidator);
+        EditTagsProcess process = (EditTagsProcess) processFactory.getProcessByName("editTagsProcess");
+        process.setFilesToChange(new ArrayList<ILocalAudioObject>(audioFilesEditing));
+        process.setEditTagInfo(editTagInfo);
         process.execute();
     }
 

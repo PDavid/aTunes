@@ -27,9 +27,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -42,31 +40,13 @@ public class AutoSetGenresAction extends AbstractActionOverSelectedObjects<ILoca
 
     private static final long serialVersionUID = 2868302038954563763L;
 
-    private IPlayListHandler playListHandler;
-    
-    private IRepositoryHandler repositoryHandler;
-    
-    private IPlayerHandler playerHandler;
+    private IProcessFactory processFactory;
     
     /**
-     * @param playerHandler
+     * @param processFactory
      */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
-		this.playerHandler = playerHandler;
-	}
-    
-    /**
-     * @param repositoryHandler
-     */
-    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
-	}
-    
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
+    public void setProcessFactory(IProcessFactory processFactory) {
+		this.processFactory = processFactory;
 	}
     
     public AutoSetGenresAction() {
@@ -76,7 +56,7 @@ public class AutoSetGenresAction extends AbstractActionOverSelectedObjects<ILoca
     
     @Override
     protected void executeAction(List<ILocalAudioObject> objects) {
-        TagEditionOperations.editGenre(objects, getState(), playListHandler, repositoryHandler, playerHandler);
+        TagEditionOperations.editGenre(objects, processFactory);
     }
 
     @Override

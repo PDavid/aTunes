@@ -18,25 +18,35 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.draganddrop;
+package net.sourceforge.atunes.model;
 
-import java.io.Serializable;
-import java.util.Comparator;
 
-final class PlayListDragableRowComparator implements Comparator<PlayListDragableRow>, Serializable {
-	
+/**
+ * A Process represents a task to be done in background. While task is being
+ * executed it updates a progress dialog.
+ * 
+ * @author fleax
+ * 
+ */
+public interface IProcess {
+
 	/**
+	 * Adds a listener to this process
 	 * 
+	 * @param listener
 	 */
-	private static final long serialVersionUID = 2196123391276254494L;
-	private final boolean needReverseRows;
+	public void addProcessListener(IProcessListener listener);
 
-	PlayListDragableRowComparator(boolean needReverseRows) {
-		this.needReverseRows = needReverseRows;
-	}
+	/**
+	 * Removes a listener of this process
+	 * 
+	 * @param listener
+	 */
+	public void removeProcessListener(IProcessListener listener);
 
-	@Override
-	public int compare(PlayListDragableRow o1, PlayListDragableRow o2) {
-	    return (needReverseRows ? -1 : 1) * Integer.valueOf(o1.getRowPosition()).compareTo(Integer.valueOf(o2.getRowPosition()));
-	}
+	/**
+	 * Executes this process
+	 */
+	public void execute();
+
 }

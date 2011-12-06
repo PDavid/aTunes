@@ -38,9 +38,9 @@ public class ArtistColumn extends AbstractColumn implements ApplicationContextAw
 
     private CachedIconFactory artistFavoriteIcon;
 
-    private ApplicationContext context;
+    private transient ApplicationContext context;
     
-    private IFavoritesHandler favoritesHandler;
+    private transient IFavoritesHandler favoritesHandler;
     
     public ArtistColumn() {
         super("ARTIST", TextAndIcon.class);

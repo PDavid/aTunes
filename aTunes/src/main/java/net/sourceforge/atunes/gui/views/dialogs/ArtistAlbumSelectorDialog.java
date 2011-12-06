@@ -87,7 +87,7 @@ public final class ArtistAlbumSelectorDialog extends AbstractCustomDialog implem
         
         ArrayList<Album> albumList = new ArrayList<Album>(artist.getAlbums().values());
         
-        final AlbumTableModel model = new AlbumTableModel(lookAndFeel);
+        final AlbumTableModel model = new AlbumTableModel();
         albumTable.setModel(model);
         
         // Set column model

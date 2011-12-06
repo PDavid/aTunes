@@ -18,25 +18,28 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.draganddrop;
+package net.sourceforge.atunes.kernel.modules.covernavigator;
 
-import java.io.Serializable;
-import java.util.Comparator;
+import javax.swing.ImageIcon;
 
-final class PlayListDragableRowComparator implements Comparator<PlayListDragableRow>, Serializable {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2196123391276254494L;
-	private final boolean needReverseRows;
+import net.sourceforge.atunes.model.Album;
 
-	PlayListDragableRowComparator(boolean needReverseRows) {
-		this.needReverseRows = needReverseRows;
-	}
+class IntermediateResult {
 
-	@Override
-	public int compare(PlayListDragableRow o1, PlayListDragableRow o2) {
-	    return (needReverseRows ? -1 : 1) * Integer.valueOf(o1.getRowPosition()).compareTo(Integer.valueOf(o2.getRowPosition()));
-	}
+    private Album album;
+    private ImageIcon cover;
+
+    public IntermediateResult(Album album, ImageIcon cover) {
+        this.album = album;
+        this.cover = cover;
+    }
+
+    public Album getAlbum() {
+        return album;
+    }
+
+    public ImageIcon getCover() {
+        return cover;
+    }
+
 }

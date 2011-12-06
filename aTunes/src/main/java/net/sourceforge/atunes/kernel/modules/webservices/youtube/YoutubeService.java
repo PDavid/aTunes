@@ -29,7 +29,6 @@ import java.util.List;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.INetworkHandler;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -70,19 +69,15 @@ public final class YoutubeService {
     private static final String SEARCH_URL = StringUtils.getString("http://gdata.youtube.com/feeds/api/videos?vq=", QUERY_STRING_WILDCARD, "&max-results=", Integer
             .toString(MAX_RESULTS), "&start-index=", START_INDEX_WILDCARD);
 
-    private IState state;
-    
     private INetworkHandler networkHandler;
-    
+
     /**
-     * @param state
      * @param networkHandler
      */
-    public YoutubeService(IState state, INetworkHandler networkHandler) {
-    	this.state = state;
-    	this.networkHandler = networkHandler;
-    }
-
+    public void setNetworkHandler(INetworkHandler networkHandler) {
+		this.networkHandler = networkHandler;
+	}
+    
     /**
      * triggers youtube search and returns result in table model structure by
      * default only the first 10 result entries will be returned. Specify

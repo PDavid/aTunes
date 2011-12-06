@@ -33,13 +33,12 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObjectTransferProcess;
 import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IProgressDialog;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -47,7 +46,12 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.commons.io.FileUtils;
 
-public abstract class AbstractAudioFileTransferProcess extends AbstractProcess {
+/**
+ * A type of processes that move local audio objects
+ * @author alex
+ *
+ */
+public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractProcess implements ILocalAudioObjectTransferProcess {
 
     /**
      * The files to be transferred.
@@ -74,14 +78,70 @@ public abstract class AbstractAudioFileTransferProcess extends AbstractProcess {
     
     private IFrame frame;
     
-    protected AbstractAudioFileTransferProcess(Collection<ILocalAudioObject> collection, IState state, IFrame frame, IOSManager osManager) {
-    	super(state);
-        this.filesToTransfer = collection;
+    private IProgressDialog transferDialog;
+    
+    private IMessageDialogFactory messageDialogFactory;
+    
+    private String destination;
+    
+    /**
+     * @param collection
+     */
+    public AbstractLocalAudioObjectTransferProcess() {
         this.filesTransferred = new ArrayList<File>();
-        this.osManager = osManager;
-        this.frame = frame;
-        setOwner(frame.getFrame());
     }
+    
+    /**
+     * Destination of transfer
+     * @param destination
+     */
+    public void setDestination(String destination) {
+		this.destination = destination;
+	}
+    
+    /**
+     * @return
+     */
+    protected Collection<ILocalAudioObject> getFilesToTransfer() {
+		return filesToTransfer;
+	}
+
+    /**
+     * @param messageDialogFactory
+     */
+    public void setMessageDialogFactory(IMessageDialogFactory messageDialogFactory) {
+		this.messageDialogFactory = messageDialogFactory;
+	}
+    
+    /**
+     * @param transferDialog
+     */
+    public void setTransferDialog(IProgressDialog transferDialog) {
+		this.transferDialog = transferDialog;
+	}
+    
+    /**
+     * Sets the files to transfer by this process
+     * @param filesToTransfer
+     */
+    @Override
+	public void setFilesToTransfer(Collection<ILocalAudioObject> filesToTransfer) {
+		this.filesToTransfer = filesToTransfer;
+	}
+    
+    /**
+     * @param frame
+     */
+    public void setFrame(IFrame frame) {
+		this.frame = frame;
+	}
+    
+    /**
+     * @param osManager
+     */
+    public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
 
     @Override
     protected long getProcessSize() {
@@ -96,7 +156,7 @@ public abstract class AbstractAudioFileTransferProcess extends AbstractProcess {
     @Override
     protected IProgressDialog getProgressDialog() {
         if (progressDialog == null) {
-            progressDialog = (IProgressDialog) Context.getBean("transferDialog");
+            progressDialog = transferDialog;
             progressDialog.setTitle(getProgressDialogTitle());
             progressDialog.setInfoText(getProgressDialogInformation());
             progressDialog.setCurrentProgress(0);
@@ -118,7 +178,7 @@ public abstract class AbstractAudioFileTransferProcess extends AbstractProcess {
         File destination = new File(getDestination());
         long bytesTransferred = 0;
         boolean ignoreAllErrors = false;
-        addInfoLog(StringUtils.getString("Transferring ", this.filesToTransfer.size(), " files to ", destination));
+        Logger.info(StringUtils.getString("Transferring ", this.filesToTransfer.size(), " files to ", destination));
         for (Iterator<ILocalAudioObject> it = this.filesToTransfer.iterator(); it.hasNext() && !isCanceled();) {
         	ILocalAudioObject file = it.next();
             final List<Exception> thrownExceptions = new ArrayList<Exception>();
@@ -126,14 +186,14 @@ public abstract class AbstractAudioFileTransferProcess extends AbstractProcess {
             filesTransferred.add(transferredFile);
             if (!thrownExceptions.isEmpty()) {
                 for (Exception e : thrownExceptions) {
-                    addErrorLog(e);
+                    Logger.error(e);
                 }
                 if (!ignoreAllErrors) {
                     try {
                         SwingUtilities.invokeAndWait(new Runnable() {
                             @Override
                             public void run() {
-                                userSelectionWhenErrors = (String) Context.getBean(IMessageDialogFactory.class).getDialog()
+                                userSelectionWhenErrors = (String) messageDialogFactory.getDialog()
                                         .showMessage(frame, StringUtils.getString(I18nUtils.getString("ERROR"), ": ", thrownExceptions.get(0).getMessage()), I18nUtils.getString("ERROR"),
                                                 JOptionPane.ERROR_MESSAGE,
                                                 new String[] { I18nUtils.getString("IGNORE"), I18nUtils.getString("IGNORE_ALL"), I18nUtils.getString("CANCEL") });
@@ -160,7 +220,7 @@ public abstract class AbstractAudioFileTransferProcess extends AbstractProcess {
             bytesTransferred += file.getFile().length();
             setCurrentProgress(bytesTransferred);
         }
-        addInfoLog("Transfer process done");
+        Logger.info("Transfer process done");
         return !errors;
     }
 
@@ -181,7 +241,9 @@ public abstract class AbstractAudioFileTransferProcess extends AbstractProcess {
      * 
      * @return
      */
-    protected abstract String getDestination();
+    protected String getDestination() {
+    	return destination;
+    }
 
     /**
      * Transfers a file to a destination
@@ -196,7 +258,7 @@ public abstract class AbstractAudioFileTransferProcess extends AbstractProcess {
     protected File transferAudioFile(File destination, ILocalAudioObject file, List<Exception> thrownExceptions) {
         String destDir = getDirectory(file, destination, false);
         String newName = getName(file, false);
-        File destFile = new File(StringUtils.getString(destDir, Context.getBean(IOSManager.class).getFileSeparator(), newName));
+        File destFile = new File(StringUtils.getString(destDir, osManager.getFileSeparator(), newName));
 
         try {
             // Now that we (supposedly) have a valid filename write file
@@ -210,7 +272,8 @@ public abstract class AbstractAudioFileTransferProcess extends AbstractProcess {
     /**
      * @return the filesTransferred
      */
-    public List<File> getFilesTransferred() {
+    @Override
+	public List<File> getFilesTransferred() {
         return filesTransferred;
     }
 
@@ -223,7 +286,7 @@ public abstract class AbstractAudioFileTransferProcess extends AbstractProcess {
      * @param data.osManager
      * @return
      */
-    public String getDirectory(ILocalAudioObject song, File destination, boolean isMp3Device) {
+    protected String getDirectory(ILocalAudioObject song, File destination, boolean isMp3Device) {
         return getDirectory(song, destination, isMp3Device, getState().getImportExportFolderPathPattern());
     }
 
@@ -242,7 +305,7 @@ public abstract class AbstractAudioFileTransferProcess extends AbstractProcess {
         if (pattern != null) {
             songRelativePath = FileNameUtils.getValidFolderName(FileNameUtils.getNewFolderPath(pattern, song, osManager), isMp3Device, osManager);
         }
-        return StringUtils.getString(destination.getAbsolutePath(), Context.getBean(IOSManager.class).getFileSeparator(), songRelativePath);
+        return StringUtils.getString(destination.getAbsolutePath(), osManager.getFileSeparator(), songRelativePath);
     }
 
     /**
@@ -253,7 +316,7 @@ public abstract class AbstractAudioFileTransferProcess extends AbstractProcess {
      * @param isMp3Device
      * @return
      */
-    public String getName(ILocalAudioObject file, boolean isMp3Device) {
+    protected String getName(ILocalAudioObject file, boolean isMp3Device) {
         return getName(file, isMp3Device, getState().getImportExportFileNamePattern());
     }
 

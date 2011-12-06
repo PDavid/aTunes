@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.repository;
+package net.sourceforge.atunes.kernel.modules.process;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,16 +26,12 @@ import java.util.HashSet;
 import java.util.List;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.process.AbstractAudioFileTransferProcess;
 import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
 import net.sourceforge.atunes.kernel.modules.tags.TagFactory;
 import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
-import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
-import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.ITagAttributesReviewed;
 import net.sourceforge.atunes.model.IWebServicesHandler;
@@ -48,15 +44,12 @@ import org.apache.commons.io.FileUtils;
 /**
  * Imports (song) files to repository
  */
-public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
+public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess {
 
     /**
      * Folders to import
      */
     private List<File> folders;
-
-    /** The path. */
-    private String path;
 
     /** Set of audio files whose tag must be written */
     private HashSet<ILocalAudioObject> filesToChangeTag;
@@ -66,25 +59,12 @@ public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
     private ILocalAudioObjectValidator localAudioObjectValidator;
 
     /**
-     * Imports songs to the repository
-     * @param filesToImport
-     * @param folders
-     * @param path
+     * Replaces tags before import audio objects
      * @param tagAttributesReviewed
-     * @param state
-     * @param frame
-     * @param osManager
-     * @param localAudioObjectFactory
-     * @param localAudioObjectValidator
      */
-    public ImportFilesProcess(List<ILocalAudioObject> filesToImport, List<File> folders, String path, ITagAttributesReviewed tagAttributesReviewed, IState state, IFrame frame, IOSManager osManager, ILocalAudioObjectFactory localAudioObjectFactory, ILocalAudioObjectValidator localAudioObjectValidator) {
-        super(filesToImport, state, frame, osManager);
-        this.folders = folders;
-        this.path = path;
-        this.filesToChangeTag = new HashSet<ILocalAudioObject>();
-        this.localAudioObjectFactory = localAudioObjectFactory;
-        this.localAudioObjectValidator = localAudioObjectValidator;
-        for (ILocalAudioObject fileToImport : filesToImport) {
+    public void initialize(ITagAttributesReviewed tagAttributesReviewed) {
+    	this.filesToChangeTag = new HashSet<ILocalAudioObject>();
+        for (ILocalAudioObject fileToImport : getFilesToTransfer()) {
             // Replace tags (in memory) before import audio files if necessary
             replaceTag(fileToImport, tagAttributesReviewed);
 
@@ -92,6 +72,27 @@ public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
             setTrackNumber(fileToImport);
         }
     }
+    
+    /**
+     * @param folders
+     */
+    public void setFolders(List<File> folders) {
+		this.folders = folders;
+	}
+    
+    /**
+     * @param localAudioObjectFactory
+     */
+    public void setLocalAudioObjectFactory(ILocalAudioObjectFactory localAudioObjectFactory) {
+		this.localAudioObjectFactory = localAudioObjectFactory;
+	}
+    
+    /**
+     * @param localAudioObjectValidator
+     */
+    public void setLocalAudioObjectValidator(ILocalAudioObjectValidator localAudioObjectValidator) {
+		this.localAudioObjectValidator = localAudioObjectValidator;
+	}
 
     @Override
     public String getProgressDialogTitle() {
@@ -127,11 +128,6 @@ public class ImportFilesProcess extends AbstractAudioFileTransferProcess {
             songRelativePath = FileNameUtils.getValidFolderName(FileNameUtils.getNewFolderPath(getState().getImportExportFolderPathPattern(), song, getOsManager()), getOsManager());
         }
         return new File(StringUtils.getString(destinationBaseFolder.getAbsolutePath(), getOsManager().getFileSeparator(), songRelativePath));
-    }
-
-    @Override
-    protected String getDestination() {
-        return this.path;
     }
 
     @Override

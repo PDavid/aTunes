@@ -58,9 +58,11 @@ import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFileSelectionDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
+import net.sourceforge.atunes.model.ILocalAudioObjectTransferProcess;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
@@ -96,6 +98,15 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
     private ILocalAudioObjectValidator localAudioObjectValidator;
     
     private DeviceMonitor deviceMonitor;
+    
+    private IProcessFactory processFactory;
+    
+    /**
+     * @param processFactory
+     */
+    public void setProcessFactory(IProcessFactory processFactory) {
+		this.processFactory = processFactory;
+	}
     
     /**
      * @param deviceMonitor
@@ -271,7 +282,9 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
         	}
         }
 
-        final TransferToDeviceProcess process = new TransferToDeviceProcess(collection, deviceRepository.getRepositoryFolders().get(0).getAbsolutePath(), getState(), getFrame(), getOsManager());
+        final ILocalAudioObjectTransferProcess process = (ILocalAudioObjectTransferProcess) processFactory.getProcessByName("transferToDeviceProcess");
+        process.setFilesToTransfer(collection);
+        process.setDestination(deviceRepository.getRepositoryFolders().get(0).getAbsolutePath());
         process.addProcessListener(new IProcessListener() {
 
             @Override

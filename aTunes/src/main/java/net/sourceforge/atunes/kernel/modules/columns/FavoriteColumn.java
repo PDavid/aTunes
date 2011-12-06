@@ -34,9 +34,9 @@ public class FavoriteColumn extends AbstractColumn implements ApplicationContext
 
     private static final long serialVersionUID = -4652512586792166062L;
     
-    private ApplicationContext context;
+    private transient ApplicationContext context;
     
-    private IFavoritesHandler favoritesHandler;
+    private transient IFavoritesHandler favoritesHandler;
 
     public FavoriteColumn() {
         super("FAVORITES", AudioObjectProperty.class);

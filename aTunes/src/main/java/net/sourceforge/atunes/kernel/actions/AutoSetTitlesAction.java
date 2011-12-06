@@ -24,12 +24,10 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.kernel.modules.tags.EditTitlesProcess;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IChangeTagsProcess;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -42,33 +40,18 @@ public class AutoSetTitlesAction extends AbstractActionOverSelectedObjects<ILoca
 
     private static final long serialVersionUID = 7230329972815239426L;
 
-    private IPlayListHandler playListHandler;
-    
-    private IRepositoryHandler repositoryHandler;
-    
-    private IPlayerHandler playerHandler;
+    private IProcessFactory processFactory;
     
     /**
-     * @param playerHandler
+     * @param processFactory
      */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
-		this.playerHandler = playerHandler;
+    public void setProcessFactory(IProcessFactory processFactory) {
+		this.processFactory = processFactory;
 	}
     
     /**
-     * @param repositoryHandler
+     * Creates action
      */
-    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
-	}
-    
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
-	}
-
     public AutoSetTitlesAction() {
         super(I18nUtils.getString("AUTO_SET_TITLE"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("AUTO_SET_TITLE"));
@@ -76,7 +59,9 @@ public class AutoSetTitlesAction extends AbstractActionOverSelectedObjects<ILoca
 
     @Override
     protected void executeAction(List<ILocalAudioObject> objects) {
-        new EditTitlesProcess(objects, getState(), playListHandler, repositoryHandler, playerHandler).execute();
+    	IChangeTagsProcess process = (IChangeTagsProcess) processFactory.getProcessByName("editTitlesProcess");
+    	process.setFilesToChange(objects);
+    	process.execute();
     }
 
     @Override

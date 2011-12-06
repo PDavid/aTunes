@@ -18,26 +18,24 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.tags;
+package net.sourceforge.atunes.kernel.modules.process;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.kernel.modules.tags.EditTagInfo;
+import net.sourceforge.atunes.kernel.modules.tags.TagFactory;
+import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
-import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -51,20 +49,22 @@ public class SetCoversProcess extends AbstractChangeTagProcess {
 	private ILocalAudioObjectValidator localAudioObjectValidator;
 	
     private Map<ILocalAudioObject, Image> filesAndCovers;
-
+    
+    private IWebServicesHandler webServicesHandler;
+    
     /**
-     * Instantiates a new sets the covers process.
-     * @param files
-     * @param state
-     * @param playListHandler
-     * @param repositoryHandler
-     * @param playerHandler
+     * @param webServicesHandler
+     */
+    public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+		this.webServicesHandler = webServicesHandler;
+	}
+    
+    /**
      * @param localAudioObjectValidator
      */
-    SetCoversProcess(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler, ILocalAudioObjectValidator localAudioObjectValidator) {
-        super(files, state, playListHandler, repositoryHandler, playerHandler);
-        this.localAudioObjectValidator = localAudioObjectValidator;
-    }
+    public void setLocalAudioObjectValidator(ILocalAudioObjectValidator localAudioObjectValidator) {
+		this.localAudioObjectValidator = localAudioObjectValidator;
+	}
 
     @Override
     protected void retrieveInformationBeforeChangeTags() {
@@ -90,12 +90,11 @@ public class SetCoversProcess extends AbstractChangeTagProcess {
      * 
      * @return the covers for files
      */
-    private Map<ILocalAudioObject, Image> getCoversForFiles(List<ILocalAudioObject> files) {
+    private Map<ILocalAudioObject, Image> getCoversForFiles(Collection<ILocalAudioObject> files) {
         Map<ILocalAudioObject, Image> result = new HashMap<ILocalAudioObject, Image>();
 
         Map<Integer, Image> coverCache = new HashMap<Integer, Image>();
 
-        IWebServicesHandler  webServicesHandler = Context.getBean(IWebServicesHandler.class);
         for (ILocalAudioObject f : files) {
             if (!UnknownObjectCheck.isUnknownArtist(f.getArtist()) && !UnknownObjectCheck.isUnknownAlbum(f.getAlbum())) {
                 Image cover = null;

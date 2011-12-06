@@ -52,6 +52,7 @@ public class Context {
 				"/settings/spring/navigationviews.xml", 
 				"/settings/spring/os.xml", 
 				"/settings/spring/player.xml", 
+				"/settings/spring/process.xml",
 				"/settings/spring/repository.xml",
 				"/settings/spring/tasks.xml", 
 				"/settings/spring/treecelldecorators.xml", 

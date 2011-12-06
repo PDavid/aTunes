@@ -18,20 +18,15 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.tags;
+package net.sourceforge.atunes.kernel.modules.process;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
@@ -41,19 +36,15 @@ import net.sourceforge.atunes.utils.UnknownObjectCheck;
 public class SetGenresProcess extends AbstractChangeTagProcess {
 
     private Map<ILocalAudioObject, String> filesAndGenres;
-
+    
+    private IWebServicesHandler webServicesHandler;
+    
     /**
-     * Instantiates a new sets the genres process.
-     * 
-     * @param files
-     * @param state
-     * @param playListHandler
-     * @param repositoryHandler
-     * @param playerHandler
+     * @param webServicesHandler
      */
-    SetGenresProcess(Collection<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
-        super(files, state, playListHandler, repositoryHandler, playerHandler);
-    }
+    public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+		this.webServicesHandler = webServicesHandler;
+	}
 
     @Override
     protected void retrieveInformationBeforeChangeTags() {
@@ -78,12 +69,11 @@ public class SetGenresProcess extends AbstractChangeTagProcess {
      * 
      * @return the genres for files
      */
-    private Map<ILocalAudioObject, String> getGenresForFiles(List<ILocalAudioObject> files) {
+    private Map<ILocalAudioObject, String> getGenresForFiles(Collection<ILocalAudioObject> files) {
         Map<ILocalAudioObject, String> result = new HashMap<ILocalAudioObject, String>();
 
         Map<String, String> tagCache = new HashMap<String, String>();
         
-        IWebServicesHandler webServicesHandler = Context.getBean(IWebServicesHandler.class);
         for (ILocalAudioObject f : files) {
             if (!UnknownObjectCheck.isUnknownArtist(f.getArtist())) {
                 String tag = null;

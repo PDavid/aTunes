@@ -33,7 +33,6 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IProgressDialog;
-import net.sourceforge.atunes.model.IProxy;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -82,8 +81,6 @@ public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
      */
     private boolean cancelled = false;
 
-    private IProxy proxy;
-    
     private YoutubeService youtubeService;
     
     private INetworkHandler networkHandler;
@@ -96,7 +93,7 @@ public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
      * @param youtubeService
      * @param networkHandler
      */
-    public YoutubeVideoDownloader(YoutubeResultEntry entry, File file, IProxy proxy, YoutubeService youtubeService, INetworkHandler networkHandler) {
+    public YoutubeVideoDownloader(YoutubeResultEntry entry, File file, YoutubeService youtubeService, INetworkHandler networkHandler) {
         this.entry = entry;
         this.youtubeService = youtubeService;
         File f = file;
@@ -115,7 +112,6 @@ public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
                 cancelled = true;
             }
         });
-        this.proxy = proxy;
         this.networkHandler = networkHandler;
         this.progressDialog.showDialog();
     }

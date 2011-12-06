@@ -22,42 +22,22 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.tags.ClearTagsProcess;
+import net.sourceforge.atunes.model.IChangeTagsProcess;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class ClearTagPlaylistAction extends AbstractActionOverSelectedObjects<ILocalAudioObject> {
 
     private static final long serialVersionUID = 4476719536754930347L;
 
-    private IPlayListHandler playListHandler;
-    
-    private IRepositoryHandler repositoryHandler;
-    
-    private IPlayerHandler playerHandler;
+    private IProcessFactory processFactory;
     
     /**
-     * @param playerHandler
+     * @param processFactory
      */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
-		this.playerHandler = playerHandler;
-	}
-    
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
-	}
-    
-    /**
-     * @param repositoryHandler
-     */
-    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
+    public void setProcessFactory(IProcessFactory processFactory) {
+		this.processFactory = processFactory;
 	}
     
     public ClearTagPlaylistAction() {
@@ -67,6 +47,8 @@ public class ClearTagPlaylistAction extends AbstractActionOverSelectedObjects<IL
 
     @Override
     protected void executeAction(List<ILocalAudioObject> objects) {
-        new ClearTagsProcess(objects, getState(), playListHandler, repositoryHandler, playerHandler).execute();
+    	IChangeTagsProcess process = (IChangeTagsProcess) processFactory.getProcessByName("clearTagsProcess");
+    	process.setFilesToChange(objects);
+    	process.execute();
     }
 }

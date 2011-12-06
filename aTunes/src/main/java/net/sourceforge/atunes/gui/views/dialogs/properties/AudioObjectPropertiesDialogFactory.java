@@ -33,6 +33,7 @@ import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
+import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
@@ -53,6 +54,8 @@ public class AudioObjectPropertiesDialogFactory implements IAudioObjectPropertie
 	
 	private ILocalAudioObjectValidator localAudioObjectValidator;
 	
+	private IProcessFactory processFactory;
+	
     @Override
 	public IAudioObjectPropertiesDialog newInstance(IAudioObject a, ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler) {
     	AudioObjectPropertiesDialog dialog = null;
@@ -61,7 +64,7 @@ public class AudioObjectPropertiesDialogFactory implements IAudioObjectPropertie
     	} else if (a instanceof IRadio) {
     		dialog = new RadioPropertiesDialog((Radio) a, frame, lookAndFeelManager);
     	} else if (a instanceof ILocalAudioObject) {
-    		dialog = new LocalAudioObjectPropertiesDialog((ILocalAudioObject) a, state, frame, osManager, playListHandler, lookAndFeelManager, repositoryHandler, playerHandler, audioObjectImageLocator, localAudioObjectValidator);
+    		dialog = new LocalAudioObjectPropertiesDialog((ILocalAudioObject) a, state, frame, osManager, playListHandler, lookAndFeelManager, repositoryHandler, audioObjectImageLocator, localAudioObjectValidator, processFactory);
     	}
     	if (dialog != null) {
     		dialog.setAudioObject(a);
@@ -105,5 +108,12 @@ public class AudioObjectPropertiesDialogFactory implements IAudioObjectPropertie
 	 */
 	public void setAudioObjectImageLocator(IAudioObjectImageLocator audioObjectImageLocator) {
 		this.audioObjectImageLocator = audioObjectImageLocator;
+	}
+	
+	/**
+	 * @param processFactory
+	 */
+	public void setProcessFactory(IProcessFactory processFactory) {
+		this.processFactory = processFactory;
 	}
 }

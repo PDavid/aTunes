@@ -31,7 +31,7 @@ public class TypeColumn extends AbstractColumn {
 
     private static final long serialVersionUID = -3060341777429113749L;
     
-    private IAudioObjectGenericImageFactory audioObjectGenericImageFactory;
+    private transient IAudioObjectGenericImageFactory audioObjectGenericImageFactory;
     
     /**
      * @param audioObjectGenericImageFactory

@@ -18,25 +18,31 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.draganddrop;
+package net.sourceforge.atunes.kernel.modules.process;
 
-import java.io.Serializable;
-import java.util.Comparator;
+import net.sourceforge.atunes.model.IProcess;
+import net.sourceforge.atunes.model.IProcessFactory;
 
-final class PlayListDragableRowComparator implements Comparator<PlayListDragableRow>, Serializable {
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
+/**
+ * Implements a IProcessFactory using Spring beans
+ * @author alex
+ *
+ */
+public class ProcessFactory implements IProcessFactory, ApplicationContextAware {
+
+	private ApplicationContext context;
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2196123391276254494L;
-	private final boolean needReverseRows;
-
-	PlayListDragableRowComparator(boolean needReverseRows) {
-		this.needReverseRows = needReverseRows;
-	}
-
 	@Override
-	public int compare(PlayListDragableRow o1, PlayListDragableRow o2) {
-	    return (needReverseRows ? -1 : 1) * Integer.valueOf(o1.getRowPosition()).compareTo(Integer.valueOf(o2.getRowPosition()));
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.context = applicationContext;
+	}
+	
+	@Override
+	public IProcess getProcessByName(String processName) {
+		return this.context.getBean(processName, IProcess.class);
 	}
 }

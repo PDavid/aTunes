@@ -37,6 +37,7 @@ import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListTableTransferHandler;
+import net.sourceforge.atunes.kernel.modules.process.LoadPlayListProcess;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
@@ -58,6 +59,7 @@ import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.IPlayerControlsPanel;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
+import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -99,6 +101,8 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     private ILocalAudioObjectFactory localAudioObjectFactory;
     
     private IAudioObjectComparator audioObjectComparator;
+    
+    private IProcessFactory processFactory;
 
     /**
      * Filter for play list
@@ -148,6 +152,13 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	private IRepositoryHandler repositoryHandler;
 	
 	private IRadioHandler radioHandler;
+	
+	/**
+	 * @param processFactory
+	 */
+	public void setProcessFactory(IProcessFactory processFactory) {
+		this.processFactory = processFactory;
+	}
 	
 	/**
 	 * @param radioHandler
@@ -711,7 +722,8 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
                 List<String> filesToLoad = PlayListIO.read(file, getOsManager());
                 // Background loading - but only when returned array is not null (Progress dialog hangs otherwise)
                 if (filesToLoad != null) {
-                    LoadPlayListProcess process = new LoadPlayListProcess(filesToLoad, getState(), getBean(IRepositoryHandler.class), getBean(IRadioHandler.class), localAudioObjectFactory);
+                    LoadPlayListProcess process = (LoadPlayListProcess) processFactory.getProcessByName("loadPlayListProcess");
+                    process.setFilenamesToLoad(filesToLoad);
                     process.execute();
                 }
             } else {

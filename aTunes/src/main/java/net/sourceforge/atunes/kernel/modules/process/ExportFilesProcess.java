@@ -18,25 +18,17 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.draganddrop;
+package net.sourceforge.atunes.kernel.modules.process;
 
-import java.io.Serializable;
-import java.util.Comparator;
+import net.sourceforge.atunes.utils.I18nUtils;
 
-final class PlayListDragableRowComparator implements Comparator<PlayListDragableRow>, Serializable {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2196123391276254494L;
-	private final boolean needReverseRows;
+/**
+ * Exports (song) files to a partition/device and checks if filename is valid.
+ */
+public class ExportFilesProcess extends AbstractLocalAudioObjectTransferProcess {
 
-	PlayListDragableRowComparator(boolean needReverseRows) {
-		this.needReverseRows = needReverseRows;
-	}
-
-	@Override
-	public int compare(PlayListDragableRow o1, PlayListDragableRow o2) {
-	    return (needReverseRows ? -1 : 1) * Integer.valueOf(o1.getRowPosition()).compareTo(Integer.valueOf(o2.getRowPosition()));
-	}
+    @Override
+    public String getProgressDialogTitle() {
+        return I18nUtils.getString("EXPORTING");
+    }
 }

@@ -18,22 +18,18 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.webservices.lastfm;
+package net.sourceforge.atunes.kernel.modules.process;
 
 import java.awt.Image;
-import java.awt.Window;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.process.AbstractProcess;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -52,21 +48,29 @@ public class GetCoversProcess extends AbstractProcess {
     private Artist artist;
     
     private IOSManager osManager;
-
+    
+    private IWebServicesHandler webServicesHandler;
+    
     /**
-     * Instantiates a new gets the covers process.
-     * 
-     * @param artist
-     *            the artist
-     * @param progressDialog
-     *            the progress dialog
+     * @param webServicesHandler
      */
-    public GetCoversProcess(Artist artist, Window owner, IState state, IOSManager osManager) {
-    	super(state);
-        this.artist = artist;
-        this.osManager = osManager;
-        setOwner(owner);
-    }
+    public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+		this.webServicesHandler = webServicesHandler;
+	}
+    
+    /**
+     * @param artist
+     */
+    public void setArtist(Artist artist) {
+		this.artist = artist;
+	}
+    
+    /**
+     * @param osManager
+     */
+    public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
 
     @Override
     protected long getProcessSize() {
@@ -77,7 +81,6 @@ public class GetCoversProcess extends AbstractProcess {
     protected boolean runProcess() {
         long coversRetrieved = 0;
         List<Album> albums = new ArrayList<Album>(artist.getAlbums().values());
-        IWebServicesHandler webServicesHandler = Context.getBean(IWebServicesHandler.class);
         for (int i = 0; i < albums.size() && !isCanceled(); i++) {
             Album album = albums.get(i);
             if (!hasCoverDownloaded(album)) {
@@ -116,9 +119,7 @@ public class GetCoversProcess extends AbstractProcess {
      * 
      * @return true, if checks for cover downloaded
      */
-    public boolean hasCoverDownloaded(Album album) {
+    private boolean hasCoverDownloaded(Album album) {
         return new File(AudioFilePictureUtils.getFileNameForCover(((ILocalAudioObject)album.getAudioObjects().get(0)), osManager)).exists();
     }
-
-
 }

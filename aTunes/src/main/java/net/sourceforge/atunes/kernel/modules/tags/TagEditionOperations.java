@@ -27,13 +27,13 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.kernel.modules.process.SetTrackNumberProcess;
+import net.sourceforge.atunes.model.IChangeTagsProcess;
 import net.sourceforge.atunes.model.IConfirmationDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
+import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.UnknownObjectCheck;
@@ -55,68 +55,53 @@ public final class TagEditionOperations {
     /**
      * Adds the lyrics.
      * @param files
-     * @param state
-     * @param playListHandler
-     * @param repositoryHandler
-     * @param playerHandler
+     * @param processFactory
      */
-    public static void addLyrics(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
-        SetLyricsProcess process = new SetLyricsProcess(files, state, playListHandler, repositoryHandler, playerHandler);
+    public static void addLyrics(List<ILocalAudioObject> files, IProcessFactory processFactory) {
+    	IChangeTagsProcess process = (IChangeTagsProcess) processFactory.getProcessByName("setLyricsProcess");
+    	process.setFilesToChange(files);
         process.execute();
     }
 
     /**
      * Edits the album name.
-     * 
      * @param files
-     * @param state
-     * @param playListHandler
-     * @param repositoryHandler
-     * @param playerHandler
+     * @param processFactory
      */
-    private static void editAlbumName(Collection<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
-        SetAlbumNamesProcess process = new SetAlbumNamesProcess(files, state, playListHandler, repositoryHandler, playerHandler);
+    private static void editAlbumName(Collection<ILocalAudioObject> files, IProcessFactory processFactory) {
+    	IChangeTagsProcess process = (IChangeTagsProcess) processFactory.getProcessByName("setAlbumNamesProcess");
+    	process.setFilesToChange(files);
         process.execute();
     }
 
     /**
      * Sets genre based on Last.fm tags
-     * 
      * @param files
-     * @param state
-     * @param playListHandler
-     * @param repositoryHandler
-     * @param playerHandler
+     * @param processFactory
      */
-    public static void editGenre(Collection<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
-        SetGenresProcess process = new SetGenresProcess(files, state, playListHandler, repositoryHandler, playerHandler);
+    public static void editGenre(Collection<ILocalAudioObject> files, IProcessFactory processFactory) {
+    	IChangeTagsProcess process = (IChangeTagsProcess) processFactory.getProcessByName("setGenresProcess");
+    	process.setFilesToChange(files);
         process.execute();
     }
 
     /**
      * Sets covers
      * @param files
-     * @param state
-     * @param playListHandler
-     * @param repositoryHandler
-     * @param playerHandler
-     * @param localAudioObjectValidator
+     * @param processFactory
      */
-    public static void editCover(List<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler, ILocalAudioObjectValidator localAudioObjectValidator) {
-        SetCoversProcess process = new SetCoversProcess(files, state, playListHandler, repositoryHandler, playerHandler, localAudioObjectValidator);
+    public static void editCover(List<ILocalAudioObject> files, IProcessFactory processFactory) {
+    	IChangeTagsProcess process = (IChangeTagsProcess) processFactory.getProcessByName("setCoversProcess");
+    	process.setFilesToChange(files);
         process.execute();
     }
 
     /**
      * Sets track number based on file name to an array of files.
-     * 
      * @param files
-     * @param state
-     * @param playListHandler
-     * @param repositoryHandler
-     * @param playerHandler
+     * @param processFactory
      */
-    public static void editTrackNumber(Collection<ILocalAudioObject> files, IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
+    public static void editTrackNumber(Collection<ILocalAudioObject> files, IProcessFactory processFactory) {
         /*
          * Given an array of files, returns a map containing each file and its
          * track number based on information found on file name.
@@ -131,7 +116,8 @@ public final class TagEditionOperations {
         }
         if (!filesToSet.isEmpty()) {
             // Call process
-            SetTrackNumberProcess process = new SetTrackNumberProcess(filesToSet, state, playListHandler, repositoryHandler, playerHandler);
+            SetTrackNumberProcess process = (SetTrackNumberProcess) processFactory.getProcessByName("setTrackNumberProcess");
+            process.setFilesAndTracks(filesToSet);
             process.execute();
         }
     }
@@ -173,47 +159,42 @@ public final class TagEditionOperations {
 
     /**
      * Repair album names.
-     * @param state
      * @param playListHandler
      * @param repositoryHandler
-     * @param playerHandler
+     * @param processFactory
      */
-    public static void repairAlbumNames(IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
+    public static void repairAlbumNames(IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IProcessFactory processFactory) {
         // Show confirmation dialog
         if (Context.getBean(IConfirmationDialogFactory.class).getDialog().showDialog(I18nUtils.getString("REPAIR_ALBUM_NAMES_MESSAGE"))) {
             // Call album name edit
-            editAlbumName(getFilesWithEmptyAlbum(repositoryHandler.getAudioFilesList()), state, playListHandler, repositoryHandler, playerHandler);
+            editAlbumName(getFilesWithEmptyAlbum(repositoryHandler.getAudioFilesList()), processFactory);
         }
     }
 
     /**
      * Sets genres on audio files that have an empty genre.
-     * @param state
-     * @param playListHandler
+     * @param processFactory
      * @param repositoryHandler
-     * @param playerHandler
      */
-    public static void repairGenres(IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
+    public static void repairGenres(IProcessFactory processFactory, IRepositoryHandler repositoryHandler) {
         // Show confirmation dialog
         if (Context.getBean(IConfirmationDialogFactory.class).getDialog().showDialog(I18nUtils.getString("REPAIR_GENRES_MESSAGE"))) {
             // Call genre edit
-            editGenre(getFilesWithEmptyGenre(repositoryHandler.getAudioFilesList()), state, playListHandler, repositoryHandler, playerHandler);
+            editGenre(getFilesWithEmptyGenre(repositoryHandler.getAudioFilesList()), processFactory);
         }
 
     }
 
     /**
      * Sets track number to audio files that have an empty track number.
-     * @param state
-     * @param playListHandler
+     * @param processFactory
      * @param repositoryHandler
-     * @param playerHandler
      */
-    public static void repairTrackNumbers(IState state, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IPlayerHandler playerHandler) {
+    public static void repairTrackNumbers(IProcessFactory processFactory, IRepositoryHandler repositoryHandler) {
         // Show confirmation dialog
         if (Context.getBean(IConfirmationDialogFactory.class).getDialog().showDialog(I18nUtils.getString("REPAIR_TRACK_NUMBERS_MESSAGE"))) {
             // Call track number edit
-            editTrackNumber(getFilesWithEmptyTracks(repositoryHandler.getAudioFilesList()), state, playListHandler, repositoryHandler, playerHandler);
+            editTrackNumber(getFilesWithEmptyTracks(repositoryHandler.getAudioFilesList()), processFactory);
         }
     }
     

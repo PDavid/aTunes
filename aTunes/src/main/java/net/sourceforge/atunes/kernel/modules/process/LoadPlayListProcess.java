@@ -18,24 +18,27 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.playlist;
+package net.sourceforge.atunes.kernel.modules.process;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.process.AbstractProcess;
+import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-class LoadPlayListProcess extends AbstractProcess {
+/**
+ * Adds to play list a list of local audio objects given their files
+ * @author alex
+ *
+ */
+public class LoadPlayListProcess extends AbstractProcess {
 
     private List<String> filenamesToLoad;
     
@@ -44,21 +47,43 @@ class LoadPlayListProcess extends AbstractProcess {
     private IRadioHandler radioHandler;
     
     private ILocalAudioObjectFactory localAudioObjectFactory;
-
+    
+    private IPlayListHandler playListHandler;
+    
     /**
      * @param filenamesToLoad
-     * @param state
+     */
+    public void setFilenamesToLoad(List<String> filenamesToLoad) {
+		this.filenamesToLoad = filenamesToLoad;
+	}
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+
+    /**
      * @param repositoryHandler
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+    
+    /**
      * @param radioHandler
+     */
+    public void setRadioHandler(IRadioHandler radioHandler) {
+		this.radioHandler = radioHandler;
+	}
+    
+    /**
      * @param localAudioObjectFactory
      */
-    LoadPlayListProcess(List<String> filenamesToLoad, IState state, IRepositoryHandler repositoryHandler, IRadioHandler radioHandler, ILocalAudioObjectFactory localAudioObjectFactory) {
-    	super(state);
-        this.filenamesToLoad = filenamesToLoad;
-        this.repositoryHandler = repositoryHandler;
-        this.radioHandler = radioHandler;
-        this.localAudioObjectFactory = localAudioObjectFactory;
-    }
+    public void setLocalAudioObjectFactory(ILocalAudioObjectFactory localAudioObjectFactory) {
+		this.localAudioObjectFactory = localAudioObjectFactory;
+	}
 
     @Override
     protected long getProcessSize() {
@@ -83,25 +108,26 @@ class LoadPlayListProcess extends AbstractProcess {
             setCurrentProgress(i + 1);
         }
         // If canceled loaded files are added anyway
-        SwingUtilities.invokeLater(new AddToPlayListRunnable(songsLoaded));
+        SwingUtilities.invokeLater(new AddToPlayListRunnable(songsLoaded, playListHandler));
         return true;
     }
-
-    private static class AddToPlayListRunnable implements Runnable {
+    
+    static class AddToPlayListRunnable implements Runnable {
 
         private List<IAudioObject> songsLoaded;
+        
+        private IPlayListHandler playListHandler;
 
-        public AddToPlayListRunnable(List<IAudioObject> songsLoaded) {
+        public AddToPlayListRunnable(List<IAudioObject> songsLoaded, IPlayListHandler playListHandler) {
             this.songsLoaded = songsLoaded;
+            this.playListHandler = playListHandler;
         }
 
         @Override
         public void run() {
             if (songsLoaded.size() >= 1) {
-            	Context.getBean(IPlayListHandler.class).addToPlayList(songsLoaded);
+            	playListHandler.addToPlayList(songsLoaded);
             }
         }
-
     }
-
 }

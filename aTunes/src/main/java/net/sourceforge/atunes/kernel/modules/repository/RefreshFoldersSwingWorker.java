@@ -73,6 +73,7 @@ final class RefreshFoldersSwingWorker extends SwingWorker<Void, Void> {
 		this.osManager = osManager;
 		this.state = state;
 		this.localAudioObjectFactory = localAudioObjectFactory;
+		this.localAudioObjectValidator = localAudioObjectValidator;
 	}
 	
 	@Override

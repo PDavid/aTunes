@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
 import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
+import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -40,13 +40,13 @@ public class RepairAlbumNamesAction extends CustomAbstractAction {
     
     private IRepositoryHandler repositoryHandler;
     
-    private IPlayerHandler playerHandler;
+    private IProcessFactory processFactory;
     
     /**
-     * @param playerHandler
+     * @param processFactory
      */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
-		this.playerHandler = playerHandler;
+    public void setProcessFactory(IProcessFactory processFactory) {
+		this.processFactory = processFactory;
 	}
     
     /**
@@ -69,6 +69,6 @@ public class RepairAlbumNamesAction extends CustomAbstractAction {
 
     @Override
     protected void executeAction() {
-        TagEditionOperations.repairAlbumNames(getState(), playListHandler, repositoryHandler, playerHandler);
+        TagEditionOperations.repairAlbumNames(playListHandler, repositoryHandler, processFactory);
     }
 }

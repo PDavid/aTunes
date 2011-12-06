@@ -18,25 +18,24 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.draganddrop;
+package net.sourceforge.atunes.model;
 
-import java.io.Serializable;
-import java.util.Comparator;
+import java.util.Collection;
 
-final class PlayListDragableRowComparator implements Comparator<PlayListDragableRow>, Serializable {
-	
+
+/**
+ * This class represents a process which performs changes in tag of a set of
+ * LocalAudioObject objects
+ * 
+ * @author fleax
+ * 
+ */
+public interface IChangeTagsProcess extends IProcess {
+
 	/**
-	 * 
+	 * @param filesToChange
+	 *            the filesToChange to set
 	 */
-	private static final long serialVersionUID = 2196123391276254494L;
-	private final boolean needReverseRows;
+	public void setFilesToChange(Collection<ILocalAudioObject> filesToChange);
 
-	PlayListDragableRowComparator(boolean needReverseRows) {
-		this.needReverseRows = needReverseRows;
-	}
-
-	@Override
-	public int compare(PlayListDragableRow o1, PlayListDragableRow o2) {
-	    return (needReverseRows ? -1 : 1) * Integer.valueOf(o1.getRowPosition()).compareTo(Integer.valueOf(o2.getRowPosition()));
-	}
 }
