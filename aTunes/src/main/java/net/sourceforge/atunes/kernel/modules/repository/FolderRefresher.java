@@ -25,8 +25,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
-import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
+import net.sourceforge.atunes.model.ILocalAudioObjectLocator;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -43,13 +42,18 @@ public class FolderRefresher {
 	
 	private IRepositoryHandler repositoryHandler;
 	
-	private ILocalAudioObjectFactory localAudioObjectFactory;
-	
-	private ILocalAudioObjectValidator localAudioObjectValidator;
-	
 	private LocalAudioObjectRefresher localAudioObjectRefresher;
 	
 	private RepositoryAddService repositoryAddService;
+
+	private ILocalAudioObjectLocator localAudioObjectLocator;
+	
+	/**
+	 * @param localAudioObjectLocator
+	 */
+	public void setLocalAudioObjectLocator(ILocalAudioObjectLocator localAudioObjectLocator) {
+		this.localAudioObjectLocator = localAudioObjectLocator;
+	}
 	
 	/**
 	 * @param repositoryAddService
@@ -70,20 +74,6 @@ public class FolderRefresher {
 	 */
 	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
-	}
-	
-	/**
-	 * @param localAudioObjectFactory
-	 */
-	public void setLocalAudioObjectFactory(ILocalAudioObjectFactory localAudioObjectFactory) {
-		this.localAudioObjectFactory = localAudioObjectFactory;
-	}
-	
-	/**
-	 * @param localAudioObjectValidator
-	 */
-	public void setLocalAudioObjectValidator(ILocalAudioObjectValidator localAudioObjectValidator) {
-		this.localAudioObjectValidator = localAudioObjectValidator;
 	}
 	
 	/**
@@ -121,7 +111,7 @@ public class FolderRefresher {
 	 */
 	private void addNewFiles(IRepository repository, Folder folder) {
 		// Add new files
-		List<ILocalAudioObject> allObjects = RepositoryLoader.getSongsForFolder(folder.getFolderPath(osManager), null, localAudioObjectFactory, localAudioObjectValidator);
+		List<ILocalAudioObject> allObjects = localAudioObjectLocator.locateLocalAudioObjectsInFolder(folder.getFolderPath(osManager), null);
 		for (ILocalAudioObject ao : allObjects) {
 			if (repository.getFile(ao.getFile().getAbsolutePath()) == null) {
 				Logger.debug("Adding file: ", ao.getFile().getAbsolutePath());

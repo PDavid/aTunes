@@ -38,12 +38,12 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import net.sourceforge.atunes.api.RepositoryApi;
 import net.sourceforge.atunes.gui.model.TransferableList;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectComparator;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
+import net.sourceforge.atunes.model.ILocalAudioObjectLocator;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IOSManager;
@@ -99,6 +99,8 @@ public class PlayListTableTransferHandler extends TransferHandler {
     
     private IAudioObjectComparator audioObjectComparator;
     
+    private ILocalAudioObjectLocator localAudioObjectLocator;
+    
     /**
      * @param playListTable
      * @param frame
@@ -111,7 +113,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
      * @param localAudioObjectValidator
      * @param audioObjectComparator
      */
-    public PlayListTableTransferHandler(IPlayListTable playListTable, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, INavigationHandler navigationHandler, IRepositoryHandler repositoryHandler, IRadioHandler radioHandler, ILocalAudioObjectFactory localAudioObjectFactory, ILocalAudioObjectValidator localAudioObjectValidator, IAudioObjectComparator audioObjectComparator) {
+    public PlayListTableTransferHandler(IPlayListTable playListTable, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, INavigationHandler navigationHandler, IRepositoryHandler repositoryHandler, IRadioHandler radioHandler, ILocalAudioObjectFactory localAudioObjectFactory, ILocalAudioObjectValidator localAudioObjectValidator, IAudioObjectComparator audioObjectComparator, ILocalAudioObjectLocator localAudioObjectLocator) {
     	this.playListTable = playListTable;
     	this.frame = frame;
     	this.osManager = osManager;
@@ -122,6 +124,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
     	this.localAudioObjectFactory = localAudioObjectFactory;
     	this.localAudioObjectValidator = localAudioObjectValidator;
     	this.audioObjectComparator = audioObjectComparator;
+    	this.localAudioObjectLocator = localAudioObjectLocator;
 	}
     
     /**
@@ -392,7 +395,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
             List<IAudioObject> filesToAdd = new ArrayList<IAudioObject>();
             for (File f : files) {
                 if (f.isDirectory()) {
-                    filesToAdd.addAll(RepositoryLoader.getSongsForFolder(f, null, localAudioObjectFactory, localAudioObjectValidator));
+                    filesToAdd.addAll(localAudioObjectLocator.locateLocalAudioObjectsInFolder(f, null));
                 } else if (localAudioObjectValidator.isValidAudioFile(f)) {
                     filesToAdd.add(localAudioObjectFactory.getLocalAudioObject(f));
                 } else if (f.getName().toLowerCase().endsWith("m3u")) {
