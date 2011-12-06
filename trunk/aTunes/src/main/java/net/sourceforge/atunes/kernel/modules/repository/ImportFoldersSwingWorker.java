@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -36,6 +37,7 @@ import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.IRepositoryLoaderListener;
 import net.sourceforge.atunes.model.IReviewImportDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITagAttributesReviewed;
@@ -81,7 +83,7 @@ final class ImportFoldersSwingWorker extends SwingWorker<List<ILocalAudioObject>
 
 	@Override
 	protected List<ILocalAudioObject> doInBackground() throws Exception {
-	    return RepositoryLoader.getSongsForFolders(folders, new ImportFoldersLoaderListener(progressDialog), localAudioObjectFactory, localAudioObjectValidator);
+	    return getSongsForFolders(folders, new ImportFoldersLoaderListener(progressDialog), localAudioObjectFactory, localAudioObjectValidator);
 	}
 
 	@Override
@@ -115,5 +117,54 @@ final class ImportFoldersSwingWorker extends SwingWorker<List<ILocalAudioObject>
 	    } catch (ExecutionException e) {
 	        Logger.error(e);
 	    }
+	}
+	
+	/**
+	 * Gets the songs of a list of folders. Used in import
+	 * @param folders
+	 * @param listener
+	 * @param localAudioObjectFactory
+	 * @param localAudioObjectValidator
+	 * @return
+	 */
+	private List<ILocalAudioObject> getSongsForFolders(List<File> folders, IRepositoryLoaderListener listener, ILocalAudioObjectFactory localAudioObjectFactory, ILocalAudioObjectValidator localAudioObjectValidator) {
+		int filesCount = 0;
+		for (File folder : folders) {
+			filesCount = filesCount + countFiles(folder, localAudioObjectValidator);
+		}
+		if (listener != null) {
+			listener.notifyFilesInRepository(filesCount);
+		}
+		List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
+		for (File folder : folders) {
+			result.addAll(RepositoryLoader.getSongsForFolder(folder, listener, localAudioObjectFactory, localAudioObjectValidator));
+		}
+		if (listener != null) {
+			listener.notifyFinishRead(null);
+		}
+		return result;
+	}
+	
+	/**
+	 * Count files.
+	 * 
+	 * @param dir
+	 * @param localAudioObjectValidator
+	 * @return
+	 */
+	private int countFiles(File dir, ILocalAudioObjectValidator localAudioObjectValidator) {
+		int files = 0;
+		File[] list = dir.listFiles();
+		if (list == null) {
+			return files;
+		}
+		for (File element : list) {
+			if (localAudioObjectValidator.isValidAudioFile(element)) {
+				files++;
+			} else if (element.isDirectory()) {
+				files = files + countFiles(element, localAudioObjectValidator);
+			}
+		}
+		return files;
 	}
 }

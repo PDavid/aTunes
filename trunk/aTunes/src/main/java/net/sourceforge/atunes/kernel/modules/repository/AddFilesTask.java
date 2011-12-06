@@ -27,11 +27,9 @@ import java.util.concurrent.Callable;
 import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -42,23 +40,21 @@ public class AddFilesTask {
 
 	private IRepositoryHandler repositoryHandler;
 
-	private IState state;
-
 	private ShowRepositoryDataHelper showRepositoryDataHelper;
 
 	private INavigationHandler navigationHandler;
 
 	private IBackgroundWorkerFactory backgroundWorkerFactory;
 	
-	private ILocalAudioObjectFactory localAudioObjectFactory;
+	private RepositoryAddService repositoryAddService;
 	
 	/**
-	 * @param localAudioObjectFactory
+	 * @param repositoryAddService
 	 */
-	public void setLocalAudioObjectFactory(ILocalAudioObjectFactory localAudioObjectFactory) {
-		this.localAudioObjectFactory = localAudioObjectFactory;
+	public void setRepositoryAddService(RepositoryAddService repositoryAddService) {
+		this.repositoryAddService = repositoryAddService;
 	}
-
+	
 	/**
 	 * @param backgroundWorkerFactory
 	 */
@@ -80,13 +76,6 @@ public class AddFilesTask {
 	public void setShowRepositoryDataHelper(
 			ShowRepositoryDataHelper showRepositoryDataHelper) {
 		this.showRepositoryDataHelper = showRepositoryDataHelper;
-	}
-
-	/**
-	 * @param state
-	 */
-	public void setState(IState state) {
-		this.state = state;
 	}
 
 	/**
@@ -123,7 +112,7 @@ public class AddFilesTask {
 			@Override
 			public Void call() throws Exception {
 				repositoryHandler.startTransaction();
-				RepositoryLoader.addToRepository(state, repository, files, localAudioObjectFactory);
+				repositoryAddService.addToRepository(repository, files);
 				repositoryHandler.endTransaction();
 				return null;
 			}

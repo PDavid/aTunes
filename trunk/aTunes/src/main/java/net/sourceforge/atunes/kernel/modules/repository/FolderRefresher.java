@@ -30,7 +30,6 @@ import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.Logger;
 
 /**
@@ -39,8 +38,6 @@ import net.sourceforge.atunes.utils.Logger;
  *
  */
 public class FolderRefresher {
-	
-	private IState state;
 	
 	private IOSManager osManager;
 	
@@ -52,13 +49,15 @@ public class FolderRefresher {
 	
 	private LocalAudioObjectRefresher localAudioObjectRefresher;
 	
+	private RepositoryAddService repositoryAddService;
+	
 	/**
-	 * @param state
+	 * @param repositoryAddService
 	 */
-	public void setState(IState state) {
-		this.state = state;
+	public void setRepositoryAddService(RepositoryAddService repositoryAddService) {
+		this.repositoryAddService = repositoryAddService;
 	}
-
+	
 	/**
 	 * @param osManager
 	 */
@@ -126,7 +125,7 @@ public class FolderRefresher {
 		for (ILocalAudioObject ao : allObjects) {
 			if (repository.getFile(ao.getFile().getAbsolutePath()) == null) {
 				Logger.debug("Adding file: ", ao.getFile().getAbsolutePath());
-				RepositoryLoader.addToRepository(state, repository, Collections.singletonList(ao.getFile()), localAudioObjectFactory);
+				repositoryAddService.addToRepository(repository, Collections.singletonList(ao.getFile()));
 			}
 		}
 	}
