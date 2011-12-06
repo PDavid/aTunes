@@ -163,6 +163,7 @@ public final class AudioFilePictureUtils {
     	if (file.getFile() == null) {
     		return null;
     	}
+    	Logger.debug("Getting internal image to file: ", file.getFile().getAbsolutePath());
         try {
             org.jaudiotagger.tag.Tag tag = AudioFileIO.read(file.getFile()).getTag();
             if (tag == null) {
