@@ -28,12 +28,11 @@ import java.util.List;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
 import net.sourceforge.atunes.kernel.modules.tags.TagFactory;
-import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
-import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.ITagAttributesReviewed;
+import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -56,8 +55,15 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
     
     private ILocalAudioObjectFactory localAudioObjectFactory;
     
-    private ILocalAudioObjectValidator localAudioObjectValidator;
-
+    private ITagHandler tagHandler;
+    
+    /**
+     * @param tagHandler
+     */
+    public void setTagHandler(ITagHandler tagHandler) {
+		this.tagHandler = tagHandler;
+	}
+    
     /**
      * Replaces tags before import audio objects
      * @param tagAttributesReviewed
@@ -87,13 +93,6 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
 		this.localAudioObjectFactory = localAudioObjectFactory;
 	}
     
-    /**
-     * @param localAudioObjectValidator
-     */
-    public void setLocalAudioObjectValidator(ILocalAudioObjectValidator localAudioObjectValidator) {
-		this.localAudioObjectValidator = localAudioObjectValidator;
-	}
-
     @Override
     public String getProgressDialogTitle() {
         return StringUtils.getString(I18nUtils.getString("IMPORTING"), "...");
@@ -193,7 +192,7 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
      */
     private void changeTag(ILocalAudioObject sourceFile, ILocalAudioObject destFile) {
         if (filesToChangeTag.contains(sourceFile)) {
-            TagModifier.setInfo(destFile, sourceFile.getTag(), localAudioObjectValidator);
+            tagHandler.setTag(destFile, sourceFile.getTag());
         }
     }
 

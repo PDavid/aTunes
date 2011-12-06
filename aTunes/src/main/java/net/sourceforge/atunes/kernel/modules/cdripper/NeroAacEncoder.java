@@ -30,7 +30,7 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
+import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -87,7 +87,7 @@ public class NeroAacEncoder extends AbstractEncoder {
      * Creates a new nero aac encoder
      */
     public NeroAacEncoder() {
-    	super("m4a", NERO_AAC_QUALITY, DEFAULT_NERO_AAC_QUALITY, FORMAT_NAME, Context.getBean(ILocalAudioObjectValidator.class));
+    	super("m4a", NERO_AAC_QUALITY, DEFAULT_NERO_AAC_QUALITY, FORMAT_NAME, Context.getBean(ITagHandler.class));
 	}
 
     /**

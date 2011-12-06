@@ -24,7 +24,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.tags.TagModifier;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 
@@ -56,7 +55,7 @@ public class EditTitlesProcess extends AbstractChangeTagProcess {
     @Override
     protected void changeTag(ILocalAudioObject file) {
         String newTitle = filesAndTitles.get(file);
-        TagModifier.setTitles(file, newTitle);
+        getTagHandler().setTitle(file, newTitle);
     }
 
     /**
