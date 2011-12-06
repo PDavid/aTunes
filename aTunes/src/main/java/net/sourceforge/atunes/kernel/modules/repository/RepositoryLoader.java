@@ -23,9 +23,7 @@ package net.sourceforge.atunes.kernel.modules.repository;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.SwingUtilities;
 
@@ -97,108 +95,6 @@ public class RepositoryLoader extends Thread {
 	}
 
 	/**
-	 * Add files to repository.
-	 * @param state
-	 * @param rep
-	 * @param files
-	 * @param localAudioObjectFactory
-	 */
-	static void addToRepository(IState state, IRepository rep, List<File> files, ILocalAudioObjectFactory localAudioObjectFactory) {
-		// Get folders where files are
-		Set<File> folders = new HashSet<File>();
-		for (File file : files) {
-			folders.add(file.getParentFile());
-		}
-
-		for (File folder : folders) {
-			String repositoryPath = getRepositoryFolderContaining(rep, folder)
-					.getAbsolutePath().replace('\\', '/');
-			if (repositoryPath.endsWith("/")) {
-				repositoryPath = repositoryPath.substring(0, repositoryPath
-						.length() - 2);
-			}
-			int firstChar = repositoryPath.length() + 1;
-
-			RepositoryFiller filler = new RepositoryFiller(rep, state);
-			for (File f : files) {
-				if (f.getParentFile().equals(folder)) {
-					ILocalAudioObject audioObject = localAudioObjectFactory.getLocalAudioObject(f);
-
-					String pathToFile = audioObject.getUrl().replace('\\', '/');
-					int lastChar = pathToFile.lastIndexOf('/') + 1;
-					String relativePath;
-					if (firstChar < lastChar) {
-						relativePath = pathToFile.substring(firstChar, lastChar);
-					} else {
-						relativePath = ".";
-					}
-
-					filler.addAudioFile(audioObject, getRepositoryFolderContaining(rep, folder), relativePath);
-				}
-			}
-		}		
-	}
-
-	/**
-	 * Count files.
-	 * 
-	 * @param dir
-	 * @param localAudioObjectValidator
-	 * @return
-	 */
-	private static int countFiles(File dir, ILocalAudioObjectValidator localAudioObjectValidator) {
-		int files = 0;
-		File[] list = dir.listFiles();
-		if (list == null) {
-			return files;
-		}
-		for (File element : list) {
-			if (localAudioObjectValidator.isValidAudioFile(element)) {
-				files++;
-			} else if (element.isDirectory()) {
-				files = files + countFiles(element, localAudioObjectValidator);
-			}
-		}
-		return files;
-	}
-
-	/**
-	 * Count files in repository.
-	 * 
-	 * @param rep
-	 * @param localAudioObjectValidator
-	 * @return
-	 */
-	static int countFilesInRepository(IRepository rep, ILocalAudioObjectValidator localAudioObjectValidator) {
-		int files = 0;
-		for (File dir : rep.getRepositoryFolders()) {
-			files = files + countFiles(dir, localAudioObjectValidator);
-		}
-		return files;
-	}
-
-	/**
-	 * Gets the repository folder containing.
-	 * 
-	 * @param rep
-	 *            the rep
-	 * @param folder
-	 *            the folder
-	 * 
-	 * @return the repository folder containing
-	 */
-	private static File getRepositoryFolderContaining(IRepository rep,
-			File folder) {
-		String path = folder.getAbsolutePath();
-		for (File f : rep.getRepositoryFolders()) {
-			if (path.startsWith(f.getAbsolutePath())) {
-				return f;
-			}
-		}
-		return null;
-	}
-
-	/**
 	 * Gets the songs for dir.
 	 * @param folder
 	 * @param listener
@@ -228,32 +124,6 @@ public class RepositoryLoader extends Thread {
 					listener.notifyFileLoaded();
 				}
 			}
-		}
-		return result;
-	}
-
-	/**
-	 * Gets the songs of a list of folders. Used in import
-	 * @param folders
-	 * @param listener
-	 * @param localAudioObjectFactory
-	 * @param localAudioObjectValidator
-	 * @return
-	 */
-	public static List<ILocalAudioObject> getSongsForFolders(List<File> folders, IRepositoryLoaderListener listener, ILocalAudioObjectFactory localAudioObjectFactory, ILocalAudioObjectValidator localAudioObjectValidator) {
-		int filesCount = 0;
-		for (File folder : folders) {
-			filesCount = filesCount + countFiles(folder, localAudioObjectValidator);
-		}
-		if (listener != null) {
-			listener.notifyFilesInRepository(filesCount);
-		}
-		List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
-		for (File folder : folders) {
-			result.addAll(getSongsForFolder(folder, listener, localAudioObjectFactory, localAudioObjectValidator));
-		}
-		if (listener != null) {
-			listener.notifyFinishRead(null);
 		}
 		return result;
 	}

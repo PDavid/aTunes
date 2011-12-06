@@ -24,6 +24,7 @@
 	<bean id="folderRefresher" class="net.sourceforge.atunes.kernel.modules.repository.FolderRefresher"/>
 	<bean id="localAudioObjectRefresher" class="net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectRefresher"/>
 	
+	<bean id="repositoryAddService" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryAddService"/>
 	<bean id="repositoryRemover" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryRemover"/>
 
 	<bean id="addFilesTask" class="net.sourceforge.atunes.kernel.modules.repository.AddFilesTask" scope="prototype"/>
