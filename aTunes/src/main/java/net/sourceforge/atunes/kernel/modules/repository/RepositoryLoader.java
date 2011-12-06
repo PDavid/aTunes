@@ -23,30 +23,18 @@ package net.sourceforge.atunes.kernel.modules.repository;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.StringTokenizer;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.Artist;
-import net.sourceforge.atunes.model.Folder;
-import net.sourceforge.atunes.model.IDeviceHandler;
-import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRepository;
-import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IRepositoryLoaderListener;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.IStatisticsHandler;
-import net.sourceforge.atunes.model.ITag;
-import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.utils.DirectoryFileFilter;
 import net.sourceforge.atunes.utils.Logger;
@@ -268,62 +256,6 @@ public class RepositoryLoader extends Thread {
 			listener.notifyFinishRead(null);
 		}
 		return result;
-	}
-
-	/**
-	 * Refresh file
-	 * 
-	 * @param state
-	 * @param repository
-	 * @param file
-	 * @param statisticsHandler
-	 * @param localAudioObjectFactory
-	 */
-	static void refreshFile(IState state, IRepository repository, ILocalAudioObject file, IStatisticsHandler statisticsHandler, ILocalAudioObjectFactory localAudioObjectFactory) {
-		try {
-			// Get old tag
-			ITag oldTag = file.getTag();
-			
-			// Update tag
-			localAudioObjectFactory.refreshAudioObject(file);
-			
-			// Update repository
-			new RepositoryFiller(repository, state).refreshAudioFile(file, oldTag);
-
-			// Compare old tag with new tag
-			ITag newTag = file.getTag();
-			if (newTag != null) {
-				boolean artistChanged = oldTag.getArtist() == null && newTag.getArtist() != null ||
-									    oldTag.getArtist() != null && newTag.getArtist() == null || 
-									    !oldTag.getArtist().equals(newTag.getArtist());
-				
-				boolean albumChanged = oldTag.getAlbum() == null && newTag.getAlbum() != null ||
-									   oldTag.getAlbum() != null && newTag.getAlbum() == null ||
-									   !oldTag.getAlbum().equals(newTag.getAlbum());
-				
-				boolean oldArtistRemoved = false;
-				
-				if (artistChanged) {
-					Artist oldArtist = repository.getArtist(oldTag.getArtist());
-					if (oldArtist == null) {
-						// Artist has been renamed -> Update statistics
-						statisticsHandler.replaceArtist(oldTag.getArtist(), newTag.getArtist());
-						oldArtistRemoved = true;
-					}
-				}
-				if (albumChanged) {
-					Artist artistWithOldAlbum = repository.getArtist(oldArtistRemoved ? newTag.getArtist() : oldTag.getArtist()); 
-					Album oldAlbum = artistWithOldAlbum.getAlbum(oldTag.getAlbum());
-					if (oldAlbum == null) {
-						// Album has been renamed -> Update statistics
-						statisticsHandler.replaceAlbum(artistWithOldAlbum.getName(), oldTag.getAlbum(), newTag.getAlbum());
-					}
-				}
-			}
-
-		} catch (Exception e) {
-			Logger.error(e.getMessage());
-		}
 	}
 
 	/**
@@ -593,156 +525,4 @@ public class RepositoryLoader extends Thread {
 	Repository getOldRepository() {
 		return oldRepository;
 	}
-
-	/**
-	 * Permanently deletes an audio file from the repository metainformation
-	 * 
-	 * This method marks repository as dirty but new state is not notified
-	 * To notify repository change call Repository.setDirty(true, true) when finish
-	 * 
-	 * @param file
-	 * @param osManager
-	 * @param repositoryHandler
-	 * @param deviceHandler
-	 */
-	static void deleteFile(ILocalAudioObject file, IOSManager osManager, IRepositoryHandler repositoryHandler, IDeviceHandler deviceHandler) {
-		String albumArtist = file.getAlbumArtist();
-		String artist = file.getArtist();
-		String album = file.getAlbum();
-		String genre = file.getGenre();
-		String year = file.getYear();
-
-		// Only do this if file is in repository
-		if (getFolderForFile(file, osManager, repositoryHandler) != null) {
-			// Remove from file structure
-			Folder f = getFolderForFile(file, osManager, repositoryHandler);
-			if (f != null) {
-				f.removeAudioFile(file);
-				// If folder is empty, remove too
-				if (f.isEmpty()) {
-					f.getParentFolder().removeFolder(f);
-				}
-			}
-
-			// Remove from tree structure
-			Artist a = repositoryHandler.getArtist(albumArtist);
-			if (a == null) {
-				a = repositoryHandler.getArtist(artist);
-			}
-			if (a != null) {
-				Album alb = a.getAlbum(album);
-				if (alb != null) {
-					if (alb.size() == 1) {
-						a.removeAlbum(alb);
-					} else {
-						alb.removeAudioFile(file);
-					}
-
-					if (a.size() <= 1) {
-						repositoryHandler.removeArtist(a);
-					}
-				}
-			}
-
-			// Remove from genre structure
-			IGenre g = repositoryHandler.getGenre(genre);
-			if (g != null) {
-				g.removeAudioObject(file);
-				if (g.size() <= 1) {
-					repositoryHandler.removeGenre(g);
-				}
-			}
-
-			// Remove from year structure
-			IYear y = repositoryHandler.getYear(year);
-			if (y != null) {
-				y.removeAudioObject(file);
-				if (y.size() <= 1) {
-					repositoryHandler.removeYear(y);
-				}
-			}
-
-			// Remove from repository
-			repositoryHandler.removeFile(file);
-		}
-		// File is on a device
-		else if (deviceHandler.isDevicePath(file.getUrl())) {
-			Logger.info("Deleted file ", file, " from device");
-		}
-	}
-
-	/**
-	 * Finds folder that contains file.
-	 * 
-	 * @param file
-	 *            Audio file for which the folder is wanted
-	 * 
-	 * @param osManager
-	 * @param repositoryHandler
-	 * @return Either folder or null if file is not in repository
-	 */
-	private static Folder getFolderForFile(ILocalAudioObject file, IOSManager osManager, IRepositoryHandler repositoryHandler) {
-		// Get repository folder where file is
-		File repositoryFolder = repositoryHandler.getRepositoryFolderContainingFile(file);
-		// If the file is not in the repository, return null
-		if (repositoryFolder == null) {
-			return null;
-		}
-
-		// Get root folder
-		Folder rootFolder = repositoryHandler.getFolder(repositoryFolder.getAbsolutePath());
-
-		// Now navigate through folder until find folder that contains file
-		String path = file.getFile().getParentFile().getAbsolutePath();
-		path = path.replace(repositoryFolder.getAbsolutePath(), "");
-
-		Folder f = rootFolder;
-		StringTokenizer st = new StringTokenizer(path, osManager.getFileSeparator());
-		while (st.hasMoreTokens()) {
-			String folderName = st.nextToken();
-			f = f.getFolder(folderName);
-		}
-		return f;
-	}
-
-	/**
-	 * Refreshes folder
-	 * @param state
-	 * @param repository
-	 * @param folders
-	 * @param statisticsHandler
-	 * @param osManager
-	 * @param repositoryHandler
-	 * @param localAudioObjectFactory
-	 * @param localAudioObjectValidator
-	 */
-	public static void refreshFolders(IState state, IRepository repository, List<Folder> folders, IStatisticsHandler statisticsHandler, IOSManager osManager, IRepositoryHandler repositoryHandler, ILocalAudioObjectFactory localAudioObjectFactory, ILocalAudioObjectValidator localAudioObjectValidator) {
-		repositoryHandler.startTransaction();
-		
-		for (Folder folder : folders) {
-			// Remove o refresh previous files		
-			List<ILocalAudioObject> aos = folder.getAudioObjects();
-			for (ILocalAudioObject ao : aos) {
-				if (ao.getFile().exists()) {
-					Logger.debug("Refreshing file: ", ao.getFile().getAbsolutePath());
-					refreshFile(state, repository, ao, statisticsHandler, localAudioObjectFactory);
-				} else {
-					Logger.debug("Removing file: ", ao.getFile().getAbsolutePath());
-					repositoryHandler.remove(Collections.singletonList(ao));
-				}
-			}
-
-			// Add new files
-			List<ILocalAudioObject> allObjects = getSongsForFolder(folder.getFolderPath(osManager), null, localAudioObjectFactory, localAudioObjectValidator);
-			for (ILocalAudioObject ao : allObjects) {
-				if (repository.getFile(ao.getFile().getAbsolutePath()) == null) {
-					Logger.debug("Adding file: ", ao.getFile().getAbsolutePath());
-					addToRepository(state, repository, Collections.singletonList(ao.getFile()), localAudioObjectFactory);
-				}
-			}
-		}
-		
-		repositoryHandler.endTransaction();
-	}
-
 }
