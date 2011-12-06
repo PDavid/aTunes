@@ -20,10 +20,17 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
+import java.util.Collection;
+
+import net.sourceforge.atunes.model.IChangeTagsProcess;
+import net.sourceforge.atunes.model.IConfirmationDialogFactory;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 
 /**
  * This action invokes process to repair genres of repository
@@ -37,6 +44,15 @@ public class RepairGenresAction extends CustomAbstractAction {
     private IProcessFactory processFactory;
     
     private IRepositoryHandler repositoryHandler;
+    
+    private IConfirmationDialogFactory confirmationDialogFactory;
+    
+    /**
+     * @param confirmationDialogFactory
+     */
+    public void setConfirmationDialogFactory(IConfirmationDialogFactory confirmationDialogFactory) {
+		this.confirmationDialogFactory = confirmationDialogFactory;
+	}
 
     /**
      * @param processFactory
@@ -58,7 +74,26 @@ public class RepairGenresAction extends CustomAbstractAction {
 
     @Override
     protected void executeAction() {
-        TagEditionOperations.repairGenres(processFactory, repositoryHandler);
+        // Show confirmation dialog
+        if (confirmationDialogFactory.getDialog().showDialog(I18nUtils.getString("REPAIR_GENRES_MESSAGE"))) {
+            // Call genre edit
+        	IChangeTagsProcess process = (IChangeTagsProcess) processFactory.getProcessByName("setGenresProcess");
+        	process.setFilesToChange(getFilesWithEmptyGenre(repositoryHandler.getAudioFilesList()));
+            process.execute();
+        }
     }
 
+    /**
+     * Returns files without genre
+     * @param audioFiles
+     * @return
+     */
+    private Collection<ILocalAudioObject> getFilesWithEmptyGenre(Collection<ILocalAudioObject> audioFiles) {
+    	return Collections2.filter(audioFiles, new Predicate<ILocalAudioObject>() {
+    		@Override
+    		public boolean apply(ILocalAudioObject ao) {
+    			return ao.getGenre() == null || ao.getGenre().isEmpty();
+    		}
+		});
+    }
 }

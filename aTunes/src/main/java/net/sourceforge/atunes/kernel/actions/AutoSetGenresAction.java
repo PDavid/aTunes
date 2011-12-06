@@ -24,8 +24,8 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IChangeTagsProcess;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -56,7 +56,9 @@ public class AutoSetGenresAction extends AbstractActionOverSelectedObjects<ILoca
     
     @Override
     protected void executeAction(List<ILocalAudioObject> objects) {
-        TagEditionOperations.editGenre(objects, processFactory);
+    	IChangeTagsProcess process = (IChangeTagsProcess) processFactory.getProcessByName("setGenresProcess");
+    	process.setFilesToChange(objects);
+        process.execute();
     }
 
     @Override

@@ -20,10 +20,21 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import net.sourceforge.atunes.kernel.modules.tags.TagEditionOperations;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
+
+import net.sourceforge.atunes.kernel.modules.process.SetTrackNumberProcess;
+import net.sourceforge.atunes.model.IConfirmationDialogFactory;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 
 public class RepairTrackNumbersAction extends CustomAbstractAction {
 
@@ -32,7 +43,27 @@ public class RepairTrackNumbersAction extends CustomAbstractAction {
     private IProcessFactory processFactory;
     
     private IRepositoryHandler repositoryHandler;
+    
+    private IConfirmationDialogFactory confirmationDialogFactory;
+    
+    private IWebServicesHandler webServicesHandler;
+    
+    private static final Pattern NUMBER_SEPARATOR_PATTERN = Pattern.compile("[^0-9]+");
 
+    /**
+     * @param webServicesHandler
+     */
+    public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+		this.webServicesHandler = webServicesHandler;
+	}
+    
+    /**
+     * @param confirmationDialogFactory
+     */
+    public void setConfirmationDialogFactory(IConfirmationDialogFactory confirmationDialogFactory) {
+		this.confirmationDialogFactory = confirmationDialogFactory;
+	}
+    
     /**
      * @param processFactory
      */
@@ -53,6 +84,77 @@ public class RepairTrackNumbersAction extends CustomAbstractAction {
 
     @Override
     protected void executeAction() {
-        TagEditionOperations.repairTrackNumbers(processFactory, repositoryHandler);
+        // Show confirmation dialog
+        if (confirmationDialogFactory.getDialog().showDialog(I18nUtils.getString("REPAIR_TRACK_NUMBERS_MESSAGE"))) {
+            // Call track number edit
+            /*
+             * Given an array of files, returns a map containing each file and its
+             * track number based on information found on file name.
+             */
+            Map<ILocalAudioObject, Integer> filesToSet = new HashMap<ILocalAudioObject, Integer>();
+            for (ILocalAudioObject ao : getFilesWithEmptyTracks(repositoryHandler.getAudioFilesList())) {
+                int trackNumber = getTrackNumber(ao);
+
+                if (trackNumber != 0) {
+                    filesToSet.put(ao, trackNumber);
+                }
+            }
+            if (!filesToSet.isEmpty()) {
+                // Call process
+                SetTrackNumberProcess process = (SetTrackNumberProcess) processFactory.getProcessByName("setTrackNumberProcess");
+                process.setFilesAndTracks(filesToSet);
+                process.execute();
+            }
+        }
+    }
+    
+    /**
+     * Returns track number for a given audio file
+     * 
+     * @param audioFile
+     * @return
+     */
+    private int getTrackNumber(ILocalAudioObject audioFile) {
+        // Try to get a number from file name
+        String fileName = audioFile.getNameWithoutExtension();
+        String[] aux = NUMBER_SEPARATOR_PATTERN.split(fileName);
+        int trackNumber = 0;
+        int i = 0;
+        while (trackNumber == 0 && i < aux.length) {
+            String token = aux[i];
+            try {
+                trackNumber = Integer.parseInt(token);
+                // If trackNumber >= 1000 maybe it's not a track number (year?) 
+                if (trackNumber >= 1000) {
+                    trackNumber = 0;
+                }
+            } catch (NumberFormatException e) {
+                // Ok, it's not a valid number, skip it
+            }
+            i++;
+        }
+
+        // If trackNumber could not be retrieved from file name, try to get from last.fm
+        // To get this, titles must match
+        if (trackNumber == 0) {
+            trackNumber = webServicesHandler.getTrackNumber(audioFile);
+        }
+
+        return trackNumber;
+    }
+
+    
+    /**
+     * Returns files without track number
+     * @param audioFiles
+     * @return
+     */
+    private Collection<ILocalAudioObject> getFilesWithEmptyTracks(Collection<ILocalAudioObject> audioFiles) {
+    	return Collections2.filter(audioFiles, new Predicate<ILocalAudioObject>() {
+    		@Override
+    		public boolean apply(ILocalAudioObject ao) {
+    			return ao.getTrackNumber() == 0;
+    		}
+		});
     }
 }
