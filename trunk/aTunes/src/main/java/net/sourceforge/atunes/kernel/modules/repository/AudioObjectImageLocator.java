@@ -50,21 +50,10 @@ public class AudioObjectImageLocator implements IAudioObjectImageLocator {
 	public ImageIcon getImage(IAudioObject audioObject, ImageSize imageSize) {
 		if (audioObject instanceof ILocalAudioObject) {
 			ILocalAudioObject localAudioObject = (ILocalAudioObject) audioObject;
-			ImageIcon result = null;
 
-			result = ImageCache.getImageCache().retrieveImage(localAudioObject, imageSize);
-
+			ImageIcon result = AudioFilePictureUtils.getInsidePicture(localAudioObject, imageSize.getSize(), imageSize.getSize());
 			if (result == null) {
-				result = AudioFilePictureUtils.getInsidePicture(localAudioObject, imageSize.getSize(), imageSize.getSize());
-				if (result == null) {
-					result = AudioFilePictureUtils.getExternalPicture(localAudioObject, imageSize.getSize(), imageSize.getSize(), osManager);
-				}
-			} else {
-				return result;
-			}
-
-			if (result != null) {
-				ImageCache.getImageCache().storeImage(localAudioObject, imageSize, result);
+				result = AudioFilePictureUtils.getExternalPicture(localAudioObject, imageSize.getSize(), imageSize.getSize(), osManager);
 			}
 
 			return result;
@@ -79,9 +68,4 @@ public class AudioObjectImageLocator implements IAudioObjectImageLocator {
 		}
 		return getImage(album.getAudioObjects().get(0), imageSize);
     }
-    
-
-	
-	
-
 }

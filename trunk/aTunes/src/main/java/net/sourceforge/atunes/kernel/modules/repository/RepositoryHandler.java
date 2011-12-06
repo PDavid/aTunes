@@ -305,8 +305,6 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
             // Execute command after last access to repository
             new LoadRepositoryCommandExecutor().execute(getState().getCommandAfterAccessRepository());
         }
-        
-        ImageCache.shutdown();
     }
 
     @Override

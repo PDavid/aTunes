@@ -472,8 +472,6 @@ public class RepositoryLoader extends Thread {
 	private void notifyFinish() {
 		transaction.finishTransaction();
 		
-		ImageCache.getImageCache().clearCache();
-
 		if (listener == null) {
 			return;
 		}
