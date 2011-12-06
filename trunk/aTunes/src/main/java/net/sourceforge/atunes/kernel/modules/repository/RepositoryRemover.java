@@ -33,6 +33,7 @@ import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.utils.Logger;
+import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 /**
  * Removes from repository
@@ -149,7 +150,7 @@ public class RepositoryRemover {
 		String album = file.getAlbum();
 
 		Artist a = repositoryHandler.getArtist(albumArtist);
-		if (a == null) {
+		if (a == null || UnknownObjectCheck.isUnknownArtist(a)) {
 			a = repositoryHandler.getArtist(artist);
 		}
 		if (a != null) {
