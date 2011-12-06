@@ -12,7 +12,6 @@
 	<bean id="repositorySearchableObject" class="net.sourceforge.atunes.kernel.modules.search.RepositorySearchableObject"/>
 	<bean id="repositoryRefresher" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryAutoRefresher"/>
 	<bean id="persistRepositoryTask" class="net.sourceforge.atunes.kernel.modules.repository.PersistRepositoryTask"/>
-	<bean id="addFilesTask" class="net.sourceforge.atunes.kernel.modules.repository.AddFilesTask" scope="prototype"/>
 	
 	<bean id="localAudioObjectFactory" class="net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectFactory"/>
 	<bean id="localAudioObjectReader" class="net.sourceforge.atunes.kernel.modules.tags.TagReader"/>
@@ -26,6 +25,8 @@
 	<bean id="localAudioObjectRefresher" class="net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectRefresher"/>
 	
 	<bean id="repositoryRemover" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryRemover"/>
-	
+
+	<bean id="addFilesTask" class="net.sourceforge.atunes.kernel.modules.repository.AddFilesTask" scope="prototype"/>
+	<bean id="refreshFoldersTask" class="net.sourceforge.atunes.kernel.modules.repository.RefreshFoldersTask" scope="prototype"/>	
 
 </beans>

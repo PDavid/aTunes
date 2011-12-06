@@ -112,8 +112,6 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	
 	private LocalAudioObjectRefresher localAudioObjectRefresher;
 	
-	private FolderRefresher folderRefresher;
-	
 	private RepositoryRemover repositoryRemover;
 	
 	/**
@@ -121,13 +119,6 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	 */
 	public void setRepositoryRemover(RepositoryRemover repositoryRemover) {
 		this.repositoryRemover = repositoryRemover;
-	}
-	
-	/**
-	 * @param folderRefresher
-	 */
-	public void setFolderRefresher(FolderRefresher folderRefresher) {
-		this.folderRefresher = folderRefresher;
 	}
 	
 	/**
@@ -456,7 +447,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	public void refreshFolders(List<Folder> folders) {
     	getFrame().showProgressBar(true, StringUtils.getString(I18nUtils.getString("REFRESHING"), "..."));
     	repositoryActions.enableRepositoryActions(false);
-    	new RefreshFoldersSwingWorker(repositoryReader, this, repository, folders, folderRefresher).execute();
+    	getBean(RefreshFoldersTask.class).execute(repository, folders);
     }
 
     @Override
