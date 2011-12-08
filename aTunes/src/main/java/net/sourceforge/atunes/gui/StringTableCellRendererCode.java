@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.gui;
 
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 
@@ -40,7 +39,7 @@ public class StringTableCellRendererCode extends AbstractTableCellRendererCode<J
     }
 
     @Override
-    public JComponent getComponent(JLabel c, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    public JLabel getComponent(JLabel c, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         // Get alignment from model
         c.setHorizontalAlignment(model.getColumnAlignment(column));
         return c;

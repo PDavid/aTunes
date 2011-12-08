@@ -195,7 +195,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
      * @return
      */
     @Override
-    public TableCellRenderer getTableCellRenderer(final AbstractTableCellRendererCode code) {
+    public TableCellRenderer getTableCellRenderer(final AbstractTableCellRendererCode<?, ?> code) {
         return new SubstanceLookAndFeelTableCellRenderer(code);
     }
 
@@ -207,7 +207,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
      * @return
      */
     @Override
-    public TableCellRenderer getTableHeaderCellRenderer(final AbstractTableCellRendererCode code) {
+    public TableCellRenderer getTableHeaderCellRenderer(final AbstractTableCellRendererCode<?, ?> code) {
         return new SubstanceLookAndFeelTableHeaderCellRenderer(code);
     }
 

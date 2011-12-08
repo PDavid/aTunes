@@ -22,7 +22,6 @@ package net.sourceforge.atunes.gui;
 
 import java.awt.Color;
 
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 
@@ -39,7 +38,7 @@ public class ColorMutableTableCellRendererCode extends AbstractTableCellRenderer
     }
 
     @Override
-    public JComponent getComponent(JLabel c, JTable table, IColorMutableImageIcon value, boolean isSelected, boolean hasFocus, int row, int column) {
+    public JLabel getComponent(JLabel c, JTable table, IColorMutableImageIcon value, boolean isSelected, boolean hasFocus, int row, int column) {
         c.setText(null);
         Color color = lookAndFeel.getPaintForColorMutableIcon(c, isSelected);
         c.setIcon(value.getIcon(color));

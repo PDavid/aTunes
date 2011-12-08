@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -71,7 +70,7 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
 		}
 
 		@Override
-        public JComponent getComponent(JLabel superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        public JLabel getComponent(JLabel superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         	superComponent.setHorizontalAlignment(SwingConstants.RIGHT);
         	return superComponent;
         }
@@ -84,7 +83,7 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
 		}
 
 		@Override
-        public JComponent getComponent(JLabel superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        public JLabel getComponent(JLabel superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         	superComponent.setHorizontalAlignment(GuiUtils.getComponentOrientationAsSwingConstant());
         	return superComponent;
         }

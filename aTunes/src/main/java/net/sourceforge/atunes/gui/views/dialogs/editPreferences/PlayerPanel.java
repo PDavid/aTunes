@@ -67,7 +67,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
 		}
 
 		@Override
-		public JComponent getComponent(JLabel c, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+		public JLabel getComponent(JLabel c, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 		    GuiUtils.applyComponentOrientation(c);
 		    if (conflicts.contains(row) || notRecommendedKeys.contains(row)) {
 		        c.setForeground(ColorDefinitions.WARNING_COLOR);

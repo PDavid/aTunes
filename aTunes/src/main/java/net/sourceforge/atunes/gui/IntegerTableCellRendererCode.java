@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.gui;
 
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -34,7 +33,7 @@ public class IntegerTableCellRendererCode extends AbstractTableCellRendererCode<
 	}
 
 	@Override
-    public JComponent getComponent(JLabel c, JTable table, Integer value, boolean isSelected, boolean hasFocus, int row, int column) {
+    public JLabel getComponent(JLabel c, JTable table, Integer value, boolean isSelected, boolean hasFocus, int row, int column) {
         c.setText(value != null ? value.toString() : null);
         c.setHorizontalAlignment(SwingConstants.CENTER);
         return c;

@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.gui;
 
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 
@@ -37,8 +36,8 @@ final class PlayListStringTableCellRendererCode extends StringTableCellRendererC
     }
 
     @Override
-    public JComponent getComponent(JLabel superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    	JComponent c = super.getComponent(superComponent, t, value, isSelected, hasFocus, row, column);
+    public JLabel getComponent(JLabel superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    	JLabel c = super.getComponent(superComponent, t, value, isSelected, hasFocus, row, column);
     	if (playListHandler.isCurrentVisibleRowPlaying(row)) {
     		if (getLookAndFeel().getPlayListSelectedItemFont() != null) {
     			 ((JLabel) c).setFont(getLookAndFeel().getPlayListSelectedItemFont());

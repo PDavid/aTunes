@@ -67,7 +67,7 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
     }
 
     @Override
-    public AbstractTableCellRendererCode getRendererCodeFor(Class<?> clazz) {
+    public AbstractTableCellRendererCode<?, ?> getRendererCodeFor(Class<?> clazz) {
         if (clazz.equals(Integer.class)) {
             return new PlayListIntegerTableCellRendererCode(getLookAndFeel(), playListHandler, this);
         } else if (clazz.equals(String.class)) {

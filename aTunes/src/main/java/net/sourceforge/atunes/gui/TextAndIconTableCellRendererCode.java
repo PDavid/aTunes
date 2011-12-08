@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.gui;
 
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 
@@ -36,7 +35,7 @@ public class TextAndIconTableCellRendererCode extends AbstractTableCellRendererC
     }
 
     @Override
-    public JComponent getComponent(JLabel c, JTable table, TextAndIcon value, boolean isSelected, boolean hasFocus, int row, int column) {
+    public JLabel getComponent(JLabel c, JTable table, TextAndIcon value, boolean isSelected, boolean hasFocus, int row, int column) {
         c.setText(value.getText());
         if (value.getIcon() != null) {
         	c.setIcon(value.getIcon().getIcon(lookAndFeel.getPaintForColorMutableIcon(c, isSelected)));

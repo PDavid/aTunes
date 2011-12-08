@@ -23,7 +23,6 @@ package net.sourceforge.atunes.gui;
 import java.awt.Color;
 
 import javax.swing.ImageIcon;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -48,7 +47,7 @@ final class PlayListIntegerTableCellRendererCode extends AbstractTableCellRender
 	}
 
 	@Override
-	public JComponent getComponent(JLabel c, JTable t, Integer value, boolean isSelected, boolean hasFocus, int row, int column) {
+	public JLabel getComponent(JLabel c, JTable t, Integer value, boolean isSelected, boolean hasFocus, int row, int column) {
 	    String name = t.getColumnName(column);
 	    //Display Integer values if the column is nameless
 	    if (!"".equals(name)) {

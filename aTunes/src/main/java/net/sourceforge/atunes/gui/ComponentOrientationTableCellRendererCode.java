@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.gui;
 
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 
@@ -33,7 +32,7 @@ public class ComponentOrientationTableCellRendererCode extends AbstractTableCell
 	}
 
 	@Override
-    public JComponent getComponent(JLabel superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    public JLabel getComponent(JLabel superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     	GuiUtils.applyComponentOrientation(superComponent);
     	return superComponent;
     }

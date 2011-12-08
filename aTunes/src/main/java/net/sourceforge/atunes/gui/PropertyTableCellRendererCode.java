@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.gui;
 
 import javax.swing.ImageIcon;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 
@@ -37,7 +36,7 @@ public class PropertyTableCellRendererCode extends AbstractTableCellRendererCode
 	}
 
 	@Override
-    public JComponent getComponent(JLabel comp, JTable table, AudioObjectProperty val, boolean isSelected, boolean hasFocus, int row, int column) {
+    public JLabel getComponent(JLabel comp, JTable table, AudioObjectProperty val, boolean isSelected, boolean hasFocus, int row, int column) {
         ImageIcon icon = null;
         if (val == AudioObjectProperty.FAVORITE) {
             icon = Context.getBean("favoriteIcon", CachedIconFactory.class).getIcon(lookAndFeel.getPaintForColorMutableIcon(comp, isSelected));
