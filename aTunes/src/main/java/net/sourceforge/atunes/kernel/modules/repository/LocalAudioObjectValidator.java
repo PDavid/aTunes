@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.io.File;
+import java.io.FileFilter;
 
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.LocalAudioObjectFormat;
@@ -28,7 +29,13 @@ import net.sourceforge.atunes.model.LocalAudioObjectFormat;
 import org.apache.commons.io.FilenameUtils;
 
 public class LocalAudioObjectValidator implements ILocalAudioObjectValidator {
-
+	
+	private FileFilter validLocalAudioObjectFileFilter;
+	
+	public void setValidLocalAudioObjectFileFilter(FileFilter validLocalAudioObjectFileFilter) {
+		this.validLocalAudioObjectFileFilter = validLocalAudioObjectFileFilter;
+	}
+	
     /**
      * Checks if is valid audio file.
      * 
@@ -75,4 +82,9 @@ public class LocalAudioObjectValidator implements ILocalAudioObjectValidator {
         }
         return false;
     }
+    
+    @Override
+    public FileFilter getValidLocalAudioObjectFileFilter() {
+    	return validLocalAudioObjectFileFilter;
+    }    
 }

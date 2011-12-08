@@ -30,6 +30,7 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IRepository;
+import net.sourceforge.atunes.model.IRepositoryLoader;
 import net.sourceforge.atunes.model.IRepositoryLoaderListener;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.Repository;
@@ -41,17 +42,8 @@ import net.sourceforge.atunes.utils.Timer;
 /**
  * Class for loading audio files into repository.
  */
-public class RepositoryLoader extends Thread {
+public class RepositoryLoader implements IRepositoryLoader, Runnable {
 
-	private FileFilter validAudioFileFilter =  new FileFilter() {
-		
-		@Override
-		public boolean accept(File pathname) {
-			return localAudioObjectValidator.isValidAudioFile(pathname);
-		}
-	};
-
-	
 	// Some attributes to speed up populate info process
 	private IRepositoryLoaderListener listener;
 	private List<File> folders;
@@ -67,30 +59,57 @@ public class RepositoryLoader extends Thread {
 	private IState state;
 	private ILocalAudioObjectFactory localAudioObjectFactory;
 	private ILocalAudioObjectValidator localAudioObjectValidator;
+	private FileFilter validLocalAudioObjectFileFilter;
 	
 	private RepositoryTransaction transaction;
 
 	/**
-	 * Instantiates a new repository loader.
+	 * Starts load
 	 * @param state
 	 * @param transaction
 	 * @param folders
 	 * @param oldRepository
 	 * @param repository
 	 * @param refresh
-	 * @param localAudioObjectFactory
-	 * @param localAudioObjectValidator
 	 */
-	public RepositoryLoader(IState state, RepositoryTransaction transaction, List<File> folders, Repository oldRepository, IRepository repository, boolean refresh, ILocalAudioObjectFactory localAudioObjectFactory, ILocalAudioObjectValidator localAudioObjectValidator) {
+	@Override
+	public void start(RepositoryTransaction transaction, List<File> folders, Repository oldRepository, IRepository repository, boolean refresh) {
 		this.transaction = transaction;
 		this.refresh = refresh;
 		this.folders = folders;
 		this.oldRepository = oldRepository;
 		this.repository = repository;
+		Thread t = new Thread(this);
+		t.setPriority(Thread.MAX_PRIORITY);
+		t.start();
+	}
+
+	/**
+	 * @param state
+	 */
+	public void setState(IState state) {
 		this.state = state;
+	}
+	
+	/**
+	 * @param localAudioObjectFactory
+	 */
+	public void setLocalAudioObjectFactory(ILocalAudioObjectFactory localAudioObjectFactory) {
 		this.localAudioObjectFactory = localAudioObjectFactory;
+	}
+	
+	/**
+	 * @param localAudioObjectValidator
+	 */
+	public void setLocalAudioObjectValidator(ILocalAudioObjectValidator localAudioObjectValidator) {
 		this.localAudioObjectValidator = localAudioObjectValidator;
-		setPriority(Thread.MAX_PRIORITY);
+	}
+	
+	/**
+	 * @param validLocalAudioObjectFileFilter
+	 */
+	public void setValidLocalAudioObjectFileFilter(FileFilter validLocalAudioObjectFileFilter) {
+		this.validLocalAudioObjectFileFilter = validLocalAudioObjectFileFilter;
 	}
 
 	/**
@@ -99,6 +118,7 @@ public class RepositoryLoader extends Thread {
 	 * @param listener
 	 *            the listener
 	 */
+	@Override
 	public void addRepositoryLoaderListener(IRepositoryLoaderListener listener) {
 		this.listener = listener;
 	}
@@ -148,7 +168,8 @@ public class RepositoryLoader extends Thread {
 	/**
 	 * Interrupt load.
 	 */
-	void interruptLoad() {
+	@Override
+	public void interruptLoad() {
 		Logger.info("Load interrupted");
 		interrupt = true;
 	}
@@ -229,7 +250,7 @@ public class RepositoryLoader extends Thread {
 	 */
 	private void processAudioFiles(File dir, File relativeTo) {
         // Get audio files
-        File[] audiofiles = dir.listFiles(validAudioFileFilter);
+        File[] audiofiles = dir.listFiles(validLocalAudioObjectFileFilter);
         
         String pathToFile = dir.getAbsolutePath().replace('\\', '/');
 
@@ -355,7 +376,8 @@ public class RepositoryLoader extends Thread {
 	/**
 	 * @return the oldRepository
 	 */
-	Repository getOldRepository() {
+	@Override
+	public Repository getOldRepository() {
 		return oldRepository;
 	}
 }

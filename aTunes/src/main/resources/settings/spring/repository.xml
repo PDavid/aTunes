@@ -17,6 +17,7 @@
 	<bean id="localAudioObjectReader" class="net.sourceforge.atunes.kernel.modules.tags.TagReader"/>
 	<bean id="localAudioObjectValidator" class="net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectValidator"/>
 	<bean id="localAudioObjectLocator" class="net.sourceforge.atunes.kernel.modules.repository.LocalAudioObjectLocator"/>
+	<bean id="validLocalAudioObjectFileFilter" class="net.sourceforge.atunes.kernel.modules.repository.ValidLocalAudioObjectFileFilter"/>
 	
 	<bean id="audioObjectImageLocator" class="net.sourceforge.atunes.kernel.modules.repository.AudioObjectImageLocator"/>
 	
@@ -30,5 +31,7 @@
 
 	<bean id="addFilesTask" class="net.sourceforge.atunes.kernel.modules.repository.AddFilesTask" scope="prototype"/>
 	<bean id="refreshFoldersTask" class="net.sourceforge.atunes.kernel.modules.repository.RefreshFoldersTask" scope="prototype"/>	
+	
+	<bean id="repositoryLoader" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader" scope="prototype"/>
 
 </beans>

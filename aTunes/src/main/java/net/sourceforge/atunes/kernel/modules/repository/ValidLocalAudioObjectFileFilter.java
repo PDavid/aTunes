@@ -18,51 +18,31 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.io.File;
 import java.io.FileFilter;
 
+import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 
 /**
- * Tests if a file is a valid local audio object
+ * A file filter using a local audio object validator
  * @author alex
  *
  */
-public interface ILocalAudioObjectValidator {
-
-	/**
-	 * Checks if is valid audio file.
-	 * 
-	 * @param file
-	 *            the file
-	 * 
-	 * @return true, if is valid audio file
-	 */
-	boolean isValidAudioFile(String file);
-
-	/**
-	 * Checks if is valid audio file.
-	 * 
-	 * @param file
-	 *            the file
-	 * 
-	 * @return true, if is valid audio file
-	 */
-	boolean isValidAudioFile(File file);
-
-	/**
-	 * Checks if a file is a valid audio file given its name
-	 * 
-	 * @param fileName
-	 * @param formats
-	 * @return if the file is a valid audio file
-	 */
-	boolean isOneOfTheseFormats(String fileName, LocalAudioObjectFormat... formats);
+public final class ValidLocalAudioObjectFileFilter implements FileFilter {
 	
+	private ILocalAudioObjectValidator localAudioObjectValidator;
+
 	/**
-	 * Returns a file filter to select valid local audio objects
-	 * @return
+	 * @param localAudioObjectValidator
 	 */
-	FileFilter getValidLocalAudioObjectFileFilter();
+	public void setLocalAudioObjectValidator(ILocalAudioObjectValidator localAudioObjectValidator) {
+		this.localAudioObjectValidator = localAudioObjectValidator;
+	}
+	
+	@Override
+	public boolean accept(File pathname) {
+		return localAudioObjectValidator.isValidAudioFile(pathname);
+	}
 }

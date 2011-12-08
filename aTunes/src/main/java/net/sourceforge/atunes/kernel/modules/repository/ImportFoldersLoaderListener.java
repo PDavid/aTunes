@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.repository;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.model.IProgressDialog;
+import net.sourceforge.atunes.model.IRepositoryLoader;
 import net.sourceforge.atunes.model.IRepositoryLoaderListener;
 
 final class ImportFoldersLoaderListener implements IRepositoryLoaderListener {
@@ -45,7 +46,7 @@ final class ImportFoldersLoaderListener implements IRepositoryLoaderListener {
 	}
 
 	@Override
-	public void notifyFinishRefresh(RepositoryLoader loader) {
+	public void notifyFinishRefresh(IRepositoryLoader loader) {
 	}
 	
 	@Override
@@ -53,7 +54,7 @@ final class ImportFoldersLoaderListener implements IRepositoryLoaderListener {
 	}
 
 	@Override
-	public void notifyFinishRead(RepositoryLoader loader) {
+	public void notifyFinishRead(IRepositoryLoader loader) {
 	    progressDialog.hideDialog();
 	}
 

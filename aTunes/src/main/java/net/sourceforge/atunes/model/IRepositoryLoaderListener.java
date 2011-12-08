@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.model;
 
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader;
 
 /**
  * The listener interface for receiving loader events.
@@ -61,7 +60,7 @@ public interface IRepositoryLoaderListener {
      * @param loader
      *            the loader
      */
-    public void notifyFinishRead(RepositoryLoader loader);
+    public void notifyFinishRead(IRepositoryLoader loader);
 
     /**
      * Notify finish refresh.
@@ -69,7 +68,7 @@ public interface IRepositoryLoaderListener {
      * @param loader
      *            the loader
      */
-    public void notifyFinishRefresh(RepositoryLoader loader);
+    public void notifyFinishRefresh(IRepositoryLoader loader);
 
     /**
      * Notify remaining time.

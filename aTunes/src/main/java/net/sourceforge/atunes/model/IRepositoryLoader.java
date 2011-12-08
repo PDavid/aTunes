@@ -21,48 +21,44 @@
 package net.sourceforge.atunes.model;
 
 import java.io.File;
-import java.io.FileFilter;
+import java.util.List;
+
+import net.sourceforge.atunes.kernel.modules.repository.RepositoryTransaction;
 
 
 /**
- * Tests if a file is a valid local audio object
+ * Responsible of reading or refreshing a repository
  * @author alex
  *
  */
-public interface ILocalAudioObjectValidator {
+public interface IRepositoryLoader {
 
 	/**
-	 * Checks if is valid audio file.
-	 * 
-	 * @param file
-	 *            the file
-	 * 
-	 * @return true, if is valid audio file
+	 * Starts loading repository
+	 * @param transaction
+	 * @param folders
+	 * @param oldRepository
+	 * @param repository
+	 * @param refresh
 	 */
-	boolean isValidAudioFile(String file);
+	void start(RepositoryTransaction transaction, List<File> folders, Repository oldRepository, IRepository repository, boolean refresh);
 
 	/**
-	 * Checks if is valid audio file.
+	 * Adds the repository loader listener.
 	 * 
-	 * @param file
-	 *            the file
-	 * 
-	 * @return true, if is valid audio file
+	 * @param listener
+	 *            the listener
 	 */
-	boolean isValidAudioFile(File file);
+	void addRepositoryLoaderListener(IRepositoryLoaderListener listener);
 
 	/**
-	 * Checks if a file is a valid audio file given its name
-	 * 
-	 * @param fileName
-	 * @param formats
-	 * @return if the file is a valid audio file
+	 * Interrupts process
 	 */
-	boolean isOneOfTheseFormats(String fileName, LocalAudioObjectFormat... formats);
-	
+	void interruptLoad();
+
 	/**
-	 * Returns a file filter to select valid local audio objects
+	 * Returns previous repository (to be used if interrupted to restore previous repository)
 	 * @return
 	 */
-	FileFilter getValidLocalAudioObjectFileFilter();
+	Repository getOldRepository();
 }
