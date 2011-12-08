@@ -102,7 +102,7 @@ public class ScoreColumn extends AbstractColumn {
         return lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(new AbstractTableCellRendererCode<JLabel, Integer>(lookAndFeelManager.getCurrentLookAndFeel()) {
 
             @Override
-            public JComponent getComponent(JLabel superComponent, JTable t, Integer value, boolean isSelected, boolean hasFocus, int row, int column) {
+            public JLabel getComponent(JLabel superComponent, JTable t, Integer value, boolean isSelected, boolean hasFocus, int row, int column) {
                 setLabel(superComponent, value);
                 return superComponent;
             }

@@ -34,7 +34,7 @@ import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IState;
 
-class NavigationTableCellRendererCode extends AbstractTableCellRendererCode {
+class NavigationTableCellRendererCode extends AbstractTableCellRendererCode<JComponent, Object> {
 
     private AbstractTableCellRendererCode renderer;
 
@@ -42,7 +42,7 @@ class NavigationTableCellRendererCode extends AbstractTableCellRendererCode {
     
     private INavigationHandler navigationHandler;
     
-    public NavigationTableCellRendererCode(AbstractTableCellRendererCode renderer, IState state, ILookAndFeel lookAndFeel, INavigationHandler navigationHandler) {
+    public NavigationTableCellRendererCode(AbstractTableCellRendererCode<?, ?> renderer, IState state, ILookAndFeel lookAndFeel, INavigationHandler navigationHandler) {
     	super(lookAndFeel);
         this.renderer = renderer;
         this.state = state;

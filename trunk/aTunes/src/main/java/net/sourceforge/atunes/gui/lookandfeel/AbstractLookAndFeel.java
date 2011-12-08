@@ -27,9 +27,7 @@ import java.awt.Font;
 import java.util.Enumeration;
 import java.util.List;
 
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -39,9 +37,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.plaf.FontUIResource;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
 import net.sourceforge.atunes.gui.AbstractListCellRendererCode;
@@ -63,95 +59,6 @@ public abstract class AbstractLookAndFeel implements ILookAndFeel {
 	
 	protected IOSManager osManager;
 	
-    private static final class LookAndFeelListCellRenderer extends DefaultListCellRenderer {
-        private final AbstractListCellRendererCode code;
-        /**
-		 * 
-		 */
-        private static final long serialVersionUID = 2572603555660744197L;
-
-        private LookAndFeelListCellRenderer(AbstractListCellRendererCode code) {
-            this.code = code;
-        }
-
-        @Override
-        public JComponent getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        	JComponent c = (JComponent) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        	if (code != null) {
-        		c = code.getComponent(c, list, value, index, isSelected, cellHasFocus);
-        	}
-            c.setOpaque(isSelected);
-            return c;
-        }
-    }
-
-    private static final class LookAndFeelTableHeaderCellRenderer extends DefaultTableCellRenderer {
-        private final AbstractTableCellRendererCode code;
-        /**
-		 * 
-		 */
-        private static final long serialVersionUID = 1L;
-
-        private LookAndFeelTableHeaderCellRenderer(AbstractTableCellRendererCode code) {
-            this.code = code;
-        }
-
-        @Override
-        public JComponent getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        	JComponent c = (JComponent) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            return code.getComponent(c, table, value, isSelected, hasFocus, row, column);
-        }
-    }
-
-    private static final class LookAndFeelTableCellRenderer extends DefaultTableCellRenderer {
-        private final AbstractTableCellRendererCode code;
-        /**
-		 * 
-		 */
-        private static final long serialVersionUID = 1L;
-
-        private LookAndFeelTableCellRenderer(AbstractTableCellRendererCode code) {
-            this.code = code;
-        }
-
-        @Override
-        public JComponent getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        	JComponent c = (JComponent) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-        	if (code != null) {
-        		c = code.getComponent(c, table, value, isSelected, hasFocus, row, column);
-        	}
-            c.setOpaque(isSelected);
-            return c;
-        }
-    }
-
-    private static final class LookAndFeelTreeCellRenderer extends DefaultTreeCellRenderer {
-        private final AbstractTreeCellRendererCode code;
-        /**
-		 * 
-		 */
-        private static final long serialVersionUID = 5424315832943108932L;
-
-        private LookAndFeelTreeCellRenderer(AbstractTreeCellRendererCode code) {
-            this.code = code;
-        }
-
-        @Override
-        public JComponent getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-        	// Use custom JLabel component (if call super method, returned component can't be fully customized)
-        	JComponent c = new JLabel(value.toString());
-        	if (code != null) {
-        		c = code.getComponent(c, tree, value,isSelected, expanded, leaf, row, hasFocus);
-        	}
-        	c.setOpaque(isSelected);
-        	if (isSelected) {
-        		c.setBackground(UIManager.getColor("Tree.selectionBackground"));
-        		c.setForeground(UIManager.getColor("Tree.selectionForeground"));
-        	}
-            return c;
-        }
-    }
-
     @Override
 	public abstract String getName();
 
@@ -181,12 +88,12 @@ public abstract class AbstractLookAndFeel implements ILookAndFeel {
     }
 
     @Override
-	public TableCellRenderer getTableCellRenderer(final AbstractTableCellRendererCode code) {
+	public TableCellRenderer getTableCellRenderer(final AbstractTableCellRendererCode<?, ?> code) {
         return new LookAndFeelTableCellRenderer(code);
     }
 
     @Override
-	public TableCellRenderer getTableHeaderCellRenderer(final AbstractTableCellRendererCode code) {
+	public TableCellRenderer getTableHeaderCellRenderer(final AbstractTableCellRendererCode<?, ?> code) {
         return new LookAndFeelTableHeaderCellRenderer(code);
     }
 

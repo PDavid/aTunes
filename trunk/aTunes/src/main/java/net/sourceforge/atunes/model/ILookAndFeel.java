@@ -107,8 +107,7 @@ public interface ILookAndFeel {
 	 * @param code
 	 * @return
 	 */
-	public TableCellRenderer getTableCellRenderer(
-			final AbstractTableCellRendererCode code);
+	public TableCellRenderer getTableCellRenderer(AbstractTableCellRendererCode<?, ?> code);
 
 	/**
 	 * Returns a new TableCellRenderer executing given code (default
@@ -117,8 +116,7 @@ public interface ILookAndFeel {
 	 * @param code
 	 * @return
 	 */
-	public TableCellRenderer getTableHeaderCellRenderer(
-			final AbstractTableCellRendererCode code);
+	public TableCellRenderer getTableHeaderCellRenderer(AbstractTableCellRendererCode<?, ?> code);
 
 	/**
 	 * Returns a new ListCellRendeder executing given code (default

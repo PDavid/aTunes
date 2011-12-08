@@ -46,7 +46,7 @@ public abstract class AbstractTableCellRendererCode<T extends JComponent, U> {
      * @param column
      * @return
      */
-    public abstract JComponent getComponent(T superComponent, JTable t, U value, boolean isSelected, boolean hasFocus, int row, int column);
+    public abstract T getComponent(T superComponent, JTable t, U value, boolean isSelected, boolean hasFocus, int row, int column);
     
     /**
      * Access lookAndFeel

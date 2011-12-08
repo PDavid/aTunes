@@ -36,7 +36,6 @@ import java.util.Map.Entry;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -415,7 +414,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		}
 
 		@Override
-		public JComponent getComponent(JLabel c, JTable table, PluginInfo value, boolean isSelected, boolean hasFocus, int row, int column) {
+		public JLabel getComponent(JLabel c, JTable table, PluginInfo value, boolean isSelected, boolean hasFocus, int row, int column) {
 			c.setText(value.getName());
 			if (value.getIcon() != null) {
 				c.setIcon(ImageUtils.scaleImageBicubic(value.getIcon(), CELL_HEIGHT - 5, CELL_HEIGHT - 5));
