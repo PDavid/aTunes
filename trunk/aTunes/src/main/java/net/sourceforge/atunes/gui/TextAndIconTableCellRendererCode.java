@@ -26,7 +26,7 @@ import javax.swing.JTable;
 
 import net.sourceforge.atunes.model.ILookAndFeel;
 
-public class TextAndIconTableCellRendererCode extends AbstractTableCellRendererCode<JLabel> {
+public class TextAndIconTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, TextAndIcon> {
 
     private AbstractCommonColumnModel model;
 
@@ -36,10 +36,10 @@ public class TextAndIconTableCellRendererCode extends AbstractTableCellRendererC
     }
 
     @Override
-    public JComponent getComponent(JLabel c, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        c.setText(((TextAndIcon) value).getText());
-        if (((TextAndIcon) value).getIcon() != null) {
-        	c.setIcon(((TextAndIcon) value).getIcon().getIcon(lookAndFeel.getPaintForColorMutableIcon(c, isSelected)));
+    public JComponent getComponent(JLabel c, JTable table, TextAndIcon value, boolean isSelected, boolean hasFocus, int row, int column) {
+        c.setText(value.getText());
+        if (value.getIcon() != null) {
+        	c.setIcon(value.getIcon().getIcon(lookAndFeel.getPaintForColorMutableIcon(c, isSelected)));
         } else {
         	c.setIcon(null);
         }        

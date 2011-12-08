@@ -48,9 +48,9 @@ public class YoutubeResultsTableCellRendererCode extends ContextTableRowPanel<Yo
 	}
 
 	@Override
-    public JComponent getComponent(JLabel superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        return getPanelForTableRenderer(((YoutubeResultEntry) value).getImage(), 
-        								StringUtils.getString("<html>", ((YoutubeResultEntry) value).getName(), "<br>(", ((YoutubeResultEntry) value).getDuration(), ")</html>"), 
+    public JComponent getComponent(JLabel superComponent, JTable t, YoutubeResultEntry value, boolean isSelected, boolean hasFocus, int row, int column) {
+        return getPanelForTableRenderer(value.getImage(), 
+        								StringUtils.getString("<html>", value.getName(), "<br>(", value.getDuration(), ")</html>"), 
         								superComponent.getBackground(), 
         								superComponent.getForeground(), 
         								Constants.CONTEXT_IMAGE_WIDTH, 

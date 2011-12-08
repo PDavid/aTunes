@@ -37,7 +37,7 @@ final class PlayListTextAndIconTableCellRendererCode extends TextAndIconTableCel
     }
 
     @Override
-    public JComponent getComponent(JLabel superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    public JComponent getComponent(JLabel superComponent, JTable table, TextAndIcon value, boolean isSelected, boolean hasFocus, int row, int column) {
     	JComponent c = super.getComponent(superComponent, table, value, isSelected, hasFocus, row, column);
     	if (playListHandler.isCurrentVisibleRowPlaying(row)) {
     		if (getLookAndFeel().getPlayListSelectedItemFont() != null) {

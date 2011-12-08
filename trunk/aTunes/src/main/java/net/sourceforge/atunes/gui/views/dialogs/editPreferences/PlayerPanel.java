@@ -60,7 +60,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class PlayerPanel extends AbstractPreferencesPanel {
 
-	private final class HotkeyTableTableCellRendererCode extends AbstractTableCellRendererCode<JLabel> {
+	private final class HotkeyTableTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, Object> {
 		
 		public HotkeyTableTableCellRendererCode(ILookAndFeel lookAndFeel) {
 			super(lookAndFeel);

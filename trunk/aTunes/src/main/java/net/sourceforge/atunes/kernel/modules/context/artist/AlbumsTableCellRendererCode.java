@@ -46,9 +46,9 @@ class AlbumsTableCellRendererCode extends ContextTableRowPanel<IAlbumInfo> {
 	}
 
 	@Override
-    public JComponent getComponent(JLabel superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        return getPanelForTableRenderer(((IAlbumInfo) value).getCover(), 
-        								StringUtils.getString("<html>", ((IAlbumInfo) value).getTitle(), "</html>"), 
+    public JComponent getComponent(JLabel superComponent, JTable table, IAlbumInfo value, boolean isSelected, boolean hasFocus, int row, int column) {
+        return getPanelForTableRenderer(value.getCover(), 
+        								StringUtils.getString("<html>", value.getTitle(), "</html>"), 
         								superComponent.getBackground(),
         								superComponent.getForeground(), 
         								Constants.CONTEXT_IMAGE_WIDTH, 
