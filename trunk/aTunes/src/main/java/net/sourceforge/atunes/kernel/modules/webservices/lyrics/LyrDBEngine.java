@@ -18,14 +18,13 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines;
+package net.sourceforge.atunes.kernel.modules.webservices.lyrics;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;

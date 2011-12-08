@@ -25,6 +25,7 @@ import static org.mockito.Mockito.mock;
 import java.util.UUID;
 
 import net.sourceforge.atunes.kernel.modules.network.NetworkHandler;
+import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricWikiEngine;
 import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.model.IState;
 

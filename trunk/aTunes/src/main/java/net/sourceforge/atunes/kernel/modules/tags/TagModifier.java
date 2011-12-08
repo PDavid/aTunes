@@ -35,6 +35,7 @@ import net.sourceforge.atunes.utils.FileUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
+import org.apache.sanselan.ImageReadException;
 import org.apache.sanselan.Sanselan;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.audio.exceptions.CannotWriteException;
@@ -170,50 +171,14 @@ final class TagModifier {
                 }
             }
 
-            if (shouldEditCover) {
-                // Remove old images
-                try {
-                    newTag.deleteArtworkField();
-                } catch (KeyNotFoundException e) {
-                	Logger.error(StringUtils.getString("Could not delte artwork field. File: ", file.getUrl(), " Error: ", e));
-                }
-
-                if (cover != null) {
-                    Artwork artwork = new Artwork();
-                    artwork.setBinaryData(cover);
-                    artwork.setDescription("cover");
-                    artwork.setPictureType(PictureTypes.DEFAULT_ID);
-                    artwork.setLinked(false);
-                    artwork.setMimeType(Sanselan.getImageInfo(cover).getMimeType());
-                    newTag.setField(newTag.createField(artwork));
-                }
-            }
+            editCover(file, shouldEditCover, cover, newTag);
 
             // Workaround for mp4 files - strings outside genre list might not be written otherwise
             if (localAudioObjectValidator.isOneOfTheseFormats(file.getFile().getName(), LocalAudioObjectFormat.MP4_1, LocalAudioObjectFormat.MP4_2)) {
                 newTag.deleteField(FieldKey.GENRE);
             }
 
-            setStringTagField(file, newTag, FieldKey.ALBUM, album);
-            setStringTagField(file, newTag, FieldKey.ARTIST, artist);
-            setStringTagField(file, newTag, FieldKey.COMMENT, comment);
-            setStringTagField(file, newTag, FieldKey.GENRE, genre);
-            setStringTagField(file, newTag, FieldKey.TITLE, title);
-            setNumberTagField(file, newTag, FieldKey.YEAR, year);
-            setNumberTagField(file, newTag, FieldKey.TRACK, track);
-            if (discNumber <= 0) {
-                newTag.deleteField(FieldKey.DISC_NO);
-            } else {
-                // only set the discnumber if we have a useful one. remove previous one to avoid errors
-                String discno = newTag.getFirst(FieldKey.DISC_NO);
-                if (!StringUtils.isEmpty(discno)) {
-                	newTag.deleteField(FieldKey.DISC_NO);
-                }
-                newTag.setField(FieldKey.DISC_NO, Integer.toString(discNumber));
-            }
-            setStringTagField(file, newTag, FieldKey.LYRICS, lyrics);
-            setStringTagField(file, newTag, FieldKey.ALBUM_ARTIST, albumArtist);
-            setStringTagField(file, newTag, FieldKey.COMPOSER, composer);
+            setTagFields(file, title, album, artist, year, comment, genre, lyrics, composer, track, discNumber, albumArtist, newTag);
 
             audioFile.setTag(newTag);
             audioFile.commit();
@@ -234,6 +199,81 @@ final class TagModifier {
 			reportWriteError(file, e);
 		}
     }
+
+	/**
+	 * @param file
+	 * @param title
+	 * @param album
+	 * @param artist
+	 * @param year
+	 * @param comment
+	 * @param genre
+	 * @param lyrics
+	 * @param composer
+	 * @param track
+	 * @param discNumber
+	 * @param albumArtist
+	 * @param newTag
+	 * @throws FieldDataInvalidException
+	 */
+	private void setTagFields(ILocalAudioObject file, String title,
+			String album, String artist, int year, String comment,
+			String genre, String lyrics, String composer, int track,
+			int discNumber, String albumArtist, org.jaudiotagger.tag.Tag newTag)
+			throws FieldDataInvalidException {
+		setStringTagField(file, newTag, FieldKey.ALBUM, album);
+		setStringTagField(file, newTag, FieldKey.ARTIST, artist);
+		setStringTagField(file, newTag, FieldKey.COMMENT, comment);
+		setStringTagField(file, newTag, FieldKey.GENRE, genre);
+		setStringTagField(file, newTag, FieldKey.TITLE, title);
+		setNumberTagField(file, newTag, FieldKey.YEAR, year);
+		setNumberTagField(file, newTag, FieldKey.TRACK, track);
+		if (discNumber <= 0) {
+		    newTag.deleteField(FieldKey.DISC_NO);
+		} else {
+		    // only set the discnumber if we have a useful one. remove previous one to avoid errors
+		    String discno = newTag.getFirst(FieldKey.DISC_NO);
+		    if (!StringUtils.isEmpty(discno)) {
+		    	newTag.deleteField(FieldKey.DISC_NO);
+		    }
+		    newTag.setField(FieldKey.DISC_NO, Integer.toString(discNumber));
+		}
+		setStringTagField(file, newTag, FieldKey.LYRICS, lyrics);
+		setStringTagField(file, newTag, FieldKey.ALBUM_ARTIST, albumArtist);
+		setStringTagField(file, newTag, FieldKey.COMPOSER, composer);
+	}
+
+	/**
+	 * @param file
+	 * @param shouldEditCover
+	 * @param cover
+	 * @param newTag
+	 * @throws ImageReadException
+	 * @throws IOException
+	 * @throws FieldDataInvalidException
+	 */
+	private void editCover(ILocalAudioObject file, boolean shouldEditCover,
+			byte[] cover, org.jaudiotagger.tag.Tag newTag)
+			throws ImageReadException, IOException, FieldDataInvalidException {
+		if (shouldEditCover) {
+		    // Remove old images
+		    try {
+		        newTag.deleteArtworkField();
+		    } catch (KeyNotFoundException e) {
+		    	Logger.error(StringUtils.getString("Could not delte artwork field. File: ", file.getUrl(), " Error: ", e));
+		    }
+
+		    if (cover != null) {
+		        Artwork artwork = new Artwork();
+		        artwork.setBinaryData(cover);
+		        artwork.setDescription("cover");
+		        artwork.setPictureType(PictureTypes.DEFAULT_ID);
+		        artwork.setLinked(false);
+		        artwork.setMimeType(Sanselan.getImageInfo(cover).getMimeType());
+		        newTag.setField(newTag.createField(artwork));
+		    }
+		}
+	}
 
     private void setStringTagField(ILocalAudioObject file, org.jaudiotagger.tag.Tag tag, FieldKey fieldKey, String fieldValue) {
         if (fieldValue == null || fieldValue.isEmpty()) {

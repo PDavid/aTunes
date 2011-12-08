@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines;
+package net.sourceforge.atunes.kernel.modules.webservices.lyrics;
 
 import java.beans.ConstructorProperties;
 
