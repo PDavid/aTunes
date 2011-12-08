@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.renderers;
+package net.sourceforge.atunes.gui;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;

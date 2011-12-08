@@ -30,7 +30,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
+import net.sourceforge.atunes.gui.AbstractCommonColumnModel;
 import net.sourceforge.atunes.model.IColumnSelectorDialog;
 import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;

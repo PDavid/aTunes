@@ -31,7 +31,7 @@ import java.awt.dnd.DropTargetListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.gui.model.TransferableList;
+import net.sourceforge.atunes.gui.TransferableList;
 import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
 import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;

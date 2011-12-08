@@ -235,10 +235,8 @@ public class CDInfo implements Serializable {
      * 
      * @see java.lang.Object#toString()
      */
-
     @Override
     public String toString() {
         return StringUtils.getString("(id=", id, " tracks=", tracks, " duration=", duration, ")");
     }
-
 }

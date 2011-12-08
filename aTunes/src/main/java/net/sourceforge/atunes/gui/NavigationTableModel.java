@@ -18,31 +18,37 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.model;
+package net.sourceforge.atunes.gui;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.event.TableModelEvent;
 
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.images.AlbumImageSmallIcon;
-import net.sourceforge.atunes.kernel.modules.columns.TypeColumn;
-import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.IAudioObject;
 
 /**
- * The Class AlbumTableModel.
+ * The Class NavigationTableModel.
  * 
- * @author encestre
+ * @author fleax
  */
-public final class AlbumTableModel extends AbstractColumnSetTableModel {
+public final class NavigationTableModel extends AbstractColumnSetTableModel {
 
-   
-    /** The albums. */
-    private List<Album> albums;
-    
+    /** The songs. */
+    private List<? extends IAudioObject> audioObjects;
+
+    /**
+     * Instantiates a new navigation table model.
+     * 
+     * @param controller
+     *            the controller
+     */
+    public NavigationTableModel() {
+        super();
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -50,42 +56,42 @@ public final class AlbumTableModel extends AbstractColumnSetTableModel {
      */
     @Override
     public int getRowCount() {
-        return albums != null ? albums.size() : 0;
+        return audioObjects != null ? audioObjects.size() : 0;
     }
 
     /**
-     * Gets the album at.
+     * Gets the audio object at.
      * 
      * @param row
      *            the row
      * 
-     * @return the album at
+     * @return the song at
      */
-    public Album getAlbumAt(int row) {
-        return albums != null ? albums.get(row) : null;
+    public IAudioObject getAudioObjectAt(int row) {
+        return audioObjects != null ? audioObjects.get(row) : null;
     }
 
     /**
-     * Gets the albums.
+     * Gets the audio objects.
      * 
-     * @return the albums
+     * @return the audio objects
      */
-    public List<Album> getAlbums() {
-        return albums;
+    public List<? extends IAudioObject> getAudioObjects() {
+        return audioObjects;
     }
 
     /**
-     * Gets the album at.
+     * Gets the songs at.
      * 
      * @param rows
      *            the rows
      * 
-     * @return the album at
+     * @return the songs at
      */
-    public List<Album> getAlbumsAt(int[] rows) {
-        List<Album> result = new ArrayList<Album>();
+    public List<IAudioObject> getAudioObjectsAt(int[] rows) {
+        List<IAudioObject> result = new ArrayList<IAudioObject>();
         for (int element : rows) {
-            result.add(albums.get(element));
+            result.add(getAudioObjectAt(element));
         }
         return result;
     }
@@ -98,13 +104,11 @@ public final class AlbumTableModel extends AbstractColumnSetTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-    	Album album = getAlbumAt(rowIndex);
-    	if (album == null) {
-    		return null;
-    	} else if (getColumn(columnIndex) instanceof TypeColumn) {
-    		return Context.getBean(AlbumImageSmallIcon.class).getColorMutableIcon();
-    	}
-    	return getColumn(columnIndex).getValueFor(album.getAudioObjects().get(0));
+        IAudioObject audioObject = getAudioObjectAt(rowIndex);
+        if (audioObject == null) {
+            return null;
+        }
+        return getColumn(columnIndex).getValueFor(audioObject);
     }
 
     /*
@@ -118,13 +122,13 @@ public final class AlbumTableModel extends AbstractColumnSetTableModel {
     }
 
     /**
-     * Sets the albums.
+     * Sets the songs.
      * 
-     * @param albums
-     *            
+     * @param songs
+     *            the new songs
      */
-    public void setAlbums(List<Album> albums) {
-        this.albums = albums;
+    public void setSongs(List<? extends IAudioObject> songs) {
+        this.audioObjects = songs;
         refresh(TableModelEvent.INSERT);
     }
 
@@ -135,9 +139,12 @@ public final class AlbumTableModel extends AbstractColumnSetTableModel {
      */
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        // Nothing to do
     }
 
-	@Override
-	public void sort(Comparator<IAudioObject> comparator) {
-	}
+    @Override
+    public void sort(Comparator<IAudioObject> comparator) {
+        Collections.sort(this.audioObjects, comparator);
+        refresh(TableModelEvent.UPDATE);
+    }
 }

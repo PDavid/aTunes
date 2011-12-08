@@ -36,7 +36,7 @@ import javax.swing.TransferHandler;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.api.RepositoryApi;
-import net.sourceforge.atunes.gui.model.TransferableList;
+import net.sourceforge.atunes.gui.TransferableList;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectComparator;

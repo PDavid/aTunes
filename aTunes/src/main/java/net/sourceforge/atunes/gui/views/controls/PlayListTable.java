@@ -40,9 +40,9 @@ import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 
-import net.sourceforge.atunes.gui.model.PlayListColumnModel;
-import net.sourceforge.atunes.gui.model.TransferableList;
-import net.sourceforge.atunes.gui.renderers.ColumnRenderers;
+import net.sourceforge.atunes.gui.ColumnRenderers;
+import net.sourceforge.atunes.gui.PlayListColumnModel;
+import net.sourceforge.atunes.gui.TransferableList;
 import net.sourceforge.atunes.gui.views.menus.PlayListMenuFiller;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListDragableRow;
 import net.sourceforge.atunes.kernel.modules.playlist.PlayListTableModel;

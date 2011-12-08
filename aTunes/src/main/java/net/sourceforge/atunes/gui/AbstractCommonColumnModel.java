@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.model;
+package net.sourceforge.atunes.gui;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -37,12 +37,6 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.gui.renderers.ColorMutableTableCellRendererCode;
-import net.sourceforge.atunes.gui.renderers.ImageIconTableCellRendererCode;
-import net.sourceforge.atunes.gui.renderers.IntegerTableCellRendererCode;
-import net.sourceforge.atunes.gui.renderers.PropertyTableCellRendererCode;
-import net.sourceforge.atunes.gui.renderers.StringTableCellRendererCode;
-import net.sourceforge.atunes.gui.renderers.TextAndIconTableCellRendererCode;
 import net.sourceforge.atunes.model.AudioObjectProperty;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumn;

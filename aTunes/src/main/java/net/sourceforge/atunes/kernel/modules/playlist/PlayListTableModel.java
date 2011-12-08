@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 
 import java.util.Comparator;
 
-import net.sourceforge.atunes.gui.model.AbstractColumnSetTableModel;
+import net.sourceforge.atunes.gui.AbstractColumnSetTableModel;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IPlayListHandler;

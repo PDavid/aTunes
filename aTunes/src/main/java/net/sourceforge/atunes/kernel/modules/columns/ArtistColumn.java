@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.gui.model.TextAndIcon;
+import net.sourceforge.atunes.gui.TextAndIcon;
 import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.ColumnSort;
 import net.sourceforge.atunes.model.IAudioObject;

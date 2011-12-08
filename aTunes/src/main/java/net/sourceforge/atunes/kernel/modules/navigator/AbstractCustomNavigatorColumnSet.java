@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.modules.navigator;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sourceforge.atunes.gui.model.NavigationTableColumnModel;
+import net.sourceforge.atunes.gui.NavigationTableColumnModel;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.model.ColumnBean;
 import net.sourceforge.atunes.model.ITable;
