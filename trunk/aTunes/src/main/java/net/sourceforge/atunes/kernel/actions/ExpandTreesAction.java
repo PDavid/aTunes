@@ -20,9 +20,9 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class ExpandTreesAction extends CustomAbstractAction {

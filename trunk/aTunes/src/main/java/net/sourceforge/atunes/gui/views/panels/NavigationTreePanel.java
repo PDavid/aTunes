@@ -33,12 +33,12 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.TransferHandler;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationTreePanel;
 import net.sourceforge.atunes.model.INavigationView;
-import net.sourceforge.atunes.utils.GuiUtils;
 
 public final class NavigationTreePanel extends JPanel implements INavigationTreePanel {
 

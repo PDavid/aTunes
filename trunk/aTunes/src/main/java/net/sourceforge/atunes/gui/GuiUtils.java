@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.utils;
+package net.sourceforge.atunes.gui;
 
 import java.awt.Color;
 import java.awt.ComponentOrientation;
@@ -39,9 +39,7 @@ import java.util.Arrays;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JRootPane;
-import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
@@ -50,11 +48,11 @@ import javax.swing.UIManager;
 import javax.swing.text.StyleConstants;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.utils.Logger;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -506,20 +504,6 @@ public final class GuiUtils {
         return new ComponentOrientationTableCellRendererCode(lookAndFeel);
     }
 
-    public static class ComponentOrientationTableCellRendererCode extends AbstractTableCellRendererCode {
-        public ComponentOrientationTableCellRendererCode(ILookAndFeel lookAndFeel) {
-			super(lookAndFeel);
-		}
-
-		@Override
-        public JComponent getComponent(JComponent superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        	if (superComponent instanceof JLabel) {
-        		GuiUtils.applyComponentOrientation((JLabel) superComponent);
-        	}
-            return superComponent;
-        }
-    }
-    
     /**
      * Returns true if mouse event is from primary mouse button (left-click or not Ctrl-click in Mac)
      * @param e

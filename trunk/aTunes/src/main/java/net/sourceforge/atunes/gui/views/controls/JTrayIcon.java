@@ -35,7 +35,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
-import net.sourceforge.atunes.utils.GuiUtils;
+import net.sourceforge.atunes.gui.GuiUtils;
 
 /*
  * This class is based on Java6Tray class from TVBrowser project

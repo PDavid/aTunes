@@ -27,17 +27,17 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.model.ILookAndFeel;
 
-public class IntegerTableCellRendererCode extends AbstractTableCellRendererCode {
+public class IntegerTableCellRendererCode extends AbstractTableCellRendererCode<JLabel> {
 
     public IntegerTableCellRendererCode(ILookAndFeel lookAndFeel) {
 		super(lookAndFeel);
 	}
 
 	@Override
-    public JComponent getComponent(JComponent c, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    public JComponent getComponent(JLabel c, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         String theValue = value != null ? value.toString() : "";
-        ((JLabel) c).setText(theValue);
-        ((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);
+        c.setText(theValue);
+        c.setHorizontalAlignment(SwingConstants.CENTER);
         return c;
     }
 

@@ -26,9 +26,9 @@ import java.awt.event.MouseEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.menus.PlayListMenuFiller;
 import net.sourceforge.atunes.model.IPlayListTable;
-import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
  * The listener interface for receiving play list events.

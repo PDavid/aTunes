@@ -43,6 +43,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.tree.TreePath;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.ReviewImportTreeTableModel;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
@@ -54,7 +55,6 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IReviewImportDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITagAttributesReviewed;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 

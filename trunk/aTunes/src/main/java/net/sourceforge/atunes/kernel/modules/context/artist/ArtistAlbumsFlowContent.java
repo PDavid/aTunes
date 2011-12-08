@@ -32,11 +32,11 @@ import javax.swing.JLabel;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.ScrollableFlowPanel;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jdesktop.swingx.border.DropShadowBorder;

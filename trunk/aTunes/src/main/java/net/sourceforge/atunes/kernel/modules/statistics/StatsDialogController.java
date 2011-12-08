@@ -33,6 +33,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
 import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.dialogs.StatsDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.Album;
@@ -44,7 +45,6 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStatisticsHandler;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -64,34 +64,28 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
 	
 	private IRepositoryHandler repositoryHandler;
 	
-    private static class RightAlignmentTableCellRendererCode extends AbstractTableCellRendererCode {
+    private static class RightAlignmentTableCellRendererCode extends AbstractTableCellRendererCode<JLabel> {
+    	
         public RightAlignmentTableCellRendererCode(ILookAndFeel lookAndFeel) {
 			super(lookAndFeel);
 		}
 
 		@Override
-        public JComponent getComponent(JComponent superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        	if (superComponent instanceof JLabel) {
-        		JLabel l = (JLabel) superComponent;
-        		l.setHorizontalAlignment(SwingConstants.RIGHT);
-        		return l;
-        	}
+        public JComponent getComponent(JLabel superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        	superComponent.setHorizontalAlignment(SwingConstants.RIGHT);
         	return superComponent;
         }
     }
 
-    private static class SwingOrientationTableCellRendererCode extends AbstractTableCellRendererCode {
+    private static class SwingOrientationTableCellRendererCode extends AbstractTableCellRendererCode<JLabel> {
+    	
         public SwingOrientationTableCellRendererCode(ILookAndFeel lookAndFeel) {
 			super(lookAndFeel);
 		}
 
 		@Override
-        public JComponent getComponent(JComponent superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        	if (superComponent instanceof JLabel) {
-        		JLabel l = (JLabel) superComponent;
-        		l.setHorizontalAlignment(GuiUtils.getComponentOrientationAsSwingConstant());
-        		return l;
-        	}
+        public JComponent getComponent(JLabel superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        	superComponent.setHorizontalAlignment(GuiUtils.getComponentOrientationAsSwingConstant());
         	return superComponent;
         }
     }

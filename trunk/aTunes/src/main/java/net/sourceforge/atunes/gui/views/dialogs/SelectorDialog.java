@@ -38,8 +38,8 @@ import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
  * This is the dialog shown to select values.

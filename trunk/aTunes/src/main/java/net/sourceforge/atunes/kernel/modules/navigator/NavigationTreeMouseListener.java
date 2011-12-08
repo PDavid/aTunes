@@ -29,13 +29,13 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITable;
-import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
  * The listener interface for receiving navigationTreeMouse events.

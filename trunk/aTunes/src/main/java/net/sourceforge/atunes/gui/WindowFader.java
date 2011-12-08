@@ -27,7 +27,6 @@ import java.lang.ref.WeakReference;
 
 import javax.swing.Timer;
 
-import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
  * Helper class for window fading

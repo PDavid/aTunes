@@ -28,7 +28,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.Action;
 
-import net.sourceforge.atunes.utils.GuiUtils;
+import net.sourceforge.atunes.gui.GuiUtils;
 
 /**
  * Tray Icon that fires actions when left mouse button clicked

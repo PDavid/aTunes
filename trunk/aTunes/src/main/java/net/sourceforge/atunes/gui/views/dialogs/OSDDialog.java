@@ -30,9 +30,9 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
 import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 
 import org.jdesktop.swingx.border.DropShadowBorder;

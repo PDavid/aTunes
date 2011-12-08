@@ -34,6 +34,7 @@ import javax.swing.JSlider;
 import javax.swing.JToggleButton;
 
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.NextButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
@@ -48,7 +49,6 @@ import net.sourceforge.atunes.model.IPlayerControlsPanel;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IProgressSlider;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
  * The player controls panel.

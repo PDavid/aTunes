@@ -42,6 +42,7 @@ import javax.swing.tree.TreeCellRenderer;
 import net.sourceforge.atunes.gui.AbstractListCellRendererCode;
 import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.AbstractTreeCellRendererCode;
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.NextButton;
@@ -51,7 +52,6 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.SecondaryControl
 import net.sourceforge.atunes.gui.views.controls.playerControls.SecondaryToggleControl;
 import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsSize;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.Logger;
 
 import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;

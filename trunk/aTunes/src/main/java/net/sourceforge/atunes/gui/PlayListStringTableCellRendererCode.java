@@ -37,7 +37,7 @@ final class PlayListStringTableCellRendererCode extends StringTableCellRendererC
     }
 
     @Override
-    public JComponent getComponent(JComponent superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    public JComponent getComponent(JLabel superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
     	JComponent c = super.getComponent(superComponent, t, value, isSelected, hasFocus, row, column);
     	if (playListHandler.isCurrentVisibleRowPlaying(row)) {
     		if (getLookAndFeel().getPlayListSelectedItemFont() != null) {

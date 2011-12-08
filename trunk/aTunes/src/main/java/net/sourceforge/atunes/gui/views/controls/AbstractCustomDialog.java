@@ -27,9 +27,9 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.WindowConstants;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.utils.GuiUtils;
 
 public abstract class AbstractCustomDialog extends JDialog {
 

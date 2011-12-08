@@ -23,9 +23,9 @@ package net.sourceforge.atunes.gui.frame;
 import java.awt.Dimension;
 import java.awt.Frame;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
  * Calculates window size and applies to a frame

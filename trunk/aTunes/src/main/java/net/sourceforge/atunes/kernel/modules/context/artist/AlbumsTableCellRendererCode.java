@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.Constants;
@@ -45,7 +46,7 @@ class AlbumsTableCellRendererCode extends ContextTableRowPanel<IAlbumInfo> {
 	}
 
 	@Override
-    public JComponent getComponent(JComponent superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    public JComponent getComponent(JLabel superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         return getPanelForTableRenderer(((IAlbumInfo) value).getCover(), 
         								StringUtils.getString("<html>", ((IAlbumInfo) value).getTitle(), "</html>"), 
         								superComponent.getBackground(),

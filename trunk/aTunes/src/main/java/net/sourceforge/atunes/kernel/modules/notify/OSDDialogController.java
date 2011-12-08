@@ -30,6 +30,7 @@ import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.WindowFader;
 import net.sourceforge.atunes.gui.views.dialogs.OSDDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
@@ -40,7 +41,6 @@ import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ImageSize;
-import net.sourceforge.atunes.utils.GuiUtils;
 
 final class OSDDialogController extends AbstractSimpleController<OSDDialog> {
 

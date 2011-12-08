@@ -409,13 +409,13 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		}
 	}
 
-	private static class PluginsTableCellRendererCode extends AbstractTableCellRendererCode {
+	private static class PluginsTableCellRendererCode extends AbstractTableCellRendererCode<JLabel> {
 		public PluginsTableCellRendererCode(ILookAndFeel lookAndFeel) {
 			super(lookAndFeel);
 		}
 
 		@Override
-		public JComponent getComponent(JComponent c, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+		public JComponent getComponent(JLabel c, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 			((JLabel) c).setText(((PluginInfo) value).getName());
 			if (((PluginInfo) value).getIcon() != null) {
 				((JLabel) c).setIcon(ImageUtils.scaleImageBicubic(((PluginInfo) value).getIcon(), CELL_HEIGHT - 5, CELL_HEIGHT - 5));

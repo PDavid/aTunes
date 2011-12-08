@@ -37,6 +37,7 @@ import javax.swing.JTextArea;
 import javax.swing.Timer;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
@@ -47,7 +48,6 @@ import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 

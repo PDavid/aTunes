@@ -35,7 +35,7 @@ import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.PlayState;
 
-final class PlayListIntegerTableCellRendererCode extends AbstractTableCellRendererCode {
+final class PlayListIntegerTableCellRendererCode extends AbstractTableCellRendererCode<JLabel> {
 	
 	private IPlayListHandler playListHandler;
 	
@@ -48,34 +48,34 @@ final class PlayListIntegerTableCellRendererCode extends AbstractTableCellRender
 	}
 
 	@Override
-	public JComponent getComponent(JComponent c, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+	public JComponent getComponent(JLabel c, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 	    String name = t.getColumnName(column);
 	    //Display Integer values if the column is nameless
 	    if (!"".equals(name)) {
 	    	if (playListHandler.isCurrentVisibleRowPlaying(row)) {
 	    		if (getLookAndFeel().getPlayListSelectedItemFont() != null) {
-	    			 ((JLabel) c).setFont(getLookAndFeel().getPlayListSelectedItemFont());
+	    			 c.setFont(getLookAndFeel().getPlayListSelectedItemFont());
 	    		} else if (getLookAndFeel().getPlayListFont() != null) {
-	                ((JLabel) c).setFont(getLookAndFeel().getPlayListFont());
+	                c.setFont(getLookAndFeel().getPlayListFont());
 	    		}
 	    	}
-	        ((JLabel) c).setIcon(null);
-	        ((JLabel) c).setText(value == null ? null : value.toString());
-	        ((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);
+	        c.setIcon(null);
+	        c.setText(value == null ? null : value.toString());
+	        c.setHorizontalAlignment(SwingConstants.CENTER);
 	        return c;
 	    }
 
 	    //Display an icon if playing and cell is in a "special" column
-	    ((JLabel) c).setText(null);
+	    c.setText(null);
 	    if (playListHandler.isCurrentVisibleRowPlaying(row)) {
-	        ((JLabel) c).setIcon(getPlayStateIcon(getLookAndFeel().getPaintForColorMutableIcon(c, isSelected), 
+	        c.setIcon(getPlayStateIcon(getLookAndFeel().getPaintForColorMutableIcon(c, isSelected), 
 	        		((IPlayListTable) columnModel.getTable()).getPlayState(), getLookAndFeel()));
 	    } else {
-	        ((JLabel) c).setIcon(null); // was using Images.getImage(Images.EMPTY) previously
+	        c.setIcon(null); // was using Images.getImage(Images.EMPTY) previously
 	    }
 
 	    // Get alignment from model
-	    ((JLabel) c).setHorizontalAlignment(columnModel.getColumnAlignment(column));
+	    c.setHorizontalAlignment(columnModel.getColumnAlignment(column));
 	    return c;
 	}
 	
