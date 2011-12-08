@@ -36,14 +36,13 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.RepositorySelectionInfoDialog;
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
-import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
 import net.sourceforge.atunes.model.IMultiFolderSelectionDialogFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IRepository;
+import net.sourceforge.atunes.model.IRepositoryLoader;
 import net.sourceforge.atunes.model.IRepositoryLoaderListener;
 import net.sourceforge.atunes.model.IRepositoryProgressDialog;
 import net.sourceforge.atunes.model.IState;
@@ -76,7 +75,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
     
     private IRepositoryProgressDialog progressDialog;
     
-    private RepositoryLoader currentLoader;
+    private IRepositoryLoader currentLoader;
     
 	private Repository repository;
 	
@@ -93,24 +92,6 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	private RepositoryActionsHelper repositoryActions;
 	
 	private ShowRepositoryDataHelper showRepositoryDataHelper;
-	
-	private ILocalAudioObjectFactory localAudioObjectFactory;
-	
-	private ILocalAudioObjectValidator localAudioObjectValidator;
-	
-	/**
-	 * @param localAudioObjectValidator
-	 */
-	public void setLocalAudioObjectValidator(ILocalAudioObjectValidator localAudioObjectValidator) {
-		this.localAudioObjectValidator = localAudioObjectValidator;
-	}
-	
-	/**
-	 * @param localAudioObjectFactory
-	 */
-	public void setLocalAudioObjectFactory(ILocalAudioObjectFactory localAudioObjectFactory) {
-		this.localAudioObjectFactory = localAudioObjectFactory;
-	}
 	
 	/**
 	 * @param showRepositoryDataHelper
@@ -336,9 +317,9 @@ public class RepositoryReader implements IRepositoryLoaderListener {
         Repository oldRepository = repository;
         repository = new Repository(folders, state);
         repositoryHandler.setRepository(repository);
-        currentLoader = new RepositoryLoader(state, new RepositoryTransaction(repository, repositoryHandler), folders, oldRepository, repository, false, localAudioObjectFactory, localAudioObjectValidator);
+        currentLoader = Context.getBean(IRepositoryLoader.class);
         currentLoader.addRepositoryLoaderListener(this);
-        currentLoader.start();
+        currentLoader.start(new RepositoryTransaction(repository, repositoryHandler), folders, oldRepository, repository, false);
     }
 
     @Override
@@ -385,7 +366,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
     }
 
     @Override
-    public void notifyFinishRead(RepositoryLoader loader) {
+    public void notifyFinishRead(IRepositoryLoader loader) {
         if (progressDialog != null) {
             progressDialog.setButtonsEnabled(false);
             progressDialog.setCurrentTask(I18nUtils.getString("STORING_REPOSITORY_INFORMATION"));
@@ -408,7 +389,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
     }
 
     @Override
-    public void notifyFinishRefresh(RepositoryLoader loader) {
+    public void notifyFinishRefresh(IRepositoryLoader loader) {
     	repositoryActions.enableRepositoryActions(true);
 
         frame.hideProgressBar();
@@ -460,9 +441,9 @@ public class RepositoryReader implements IRepositoryLoaderListener {
         Repository oldRepository = repository;
         repository = new Repository(oldRepository.getRepositoryFolders(), state);
         repositoryHandler.setRepository(repository);
-        currentLoader = new RepositoryLoader(state, new RepositoryTransaction(repository, repositoryHandler), oldRepository.getRepositoryFolders(), oldRepository, repository, true, localAudioObjectFactory, localAudioObjectValidator);
+        currentLoader = Context.getBean(IRepositoryLoader.class);
         currentLoader.addRepositoryLoaderListener(this);
-        currentLoader.start();
+        currentLoader.start(new RepositoryTransaction(repository, repositoryHandler), oldRepository.getRepositoryFolders(), oldRepository, repository, true);
     }
     
 	@Override
@@ -502,7 +483,6 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	public void doInBackground() {
         if (currentLoader != null) {
             backgroundLoad = true;
-            currentLoader.setPriority(Thread.MIN_PRIORITY);
             if (progressDialog != null) {
                 progressDialog.hideProgressDialog();
             }
@@ -511,7 +491,6 @@ public class RepositoryReader implements IRepositoryLoaderListener {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     backgroundLoad = false;
-                    currentLoader.setPriority(Thread.MAX_PRIORITY);
                     frame.hideProgressBar();
                     if (progressDialog != null) {
                         progressDialog.showProgressDialog();
