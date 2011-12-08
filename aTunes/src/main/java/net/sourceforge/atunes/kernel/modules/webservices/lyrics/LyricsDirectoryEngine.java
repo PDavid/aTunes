@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines;
+package net.sourceforge.atunes.kernel.modules.webservices.lyrics;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
@@ -26,7 +26,6 @@ import java.util.List;
 
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
-import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;

@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines;
+package net.sourceforge.atunes.kernel.modules.webservices.lyrics;
 
 /**
  * Copyright Tehcon.org. All rights reserved.
@@ -30,7 +30,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;

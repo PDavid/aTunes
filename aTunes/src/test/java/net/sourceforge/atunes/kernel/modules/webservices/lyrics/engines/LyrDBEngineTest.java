@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines;
 
 import static org.mockito.Mockito.mock;
 import net.sourceforge.atunes.kernel.modules.network.NetworkHandler;
+import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyrDBEngine;
 import net.sourceforge.atunes.model.IState;
 
 import org.junit.Before;
