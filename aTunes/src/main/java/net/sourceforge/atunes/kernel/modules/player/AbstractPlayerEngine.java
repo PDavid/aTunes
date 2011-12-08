@@ -28,7 +28,6 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.kernel.PlaybackStateListeners;
-import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IEqualizer;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
@@ -37,6 +36,7 @@ import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
@@ -117,6 +117,15 @@ public abstract class AbstractPlayerEngine {
     private PlayListEventListeners playListEventListeners;
     
     private ILocalAudioObjectFactory localAudioObjectFactory;
+    
+    private INavigationView podcastNavigationView;
+    
+    /**
+     * @param podcastNavigationView
+     */
+    public void setPodcastNavigationView(INavigationView podcastNavigationView) {
+		this.podcastNavigationView = podcastNavigationView;
+	}
     
     /**
      * @return
@@ -664,7 +673,7 @@ public abstract class AbstractPlayerEngine {
 		if (audioObject instanceof IPodcastFeedEntry) {
 			((IPodcastFeedEntry) audioObject).setListened(true);
 			// Update pod cast navigator
-			navigationHandler.refreshView(PodcastNavigationView.class);
+			navigationHandler.refreshView(podcastNavigationView);
 		}
 
 		// Send Now Playing info to Last.fm

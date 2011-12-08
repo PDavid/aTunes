@@ -48,7 +48,7 @@ public class PodcastFeedEntryRetrieverTest {
     	NetworkHandler networkHandler = new NetworkHandler();
     	networkHandler.setState(mock(IState.class));
     	
-        PodcastFeedEntryRetriever podcastFeedEntryRetriever = new PodcastFeedEntryRetriever(Arrays.asList(testedObject), null, null, null, networkHandler);
+        PodcastFeedEntryRetriever podcastFeedEntryRetriever = new PodcastFeedEntryRetriever(Arrays.asList(testedObject), null, null, null, networkHandler, null);
         List<IPodcastFeed> podcastFeedsWithNewEntries = podcastFeedEntryRetriever.retrievePodcastFeedEntries(true);
 
         Assert.assertEquals("RadioTux GNU/Linux", testedObject.getName());

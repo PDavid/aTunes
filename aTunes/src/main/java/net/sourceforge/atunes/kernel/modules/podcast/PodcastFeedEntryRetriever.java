@@ -27,11 +27,11 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.model.FeedType;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
@@ -58,7 +58,7 @@ public class PodcastFeedEntryRetriever implements Runnable {
         @Override
         public void run() {
             // refresh view
-            navigationHandler.refreshView(PodcastNavigationView.class);
+            navigationHandler.refreshView(podcastNavigationView);
             Logger.info("Podcast feed entries retrieval done");
         }
     }
@@ -72,20 +72,24 @@ public class PodcastFeedEntryRetriever implements Runnable {
     private INavigationHandler navigationHandler;
     
     private INetworkHandler networkHandler;
-
+    
+    private INavigationView podcastNavigationView;
+    
     /**
      * @param podcastFeeds
      * @param state
      * @param frame
      * @param navigationHandler
      * @param networkHandler
+     * @param podcastNavigationView
      */
-    public PodcastFeedEntryRetriever(List<IPodcastFeed> podcastFeeds, IState state, IFrame frame, INavigationHandler navigationHandler, INetworkHandler networkHandler) {
+    public PodcastFeedEntryRetriever(List<IPodcastFeed> podcastFeeds, IState state, IFrame frame, INavigationHandler navigationHandler, INetworkHandler networkHandler, INavigationView podcastNavigationView) {
         this.podcastFeeds = podcastFeeds;
         this.state = state;
         this.frame = frame;
         this.navigationHandler = navigationHandler;
         this.networkHandler = networkHandler;
+        this.podcastNavigationView = podcastNavigationView;
     }
 
     /**

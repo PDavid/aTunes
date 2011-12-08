@@ -27,9 +27,8 @@ import java.util.Set;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
-import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -38,15 +37,15 @@ public class RemovePodcastFeedAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -7470658878101801512L;
 
-    private INavigationHandler navigationHandler;
-    
     private IPodcastFeedHandler podcastFeedHandler;
     
+    private INavigationView podcastNavigationView;
+    
     /**
-     * @param navigationHandler
+     * @param podcastNavigationView
      */
-    public void setNavigationHandler(INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
+    public void setPodcastNavigationView(INavigationView podcastNavigationView) {
+		this.podcastNavigationView = podcastNavigationView;
 	}
     
     /**
@@ -63,7 +62,7 @@ public class RemovePodcastFeedAction extends CustomAbstractAction {
 
     @Override
     protected void executeAction() {
-        TreePath[] paths = navigationHandler.getView(PodcastNavigationView.class).getTree().getSelectionPaths();
+        TreePath[] paths = podcastNavigationView.getTree().getSelectionPaths();
         Set<PodcastFeed> podcastsToRemove = new HashSet<PodcastFeed>();
         for (TreePath path : paths) {
         	PodcastFeed podcastFeed = (PodcastFeed) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
