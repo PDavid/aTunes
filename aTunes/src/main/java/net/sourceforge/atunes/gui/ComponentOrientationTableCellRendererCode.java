@@ -26,7 +26,7 @@ import javax.swing.JTable;
 
 import net.sourceforge.atunes.model.ILookAndFeel;
 
-public class ComponentOrientationTableCellRendererCode extends AbstractTableCellRendererCode<JLabel> {
+public class ComponentOrientationTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, Object> {
 	
     public ComponentOrientationTableCellRendererCode(ILookAndFeel lookAndFeel) {
 		super(lookAndFeel);

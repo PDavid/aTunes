@@ -50,9 +50,9 @@ class SimilarArtistTableCellRendererCode extends ContextTableRowPanel<IArtistInf
 	}
 
 	@Override
-    public JComponent getComponent(JLabel superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        return getPanelForTableRenderer(((IArtistInfo) value).getImage(), 
-        							    StringUtils.getString("<html><br>", ((IArtistInfo) value).getName(), "<br>", ((IArtistInfo) value).getMatch(), "%<br>", ((IArtistInfo) value).isAvailable() ? I18nUtils.getString("AVAILABLE_IN_REPOSITORY") : "", "</html>"), 
+    public JComponent getComponent(JLabel superComponent, JTable t, IArtistInfo value, boolean isSelected, boolean hasFocus, int row, int column) {
+        return getPanelForTableRenderer(value.getImage(), 
+        							    StringUtils.getString("<html><br>", value.getName(), "<br>", value.getMatch(), "%<br>", value.isAvailable() ? I18nUtils.getString("AVAILABLE_IN_REPOSITORY") : "", "</html>"), 
         							    superComponent.getBackground(),
         							    superComponent.getForeground(),
         							    Constants.CONTEXT_IMAGE_WIDTH, 

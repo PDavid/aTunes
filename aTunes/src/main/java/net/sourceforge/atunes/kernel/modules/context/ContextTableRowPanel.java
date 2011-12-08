@@ -37,7 +37,7 @@ import javax.swing.table.TableCellEditor;
 import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.model.ILookAndFeel;
 
-public abstract class ContextTableRowPanel<T> extends AbstractTableCellRendererCode<JLabel> implements TableCellEditor {
+public abstract class ContextTableRowPanel<T> extends AbstractTableCellRendererCode<JLabel, T> implements TableCellEditor {
 	
 	private Class<?> clazz;
 	
@@ -108,7 +108,7 @@ public abstract class ContextTableRowPanel<T> extends AbstractTableCellRendererC
 	}
 	
     @Override
-    public abstract JComponent getComponent(JLabel superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column);
+    public abstract JComponent getComponent(JLabel superComponent, JTable t, T value, boolean isSelected, boolean hasFocus, int row, int column);
     
     public abstract List<ContextTableAction<T>> getActions();
 }

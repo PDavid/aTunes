@@ -365,7 +365,7 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
      * @param clazz
      * @return
      */
-    public AbstractTableCellRendererCode getRendererCodeFor(Class<?> clazz) {
+    public AbstractTableCellRendererCode<?, ?> getRendererCodeFor(Class<?> clazz) {
         if (clazz.equals(Integer.class)) {
             return new IntegerTableCellRendererCode(lookAndFeel);
         } else if (clazz.equals(ImageIcon.class)) {

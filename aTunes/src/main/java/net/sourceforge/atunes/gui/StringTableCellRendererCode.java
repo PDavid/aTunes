@@ -26,7 +26,7 @@ import javax.swing.JTable;
 
 import net.sourceforge.atunes.model.ILookAndFeel;
 
-public class StringTableCellRendererCode extends AbstractTableCellRendererCode<JLabel> {
+public class StringTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, Object> {
 
     private AbstractCommonColumnModel model;
 

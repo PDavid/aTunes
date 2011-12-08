@@ -27,7 +27,7 @@ import javax.swing.JTable;
 
 import net.sourceforge.atunes.model.ILookAndFeel;
 
-public class ImageIconTableCellRendererCode extends AbstractTableCellRendererCode<JLabel> {
+public class ImageIconTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, ImageIcon> {
 
     private AbstractCommonColumnModel model;
 
@@ -41,9 +41,9 @@ public class ImageIconTableCellRendererCode extends AbstractTableCellRendererCod
     }
 
     @Override
-    public JComponent getComponent(JLabel c, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    public JComponent getComponent(JLabel c, JTable table, ImageIcon value, boolean isSelected, boolean hasFocus, int row, int column) {
         c.setText(null);
-        c.setIcon((ImageIcon) value);
+        c.setIcon(value);
 
         // Get alignment from model
         c.setHorizontalAlignment(model.getColumnAlignment(column));

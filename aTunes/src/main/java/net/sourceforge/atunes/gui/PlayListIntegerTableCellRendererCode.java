@@ -35,7 +35,7 @@ import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.PlayState;
 
-final class PlayListIntegerTableCellRendererCode extends AbstractTableCellRendererCode<JLabel> {
+final class PlayListIntegerTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, Integer> {
 	
 	private IPlayListHandler playListHandler;
 	
@@ -48,7 +48,7 @@ final class PlayListIntegerTableCellRendererCode extends AbstractTableCellRender
 	}
 
 	@Override
-	public JComponent getComponent(JLabel c, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+	public JComponent getComponent(JLabel c, JTable t, Integer value, boolean isSelected, boolean hasFocus, int row, int column) {
 	    String name = t.getColumnName(column);
 	    //Display Integer values if the column is nameless
 	    if (!"".equals(name)) {

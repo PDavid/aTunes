@@ -64,7 +64,7 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
 	
 	private IRepositoryHandler repositoryHandler;
 	
-    private static class RightAlignmentTableCellRendererCode extends AbstractTableCellRendererCode<JLabel> {
+    private static class RightAlignmentTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, Object> {
     	
         public RightAlignmentTableCellRendererCode(ILookAndFeel lookAndFeel) {
 			super(lookAndFeel);
@@ -77,7 +77,7 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
         }
     }
 
-    private static class SwingOrientationTableCellRendererCode extends AbstractTableCellRendererCode<JLabel> {
+    private static class SwingOrientationTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, Object> {
     	
         public SwingOrientationTableCellRendererCode(ILookAndFeel lookAndFeel) {
 			super(lookAndFeel);

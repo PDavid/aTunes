@@ -63,8 +63,8 @@ public final class NavigationTableColumnModel extends AbstractCommonColumnModel 
     }
 
     @Override
-    public AbstractTableCellRendererCode<?> getRendererCodeFor(Class<?> clazz) {
-        AbstractTableCellRendererCode<?> renderer = super.getRendererCodeFor(clazz);
+    public AbstractTableCellRendererCode<?, ?> getRendererCodeFor(Class<?> clazz) {
+        AbstractTableCellRendererCode<?, ?> renderer = super.getRendererCodeFor(clazz);
         return new NavigationTableCellRendererCode(renderer, state, getLookAndFeel(), navigationHandler);
     }
 
