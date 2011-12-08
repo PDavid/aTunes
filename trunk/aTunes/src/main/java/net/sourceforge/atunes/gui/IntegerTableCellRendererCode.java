@@ -25,7 +25,6 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
-import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.model.ILookAndFeel;
 
 public class IntegerTableCellRendererCode extends AbstractTableCellRendererCode {

@@ -49,8 +49,8 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import net.sourceforge.atunes.gui.lookandfeel.AbstractListCellRendererCode;
-import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellRendererCode;
+import net.sourceforge.atunes.gui.AbstractListCellRendererCode;
+import net.sourceforge.atunes.gui.AbstractTreeCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.model.IFileSelectionDialog;
 import net.sourceforge.atunes.model.IFrame;

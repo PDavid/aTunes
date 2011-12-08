@@ -25,7 +25,7 @@ import java.awt.Component;
 import javax.swing.JComponent;
 import javax.swing.JTree;
 
-import net.sourceforge.atunes.gui.lookandfeel.AbstractTreeCellRendererCode;
+import net.sourceforge.atunes.gui.AbstractTreeCellRendererCode;
 
 import org.pushingpixels.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 

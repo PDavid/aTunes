@@ -18,13 +18,42 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.lookandfeel;
+package net.sourceforge.atunes.gui;
 
 import javax.swing.JComponent;
-import javax.swing.JTree;
+import javax.swing.JTable;
 
-public abstract class AbstractTreeCellRendererCode {
+import net.sourceforge.atunes.model.ILookAndFeel;
 
-    public abstract JComponent getComponent(JComponent superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus);
+public abstract class AbstractTableCellRendererCode {
+
+	protected ILookAndFeel lookAndFeel;
+	
+	/**
+	 * @param lookAndFeel
+	 */
+	public AbstractTableCellRendererCode(ILookAndFeel lookAndFeel) {
+		this.lookAndFeel = lookAndFeel;
+	}
+	
+    /**
+     * @param superComponent
+     * @param t
+     * @param value
+     * @param isSelected
+     * @param hasFocus
+     * @param row
+     * @param column
+     * @return
+     */
+    public abstract JComponent getComponent(JComponent superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column);
+    
+    /**
+     * Access lookAndFeel
+     * @return
+     */
+    protected ILookAndFeel getLookAndFeel() {
+		return lookAndFeel;
+	}
 
 }

@@ -29,7 +29,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.lookandfeel.AbstractListCellRendererCode;
+import net.sourceforge.atunes.gui.AbstractListCellRendererCode;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.StringUtils;
 
