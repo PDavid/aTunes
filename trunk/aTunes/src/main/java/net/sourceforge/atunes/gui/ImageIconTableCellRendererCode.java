@@ -18,27 +18,36 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.renderers;
+package net.sourceforge.atunes.gui;
 
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
-import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.model.ILookAndFeel;
 
-public class IntegerTableCellRendererCode extends AbstractTableCellRendererCode {
+public class ImageIconTableCellRendererCode extends AbstractTableCellRendererCode {
 
-    public IntegerTableCellRendererCode(ILookAndFeel lookAndFeel) {
-		super(lookAndFeel);
-	}
+    private AbstractCommonColumnModel model;
 
-	@Override
+    /**
+     * @param model
+     * @param lookAndFeel
+     */
+    public ImageIconTableCellRendererCode(AbstractCommonColumnModel model, ILookAndFeel lookAndFeel) {
+    	super(lookAndFeel);
+        this.model = model;
+    }
+
+    @Override
     public JComponent getComponent(JComponent c, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        String theValue = value != null ? value.toString() : "";
-        ((JLabel) c).setText(theValue);
-        ((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);
+        ((JLabel) c).setText(null);
+        ((JLabel) c).setIcon((ImageIcon) value);
+
+        // Get alignment from model
+        ((JLabel) c).setHorizontalAlignment(model.getColumnAlignment(column));
         return c;
     }
 

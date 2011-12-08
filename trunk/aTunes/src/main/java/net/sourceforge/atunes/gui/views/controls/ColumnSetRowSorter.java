@@ -27,8 +27,8 @@ import java.util.Comparator;
 import javax.swing.JTable;
 import javax.swing.event.TableModelEvent;
 
-import net.sourceforge.atunes.gui.model.AbstractColumnSetTableModel;
-import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
+import net.sourceforge.atunes.gui.AbstractColumnSetTableModel;
+import net.sourceforge.atunes.gui.AbstractCommonColumnModel;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.utils.GuiUtils;

@@ -33,7 +33,7 @@ import java.util.List;
 
 import javax.swing.JTable;
 
-import net.sourceforge.atunes.gui.model.TransferableList;
+import net.sourceforge.atunes.gui.TransferableList;
 import net.sourceforge.atunes.gui.views.CopyTransferHandler;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.ITable;

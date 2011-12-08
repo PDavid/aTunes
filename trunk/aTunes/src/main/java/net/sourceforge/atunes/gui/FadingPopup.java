@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.popup;
+package net.sourceforge.atunes.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -28,7 +28,6 @@ import javax.swing.JWindow;
 import javax.swing.Popup;
 import javax.swing.border.Border;
 
-import net.sourceforge.atunes.gui.WindowFader;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.GuiUtils;
 

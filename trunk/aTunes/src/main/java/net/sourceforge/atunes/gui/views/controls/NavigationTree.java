@@ -36,7 +36,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.gui.model.TransferableList;
+import net.sourceforge.atunes.gui.TransferableList;
 
 public final class NavigationTree extends JTree implements DragSourceListener, DragGestureListener {
 

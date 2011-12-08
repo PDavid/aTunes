@@ -30,9 +30,9 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.model.AlbumTableColumnModel;
-import net.sourceforge.atunes.gui.model.AlbumTableModel;
-import net.sourceforge.atunes.gui.renderers.ColumnRenderers;
+import net.sourceforge.atunes.gui.AlbumTableColumnModel;
+import net.sourceforge.atunes.gui.AlbumTableModel;
+import net.sourceforge.atunes.gui.ColumnRenderers;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
 import net.sourceforge.atunes.model.Album;

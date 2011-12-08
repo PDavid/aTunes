@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import java.util.Map;
 
-import net.sourceforge.atunes.gui.model.PlayListColumnModel;
+import net.sourceforge.atunes.gui.PlayListColumnModel;
 import net.sourceforge.atunes.model.ColumnBean;
 import net.sourceforge.atunes.model.IPlayListTable;
 

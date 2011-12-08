@@ -18,31 +18,33 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.renderers;
+package net.sourceforge.atunes.gui;
+
+import java.awt.Color;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
+import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILookAndFeel;
 
-public class StringTableCellRendererCode extends AbstractTableCellRendererCode {
+public class ColorMutableTableCellRendererCode extends AbstractTableCellRendererCode {
 
     private AbstractCommonColumnModel model;
 
-    /**
-     * @param model
-     * @param lookAndFeel
-     */
-    public StringTableCellRendererCode(AbstractCommonColumnModel model, ILookAndFeel lookAndFeel) {
+    public ColorMutableTableCellRendererCode(AbstractCommonColumnModel model, ILookAndFeel lookAndFeel) {
     	super(lookAndFeel);
         this.model = model;
     }
 
     @Override
     public JComponent getComponent(JComponent c, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        ((JLabel) c).setText(null);
+        Color color = lookAndFeel.getPaintForColorMutableIcon(c, isSelected);
+        ((JLabel) c).setIcon(((IColorMutableImageIcon)value).getIcon(color));
+
         // Get alignment from model
         ((JLabel) c).setHorizontalAlignment(model.getColumnAlignment(column));
         return c;

@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.model;
+package net.sourceforge.atunes.gui;
 
 import javax.swing.JTable;
 import javax.swing.table.TableColumn;
@@ -28,31 +28,33 @@ import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ITaskService;
 
-public class SearchResultColumnModel extends AbstractCommonColumnModel {
+/**
+ * Column model used for table displaying album information
+ * @author loran
+ *
+ */
+public final class AlbumTableColumnModel extends AbstractCommonColumnModel {
 
-    private static final long serialVersionUID = -2211160302611944001L;
+	private static final long serialVersionUID = 8480107980198328642L;
 
-    /**
-     * Instantiates a new play list column model.
-     * 
-     * @param table
-     * @param columnSet
-     * @param lookAndFeel 
-     */
-    public SearchResultColumnModel(JTable table, IColumnSet columnSet, ILookAndFeel lookAndFeel) {
-        super(table, columnSet, Context.getBean(ITaskService.class), lookAndFeel);
+
+	/**
+	 * @param table
+	 */
+	public AlbumTableColumnModel(JTable table, ILookAndFeel lookAndFeel) {
+        super(table, (IColumnSet) Context.getBean("albumColumnSet"), Context.getBean(ITaskService.class), lookAndFeel);
         enableColumnChange(true);
     }
 
-    @Override
-    protected void reapplyFilter() {
-        // Nothing to do    	
-    }
-
-    @Override
+   
+	@Override
+	protected void reapplyFilter() {
+	}
+	
+	@Override
     public void addColumn(TableColumn aColumn) {
         super.addColumn(aColumn);
         updateColumnSettings(aColumn);
     }
-
+	
 }

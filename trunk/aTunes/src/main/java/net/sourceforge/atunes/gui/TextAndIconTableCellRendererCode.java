@@ -18,15 +18,13 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.renderers;
+package net.sourceforge.atunes.gui;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.gui.model.AbstractCommonColumnModel;
-import net.sourceforge.atunes.gui.model.TextAndIcon;
 import net.sourceforge.atunes.model.ILookAndFeel;
 
 public class TextAndIconTableCellRendererCode extends AbstractTableCellRendererCode {

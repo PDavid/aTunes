@@ -29,8 +29,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.gui.FadingPopupFactory;
 import net.sourceforge.atunes.gui.frame.FrameState;
-import net.sourceforge.atunes.gui.popup.FadingPopupFactory;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.model.IAboutDialog;
