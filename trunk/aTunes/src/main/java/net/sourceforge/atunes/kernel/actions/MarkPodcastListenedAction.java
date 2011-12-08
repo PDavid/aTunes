@@ -25,8 +25,8 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -36,6 +36,15 @@ public class MarkPodcastListenedAction extends CustomAbstractAction {
     private static final long serialVersionUID = 2594418895817769179L;
 
     private INavigationHandler navigationHandler;
+    
+    private INavigationView podcastNavigationView;
+    
+    /**
+     * @param podcastNavigationView
+     */
+    public void setPodcastNavigationView(INavigationView podcastNavigationView) {
+		this.podcastNavigationView = podcastNavigationView;
+	}
     
     /**
      * @param navigationHandler
@@ -51,10 +60,10 @@ public class MarkPodcastListenedAction extends CustomAbstractAction {
 
     @Override
     protected void executeAction() {
-        TreePath path = navigationHandler.getView(PodcastNavigationView.class).getTree().getSelectionPath();
+        TreePath path = podcastNavigationView.getTree().getSelectionPath();
         IPodcastFeed podcastFeedToMarkAsListened = (IPodcastFeed) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
         podcastFeedToMarkAsListened.markEntriesAsListened();
-        navigationHandler.refreshView(PodcastNavigationView.class);
+        navigationHandler.refreshView(podcastNavigationView);
     }
 
     @Override

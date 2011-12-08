@@ -25,12 +25,12 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
 import net.sourceforge.atunes.model.LocalAudioObjectFilter;
@@ -47,6 +47,15 @@ public class CopyToDeviceAction extends AbstractActionOverSelectedObjects<IAudio
     private IPodcastFeedHandler podcastFeedHandler;
     
     private ILocalAudioObjectFactory localAudioObjectFactory;
+    
+    private INavigationView podcastNavigationView;
+    
+    /**
+     * @param podcastNavigationView
+     */
+    public void setPodcastNavigationView(INavigationView podcastNavigationView) {
+		this.podcastNavigationView = podcastNavigationView;
+	}
     
     /**
      * @param localAudioObjectFactory
@@ -113,7 +122,7 @@ public class CopyToDeviceAction extends AbstractActionOverSelectedObjects<IAudio
             return false;
         }
 
-        if (navigationHandler.getCurrentView().equals(navigationHandler.getView(PodcastNavigationView.class))) {
+        if (navigationHandler.getCurrentView().equals(podcastNavigationView)) {
             for (IAudioObject ao : selection) {
                 if (!((IPodcastFeedEntry) ao).isDownloaded()) {
                     return false;

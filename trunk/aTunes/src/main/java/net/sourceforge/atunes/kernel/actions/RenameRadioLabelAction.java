@@ -25,10 +25,10 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationView;
 import net.sourceforge.atunes.model.IInputDialog;
 import net.sourceforge.atunes.model.IInputDialogFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -42,6 +42,15 @@ public class RenameRadioLabelAction extends CustomAbstractAction {
     private IRadioHandler radioHandler;
     
     private IInputDialogFactory inputDialogFactory;
+    
+    private INavigationView radioNavigationView;
+    
+    /**
+     * @param radioNavigationView
+     */
+    public void setRadioNavigationView(INavigationView radioNavigationView) {
+		this.radioNavigationView = radioNavigationView;
+	}
     
     /**
      * @param inputDialogFactory
@@ -71,7 +80,7 @@ public class RenameRadioLabelAction extends CustomAbstractAction {
 
     @Override
     protected void executeAction() {
-        TreePath path = navigationHandler.getView(RadioNavigationView.class).getTree().getSelectionPath();
+        TreePath path = radioNavigationView.getTree().getSelectionPath();
         Object o = ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
         
         IInputDialog dialog = inputDialogFactory.getDialog();
@@ -84,7 +93,7 @@ public class RenameRadioLabelAction extends CustomAbstractAction {
             if (result != null) {
                 List<IRadio> radios = radioHandler.getRadios(label);
                 radioHandler.setLabel(radios, result);
-                navigationHandler.refreshView(RadioNavigationView.class);
+                navigationHandler.refreshView(radioNavigationView);
             }
         } else if (o instanceof IRadio) {
             IRadio radio = (IRadio) o;
@@ -92,7 +101,7 @@ public class RenameRadioLabelAction extends CustomAbstractAction {
             String result = dialog.getResult();
             if (result != null) {
                 radio.setLabel(result);
-                navigationHandler.refreshView(RadioNavigationView.class);
+                navigationHandler.refreshView(radioNavigationView);
             }
         }
     }

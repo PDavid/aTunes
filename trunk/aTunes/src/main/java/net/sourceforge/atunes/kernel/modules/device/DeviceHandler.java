@@ -46,7 +46,6 @@ import net.sourceforge.atunes.kernel.actions.CopyPlayListToDeviceAction;
 import net.sourceforge.atunes.kernel.actions.DisconnectDeviceAction;
 import net.sourceforge.atunes.kernel.actions.RefreshDeviceAction;
 import net.sourceforge.atunes.kernel.actions.SynchronizeDeviceWithPlayListAction;
-import net.sourceforge.atunes.kernel.modules.navigator.DeviceNavigationView;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader;
 import net.sourceforge.atunes.kernel.modules.repository.RepositoryTransaction;
 import net.sourceforge.atunes.model.Album;
@@ -62,6 +61,7 @@ import net.sourceforge.atunes.model.ILocalAudioObjectTransferProcess;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -100,6 +100,24 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
     private DeviceMonitor deviceMonitor;
     
     private IProcessFactory processFactory;
+    
+    private INavigationHandler navigationHandler;
+    
+    private INavigationView deviceNavigationView;
+    
+    /**
+     * @param deviceNavigationView
+     */
+    public void setDeviceNavigationView(INavigationView deviceNavigationView) {
+		this.deviceNavigationView = deviceNavigationView;
+	}
+    
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
     
     /**
      * @param processFactory
@@ -439,7 +457,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
      */
     private void notifyDeviceReload(RepositoryLoader loader) {
     	getFrame().hideProgressBar();
-    	getBean(INavigationHandler.class).refreshView(DeviceNavigationView.class);
+    	navigationHandler.refreshView(deviceNavigationView);
 
         // Enable action to copy to device
     	getBean(CopyPlayListToDeviceAction.class).setEnabled(true);
@@ -459,7 +477,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 
     	if (loader != null) {
     		// Switch to device view in navigator
-    		getBean(INavigationHandler.class).setNavigationView(DeviceNavigationView.class.getName());
+    		navigationHandler.setNavigationView(deviceNavigationView.getClass().getName());
     	}
     }
 

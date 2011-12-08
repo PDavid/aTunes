@@ -32,9 +32,9 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.dialogs.RadioBrowserDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.modules.navigator.RadioNavigationView;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioDialog;
@@ -65,7 +65,7 @@ public final class RadioHandler extends AbstractHandler implements IRadioHandler
                 retrievedPresetRadios.clear();
                 retrievedPresetRadios.addAll(get());
                 getRadioPresets();
-                getBean(INavigationHandler.class).refreshView(RadioNavigationView.class);
+                getBean(INavigationHandler.class).refreshView(radioNavigationView);
             } catch (InterruptedException e) {
                 Logger.error(e);
             } catch (ExecutionException e) {
@@ -94,6 +94,15 @@ public final class RadioHandler extends AbstractHandler implements IRadioHandler
     
     private INetworkHandler networkHandler;
     
+    private INavigationView radioNavigationView;
+    
+    /**
+     * @param radioNavigationView
+     */
+    public void setRadioNavigationView(INavigationView radioNavigationView) {
+		this.radioNavigationView = radioNavigationView;
+	}
+    
     /**
      * @param networkHandler
      */
@@ -119,7 +128,7 @@ public final class RadioHandler extends AbstractHandler implements IRadioHandler
             radioListDirty = true;
         }
         Collections.sort(getRadios(), COMPARATOR);
-        getBean(INavigationHandler.class).refreshView(RadioNavigationView.class);
+        getBean(INavigationHandler.class).refreshView(radioNavigationView);
     }
 
     /**
@@ -242,7 +251,7 @@ public final class RadioHandler extends AbstractHandler implements IRadioHandler
             }
         }
         radioListDirty = true;
-        getBean(INavigationHandler.class).refreshView(RadioNavigationView.class);
+        getBean(INavigationHandler.class).refreshView(radioNavigationView);
     }
 
     @Override

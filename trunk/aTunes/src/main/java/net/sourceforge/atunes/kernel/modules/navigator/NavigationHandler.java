@@ -182,13 +182,13 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
                 filterHandler.isFilterSelected(getTreeFilter()) ? filterHandler.getFilter() : null);
     }
 
-    @Override
-	public void refreshView(Class<? extends INavigationView> navigationViewClass) {
-        if (getView(navigationViewClass).equals(getCurrentView())) {
-            getView(navigationViewClass).refreshView(getState().getViewMode(),
+	@Override
+	public void refreshView(INavigationView navigationView) {
+        if (navigationView.equals(getCurrentView())) {
+        	navigationView.refreshView(getState().getViewMode(),
                     filterHandler.isFilterSelected(getTreeFilter()) ? filterHandler.getFilter() : null);
         }
-    }
+	}
 
     @Override
 	public Class<? extends INavigationView> getViewByName(String className) {
@@ -368,5 +368,5 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 	@Override
 	public void setNavigationViews(List<INavigationView> navigationViews) {
 		this.navigationViews = navigationViews;
-	}
+	}	
 }

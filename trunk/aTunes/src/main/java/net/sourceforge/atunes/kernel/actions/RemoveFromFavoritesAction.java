@@ -26,12 +26,12 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.kernel.modules.navigator.FavoritesNavigationView;
 import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.LocalAudioObjectFilter;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -43,6 +43,15 @@ public class RemoveFromFavoritesAction extends CustomAbstractAction {
     private INavigationHandler navigationHandler;
     
     private IFavoritesHandler favoritesHandler;
+    
+    private INavigationView favoritesNavigationView;
+    
+    /**
+     * @param favoritesNavigationView
+     */
+    public void setFavoritesNavigationView(INavigationView favoritesNavigationView) {
+		this.favoritesNavigationView = favoritesNavigationView;
+	}
     
     /**
      * @param navigationHandler
@@ -66,8 +75,8 @@ public class RemoveFromFavoritesAction extends CustomAbstractAction {
     @SuppressWarnings("unchecked")
 	@Override
     protected void executeAction() {
-        if (navigationHandler.isActionOverTree() && navigationHandler.getCurrentView().equals(navigationHandler.getView(FavoritesNavigationView.class))) {
-            TreePath[] paths = navigationHandler.getView(FavoritesNavigationView.class).getTree().getSelectionPaths();
+        if (navigationHandler.isActionOverTree() && navigationHandler.getCurrentView().equals(favoritesNavigationView)) {
+            TreePath[] paths = favoritesNavigationView.getTree().getSelectionPaths();
             if (paths != null) {
                 List<ITreeObject<? extends IAudioObject>> objects = new ArrayList<ITreeObject<? extends IAudioObject>>();
                 for (TreePath element : paths) {

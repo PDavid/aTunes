@@ -22,9 +22,9 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -33,6 +33,15 @@ public class RemoveOldPodcastEntryAction extends AbstractActionOverSelectedObjec
     private static final long serialVersionUID = -1499729879534990802L;
 
     private INavigationHandler navigationHandler;
+    
+    private INavigationView podcastNavigationView;
+    
+    /**
+     * @param podcastNavigationView
+     */
+    public void setPodcastNavigationView(INavigationView podcastNavigationView) {
+		this.podcastNavigationView = podcastNavigationView;
+	}
     
     /**
      * @param navigationHandler
@@ -51,7 +60,7 @@ public class RemoveOldPodcastEntryAction extends AbstractActionOverSelectedObjec
         for (IPodcastFeedEntry pfe : objects) {
             pfe.getPodcastFeed().removeEntry(pfe);
         }
-        navigationHandler.refreshView(PodcastNavigationView.class);
+        navigationHandler.refreshView(podcastNavigationView);
     }
 
     @Override

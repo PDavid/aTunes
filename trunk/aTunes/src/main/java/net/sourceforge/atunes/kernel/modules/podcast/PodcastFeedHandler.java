@@ -38,11 +38,11 @@ import java.util.concurrent.ScheduledFuture;
 import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAddPodcastFeedDialog;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
@@ -96,6 +96,15 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
     private ILookAndFeelManager lookAndFeelManager;
     
     private ApplicationArguments applicationArguments;
+    
+    private INavigationView podcastNavigationView;
+    
+    /**
+     * @param podcastNavigationView
+     */
+    public void setPodcastNavigationView(INavigationView podcastNavigationView) {
+		this.podcastNavigationView = podcastNavigationView;
+	}
     
     /**
      * @param applicationArguments
@@ -159,7 +168,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
         IPodcastFeed podcastFeed = dialog.getPodcastFeed(); 
         if (podcastFeed != null) {
             addPodcastFeed(podcastFeed);
-            navigationHandler.refreshView(PodcastNavigationView.class);
+            navigationHandler.refreshView(podcastNavigationView);
             retrievePodcastFeedEntries();
         }
     }
@@ -251,7 +260,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
         Logger.info("Removing podcast feed");
         getPodcastFeeds().remove(podcastFeed);
         podcastFeedsDirty = true;
-        navigationHandler.refreshView(PodcastNavigationView.class);
+        navigationHandler.refreshView(podcastNavigationView);
     }
 
     /* (non-Javadoc)
@@ -294,7 +303,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
         if (scheduledPodcastFeedEntryRetrieverFuture != null) {
             scheduledPodcastFeedEntryRetrieverFuture.cancel(true);
         }
-        scheduledPodcastFeedEntryRetrieverFuture = taskService.submitPeriodically("Periodically Retrieve Podcast Feed Entries", newRetrievalInterval, newRetrievalInterval, new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame(), navigationHandler, networkHandler));
+        scheduledPodcastFeedEntryRetrieverFuture = taskService.submitPeriodically("Periodically Retrieve Podcast Feed Entries", newRetrievalInterval, newRetrievalInterval, new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame(), navigationHandler, networkHandler, podcastNavigationView));
     }
 
     /* (non-Javadoc)
@@ -302,7 +311,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
 	 */
     @Override
 	public void retrievePodcastFeedEntries() {
-    	taskService.submitNow("Retrieve Podcast Feed Entries", new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame(), navigationHandler, networkHandler));
+    	taskService.submitNow("Retrieve Podcast Feed Entries", new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame(), navigationHandler, networkHandler, podcastNavigationView));
     }
 
     /* (non-Javadoc)

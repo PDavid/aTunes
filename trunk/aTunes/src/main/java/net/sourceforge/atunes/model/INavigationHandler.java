@@ -52,8 +52,13 @@ public interface INavigationHandler extends IHandler {
 	 * 
 	 * @param navigationViewClass
 	 */
-	public void refreshView(Class<? extends INavigationView> navigationViewClass);
+	public void refreshView(INavigationView navigationView);
 
+	/**
+	 * Returns view class by name
+	 * @param className
+	 * @return
+	 */
 	public Class<? extends INavigationView> getViewByName(String className);
 
 	/**
