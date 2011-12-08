@@ -23,7 +23,7 @@ package net.sourceforge.atunes.gui.lookandfeel.substance;
 import javax.swing.JComponent;
 import javax.swing.JList;
 
-import net.sourceforge.atunes.gui.lookandfeel.AbstractListCellRendererCode;
+import net.sourceforge.atunes.gui.AbstractListCellRendererCode;
 
 import org.pushingpixels.substance.api.renderers.SubstanceDefaultListCellRenderer;
 

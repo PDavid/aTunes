@@ -20,69 +20,21 @@
 
 package net.sourceforge.atunes.gui;
 
-import java.awt.Color;
 
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
 import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.ITaskService;
-import net.sourceforge.atunes.model.PlayState;
 
 /**
  * The Class PlayListColumnModel.
  */
 public final class PlayListColumnModel extends AbstractCommonColumnModel {
 
-    private final class PlayListTextAndIconTableCellRendererCode extends TextAndIconTableCellRendererCode {
-
-        private PlayListTextAndIconTableCellRendererCode(AbstractCommonColumnModel model, ILookAndFeel lookAndFeel) {
-            super(model, lookAndFeel);
-        }
-
-        @Override
-        public JComponent getComponent(JComponent superComponent, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        	JComponent c = super.getComponent(superComponent, table, value, isSelected, hasFocus, row, column);
-        	if (playListHandler.isCurrentVisibleRowPlaying(row)) {
-        		if (getLookAndFeel().getPlayListSelectedItemFont() != null) {
-        			 ((JLabel) c).setFont(getLookAndFeel().getPlayListSelectedItemFont());
-        		} else if (getLookAndFeel().getPlayListFont() != null) {
-                    ((JLabel) c).setFont(getLookAndFeel().getPlayListFont());
-        		}
-        	}
-            return c;
-        }
-    }
-
-    private final class PlayListStringTableCellRendererCode extends StringTableCellRendererCode {
-
-        private PlayListStringTableCellRendererCode(AbstractCommonColumnModel model, ILookAndFeel lookAndFeel) {
-            super(model, lookAndFeel);
-        }
-
-        @Override
-        public JComponent getComponent(JComponent superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        	JComponent c = super.getComponent(superComponent, t, value, isSelected, hasFocus, row, column);
-        	if (playListHandler.isCurrentVisibleRowPlaying(row)) {
-        		if (getLookAndFeel().getPlayListSelectedItemFont() != null) {
-        			 ((JLabel) c).setFont(getLookAndFeel().getPlayListSelectedItemFont());
-        		} else if (getLookAndFeel().getPlayListFont() != null) {
-                    ((JLabel) c).setFont(getLookAndFeel().getPlayListFont());
-        		}
-        	}
-            return c;
-        }
-    }
     private static final long serialVersionUID = -2211160302611944001L;
 
     private IPlayListHandler playListHandler;
@@ -117,68 +69,13 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
     @Override
     public AbstractTableCellRendererCode getRendererCodeFor(Class<?> clazz) {
         if (clazz.equals(Integer.class)) {
-            return new AbstractTableCellRendererCode(getLookAndFeel()) {
-
-                @Override
-                public JComponent getComponent(JComponent c, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                    String name = t.getColumnName(column);
-                    //Display Integer values if the column is nameless
-                    if (!"".equals(name)) {
-                    	if (playListHandler.isCurrentVisibleRowPlaying(row)) {
-                    		if (getLookAndFeel().getPlayListSelectedItemFont() != null) {
-                    			 ((JLabel) c).setFont(getLookAndFeel().getPlayListSelectedItemFont());
-                    		} else if (getLookAndFeel().getPlayListFont() != null) {
-                                ((JLabel) c).setFont(getLookAndFeel().getPlayListFont());
-                    		}
-                    	}
-                        ((JLabel) c).setIcon(null);
-                        ((JLabel) c).setText(value == null ? null : value.toString());
-                        ((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);
-                        return c;
-                    }
-
-                    //Display an icon if playing and cell is in a "special" column
-                    ((JLabel) c).setText(null);
-                    if (playListHandler.isCurrentVisibleRowPlaying(row)) {
-                        ((JLabel) c).setIcon(getPlayStateIcon(getLookAndFeel().getPaintForColorMutableIcon(c, isSelected), 
-                        		((IPlayListTable) getTable()).getPlayState(), getLookAndFeel()));
-                    } else {
-                        ((JLabel) c).setIcon(null); // was using Images.getImage(Images.EMPTY) previously
-                    }
-
-                    // Get alignment from model
-                    ((JLabel) c).setHorizontalAlignment(getColumnAlignment(column));
-                    return c;
-                }
-            };
+            return new PlayListIntegerTableCellRendererCode(getLookAndFeel(), playListHandler, this);
         } else if (clazz.equals(String.class)) {
-            return new PlayListStringTableCellRendererCode(this, getLookAndFeel());
+            return new PlayListStringTableCellRendererCode(this, getLookAndFeel(), playListHandler);
         } else if (clazz.equals(TextAndIcon.class)) {
-            return new PlayListTextAndIconTableCellRendererCode(this, getLookAndFeel());
+            return new PlayListTextAndIconTableCellRendererCode(this, getLookAndFeel(), playListHandler);
         } else {
             return super.getRendererCodeFor(clazz);
         }
-    }
-    
-    /**
-     * @param color
-     * @param state
-     * @param lookAndFeel
-     * @return
-     */
-    private ImageIcon getPlayStateIcon(Color color, PlayState state, ILookAndFeel lookAndFeel) {
-        switch (state) {
-        case PLAYING:
-            return Context.getBean("playListPlayStateIcon", CachedIconFactory.class).getIcon(color);
-        case STOPPED:
-            return Context.getBean("playListStopStateIcon", CachedIconFactory.class).getIcon(color);
-        case PAUSED:
-            return Context.getBean("playListPauseStateIcon", CachedIconFactory.class).getIcon(color);
-        case NONE:
-            return null;
-        default:
-            return null;
-        }
-    }
-
+    }    
 }

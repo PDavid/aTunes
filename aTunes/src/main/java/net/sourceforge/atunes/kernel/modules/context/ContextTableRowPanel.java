@@ -33,7 +33,7 @@ import javax.swing.JTable;
 import javax.swing.event.CellEditorListener;
 import javax.swing.table.TableCellEditor;
 
-import net.sourceforge.atunes.gui.lookandfeel.AbstractTableCellRendererCode;
+import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.model.ILookAndFeel;
 
 public abstract class ContextTableRowPanel<T> extends AbstractTableCellRendererCode implements TableCellEditor {

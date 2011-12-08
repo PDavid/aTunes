@@ -24,7 +24,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 
-import net.sourceforge.atunes.gui.lookandfeel.AbstractListCellRendererCode;
+import net.sourceforge.atunes.gui.AbstractListCellRendererCode;
 import net.sourceforge.atunes.model.IContextPanel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
