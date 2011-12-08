@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel;
+package net.sourceforge.atunes.kernel.modules.os;
 
 import java.awt.Window;
 import java.io.File;
@@ -31,10 +31,6 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.cdripper.AbstractCdToWavConverter;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
-import net.sourceforge.atunes.kernel.modules.os.LinuxOperatingSystem;
-import net.sourceforge.atunes.kernel.modules.os.OperatingSystemAdapter;
-import net.sourceforge.atunes.kernel.modules.os.SolarisOperatingSystem;
-import net.sourceforge.atunes.kernel.modules.os.WindowsOperatingSystem;
 import net.sourceforge.atunes.kernel.modules.os.macosx.MacOSXOperatingSystem;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.model.IFrame;
