@@ -27,4 +27,4 @@ do
   args="$args \"$arg\""
 done
 
-java -Djava.library.path=./ -Xms128m -Xmx1024m -splash:splash.gif -cp aTunes.jar:lib/* net.sourceforge.atunes.Main $args
+java -Djava.library.path=./ -Xms64m -Xmx256m -splash:splash.gif -cp aTunes.jar:lib/* net.sourceforge.atunes.Main $args
