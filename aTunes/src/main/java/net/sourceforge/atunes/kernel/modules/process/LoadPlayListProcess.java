@@ -25,12 +25,9 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IRadioHandler;
-import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.IPlayListIOService;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -42,13 +39,16 @@ public class LoadPlayListProcess extends AbstractProcess {
 
     private List<String> filenamesToLoad;
     
-    private IRepositoryHandler repositoryHandler;
-    
-    private IRadioHandler radioHandler;
-    
-    private ILocalAudioObjectFactory localAudioObjectFactory;
-    
     private IPlayListHandler playListHandler;
+    
+    private IPlayListIOService playListIOService;
+    
+    /**
+     * @param playListIOService
+     */
+    public void setPlayListIOService(IPlayListIOService playListIOService) {
+		this.playListIOService = playListIOService;
+	}
     
     /**
      * @param filenamesToLoad
@@ -62,27 +62,6 @@ public class LoadPlayListProcess extends AbstractProcess {
      */
     public void setPlayListHandler(IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
-	}
-
-    /**
-     * @param repositoryHandler
-     */
-    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
-	}
-    
-    /**
-     * @param radioHandler
-     */
-    public void setRadioHandler(IRadioHandler radioHandler) {
-		this.radioHandler = radioHandler;
-	}
-    
-    /**
-     * @param localAudioObjectFactory
-     */
-    public void setLocalAudioObjectFactory(ILocalAudioObjectFactory localAudioObjectFactory) {
-		this.localAudioObjectFactory = localAudioObjectFactory;
 	}
 
     @Override
@@ -104,7 +83,7 @@ public class LoadPlayListProcess extends AbstractProcess {
     protected boolean runProcess() {
         final List<IAudioObject> songsLoaded = new ArrayList<IAudioObject>();
         for (int i = 0; i < filenamesToLoad.size() && !isCanceled(); i++) {
-            songsLoaded.add(PlayListIO.getAudioFileOrCreate(repositoryHandler, filenamesToLoad.get(i), radioHandler, localAudioObjectFactory));
+            songsLoaded.add(playListIOService.getAudioObjectOrCreate(filenamesToLoad.get(i)));
             setCurrentProgress(i + 1);
         }
         // If canceled loaded files are added anyway

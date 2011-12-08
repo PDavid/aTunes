@@ -29,6 +29,7 @@
 		<config>src/main/resources/settings/spring/repository.xml</config>
 		<config>src/main/resources/settings/spring/device.xml</config>
 		<config>src/main/resources/settings/spring/process.xml</config>
+		<config>src/main/resources/settings/spring/playlist.xml</config>
 	</configs>
 	<configSets>
 		<configSet>
@@ -58,6 +59,7 @@
 				<config>src/main/resources/settings/spring/repository.xml</config>
 				<config>src/main/resources/settings/spring/device.xml</config>
 				<config>src/main/resources/settings/spring/process.xml</config>
+				<config>src/main/resources/settings/spring/playlist.xml</config>
 			</configs>
 		</configSet>
 	</configSets>

@@ -55,6 +55,7 @@ import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayListIOService;
 import net.sourceforge.atunes.model.IPlayListPanel;
 import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.IPlayerControlsPanel;
@@ -62,7 +63,6 @@ import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRadio;
-import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
@@ -106,6 +106,8 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     private IProcessFactory processFactory;
     
     private ILocalAudioObjectLocator localAudioObjectLocator;
+    
+    private IPlayListIOService playListIOService;
 
     /**
      * Filter for play list
@@ -152,9 +154,12 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	
 	private INavigationHandler navigationHandler;
 	
-	private IRepositoryHandler repositoryHandler;
-	
-	private IRadioHandler radioHandler;
+	/**
+	 * @param playListIOService
+	 */
+	public void setPlayListIOService(IPlayListIOService playListIOService) {
+		this.playListIOService = playListIOService;
+	}
 	
 	/**
 	 * @param localAudioObjectLocator
@@ -168,20 +173,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	 */
 	public void setProcessFactory(IProcessFactory processFactory) {
 		this.processFactory = processFactory;
-	}
-	
-	/**
-	 * @param radioHandler
-	 */
-	public void setRadioHandler(IRadioHandler radioHandler) {
-		this.radioHandler = radioHandler;
-	}
-	
-	/**
-	 * @param repositoryHandler
-	 */
-	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
 	}
 	
 	/**
@@ -232,7 +223,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     @Override
     public void allHandlersInitialized() {
         // Create drag and drop listener
-    	playListPanel.enableDragAndDrop(new PlayListTableTransferHandler(playListTable, getFrame(), getOsManager(), this, navigationHandler, repositoryHandler, radioHandler, localAudioObjectFactory, localAudioObjectValidator, audioObjectComparator, localAudioObjectLocator));
+    	playListPanel.enableDragAndDrop(new PlayListTableTransferHandler(playListTable, getFrame(), this, navigationHandler, localAudioObjectFactory, localAudioObjectValidator, audioObjectComparator, localAudioObjectLocator, playListIOService));
     }
 
     /**
@@ -718,7 +709,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     @Override
 	public void loadPlaylist() {
         JFileChooser fileChooser = new JFileChooser(getState().getLoadPlaylistPath());
-        FileFilter filter = PlayListIO.getPlaylistFileFilter();
+        FileFilter filter = playListIOService.getPlaylistFileFilter();
         // Open file chooser
         fileChooser.setFileFilter(filter);
         if (fileChooser.showOpenDialog(getFrame().getFrame()) == JFileChooser.APPROVE_OPTION) {
@@ -729,7 +720,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
             if (file.exists()) {
                 getState().setLoadPlaylistPath(file.getParentFile().getAbsolutePath());
                 // Read file names
-                List<String> filesToLoad = PlayListIO.read(file, getOsManager());
+                List<String> filesToLoad = playListIOService.read(file);
                 // Background loading - but only when returned array is not null (Progress dialog hangs otherwise)
                 if (filesToLoad != null) {
                     LoadPlayListProcess process = (LoadPlayListProcess) processFactory.getProcessByName("loadPlayListProcess");

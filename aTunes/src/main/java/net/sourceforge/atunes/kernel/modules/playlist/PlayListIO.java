@@ -36,6 +36,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayList;
+import net.sourceforge.atunes.model.IPlayListIOService;
 import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -46,7 +47,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The Class PlayListIO.
  */
-public final class PlayListIO {
+public final class PlayListIO implements IPlayListIOService {
 
     // The different Strings used
     /** The Constant M3U_HEADER. */
@@ -69,24 +70,52 @@ public final class PlayListIO {
 
     /** The Constant M3U_HTTP_PREFIX. */
     private static final String M3U_HTTP_PREFIX = "http://";
-
-    private PlayListIO() {
-
-    }
+    
+    private IRepositoryHandler repositoryHandler;
+    
+    private IRadioHandler radioHandler;
+    
+    private ILocalAudioObjectFactory localAudioObjectFactory;
+    
+    private IOSManager osManager;
+    
+    /**
+     * @param osManager
+     */
+    public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
+    
+    /**
+     * @param radioHandler
+     */
+    public void setRadioHandler(IRadioHandler radioHandler) {
+		this.radioHandler = radioHandler;
+	}
+    
+    /**
+     * @param localAudioObjectFactory
+     */
+    public void setLocalAudioObjectFactory(ILocalAudioObjectFactory localAudioObjectFactory) {
+		this.localAudioObjectFactory = localAudioObjectFactory;
+	}
+    
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
 
     /**
-     * Returns a list of files contained in a list of file names.
-     * 
-     * @param repositoryHandler
      * @param fileNames
-     * @param radioHandler
-     * @param localAudioObjectFactory
-     * @return the audio objects from file names list
+     * @return
      */
-    public static List<IAudioObject> getAudioObjectsFromFileNamesList(IRepositoryHandler repositoryHandler, List<String> fileNames, IRadioHandler radioHandler, ILocalAudioObjectFactory localAudioObjectFactory) {
+    @Override
+	public List<IAudioObject> getAudioObjectsFromFileNamesList(List<String> fileNames) {
         List<IAudioObject> result = new ArrayList<IAudioObject>();
         for (String fileName : fileNames) {
-            result.add(getAudioFileOrCreate(repositoryHandler, fileName, radioHandler, localAudioObjectFactory));
+            result.add(getAudioObjectOrCreate(fileName));
         }
         return result;
     }
@@ -101,7 +130,8 @@ public final class PlayListIO {
      * @param localAudioObjectFactory
      * @return
      */
-    public static IAudioObject getAudioFileOrCreate(IRepositoryHandler repositoryHandler, String resourceName, IRadioHandler radioHandler, ILocalAudioObjectFactory localAudioObjectFactory) {
+    @Override
+	public IAudioObject getAudioObjectOrCreate(String resourceName) {
         IAudioObject ao = null;
 
         // It's an online radio
@@ -127,15 +157,12 @@ public final class PlayListIO {
      * Returns a list of files contained in a play list file.
      * 
      * @param file
-     * @param repositoryHandler
-     * @param osManager
-     * @param radioHandler
-     * @param localAudioObjectFactory
      * @return
      */
-    public static List<IAudioObject> getFilesFromList(File file, IRepositoryHandler repositoryHandler, IOSManager osManager, IRadioHandler radioHandler, ILocalAudioObjectFactory localAudioObjectFactory) {
-        List<String> list = read(file, osManager);
-        return getAudioObjectsFromFileNamesList(repositoryHandler, list, radioHandler, localAudioObjectFactory);
+    @Override
+	public List<IAudioObject> getFilesFromList(File file) {
+        List<String> list = read(file);
+        return getAudioObjectsFromFileNamesList(list);
     }
 
     /**
@@ -143,7 +170,8 @@ public final class PlayListIO {
      * 
      * @return the playlist file filter
      */
-    public static final FileFilter getPlaylistFileFilter() {
+    @Override
+	public final FileFilter getPlaylistFileFilter() {
         return new FileFilter() {
             @Override
             public boolean accept(File file) {
@@ -165,7 +193,8 @@ public final class PlayListIO {
      * 
      * @return true, if is valid play list
      */
-    public static boolean isValidPlayList(String playListFile) {
+    @Override
+	public boolean isValidPlayList(String playListFile) {
         File f = new File(playListFile);
         return playListFile.endsWith(M3U_FILE_EXTENSION) && f.exists();
     }
@@ -178,7 +207,8 @@ public final class PlayListIO {
      * 
      * @return true, if is valid play list
      */
-    public static boolean isValidPlayList(File playListFile) {
+    @Override
+	public boolean isValidPlayList(File playListFile) {
         return playListFile.getName().endsWith(M3U_FILE_EXTENSION) && playListFile.exists();
     }
 
@@ -204,7 +234,8 @@ public final class PlayListIO {
      * 
      * @return Returns an List of files of the playlist as String.
      */
-    public static List<String> read(File file, IOSManager osManager) {
+    @Override
+	public List<String> read(File file) {
 
         BufferedReader br = null;
         try {
@@ -264,7 +295,8 @@ public final class PlayListIO {
      * @param osManager
      * @return
      */
-    public static boolean write(IPlayList playlist, File file, IOSManager osManager) {
+    @Override
+	public boolean write(IPlayList playlist, File file) {
         FileWriter writer = null;
         try {
             if (file.exists()) {
@@ -285,5 +317,13 @@ public final class PlayListIO {
         } finally {
             ClosingUtils.close(writer);
         }
+    }
+    
+    @Override
+    public File checkPlayListFileName(File file) {
+        if (!file.getName().toUpperCase().endsWith(M3U_FILE_EXTENSION.toUpperCase())) {
+            return new File(StringUtils.getString(file.getAbsolutePath(), ".", M3U_FILE_EXTENSION));
+        }
+        return file;
     }
 }

@@ -37,7 +37,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.api.RepositoryApi;
 import net.sourceforge.atunes.gui.model.TransferableList;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
 import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectComparator;
@@ -46,11 +45,9 @@ import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.ILocalAudioObjectLocator;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.INavigationHandler;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayListIOService;
 import net.sourceforge.atunes.model.IPlayListTable;
-import net.sourceforge.atunes.model.IRadioHandler;
-import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.Logger;
 
 /**
@@ -81,15 +78,9 @@ public class PlayListTableTransferHandler extends TransferHandler {
 
     private IFrame frame;
     
-    private IOSManager osManager;
-    
     private IPlayListHandler playListHandler;
 
     private INavigationHandler navigationHandler;
-    
-    private IRepositoryHandler repositoryHandler;
-    
-    private IRadioHandler radioHandler;
     
     private IPlayListTable playListTable;
     
@@ -101,30 +92,29 @@ public class PlayListTableTransferHandler extends TransferHandler {
     
     private ILocalAudioObjectLocator localAudioObjectLocator;
     
+    private IPlayListIOService playListIOService;
+    
     /**
      * @param playListTable
      * @param frame
-     * @param osManager
      * @param playListHandler
      * @param navigationHandler
-     * @param repositoryHandler
-     * @param radioHandler
      * @param localAudioObjectFactory
      * @param localAudioObjectValidator
      * @param audioObjectComparator
+     * @param localAudioObjectLocator
+     * @param playListIOService
      */
-    public PlayListTableTransferHandler(IPlayListTable playListTable, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, INavigationHandler navigationHandler, IRepositoryHandler repositoryHandler, IRadioHandler radioHandler, ILocalAudioObjectFactory localAudioObjectFactory, ILocalAudioObjectValidator localAudioObjectValidator, IAudioObjectComparator audioObjectComparator, ILocalAudioObjectLocator localAudioObjectLocator) {
+    public PlayListTableTransferHandler(IPlayListTable playListTable, IFrame frame, IPlayListHandler playListHandler, INavigationHandler navigationHandler, ILocalAudioObjectFactory localAudioObjectFactory, ILocalAudioObjectValidator localAudioObjectValidator, IAudioObjectComparator audioObjectComparator, ILocalAudioObjectLocator localAudioObjectLocator, IPlayListIOService playListIOService) {
     	this.playListTable = playListTable;
     	this.frame = frame;
-    	this.osManager = osManager;
     	this.playListHandler = playListHandler;
     	this.navigationHandler = navigationHandler;
-    	this.repositoryHandler = repositoryHandler;
-    	this.radioHandler = radioHandler;
     	this.localAudioObjectFactory = localAudioObjectFactory;
     	this.localAudioObjectValidator = localAudioObjectValidator;
     	this.audioObjectComparator = audioObjectComparator;
     	this.localAudioObjectLocator = localAudioObjectLocator;
+    	this.playListIOService = playListIOService;
 	}
     
     /**
@@ -399,7 +389,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
                 } else if (localAudioObjectValidator.isValidAudioFile(f)) {
                     filesToAdd.add(localAudioObjectFactory.getLocalAudioObject(f));
                 } else if (f.getName().toLowerCase().endsWith("m3u")) {
-                    filesToAdd.addAll(PlayListIO.getFilesFromList(f, repositoryHandler, osManager, radioHandler, localAudioObjectFactory));
+                    filesToAdd.addAll(playListIOService.getFilesFromList(f));
                 }
             }
             int dropRow = playListTable.rowAtPoint(support.getDropLocation().getDropPoint());
