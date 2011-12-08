@@ -36,6 +36,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.images.NextTrayImageIcon;
 import net.sourceforge.atunes.gui.images.PauseTrayImageIcon;
@@ -61,7 +62,6 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ISystemTrayHandler;
 import net.sourceforge.atunes.model.PlaybackState;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.Logger;

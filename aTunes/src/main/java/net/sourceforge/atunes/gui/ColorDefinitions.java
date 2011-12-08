@@ -26,7 +26,6 @@ import javax.swing.BorderFactory;
 import javax.swing.UIManager;
 import javax.swing.plaf.ColorUIResource;
 
-import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
  * Colors used on app.

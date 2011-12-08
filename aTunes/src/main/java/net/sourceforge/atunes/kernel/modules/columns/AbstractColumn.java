@@ -25,11 +25,11 @@ import java.util.Comparator;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.ColumnBean;
 import net.sourceforge.atunes.model.ColumnSort;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumn;
-import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
  * This class represents a column

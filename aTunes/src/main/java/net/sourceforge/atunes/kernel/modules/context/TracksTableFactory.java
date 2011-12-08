@@ -24,8 +24,8 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionListener;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.utils.GuiUtils;
 
 public class TracksTableFactory {
 

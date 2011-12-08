@@ -26,7 +26,7 @@ import javax.swing.JTable;
 
 import net.sourceforge.atunes.model.ILookAndFeel;
 
-public class TextAndIconTableCellRendererCode extends AbstractTableCellRendererCode {
+public class TextAndIconTableCellRendererCode extends AbstractTableCellRendererCode<JLabel> {
 
     private AbstractCommonColumnModel model;
 
@@ -36,16 +36,16 @@ public class TextAndIconTableCellRendererCode extends AbstractTableCellRendererC
     }
 
     @Override
-    public JComponent getComponent(JComponent c, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        ((JLabel) c).setText(((TextAndIcon) value).getText());
+    public JComponent getComponent(JLabel c, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        c.setText(((TextAndIcon) value).getText());
         if (((TextAndIcon) value).getIcon() != null) {
-        	((JLabel) c).setIcon(((TextAndIcon) value).getIcon().getIcon(lookAndFeel.getPaintForColorMutableIcon(c, isSelected)));
+        	c.setIcon(((TextAndIcon) value).getIcon().getIcon(lookAndFeel.getPaintForColorMutableIcon(c, isSelected)));
         } else {
-        	((JLabel) c).setIcon(null);
+        	c.setIcon(null);
         }        
-        ((JLabel) c).setHorizontalTextPosition(((TextAndIcon) value).getHorizontalTextPosition());
+        c.setHorizontalTextPosition(((TextAndIcon) value).getHorizontalTextPosition());
         // Get alignment from model
-        ((JLabel) c).setHorizontalAlignment(model.getColumnAlignment(column));
+        c.setHorizontalAlignment(model.getColumnAlignment(column));
         return c;
     }
 

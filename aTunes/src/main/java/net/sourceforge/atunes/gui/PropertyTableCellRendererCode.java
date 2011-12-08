@@ -30,14 +30,14 @@ import net.sourceforge.atunes.model.AudioObjectProperty;
 import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 
-public class PropertyTableCellRendererCode extends AbstractTableCellRendererCode {
+public class PropertyTableCellRendererCode extends AbstractTableCellRendererCode<JLabel> {
 
     public PropertyTableCellRendererCode(ILookAndFeel lookAndFeel) {
 		super(lookAndFeel);
 	}
 
 	@Override
-    public JComponent getComponent(JComponent comp, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    public JComponent getComponent(JLabel comp, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         ImageIcon icon = null;
         AudioObjectProperty val = (AudioObjectProperty) value;
         if (val == AudioObjectProperty.FAVORITE) {
@@ -47,8 +47,8 @@ public class PropertyTableCellRendererCode extends AbstractTableCellRendererCode
         } else if (val == AudioObjectProperty.DOWNLOADED_ENTRY) {
             icon = Context.getBean("downloadIcon", CachedIconFactory.class).getIcon(lookAndFeel.getPaintForColorMutableIcon(comp, isSelected));
         }
-        ((JLabel) comp).setIcon(icon);
-        ((JLabel) comp).setText(null);
+        comp.setIcon(icon);
+        comp.setText(null);
         return comp;
     }
 

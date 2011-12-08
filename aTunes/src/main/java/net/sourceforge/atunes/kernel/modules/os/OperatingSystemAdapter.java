@@ -34,6 +34,7 @@ import java.util.Properties;
 
 import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.SystemLookAndFeel;
 import net.sourceforge.atunes.kernel.modules.cdripper.AbstractCdToWavConverter;
@@ -46,7 +47,6 @@ import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.OperatingSystem;
 import net.sourceforge.atunes.utils.ClosingUtils;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;

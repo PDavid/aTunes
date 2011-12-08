@@ -25,13 +25,13 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.NavigationTableModel;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.ITable;
-import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
  * The listener interface for receiving navigationTableMouse events.

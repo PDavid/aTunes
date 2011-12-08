@@ -28,10 +28,10 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.modules.player.Volume;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.utils.GuiUtils;
 
 public final class VolumeSlider extends JSlider {
 

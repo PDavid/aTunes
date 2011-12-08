@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.Constants;
@@ -49,7 +50,7 @@ class SimilarArtistTableCellRendererCode extends ContextTableRowPanel<IArtistInf
 	}
 
 	@Override
-    public JComponent getComponent(JComponent superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    public JComponent getComponent(JLabel superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         return getPanelForTableRenderer(((IArtistInfo) value).getImage(), 
         							    StringUtils.getString("<html><br>", ((IArtistInfo) value).getName(), "<br>", ((IArtistInfo) value).getMatch(), "%<br>", ((IArtistInfo) value).isAvailable() ? I18nUtils.getString("AVAILABLE_IN_REPOSITORY") : "", "</html>"), 
         							    superComponent.getBackground(),

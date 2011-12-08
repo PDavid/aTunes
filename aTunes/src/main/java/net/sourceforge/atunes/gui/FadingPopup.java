@@ -29,7 +29,6 @@ import javax.swing.Popup;
 import javax.swing.border.Border;
 
 import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
  * Based on a fading popup with shadow border by Kirill Grouchnikov.

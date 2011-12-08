@@ -29,7 +29,7 @@ import javax.swing.JTable;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.ILookAndFeel;
 
-public class ColorMutableTableCellRendererCode extends AbstractTableCellRendererCode {
+public class ColorMutableTableCellRendererCode extends AbstractTableCellRendererCode<JLabel> {
 
     private AbstractCommonColumnModel model;
 
@@ -39,13 +39,13 @@ public class ColorMutableTableCellRendererCode extends AbstractTableCellRenderer
     }
 
     @Override
-    public JComponent getComponent(JComponent c, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        ((JLabel) c).setText(null);
+    public JComponent getComponent(JLabel c, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        c.setText(null);
         Color color = lookAndFeel.getPaintForColorMutableIcon(c, isSelected);
-        ((JLabel) c).setIcon(((IColorMutableImageIcon)value).getIcon(color));
+        c.setIcon(((IColorMutableImageIcon)value).getIcon(color));
 
         // Get alignment from model
-        ((JLabel) c).setHorizontalAlignment(model.getColumnAlignment(column));
+        c.setHorizontalAlignment(model.getColumnAlignment(column));
         return c;
     }
 

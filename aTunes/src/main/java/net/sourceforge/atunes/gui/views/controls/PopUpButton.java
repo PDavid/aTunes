@@ -39,10 +39,10 @@ import javax.swing.JSeparator;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPopUpButton;
-import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
  * A button with a popup menu.

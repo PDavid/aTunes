@@ -26,9 +26,9 @@ import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
  * A CustomTextPane is a JTextPane using the fonts and colors configured for all

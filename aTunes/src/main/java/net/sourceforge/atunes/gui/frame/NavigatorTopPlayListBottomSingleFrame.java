@@ -27,9 +27,9 @@ import java.util.Map;
 import javax.swing.JComponent;
 import javax.swing.JSplitPane;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.CustomSplitPane;
 import net.sourceforge.atunes.model.IFrameState;
-import net.sourceforge.atunes.utils.GuiUtils;
 
 public final class NavigatorTopPlayListBottomSingleFrame extends MainSplitPaneRightSingleFrame implements net.sourceforge.atunes.model.IFrame {
 

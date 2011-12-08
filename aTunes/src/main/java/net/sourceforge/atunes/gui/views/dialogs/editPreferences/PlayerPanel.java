@@ -48,6 +48,7 @@ import javax.swing.table.AbstractTableModel;
 
 import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.ColorDefinitions;
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IHotkey;
 import net.sourceforge.atunes.model.IHotkeyHandler;
 import net.sourceforge.atunes.model.IHotkeysConfig;
@@ -55,22 +56,21 @@ import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class PlayerPanel extends AbstractPreferencesPanel {
 
-	private final class HotkeyTableTableCellRendererCode extends AbstractTableCellRendererCode {
+	private final class HotkeyTableTableCellRendererCode extends AbstractTableCellRendererCode<JLabel> {
 		
 		public HotkeyTableTableCellRendererCode(ILookAndFeel lookAndFeel) {
 			super(lookAndFeel);
 		}
 
 		@Override
-		public JComponent getComponent(JComponent c, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-		    GuiUtils.applyComponentOrientation((JLabel) c);
+		public JComponent getComponent(JLabel c, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+		    GuiUtils.applyComponentOrientation(c);
 		    if (conflicts.contains(row) || notRecommendedKeys.contains(row)) {
-		        ((JLabel) c).setForeground(ColorDefinitions.WARNING_COLOR);
+		        c.setForeground(ColorDefinitions.WARNING_COLOR);
 		    }
 		    String keyWarnings = "";
 		    if (conflicts.contains(row)) {
@@ -82,7 +82,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
 		        }
 		        keyWarnings += I18nUtils.getString("NOT_RECOMMENDED_HOTKEYS");
 		    }
-		    ((JLabel) c).setToolTipText(keyWarnings.isEmpty() ? null : keyWarnings);
+		    c.setToolTipText(keyWarnings.isEmpty() ? null : keyWarnings);
 		    return c;
 		}
 	}

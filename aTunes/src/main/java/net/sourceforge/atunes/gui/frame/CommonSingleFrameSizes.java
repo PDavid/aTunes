@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.gui.frame;
 
-import net.sourceforge.atunes.utils.GuiUtils;
+import net.sourceforge.atunes.gui.GuiUtils;
 
 public class CommonSingleFrameSizes {
 

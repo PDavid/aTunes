@@ -31,8 +31,8 @@ import javax.swing.JTable;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.AbstractCommonColumnModel;
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IColumnSelectorDialog;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class ColumnSetPopupMenu {

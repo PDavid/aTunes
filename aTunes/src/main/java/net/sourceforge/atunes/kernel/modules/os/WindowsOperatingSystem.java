@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.modules.cdripper.AbstractCdToWavConverter;
 import net.sourceforge.atunes.kernel.modules.cdripper.Cdda2wav;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
@@ -36,7 +37,6 @@ import net.sourceforge.atunes.kernel.modules.player.xine.XineEngine;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.OperatingSystem;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class WindowsOperatingSystem extends OperatingSystemAdapter {

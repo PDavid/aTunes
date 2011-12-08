@@ -29,9 +29,9 @@ import javax.swing.event.TableModelEvent;
 
 import net.sourceforge.atunes.gui.AbstractColumnSetTableModel;
 import net.sourceforge.atunes.gui.AbstractCommonColumnModel;
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumn;
-import net.sourceforge.atunes.utils.GuiUtils;
 
 public class ColumnSetRowSorter {
 

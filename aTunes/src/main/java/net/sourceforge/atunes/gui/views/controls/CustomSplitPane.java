@@ -25,7 +25,7 @@ import java.awt.Component;
 import javax.swing.BorderFactory;
 import javax.swing.JSplitPane;
 
-import net.sourceforge.atunes.utils.GuiUtils;
+import net.sourceforge.atunes.gui.GuiUtils;
 
 //JSplitPane does not support component orientation, so we must do this manually
 // -> http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4265389

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.Constants;
@@ -47,7 +48,7 @@ public class YoutubeResultsTableCellRendererCode extends ContextTableRowPanel<Yo
 	}
 
 	@Override
-    public JComponent getComponent(JComponent superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    public JComponent getComponent(JLabel superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
         return getPanelForTableRenderer(((YoutubeResultEntry) value).getImage(), 
         								StringUtils.getString("<html>", ((YoutubeResultEntry) value).getName(), "<br>(", ((YoutubeResultEntry) value).getDuration(), ")</html>"), 
         								superComponent.getBackground(), 

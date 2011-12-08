@@ -41,6 +41,7 @@ import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 
 import net.sourceforge.atunes.gui.ColumnRenderers;
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.PlayListColumnModel;
 import net.sourceforge.atunes.gui.TransferableList;
 import net.sourceforge.atunes.gui.views.menus.PlayListMenuFiller;
@@ -53,7 +54,6 @@ import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.PlayState;
-import net.sourceforge.atunes.utils.GuiUtils;
 
 /**
  * The play list table.

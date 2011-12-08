@@ -20,17 +20,9 @@
 
 package net.sourceforge.atunes.gui;
 
-import java.awt.Color;
 
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JTable;
-import javax.swing.UIManager;
 import javax.swing.table.TableColumn;
 
-import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
-import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IState;
@@ -71,47 +63,9 @@ public final class NavigationTableColumnModel extends AbstractCommonColumnModel 
     }
 
     @Override
-    public AbstractTableCellRendererCode getRendererCodeFor(Class<?> clazz) {
-        AbstractTableCellRendererCode renderer = super.getRendererCodeFor(clazz);
-        return new NavigationTableCellRendererCode(renderer, state, getLookAndFeel());
-    }
-
-    private class NavigationTableCellRendererCode extends AbstractTableCellRendererCode {
-
-        private AbstractTableCellRendererCode renderer;
-
-        private IState state;
-        
-        public NavigationTableCellRendererCode(AbstractTableCellRendererCode renderer, IState state, ILookAndFeel lookAndFeel) {
-        	super(lookAndFeel);
-            this.renderer = renderer;
-            this.state = state;
-        }
-
-        @Override
-        public JComponent getComponent(JComponent superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            // Get result from super renderer
-        	JComponent c = renderer.getComponent(superComponent, t, value, isSelected, hasFocus, row, column);
-            // Check incomplete tags if necessary
-            if (state.isHighlightIncompleteTagElements()) {
-                IAudioObject audioObject = navigationHandler.getAudioObjectInNavigationTable(row);
-                if (IncompleteTagsChecker.hasIncompleteTags(audioObject, state.getHighlightIncompleteTagFoldersAttributes())) {
-                    ((JLabel) c).setForeground(Color.red);
-                } else {
-                	// Only Substance doesn't need this workaround
-                	if (!getLookAndFeel().getClass().equals(SubstanceLookAndFeel.class)) {
-                		((JLabel) c).setForeground(c.getForeground());
-                		if( isSelected ) {
-                			((JLabel) c).setForeground(UIManager.getColor("List.selectionForeground"));
-                		}
-                		else {
-                			((JLabel) c).setForeground(UIManager.getColor("List.foreground"));
-                		}
-                	}
-                }    
-            }
-            return c;
-        }
+    public AbstractTableCellRendererCode<?> getRendererCodeFor(Class<?> clazz) {
+        AbstractTableCellRendererCode<?> renderer = super.getRendererCodeFor(clazz);
+        return new NavigationTableCellRendererCode(renderer, state, getLookAndFeel(), navigationHandler);
     }
 
 }

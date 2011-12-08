@@ -26,7 +26,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JWindow;
 
-import net.sourceforge.atunes.utils.GuiUtils;
+import net.sourceforge.atunes.gui.GuiUtils;
 
 public abstract class AbstractCustomWindow extends JWindow {
 

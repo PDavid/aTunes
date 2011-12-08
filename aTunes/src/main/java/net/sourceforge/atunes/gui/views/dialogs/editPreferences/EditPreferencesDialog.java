@@ -37,10 +37,10 @@ import javax.swing.JScrollPane;
 import javax.swing.ListModel;
 
 import net.sourceforge.atunes.gui.AbstractListCellRendererCode;
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.utils.GuiUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**

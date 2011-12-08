@@ -99,11 +99,11 @@ public class ScoreColumn extends AbstractColumn {
 
     @Override
     public TableCellRenderer getCellRenderer() {
-        return lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(new AbstractTableCellRendererCode(lookAndFeelManager.getCurrentLookAndFeel()) {
+        return lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(new AbstractTableCellRendererCode<JLabel>(lookAndFeelManager.getCurrentLookAndFeel()) {
 
             @Override
-            public JComponent getComponent(JComponent superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                setLabel((JLabel) superComponent, value);
+            public JComponent getComponent(JLabel superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                setLabel(superComponent, value);
                 return superComponent;
             }
         });
