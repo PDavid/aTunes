@@ -56,6 +56,7 @@ import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListIOService;
+import net.sourceforge.atunes.model.IPlayListObjectFilter;
 import net.sourceforge.atunes.model.IPlayListPanel;
 import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.IPlayerControlsPanel;
@@ -108,6 +109,8 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     private ILocalAudioObjectLocator localAudioObjectLocator;
     
     private IPlayListIOService playListIOService;
+    
+    private IPlayListObjectFilter<ILocalAudioObject> playListLocalAudioObjectFilter;
 
     /**
      * Filter for play list
@@ -153,6 +156,13 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	private ILocalAudioObjectValidator localAudioObjectValidator;
 	
 	private INavigationHandler navigationHandler;
+	
+	/**
+	 * @param playListLocalAudioObjectFilter
+	 */
+	public void setPlayListLocalAudioObjectFilter(IPlayListObjectFilter<ILocalAudioObject> playListLocalAudioObjectFilter) {
+		this.playListLocalAudioObjectFilter = playListLocalAudioObjectFilter;
+	}
 	
 	/**
 	 * @param playListIOService
@@ -1334,7 +1344,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	@Override
 	public void deviceDisconnected(String location) {
         List<Integer> songsToRemove = new ArrayList<Integer>();
-        for (ILocalAudioObject audioFile : new PlayListLocalAudioObjectFilter().getObjects(getCurrentPlayList(true))) {
+        for (ILocalAudioObject audioFile : playListLocalAudioObjectFilter.getObjects(getCurrentPlayList(true))) {
             if (audioFile.getFile().getPath().startsWith(location)) {
                 songsToRemove.add(getCurrentPlayList(true).indexOf(audioFile));
             }
@@ -1406,7 +1416,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
      *            the play list
      */
     private void showPlayListInformation(PlayList playList) {
-        int audioFiles = new PlayListLocalAudioObjectFilter().getObjects(playList).size();
+        int audioFiles = playListLocalAudioObjectFilter.getObjects(playList).size();
         int radios = new PlayListRadioFilter().getObjects(playList).size();
         int podcastFeedEntries = new PlayListPodcastFeedEntryFilter().getObjects(playList).size();
         int audioObjects = playList.size();

@@ -6,4 +6,6 @@
 	
 	<bean id="playListIOService" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListIO"/>
 	
+	<bean id="playListLocalAudioObjectFilter" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListLocalAudioObjectFilter"/>
+	
 </beans>
