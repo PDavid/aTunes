@@ -29,12 +29,11 @@ import javax.swing.JFileChooser;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListIO;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IConfirmationDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayListIOService;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -52,9 +51,16 @@ public class SavePlayListAction extends CustomAbstractAction {
     
     private IPlayListHandler playListHandler;
     
-    private IOSManager osManager;
-    
     private IConfirmationDialogFactory confirmationDialogFactory;
+    
+    private IPlayListIOService playListIOService;
+    
+    /**
+     * @param playListIOService
+     */
+    public void setPlayListIOService(IPlayListIOService playListIOService) {
+		this.playListIOService = playListIOService;
+	}
     
     /**
      * @param frame
@@ -86,7 +92,7 @@ public class SavePlayListAction extends CustomAbstractAction {
     @Override
     protected void executeAction() {
         JFileChooser fileChooser = new JFileChooser(getState().getSavePlaylistPath());
-        FileFilter filter = PlayListIO.getPlaylistFileFilter();
+        FileFilter filter = playListIOService.getPlaylistFileFilter();
         fileChooser.setFileFilter(filter);
         if (fileChooser.showSaveDialog(frame.getFrame()) == JFileChooser.APPROVE_OPTION) {
 
@@ -96,14 +102,12 @@ public class SavePlayListAction extends CustomAbstractAction {
             getState().setSavePlaylistPath(file.getParentFile().getAbsolutePath());
 
             // If filename have incorrect extension, add it
-            if (!file.getName().toUpperCase().endsWith(PlayListIO.M3U_FILE_EXTENSION.toUpperCase())) {
-                file = new File(StringUtils.getString(file.getAbsolutePath(), ".", PlayListIO.M3U_FILE_EXTENSION));
-            }
+            file = playListIOService.checkPlayListFileName(file);
 
             // If file does not exist, or exist and overwrite is confirmed, then write file
             if (!file.exists()
                     || (file.exists() && confirmationDialogFactory.getDialog().showDialog(I18nUtils.getString("OVERWRITE_FILE")))) {
-                PlayListIO.write(playListHandler.getCurrentPlayList(true), file, osManager);
+            	playListIOService.write(playListHandler.getCurrentPlayList(true), file);
             }
         }
     }
