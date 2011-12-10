@@ -374,7 +374,7 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
      */
     private class CheckRenderer extends DefaultTreeCellRenderer {
 
-        private final class CheckRendererTreeCellRendererCode extends AbstractTreeCellRendererCode {
+        private final class CheckRendererTreeCellRendererCode extends AbstractTreeCellRendererCode<JComponent, Object> {
         	
 			@Override
 			public JComponent getComponent(JComponent superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
@@ -426,18 +426,21 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
 
 		private static final long serialVersionUID = 5564069979708271654L;
 
-        private transient AbstractTreeCellRendererCode rendererCode;
+        private transient AbstractTreeCellRendererCode<JComponent, Object> rendererCode;
+        
+        private transient JLabel label;
 
         /**
          * Instantiates a new check renderer.
          */
         public CheckRenderer() {
+        	label = new JLabel();
             rendererCode = new CheckRendererTreeCellRendererCode();
         }
 
         @Override
         public Component getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-            return rendererCode.getComponent(new JLabel(), tree, value, isSelected, expanded, leaf, row, hasFocus);
+            return rendererCode.getComponent(label, tree, value, isSelected, expanded, leaf, row, hasFocus);
         }
 
     }

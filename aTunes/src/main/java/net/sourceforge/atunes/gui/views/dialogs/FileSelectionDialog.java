@@ -169,24 +169,15 @@ public final class FileSelectionDialog extends AbstractCustomDialog implements I
 		}
 	}
 
-	private static class FileSystemTreeCellRendererCode extends AbstractTreeCellRendererCode {
+	private static class FileSystemTreeCellRendererCode extends AbstractTreeCellRendererCode<JLabel, DefaultMutableTreeNode> {
         @Override
-        public JComponent getComponent(JComponent superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
-            if (superComponent instanceof JLabel) {
-                DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-            	if (node.getUserObject() instanceof String) {
-            		((JLabel) superComponent).setText(null);
-            		return superComponent;
-            	}
-
-            	Directory content = (Directory) node.getUserObject();
-            	JLabel icon = (JLabel) superComponent;
-            	if (content != null) {
-            		icon.setIcon(fsView.getSystemIcon(content.file));
-            	}
-
-            	return icon;
-            }
+        public JComponent getComponent(JLabel superComponent, JTree tree, DefaultMutableTreeNode value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
+        	Object userObject = value.getUserObject();
+        	if (userObject instanceof String) {
+        		superComponent.setText(null);
+        	} else if (userObject instanceof Directory) {
+        		superComponent.setIcon(fsView.getSystemIcon(((Directory) userObject).file));
+        	}
             return superComponent;
         }
     }

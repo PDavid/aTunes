@@ -29,7 +29,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import net.sourceforge.atunes.gui.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.AbstractTreeCellRendererCode;
 
-final class NavigationViewTreeCellRendererCode extends AbstractTreeCellRendererCode {
+final class NavigationViewTreeCellRendererCode extends AbstractTreeCellRendererCode<JComponent, DefaultMutableTreeNode> {
 	
 	private List<AbstractTreeCellDecorator<?, ?>> decorators;
 	
@@ -39,11 +39,10 @@ final class NavigationViewTreeCellRendererCode extends AbstractTreeCellRendererC
 	
 	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public JComponent getComponent(JComponent superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
-		Object valueObject = ((DefaultMutableTreeNode) value).getUserObject();
+	public JComponent getComponent(JComponent superComponent, JTree tree, DefaultMutableTreeNode value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
 	    for (AbstractTreeCellDecorator decorator : decorators) {
-	    	if (decorator.getComponentClass().isAssignableFrom(superComponent.getClass()) && decorator.getValueClass().isAssignableFrom(valueObject.getClass())) {
-	    		decorator.decorateTreeCellComponent(superComponent, valueObject, isSelected);
+	    	if (decorator.getComponentClass().isAssignableFrom(superComponent.getClass()) && decorator.getValueClass().isAssignableFrom(value.getUserObject().getClass())) {
+	    		decorator.decorateTreeCellComponent(superComponent, value.getUserObject(), isSelected);
 	    	}
 	    }
 	    return superComponent;
