@@ -18,41 +18,37 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.os.macosx;
+package net.sourceforge.atunes.kernel.modules.os;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
+import javax.swing.JList;
+
 import net.sourceforge.atunes.model.IOSManager;
 
 /**
- * Saves player engine path and closes dialog
+ * Saves player engine path after selecting one from automatic search
  * @author alex
  *
  */
-final class MacOSXPlayerSelectionDialogEnterPlayerEngineFinishButtonListener implements ActionListener {
+final class MacOSXPlayerSelectionDialogSearchResultsFinishButtonListener implements ActionListener {
 	
-	private final MacOSXPlayerSelectionDialog dialog;
+	private MacOSXPlayerSelectionDialog dialog;
 	
-	private final CustomJFileChooser locationFileChooser;
-
-	private final IOSManager osManager;
+	private IOSManager osManager;
 	
-	/**
-	 * @param dialog
-	 * @param osManager
-	 * @param locationFileChooser
-	 */
-	public MacOSXPlayerSelectionDialogEnterPlayerEngineFinishButtonListener(MacOSXPlayerSelectionDialog dialog, IOSManager osManager, CustomJFileChooser locationFileChooser) {
+	private JList list;
+	
+	public MacOSXPlayerSelectionDialogSearchResultsFinishButtonListener(MacOSXPlayerSelectionDialog dialog, IOSManager osManager, JList list) {
 		this.dialog = dialog;
-		this.locationFileChooser = locationFileChooser;
 		this.osManager = osManager;
+		this.list = list;
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		osManager.setOSProperty(MacOSXOperatingSystem.MPLAYER_COMMAND, locationFileChooser.getResult());
+		osManager.setOSProperty(MacOSXOperatingSystem.MPLAYER_COMMAND, (String)list.getSelectedValue());
 		dialog.dispose();
 		osManager.playerEngineFound();
 	}

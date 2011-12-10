@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.os.macosx;
+package net.sourceforge.atunes.kernel.modules.os;
 
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
@@ -89,7 +89,7 @@ public class MacOSXDockMenu {
      */
     private MenuItem getMenuItemForAction(final Action action) {
     	MenuItem menuItem = new MenuItem((String)action.getValue(AbstractAction.NAME));
-    	menuItem.addActionListener(new DockMenuItemActionListener(action));
+    	menuItem.addActionListener(new MacOSXDockMenuItemActionListener(action));
     	return menuItem;
     }    
 }

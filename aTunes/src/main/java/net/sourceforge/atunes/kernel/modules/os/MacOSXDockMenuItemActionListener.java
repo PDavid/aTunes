@@ -18,38 +18,27 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.os.macosx;
+package net.sourceforge.atunes.kernel.modules.os;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JList;
-
-import net.sourceforge.atunes.model.IOSManager;
+import javax.swing.Action;
 
 /**
- * Saves player engine path after selecting one from automatic search
+ * Wraps an action into an action listener
  * @author alex
  *
  */
-final class MacOSXPlayerSelectionDialogSearchResultsFinishButtonListener implements ActionListener {
-	
-	private MacOSXPlayerSelectionDialog dialog;
-	
-	private IOSManager osManager;
-	
-	private JList list;
-	
-	public MacOSXPlayerSelectionDialogSearchResultsFinishButtonListener(MacOSXPlayerSelectionDialog dialog, IOSManager osManager, JList list) {
-		this.dialog = dialog;
-		this.osManager = osManager;
-		this.list = list;
+final class MacOSXDockMenuItemActionListener implements ActionListener {
+	private final Action action;
+
+	MacOSXDockMenuItemActionListener(Action action) {
+		this.action = action;
 	}
-	
+
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		osManager.setOSProperty(MacOSXOperatingSystem.MPLAYER_COMMAND, (String)list.getSelectedValue());
-		dialog.dispose();
-		osManager.playerEngineFound();
+	public void actionPerformed(ActionEvent e) {
+		action.actionPerformed(e);
 	}
 }

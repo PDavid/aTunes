@@ -18,21 +18,21 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.os.macosx;
+package net.sourceforge.atunes.kernel.modules.os;
 
 
 /**
- * Pass this method an Object and Method equipped to perform application shutdown logic
- * The method passed should return a boolean stating whether or not the quit should occur
+ * Pass this method an Object and Method equipped to display application info
+ * They will be called when the About menu item is selected from the application menu
  * @author alex
  */
-public class MacOSXQuitHandler extends MacOSXAdapter {
+public class MacOSXAboutHandler extends MacOSXAdapter {
 
 	/**
 	 * @param target
 	 * @param methodName
 	 */
-	protected MacOSXQuitHandler(Object target, String methodName) {
-		super("handleQuit", target, methodName);
+	protected MacOSXAboutHandler(Object target, String methodName) {
+		super("handleAbout", target, methodName);
 	}
 }

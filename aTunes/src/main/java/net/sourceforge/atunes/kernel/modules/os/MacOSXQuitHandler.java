@@ -18,32 +18,21 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.os.macosx;
+package net.sourceforge.atunes.kernel.modules.os;
 
-import java.awt.CardLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JPanel;
 
 /**
- * Moves dialog to first panel
+ * Pass this method an Object and Method equipped to perform application shutdown logic
+ * The method passed should return a boolean stating whether or not the quit should occur
  * @author alex
- *
  */
-final class MacOSXPlayerSelectionDialogGoToFirstPanelListener implements ActionListener {
-	
-	private JPanel panelContainer;
-	
-	private String firstPanelName;
-	
-	public MacOSXPlayerSelectionDialogGoToFirstPanelListener(JPanel panelContainer, String firstPanelName) {
-		this.panelContainer = panelContainer;
-		this.firstPanelName = firstPanelName;
-	}
-	
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		((CardLayout)panelContainer.getLayout()).show(panelContainer, firstPanelName);
+public class MacOSXQuitHandler extends MacOSXAdapter {
+
+	/**
+	 * @param target
+	 * @param methodName
+	 */
+	protected MacOSXQuitHandler(Object target, String methodName) {
+		super("handleQuit", target, methodName);
 	}
 }

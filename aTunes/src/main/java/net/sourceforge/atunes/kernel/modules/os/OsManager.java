@@ -31,7 +31,6 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.cdripper.AbstractCdToWavConverter;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
-import net.sourceforge.atunes.kernel.modules.os.macosx.MacOSXOperatingSystem;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;

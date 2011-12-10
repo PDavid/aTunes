@@ -18,29 +18,31 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.os.macosx;
+package net.sourceforge.atunes.kernel.modules.os;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
- * Called when dialog canceled
+ * Called when enabling finish button
  * @author alex
  *
  */
-final class MacOSXPlayerSelectionDialogCancelButtonActionListener implements ActionListener {
+final class MacOSXPlayerSelectionDialogEnableFinishButtonListener implements ListSelectionListener {
 	
-	private MacOSXPlayerSelectionDialog dialog;
 	
+	private final JButton finishButton;
+
 	/**
-	 * @param dialog
+	 * @param finishButton
 	 */
-	public MacOSXPlayerSelectionDialogCancelButtonActionListener(MacOSXPlayerSelectionDialog dialog) {
-		this.dialog = dialog;
+	MacOSXPlayerSelectionDialogEnableFinishButtonListener(JButton finishButton) {
+		this.finishButton = finishButton;
 	}
-	
+
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		dialog.dispose();
+	public void valueChanged(ListSelectionEvent e) {
+		finishButton.setEnabled(true);
 	}
 }

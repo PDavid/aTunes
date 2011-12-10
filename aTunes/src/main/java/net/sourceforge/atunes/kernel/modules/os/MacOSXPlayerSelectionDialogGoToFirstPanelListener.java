@@ -18,31 +18,32 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.os.macosx;
+package net.sourceforge.atunes.kernel.modules.os;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
+import java.awt.CardLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import net.sourceforge.atunes.utils.ReflectionUtils;
+import javax.swing.JPanel;
 
 /**
- * Listener to be called when application is reopened, usually from dock
+ * Moves dialog to first panel
  * @author alex
  *
  */
-final class MacOSXAppReOpenedListener implements InvocationHandler {
+final class MacOSXPlayerSelectionDialogGoToFirstPanelListener implements ActionListener {
 	
-	private Object targetObject;
-	private Method targetMethod;
-
-	public MacOSXAppReOpenedListener(Object target, String methodName) {
-        this.targetObject = target;
-        this.targetMethod = ReflectionUtils.getMethod(target.getClass(), methodName);
+	private JPanel panelContainer;
+	
+	private String firstPanelName;
+	
+	public MacOSXPlayerSelectionDialogGoToFirstPanelListener(JPanel panelContainer, String firstPanelName) {
+		this.panelContainer = panelContainer;
+		this.firstPanelName = firstPanelName;
 	}
 	
 	@Override
-	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-		targetMethod.invoke(targetObject, (Object[]) null);
-		return null;
+	public void actionPerformed(ActionEvent arg0) {
+		((CardLayout)panelContainer.getLayout()).show(panelContainer, firstPanelName);
 	}
 }
