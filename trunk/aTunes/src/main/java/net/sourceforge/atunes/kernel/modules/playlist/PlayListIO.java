@@ -49,7 +49,19 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class PlayListIO implements IPlayListIOService {
 
-    // The different Strings used
+    private static final class PlayListFileFilter extends FileFilter {
+		@Override
+		public boolean accept(File file) {
+		    return file.isDirectory() || file.getName().toLowerCase().endsWith(M3U_FILE_EXTENSION);
+		}
+
+		@Override
+		public String getDescription() {
+		    return I18nUtils.getString("PLAYLIST");
+		}
+	}
+
+	// The different Strings used
     /** The Constant M3U_HEADER. */
     private static final String M3U_HEADER = "#EXTM3U";
 
@@ -172,17 +184,7 @@ public final class PlayListIO implements IPlayListIOService {
      */
     @Override
 	public final FileFilter getPlaylistFileFilter() {
-        return new FileFilter() {
-            @Override
-            public boolean accept(File file) {
-                return file.isDirectory() || file.getName().toLowerCase().endsWith(M3U_FILE_EXTENSION);
-            }
-
-            @Override
-            public String getDescription() {
-                return I18nUtils.getString("PLAYLIST");
-            }
-        };
+        return new PlayListFileFilter();
     }
 
     /**
