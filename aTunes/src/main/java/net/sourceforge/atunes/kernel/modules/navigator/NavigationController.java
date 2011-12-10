@@ -31,8 +31,6 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.SwingWorker;
@@ -45,7 +43,6 @@ import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.AbstractCommonColumnModel;
-import net.sourceforge.atunes.gui.AbstractListCellRendererCode;
 import net.sourceforge.atunes.gui.ColumnRenderers;
 import net.sourceforge.atunes.gui.NavigationTableColumnModel;
 import net.sourceforge.atunes.gui.NavigationTableModel;
@@ -243,15 +240,7 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
         navigationTable.addMouseListener(new NavigationTableMouseListener(this, navigationTable, navigationHandler));
         
         if (lookAndFeelManager.getCurrentLookAndFeel().customComboBoxRenderersSupported()) {
-        	navigationTreePanel.getTreeComboBox().setRenderer(lookAndFeelManager.getCurrentLookAndFeel().getListCellRenderer(new AbstractListCellRendererCode() {
-
-        		@Override
-        		public JComponent getComponent(JComponent superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        			((JLabel)superComponent).setIcon(((INavigationView)value).getIcon().getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForColorMutableIcon(superComponent, isSelected)));
-        			((JLabel)superComponent).setText(((INavigationView)value).getTitle());
-        			return superComponent;
-        		}
-        	}));
+        	navigationTreePanel.getTreeComboBox().setRenderer(lookAndFeelManager.getCurrentLookAndFeel().getListCellRenderer(new NavigationTreePanelCustomComboBoxRenderer(lookAndFeelManager)));
         }
     }
     

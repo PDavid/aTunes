@@ -37,7 +37,16 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 public class ScoreColumn extends AbstractColumn {
 
-    private static final long serialVersionUID = -2673502888298485650L;
+    private final class ScoreColumnCellEditorRenderer extends AbstractListCellRendererCode<JLabel, Integer> {
+
+		@Override
+		public JComponent getComponent(JLabel superComponent, JList list, Integer value, int index, boolean isSelected, boolean cellHasFocus) {
+		    setLabel(superComponent, value);
+		    return superComponent;
+		}
+	}
+
+	private static final long serialVersionUID = -2673502888298485650L;
     
     private transient ILookAndFeelManager lookAndFeelManager;
     
@@ -46,6 +55,10 @@ public class ScoreColumn extends AbstractColumn {
     private CachedIconFactory star3Icon;
     private CachedIconFactory star4Icon;
     private CachedIconFactory star5Icon;
+    
+    private static final Integer[] STARS = new Integer[] { 0, 1, 2, 3, 4, 5 };
+    
+    private final transient ScoreColumnCellEditorRenderer editor = new ScoreColumnCellEditorRenderer();
     
     public void setStar1Icon(CachedIconFactory star1Icon) {
 		this.star1Icon = star1Icon;
@@ -83,17 +96,8 @@ public class ScoreColumn extends AbstractColumn {
 
     @Override
     public TableCellEditor getCellEditor() {
-        JComboBox comboBox = new JComboBox(new Object[] { 0, 1, 2, 3, 4, 5 });
-
-        comboBox.setRenderer(lookAndFeelManager.getCurrentLookAndFeel().getListCellRenderer(new AbstractListCellRendererCode() {
-
-            @Override
-            public JComponent getComponent(JComponent superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                setLabel((JLabel) superComponent, value);
-                return superComponent;
-            }
-        }));
-
+        JComboBox comboBox = new JComboBox(STARS);
+        comboBox.setRenderer(lookAndFeelManager.getCurrentLookAndFeel().getListCellRenderer(editor));
         return new DefaultCellEditor(comboBox);
     }
 
@@ -130,9 +134,9 @@ public class ScoreColumn extends AbstractColumn {
      * @param label
      * @param score
      */
-    private void setLabel(JLabel label, Object score) {
+    private void setLabel(JLabel label, Integer score) {
         label.setText(null);
-        CachedIconFactory icon = score != null ? getIcon((Integer)score) : null;
+        CachedIconFactory icon = score != null ? getIcon(score) : null;
     	// TODO: ICONOS Sacar a un renderer
         label.setIcon(icon != null ? icon.getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForColorMutableIcon(label, false)) : null);
     }

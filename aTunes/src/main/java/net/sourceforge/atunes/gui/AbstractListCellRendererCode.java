@@ -20,11 +20,13 @@
 
 package net.sourceforge.atunes.gui;
 
+import java.awt.Component;
+
 import javax.swing.JComponent;
 import javax.swing.JList;
 
-public abstract class AbstractListCellRendererCode {
+public abstract class AbstractListCellRendererCode<T extends Component, U> {
 
-    public abstract JComponent getComponent(JComponent superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus);
+    public abstract JComponent getComponent(T superComponent, JList list, U value, int index, boolean isSelected, boolean cellHasFocus);
 
 }

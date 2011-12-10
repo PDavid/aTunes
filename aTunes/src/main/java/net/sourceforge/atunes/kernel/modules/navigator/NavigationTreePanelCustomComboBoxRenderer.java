@@ -18,30 +18,28 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.panels.context;
+package net.sourceforge.atunes.kernel.modules.navigator;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 
 import net.sourceforge.atunes.gui.AbstractListCellRendererCode;
-import net.sourceforge.atunes.model.IContextPanel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.INavigationView;
 
-final class ContextSelectorListCellRendererCode extends AbstractListCellRendererCode<JLabel, IContextPanel> {
+final class NavigationTreePanelCustomComboBoxRenderer extends AbstractListCellRendererCode<JLabel, INavigationView> {
 	
-	private final ILookAndFeelManager lookAndFeelManager;
-
-	ContextSelectorListCellRendererCode(ILookAndFeelManager lookAndFeelManager) {
+	private ILookAndFeelManager lookAndFeelManager;
+	
+	public NavigationTreePanelCustomComboBoxRenderer(ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
-
+	
 	@Override
-	public JComponent getComponent(JLabel superComponent, JList list, IContextPanel value, int index, boolean isSelected, boolean cellHasFocus) {
-		if (value != null) {
-			superComponent.setIcon(value.getIcon().getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForColorMutableIcon(superComponent, isSelected || cellHasFocus)));
-			superComponent.setText(value.getTitle());
-		}
+	public JComponent getComponent(JLabel superComponent, JList list, INavigationView value, int index, boolean isSelected, boolean cellHasFocus) {
+		superComponent.setIcon(value.getIcon().getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForColorMutableIcon(superComponent, isSelected)));
+		superComponent.setText(value.getTitle());
 		return superComponent;
 	}
 }

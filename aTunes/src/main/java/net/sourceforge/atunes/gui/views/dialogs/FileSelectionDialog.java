@@ -182,17 +182,12 @@ public final class FileSelectionDialog extends AbstractCustomDialog implements I
         }
     }
 
-    private static class FileSystemListCellRendererCode extends AbstractListCellRendererCode {
+    private static class FileSystemListCellRendererCode extends AbstractListCellRendererCode<JLabel, File> {
         @Override
-        public JComponent getComponent(JComponent superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        	if (superComponent instanceof JLabel) {
-        		JLabel icon = (JLabel) superComponent;
-        		File f = (File) value;
-        		icon.setText(fsView.getSystemDisplayName(f));
-        		icon.setIcon(fsView.getSystemIcon(f));
-        		icon.setHorizontalAlignment(GuiUtils.getComponentOrientationAsSwingConstant());
-        		return icon;
-        	}
+        public JComponent getComponent(JLabel superComponent, JList list, File value, int index, boolean isSelected, boolean cellHasFocus) {
+        	superComponent.setText(fsView.getSystemDisplayName(value));
+        	superComponent.setIcon(fsView.getSystemIcon(value));
+        	superComponent.setHorizontalAlignment(GuiUtils.getComponentOrientationAsSwingConstant());
         	return superComponent;
         }
     }

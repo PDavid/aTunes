@@ -33,7 +33,7 @@ import net.sourceforge.atunes.gui.AbstractListCellRendererCode;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class LanguageListCellRendererCode extends AbstractListCellRendererCode {
+public class LanguageListCellRendererCode extends AbstractListCellRendererCode<JLabel, Locale> {
 	
 	private IState state;
 	
@@ -42,19 +42,12 @@ public class LanguageListCellRendererCode extends AbstractListCellRendererCode {
 	}
 	
     @Override
-    public JComponent getComponent(JComponent superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        if (!(value instanceof Locale)) {
-            throw new IllegalArgumentException("Argument value must be instance of Locale");
-        }
-
-        JComponent c = superComponent;
-
-        Locale displayingLocale = (Locale) value;
+    public JComponent getComponent(JLabel c, JList list, Locale displayingLocale, int index, boolean isSelected, boolean cellHasFocus) {
         Locale currentLocale = state.getLocale().getLocale();
 
         String name = displayingLocale.getDisplayName(currentLocale);
         name = StringUtils.getString(String.valueOf(name.charAt(0)).toUpperCase(currentLocale), name.substring(1));
-        ((JLabel) c).setText(name);
+        c.setText(name);
 
         // The name of flag file should be flag_<locale>.png
         // if the name of bundle is MainBundle_<locale>.properties
@@ -62,7 +55,7 @@ public class LanguageListCellRendererCode extends AbstractListCellRendererCode {
         
         URL flagURL = GeneralPanel.class.getResource(StringUtils.getString("/", Constants.TRANSLATIONS_DIR, "/", flag));
         if (flagURL != null) {
-        	((JLabel) c).setIcon(new ImageIcon(flagURL));
+        	c.setIcon(new ImageIcon(flagURL));
         }
         return c;
     }
