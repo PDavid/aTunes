@@ -29,7 +29,7 @@ import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
-public class UnknownElementTreeCellDecorator extends AbstractTreeCellDecorator {
+public class UnknownElementTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, Object> {
 
 	private String unknownArtist;
 	private String unknownAlbum;
@@ -44,9 +44,9 @@ public class UnknownElementTreeCellDecorator extends AbstractTreeCellDecorator {
 	}
 	
     @Override
-    public Component decorateTreeCellComponent(Component component, Object userObject, boolean isSelected) {
+    public Component decorateTreeCellComponent(JLabel component, Object userObject, boolean isSelected) {
     	if (StringUtils.equalsToStrings(userObject.toString(), unknownAlbum, unknownArtist, unknownGenre, unknownYear)) {
-        	((JLabel) component).setForeground(ColorDefinitions.GENERAL_UNKNOWN_ELEMENT_FOREGROUND_COLOR);
+        	component.setForeground(ColorDefinitions.GENERAL_UNKNOWN_ELEMENT_FOREGROUND_COLOR);
         }
         return component;
     }

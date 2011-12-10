@@ -21,36 +21,85 @@
 package net.sourceforge.atunes.gui;
 
 import java.awt.Component;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.utils.ReflectionUtils;
 
-public abstract class AbstractTreeCellDecorator {
+public abstract class AbstractTreeCellDecorator<T extends Component, U> {
 	
-	protected IState state;
+	private IState state;
 	
-	protected ILookAndFeelManager lookAndFeelManager;
+	private ILookAndFeelManager lookAndFeelManager;
+	
+	private Class<?> componentClass;
+	
+	private Class<?> valueClass;
+	
+	public AbstractTreeCellDecorator() {
+		try {
+			Type[] types = ReflectionUtils.getTypeArgumentsOfParameterizedType(this.getClass());
+			this.componentClass = (Class<?>) types[0];
+			if (types[1] instanceof Class<?>) {
+				this.valueClass = (Class<?>) types[1];
+			} else if (types[1] instanceof ParameterizedType) {
+				this.valueClass = (Class<?>) ((ParameterizedType)types[1]).getRawType();
+			}
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+	}
 	
 	/**
 	 * @param state
 	 */
-	public void setState(IState state) {
+	public final void setState(IState state) {
 		this.state = state;
 	}
 	
 	/**
 	 * @param lookAndFeelManager
 	 */
-	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+	public final void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
+	}
+	
+	/**
+	 * @return
+	 */
+	protected final IState getState() {
+		return state;
+	}
+	
+	/**
+	 * @return
+	 */
+	protected final ILookAndFeelManager getLookAndFeelManager() {
+		return lookAndFeelManager;
 	}
 	
 	/**
 	 * @return current look and feel
 	 */
-	protected ILookAndFeel getLookAndFeel() {
+	protected final ILookAndFeel getLookAndFeel() {
 		return lookAndFeelManager.getCurrentLookAndFeel();
+	}
+
+	/**
+	 * @return
+	 */
+	public final Class<?> getComponentClass() {
+		return componentClass;
+	}
+	
+	/**
+	 * @return
+	 */
+	public final Class<?> getValueClass() {
+		return valueClass;
 	}
 	
     /**
@@ -60,6 +109,6 @@ public abstract class AbstractTreeCellDecorator {
      * @param isSelected
      * @return
      */
-    public abstract Component decorateTreeCellComponent(Component component, Object userObject, boolean isSelected);
+    public abstract Component decorateTreeCellComponent(T component, U userObject, boolean isSelected);
 
 }

@@ -28,7 +28,7 @@ import net.sourceforge.atunes.gui.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.Folder;
 
-public class FolderTreeCellDecorator extends AbstractTreeCellDecorator {
+public class FolderTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, Folder> {
 
 	private CachedIconFactory folderIcon;
 	
@@ -40,10 +40,8 @@ public class FolderTreeCellDecorator extends AbstractTreeCellDecorator {
 	}
 	
     @Override
-    public Component decorateTreeCellComponent(Component component, Object userObject, boolean isSelected) {
-        if (userObject instanceof Folder && component instanceof JLabel) {
-            ((JLabel) component).setIcon(folderIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
-        }
+    public Component decorateTreeCellComponent(JLabel component, Folder userObject, boolean isSelected) {
+        component.setIcon(folderIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
         return component;
     }
 

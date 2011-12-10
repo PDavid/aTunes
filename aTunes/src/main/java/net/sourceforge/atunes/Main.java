@@ -78,6 +78,9 @@ public final class Main {
      * @param args
      */
     public static void main(String[] args) {
+        // Enable uncaught exception catching
+        Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler());
+
         // Fetch arguments into a list
         List<String> arguments = StringUtils.fromStringArrayToList(args);
     	Context.initialize();
@@ -89,9 +92,9 @@ public final class Main {
     
     private void start(List<String> arguments) {
         // For detecting Swing threading violations
-//        if (applicationArguments.isDebug()) {
+        if (applicationArguments.isDebug()) {
 //            RepaintManager.setCurrentManager(new CheckThreadViolationRepaintManager());
-//        }
+        }
 
         // Set log4j properties
         Logger.loadProperties(applicationArguments.isDebug(), osManager);
@@ -101,9 +104,6 @@ public final class Main {
             // Is not first aTunes instance running, so send parameters and finalize
         	applicationArgumentsSender.sendArgumentsToFirstInstance(arguments);
         } else {
-            // Enable uncaught exception catching
-            Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler());
-
             // WE ARE CLOSING ERROR STREAM!!!
             // THIS IS DONE TO AVOID ANNOYING MESSAGES FROM SOME LIBRARIES
             System.err.close();

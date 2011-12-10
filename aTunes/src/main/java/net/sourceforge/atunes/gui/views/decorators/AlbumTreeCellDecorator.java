@@ -29,7 +29,7 @@ import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 
-public class AlbumTreeCellDecorator extends AbstractTreeCellDecorator {
+public class AlbumTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, Album> {
 
 	private IFavoritesHandler favoritesHandler;
 	
@@ -52,15 +52,12 @@ public class AlbumTreeCellDecorator extends AbstractTreeCellDecorator {
 	}
 	
     @Override
-    public Component decorateTreeCellComponent(Component component, Object userObject, boolean isSelected) {
-        if (userObject instanceof Album) {
-            if (!state.isShowFavoritesInNavigator() || !favoritesHandler.getFavoriteAlbumsInfo().containsValue(userObject)) {
-                ((JLabel) component).setIcon(albumSmallIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
-            } else {
-                ((JLabel) component).setIcon(albumFavoriteIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
-            }
-        }
-        
+    public Component decorateTreeCellComponent(JLabel component, Album userObject, boolean isSelected) {
+    	if (!getState().isShowFavoritesInNavigator() || !favoritesHandler.getFavoriteAlbumsInfo().containsValue(userObject)) {
+    		component.setIcon(albumSmallIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
+    	} else {
+    		component.setIcon(albumFavoriteIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
+    	}
         return component;
     }
     

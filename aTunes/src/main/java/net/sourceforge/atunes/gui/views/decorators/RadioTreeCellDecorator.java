@@ -28,7 +28,7 @@ import net.sourceforge.atunes.gui.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IRadio;
 
-public class RadioTreeCellDecorator extends AbstractTreeCellDecorator {
+public class RadioTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, IRadio> {
 	
 	private CachedIconFactory radioSmallIcon;
 	
@@ -40,10 +40,8 @@ public class RadioTreeCellDecorator extends AbstractTreeCellDecorator {
 	}
 
     @Override
-    public Component decorateTreeCellComponent(Component component, Object userObject, boolean isSelected) {
-        if (userObject instanceof IRadio && component instanceof JLabel) {
-            ((JLabel) component).setIcon(radioSmallIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
-        }
+    public Component decorateTreeCellComponent(JLabel component, IRadio userObject, boolean isSelected) {
+        component.setIcon(radioSmallIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
         return component;
     }
 
