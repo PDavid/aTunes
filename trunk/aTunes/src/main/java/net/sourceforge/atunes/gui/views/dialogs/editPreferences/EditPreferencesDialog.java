@@ -187,11 +187,9 @@ public final class EditPreferencesDialog extends AbstractCustomDialog {
     	}
     }
 
-    private static class PreferencesListCellRendererCode extends AbstractListCellRendererCode {
+    private static class PreferencesListCellRendererCode extends AbstractListCellRendererCode<JLabel, AbstractPreferencesPanel> {
         @Override
-        public JComponent getComponent(JComponent superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            JLabel label = (JLabel) superComponent;
-            AbstractPreferencesPanel p = (AbstractPreferencesPanel) value;
+        public JComponent getComponent(JLabel label, JList list, AbstractPreferencesPanel p, int index, boolean isSelected, boolean cellHasFocus) {
             label.setText(p.getTitle());
             label.setIcon(p.getIcon());
             return label;

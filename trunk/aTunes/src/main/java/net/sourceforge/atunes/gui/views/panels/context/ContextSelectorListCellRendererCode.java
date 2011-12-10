@@ -28,7 +28,7 @@ import net.sourceforge.atunes.gui.AbstractListCellRendererCode;
 import net.sourceforge.atunes.model.IContextPanel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
-final class ContextSelectorListCellRendererCode extends AbstractListCellRendererCode {
+final class ContextSelectorListCellRendererCode extends AbstractListCellRendererCode<JLabel, IContextPanel> {
 	
 	private final ILookAndFeelManager lookAndFeelManager;
 
@@ -37,10 +37,10 @@ final class ContextSelectorListCellRendererCode extends AbstractListCellRenderer
 	}
 
 	@Override
-	public JComponent getComponent(JComponent superComponent, JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+	public JComponent getComponent(JLabel superComponent, JList list, IContextPanel value, int index, boolean isSelected, boolean cellHasFocus) {
 		if (value != null) {
-			((JLabel)superComponent).setIcon(((IContextPanel)value).getIcon().getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForColorMutableIcon(superComponent, isSelected || cellHasFocus)));
-			((JLabel)superComponent).setText(((IContextPanel)value).getTitle());
+			superComponent.setIcon(value.getIcon().getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForColorMutableIcon(superComponent, isSelected || cellHasFocus)));
+			superComponent.setText(value.getTitle());
 		}
 		return superComponent;
 	}
