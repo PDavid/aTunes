@@ -88,7 +88,7 @@ public class Artist implements Serializable, ITreeObject<ILocalAudioObject>, Com
         if (!(o instanceof Artist)) {
             return false;
         }
-        return ((Artist) o).name.toLowerCase().equals(name.toLowerCase());
+        return ((Artist) o).name.equalsIgnoreCase(name);
     }
 
     /**

@@ -72,7 +72,7 @@ public class Genre implements IGenre {
         if (!(o instanceof Genre)) {
             return false;
         }
-        return ((Genre) o).name.toLowerCase().equals(name.toLowerCase());
+        return ((Genre) o).name.equalsIgnoreCase(name);
     }
 
     /**

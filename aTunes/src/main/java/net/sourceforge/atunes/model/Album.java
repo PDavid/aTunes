@@ -222,7 +222,7 @@ public class Album implements Serializable, ITreeObject<ILocalAudioObject>, Comp
 		if (name == null) {
 			if (other.name != null)
 				return false;
-		} else if (!name.toLowerCase().equals(other.name.toLowerCase()))
+		} else if (!name.equalsIgnoreCase(other.name))
 			return false;
 		return true;
 	}
