@@ -159,33 +159,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
 
         BufferedReader stdInput = null;
         try {
-            List<String> command = new ArrayList<String>();
-            command.add(StringUtils.getString(osManager.getExternalToolsPath(), converterCommand));
-            if (device != null) {
-                // When -scanbus dev=ATA is used we use another syntax
-                if (ata) {
-                    String devATA = StringUtils.getString(Cdda2wavConstants.ATA, ":", getDriveId());
-                    command.add(devATA);
-                } else {
-                    command.add(Cdda2wavConstants.DEVICE);
-                    command.add(getDriveId());
-                }
-            }
-            command.add(Cdda2wavConstants.WAVFORMAT);
-            command.add(StringUtils.getString(Cdda2wavConstants.TRACKS, track));
-            command.add(Cdda2wavConstants.NO_INFO_FILE);
-            if (useParanoia) {
-                Logger.info("Using paranoia mode");
-                command.add(Cdda2wavConstants.PARANOIA);
-            }
-            command.add(fileName.getAbsolutePath());
-
-            /* Check that we've got somewhere to write the track to */
-            if (!fileName.getParentFile().mkdirs()) {
-            	Logger.error(StringUtils.getString(fileName.getParentFile(), " not created"));
-            }
-
-            Logger.debug((Object[]) command.toArray(new String[command.size()]));
+            List<String> command = createCommand(track, fileName);
 
             setProcess(new ProcessBuilder(command).start());
             stdInput = new BufferedReader(new InputStreamReader(getProcess().getErrorStream()));
@@ -221,6 +195,42 @@ public class Cdda2wav extends AbstractCdToWavConverter {
             ClosingUtils.close(stdInput);
         }
     }
+
+	/**
+	 * @param track
+	 * @param fileName
+	 * @return
+	 */
+	private List<String> createCommand(int track, File fileName) {
+		List<String> command = new ArrayList<String>();
+		command.add(StringUtils.getString(osManager.getExternalToolsPath(), converterCommand));
+		if (device != null) {
+		    // When -scanbus dev=ATA is used we use another syntax
+		    if (ata) {
+		        String devATA = StringUtils.getString(Cdda2wavConstants.ATA, ":", getDriveId());
+		        command.add(devATA);
+		    } else {
+		        command.add(Cdda2wavConstants.DEVICE);
+		        command.add(getDriveId());
+		    }
+		}
+		command.add(Cdda2wavConstants.WAVFORMAT);
+		command.add(StringUtils.getString(Cdda2wavConstants.TRACKS, track));
+		command.add(Cdda2wavConstants.NO_INFO_FILE);
+		if (useParanoia) {
+		    Logger.info("Using paranoia mode");
+		    command.add(Cdda2wavConstants.PARANOIA);
+		}
+		command.add(fileName.getAbsolutePath());
+
+		/* Check that we've got somewhere to write the track to */
+		if (!fileName.getParentFile().mkdirs()) {
+			Logger.error(StringUtils.getString(fileName.getParentFile(), " not created"));
+		}
+
+		Logger.debug((Object[]) command.toArray(new String[command.size()]));
+		return command;
+	}
 
     /**
      * Enable paranoia mode for ripping
@@ -264,26 +274,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
 
         try {
             // Prepare cdda2wav commands and execute
-            List<String> command = new ArrayList<String>();
-            command.add(StringUtils.getString(osManager.getExternalToolsPath(), converterCommand));
-
-            if (device != null) {
-                // If -scanbus dev=ATA method finds something, we need to use a different syntax
-                if (ata) {
-                    String devATA = StringUtils.getString(Cdda2wavConstants.ATA, ":", getDriveId());
-                    command.add(devATA);
-                } else {
-                    command.add(Cdda2wavConstants.DEVICE);
-                    command.add(getDriveId());
-                }
-            }
-            command.add(Cdda2wavConstants.LIST_TRACKS);
-            command.add(Cdda2wavConstants.VERBOSE);
-            command.add(Cdda2wavConstants.GUI);
-            command.add(Cdda2wavConstants.NO_INFO_FILE);
-            command.add(Cdda2wavConstants.CDDB);
-
-            Logger.debug((Object[]) command.toArray(new String[command.size()]));
+            List<String> command = createCommandToRetrieveDiscInformation();
 
             setProcess(new ProcessBuilder(command).start());
             cdLoaded = false;
@@ -348,6 +339,33 @@ public class Cdda2wav extends AbstractCdToWavConverter {
             return null;
         }
     }
+
+	/**
+	 * @return
+	 */
+	private List<String> createCommandToRetrieveDiscInformation() {
+		List<String> command = new ArrayList<String>();
+		command.add(StringUtils.getString(osManager.getExternalToolsPath(), converterCommand));
+
+		if (device != null) {
+		    // If -scanbus dev=ATA method finds something, we need to use a different syntax
+		    if (ata) {
+		        String devATA = StringUtils.getString(Cdda2wavConstants.ATA, ":", getDriveId());
+		        command.add(devATA);
+		    } else {
+		        command.add(Cdda2wavConstants.DEVICE);
+		        command.add(getDriveId());
+		    }
+		}
+		command.add(Cdda2wavConstants.LIST_TRACKS);
+		command.add(Cdda2wavConstants.VERBOSE);
+		command.add(Cdda2wavConstants.GUI);
+		command.add(Cdda2wavConstants.NO_INFO_FILE);
+		command.add(Cdda2wavConstants.CDDB);
+
+		Logger.debug((Object[]) command.toArray(new String[command.size()]));
+		return command;
+	}
 
     /**
      * Returns OS name of CD drive.
