@@ -38,7 +38,15 @@ import com.google.common.collect.Collections2;
 
 public class RepairTrackNumbersAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 4117130815173907225L;
+    private static final class FilesWithEmptyTracksFilter implements Predicate<ILocalAudioObject> {
+		@Override
+		public boolean apply(ILocalAudioObject ao) {
+			return ao.getTrackNumber() == 0;
+		}
+	}
+
+
+	private static final long serialVersionUID = 4117130815173907225L;
 
     private IProcessFactory processFactory;
     
@@ -150,11 +158,6 @@ public class RepairTrackNumbersAction extends CustomAbstractAction {
      * @return
      */
     private Collection<ILocalAudioObject> getFilesWithEmptyTracks(Collection<ILocalAudioObject> audioFiles) {
-    	return Collections2.filter(audioFiles, new Predicate<ILocalAudioObject>() {
-    		@Override
-    		public boolean apply(ILocalAudioObject ao) {
-    			return ao.getTrackNumber() == 0;
-    		}
-		});
+    	return Collections2.filter(audioFiles, new FilesWithEmptyTracksFilter());
     }
 }

@@ -22,6 +22,9 @@ package net.sourceforge.atunes;
 
 import java.util.List;
 
+import javax.swing.RepaintManager;
+
+import net.sourceforge.atunes.gui.debug.CheckThreadViolationRepaintManager;
 import net.sourceforge.atunes.model.IKernel;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.Logger;
@@ -93,7 +96,7 @@ public final class Main {
     private void start(List<String> arguments) {
         // For detecting Swing threading violations
         if (applicationArguments.isDebug()) {
-//            RepaintManager.setCurrentManager(new CheckThreadViolationRepaintManager());
+            RepaintManager.setCurrentManager(new CheckThreadViolationRepaintManager());
         }
 
         // Set log4j properties

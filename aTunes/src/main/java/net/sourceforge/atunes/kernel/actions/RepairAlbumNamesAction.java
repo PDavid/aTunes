@@ -41,7 +41,14 @@ import com.google.common.collect.Collections2;
  */
 public class RepairAlbumNamesAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = -7828819966696617838L;
+    private static final class FilesWithEmptyAlbumFilter implements Predicate<ILocalAudioObject> {
+		@Override
+		public boolean apply(ILocalAudioObject ao) {
+			return ao.getAlbum() == null || UnknownObjectCheck.isUnknownAlbum(ao.getAlbum()) || ao.getAlbum().isEmpty();
+		}
+	}
+
+	private static final long serialVersionUID = -7828819966696617838L;
 
     private IRepositoryHandler repositoryHandler;
     
@@ -91,11 +98,6 @@ public class RepairAlbumNamesAction extends CustomAbstractAction {
      * @return
      */
     private Collection<ILocalAudioObject> getFilesWithEmptyAlbum(Collection<ILocalAudioObject> audioFiles) {
-    	return Collections2.filter(audioFiles, new Predicate<ILocalAudioObject>() {
-    		@Override
-    		public boolean apply(ILocalAudioObject ao) {
-    			return ao.getAlbum() == null || UnknownObjectCheck.isUnknownAlbum(ao.getAlbum()) || ao.getAlbum().isEmpty();
-    		}
-		});
+    	return Collections2.filter(audioFiles, new FilesWithEmptyAlbumFilter());
     }
 }

@@ -40,16 +40,12 @@ public abstract class AbstractTreeCellDecorator<T extends Component, U> {
 	private Class<?> valueClass;
 	
 	public AbstractTreeCellDecorator() {
-		try {
-			Type[] types = ReflectionUtils.getTypeArgumentsOfParameterizedType(this.getClass());
-			this.componentClass = (Class<?>) types[0];
-			if (types[1] instanceof Class<?>) {
-				this.valueClass = (Class<?>) types[1];
-			} else if (types[1] instanceof ParameterizedType) {
-				this.valueClass = (Class<?>) ((ParameterizedType)types[1]).getRawType();
-			}
-		} catch (Throwable e) {
-			e.printStackTrace();
+		Type[] types = ReflectionUtils.getTypeArgumentsOfParameterizedType(this.getClass());
+		this.componentClass = (Class<?>) types[0];
+		if (types[1] instanceof Class<?>) {
+			this.valueClass = (Class<?>) types[1];
+		} else if (types[1] instanceof ParameterizedType) {
+			this.valueClass = (Class<?>) ((ParameterizedType)types[1]).getRawType();
 		}
 	}
 	

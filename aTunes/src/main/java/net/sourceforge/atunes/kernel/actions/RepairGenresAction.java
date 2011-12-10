@@ -39,7 +39,14 @@ import com.google.common.collect.Collections2;
  */
 public class RepairGenresAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = -7789897583007508598L;
+    private static final class FilesWithEmptyGenre implements Predicate<ILocalAudioObject> {
+		@Override
+		public boolean apply(ILocalAudioObject ao) {
+			return ao.getGenre() == null || ao.getGenre().isEmpty();
+		}
+	}
+
+	private static final long serialVersionUID = -7789897583007508598L;
 
     private IProcessFactory processFactory;
     
@@ -89,11 +96,6 @@ public class RepairGenresAction extends CustomAbstractAction {
      * @return
      */
     private Collection<ILocalAudioObject> getFilesWithEmptyGenre(Collection<ILocalAudioObject> audioFiles) {
-    	return Collections2.filter(audioFiles, new Predicate<ILocalAudioObject>() {
-    		@Override
-    		public boolean apply(ILocalAudioObject ao) {
-    			return ao.getGenre() == null || ao.getGenre().isEmpty();
-    		}
-		});
+    	return Collections2.filter(audioFiles, new FilesWithEmptyGenre());
     }
 }
