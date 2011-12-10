@@ -32,6 +32,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 
 import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheException;
 import net.sf.ehcache.Element;
 import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
@@ -75,50 +76,46 @@ public class LastFmCache extends AbstractCache {
      */
     public synchronized boolean clearCache() {
         boolean exception = false;
-        try {
-            getAlbumCoverCache().removeAll();
-        } catch (Exception e) {
-            Logger.info("Could not delete all files from album cover cache");
-            exception = true;
+        if (clearCache(getAlbumCoverCache())) {
+        	exception = true;
         }
-        try {
-            getAlbumInfoCache().removeAll();
-        } catch (Exception e) {
-            Logger.info("Could not delete all files from album info cache");
-            exception = true;
+        if (clearCache(getAlbumInfoCache())) {
+        	exception = true;
         }
-        try {
-            getArtistImageCache().removeAll();
-        } catch (Exception e) {
-            Logger.info("Could not delete all files from artist image cache");
-            exception = true;
+        if (clearCache(getArtistImageCache())) {
+        	exception = true;
         }
-        try {
-            getAlbumListCache().removeAll();
-        } catch (Exception e) {
-            Logger.info("Could not delete all files from album list cache");
-            exception = true;
+        if (clearCache(getAlbumListCache())) {
+        	exception = true;
         }
-        try {
-            getSimilarArtistsCache().removeAll();
-        } catch (Exception e) {
-            Logger.info("Could not delete all files from similar artist cache");
-            exception = true;
+        if (clearCache(getSimilarArtistsCache())) {
+        	exception = true;
         }
-        try {
-            getArtistThumbsCache().removeAll();
-        } catch (Exception e) {
-            Logger.info("Could not delete all files from artist thumbs cache");
-            exception = true;
+        if (clearCache(getArtistThumbsCache())) {
+        	exception = true;
         }
-        try {
-            getArtistWikiCache().removeAll();
-        } catch (Exception e) {
-            Logger.info("Could not delete all files from artist wiki cache");
-            exception = true;
+        if (clearCache(getArtistWikiCache())) {
+        	exception = true;
         }
-
         return exception;
+    }
+    
+    /**
+     * Clears a cache, returning true if some error happened
+     * @param cache
+     * @return
+     */
+    private boolean clearCache(Cache cache) {
+        try {
+            cache.removeAll();
+        } catch (IllegalStateException e) {
+            Logger.info("Could not delete all files from cache: ", cache.getName());
+            return true;
+        } catch (CacheException e) {
+        	Logger.info("Could not delete all files from cache: ", cache.getName());
+        	return true;
+        }
+        return false;
     }
 
     private synchronized File getSubmissionDataDir() throws IOException {

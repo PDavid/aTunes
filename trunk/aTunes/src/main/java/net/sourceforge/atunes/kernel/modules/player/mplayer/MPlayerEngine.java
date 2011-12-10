@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.player.mplayer;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.EnumSet;
 
@@ -91,10 +92,13 @@ public class MPlayerEngine extends AbstractPlayerEngine {
         	} else {
         		return false;
         	}
-    	} catch (Exception e) {
+    	} catch (IOException e) {
     		Logger.error(e);
     		return false;
-    	} finally {
+		} catch (InterruptedException e) {
+    		Logger.error(e);
+    		return false;
+		} finally {
     		ClosingUtils.close(in);
     	}
     }

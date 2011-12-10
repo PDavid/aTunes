@@ -64,7 +64,7 @@ public class LyrDBEngine extends AbstractLyricsEngine {
 			}
 			br.close();
 			
-		} catch (Exception e) {
+		} catch (IOException e) {
             Logger.error(StringUtils.getString(e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
 		}
         return lyrics;

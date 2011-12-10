@@ -155,10 +155,13 @@ public class NeroAacEncoder extends AbstractEncoder {
             Logger.info("Encoded ok!!");
             return true;
 
-        } catch (Exception e) {
+        } catch (IOException e) {
             Logger.error(StringUtils.getString("Process execution caused exception ", e));
             return false;
-        } finally {
+        } catch (InterruptedException e) {
+            Logger.error(StringUtils.getString("Process execution caused exception ", e));
+            return false;
+		} finally {
             ClosingUtils.close(stdInput);
         }
     }

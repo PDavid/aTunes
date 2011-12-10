@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.webservices.lyrics;
 
 import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheException;
 import net.sf.ehcache.Element;
 import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.utils.AbstractCache;
@@ -43,7 +44,10 @@ public class LyricsCache extends AbstractCache {
         try {
             getCache().removeAll();
             getCache().flush();
-        } catch (Exception e) {
+        } catch (IllegalStateException e) {
+            Logger.info("Could not delete all files from lyrics cache");
+            return true;
+        } catch (CacheException e) {
             Logger.info("Could not delete all files from lyrics cache");
             return true;
         }
