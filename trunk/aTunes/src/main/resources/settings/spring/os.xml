@@ -7,8 +7,8 @@
 	
 	<bean id="osManager" class="net.sourceforge.atunes.kernel.modules.os.OsManager" init-method="initialize"/>
 
-	<bean id="macOsApplication" class="net.sourceforge.atunes.kernel.modules.os.macosx.MacOSXApplication" scope="prototype"/>
-	<bean id="macOsDockMenu" class="net.sourceforge.atunes.kernel.modules.os.macosx.MacOSXDockMenu" scope="prototype"/>
-	<bean id="macOsInitializer" class="net.sourceforge.atunes.kernel.modules.os.macosx.MacOSXInitializer" scope="prototype"/>
+	<bean id="macOsApplication" class="net.sourceforge.atunes.kernel.modules.os.MacOSXApplication" scope="prototype"/>
+	<bean id="macOsDockMenu" class="net.sourceforge.atunes.kernel.modules.os.MacOSXDockMenu" scope="prototype"/>
+	<bean id="macOsInitializer" class="net.sourceforge.atunes.kernel.modules.os.MacOSXInitializer" scope="prototype"/>
 
 </beans>

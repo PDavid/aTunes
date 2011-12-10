@@ -18,21 +18,29 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.os.macosx;
+package net.sourceforge.atunes.kernel.modules.os;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
- * Pass this method an Object and Method equipped to display application info
- * They will be called when the About menu item is selected from the application menu
+ * Called when dialog canceled
  * @author alex
+ *
  */
-public class MacOSXAboutHandler extends MacOSXAdapter {
-
+final class MacOSXPlayerSelectionDialogCancelButtonActionListener implements ActionListener {
+	
+	private MacOSXPlayerSelectionDialog dialog;
+	
 	/**
-	 * @param target
-	 * @param methodName
+	 * @param dialog
 	 */
-	protected MacOSXAboutHandler(Object target, String methodName) {
-		super("handleAbout", target, methodName);
+	public MacOSXPlayerSelectionDialogCancelButtonActionListener(MacOSXPlayerSelectionDialog dialog) {
+		this.dialog = dialog;
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		dialog.dispose();
 	}
 }

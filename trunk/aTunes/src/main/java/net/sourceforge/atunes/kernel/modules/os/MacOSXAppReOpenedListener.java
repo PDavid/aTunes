@@ -18,27 +18,31 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.os.macosx;
+package net.sourceforge.atunes.kernel.modules.os;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
 
-import javax.swing.Action;
+import net.sourceforge.atunes.utils.ReflectionUtils;
 
 /**
- * Wraps an action into an action listener
+ * Listener to be called when application is reopened, usually from dock
  * @author alex
  *
  */
-final class DockMenuItemActionListener implements ActionListener {
-	private final Action action;
+final class MacOSXAppReOpenedListener implements InvocationHandler {
+	
+	private Object targetObject;
+	private Method targetMethod;
 
-	DockMenuItemActionListener(Action action) {
-		this.action = action;
+	public MacOSXAppReOpenedListener(Object target, String methodName) {
+        this.targetObject = target;
+        this.targetMethod = ReflectionUtils.getMethod(target.getClass(), methodName);
 	}
-
+	
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		action.actionPerformed(e);
+	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+		targetMethod.invoke(targetObject, (Object[]) null);
+		return null;
 	}
 }

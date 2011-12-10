@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.os.macosx;
+package net.sourceforge.atunes.kernel.modules.os;
 
 import net.sourceforge.atunes.model.IKernel;
 import net.sourceforge.atunes.model.IStateHandler;

@@ -18,13 +18,19 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.os.macosx;
+package net.sourceforge.atunes.kernel.modules.os;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import net.sourceforge.atunes.kernel.modules.os.IMacOSXApplication;
+import net.sourceforge.atunes.kernel.modules.os.MacOSXAboutHandler;
+import net.sourceforge.atunes.kernel.modules.os.MacOSXAppReOpenedListener;
+import net.sourceforge.atunes.kernel.modules.os.MacOSXInitializer;
+import net.sourceforge.atunes.kernel.modules.os.MacOSXPreferencesHandler;
+import net.sourceforge.atunes.kernel.modules.os.MacOSXQuitHandler;
 import net.sourceforge.atunes.model.IKernel;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.IUIHandler;
