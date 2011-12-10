@@ -25,6 +25,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -52,6 +53,7 @@ import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.utils.Logger;
 
 import org.jdesktop.swingx.border.DropShadowBorder;
 
@@ -125,9 +127,11 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
 			                updateCovers();
 			            }
 			        });
-			    } catch (Exception e) {
-			        // Nothing to do
-			    }
+			    } catch (InvocationTargetException e) {
+			    	Logger.error(e);
+				} catch (InterruptedException e) {
+			    	Logger.error(e);
+				}
 			}
 		}
 

@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLConnection;
 import java.util.List;
@@ -140,7 +141,7 @@ public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
                     lastTime = System.currentTimeMillis();
                 }
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             Logger.error(e);
         } finally {
             ClosingUtils.close(input);

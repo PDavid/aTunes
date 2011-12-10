@@ -34,6 +34,7 @@ import java.io.StringReader;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -62,6 +63,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.ConversionException;
@@ -196,12 +198,20 @@ public final class XMLUtils {
      */
     public static Document getXMLDocument(String xml) {
         if ((null != xml) && (!xml.isEmpty())) {
-            try {
-                DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-                return parser.parse(new InputSource(new StringReader(xml)));
-            } catch (Exception e) {
-                return null;
-            }
+        	DocumentBuilder parser;
+        	try {
+        		parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        		return parser.parse(new InputSource(new StringReader(xml)));
+        	} catch (ParserConfigurationException e) {
+        		Logger.error(e);
+        		return null;
+        	} catch (SAXException e) {
+        		Logger.error(e);
+        		return null;
+        	} catch (IOException e) {
+        		Logger.error(e);
+        		return null;
+			}
         }
         return null;
     }

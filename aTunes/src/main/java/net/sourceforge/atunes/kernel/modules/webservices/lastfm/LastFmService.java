@@ -276,62 +276,57 @@ public final class LastFmService {
      * @return the album list
      */
     public IAlbumListInfo getAlbumList(String artist, boolean hideVariousArtists, int minimumSongNumber) {
-        try {
-            // Try to get from cache
-            IAlbumListInfo albumList = getCache().retrieveAbumList(artist);
-            if (albumList == null) {
-                Collection<Album> as = Artist.getTopAlbums(artist, getApiKey());
-                if (as != null) {
-                    IAlbumListInfo albums = LastFmAlbumList.getAlbumList(as, artist);
+        // Try to get from cache
+		IAlbumListInfo albumList = getCache().retrieveAbumList(artist);
+		if (albumList == null) {
+		    Collection<Album> as = Artist.getTopAlbums(artist, getApiKey());
+		    if (as != null) {
+		        IAlbumListInfo albums = LastFmAlbumList.getAlbumList(as, artist);
 
-                    List<IAlbumInfo> result = new ArrayList<IAlbumInfo>();
-                    for (IAlbumInfo a : albums.getAlbums()) {
-                        if (a.getBigCoverURL() != null && !a.getBigCoverURL().isEmpty()) {
-                            result.add(a);
-                        }
-                    }
+		        List<IAlbumInfo> result = new ArrayList<IAlbumInfo>();
+		        for (IAlbumInfo a : albums.getAlbums()) {
+		            if (a.getBigCoverURL() != null && !a.getBigCoverURL().isEmpty()) {
+		                result.add(a);
+		            }
+		        }
 
-                    albumList = new LastFmAlbumList();
-                    albumList.setArtist(artist);
-                    albumList.setAlbums(result);
-                    getCache().storeAlbumList(artist, albumList);
-                }
-            }
+		        albumList = new LastFmAlbumList();
+		        albumList.setArtist(artist);
+		        albumList.setAlbums(result);
+		        getCache().storeAlbumList(artist, albumList);
+		    }
+		}
 
-            if (albumList != null) {
-                List<IAlbumInfo> albumsFiltered = null;
+		if (albumList != null) {
+		    List<IAlbumInfo> albumsFiltered = null;
 
-                // Apply filter to hide "Various Artists" albums
-                if (hideVariousArtists) {
-                    albumsFiltered = new ArrayList<IAlbumInfo>();
-                    for (IAlbumInfo albumInfo : albumList.getAlbums()) {
-                        if (!albumInfo.getArtist().equals(VARIOUS_ARTISTS)) {
-                            albumsFiltered.add(albumInfo);
-                        }
-                    }
-                    albumList.setAlbums(albumsFiltered);
-                }
+		    // Apply filter to hide "Various Artists" albums
+		    if (hideVariousArtists) {
+		        albumsFiltered = new ArrayList<IAlbumInfo>();
+		        for (IAlbumInfo albumInfo : albumList.getAlbums()) {
+		            if (!albumInfo.getArtist().equals(VARIOUS_ARTISTS)) {
+		                albumsFiltered.add(albumInfo);
+		            }
+		        }
+		        albumList.setAlbums(albumsFiltered);
+		    }
 
-                // Apply filter to hide albums with less than X songs
-                if (minimumSongNumber > 0) {
-                    albumsFiltered = new ArrayList<IAlbumInfo>();
-                    for (IAlbumInfo albumInfo : albumList.getAlbums()) {
-                        IAlbumInfo extendedAlbumInfo = getAlbum(artist, albumInfo.getTitle());
-                        if (extendedAlbumInfo != null && extendedAlbumInfo.getTracks() != null && extendedAlbumInfo.getTracks().size() >= minimumSongNumber) {
-                            albumsFiltered.add(albumInfo);
-                        }
-                    }
-                }
+		    // Apply filter to hide albums with less than X songs
+		    if (minimumSongNumber > 0) {
+		        albumsFiltered = new ArrayList<IAlbumInfo>();
+		        for (IAlbumInfo albumInfo : albumList.getAlbums()) {
+		            IAlbumInfo extendedAlbumInfo = getAlbum(artist, albumInfo.getTitle());
+		            if (extendedAlbumInfo != null && extendedAlbumInfo.getTracks() != null && extendedAlbumInfo.getTracks().size() >= minimumSongNumber) {
+		                albumsFiltered.add(albumInfo);
+		            }
+		        }
+		    }
 
-                if (albumsFiltered != null) {
-                    albumList.setAlbums(albumsFiltered);
-                }
-            }
-            return albumList;
-        } catch (Exception e) {
-            Logger.error(e);
-        }
-        return null;
+		    if (albumsFiltered != null) {
+		        albumList.setAlbums(albumsFiltered);
+		    }
+		}
+		return albumList;
     }
 
     /**

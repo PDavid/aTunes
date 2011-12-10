@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.state;
 
 import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheException;
 import net.sf.ehcache.Element;
 import net.sourceforge.atunes.model.IStateStore;
 import net.sourceforge.atunes.utils.AbstractCache;
@@ -46,7 +47,10 @@ class PreferencesCache extends AbstractCache implements IStateStore {
         boolean exception = false;
         try {
             getCache().removeAll();
-        } catch (Exception e) {
+        } catch (IllegalStateException e) {
+            Logger.info("Could not delete all files from preferences cache");
+            exception = true;
+        } catch (CacheException e) {
             Logger.info("Could not delete all files from preferences cache");
             exception = true;
         }

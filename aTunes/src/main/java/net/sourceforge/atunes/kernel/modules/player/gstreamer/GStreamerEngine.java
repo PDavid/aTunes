@@ -40,6 +40,7 @@ import net.sourceforge.atunes.utils.Logger;
 import org.gstreamer.Bus;
 import org.gstreamer.ElementFactory;
 import org.gstreamer.Gst;
+import org.gstreamer.GstException;
 import org.gstreamer.GstObject;
 import org.gstreamer.elements.PlayBin;
 
@@ -55,7 +56,7 @@ public class GStreamerEngine extends AbstractPlayerEngine {
             Gst.init("AudioPlayer", new String[] {});
             playBin = new PlayBin("AudioPlayer");
             playBin.setVideoSink(ElementFactory.make("fakesink", "videosink"));
-        } catch (Exception e) {
+        } catch (GstException e) {
             Logger.error("GStreamer is not supported");
         }
 

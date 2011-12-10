@@ -26,6 +26,8 @@ import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
 
 /**
  * The Class ClipboardFacade.
@@ -62,9 +64,13 @@ public final class ClipboardFacade implements ClipboardOwner {
             if (hasTransferableText) {
                 content = (String) transferable.getTransferData(DataFlavor.stringFlavor);
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
+        	Logger.error(e);
             // Thrown if clipboard is not available: Will return empty string
-        }
+        } catch (UnsupportedFlavorException e) {
+        	Logger.error(e);
+            // Thrown if clipboard is not available: Will return empty string
+		}
         return content;
     }
 

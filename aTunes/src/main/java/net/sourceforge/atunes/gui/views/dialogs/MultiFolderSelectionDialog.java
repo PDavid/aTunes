@@ -236,9 +236,11 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
 
 		        fileSystemTree.revalidate();
 		        fileSystemTree.repaint();
-		    } catch (Exception e) {
+		    } catch (InterruptedException e) {
 		        Logger.error(e);
-		    } finally {
+		    } catch (ExecutionException e) {
+		        Logger.error(e);
+			} finally {
 		        okButton.setEnabled(true);
 		        // Show default cursor
 		        MultiFolderSelectionDialog.this.setCursor(Cursor.getDefaultCursor());

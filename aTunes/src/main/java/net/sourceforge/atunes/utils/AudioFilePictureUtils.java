@@ -84,9 +84,11 @@ public final class AudioFilePictureUtils {
                     savePictureToFile(song, file);
                 }
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             Logger.error(e);
-        }
+        } catch (ImageWriteException e) {
+            Logger.error(e);
+		}
     }
 
     /**

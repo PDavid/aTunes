@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.repository;
 
+import java.io.IOException;
+
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -43,9 +45,11 @@ class LoadRepositoryCommandExecutor {
                 p.waitFor();
                 int rc = p.exitValue();
                 Logger.info(StringUtils.getString("Command '", command, "' return code: ", rc));
-            } catch (Exception e) {
+            } catch (IOException e) {
                 Logger.error(e);
-            }
+            } catch (InterruptedException e) {
+                Logger.error(e);
+			}
         }
 	}
 

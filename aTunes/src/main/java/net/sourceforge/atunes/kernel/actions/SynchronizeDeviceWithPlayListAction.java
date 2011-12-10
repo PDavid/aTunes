@@ -24,6 +24,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
@@ -241,9 +242,11 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 		        } else {
 		            showMessage(filesRemoved, false);
 		        }
-		    } catch (Exception e) {
+		    } catch (InterruptedException e) {
 		        Logger.error(e);
-		    }
+		    } catch (ExecutionException e) {
+		        Logger.error(e);
+			}
 		}
 	}
 }
