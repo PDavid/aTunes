@@ -133,34 +133,11 @@ public final class FullScreenWindow extends AbstractCustomWindow {
     /** The options. */
     private JPopupMenu options;
 
-    /** The exit full screen. */
-    private JMenuItem exitFullScreen;
-
-    /** The select background. */
-    private JMenuItem selectBackground;
-
-    /** The remove background. */
-    private JMenuItem removeBackground;
-
-    /** The previous button. */
-    private PreviousButton previousButton;
-
     /** The play button. */
     private PlayPauseButton playButton;
 
-    /** The stop button. */
-    private StopButton stopButton;
-
-    /** The next button. */
-    private NextButton nextButton;
-
-    /** The mute button */
-    private MuteButton muteButton;
-
     /** The volume slider */
     private VolumeSlider volumeSlider;
-
-    private JPanel textPanel;
 
     private JPanel controlsPanel;
 
@@ -368,11 +345,11 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 
         panel.addMouseListener(showMenuListener);
 
-        selectBackground = new JMenuItem(I18nUtils.getString("SELECT_BACKGROUND"));
+        JMenuItem selectBackground = new JMenuItem(I18nUtils.getString("SELECT_BACKGROUND"));
 
         selectBackground.addActionListener(new SelectBackgroundActionListener());
 
-        removeBackground = new JMenuItem(I18nUtils.getString("REMOVE_BACKGROUND"));
+        JMenuItem removeBackground = new JMenuItem(I18nUtils.getString("REMOVE_BACKGROUND"));
         removeBackground.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -382,7 +359,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
                 FullScreenWindow.this.repaint();
             }
         });
-        exitFullScreen = new JMenuItem(I18nUtils.getString("CLOSE"));
+        JMenuItem exitFullScreen = new JMenuItem(I18nUtils.getString("CLOSE"));
         exitFullScreen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -394,11 +371,11 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         options.add(removeBackground);
         options.add(exitFullScreen);
 
-        previousButton = new PreviousButton(PlayerControlsSize.PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
+        PreviousButton previousButton = new PreviousButton(PlayerControlsSize.PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
         playButton = new PlayPauseButton(PlayerControlsSize.PLAY_BUTTON_SIZE, lookAndFeelManager);
-        stopButton = new StopButton(PlayerControlsSize.STOP_MUTE_BUTTONS_SIZE, lookAndFeelManager);
-        nextButton = new NextButton(PlayerControlsSize.PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
-        muteButton = Context.getBean("volumeButton", MuteButton.class);
+        StopButton stopButton = new StopButton(PlayerControlsSize.STOP_MUTE_BUTTONS_SIZE, lookAndFeelManager);
+        NextButton nextButton = new NextButton(PlayerControlsSize.PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
+        MuteButton muteButton = Context.getBean("volumeButton", MuteButton.class);
         muteButton.setText("");
         volumeSlider = new VolumeSlider(state, playerHandler);
 
@@ -436,7 +413,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         JPanel textAndControlsPanel = new JPanel(new GridLayout(2, 1));
         textAndControlsPanel.setOpaque(false);
 
-        textPanel = new JPanel(new GridBagLayout());
+        JPanel textPanel = new JPanel(new GridBagLayout());
         textPanel.setOpaque(false);
 
         GridBagConstraints c = new GridBagConstraints();
