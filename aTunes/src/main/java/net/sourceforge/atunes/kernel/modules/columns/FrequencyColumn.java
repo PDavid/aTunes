@@ -25,12 +25,12 @@ import javax.swing.SwingConstants;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class FrequencyColumn extends AbstractColumn {
+public class FrequencyColumn extends AbstractColumn<String> {
 
     private static final long serialVersionUID = -198950195313638217L;
 
     public FrequencyColumn() {
-        super("FREQUENCY", String.class);
+        super("FREQUENCY");
         setWidth(100);
         setVisible(false);
         setAlignment(SwingConstants.CENTER);
@@ -42,7 +42,7 @@ public class FrequencyColumn extends AbstractColumn {
     }
 
     @Override
-    public Object getValueFor(IAudioObject audioObject) {
+    public String getValueFor(IAudioObject audioObject) {
         // Return FREQUENCY
         if (audioObject.getFrequency() > 0) {
             return StringUtils.getString(Integer.toString(audioObject.getFrequency()), " Hz");

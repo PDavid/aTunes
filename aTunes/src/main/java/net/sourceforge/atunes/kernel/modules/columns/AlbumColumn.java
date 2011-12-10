@@ -31,7 +31,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-public class AlbumColumn extends AbstractColumn implements ApplicationContextAware {
+public class AlbumColumn extends AbstractColumn<TextAndIcon> implements ApplicationContextAware {
 
     private static final long serialVersionUID = -6162621108007788707L;
 
@@ -42,7 +42,7 @@ public class AlbumColumn extends AbstractColumn implements ApplicationContextAwa
     private transient IFavoritesHandler favoritesHandler;
 
     public AlbumColumn() {
-        super("ALBUM", TextAndIcon.class);
+        super("ALBUM");
         setVisible(true);
         setUsedForFilter(true);
     }
@@ -64,7 +64,7 @@ public class AlbumColumn extends AbstractColumn implements ApplicationContextAwa
     }
 
     @Override
-    public Object getValueFor(IAudioObject audioObject) {
+    public TextAndIcon getValueFor(IAudioObject audioObject) {
     	if (getFavoritesHandler().getFavoriteAlbumsInfo().containsKey(audioObject.getAlbum())) {
             return new TextAndIcon(audioObject.getAlbum(), albumFavoriteIcon.getColorMutableIcon(), SwingConstants.LEFT);
     	} else {

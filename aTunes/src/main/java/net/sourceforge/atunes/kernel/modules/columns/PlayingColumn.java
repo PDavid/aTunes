@@ -22,13 +22,13 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import net.sourceforge.atunes.model.IAudioObject;
 
-public class PlayingColumn extends AbstractColumn {
+public class PlayingColumn extends AbstractColumn<Integer> {
 
     
     private static final long serialVersionUID = -5604736587749167043L;
 
     public PlayingColumn() {
-        super("PLAYING", Integer.class);
+        super("PLAYING");
         setResizable(false);
         setWidth(16);
         setVisible(true);
@@ -45,7 +45,7 @@ public class PlayingColumn extends AbstractColumn {
     }
 
     @Override
-    public Object getValueFor(IAudioObject audioObject) {
+    public Integer getValueFor(IAudioObject audioObject) {
         return null;
     }
 

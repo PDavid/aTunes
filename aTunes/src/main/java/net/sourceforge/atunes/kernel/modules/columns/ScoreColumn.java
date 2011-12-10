@@ -35,7 +35,7 @@ import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
-public class ScoreColumn extends AbstractColumn {
+public class ScoreColumn extends AbstractColumn<Integer> {
 
     private final class ScoreColumnCellEditorRenderer extends AbstractListCellRendererCode<JLabel, Integer> {
 
@@ -88,7 +88,7 @@ public class ScoreColumn extends AbstractColumn {
 	}
 
     public ScoreColumn() {
-        super("SCORE", Integer.class);
+        super("SCORE");
         setWidth(100);
         setVisible(true);
         setEditable(true);
@@ -119,7 +119,7 @@ public class ScoreColumn extends AbstractColumn {
     }
 
     @Override
-    public Object getValueFor(IAudioObject audioObject) {
+    public Integer getValueFor(IAudioObject audioObject) {
         return audioObject.getStars();
     }
 

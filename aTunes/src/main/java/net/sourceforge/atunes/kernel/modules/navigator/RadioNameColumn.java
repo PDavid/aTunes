@@ -24,18 +24,18 @@ import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IRadio;
 
-final class RadioNameColumn extends AbstractColumn {
+final class RadioNameColumn extends AbstractColumn<String> {
     /**
 	 * 
 	 */
     private static final long serialVersionUID = 3613237620716484881L;
 
-    RadioNameColumn(String name, Class<?> columnClass) {
-        super(name, columnClass);
+    RadioNameColumn(String name) {
+        super(name);
     }
 
     @Override
-    public Object getValueFor(IAudioObject audioObject) {
+    public String getValueFor(IAudioObject audioObject) {
         return ((IRadio) audioObject).getName();
     }
 

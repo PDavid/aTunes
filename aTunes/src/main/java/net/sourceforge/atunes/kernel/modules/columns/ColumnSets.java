@@ -64,7 +64,8 @@ public class ColumnSets implements PluginListener {
     	columnSets.add(columnSet);
     }
 
-    @Override
+    @SuppressWarnings("rawtypes")
+	@Override
     public void pluginActivated(PluginInfo plugin) {
         try {
             for (AbstractColumnSet columnSet : columnSets) {

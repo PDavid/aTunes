@@ -24,13 +24,13 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.model.IAudioObject;
 
-public class YearColumn extends AbstractColumn {
+public class YearColumn extends AbstractColumn<String> {
 
 
     private static final long serialVersionUID = -8016584284036796639L;
 
     public YearColumn() {
-        super("YEAR", String.class);
+        super("YEAR");
         setWidth(100);
         setAlignment(SwingConstants.CENTER);
         setVisible(false);
@@ -43,7 +43,7 @@ public class YearColumn extends AbstractColumn {
     }
 
     @Override
-    public Object getValueFor(IAudioObject audioObject) {
+    public String getValueFor(IAudioObject audioObject) {
         // Return year
         return audioObject.getYear();
     }

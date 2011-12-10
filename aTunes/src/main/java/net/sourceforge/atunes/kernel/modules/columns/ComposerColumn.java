@@ -22,13 +22,13 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import net.sourceforge.atunes.model.IAudioObject;
 
-public class ComposerColumn extends AbstractColumn {
+public class ComposerColumn extends AbstractColumn<String> {
 
     
     private static final long serialVersionUID = -927958183654730193L;
 
     public ComposerColumn() {
-        super("COMPOSER", String.class);
+        super("COMPOSER");
         setVisible(true);
         setUsedForFilter(true);
     }
@@ -39,7 +39,7 @@ public class ComposerColumn extends AbstractColumn {
     }
 
     @Override
-    public Object getValueFor(IAudioObject audioObject) {
+    public String getValueFor(IAudioObject audioObject) {
         return audioObject.getComposer();
     }
 

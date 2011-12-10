@@ -27,13 +27,13 @@ import net.sourceforge.atunes.model.IAudioObject;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-public class DateColumn extends AbstractColumn {
+public class DateColumn extends AbstractColumn<String> {
 
     private static final long serialVersionUID = 6832826017182272636L;
     private static final DateTimeFormatter dateFormat = DateTimeFormat.mediumDateTime();
 
     public DateColumn() {
-        super("DATE", String.class);
+        super("DATE");
         setAlignment(SwingConstants.CENTER);
         setVisible(false);
         setUsedForFilter(true);
@@ -50,7 +50,7 @@ public class DateColumn extends AbstractColumn {
     }
 
     @Override
-    public Object getValueFor(IAudioObject audioObject) {
+    public String getValueFor(IAudioObject audioObject) {
         if (audioObject.getDate() != null) {
             return dateFormat.print(audioObject.getDate());
         } else {

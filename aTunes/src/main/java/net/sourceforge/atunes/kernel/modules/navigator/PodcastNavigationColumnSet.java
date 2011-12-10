@@ -25,7 +25,6 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.kernel.modules.columns.DateColumn;
-import net.sourceforge.atunes.model.AudioObjectProperty;
 import net.sourceforge.atunes.model.IColumn;
 
 public class PodcastNavigationColumnSet extends AbstractCustomNavigatorColumnSet {
@@ -33,39 +32,39 @@ public class PodcastNavigationColumnSet extends AbstractCustomNavigatorColumnSet
 	public PodcastNavigationColumnSet() {
 		super();
 
-		List<IColumn> columns = new ArrayList<IColumn>();
+		List<IColumn<?>> columns = new ArrayList<IColumn<?>>();
 
-        AbstractColumn property1 = new PodcastNotListenedPropertyColumn("", AudioObjectProperty.class);
+        AbstractColumn<?> property1 = new PodcastNotListenedPropertyColumn("");
         property1.setVisible(true);
         property1.setWidth(20);
         property1.setResizable(false);
         columns.add(property1);
 
-        AbstractColumn property2 = new PodcastDownloadedPropertyColumn("", AudioObjectProperty.class);
+        AbstractColumn<?> property2 = new PodcastDownloadedPropertyColumn("");
         property2.setVisible(true);
         property2.setWidth(20);
         property2.setResizable(false);
         columns.add(property2);
 
-        AbstractColumn property3 = new PodcastOldEntryPropertyColumn("", AudioObjectProperty.class);
+        AbstractColumn<?> property3 = new PodcastOldEntryPropertyColumn("");
         property3.setVisible(true);
         property3.setWidth(20);
         property3.setResizable(false);
         columns.add(property3);
 
-        AbstractColumn entries = new PodcastEntriesColumn("PODCAST_ENTRIES", String.class);
+        AbstractColumn<?> entries = new PodcastEntriesColumn("PODCAST_ENTRIES");
         entries.setVisible(true);
         entries.setWidth(300);
         entries.setUsedForFilter(true);
         columns.add(entries);
 
-        AbstractColumn duration = new PodcastDurationColumn("DURATION", String.class);
+        AbstractColumn<?> duration = new PodcastDurationColumn("DURATION");
         duration.setVisible(true);
         duration.setWidth(60);
         duration.setUsedForFilter(true);
         columns.add(duration);
         
-        AbstractColumn date = new DateColumn();
+        AbstractColumn<?> date = new DateColumn();
         date.setVisible(true);
         date.setUsedForFilter(true);
         columns.add(date);

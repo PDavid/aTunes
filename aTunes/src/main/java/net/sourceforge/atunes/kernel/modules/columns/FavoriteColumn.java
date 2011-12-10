@@ -30,7 +30,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-public class FavoriteColumn extends AbstractColumn implements ApplicationContextAware {
+public class FavoriteColumn extends AbstractColumn<AudioObjectProperty> implements ApplicationContextAware {
 
     private static final long serialVersionUID = -4652512586792166062L;
     
@@ -39,7 +39,7 @@ public class FavoriteColumn extends AbstractColumn implements ApplicationContext
     private transient IFavoritesHandler favoritesHandler;
 
     public FavoriteColumn() {
-        super("FAVORITES", AudioObjectProperty.class);
+        super("FAVORITES");
         setResizable(false);
         setWidth(20);
         setVisible(true);
@@ -56,7 +56,7 @@ public class FavoriteColumn extends AbstractColumn implements ApplicationContext
     }
 
     @Override
-    public Object getValueFor(IAudioObject audioObject) {
+    public AudioObjectProperty getValueFor(IAudioObject audioObject) {
         // Return image
         if (audioObject instanceof IRadio) {
             return null;

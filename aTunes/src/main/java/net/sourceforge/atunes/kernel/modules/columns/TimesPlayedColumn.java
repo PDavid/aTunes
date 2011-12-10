@@ -29,7 +29,7 @@ import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 
-public class TimesPlayedColumn extends AbstractColumn {
+public class TimesPlayedColumn extends AbstractColumn<String> {
     
     private static final long serialVersionUID = 7879150472122090859L;
 
@@ -43,7 +43,7 @@ public class TimesPlayedColumn extends AbstractColumn {
 	}
     
     public TimesPlayedColumn() {
-        super("TIMES_PLAYED", String.class);
+        super("TIMES_PLAYED");
         setWidth(100);
         setVisible(false);
         setAlignment(SwingConstants.CENTER);
@@ -65,7 +65,7 @@ public class TimesPlayedColumn extends AbstractColumn {
     }
 
     @Override
-    public Object getValueFor(IAudioObject audioObject) {
+    public String getValueFor(IAudioObject audioObject) {
         if (audioObject instanceof IRadio) {
             return "";
         }

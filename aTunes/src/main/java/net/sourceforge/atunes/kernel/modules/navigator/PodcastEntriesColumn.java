@@ -23,18 +23,18 @@ package net.sourceforge.atunes.kernel.modules.navigator;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.model.IAudioObject;
 
-final class PodcastEntriesColumn extends AbstractColumn {
+final class PodcastEntriesColumn extends AbstractColumn<String> {
     /**
 	 * 
 	 */
     private static final long serialVersionUID = -1788596965509543581L;
 
-    PodcastEntriesColumn(String name, Class<?> columnClass) {
-        super(name, columnClass);
+    PodcastEntriesColumn(String name) {
+        super(name);
     }
 
     @Override
-    public Object getValueFor(IAudioObject audioObject) {
+    public String getValueFor(IAudioObject audioObject) {
         return audioObject.getTitleOrFileName();
     }
 

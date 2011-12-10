@@ -25,13 +25,13 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
 
-public class FileNameColumn extends AbstractColumn {
+public class FileNameColumn extends AbstractColumn<String> {
 
     
     private static final long serialVersionUID = -6243616734204965925L;
 
     public FileNameColumn() {
-        super("FILE", String.class);
+        super("FILE");
         setWidth(250);
         setVisible(false);
         setUsedForFilter(true);
@@ -43,7 +43,7 @@ public class FileNameColumn extends AbstractColumn {
     }
 
     @Override
-    public Object getValueFor(IAudioObject audioObject) {
+    public String getValueFor(IAudioObject audioObject) {
         if (audioObject instanceof IRadio) {
             return "";
         }

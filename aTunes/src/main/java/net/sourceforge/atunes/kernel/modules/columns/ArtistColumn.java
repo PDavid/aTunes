@@ -32,7 +32,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-public class ArtistColumn extends AbstractColumn implements ApplicationContextAware {
+public class ArtistColumn extends AbstractColumn<TextAndIcon> implements ApplicationContextAware {
 
     private static final long serialVersionUID = 8144686293055648148L;
 
@@ -43,7 +43,7 @@ public class ArtistColumn extends AbstractColumn implements ApplicationContextAw
     private transient IFavoritesHandler favoritesHandler;
     
     public ArtistColumn() {
-        super("ARTIST", TextAndIcon.class);
+        super("ARTIST");
         setVisible(true);
         setUsedForFilter(true);
         setColumnSort(ColumnSort.ASCENDING); // Column sets are ordered by default by this column
@@ -69,7 +69,7 @@ public class ArtistColumn extends AbstractColumn implements ApplicationContextAw
     }
 
     @Override
-    public Object getValueFor(IAudioObject audioObject) {
+    public TextAndIcon getValueFor(IAudioObject audioObject) {
     	if (getFavoritesHandler().getFavoriteArtistsInfo().containsKey(audioObject.getArtist())) {
             return new TextAndIcon(audioObject.getArtist(), artistFavoriteIcon.getColorMutableIcon(), SwingConstants.LEFT);
     	} else {
