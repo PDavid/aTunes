@@ -29,20 +29,20 @@ import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ITreeObject;
 
-public class TooltipTreeCellDecorator extends AbstractTreeCellDecorator {
+public class TooltipTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, Object> {
 
     @SuppressWarnings("unchecked")
 	@Override
-    public Component decorateTreeCellComponent(Component component, Object userObject, boolean isSelected) {
-        if (!state.isShowExtendedTooltip() || !ExtendedToolTip.canObjectBeShownInExtendedToolTip(userObject)) {
+    public Component decorateTreeCellComponent(JLabel component, Object userObject, boolean isSelected) {
+        if (!getState().isShowExtendedTooltip() || !ExtendedToolTip.canObjectBeShownInExtendedToolTip(userObject)) {
             if (userObject instanceof ITreeObject) {
-                ((JLabel) component).setToolTipText(((ITreeObject<? extends IAudioObject>) userObject).getToolTip());
+                component.setToolTipText(((ITreeObject<? extends IAudioObject>) userObject).getToolTip());
             } else {
-                ((JLabel) component).setToolTipText(userObject.toString());
+                component.setToolTipText(userObject.toString());
             }
         } else {
             // If using extended tooltip we must set tooltip to null. If not will appear the tooltip of the parent node
-            ((JLabel) component).setToolTipText(null);
+            component.setToolTipText(null);
         }
         return component;
     }

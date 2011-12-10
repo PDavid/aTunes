@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes;
 
+import java.lang.reflect.InvocationTargetException;
+
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -29,5 +31,8 @@ final class UncaughtExceptionHandler implements Thread.UncaughtExceptionHandler 
 	public void uncaughtException(Thread t, Throwable e) {
 		Logger.error(StringUtils.getString("Thread: ", t.getName()));
 		Logger.error(e);
+		if (e instanceof InvocationTargetException) {
+			Logger.error(((InvocationTargetException)e).getCause());
+		}
 	}
 }

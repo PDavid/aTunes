@@ -22,6 +22,8 @@ package net.sourceforge.atunes.utils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 public class ReflectionUtils {
 
@@ -109,5 +111,14 @@ public class ReflectionUtils {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * Returns type arguments of a clazz
+	 * @param clazz
+	 * @return
+	 */
+	public static Type[] getTypeArgumentsOfParameterizedType(Class<?> clazz) {
+		return ((ParameterizedType) clazz.getGenericSuperclass()).getActualTypeArguments();
 	}
 }

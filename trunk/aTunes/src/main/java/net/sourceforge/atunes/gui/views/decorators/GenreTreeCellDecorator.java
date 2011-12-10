@@ -28,7 +28,7 @@ import net.sourceforge.atunes.gui.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IGenre;
 
-public class GenreTreeCellDecorator extends AbstractTreeCellDecorator {
+public class GenreTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, IGenre> {
 	
 	private CachedIconFactory genreIcon;
 	
@@ -40,10 +40,8 @@ public class GenreTreeCellDecorator extends AbstractTreeCellDecorator {
 	}
 
     @Override
-    public Component decorateTreeCellComponent(Component component, Object userObject, boolean isSelected) {
-        if (userObject instanceof IGenre) {
-            ((JLabel) component).setIcon(genreIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
-        }
+    public Component decorateTreeCellComponent(JLabel component, IGenre userObject, boolean isSelected) {
+        component.setIcon(genreIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
         return component;
     }
 

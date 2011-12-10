@@ -30,7 +30,6 @@ import java.util.Map;
 
 import javax.swing.Action;
 import javax.swing.ImageIcon;
-import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -41,7 +40,6 @@ import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.gui.AbstractTreeCellDecorator;
-import net.sourceforge.atunes.gui.AbstractTreeCellRendererCode;
 import net.sourceforge.atunes.gui.NavigationTableModel;
 import net.sourceforge.atunes.kernel.actions.ActionWithColorMutableIcon;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -62,7 +60,7 @@ import net.sourceforge.atunes.utils.Logger;
 
 public abstract class AbstractNavigationView implements INavigationView {
 
-    /**
+	/**
      * Scroll pane used for tree
      */
     private JScrollPane scrollPane;
@@ -84,7 +82,7 @@ public abstract class AbstractNavigationView implements INavigationView {
     /**
      * Decorators used in view
      */
-    private List<AbstractTreeCellDecorator> decorators;
+    private List<AbstractTreeCellDecorator<?, ?>> decorators;
     
     private ITreeGeneratorFactory treeGeneratorFactory;
 
@@ -125,11 +123,11 @@ public abstract class AbstractNavigationView implements INavigationView {
      * 
      * @return
      */
-    protected final List<AbstractTreeCellDecorator> getTreeCellDecorators() {
+    protected final List<AbstractTreeCellDecorator<?, ?>> getTreeCellDecorators() {
     	return decorators;
     }
     
-	public void setDecorators(List<AbstractTreeCellDecorator> decorators) {
+	public void setDecorators(List<AbstractTreeCellDecorator<?, ?>> decorators) {
 		this.decorators = decorators;
 	}
 
@@ -525,16 +523,7 @@ public abstract class AbstractNavigationView implements INavigationView {
      * @return
      */
     protected final TreeCellRenderer getTreeRenderer() {
-        return lookAndFeelManager.getCurrentLookAndFeel().getTreeCellRenderer(new AbstractTreeCellRendererCode() {
-
-            @Override
-            public JComponent getComponent(JComponent superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
-                for (AbstractTreeCellDecorator decorator : getTreeCellDecorators()) {
-                    decorator.decorateTreeCellComponent(superComponent, ((DefaultMutableTreeNode) value).getUserObject(), isSelected);
-                }
-                return superComponent;
-            }
-        });
+        return lookAndFeelManager.getCurrentLookAndFeel().getTreeCellRenderer(new NavigationViewTreeCellRendererCode(getTreeCellDecorators()));
     }
 
     @Override

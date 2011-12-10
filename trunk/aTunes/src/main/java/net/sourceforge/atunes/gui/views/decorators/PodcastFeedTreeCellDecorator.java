@@ -28,7 +28,7 @@ import net.sourceforge.atunes.gui.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IPodcastFeed;
 
-public class PodcastFeedTreeCellDecorator extends AbstractTreeCellDecorator {
+public class PodcastFeedTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, IPodcastFeed> {
 	
 	private CachedIconFactory rssSmallIcon;
 	
@@ -40,10 +40,8 @@ public class PodcastFeedTreeCellDecorator extends AbstractTreeCellDecorator {
 	}
 
     @Override
-    public Component decorateTreeCellComponent(Component component, Object userObject, boolean isSelected) {
-        if (userObject instanceof IPodcastFeed) {
-            ((JLabel) component).setIcon(rssSmallIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
-        }
+    public Component decorateTreeCellComponent(JLabel component, IPodcastFeed userObject, boolean isSelected) {
+        component.setIcon(rssSmallIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
         return component;
     }
 

@@ -29,7 +29,7 @@ import net.sourceforge.atunes.gui.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class StringTreeCellDecorator extends AbstractTreeCellDecorator {
+public class StringTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, String> {
 	
 	private CachedIconFactory artistImageIcon;
 	
@@ -104,14 +104,10 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator {
 	}
 
     @Override
-    public Component decorateTreeCellComponent(Component component, Object userObject, boolean isSelected) {
-        if (userObject instanceof String && component instanceof JLabel) {
-            String text = ((String) userObject);
-            JLabel label = (JLabel) component;
-            Color color = getLookAndFeel().getPaintForColorMutableIcon(label, isSelected);
-            label.setIcon(getIcon(text, label, color).getIcon(color));
-            label.setToolTipText(null);
-        }
+    public Component decorateTreeCellComponent(JLabel component, String userObject, boolean isSelected) {
+    	Color color = getLookAndFeel().getPaintForColorMutableIcon(component, isSelected);
+    	component.setIcon(getIcon(userObject, component, color).getIcon(color));
+    	component.setToolTipText(null);
         return component;
     }
 
