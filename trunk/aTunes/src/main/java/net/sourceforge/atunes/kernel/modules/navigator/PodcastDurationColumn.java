@@ -24,18 +24,18 @@ import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
 
-final class PodcastDurationColumn extends AbstractColumn {
+final class PodcastDurationColumn extends AbstractColumn<String> {
     /**
 	 * 
 	 */
     private static final long serialVersionUID = -5577224920500040774L;
 
-    PodcastDurationColumn(String name, Class<?> columnClass) {
-        super(name, columnClass);
+    PodcastDurationColumn(String name) {
+        super(name);
     }
 
     @Override
-    public Object getValueFor(IAudioObject audioObject) {
+    public String getValueFor(IAudioObject audioObject) {
         return StringUtils.seconds2String(audioObject.getDuration());
     }
 

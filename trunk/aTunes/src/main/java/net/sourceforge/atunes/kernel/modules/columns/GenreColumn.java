@@ -22,12 +22,12 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import net.sourceforge.atunes.model.IAudioObject;
 
-public class GenreColumn extends AbstractColumn {
+public class GenreColumn extends AbstractColumn<String> {
 
     private static final long serialVersionUID = 1420893111015572964L;
 
     public GenreColumn() {
-        super("GENRE", String.class);
+        super("GENRE");
         setVisible(true);
         setUsedForFilter(true);
     }
@@ -47,7 +47,7 @@ public class GenreColumn extends AbstractColumn {
     }
 
     @Override
-    public Object getValueFor(IAudioObject audioObject) {
+    public String getValueFor(IAudioObject audioObject) {
         // Return genre
         return audioObject.getGenre();
     }

@@ -26,12 +26,12 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
 
-public class PathColumn extends AbstractColumn {
+public class PathColumn extends AbstractColumn<String> {
 
     private static final long serialVersionUID = 2053462205073873545L;
 
     public PathColumn() {
-        super("LOCATION", String.class);
+        super("LOCATION");
         setWidth(350);
         setVisible(false);
         setUsedForFilter(true);
@@ -51,7 +51,7 @@ public class PathColumn extends AbstractColumn {
     }
 
     @Override
-    public Object getValueFor(IAudioObject audioObject) {
+    public String getValueFor(IAudioObject audioObject) {
         if (audioObject instanceof IRadio) {
             return ((Radio) audioObject).getUrl();
         }

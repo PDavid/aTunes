@@ -24,12 +24,12 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.model.IAudioObject;
 
-public class DiscNumberColumn extends AbstractColumn {
+public class DiscNumberColumn extends AbstractColumn<Integer> {
 
     private static final long serialVersionUID = -6226391762384061708L;
 
     public DiscNumberColumn() {
-        super("DISC_NUMBER", Integer.class);
+        super("DISC_NUMBER");
         setWidth(40);
         setVisible(false);
         setAlignment(SwingConstants.CENTER);
@@ -41,7 +41,7 @@ public class DiscNumberColumn extends AbstractColumn {
     }
 
     @Override
-    public Object getValueFor(IAudioObject audioObject) {
+    public Integer getValueFor(IAudioObject audioObject) {
         // Return disc number
         return audioObject.getDiscNumber() > 0 ? audioObject.getDiscNumber() : null;
     }

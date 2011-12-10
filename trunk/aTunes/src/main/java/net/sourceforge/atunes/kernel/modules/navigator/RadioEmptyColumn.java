@@ -24,14 +24,14 @@ import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.model.AudioObjectProperty;
 import net.sourceforge.atunes.model.IAudioObject;
 
-final class RadioEmptyColumn extends AbstractColumn {
+final class RadioEmptyColumn extends AbstractColumn<AudioObjectProperty> {
     /**
 	 * 
 	 */
     private static final long serialVersionUID = 3613237620716484881L;
 
-    RadioEmptyColumn(String name, Class<?> columnClass) {
-        super(name, columnClass);
+    RadioEmptyColumn(String name) {
+        super(name);
     }
 
     @Override
@@ -40,7 +40,7 @@ final class RadioEmptyColumn extends AbstractColumn {
     }
 
     @Override
-    public Object getValueFor(IAudioObject audioObject) {
+    public AudioObjectProperty getValueFor(IAudioObject audioObject) {
         return AudioObjectProperty.NO_PROPERTIES;
     }
 }

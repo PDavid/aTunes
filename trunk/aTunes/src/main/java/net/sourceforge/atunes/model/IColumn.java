@@ -32,7 +32,7 @@ import javax.swing.table.TableCellRenderer;
  * @author alex
  *
  */
-public interface IColumn extends Serializable, Comparable<IColumn> {
+public interface IColumn<T> extends Serializable, Comparable<IColumn<T>> {
 
 	/**
 	 * Apply column bean.
@@ -106,7 +106,7 @@ public interface IColumn extends Serializable, Comparable<IColumn> {
 	 * 
 	 * @return the value for
 	 */
-	public Object getValueFor(IAudioObject audioObject);
+	public T getValueFor(IAudioObject audioObject);
 
 	/**
 	 * Gets the width.

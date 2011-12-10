@@ -23,14 +23,14 @@ package net.sourceforge.atunes.kernel.modules.navigator;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.model.IAudioObject;
 
-final class RadioUrlColumn extends AbstractColumn {
+final class RadioUrlColumn extends AbstractColumn<String> {
     /**
 	 * 
 	 */
     private static final long serialVersionUID = -1615880013918017198L;
 
-    RadioUrlColumn(String name, Class<?> columnClass) {
-        super(name, columnClass);
+    RadioUrlColumn(String name) {
+        super(name);
     }
 
     @Override
@@ -39,7 +39,7 @@ final class RadioUrlColumn extends AbstractColumn {
     }
 
     @Override
-    public Object getValueFor(IAudioObject audioObject) {
+    public String getValueFor(IAudioObject audioObject) {
         return audioObject.getUrl();
     }
 }

@@ -28,13 +28,13 @@ import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class SizeColumn extends AbstractColumn {
+public class SizeColumn extends AbstractColumn<String> {
 
     
     private static final long serialVersionUID = 6971729868799630776L;
 
     public SizeColumn() {
-        super("SIZE", String.class);
+        super("SIZE");
         setWidth(100);
         setVisible(false);
         setAlignment(SwingConstants.CENTER);
@@ -54,7 +54,7 @@ public class SizeColumn extends AbstractColumn {
     }
 
     @Override
-    public Object getValueFor(IAudioObject audioObject) {
+    public String getValueFor(IAudioObject audioObject) {
         if (audioObject instanceof IRadio) {
             return "";
         }

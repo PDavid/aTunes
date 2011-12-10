@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
-import net.sourceforge.atunes.model.AudioObjectProperty;
 import net.sourceforge.atunes.model.IColumn;
 
 public final class RadioNavigationColumnSet extends AbstractCustomNavigatorColumnSet {
@@ -32,21 +31,21 @@ public final class RadioNavigationColumnSet extends AbstractCustomNavigatorColum
 	public RadioNavigationColumnSet() {
 		super();
 
-		List<IColumn> columns = new ArrayList<IColumn>();
+		List<IColumn<?>> columns = new ArrayList<IColumn<?>>();
 
-        AbstractColumn property = new RadioEmptyColumn("", AudioObjectProperty.class);
+        AbstractColumn<?> property = new RadioEmptyColumn("");
         property.setVisible(true);
         property.setWidth(20);
         property.setResizable(false);
         columns.add(property);
 
-        AbstractColumn name = new RadioNameColumn("NAME", String.class);
+        AbstractColumn<?> name = new RadioNameColumn("NAME");
         name.setVisible(true);
         name.setWidth(150);
         name.setUsedForFilter(true);
         columns.add(name);
 
-        AbstractColumn url = new RadioUrlColumn("URL", String.class);
+        AbstractColumn<?> url = new RadioUrlColumn("URL");
         url.setVisible(true);
         url.setWidth(400);
         url.setUsedForFilter(true);

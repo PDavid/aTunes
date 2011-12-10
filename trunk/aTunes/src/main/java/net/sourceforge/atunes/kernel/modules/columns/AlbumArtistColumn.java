@@ -22,12 +22,12 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import net.sourceforge.atunes.model.IAudioObject;
 
-public class AlbumArtistColumn extends AbstractColumn {
+public class AlbumArtistColumn extends AbstractColumn<String> {
 
     private static final long serialVersionUID = -1105793722315426353L;
 
     public AlbumArtistColumn() {
-        super("ALBUM_ARTIST", String.class);
+        super("ALBUM_ARTIST");
         setVisible(false);
         setUsedForFilter(true);
     }
@@ -41,7 +41,7 @@ public class AlbumArtistColumn extends AbstractColumn {
     }
 
     @Override
-    public Object getValueFor(IAudioObject audioObject) {
+    public String getValueFor(IAudioObject audioObject) {
         // Return album artist
         return audioObject.getAlbumArtist();
     }

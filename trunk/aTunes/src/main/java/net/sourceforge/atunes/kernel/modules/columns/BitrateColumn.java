@@ -25,13 +25,13 @@ import javax.swing.SwingConstants;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class BitrateColumn extends AbstractColumn {
+public class BitrateColumn extends AbstractColumn<String> {
 
     
     private static final long serialVersionUID = 7541146903350085592L;
 
     public BitrateColumn() {
-        super("BITRATE", String.class);
+        super("BITRATE");
         setWidth(100);
         setVisible(false);
         setAlignment(SwingConstants.CENTER);
@@ -43,7 +43,7 @@ public class BitrateColumn extends AbstractColumn {
     }
 
     @Override
-    public Object getValueFor(IAudioObject audioObject) {
+    public String getValueFor(IAudioObject audioObject) {
         // Return bitrate
         if (audioObject.getBitrate() > 0) {
             return StringUtils.getString(Long.toString(audioObject.getBitrate()), " Kbps");

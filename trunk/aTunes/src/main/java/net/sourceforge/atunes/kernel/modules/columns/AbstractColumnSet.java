@@ -41,10 +41,11 @@ import org.commonjukebox.plugins.model.PluginApi;
  * @author fleax
  */
 @PluginApi
+@SuppressWarnings("rawtypes")
 public abstract class AbstractColumnSet implements IColumnSet {
 
     /** Available columns */
-    private List<IColumn> availableColumns;
+	private List<IColumn<?>> availableColumns;
 
     /** Column map for direct access */
     private Map<Class<? extends IColumn>, IColumn> columnMap;
@@ -59,12 +60,12 @@ public abstract class AbstractColumnSet implements IColumnSet {
 	
     protected IFrame frame;
     
-	private List<IColumn> allowedColumns;
+	private List<IColumn<?>> allowedColumns;
 	
 	/**
 	 * @param allowedColumns
 	 */
-	public final void setAllowedColumns(List<IColumn> allowedColumns) {
+	public final void setAllowedColumns(List<IColumn<?>> allowedColumns) {
 		this.allowedColumns = allowedColumns;
 		int order = 0;
 		for (IColumn column : this.allowedColumns) {
@@ -76,7 +77,7 @@ public abstract class AbstractColumnSet implements IColumnSet {
      * Returns a list of columns allowed to be used in this column set
      * @return
      */
-    protected final List<IColumn> getAllowedColumns() {
+    protected final List<IColumn<?>> getAllowedColumns() {
         return allowedColumns;
     }
     
@@ -99,7 +100,7 @@ public abstract class AbstractColumnSet implements IColumnSet {
      * 
      * @return the available columns
      */
-    private List<IColumn> getAvailableColumns() {
+    private List<IColumn<?>> getAvailableColumns() {
         if (availableColumns == null) {
             // Try to get configuration saved
             Map<String, ColumnBean> columnsBeans = getColumnsConfiguration();
@@ -144,7 +145,8 @@ public abstract class AbstractColumnSet implements IColumnSet {
         return visibleColumns;
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
 	public final List<IColumn> getColumnsOrdered() {
         List<IColumn> result = new ArrayList<IColumn>(getAvailableColumns());
         Collections.sort(result);

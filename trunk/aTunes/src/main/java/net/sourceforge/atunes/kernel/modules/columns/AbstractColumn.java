@@ -30,13 +30,14 @@ import net.sourceforge.atunes.model.ColumnBean;
 import net.sourceforge.atunes.model.ColumnSort;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumn;
+import net.sourceforge.atunes.utils.ReflectionUtils;
 
 /**
  * This class represents a column
  * 
  * @author fleax
  */
-public abstract class AbstractColumn implements IColumn {
+public abstract class AbstractColumn<T> implements IColumn<T> {
 
     private static final long serialVersionUID = 7407756833207959017L;
 
@@ -82,9 +83,9 @@ public abstract class AbstractColumn implements IColumn {
      * @param columnClass
      *            the column class
      */
-    public AbstractColumn(String name, Class<?> columnClass) {
+    public AbstractColumn(String name) {
         this.columnName = name;
-        this.columnClass = columnClass;
+        this.columnClass = (Class<?>) ReflectionUtils.getTypeArgumentsOfParameterizedType(this.getClass())[0];
     }
 
     @Override
@@ -96,7 +97,7 @@ public abstract class AbstractColumn implements IColumn {
     }
 
     @Override
-    public int compareTo(IColumn o) {
+    public int compareTo(IColumn<T> o) {
         return Integer.valueOf(order).compareTo(o.getOrder());
     }
     
@@ -280,15 +281,22 @@ public abstract class AbstractColumn implements IColumn {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
-		AbstractColumn other = (AbstractColumn) obj;
-		if (order != other.order)
-			return false;
+		}
+		if (obj instanceof AbstractColumn<?>) {
+			@SuppressWarnings("rawtypes")
+			AbstractColumn other = (AbstractColumn) obj;
+			if (order != other.order) {
+				return false;
+			}
+		}
 		return true;
 	}
 }

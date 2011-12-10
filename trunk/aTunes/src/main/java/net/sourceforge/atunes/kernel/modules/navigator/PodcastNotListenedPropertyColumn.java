@@ -25,18 +25,18 @@ import net.sourceforge.atunes.model.AudioObjectProperty;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 
-final class PodcastNotListenedPropertyColumn extends AbstractColumn {
+final class PodcastNotListenedPropertyColumn extends AbstractColumn<AudioObjectProperty> {
     /**
 	 * 
 	 */
     private static final long serialVersionUID = 1L;
 
-    PodcastNotListenedPropertyColumn(String name, Class<?> columnClass) {
-        super(name, columnClass);
+    PodcastNotListenedPropertyColumn(String name) {
+        super(name);
     }
 
     @Override
-    public Object getValueFor(IAudioObject audioObject) {
+    public AudioObjectProperty getValueFor(IAudioObject audioObject) {
         return ((IPodcastFeedEntry) audioObject).isListened() ? AudioObjectProperty.NO_PROPERTIES : AudioObjectProperty.NOT_LISTENED_ENTRY;
     }
 
