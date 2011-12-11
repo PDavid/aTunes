@@ -18,18 +18,17 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.state.beans;
+package net.sourceforge.atunes.kernel.modules.state;
 
-import java.awt.Color;
+import java.awt.Font;
 
-import net.sourceforge.atunes.model.IColorBean;
-import net.sourceforge.atunes.model.IColorBeanFactory;
+import net.sourceforge.atunes.model.IFontBean;
+import net.sourceforge.atunes.model.IFontBeanFactory;
 
-public class ColorBeanFactory implements IColorBeanFactory {
+public class FontBeanFactory implements IFontBeanFactory {
 	
 	@Override
-	public IColorBean getColorBean(Color color) {
-		return new ColorBean(color);
+	public IFontBean getFontBean(Font font) {
+		return new FontBean(font);
 	}
-
 }

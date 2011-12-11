@@ -18,9 +18,8 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.state.beans;
+package net.sourceforge.atunes.kernel.modules.state;
 
-import net.sourceforge.atunes.kernel.modules.state.PasswordPreference;
 import net.sourceforge.atunes.model.IProxyBean;
 
 /**

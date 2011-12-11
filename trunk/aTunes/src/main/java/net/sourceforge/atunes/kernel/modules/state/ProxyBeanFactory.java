@@ -18,18 +18,15 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.state.beans;
+package net.sourceforge.atunes.kernel.modules.state;
 
-import java.util.Locale;
+import net.sourceforge.atunes.model.IProxyBean;
+import net.sourceforge.atunes.model.IProxyBeanFactory;
 
-import net.sourceforge.atunes.model.ILocaleBean;
-import net.sourceforge.atunes.model.ILocaleBeanFactory;
-
-public class LocaleBeanFactory implements ILocaleBeanFactory {
-
+public class ProxyBeanFactory implements IProxyBeanFactory {
+	
 	@Override
-	public ILocaleBean getLocaleBean(Locale locale) {
-		return new LocaleBean(locale);
+	public IProxyBean getProxy(String type, String url, int port, String user, String password) {
+		return new ProxyBean(type, url, port, user, password);
 	}
-
 }
