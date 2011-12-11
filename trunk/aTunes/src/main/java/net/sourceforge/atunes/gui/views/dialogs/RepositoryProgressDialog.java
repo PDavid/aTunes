@@ -28,6 +28,7 @@ import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -36,11 +37,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.kernel.actions.RepositoryLoadCancelAction;
-import net.sourceforge.atunes.kernel.actions.RepositoryLoadInBackgroundAction;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IRepositoryProgressDialog;
@@ -73,6 +71,8 @@ public final class RepositoryProgressDialog extends AbstractCustomDialog impleme
     private JButton cancelButton;
     private JButton backgroundButton;
     private transient MouseListener listener = new GlassPaneMouseListener();
+    private AbstractAction repositoryLoadInBackgroundAction;
+    private AbstractAction repositoryLoadCancelAction;
 
     /**
      * Instantiates a new repository progress dialog.
@@ -82,11 +82,31 @@ public final class RepositoryProgressDialog extends AbstractCustomDialog impleme
      */
     public RepositoryProgressDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
         super(frame, 500, 250, false, CloseAction.NOTHING, lookAndFeelManager.getCurrentLookAndFeel());
+    }
+    
+    /**
+     * Initializes this dialog
+     */
+    public void initialize() {
         add(getContent());
         backgroundButton.setVisible(false);
         cancelButton.setVisible(false);
         setResizable(false);
     }
+    
+    /**
+     * @param repositoryLoadCancelAction
+     */
+    public void setRepositoryLoadCancelAction(AbstractAction repositoryLoadCancelAction) {
+		this.repositoryLoadCancelAction = repositoryLoadCancelAction;
+	}
+    
+    /**
+     * @param repositoryLoadInBackgroundAction
+     */
+    public void setRepositoryLoadInBackgroundAction(AbstractAction repositoryLoadInBackgroundAction) {
+		this.repositoryLoadInBackgroundAction = repositoryLoadInBackgroundAction;
+	}
 
     /**
      * Activate glass pane.
@@ -123,8 +143,8 @@ public final class RepositoryProgressDialog extends AbstractCustomDialog impleme
         progressBar.setBorder(BorderFactory.createEmptyBorder());
         folderLabel = new JLabel(" ");
         remainingTimeLabel = new JLabel(" ");
-        backgroundButton = new JButton(Context.getBean(RepositoryLoadInBackgroundAction.class));
-        cancelButton = new JButton(Context.getBean(RepositoryLoadCancelAction.class));
+        backgroundButton = new JButton(repositoryLoadInBackgroundAction);
+        cancelButton = new JButton(repositoryLoadCancelAction);
 
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.add(backgroundButton);

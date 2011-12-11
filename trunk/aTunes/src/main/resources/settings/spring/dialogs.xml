@@ -50,7 +50,7 @@
 		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
 	
-	<bean id="repositoryProgressDialog" class="net.sourceforge.atunes.gui.views.dialogs.RepositoryProgressDialog" scope="prototype">
+	<bean id="repositoryProgressDialog" class="net.sourceforge.atunes.gui.views.dialogs.RepositoryProgressDialog" scope="prototype" init-method="initialize">
 		<constructor-arg ref="frame"/>
 		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
