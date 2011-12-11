@@ -59,6 +59,7 @@ public class RepositoryLoader implements IRepositoryLoader, Runnable {
 	private ILocalAudioObjectFactory localAudioObjectFactory;
 	private ILocalAudioObjectValidator localAudioObjectValidator;
 	private FileFilter validLocalAudioObjectFileFilter;
+	private DirectoryFileFilter directoryFileFilter;
 	
 	private RepositoryTransaction transaction;
 
@@ -78,6 +79,7 @@ public class RepositoryLoader implements IRepositoryLoader, Runnable {
 		this.folders = folders;
 		this.oldRepository = oldRepository;
 		this.repository = repository;
+		this.directoryFileFilter = new DirectoryFileFilter();
 		Thread t = new Thread(this);
 		t.setPriority(Thread.MAX_PRIORITY);
 		t.start();
@@ -190,92 +192,89 @@ public class RepositoryLoader implements IRepositoryLoader, Runnable {
 		}
 		startReadTime = System.currentTimeMillis();
 
+		RepositoryFiller filler = new RepositoryFiller(repository, state);
 		for (File folder : folders) {
-			fastRepositoryPath = folder.getAbsolutePath()
-			.replace('\\', '/');
+			fastRepositoryPath = folder.getAbsolutePath().replace('\\', '/');
 			if (fastRepositoryPath.endsWith("/")) {
-				fastRepositoryPath = fastRepositoryPath.substring(0,
-						fastRepositoryPath.length() - 2);
+				fastRepositoryPath = fastRepositoryPath.substring(0, fastRepositoryPath.length() - 2);
 			}
 			fastFirstChar = fastRepositoryPath.length() + 1;
 
 			if (folder.exists()) {
-				navigateDir(folder, folder);
+				navigateDir(filler, folder, folder);
 			}
 		}
 
 	}
 
 	/**
-	 * Navigate dir.
-	 * 
+	 * Navigates directory loading audio files and directories
+	 * @param filler
 	 * @param relativeTo
-	 *            the relative to
 	 * @param dir
-	 *            the dir
 	 */
-	private void navigateDir(File relativeTo, File dir) {
+	private void navigateDir(RepositoryFiller filler, File relativeTo, File dir) {
         if (!interrupt) {
 
             // Process directories
-            processDirectories(dir, relativeTo);
+            processDirectories(filler, dir, relativeTo);
             
             // Process audio files
-            processAudioFiles(dir, relativeTo);            
+            processAudioFiles(filler, dir, relativeTo);            
         }
     }
 	
 	/**
 	 * Process directory
+	 * @param filler
 	 * @param dir
 	 * @param relativeTo
 	 */
-	private void processDirectories(File dir, File relativeTo) {
+	private void processDirectories(RepositoryFiller filler, File dir, File relativeTo) {
         // Directories
-        File[] dirs = dir.listFiles(new DirectoryFileFilter());
+        File[] dirs = dir.listFiles(directoryFileFilter);
         
         // Process directories
         if (dirs != null) {
         	for (File directory : dirs) {
-        		navigateDir(relativeTo, directory);
+        		navigateDir(filler, relativeTo, directory);
         	}
         }
 	}
 	
 	/**
 	 * Process audio files in a directory
+	 * @param filler
 	 * @param dir
 	 * @param relativeTo
 	 */
-	private void processAudioFiles(File dir, File relativeTo) {
+	private void processAudioFiles(RepositoryFiller filler, File dir, File relativeTo) {
         // Get audio files
         File[] audiofiles = dir.listFiles(validLocalAudioObjectFileFilter);
         
-        String pathToFile = dir.getAbsolutePath().replace('\\', '/');
-
-        int lastChar = pathToFile.lastIndexOf('/') + 1;
-        final String relativePath;
-        if (fastFirstChar <= lastChar) {
-            relativePath = pathToFile.substring(fastFirstChar);
-        } else {
-            relativePath = ".";
-        }
-
-        if (listener != null && !refresh) {
-            listener.notifyCurrentPath(relativePath);
-        }
-
         // Process audio files
-        if (audiofiles != null) {
-        	RepositoryFiller filler = new RepositoryFiller(repository, state);
+        if (audiofiles != null && audiofiles.length > 0) {
+            String pathToFile = dir.getAbsolutePath().replace('\\', '/');
+            int lastChar = pathToFile.lastIndexOf('/') + 1;
+            final String relativePath;
+            if (fastFirstChar <= lastChar) {
+                relativePath = pathToFile.substring(fastFirstChar);
+            } else {
+                relativePath = ".";
+            }
+
+            if (listener != null && !refresh) {
+                listener.notifyCurrentPath(relativePath);
+            }
+
         	for (File audiofile : audiofiles) {
         		if (!interrupt) {
         			processAudioFile(audiofile, filler, relativeTo, relativePath);
         		}
         	}
         	
-    		// Update remaining time after each folder
-    		if (!refresh && listener != null && !interrupt) {
+    		// Update remaining time after a number of files
+    		if (filesLoaded % 100 == 0 && !refresh && listener != null && !interrupt) {
     			long t1 = System.currentTimeMillis();
     			final long remainingTime = filesLoaded != 0 ? (totalFilesToLoad - filesLoaded) * (t1 - startReadTime) / filesLoaded : 0;
     			listener.notifyRemainingTime(remainingTime);
