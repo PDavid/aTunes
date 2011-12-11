@@ -49,11 +49,12 @@ import net.sourceforge.atunes.gui.frame.Frames;
 import net.sourceforge.atunes.gui.views.controls.ByImageChoosingPanel;
 import net.sourceforge.atunes.gui.views.controls.ByImageChoosingPanel.ImageEntry;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog;
-import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.model.FontSettings;
 import net.sourceforge.atunes.model.IColorBeanFactory;
 import net.sourceforge.atunes.model.IFontBeanFactory;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.ILocaleBean;
+import net.sourceforge.atunes.model.ILocaleBeanFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
@@ -111,6 +112,8 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 	
 	private transient IColorBeanFactory colorBeanFactory;
 	
+	private transient ILocaleBeanFactory localeBeanFactory;
+	
     /**
      * Instantiates a new general panel.
      * @param osManager
@@ -119,12 +122,13 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
      * @param colorBeanFactory
      * @param fontBeanFactory
      */
-    public GeneralPanel(final IOSManager osManager, ILookAndFeelManager lookAndFeelManager, ApplicationArguments applicationArguments, IColorBeanFactory colorBeanFactory, final IFontBeanFactory fontBeanFactory) {
+    public GeneralPanel(final IOSManager osManager, ILookAndFeelManager lookAndFeelManager, ApplicationArguments applicationArguments, IColorBeanFactory colorBeanFactory, final IFontBeanFactory fontBeanFactory, ILocaleBeanFactory localeBeanFactory) {
         super(I18nUtils.getString("GENERAL"));
         this.osManager = osManager;
         this.lookAndFeelManager = lookAndFeelManager;
         this.applicationArguments = applicationArguments;
         this.colorBeanFactory = colorBeanFactory;
+        this.localeBeanFactory = localeBeanFactory;
         JLabel windowTypeLabel = new JLabel(I18nUtils.getString("WINDOW_TYPE"));
         JLabel languageLabel = new JLabel(I18nUtils.getString("LANGUAGE"));
         language = new JComboBox();
@@ -290,12 +294,12 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
             needRestart = true;
         }
 
-        LocaleBean oldLocale = state.getLocale();
-        LocaleBean newLocale = new LocaleBean((Locale) language.getSelectedItem());
+        ILocaleBean oldLocale = state.getLocale();
+        ILocaleBean newLocale = localeBeanFactory.getLocaleBean((Locale) language.getSelectedItem());
         state.setLocale(newLocale);
         if (!oldLocale.equals(newLocale)) {
             needRestart = true;
-            state.setOldLocale(new LocaleBean(Locale.getDefault()));
+            state.setOldLocale(localeBeanFactory.getLocaleBean(Locale.getDefault()));
         }
 
         if (lookAndFeelManager.getCurrentLookAndFeel().supportsCustomFontSettings()) {

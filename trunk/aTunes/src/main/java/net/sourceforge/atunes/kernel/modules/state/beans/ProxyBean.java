@@ -21,12 +21,12 @@
 package net.sourceforge.atunes.kernel.modules.state.beans;
 
 import net.sourceforge.atunes.kernel.modules.state.PasswordPreference;
-import net.sourceforge.atunes.model.IProxy;
+import net.sourceforge.atunes.model.IProxyBean;
 
 /**
  * Bean for net.sourceforge.atunes.kernel.modules.proxy.Proxy
  */
-public final class ProxyBean implements IProxy {
+public final class ProxyBean implements IProxyBean {
 
     /**
 	 * 

@@ -42,12 +42,14 @@ import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFavorites;
 import net.sourceforge.atunes.model.IFontBeanFactory;
 import net.sourceforge.atunes.model.IHotkeyHandler;
+import net.sourceforge.atunes.model.ILocaleBeanFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.INotificationsHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.IPodcastFeed;
+import net.sourceforge.atunes.model.IProxyBeanFactory;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -81,6 +83,22 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	private INetworkHandler networkHandler;
 	private IColorBeanFactory colorBeanFactory;
 	private IFontBeanFactory fontBeanFactory;
+	private ILocaleBeanFactory localeBeanFactory;
+	private IProxyBeanFactory proxyBeanFactory;
+	
+	/**
+	 * @param proxyBeanFactory
+	 */
+	public void setProxyBeanFactory(IProxyBeanFactory proxyBeanFactory) {
+		this.proxyBeanFactory = proxyBeanFactory;
+	}
+	
+	/**
+	 * @param localeBeanFactory
+	 */
+	public void setLocaleBeanFactory(ILocaleBeanFactory localeBeanFactory) {
+		this.localeBeanFactory = localeBeanFactory;
+	}
 	
 	/**
 	 * @param fontBeanFactory
@@ -627,6 +645,6 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
     	EditPreferencesDialog dialog = new EditPreferencesDialog(getFrame().getFrame(), lookAndFeelManager);
     	new EditPreferencesDialogController(dialog, getState(), getOsManager(), getFrame(), getBean(StateChangeListeners.class), lookAndFeelManager, 
     			playerHandler, hotkeyHandler, notificationsHandler, 
-    			pluginsHandler, applicationArguments, desktop, networkHandler, colorBeanFactory, fontBeanFactory).start();
+    			pluginsHandler, applicationArguments, desktop, networkHandler, colorBeanFactory, fontBeanFactory, localeBeanFactory, proxyBeanFactory).start();
     }
 }

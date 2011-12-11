@@ -35,7 +35,7 @@ public interface INetworkHandler extends IHandler {
 	/**
 	 * @param proxy
 	 */
-	public void updateProxy(IProxy proxy);
+	public void updateProxy(IProxyBean proxy);
 
 	/**
 	 * Encodes a string in a format suitable to send a http request.

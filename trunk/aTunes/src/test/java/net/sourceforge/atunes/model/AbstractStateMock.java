@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeysConfig;
-import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.kernel.modules.tags.TagAttribute;
 
 /**
@@ -145,21 +144,21 @@ public abstract class AbstractStateMock implements IState {
 	}
 
 	@Override
-	public LocaleBean getLocale() {
+	public ILocaleBean getLocale() {
 		return null;
 	}
 
 	@Override
-	public void setLocale(LocaleBean locale) {
+	public void setLocale(ILocaleBean locale) {
 	}
 
 	@Override
-	public LocaleBean getOldLocale() {
+	public ILocaleBean getOldLocale() {
 		return null;
 	}
 
 	@Override
-	public void setOldLocale(LocaleBean oldLocale) {
+	public void setOldLocale(ILocaleBean oldLocale) {
 	}
 
 	@Override
@@ -204,13 +203,13 @@ public abstract class AbstractStateMock implements IState {
 	}
 
 	@Override
-	public IProxy getProxy() {
+	public IProxyBean getProxy() {
 		
 		return null;
 	}
 
 	@Override
-	public void setProxy(IProxy proxy) {
+	public void setProxy(IProxyBean proxy) {
 		
 		
 	}

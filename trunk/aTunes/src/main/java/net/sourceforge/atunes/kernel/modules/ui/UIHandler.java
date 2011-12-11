@@ -32,12 +32,12 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.FadingPopupFactory;
 import net.sourceforge.atunes.gui.frame.FrameState;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.model.IAboutDialog;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.IKernel;
+import net.sourceforge.atunes.model.ILocaleBean;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
@@ -182,8 +182,8 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
 		getFrame().setState(getState());
         
         IFrameState frameState = getState().getFrameState(getFrame().getClass());
-        LocaleBean locale = getState().getLocale();
-        LocaleBean oldLocale = getState().getOldLocale();
+        ILocaleBean locale = getState().getLocale();
+        ILocaleBean oldLocale = getState().getOldLocale();
         // Reset fame state if no frame state in state or if component orientation of locale has changed
         if (frameState == null || locale == null || locale != null && oldLocale != null
                 && !(ComponentOrientation.getOrientation(locale.getLocale()).equals(ComponentOrientation.getOrientation(oldLocale.getLocale())))) {

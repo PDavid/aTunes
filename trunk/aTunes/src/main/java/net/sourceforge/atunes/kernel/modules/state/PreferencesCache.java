@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.state;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheException;
 import net.sf.ehcache.Element;
-import net.sourceforge.atunes.model.IStateStore;
 import net.sourceforge.atunes.utils.AbstractCache;
 import net.sourceforge.atunes.utils.Logger;
 

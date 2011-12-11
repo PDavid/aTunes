@@ -57,12 +57,14 @@ import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IHotkeyHandler;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
+import net.sourceforge.atunes.model.ILocaleBeanFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.INotificationsHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPluginsHandler;
+import net.sourceforge.atunes.model.IProxyBeanFactory;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -92,23 +94,26 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
      * @param desktop
      * @param networkHandler
      * @param colorBeanFactory
+     * @param fontBeanFactory
+     * @param localeBeanFactory
+     * @param proxyBeanFactory
      */
     EditPreferencesDialogController(EditPreferencesDialog dialog, IState state, IOSManager osManager, IFrame frame, StateChangeListeners stateChangeListeners, 
     		ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler, IHotkeyHandler hotkeyHandler, 
     		INotificationsHandler notificationsHandler, IPluginsHandler pluginsHandler, ApplicationArguments applicationArguments, IDesktop desktop,
-    		INetworkHandler networkHandler, IColorBeanFactory colorBeanFactory, IFontBeanFactory fontBeanFactory) {
+    		INetworkHandler networkHandler, IColorBeanFactory colorBeanFactory, IFontBeanFactory fontBeanFactory, ILocaleBeanFactory localeBeanFactory, IProxyBeanFactory proxyBeanFactory) {
         super(dialog, state);
         this.stateChangeListeners = stateChangeListeners;
         this.lookAndFeelManager = lookAndFeelManager;
         panels = new ArrayList<AbstractPreferencesPanel>();
-        panels.add(new GeneralPanel(osManager, lookAndFeelManager, applicationArguments, colorBeanFactory, fontBeanFactory));
+        panels.add(new GeneralPanel(osManager, lookAndFeelManager, applicationArguments, colorBeanFactory, fontBeanFactory, localeBeanFactory));
         panels.add(new RepositoryPanel()); 
         panels.add(new PlayerPanel(osManager, lookAndFeelManager.getCurrentLookAndFeel(), playerHandler, hotkeyHandler)); 
         panels.add(new NavigatorPanel(lookAndFeelManager.getCurrentLookAndFeel())); 
         panels.add(new PlayListPrefPanel());
         panels.add(new OSDPanel(notificationsHandler, desktop)); 
         panels.add(new ContextPanel(lookAndFeelManager.getCurrentLookAndFeel(), desktop)); 
-        panels.add(new InternetPanel(networkHandler)); 
+        panels.add(new InternetPanel(networkHandler, proxyBeanFactory)); 
         panels.add(new LastFmPanel()); 
         panels.add(new DevicePanel(osManager, lookAndFeelManager.getCurrentLookAndFeel())); 
         panels.add(new RadioPanel()); 
