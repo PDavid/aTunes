@@ -116,7 +116,7 @@ public class Album implements Serializable, ITreeObject<ILocalAudioObject>, Comp
     	} else {
     		int artistCompare = artist.compareTo(o.artist);
     		if (artistCompare == 0) {
-    			return name.toLowerCase().compareTo(o.name.toLowerCase());
+    			return name.compareToIgnoreCase(o.name);
     		} else {
     			return artistCompare;
     		}

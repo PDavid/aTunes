@@ -80,7 +80,7 @@ public class Artist implements Serializable, ITreeObject<ILocalAudioObject>, Com
      */
     @Override
     public int compareTo(Artist o) {
-        return this.name.toLowerCase().compareTo(o.name.toLowerCase());
+        return this.name.compareToIgnoreCase(o.name);
     }
 
     @Override
