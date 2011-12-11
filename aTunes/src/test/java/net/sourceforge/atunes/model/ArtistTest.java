@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.model;
 
+import net.sourceforge.atunes.kernel.modules.repository.data.Album;
+import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
 
 import org.junit.Assert;

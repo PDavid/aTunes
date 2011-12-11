@@ -42,27 +42,27 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 	 * 
 	 * @return the albums
 	 */
-	public List<Album> getAlbums();
+	public List<IAlbum> getAlbums();
 
 	/**
 	 * Gets the artists.
 	 * 
 	 * @return the artists
 	 */
-	public List<Artist> getArtists();
+	public List<IArtist> getArtists();
 
 	/**
 	 * Returns artist with given name
 	 * @param name
 	 * @return
 	 */
-	public Artist getArtist(String name);
+	public IArtist getArtist(String name);
 
 	/**
 	 * Removes artist
 	 * @param artist
 	 */
-	public void removeArtist(Artist artist);
+	public void removeArtist(IArtist artist);
 
 	/**
 	 * Returns genre with given name
@@ -147,8 +147,7 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 	 * 
 	 * @return the audio files for albums
 	 */
-	public List<ILocalAudioObject> getAudioFilesForAlbums(
-			Map<String, Album> albums);
+	public List<ILocalAudioObject> getAudioFilesForAlbums(Map<String, IAlbum> albums);
 
 	/**
 	 * Gets the audio files for artists.
@@ -158,8 +157,7 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 	 * 
 	 * @return the audio files for artists
 	 */
-	public List<ILocalAudioObject> getAudioFilesForArtists(
-			Map<String, Artist> artists);
+	public List<ILocalAudioObject> getAudioFilesForArtists(Map<String, IArtist> artists);
 
 	/**
 	 * Returns true if folder is in repository.
@@ -283,13 +281,11 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 	/**
 	 * @param year
 	 * @return
-	 * @see net.sourceforge.atunes.model.Repository#getYear(java.lang.String)
 	 */
 	public IYear getYear(String year);
 
 	/**
 	 * @param year
-	 * @see net.sourceforge.atunes.model.Repository#removeYear(net.sourceforge.atunes.kernel.modules.repository.data.Year)
 	 */
 	public void removeYear(IYear year);
 
@@ -302,7 +298,6 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 	/**
 	 * @param path
 	 * @return
-	 * @see net.sourceforge.atunes.model.Repository#getFolder(java.lang.String)
 	 */
 	public Folder getFolder(String path);
 

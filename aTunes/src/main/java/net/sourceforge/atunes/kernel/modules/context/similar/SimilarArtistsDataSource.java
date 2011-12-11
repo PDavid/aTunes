@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.Set;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IArtistInfo;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextInformationSource;
@@ -81,7 +81,7 @@ public class SimilarArtistsDataSource implements IContextInformationSource {
             ISimilarArtistsInfo artists = webServicesHandler.getSimilarArtists(audioObject.getArtist());
             if (artists != null) {
             	Set<String> artistNamesSet = new HashSet<String>();
-            	for (Artist a : repositoryHandler.getArtists()) {
+            	for (IArtist a : repositoryHandler.getArtists()) {
             		artistNamesSet.add(a.getName().toUpperCase());
             	}
                 for (int i = 0; i < artists.getArtists().size(); i++) {

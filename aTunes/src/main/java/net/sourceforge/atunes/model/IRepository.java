@@ -148,26 +148,26 @@ public interface IRepository {
 	 * @param artistName
 	 * @return
 	 */
-	public Artist getArtist(String artistName);
+	public IArtist getArtist(String artistName);
 
 	/**
 	 * Returns all artists
 	 * @return
 	 */
-	public Collection<Artist> getArtists();
+	public Collection<IArtist> getArtists();
 
 	/**
 	 * Adds an artist to repository
-	 * @param artistName
+	 * @param artist
 	 * @return created artist
 	 */
-	public Artist putArtist(String artistName);
+	public IArtist putArtist(IArtist artist);
 
 	/**
 	 * Removes artist from repository
 	 * @param artist
 	 */
-	public void removeArtist(Artist artist);
+	public void removeArtist(IArtist artist);
 
 	/**
 	 * Returns folder

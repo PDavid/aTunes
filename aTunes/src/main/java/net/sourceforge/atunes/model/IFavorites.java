@@ -49,14 +49,14 @@ public interface IFavorites extends Serializable {
 	 * 
 	 * @return the favorite albums
 	 */
-	public Map<String, Album> getFavoriteAlbums();
+	public Map<String, IAlbum> getFavoriteAlbums();
 
 	/**
 	 * Gets the favorite artists.
 	 * 
 	 * @return the favorite artists
 	 */
-	public Map<String, Artist> getFavoriteArtists();
+	public Map<String, IArtist> getFavoriteArtists();
 
 	/**
 	 * Gets the favorite songs.
@@ -71,7 +71,7 @@ public interface IFavorites extends Serializable {
 	 * @param favoriteAlbums
 	 *            the favorite albums
 	 */
-	public void setFavoriteAlbums(Map<String, Album> favoriteAlbums);
+	public void setFavoriteAlbums(Map<String, IAlbum> favoriteAlbums);
 
 	/**
 	 * Sets the favorite artists.
@@ -79,7 +79,7 @@ public interface IFavorites extends Serializable {
 	 * @param favoriteArtists
 	 *            the favorite artists
 	 */
-	public void setFavoriteArtists(Map<String, Artist> favoriteArtists);
+	public void setFavoriteArtists(Map<String, IArtist> favoriteArtists);
 
 	/**
 	 * Sets the favorite songs.

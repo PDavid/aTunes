@@ -28,8 +28,8 @@ import java.util.Map;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.model.Album;
 import net.sourceforge.atunes.model.EditTagSources;
+import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -123,7 +123,7 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 	}
 	
 	@Override
-	public void editFiles(Album a) {
+	public void editFiles(IAlbum a) {
 		new EditTitlesDialogController(new EditTitlesDialog(getFrame().getFrame(), lookAndFeelManager), getState(), processFactory).editFiles(a);
 	}
 	

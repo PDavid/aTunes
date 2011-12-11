@@ -38,8 +38,8 @@ import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListTableTransferHandler;
 import net.sourceforge.atunes.kernel.modules.process.LoadPlayListProcess;
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectComparator;
@@ -1401,9 +1401,9 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#showAddArtistDragDialog(net.sourceforge.atunes.model.Artist)
 	 */
     @Override
-	public void showAddArtistDragDialog(Artist currentArtist) {
+	public void showAddArtistDragDialog(IArtist currentArtist) {
     	IArtistAlbumSelectorDialog dialog = getBean(IArtistAlbumSelectorDialog.class);
-    	Album album = dialog.showDialog(currentArtist);
+    	IAlbum album = dialog.showDialog(currentArtist);
     	if (album != null) {
     		addToPlayList(album.getAudioObjects());
     	}

@@ -25,8 +25,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IFavorites;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
@@ -41,10 +41,10 @@ public class Favorites implements IFavorites {
     private Map<String, ILocalAudioObject> favoriteSongs;
 
     /** The favorite albums. */
-    private Map<String, Album> favoriteAlbums;
+    private Map<String, IAlbum> favoriteAlbums;
 
     /** The favorite artists. */
-    private Map<String, Artist> favoriteArtists;
+    private Map<String, IArtist> favoriteArtists;
 
     /**
      * Flag indicating if favorites information needs to be written to disk
@@ -56,8 +56,8 @@ public class Favorites implements IFavorites {
      */
     protected Favorites() {
         favoriteSongs = new HashMap<String, ILocalAudioObject>();
-        favoriteAlbums = new HashMap<String, Album>();
-        favoriteArtists = new HashMap<String, Artist>();
+        favoriteAlbums = new HashMap<String, IAlbum>();
+        favoriteArtists = new HashMap<String, IArtist>();
     }
 
     /* (non-Javadoc)
@@ -66,10 +66,10 @@ public class Favorites implements IFavorites {
     @Override
 	public List<ILocalAudioObject> getAllFavoriteSongs() {
         List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
-        for (Artist artist : favoriteArtists.values()) {
+        for (IArtist artist : favoriteArtists.values()) {
             result.addAll(artist.getAudioObjects());
         }
-        for (Album album : favoriteAlbums.values()) {
+        for (IAlbum album : favoriteAlbums.values()) {
             result.addAll(album.getAudioObjects());
         }
         result.addAll(favoriteSongs.values());
@@ -92,7 +92,7 @@ public class Favorites implements IFavorites {
 	 * @see net.sourceforge.atunes.kernel.modules.repository.favorites.IFavorites#getFavoriteAlbums()
 	 */
     @Override
-	public Map<String, Album> getFavoriteAlbums() {
+	public Map<String, IAlbum> getFavoriteAlbums() {
         return favoriteAlbums;
     }
 
@@ -100,7 +100,7 @@ public class Favorites implements IFavorites {
 	 * @see net.sourceforge.atunes.kernel.modules.repository.favorites.IFavorites#getFavoriteArtists()
 	 */
     @Override
-	public Map<String, Artist> getFavoriteArtists() {
+	public Map<String, IArtist> getFavoriteArtists() {
         return favoriteArtists;
     }
 
@@ -116,7 +116,7 @@ public class Favorites implements IFavorites {
 	 * @see net.sourceforge.atunes.kernel.modules.repository.favorites.IFavorites#setFavoriteAlbums(java.util.Map)
 	 */
     @Override
-	public void setFavoriteAlbums(Map<String, Album> favoriteAlbums) {
+	public void setFavoriteAlbums(Map<String, IAlbum> favoriteAlbums) {
         this.favoriteAlbums = favoriteAlbums;
     }
 
@@ -124,7 +124,7 @@ public class Favorites implements IFavorites {
 	 * @see net.sourceforge.atunes.kernel.modules.repository.favorites.IFavorites#setFavoriteArtists(java.util.Map)
 	 */
     @Override
-	public void setFavoriteArtists(Map<String, Artist> favoriteArtists) {
+	public void setFavoriteArtists(Map<String, IArtist> favoriteArtists) {
         this.favoriteArtists = favoriteArtists;
     }
 

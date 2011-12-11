@@ -29,7 +29,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.model.Album;
+import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.INavigationViewSorter;
@@ -99,7 +99,7 @@ public class AlbumTreeGenerator implements ITreeGenerator {
 			List<ITreeObject<? extends IAudioObject>> objectsSelected,
 			List<DefaultMutableTreeNode> nodesToSelect, String albumName) {
 		
-		Album album = (Album) structure.get(albumName);
+		IAlbum album = (IAlbum) structure.get(albumName);
 		if (currentFilter == null || album.getName().toUpperCase().contains(currentFilter.toUpperCase())) {
 		    // Special album node that shows artist name too
 		    DefaultMutableTreeNode albumNode = new AlbumDefaultMutableTreeNode(album);

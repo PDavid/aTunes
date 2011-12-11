@@ -26,8 +26,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
 class ArtistStructureBuilder {
@@ -38,15 +38,15 @@ class ArtistStructureBuilder {
      * @param audioFiles
      * @return
      */
-    Map<String, Artist> getArtistObjects(List<ILocalAudioObject> audioFiles) {
-        Map<String, Artist> structure = new HashMap<String, Artist>();
+    Map<String, IArtist> getArtistObjects(List<ILocalAudioObject> audioFiles) {
+        Map<String, IArtist> structure = new HashMap<String, IArtist>();
         for (ILocalAudioObject song : audioFiles) {
             String artist = !song.getAlbumArtist().equals("") ? song.getAlbumArtist() : song.getArtist();
             if (!structure.containsKey(artist)) {
                 structure.put(artist, new Artist(artist));
             }
             if (!structure.get(artist).getAlbums().containsKey(song.getAlbum())) {
-                Album album = new Album(structure.get(artist), song.getAlbum());
+            	IAlbum album = new Album(structure.get(artist), song.getAlbum());
                 structure.get(artist).addAlbum(album);
             }
             structure.get(artist).getAlbum(song.getAlbum()).addAudioFile(song);

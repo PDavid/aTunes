@@ -28,7 +28,7 @@ import java.util.Map;
 import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.process.EditTitlesProcess;
-import net.sourceforge.atunes.model.Album;
+import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IState;
@@ -36,7 +36,7 @@ import net.sourceforge.atunes.model.IState;
 final class EditTitlesDialogController extends AbstractSimpleController<EditTitlesDialog> {
 
     private List<ILocalAudioObject> filesToEdit;
-    private Album album;
+    private IAlbum album;
     private EditTitlesTableModel model;
     private IProcessFactory processFactory;
     
@@ -87,7 +87,7 @@ final class EditTitlesDialogController extends AbstractSimpleController<EditTitl
      * @param alb
      *            the alb
      */
-    public void editFiles(Album alb) {
+    public void editFiles(IAlbum alb) {
         this.album = alb;
         filesToEdit = alb.getAudioObjects();
         Collections.sort(filesToEdit);
@@ -101,7 +101,7 @@ final class EditTitlesDialogController extends AbstractSimpleController<EditTitl
      * 
      * @return the album
      */
-    protected Album getAlbum() {
+    protected IAlbum getAlbum() {
         return album;
     }
 

@@ -33,7 +33,6 @@ import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryLoader;
 import net.sourceforge.atunes.model.IRepositoryLoaderListener;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.utils.DirectoryFileFilter;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -49,7 +48,7 @@ public class RepositoryLoader implements IRepositoryLoader, Runnable {
 	private List<File> folders;
 	private boolean refresh;
 	private boolean interrupt;
-	private Repository oldRepository;
+	private IRepository oldRepository;
 	private IRepository repository;
 	private int totalFilesToLoad;
 	private int filesLoaded;
@@ -73,7 +72,7 @@ public class RepositoryLoader implements IRepositoryLoader, Runnable {
 	 * @param refresh
 	 */
 	@Override
-	public void start(RepositoryTransaction transaction, List<File> folders, Repository oldRepository, IRepository repository, boolean refresh) {
+	public void start(RepositoryTransaction transaction, List<File> folders, IRepository oldRepository, IRepository repository, boolean refresh) {
 		this.transaction = transaction;
 		this.refresh = refresh;
 		this.folders = folders;
@@ -377,7 +376,7 @@ public class RepositoryLoader implements IRepositoryLoader, Runnable {
 	 * @return the oldRepository
 	 */
 	@Override
-	public Repository getOldRepository() {
+	public IRepository getOldRepository() {
 		return oldRepository;
 	}
 }

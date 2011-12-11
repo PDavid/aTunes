@@ -55,7 +55,7 @@ public interface IYear extends Serializable, ITreeObject<ILocalAudioObject> {
 	 * 
 	 * @return the artists
 	 */
-	public Map<String, Artist> getArtistObjects();
+	public Map<String, IArtist> getArtistObjects();
 
 	/**
 	 * Returns all artists of this year

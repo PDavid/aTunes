@@ -31,8 +31,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.INavigationViewSorter;
@@ -124,7 +124,7 @@ public class YearTreeGenerator implements ITreeGenerator {
 		    }
 		    List<String> artistNamesList = new ArrayList<String>(year.getArtistSet());
 		    Collections.sort(artistNamesList);
-		    Map<String, Artist> yearArtists = year.getArtistObjects();
+		    Map<String, IArtist> yearArtists = year.getArtistObjects();
 		    for (int j = 0; j < artistNamesList.size(); j++) {
 		        buildArtistNode(objectsSelected, objectsExpanded,
 						nodesToSelect, nodesToExpand, yearNode,
@@ -150,8 +150,8 @@ public class YearTreeGenerator implements ITreeGenerator {
 			List<DefaultMutableTreeNode> nodesToSelect,
 			List<DefaultMutableTreeNode> nodesToExpand,
 			DefaultMutableTreeNode yearNode, List<String> artistNamesList,
-			Map<String, Artist> yearArtists, int j) {
-		Artist artist = yearArtists.get(artistNamesList.get(j));
+			Map<String, IArtist> yearArtists, int j) {
+		IArtist artist = yearArtists.get(artistNamesList.get(j));
 		DefaultMutableTreeNode artistNode = new DefaultMutableTreeNode(artist);
 		List<String> albumNamesList = new ArrayList<String>(artist.getAlbums().keySet());
 		Collections.sort(albumNamesList);
@@ -178,10 +178,10 @@ public class YearTreeGenerator implements ITreeGenerator {
 			List<ITreeObject<? extends IAudioObject>> objectsExpanded,
 			List<DefaultMutableTreeNode> nodesToSelect,
 			List<DefaultMutableTreeNode> nodesToExpand,
-			DefaultMutableTreeNode yearNode, Artist artist,
+			DefaultMutableTreeNode yearNode, IArtist artist,
 			DefaultMutableTreeNode artistNode, List<String> albumNamesList,
 			int k) {
-		Album album = artist.getAlbum(albumNamesList.get(k));
+		IAlbum album = artist.getAlbum(albumNamesList.get(k));
 		DefaultMutableTreeNode albumNode = new DefaultMutableTreeNode(album);
 		artistNode.add(albumNode);
 		yearNode.add(artistNode);

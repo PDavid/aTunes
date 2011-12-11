@@ -18,14 +18,16 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.kernel.modules.repository.data;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IArtist;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -37,7 +39,7 @@ import org.commonjukebox.plugins.model.PluginApi;
  * @author fleax
  */
 @PluginApi
-public class Artist implements Serializable, ITreeObject<ILocalAudioObject>, Comparable<Artist> {
+public class Artist implements IArtist {
 
     /**
 	 * 
@@ -47,8 +49,8 @@ public class Artist implements Serializable, ITreeObject<ILocalAudioObject>, Com
 	/** Name of the artist. */
     private String name;
 
-    /** List of Album objects, indexed by name. */
-    private Map<String, Album> albums;
+    /** List of IAlbum objects, indexed by name. */
+    private Map<String, IAlbum> albums;
 
     /**
      * Constructor.
@@ -66,7 +68,8 @@ public class Artist implements Serializable, ITreeObject<ILocalAudioObject>, Com
      * @param album
      *            the album
      */
-    public void addAlbum(Album album) {
+    @Override
+	public void addAlbum(IAlbum album) {
     	getAlbums().put(album.getName(), album);
     }
 
@@ -79,8 +82,8 @@ public class Artist implements Serializable, ITreeObject<ILocalAudioObject>, Com
      * @return the int
      */
     @Override
-    public int compareTo(Artist o) {
-        return this.name.compareToIgnoreCase(o.name);
+    public int compareTo(IArtist o) {
+        return this.name.compareToIgnoreCase(o.getName());
     }
 
     @Override
@@ -92,14 +95,15 @@ public class Artist implements Serializable, ITreeObject<ILocalAudioObject>, Com
     }
 
     /**
-     * Return an Album for a given album name.
+     * Return an IAlbum for a given album name.
      * 
      * @param albumName
      *            the album name
      * 
      * @return the album
      */
-    public Album getAlbum(String albumName) {
+    @Override
+	public IAlbum getAlbum(String albumName) {
         return getAlbums().get(albumName);
     }
 
@@ -108,9 +112,10 @@ public class Artist implements Serializable, ITreeObject<ILocalAudioObject>, Com
      * 
      * @return the albums
      */
-    public Map<String, Album> getAlbums() {
+    @Override
+	public Map<String, IAlbum> getAlbums() {
     	if (albums == null) {
-    		albums = new HashMap<String, Album>();
+    		albums = new HashMap<String, IAlbum>();
     	}
         return albums;
     }
@@ -123,7 +128,7 @@ public class Artist implements Serializable, ITreeObject<ILocalAudioObject>, Com
     @Override
     public List<ILocalAudioObject> getAudioObjects() {
         List<ILocalAudioObject> songs = new ArrayList<ILocalAudioObject>();
-        for (Album album : getAlbums().values()) {
+        for (IAlbum album : getAlbums().values()) {
             songs.addAll(album.getAudioObjects());
         }
         return songs;
@@ -134,7 +139,8 @@ public class Artist implements Serializable, ITreeObject<ILocalAudioObject>, Com
      * 
      * @return the name
      */
-    public String getName() {
+    @Override
+	public String getName() {
         return name;
     }
 
@@ -149,7 +155,8 @@ public class Artist implements Serializable, ITreeObject<ILocalAudioObject>, Com
      * @param alb
      *            the alb
      */
-    public void removeAlbum(Album alb) {
+    @Override
+	public void removeAlbum(IAlbum alb) {
     	getAlbums().remove(alb.getName());
     }
 
@@ -183,9 +190,10 @@ public class Artist implements Serializable, ITreeObject<ILocalAudioObject>, Com
 	 * Returns true if artist has no audio files
 	 * @return
 	 */
+	@Override
 	public boolean isEmpty() {
 		if (!getAlbums().isEmpty()) {
-			for (Album a : getAlbums().values()) {
+			for (IAlbum a : getAlbums().values()) {
 				if (!a.isEmpty()) {
 					return false;
 				}
@@ -201,11 +209,10 @@ public class Artist implements Serializable, ITreeObject<ILocalAudioObject>, Com
 	public int size() {
 		int size = 0;
 		if (!getAlbums().isEmpty()) {
-			for (Album a : getAlbums().values()) {
+			for (IAlbum a : getAlbums().values()) {
 				size = size + a.size();
 			}
 		}
 		return size;
 	}
-
 }

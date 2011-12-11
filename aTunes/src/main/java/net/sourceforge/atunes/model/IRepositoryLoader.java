@@ -41,7 +41,7 @@ public interface IRepositoryLoader {
 	 * @param repository
 	 * @param refresh
 	 */
-	void start(RepositoryTransaction transaction, List<File> folders, Repository oldRepository, IRepository repository, boolean refresh);
+	void start(RepositoryTransaction transaction, List<File> folders, IRepository oldRepository, IRepository repository, boolean refresh);
 
 	/**
 	 * Adds the repository loader listener.
@@ -60,5 +60,5 @@ public interface IRepositoryLoader {
 	 * Returns previous repository (to be used if interrupted to restore previous repository)
 	 * @return
 	 */
-	Repository getOldRepository();
+	IRepository getOldRepository();
 }

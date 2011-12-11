@@ -20,8 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.repository;
 
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.IRepository;
@@ -116,8 +116,8 @@ public class LocalAudioObjectRefresher {
 	 * @param oldArtistRemoved
 	 */
 	private void updateAlbumStatistics(IRepository repository, ITag oldTag, ITag newTag, boolean oldArtistRemoved) {
-		Artist artistWithOldAlbum = repository.getArtist(oldArtistRemoved ? newTag.getArtist() : oldTag.getArtist()); 
-		Album oldAlbum = artistWithOldAlbum.getAlbum(oldTag.getAlbum());
+		IArtist artistWithOldAlbum = repository.getArtist(oldArtistRemoved ? newTag.getArtist() : oldTag.getArtist()); 
+		IAlbum oldAlbum = artistWithOldAlbum.getAlbum(oldTag.getAlbum());
 		if (oldAlbum == null) {
 			// Album has been renamed -> Update statistics
 			statisticsHandler.replaceAlbum(artistWithOldAlbum.getName(), oldTag.getAlbum(), newTag.getAlbum());
@@ -133,7 +133,7 @@ public class LocalAudioObjectRefresher {
 	 */
 	private boolean updateArtistStatistics(IRepository repository, ITag oldTag,
 			ITag newTag, boolean oldArtistRemoved) {
-		Artist oldArtist = repository.getArtist(oldTag.getArtist());
+		IArtist oldArtist = repository.getArtist(oldTag.getArtist());
 		if (oldArtist == null) {
 			// Artist has been renamed -> Update statistics
 			statisticsHandler.replaceArtist(oldTag.getArtist(), newTag.getArtist());

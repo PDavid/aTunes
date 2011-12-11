@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.io.File;
 import java.io.Serializable;
@@ -28,6 +28,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.sourceforge.atunes.model.Folder;
+import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IArtist;
+import net.sourceforge.atunes.model.IGenre;
+import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IRepository;
+import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IYear;
+import net.sourceforge.atunes.model.InconsistentRepositoryException;
 import net.sourceforge.atunes.utils.StringUtils;
 
 
@@ -58,7 +67,7 @@ public class Repository implements Serializable, IRepository {
     /**
      * Artists structure
      */
-    private RepositoryStructure<Artist> artistsStructure;
+    private RepositoryStructure<IArtist> artistsStructure;
     
     /**
      * Folders structure
@@ -88,7 +97,7 @@ public class Repository implements Serializable, IRepository {
     public Repository(List<File> folders, IState state) {
         this.folders = folders;
         this.filesStructure = new RepositoryStructure<ILocalAudioObject>();
-        this.artistsStructure = new RepositoryStructure<Artist>();
+        this.artistsStructure = new RepositoryStructure<IArtist>();
         this.foldersStructure = new RepositoryStructure<Folder>();
         this.genresStructure = new RepositoryStructure<IGenre>();
         this.yearStructure = new RepositoryStructure<IYear>();
@@ -250,7 +259,7 @@ public class Repository implements Serializable, IRepository {
      * @return
      */
 	@Override
-    public Map<String, Artist> getArtistStructure() {
+    public Map<String, IArtist> getArtistStructure() {
         return artistsStructure.getStructure();
     }
     
@@ -266,7 +275,7 @@ public class Repository implements Serializable, IRepository {
 	 * @see net.sourceforge.atunes.model.IRepository#getArtist(java.lang.String)
 	 */
     @Override
-	public Artist getArtist(String artistName) {
+	public IArtist getArtist(String artistName) {
     	if (artistName == null) {
     		return null;
     	} else if (state.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
@@ -280,20 +289,16 @@ public class Repository implements Serializable, IRepository {
 	 * @see net.sourceforge.atunes.model.IRepository#getArtists()
 	 */
     @Override
-	public Collection<Artist> getArtists() {
+	public Collection<IArtist> getArtists() {
     	return artistsStructure.getAll();
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#putArtist(java.lang.String)
-	 */
     @Override
-	public Artist putArtist(String artistName) {
-    	Artist artist = new Artist(artistName);
+	public IArtist putArtist(IArtist artist) {
     	if (state.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
-    		artistsStructure.put(artistName, artist);
+    		artistsStructure.put(artist.getName(), artist);
     	} else {
-    		artistsStructure.put(artistName.toLowerCase(), artist);
+    		artistsStructure.put(artist.getName().toLowerCase(), artist);
     	}
     	return artist;
     }
@@ -302,7 +307,7 @@ public class Repository implements Serializable, IRepository {
 	 * @see net.sourceforge.atunes.model.IRepository#removeArtist(net.sourceforge.atunes.model.Artist)
 	 */
     @Override
-	public void removeArtist(Artist artist) {
+	public void removeArtist(IArtist artist) {
     	if (state.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
     		artistsStructure.remove(artist.getName());
     	} else {
@@ -317,11 +322,11 @@ public class Repository implements Serializable, IRepository {
      * @return
      */
 	@Override
-    public Map<String, Album> getAlbumStructure() {
-        Map<String, Album> albumsStructure = new HashMap<String, Album>();
-        Collection<Artist> artistCollection = getArtists();
-        for (Artist artist : artistCollection) {
-            for (Album album : artist.getAlbums().values()) {
+    public Map<String, IAlbum> getAlbumStructure() {
+        Map<String, IAlbum> albumsStructure = new HashMap<String, IAlbum>();
+        Collection<IArtist> artistCollection = getArtists();
+        for (IArtist artist : artistCollection) {
+            for (IAlbum album : artist.getAlbums().values()) {
                 albumsStructure.put(StringUtils.getString(album.getName(), " (", album.getArtist(), ")"), album);
             }
         }

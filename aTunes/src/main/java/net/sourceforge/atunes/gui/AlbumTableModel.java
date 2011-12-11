@@ -29,7 +29,7 @@ import javax.swing.event.TableModelEvent;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.AlbumImageSmallIcon;
 import net.sourceforge.atunes.kernel.modules.columns.TypeColumn;
-import net.sourceforge.atunes.model.Album;
+import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IAudioObject;
 
 /**
@@ -41,7 +41,7 @@ public final class AlbumTableModel extends AbstractColumnSetTableModel {
 
    
     /** The albums. */
-    private List<Album> albums;
+    private List<IAlbum> albums;
     
     /*
      * (non-Javadoc)
@@ -61,7 +61,7 @@ public final class AlbumTableModel extends AbstractColumnSetTableModel {
      * 
      * @return the album at
      */
-    public Album getAlbumAt(int row) {
+    public IAlbum getAlbumAt(int row) {
         return albums != null ? albums.get(row) : null;
     }
 
@@ -70,7 +70,7 @@ public final class AlbumTableModel extends AbstractColumnSetTableModel {
      * 
      * @return the albums
      */
-    public List<Album> getAlbums() {
+    public List<IAlbum> getAlbums() {
         return albums;
     }
 
@@ -82,8 +82,8 @@ public final class AlbumTableModel extends AbstractColumnSetTableModel {
      * 
      * @return the album at
      */
-    public List<Album> getAlbumsAt(int[] rows) {
-        List<Album> result = new ArrayList<Album>();
+    public List<IAlbum> getAlbumsAt(int[] rows) {
+        List<IAlbum> result = new ArrayList<IAlbum>();
         for (int element : rows) {
             result.add(albums.get(element));
         }
@@ -98,7 +98,7 @@ public final class AlbumTableModel extends AbstractColumnSetTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-    	Album album = getAlbumAt(rowIndex);
+    	IAlbum album = getAlbumAt(rowIndex);
     	if (album == null) {
     		return null;
     	} else if (getColumn(columnIndex) instanceof TypeColumn) {
@@ -123,7 +123,7 @@ public final class AlbumTableModel extends AbstractColumnSetTableModel {
      * @param albums
      *            
      */
-    public void setAlbums(List<Album> albums) {
+    public void setAlbums(List<IAlbum> albums) {
         this.albums = albums;
         refresh(TableModelEvent.INSERT);
     }

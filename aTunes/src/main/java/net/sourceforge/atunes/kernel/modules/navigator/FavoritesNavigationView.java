@@ -50,9 +50,9 @@ import net.sourceforge.atunes.kernel.actions.SearchArtistAction;
 import net.sourceforge.atunes.kernel.actions.SearchArtistAtAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.CachedIconFactory;
+import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
@@ -237,13 +237,13 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
         DefaultMutableTreeNode artistsNode = new DefaultMutableTreeNode();
         artistsNode.setUserObject(I18nUtils.getString("ARTISTS"));
         nodesToExpand.add(artistsNode);
-        addArtistNodes(artistsNode, treeFilter, (Map<String, Artist>) data.get("ARTISTS"), objectsSelected, objectsExpanded, nodesToSelect, nodesToExpand);
+        addArtistNodes(artistsNode, treeFilter, (Map<String, IArtist>) data.get("ARTISTS"), objectsSelected, objectsExpanded, nodesToSelect, nodesToExpand);
         root.add(artistsNode);
 
         DefaultMutableTreeNode albumsNode = new DefaultMutableTreeNode();
         albumsNode.setUserObject(I18nUtils.getString("ALBUMS"));
         nodesToExpand.add(albumsNode);
-        addAlbumNodes(albumsNode, treeFilter, (Map<String, Album>) data.get("ALBUMS"), objectsSelected, objectsExpanded, nodesToSelect, nodesToExpand);
+        addAlbumNodes(albumsNode, treeFilter, (Map<String, IAlbum>) data.get("ALBUMS"), objectsSelected, objectsExpanded, nodesToSelect, nodesToExpand);
         root.add(albumsNode);
 
         DefaultMutableTreeNode songsNode = new DefaultMutableTreeNode();
@@ -294,12 +294,12 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
      * @param albums
      *            the albums
      */
-    private static void addAlbumNodes(DefaultMutableTreeNode root, String currentFilter, Map<String, Album> albums, List<ITreeObject<? extends IAudioObject>> objectsSelected, List<ITreeObject<? extends IAudioObject>> objectsExpanded, List<DefaultMutableTreeNode> nodesToSelect, List<DefaultMutableTreeNode> nodesToExpand) {
+    private static void addAlbumNodes(DefaultMutableTreeNode root, String currentFilter, Map<String, IAlbum> albums, List<ITreeObject<? extends IAudioObject>> objectsSelected, List<ITreeObject<? extends IAudioObject>> objectsExpanded, List<DefaultMutableTreeNode> nodesToSelect, List<DefaultMutableTreeNode> nodesToExpand) {
         List<String> albumsNamesList = new ArrayList<String>(albums.keySet());
         Collections.sort(albumsNamesList);
 
         for (int i = 0; i < albumsNamesList.size(); i++) {
-            Album album = albums.get(albumsNamesList.get(i));
+            IAlbum album = albums.get(albumsNamesList.get(i));
             if (currentFilter == null || album.getName().toUpperCase().contains(currentFilter.toUpperCase())) {
                 DefaultMutableTreeNode albumNode = new DefaultMutableTreeNode(album);
 
@@ -325,12 +325,12 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
      * @param artists
      *            the artists
      */
-    private static void addArtistNodes(DefaultMutableTreeNode root, String currentFilter, Map<String, Artist> artists, List<ITreeObject<? extends IAudioObject>> objectsSelected, List<ITreeObject<? extends IAudioObject>> objectsExpanded, List<DefaultMutableTreeNode> nodesToSelect, List<DefaultMutableTreeNode> nodesToExpand) {
+    private static void addArtistNodes(DefaultMutableTreeNode root, String currentFilter, Map<String, IArtist> artists, List<ITreeObject<? extends IAudioObject>> objectsSelected, List<ITreeObject<? extends IAudioObject>> objectsExpanded, List<DefaultMutableTreeNode> nodesToSelect, List<DefaultMutableTreeNode> nodesToExpand) {
         List<String> artistNamesList = new ArrayList<String>(artists.keySet());
         Collections.sort(artistNamesList);
 
         for (int i = 0; i < artistNamesList.size(); i++) {
-            Artist artist = artists.get(artistNamesList.get(i));
+            IArtist artist = artists.get(artistNamesList.get(i));
             if (currentFilter == null || artist.getName().toUpperCase().contains(currentFilter.toUpperCase())) {
                 DefaultMutableTreeNode artistNode = new DefaultMutableTreeNode(artist);
 

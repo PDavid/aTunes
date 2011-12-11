@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
 import net.sourceforge.atunes.model.IFavoritesHandler;
@@ -111,7 +111,7 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
         List<ILovedTrack> lovedTracks = webServicesHandler.getLovedTracks();
         if (!lovedTracks.isEmpty()) {
             for (ILovedTrack lovedTrack : lovedTracks) {
-                Artist artist = repositoryHandler.getArtist(lovedTrack.getArtist());
+                IArtist artist = repositoryHandler.getArtist(lovedTrack.getArtist());
                 if (artist != null) {
                     for (ILocalAudioObject audioObject : artist.getAudioObjects()) {
                         if (audioObject.getTitleOrFileName().equalsIgnoreCase(lovedTrack.getTitle())) {

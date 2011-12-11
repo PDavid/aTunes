@@ -37,7 +37,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.api.RepositoryApi;
 import net.sourceforge.atunes.gui.TransferableList;
-import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectComparator;
 import net.sourceforge.atunes.model.IFrame;
@@ -289,7 +289,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
 
     private boolean getArtistSongs(List<DragableArtist> listOfObjectsDragged) {
     	DragableArtist dragabreArtist = listOfObjectsDragged.get(0);
-    	Artist currentArtist = RepositoryApi.getArtist(dragabreArtist.getArtistInfo().getName());
+    	IArtist currentArtist = RepositoryApi.getArtist(dragabreArtist.getArtistInfo().getName());
     	playListHandler.showAddArtistDragDialog(currentArtist);
     	return true;
 	}

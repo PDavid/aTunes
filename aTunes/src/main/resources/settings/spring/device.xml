@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
 	default-autowire="byName" default-lazy-init="true">
 	
-	<bean id="deviceMonitor" class="net.sourceforge.atunes.kernel.modules.device.DeviceMonitor">
+	<bean id="deviceMonitor" class="net.sourceforge.atunes.kernel.modules.repository.DeviceMonitor">
 		<property name="delayInSeconds" value="15"/>
 	</bean>
 

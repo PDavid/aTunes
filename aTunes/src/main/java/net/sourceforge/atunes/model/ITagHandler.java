@@ -42,7 +42,7 @@ public interface ITagHandler extends IHandler {
 	 * Edits all elements of an album
 	 * @param a
 	 */
-	void editFiles(Album a);
+	void editFiles(IAlbum a);
 
 	/**
 	 * Sets tag to audio object

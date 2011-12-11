@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.repository;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.Album;
+import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -62,7 +62,7 @@ public class AudioObjectImageLocator implements IAudioObjectImageLocator {
 	}
 	
 	@Override
-	public ImageIcon getImage(Album album, ImageSize imageSize) {
+	public ImageIcon getImage(IAlbum album, ImageSize imageSize) {
 		if (album == null || album.getAudioObjects().isEmpty()) {
 			return null;
 		}

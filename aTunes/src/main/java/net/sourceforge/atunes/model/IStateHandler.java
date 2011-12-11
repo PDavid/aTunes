@@ -147,14 +147,14 @@ public interface IStateHandler extends IHandler {
 	 * 
 	 * @return The retrieved repository
 	 */
-	public Repository retrieveRepositoryCache();
+	public IRepository retrieveRepositoryCache();
 
 	/**
 	 * Reads device cache.
 	 * 
 	 * @return The retrieved device
 	 */
-	public Repository retrieveDeviceCache(String deviceId);
+	public IRepository retrieveDeviceCache(String deviceId);
 
 	/**
 	 * Opens preferences dialog

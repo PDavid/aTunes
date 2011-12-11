@@ -22,19 +22,19 @@ package net.sourceforge.atunes.kernel.modules.covernavigator;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.Album;
+import net.sourceforge.atunes.model.IAlbum;
 
 class IntermediateResult {
 
-    private Album album;
+    private IAlbum album;
     private ImageIcon cover;
 
-    public IntermediateResult(Album album, ImageIcon cover) {
+    public IntermediateResult(IAlbum album, ImageIcon cover) {
         this.album = album;
         this.cover = cover;
     }
 
-    public Album getAlbum() {
+    public IAlbum getAlbum() {
         return album;
     }
 

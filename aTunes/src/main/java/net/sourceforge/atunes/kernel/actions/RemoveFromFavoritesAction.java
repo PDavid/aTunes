@@ -26,8 +26,8 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -96,10 +96,10 @@ public class RemoveFromFavoritesAction extends CustomAbstractAction {
     public boolean isEnabledForNavigationTreeSelection(boolean rootSelected, List<DefaultMutableTreeNode> selection) {
         for (DefaultMutableTreeNode node : selection) {
             // Only allow to remove album if does not belong to a favorite artist
-            if (node.getUserObject() instanceof Album) {
+            if (node.getUserObject() instanceof IAlbum) {
                 Object[] objs = node.getUserObjectPath();
                 for (Object element : objs) {
-                    if (element instanceof Artist) {
+                    if (element instanceof IArtist) {
                         return false;
                     }
                 }

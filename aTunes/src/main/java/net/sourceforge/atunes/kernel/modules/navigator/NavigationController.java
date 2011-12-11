@@ -54,8 +54,8 @@ import net.sourceforge.atunes.kernel.actions.ShowArtistsInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowFoldersInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowGenresInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowYearsInNavigatorAction;
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
@@ -95,15 +95,15 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
 			protected ImageIcon doInBackground() throws Exception {
 			    // Get image for albums
 		        if (currentObject instanceof ITreeObject) {
-		        	if (currentObject instanceof Artist) {
-		        		Artist a = (Artist) currentObject;
+		        	if (currentObject instanceof IArtist) {
+		        		IArtist a = (IArtist) currentObject;
 		                Image img = Context.getBean(IWebServicesHandler.class).getArtistImage(a.getName());
 		                if (img != null) {
 		                    return new ImageIcon(img);
 		                }
 		                return null;
-		        	} else if (currentObject instanceof Album) {
-		        		return audioObjectImageLocator.getImage((Album)currentObject, ImageSize.SIZE_MAX);
+		        	} else if (currentObject instanceof IAlbum) {
+		        		return audioObjectImageLocator.getImage((IAlbum)currentObject, ImageSize.SIZE_MAX);
 		        	}
 		        }
 		        return null;

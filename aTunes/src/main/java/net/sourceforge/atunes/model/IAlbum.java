@@ -20,20 +20,49 @@
 
 package net.sourceforge.atunes.model;
 
-
+import java.io.Serializable;
 
 /**
- * Dialog to select an album of an artist
+ * Represents an album, with it's name, artist, and songs.
  * @author alex
  *
  */
-public interface IArtistAlbumSelectorDialog {
+public interface IAlbum extends Serializable, ITreeObject<ILocalAudioObject>, Comparable<IAlbum> {
 
 	/**
-	 * Shows dialog and returns album selected
-	 * @param artist
+	 * Adds a song to this album.
+	 * 
+	 * @param file
+	 *            the file
+	 */
+	void addAudioFile(ILocalAudioObject file);
+
+	/**
+	 * Returns the name of the artist of this album.
+	 * 
+	 * @return the artist
+	 */
+	IArtist getArtist();
+
+	/**
+	 * Returns name of the album.
+	 * 
+	 * @return the name
+	 */
+	String getName();
+
+	/**
+	 * Removes a song from this album.
+	 * 
+	 * @param file
+	 *            the file
+	 */
+	void removeAudioFile(ILocalAudioObject file);
+
+	/**
+	 * Returns true if album has no audio files
 	 * @return
 	 */
-	public IAlbum showDialog(IArtist artist);
+	boolean isEmpty();
 
 }

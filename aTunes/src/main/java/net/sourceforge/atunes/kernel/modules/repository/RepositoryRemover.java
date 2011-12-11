@@ -23,9 +23,9 @@ package net.sourceforge.atunes.kernel.modules.repository;
 import java.io.File;
 import java.util.StringTokenizer;
 
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.Folder;
+import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -149,12 +149,12 @@ public class RepositoryRemover {
 		String artist = file.getArtist();
 		String album = file.getAlbum();
 
-		Artist a = repositoryHandler.getArtist(albumArtist);
+		IArtist a = repositoryHandler.getArtist(albumArtist);
 		if (a == null || UnknownObjectCheck.isUnknownArtist(a)) {
 			a = repositoryHandler.getArtist(artist);
 		}
 		if (a != null) {
-			Album alb = a.getAlbum(album);
+			IAlbum alb = a.getAlbum(album);
 			if (alb != null) {
 				if (alb.size() == 1) {
 					a.removeAlbum(alb);

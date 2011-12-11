@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.kernel.modules.repository.data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,6 +26,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
 
+import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IArtist;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -34,7 +37,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  * @author fleax
  */
-public class Album implements Serializable, ITreeObject<ILocalAudioObject>, Comparable<Album> {
+public class Album implements IAlbum {
 
     private static final long serialVersionUID = -1481314950918557022L;
 
@@ -42,7 +45,7 @@ public class Album implements Serializable, ITreeObject<ILocalAudioObject>, Comp
     private String name;
 
     /** Name of the artist. */
-    private Artist artist;
+    private IArtist artist;
 
     /** List of songs of this album. */
     private TreeSet<ILocalAudioObject> audioFiles;
@@ -75,7 +78,7 @@ public class Album implements Serializable, ITreeObject<ILocalAudioObject>, Comp
      * @param artist
      * @param name
      */
-    public Album(Artist artist, String name) {
+    public Album(IArtist artist, String name) {
         this.artist = artist;
         this.name = name;
     }
@@ -97,7 +100,8 @@ public class Album implements Serializable, ITreeObject<ILocalAudioObject>, Comp
      * @param file
      *            the file
      */
-    public void addAudioFile(ILocalAudioObject file) {
+    @Override
+	public void addAudioFile(ILocalAudioObject file) {
     	getAudioFiles().add(file);
     }
 
@@ -110,13 +114,13 @@ public class Album implements Serializable, ITreeObject<ILocalAudioObject>, Comp
      * @return the int
      */
     @Override
-    public int compareTo(Album o) {
+    public int compareTo(IAlbum o) {
     	if (o == null || name == null || artist == null) {
     		return 1;
     	} else {
-    		int artistCompare = artist.compareTo(o.artist);
+    		int artistCompare = artist.compareTo(o.getArtist());
     		if (artistCompare == 0) {
-    			return name.compareToIgnoreCase(o.name);
+    			return name.compareToIgnoreCase(o.getName());
     		} else {
     			return artistCompare;
     		}
@@ -128,7 +132,8 @@ public class Album implements Serializable, ITreeObject<ILocalAudioObject>, Comp
      * 
      * @return the artist
      */
-    public Artist getArtist() {
+    @Override
+	public IArtist getArtist() {
         return artist;
     }
 
@@ -147,7 +152,8 @@ public class Album implements Serializable, ITreeObject<ILocalAudioObject>, Comp
      * 
      * @return the name
      */
-    public String getName() {
+    @Override
+	public String getName() {
         return name;
     }
 
@@ -157,7 +163,8 @@ public class Album implements Serializable, ITreeObject<ILocalAudioObject>, Comp
      * @param file
      *            the file
      */
-    public void removeAudioFile(ILocalAudioObject file) {
+    @Override
+	public void removeAudioFile(ILocalAudioObject file) {
     	getAudioFiles().remove(file);
     }
 
@@ -222,6 +229,7 @@ public class Album implements Serializable, ITreeObject<ILocalAudioObject>, Comp
 	 * Returns true if album has no audio files
 	 * @return
 	 */
+	@Override
 	public boolean isEmpty() {
 		return getAudioFiles().isEmpty();
 	}

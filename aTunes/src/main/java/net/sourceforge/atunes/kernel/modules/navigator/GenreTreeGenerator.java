@@ -31,8 +31,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.INavigationView;
@@ -135,7 +135,7 @@ public class GenreTreeGenerator implements ITreeGenerator {
 		    }
 		    List<String> artistNamesList = new ArrayList<String>(genre.getArtistSet());
 		    artistSorter.sort(artistNamesList);
-		    Map<String, Artist> genreArtists = genre.getArtistObjects();
+		    Map<String, IArtist> genreArtists = genre.getArtistObjects();
 		    for (String artistName : artistNamesList) {
 		        buildArtistNode(objectsSelected, objectsExpanded,
 						nodesToSelect, nodesToExpand, genreNode, genreArtists,
@@ -159,9 +159,9 @@ public class GenreTreeGenerator implements ITreeGenerator {
 			List<ITreeObject<? extends IAudioObject>> objectsExpanded,
 			List<DefaultMutableTreeNode> nodesToSelect,
 			List<DefaultMutableTreeNode> nodesToExpand,
-			DefaultMutableTreeNode genreNode, Map<String, Artist> genreArtists,
+			DefaultMutableTreeNode genreNode, Map<String, IArtist> genreArtists,
 			String artistName) {
-		Artist artist = genreArtists.get(artistName);
+		IArtist artist = genreArtists.get(artistName);
 		DefaultMutableTreeNode artistNode = new DefaultMutableTreeNode(artist);
 		List<String> albumNamesList = new ArrayList<String>(artist.getAlbums().keySet());
 		albumSorter.sort(albumNamesList);
@@ -186,9 +186,9 @@ public class GenreTreeGenerator implements ITreeGenerator {
 			List<ITreeObject<? extends IAudioObject>> objectsExpanded,
 			List<DefaultMutableTreeNode> nodesToSelect,
 			List<DefaultMutableTreeNode> nodesToExpand,
-			DefaultMutableTreeNode genreNode, Artist artist,
+			DefaultMutableTreeNode genreNode, IArtist artist,
 			DefaultMutableTreeNode artistNode, String albumName) {
-		Album album = artist.getAlbum(albumName);
+		IAlbum album = artist.getAlbum(albumName);
 		DefaultMutableTreeNode albumNode = new DefaultMutableTreeNode(album);
 		artistNode.add(albumNode);
 		genreNode.add(artistNode);

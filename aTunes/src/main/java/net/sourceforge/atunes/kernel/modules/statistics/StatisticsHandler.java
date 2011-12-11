@@ -25,8 +25,8 @@ import java.util.List;
 
 import net.sourceforge.atunes.gui.views.dialogs.StatsDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectStatistics;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -116,7 +116,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
 		updateAudioObjectRanking(songPath);
 
 		String artist = audioObject.getArtist();
-		Artist a = repositoryHandler.getArtist(artist);
+		IArtist a = repositoryHandler.getArtist(artist);
 
 		updateArtistRanking(a);
 		updateAlbumRanking(audioObject, artist, a);
@@ -151,10 +151,10 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
 	 * @param artist
 	 * @param a
 	 */
-	private void updateAlbumRanking(IAudioObject audioObject, String artist, Artist a) {
+	private void updateAlbumRanking(IAudioObject audioObject, String artist, IArtist a) {
 		String album = audioObject.getAlbum();
 
-		Album alb = a.getAlbum(album);
+		IAlbum alb = a.getAlbum(album);
 
 		// Unknown album -> don't fill album stats
 		if (alb == null || UnknownObjectCheck.isUnknownAlbum(alb.getName())) {
@@ -169,7 +169,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
 	 * Updates artist ranking
 	 * @param a
 	 */
-	private void updateArtistRanking(Artist a) {
+	private void updateArtistRanking(IArtist a) {
 		// Unknown artist -> don't fill artist stats
 		if (a == null || UnknownObjectCheck.isUnknownArtist(a.getName())) {
 		    return;
@@ -188,7 +188,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
 	}
 
     @Override
-    public int getArtistTimesPlayed(Artist artist) {
+    public int getArtistTimesPlayed(IArtist artist) {
         if (statistics.getArtistsRanking().getCount(artist.getName()) != null) {
             return statistics.getArtistsRanking().getCount(artist.getName());
         }
@@ -201,14 +201,14 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
     }
 
     @Override
-    public List<Album> getMostPlayedAlbums(int n) {
+    public List<IAlbum> getMostPlayedAlbums(int n) {
         List<IStatisticsAlbum> statisticsAlbums = statistics.getAlbumsRanking().getNFirstElements(n);
         if (statisticsAlbums != null) {
-            List<Album> albums = new ArrayList<Album>();
+            List<IAlbum> albums = new ArrayList<IAlbum>();
             for (IStatisticsAlbum statisticAlbum : statisticsAlbums) {
-            	Artist artist = repositoryHandler.getArtist(statisticAlbum.getArtist());
+            	IArtist artist = repositoryHandler.getArtist(statisticAlbum.getArtist());
             	if (artist != null) {
-            		Album album = artist.getAlbum(statisticAlbum.getAlbum());
+            		IAlbum album = artist.getAlbum(statisticAlbum.getAlbum());
             		if (album != null) {
             			albums.add(album);
             		}
@@ -225,10 +225,10 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
     }
 
     @Override
-    public List<Artist> getMostPlayedArtists(int n) {
+    public List<IArtist> getMostPlayedArtists(int n) {
         List<String> artistsNames = statistics.getArtistsRanking().getNFirstElements(n);
         if (artistsNames != null) {
-            List<Artist> artists = new ArrayList<Artist>();
+            List<IArtist> artists = new ArrayList<IArtist>();
             for (String artistName : artistsNames) {
                 artists.add(repositoryHandler.getArtist(artistName));
             }

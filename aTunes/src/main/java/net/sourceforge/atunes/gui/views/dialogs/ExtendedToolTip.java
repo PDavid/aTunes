@@ -34,9 +34,9 @@ import javax.swing.ScrollPaneConstants;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.Folder;
+import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -190,7 +190,7 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
      * @param object
      */
     private void setExtendedToolTipFromTreeObject(ITreeObject<? extends IAudioObject> object) {
-    	if (object instanceof Album) {
+    	if (object instanceof IAlbum) {
     		setFromAlbum(object);
     	} else if (object instanceof IPodcastFeed) {
     		setFromPodcast(object);
@@ -200,7 +200,7 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
     		setFromGenre(object);
     	} else if (object instanceof IYear) {
     		setFromYear(object);
-    	} else if (object instanceof Artist) {
+    	} else if (object instanceof IArtist) {
     		setFromArtist(object);
     	}
 	}
@@ -209,7 +209,7 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
 	 * @param object
 	 */
 	private void setFromArtist(ITreeObject<? extends IAudioObject> object) {
-		Artist a = (Artist) object;
+		IArtist a = (IArtist) object;
 		setLine1(a.getName());
 		int albumNumber = a.getAlbums().size();
 		setLine2(StringUtils.getString(albumNumber, " ", (albumNumber > 1 ? I18nUtils.getString("ALBUMS") : I18nUtils.getString("ALBUM"))));
@@ -270,7 +270,7 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
 	 * @param object
 	 */
 	private void setFromAlbum(ITreeObject<? extends IAudioObject> object) {
-		Album a = (Album) object;
+		IAlbum a = (IAlbum) object;
 		setLine1(a.getName());
 		setLine2(a.getArtist().getName());
 		int songNumber = a.size();

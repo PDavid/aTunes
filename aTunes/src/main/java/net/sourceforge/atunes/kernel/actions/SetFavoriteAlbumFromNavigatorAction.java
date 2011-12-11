@@ -24,7 +24,7 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.model.Album;
+import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -75,7 +75,7 @@ public class SetFavoriteAlbumFromNavigatorAction extends AbstractActionOverSelec
         }
 
         for (DefaultMutableTreeNode node : selection) {
-            if (!(node.getUserObject() instanceof Album)) {
+            if (!(node.getUserObject() instanceof IAlbum)) {
                 return false;
             }
         }

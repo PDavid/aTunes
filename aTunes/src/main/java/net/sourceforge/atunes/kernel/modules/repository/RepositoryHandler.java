@@ -31,9 +31,9 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.Folder;
+import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFavoritesHandler;
@@ -53,7 +53,6 @@ import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.IYear;
-import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
@@ -197,7 +196,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	/**
 	 * @param repository
 	 */
-	void setRepository(Repository repository) {
+	void setRepository(IRepository repository) {
 		this.repository = repository;
 	}
 	
@@ -323,10 +322,10 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     }
 
     @Override
-	public List<Album> getAlbums() {
-        List<Album> result = new ArrayList<Album>();
-        Collection<Artist> artists = repository.getArtists();
-        for (Artist a : artists) {
+	public List<IAlbum> getAlbums() {
+        List<IAlbum> result = new ArrayList<IAlbum>();
+        Collection<IArtist> artists = repository.getArtists();
+        for (IArtist a : artists) {
         	result.addAll(a.getAlbums().values());
         }
         Collections.sort(result);
@@ -334,20 +333,20 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     }
 
     @Override
-	public List<Artist> getArtists() {
-        List<Artist> result = new ArrayList<Artist>();
+	public List<IArtist> getArtists() {
+        List<IArtist> result = new ArrayList<IArtist>();
         result.addAll(repository.getArtists());
         Collections.sort(result);
         return result;
     }
     
     @Override
-	public Artist getArtist(String name) {
+	public IArtist getArtist(String name) {
     	return repository.getArtist(name);
     }
     
     @Override
-	public void removeArtist(Artist artist) {
+	public void removeArtist(IArtist artist) {
     	repository.removeArtist(artist);
     }
 
@@ -408,18 +407,18 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     }
 
     @Override
-	public List<ILocalAudioObject> getAudioFilesForAlbums(Map<String, Album> albums) {
+	public List<ILocalAudioObject> getAudioFilesForAlbums(Map<String, IAlbum> albums) {
         List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
-        for (Map.Entry<String, Album> entry : albums.entrySet()) {
+        for (Map.Entry<String, IAlbum> entry : albums.entrySet()) {
             result.addAll(entry.getValue().getAudioObjects());
         }
         return result;
     }
 
     @Override
-	public List<ILocalAudioObject> getAudioFilesForArtists(Map<String, Artist> artists) {
+	public List<ILocalAudioObject> getAudioFilesForArtists(Map<String, IArtist> artists) {
         List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
-        for (Map.Entry<String, Artist> entry : artists.entrySet()) {
+        for (Map.Entry<String, IArtist> entry : artists.entrySet()) {
             result.addAll(entry.getValue().getAudioObjects());
         }
         return result;

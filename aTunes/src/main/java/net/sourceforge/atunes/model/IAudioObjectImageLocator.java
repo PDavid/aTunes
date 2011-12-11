@@ -43,6 +43,6 @@ public interface IAudioObjectImageLocator {
      * @param imageSize
      * @return
      */
-    ImageIcon getImage(Album album, ImageSize imageSize);
+    ImageIcon getImage(IAlbum album, ImageSize imageSize);
 
 }

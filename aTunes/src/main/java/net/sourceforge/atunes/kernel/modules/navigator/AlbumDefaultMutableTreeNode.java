@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.navigator;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.model.Album;
+import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.utils.StringUtils;
 
 final class AlbumDefaultMutableTreeNode extends DefaultMutableTreeNode {
@@ -34,6 +34,6 @@ final class AlbumDefaultMutableTreeNode extends DefaultMutableTreeNode {
 
     @Override
     public String toString() {
-    	return StringUtils.getString(((Album) getUserObject()).getName(), " (", ((Album) getUserObject()).getArtist(), ")");
+    	return StringUtils.getString(((IAlbum) getUserObject()).getName(), " (", ((IAlbum) getUserObject()).getArtist(), ")");
     }
 }
