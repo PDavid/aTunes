@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeysConfig;
-import net.sourceforge.atunes.kernel.modules.state.beans.ColorBean;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.kernel.modules.tags.TagAttribute;
 
@@ -1169,13 +1168,13 @@ public abstract class AbstractStateMock implements IState {
 	}
 
 	@Override
-	public ColorBean getTrayPlayerIconsColor() {
+	public IColorBean getTrayPlayerIconsColor() {
 		
 		return null;
 	}
 
 	@Override
-	public void setTrayPlayerIconsColor(ColorBean color) {
+	public void setTrayPlayerIconsColor(IColorBean color) {
 		
 		
 	}

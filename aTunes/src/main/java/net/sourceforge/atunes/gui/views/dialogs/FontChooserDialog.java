@@ -45,12 +45,16 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.kernel.modules.state.beans.FontBean;
 import net.sourceforge.atunes.model.FontSettings;
+import net.sourceforge.atunes.model.IFontBeanFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * @author alex
+ *
+ */
 public final class FontChooserDialog extends AbstractCustomDialog {
 
     private static final long serialVersionUID = 2941323406891892062L;
@@ -68,11 +72,25 @@ public final class FontChooserDialog extends AbstractCustomDialog {
     private Locale locale;
 
     private FontSettings fontSettings = new FontSettings();
+    
+    private IFontBeanFactory fontBeanFactory;
 
-    public FontChooserDialog(Window owner, int width, int height, Font font, boolean useFontSmoothing, boolean useFontSmoothingSettingsFromOs, Locale locale, ILookAndFeelManager lookAndFeelManager) {
+    /**
+     * @param owner
+     * @param width
+     * @param height
+     * @param font
+     * @param useFontSmoothing
+     * @param useFontSmoothingSettingsFromOs
+     * @param locale
+     * @param lookAndFeelManager
+     * @param fontBeanFactory
+     */
+    public FontChooserDialog(Window owner, int width, int height, Font font, boolean useFontSmoothing, boolean useFontSmoothingSettingsFromOs, Locale locale, ILookAndFeelManager lookAndFeelManager, IFontBeanFactory fontBeanFactory) {
         super(owner, width, height, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
         this.locale = locale;
-        this.fontSettings.setFont(new FontBean(font));
+        this.fontBeanFactory = fontBeanFactory;
+        this.fontSettings.setFont(fontBeanFactory.getFontBean(font));
         this.fontSettings.setUseFontSmoothing(useFontSmoothing);
         this.fontSettings.setUseFontSmoothingSettingsFromOs(useFontSmoothingSettingsFromOs);
         setResizable(false);
@@ -95,7 +113,7 @@ public final class FontChooserDialog extends AbstractCustomDialog {
 
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                fontSettings.setFont(new FontBean(new Font(fontList.getSelectedValue().toString(), fontSettings.getFont().getStyle(), fontSettings.getFont().getSize())));
+                fontSettings.setFont(fontBeanFactory.getFontBean(new Font(fontList.getSelectedValue().toString(), fontSettings.getFont().getStyle(), fontSettings.getFont().getSize())));
                 updatePreview();
             }
         });
@@ -107,7 +125,7 @@ public final class FontChooserDialog extends AbstractCustomDialog {
 
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                fontSettings.setFont(new FontBean(fontSettings.getFont().toFont().deriveFont(Float.valueOf(fontSizeList.getSelectedValue().toString()))));
+                fontSettings.setFont(fontBeanFactory.getFontBean(fontSettings.getFont().toFont().deriveFont(Float.valueOf(fontSizeList.getSelectedValue().toString()))));
                 updatePreview();
             }
         });

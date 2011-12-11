@@ -37,8 +37,10 @@ import net.sourceforge.atunes.kernel.StateChangeListeners;
 import net.sourceforge.atunes.kernel.modules.playlist.ListOfPlayLists;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IColorBeanFactory;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFavorites;
+import net.sourceforge.atunes.model.IFontBeanFactory;
 import net.sourceforge.atunes.model.IHotkeyHandler;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INetworkHandler;
@@ -77,6 +79,22 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	private ApplicationArguments applicationArguments;
 	private IDesktop desktop;
 	private INetworkHandler networkHandler;
+	private IColorBeanFactory colorBeanFactory;
+	private IFontBeanFactory fontBeanFactory;
+	
+	/**
+	 * @param fontBeanFactory
+	 */
+	public void setFontBeanFactory(IFontBeanFactory fontBeanFactory) {
+		this.fontBeanFactory = fontBeanFactory;
+	}
+	
+	/**
+	 * @param colorBeanFactory
+	 */
+	public void setColorBeanFactory(IColorBeanFactory colorBeanFactory) {
+		this.colorBeanFactory = colorBeanFactory;
+	}
 	
 	/**
 	 * @param networkHandler
@@ -609,6 +627,6 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
     	EditPreferencesDialog dialog = new EditPreferencesDialog(getFrame().getFrame(), lookAndFeelManager);
     	new EditPreferencesDialogController(dialog, getState(), getOsManager(), getFrame(), getBean(StateChangeListeners.class), lookAndFeelManager, 
     			playerHandler, hotkeyHandler, notificationsHandler, 
-    			pluginsHandler, applicationArguments, desktop, networkHandler).start();
+    			pluginsHandler, applicationArguments, desktop, networkHandler, colorBeanFactory, fontBeanFactory).start();
     }
 }

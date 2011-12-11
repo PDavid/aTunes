@@ -23,7 +23,6 @@ package net.sourceforge.atunes.model;
 import java.beans.ConstructorProperties;
 import java.io.Serializable;
 
-import net.sourceforge.atunes.kernel.modules.state.beans.FontBean;
 
 public class FontSettings implements Serializable {
 
@@ -31,12 +30,12 @@ public class FontSettings implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -8438133427543514976L;
-	FontBean font;
+	IFontBean font;
     private boolean useFontSmoothing;
     private boolean useFontSmoothingSettingsFromOs;
 
     @ConstructorProperties( { "font", "useFontSmoothing", "useFontSmoothingSettingsFromOs" })
-    public FontSettings(FontBean font, boolean useFontSmoothing, boolean useFontSmoothingSettingsFromOs) {
+    public FontSettings(IFontBean font, boolean useFontSmoothing, boolean useFontSmoothingSettingsFromOs) {
         super();
         this.font = font;
         this.useFontSmoothing = useFontSmoothing;
@@ -46,11 +45,11 @@ public class FontSettings implements Serializable {
     public FontSettings() {
     }
 
-    public void setFont(FontBean font) {
+    public void setFont(IFontBean font) {
         this.font = font;
     }
 
-    public FontBean getFont() {
+    public IFontBean getFont() {
         return font;
     }
 

@@ -50,7 +50,9 @@ import net.sourceforge.atunes.gui.views.dialogs.editPreferences.RadioPanel;
 import net.sourceforge.atunes.gui.views.dialogs.editPreferences.RepositoryPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.StateChangeListeners;
+import net.sourceforge.atunes.model.IColorBeanFactory;
 import net.sourceforge.atunes.model.IDesktop;
+import net.sourceforge.atunes.model.IFontBeanFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IHotkeyHandler;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
@@ -89,16 +91,17 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
      * @param applicationArguments
      * @param desktop
      * @param networkHandler
+     * @param colorBeanFactory
      */
     EditPreferencesDialogController(EditPreferencesDialog dialog, IState state, IOSManager osManager, IFrame frame, StateChangeListeners stateChangeListeners, 
     		ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler, IHotkeyHandler hotkeyHandler, 
     		INotificationsHandler notificationsHandler, IPluginsHandler pluginsHandler, ApplicationArguments applicationArguments, IDesktop desktop,
-    		INetworkHandler networkHandler) {
+    		INetworkHandler networkHandler, IColorBeanFactory colorBeanFactory, IFontBeanFactory fontBeanFactory) {
         super(dialog, state);
         this.stateChangeListeners = stateChangeListeners;
         this.lookAndFeelManager = lookAndFeelManager;
         panels = new ArrayList<AbstractPreferencesPanel>();
-        panels.add(new GeneralPanel(osManager, lookAndFeelManager, applicationArguments));
+        panels.add(new GeneralPanel(osManager, lookAndFeelManager, applicationArguments, colorBeanFactory, fontBeanFactory));
         panels.add(new RepositoryPanel()); 
         panels.add(new PlayerPanel(osManager, lookAndFeelManager.getCurrentLookAndFeel(), playerHandler, hotkeyHandler)); 
         panels.add(new NavigatorPanel(lookAndFeelManager.getCurrentLookAndFeel())); 

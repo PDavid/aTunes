@@ -33,8 +33,8 @@ import javax.swing.UIManager;
 import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.ColorDefinitions;
-import net.sourceforge.atunes.kernel.modules.state.beans.FontBean;
 import net.sourceforge.atunes.model.FontSettings;
+import net.sourceforge.atunes.model.IFontBeanFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -73,11 +73,20 @@ public final class LookAndFeelManager implements PluginListener, ILookAndFeelMan
      * Look and Feel change listeners
      */
     private List<ILookAndFeelChangeListener> changeListeners;
+    
+    private IFontBeanFactory fontBeanFactory;
 
     public LookAndFeelManager(IOSManager osManager) {
         lookAndFeels = osManager.getLookAndFeels();
         defaultLookAndFeelClass = osManager.getDefaultLookAndFeel();
     }
+    
+    /**
+     * @param fontBeanFactory
+     */
+    public void setFontBeanFactory(IFontBeanFactory fontBeanFactory) {
+		this.fontBeanFactory = fontBeanFactory;
+	}
 
     @Override
     public void pluginActivated(PluginInfo plugin) {
@@ -171,7 +180,7 @@ public final class LookAndFeelManager implements PluginListener, ILookAndFeelMan
     			} else {
     				font = UIManager.getFont("Label.font");
     			}
-    			state.setFontSettings(new FontSettings(new FontBean(font), USE_FONT_SMOOTHING_DEFAULT_VALUE, USE_FONT_SMOOTHING_SETTINGS_FROM_OS_DEFAULT_VALUE));
+    			state.setFontSettings(new FontSettings(fontBeanFactory.getFontBean(font), USE_FONT_SMOOTHING_DEFAULT_VALUE, USE_FONT_SMOOTHING_SETTINGS_FROM_OS_DEFAULT_VALUE));
     		}
     	}
 		lookAndFeel.setBaseFont(font);

@@ -49,9 +49,10 @@ import net.sourceforge.atunes.gui.frame.Frames;
 import net.sourceforge.atunes.gui.views.controls.ByImageChoosingPanel;
 import net.sourceforge.atunes.gui.views.controls.ByImageChoosingPanel.ImageEntry;
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog;
-import net.sourceforge.atunes.kernel.modules.state.beans.ColorBean;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.model.FontSettings;
+import net.sourceforge.atunes.model.IColorBeanFactory;
+import net.sourceforge.atunes.model.IFontBeanFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
@@ -107,18 +108,23 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 	private ILookAndFeelManager lookAndFeelManager;
 	
 	private transient ApplicationArguments applicationArguments;
-
+	
+	private transient IColorBeanFactory colorBeanFactory;
+	
     /**
      * Instantiates a new general panel.
      * @param osManager
      * @param lookAndFeelManager
      * @param applicationArguments
+     * @param colorBeanFactory
+     * @param fontBeanFactory
      */
-    public GeneralPanel(final IOSManager osManager, ILookAndFeelManager lookAndFeelManager, ApplicationArguments applicationArguments) {
+    public GeneralPanel(final IOSManager osManager, ILookAndFeelManager lookAndFeelManager, ApplicationArguments applicationArguments, IColorBeanFactory colorBeanFactory, final IFontBeanFactory fontBeanFactory) {
         super(I18nUtils.getString("GENERAL"));
         this.osManager = osManager;
         this.lookAndFeelManager = lookAndFeelManager;
         this.applicationArguments = applicationArguments;
+        this.colorBeanFactory = colorBeanFactory;
         JLabel windowTypeLabel = new JLabel(I18nUtils.getString("WINDOW_TYPE"));
         JLabel languageLabel = new JLabel(I18nUtils.getString("LANGUAGE"));
         language = new JComboBox();
@@ -163,14 +169,15 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                FontChooserDialog fontChooserDialog;
-                if (currentFontSettings != null) {
-                    fontChooserDialog = new FontChooserDialog(getPreferenceDialog(), 300, 300, currentFontSettings.getFont().toFont(), currentFontSettings
-                            .isUseFontSmoothing(), currentFontSettings.isUseFontSmoothingSettingsFromOs(), getState().getLocale().getLocale(), GeneralPanel.this.lookAndFeelManager);
-                } else {
-                    fontChooserDialog = new FontChooserDialog(getPreferenceDialog(), 300, 300, GeneralPanel.this.lookAndFeelManager.getCurrentLookAndFeel()
-                            .getDefaultFont(), true, false, getState().getLocale().getLocale(), GeneralPanel.this.lookAndFeelManager);
-                }
+                FontChooserDialog fontChooserDialog = new FontChooserDialog(getPreferenceDialog(), 
+                										 300, 
+                										 300, 
+                										 currentFontSettings != null ? currentFontSettings.getFont().toFont() : GeneralPanel.this.lookAndFeelManager.getCurrentLookAndFeel().getDefaultFont(),
+                										 currentFontSettings != null ? currentFontSettings.isUseFontSmoothing() : true, 
+                										 currentFontSettings != null ? currentFontSettings.isUseFontSmoothingSettingsFromOs() : false, 
+                										 getState().getLocale().getLocale(), 
+                										 GeneralPanel.this.lookAndFeelManager, 
+                										 fontBeanFactory);
                 fontChooserDialog.setVisible(true);
                 if (fontChooserDialog.getSelectedFontSettings() != null) {
                     currentFontSettings = fontChooserDialog.getSelectedFontSettings();
@@ -303,7 +310,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
         state.setShowTrayPlayer(showTrayPlayer.isSelected());
         
         if (currentTrayIconColor != null) {
-        	state.setTrayPlayerIconsColor(new ColorBean(currentTrayIconColor));
+        	state.setTrayPlayerIconsColor(colorBeanFactory.getColorBean(currentTrayIconColor));
         }
 
         LookAndFeelBean oldLookAndFeel = state.getLookAndFeel();
