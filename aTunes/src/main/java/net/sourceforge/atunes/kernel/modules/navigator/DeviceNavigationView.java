@@ -46,11 +46,11 @@ import net.sourceforge.atunes.kernel.actions.RemoveFromDiskAction;
 import net.sourceforge.atunes.kernel.actions.SearchArtistAction;
 import net.sourceforge.atunes.kernel.actions.SearchArtistAtAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IDeviceHandler;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.model.ViewMode;
@@ -69,12 +69,12 @@ public final class DeviceNavigationView extends AbstractNavigationView {
     
     private IDeviceHandler deviceHandler;
     
-    private CachedIconFactory deviceIcon;
+    private IIconFactory deviceIcon;
     
     /**
      * @param deviceIcon
      */
-    public void setDeviceIcon(CachedIconFactory deviceIcon) {
+    public void setDeviceIcon(IIconFactory deviceIcon) {
 		this.deviceIcon = deviceIcon;
 	}
 

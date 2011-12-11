@@ -25,7 +25,6 @@ import java.awt.Shape;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.CachedIconFactory;
 
 import org.jdesktop.swingx.geom.Star2D;
 

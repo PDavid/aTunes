@@ -20,8 +20,8 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.ViewMode;
@@ -33,12 +33,12 @@ public class ShowAlbumsInNavigatorAction extends ActionWithColorMutableIcon {
 
     private INavigationHandler navigationHandler;
     
-    private CachedIconFactory albumSmallIcon;
+    private IIconFactory albumSmallIcon;
     
     /**
      * @param albumSmallIcon
      */
-    public void setAlbumSmallIcon(CachedIconFactory albumSmallIcon) {
+    public void setAlbumSmallIcon(IIconFactory albumSmallIcon) {
 		this.albumSmallIcon = albumSmallIcon;
 	}
     

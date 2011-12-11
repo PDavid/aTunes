@@ -25,17 +25,17 @@ import java.awt.Component;
 import javax.swing.JLabel;
 
 import net.sourceforge.atunes.gui.AbstractTreeCellDecorator;
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IGenre;
+import net.sourceforge.atunes.model.IIconFactory;
 
 public class GenreTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, IGenre> {
 	
-	private CachedIconFactory genreIcon;
+	private IIconFactory genreIcon;
 	
 	/**
 	 * @param genreIcon
 	 */
-	public void setGenreIcon(CachedIconFactory genreIcon) {
+	public void setGenreIcon(IIconFactory genreIcon) {
 		this.genreIcon = genreIcon;
 	}
 

@@ -25,7 +25,6 @@ import java.awt.Polygon;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.CachedIconFactory;
 
 public class PlayListPlayStateImageIcon extends CachedIconFactory {
 

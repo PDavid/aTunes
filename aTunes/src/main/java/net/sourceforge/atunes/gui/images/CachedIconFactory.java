@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.gui.images;
 
 import java.awt.Color;
 import java.io.Serializable;
@@ -27,6 +27,10 @@ import java.util.Map;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.IIconFactory;
+import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.Logger;
 
 /**
@@ -34,7 +38,7 @@ import net.sourceforge.atunes.utils.Logger;
  * @author alex
  *
  */
-public abstract class CachedIconFactory implements ILookAndFeelChangeListener, Serializable {
+abstract class CachedIconFactory implements ILookAndFeelChangeListener, Serializable, IIconFactory {
 	
 	/**
 	 * 
@@ -62,6 +66,7 @@ public abstract class CachedIconFactory implements ILookAndFeelChangeListener, S
 	 * @param color
 	 * @return
 	 */
+	@Override
 	public final ImageIcon getIcon(Color color) {
 		ImageIcon icon = cachedIcons.get(color);
 		if (icon == null) {
@@ -79,6 +84,7 @@ public abstract class CachedIconFactory implements ILookAndFeelChangeListener, S
 	 * Returns a color mutable icon
 	 * @return
 	 */
+	@Override
 	public final IColorMutableImageIcon getColorMutableIcon() {
 		if (colorMutableIcon == null) {
 			colorMutableIcon = new ColorMutableIconFromCachedIconFactory(this);

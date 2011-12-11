@@ -22,7 +22,6 @@ package net.sourceforge.atunes.gui.images;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.CachedIconFactory;
 
 public class VolumeMinImageIcon extends CachedIconFactory {
 	

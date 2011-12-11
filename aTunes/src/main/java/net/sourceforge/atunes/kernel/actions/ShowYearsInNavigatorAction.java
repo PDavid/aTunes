@@ -20,8 +20,8 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.ViewMode;
@@ -33,12 +33,12 @@ public class ShowYearsInNavigatorAction extends ActionWithColorMutableIcon {
 
     private INavigationHandler navigationHandler;
     
-    private CachedIconFactory dateIcon;
+    private IIconFactory dateIcon;
     
     /**
      * @param dateIcon
      */
-    public void setDateIcon(CachedIconFactory dateIcon) {
+    public void setDateIcon(IIconFactory dateIcon) {
 		this.dateIcon = dateIcon;
 	}
     

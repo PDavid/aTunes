@@ -38,8 +38,8 @@ import java.util.concurrent.ScheduledFuture;
 import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAddPodcastFeedDialog;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
@@ -83,7 +83,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
     
     private ScheduledFuture<?> scheduledPodcastFeedEntryRetrieverFuture;
     
-    private CachedIconFactory rssMediumIcon;
+    private IIconFactory rssMediumIcon;
     
     private INetworkHandler networkHandler;
     
@@ -148,7 +148,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
     /**
      * @param rssMediumIcon
      */
-    public void setRssMediumIcon(CachedIconFactory rssMediumIcon) {
+    public void setRssMediumIcon(IIconFactory rssMediumIcon) {
 		this.rssMediumIcon = rssMediumIcon;
 	}
 

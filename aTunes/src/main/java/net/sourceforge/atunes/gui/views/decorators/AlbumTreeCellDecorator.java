@@ -25,29 +25,29 @@ import java.awt.Component;
 import javax.swing.JLabel;
 
 import net.sourceforge.atunes.gui.AbstractTreeCellDecorator;
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IFavoritesHandler;
+import net.sourceforge.atunes.model.IIconFactory;
 
 public class AlbumTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, IAlbum> {
 
 	private IFavoritesHandler favoritesHandler;
 	
-	private CachedIconFactory albumFavoriteIcon;
+	private IIconFactory albumFavoriteIcon;
 	
-	private CachedIconFactory albumSmallIcon;
+	private IIconFactory albumSmallIcon;
 
 	/**
 	 * @param albumFavoriteIcon
 	 */
-	public void setAlbumFavoriteIcon(CachedIconFactory albumFavoriteIcon) {
+	public void setAlbumFavoriteIcon(IIconFactory albumFavoriteIcon) {
 		this.albumFavoriteIcon = albumFavoriteIcon;
 	}
 	
 	/**
 	 * @param albumSmallIcon
 	 */
-	public void setAlbumSmallIcon(CachedIconFactory albumSmallIcon) {
+	public void setAlbumSmallIcon(IIconFactory albumSmallIcon) {
 		this.albumSmallIcon = albumSmallIcon;
 	}
 	

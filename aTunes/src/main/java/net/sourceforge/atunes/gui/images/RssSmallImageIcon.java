@@ -26,7 +26,6 @@ import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.CachedIconFactory;
 
 public class RssSmallImageIcon extends CachedIconFactory {
 

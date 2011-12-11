@@ -29,11 +29,11 @@ import javax.swing.ImageIcon;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IAudioObjectStatistics;
 import net.sourceforge.atunes.model.IContextInformationSource;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
@@ -89,9 +89,9 @@ public class AudioObjectBasicInfoDataSource implements IContextInformationSource
     
     private ILookAndFeelManager lookAndFeelManager;
     
-    private CachedIconFactory rssMediumIcon;
+    private IIconFactory rssMediumIcon;
     
-    private CachedIconFactory radioMediumIcon;
+    private IIconFactory radioMediumIcon;
     
     private IAudioObjectImageLocator audioObjectImageLocator;
     
@@ -105,14 +105,14 @@ public class AudioObjectBasicInfoDataSource implements IContextInformationSource
     /**
      * @param radioMediumIcon
      */
-    public void setRadioMediumIcon(CachedIconFactory radioMediumIcon) {
+    public void setRadioMediumIcon(IIconFactory radioMediumIcon) {
 		this.radioMediumIcon = radioMediumIcon;
 	}
     
     /**
      * @param rssMediumIcon
      */
-    public void setRssMediumIcon(CachedIconFactory rssMediumIcon) {
+    public void setRssMediumIcon(IIconFactory rssMediumIcon) {
 		this.rssMediumIcon = rssMediumIcon;
 	}
 

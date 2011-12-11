@@ -47,10 +47,10 @@ import net.sourceforge.atunes.kernel.actions.RenameRadioLabelAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.model.ITreeObject;
@@ -73,12 +73,12 @@ public final class RadioNavigationView extends AbstractNavigationView {
 
     private IRadioHandler radioHandler;
     
-    private CachedIconFactory radioSmallIcon;
+    private IIconFactory radioSmallIcon;
     
     /**
      * @param radioSmallIcon
      */
-    public void setRadioSmallIcon(CachedIconFactory radioSmallIcon) {
+    public void setRadioSmallIcon(IIconFactory radioSmallIcon) {
 		this.radioSmallIcon = radioSmallIcon;
 	}
     

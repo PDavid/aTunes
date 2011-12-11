@@ -26,7 +26,7 @@ import javax.swing.Action;
 import javax.swing.JButton;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.model.CachedIconFactory;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -51,14 +51,14 @@ public final class NextButton extends JButton implements ILookAndFeelChangeListe
         setMaximumSize(size);
         setFocusable(false);
         setText(null);
-        setIcon(Context.getBean("nextIcon", CachedIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls()));
+        setIcon(Context.getBean("nextIcon", IIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls()));
         lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(this);
         lookAndFeelManager.addLookAndFeelChangeListener(this);
     }    
     
     @Override
     public void lookAndFeelChanged() {
-        setIcon(Context.getBean("nextIcon", CachedIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls()));
+        setIcon(Context.getBean("nextIcon", IIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls()));
     }
     
     

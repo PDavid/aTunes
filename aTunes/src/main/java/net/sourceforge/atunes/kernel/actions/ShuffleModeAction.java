@@ -20,8 +20,8 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -35,12 +35,12 @@ public class ShuffleModeAction extends ActionWithColorMutableIcon {
 
     private static final long serialVersionUID = 6841858742889010498L;
     
-    private CachedIconFactory shuffleIcon;
+    private IIconFactory shuffleIcon;
     
     /**
      * @param shuffleIcon
      */
-    public void setShuffleIcon(CachedIconFactory shuffleIcon) {
+    public void setShuffleIcon(IIconFactory shuffleIcon) {
 		this.shuffleIcon = shuffleIcon;
 	}
     

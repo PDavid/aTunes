@@ -28,7 +28,7 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.model.CachedIconFactory;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
@@ -87,11 +87,11 @@ final class PlayListIntegerTableCellRendererCode extends AbstractTableCellRender
     private ImageIcon getPlayStateIcon(Color color, PlayState state, ILookAndFeel lookAndFeel) {
         switch (state) {
         case PLAYING:
-            return Context.getBean("playListPlayStateIcon", CachedIconFactory.class).getIcon(color);
+            return Context.getBean("playListPlayStateIcon", IIconFactory.class).getIcon(color);
         case STOPPED:
-            return Context.getBean("playListStopStateIcon", CachedIconFactory.class).getIcon(color);
+            return Context.getBean("playListStopStateIcon", IIconFactory.class).getIcon(color);
         case PAUSED:
-            return Context.getBean("playListPauseStateIcon", CachedIconFactory.class).getIcon(color);
+            return Context.getBean("playListPauseStateIcon", IIconFactory.class).getIcon(color);
         case NONE:
             return null;
         default:

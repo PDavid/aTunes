@@ -21,9 +21,9 @@
 package net.sourceforge.atunes.kernel.modules.context.artist;
 
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -39,12 +39,12 @@ public class ArtistContextPanel extends AbstractContextPanel {
 
     private static final long serialVersionUID = -7910261492394049289L;
     
-    private CachedIconFactory artistImageIcon;
+    private IIconFactory artistImageIcon;
     
     /**
      * @param artistImageIcon
      */
-    public void setArtistImageIcon(CachedIconFactory artistImageIcon) {
+    public void setArtistImageIcon(IIconFactory artistImageIcon) {
 		this.artistImageIcon = artistImageIcon;
 	}
 

@@ -26,7 +26,7 @@ import javax.swing.JTable;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.AudioObjectProperty;
-import net.sourceforge.atunes.model.CachedIconFactory;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 
 public class PropertyTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, AudioObjectProperty> {
@@ -39,11 +39,11 @@ public class PropertyTableCellRendererCode extends AbstractTableCellRendererCode
     public JLabel getComponent(JLabel comp, JTable table, AudioObjectProperty val, boolean isSelected, boolean hasFocus, int row, int column) {
         ImageIcon icon = null;
         if (val == AudioObjectProperty.FAVORITE) {
-            icon = Context.getBean("favoriteIcon", CachedIconFactory.class).getIcon(lookAndFeel.getPaintForColorMutableIcon(comp, isSelected));
+            icon = Context.getBean("favoriteIcon", IIconFactory.class).getIcon(lookAndFeel.getPaintForColorMutableIcon(comp, isSelected));
         } else if (val == AudioObjectProperty.NOT_LISTENED_ENTRY) {
-            icon = Context.getBean("newIcon", CachedIconFactory.class).getIcon(lookAndFeel.getPaintForColorMutableIcon(comp, isSelected));
+            icon = Context.getBean("newIcon", IIconFactory.class).getIcon(lookAndFeel.getPaintForColorMutableIcon(comp, isSelected));
         } else if (val == AudioObjectProperty.DOWNLOADED_ENTRY) {
-            icon = Context.getBean("downloadIcon", CachedIconFactory.class).getIcon(lookAndFeel.getPaintForColorMutableIcon(comp, isSelected));
+            icon = Context.getBean("downloadIcon", IIconFactory.class).getIcon(lookAndFeel.getPaintForColorMutableIcon(comp, isSelected));
         }
         comp.setIcon(icon);
         comp.setText(null);

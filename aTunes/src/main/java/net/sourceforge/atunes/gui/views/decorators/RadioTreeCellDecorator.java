@@ -25,17 +25,17 @@ import java.awt.Component;
 import javax.swing.JLabel;
 
 import net.sourceforge.atunes.gui.AbstractTreeCellDecorator;
-import net.sourceforge.atunes.model.CachedIconFactory;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.IRadio;
 
 public class RadioTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, IRadio> {
 	
-	private CachedIconFactory radioSmallIcon;
+	private IIconFactory radioSmallIcon;
 	
 	/**
 	 * @param radioSmallIcon
 	 */
-	public void setRadioSmallIcon(CachedIconFactory radioSmallIcon) {
+	public void setRadioSmallIcon(IIconFactory radioSmallIcon) {
 		this.radioSmallIcon = radioSmallIcon;
 	}
 

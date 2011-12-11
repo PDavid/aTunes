@@ -25,17 +25,17 @@ import java.awt.Component;
 import javax.swing.JLabel;
 
 import net.sourceforge.atunes.gui.AbstractTreeCellDecorator;
-import net.sourceforge.atunes.model.CachedIconFactory;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.IYear;
 
 public class YearTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, IYear> {
 
-	private CachedIconFactory dateIcon;
+	private IIconFactory dateIcon;
 	
 	/**
 	 * @param dateIcon
 	 */
-	public void setDateIcon(CachedIconFactory dateIcon) {
+	public void setDateIcon(IIconFactory dateIcon) {
 		this.dateIcon = dateIcon;
 	}
 	

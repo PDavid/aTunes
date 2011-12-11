@@ -21,11 +21,11 @@
 package net.sourceforge.atunes.kernel.modules.context.audioobject;
 
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectGenericImageFactory;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
@@ -43,12 +43,12 @@ public class AudioObjectContextPanel extends AbstractContextPanel {
 
     private IAudioObjectGenericImageFactory audioObjectGenericImageFactory;
     
-    private CachedIconFactory audioFileSmallIcon;
+    private IIconFactory audioFileSmallIcon;
     
     /**
      * @param audioFileSmallIcon
      */
-    public void setAudioFileSmallIcon(CachedIconFactory audioFileSmallIcon) {
+    public void setAudioFileSmallIcon(IIconFactory audioFileSmallIcon) {
 		this.audioFileSmallIcon = audioFileSmallIcon;
 	}
     

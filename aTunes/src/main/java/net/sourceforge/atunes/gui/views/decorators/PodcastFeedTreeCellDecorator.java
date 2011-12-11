@@ -25,17 +25,17 @@ import java.awt.Component;
 import javax.swing.JLabel;
 
 import net.sourceforge.atunes.gui.AbstractTreeCellDecorator;
-import net.sourceforge.atunes.model.CachedIconFactory;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.IPodcastFeed;
 
 public class PodcastFeedTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, IPodcastFeed> {
 	
-	private CachedIconFactory rssSmallIcon;
+	private IIconFactory rssSmallIcon;
 	
 	/**
 	 * @param rssSmallIcon
 	 */
-	public void setRssSmallIcon(CachedIconFactory rssSmallIcon) {
+	public void setRssSmallIcon(IIconFactory rssSmallIcon) {
 		this.rssSmallIcon = rssSmallIcon;
 	}
 

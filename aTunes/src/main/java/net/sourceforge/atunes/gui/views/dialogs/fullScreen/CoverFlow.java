@@ -36,8 +36,8 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.Cover3D;
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
@@ -65,9 +65,9 @@ public final class CoverFlow extends JPanel {
 		protected Void doInBackground() throws Exception {
 			Image image = null;
 		    if (audioObject instanceof IRadio) {
-		        image = Context.getBean("radioBigIcon", CachedIconFactory.class).getIcon(Color.WHITE).getImage();
+		        image = Context.getBean("radioBigIcon", IIconFactory.class).getIcon(Color.WHITE).getImage();
 		    } else if (audioObject instanceof IPodcastFeedEntry) {
-		        image = Context.getBean("rssBigIcon", CachedIconFactory.class).getIcon(Color.WHITE).getImage();
+		        image = Context.getBean("rssBigIcon", IIconFactory.class).getIcon(Color.WHITE).getImage();
 		    } else if (audioObject instanceof ILocalAudioObject){
 	    		image = getPicture((ILocalAudioObject)audioObject, osManager);
 		    }

@@ -26,80 +26,80 @@ import java.awt.Component;
 import javax.swing.JLabel;
 
 import net.sourceforge.atunes.gui.AbstractTreeCellDecorator;
-import net.sourceforge.atunes.model.CachedIconFactory;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class StringTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, String> {
 	
-	private CachedIconFactory artistImageIcon;
+	private IIconFactory artistImageIcon;
 	
-	private CachedIconFactory albumSmallIcon;
+	private IIconFactory albumSmallIcon;
 	
-	private CachedIconFactory audioFileSmallIcon;
+	private IIconFactory audioFileSmallIcon;
 	
-	private CachedIconFactory deviceIcon;
+	private IIconFactory deviceIcon;
 	
-	private CachedIconFactory favoriteIcon;
+	private IIconFactory favoriteIcon;
 	
-	private CachedIconFactory folderIcon;
+	private IIconFactory folderIcon;
 	
-	private CachedIconFactory rssSmallIcon;
+	private IIconFactory rssSmallIcon;
 	
-	private CachedIconFactory radioSmallIcon;
+	private IIconFactory radioSmallIcon;
 	
 	/**
 	 * @param radioSmallIcon
 	 */
-	public void setRadioSmallIcon(CachedIconFactory radioSmallIcon) {
+	public void setRadioSmallIcon(IIconFactory radioSmallIcon) {
 		this.radioSmallIcon = radioSmallIcon;
 	}
 	
 	/**
 	 * @param rssSmallIcon
 	 */
-	public void setRssSmallIcon(CachedIconFactory rssSmallIcon) {
+	public void setRssSmallIcon(IIconFactory rssSmallIcon) {
 		this.rssSmallIcon = rssSmallIcon;
 	}
 	
 	/**
 	 * @param folderIcon
 	 */
-	public void setFolderIcon(CachedIconFactory folderIcon) {
+	public void setFolderIcon(IIconFactory folderIcon) {
 		this.folderIcon = folderIcon;
 	}
 	
 	/**
 	 * @param favoriteIcon
 	 */
-	public void setFavoriteIcon(CachedIconFactory favoriteIcon) {
+	public void setFavoriteIcon(IIconFactory favoriteIcon) {
 		this.favoriteIcon = favoriteIcon;
 	}
 	
 	/**
 	 * @param deviceIcon
 	 */
-	public void setDeviceIcon(CachedIconFactory deviceIcon) {
+	public void setDeviceIcon(IIconFactory deviceIcon) {
 		this.deviceIcon = deviceIcon;
 	}
 	
 	/**
 	 * @param audioFileSmallIcon
 	 */
-	public void setAudioFileSmallIcon(CachedIconFactory audioFileSmallIcon) {
+	public void setAudioFileSmallIcon(IIconFactory audioFileSmallIcon) {
 		this.audioFileSmallIcon = audioFileSmallIcon;
 	}
 	
 	/**
 	 * @param albumSmallIcon
 	 */
-	public void setAlbumSmallIcon(CachedIconFactory albumSmallIcon) {
+	public void setAlbumSmallIcon(IIconFactory albumSmallIcon) {
 		this.albumSmallIcon = albumSmallIcon;
 	}
 	
 	/**
 	 * @param artistImageIcon
 	 */
-	public void setArtistImageIcon(CachedIconFactory artistImageIcon) {
+	public void setArtistImageIcon(IIconFactory artistImageIcon) {
 		this.artistImageIcon = artistImageIcon;
 	}
 
@@ -118,7 +118,7 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, S
 	 * @param color
 	 * @return 
 	 */
-	private CachedIconFactory getIcon(String text, JLabel label, Color color) {
+	private IIconFactory getIcon(String text, JLabel label, Color color) {
 		if (text.equals(I18nUtils.getString("REPOSITORY"))) {
 		    return audioFileSmallIcon;
 		} else if (text.equals(I18nUtils.getString("DEVICE"))) {

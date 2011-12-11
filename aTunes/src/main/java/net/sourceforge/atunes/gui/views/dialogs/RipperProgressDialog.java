@@ -36,8 +36,8 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IRipperProgressDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -57,12 +57,12 @@ public final class RipperProgressDialog extends AbstractCustomDialog implements 
     private JLabel encodeProgressValueLabel;
     private JButton cancelButton;
     
-    private CachedIconFactory albumBigIcon;
+    private IIconFactory albumBigIcon;
     
     /**
      * @param albumBigIcon
      */
-    public void setAlbumBigIcon(CachedIconFactory albumBigIcon) {
+    public void setAlbumBigIcon(IIconFactory albumBigIcon) {
 		this.albumBigIcon = albumBigIcon;
 	}
 
