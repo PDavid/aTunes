@@ -189,8 +189,8 @@
 	<bean id="repairTrackNumbersAction" class="net.sourceforge.atunes.kernel.actions.RepairTrackNumbersAction"/>
 	<bean id="repeatModeAction" class="net.sourceforge.atunes.kernel.actions.RepeatModeAction"/>
 	<bean id="reportBugOrFeatureRequestAction" class="net.sourceforge.atunes.kernel.actions.ReportBugOrFeatureRequestAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.RepositoryLoadCancelAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.RepositoryLoadInBackgroundAction"/>
+	<bean id="repositoryLoadCancelAction" class="net.sourceforge.atunes.kernel.actions.RepositoryLoadCancelAction"/>
+	<bean id="repositoryLoadInBackgroundAction" class="net.sourceforge.atunes.kernel.actions.RepositoryLoadInBackgroundAction"/>
 	<bean id="ripCDAction" class="net.sourceforge.atunes.kernel.actions.RipCDAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.SavePlayListAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.SearchArtistAction"/>
