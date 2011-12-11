@@ -20,12 +20,13 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
-import net.sourceforge.atunes.model.Folder;
+import net.sourceforge.atunes.kernel.modules.repository.data.Folder;
+import net.sourceforge.atunes.model.IFolder;
 
-class FolderAudioObjectSelector extends AudioObjectSelector<Folder, String> {
+class FolderAudioObjectSelector extends AudioObjectSelector<IFolder, String> {
 
 	@Override
-	boolean equals(Folder folder, String filePath) {
+	boolean equals(IFolder folder, String filePath) {
 		return filePath.startsWith(folder.getName());
 	}
 

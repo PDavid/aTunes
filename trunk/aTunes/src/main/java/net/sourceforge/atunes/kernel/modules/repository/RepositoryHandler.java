@@ -31,12 +31,13 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.model.Folder;
+import net.sourceforge.atunes.kernel.modules.repository.data.Folder;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFavoritesHandler;
+import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
@@ -451,7 +452,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     }
 
     @Override
-	public void refreshFolders(List<Folder> folders) {
+	public void refreshFolders(List<IFolder> folders) {
     	getFrame().showProgressBar(true, StringUtils.getString(I18nUtils.getString("REFRESHING"), "..."));
     	repositoryActions.enableRepositoryActions(false);
     	getBean(RefreshFoldersTask.class).execute(repository, folders);
@@ -468,8 +469,8 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     }
 
     @Override
-	public void removeFolders(List<Folder> foldersToRemove) {
-        for (Folder folder : foldersToRemove) {
+	public void removeFolders(List<IFolder> foldersToRemove) {
+        for (IFolder folder : foldersToRemove) {
 
             // Remove content
             remove(folder.getAudioObjects());
@@ -646,7 +647,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	}
 
 	@Override
-	public Folder getFolder(String path) {
+	public IFolder getFolder(String path) {
 		return repository.getFolder(path);
 	}
 }

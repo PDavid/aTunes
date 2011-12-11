@@ -26,8 +26,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IArtist;
+import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepository;
@@ -130,17 +130,17 @@ public class VoidRepository implements IRepository {
 	public void removeArtist(IArtist artist) {}
 
 	@Override
-	public Folder getFolder(String path) {
+	public IFolder getFolder(String path) {
 		return null;
 	}
 
 	@Override
-	public Collection<Folder> getFolders() {
+	public Collection<IFolder> getFolders() {
 		return null;
 	}
 
 	@Override
-	public Folder putFolder(Folder folder) {
+	public IFolder putFolder(IFolder folder) {
 		return null;
 	}
 

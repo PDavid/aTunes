@@ -34,10 +34,10 @@ import javax.swing.ScrollPaneConstants;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
-import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IPodcastFeed;
@@ -194,7 +194,7 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
     		setFromAlbum(object);
     	} else if (object instanceof IPodcastFeed) {
     		setFromPodcast(object);
-    	} else if (object instanceof Folder) {
+    	} else if (object instanceof IFolder) {
     		setFromFolder(object);
     	} else if (object instanceof IGenre) {
     		setFromGenre(object);
@@ -244,7 +244,7 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
 	 * @param object
 	 */
 	private void setFromFolder(ITreeObject<? extends IAudioObject> object) {
-		Folder f = (Folder) object;
+		IFolder f = (IFolder) object;
 		setLine1(f.getName());
 		int folderNumber = f.getFolders().size();
 		if (folderNumber > 0) {

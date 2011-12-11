@@ -174,20 +174,20 @@ public interface IRepository {
 	 * @param path
 	 * @return
 	 */
-	public Folder getFolder(String path);
+	public IFolder getFolder(String path);
 
 	/**
 	 * Returns all folders
 	 * @return
 	 */
-	public Collection<Folder> getFolders();
+	public Collection<IFolder> getFolders();
 
 	/**
 	 * Puts folder
 	 * @param folder
 	 * @return
 	 */
-	public Folder putFolder(Folder folder);
+	public IFolder putFolder(IFolder folder);
 
 	/**
 	 * Returns all genres
