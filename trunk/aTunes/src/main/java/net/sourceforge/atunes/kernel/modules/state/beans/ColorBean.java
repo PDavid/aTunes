@@ -21,9 +21,15 @@
 package net.sourceforge.atunes.kernel.modules.state.beans;
 
 import java.awt.Color;
-import java.io.Serializable;
 
-public class ColorBean implements Serializable {
+import net.sourceforge.atunes.model.IColorBean;
+
+/**
+ * Stores a color, by storing its components (red, green, blue, alpha)
+ * @author alex
+ *
+ */
+public class ColorBean implements IColorBean {
 	
 	/**
 	 * 
@@ -47,17 +53,10 @@ public class ColorBean implements Serializable {
 	}
 
 	/**
-	 * Creates new default color bean (black)
-	 * @param c
-	 */
-	public ColorBean() {
-		this(Color.BLACK);
-	}
-
-	/**
 	 * Returns original color object
 	 * @return
 	 */
+	@Override
 	public Color getColor() {
 		return new Color(red, green, blue, alpha);
 	}

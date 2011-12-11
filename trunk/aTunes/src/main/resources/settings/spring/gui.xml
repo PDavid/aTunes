@@ -52,4 +52,8 @@
 	
 	<!--  This object can be reused across all components with this border -->
 	<bean id="shadowBorder" class="org.jdesktop.swingx.border.DropShadowBorder"/>
+	
+	<bean id="colorBeanFactory" class="net.sourceforge.atunes.kernel.modules.state.beans.ColorBeanFactory"/>
+	<bean id="fontBeanFactory" class="net.sourceforge.atunes.kernel.modules.state.beans.FontBeanFactory"/>
+	
 </beans>

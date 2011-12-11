@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeysConfig;
-import net.sourceforge.atunes.kernel.modules.state.beans.ColorBean;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.kernel.modules.tags.TagAttribute;
 
@@ -453,9 +452,9 @@ public interface IState {
 	public void setCustomNavigatorColumns(
 			Map<String, Map<String, ColumnBean>> customNavigatorColumns);
 
-	public ColorBean getTrayPlayerIconsColor();
+	public IColorBean getTrayPlayerIconsColor();
 
-	public void setTrayPlayerIconsColor(ColorBean color);
+	public void setTrayPlayerIconsColor(IColorBean color);
 
 	public boolean isShowPlayerControlsOnTop();
 

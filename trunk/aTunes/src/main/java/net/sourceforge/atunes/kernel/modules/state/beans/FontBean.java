@@ -22,12 +22,13 @@ package net.sourceforge.atunes.kernel.modules.state.beans;
 
 import java.awt.Font;
 import java.beans.ConstructorProperties;
-import java.io.Serializable;
+
+import net.sourceforge.atunes.model.IFontBean;
 
 /**
  * Bean for java.awt.Font
  */
-public final class FontBean implements Serializable {
+public final class FontBean implements IFontBean {
 
     /**
 	 * 
@@ -50,19 +51,23 @@ public final class FontBean implements Serializable {
         this.size = font.getSize();
     }
 
-    public String getName() {
+    @Override
+	public String getName() {
         return name;
     }
 
-    public int getStyle() {
+    @Override
+	public int getStyle() {
         return style;
     }
 
-    public int getSize() {
+    @Override
+	public int getSize() {
         return size;
     }
 
-    public Font toFont() {
+    @Override
+	public Font toFont() {
         return new Font(name, style, size);
     }
 

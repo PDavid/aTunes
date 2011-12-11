@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.state;
 
+import java.awt.Color;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -32,13 +33,14 @@ import net.sourceforge.atunes.gui.frame.FrameState;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeysConfig;
 import net.sourceforge.atunes.kernel.modules.navigator.RepositoryNavigationView;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
-import net.sourceforge.atunes.kernel.modules.state.beans.ColorBean;
 import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
 import net.sourceforge.atunes.kernel.modules.tags.TagAttribute;
 import net.sourceforge.atunes.model.ArtistViewMode;
 import net.sourceforge.atunes.model.ColumnBean;
 import net.sourceforge.atunes.model.FontSettings;
+import net.sourceforge.atunes.model.IColorBean;
+import net.sourceforge.atunes.model.IColorBeanFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.IHotkeysConfig;
@@ -62,6 +64,15 @@ public class ApplicationState implements IState {
      * Component responsible of store state
      */
     private IStateStore stateStore;
+    
+    private IColorBeanFactory colorBeanFactory;
+    
+    /**
+     * @param colorBeanFactory
+     */
+    public void setColorBeanFactory(IColorBeanFactory colorBeanFactory) {
+		this.colorBeanFactory = colorBeanFactory;
+	}
     
     /**
      * Sets state store
@@ -1859,15 +1870,15 @@ public class ApplicationState implements IState {
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getTrayPlayerIconsColor()
 	 */
     @Override
-	public ColorBean getTrayPlayerIconsColor() {
-    	return (ColorBean) this.stateStore.retrievePreference(Preferences.TRAY_PLAYER_ICONS_COLOR, new ColorBean());
+	public IColorBean getTrayPlayerIconsColor() {
+    	return (IColorBean) this.stateStore.retrievePreference(Preferences.TRAY_PLAYER_ICONS_COLOR, colorBeanFactory.getColorBean(Color.BLACK));
     }
     
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setTrayPlayerIconsColor(net.sourceforge.atunes.kernel.modules.state.beans.ColorBean)
 	 */
     @Override
-	public void setTrayPlayerIconsColor(ColorBean color) {
+	public void setTrayPlayerIconsColor(IColorBean color) {
     	this.stateStore.storePreference(Preferences.TRAY_PLAYER_ICONS_COLOR, color);
     }
     
