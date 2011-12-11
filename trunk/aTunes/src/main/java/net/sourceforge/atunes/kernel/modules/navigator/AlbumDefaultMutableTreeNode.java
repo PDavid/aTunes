@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.navigator;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.model.Album;
+import net.sourceforge.atunes.utils.StringUtils;
 
 final class AlbumDefaultMutableTreeNode extends DefaultMutableTreeNode {
     private static final long serialVersionUID = -1276777390072754207L;
@@ -33,6 +34,6 @@ final class AlbumDefaultMutableTreeNode extends DefaultMutableTreeNode {
 
     @Override
     public String toString() {
-        return ((Album) getUserObject()).getNameAndArtist();
+    	return StringUtils.getString(((Album) getUserObject()).getName(), " (", ((Album) getUserObject()).getArtist(), ")");
     }
 }

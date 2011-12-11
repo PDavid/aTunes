@@ -152,15 +152,6 @@ public class Album implements Serializable, ITreeObject<ILocalAudioObject>, Comp
     }
 
     /**
-     * Returns name of the album and artist
-     * 
-     * @return
-     */
-    public String getNameAndArtist() {
-        return StringUtils.getString(name, " (", artist, ")");
-    }
-
-    /**
      * Removes a song from this album.
      * 
      * @param file
