@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
-import net.sourceforge.atunes.kernel.modules.repository.data.Folder;
 import net.sourceforge.atunes.model.IFolder;
 
 class FolderAudioObjectSelector extends AudioObjectSelector<IFolder, String> {

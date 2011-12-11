@@ -25,7 +25,6 @@ import java.awt.Shape;
 
 import javax.swing.ImageIcon;
 
-
 import org.jdesktop.swingx.geom.Star2D;
 
 public class NewImageIcon extends CachedIconFactory {

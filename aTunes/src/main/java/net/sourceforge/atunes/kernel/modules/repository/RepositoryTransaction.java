@@ -22,16 +22,27 @@ package net.sourceforge.atunes.kernel.modules.repository;
 
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryListener;
+import net.sourceforge.atunes.model.IRepositoryTransaction;
 import net.sourceforge.atunes.utils.Logger;
 
 import org.joda.time.DateTime;
 
-public final class RepositoryTransaction {
+/**
+ * A transaction to make changes in repository
+ * @author alex
+ *
+ */
+final class RepositoryTransaction implements IRepositoryTransaction {
 	
 	private IRepository repository;
 	private IRepositoryListener listener;
 	private volatile boolean pending;
 	
+	/**
+	 * Creates and starts a new repository transaction
+	 * @param repository
+	 * @param listener
+	 */
 	public RepositoryTransaction(IRepository repository, IRepositoryListener listener) {
 		this.repository = repository;
 		this.listener = listener;
@@ -39,6 +50,10 @@ public final class RepositoryTransaction {
 		Logger.debug("Creating new repository transaction: ", new DateTime().toString());
 	}
 	
+	/**
+	 * Called when transaction is finished
+	 */
+	@Override
 	public void finishTransaction() {
 		if (listener != null) {
 			listener.repositoryChanged(this.repository);
@@ -47,6 +62,11 @@ public final class RepositoryTransaction {
 		Logger.debug("Finished repository transaction: ", new DateTime().toString());
 	}
 	
+	/**
+	 * Returns if transaction has finished (returns false) or not (returns true)
+	 * @return
+	 */
+	@Override
 	public boolean isPending() {
 		return this.pending;
 	}

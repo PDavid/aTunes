@@ -20,44 +20,22 @@
 
 package net.sourceforge.atunes.model;
 
-import java.io.File;
-import java.util.List;
-
-
-
 /**
- * Responsible of reading or refreshing a repository
+ * A transaction to make changes in repository
  * @author alex
  *
  */
-public interface IRepositoryLoader {
+public interface IRepositoryTransaction {
 
 	/**
-	 * Starts loading repository
-	 * @param transaction
-	 * @param folders
-	 * @param oldRepository
-	 * @param repository
-	 * @param refresh
+	 * Called when transaction is finished
 	 */
-	void start(IRepositoryTransaction transaction, List<File> folders, IRepository oldRepository, IRepository repository, boolean refresh);
+	public void finishTransaction();
 
 	/**
-	 * Adds the repository loader listener.
-	 * 
-	 * @param listener
-	 *            the listener
-	 */
-	void addRepositoryLoaderListener(IRepositoryLoaderListener listener);
-
-	/**
-	 * Interrupts process
-	 */
-	void interruptLoad();
-
-	/**
-	 * Returns previous repository (to be used if interrupted to restore previous repository)
+	 * Returns if transaction has finished (returns false) or not (returns true)
 	 * @return
 	 */
-	IRepository getOldRepository();
+	public boolean isPending();
+
 }

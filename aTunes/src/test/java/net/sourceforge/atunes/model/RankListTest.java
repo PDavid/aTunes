@@ -25,8 +25,6 @@ import java.util.List;
 
 import junit.framework.Assert;
 
-import net.sourceforge.atunes.model.RankList;
-
 import org.junit.Before;
 import org.junit.Test;
 
