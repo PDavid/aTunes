@@ -23,7 +23,6 @@ package net.sourceforge.atunes.model;
 import java.io.File;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryTransaction;
 
 
 /**
@@ -41,7 +40,7 @@ public interface IRepositoryLoader {
 	 * @param repository
 	 * @param refresh
 	 */
-	void start(RepositoryTransaction transaction, List<File> folders, IRepository oldRepository, IRepository repository, boolean refresh);
+	void start(IRepositoryTransaction transaction, List<File> folders, IRepository oldRepository, IRepository repository, boolean refresh);
 
 	/**
 	 * Adds the repository loader listener.

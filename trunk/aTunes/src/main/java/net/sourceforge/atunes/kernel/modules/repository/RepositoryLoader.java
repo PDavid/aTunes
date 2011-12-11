@@ -32,6 +32,7 @@ import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryLoader;
 import net.sourceforge.atunes.model.IRepositoryLoaderListener;
+import net.sourceforge.atunes.model.IRepositoryTransaction;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.DirectoryFileFilter;
 import net.sourceforge.atunes.utils.Logger;
@@ -61,7 +62,7 @@ public class RepositoryLoader implements IRepositoryLoader, Runnable {
 	private FileFilter validLocalAudioObjectFileFilter;
 	private DirectoryFileFilter directoryFileFilter;
 	
-	private RepositoryTransaction transaction;
+	private IRepositoryTransaction transaction;
 
 	/**
 	 * Starts load
@@ -73,7 +74,7 @@ public class RepositoryLoader implements IRepositoryLoader, Runnable {
 	 * @param refresh
 	 */
 	@Override
-	public void start(RepositoryTransaction transaction, List<File> folders, IRepository oldRepository, IRepository repository, boolean refresh) {
+	public void start(IRepositoryTransaction transaction, List<File> folders, IRepository oldRepository, IRepository repository, boolean refresh) {
 		this.transaction = transaction;
 		this.refresh = refresh;
 		this.folders = folders;
