@@ -29,7 +29,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.INavigationViewSorter;
@@ -118,7 +118,7 @@ public class ArtistTreeGenerator implements ITreeGenerator {
 			List<DefaultMutableTreeNode> nodesToSelect,
 			List<DefaultMutableTreeNode> nodesToExpand, String artistName) {
 		
-		Artist artist = (Artist) structure.get(artistName);
+		IArtist artist = (IArtist) structure.get(artistName);
 		DefaultMutableTreeNode artistNode = new DefaultMutableTreeNode(artist);
 		List<String> albumNamesList = new ArrayList<String>(artist.getAlbums().keySet());
 		albumSorter.sort(albumNamesList);

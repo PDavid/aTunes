@@ -26,8 +26,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IWebServicesHandler;
@@ -45,7 +45,7 @@ import org.apache.sanselan.ImageWriteException;
 public class GetCoversProcess extends AbstractProcess {
 
     /** The artist. */
-    private Artist artist;
+    private IArtist artist;
     
     private IOSManager osManager;
     
@@ -61,7 +61,7 @@ public class GetCoversProcess extends AbstractProcess {
     /**
      * @param artist
      */
-    public void setArtist(Artist artist) {
+    public void setArtist(IArtist artist) {
 		this.artist = artist;
 	}
     
@@ -80,9 +80,9 @@ public class GetCoversProcess extends AbstractProcess {
     @Override
     protected boolean runProcess() {
         long coversRetrieved = 0;
-        List<Album> albums = new ArrayList<Album>(artist.getAlbums().values());
+        List<IAlbum> albums = new ArrayList<IAlbum>(artist.getAlbums().values());
         for (int i = 0; i < albums.size() && !isCanceled(); i++) {
-            Album album = albums.get(i);
+        	IAlbum album = albums.get(i);
             if (!hasCoverDownloaded(album)) {
                 Image albumImage = webServicesHandler.getAlbumImage(artist.getName(), album.getName());
                 if (albumImage != null) {
@@ -119,7 +119,7 @@ public class GetCoversProcess extends AbstractProcess {
      * 
      * @return true, if checks for cover downloaded
      */
-    private boolean hasCoverDownloaded(Album album) {
+    private boolean hasCoverDownloaded(IAlbum album) {
         return new File(AudioFilePictureUtils.getFileNameForCover(((ILocalAudioObject)album.getAudioObjects().get(0)), osManager)).exists();
     }
 }

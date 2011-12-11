@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.utils;
 
-import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IArtist;
 
 public class UnknownObjectCheck {
 
@@ -38,7 +38,7 @@ public class UnknownObjectCheck {
      * 
      * @return
      */
-    public static boolean isUnknownArtist(Artist artist) {
+    public static boolean isUnknownArtist(IArtist artist) {
         return artist != null && artist.getName().equalsIgnoreCase(getUnknownArtist());
     }
 

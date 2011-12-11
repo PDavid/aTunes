@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -148,7 +148,7 @@ public class Year implements IYear {
      * @return the artists
      */
     @Override
-	public Map<String, Artist> getArtistObjects() {
+	public Map<String, IArtist> getArtistObjects() {
     	return new ArtistStructureBuilder().getArtistObjects(audioFiles);
     }
 

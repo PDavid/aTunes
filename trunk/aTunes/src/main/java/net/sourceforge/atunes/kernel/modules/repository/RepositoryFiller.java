@@ -22,12 +22,14 @@ package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.io.File;
 
+import net.sourceforge.atunes.kernel.modules.repository.data.Album;
+import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.ArtistViewMode;
 import net.sourceforge.atunes.model.Folder;
+import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepository;
@@ -131,13 +133,13 @@ final class RepositoryFiller {
     	String album = audioFile.getAlbum();
 
     	// Create artist object if needed
-    	Artist artistObject = repository.getArtist(artist);
+    	IArtist artistObject = repository.getArtist(artist);
     	if (artistObject == null) {
-    		artistObject = repository.putArtist(artist);
+    		artistObject = repository.putArtist(new Artist(artist));
     	}
 
     	// Create album object if needed
-    	Album albumObject = artistObject.getAlbum(album);
+    	IAlbum albumObject = artistObject.getAlbum(album);
     	if (albumObject == null) {
     		albumObject = new Album(artistObject, album);
     		artistObject.addAlbum(albumObject);
@@ -240,13 +242,13 @@ final class RepositoryFiller {
 		}
 		
 		boolean albumArtistPresent = true;
-		Artist a = repository.getArtist(albumArtist);
+		IArtist a = repository.getArtist(albumArtist);
 		if (a == null) {
 			a = repository.getArtist(artist);
 			albumArtistPresent = false;
 		}
 		if (a != null) {
-			Album alb = a.getAlbum(album);
+			IAlbum alb = a.getAlbum(album);
 			if (alb != null) {
 				if (alb.size() == 1) {
 					a.removeAlbum(alb);

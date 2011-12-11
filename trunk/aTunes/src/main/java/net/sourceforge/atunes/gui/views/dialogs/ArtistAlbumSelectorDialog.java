@@ -24,6 +24,7 @@ import java.awt.BorderLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -35,8 +36,8 @@ import net.sourceforge.atunes.gui.AlbumTableModel;
 import net.sourceforge.atunes.gui.ColumnRenderers;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IFrame;
@@ -53,9 +54,9 @@ public final class ArtistAlbumSelectorDialog extends AbstractCustomDialog implem
 
     private static final long serialVersionUID = 8991547440913162267L;
 
-	private Artist artist;
+	private IArtist artist;
    
-	private Album album;
+	private IAlbum album;
 	
 	private ILookAndFeel lookAndFeel;
 
@@ -85,7 +86,7 @@ public final class ArtistAlbumSelectorDialog extends AbstractCustomDialog implem
         
         panel.add(lookAndFeel.getTableScrollPane(albumTable), BorderLayout.CENTER);
         
-        ArrayList<Album> albumList = new ArrayList<Album>(artist.getAlbums().values());
+        List<IAlbum> albumList = new ArrayList<IAlbum>(artist.getAlbums().values());
         
         final AlbumTableModel model = new AlbumTableModel();
         albumTable.setModel(model);
@@ -113,7 +114,7 @@ public final class ArtistAlbumSelectorDialog extends AbstractCustomDialog implem
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int row = albumTable.getSelectedRow();
-				album = (Album) model.getAlbumAt(row);
+				album = (IAlbum) model.getAlbumAt(row);
 				setVisible(false);
 			}
 		});
@@ -125,7 +126,7 @@ public final class ArtistAlbumSelectorDialog extends AbstractCustomDialog implem
 	 * @see net.sourceforge.atunes.gui.views.dialogs.IArtistAlbumSelectorDialog#showDialog(net.sourceforge.atunes.model.Artist)
 	 */
     @Override
-	public Album showDialog(Artist artist) {
+	public IAlbum showDialog(IArtist artist) {
         this.artist = artist;
       	String text = I18nUtils.getString("ADD_ARTIST_DIALOG_TITLE");
         text = text.replace("(%ARTIST%)", artist.getName());

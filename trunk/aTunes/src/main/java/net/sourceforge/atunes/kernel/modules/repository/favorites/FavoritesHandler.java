@@ -33,8 +33,8 @@ import net.sourceforge.atunes.kernel.FavoritesListeners;
 import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.actions.RemoveLovedSongInLastFmAction;
 import net.sourceforge.atunes.kernel.modules.search.FavoritesSearchableObject;
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFavorites;
@@ -95,13 +95,13 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
 		Set<ILocalAudioObject> set = SetUniqueList.decorate(songs).asSet();
 
     	List<ITreeObject<?>> toRemove = new ArrayList<ITreeObject<?>>();
-        Map<String, Album> favAlbums = favorites.getFavoriteAlbums();
+        Map<String, IAlbum> favAlbums = favorites.getFavoriteAlbums();
         for (ILocalAudioObject f : set) {
-            Artist artist = repositoryHandler.getArtist(f.getArtist());
+            IArtist artist = repositoryHandler.getArtist(f.getArtist());
             if (artist == null) {
                 artist = repositoryHandler.getArtist(f.getAlbumArtist());
             }
-            Album album = artist.getAlbum(f.getAlbum());
+            IAlbum album = artist.getAlbum(f.getAlbum());
             if (favAlbums.containsValue(album)) {
             	toRemove.add(album);
             } else {
@@ -123,9 +123,9 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
 		Set<ILocalAudioObject> set = SetUniqueList.decorate(songs).asSet();
 
     	List<ITreeObject<?>> toRemove = new ArrayList<ITreeObject<?>>();    	
-        Map<String, Artist> favArtists = favorites.getFavoriteArtists();
+        Map<String, IArtist> favArtists = favorites.getFavoriteArtists();
         for (ILocalAudioObject f : set) {
-            Artist artist = repositoryHandler.getArtist(f.getArtist());
+            IArtist artist = repositoryHandler.getArtist(f.getArtist());
             if (favArtists.containsValue(artist)) {
             	toRemove.add(artist);
             } else {
@@ -195,12 +195,12 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
     }
 
     @Override
-	public Map<String, Album> getFavoriteAlbumsInfo() {
+	public Map<String, IAlbum> getFavoriteAlbumsInfo() {
         return favorites.getFavoriteAlbums();
     }
 
     @Override
-	public Map<String, Artist> getFavoriteArtistsInfo() {
+	public Map<String, IArtist> getFavoriteArtistsInfo() {
         return favorites.getFavoriteArtists();
     }
 
@@ -236,7 +236,7 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
     @Override
 	public void removeFromFavorites(List<ITreeObject<?>> objects) {
         for (ITreeObject<? extends IAudioObject> obj : objects) {
-            if (obj instanceof Artist) {
+            if (obj instanceof IArtist) {
                 favorites.getFavoriteArtists().remove(obj.toString());
             } else {
                 favorites.getFavoriteAlbums().remove(obj.toString());

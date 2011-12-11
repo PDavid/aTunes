@@ -25,11 +25,11 @@ import java.awt.Component;
 import javax.swing.JLabel;
 
 import net.sourceforge.atunes.gui.AbstractTreeCellDecorator;
-import net.sourceforge.atunes.model.Artist;
 import net.sourceforge.atunes.model.CachedIconFactory;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 
-public class ArtistTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, Artist> {
+public class ArtistTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, IArtist> {
 
 	private IFavoritesHandler favoritesHandler;
 	
@@ -38,7 +38,7 @@ public class ArtistTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, A
 	private CachedIconFactory artistFavoriteIcon;
 	
     @Override
-    public Component decorateTreeCellComponent(JLabel component, Artist userObject, boolean isSelected) {
+    public Component decorateTreeCellComponent(JLabel component, IArtist userObject, boolean isSelected) {
     	if (!getState().isShowFavoritesInNavigator() || !favoritesHandler.getFavoriteArtistsInfo().containsKey(userObject.getName())) {
     		component.setIcon(artistImageIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
     	} else {

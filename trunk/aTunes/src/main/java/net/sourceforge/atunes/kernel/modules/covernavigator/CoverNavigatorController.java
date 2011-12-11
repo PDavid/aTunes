@@ -47,8 +47,8 @@ import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorFrame;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.process.GetCoversProcess;
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IProcessListener;
@@ -68,20 +68,20 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
     
     private final class GenerateAndShowAlbumPanelsSwingWorker extends SwingWorker<Void, IntermediateResult> {
     	
-		private final Artist artistSelected;
+		private final IArtist artistSelected;
 		
-		private GenerateAndShowAlbumPanelsSwingWorker(Artist artistSelected) {
+		private GenerateAndShowAlbumPanelsSwingWorker(IArtist artistSelected) {
 			this.artistSelected = artistSelected;
 		}
 
 		@Override
 		protected Void doInBackground() throws Exception {
 
-		    final List<Album> albums = new ArrayList<Album>(artistSelected.getAlbums().values());
+		    final List<IAlbum> albums = new ArrayList<IAlbum>(artistSelected.getAlbums().values());
 		    Collections.sort(albums);
 
 		    int coversAdded = 0;
-		    for (Album album : albums) {
+		    for (IAlbum album : albums) {
 		        ImageIcon cover = audioObjectImageLocator.getImage(album, Constants.COVER_NAVIGATOR_IMAGE_SIZE);
 		        publish(new IntermediateResult(album, cover));
 		        coversAdded++;
@@ -143,7 +143,7 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-		    Artist selectedArtist = (Artist) frame.getList().getSelectedValue();
+		    IArtist selectedArtist = (IArtist) frame.getList().getSelectedValue();
 		    if (selectedArtist != null) {
 		        GetCoversProcess process = (GetCoversProcess) processFactory.getProcessByName("getCoversProcess");
 		        process.setArtist(selectedArtist);
@@ -194,7 +194,7 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
      * 
      * @return the panel for album
      */
-    JPanel getPanelForAlbum(Album album, ImageIcon cover) {
+    JPanel getPanelForAlbum(IAlbum album, ImageIcon cover) {
         JPanel panel = new JPanel(new FlowLayout());
 
         JLabel coverLabel = new JLabel(cover);
@@ -222,7 +222,7 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
      * Update covers.
      */
     protected void updateCovers() {
-        final Artist artistSelected = (Artist) getComponentControlled().getList().getSelectedValue();
+        final IArtist artistSelected = (IArtist) getComponentControlled().getList().getSelectedValue();
         if (artistSelected == null) {
             return;
         }

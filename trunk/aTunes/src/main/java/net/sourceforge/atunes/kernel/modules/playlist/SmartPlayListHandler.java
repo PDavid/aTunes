@@ -26,8 +26,8 @@ import java.util.List;
 import java.util.Random;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectComparator;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -67,13 +67,13 @@ public final class SmartPlayListHandler extends AbstractHandler implements ISmar
     @Override
 	public void addAlbumsMostPlayed(int n) {
         // Get n most played albums
-        List<Album> albums = statisticsHandler.getMostPlayedAlbums(n);
+        List<IAlbum> albums = statisticsHandler.getMostPlayedAlbums(n);
 
         // Songs selected
         List<IAudioObject> songsSelected = new ArrayList<IAudioObject>();
 
         // Add album songs
-        for (Album a : albums) {
+        for (IAlbum a : albums) {
             songsSelected.addAll(getBean(IRepositoryHandler.class).getAudioFilesForAlbums(Collections.singletonMap(a.getName(), a)));
         }
 
@@ -87,13 +87,13 @@ public final class SmartPlayListHandler extends AbstractHandler implements ISmar
     @Override
 	public void addArtistsMostPlayed(int n) {
         // Get n most played albums
-        List<Artist> artists = statisticsHandler.getMostPlayedArtists(n);
+        List<IArtist> artists = statisticsHandler.getMostPlayedArtists(n);
 
         // Songs selected
         List<IAudioObject> songsSelected = new ArrayList<IAudioObject>();
 
         // Add album songs
-        for (Artist a : artists) {
+        for (IArtist a : artists) {
             songsSelected.addAll(a.getAudioObjects());
         }
 

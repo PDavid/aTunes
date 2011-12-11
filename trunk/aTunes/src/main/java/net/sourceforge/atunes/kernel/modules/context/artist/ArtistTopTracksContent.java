@@ -37,7 +37,7 @@ import javax.swing.event.ListSelectionListener;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.context.TracksTableFactory;
-import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -68,7 +68,7 @@ public class ArtistTopTracksContent extends AbstractContextPanelContent {
         @Override
         public void actionPerformed(ActionEvent e) {
         	// Get artist files from repository and match by title with top tracks to create a play list
-    		Artist artist = repositoryHandler.getArtist(lastTopTracks.getArtist());
+    		IArtist artist = repositoryHandler.getArtist(lastTopTracks.getArtist());
     		if (artist != null) {
     			List<ILocalAudioObject> audioObjects = artist.getAudioObjects();
     			Map<String, ILocalAudioObject> titles = new HashMap<String, ILocalAudioObject>();

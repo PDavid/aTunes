@@ -26,7 +26,7 @@
 	<bean id="favoritesHandler" class="net.sourceforge.atunes.kernel.modules.repository.favorites.FavoritesHandler"/>
 	<bean id="searchHandler" class="net.sourceforge.atunes.kernel.modules.search.SearchHandler"/>
 	<bean id="repositoryHandler" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryHandler"/>
-	<bean id="deviceHandler" class="net.sourceforge.atunes.kernel.modules.device.DeviceHandler"/>
+	<bean id="deviceHandler" class="net.sourceforge.atunes.kernel.modules.repository.DeviceHandler"/>
 	<bean id="radioHandler" class="net.sourceforge.atunes.kernel.modules.radio.RadioHandler"/>
 	<bean id="playerHandler" class="net.sourceforge.atunes.kernel.modules.player.PlayerHandler"/>
 	<bean id="ripperHandler" class="net.sourceforge.atunes.kernel.modules.cdripper.RipperHandler"/>

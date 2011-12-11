@@ -17,7 +17,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-package net.sourceforge.atunes.kernel.modules.device;
+package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -46,9 +46,8 @@ import net.sourceforge.atunes.kernel.actions.CopyPlayListToDeviceAction;
 import net.sourceforge.atunes.kernel.actions.DisconnectDeviceAction;
 import net.sourceforge.atunes.kernel.actions.RefreshDeviceAction;
 import net.sourceforge.atunes.kernel.actions.SynchronizeDeviceWithPlayListAction;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryTransaction;
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IConfirmationDialogFactory;
 import net.sourceforge.atunes.model.IDeviceHandler;
@@ -61,11 +60,11 @@ import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IProcessListener;
+import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IRepositoryLoader;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
-import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -78,7 +77,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class DeviceHandler extends AbstractHandler implements IDeviceHandler {
 
-    private Repository deviceRepository;
+    private IRepository deviceRepository;
     private IRepositoryLoader currentLoader;
     private File devicePath;
     /**
@@ -503,7 +502,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 	public void refreshDevice() {
     	getFrame().showProgressBar(true, null);
         Logger.info("Refreshing device");
-        Repository oldDeviceRepository = deviceRepository;
+        IRepository oldDeviceRepository = deviceRepository;
         deviceRepository = new Repository(oldDeviceRepository.getRepositoryFolders(), getState());
         currentLoader = getBean(IRepositoryLoader.class);
         currentLoader.addRepositoryLoaderListener(this);
@@ -632,7 +631,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
                 String title = af.getTitle();
 
                 // If artist is not present in device then add
-                Artist a = getArtist(artist);
+                IArtist a = getArtist(artist);
                 if (a == null) {
                     result.add(af);
                 } else {
@@ -642,7 +641,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
                             result.add(af);
                         } else {
                             // Compare title of every file and add if title is not in list
-                            Album alb = a.getAlbum(album);
+                        	IAlbum alb = a.getAlbum(album);
                             List<ILocalAudioObject> deviceFiles = alb.getAudioObjects();
                             HashSet<String> titles = new HashSet<String>();
                             for (IAudioObject deviceFile : deviceFiles) {
@@ -683,11 +682,11 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
             String title = af.getTitle();
 
             // Remove objects present in device
-            Artist a = getArtist(artist);
+            IArtist a = getArtist(artist);
             if (a != null) {
                 if (getState().isAllowRepeatedSongsInDevice()) {
                     if (a.getAlbum(album) != null) {
-                        Album alb = a.getAlbum(album);
+                    	IAlbum alb = a.getAlbum(album);
                         List<ILocalAudioObject> deviceFiles = alb.getAudioObjects();
                         HashMap<String, IAudioObject> titles = new HashMap<String, IAudioObject>();
                         for (IAudioObject deviceFile : deviceFiles) {
@@ -734,7 +733,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 	 * @see net.sourceforge.atunes.kernel.modules.device.IDeviceHandler#getArtist(java.lang.String)
 	 */
     @Override
-	public Artist getArtist(String name) {
+	public IArtist getArtist(String name) {
     	if (deviceRepository != null) {
     		return deviceRepository.getArtist(name);
     	}

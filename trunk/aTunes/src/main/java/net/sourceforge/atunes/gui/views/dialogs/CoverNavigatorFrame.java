@@ -39,7 +39,7 @@ import javax.swing.ScrollPaneConstants;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.ScrollableFlowPanel;
-import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -59,7 +59,7 @@ public final class CoverNavigatorFrame extends AbstractCustomDialog {
      * @param owner
      * @param lookAndFeelManager
      */
-    public CoverNavigatorFrame(List<Artist> artists, Window owner, ILookAndFeelManager lookAndFeelManager) {
+    public CoverNavigatorFrame(List<IArtist> artists, Window owner, ILookAndFeelManager lookAndFeelManager) {
         super(owner, GuiUtils.getComponentWidthForResolution(0.75f), GuiUtils.getComponentHeightForResolution(0.75f), true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
         setTitle(I18nUtils.getString("COVER_NAVIGATOR"));
         setContent(artists, lookAndFeelManager.getCurrentLookAndFeel());
@@ -99,7 +99,7 @@ public final class CoverNavigatorFrame extends AbstractCustomDialog {
      *            the new content
      * @param iLookAndFeel 
      */
-    private void setContent(List<Artist> artists, ILookAndFeel iLookAndFeel) {
+    private void setContent(List<IArtist> artists, ILookAndFeel iLookAndFeel) {
         JPanel panel = new JPanel(new GridBagLayout());
 
         coversPanel = new ScrollableFlowPanel();

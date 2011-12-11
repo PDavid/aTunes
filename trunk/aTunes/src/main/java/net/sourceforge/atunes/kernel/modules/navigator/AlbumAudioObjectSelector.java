@@ -20,13 +20,13 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
-import net.sourceforge.atunes.model.Album;
+import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IAudioObject;
 
-class AlbumAudioObjectSelector extends AudioObjectSelector<Album, IAudioObject> {
+class AlbumAudioObjectSelector extends AudioObjectSelector<IAlbum, IAudioObject> {
 
 	@Override
-	boolean equals(Album album, IAudioObject audioObject) {
+	boolean equals(IAlbum album, IAudioObject audioObject) {
 		return album.getName().equals(audioObject.getAlbum());
 	}
 

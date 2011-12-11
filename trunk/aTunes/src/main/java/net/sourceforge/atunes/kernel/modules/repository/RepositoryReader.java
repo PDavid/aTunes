@@ -47,7 +47,6 @@ import net.sourceforge.atunes.model.IRepositoryLoaderListener;
 import net.sourceforge.atunes.model.IRepositoryProgressDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
-import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -65,7 +64,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 
     private boolean backgroundLoad = false;
 
-    private Repository repositoryRetrievedFromCache = null;
+    private IRepository repositoryRetrievedFromCache = null;
 
     private IMessageDialogFactory messageDialogFactory;
     
@@ -77,7 +76,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
     
     private IRepositoryLoader currentLoader;
     
-	private Repository repository;
+	private IRepository repository;
 	
 	private IFrame frame;
 	
@@ -166,7 +165,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
     /**
      * @param repositoryRetrievedFromCache
      */
-    void setRepositoryRetrievedFromCache(Repository repositoryRetrievedFromCache) {
+    void setRepositoryRetrievedFromCache(IRepository repositoryRetrievedFromCache) {
 		this.repositoryRetrievedFromCache = repositoryRetrievedFromCache;
 	}
 
@@ -175,7 +174,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
      * @param askUser
      */
     void applyRepositoryFromCache() {
-        Repository rep = repositoryRetrievedFromCache;
+        IRepository rep = repositoryRetrievedFromCache;
         if (rep != null && rep.exists()) {
         	applyExistingRepository(rep);
         }
@@ -196,7 +195,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
      * @param askUser
      */
     private void applyRepository() {
-        Repository rep = repositoryRetrievedFromCache;
+        IRepository rep = repositoryRetrievedFromCache;
         // Try to read repository cache. If fails or not exists, should be selected again
         if (rep != null) {
         	if (!rep.exists()) {
@@ -235,7 +234,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
         } while (I18nUtils.getString("RETRY").equals(selection) && !rep.exists());
     }
 
-    private void applyExistingRepository(Repository rep) {
+    private void applyExistingRepository(IRepository rep) {
         repository = rep;
         repositoryReadCompleted();
     }
@@ -314,7 +313,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
      */
     private void readRepository(List<File> folders) {
         backgroundLoad = false;
-        Repository oldRepository = repository;
+        IRepository oldRepository = repository;
         repository = new Repository(folders, state);
         repositoryHandler.setRepository(repository);
         currentLoader = Context.getBean(IRepositoryLoader.class);
@@ -438,7 +437,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
     void refresh() {
         Logger.info("Refreshing repository");
         filesLoaded = 0;
-        Repository oldRepository = repository;
+        IRepository oldRepository = repository;
         repository = new Repository(oldRepository.getRepositoryFolders(), state);
         repositoryHandler.setRepository(repository);
         currentLoader = Context.getBean(IRepositoryLoader.class);

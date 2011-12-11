@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectComparator;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -82,13 +82,13 @@ public class CreatePlayListWithSelectedAlbumsAction extends AbstractActionOverSe
     @Override
     protected void executeAction(List<IAudioObject> objects) {
         // Get selected albums from play list
-        List<Album> selectedAlbums = new ArrayList<Album>();
+        List<IAlbum> selectedAlbums = new ArrayList<IAlbum>();
         for (IAudioObject ao : objects) {
             String artistName = ao.getArtist();
             String album = ao.getAlbum();
-            Artist a = repositoryHandler.getArtist(artistName);
+            IArtist a = repositoryHandler.getArtist(artistName);
             if (a != null) {
-                Album alb = a.getAlbum(album);
+            	IAlbum alb = a.getAlbum(album);
                 if (alb != null && !selectedAlbums.contains(alb)) {
                     selectedAlbums.add(alb);
                 }
@@ -102,8 +102,8 @@ public class CreatePlayListWithSelectedAlbumsAction extends AbstractActionOverSe
 	/**
 	 * @param selectedAlbums
 	 */
-	private void createPlayLists(List<Album> selectedAlbums) {
-        for (Album album : selectedAlbums) {
+	private void createPlayLists(List<IAlbum> selectedAlbums) {
+        for (IAlbum album : selectedAlbums) {
             List<ILocalAudioObject> audioObjects = repositoryHandler.getAudioFilesForAlbums(Collections.singletonMap(album.getName(), album));
             audioObjectComparator.sort(audioObjects);
 

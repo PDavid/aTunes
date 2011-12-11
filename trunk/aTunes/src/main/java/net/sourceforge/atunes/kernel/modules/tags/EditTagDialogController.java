@@ -40,8 +40,8 @@ import net.sourceforge.atunes.gui.autocomplete.AutoCompleteDecorator;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.process.EditTagsProcess;
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IOSManager;
@@ -175,9 +175,9 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
         coverEdited = false;
 
         // Load artists into combo box
-        List<Artist> artistList = repositoryHandler.getArtists();
+        List<IArtist> artistList = repositoryHandler.getArtists();
         List<String> artistNames = new ArrayList<String>();
-        for (Artist a : artistList) {
+        for (IArtist a : artistList) {
             artistNames.add(a.getName());
         }
         getComponentControlled().getArtistTextField().setModel(new ListComboBoxModel<String>(artistNames));
@@ -185,9 +185,9 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
         AutoCompleteDecorator.decorate(getComponentControlled().getArtistTextField());
 
         // Load albums into combo box
-        List<Album> albumList = repositoryHandler.getAlbums();
+        List<IAlbum> albumList = repositoryHandler.getAlbums();
         List<String> albumNames = new ArrayList<String>();
-        for (Album alb : albumList) {
+        for (IAlbum alb : albumList) {
             // Because of artists and album artists there can be more than one album with the same name
             if (!albumNames.contains(alb.getName())) {
                 albumNames.add(alb.getName());

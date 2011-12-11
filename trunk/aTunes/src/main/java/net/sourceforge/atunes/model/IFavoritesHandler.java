@@ -68,14 +68,14 @@ public interface IFavoritesHandler extends IHandler {
 	 * 
 	 * @return the favorite albums info
 	 */
-	public Map<String, Album> getFavoriteAlbumsInfo();
+	public Map<String, IAlbum> getFavoriteAlbumsInfo();
 
 	/**
 	 * Gets the favorite artists info.
 	 * 
 	 * @return the favorite artists info
 	 */
-	public Map<String, Artist> getFavoriteArtistsInfo();
+	public Map<String, IArtist> getFavoriteArtistsInfo();
 
 	/**
 	 * Gets the favorite songs.

@@ -35,8 +35,8 @@ import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.dialogs.StatsDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
-import net.sourceforge.atunes.model.Album;
-import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
@@ -171,7 +171,7 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
      */
     private List<Object[]> getMostPlayedAlbumsInRanking(int n) {
         List<Object[]> result = new ArrayList<Object[]>();
-        List<Album> albums = statisticsHandler.getMostPlayedAlbums(n);
+        List<IAlbum> albums = statisticsHandler.getMostPlayedAlbums(n);
         List<Integer> count = statisticsHandler.getMostPlayedAlbumsCount(n);
         if (albums != null) {
             for (int i = 0; i < albums.size(); i++) {
@@ -216,7 +216,7 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
      */
     private List<Object[]> getMostPlayedArtistsInRanking(int n) {
         List<Object[]> result = new ArrayList<Object[]>();
-        List<Artist> artists = statisticsHandler.getMostPlayedArtists(n);
+        List<IArtist> artists = statisticsHandler.getMostPlayedArtists(n);
         List<Integer> count = statisticsHandler.getMostPlayedArtistsCount(n);
         if (artists != null) {
             for (int i = 0; i < artists.size(); i++) {

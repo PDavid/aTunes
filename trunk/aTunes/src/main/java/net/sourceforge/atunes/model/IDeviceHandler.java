@@ -131,7 +131,7 @@ public interface IDeviceHandler extends IHandler, IRepositoryLoaderListener, IAu
 	 * @param name
 	 * @return
 	 */
-	public Artist getArtist(String name);
+	public IArtist getArtist(String name);
 
 	/**
 	 * Returns data to show in a tree

@@ -56,7 +56,6 @@ import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.IStatistics;
 import net.sourceforge.atunes.model.InconsistentRepositoryException;
-import net.sourceforge.atunes.model.Repository;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -541,7 +540,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#retrieveRepositoryCache()
 	 */
     @Override
-	public Repository retrieveRepositoryCache() {
+	public IRepository retrieveRepositoryCache() {
         String folder = getBean(IRepositoryHandler.class).getRepositoryConfigurationFolder();
 
         ObjectInputStream ois = null;
@@ -551,7 +550,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
             Logger.info("Reading serialized repository cache");
             Timer timer = new Timer();
             timer.start();
-            Repository result = (Repository) ois.readObject();
+            IRepository result = (IRepository) ois.readObject();
             result.setState(getState());
 
             // Check repository integrity
@@ -575,13 +574,13 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
     	return readRepositoryFromXml(folder);
     }
     
-    private Repository readRepositoryFromXml(String folder) {
+    private IRepository readRepositoryFromXml(String folder) {
         Logger.info("No serialized repository info found");
         if (getState().isSaveRepositoryAsXml()) {
             try {
                 Logger.info("Reading xml repository cache");
                 long t0 = System.currentTimeMillis();
-                Repository repository = (Repository) XMLUtils.readObjectFromFile(StringUtils.getString(folder, "/", Constants.XML_CACHE_REPOSITORY_NAME));
+                IRepository repository = (IRepository) XMLUtils.readObjectFromFile(StringUtils.getString(folder, "/", Constants.XML_CACHE_REPOSITORY_NAME));
                 if (repository != null) {
                 	repository.setState(getState());
 
@@ -606,14 +605,14 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#retrieveDeviceCache(java.lang.String)
 	 */
     @Override
-	public Repository retrieveDeviceCache(String deviceId) {
+	public IRepository retrieveDeviceCache(String deviceId) {
         ObjectInputStream ois = null;
         try {
             FileInputStream fis = new FileInputStream(StringUtils.getString(getUserConfigFolder(), getOsManager().getFileSeparator(), Constants.DEVICE_CACHE_FILE_PREFIX, deviceId));
             ois = new ObjectInputStream(fis);
             Logger.info("Reading serialized device cache");
             long t0 = System.currentTimeMillis();
-            Repository result = (Repository) ois.readObject();
+            IRepository result = (IRepository) ois.readObject();
             result.setState(getState());
             long t1 = System.currentTimeMillis();
             Logger.info(StringUtils.getString("Reading device cache done (", (t1 - t0) / 1000.0, " seconds)"));

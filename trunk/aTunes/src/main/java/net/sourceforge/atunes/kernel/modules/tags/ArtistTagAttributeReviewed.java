@@ -28,7 +28,7 @@ import javax.swing.JComboBox;
 import javax.swing.table.TableCellEditor;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ITag;
@@ -54,9 +54,9 @@ final class ArtistTagAttributeReviewed extends AbstractTagAttributeReviewed {
 
     @Override
     TableCellEditor getCellEditor() {
-        List<Artist> artistList = Context.getBean(IRepositoryHandler.class).getArtists();
+        List<IArtist> artistList = Context.getBean(IRepositoryHandler.class).getArtists();
         List<String> artistNames = new ArrayList<String>();
-        for (Artist a : artistList) {
+        for (IArtist a : artistList) {
             artistNames.add(a.getName());
         }
         JComboBox artistsCombo = new JComboBox(new ListComboBoxModel<String>(artistNames));

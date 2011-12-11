@@ -63,7 +63,7 @@ public interface IGenre extends ITreeObject<ILocalAudioObject>, Serializable {
 	 * 
 	 * @return the artists
 	 */
-	public Map<String, Artist> getArtistObjects();
+	public Map<String, IArtist> getArtistObjects();
 
 	/**
 	 * Returns all artists of this genre

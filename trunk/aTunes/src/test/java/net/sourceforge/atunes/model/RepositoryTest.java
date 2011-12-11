@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.Assert;
+import net.sourceforge.atunes.kernel.modules.repository.Repository;
 
 import org.junit.Before;
 import org.junit.Test;

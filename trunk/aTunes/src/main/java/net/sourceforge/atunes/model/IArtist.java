@@ -21,44 +21,59 @@
 package net.sourceforge.atunes.model;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
-public class RepositoryStructure<T> implements Serializable {
+/**
+ * Represents an artist, with a name, and a list of albums.
+ * @author alex
+ *
+ */
+public interface IArtist extends Serializable, ITreeObject<ILocalAudioObject>, Comparable<IArtist> {
 
 	/**
+	 * Adds an album to this artist.
 	 * 
+	 * @param album
+	 *            the album
 	 */
-	private static final long serialVersionUID = 3802494024307120854L;
+	void addAlbum(IAlbum album);
 
-	private Map<String, T> structure;
-	
-	RepositoryStructure() {
-		this.structure = new HashMap<String, T>();
-	}
-	
-	int count() {
-		return this.structure.size();
-	}
-	
-	Collection<T> getAll() {
-		return this.structure.values();
-	}
-	
-	T get(String key) {
-		return this.structure.get(key);
-	}
-	
-	void put(String key, T value) {
-		this.structure.put(key, value);
-	}
-	
-	void remove(String key) {
-		this.structure.remove(key);
-	}
-	
-	Map<String, T> getStructure() {
-		return this.structure;
-	}
+	/**
+	 * Return an IAlbum for a given album name.
+	 * 
+	 * @param albumName
+	 *            the album name
+	 * 
+	 * @return the album
+	 */
+	IAlbum getAlbum(String albumName);
+
+	/**
+	 * Return albums of this artist.
+	 * 
+	 * @return the albums
+	 */
+	Map<String, IAlbum> getAlbums();
+
+	/**
+	 * Returns the name of this artist.
+	 * 
+	 * @return the name
+	 */
+	String getName();
+
+	/**
+	 * Removes an album from this artist.
+	 * 
+	 * @param alb
+	 *            the alb
+	 */
+	void removeAlbum(IAlbum alb);
+
+	/**
+	 * Returns true if artist has no audio files
+	 * @return
+	 */
+	boolean isEmpty();
+
 }

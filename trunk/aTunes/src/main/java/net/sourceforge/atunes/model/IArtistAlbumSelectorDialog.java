@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.model;
 
 
+
 /**
  * Dialog to select an album of an artist
  * @author alex
@@ -33,6 +34,6 @@ public interface IArtistAlbumSelectorDialog {
 	 * @param artist
 	 * @return
 	 */
-	public Album showDialog(Artist artist);
+	public IAlbum showDialog(IArtist artist);
 
 }

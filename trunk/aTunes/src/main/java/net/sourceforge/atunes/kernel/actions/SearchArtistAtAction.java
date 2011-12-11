@@ -25,7 +25,7 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.model.Artist;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.ISearch;
@@ -74,8 +74,8 @@ public class SearchArtistAtAction extends CustomAbstractAction {
     @Override
     protected void executeAction() {
         TreePath path = navigationHandler.getCurrentView().getTree().getSelectionPath();
-        if (((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject() instanceof Artist) {
-            Artist a = (Artist) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
+        if (((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject() instanceof IArtist) {
+            IArtist a = (IArtist) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
             ISearchDialog dialog = searchDialogFactory.createDialog();
             ISearch search = navigationHandler.openSearchDialog(dialog, true);
             if (dialog.isSetAsDefault() && search != null) {
@@ -94,7 +94,7 @@ public class SearchArtistAtAction extends CustomAbstractAction {
         }
 
         for (DefaultMutableTreeNode node : selection) {
-            if (!(node.getUserObject() instanceof Artist) || UnknownObjectCheck.isUnknownArtist((Artist) node.getUserObject())) {
+            if (!(node.getUserObject() instanceof IArtist) || UnknownObjectCheck.isUnknownArtist((IArtist) node.getUserObject())) {
                 return false;
             }
         }

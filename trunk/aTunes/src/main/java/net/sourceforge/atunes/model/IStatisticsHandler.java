@@ -37,7 +37,7 @@ public interface IStatisticsHandler extends IHandler {
      * 
      * @return the artist times played
      */
-    public int getArtistTimesPlayed(Artist artist);
+    public int getArtistTimesPlayed(IArtist artist);
 
 	/**
 	 * Returns statistics for an audio object
@@ -85,7 +85,7 @@ public interface IStatisticsHandler extends IHandler {
 	 * @param n
 	 * @return
 	 */
-	public List<Album> getMostPlayedAlbums(int n);
+	public List<IAlbum> getMostPlayedAlbums(int n);
 	
 	/**
 	 * Returns number of plays of most played albums
@@ -99,7 +99,7 @@ public interface IStatisticsHandler extends IHandler {
 	 * @param n
 	 * @return
 	 */
-	public List<Artist> getMostPlayedArtists(int n);
+	public List<IArtist> getMostPlayedArtists(int n);
 
 	/**
 	 * Returns number of plays of most played artists
