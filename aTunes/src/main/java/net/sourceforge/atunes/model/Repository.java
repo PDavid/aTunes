@@ -28,6 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.sourceforge.atunes.utils.StringUtils;
+
 
 public class Repository implements Serializable, IRepository {
 
@@ -320,7 +322,7 @@ public class Repository implements Serializable, IRepository {
         Collection<Artist> artistCollection = getArtists();
         for (Artist artist : artistCollection) {
             for (Album album : artist.getAlbums().values()) {
-                albumsStructure.put(album.getNameAndArtist(), album);
+                albumsStructure.put(StringUtils.getString(album.getName(), " (", album.getArtist(), ")"), album);
             }
         }
         return albumsStructure;
