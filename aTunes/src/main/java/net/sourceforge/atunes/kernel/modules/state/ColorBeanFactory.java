@@ -18,15 +18,18 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.state.beans;
+package net.sourceforge.atunes.kernel.modules.state;
 
-import net.sourceforge.atunes.model.IProxyBean;
-import net.sourceforge.atunes.model.IProxyBeanFactory;
+import java.awt.Color;
 
-public class ProxyBeanFactory implements IProxyBeanFactory {
+import net.sourceforge.atunes.model.IColorBean;
+import net.sourceforge.atunes.model.IColorBeanFactory;
+
+public class ColorBeanFactory implements IColorBeanFactory {
 	
 	@Override
-	public IProxyBean getProxy(String type, String url, int port, String user, String password) {
-		return new ProxyBean(type, url, port, user, password);
+	public IColorBean getColorBean(Color color) {
+		return new ColorBean(color);
 	}
+
 }

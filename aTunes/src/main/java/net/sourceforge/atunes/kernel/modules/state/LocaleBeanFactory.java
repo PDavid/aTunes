@@ -18,17 +18,18 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.state.beans;
+package net.sourceforge.atunes.kernel.modules.state;
 
-import java.awt.Font;
+import java.util.Locale;
 
-import net.sourceforge.atunes.model.IFontBean;
-import net.sourceforge.atunes.model.IFontBeanFactory;
+import net.sourceforge.atunes.model.ILocaleBean;
+import net.sourceforge.atunes.model.ILocaleBeanFactory;
 
-public class FontBeanFactory implements IFontBeanFactory {
-	
+public class LocaleBeanFactory implements ILocaleBeanFactory {
+
 	@Override
-	public IFontBean getFontBean(Font font) {
-		return new FontBean(font);
+	public ILocaleBean getLocaleBean(Locale locale) {
+		return new LocaleBean(locale);
 	}
+
 }

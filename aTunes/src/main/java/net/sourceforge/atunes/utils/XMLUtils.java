@@ -20,9 +20,7 @@
 
 package net.sourceforge.atunes.utils;
 
-import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -35,10 +33,6 @@ import java.io.StringReader;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
 
 import net.sourceforge.atunes.kernel.modules.playlist.PlayList;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
@@ -61,7 +55,6 @@ import net.sourceforge.atunes.model.RankList;
 import org.commonjukebox.plugins.model.PluginApi;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -76,65 +69,6 @@ import com.thoughtworks.xstream.converters.ConversionException;
 public final class XMLUtils {
 
     private XMLUtils() {
-    }
-
-    private static volatile ThreadLocal<XPath> xPath;
-
-    /**
-     * Evaluates a XPath expression from a XML node, returning a Node object.
-     * 
-     * @param expression
-     *            A XPath expression
-     * @param node
-     *            The Node for which this expression should be evaluated
-     * 
-     * @return The result of evaluating the XPath expression to the given Node
-     *         or <code>null</code> if an ecxception occured
-     */
-    public static Node evaluateXPathExpressionAndReturnNode(String expression, Node node) {
-        try {
-            return (Node) getXPath().get().evaluate(expression, node, XPathConstants.NODE);
-        } catch (XPathExpressionException e) {
-            return null;
-        }
-    }
-
-    /**
-     * Evaluates a XPath expression from a XML node, returning a String object.
-     * 
-     * @param expression
-     *            A XPath expression
-     * @param node
-     *            The Node for which this expression should be evaluated
-     * 
-     * @return The result of evaluating the XPath expression to the given Node
-     *         or <code>null</code> if an ecxception occured
-     */
-    public static String evaluateXPathExpressionAndReturnString(String expression, Node node) {
-        try {
-            return (String) getXPath().get().evaluate(expression, node, XPathConstants.STRING);
-        } catch (XPathExpressionException e) {
-            return null;
-        }
-    }
-
-    /**
-     * Evaluates a XPath expression from a XML node, returning a NodeList.
-     * 
-     * @param expression
-     *            A XPath expression
-     * @param node
-     *            The NodeList for which this expression should be evaluated
-     * 
-     * @return The result of evaluating the XPath expression to the given or
-     *         <code>null</code> if an ecxception occured NodeList
-     */
-    public static NodeList evaluateXPathExpressionAndReturnNodeList(String expression, Node node) {
-        try {
-            return (NodeList) getXPath().get().evaluate(expression, node, XPathConstants.NODESET);
-        } catch (XPathExpressionException e) {
-            return null;
-        }
     }
 
     /**
@@ -215,27 +149,6 @@ public final class XMLUtils {
 			}
         }
         return null;
-    }
-
-    /**
-     * Reads an object from an XML file.
-     * 
-     * @param filename
-     *            the filename
-     * 
-     * @return the object
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    public static Object readBeanFromFile(String filename) throws IOException {
-        XMLDecoder decoder = null;
-        try {
-            decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(filename)));
-            return decoder.readObject();
-        } finally {
-            ClosingUtils.close(decoder);
-        }
     }
 
     /**
@@ -354,17 +267,4 @@ public final class XMLUtils {
 
         return xStream;
     }
-
-    private static ThreadLocal<XPath> getXPath() {
-        if (xPath == null) {
-            xPath = new ThreadLocal<XPath>() {
-                @Override
-                protected XPath initialValue() {
-                    return XPathFactory.newInstance().newXPath();
-                }
-            };
-        }
-        return xPath;
-    }
-
 }
