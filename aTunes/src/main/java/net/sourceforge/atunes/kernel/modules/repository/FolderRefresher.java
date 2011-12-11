@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.modules.repository;
 import java.util.Collections;
 import java.util.List;
 
-import net.sourceforge.atunes.model.Folder;
+import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectLocator;
 import net.sourceforge.atunes.model.IOSManager;
@@ -88,9 +88,9 @@ public class FolderRefresher {
 	 * @param repository
 	 * @param folders
 	 */
-	public void refreshFolders(IRepository repository, List<Folder> folders) {
+	public void refreshFolders(IRepository repository, List<IFolder> folders) {
 		repositoryHandler.startTransaction();
-		for (Folder folder : folders) {
+		for (IFolder folder : folders) {
 			refreshFolder(repository, folder);
 		}
 		repositoryHandler.endTransaction();
@@ -100,7 +100,7 @@ public class FolderRefresher {
 	 * @param repository
 	 * @param folder
 	 */
-	private void refreshFolder(IRepository repository, Folder folder) {
+	private void refreshFolder(IRepository repository, IFolder folder) {
 		removeOrRefresh(repository, folder);
 		addNewFiles(repository, folder);
 	}
@@ -109,7 +109,7 @@ public class FolderRefresher {
 	 * @param repository
 	 * @param folder
 	 */
-	private void addNewFiles(IRepository repository, Folder folder) {
+	private void addNewFiles(IRepository repository, IFolder folder) {
 		// Add new files
 		List<ILocalAudioObject> allObjects = localAudioObjectLocator.locateLocalAudioObjectsInFolder(folder.getFolderPath(osManager), null);
 		for (ILocalAudioObject ao : allObjects) {
@@ -124,7 +124,7 @@ public class FolderRefresher {
 	 * @param repository
 	 * @param folder
 	 */
-	private void removeOrRefresh(IRepository repository, Folder folder) {
+	private void removeOrRefresh(IRepository repository, IFolder folder) {
 		// Remove o refresh previous files		
 		List<ILocalAudioObject> aos = folder.getAudioObjects();
 		for (ILocalAudioObject ao : aos) {

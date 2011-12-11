@@ -18,15 +18,17 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.kernel.modules.repository.data;
 
 import java.io.File;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.sourceforge.atunes.model.IFolder;
+import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -36,7 +38,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  * @author fleax
  */
-public class Folder implements Serializable, ITreeObject<ILocalAudioObject> {
+public class Folder implements IFolder {
 
     /**
 	 * 
@@ -50,10 +52,10 @@ public class Folder implements Serializable, ITreeObject<ILocalAudioObject> {
     private List<ILocalAudioObject> files;
 
     /** List of folders in this folder, indexed by name. */
-    private Map<String, Folder> folders;
+    private Map<String, IFolder> folders;
 
     /** Folder that contains this folder. */
-    private Folder parentFolder;
+    private IFolder parentFolder;
 
     /**
      * Constructor.
@@ -71,7 +73,8 @@ public class Folder implements Serializable, ITreeObject<ILocalAudioObject> {
      * @param file
      *            the file
      */
-    public void addAudioFile(ILocalAudioObject file) {
+    @Override
+	public void addAudioFile(ILocalAudioObject file) {
         getFiles().add(file);
     }
 
@@ -81,23 +84,14 @@ public class Folder implements Serializable, ITreeObject<ILocalAudioObject> {
      * @param f
      *            the f
      */
-    public void addFolder(Folder f) {
+    @Override
+	public void addFolder(IFolder f) {
         if (getFolders().containsKey(f.getName())) {
-            getFolders().get(f.getName()).addFoldersOf(f);
+            getFolders().get(f.getName()).getFolders().putAll(f.getFolders());
         } else {
         	getFolders().put(f.getName(), f);
             f.setParentFolder(this);
         }
-    }
-
-    /**
-     * Adds all children folders of a given folder to this.
-     * 
-     * @param f
-     *            the f
-     */
-    private void addFoldersOf(Folder f) {
-    	getFolders().putAll(f.getFolders());
     }
 
     /**
@@ -108,7 +102,7 @@ public class Folder implements Serializable, ITreeObject<ILocalAudioObject> {
     @Override
     public List<ILocalAudioObject> getAudioObjects() {
         List<ILocalAudioObject> result = null;
-        for (Folder f : getFolders().values()) {
+        for (IFolder f : getFolders().values()) {
         	if (result == null) {
         		result = f.getAudioObjects();
         	} else {
@@ -142,7 +136,8 @@ public class Folder implements Serializable, ITreeObject<ILocalAudioObject> {
      * 
      * @return the folder
      */
-    public Folder getFolder(String folderName) {
+    @Override
+	public IFolder getFolder(String folderName) {
         return getFolders().get(folderName);
     }
 
@@ -151,9 +146,10 @@ public class Folder implements Serializable, ITreeObject<ILocalAudioObject> {
      * 
      * @return the folders
      */
-    public Map<String, Folder> getFolders() {
+    @Override
+	public Map<String, IFolder> getFolders() {
     	if (folders == null) {
-    		folders = new HashMap<String, Folder>();
+    		folders = new HashMap<String, IFolder>();
     	}
         return folders;
     }
@@ -163,7 +159,8 @@ public class Folder implements Serializable, ITreeObject<ILocalAudioObject> {
      * 
      * @return the name
      */
-    public String getName() {
+    @Override
+	public String getName() {
         return name;
     }
 
@@ -172,7 +169,8 @@ public class Folder implements Serializable, ITreeObject<ILocalAudioObject> {
      * 
      * @return the parentFolder
      */
-    public Folder getParentFolder() {
+    @Override
+	public IFolder getParentFolder() {
         return parentFolder;
     }
 
@@ -181,7 +179,8 @@ public class Folder implements Serializable, ITreeObject<ILocalAudioObject> {
      * 
      * @return true, if checks if is empty
      */
-    public boolean isEmpty() {
+    @Override
+	public boolean isEmpty() {
         return getFiles().isEmpty() && getFolders().isEmpty();
     }
 
@@ -191,7 +190,8 @@ public class Folder implements Serializable, ITreeObject<ILocalAudioObject> {
      * @param file
      *            the file
      */
-    public void removeAudioFile(ILocalAudioObject file) {
+    @Override
+	public void removeAudioFile(ILocalAudioObject file) {
         getFiles().remove(file);
     }
 
@@ -201,7 +201,8 @@ public class Folder implements Serializable, ITreeObject<ILocalAudioObject> {
      * @param f
      *            the f
      */
-    public void removeFolder(Folder f) {
+    @Override
+	public void removeFolder(IFolder f) {
     	getFolders().remove(f.getName());
     }
 
@@ -211,7 +212,8 @@ public class Folder implements Serializable, ITreeObject<ILocalAudioObject> {
      * @param parentFolder
      *            the parentFolder to set
      */
-    private void setParentFolder(Folder parentFolder) {
+    @Override
+    public void setParentFolder(IFolder parentFolder) {
         this.parentFolder = parentFolder;
     }
 
@@ -258,12 +260,13 @@ public class Folder implements Serializable, ITreeObject<ILocalAudioObject> {
      * @param osManager
      * @return
      */
-    public File getFolderPath(IOSManager osManager) {
+    @Override
+	public File getFolderPath(IOSManager osManager) {
         String path = name;
-        Folder parent = this.parentFolder;
+        IFolder parent = this.parentFolder;
         while (parent != null) {
             path = StringUtils.getString(parent.getName(), osManager.getFileSeparator(), path);
-            parent = parent.parentFolder;
+            parent = parent.getParentFolder();
         }
         return new File(path);
     }
@@ -290,10 +293,9 @@ public class Folder implements Serializable, ITreeObject<ILocalAudioObject> {
 	 */
 	public int size() {
 		int size = getFiles().size();
-        for (Folder f : getFolders().values()) {
+        for (IFolder f : getFolders().values()) {
         	size = size + f.size();
         }       	
 		return size;
 	}
-
 }

@@ -37,7 +37,7 @@ import net.sourceforge.atunes.model.IStatistics;
 import net.sourceforge.atunes.model.IStatisticsAlbum;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.ITaskService;
-import net.sourceforge.atunes.utils.RankList;
+import net.sourceforge.atunes.model.RankList;
 import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 public final class StatisticsHandler extends AbstractHandler implements IStatisticsHandler {

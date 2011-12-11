@@ -23,10 +23,10 @@ package net.sourceforge.atunes.kernel.modules.repository;
 import java.io.File;
 import java.util.StringTokenizer;
 
-import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IDeviceHandler;
+import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
@@ -173,7 +173,7 @@ public class RepositoryRemover {
 	 * @param file
 	 */
 	private void removeFromFileStructure(ILocalAudioObject file) {
-		Folder f = getFolderForFile(file, osManager, repositoryHandler);
+		IFolder f = getFolderForFile(file, osManager, repositoryHandler);
 		if (f != null) {
 			f.removeAudioFile(file);
 			// If folder is empty, remove too
@@ -193,7 +193,7 @@ public class RepositoryRemover {
 	 * @param repositoryHandler
 	 * @return Either folder or null if file is not in repository
 	 */
-	private Folder getFolderForFile(ILocalAudioObject file, IOSManager osManager, IRepositoryHandler repositoryHandler) {
+	private IFolder getFolderForFile(ILocalAudioObject file, IOSManager osManager, IRepositoryHandler repositoryHandler) {
 		// Get repository folder where file is
 		File repositoryFolder = repositoryHandler.getRepositoryFolderContainingFile(file);
 		// If the file is not in the repository, return null
@@ -202,13 +202,13 @@ public class RepositoryRemover {
 		}
 
 		// Get root folder
-		Folder rootFolder = repositoryHandler.getFolder(repositoryFolder.getAbsolutePath());
+		IFolder rootFolder = repositoryHandler.getFolder(repositoryFolder.getAbsolutePath());
 
 		// Now navigate through folder until find folder that contains file
 		String path = file.getFile().getParentFile().getAbsolutePath();
 		path = path.replace(repositoryFolder.getAbsolutePath(), "");
 
-		Folder f = rootFolder;
+		IFolder f = rootFolder;
 		StringTokenizer st = new StringTokenizer(path, osManager.getFileSeparator());
 		while (st.hasMoreTokens()) {
 			String folderName = st.nextToken();

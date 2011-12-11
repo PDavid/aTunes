@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.utils;
+package net.sourceforge.atunes.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;

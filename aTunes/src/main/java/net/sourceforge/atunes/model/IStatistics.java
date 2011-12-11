@@ -22,7 +22,6 @@ package net.sourceforge.atunes.model;
 
 import java.util.Map;
 
-import net.sourceforge.atunes.utils.RankList;
 
 public interface IStatistics {
 

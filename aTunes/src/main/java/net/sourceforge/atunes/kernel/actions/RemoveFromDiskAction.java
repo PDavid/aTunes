@@ -30,9 +30,9 @@ import javax.swing.SwingWorker;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IConfirmationDialogFactory;
+import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
@@ -143,12 +143,12 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
 
     private void fromRepositoryOrDeviceView(IRepositoryHandler repositoryHandler) {
         TreePath[] paths = navigationHandler.getCurrentView().getTree().getSelectionPaths();
-        final List<Folder> foldersToRemove = new ArrayList<Folder>();
+        final List<IFolder> foldersToRemove = new ArrayList<IFolder>();
         if (paths != null) {
             for (TreePath path : paths) {
                 Object treeNode = ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-                if (treeNode instanceof Folder) {
-                    foldersToRemove.add((Folder) treeNode);
+                if (treeNode instanceof IFolder) {
+                    foldersToRemove.add((IFolder) treeNode);
                 }
             }
         }
@@ -166,7 +166,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
         new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() {
-                for (Folder folder : foldersToRemove) {
+                for (IFolder folder : foldersToRemove) {
                     try {
                         FileUtils.deleteDirectory(folder.getFolderPath(osManager));
                         Logger.info(StringUtils.getString("Removed folder ", folder));

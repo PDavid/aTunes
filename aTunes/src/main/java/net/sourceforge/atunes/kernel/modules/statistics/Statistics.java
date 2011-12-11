@@ -28,7 +28,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectStatistics;
 import net.sourceforge.atunes.model.IStatistics;
 import net.sourceforge.atunes.model.IStatisticsAlbum;
-import net.sourceforge.atunes.utils.RankList;
+import net.sourceforge.atunes.model.RankList;
 
 public class Statistics implements Serializable, IStatistics {
 

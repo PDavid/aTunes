@@ -53,10 +53,10 @@ import net.sourceforge.atunes.kernel.actions.SetFavoriteArtistFromNavigatorActio
 import net.sourceforge.atunes.kernel.actions.SetFavoriteSongFromNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.model.CachedIconFactory;
-import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
+import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.IYear;
@@ -128,7 +128,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
             openFolderFromNavigatorAction.setAudioObjectsSource(this);
             treePopupMenu.add(openFolderFromNavigatorAction);
             
-            AbstractActionOverSelectedTreeObjects<Folder> refreshFolderFromNavigatorAction = Context.getBean(RefreshFolderFromNavigatorAction.class);
+            AbstractActionOverSelectedTreeObjects<IFolder> refreshFolderFromNavigatorAction = Context.getBean(RefreshFolderFromNavigatorAction.class);
             refreshFolderFromNavigatorAction.setTreeObjectsSource(this);
             treePopupMenu.add(refreshFolderFromNavigatorAction);
             

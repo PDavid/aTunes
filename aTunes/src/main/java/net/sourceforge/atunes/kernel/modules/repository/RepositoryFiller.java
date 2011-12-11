@@ -24,12 +24,13 @@ import java.io.File;
 
 import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
+import net.sourceforge.atunes.kernel.modules.repository.data.Folder;
 import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
 import net.sourceforge.atunes.kernel.modules.repository.data.Year;
 import net.sourceforge.atunes.model.ArtistViewMode;
-import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
+import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepository;
@@ -193,15 +194,15 @@ final class RepositoryFiller {
      *            the file
      */
     private void addToFolderStructure(File relativeTo, String relativePath, ILocalAudioObject file) {
-        Folder relativeFolder = repository.getFolder(relativeTo.getAbsolutePath());
+        IFolder relativeFolder = repository.getFolder(relativeTo.getAbsolutePath());
         if (relativeFolder == null) {
             relativeFolder = new Folder(relativeTo.getAbsolutePath());
             repository.putFolder(relativeFolder);
         }
 
         String[] foldersInPath = relativePath.split("/");
-        Folder parentFolder = relativeFolder;
-        Folder f = null;
+        IFolder parentFolder = relativeFolder;
+        IFolder f = null;
         for (String folderName : foldersInPath) {
             if (parentFolder != null) {
                 f = parentFolder.getFolder(folderName);

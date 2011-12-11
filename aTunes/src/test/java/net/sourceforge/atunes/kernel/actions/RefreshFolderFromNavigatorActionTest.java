@@ -25,7 +25,8 @@ import static org.mockito.Mockito.verify;
 
 import java.util.Arrays;
 
-import net.sourceforge.atunes.model.Folder;
+import net.sourceforge.atunes.kernel.modules.repository.data.Folder;
+import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 
 import org.junit.Test;
@@ -38,7 +39,7 @@ public class RefreshFolderFromNavigatorActionTest {
 		IRepositoryHandler repositoryHandler = mock(IRepositoryHandler.class);
 		sut.setRepositoryHandler(repositoryHandler);
 		
-		Folder f = new Folder("a");
+		IFolder f = new Folder("a");
 		sut.executeAction(Arrays.asList(f));
 		
 		verify(repositoryHandler).refreshFolders(Arrays.asList(f));

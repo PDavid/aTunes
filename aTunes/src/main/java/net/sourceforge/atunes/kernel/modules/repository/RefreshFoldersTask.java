@@ -23,9 +23,9 @@ package net.sourceforge.atunes.kernel.modules.repository;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
+import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 
@@ -72,7 +72,7 @@ public final class RefreshFoldersTask {
 	 * @param repository
 	 * @param folders
 	 */
-	public void execute(final IRepository repository, final List<Folder> folders) {
+	public void execute(final IRepository repository, final List<IFolder> folders) {
 		IBackgroundWorker<Void> worker = backgroundWorkerFactory.getWorker();
 		worker.setBackgroundActions(new Callable<Void>() {
 			

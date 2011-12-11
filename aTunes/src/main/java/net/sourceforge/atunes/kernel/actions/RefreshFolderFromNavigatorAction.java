@@ -24,7 +24,7 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.model.Folder;
+import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -35,7 +35,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class RefreshFolderFromNavigatorAction extends AbstractActionOverSelectedTreeObjects<Folder> {
+public class RefreshFolderFromNavigatorAction extends AbstractActionOverSelectedTreeObjects<IFolder> {
 
 	private static final long serialVersionUID = -6840836346786226858L;
 
@@ -54,7 +54,7 @@ public class RefreshFolderFromNavigatorAction extends AbstractActionOverSelected
     }
 
     @Override
-    protected void executeAction(List<Folder> folders) {
+    protected void executeAction(List<IFolder> folders) {
     	repositoryHandler.refreshFolders(folders);        	        
     }
     
@@ -69,7 +69,7 @@ public class RefreshFolderFromNavigatorAction extends AbstractActionOverSelected
         }
 
         for (DefaultMutableTreeNode node : selection) {
-            if (!(node.getUserObject() instanceof Folder)) {
+            if (!(node.getUserObject() instanceof IFolder)) {
                 return false;
             }
         }

@@ -188,7 +188,7 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 	 * @param file
 	 *            the file
 	 */
-	public void refreshFolders(List<Folder> folders);
+	public void refreshFolders(List<IFolder> folders);
 
 	/**
 	 * Refresh repository.
@@ -200,7 +200,7 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 	 * 
 	 * @param foldersToRemove
 	 */
-	public void removeFolders(List<Folder> foldersToRemove);
+	public void removeFolders(List<IFolder> foldersToRemove);
 
 	/**
 	 * Removes a list of files from repository
@@ -299,6 +299,6 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 	 * @param path
 	 * @return
 	 */
-	public Folder getFolder(String path);
+	public IFolder getFolder(String path);
 
 }

@@ -28,9 +28,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
+import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepository;
@@ -72,7 +72,7 @@ public class Repository implements Serializable, IRepository {
     /**
      * Folders structure
      */
-    private RepositoryStructure<Folder> foldersStructure;
+    private RepositoryStructure<IFolder> foldersStructure;
     
     /**
      * Genres structure
@@ -98,7 +98,7 @@ public class Repository implements Serializable, IRepository {
         this.folders = folders;
         this.filesStructure = new RepositoryStructure<ILocalAudioObject>();
         this.artistsStructure = new RepositoryStructure<IArtist>();
-        this.foldersStructure = new RepositoryStructure<Folder>();
+        this.foldersStructure = new RepositoryStructure<IFolder>();
         this.genresStructure = new RepositoryStructure<IGenre>();
         this.yearStructure = new RepositoryStructure<IYear>();
         this.state = state;
@@ -340,7 +340,7 @@ public class Repository implements Serializable, IRepository {
      * @return
      */
 	@Override
-    public Map<String, Folder> getFolderStructure() {
+    public Map<String, IFolder> getFolderStructure() {
         return foldersStructure.getStructure();
     }
 
@@ -348,7 +348,7 @@ public class Repository implements Serializable, IRepository {
 	 * @see net.sourceforge.atunes.model.IRepository#getFolder(java.lang.String)
 	 */
     @Override
-	public Folder getFolder(String path) {
+	public IFolder getFolder(String path) {
     	return foldersStructure.get(path);
     }
     
@@ -356,15 +356,12 @@ public class Repository implements Serializable, IRepository {
 	 * @see net.sourceforge.atunes.model.IRepository#getFolders()
 	 */
     @Override
-	public Collection<Folder> getFolders() {
+	public Collection<IFolder> getFolders() {
     	return foldersStructure.getAll();
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#putFolder(net.sourceforge.atunes.model.Folder)
-	 */
     @Override
-	public Folder putFolder(Folder folder) {
+	public IFolder putFolder(IFolder folder) {
     	foldersStructure.put(folder.getName(), folder);
     	return folder;
     }

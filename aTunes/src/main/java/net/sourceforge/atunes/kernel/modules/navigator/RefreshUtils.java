@@ -26,8 +26,8 @@ import java.util.Map;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.INavigationViewSorter;
 import net.sourceforge.atunes.model.ITreeObject;
 
@@ -56,7 +56,7 @@ public final class RefreshUtils {
         List<String> folderNamesList = new ArrayList<String>(folders.keySet());
         sorter.sort(folderNamesList);
         for (int i = 0; i < folderNamesList.size(); i++) {
-            Folder f = (Folder) folders.get(folderNamesList.get(i));
+            IFolder f = (IFolder) folders.get(folderNamesList.get(i));
             if (node.isRoot() || currentFilter == null || f.getName().toUpperCase().contains(currentFilter.toUpperCase())) {
                 DefaultMutableTreeNode child = new DefaultMutableTreeNode(f);
                 node.add(child);

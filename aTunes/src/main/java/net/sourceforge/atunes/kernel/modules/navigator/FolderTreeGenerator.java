@@ -30,8 +30,8 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.model.Folder;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.INavigationViewSorter;
@@ -104,7 +104,7 @@ public class FolderTreeGenerator implements ITreeGenerator {
     		String filePath = audioObject.getUrl();
     		DefaultMutableTreeNode folderNode = new FolderAudioObjectSelector().getNodeRepresentingAudioObject((DefaultMutableTreeNode)tree.getModel().getRoot(), filePath);
     		if (folderNode != null) {
-    			Folder f = (Folder) folderNode.getUserObject();
+    			IFolder f = (IFolder) folderNode.getUserObject();
 				String searchPath = filePath.substring(f.getName().length()+1);
 				String[] paths = searchPath.split(Context.getBean(IOSManager.class).getFileSeparator());
 				TreePath treePath = getTreePathForLevel(paths, 0, folderNode);
