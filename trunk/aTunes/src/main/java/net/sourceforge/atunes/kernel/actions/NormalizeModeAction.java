@@ -25,8 +25,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -54,21 +54,21 @@ public class NormalizeModeAction extends ActionWithColorMutableIcon {
     
     private IPlayerHandler playerHandler;
     
-    private CachedIconFactory normalizationIcon;
+    private IIconFactory normalizationIcon;
     
-    private CachedIconFactory warningIcon;
+    private IIconFactory warningIcon;
     
     /**
      * @param warningIcon
      */
-    public void setWarningIcon(CachedIconFactory warningIcon) {
+    public void setWarningIcon(IIconFactory warningIcon) {
 		this.warningIcon = warningIcon;
 	}
     
     /**
      * @param normalizationIcon
      */
-    public void setNormalizationIcon(CachedIconFactory normalizationIcon) {
+    public void setNormalizationIcon(IIconFactory normalizationIcon) {
 		this.normalizationIcon = normalizationIcon;
 	}
     

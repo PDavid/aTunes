@@ -52,11 +52,11 @@ import net.sourceforge.atunes.kernel.actions.SetFavoriteAlbumFromNavigatorAction
 import net.sourceforge.atunes.kernel.actions.SetFavoriteArtistFromNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.SetFavoriteSongFromNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IFolder;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.IYear;
@@ -74,12 +74,12 @@ public class RepositoryNavigationView extends AbstractNavigationView {
     
     private IRepositoryHandler repositoryHandler;
 
-    private CachedIconFactory audioFileSmallIcon;
+    private IIconFactory audioFileSmallIcon;
     
     /**
      * @param audioFileSmallIcon
      */
-    public void setAudioFileSmallIcon(CachedIconFactory audioFileSmallIcon) {
+    public void setAudioFileSmallIcon(IIconFactory audioFileSmallIcon) {
 		this.audioFileSmallIcon = audioFileSmallIcon;
 	}
     

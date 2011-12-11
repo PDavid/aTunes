@@ -18,11 +18,14 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.gui.images;
 
 import java.awt.Color;
 
 import javax.swing.ImageIcon;
+
+import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.IIconFactory;
 
 
 /**
@@ -32,9 +35,9 @@ import javax.swing.ImageIcon;
  */
 final class ColorMutableIconFromCachedIconFactory implements IColorMutableImageIcon {
 	
-	private CachedIconFactory iconFactory;
+	private IIconFactory iconFactory;
 	
-	public ColorMutableIconFromCachedIconFactory(CachedIconFactory iconFactory) {
+	public ColorMutableIconFromCachedIconFactory(IIconFactory iconFactory) {
 		this.iconFactory = iconFactory;
 	}
 	

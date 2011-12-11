@@ -37,8 +37,8 @@ import javax.swing.SwingUtilities;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
@@ -187,7 +187,7 @@ final class PodcastFeedEntryPropertiesDialog extends AudioObjectPropertiesDialog
      * Fill picture.
      */
     private void fillPicture() {
-        ImageIcon picture = Context.getBean("rssMediumIcon", CachedIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls());
+        ImageIcon picture = Context.getBean("rssMediumIcon", IIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls());
         pictureLabel.setPreferredSize(new Dimension(picture.getIconWidth(), picture.getIconHeight()));
         pictureLabel.setIcon(picture);
         pictureLabel.setVisible(true);

@@ -25,7 +25,6 @@ import java.awt.geom.Area;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.CachedIconFactory;
 
 public class AlbumFavoriteImageIcon extends CachedIconFactory {
 

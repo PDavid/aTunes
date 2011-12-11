@@ -23,9 +23,9 @@ package net.sourceforge.atunes.kernel.modules.columns;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.TextAndIcon;
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFavoritesHandler;
+import net.sourceforge.atunes.model.IIconFactory;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -35,7 +35,7 @@ public class AlbumColumn extends AbstractColumn<TextAndIcon> implements Applicat
 
     private static final long serialVersionUID = -6162621108007788707L;
 
-    private CachedIconFactory albumFavoriteIcon;
+    private IIconFactory albumFavoriteIcon;
     
     private transient ApplicationContext context;
     
@@ -90,7 +90,7 @@ public class AlbumColumn extends AbstractColumn<TextAndIcon> implements Applicat
     /**
      * @param albumFavoriteIcon
      */
-    public void setAlbumFavoriteIcon(CachedIconFactory albumFavoriteIcon) {
+    public void setAlbumFavoriteIcon(IIconFactory albumFavoriteIcon) {
 		this.albumFavoriteIcon = albumFavoriteIcon;
 	}
 }

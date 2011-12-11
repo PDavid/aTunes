@@ -43,10 +43,10 @@ import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomFrame;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.model.ApplicationVersion;
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextPanelsContainer;
 import net.sourceforge.atunes.model.IFrameState;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMenuBar;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -324,14 +324,14 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
      */
     private JLabel getStatusBarDeviceLabel() {
         if (statusBarDeviceLabel == null) {
-            statusBarDeviceLabel = new JLabel(context.getBean("deviceIcon", CachedIconFactory.class).getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls()));
+            statusBarDeviceLabel = new JLabel(context.getBean("deviceIcon", IIconFactory.class).getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls()));
         }
         return statusBarDeviceLabel;
     }
 
     private JLabel getStatusBarNewPodcastEntriesLabel() {
         if (statusBarNewPodcastEntriesLabel == null) {
-            statusBarNewPodcastEntriesLabel = new JLabel(context.getBean("rssSmallIcon", CachedIconFactory.class).getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls()));
+            statusBarNewPodcastEntriesLabel = new JLabel(context.getBean("rssSmallIcon", IIconFactory.class).getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls()));
             statusBarNewPodcastEntriesLabel.setToolTipText(I18nUtils.getString("NEW_PODCAST_ENTRIES"));
             statusBarNewPodcastEntriesLabel.addMouseListener(new MouseAdapter() {
                 @Override
@@ -346,7 +346,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
 
     private JLabel getStatusBarNewVersionLabel() {
         if (statusBarNewVersionLabel == null) {
-            statusBarNewVersionLabel = new JLabel(context.getBean("newIcon", CachedIconFactory.class).getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls()));
+            statusBarNewVersionLabel = new JLabel(context.getBean("newIcon", IIconFactory.class).getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls()));
             statusBarNewVersionLabel.setToolTipText(I18nUtils.getString("NEW_VERSION_AVAILABLE"));
             statusBarNewVersionLabel.addMouseListener(new MouseAdapter() {
                 @Override

@@ -35,8 +35,8 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioDialog;
@@ -142,7 +142,7 @@ public final class RadioDialog extends AbstractCustomDialog implements IRadioDia
         c.gridheight = 2;
         c.fill = GridBagConstraints.NONE;
         c.weightx = -1;
-        panel.add(new JLabel(Context.getBean("radioMediumIcon", CachedIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls())), c);
+        panel.add(new JLabel(Context.getBean("radioMediumIcon", IIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls())), c);
 
         JPanel auxPanel = new JPanel();
         auxPanel.add(okButton);

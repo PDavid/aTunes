@@ -22,8 +22,8 @@ package net.sourceforge.atunes.kernel.actions;
 
 
 
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.ViewMode;
@@ -35,12 +35,12 @@ public class ShowFoldersInNavigatorAction extends ActionWithColorMutableIcon {
 
     private INavigationHandler navigationHandler;
     
-    private CachedIconFactory folderIcon;
+    private IIconFactory folderIcon;
     
     /**
      * @param folderIcon
      */
-    public void setFolderIcon(CachedIconFactory folderIcon) {
+    public void setFolderIcon(IIconFactory folderIcon) {
 		this.folderIcon = folderIcon;
 	}
     

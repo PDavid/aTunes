@@ -26,7 +26,6 @@ import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.CachedIconFactory;
 
 public class StopTrayImageIcon extends CachedIconFactory {
 

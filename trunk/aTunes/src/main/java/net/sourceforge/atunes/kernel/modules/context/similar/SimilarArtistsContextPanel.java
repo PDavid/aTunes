@@ -21,9 +21,9 @@
 package net.sourceforge.atunes.kernel.modules.context.similar;
 
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -37,12 +37,12 @@ import net.sourceforge.atunes.utils.UnknownObjectCheck;
  */
 public class SimilarArtistsContextPanel extends AbstractContextPanel {
 	
-	private CachedIconFactory artistSimilarIcon;
+	private IIconFactory artistSimilarIcon;
 	
 	/**
 	 * @param artistSimilarIcon
 	 */
-	public void setArtistSimilarIcon(CachedIconFactory artistSimilarIcon) {
+	public void setArtistSimilarIcon(IIconFactory artistSimilarIcon) {
 		this.artistSimilarIcon = artistSimilarIcon;
 	}
 

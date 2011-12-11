@@ -20,8 +20,8 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -35,12 +35,12 @@ public class RepeatModeAction extends ActionWithColorMutableIcon {
 
     private static final long serialVersionUID = 2032609750151412458L;
 
-    private CachedIconFactory repeatIcon;
+    private IIconFactory repeatIcon;
     
     /**
      * @param repeatIcon
      */
-    public void setRepeatIcon(CachedIconFactory repeatIcon) {
+    public void setRepeatIcon(IIconFactory repeatIcon) {
 		this.repeatIcon = repeatIcon;
 	}
     

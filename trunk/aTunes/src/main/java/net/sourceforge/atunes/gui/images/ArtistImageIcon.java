@@ -27,7 +27,6 @@ import java.awt.geom.Ellipse2D;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.CachedIconFactory;
 
 public class ArtistImageIcon extends CachedIconFactory {
 

@@ -26,7 +26,6 @@ import java.awt.geom.CubicCurve2D;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.CachedIconFactory;
 
 public class FavoriteImageIcon extends CachedIconFactory {
 

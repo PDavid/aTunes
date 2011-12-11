@@ -21,9 +21,9 @@
 package net.sourceforge.atunes.kernel.modules.context.youtube;
 
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRadio;
 
@@ -35,12 +35,12 @@ import net.sourceforge.atunes.model.IRadio;
  */
 public class YoutubeContextPanel extends AbstractContextPanel {
 
-	private CachedIconFactory videoIcon;
+	private IIconFactory videoIcon;
 	
 	/**
 	 * @param videoIcon
 	 */
-	public void setVideoIcon(CachedIconFactory videoIcon) {
+	public void setVideoIcon(IIconFactory videoIcon) {
 		this.videoIcon = videoIcon;
 	}
 	

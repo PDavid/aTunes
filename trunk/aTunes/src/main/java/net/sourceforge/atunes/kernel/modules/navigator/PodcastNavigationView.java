@@ -50,10 +50,10 @@ import net.sourceforge.atunes.kernel.actions.RenamePodcastFeedAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
@@ -74,12 +74,12 @@ public final class PodcastNavigationView extends AbstractNavigationView {
     
     private IPodcastFeedHandler podcastFeedHandler;
     
-    private CachedIconFactory rssSmallIcon;
+    private IIconFactory rssSmallIcon;
     
     /**
      * @param rssSmallIcon
      */
-    public void setRssSmallIcon(CachedIconFactory rssSmallIcon) {
+    public void setRssSmallIcon(IIconFactory rssSmallIcon) {
 		this.rssSmallIcon = rssSmallIcon;
 	}
 

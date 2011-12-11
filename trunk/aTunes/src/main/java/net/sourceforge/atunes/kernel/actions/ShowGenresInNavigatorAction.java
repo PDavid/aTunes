@@ -20,8 +20,8 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.ViewMode;
@@ -33,12 +33,12 @@ public class ShowGenresInNavigatorAction extends ActionWithColorMutableIcon {
 
     private INavigationHandler navigationHandler;
     
-    private CachedIconFactory genreIcon;
+    private IIconFactory genreIcon;
     
     /**
      * @param genreIcon
      */
-    public void setGenreIcon(CachedIconFactory genreIcon) {
+    public void setGenreIcon(IIconFactory genreIcon) {
 		this.genreIcon = genreIcon;
 	}
     

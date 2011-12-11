@@ -29,7 +29,6 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.CachedIconFactory;
 
 public class VideoImageIcon extends CachedIconFactory {
 

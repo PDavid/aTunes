@@ -50,13 +50,13 @@ import net.sourceforge.atunes.kernel.actions.SearchArtistAction;
 import net.sourceforge.atunes.kernel.actions.SearchArtistAtAction;
 import net.sourceforge.atunes.kernel.actions.SetAsPlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IFavoritesHandler;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ITreeObject;
@@ -77,12 +77,12 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
     
     private IRepositoryHandler repositoryHandler;
     
-    private CachedIconFactory favoriteIcon;
+    private IIconFactory favoriteIcon;
     
     /**
      * @param favoriteIcon
      */
-    public void setFavoriteIcon(CachedIconFactory favoriteIcon) {
+    public void setFavoriteIcon(IIconFactory favoriteIcon) {
 		this.favoriteIcon = favoriteIcon;
 	}
 

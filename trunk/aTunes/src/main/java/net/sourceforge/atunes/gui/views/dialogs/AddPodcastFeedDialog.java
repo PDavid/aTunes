@@ -35,9 +35,9 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAddPodcastFeedDialog;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -126,7 +126,7 @@ public final class AddPodcastFeedDialog extends AbstractCustomDialog implements 
         c.gridheight = 2;
         c.fill = GridBagConstraints.NONE;
         c.weightx = -1;
-        panel.add(new JLabel(Context.getBean("rssMediumIcon", CachedIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls())), c);
+        panel.add(new JLabel(Context.getBean("rssMediumIcon", IIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls())), c);
 
         JPanel auxPanel = new JPanel();
         auxPanel.add(okButton);

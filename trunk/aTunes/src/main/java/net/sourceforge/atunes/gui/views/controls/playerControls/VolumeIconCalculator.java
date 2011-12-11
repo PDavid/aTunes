@@ -22,7 +22,7 @@ package net.sourceforge.atunes.gui.views.controls.playerControls;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.CachedIconFactory;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IState;
 
@@ -37,48 +37,48 @@ public class VolumeIconCalculator {
 	
 	private ILookAndFeelManager lookAndFeelManager;
 	
-	private CachedIconFactory volumeMuteIcon;
+	private IIconFactory volumeMuteIcon;
 	
-	private CachedIconFactory volumeMaxIcon;
+	private IIconFactory volumeMaxIcon;
 	
-	private CachedIconFactory volumeMedIcon;
+	private IIconFactory volumeMedIcon;
 	
-	private CachedIconFactory volumeMinIcon;
+	private IIconFactory volumeMinIcon;
 	
-	private CachedIconFactory volumeZeroIcon;
+	private IIconFactory volumeZeroIcon;
 	
 	/**
 	 * @param volumeMaxIcon
 	 */
-	public void setVolumeMaxIcon(CachedIconFactory volumeMaxIcon) {
+	public void setVolumeMaxIcon(IIconFactory volumeMaxIcon) {
 		this.volumeMaxIcon = volumeMaxIcon;
 	}
 	
 	/**
 	 * @param volumeMedIcon
 	 */
-	public void setVolumeMedIcon(CachedIconFactory volumeMedIcon) {
+	public void setVolumeMedIcon(IIconFactory volumeMedIcon) {
 		this.volumeMedIcon = volumeMedIcon;
 	}
 	
 	/**
 	 * @param volumeMinIcon
 	 */
-	public void setVolumeMinIcon(CachedIconFactory volumeMinIcon) {
+	public void setVolumeMinIcon(IIconFactory volumeMinIcon) {
 		this.volumeMinIcon = volumeMinIcon;
 	}
 	
 	/**
 	 * @param volumeMuteIcon
 	 */
-	public void setVolumeMuteIcon(CachedIconFactory volumeMuteIcon) {
+	public void setVolumeMuteIcon(IIconFactory volumeMuteIcon) {
 		this.volumeMuteIcon = volumeMuteIcon;
 	}
 	
 	/**
 	 * @param volumeZeroIcon
 	 */
-	public void setVolumeZeroIcon(CachedIconFactory volumeZeroIcon) {
+	public void setVolumeZeroIcon(IIconFactory volumeZeroIcon) {
 		this.volumeZeroIcon = volumeZeroIcon;
 	}
 	
@@ -108,7 +108,7 @@ public class VolumeIconCalculator {
      * Returns icon to use
      * @return
      */
-    private CachedIconFactory getIcon() {
+    private IIconFactory getIcon() {
         if (state.isMuteEnabled()) {
             return volumeMuteIcon;
         } else {

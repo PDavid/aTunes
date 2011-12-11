@@ -24,7 +24,6 @@ import java.awt.Color;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.model.CachedIconFactory;
 
 public class RadioBigImageIcon extends CachedIconFactory {
 

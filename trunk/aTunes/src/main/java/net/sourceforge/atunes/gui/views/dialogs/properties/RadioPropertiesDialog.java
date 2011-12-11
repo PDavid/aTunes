@@ -32,8 +32,8 @@ import javax.swing.JPanel;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IRadio;
@@ -140,7 +140,7 @@ final class RadioPropertiesDialog extends AudioObjectPropertiesDialog {
      * Fill picture.
      */
     private void fillPicture() {
-        ImageIcon picture = Context.getBean("radioMediumIcon", CachedIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls());
+        ImageIcon picture = Context.getBean("radioMediumIcon", IIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls());
         pictureLabel.setPreferredSize(new Dimension(picture.getIconWidth(), picture.getIconHeight()));
         pictureLabel.setIcon(picture);
         pictureLabel.setVisible(true);

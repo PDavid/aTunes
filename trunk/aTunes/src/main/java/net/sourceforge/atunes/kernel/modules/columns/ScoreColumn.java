@@ -31,8 +31,8 @@ import javax.swing.table.TableCellRenderer;
 
 import net.sourceforge.atunes.gui.AbstractListCellRendererCode;
 import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 public class ScoreColumn extends AbstractColumn<Integer> {
@@ -50,33 +50,33 @@ public class ScoreColumn extends AbstractColumn<Integer> {
     
     private transient ILookAndFeelManager lookAndFeelManager;
     
-    private CachedIconFactory star1Icon;
-    private CachedIconFactory star2Icon;
-    private CachedIconFactory star3Icon;
-    private CachedIconFactory star4Icon;
-    private CachedIconFactory star5Icon;
+    private IIconFactory star1Icon;
+    private IIconFactory star2Icon;
+    private IIconFactory star3Icon;
+    private IIconFactory star4Icon;
+    private IIconFactory star5Icon;
     
     private static final Integer[] STARS = new Integer[] { 0, 1, 2, 3, 4, 5 };
     
     private final transient ScoreColumnCellEditorRenderer editor = new ScoreColumnCellEditorRenderer();
     
-    public void setStar1Icon(CachedIconFactory star1Icon) {
+    public void setStar1Icon(IIconFactory star1Icon) {
 		this.star1Icon = star1Icon;
 	}
     
-    public void setStar2Icon(CachedIconFactory star2Icon) {
+    public void setStar2Icon(IIconFactory star2Icon) {
 		this.star2Icon = star2Icon;
 	}
     
-    public void setStar3Icon(CachedIconFactory star3Icon) {
+    public void setStar3Icon(IIconFactory star3Icon) {
 		this.star3Icon = star3Icon;
 	}
     
-    public void setStar4Icon(CachedIconFactory star4Icon) {
+    public void setStar4Icon(IIconFactory star4Icon) {
 		this.star4Icon = star4Icon;
 	}
     
-    public void setStar5Icon(CachedIconFactory star5Icon) {
+    public void setStar5Icon(IIconFactory star5Icon) {
 		this.star5Icon = star5Icon;
 	}
     
@@ -136,7 +136,7 @@ public class ScoreColumn extends AbstractColumn<Integer> {
      */
     private void setLabel(JLabel label, Integer score) {
         label.setText(null);
-        CachedIconFactory icon = score != null ? getIcon(score) : null;
+        IIconFactory icon = score != null ? getIcon(score) : null;
     	// TODO: ICONOS Sacar a un renderer
         label.setIcon(icon != null ? icon.getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForColorMutableIcon(label, false)) : null);
     }
@@ -146,7 +146,7 @@ public class ScoreColumn extends AbstractColumn<Integer> {
      * @param score
      * @return
      */
-    private CachedIconFactory getIcon(int score) {
+    private IIconFactory getIcon(int score) {
     	switch (score) {
 			case 1: return star1Icon;
 			case 2: return star2Icon;

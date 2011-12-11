@@ -25,17 +25,17 @@ import java.awt.Component;
 import javax.swing.JLabel;
 
 import net.sourceforge.atunes.gui.AbstractTreeCellDecorator;
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.IFolder;
+import net.sourceforge.atunes.model.IIconFactory;
 
 public class FolderTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, IFolder> {
 
-	private CachedIconFactory folderIcon;
+	private IIconFactory folderIcon;
 	
 	/**
 	 * @param folderIcon
 	 */
-	public void setFolderIcon(CachedIconFactory folderIcon) {
+	public void setFolderIcon(IIconFactory folderIcon) {
 		this.folderIcon = folderIcon;
 	}
 	

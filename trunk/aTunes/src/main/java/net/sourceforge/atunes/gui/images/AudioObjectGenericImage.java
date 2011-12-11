@@ -22,11 +22,11 @@ package net.sourceforge.atunes.gui.images;
 
 
 
-import net.sourceforge.atunes.model.CachedIconFactory;
 import net.sourceforge.atunes.model.GenericImageSize;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectGenericImageFactory;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
@@ -38,16 +38,16 @@ import net.sourceforge.atunes.model.IRadio;
  */
 public class AudioObjectGenericImage implements IAudioObjectGenericImageFactory {
 
-	private CachedIconFactory audioFileSmallIcon;
-	private CachedIconFactory audioFileMediumIcon;
+	private IIconFactory audioFileSmallIcon;
+	private IIconFactory audioFileMediumIcon;
 
-	private CachedIconFactory rssSmallIcon;
-	private CachedIconFactory rssMediumIcon;
-	private CachedIconFactory rssBigIcon;
+	private IIconFactory rssSmallIcon;
+	private IIconFactory rssMediumIcon;
+	private IIconFactory rssBigIcon;
 	
-	private CachedIconFactory radioSmallIcon;
-	private CachedIconFactory radioMediumIcon;
-	private CachedIconFactory radioBigIcon;
+	private IIconFactory radioSmallIcon;
+	private IIconFactory radioMediumIcon;
+	private IIconFactory radioBigIcon;
 	
     /**
      * Returns a generic image for given audio object.
@@ -111,56 +111,56 @@ public class AudioObjectGenericImage implements IAudioObjectGenericImageFactory 
 	/**
 	 * @param audioFileMediumIcon
 	 */
-	public void setAudioFileMediumIcon(CachedIconFactory audioFileMediumIcon) {
+	public void setAudioFileMediumIcon(IIconFactory audioFileMediumIcon) {
 		this.audioFileMediumIcon = audioFileMediumIcon;
 	}
 	
 	/**
 	 * @param audioFileSmallIcon
 	 */
-	public void setAudioFileSmallIcon(CachedIconFactory audioFileSmallIcon) {
+	public void setAudioFileSmallIcon(IIconFactory audioFileSmallIcon) {
 		this.audioFileSmallIcon = audioFileSmallIcon;
 	}
 
 	/**
 	 * @param rssSmallIcon
 	 */
-	public void setRssSmallIcon(CachedIconFactory rssSmallIcon) {
+	public void setRssSmallIcon(IIconFactory rssSmallIcon) {
 		this.rssSmallIcon = rssSmallIcon;
 	}
 	
 	/**
 	 * @param rssMediumIcon
 	 */
-	public void setRssMediumIcon(CachedIconFactory rssMediumIcon) {
+	public void setRssMediumIcon(IIconFactory rssMediumIcon) {
 		this.rssMediumIcon = rssMediumIcon;
 	}
 	
 	/**
 	 * @param rssBigIcon
 	 */
-	public void setRssBigIcon(CachedIconFactory rssBigIcon) {
+	public void setRssBigIcon(IIconFactory rssBigIcon) {
 		this.rssBigIcon = rssBigIcon;
 	}
 	
 	/**
 	 * @param radioBigIcon
 	 */
-	public void setRadioBigIcon(CachedIconFactory radioBigIcon) {
+	public void setRadioBigIcon(IIconFactory radioBigIcon) {
 		this.radioBigIcon = radioBigIcon;
 	}
 	
 	/**
 	 * @param radioMediumIcon
 	 */
-	public void setRadioMediumIcon(CachedIconFactory radioMediumIcon) {
+	public void setRadioMediumIcon(IIconFactory radioMediumIcon) {
 		this.radioMediumIcon = radioMediumIcon;
 	}
 	
 	/**
 	 * @param radioSmallIcon
 	 */
-	public void setRadioSmallIcon(CachedIconFactory radioSmallIcon) {
+	public void setRadioSmallIcon(IIconFactory radioSmallIcon) {
 		this.radioSmallIcon = radioSmallIcon;
 	}
 }
