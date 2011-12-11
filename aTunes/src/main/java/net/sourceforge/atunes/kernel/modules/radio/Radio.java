@@ -27,7 +27,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.INetworkHandler;
-import net.sourceforge.atunes.model.IProxy;
+import net.sourceforge.atunes.model.IProxyBean;
 import net.sourceforge.atunes.model.IRadio;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -205,7 +205,7 @@ public final class Radio implements IRadio {
     }
 
     @Override
-	public boolean hasPlaylistUrl(INetworkHandler networkHandler, IProxy proxy) {
+	public boolean hasPlaylistUrl(INetworkHandler networkHandler, IProxyBean proxy) {
         // First check based on URL end (extension)
         for (String pl : PLAYLISTS) {
             if (url.trim().toLowerCase().endsWith(pl)) {

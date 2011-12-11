@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeysConfig;
-import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.kernel.modules.tags.TagAttribute;
 
 public interface IState {
@@ -86,13 +85,13 @@ public interface IState {
 
 	public void setViewMode(ViewMode viewMode);
 
-	public LocaleBean getLocale();
+	public ILocaleBean getLocale();
 
-	public void setLocale(LocaleBean locale);
+	public void setLocale(ILocaleBean locale);
 
-	public LocaleBean getOldLocale();
+	public ILocaleBean getOldLocale();
 
-	public void setOldLocale(LocaleBean oldLocale);
+	public void setOldLocale(ILocaleBean oldLocale);
 
 	public String getDefaultSearch();
 
@@ -111,9 +110,9 @@ public interface IState {
 
 	public void setFrameClass(Class<? extends IFrame> frameClass);
 
-	public IProxy getProxy();
+	public IProxyBean getProxy();
 
-	public void setProxy(IProxy proxy);
+	public void setProxy(IProxyBean proxy);
 
 	public LookAndFeelBean getLookAndFeel();
 

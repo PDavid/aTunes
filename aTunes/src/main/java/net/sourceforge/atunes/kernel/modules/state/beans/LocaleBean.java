@@ -21,13 +21,14 @@
 package net.sourceforge.atunes.kernel.modules.state.beans;
 
 import java.beans.ConstructorProperties;
-import java.io.Serializable;
 import java.util.Locale;
+
+import net.sourceforge.atunes.model.ILocaleBean;
 
 /**
  * Bean for java.util.Locale
  */
-public final class LocaleBean implements Serializable {
+public final class LocaleBean implements ILocaleBean {
 
     /**
 	 * 
@@ -67,7 +68,8 @@ public final class LocaleBean implements Serializable {
      * 
      * @return the country
      */
-    public String getCountry() {
+    @Override
+	public String getCountry() {
         return country;
     }
 
@@ -76,7 +78,8 @@ public final class LocaleBean implements Serializable {
      * 
      * @return the language
      */
-    public String getLanguage() {
+    @Override
+	public String getLanguage() {
         return language;
     }
 
@@ -85,14 +88,15 @@ public final class LocaleBean implements Serializable {
      * 
      * @return A suitable java.util.Locale object
      */
-    public Locale getLocale() {
+    @Override
+	public Locale getLocale() {
         return new Locale(language, country);
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof LocaleBean) {
-            return language.equals(((LocaleBean) obj).getLanguage()) && country.equals(((LocaleBean) obj).getCountry());
+            return language.equals(((ILocaleBean) obj).getLanguage()) && country.equals(((ILocaleBean) obj).getCountry());
         }
         return false;
     }

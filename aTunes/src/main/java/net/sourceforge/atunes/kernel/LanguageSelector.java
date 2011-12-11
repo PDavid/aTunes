@@ -22,7 +22,8 @@ package net.sourceforge.atunes.kernel;
 
 import java.util.Locale;
 
-import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
+import net.sourceforge.atunes.model.ILocaleBean;
+import net.sourceforge.atunes.model.ILocaleBeanFactory;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -37,16 +38,17 @@ final class LanguageSelector {
      * Sets application language. If a language is defined in the state, it's
      * used. If not, default locale is used
      * @param state
+     * @param localeBeanFactory
      */
-    void setLanguage(IState state) {
-        LocaleBean localeBean = state.getLocale();
+    void setLanguage(IState state, ILocaleBeanFactory localeBeanFactory) {
+        ILocaleBean localeBean = state.getLocale();
         if (localeBean != null) {
             I18nUtils.setLocale(localeBean.getLocale());
             Logger.info(StringUtils.getString("Setting language: ", localeBean.getLocale()));
         } else {
             Logger.info("Language not configured; using default language");
             I18nUtils.setLocale(null);
-            state.setLocale(new LocaleBean(I18nUtils.getSelectedLocale()));
+            state.setLocale(localeBeanFactory.getLocaleBean(I18nUtils.getSelectedLocale()));
         }
         Locale.setDefault(state.getLocale().getLocale());
     }

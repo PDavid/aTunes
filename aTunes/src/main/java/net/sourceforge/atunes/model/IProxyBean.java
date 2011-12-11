@@ -27,7 +27,7 @@ import java.io.Serializable;
  * @author alex
  *
  */
-public interface IProxy extends Serializable {
+public interface IProxyBean extends Serializable {
 
 	public static final String HTTP_PROXY = "HTTP_PROXY";
 	public static final String SOCKS_PROXY = "SOCKS_PROXY";

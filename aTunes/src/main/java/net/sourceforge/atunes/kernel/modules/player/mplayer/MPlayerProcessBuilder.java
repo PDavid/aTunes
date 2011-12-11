@@ -32,7 +32,7 @@ import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
-import net.sourceforge.atunes.model.IProxy;
+import net.sourceforge.atunes.model.IProxyBean;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.FileNameUtils;
@@ -213,8 +213,8 @@ public class MPlayerProcessBuilder {
 	private void prepareProxy(List<String> command, String url) {
 		// proxy
 		StringBuilder proxy = new StringBuilder();
-		IProxy proxyBean = state.getProxy();
-		if (proxyBean != null && proxyBean.getType().equals(IProxy.HTTP_PROXY)) {
+		IProxyBean proxyBean = state.getProxy();
+		if (proxyBean != null && proxyBean.getType().equals(IProxyBean.HTTP_PROXY)) {
 			//String user = proxyBean.getUser();
 			//String password = proxyBean.getPassword();
 			String proxyUrl = proxyBean.getUrl();

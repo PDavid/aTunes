@@ -33,7 +33,6 @@ import net.sourceforge.atunes.gui.frame.FrameState;
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeysConfig;
 import net.sourceforge.atunes.kernel.modules.navigator.RepositoryNavigationView;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
-import net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean;
 import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
 import net.sourceforge.atunes.kernel.modules.tags.TagAttribute;
 import net.sourceforge.atunes.model.ArtistViewMode;
@@ -44,10 +43,10 @@ import net.sourceforge.atunes.model.IColorBeanFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.IHotkeysConfig;
+import net.sourceforge.atunes.model.ILocaleBean;
 import net.sourceforge.atunes.model.ILyricsEngineInfo;
-import net.sourceforge.atunes.model.IProxy;
+import net.sourceforge.atunes.model.IProxyBean;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.IStateStore;
 import net.sourceforge.atunes.model.LookAndFeelBean;
 import net.sourceforge.atunes.model.ViewMode;
 
@@ -296,15 +295,15 @@ public class ApplicationState implements IState {
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getLocale()
 	 */
     @Override
-	public LocaleBean getLocale() {
-    	return (LocaleBean) this.stateStore.retrievePreference(Preferences.LOCALE, null);
+	public ILocaleBean getLocale() {
+    	return (ILocaleBean) this.stateStore.retrievePreference(Preferences.LOCALE, null);
     }
 
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setLocale(net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean)
 	 */
     @Override
-	public void setLocale(LocaleBean locale) {
+	public void setLocale(ILocaleBean locale) {
         this.stateStore.storePreference(Preferences.LOCALE, locale);
     }
     
@@ -314,15 +313,15 @@ public class ApplicationState implements IState {
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getOldLocale()
 	 */
     @Override
-	public LocaleBean getOldLocale() {
-        return (LocaleBean) this.stateStore.retrievePreference(Preferences.OLD_LOCALE, null);
+	public ILocaleBean getOldLocale() {
+        return (ILocaleBean) this.stateStore.retrievePreference(Preferences.OLD_LOCALE, null);
     }
 
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setOldLocale(net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean)
 	 */
     @Override
-	public void setOldLocale(LocaleBean oldLocale) {
+	public void setOldLocale(ILocaleBean oldLocale) {
         this.stateStore.storePreference(Preferences.OLD_LOCALE, oldLocale);
     }
     
@@ -409,15 +408,15 @@ public class ApplicationState implements IState {
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getProxy()
 	 */
     @Override
-	public IProxy getProxy() {
-        return (IProxy) this.stateStore.retrievePreference(Preferences.PROXY, null);
+	public IProxyBean getProxy() {
+        return (IProxyBean) this.stateStore.retrievePreference(Preferences.PROXY, null);
     }
 
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setProxy(net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean)
 	 */
     @Override
-	public void setProxy(IProxy proxy) {
+	public void setProxy(IProxyBean proxy) {
         this.stateStore.storePreference(Preferences.PROXY, proxy);
     }
     

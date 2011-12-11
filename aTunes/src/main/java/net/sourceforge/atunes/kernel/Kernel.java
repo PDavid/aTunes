@@ -30,6 +30,7 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.model.ICommandHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IKernel;
+import net.sourceforge.atunes.model.ILocaleBeanFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
@@ -55,12 +56,21 @@ public final class Kernel implements IKernel, ApplicationContextAware {
     
     private IState state;
     
+    private ILocaleBeanFactory localeBeanFactory;
+    
     private ApplicationContext context;
     
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
     	this.context = applicationContext;
     }
+    
+    /**
+     * @param localeBeanFactory
+     */
+    public void setLocaleBeanFactory(ILocaleBeanFactory localeBeanFactory) {
+		this.localeBeanFactory = localeBeanFactory;
+	}
     
     /**
      * Sets state
@@ -77,7 +87,7 @@ public final class Kernel implements IKernel, ApplicationContextAware {
         timer = new Timer();
         timer.start();
 
-        new LanguageSelector().setLanguage(state);
+        new LanguageSelector().setLanguage(state, localeBeanFactory);
         
         initializeUI();
         context.getBean(HandlerInitializer.class).initializeHandlers(state);

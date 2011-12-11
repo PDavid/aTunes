@@ -35,9 +35,9 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
-import net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean;
 import net.sourceforge.atunes.model.INetworkHandler;
-import net.sourceforge.atunes.model.IProxy;
+import net.sourceforge.atunes.model.IProxyBean;
+import net.sourceforge.atunes.model.IProxyBeanFactory;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -62,14 +62,19 @@ public final class InternetPanel extends AbstractPreferencesPanel {
     private JPasswordField proxyPassword;
     
     private INetworkHandler networkHandler;
+    
+    private transient IProxyBeanFactory proxyBeanFactory;
 
     /**
      * Instantiates a new internet panel.
+     * @param networkHandler
+     * @param proxyBeanFactory
      */
-    public InternetPanel(INetworkHandler networkHandler) {
+    public InternetPanel(INetworkHandler networkHandler, IProxyBeanFactory proxyBeanFactory) {
         super(I18nUtils.getString("INTERNET"));
         
         this.networkHandler = networkHandler;
+        this.proxyBeanFactory = proxyBeanFactory;
 
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1;
@@ -192,7 +197,7 @@ public final class InternetPanel extends AbstractPreferencesPanel {
      * 
      * @return the proxy
      */
-    private IProxy getProxy() {
+    private IProxyBean getProxy() {
         if (noProxyRadioButton.isSelected()) {
             return null;
         }
@@ -200,22 +205,16 @@ public final class InternetPanel extends AbstractPreferencesPanel {
         int port = Integer.parseInt(proxyPort.getText());
         String type;
         if (httpProxyRadioButton.isSelected()) {
-            type = IProxy.HTTP_PROXY;
+            type = IProxyBean.HTTP_PROXY;
         } else {
-            type = IProxy.SOCKS_PROXY;
+            type = IProxyBean.SOCKS_PROXY;
         }
-        IProxy proxy = new ProxyBean();
-        proxy.setUrl(proxyURL.getText());
-        proxy.setPort(port);
-        proxy.setUser(proxyUser.getText());
-        proxy.setPassword(new String(proxyPassword.getPassword()));
-        proxy.setType(type);
-        return proxy;
+        return proxyBeanFactory.getProxy(type, proxyURL.getText(), port, proxyUser.getText(), new String(proxyPassword.getPassword()));
     }
 
     @Override
     public boolean applyPreferences(IState state) {
-        IProxy proxy = getProxy();
+        IProxyBean proxy = getProxy();
         state.setProxy(proxy);
         networkHandler.updateProxy(proxy);
         return false;
@@ -250,11 +249,11 @@ public final class InternetPanel extends AbstractPreferencesPanel {
      * @param proxy
      *            the new configuration
      */
-    private void setConfiguration(IProxy proxy) {
+    private void setConfiguration(IProxyBean proxy) {
         enableProxySettings(proxy != null);
         if (proxy == null) {
             noProxyRadioButton.setSelected(true);
-        } else if (proxy.getType().equals(IProxy.HTTP_PROXY)) {
+        } else if (proxy.getType().equals(IProxyBean.HTTP_PROXY)) {
             httpProxyRadioButton.setSelected(true);
         } else {
             socksProxyRadioButton.setSelected(true);

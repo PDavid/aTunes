@@ -25,7 +25,7 @@ import java.net.Authenticator;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import net.sourceforge.atunes.model.IProxy;
+import net.sourceforge.atunes.model.IProxyBean;
 
 /**
  * The Class CustomProxy.
@@ -93,11 +93,11 @@ class ExtendedProxy extends java.net.Proxy {
      * @throws IOException
      *             If an IO exception occurs
      */
-    public static ExtendedProxy getProxy(IProxy proxy) throws UnknownHostException, IOException {
+    public static ExtendedProxy getProxy(IProxyBean proxy) throws UnknownHostException, IOException {
         if (proxy == null) {
             return null;
         }
-        return new ExtendedProxy(proxy.getType().equals(IProxy.HTTP_PROXY) ? Type.HTTP : Type.SOCKS, proxy.getUrl(), proxy.getPort(), proxy.getUser(), proxy.getPassword());
+        return new ExtendedProxy(proxy.getType().equals(IProxyBean.HTTP_PROXY) ? Type.HTTP : Type.SOCKS, proxy.getUrl(), proxy.getPort(), proxy.getUser(), proxy.getPassword());
     }
 
     /**

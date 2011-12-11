@@ -33,7 +33,7 @@ import javax.imageio.ImageIO;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.INetworkHandler;
-import net.sourceforge.atunes.model.IProxy;
+import net.sourceforge.atunes.model.IProxyBean;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -57,7 +57,7 @@ public class NetworkHandler extends AbstractHandler implements INetworkHandler {
 	 * @param proxy
 	 */
 	@Override
-	public void updateProxy(IProxy proxy) {
+	public void updateProxy(IProxyBean proxy) {
         try {
     		ExtendedProxy extendedProxy = ExtendedProxy.getProxy(proxy);
             ExtendedProxy.initProxy(extendedProxy);

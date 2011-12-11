@@ -17,6 +17,9 @@
 	<bean id="stateStore" class="net.sourceforge.atunes.kernel.modules.state.PreferencesCache">
 		<constructor-arg value="/settings/ehcache-preferences.xml" />
 	</bean>
+	
+	<bean id="localeBeanFactory" class="net.sourceforge.atunes.kernel.modules.state.beans.LocaleBeanFactory"/>
+	<bean id="proxyBeanFactory" class="net.sourceforge.atunes.kernel.modules.state.beans.ProxyBeanFactory"/>
 
 
 

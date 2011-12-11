@@ -20,7 +20,12 @@
 
 package net.sourceforge.atunes.kernel.modules.state;
 
-public enum Preferences {
+/**
+ * All preferences needed by application to work
+ * @author alex
+ *
+ */
+enum Preferences {
 	
 	ALBUM_COLUMNS,
 	ALLOW_REPEATED_SONGS_IN_DEVICE, 

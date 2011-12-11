@@ -18,14 +18,13 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.kernel.modules.state;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
-import net.sourceforge.atunes.kernel.modules.state.Preferences;
 
-public interface IStateStore {
+interface IStateStore {
 
 	/**
 	 * Clears the cache.

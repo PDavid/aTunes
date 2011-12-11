@@ -48,7 +48,7 @@ public interface IRadio extends IAudioObject, Serializable, ITreeObject<IRadio>,
 	 * @param proxy
 	 * @return
 	 */
-	public boolean hasPlaylistUrl(INetworkHandler networkHandler, IProxy proxy);
+	public boolean hasPlaylistUrl(INetworkHandler networkHandler, IProxyBean proxy);
 
 	/**
 	 * Checks if is removed.
