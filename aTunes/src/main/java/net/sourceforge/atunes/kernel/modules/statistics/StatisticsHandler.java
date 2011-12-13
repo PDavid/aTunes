@@ -118,6 +118,11 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
 		String artist = audioObject.getArtist();
 		IArtist a = repositoryHandler.getArtist(artist);
 
+		// Unknown artist -> don't fill artist stats
+		if (a == null || UnknownObjectCheck.isUnknownArtist(a.getName())) {
+		    return;
+		}
+
 		updateArtistRanking(a);
 		updateAlbumRanking(audioObject, artist, a);
 	}
@@ -170,11 +175,6 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
 	 * @param a
 	 */
 	private void updateArtistRanking(IArtist a) {
-		// Unknown artist -> don't fill artist stats
-		if (a == null || UnknownObjectCheck.isUnknownArtist(a.getName())) {
-		    return;
-		}
-
 		statistics.getArtistsRanking().addItem(a.getName());
 	}
 
