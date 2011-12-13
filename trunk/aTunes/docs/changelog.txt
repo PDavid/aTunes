@@ -4,6 +4,7 @@ aTunes 2.2.0
 - New options to organize artist view, using artist and / or album artist tag fields [ patch by Laurent Cathala ]
 - Removed external pictures support, only pictures exported with application are supported
 - Improved performance of Full Screen Mode
+- Use dynamic heap size in Windows (5% of free memory for initial heap space, 10% for maximum heap space)
 
 aTunes 2.1.1
 ------------

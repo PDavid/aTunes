@@ -12,8 +12,10 @@
     <path></path>
     <minVersion>1.6.0</minVersion>
     <maxVersion></maxVersion>
-    <initialHeapSize>18</initialHeapSize>
-    <maxHeapSize>256</maxHeapSize>
+    <initialHeapSize>16</initialHeapSize>
+    <initialHeapPercent>5</initialHeapPercent>
+    <maxHeapSize>64</maxHeapSize>
+    <maxHeapPercent>10</maxHeapPercent>
     <args>-splash:splash.gif -cp aTunes.jar;lib/* net.sourceforge.atunes.Main</args>
   </jre>
 </launch4jConfig>
