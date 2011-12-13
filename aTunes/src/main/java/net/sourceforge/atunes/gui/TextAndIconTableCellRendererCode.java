@@ -36,13 +36,15 @@ public class TextAndIconTableCellRendererCode extends AbstractTableCellRendererC
 
     @Override
     public JLabel getComponent(JLabel c, JTable table, TextAndIcon value, boolean isSelected, boolean hasFocus, int row, int column) {
-        c.setText(value.getText());
-        if (value.getIcon() != null) {
-        	c.setIcon(value.getIcon().getIcon(lookAndFeel.getPaintForColorMutableIcon(c, isSelected)));
-        } else {
-        	c.setIcon(null);
-        }        
-        c.setHorizontalTextPosition(((TextAndIcon) value).getHorizontalTextPosition());
+    	if (value != null) {
+    		c.setText(value.getText());
+    		if (value.getIcon() != null) {
+    			c.setIcon(value.getIcon().getIcon(lookAndFeel.getPaintForColorMutableIcon(c, isSelected)));
+    		} else {
+    			c.setIcon(null);
+    		}        
+    		c.setHorizontalTextPosition(((TextAndIcon) value).getHorizontalTextPosition());
+    	}
         // Get alignment from model
         c.setHorizontalAlignment(model.getColumnAlignment(column));
         return c;
