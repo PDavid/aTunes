@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.radio.Radio;
+import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jdesktop.swingx.treetable.AbstractTreeTableModel;
@@ -40,7 +40,7 @@ public final class RadioBrowserTreeTableModel extends AbstractTreeTableModel {
     private static final long serialVersionUID = 1997644065009669746L;
 
     /** The radios map */
-    private Map<String, List<Radio>> radiosMap;
+    private Map<String, List<IRadio>> radiosMap;
 
     /** List of radio labels */
     private List<String> radioLabels;
@@ -50,7 +50,7 @@ public final class RadioBrowserTreeTableModel extends AbstractTreeTableModel {
      */
     private static final String ROOT = "ROOT";
 
-    public RadioBrowserTreeTableModel(List<Radio> radios) {
+    public RadioBrowserTreeTableModel(List<IRadio> radios) {
         super(new DefaultMutableTreeTableNode(ROOT));
         setRadios(radios);
     }
@@ -60,14 +60,14 @@ public final class RadioBrowserTreeTableModel extends AbstractTreeTableModel {
      * 
      * @param radios
      */
-    private void setRadios(List<Radio> radios) {
-        radiosMap = new HashMap<String, List<Radio>>();
+    private void setRadios(List<IRadio> radios) {
+        radiosMap = new HashMap<String, List<IRadio>>();
         radioLabels = new ArrayList<String>();
-        for (Radio r : radios) {
+        for (IRadio r : radios) {
             if (radiosMap.containsKey(r.getLabel())) {
                 radiosMap.get(r.getLabel()).add(r);
             } else {
-                List<Radio> radioList = new ArrayList<Radio>();
+                List<IRadio> radioList = new ArrayList<IRadio>();
                 radioList.add(r);
                 radiosMap.put(r.getLabel(), radioList);
                 radioLabels.add(r.getLabel());
@@ -126,7 +126,7 @@ public final class RadioBrowserTreeTableModel extends AbstractTreeTableModel {
         }
         // Is a radio
         String label = (String) ((DefaultMutableTreeTableNode) parent).getUserObject();
-        Radio r = (Radio) ((DefaultMutableTreeTableNode) child).getUserObject();
+        IRadio r = (IRadio) ((DefaultMutableTreeTableNode) child).getUserObject();
         return radiosMap.get(label).indexOf(r);
     }
 
@@ -153,7 +153,7 @@ public final class RadioBrowserTreeTableModel extends AbstractTreeTableModel {
         }
 
         // Is a radio
-        Radio r = (Radio) ((DefaultMutableTreeTableNode) node).getUserObject();
+        IRadio r = (IRadio) ((DefaultMutableTreeTableNode) node).getUserObject();
         if (column == 0) {
             return null;
         } else if (column == 1) {

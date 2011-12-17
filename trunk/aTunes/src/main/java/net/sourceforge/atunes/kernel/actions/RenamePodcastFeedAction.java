@@ -25,10 +25,9 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.model.IInputDialog;
 import net.sourceforge.atunes.model.IInputDialogFactory;
-import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -40,9 +39,16 @@ public class RenamePodcastFeedAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 8334487960720117561L;
 
-    private INavigationHandler navigationHandler;
-    
     private IInputDialogFactory inputDialogFactory;
+    
+    private INavigationView podcastNavigationView;
+    
+    /**
+     * @param podcastNavigationView
+     */
+    public void setPodcastNavigationView(INavigationView podcastNavigationView) {
+		this.podcastNavigationView = podcastNavigationView;
+	}
     
     /**
      * @param inputDialogFactory
@@ -51,10 +57,9 @@ public class RenamePodcastFeedAction extends CustomAbstractAction {
 		this.inputDialogFactory = inputDialogFactory;
 	}
     
-    public void setNavigationHandler(INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
-	}
-    
+    /**
+     * 
+     */
     public RenamePodcastFeedAction() {
         super(I18nUtils.getString("RENAME_PODCAST_FEED"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("RENAME_PODCAST_FEED"));
@@ -62,7 +67,7 @@ public class RenamePodcastFeedAction extends CustomAbstractAction {
 
     @Override
     protected void executeAction() {
-        TreePath path = navigationHandler.getView(PodcastNavigationView.class).getTree().getSelectionPath();
+        TreePath path = podcastNavigationView.getTree().getSelectionPath();
         IPodcastFeed podcastFeed = (IPodcastFeed) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
         IInputDialog dialog = inputDialogFactory.getDialog();
         dialog.setTitle(I18nUtils.getString("RENAME_PODCAST_FEED"));

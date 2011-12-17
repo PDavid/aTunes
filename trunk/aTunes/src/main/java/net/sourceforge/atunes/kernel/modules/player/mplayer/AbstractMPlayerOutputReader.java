@@ -27,7 +27,6 @@ import java.util.regex.Pattern;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -77,7 +76,7 @@ abstract class AbstractMPlayerOutputReader extends Thread {
         if (ao instanceof ILocalAudioObject) {
             return new AudioFileMPlayerOutputReader(engine, process, (ILocalAudioObject) ao, localAudioObjectValidator);
         } else if (ao instanceof IRadio) {
-            return new RadioMPlayerOutputReader(engine, process, (Radio) ao, state, frame, playListHandler);
+            return new RadioMPlayerOutputReader(engine, process, (IRadio) ao, state, frame, playListHandler);
         } else if (ao instanceof IPodcastFeedEntry) {
             return new PodcastFeedEntryMPlayerOutputReader(engine, process, frame, (IPodcastFeedEntry) ao);
         } else {

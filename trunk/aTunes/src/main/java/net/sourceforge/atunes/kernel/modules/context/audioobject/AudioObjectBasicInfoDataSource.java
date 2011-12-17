@@ -28,7 +28,6 @@ import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IAudioObjectStatistics;
@@ -129,7 +128,7 @@ public class AudioObjectBasicInfoDataSource implements IContextInformationSource
                 result.put(OUTPUT_LASTPLAYDATE, getLastPlayDate(audioObject));
             } else if (audioObject instanceof IRadio) {
                 result.put(OUTPUT_TITLE, ((IRadio) audioObject).getName());
-                result.put(OUTPUT_ARTIST, ((Radio) audioObject).getUrl());
+                result.put(OUTPUT_ARTIST, ((IRadio) audioObject).getUrl());
             } else if (audioObject instanceof IPodcastFeedEntry) {
                 result.put(OUTPUT_TITLE, ((IPodcastFeedEntry) audioObject).getTitle());
             }

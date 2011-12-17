@@ -23,10 +23,10 @@ package net.sourceforge.atunes.kernel.modules.player.mplayer;
 import java.util.regex.Pattern;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -35,7 +35,7 @@ class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
     /** Pattern of end of play back */
     private static final Pattern END_PATTERN = Pattern.compile(".*\\x2e\\x2e\\x2e.*\\(.*\\).*");
 
-    private Radio radio;
+    private IRadio radio;
     private String lastArtist = "";
     private String lastTitle = "";
     private boolean started;
@@ -53,7 +53,7 @@ class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
      * @param frame
      * @param playListHandler
      */
-    RadioMPlayerOutputReader(MPlayerEngine engine, Process process, Radio radio, IState state, IFrame frame, IPlayListHandler playListHandler) {
+    RadioMPlayerOutputReader(MPlayerEngine engine, Process process, IRadio radio, IState state, IFrame frame, IPlayListHandler playListHandler) {
         super(engine, process);
         this.radio = radio;
         this.state = state;

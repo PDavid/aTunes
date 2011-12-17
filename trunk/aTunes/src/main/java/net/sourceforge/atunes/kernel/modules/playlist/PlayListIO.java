@@ -31,7 +31,6 @@ import java.util.List;
 
 import javax.swing.filechooser.FileFilter;
 
-import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.IOSManager;
@@ -151,7 +150,7 @@ public final class PlayListIO implements IPlayListIOService {
             ao = radioHandler.getRadioIfLoaded(resourceName);
             if (ao == null) {
                 // If radio is not previously loaded in application then create a new Radio object with resource as name and url and leave label empty
-                ao = new Radio(resourceName, resourceName, null);
+                ao = radioHandler.createRadio(resourceName, resourceName, null);
             }
             return ao;
         }

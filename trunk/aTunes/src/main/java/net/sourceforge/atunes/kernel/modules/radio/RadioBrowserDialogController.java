@@ -20,39 +20,14 @@
 
 package net.sourceforge.atunes.kernel.modules.radio;
 
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.gui.RadioBrowserTreeTableModel;
 import net.sourceforge.atunes.gui.views.dialogs.RadioBrowserDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.utils.Logger;
 
 final class RadioBrowserDialogController extends AbstractSimpleController<RadioBrowserDialog> {
-
-    private final class RetrieveDataSwingWorker extends
-			SwingWorker<List<Radio>, Void> {
-		@Override
-		protected List<Radio> doInBackground() throws Exception {
-		    return radioHandler.retrieveRadiosForBrowser();
-		}
-
-		@Override
-		protected void done() {
-		    try {
-		        List<Radio> radios = get();
-		        getComponentControlled().getTreeTable().setTreeTableModel(new RadioBrowserTreeTableModel(radios));
-		    } catch (InterruptedException e) {
-		        Logger.error(e);
-		    } catch (ExecutionException e) {
-		        Logger.error(e);
-		    }
-		}
-	}
 
     private IRadioHandler radioHandler;
     
@@ -82,9 +57,7 @@ final class RadioBrowserDialogController extends AbstractSimpleController<RadioB
      * Retrieve data.
      */
     void retrieveData() {
-        //getFrameControlled().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
-        new RetrieveDataSwingWorker().execute();
+        new RetrieveDataSwingWorker(radioHandler, getComponentControlled()).execute();
     }
 
     @Override

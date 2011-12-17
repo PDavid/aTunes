@@ -31,7 +31,6 @@ import javax.swing.JPanel;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
-import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -52,7 +51,7 @@ final class RadioPropertiesDialog extends AudioObjectPropertiesDialog {
     private JLabel labelLabel;
     private JLabel bitrateLabel;
     private JLabel frequencyLabel;
-    private Radio radio;
+    private IRadio radio;
 
     /**
      * Instantiates a new radio properties dialog.
@@ -60,7 +59,7 @@ final class RadioPropertiesDialog extends AudioObjectPropertiesDialog {
      * @param radio
      * @param frame
      */
-    RadioPropertiesDialog(Radio radio, IFrame frame, ILookAndFeelManager lookAndFeelManager) {
+    RadioPropertiesDialog(IRadio radio, IFrame frame, ILookAndFeelManager lookAndFeelManager) {
         super(getTitleText(radio), frame, lookAndFeelManager);
         this.radio = radio;
         setAudioObject(radio);

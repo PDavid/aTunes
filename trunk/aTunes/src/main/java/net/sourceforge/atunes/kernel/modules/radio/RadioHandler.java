@@ -25,9 +25,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-
-import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.dialogs.RadioBrowserDialog;
@@ -50,31 +47,6 @@ import net.sourceforge.atunes.utils.XMLUtils;
  */
 public final class RadioHandler extends AbstractHandler implements IRadioHandler {
 
-    private final class RetrieveRadiosSwingWorker extends SwingWorker<List<Radio>, Void> {
-
-        @SuppressWarnings("unchecked")
-        @Override
-        protected List<Radio> doInBackground() throws Exception {
-            String xml = networkHandler.readURL(networkHandler.getConnection(Constants.RADIO_LIST_DOWNLOAD));
-            return (List<Radio>) XMLUtils.readObjectFromString(xml);
-        }
-
-        @Override
-        protected void done() {
-            try {
-                retrievedPresetRadios.clear();
-                retrievedPresetRadios.addAll(get());
-                getRadioPresets();
-                getBean(INavigationHandler.class).refreshView(radioNavigationView);
-            } catch (InterruptedException e) {
-                Logger.error(e);
-            } catch (ExecutionException e) {
-                Logger.error(e);
-            }
-
-        }
-    }
-    
     private static final Comparator<IRadio> COMPARATOR = new Comparator<IRadio>() {
         @Override
         public int compare(IRadio o1, IRadio o2) {
@@ -96,6 +68,22 @@ public final class RadioHandler extends AbstractHandler implements IRadioHandler
     
     private INavigationView radioNavigationView;
     
+    private INavigationHandler navigationHandler;
+    
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+    
+    /**
+     * @return
+     */
+    protected List<IRadio> getRetrievedPresetRadios() {
+		return retrievedPresetRadios;
+	}
+    
     /**
      * @param radioNavigationView
      */
@@ -110,6 +98,11 @@ public final class RadioHandler extends AbstractHandler implements IRadioHandler
 		this.networkHandler = networkHandler;
 	}
 
+    @Override
+    public IRadio createRadio(String name, String url, String label) {
+    	return new Radio(name, url, label);
+    }
+    
     @Override
 	public void addRadio() {
         IRadioDialog dialog = getBean(IRadioDialog.class);
@@ -245,7 +238,7 @@ public final class RadioHandler extends AbstractHandler implements IRadioHandler
             // Preset radio station, we can not delete from preset file directly but must mark it as removed.
             else {
                 presetRadios.remove(radio);
-                final Radio newRadio = new Radio(radio.getName(), radio.getUrl(), radio.getLabel());
+                final IRadio newRadio = createRadio(radio.getName(), radio.getUrl(), radio.getLabel());
                 newRadio.setRemoved(true);
                 getRadios().add(newRadio);
             }
@@ -259,15 +252,15 @@ public final class RadioHandler extends AbstractHandler implements IRadioHandler
         removeRadios(Collections.singletonList(radio));
     }
 
-    @Override
-	@SuppressWarnings("unchecked")
-    public List<Radio> retrieveRadiosForBrowser() throws IOException {
+    @SuppressWarnings("unchecked")
+	@Override
+    public List<IRadio> retrieveRadiosForBrowser() throws IOException {
         try {
             String xml = networkHandler.readURL(networkHandler.getConnection(Constants.RADIO_LIST_DOWNLOAD_COMMON_JUKEBOX));
-            return (List<Radio>) XMLUtils.readObjectFromString(xml);
+            return (List<IRadio>) XMLUtils.readObjectFromString(xml);
         } catch (Exception e) {
             String xml = networkHandler.readURL(networkHandler.getConnection(Constants.RADIO_LIST_DOWNLOAD));
-            return (List<Radio>) XMLUtils.readObjectFromString(xml);
+            return (List<IRadio>) XMLUtils.readObjectFromString(xml);
         }
     }
 
@@ -276,7 +269,7 @@ public final class RadioHandler extends AbstractHandler implements IRadioHandler
      */
     @Override
 	public void retrieveRadios() {
-        new RetrieveRadiosSwingWorker().execute();
+        new RetrieveRadiosSwingWorker(this, navigationHandler, networkHandler, radioNavigationView).execute();
     }
 
     @Override
