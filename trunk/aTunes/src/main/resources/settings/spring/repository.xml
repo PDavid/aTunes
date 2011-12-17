@@ -32,6 +32,8 @@
 	<bean id="addFilesTask" class="net.sourceforge.atunes.kernel.modules.repository.AddFilesTask" scope="prototype"/>
 	<bean id="refreshFoldersTask" class="net.sourceforge.atunes.kernel.modules.repository.RefreshFoldersTask" scope="prototype"/>	
 	
-	<bean id="repositoryLoader" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryLoader" scope="prototype"/>
+	<bean id="abstractRepositoryLoader" class="net.sourceforge.atunes.kernel.modules.repository.AbstractRepositoryLoader" abstract="true"/>
+	<bean id="repositoryReadLoader" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryReadLoader" parent="abstractRepositoryLoader" scope="prototype"/>
+	<bean id="repositoryRefreshLoader" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryRefreshLoader" parent="abstractRepositoryLoader" scope="prototype"/>
 
 </beans>

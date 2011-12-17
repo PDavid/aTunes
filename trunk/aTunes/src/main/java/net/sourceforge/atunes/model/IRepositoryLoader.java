@@ -38,9 +38,8 @@ public interface IRepositoryLoader {
 	 * @param folders
 	 * @param oldRepository
 	 * @param repository
-	 * @param refresh
 	 */
-	void start(IRepositoryTransaction transaction, List<File> folders, IRepository oldRepository, IRepository repository, boolean refresh);
+	void start(IRepositoryTransaction transaction, List<File> folders, IRepository oldRepository, IRepository repository);
 
 	/**
 	 * Adds the repository loader listener.
@@ -48,7 +47,7 @@ public interface IRepositoryLoader {
 	 * @param listener
 	 *            the listener
 	 */
-	void addRepositoryLoaderListener(IRepositoryLoaderListener listener);
+	void setRepositoryLoaderListener(IRepositoryLoaderListener listener);
 
 	/**
 	 * Interrupts process
