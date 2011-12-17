@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 
 import java.util.List;
 
+import net.sourceforge.atunes.model.IPlayListAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.PointedList;
 
@@ -36,9 +37,9 @@ class ShufflePointedList extends PointedList<Integer> {
     	this.state = state;
 	}
     
-    void add(List<PlayListAudioObject> playListAudioObjects) {
+    void add(List<IPlayListAudioObject> playListAudioObjects) {
         // Add positions
-        for (PlayListAudioObject plao : playListAudioObjects) {
+        for (IPlayListAudioObject plao : playListAudioObjects) {
             add(plao.getPosition());
         }
 

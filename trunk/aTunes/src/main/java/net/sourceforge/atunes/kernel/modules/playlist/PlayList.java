@@ -31,6 +31,7 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayList;
+import net.sourceforge.atunes.model.IPlayListAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.PointedList;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -61,14 +62,14 @@ public class PlayList implements IPlayList {
     
     private transient IState state;
 
-    private static class PlayListAudioObjectComparator implements Comparator<PlayListAudioObject>, Serializable {
+    private static class PlayListAudioObjectComparator implements Comparator<IPlayListAudioObject>, Serializable {
         /**
 		 * 
 		 */
 		private static final long serialVersionUID = 2216966505910863325L;
 
 		@Override
-        public int compare(PlayListAudioObject o1, PlayListAudioObject o2) {
+        public int compare(IPlayListAudioObject o1, IPlayListAudioObject o2) {
             return -Integer.valueOf(o1.getPosition()).compareTo(Integer.valueOf(o2.getPosition()));
         }
     }
@@ -200,7 +201,7 @@ public class PlayList implements IPlayList {
             PlayListAudioObject plao = new PlayListAudioObject();
             plao.setPosition(index);
             plao.setAudioObject(ao);
-            List<PlayListAudioObject> removedAudioObjects = new ArrayList<PlayListAudioObject>();
+            List<IPlayListAudioObject> removedAudioObjects = new ArrayList<IPlayListAudioObject>();
             removedAudioObjects.add(plao);
             audioObjects.remove(index);
             notifyAudioObjectsRemoved(removedAudioObjects);
@@ -215,7 +216,7 @@ public class PlayList implements IPlayList {
      */
     protected void remove(List<? extends IAudioObject> list) {
         // First get all positions of objects to remove
-        List<PlayListAudioObject> playListAudioObjects = new ArrayList<PlayListAudioObject>();
+        List<IPlayListAudioObject> playListAudioObjects = new ArrayList<IPlayListAudioObject>();
         for (IAudioObject ao : list) {
             List<IAudioObject> clonedList = new ArrayList<IAudioObject>(audioObjects.getList());
             while (clonedList.indexOf(ao) != -1) {
@@ -231,7 +232,7 @@ public class PlayList implements IPlayList {
         // Sort in reverse order to remove last index first and avoid shift
         Collections.sort(playListAudioObjects, new PlayListAudioObjectComparator());
 
-        for (PlayListAudioObject plao : playListAudioObjects) {
+        for (IPlayListAudioObject plao : playListAudioObjects) {
             this.audioObjects.remove(plao.getPosition());
         }
         notifyAudioObjectsRemoved(playListAudioObjects);
@@ -476,7 +477,7 @@ public class PlayList implements IPlayList {
      * @param audioObjectList
      */
     private void notifyAudioObjectsAdded(int position, List<? extends IAudioObject> audioObjectList) {
-        List<PlayListAudioObject> playListAudioObjects = PlayListAudioObject.getList(position, audioObjectList);
+        List<IPlayListAudioObject> playListAudioObjects = PlayListAudioObject.getList(position, audioObjectList);
 
         // Notify mode too
         getMode().audioObjectsAdded(playListAudioObjects);
@@ -489,7 +490,7 @@ public class PlayList implements IPlayList {
      * 
      * @param audioObjectList
      */
-    private void notifyAudioObjectsRemoved(List<PlayListAudioObject> audioObjectList) {   	
+    private void notifyAudioObjectsRemoved(List<IPlayListAudioObject> audioObjectList) {   	
         // Notify mode too
         getMode().audioObjectsRemoved(audioObjectList);
 

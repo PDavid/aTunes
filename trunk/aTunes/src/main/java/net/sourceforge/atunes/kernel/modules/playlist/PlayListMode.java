@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPlayListAudioObject;
 import net.sourceforge.atunes.model.IState;
 
 final class PlayListMode {
@@ -166,7 +167,7 @@ final class PlayListMode {
         return playList.getPointedList().getNextObject(index);
     }
 
-    void audioObjectsAdded(List<PlayListAudioObject> audioObjectsAdded) {
+    void audioObjectsAdded(List<IPlayListAudioObject> audioObjectsAdded) {
         if (audioObjectsAdded == null || audioObjectsAdded.isEmpty()) {
             return;
         }
@@ -175,13 +176,13 @@ final class PlayListMode {
         this.shufflePlayList.add(audioObjectsAdded);
     }
 
-    void audioObjectsRemoved(List<PlayListAudioObject> audioObjectsRemoved) {
+    void audioObjectsRemoved(List<IPlayListAudioObject> audioObjectsRemoved) {
         if (audioObjectsRemoved == null || audioObjectsRemoved.isEmpty()) {
             return;
         }
 
         // Update shuffle list
-        for (PlayListAudioObject plao : audioObjectsRemoved) {
+        for (IPlayListAudioObject plao : audioObjectsRemoved) {
             int indexToRemove = shufflePlayList.indexOf(plao.getPosition());
             shufflePlayList.remove(indexToRemove);
         }
@@ -190,7 +191,7 @@ final class PlayListMode {
         // Only remove from history audio objects removed from play list
         // If an audio object is duplicated in play list and is in history, if one of its occurrences is removed, history is not updated
         List<IAudioObject> audioObjectsToRemoveFromHistory = new ArrayList<IAudioObject>();
-        for (PlayListAudioObject plao : audioObjectsRemoved) {
+        for (IPlayListAudioObject plao : audioObjectsRemoved) {
             if (!playList.contains(plao.getAudioObject())) {
                 // If audio object is no more present in play list then remove from history
                 audioObjectsToRemoveFromHistory.add(plao.getAudioObject());

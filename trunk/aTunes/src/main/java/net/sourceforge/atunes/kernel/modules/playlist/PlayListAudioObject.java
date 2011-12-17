@@ -24,8 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPlayListAudioObject;
 
-public class PlayListAudioObject {
+public class PlayListAudioObject implements IPlayListAudioObject {
 
     private IAudioObject audioObject;
     private int position;
@@ -33,7 +34,8 @@ public class PlayListAudioObject {
     /**
      * @return the audioObject
      */
-    public IAudioObject getAudioObject() {
+    @Override
+	public IAudioObject getAudioObject() {
         return audioObject;
     }
 
@@ -48,7 +50,8 @@ public class PlayListAudioObject {
     /**
      * @return the position
      */
-    public int getPosition() {
+    @Override
+	public int getPosition() {
         return position;
     }
 
@@ -68,8 +71,8 @@ public class PlayListAudioObject {
      * @param audioObjects
      * @return
      */
-    public static List<PlayListAudioObject> getList(int startPosition, List<? extends IAudioObject> audioObjects) {
-        List<PlayListAudioObject> result = new ArrayList<PlayListAudioObject>();
+    static List<IPlayListAudioObject> getList(int startPosition, List<? extends IAudioObject> audioObjects) {
+        List<IPlayListAudioObject> result = new ArrayList<IPlayListAudioObject>();
         int positionFromStart = 0;
         for (IAudioObject ao : audioObjects) {
             PlayListAudioObject plao = new PlayListAudioObject();

@@ -23,8 +23,8 @@ package net.sourceforge.atunes.kernel;
 import java.util.Collection;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListAudioObject;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPlayListAudioObject;
 import net.sourceforge.atunes.model.IPlayListEventListener;
 
 import org.springframework.beans.BeansException;
@@ -53,7 +53,7 @@ public class PlayListEventListeners implements ApplicationContextAware {
 	 * Called when added objects to play list
 	 * @param playListAudioObjects
 	 */
-	public void audioObjectsAdded(List<PlayListAudioObject> playListAudioObjects) {
+	public void audioObjectsAdded(List<IPlayListAudioObject> playListAudioObjects) {
 		for (IPlayListEventListener listener : listeners) {
 			listener.audioObjectsAdded(playListAudioObjects);
 		}
@@ -63,7 +63,7 @@ public class PlayListEventListeners implements ApplicationContextAware {
 	 * Called when audio objects are removed from play list
 	 * @param audioObjectList
 	 */
-	public void audioObjectsRemoved(List<PlayListAudioObject> audioObjectList) {
+	public void audioObjectsRemoved(List<IPlayListAudioObject> audioObjectList) {
 		for (IPlayListEventListener listener : listeners) {
 			listener.audioObjectsRemoved(audioObjectList);
 		}
