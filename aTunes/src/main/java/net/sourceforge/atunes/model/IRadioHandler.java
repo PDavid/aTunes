@@ -23,8 +23,6 @@ package net.sourceforge.atunes.model;
 import java.io.IOException;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.radio.Radio;
-
 /**
  * Responsible of managing radios
  * @author alex
@@ -32,6 +30,15 @@ import net.sourceforge.atunes.kernel.modules.radio.Radio;
  */
 public interface IRadioHandler extends IHandler {
 
+	/**
+	 * Creates a new IRadio object
+	 * @param name
+	 * @param url
+	 * @param label
+	 * @return
+	 */
+	public IRadio createRadio(String name, String url, String label);
+	
 	/**
 	 * Add the radio station from the add radio dialog.
 	 */
@@ -102,8 +109,7 @@ public interface IRadioHandler extends IHandler {
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	@SuppressWarnings("unchecked")
-	public List<Radio> retrieveRadiosForBrowser() throws IOException;
+	public List<IRadio> retrieveRadiosForBrowser() throws IOException;
 
 	/**
 	 * Retrieve radios.

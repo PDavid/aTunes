@@ -34,12 +34,12 @@ import javax.swing.JTextField;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
-import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioDialog;
+import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -54,9 +54,11 @@ public final class RadioDialog extends AbstractCustomDialog implements IRadioDia
     private JTextField nameTextField;
     private JTextField urlTextField;
     private JTextField labelTextField;
+    
+    private IRadioHandler radioHandler;
 
     /** The radio. */
-    private Radio result;
+    private IRadio result;
     
     /**
      * Instantiates a new radio dialog for adding a new radio
@@ -70,6 +72,13 @@ public final class RadioDialog extends AbstractCustomDialog implements IRadioDia
         setResizable(false);
         add(getContent());
     }
+    
+    /**
+     * @param radioHandler
+     */
+    public void setRadioHandler(IRadioHandler radioHandler) {
+		this.radioHandler = radioHandler;
+	}
 
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.gui.views.dialogs.IRadioDialog#setRadio(net.sourceforge.atunes.kernel.modules.radio.Radio)
@@ -101,7 +110,7 @@ public final class RadioDialog extends AbstractCustomDialog implements IRadioDia
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	result = new Radio(nameTextField.getText(), urlTextField.getText(), labelTextField.getText());
+            	result = radioHandler.createRadio(nameTextField.getText(), urlTextField.getText(), labelTextField.getText());
                 RadioDialog.this.dispose();
             }
         });
@@ -157,11 +166,8 @@ public final class RadioDialog extends AbstractCustomDialog implements IRadioDia
         return panel;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IRadioDialog#getRadio()
-	 */
     @Override
-	public Radio getRadio() {
+	public IRadio getRadio() {
         return result;
     }
     

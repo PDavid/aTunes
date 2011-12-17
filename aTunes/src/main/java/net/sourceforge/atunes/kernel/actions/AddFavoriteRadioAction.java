@@ -24,13 +24,12 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public class AddFavoriteRadioAction extends AbstractActionOverSelectedObjects<Radio> {
+public class AddFavoriteRadioAction extends AbstractActionOverSelectedObjects<IRadio> {
 
     private static final long serialVersionUID = 82199784140877040L;
 
@@ -54,8 +53,8 @@ public class AddFavoriteRadioAction extends AbstractActionOverSelectedObjects<Ra
     }
 
     @Override
-    protected void executeAction(List<Radio> objects) {
-        for (Radio r : objects) {
+    protected void executeAction(List<IRadio> objects) {
+        for (IRadio r : objects) {
         	radioHandler.addRadio(r);
         }
     }

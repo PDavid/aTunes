@@ -25,7 +25,6 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IProxyBean;
 import net.sourceforge.atunes.model.IRadio;
@@ -71,24 +70,6 @@ public final class Radio implements IRadio {
         this.label = label;
     }
 
-    /**
-     * Gets the radios.
-     * 
-     * @param audioObjects
-     *            the audio objects
-     * 
-     * @return the radios
-     */
-    public static List<Radio> getRadios(List<IAudioObject> audioObjects) {
-        List<Radio> result = new ArrayList<Radio>();
-        for (IAudioObject audioObject : audioObjects) {
-            if (audioObject instanceof Radio) {
-                result.add((Radio) audioObject);
-            }
-        }
-        return result;
-    }
-
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#deleteSongInfo()
 	 */
@@ -98,8 +79,6 @@ public final class Radio implements IRadio {
         title = null;
         songInfoAvailable = false;
     }
-
-    
 
     @Override
     public String getAlbum() {

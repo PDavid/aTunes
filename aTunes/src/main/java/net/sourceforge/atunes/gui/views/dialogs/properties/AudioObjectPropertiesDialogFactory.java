@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.gui.views.dialogs.properties;
 
-import net.sourceforge.atunes.kernel.modules.radio.Radio;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialog;
@@ -62,7 +61,7 @@ public class AudioObjectPropertiesDialogFactory implements IAudioObjectPropertie
     	if (a instanceof IPodcastFeedEntry) {
     		dialog = new PodcastFeedEntryPropertiesDialog((IPodcastFeedEntry) a, frame, state, lookAndFeelManager);
     	} else if (a instanceof IRadio) {
-    		dialog = new RadioPropertiesDialog((Radio) a, frame, lookAndFeelManager);
+    		dialog = new RadioPropertiesDialog((IRadio) a, frame, lookAndFeelManager);
     	} else if (a instanceof ILocalAudioObject) {
     		dialog = new LocalAudioObjectPropertiesDialog((ILocalAudioObject) a, state, frame, osManager, playListHandler, lookAndFeelManager, repositoryHandler, audioObjectImageLocator, localAudioObjectValidator, processFactory);
     	}
