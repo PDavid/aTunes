@@ -31,7 +31,7 @@ import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.utils.Logger;
-import net.sourceforge.atunes.utils.XMLUtils;
+import net.sourceforge.atunes.utils.XMLSerializerService;
 
 final class RetrieveRadiosSwingWorker extends SwingWorker<List<IRadio>, Void> {
 
@@ -43,24 +43,28 @@ final class RetrieveRadiosSwingWorker extends SwingWorker<List<IRadio>, Void> {
 	
 	private INavigationView radioNavigationView;
 	
+	private XMLSerializerService xmlSerializerService;
+	
 	/**
 	 * @param radioHandler
 	 * @param navigationHandler
 	 * @param networkHandler
 	 * @param radioNavigationView
+	 * @param xmlSerializerService
 	 */
-	public RetrieveRadiosSwingWorker(RadioHandler radioHandler, INavigationHandler navigationHandler, INetworkHandler networkHandler, INavigationView radioNavigationView) {
+	public RetrieveRadiosSwingWorker(RadioHandler radioHandler, INavigationHandler navigationHandler, INetworkHandler networkHandler, INavigationView radioNavigationView, XMLSerializerService xmlSerializerService) {
 		this.radioHandler = radioHandler;
 		this.navigationHandler = navigationHandler;
 		this.networkHandler = networkHandler;
 		this.radioNavigationView = radioNavigationView;
+		this.xmlSerializerService = xmlSerializerService;
 	}
 	
     @SuppressWarnings("unchecked")
     @Override
     protected List<IRadio> doInBackground() throws Exception {
         String xml = networkHandler.readURL(networkHandler.getConnection(Constants.RADIO_LIST_DOWNLOAD));
-        return (List<IRadio>) XMLUtils.readObjectFromString(xml);
+        return (List<IRadio>) xmlSerializerService.readObjectFromString(xml);
     }
 
     @Override

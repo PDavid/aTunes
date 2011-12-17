@@ -20,37 +20,12 @@
 
 package net.sourceforge.atunes.utils;
 
-import java.beans.XMLEncoder;
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.StringReader;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
-import net.sourceforge.atunes.kernel.modules.playlist.PlayList;
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry;
-import net.sourceforge.atunes.kernel.modules.radio.Radio;
-import net.sourceforge.atunes.kernel.modules.repository.Repository;
-import net.sourceforge.atunes.kernel.modules.repository.RepositoryStructure;
-import net.sourceforge.atunes.kernel.modules.repository.data.Album;
-import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
-import net.sourceforge.atunes.kernel.modules.repository.data.AudioFile;
-import net.sourceforge.atunes.kernel.modules.repository.data.Folder;
-import net.sourceforge.atunes.kernel.modules.repository.data.Genre;
-import net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites;
-import net.sourceforge.atunes.kernel.modules.statistics.AudioObjectStats;
-import net.sourceforge.atunes.kernel.modules.statistics.Statistics;
-import net.sourceforge.atunes.kernel.modules.statistics.StatisticsAlbum;
-import net.sourceforge.atunes.kernel.modules.tags.DefaultTag;
-import net.sourceforge.atunes.model.RankList;
 
 import org.commonjukebox.plugins.model.PluginApi;
 import org.w3c.dom.Document;
@@ -58,9 +33,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.converters.ConversionException;
 
 /**
  * Utility methods for XML.
@@ -149,122 +121,5 @@ public final class XMLUtils {
 			}
         }
         return null;
-    }
-
-    /**
-     * Reads an object from a file as xml.
-     * 
-     * @param filename
-     *            filename
-     * 
-     * @return The object read from the xml file or null if can't be read
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    public static Object readObjectFromFile(String filename) throws IOException {
-        InputStreamReader inputStreamReader = null;
-        try {
-            inputStreamReader = new InputStreamReader(new FileInputStream(filename), "UTF-8");
-            return getXStream().fromXML(inputStreamReader);
-        } catch (ConversionException e) {
-        	return null;
-        } finally {
-            ClosingUtils.close(inputStreamReader);
-        }
-    }
-
-    public static Object readObjectFromFile(InputStream inputStream) throws IOException {
-        InputStreamReader inputStreamReader = null;
-        try {
-            inputStreamReader = new InputStreamReader(inputStream);
-            return getXStream().fromXML(inputStreamReader);
-        } finally {
-            ClosingUtils.close(inputStreamReader);
-        }
-    }
-
-    /**
-     * Reads an object from a String as xml.
-     * 
-     * @param string
-     *            the string
-     * 
-     * @return The object read from the xml string
-     */
-    public static Object readObjectFromString(String string) {
-        return getXStream().fromXML(string);
-    }
-
-    /**
-     * Writes an object to an XML file.
-     * 
-     * @param bean
-     *            the bean
-     * @param filename
-     *            the filename
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    public static void writeBeanToFile(Object bean, String filename) throws IOException {
-        XMLEncoder encoder = null;
-        try {
-            encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(filename)));
-            encoder.writeObject(bean);
-        } finally {
-            ClosingUtils.close(encoder);
-        }
-    }
-
-    /**
-     * Writes an object to a file as xml.
-     * 
-     * @param object
-     *            Object that should be writen to a xml file
-     * @param filename
-     *            filename
-     * 
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    public static void writeObjectToFile(Object object, String filename) throws IOException {
-        OutputStreamWriter outputStreamWriter = null;
-        try {
-            outputStreamWriter = new OutputStreamWriter(new FileOutputStream(filename), "UTF-8");
-            getXStream().toXML(object, outputStreamWriter);
-        } finally {
-            ClosingUtils.close(outputStreamWriter);
-        }
-    }
-
-    private static XStream getXStream() {
-        XStream xStream = new XStream();
-
-        xStream.alias("Repository", Repository.class);
-        xStream.alias("RepositoryStats", Statistics.class);
-        xStream.alias("RepositoryStructure", RepositoryStructure.class);
-        xStream.alias("SongStats", AudioObjectStats.class);
-        xStream.alias("RankList", RankList.class);
-        xStream.alias("StatisticsAlbum", StatisticsAlbum.class);
-        xStream.alias("AudioFile", AudioFile.class);
-        xStream.alias("Radio", Radio.class);
-        xStream.alias("PodcastFeed", PodcastFeed.class);
-        xStream.alias("PodcastFeedEntry", PodcastFeedEntry.class);
-        xStream.alias("Artist", Artist.class);
-        xStream.alias("Album", Album.class);
-        xStream.alias("Folder", Folder.class);
-        xStream.alias("Genre", Genre.class);
-        xStream.alias("DefaultTag", DefaultTag.class);
-        xStream.alias("PlayList", PlayList.class);
-        xStream.alias("Favorites", Favorites.class);
-
-        xStream.omitField(Radio.class, "title");
-        xStream.omitField(Radio.class, "artist");
-        xStream.omitField(Radio.class, "songInfoAvailable");
-
-        xStream.omitField(PointedList.class, "list");
-
-        return xStream;
     }
 }

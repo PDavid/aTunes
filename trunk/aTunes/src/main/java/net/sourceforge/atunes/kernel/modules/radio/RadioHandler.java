@@ -38,7 +38,7 @@ import net.sourceforge.atunes.model.IRadioDialog;
 import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.utils.Logger;
-import net.sourceforge.atunes.utils.XMLUtils;
+import net.sourceforge.atunes.utils.XMLSerializerService;
 
 /**
  * The Class RadioHandler.
@@ -69,6 +69,15 @@ public final class RadioHandler extends AbstractHandler implements IRadioHandler
     private INavigationView radioNavigationView;
     
     private INavigationHandler navigationHandler;
+    
+    private XMLSerializerService xmlSerializerService;
+    
+    /**
+     * @param xmlSerializerService
+     */
+    public void setXmlSerializerService(XMLSerializerService xmlSerializerService) {
+		this.xmlSerializerService = xmlSerializerService;
+	}
     
     /**
      * @param navigationHandler
@@ -257,10 +266,10 @@ public final class RadioHandler extends AbstractHandler implements IRadioHandler
     public List<IRadio> retrieveRadiosForBrowser() throws IOException {
         try {
             String xml = networkHandler.readURL(networkHandler.getConnection(Constants.RADIO_LIST_DOWNLOAD_COMMON_JUKEBOX));
-            return (List<IRadio>) XMLUtils.readObjectFromString(xml);
+            return (List<IRadio>) xmlSerializerService.readObjectFromString(xml);
         } catch (Exception e) {
             String xml = networkHandler.readURL(networkHandler.getConnection(Constants.RADIO_LIST_DOWNLOAD));
-            return (List<IRadio>) XMLUtils.readObjectFromString(xml);
+            return (List<IRadio>) xmlSerializerService.readObjectFromString(xml);
         }
     }
 
@@ -269,7 +278,7 @@ public final class RadioHandler extends AbstractHandler implements IRadioHandler
      */
     @Override
 	public void retrieveRadios() {
-        new RetrieveRadiosSwingWorker(this, navigationHandler, networkHandler, radioNavigationView).execute();
+        new RetrieveRadiosSwingWorker(this, navigationHandler, networkHandler, radioNavigationView, xmlSerializerService).execute();
     }
 
     @Override

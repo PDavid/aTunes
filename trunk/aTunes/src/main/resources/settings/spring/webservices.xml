@@ -5,13 +5,7 @@
 
 	default-autowire="byName" default-lazy-init="true">
 
-	<bean id="lastFmService"
-		class="net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService">
-		<constructor-arg ref="state" />
-		<constructor-arg ref="osManager" />
-		<constructor-arg ref="frame"/>
-		<constructor-arg ref="networkHandler"/>
-	</bean>
+	<bean id="lastFmService" class="net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService" init-method="updateService"/>
 
 	<bean id="lyricsService"
 		class="net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService">

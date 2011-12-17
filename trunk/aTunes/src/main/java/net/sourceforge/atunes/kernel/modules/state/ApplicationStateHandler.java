@@ -60,7 +60,7 @@ import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.Timer;
-import net.sourceforge.atunes.utils.XMLUtils;
+import net.sourceforge.atunes.utils.XMLSerializerService;
 
 /**
  * This class is responsible of read, write and apply application state, and
@@ -84,6 +84,14 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	private IFontBeanFactory fontBeanFactory;
 	private ILocaleBeanFactory localeBeanFactory;
 	private IProxyBeanFactory proxyBeanFactory;
+	private XMLSerializerService xmlSerializerService;
+	
+	/**
+	 * @param xmlSerializerService
+	 */
+	public void setXmlSerializerService(XMLSerializerService xmlSerializerService) {
+		this.xmlSerializerService = xmlSerializerService;
+	}
 	
 	/**
 	 * @param proxyBeanFactory
@@ -196,7 +204,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 
         if (getState().isSaveRepositoryAsXml()) {
             try {
-                XMLUtils.writeObjectToFile(favorites, StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_FAVORITES_NAME));
+                xmlSerializerService.writeObjectToFile(favorites, StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_FAVORITES_NAME));
                 Logger.info("Storing favorites information...");
             } catch (Exception e) {
                 Logger.error("Could not write favorites");
@@ -224,7 +232,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 
         if (getState().isSaveRepositoryAsXml()) {
             try {
-                XMLUtils.writeObjectToFile(statistics, StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_STATISTICS_NAME));
+                xmlSerializerService.writeObjectToFile(statistics, StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_STATISTICS_NAME));
                 Logger.info("Storing statistics information...");
             } catch (Exception e) {
                 Logger.error("Could not write statistics");
@@ -242,7 +250,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
     		Logger.debug("Persist play list definition not allowed yet");
     	} else {
     		try {
-    			XMLUtils.writeObjectToFile(listOfPlayLists, StringUtils.getString(getUserConfigFolder(), "/", Constants.PLAYLISTS_FILE));
+    			xmlSerializerService.writeObjectToFile(listOfPlayLists, StringUtils.getString(getUserConfigFolder(), "/", Constants.PLAYLISTS_FILE));
     			Logger.info("Playlists definition saved");
     		} catch (IOException e) {
     			Logger.error("Could not persist playlists definition");
@@ -275,7 +283,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
     @Override
 	public void persistPodcastFeedCache(List<IPodcastFeed> podcastFeeds) {
         try {
-            XMLUtils.writeObjectToFile(podcastFeeds, StringUtils.getString(getUserConfigFolder(), "/", Constants.PODCAST_FEED_CACHE));
+            xmlSerializerService.writeObjectToFile(podcastFeeds, StringUtils.getString(getUserConfigFolder(), "/", Constants.PODCAST_FEED_CACHE));
         } catch (IOException e) {
             Logger.error("Could not persist podcast feeds");
             Logger.debug(e);
@@ -288,7 +296,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
     @Override
 	public void persistRadioCache(List<IRadio> radios) {
         try {
-            XMLUtils.writeObjectToFile(radios, StringUtils.getString(getUserConfigFolder(), "/", Constants.RADIO_CACHE));
+            xmlSerializerService.writeObjectToFile(radios, StringUtils.getString(getUserConfigFolder(), "/", Constants.RADIO_CACHE));
         } catch (IOException e) {
             Logger.error("Could not persist radios");
             Logger.debug(e);
@@ -301,7 +309,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
     @Override
 	public void persistPresetRadioCache(List<IRadio> radios) {
         try {
-            XMLUtils.writeObjectToFile(radios, StringUtils.getString(getUserConfigFolder(), "/", Constants.PRESET_RADIO_CACHE));
+            xmlSerializerService.writeObjectToFile(radios, StringUtils.getString(getUserConfigFolder(), "/", Constants.PRESET_RADIO_CACHE));
         } catch (IOException e) {
             Logger.error("Could not persist radios");
             Logger.debug(e);
@@ -337,7 +345,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
                 Logger.info("Storing repository information as xml...");
                 Timer timer = new Timer();
                 timer.start();
-                XMLUtils.writeObjectToFile(repository, StringUtils.getString(folder, "/", Constants.XML_CACHE_REPOSITORY_NAME));
+                xmlSerializerService.writeObjectToFile(repository, StringUtils.getString(folder, "/", Constants.XML_CACHE_REPOSITORY_NAME));
                 Logger.info(StringUtils.getString("DONE (", timer.stop(), " seconds)"));
             } catch (IOException e) {
                 Logger.error("Could not write repository as xml");
@@ -399,7 +407,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
         if (getState().isSaveRepositoryAsXml()) {
             try {
                 Logger.info("Reading xml favorites cache");
-                return (Favorites) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_FAVORITES_NAME));
+                return (Favorites) xmlSerializerService.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_FAVORITES_NAME));
             } catch (IOException e1) {
                 Logger.info("No xml favorites info found");
             } catch (InstantiationError e) {
@@ -428,7 +436,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
             if (getState().isSaveRepositoryAsXml()) {
                 try {
                     Logger.info("Reading xml statistics cache");
-                    return (IStatistics) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_STATISTICS_NAME));
+                    return (IStatistics) xmlSerializerService.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_STATISTICS_NAME));
                 } catch (IOException e1) {
                     Logger.info("No xml statistics info found");
                 }
@@ -438,7 +446,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
             if (getState().isSaveRepositoryAsXml()) {
                 try {
                     Logger.info("Reading xml statistics cache");
-                    return (IStatistics) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_STATISTICS_NAME));
+                    return (IStatistics) xmlSerializerService.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_STATISTICS_NAME));
                 } catch (IOException e1) {
                     Logger.info("No xml statistics info found");
                 }
@@ -458,7 +466,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
         ObjectInputStream stream = null;
         try {
             // First get list of playlists
-            ListOfPlayLists listOfPlayLists = (ListOfPlayLists) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.PLAYLISTS_FILE));
+            ListOfPlayLists listOfPlayLists = (ListOfPlayLists) xmlSerializerService.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.PLAYLISTS_FILE));
             if (listOfPlayLists != null) {
             	listOfPlayLists.setState(getState());
             	Logger.info(StringUtils.getString("List of playlists loaded"));
@@ -491,7 +499,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	@SuppressWarnings("unchecked")
     public List<IPodcastFeed> retrievePodcastFeedCache() {
         try {
-            return (List<IPodcastFeed>) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.PODCAST_FEED_CACHE));
+            return (List<IPodcastFeed>) xmlSerializerService.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.PODCAST_FEED_CACHE));
         } catch (FileNotFoundException e) {
         	Logger.info(e.getMessage());
         } catch (IOException e) {
@@ -507,7 +515,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	@SuppressWarnings("unchecked")
     public List<IRadio> retrieveRadioCache() {
         try {
-            return (List<IRadio>) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.RADIO_CACHE));
+            return (List<IRadio>) xmlSerializerService.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.RADIO_CACHE));
         } catch (FileNotFoundException e) {
         	Logger.info(e.getMessage());
         } catch (IOException e) {
@@ -524,11 +532,11 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
     public List<IRadio> retrieveRadioPreset() {
         try {
             // First try user settings folder
-            return (List<IRadio>) XMLUtils.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.PRESET_RADIO_CACHE));
+            return (List<IRadio>) xmlSerializerService.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.PRESET_RADIO_CACHE));
         } catch (IOException e) {
             try {
                 // Otherwise use list in application folder
-                return (List<IRadio>) XMLUtils.readObjectFromFile(ApplicationStateHandler.class.getResourceAsStream(StringUtils.getString("/settings/", Constants.PRESET_RADIO_CACHE)));
+                return (List<IRadio>) xmlSerializerService.readObjectFromFile(ApplicationStateHandler.class.getResourceAsStream(StringUtils.getString("/settings/", Constants.PRESET_RADIO_CACHE)));
             } catch (IOException e2) {
             	Logger.error(e2);
             }
@@ -580,7 +588,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
             try {
                 Logger.info("Reading xml repository cache");
                 long t0 = System.currentTimeMillis();
-                IRepository repository = (IRepository) XMLUtils.readObjectFromFile(StringUtils.getString(folder, "/", Constants.XML_CACHE_REPOSITORY_NAME));
+                IRepository repository = (IRepository) xmlSerializerService.readObjectFromFile(StringUtils.getString(folder, "/", Constants.XML_CACHE_REPOSITORY_NAME));
                 if (repository != null) {
                 	repository.setState(getState());
 
