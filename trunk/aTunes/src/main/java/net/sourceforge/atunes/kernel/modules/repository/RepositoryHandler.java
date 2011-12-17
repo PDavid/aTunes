@@ -97,8 +97,6 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	
 	private IRepositoryTransaction transaction;
 	
-	private RepositoryActionsHelper repositoryActions;
-	
 	private ShowRepositoryDataHelper showRepositoryDataHelper;
 	
 	private ISearchableObject repositorySearchableObject;
@@ -187,13 +185,6 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 		this.showRepositoryDataHelper = showRepositoryDataHelper;
 	}
 	
-	/**
-	 * @param repositoryActions
-	 */
-	public void setRepositoryActions(RepositoryActionsHelper repositoryActions) {
-		this.repositoryActions = repositoryActions;
-	}
-
 	/**
 	 * @param repository
 	 */
@@ -453,17 +444,12 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 
     @Override
 	public void refreshFolders(List<IFolder> folders) {
-    	getFrame().showProgressBar(true, StringUtils.getString(I18nUtils.getString("REFRESHING"), "..."));
-    	repositoryActions.enableRepositoryActions(false);
     	getBean(RefreshFoldersTask.class).execute(repository, folders);
     }
 
     @Override
 	public void refreshRepository() {
         if (!isRepositoryVoid()) {
-            String text = StringUtils.getString(I18nUtils.getString("REFRESHING"), "...");
-            getFrame().showProgressBar(true, text);
-            repositoryActions.enableRepositoryActions(false);
             repositoryReader.refresh();
         }
     }
