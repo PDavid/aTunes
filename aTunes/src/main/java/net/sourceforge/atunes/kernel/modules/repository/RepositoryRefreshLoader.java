@@ -20,15 +20,73 @@
 
 package net.sourceforge.atunes.kernel.modules.repository;
 
-import javax.swing.SwingUtilities;
+import java.util.concurrent.Callable;
+
+import net.sourceforge.atunes.model.IBackgroundWorker;
+import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
+import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.Logger;
+import net.sourceforge.atunes.utils.StringUtils;
 
 public class RepositoryRefreshLoader extends AbstractRepositoryLoader {
 
+	private IBackgroundWorkerFactory backgroundWorkerFactory;
+	
+	private IFrame frame;
+	
+	private RepositoryActionsHelper repositoryActions;
+	
+	/**
+	 * @param repositoryActions
+	 */
+	public void setRepositoryActions(RepositoryActionsHelper repositoryActions) {
+		this.repositoryActions = repositoryActions;
+	}
+	
+	/**
+	 * @param frame
+	 */
+	public void setFrame(IFrame frame) {
+		this.frame = frame;
+	}
+	
+	/**
+	 * @param backgroundWorkerFactory
+	 */
+	public void setBackgroundWorkerFactory(IBackgroundWorkerFactory backgroundWorkerFactory) {
+		this.backgroundWorkerFactory = backgroundWorkerFactory;
+	}
+	
 	@Override
 	protected void execute() {
-		Thread t = new Thread(this);
-		t.setPriority(Thread.MAX_PRIORITY);
-		t.start();
+		IBackgroundWorker<Void> worker = backgroundWorkerFactory.getWorker();
+		worker.setActionsAfterBackgroundStarted(new Runnable() {
+			
+			@Override
+			public void run() {
+	            String text = StringUtils.getString(I18nUtils.getString("REFRESHING"), "...");
+	            frame.showProgressBar(true, text);
+	            repositoryActions.enableRepositoryActions(false);
+			}
+		});
+		worker.setBackgroundActions(new Callable<Void>() {
+			
+			@Override
+			public Void call() throws Exception {
+				run();
+				return null;
+			}
+		});
+		worker.setActionsWhenDone(new IBackgroundWorker.IActionsWithBackgroundResult<Void>() {
+			
+			@Override
+			public void call(Void result) {
+				Logger.debug("Calling notifyFinishRefresh");
+				getRepositoryLoaderListener().notifyFinishRefresh(RepositoryRefreshLoader.this);
+			}
+		});
+		worker.execute();
 	}
 
 	@Override
@@ -58,11 +116,6 @@ public class RepositoryRefreshLoader extends AbstractRepositoryLoader {
 
 	@Override
 	protected void notifyFinishLoader() {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				getRepositoryLoaderListener().notifyFinishRefresh(RepositoryRefreshLoader.this);
-			}
-		});
+		// Nothing to do, it's done in background worker setActionsWhenDone
 	}
 }

@@ -26,8 +26,11 @@ import java.util.concurrent.Callable;
 import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
 import net.sourceforge.atunes.model.IFolder;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.StringUtils;
 
 public final class RefreshFoldersTask {
 	
@@ -38,6 +41,24 @@ public final class RefreshFoldersTask {
 	private FolderRefresher folderRefresher;
 	
 	private IBackgroundWorkerFactory backgroundWorkerFactory;
+	
+	private IFrame frame;
+	
+	private RepositoryActionsHelper repositoryActions;
+	
+	/**
+	 * @param frame
+	 */
+	public void setFrame(IFrame frame) {
+		this.frame = frame;
+	}
+	
+	/**
+	 * @param repositoryActions
+	 */
+	public void setRepositoryActions(RepositoryActionsHelper repositoryActions) {
+		this.repositoryActions = repositoryActions;
+	}
 	
 	/**
 	 * @param backgroundWorkerFactory
@@ -74,6 +95,13 @@ public final class RefreshFoldersTask {
 	 */
 	public void execute(final IRepository repository, final List<IFolder> folders) {
 		IBackgroundWorker<Void> worker = backgroundWorkerFactory.getWorker();
+		worker.setActionsAfterBackgroundStarted(new Runnable() {
+			@Override
+			public void run() {
+		    	frame.showProgressBar(true, StringUtils.getString(I18nUtils.getString("REFRESHING"), "..."));
+		    	repositoryActions.enableRepositoryActions(false);
+			}
+		});
 		worker.setBackgroundActions(new Callable<Void>() {
 			
 			@Override
