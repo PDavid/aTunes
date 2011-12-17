@@ -24,11 +24,8 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.List;
 
-import javax.swing.SwingUtilities;
-
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
-import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryLoader;
 import net.sourceforge.atunes.model.IRepositoryLoaderListener;
@@ -42,23 +39,20 @@ import net.sourceforge.atunes.utils.Timer;
 /**
  * Class for loading audio files into repository.
  */
-public class RepositoryLoader implements IRepositoryLoader, Runnable {
+public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Runnable {
 
 	// Some attributes to speed up populate info process
 	private IRepositoryLoaderListener listener;
 	private List<File> folders;
-	private boolean refresh;
 	private boolean interrupt;
 	private IRepository oldRepository;
 	private IRepository repository;
-	private int totalFilesToLoad;
 	private int filesLoaded;
 	private long startReadTime;
 	private String fastRepositoryPath;
 	private int fastFirstChar;
 	private IState state;
 	private ILocalAudioObjectFactory localAudioObjectFactory;
-	private ILocalAudioObjectValidator localAudioObjectValidator;
 	private FileFilter validLocalAudioObjectFileFilter;
 	private DirectoryFileFilter directoryFileFilter;
 	
@@ -71,21 +65,58 @@ public class RepositoryLoader implements IRepositoryLoader, Runnable {
 	 * @param folders
 	 * @param oldRepository
 	 * @param repository
-	 * @param refresh
 	 */
 	@Override
-	public void start(IRepositoryTransaction transaction, List<File> folders, IRepository oldRepository, IRepository repository, boolean refresh) {
+	public void start(IRepositoryTransaction transaction, List<File> folders, IRepository oldRepository, IRepository repository) {
 		this.transaction = transaction;
-		this.refresh = refresh;
 		this.folders = folders;
 		this.oldRepository = oldRepository;
 		this.repository = repository;
 		this.directoryFileFilter = new DirectoryFileFilter();
-		Thread t = new Thread(this);
-		t.setPriority(Thread.MAX_PRIORITY);
-		t.start();
+		if (this.listener == null) {
+			this.listener = new VoidRepositoryLoaderListener();
+		}
+		execute();
 	}
+	
+	/**
+	 * @return
+	 */
+	protected final List<File> getFolders() {
+		return folders;
+	}
+	
+	/**
+	 * @return
+	 */
+	protected final int getFilesLoaded() {
+		return filesLoaded;
+	}
+	
+	/**
+	 * @return
+	 */
+	protected final boolean isInterrupt() {
+		return interrupt;
+	}
+	
+	/**
+	 * Executes this loader 
+	 */
+	protected abstract void execute();
+	
+	/**
+	 * Use this method to call some specific actions before loading repository
+	 */
+	protected abstract void runTasksBeforeLoadRepository();
 
+	/**
+	 * @return
+	 */
+	protected final long getStartReadTime() {
+		return startReadTime;
+	}
+	
 	/**
 	 * @param state
 	 */
@@ -98,13 +129,6 @@ public class RepositoryLoader implements IRepositoryLoader, Runnable {
 	 */
 	public void setLocalAudioObjectFactory(ILocalAudioObjectFactory localAudioObjectFactory) {
 		this.localAudioObjectFactory = localAudioObjectFactory;
-	}
-	
-	/**
-	 * @param localAudioObjectValidator
-	 */
-	public void setLocalAudioObjectValidator(ILocalAudioObjectValidator localAudioObjectValidator) {
-		this.localAudioObjectValidator = localAudioObjectValidator;
 	}
 	
 	/**
@@ -121,50 +145,15 @@ public class RepositoryLoader implements IRepositoryLoader, Runnable {
 	 *            the listener
 	 */
 	@Override
-	public void addRepositoryLoaderListener(IRepositoryLoaderListener listener) {
+	public void setRepositoryLoaderListener(IRepositoryLoaderListener listener) {
 		this.listener = listener;
 	}
-
+	
 	/**
-	 * Count files in dir.
-	 * 
-	 * @param dir
-	 *            the dir
-	 * 
-	 * @return the int
+	 * @return
 	 */
-	private int countFilesInDir(File dir) {
-		int files = 0;
-		if (!interrupt) {
-			File[] list = dir.listFiles();
-			if (list == null) {
-				return files;
-			}
-			for (File element : list) {
-				if (localAudioObjectValidator.isValidAudioFile(element)) {
-					files++;
-				} else if (element.isDirectory()) {
-					files = files + countFilesInDir(element);
-				}
-			}
-		}
-		return files;
-	}
-
-	/**
-	 * Count files in dir.
-	 * 
-	 * @param folders1
-	 *            the folders1
-	 * 
-	 * @return the int
-	 */
-	private int countFilesInDir(List<File> folders1) {
-		int files = 0;
-		for (File f : folders1) {
-			files = files + countFilesInDir(f);
-		}
-		return files;
+	protected final IRepositoryLoaderListener getRepositoryLoaderListener() {
+		return listener;
 	}
 
 	/**
@@ -180,17 +169,7 @@ public class RepositoryLoader implements IRepositoryLoader, Runnable {
 	 * Load repository.
 	 */
 	private void loadRepository() {
-		if (!refresh) {
-			totalFilesToLoad = countFilesInDir(folders);
-			if (listener != null) {
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						listener.notifyFilesInRepository(totalFilesToLoad);
-					}
-				});
-			}
-		}
+		runTasksBeforeLoadRepository();
 		startReadTime = System.currentTimeMillis();
 
 		RepositoryFiller filler = new RepositoryFiller(repository, state);
@@ -205,7 +184,6 @@ public class RepositoryLoader implements IRepositoryLoader, Runnable {
 				navigateDir(filler, folder, folder);
 			}
 		}
-
 	}
 
 	/**
@@ -216,7 +194,6 @@ public class RepositoryLoader implements IRepositoryLoader, Runnable {
 	 */
 	private void navigateDir(RepositoryFiller filler, File relativeTo, File dir) {
         if (!interrupt) {
-
             // Process directories
             processDirectories(filler, dir, relativeTo);
             
@@ -264,9 +241,7 @@ public class RepositoryLoader implements IRepositoryLoader, Runnable {
                 relativePath = ".";
             }
 
-            if (listener != null && !refresh) {
-                listener.notifyCurrentPath(relativePath);
-            }
+            notifyCurrentPath(relativePath);
 
         	for (File audiofile : audiofiles) {
         		if (!interrupt) {
@@ -274,15 +249,33 @@ public class RepositoryLoader implements IRepositoryLoader, Runnable {
         		}
         	}
         	
-    		// Update remaining time after a number of files
-    		if (filesLoaded % 100 == 0 && !refresh && listener != null && !interrupt) {
-    			long t1 = System.currentTimeMillis();
-    			final long remainingTime = filesLoaded != 0 ? (totalFilesToLoad - filesLoaded) * (t1 - startReadTime) / filesLoaded : 0;
-    			listener.notifyRemainingTime(remainingTime);
-    			listener.notifyReadProgress();
-    		}
+        	notifyCurrentProgress();        	
         }
 	}
+	
+	/**
+	 * Actions needed to notify current relative path
+	 * @param relativePath
+	 */
+	protected abstract void notifyCurrentPath(String relativePath);
+	
+	/**
+	 * Actions needed to notify current progress
+	 */
+	protected abstract void notifyCurrentProgress();
+	
+	/**
+	 * Actions needed to notify each file loaded
+	 */
+	protected abstract void notifyFileLoaded();
+	
+	/**
+	 * Actions needed to notify current album being loaded
+	 * @param artist
+	 * @param album
+	 */
+	protected abstract void notifyCurrentAlbum(String artist, String album);
+
 	
 	/**
 	 * Processes a single audio file
@@ -309,16 +302,10 @@ public class RepositoryLoader implements IRepositoryLoader, Runnable {
 			}
 		}
 
-		if (!refresh && listener != null) {
-			listener.notifyFileLoaded();
-		}
+		notifyFileLoaded();
 		filesLoaded++;
 		filler.addAudioFile(audio, relativeTo, relativePath);
-
-		// Update current artist and album
-		if (!refresh && listener != null) {
-			listener.notifyCurrentAlbum(audio.getArtist(), audio.getAlbum());
-		}		
+		notifyCurrentAlbum(audio.getArtist(), audio.getAlbum());
 	}
 
 	/**
@@ -326,48 +313,29 @@ public class RepositoryLoader implements IRepositoryLoader, Runnable {
 	 */
 	private void notifyFinish() {
 		transaction.finishTransaction();
-		
-		if (listener == null) {
-			return;
-		}
-		if (refresh) {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					listener.notifyFinishRefresh(RepositoryLoader.this);
-				}
-			});
-		} else {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					listener.notifyFinishRead(RepositoryLoader.this);
-				}
-			});
-		}
+		notifyFinishLoader();
 	}
+	
+	/**
+	 * Actions needed when process finished
+	 */
+	protected abstract void notifyFinishLoader();
 
 	@Override
 	public void run() {
 		Logger.info("Starting repository read");
-		
 		Timer timer = new Timer();
 		timer.start();
 		if (!folders.isEmpty()) {
 			loadRepository();
 		} else {
-			Logger.error(					"No folders selected for repository");
+			Logger.error("No folders selected for repository");
 		}
 		if (!interrupt) {
 			double time = timer.stop();
 			long files = repository.countFiles();
 			double averageFileTime = time / files;
-			Logger.info(
-										StringUtils.getString("Read repository process DONE (",
-							files, " files, ", time, " seconds, ", StringUtils
-									.toString(averageFileTime, 4),
-							" seconds / file)"));
-
+			Logger.info(StringUtils.getString("Read repository process DONE (", files, " files, ", time, " seconds, ", StringUtils.toString(averageFileTime, 4), " seconds / file)"));
 			notifyFinish();
 		}
 	}

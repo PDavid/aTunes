@@ -316,9 +316,9 @@ public class RepositoryReader implements IRepositoryLoaderListener {
         IRepository oldRepository = repository;
         repository = new Repository(folders, state);
         repositoryHandler.setRepository(repository);
-        currentLoader = Context.getBean(IRepositoryLoader.class);
-        currentLoader.addRepositoryLoaderListener(this);
-        currentLoader.start(new RepositoryTransaction(repository, repositoryHandler), folders, oldRepository, repository, false);
+        currentLoader = Context.getBean(RepositoryReadLoader.class);
+        currentLoader.setRepositoryLoaderListener(this);
+        currentLoader.start(new RepositoryTransaction(repository, repositoryHandler), folders, oldRepository, repository);
     }
 
     @Override
@@ -440,9 +440,9 @@ public class RepositoryReader implements IRepositoryLoaderListener {
         IRepository oldRepository = repository;
         repository = new Repository(oldRepository.getRepositoryFolders(), state);
         repositoryHandler.setRepository(repository);
-        currentLoader = Context.getBean(IRepositoryLoader.class);
-        currentLoader.addRepositoryLoaderListener(this);
-        currentLoader.start(new RepositoryTransaction(repository, repositoryHandler), oldRepository.getRepositoryFolders(), oldRepository, repository, true);
+        currentLoader = Context.getBean(RepositoryRefreshLoader.class);
+        currentLoader.setRepositoryLoaderListener(this);
+        currentLoader.start(new RepositoryTransaction(repository, repositoryHandler), oldRepository.getRepositoryFolders(), oldRepository, repository);
     }
     
 	@Override
