@@ -46,7 +46,7 @@ import net.sourceforge.atunes.model.ISimilarArtistsInfo;
 import net.sourceforge.atunes.utils.AbstractCache;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
-import net.sourceforge.atunes.utils.XMLUtils;
+import net.sourceforge.atunes.utils.XMLSerializerService;
 
 import org.apache.commons.io.FileUtils;
 
@@ -64,9 +64,16 @@ public class LastFmCache extends AbstractCache {
     private File submissionCacheDir;
     
     private IOSManager osManager;
+    
+    private XMLSerializerService xmlSerializerService;
 
-    public LastFmCache(IOSManager osManager) {
+    /**
+     * @param osManager
+     * @param xmlSerializerService
+     */
+    public LastFmCache(IOSManager osManager, XMLSerializerService xmlSerializerService) {
         super(LastFmCache.class.getResource("/settings/ehcache-lastfm.xml"));
+        this.xmlSerializerService = xmlSerializerService;
     }
 
     /**
@@ -424,7 +431,7 @@ public class LastFmCache extends AbstractCache {
         try {
             String path = getFileNameForSubmissionCache();
             if (path != null) {
-                XMLUtils.writeObjectToFile(submissionDataList, path);
+            	xmlSerializerService.writeObjectToFile(submissionDataList, path);
                 Logger.debug("Stored submission data: ", submissionData);
             }
         } catch (IOException e) {
@@ -439,7 +446,7 @@ public class LastFmCache extends AbstractCache {
         try {
             String path = getFileNameForSubmissionCache();
             if (path != null && new File(path).exists()) {
-                data = (List<SubmissionData>) XMLUtils.readObjectFromFile(path);
+                data = (List<SubmissionData>) xmlSerializerService.readObjectFromFile(path);
             }
         } catch (IOException e) {
             Logger.error(e);
@@ -454,7 +461,7 @@ public class LastFmCache extends AbstractCache {
         try {
             String path = getFileNameForSubmissionCache();
             if (path != null && new File(path).exists()) {
-                XMLUtils.writeObjectToFile(new ArrayList<SubmissionData>(), path);
+            	xmlSerializerService.writeObjectToFile(new ArrayList<SubmissionData>(), path);
             }
         } catch (IOException e) {
             Logger.error(e);

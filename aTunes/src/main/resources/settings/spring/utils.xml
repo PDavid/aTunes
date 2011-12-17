@@ -11,5 +11,47 @@
 	
 	<bean id="collatorFactory" class="net.sourceforge.atunes.utils.Collator"/>
 	<bean id="collator" factory-bean="collatorFactory" factory-method="getCollator"/>
-
+	
+	<bean id="xmlSerializerService" class="net.sourceforge.atunes.utils.XMLSerializerService"/>
+	
+	<bean id="xstreamFactory" class="net.sourceforge.atunes.utils.XStreamFactory">
+		<property name="aliases">
+			<map>
+				<entry key="Repository" value="net.sourceforge.atunes.kernel.modules.repository.Repository"/>
+				<entry key="RepositoryStats" value="net.sourceforge.atunes.kernel.modules.statistics.Statistics"/>
+				<entry key="RepositoryStructure" value="net.sourceforge.atunes.kernel.modules.repository.RepositoryStructure"/>
+				<entry key="SongStats" value="net.sourceforge.atunes.kernel.modules.statistics.AudioObjectStats"/>
+				<entry key="RankList" value="net.sourceforge.atunes.model.RankList"/>
+				<entry key="StatisticsAlbum" value="net.sourceforge.atunes.kernel.modules.statistics.StatisticsAlbum"/>
+				<entry key="AudioFile" value="net.sourceforge.atunes.kernel.modules.repository.data.AudioFile"/>
+				<entry key="Radio" value="net.sourceforge.atunes.kernel.modules.radio.Radio"/>
+				<entry key="PodcastFeed" value="net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed"/>
+				<entry key="PodcastFeedEntry" value="net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntry"/>
+				<entry key="Artist" value="net.sourceforge.atunes.kernel.modules.repository.data.Artist"/>
+				<entry key="Album" value="net.sourceforge.atunes.kernel.modules.repository.data.Album"/>
+				<entry key="Folder" value="net.sourceforge.atunes.kernel.modules.repository.data.Folder"/>
+				<entry key="Genre" value="net.sourceforge.atunes.kernel.modules.repository.data.Genre"/>
+				<entry key="DefaultTag" value="net.sourceforge.atunes.kernel.modules.tags.DefaultTag"/>
+				<entry key="PlayList" value="net.sourceforge.atunes.kernel.modules.playlist.PlayList"/>
+				<entry key="Favorites" value="net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites"/>
+			</map>
+		</property>
+		<property name="omitFields">
+			<map>
+				<entry key="net.sourceforge.atunes.kernel.modules.radio.Radio">
+					<list>
+						<value>title</value>
+						<value>artist</value>
+						<value>songInfoAvailable</value>
+					</list>
+				</entry>
+				<entry key="net.sourceforge.atunes.utils.PointedList">
+					<list>
+						<value>list</value>
+					</list>
+				</entry>
+			</map>
+		</property>
+	</bean>
+	
 </beans>

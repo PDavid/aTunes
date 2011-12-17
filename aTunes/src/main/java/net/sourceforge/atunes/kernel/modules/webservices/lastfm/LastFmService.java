@@ -57,6 +57,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.UnknownObjectCheck;
+import net.sourceforge.atunes.utils.XMLSerializerService;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -171,27 +172,48 @@ public final class LastFmService {
     private IFrame frame;
     
     private IOSManager osManager;
+    
+    private XMLSerializerService xmlSerializerService;
 
     /**
-     * Instantiates a new Last.fm service
-     * 
      * @param state
-     * @param osManager
+     */
+    public void setState(IState state) {
+		this.state = state;
+	}
+    
+    /**
      * @param frame
+     */
+    public void setFrame(IFrame frame) {
+		this.frame = frame;
+	}
+    
+    /**
+     * @param osManager
+     */
+    public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
+    
+    /**
      * @param networkHandler
      */
-    public LastFmService(IState state, IOSManager osManager, IFrame frame, INetworkHandler networkHandler) {
-    	this.state = state;
-    	this.frame = frame;
-    	this.osManager = osManager;
-    	this.networkHandler = networkHandler;
-    	updateService();
-    }
+    public void setNetworkHandler(INetworkHandler networkHandler) {
+		this.networkHandler = networkHandler;
+	}
+    
+    /**
+     * @param xmlSerializerService
+     */
+    public void setXmlSerializerService(XMLSerializerService xmlSerializerService) {
+		this.xmlSerializerService = xmlSerializerService;
+	}
     
     private synchronized LastFmCache getCache() {
     	if (lastFmCache == null) {
     		Logger.debug("Initializing LastFmCache");
-    		lastFmCache = new LastFmCache(osManager);
+    		lastFmCache = new LastFmCache(osManager, xmlSerializerService);
     	}
     	return lastFmCache;
     }
