@@ -20,40 +20,22 @@
 
 package net.sourceforge.atunes.model;
 
-import java.util.List;
-
 
 /**
- * The listener interface for receiving playListEvent events.
- */
-/**
+ * Represents a position of a play list, holding an audio object
  * @author alex
  *
  */
-public interface IPlayListEventListener {
-
-    /**
-     * Called when play list is cleared.
-     */
-    public void playListCleared();
-
-    /**
-     * Called when audio object to being played changes.
-     * 
-     * @param audioObject
-     *            the audio object
-     */
-    public void selectedAudioObjectChanged(IAudioObject audioObject);
+public interface IPlayListAudioObject {
 
 	/**
-	 * Called when audio objects are added to play list
-	 * @param playListAudioObjects
+	 * @return the audioObject
 	 */
-	public void audioObjectsAdded(List<IPlayListAudioObject> playListAudioObjects);
+	public IAudioObject getAudioObject();
 
 	/**
-	 * Called when audio objects are removed from play list
-	 * @param audioObjectList
+	 * @return the position
 	 */
-	public void audioObjectsRemoved(List<IPlayListAudioObject> audioObjectList);
+	public int getPosition();
+
 }

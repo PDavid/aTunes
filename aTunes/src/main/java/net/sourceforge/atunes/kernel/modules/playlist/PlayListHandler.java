@@ -54,6 +54,7 @@ import net.sourceforge.atunes.model.ILocalAudioObjectLocator;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlayList;
+import net.sourceforge.atunes.model.IPlayListAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListIOService;
 import net.sourceforge.atunes.model.IPlayListObjectFilter;
@@ -1313,12 +1314,12 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	}
 
 	@Override
-	public void audioObjectsAdded(List<PlayListAudioObject> audioObjectsAdded) {
+	public void audioObjectsAdded(List<IPlayListAudioObject> audioObjectsAdded) {
 		playListsChanged(true, true);
 	}
 	
 	@Override
-	public void audioObjectsRemoved(List<PlayListAudioObject> audioObjectsRemoved) {		
+	public void audioObjectsRemoved(List<IPlayListAudioObject> audioObjectsRemoved) {		
 		playListsChanged(true, true);
 	}
 	

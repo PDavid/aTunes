@@ -27,8 +27,8 @@ import static org.mockito.Mockito.verify;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListAudioObject;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPlayListAudioObject;
 import net.sourceforge.atunes.model.IPlayListEventListener;
 
 import org.junit.Before;
@@ -54,7 +54,7 @@ public class PlayListEventListenersTest {
 
 	@Test
 	public void audioObjectsAdded() {
-		List<PlayListAudioObject> list = anyList();
+		List<IPlayListAudioObject> list = anyList();
 		sut.audioObjectsAdded(list);
 		
 		verify(mock1).audioObjectsAdded(list);
@@ -63,7 +63,7 @@ public class PlayListEventListenersTest {
 	
 	@Test
 	public void audioObjectsRemoved() {
-		List<PlayListAudioObject> list = anyList();
+		List<IPlayListAudioObject> list = anyList();
 		sut.audioObjectsRemoved(list);
 		
 		verify(mock1).audioObjectsRemoved(list);
