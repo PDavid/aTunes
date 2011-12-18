@@ -22,8 +22,6 @@ package net.sourceforge.atunes.model;
 
 import java.beans.ConstructorProperties;
 
-import net.sourceforge.atunes.utils.StringUtils;
-
 /**
  * This class represents a version, i.e. "1.7.4" where 1 is major number, 7 is
  * minor number, and 4 is revision number.
@@ -88,7 +86,7 @@ public class ApplicationVersion implements Comparable<ApplicationVersion> {
 
     @Override
     public int hashCode() {
-        return StringUtils.getString(majorNumber, ".", minorNumber, ".", revisionNumber, ".", versionType).hashCode();
+    	return new StringBuilder().append(majorNumber).append(".").append(minorNumber).append(".").append(revisionNumber).append(".").append(versionType).toString().hashCode();
     }
 
     /**
@@ -150,7 +148,7 @@ public class ApplicationVersion implements Comparable<ApplicationVersion> {
      */
     @Override
     public String toString() {
-        return StringUtils.getString(majorNumber, ".", minorNumber, ".", revisionNumber, " ", name, " ", versionType != VersionType.FINAL ? versionType : "");
+        return new StringBuilder().append(majorNumber).append(".").append(minorNumber).append(".").append(revisionNumber).append(" ").append(name).append(" ").append(versionType != VersionType.FINAL ? versionType : "").toString();
     }
 
     /**
@@ -159,7 +157,7 @@ public class ApplicationVersion implements Comparable<ApplicationVersion> {
      * @return the short version in string format
      */
     public String toShortString() {
-        return StringUtils.getString(majorNumber, ".", minorNumber, ".", revisionNumber, " ", versionType != VersionType.FINAL ? versionType : "");
+        return new StringBuilder().append(majorNumber).append(".").append(minorNumber).append(".").append(revisionNumber).append(" ").append(versionType != VersionType.FINAL ? versionType : "").toString();
     }
 
     /**
