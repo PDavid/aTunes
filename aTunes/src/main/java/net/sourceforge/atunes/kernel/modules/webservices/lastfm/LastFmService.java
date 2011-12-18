@@ -30,9 +30,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.swing.ImageIcon;
-import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmAlbum;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmAlbumList;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmArtistTopTracks;
@@ -42,7 +40,6 @@ import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.model.IArtistInfo;
 import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILovedTrack;
@@ -53,7 +50,6 @@ import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.ITrackInfo;
 import net.sourceforge.atunes.utils.CryptoUtils;
-import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.UnknownObjectCheck;
@@ -82,71 +78,7 @@ import de.umass.lastfm.scrobble.ScrobbleResult;
 @PluginApi
 public final class LastFmService {
 
-    private final class SubmitNowPlayingInfoRunnable implements Runnable {
-
-		private final ILocalAudioObject audioFile;
-
-		private SubmitNowPlayingInfoRunnable(ILocalAudioObject audioFile) {
-			this.audioFile = audioFile;
-		}
-
-		@Override
-		public void run() {
-		    try {
-		        submitNowPlayingInfo(audioFile);
-		    } catch (ScrobblerException e) {
-		        if (e.getStatus() == 2) {
-		            Logger.error("Authentication failure on Last.fm service");
-		            SwingUtilities.invokeLater(new Runnable() {
-
-		                @Override
-		                public void run() {
-		                	Context.getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(frame, I18nUtils.getString("LASTFM_USER_ERROR"));
-		                    // Disable service by deleting password
-		                    state.setLastFmEnabled(false);
-		                }
-		            });
-		        } else {
-		            Logger.error(e.getMessage());
-		        }
-		    }
-		}
-	}
-
-	private final class SubmitToLastFmRunnable implements Runnable {
-
-		private final long secondsPlayed;
-		private final IAudioObject audioFile;
-
-		private SubmitToLastFmRunnable(long secondsPlayed, IAudioObject audioFile) {
-			this.secondsPlayed = secondsPlayed;
-			this.audioFile = audioFile;
-		}
-
-		@Override
-		public void run() {
-		    try {
-		        submit(audioFile, secondsPlayed);
-		    } catch (ScrobblerException e) {
-		        if (e.getStatus() == 2) {
-		            Logger.error("Authentication failure on Last.fm service");
-		            SwingUtilities.invokeLater(new Runnable() {
-
-		                @Override
-		                public void run() {
-		                	Context.getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(frame, I18nUtils.getString("LASTFM_USER_ERROR"));
-		                    // Disable service by deleting password
-		                    state.setLastFmEnabled(false);
-		                }
-		            });
-		        } else {
-		            Logger.error(e.getMessage());
-		        }
-		    }
-		}
-	}
-
-	/*
+    /*
      * DO NOT USE THESE KEYS FOR OTHER APPLICATIONS THAN aTunes!
      */
     private static final byte[] API_KEY = {78, 119, -39, -5, -89, -107, -38, 41, -87, -107, 122, 98, -33, 46, 32, -47, -44, 54, 97, 67, 105, 122, 11, -26, -81, 90, 94, 55, 121,
@@ -210,12 +142,17 @@ public final class LastFmService {
 		this.xmlSerializerService = xmlSerializerService;
 	}
     
-    private synchronized LastFmCache getCache() {
-    	if (lastFmCache == null) {
-    		Logger.debug("Initializing LastFmCache");
-    		lastFmCache = new LastFmCache(osManager, xmlSerializerService);
-    	}
+    /**
+     * @return
+     */
+    private LastFmCache getCache() {
     	return lastFmCache;
+    }
+    
+    public void initialize() {
+    	Logger.debug("Initializing LastFmCache");
+    	lastFmCache = new LastFmCache(osManager, xmlSerializerService);
+    	updateService();
     }
     
     /**
@@ -616,7 +553,7 @@ public final class LastFmService {
      *            seconds the audio file has already played
      * @throws ScrobblerException
      */
-    private void submit(IAudioObject file, long secondsPlayed) throws ScrobblerException {
+    void submit(IAudioObject file, long secondsPlayed) throws ScrobblerException {
         // Do all necessary checks
         if (!checkUser() || !checkPassword() || !checkArtist(file) || !checkTitle(file) || !checkDuration(file)) {
             return;
@@ -746,7 +683,7 @@ public final class LastFmService {
      *            audio file
      * @throws ScrobblerException
      */
-    private void submitNowPlayingInfo(ILocalAudioObject file) throws ScrobblerException {
+    void submitNowPlayingInfo(ILocalAudioObject file) throws ScrobblerException {
         // Do all necessary checks
         if (!checkUser() || !checkPassword() || !checkArtist(file) || !checkTitle(file)) {
             return;
@@ -922,7 +859,7 @@ public final class LastFmService {
      */
     public void submitToLastFm(final IAudioObject audioFile, final long secondsPlayed, ITaskService taskService) {
         if (state.isLastFmEnabled()) {
-        	taskService.submitNow("Submit to Last.fm", new SubmitToLastFmRunnable(secondsPlayed, audioFile));
+        	taskService.submitNow("Submit to Last.fm", new SubmitToLastFmRunnable(secondsPlayed, audioFile, this, frame, state));
         }
     }
 
@@ -958,7 +895,7 @@ public final class LastFmService {
      */
     public void submitNowPlayingInfoToLastFm(final ILocalAudioObject audioFile, ITaskService taskService) {
         if (state.isLastFmEnabled()) {
-        	taskService.submitNow("Submit Now Playing to Last.fm", new SubmitNowPlayingInfoRunnable(audioFile));
+        	taskService.submitNow("Submit Now Playing to Last.fm", new SubmitNowPlayingInfoRunnable(audioFile, this, frame, state));
         }
     }
 
