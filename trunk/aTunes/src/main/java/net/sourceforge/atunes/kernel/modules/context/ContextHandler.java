@@ -139,8 +139,9 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 
         // Update modification time if necessary
         if (ao instanceof ILocalAudioObject) {
-        	if ( ((ILocalAudioObject) ao).getFile() != null)
+        	if ( ((ILocalAudioObject) ao).getFile() != null) {
             	lastAudioObjectModificationTime = ((ILocalAudioObject) ao).getFile().lastModified();
+        	}
         } else {
             lastAudioObjectModificationTime = 0;
         }

@@ -47,11 +47,6 @@ class AudioFileMPlayerOutputReader extends AbstractMPlayerOutputReader {
     }
 
     @Override
-    protected void init() {
-        super.init();
-    }
-
-    @Override
     protected void read(String line) {
         super.read(line);
 
