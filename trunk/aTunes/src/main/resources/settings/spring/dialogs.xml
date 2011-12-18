@@ -45,7 +45,7 @@
 		<constructor-arg ref="lookAndFeelManager"/>	
 	</bean>
 
-	<bean id="ripperProgressDialog" class="net.sourceforge.atunes.gui.views.dialogs.RipperProgressDialog" scope="prototype">
+	<bean id="ripperProgressDialog" class="net.sourceforge.atunes.kernel.modules.cdripper.RipperProgressDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
@@ -112,5 +112,20 @@
 	<bean id="audioObjectPropertiesDialogFactory" class="net.sourceforge.atunes.gui.views.dialogs.properties.AudioObjectPropertiesDialogFactory" scope="singleton"/>
 	
 	<bean id="indeterminateProgressDialogFactory" class="net.sourceforge.atunes.gui.views.dialogs.IndeterminateProgressDialogFactory" scope="singleton"/>
+
+	<bean id="statsDialog" class="net.sourceforge.atunes.kernel.modules.statistics.StatsDialog" scope="prototype" init-method="initialize">
+		<constructor-arg ref="frame"/>
+		<constructor-arg ref="lookAndFeelManager"/>
+	</bean>
+
+	<bean id="radioBrowserDialog" class="net.sourceforge.atunes.kernel.modules.radio.RadioBrowserDialog" scope="prototype" init-method="initialize">
+		<constructor-arg ref="frame"/>
+		<constructor-arg ref="lookAndFeelManager"/>
+	</bean>
+
+	<bean id="editPreferencesDialog" class="net.sourceforge.atunes.kernel.modules.state.EditPreferencesDialog" scope="prototype" init-method="initialize">
+		<constructor-arg ref="frame"/>
+		<constructor-arg ref="lookAndFeelManager"/>
+	</bean>
 	
 </beans>

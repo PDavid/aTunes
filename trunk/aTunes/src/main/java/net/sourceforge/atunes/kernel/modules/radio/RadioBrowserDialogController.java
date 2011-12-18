@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.radio;
 
 
 
-import net.sourceforge.atunes.gui.views.dialogs.RadioBrowserDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.model.IState;

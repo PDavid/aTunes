@@ -33,7 +33,6 @@ import javax.swing.table.DefaultTableModel;
 
 import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.GuiUtils;
-import net.sourceforge.atunes.gui.views.dialogs.StatsDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;

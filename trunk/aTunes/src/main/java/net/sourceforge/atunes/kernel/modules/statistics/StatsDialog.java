@@ -18,13 +18,12 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.dialogs;
+package net.sourceforge.atunes.kernel.modules.statistics;
 
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Window;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -35,6 +34,7 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -73,14 +73,23 @@ public final class StatsDialog extends AbstractCustomDialog {
 
     /** The songs chart. */
     private JLabel songsChart;
+    
+    private ILookAndFeelManager lookAndFeelManager;
 
     /**
      * Instantiates a new stats dialog.
-     * @param owner
+     * @param frame
      * @param lookAndFeelManager
      */
-    public StatsDialog(Window owner, ILookAndFeelManager lookAndFeelManager) {
-        super(owner, 750, 750, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
+    public StatsDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
+        super(frame, 750, 750, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
+        this.lookAndFeelManager = lookAndFeelManager;
+    }
+    
+    /**
+     * Initializes dialog
+     */
+    public void initialize() {
         setTitle(StringUtils.getString(I18nUtils.getString("STATS"), " - ", Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
         setResizable(false);
         add(getContent(lookAndFeelManager.getCurrentLookAndFeel()));

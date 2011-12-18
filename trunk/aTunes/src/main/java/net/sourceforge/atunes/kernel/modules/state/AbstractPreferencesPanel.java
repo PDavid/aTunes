@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.dialogs.editPreferences;
+package net.sourceforge.atunes.kernel.modules.state;
 
 import java.awt.GridBagLayout;
 import java.awt.Window;
@@ -29,7 +29,7 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.model.IState;
 
-public abstract class AbstractPreferencesPanel extends JPanel {
+abstract class AbstractPreferencesPanel extends JPanel {
 
     private static final long serialVersionUID = -6163144955354757264L;
 
