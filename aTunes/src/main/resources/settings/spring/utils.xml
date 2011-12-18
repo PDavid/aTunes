@@ -50,6 +50,11 @@
 						<value>list</value>
 					</list>
 				</entry>
+				<entry key="net.sourceforge.atunes.kernel.modules.playlist.PlayListPointedList">
+					<list>
+						<value>list</value>
+					</list>
+				</entry>
 			</map>
 		</property>
 	</bean>

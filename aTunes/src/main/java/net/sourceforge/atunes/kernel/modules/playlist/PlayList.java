@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.playlist;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -61,43 +60,6 @@ public class PlayList implements IPlayList {
     private PointedList<IAudioObject> audioObjects;
     
     private transient IState state;
-
-    private static class PlayListAudioObjectComparator implements Comparator<IPlayListAudioObject>, Serializable {
-        /**
-		 * 
-		 */
-		private static final long serialVersionUID = 2216966505910863325L;
-
-		@Override
-        public int compare(IPlayListAudioObject o1, IPlayListAudioObject o2) {
-            return -Integer.valueOf(o1.getPosition()).compareTo(Integer.valueOf(o2.getPosition()));
-        }
-    }
-
-    static class PlayListPointedList extends PointedList<IAudioObject> {
-        private static final long serialVersionUID = -6966402482637754615L;
-
-        private transient IState state;
-        
-        PlayListPointedList(IState state) {
-            super();
-            this.state = state;
-        }
-
-        PlayListPointedList(PointedList<IAudioObject> pointedList, IState state) {
-            super(pointedList);
-            this.state = state;
-        }
-
-        @Override
-        public boolean isCyclic() {
-            return state.isRepeat();
-        }
-        
-        public void setState(IState state) {
-			this.state = state;
-		}
-    };
 
     /**
      * Default constructor
