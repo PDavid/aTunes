@@ -31,6 +31,7 @@ import java.util.Set;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmAlbum;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmAlbumList;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmArtistTopTracks;
@@ -93,8 +94,6 @@ public final class LastFmService {
     private static final String VARIOUS_ARTISTS = "Various Artists";
     private static final int MIN_DURATION_TO_SUBMIT = 30;
     private static final int MAX_SUBMISSIONS = 50;
-    private String user;
-    private String password;
     private LastFmCache lastFmCache;
     
     private INetworkHandler networkHandler;
@@ -107,6 +106,14 @@ public final class LastFmService {
     
     private XMLSerializerService xmlSerializerService;
 
+    private ApplicationArguments applicationArguments;
+    
+    /**
+     * @param applicationArguments
+     */
+    public void setApplicationArguments(ApplicationArguments applicationArguments) {
+		this.applicationArguments = applicationArguments;
+	}
     /**
      * @param state
      */
@@ -149,23 +156,16 @@ public final class LastFmService {
     	return lastFmCache;
     }
     
-    public void initialize() {
-    	Logger.debug("Initializing LastFmCache");
-    	lastFmCache = new LastFmCache(osManager, xmlSerializerService);
-    	updateService();
-    }
-    
-    /**
-     * Updates service after a configuration change
-     */
-    public void updateService() {
-        this.user = state.getLastFmUser();
-        this.password = state.getLastFmPassword();
-        
+    public LastFmService() {
         Caller.getInstance().setCache(null);
         Caller.getInstance().setUserAgent(CLIENT_ID);    	
+	}
+    
+    public void initialize() {
+    	Logger.debug("Initializing LastFmCache");
+    	lastFmCache = new LastFmCache(osManager, applicationArguments, xmlSerializerService);
     }
-
+    
     /**
      * Finishes service
      */
@@ -704,9 +704,9 @@ public final class LastFmService {
      * @return a list of loved tracks from user profile
      */
     public List<ILovedTrack> getLovedTracks() {
-        if (this.user != null) {
+        if (!StringUtils.isEmpty(state.getLastFmUser())) {
             try {
-                return LastFmLovedTracks.getLovedTracks(this.user, null, networkHandler);
+                return LastFmLovedTracks.getLovedTracks(state.getLastFmUser(), null, networkHandler);
             } catch (Exception e) {
                 Logger.error(e);
             }
@@ -720,7 +720,7 @@ public final class LastFmService {
      * @return
      */
     private boolean checkUser() {
-        if (user == null || user.equals("")) {
+        if (StringUtils.isEmpty(state.getLastFmUser())) {
             Logger.debug("Don't submit to Last.fm: Empty user");
             return false;
         }
@@ -746,7 +746,7 @@ public final class LastFmService {
      * @return
      */
     private boolean checkPassword() {
-        if (password == null || password.equals("")) {
+        if (StringUtils.isEmpty(state.getLastFmPassword())) {
             Logger.debug("Don't submit to Last.fm: Empty password");
             return false;
         }
@@ -949,6 +949,6 @@ public final class LastFmService {
      * @return
      */
     private Session getSession() {
-        return Authenticator.getMobileSession(user, password, getApiKey(), getApiSecret());
+        return Authenticator.getMobileSession(state.getLastFmUser(), state.getLastFmPassword(), getApiKey(), getApiSecret());
     }
 }

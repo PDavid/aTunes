@@ -27,10 +27,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.model.ILyricsEngineInfo;
 import net.sourceforge.atunes.model.ILyricsService;
 import net.sourceforge.atunes.model.INetworkHandler;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -48,6 +50,24 @@ public final class LyricsService implements ILyricsService {
     private IState state;
 
     private INetworkHandler networkHandler;
+    
+    private IOSManager osManager;
+    
+    private ApplicationArguments applicationArguments;
+    
+    /**
+     * @param osManager
+     */
+    public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
+    
+    /**
+     * @param applicationArguments
+     */
+    public void setApplicationArguments(ApplicationArguments applicationArguments) {
+		this.applicationArguments = applicationArguments;
+	}
     
     /**
      * @param networkHandler
@@ -71,7 +91,7 @@ public final class LyricsService implements ILyricsService {
     private LyricsCache getLyricsCache() {
     	if (lyricsCache == null) {
     		Logger.debug("Initializing LyricsCache");
-    		lyricsCache = new LyricsCache();
+    		lyricsCache = new LyricsCache(osManager, applicationArguments);
     	}
     	return lyricsCache;
     }

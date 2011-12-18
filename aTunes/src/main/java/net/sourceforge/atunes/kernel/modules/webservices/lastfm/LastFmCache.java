@@ -69,10 +69,11 @@ public class LastFmCache extends AbstractCache {
 
     /**
      * @param osManager
+     * @param applicationArguments
      * @param xmlSerializerService
      */
-    public LastFmCache(IOSManager osManager, XMLSerializerService xmlSerializerService) {
-        super(LastFmCache.class.getResource("/settings/ehcache-lastfm.xml"));
+    public LastFmCache(IOSManager osManager, ApplicationArguments applicationArguments, XMLSerializerService xmlSerializerService) {
+        super(osManager, applicationArguments, LastFmCache.class.getResource("/settings/ehcache-lastfm.xml"));
         this.xmlSerializerService = xmlSerializerService;
     }
 

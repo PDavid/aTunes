@@ -23,7 +23,9 @@ package net.sourceforge.atunes.kernel.modules.webservices.lyrics;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheException;
 import net.sf.ehcache.Element;
+import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.model.ILyrics;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.AbstractCache;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -31,8 +33,12 @@ public class LyricsCache extends AbstractCache {
 
     private static final String LYRICS = "lyrics";
 
-    public LyricsCache() {
-        super(LyricsCache.class.getResource("/settings/ehcache-lyrics.xml"));
+    /**
+     * @param osManager
+     * @param applicationArguments
+     */
+    public LyricsCache(IOSManager osManager, ApplicationArguments applicationArguments) {
+        super(osManager, applicationArguments, LyricsCache.class.getResource("/settings/ehcache-lyrics.xml"));
     }
 
     /**

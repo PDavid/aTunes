@@ -45,6 +45,7 @@ public class LastFmServiceTest {
     	service.setState(state);
     	service.setOsManager(Mockito.mock(IOSManager.class));
     	service.setNetworkHandler(networkHandler);
+    	
         List<ILovedTrack> lovedTracks = service.getLovedTracks();
         
         Assert.assertFalse(lovedTracks.isEmpty());

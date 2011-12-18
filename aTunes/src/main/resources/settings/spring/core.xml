@@ -15,6 +15,8 @@
 
 	<bean id="state" class="net.sourceforge.atunes.kernel.modules.state.ApplicationState" />
 	<bean id="stateStore" class="net.sourceforge.atunes.kernel.modules.state.PreferencesCache">
+		<constructor-arg ref="osManager"/>
+		<constructor-arg ref="applicationArguments"/>
 		<constructor-arg value="/settings/ehcache-preferences.xml" />
 	</bean>
 	
