@@ -626,46 +626,59 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
         List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
         if (list != null && !list.isEmpty()) {
             for (ILocalAudioObject af : list) {
-                String artist = af.getAlbumArtist() != null && !af.getAlbumArtist().trim().equals("") ? af.getAlbumArtist() : af.getArtist();
-                String album = af.getAlbum();
-                String title = af.getTitle();
-
-                // If artist is not present in device then add
-                IArtist a = getArtist(artist);
-                if (a == null) {
-                    result.add(af);
-                } else {
-                    // Artist is present, then find song or album and song
-                    if (getState().isAllowRepeatedSongsInDevice()) {
-                        if (a.getAlbum(album) == null) {
-                            result.add(af);
-                        } else {
-                            // Compare title of every file and add if title is not in list
-                        	IAlbum alb = a.getAlbum(album);
-                            List<ILocalAudioObject> deviceFiles = alb.getAudioObjects();
-                            HashSet<String> titles = new HashSet<String>();
-                            for (IAudioObject deviceFile : deviceFiles) {
-                                titles.add(deviceFile.getTitle());
-                            }
-                            if (!titles.contains(title)) {
-                                result.add(af);
-                            }
-                        }
-                    } else {
-                        // Compare title of every file of artist and add if title is not in list
-                        List<ILocalAudioObject> deviceFiles = a.getAudioObjects();
-                        HashSet<String> titles = new HashSet<String>();
-                        for (IAudioObject deviceFile : deviceFiles) {
-                            titles.add(deviceFile.getTitle());
-                        }
-                        if (!titles.contains(title)) {
-                            result.add(af);
-                        }
-                    }
-                }
+            	if (isElementNotPresentInDevice(af)) {
+            		result.add(af);
+            	}
             }
         }
         return result;
+    }
+    
+    /**
+     * Returns if local audio object is in device
+     * @param af
+     * @return
+     */
+    private boolean isElementNotPresentInDevice(ILocalAudioObject af) {
+        String artist = af.getAlbumArtist() != null && !af.getAlbumArtist().trim().equals("") ? af.getAlbumArtist() : af.getArtist();
+        String album = af.getAlbum();
+        String title = af.getTitle();
+
+        // If artist is not present in device then
+        IArtist a = getArtist(artist);
+        if (a == null) {
+            return true;
+        } else {
+            // Artist is present, then find song or album and song
+            if (getState().isAllowRepeatedSongsInDevice()) {
+                if (a.getAlbum(album) == null) {
+                    return true;
+                } else {
+                    // Compare title of every file and add if title is not in list
+                	IAlbum alb = a.getAlbum(album);
+                    List<ILocalAudioObject> deviceFiles = alb.getAudioObjects();
+                    HashSet<String> titles = new HashSet<String>();
+                    for (IAudioObject deviceFile : deviceFiles) {
+                        titles.add(deviceFile.getTitle());
+                    }
+                    if (!titles.contains(title)) {
+                        return true;
+                    }
+                }
+            } else {
+                // Compare title of every file of artist and add if title is not in list
+                List<ILocalAudioObject> deviceFiles = a.getAudioObjects();
+                HashSet<String> titles = new HashSet<String>();
+                for (IAudioObject deviceFile : deviceFiles) {
+                    titles.add(deviceFile.getTitle());
+                }
+                if (!titles.contains(title)) {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
     }
 
     /* (non-Javadoc)
@@ -677,38 +690,46 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
         List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>(getAudioFilesList());
 
         for (ILocalAudioObject af : list) {
-            String artist = af.getAlbumArtist() != null && !af.getAlbumArtist().trim().equals("") ? af.getAlbumArtist() : af.getArtist();
-            String album = af.getAlbum();
-            String title = af.getTitle();
+        	if (!isElementNotPresentInList(af)) {
+        		result.remove(af);
+        	}
+        }
+        return result;
+    }
+    
+    private boolean isElementNotPresentInList(ILocalAudioObject af) {
+        String artist = af.getAlbumArtist() != null && !af.getAlbumArtist().trim().equals("") ? af.getAlbumArtist() : af.getArtist();
+        String album = af.getAlbum();
+        String title = af.getTitle();
 
-            // Remove objects present in device
-            IArtist a = getArtist(artist);
-            if (a != null) {
-                if (getState().isAllowRepeatedSongsInDevice()) {
-                    if (a.getAlbum(album) != null) {
-                    	IAlbum alb = a.getAlbum(album);
-                        List<ILocalAudioObject> deviceFiles = alb.getAudioObjects();
-                        HashMap<String, IAudioObject> titles = new HashMap<String, IAudioObject>();
-                        for (IAudioObject deviceFile : deviceFiles) {
-                            titles.put(deviceFile.getTitle(), deviceFile);
-                        }
-                        if (titles.containsKey(title)) {
-                            result.remove(titles.get(title));
-                        }
-                    }
-                } else {
-                    List<ILocalAudioObject> deviceFiles = a.getAudioObjects();
+        // Remove objects present in device
+        IArtist a = getArtist(artist);
+        if (a != null) {
+            if (getState().isAllowRepeatedSongsInDevice()) {
+                if (a.getAlbum(album) != null) {
+                	IAlbum alb = a.getAlbum(album);
+                    List<ILocalAudioObject> deviceFiles = alb.getAudioObjects();
                     HashMap<String, IAudioObject> titles = new HashMap<String, IAudioObject>();
                     for (IAudioObject deviceFile : deviceFiles) {
                         titles.put(deviceFile.getTitle(), deviceFile);
                     }
                     if (titles.containsKey(title)) {
-                        result.remove(titles.get(title));
+                        return false;
                     }
+                }
+            } else {
+                List<ILocalAudioObject> deviceFiles = a.getAudioObjects();
+                HashMap<String, IAudioObject> titles = new HashMap<String, IAudioObject>();
+                for (IAudioObject deviceFile : deviceFiles) {
+                    titles.put(deviceFile.getTitle(), deviceFile);
+                }
+                if (titles.containsKey(title)) {
+                    return false;
                 }
             }
         }
-        return result;
+        
+        return true;
     }
 
 	@Override
