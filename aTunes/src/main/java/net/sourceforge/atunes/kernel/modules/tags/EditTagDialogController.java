@@ -30,9 +30,12 @@ import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
+import javax.swing.text.JTextComponent;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
@@ -175,17 +178,50 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
         coverEdited = false;
 
         // Load artists into combo box
-        List<IArtist> artistList = repositoryHandler.getArtists();
-        List<String> artistNames = new ArrayList<String>();
-        for (IArtist a : artistList) {
-            artistNames.add(a.getName());
-        }
-        getComponentControlled().getArtistTextField().setModel(new ListComboBoxModel<String>(artistNames));
+        getComponentControlled().getArtistTextField().setModel(new ListComboBoxModel<String>(getArtistsNames()));
+        
         // Activate autocompletion of artists
         AutoCompleteDecorator.decorate(getComponentControlled().getArtistTextField());
 
         // Load albums into combo box
-        List<IAlbum> albumList = repositoryHandler.getAlbums();
+        getComponentControlled().getAlbumTextField().setModel(new ListComboBoxModel<String>(getAlbumNames()));
+        
+        // Active autocompletion of albums
+        AutoCompleteDecorator.decorate(getComponentControlled().getAlbumTextField());
+
+        setFieldsUnselected();
+
+        // Check if at least one audio file supports internal pictures
+        enableOrDisableCheckBoxes(audioFiles);
+
+        prepareFields(audioFiles);
+
+        // If there is only one file add a help to complete title from file name
+        if (audioFiles.size() == 1) {
+            final String fileName = audioFiles.get(0).getNameWithoutExtension();
+            final JTextField textField = getDialog().getTitleTextField();
+            textField.addKeyListener(new TitleTextFieldKeyAdapter(textField, fileName));
+        }
+
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                // If title is enabled set focus
+                if (getDialog().getTitleTextField().isEnabled()) {
+                    getDialog().getTitleTextField().setCaretPosition(0);
+                    getDialog().getTitleTextField().requestFocus();
+                }
+            }
+        });
+
+        getComponentControlled().setVisible(true);
+    }
+
+	/**
+	 * @return
+	 */
+	private List<String> getAlbumNames() {
+		List<IAlbum> albumList = repositoryHandler.getAlbums();
         List<String> albumNames = new ArrayList<String>();
         for (IAlbum alb : albumList) {
             // Because of artists and album artists there can be more than one album with the same name
@@ -193,24 +229,26 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
                 albumNames.add(alb.getName());
             }
         }
-        getComponentControlled().getAlbumTextField().setModel(new ListComboBoxModel<String>(albumNames));
-        // Active autocompletion of albums
-        AutoCompleteDecorator.decorate(getComponentControlled().getAlbumTextField());
+		return albumNames;
+	}
 
-        setFieldsUnselected();
-
-        // Check if at least one audio file supports internal pictures
-        boolean supportsInternalPicture = false;
-        for (ILocalAudioObject af : audioFilesEditing) {
-            if (supportsInternalPicture(af)) {
-                supportsInternalPicture = true;
-                break;
-            }
+	/**
+	 * @return
+	 */
+	private List<String> getArtistsNames() {
+		List<IArtist> artistList = repositoryHandler.getArtists();
+        List<String> artistNames = new ArrayList<String>();
+        for (IArtist a : artistList) {
+            artistNames.add(a.getName());
         }
+		return artistNames;
+	}
 
-        enableOrDisableCheckBoxes(audioFiles, supportsInternalPicture);
-
-        Set<String> titles = new HashSet<String>();
+	/**
+	 * @param audioFiles
+	 */
+	private void prepareFields(final List<ILocalAudioObject> audioFiles) {
+		Set<String> titles = new HashSet<String>();
         Set<Integer> trackNumbers = new HashSet<Integer>();
         Set<Integer> discNumbers = new HashSet<Integer>();
         Set<String> artists = new HashSet<String>();
@@ -249,34 +287,20 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
         prepareLyrics(audioFiles, lyrics);
         prepareComposers(audioFiles, composers);
         prepareAlbumArtists(audioFiles, albumArtists);
-
-        // If there is only one file add a help to complete title from file name
-        if (audioFiles.size() == 1) {
-            final String fileName = audioFiles.get(0).getNameWithoutExtension();
-            final JTextField textField = getDialog().getTitleTextField();
-            textField.addKeyListener(new TitleTextFieldKeyAdapter(textField, fileName));
-        }
-
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                // If title is enabled set focus
-                if (getDialog().getTitleTextField().isEnabled()) {
-                    getDialog().getTitleTextField().setCaretPosition(0);
-                    getDialog().getTitleTextField().requestFocus();
-                }
-            }
-        });
-
-        getComponentControlled().setVisible(true);
-
-    }
+	}
 
 	/**
 	 * @param audioFiles
-	 * @param supportsInternalPicture
 	 */
-	private void enableOrDisableCheckBoxes(final List<ILocalAudioObject> audioFiles, boolean supportsInternalPicture) {
+	private void enableOrDisableCheckBoxes(final List<ILocalAudioObject> audioFiles) {
+        boolean supportsInternalPicture = false;
+        for (ILocalAudioObject af : audioFilesEditing) {
+            if (supportsInternalPicture(af)) {
+                supportsInternalPicture = true;
+                break;
+            }
+        }
+
 		boolean enable = audioFiles.size() > 1; 
 			
         getComponentControlled().getTitleCheckBox().setEnabled(enable);
@@ -502,6 +526,32 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
     }
 
     /**
+     * Inserts value of text field in map if checkbox is not enabled (only one file being edited) or selected
+     * @param editTagInfo
+     * @param key
+     * @param checkBox
+     * @param textField
+     */
+    private void setEditTagInfo(Map<String, Object> editTagInfo, String key, JCheckBox checkBox, JTextComponent textField) {
+        if (!checkBox.isEnabled() || checkBox.isSelected()) {
+            editTagInfo.put(key, textField.getText());
+        }    	
+    }
+
+    /**
+     * Inserts value of combo in map if checkbox is not enabled (only one file being edited) or selected
+     * @param editTagInfo
+     * @param key
+     * @param checkBox
+     * @param combo
+     */
+    private void setEditTagInfo(Map<String, Object> editTagInfo, String key, JCheckBox checkBox, JComboBox combo) {
+        if (!checkBox.isEnabled() || checkBox.isSelected()) {
+            editTagInfo.put(key, combo.getSelectedItem());
+        }    	
+    }
+
+    /**
      * Edits the tag.
      */
     protected void editTag() {
@@ -510,24 +560,13 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
         // Build editor props
         Map<String, Object> editTagInfo = new HashMap<String, Object>();
 
-        if (!getComponentControlled().getTitleCheckBox().isEnabled() || getComponentControlled().getTitleCheckBox().isSelected()) {
-            editTagInfo.put("TITLE", getComponentControlled().getTitleTextField().getText());
-        }
-        if (!getComponentControlled().getArtistCheckBox().isEnabled() || getComponentControlled().getArtistCheckBox().isSelected()) {
-            editTagInfo.put("ARTIST", getComponentControlled().getArtistTextField().getSelectedItem());
-        }
-        if (!getComponentControlled().getAlbumCheckBox().isEnabled() || getComponentControlled().getAlbumCheckBox().isSelected()) {
-            editTagInfo.put("ALBUM", getComponentControlled().getAlbumTextField().getSelectedItem());
-        }
-        if (!getComponentControlled().getYearCheckBox().isEnabled() || getComponentControlled().getYearCheckBox().isSelected()) {
-            editTagInfo.put("YEAR", getComponentControlled().getYearTextField().getText());
-        }
-        if (!getComponentControlled().getCommentCheckBox().isEnabled() || getComponentControlled().getCommentCheckBox().isSelected()) {
-            editTagInfo.put("COMMENT", getComponentControlled().getCommentTextArea().getText());
-        }
-        if (!getComponentControlled().getGenreCheckBox().isEnabled() || getComponentControlled().getGenreCheckBox().isSelected()) {
-            editTagInfo.put("GENRE", getComponentControlled().getGenreComboBox().getSelectedItem());
-        }
+        setEditTagInfo(editTagInfo, "TITLE", getComponentControlled().getTitleCheckBox(), getComponentControlled().getTitleTextField());
+        setEditTagInfo(editTagInfo, "ARTIST", getComponentControlled().getArtistCheckBox(), getComponentControlled().getArtistTextField());
+        setEditTagInfo(editTagInfo, "ALBUM", getComponentControlled().getAlbumCheckBox(), getComponentControlled().getAlbumTextField());
+        setEditTagInfo(editTagInfo, "YEAR", getComponentControlled().getYearCheckBox(), getComponentControlled().getYearTextField());
+        setEditTagInfo(editTagInfo, "COMMENT", getComponentControlled().getCommentCheckBox(), getComponentControlled().getCommentTextArea());
+        setEditTagInfo(editTagInfo, "GENRE", getComponentControlled().getGenreCheckBox(), getComponentControlled().getGenreComboBox());
+        
         if (!getComponentControlled().getLyricsCheckBox().isEnabled() || getComponentControlled().getLyricsCheckBox().isSelected()) {
             // Text area line breaks are \n so in some OS (Windows) is not a correct line break -> Replace with OS line terminator
             String lyrics = getComponentControlled().getLyricsTextArea().getText();
@@ -536,18 +575,12 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
             }
             editTagInfo.put("LYRICS", lyrics);
         }
-        if (!getComponentControlled().getComposerCheckBox().isEnabled() || getComponentControlled().getComposerCheckBox().isSelected()) {
-            editTagInfo.put("COMPOSER", getComponentControlled().getComposerTextField().getText());
-        }
-        if (!getComponentControlled().getAlbumArtistCheckBox().isEnabled() || getComponentControlled().getAlbumArtistCheckBox().isSelected()) {
-            editTagInfo.put("ALBUM_ARTIST", getComponentControlled().getAlbumArtistTextField().getText());
-        }
-        if (!getComponentControlled().getTrackNumberCheckBox().isEnabled() || getComponentControlled().getTrackNumberCheckBox().isSelected()) {
-            editTagInfo.put("TRACK", getComponentControlled().getTrackNumberTextField().getText());
-        }
-        if (!getComponentControlled().getDiscNumberCheckBox().isEnabled() || getComponentControlled().getDiscNumberCheckBox().isSelected()) {
-            editTagInfo.put("DISC_NUMBER", getComponentControlled().getDiscNumberTextField().getText());
-        }
+        
+        setEditTagInfo(editTagInfo, "COMPOSER", getComponentControlled().getComposerCheckBox(), getComponentControlled().getComposerTextField());
+        setEditTagInfo(editTagInfo, "ALBUM_ARTIST", getComponentControlled().getAlbumArtistCheckBox(), getComponentControlled().getAlbumArtistTextField());
+        setEditTagInfo(editTagInfo, "TRACK", getComponentControlled().getTrackNumberCheckBox(), getComponentControlled().getTrackNumberTextField());
+        setEditTagInfo(editTagInfo, "DISC_NUMBER", getComponentControlled().getDiscNumberCheckBox(), getComponentControlled().getDiscNumberTextField());
+        
         if ((!getComponentControlled().getCoverCheckBox().isEnabled() || getComponentControlled().getCoverCheckBox().isSelected()) && coverEdited) {
             editTagInfo.put("COVER", newCover);
         }
