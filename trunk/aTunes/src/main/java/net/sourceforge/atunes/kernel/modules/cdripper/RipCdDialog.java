@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.dialogs;
+package net.sourceforge.atunes.kernel.modules.cdripper;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -32,18 +32,16 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.AbstractTableModel;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
-import net.sourceforge.atunes.kernel.modules.cdripper.CDInfo;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -54,172 +52,6 @@ import net.sourceforge.atunes.utils.UnknownObjectCheck;
  * The dialog for ripping cds
  */
 public final class RipCdDialog extends AbstractCustomDialog {
-
-    /**
-     * The model for cd info
-     */
-    private static class CdInfoTableModel extends AbstractTableModel {
-
-        private static final long serialVersionUID = -7577681531593039707L;
-
-        private transient CDInfo cdInfo;
-        private List<String> trackNames = new ArrayList<String>();
-        private List<String> artistNames = new ArrayList<String>();
-        private List<String> composerNames = new ArrayList<String>();
-        private List<Boolean> tracksSelected;
-
-        /**
-         * Instantiates a new cd info table model.
-         */
-        public CdInfoTableModel() {
-            // Nothing to do
-        }
-
-        @Override
-        public Class<?> getColumnClass(int columnIndex) {
-            return columnIndex == 0 ? Boolean.class : String.class;
-        }
-
-        @Override
-        public int getColumnCount() {
-            return 5;
-        }
-
-        @Override
-        public String getColumnName(int column) {
-            if (column == 0) {
-                return "";
-            } else if (column == 1) {
-                return I18nUtils.getString("TITLE");
-            } else if (column == 2) {
-                return I18nUtils.getString("ARTIST");
-            } else if (column == 3) {
-                return I18nUtils.getString("COMPOSER");
-            } else {
-                return "";
-            }
-        }
-
-        @Override
-        public int getRowCount() {
-            return cdInfo != null ? cdInfo.getTracks() : 0;
-        }
-
-        /**
-         * Gets the tracks selected.
-         * 
-         * @return the tracks selected
-         */
-        public List<Boolean> getTracksSelected() {
-            return tracksSelected;
-        }
-
-        @Override
-        public Object getValueAt(int rowIndex, int columnIndex) {
-            if (columnIndex == 0) {
-                return tracksSelected.get(rowIndex);
-            } else if (columnIndex == 1) {
-                if (rowIndex > trackNames.size() - 1) {
-                    trackNames.add(rowIndex, StringUtils.getString(I18nUtils.getString("TRACK"), " ", (rowIndex + 1)));
-                    return StringUtils.getString(I18nUtils.getString("TRACK"), " ", (rowIndex + 1));
-                }
-                if (rowIndex < trackNames.size()) {
-                    return trackNames.get(rowIndex);
-                }
-
-                trackNames.add(rowIndex, StringUtils.getString(I18nUtils.getString("TRACK"), " ", (rowIndex + 1)));
-                return StringUtils.getString(I18nUtils.getString("TRACK"), " ", (rowIndex + 1));
-
-            } else if (columnIndex == 2) {
-                if (rowIndex > artistNames.size() - 1) {
-                    // TODO if cdda2wav is modified for detecting song artist modify here
-                    if (cdInfo.getArtist() != null) {
-                        return cdInfo.getArtist();
-                    }
-                    return UnknownObjectCheck.getUnknownArtist();
-                }
-                return artistNames.get(rowIndex);
-            } else if (columnIndex == 4) {
-                return cdInfo.getDurations().get(rowIndex);
-            } else {
-                if (rowIndex > composerNames.size() - 1) {
-                    composerNames.add(rowIndex, "");
-                    return "";
-                }
-                return composerNames.get(rowIndex);
-
-            }
-        }
-
-        @Override
-        public boolean isCellEditable(int rowIndex, int columnIndex) {
-            return columnIndex != 4;
-        }
-
-        /**
-         * Sets the artist names.
-         * 
-         * @param artistNames
-         *            the new artist names
-         */
-        public void setArtistNames(List<String> artistNames) {
-            this.artistNames = artistNames;
-        }
-
-        /**
-         * Sets the cd info.
-         * 
-         * @param cdInfo
-         *            the new cd info
-         */
-        public void setCdInfo(CDInfo cdInfo) {
-            if (cdInfo != null) {
-                this.cdInfo = cdInfo;
-                if (tracksSelected == null) {
-                    tracksSelected = new ArrayList<Boolean>();
-                }
-                tracksSelected.clear();
-                for (int i = 0; i < cdInfo.getTracks(); i++) {
-                    tracksSelected.add(true);
-                }
-            }
-        }
-
-        /**
-         * Sets the composer names.
-         * 
-         * @param composerNames
-         *            the new composer names
-         */
-        public void setComposerNames(List<String> composerNames) {
-            this.composerNames = composerNames;
-        }
-
-        /**
-         * Sets the track names.
-         * 
-         * @param trackNames
-         *            the new track names
-         */
-        public void setTrackNames(List<String> trackNames) {
-            this.trackNames = trackNames;
-        }
-
-        @Override
-        public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-            if (columnIndex == 0) {
-                tracksSelected.remove(rowIndex);
-                tracksSelected.add(rowIndex, (Boolean) aValue);
-            } else if (columnIndex == 1) {
-                trackNames.set(rowIndex, (String) aValue);
-            } else if (columnIndex == 2) {
-                artistNames.set(rowIndex, (String) aValue);
-            } else if (columnIndex == 3) {
-                composerNames.set(rowIndex, (String) aValue);
-            }
-            fireTableCellUpdated(rowIndex, columnIndex);
-        }
-    }
 
     private static final long serialVersionUID = 1987727841297807350L;
 
@@ -245,8 +77,8 @@ public final class RipCdDialog extends AbstractCustomDialog {
      * @param owner
      *            the owner
      */
-    public RipCdDialog(JFrame owner, ILookAndFeelManager lookAndFeelManager) {
-        super(owner, 750, 540, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
+    public RipCdDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
+        super(frame, 750, 540, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
         setTitle(I18nUtils.getString("RIP_CD"));
         add(getContent(lookAndFeelManager.getCurrentLookAndFeel()));
     }
