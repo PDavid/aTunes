@@ -22,9 +22,7 @@ package net.sourceforge.atunes.kernel.modules.navigator;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
@@ -36,7 +34,7 @@ import net.sourceforge.atunes.model.IState;
 /**
  * The listener interface for receiving navigationTreeToolTip events.
  */
-public final class NavigationTreeToolTipListener extends MouseAdapter implements MouseMotionListener, MouseWheelListener {
+public final class NavigationTreeToolTipListener extends MouseAdapter {
 
     private NavigationController controller;
     

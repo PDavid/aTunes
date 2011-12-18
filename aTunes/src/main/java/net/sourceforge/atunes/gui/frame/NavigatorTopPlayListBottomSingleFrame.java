@@ -31,7 +31,7 @@ import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.CustomSplitPane;
 import net.sourceforge.atunes.model.IFrameState;
 
-public final class NavigatorTopPlayListBottomSingleFrame extends MainSplitPaneRightSingleFrame implements net.sourceforge.atunes.model.IFrame {
+public final class NavigatorTopPlayListBottomSingleFrame extends MainSplitPaneRightSingleFrame {
 
     private static final long serialVersionUID = 1L;
 

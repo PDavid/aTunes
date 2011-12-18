@@ -24,6 +24,8 @@ import net.sourceforge.atunes.model.IOSManager;
 
 class CdToWavConverterFactory {
 	
+	private CdToWavConverterFactory() {}
+	
     /**
      * creates a new CdToWavConverter-object. The implementation depends on the
      * users OS.

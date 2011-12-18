@@ -24,7 +24,7 @@ import java.awt.Color;
 
 import org.pushingpixels.substance.api.SubstanceColorScheme;
 
-public final class SubstanceATunesGraySkin extends net.sourceforge.atunes.gui.lookandfeel.substance.CustomSubstanceSkin implements ICustomSubstanceSkin {
+public final class SubstanceATunesGraySkin extends net.sourceforge.atunes.gui.lookandfeel.substance.CustomSubstanceSkin {
 
 	/**
 	 * Creates a new skin.

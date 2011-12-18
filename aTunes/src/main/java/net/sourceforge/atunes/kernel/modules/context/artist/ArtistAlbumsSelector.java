@@ -25,6 +25,8 @@ import net.sourceforge.atunes.model.IContextPanelContent;
 import net.sourceforge.atunes.model.IState;
 
 public class ArtistAlbumsSelector {
+	
+	private ArtistAlbumsSelector() {}
 
 	/**
 	 * Selects albums content 

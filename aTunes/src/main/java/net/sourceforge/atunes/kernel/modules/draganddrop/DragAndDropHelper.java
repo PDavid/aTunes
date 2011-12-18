@@ -32,6 +32,8 @@ class DragAndDropHelper {
      */
     private static DataFlavor internalDataFlavor;
     
+    private DragAndDropHelper() {}
+    
     /**
      * @return Data flavor of a list of objects dragged from inside application
      */

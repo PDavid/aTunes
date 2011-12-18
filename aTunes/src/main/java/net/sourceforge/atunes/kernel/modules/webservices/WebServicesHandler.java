@@ -89,7 +89,9 @@ public class WebServicesHandler extends AbstractHandler implements IWebServicesH
 	
 	@Override
 	public void submitNowPlayingInfo(IAudioObject audioObject) {
-		lastFmService.submitNowPlayingInfoToLastFm((ILocalAudioObject) audioObject, taskService);
+		if (audioObject instanceof ILocalAudioObject) {
+			lastFmService.submitNowPlayingInfoToLastFm((ILocalAudioObject) audioObject, taskService);
+		}
 	}
 	
 	@Override
@@ -144,7 +146,10 @@ public class WebServicesHandler extends AbstractHandler implements IWebServicesH
 	
 	@Override
 	public String getTitleForAudioObject(IAudioObject f) {
-		return lastFmService.getTitleForFile((ILocalAudioObject) f);
+		if (f instanceof ILocalAudioObject) {
+			return lastFmService.getTitleForFile((ILocalAudioObject) f);
+		}
+		return null;
 	}
 	
 	@Override

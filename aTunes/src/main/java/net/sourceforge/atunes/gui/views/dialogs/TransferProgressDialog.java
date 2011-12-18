@@ -22,13 +22,12 @@ package net.sourceforge.atunes.gui.views.dialogs;
 
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * The Class TransferProgressDialog.
  */
-public final class TransferProgressDialog extends ProgressDialog implements IProgressDialog {
+public final class TransferProgressDialog extends ProgressDialog {
 
     /**
 	 * 

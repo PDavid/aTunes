@@ -36,6 +36,8 @@ public class PlayerControlsSize {
      * Size of main controls by standard layout (not Substance)
      */
     public static final Dimension DEFAULT_BUTTONS_SIZE = new Dimension(34, 34);
+    
+    private PlayerControlsSize() {}
 
     /** Size of play / pause button */
     public static final Dimension PLAY_BUTTON_SIZE = Context.getBean(ILookAndFeelManager.class).getCurrentLookAndFeel().isCustomPlayerControlsSupported() ? new Dimension(45, 45)

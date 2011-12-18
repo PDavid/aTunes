@@ -33,7 +33,7 @@ import net.sourceforge.atunes.model.IFrameState;
 /**
  * The default frame.
  */
-public final class DefaultSingleFrame extends MainSplitPaneLeftSingleFrame implements net.sourceforge.atunes.model.IFrame {
+public final class DefaultSingleFrame extends MainSplitPaneLeftSingleFrame {
 
     private static final long serialVersionUID = 1L;
 

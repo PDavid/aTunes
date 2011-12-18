@@ -36,11 +36,17 @@ final class RadioNameColumn extends AbstractColumn<String> {
 
     @Override
     public String getValueFor(IAudioObject audioObject) {
-        return ((IRadio) audioObject).getName();
+    	if (audioObject instanceof IRadio) {
+    		return ((IRadio) audioObject).getName();
+    	}
+        return null;
     }
 
     @Override
     protected int ascendingCompare(IAudioObject o1, IAudioObject o2) {
-        return ((IRadio) o1).getName().compareTo(((IRadio) o2).getName());
+    	if (o1 instanceof IRadio && o2 instanceof IRadio) {
+    		return ((IRadio) o1).getName().compareTo(((IRadio) o2).getName());
+    	}
+    	return o1.getTitleOrFileName().compareTo(o2.getTitleOrFileName());
     }
 }
