@@ -27,9 +27,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.views.dialogs.RadioBrowserDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.INetworkHandler;
@@ -319,7 +317,7 @@ public final class RadioHandler extends AbstractHandler implements IRadioHandler
     
 	@Override
 	public void showRadioBrowser() {
-		new RadioBrowserDialogController(new RadioBrowserDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class)), getState(), this).showRadioBrowser();
+		new RadioBrowserDialogController(getBean(RadioBrowserDialog.class), getState(), this).showRadioBrowser();
 	}
 
 	@Override

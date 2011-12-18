@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.dialogs.editPreferences;
+package net.sourceforge.atunes.kernel.modules.state;
 
 import java.awt.CardLayout;
 import java.awt.Dimension;
@@ -29,7 +29,6 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -39,6 +38,7 @@ import javax.swing.ListModel;
 import net.sourceforge.atunes.gui.AbstractListCellRendererCode;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -55,15 +55,23 @@ public final class EditPreferencesDialog extends AbstractCustomDialog {
     private JPanel options;
     private JList list;
     private List<AbstractPreferencesPanel> panels;
+    
+    private ILookAndFeelManager lookAndFeelManager;
 
     /**
      * Instantiates a new edits the preferences dialog.
-     * 
-     * @param owner
+     * @param frame
      * @param lookAndFeelManager
      */
-    public EditPreferencesDialog(JFrame owner, ILookAndFeelManager lookAndFeelManager) {
-        super(owner, GuiUtils.getComponentWidthForResolution(0.5f, 800),GuiUtils.getComponentHeightForResolution(0.6f, 600), true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
+    public EditPreferencesDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
+        super(frame, GuiUtils.getComponentWidthForResolution(0.5f, 800),GuiUtils.getComponentHeightForResolution(0.6f, 600), true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
+        this.lookAndFeelManager = lookAndFeelManager;
+    }
+    
+    /**
+     * Initializes dialog
+     */
+    public void initialize() {
         setResizable(true);
         setTitle(I18nUtils.getString("PREFERENCES"));
         add(getContent(lookAndFeelManager.getCurrentLookAndFeel()));

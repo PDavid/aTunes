@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.dialogs.editPreferences;
+package net.sourceforge.atunes.kernel.modules.state;
 
 import java.awt.GridBagConstraints;
 

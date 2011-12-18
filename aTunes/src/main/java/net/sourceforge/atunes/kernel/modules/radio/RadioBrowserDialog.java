@@ -18,13 +18,12 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.dialogs;
+package net.sourceforge.atunes.kernel.modules.radio;
 
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -33,9 +32,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -65,14 +64,32 @@ public final class RadioBrowserDialog extends AbstractCustomDialog {
      * Close button
      */
     private JButton closeButton;
+    
+    private ILookAndFeelManager lookAndFeelManager;
+    
+    private IIconFactory radioMediumIcon;
 
     /**
      * Instantiates a new radio browser dialog.
-     * @param owner
+     * @param frame
      * @param lookAndFeelManager
      */
-    public RadioBrowserDialog(Window owner, ILookAndFeelManager lookAndFeelManager) {
-        super(owner, GuiUtils.getComponentWidthForResolution(0.5f), GuiUtils.getComponentHeightForResolution(0.5f), true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
+    public RadioBrowserDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
+        super(frame, GuiUtils.getComponentWidthForResolution(0.5f), GuiUtils.getComponentHeightForResolution(0.5f), true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
+        this.lookAndFeelManager = lookAndFeelManager;
+    }
+    
+    /**
+     * @param radioMediumIcon
+     */
+    public void setRadioMediumIcon(IIconFactory radioMediumIcon) {
+		this.radioMediumIcon = radioMediumIcon;
+	}
+    
+    /**
+     * Initializes dialog
+     */
+    public void initialize() {
         setTitle(I18nUtils.getString("RADIO_BROWSER"));
         setContent(lookAndFeelManager.getCurrentLookAndFeel());
     }
@@ -86,7 +103,7 @@ public final class RadioBrowserDialog extends AbstractCustomDialog {
         treeTable = new JXTreeTable();
         treeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JPanel topPanel = new JPanel(new BorderLayout(10, 0));
-        radioIcon = new JLabel(Context.getBean("radioMediumIcon", IIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls()));
+        radioIcon = new JLabel(radioMediumIcon.getIcon(lookAndFeel.getPaintForSpecialControls()));
         browserInstructions = new JLabel(I18nUtils.getString("RADIO_BROWSER_INSTRUCTIONS"));
         closeButton = new JButton(I18nUtils.getString("CLOSE"));
         closeButton.addActionListener(new ActionListener() {

@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.statistics;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.gui.views.dialogs.StatsDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
@@ -342,7 +341,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
     @Override
     public void showStatistics() {
 		if (controller == null) {
-			controller = new StatsDialogController(new StatsDialog(getFrame().getFrame(), lookAndFeelManager), getState(), this, lookAndFeelManager, repositoryHandler); 
+			controller = new StatsDialogController(getBean(StatsDialog.class), getState(), this, lookAndFeelManager, repositoryHandler); 
 		}
 		controller.showStats();
 	}

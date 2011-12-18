@@ -27,8 +27,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.views.dialogs.editPreferences.EditPreferencesDialog;
-import net.sourceforge.atunes.gui.views.dialogs.editPreferences.PreferencesValidationException;
 import net.sourceforge.atunes.kernel.StateChangeListeners;
 import net.sourceforge.atunes.model.IConfirmationDialogFactory;
 import net.sourceforge.atunes.model.IErrorDialogFactory;

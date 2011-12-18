@@ -31,7 +31,6 @@ import java.util.List;
 
 import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.views.dialogs.editPreferences.EditPreferencesDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.StateChangeListeners;
 import net.sourceforge.atunes.kernel.modules.playlist.ListOfPlayLists;
@@ -649,7 +648,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	 */
     @Override
 	public void editPreferences() {
-    	EditPreferencesDialog dialog = new EditPreferencesDialog(getFrame().getFrame(), lookAndFeelManager);
+    	EditPreferencesDialog dialog = getBean(EditPreferencesDialog.class);
     	new EditPreferencesDialogController(dialog, getState(), getOsManager(), getFrame(), getBean(StateChangeListeners.class), lookAndFeelManager, 
     			playerHandler, hotkeyHandler, notificationsHandler, 
     			pluginsHandler, applicationArguments, desktop, networkHandler, colorBeanFactory, fontBeanFactory, localeBeanFactory, proxyBeanFactory).start();

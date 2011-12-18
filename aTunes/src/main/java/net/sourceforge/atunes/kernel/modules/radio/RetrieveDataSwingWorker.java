@@ -26,7 +26,6 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.gui.RadioBrowserTreeTableModel;
-import net.sourceforge.atunes.gui.views.dialogs.RadioBrowserDialog;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.utils.Logger;

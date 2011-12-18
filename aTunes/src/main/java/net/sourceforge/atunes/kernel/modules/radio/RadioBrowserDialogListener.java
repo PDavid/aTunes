@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.radio;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import net.sourceforge.atunes.gui.views.dialogs.RadioBrowserDialog;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioHandler;
 

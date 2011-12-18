@@ -18,12 +18,13 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.dialogs.editPreferences;
+package net.sourceforge.atunes.kernel.modules.state;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,25 +32,22 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.StringUtils;
 
-public final class DevicePanel extends AbstractPreferencesPanel {
+public final class ImportExportPanel extends AbstractPreferencesPanel {
 
-    private static class AvailablePatternsDefaultTableModel extends DefaultTableModel {
+    private static class AvailablePatternsTableModel extends DefaultTableModel {
         /**
 		 * 
 		 */
@@ -86,28 +84,31 @@ public final class DevicePanel extends AbstractPreferencesPanel {
 
     private static final long serialVersionUID = 3331810461314007217L;
 
-    /** The location file chooser. */
-    private CustomJFileChooser locationFileChooser;
-
     /**
-     * The radio button used to select no changes in file names when copying to
-     * device
+     * The radio button used to select no changes in file names when importing /
+     * exporting
      */
     private JRadioButton fileNameNoChangeRadioButton;
 
-    /** The radio button used to rename files when copying to device */
+    /**
+     * The radio button used to rename files when importing / exporting to a
+     * custom name
+     */
     private JRadioButton fileNameCustomizedRadioButton;
 
     /** Text Field used to define custom file name pattern */
     private JTextField fileNamePatternTextField;
 
     /**
-     * The radio button used to select no changes in folder name when copying to
-     * device
+     * The radio button used to select no changes in folder name when importing
+     * / exporting
      */
     private JRadioButton folderPathNoChangeRadioButton;
 
-    /** The radio button used to set folder when copying to device */
+    /**
+     * The radio button used to set folder when importing / exporting to a
+     * custom pattern
+     */
     private JRadioButton folderPathCustomizedRadioButton;
 
     /** Text Field used to define custom folder path */
@@ -116,22 +117,24 @@ public final class DevicePanel extends AbstractPreferencesPanel {
     /** A table to show available pattern transformations */
     private JTable availablePatternsTable;
 
-    /**
-     * A check box to set if user wants to copy the same song several times (if
-     * song is repeated for different albums)
-     */
-    private JCheckBox copySameSongForDifferentAlbums;
+    /** Check box to enable tag revision before importing */
+    private JCheckBox reviewTagsBeforeImportCheckBox;
+
+    /** Check box to apply changes in tags to original files before copy them */
+    private JCheckBox applyChangesToSourceFilesCheckBox;
+
+    /** Check box to enable track number auto complete when importing */
+    private JCheckBox setTrackNumberWhenImportingCheckBox;
+
+    /** Check box to enable title auto complete when importing */
+    private JCheckBox setTitlesWhenImportingCheckBox;
 
     /**
-     * Instantiates a new device panel.
-     * @param osManager
+     * Instantiates a new import / export panel.
      * @param lookAndFeel
      */
-    public DevicePanel(IOSManager osManager, ILookAndFeel lookAndFeel) {
-        super(I18nUtils.getString("DEVICE"));
-        JLabel label = new JLabel(I18nUtils.getString("DEVICE_DEFAULT_LOCATION"));
-        locationFileChooser = new CustomJFileChooser(this, 20, JFileChooser.DIRECTORIES_ONLY, osManager);
-
+    public ImportExportPanel(ILookAndFeel lookAndFeel) {
+        super(StringUtils.getString(I18nUtils.getString("IMPORT"), "/", I18nUtils.getString("EXPORT")));
         JPanel fileNamePanel = new JPanel(new GridBagLayout());
         fileNamePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0,0,10,0), I18nUtils.getString("FILE_NAME")));
         fileNameNoChangeRadioButton = new JRadioButton(I18nUtils.getString("NO_CHANGE"));
@@ -155,7 +158,7 @@ public final class DevicePanel extends AbstractPreferencesPanel {
 
         JPanel folderPathPanel = new JPanel(new GridBagLayout());
         folderPathPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0,0,10,0), I18nUtils.getString("FOLDER")));
-        folderPathNoChangeRadioButton = new JRadioButton(I18nUtils.getString("FLAT"));
+        folderPathNoChangeRadioButton = new JRadioButton(I18nUtils.getString("NO_CHANGE"));
         folderPathNoChangeRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -175,14 +178,23 @@ public final class DevicePanel extends AbstractPreferencesPanel {
         group2.add(folderPathCustomizedRadioButton);
 
         availablePatternsTable = lookAndFeel.getTable();
-        availablePatternsTable.setModel(new AvailablePatternsDefaultTableModel());
+        availablePatternsTable.setModel(new AvailablePatternsTableModel());
 
         JPanel patternsPanel = new JPanel(new BorderLayout());
         patternsPanel.setPreferredSize(new Dimension(250, 200));
         patternsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0,0,0,0), I18nUtils.getString("AVAILABLE_PATTERNS")));
         patternsPanel.add(lookAndFeel.getTableScrollPane(availablePatternsTable), BorderLayout.CENTER);
 
-        copySameSongForDifferentAlbums = new JCheckBox(I18nUtils.getString("ALLOW_COPY_TO_DEVICE_SAME_SONG_FOR_DIFFERENT_ALBUMS"));
+        reviewTagsBeforeImportCheckBox = new JCheckBox(I18nUtils.getString("REVIEW_TAGS_BEFORE_IMPORTING"));
+        reviewTagsBeforeImportCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                applyChangesToSourceFilesCheckBox.setEnabled(((JCheckBox) e.getSource()).isSelected());
+            }
+        });
+        applyChangesToSourceFilesCheckBox = new JCheckBox(I18nUtils.getString("APPLY_CHANGES_TO_SOURCE_FILES"));
+        setTrackNumberWhenImportingCheckBox = new JCheckBox(I18nUtils.getString("AUTO_SET_TRACK_NUMBER"));
+        setTitlesWhenImportingCheckBox = new JCheckBox(I18nUtils.getString("AUTO_SET_TITLE"));
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
@@ -218,79 +230,71 @@ public final class DevicePanel extends AbstractPreferencesPanel {
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 1;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        add(label, c);
-        c.gridx = 1;
-        add(locationFileChooser, c);
-
-        c.gridx = 0;
-        c.gridy = 1;
-        c.gridwidth = 2;
-        c.weightx = 1;
         c.weighty = 0;
         c.fill = GridBagConstraints.HORIZONTAL;
         add(fileNamePanel, c);
 
-        c.gridx = 2;
-        c.gridwidth = 1;
+        c.gridx = 1;
         c.gridheight = 3;
         c.weightx = 0;
         c.anchor = GridBagConstraints.NORTH;
         add(patternsPanel, c);
 
         c.gridx = 0;
-        c.gridwidth = 2;
-        c.gridy = 2;
+        c.gridy = 1;
         c.weightx = 1;
         c.gridheight = 1;
         add(folderPathPanel, c);
 
-        c.gridy = 3;
+        c.gridy = 2;
         c.weighty = 1;
-        add(copySameSongForDifferentAlbums, c);
+
+        JPanel specificImportOptions = new JPanel(new GridLayout(4, 1));
+        specificImportOptions.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0,0,10,0), I18nUtils.getString("SPECIFIC_IMPORT_OPTIONS")));
+        specificImportOptions.add(reviewTagsBeforeImportCheckBox);
+        specificImportOptions.add(applyChangesToSourceFilesCheckBox);
+        specificImportOptions.add(setTrackNumberWhenImportingCheckBox);
+        specificImportOptions.add(setTitlesWhenImportingCheckBox);
+        add(specificImportOptions, c);
+
     }
 
     @Override
     public boolean applyPreferences(IState state) {
-        state.setDefaultDeviceLocation(locationFileChooser.getResult());
         String fileNamePattern = fileNameNoChangeRadioButton.isSelected() ? "" : fileNamePatternTextField.getText();
-        state.setDeviceFileNamePattern(fileNamePattern == null || fileNamePattern.trim().equals("") ? null : fileNamePattern);
+        state.setImportExportFileNamePattern(fileNamePattern == null || fileNamePattern.trim().equals("") ? null : fileNamePattern);
         String folderPathPattern = folderPathNoChangeRadioButton.isSelected() ? "" : folderPathPatternTextField.getText();
-        state.setDeviceFolderPathPattern(folderPathPattern == null || folderPathPattern.equals("") ? null : folderPathPattern);
-        state.setAllowRepeatedSongsInDevice(copySameSongForDifferentAlbums.isSelected());
+        state.setImportExportFolderPathPattern(folderPathPattern == null || folderPathPattern.equals("") ? null : folderPathPattern);
+        state.setReviewTagsBeforeImport(reviewTagsBeforeImportCheckBox.isSelected());
+        state.setApplyChangesToSourceFilesBeforeImport(applyChangesToSourceFilesCheckBox.isSelected());
+        state.setSetTrackNumbersWhenImporting(setTrackNumberWhenImportingCheckBox.isSelected());
+        state.setSetTitlesWhenImporting(setTitlesWhenImportingCheckBox.isSelected());
         return false;
-    }
-
-    /**
-     * Sets the default device location.
-     * 
-     * @param location
-     *            the new default device location
-     */
-    private void setDefaultDeviceLocation(String location) {
-        locationFileChooser.setText(location);
     }
 
     @Override
     public void updatePanel(IState state) {
-        setDefaultDeviceLocation(state.getDefaultDeviceLocation());
-        if (state.getDeviceFileNamePattern() == null || state.getDeviceFileNamePattern().trim().equals("")) {
+        if (state.getImportExportFileNamePattern() == null || state.getImportExportFileNamePattern().trim().equals("")) {
             fileNameNoChangeRadioButton.setSelected(true);
             fileNamePatternTextField.setEnabled(false);
         } else {
             fileNameCustomizedRadioButton.setSelected(true);
             fileNamePatternTextField.setEnabled(true);
-            fileNamePatternTextField.setText(state.getDeviceFileNamePattern());
+            fileNamePatternTextField.setText(state.getImportExportFileNamePattern());
         }
-        if (state.getDeviceFolderPathPattern() == null || state.getDeviceFolderPathPattern().trim().equals("")) {
+        if (state.getImportExportFolderPathPattern() == null || state.getImportExportFolderPathPattern().trim().equals("")) {
             folderPathNoChangeRadioButton.setSelected(true);
             folderPathPatternTextField.setEnabled(false);
         } else {
             folderPathCustomizedRadioButton.setSelected(true);
             folderPathPatternTextField.setEnabled(true);
-            folderPathPatternTextField.setText(state.getDeviceFolderPathPattern());
+            folderPathPatternTextField.setText(state.getImportExportFolderPathPattern());
         }
-        copySameSongForDifferentAlbums.setSelected(state.isAllowRepeatedSongsInDevice());
+        reviewTagsBeforeImportCheckBox.setSelected(state.isReviewTagsBeforeImport());
+        applyChangesToSourceFilesCheckBox.setEnabled(state.isReviewTagsBeforeImport());
+        applyChangesToSourceFilesCheckBox.setSelected(state.isApplyChangesToSourceFilesBeforeImport());
+        setTrackNumberWhenImportingCheckBox.setSelected(state.isSetTrackNumbersWhenImporting());
+        setTitlesWhenImportingCheckBox.setSelected(state.isSetTitlesWhenImporting());
     }
 
     @Override
