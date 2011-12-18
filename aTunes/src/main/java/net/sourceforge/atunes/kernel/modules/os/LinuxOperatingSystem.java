@@ -22,8 +22,6 @@ package net.sourceforge.atunes.kernel.modules.os;
 
 import java.io.File;
 
-import net.sourceforge.atunes.kernel.modules.cdripper.Cdda2wav;
-import net.sourceforge.atunes.kernel.modules.cdripper.Cdparanoia;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.kernel.modules.hotkeys.X11Hotkeys;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
@@ -90,14 +88,6 @@ public class LinuxOperatingSystem extends OperatingSystemAdapter {
 		return true;
 	}
 	
-	@Override
-	public boolean testCdToWavConverter() {
-		if (Cdda2wav.pTestTool(osManager)) {
-			return true;
-		}
-		return Cdparanoia.pTestTool(osManager);
-	}
-
 	@Override
 	public void setUpFrame(IFrame frame) {
 	}

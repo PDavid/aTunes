@@ -71,7 +71,7 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
     private IIndeterminateProgressDialog indeterminateProgressDialog;
     
     private IRepositoryHandler repositoryHandler;
-
+    
     /**
      * Map of available encoders in the system: key is format name, value is
      * encoder
@@ -446,7 +446,7 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
      * @return Returns true if cdda2wav/icedax is present, false otherwise
      */
     boolean testTools() {
-        if (!AbstractCdToWavConverter.testTool()) {
+        if (!CdToWavConverterTest.testTools(getOsManager())) {
             Logger.error("Error testing \"cdda2wav\" or \"cdparanoia\". Check program is installed");
             SwingUtilities.invokeLater(new ShowErrorDialogRunnable(getFrame()));
             return false;

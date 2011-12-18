@@ -29,7 +29,6 @@ import java.util.Properties;
 import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.cdripper.AbstractCdToWavConverter;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.model.IFrame;
@@ -260,22 +259,6 @@ public class OsManager implements IOSManager {
 	@Override
 	public void setFullScreen(Window window, boolean fullscreen, IFrame frame) {
 		adapter.setFullScreen(window, fullscreen, frame);
-	}
-
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#getCdToWavConverter()
-	 */
-	@Override
-	public AbstractCdToWavConverter getCdToWavConverter() {
-		return adapter.getCdToWavConverter();
-	}
-
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#testCdToWavConverter()
-	 */
-	@Override
-	public boolean testCdToWavConverter() {
-		return adapter.testCdToWavConverter();
 	}
 
 	/* (non-Javadoc)

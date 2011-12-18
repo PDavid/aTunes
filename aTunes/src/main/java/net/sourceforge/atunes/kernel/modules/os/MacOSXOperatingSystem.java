@@ -26,8 +26,6 @@ import java.util.Map;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.macos.MacOSXLookAndFeel;
-import net.sourceforge.atunes.kernel.modules.cdripper.AbstractCdToWavConverter;
-import net.sourceforge.atunes.kernel.modules.cdripper.Cdparanoia;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.model.IDesktop;
@@ -75,16 +73,6 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 		Context.getBean(MacOSXInitializer.class).initialize();
 	}
 	
-	@Override
-	public AbstractCdToWavConverter getCdToWavConverter() {
-		return new Cdparanoia();
-	}
-	
-	@Override
-	public boolean testCdToWavConverter() {
-		return Cdparanoia.pTestTool(osManager);
-	}
-
 	@Override
 	public boolean isPlayerEngineSupported(AbstractPlayerEngine engine) {
 		return engine instanceof MPlayerEngine ? true : false; // Only MPLAYER
