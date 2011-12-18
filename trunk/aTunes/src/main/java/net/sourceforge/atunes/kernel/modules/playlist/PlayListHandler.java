@@ -62,9 +62,7 @@ import net.sourceforge.atunes.model.IPlayListPanel;
 import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.IPlayerControlsPanel;
 import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IProcessFactory;
-import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
@@ -670,7 +668,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         if (selected < 0 || selected >= listOfPlayLists.getPlayLists().size()) {
             selected = 0;
         }
-        final PlayList lastPlayList = listOfPlayLists.getPlayLists().get(selected);
 
         // Add playlists
         playLists.clear();
@@ -684,25 +681,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         getPlayListTabController().forceSwitchTo(visiblePlayListIndex);
 
         setPlayList(playLists.get(activePlayListIndex));
-
-        // If play list is not empty
-        // TODO: Do this for all play lists
-        // Check that at least first entry exists. This is to avoid loading a play list that contains audio object deleted or moved
-        if (lastPlayList.size() > 0 && (lastPlayList.get(0) instanceof IRadio || lastPlayList.get(0) instanceof IPodcastFeedEntry || lastPlayList.get(0) instanceof ILocalAudioObject)) {
-
-        	// When possible, take audio objects from Repository instead of from PlayList stored.
-        	// This way we prevent to have duplicated objects in PlayList for same audio object, one of PlayList and one of Repository
-        	List<IAudioObject> audioObjects = new ArrayList<IAudioObject>(lastPlayList.getAudioObjects());
-        	// lastPlayList.clear();
-        	//TODO also for radios and podcast feed entries
-        	for (int i = 0; i < audioObjects.size(); i++) {
-        		IAudioObject ao = audioObjects.get(i);
-        		ILocalAudioObject repositoryFile = getBean(IRepositoryHandler.class).getFileIfLoaded(ao.getUrl());
-        		if (repositoryFile != null) {
-        			lastPlayList.replace(i, repositoryFile);
-        		}
-        	}
-        }
 
         // Update table model
         ((PlayListTableModel) playListTable.getModel()).setVisiblePlayList(getCurrentPlayList(true));
