@@ -267,7 +267,7 @@ public final class RadioHandler extends AbstractHandler implements IRadioHandler
         try {
             String xml = networkHandler.readURL(networkHandler.getConnection(Constants.RADIO_LIST_DOWNLOAD_COMMON_JUKEBOX));
             return (List<IRadio>) xmlSerializerService.readObjectFromString(xml);
-        } catch (Exception e) {
+        } catch (IOException e) {
             String xml = networkHandler.readURL(networkHandler.getConnection(Constants.RADIO_LIST_DOWNLOAD));
             return (List<IRadio>) xmlSerializerService.readObjectFromString(xml);
         }

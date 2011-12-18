@@ -20,9 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.repository.data;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -50,28 +48,6 @@ public class Album implements IAlbum {
     /** List of songs of this album. */
     private TreeSet<ILocalAudioObject> audioFiles;
 
-    /**
-     * A Comparator for track numbers
-     *
-     */
-    private static class TrackNumberComparator implements Comparator<ILocalAudioObject>, Serializable {
-    	
-    	/**
-		 * 
-		 */
-		private static final long serialVersionUID = 8487765896303750744L;
-
-		@Override
-    	public int compare(ILocalAudioObject o1, ILocalAudioObject o2) {
-			if (o1.getTrackNumber() == o2.getTrackNumber()) {
-				return o1.compareTo(o2);
-			}
-			return Integer.valueOf(o1.getTrackNumber()).compareTo(Integer.valueOf(o2.getTrackNumber()));
-		}
-    	
-    }
-
-    
     /**
      * Constructor.
      * 
@@ -205,23 +181,30 @@ public class Album implements IAlbum {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}		
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		Album other = (Album) obj;
 		if (artist == null) {
-			if (other.artist != null)
+			if (other.artist != null) {
 				return false;
-		} else if (!artist.equals(other.artist))
+			}
+		} else if (!artist.equals(other.artist)) {
 			return false;
+		}
 		if (name == null) {
-			if (other.name != null)
+			if (other.name != null) {
 				return false;
-		} else if (!name.equalsIgnoreCase(other.name))
+			}	
+		} else if (!name.equalsIgnoreCase(other.name)) {
 			return false;
+		}
 		return true;
 	}
 	

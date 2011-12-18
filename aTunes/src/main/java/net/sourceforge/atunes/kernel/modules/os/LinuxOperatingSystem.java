@@ -42,7 +42,7 @@ public class LinuxOperatingSystem extends OperatingSystemAdapter {
      * Command to be executed on Linux systems to launch mplayer. Mplayer should
      * be in $PATH
      */
-    private static String MPLAYER_LINUX_COMMAND = "mplayer";
+    private static final String MPLAYER_LINUX_COMMAND = "mplayer";
     
     /**
      * @param systemType

@@ -80,11 +80,9 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
 		    final List<IAlbum> albums = new ArrayList<IAlbum>(artistSelected.getAlbums().values());
 		    Collections.sort(albums);
 
-		    int coversAdded = 0;
 		    for (IAlbum album : albums) {
 		        ImageIcon cover = audioObjectImageLocator.getImage(album, Constants.COVER_NAVIGATOR_IMAGE_SIZE);
 		        publish(new IntermediateResult(album, cover));
-		        coversAdded++;
 		    }
 		    return null;
 		}

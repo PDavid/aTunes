@@ -93,11 +93,10 @@ public final class Logger {
      */
     public static void error(Object o) {
         // Find calling method name and class
-        Throwable t = new Throwable();
-        StackTraceElement[] s = t.getStackTrace();
-        String className = s[1].getClassName();
+        StackTraceElement s = new Throwable().getStackTrace()[1];
+        String className = s.getClassName();
         className = className.substring(className.lastIndexOf('.') + 1);
-        String methodName = s[1].getMethodName();
+        String methodName = s.getMethodName();
 
         logger.error(StringUtils.getString("--> ", className, ".", methodName, " [", "]\t ", o));
 

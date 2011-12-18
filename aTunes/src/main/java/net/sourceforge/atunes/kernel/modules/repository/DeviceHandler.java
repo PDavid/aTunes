@@ -197,7 +197,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 
         // Get n songs
         // Stop when there will be no free Space of no more files ...
-        for (int i = 0; (leaveFree < deviceFreeSpace) && (songs.size() > songsSelected.size()); i++) {
+        while (leaveFree < deviceFreeSpace && songs.size() > songsSelected.size()) {
             // Get song number
             int number = r.nextInt(songs.size());
 

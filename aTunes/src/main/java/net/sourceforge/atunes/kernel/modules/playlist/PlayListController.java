@@ -101,8 +101,9 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
             if(rowCount > 0) {
                 int newIndex = arrMin(rows);
 
-                if(newIndex >= rowCount)
+                if(newIndex >= rowCount) {
                     newIndex = rowCount - 1;
+                }
 
                 playListTable.getSelectionModel().setSelectionInterval(newIndex, newIndex);
             }

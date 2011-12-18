@@ -96,9 +96,10 @@ public class PlayAction extends CustomAbstractAction {
             	playListHandler.setPositionToPlayInVisiblePlayList(selAudioObject);
                 playerHandler.playCurrentAudioObject(false);
             }
-        } else
+        } else {
             // selected song equals to song being currently played -> pause
             playerHandler.playCurrentAudioObject(true);
+        }
     }
 
     @Override

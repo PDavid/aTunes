@@ -41,12 +41,13 @@ public class DateColumn extends AbstractColumn<String> {
 
     @Override
     protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
-        if (ao1.getDate() == null)
+        if (ao1.getDate() == null) {
             return 1;
-        else if (ao2.getDate() == null)
+        } else if (ao2.getDate() == null) {
             return -1;
-        else
+        } else {
             return ao1.getDate().compareTo(ao2.getDate());
+        }
     }
 
     @Override
