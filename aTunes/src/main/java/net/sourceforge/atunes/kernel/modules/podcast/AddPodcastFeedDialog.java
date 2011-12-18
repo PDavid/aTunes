@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.dialogs;
+package net.sourceforge.atunes.kernel.modules.podcast;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -31,10 +31,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
-import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeed;
 import net.sourceforge.atunes.model.IAddPodcastFeedDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIconFactory;
@@ -50,13 +48,15 @@ public final class AddPodcastFeedDialog extends AbstractCustomDialog implements 
     private static final long serialVersionUID = 7295438534550341824L;
 
     /** The podcast feed. */
-    private PodcastFeed podcastFeed;
+    private IPodcastFeed podcastFeed;
 
     /** The name text field. */
     private JTextField nameTextField;
 
     /** The url text field. */
     private JTextField urlTextField;
+    
+    private IIconFactory rssMediumIcon;
     
     /**
      * Instantiates a new adds the podcast feed dialog.
@@ -66,10 +66,23 @@ public final class AddPodcastFeedDialog extends AbstractCustomDialog implements 
      */
     public AddPodcastFeedDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
         super(frame, 500, 170, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
+    }
+    
+    /**
+     * Initializes dialog
+     */
+    public void initialize() {
         setTitle(I18nUtils.getString("ADD_PODCAST_FEED"));
         setResizable(false);
         add(getContent());
     }
+    
+    /**
+     * @param rssMediumIcon
+     */
+    public void setRssMediumIcon(IIconFactory rssMediumIcon) {
+		this.rssMediumIcon = rssMediumIcon;
+	}
 
     /**
      * Gets the content.
@@ -84,26 +97,8 @@ public final class AddPodcastFeedDialog extends AbstractCustomDialog implements 
         JLabel urlLabel = new JLabel(I18nUtils.getString("URL"));
         urlTextField = new CustomTextField();
 
-        JButton okButton = new JButton(I18nUtils.getString("OK"));
-        okButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (nameTextField.getText() == null || nameTextField.getText().trim().isEmpty()) {
-                    podcastFeed = new PodcastFeed("", urlTextField.getText());
-                    podcastFeed.setRetrieveNameFromFeed(true);
-                } else {
-                    podcastFeed = new PodcastFeed(nameTextField.getText(), urlTextField.getText());
-                }
-                AddPodcastFeedDialog.this.dispose();
-            }
-        });
-        JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                AddPodcastFeedDialog.this.dispose();
-            }
-        });
+        JButton okButton = getOkButton();
+        JButton cancelButton = getCancelButton();
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 1;
@@ -126,7 +121,7 @@ public final class AddPodcastFeedDialog extends AbstractCustomDialog implements 
         c.gridheight = 2;
         c.fill = GridBagConstraints.NONE;
         c.weightx = -1;
-        panel.add(new JLabel(Context.getBean("rssMediumIcon", IIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls())), c);
+        panel.add(new JLabel(rssMediumIcon.getIcon(lookAndFeel.getPaintForSpecialControls())), c);
 
         JPanel auxPanel = new JPanel();
         auxPanel.add(okButton);
@@ -141,20 +136,47 @@ public final class AddPodcastFeedDialog extends AbstractCustomDialog implements 
         return panel;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IAddPodcastFeedDialog#getPodcastFeed()
+	/**
+	 * @return
 	 */
+	private JButton getCancelButton() {
+		JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AddPodcastFeedDialog.this.dispose();
+            }
+        });
+		return cancelButton;
+	}
+
+	/**
+	 * @return
+	 */
+	private JButton getOkButton() {
+		JButton okButton = new JButton(I18nUtils.getString("OK"));
+        okButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (nameTextField.getText() == null || nameTextField.getText().trim().isEmpty()) {
+                    podcastFeed = new PodcastFeed("", urlTextField.getText());
+                    podcastFeed.setRetrieveNameFromFeed(true);
+                } else {
+                    podcastFeed = new PodcastFeed(nameTextField.getText(), urlTextField.getText());
+                }
+                AddPodcastFeedDialog.this.dispose();
+            }
+        });
+		return okButton;
+	}
+
     @Override
 	public IPodcastFeed getPodcastFeed() {
         return podcastFeed;
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IAddPodcastFeedDialog#showDialog()
-	 */
     @Override
 	public void showDialog() {
     	setVisible(true);
     }
-
 }

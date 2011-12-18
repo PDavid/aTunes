@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.dialogs;
+package net.sourceforge.atunes.kernel.modules.playlist;
 
 import java.awt.BorderLayout;
 import java.awt.event.MouseAdapter;
@@ -30,7 +30,6 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.AlbumTableColumnModel;
 import net.sourceforge.atunes.gui.AlbumTableModel;
 import net.sourceforge.atunes.gui.ColumnRenderers;
@@ -59,6 +58,8 @@ public final class ArtistAlbumSelectorDialog extends AbstractCustomDialog implem
 	private IAlbum album;
 	
 	private ILookAndFeel lookAndFeel;
+	
+	private IColumnSet albumColumnSet;
 
     /**
      * Instantiates a new  dialog.
@@ -70,6 +71,13 @@ public final class ArtistAlbumSelectorDialog extends AbstractCustomDialog implem
         this.lookAndFeel = lookAndFeelManager.getCurrentLookAndFeel();
         setResizable(false);
     }
+    
+    /**
+     * @param albumColumnSet
+     */
+    public void setAlbumColumnSet(IColumnSet albumColumnSet) {
+		this.albumColumnSet = albumColumnSet;
+	}
     
     /**
      * Gets the content.
@@ -96,9 +104,8 @@ public final class ArtistAlbumSelectorDialog extends AbstractCustomDialog implem
         albumTable.setColumnModel(columnModel);
         
         // why ??? don't work without
-        IColumnSet columnSet = (IColumnSet) Context.getBean("albumColumnSet");
-        model.setColumnSet(columnSet);
-        columnModel.setColumnSet(columnSet);        
+        model.setColumnSet(albumColumnSet);
+        columnModel.setColumnSet(albumColumnSet);        
         // ???
         
         // 	Set renderers
@@ -122,9 +129,6 @@ public final class ArtistAlbumSelectorDialog extends AbstractCustomDialog implem
         return panel;
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IArtistAlbumSelectorDialog#showDialog(net.sourceforge.atunes.model.Artist)
-	 */
     @Override
 	public IAlbum showDialog(IArtist artist) {
         this.artist = artist;
@@ -135,5 +139,4 @@ public final class ArtistAlbumSelectorDialog extends AbstractCustomDialog implem
     	setVisible(true);
     	return album;
     }
-
 }
