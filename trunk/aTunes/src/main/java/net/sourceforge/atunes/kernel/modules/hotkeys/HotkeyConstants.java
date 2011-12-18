@@ -36,5 +36,7 @@ public class HotkeyConstants {
     public static final int HOTKEY_TOGGLE_WINDOW_VISIBILITY = 7;
     public static final int HOTKEY_MUTE = 8;
     public static final int HOTKEY_SHOW_OSD = 9;
+    
+    private HotkeyConstants() {}
 
 }

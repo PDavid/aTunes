@@ -23,6 +23,8 @@ package net.sourceforge.atunes.utils;
 import java.util.Collection;
 
 public class CollectionUtils {
+	
+	private CollectionUtils() {}
 
 	/**
 	 * Returns if collection is empty or null

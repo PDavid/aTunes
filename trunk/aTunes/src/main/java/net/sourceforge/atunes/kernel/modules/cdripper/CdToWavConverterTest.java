@@ -23,6 +23,8 @@ package net.sourceforge.atunes.kernel.modules.cdripper;
 import net.sourceforge.atunes.model.IOSManager;
 
 class CdToWavConverterTest {
+	
+	private CdToWavConverterTest() {}
 
 	/**
 	 * Test cd to wav converter given the os manager

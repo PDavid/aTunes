@@ -35,13 +35,12 @@ import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INotificationEngine;
 import net.sourceforge.atunes.model.INotificationsHandler;
-import net.sourceforge.atunes.model.IPlaybackStateListener;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITemporalDiskStorage;
 import net.sourceforge.atunes.model.PlaybackState;
 import net.sourceforge.atunes.utils.Logger;
 
-public final class NotificationsHandler extends AbstractHandler implements IPlaybackStateListener, INotificationsHandler {
+public final class NotificationsHandler extends AbstractHandler implements INotificationsHandler {
 
     private Map<String, INotificationEngine> engines;
     

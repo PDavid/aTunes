@@ -31,7 +31,7 @@ import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.CustomSplitPane;
 import net.sourceforge.atunes.model.IFrameState;
 
-public final class EnhancedSingleFrame extends MainSplitPaneLeftSingleFrame implements net.sourceforge.atunes.model.IFrame {
+public final class EnhancedSingleFrame extends MainSplitPaneLeftSingleFrame {
 
     private static final long serialVersionUID = 1L;
 

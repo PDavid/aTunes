@@ -29,6 +29,8 @@ import java.awt.geom.RoundRectangle2D;
 import javax.swing.ImageIcon;
 
 public class RadioImageIcon {
+	
+	private RadioImageIcon() {}
 
 	/**
 	 * @param color

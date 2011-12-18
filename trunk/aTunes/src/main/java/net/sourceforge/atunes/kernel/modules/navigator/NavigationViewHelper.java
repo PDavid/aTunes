@@ -28,6 +28,8 @@ import javax.swing.tree.TreePath;
 
 class NavigationViewHelper {
 
+	private NavigationViewHelper() {}
+	
     /**
      * Expands a list of nodes of a tree
      * 

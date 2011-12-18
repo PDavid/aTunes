@@ -23,6 +23,8 @@ package net.sourceforge.atunes.utils;
 import net.sourceforge.atunes.model.IArtist;
 
 public class UnknownObjectCheck {
+	
+	private UnknownObjectCheck() {}
 
     /**
      * Return unknown artist text

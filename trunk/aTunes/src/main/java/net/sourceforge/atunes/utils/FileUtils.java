@@ -29,6 +29,8 @@ import java.io.FileNotFoundException;
  *
  */
 public class FileUtils {
+	
+	private FileUtils() {}
 
     /**
      * Sets write permissions if is not writable.

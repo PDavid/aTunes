@@ -32,6 +32,7 @@ class MacOSColors {
     
     static final Color TABLE_HEADER_COLOR = TABLE_GRID_COLOR;
 
+    private MacOSColors() {}
 
 
 }

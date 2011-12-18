@@ -24,6 +24,8 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 
 class AlbumImageIcon {
+	
+	private AlbumImageIcon() {}
 
 	/**
 	 * @param width
