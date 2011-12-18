@@ -26,19 +26,23 @@ import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
 import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IOSManager;
 
 public abstract class AbstractCache {
 
     private CacheManager cacheManager;
 
-    public AbstractCache(URL settings) {
-        init(settings);
+    /**
+     * @param osManager
+     * @param applicationArguments
+     * @param settings
+     */
+    public AbstractCache(IOSManager osManager, ApplicationArguments applicationArguments, URL settings) {
+        init(osManager, applicationArguments, settings);
     }
 
-    private void init(URL settings) {
-        System.setProperty("ehcache.disk.store.dir", StringUtils.getString(Context.getBean(IOSManager.class).getUserConfigFolder(Context.getBean(ApplicationArguments.class).isDebug()), Context.getBean(IOSManager.class).getFileSeparator(), Constants.CACHE_DIR));
+    private void init(IOSManager osManager, ApplicationArguments applicationArguments, URL settings) {
+        System.setProperty("ehcache.disk.store.dir", StringUtils.getString(osManager.getUserConfigFolder(applicationArguments.isDebug()), osManager.getFileSeparator(), Constants.CACHE_DIR));
         this.cacheManager = new CacheManager(settings);
     }
 

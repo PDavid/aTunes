@@ -72,13 +72,11 @@ public class WebServicesHandler extends AbstractHandler implements IWebServicesH
 
 	@Override
 	public void applicationStateChanged(IState newState) {
-        lastFmService.updateService();
         lyricsService.updateService();
 	}
 
 	@Override
 	protected void initHandler() {
-        lastFmService.updateService();
         lyricsService.updateService();
 	}
 
