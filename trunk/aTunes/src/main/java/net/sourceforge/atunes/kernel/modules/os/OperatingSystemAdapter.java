@@ -37,7 +37,6 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.SystemLookAndFeel;
-import net.sourceforge.atunes.kernel.modules.cdripper.AbstractCdToWavConverter;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
@@ -161,24 +160,6 @@ public abstract class OperatingSystemAdapter {
 		GraphicsDevice graphicsDevice = GuiUtils
 				.getGraphicsDeviceForLocation(frame.getLocation());
 		graphicsDevice.setFullScreenWindow(fullscreen ? window : null);
-	}
-
-	/**
-	 * Returns OS-dependent converter
-	 * 
-	 * @return
-	 */
-	public AbstractCdToWavConverter getCdToWavConverter() {
-		return null; // By default there is no converter
-	}
-
-	/**
-	 * Test OS-dependent converter
-	 * 
-	 * @return
-	 */
-	public boolean testCdToWavConverter() {
-		return false; // None supported by default
 	}
 
 	/**

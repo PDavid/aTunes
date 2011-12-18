@@ -22,9 +22,6 @@ package net.sourceforge.atunes.kernel.modules.cdripper;
 
 import java.io.File;
 
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.model.IOSManager;
-
 /**
  * Abstract class for Cdda2wav and Cdparanoia
  */
@@ -41,23 +38,6 @@ public abstract class AbstractCdToWavConverter {
      */
 
     /**
-     * creates a new CdToWavConverter-object. The implementation depends on the
-     * users OS.
-     * @param osManager
-     * @return
-     */
-    public static AbstractCdToWavConverter createNewConverterForOS(IOSManager osManager) {
-    	AbstractCdToWavConverter osConverter = Context.getBean(IOSManager.class).getCdToWavConverter();
-    	if (osConverter != null) {
-    		return osConverter;
-    	} else if (Cdda2wav.pTestTool(osManager)) {
-            return new Cdda2wav(osManager);
-        } else {
-            return new Cdparanoia();
-        }
-    }
-
-    /**
      * Sets no CD found so a dialog gets displayed.
      */
     public void notifyNoCd() {
@@ -71,15 +51,6 @@ public abstract class AbstractCdToWavConverter {
      */
     public void stop() {
         process.destroy();
-    }
-
-    /**
-     * Tests if cdda2wav or icedax is present
-     * 
-     * @return true if either cdda2wav or icedax was found, false else.
-     */
-    public static boolean testTool() {
-    	return Context.getBean(IOSManager.class).testCdToWavConverter();
     }
 
     /*

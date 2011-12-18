@@ -25,7 +25,6 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.cdripper.AbstractCdToWavConverter;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 
@@ -128,18 +127,6 @@ public interface IOSManager {
 	 * @param frame
 	 */
 	public void setFullScreen(Window window, boolean fullscreen, IFrame frame);
-
-	/**
-	 * Return OS-dependent converter
-	 * @return
-	 */
-	public AbstractCdToWavConverter getCdToWavConverter();
-
-	/**
-	 * Test OS-dependent converter
-	 * @return
-	 */
-	public boolean testCdToWavConverter();
 
 	/**
 	 * Returns OS hotkey listener

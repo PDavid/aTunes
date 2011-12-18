@@ -25,8 +25,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.cdripper.Cdda2wav;
-import net.sourceforge.atunes.kernel.modules.cdripper.Cdparanoia;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.model.IFrame;
@@ -100,14 +98,6 @@ public class SolarisOperatingSystem extends OperatingSystemAdapter {
 	@Override
 	public boolean areTrayIconsSupported() {
 		return true;
-	}
-
-	@Override
-	public boolean testCdToWavConverter() {
-		if (Cdda2wav.pTestTool(osManager)) {
-			return true;
-		}
-		return Cdparanoia.pTestTool(osManager);
 	}
 
 	@Override

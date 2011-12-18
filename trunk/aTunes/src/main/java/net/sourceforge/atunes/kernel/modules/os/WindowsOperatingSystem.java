@@ -27,8 +27,6 @@ import java.util.Collection;
 import java.util.List;
 
 import net.sourceforge.atunes.gui.GuiUtils;
-import net.sourceforge.atunes.kernel.modules.cdripper.AbstractCdToWavConverter;
-import net.sourceforge.atunes.kernel.modules.cdripper.Cdda2wav;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.kernel.modules.hotkeys.WindowsHotkeys;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
@@ -99,16 +97,6 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter {
 				window.setSize(GuiUtils.getDeviceWidth(), GuiUtils.getDeviceHeight());
 			}
 		}
-	}
-	
-	@Override
-	public AbstractCdToWavConverter getCdToWavConverter() {
-		return new Cdda2wav(osManager);
-	}
-	
-	@Override
-	public boolean testCdToWavConverter() {
-		return Cdda2wav.pTestTool(osManager);
 	}
 	
 	@Override

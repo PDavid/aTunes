@@ -61,7 +61,7 @@ class CdRipper {
      */
     CdRipper(IOSManager osManager) {
     	this.osManager = osManager;
-        cdToWavConverter = AbstractCdToWavConverter.createNewConverterForOS(osManager);
+        cdToWavConverter = CdToWavConverterFactory.createNewConverterForOS(osManager);
     }
 
     /**
