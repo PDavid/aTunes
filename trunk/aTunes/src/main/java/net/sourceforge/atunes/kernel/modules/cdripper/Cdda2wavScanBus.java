@@ -102,23 +102,7 @@ public class Cdda2wavScanBus {
 
                 setProcess(new ProcessBuilder(command).start());
                 stdInput = new BufferedReader(new InputStreamReader(getProcess().getInputStream()));
-
-                // read the output from the command
-                String s = null;
-                // Search for the dev='...' lines to know what the OS calls the CD-Rom devices
-                while ((s = stdInput.readLine()) != null) {
-                    if (s.contains("dev=") && !s.contains("dev=help")) {
-                        String line = s.trim();
-                        java.util.StringTokenizer getDeviceOSName = new java.util.StringTokenizer(line, "'");
-                        // The first part is not interesting, we look for the second token, thus the next line
-                        getDeviceOSName.nextToken();
-                        String id = getDeviceOSName.nextToken();
-                        id = id.replace("\t", "");
-                        // Write found device to list
-                        devices.add(id);
-                    }
-                }
-
+                readIcedaxDevices(devices, stdInput);
                 int code = getProcess().waitFor();
                 if (code != 0) {
                     Logger.error(StringUtils.getString("Process returned code ", code));
@@ -139,6 +123,29 @@ public class Cdda2wavScanBus {
         }
         return devices;
     }
+
+	/**
+	 * @param devices
+	 * @param stdInput
+	 * @throws IOException
+	 */
+	private void readIcedaxDevices(List<String> devices, BufferedReader stdInput) throws IOException {
+		// read the output from the command
+		String s = null;
+		// Search for the dev='...' lines to know what the OS calls the CD-Rom devices
+		while ((s = stdInput.readLine()) != null) {
+		    if (s.contains("dev=") && !s.contains("dev=help")) {
+		        String line = s.trim();
+		        java.util.StringTokenizer getDeviceOSName = new java.util.StringTokenizer(line, "'");
+		        // The first part is not interesting, we look for the second token, thus the next line
+		        getDeviceOSName.nextToken();
+		        String id = getDeviceOSName.nextToken();
+		        id = id.replace("\t", "");
+		        // Write found device to list
+		        devices.add(id);
+		    }
+		}
+	}
     
     /**
      * List of devices found with cdda2wav command or null if error happens
@@ -165,42 +172,7 @@ public class Cdda2wavScanBus {
             }
 
             // read the output from the command
-            String s = null;
-            while ((s = stdInput.readLine()) != null) {
-                if (s.contains("CD-ROM")) {
-                    String line = s.trim();
-                    String id = null;
-                    // Icedax and cdda2wav seem to behave differently
-                    if ((osManager.isLinux() && !converterCommand.equals(Cdda2wavConstants.ICEDAX_COMMAND_STRING)) || osManager.isWindows()) {
-                        // Workaround: Neither of this solutions work on all machines, but first one usually throws an exception
-                        // so we know we should try the second one.
-                        try {
-                            id = line.substring(0, line.indexOf("\t"));
-                            id = id.replace("\t", "");
-                        } catch (Exception e) {
-                            id = line.substring(0, line.indexOf(' '));
-                            id = id.replace(" ", "");
-                        }
-                    } else {
-                        id = line.substring(0, line.indexOf("\t"));
-                        id = id.replace("\t", "");
-                    }
-
-                    if (osManager.isSolaris()) {
-                        /* we need to munge the BTL notation into cXtYdZ */
-                        String devPath = null;
-                        Scanner munge = new Scanner(id).useDelimiter(",");
-                        devPath = "/dev/rdsk/c" + munge.nextInt();
-                        devPath = devPath + "t" + munge.nextInt();
-                        devPath = devPath + "d" + munge.nextInt();
-                        devPath = devPath + "s2";
-                        Logger.info("device found is " + devPath);
-                        devices.add(devPath);
-                    } else {
-                        devices.add(id);
-                    }
-                }
-            }
+            readCdda2wavDevices(devices, stdInput);
 
             int code = getProcess().waitFor();
             if (code != 0) {
@@ -221,6 +193,50 @@ public class Cdda2wavScanBus {
         }
 		return devices;
     }
+
+	/**
+	 * @param devices
+	 * @param stdInput
+	 * @throws IOException
+	 */
+	private void readCdda2wavDevices(List<String> devices, BufferedReader stdInput) throws IOException {
+		String s = null;
+		while ((s = stdInput.readLine()) != null) {
+		    if (s.contains("CD-ROM")) {
+		        String line = s.trim();
+		        String id = null;
+		        // Icedax and cdda2wav seem to behave differently
+		        if ((osManager.isLinux() && !converterCommand.equals(Cdda2wavConstants.ICEDAX_COMMAND_STRING)) || osManager.isWindows()) {
+		            // Workaround: Neither of this solutions work on all machines, but first one usually throws an exception
+		            // so we know we should try the second one.
+		            try {
+		                id = line.substring(0, line.indexOf("\t"));
+		                id = id.replace("\t", "");
+		            } catch (Exception e) {
+		                id = line.substring(0, line.indexOf(' '));
+		                id = id.replace(" ", "");
+		            }
+		        } else {
+		            id = line.substring(0, line.indexOf("\t"));
+		            id = id.replace("\t", "");
+		        }
+
+		        if (osManager.isSolaris()) {
+		            /* we need to munge the BTL notation into cXtYdZ */
+		            String devPath = null;
+		            Scanner munge = new Scanner(id).useDelimiter(",");
+		            devPath = "/dev/rdsk/c" + munge.nextInt();
+		            devPath = devPath + "t" + munge.nextInt();
+		            devPath = devPath + "d" + munge.nextInt();
+		            devPath = devPath + "s2";
+		            Logger.info("device found is " + devPath);
+		            devices.add(devPath);
+		        } else {
+		            devices.add(id);
+		        }
+		    }
+		}
+	}
     
     /**
      * @return
