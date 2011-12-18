@@ -28,7 +28,6 @@ import javax.swing.DefaultComboBoxModel;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.autocomplete.AutoCompleteDecorator;
-import net.sourceforge.atunes.gui.views.dialogs.RipCdDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.tags.Genres;
 import net.sourceforge.atunes.model.IOSManager;

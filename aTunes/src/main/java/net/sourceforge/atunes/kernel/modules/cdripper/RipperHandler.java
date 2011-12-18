@@ -35,7 +35,6 @@ import java.util.Set;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.gui.views.dialogs.RipCdDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.TaskService;
 import net.sourceforge.atunes.kernel.actions.RipCDAction;
@@ -461,7 +460,7 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
      */
     RipCdDialogController getRipCdDialogController() {
         if (ripCdDialogController == null) {
-            ripCdDialogController = new RipCdDialogController(new RipCdDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class)), getState(), getOsManager(), repositoryHandler, this);
+            ripCdDialogController = new RipCdDialogController(getBean(RipCdDialog.class), getState(), getOsManager(), repositoryHandler, this);
         }
         return ripCdDialogController;
     }
