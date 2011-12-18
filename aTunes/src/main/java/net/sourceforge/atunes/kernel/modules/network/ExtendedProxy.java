@@ -30,7 +30,7 @@ import net.sourceforge.atunes.model.IProxyBean;
 /**
  * The Class CustomProxy.
  */
-class ExtendedProxy extends java.net.Proxy {
+final class ExtendedProxy extends java.net.Proxy {
 
     /** The url. */
     private String url;

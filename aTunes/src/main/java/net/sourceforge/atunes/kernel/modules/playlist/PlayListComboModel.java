@@ -26,7 +26,7 @@ import java.util.List;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
-class PlayListComboModel extends ListComboBoxModel<String> {
+final class PlayListComboModel extends ListComboBoxModel<String> {
 
 	/**
 	 * 

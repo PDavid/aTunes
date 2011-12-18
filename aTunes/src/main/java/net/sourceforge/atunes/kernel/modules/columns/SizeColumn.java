@@ -24,8 +24,6 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IPodcastFeedEntry;
-import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class SizeColumn extends AbstractColumn<String> {
@@ -55,13 +53,10 @@ public class SizeColumn extends AbstractColumn<String> {
 
     @Override
     public String getValueFor(IAudioObject audioObject) {
-        if (audioObject instanceof IRadio) {
-            return "";
+        if (audioObject instanceof ILocalAudioObject) {
+        	return StringUtils.fromByteToMegaOrGiga(((ILocalAudioObject) audioObject).getFile().length());
         }
-        if (audioObject instanceof IPodcastFeedEntry) {
-            return "";
-        }
-        return StringUtils.fromByteToMegaOrGiga(((ILocalAudioObject) audioObject).getFile().length());
+        return null;
     }
 
 }

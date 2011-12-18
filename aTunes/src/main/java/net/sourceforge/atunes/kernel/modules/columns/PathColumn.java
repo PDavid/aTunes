@@ -57,6 +57,9 @@ public class PathColumn extends AbstractColumn<String> {
         if (audioObject instanceof IPodcastFeedEntry) {
             return ((IPodcastFeedEntry) audioObject).getUrl();
         }
-        return ((ILocalAudioObject) audioObject).getFile().getParentFile().getAbsolutePath();
+        if (audioObject instanceof ILocalAudioObject) {
+        	return ((ILocalAudioObject) audioObject).getFile().getParentFile().getAbsolutePath();
+        }
+        return null;
     }
 }

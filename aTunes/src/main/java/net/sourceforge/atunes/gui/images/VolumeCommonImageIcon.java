@@ -23,7 +23,7 @@ package net.sourceforge.atunes.gui.images;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 
-class VolumeCommonImageIcon {
+final class VolumeCommonImageIcon {
 
 	protected static final int WIDTH = 24;
 	protected static final int HEIGHT = 24;

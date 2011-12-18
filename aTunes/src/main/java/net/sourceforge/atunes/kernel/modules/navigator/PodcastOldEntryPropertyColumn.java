@@ -37,11 +37,17 @@ final class PodcastOldEntryPropertyColumn extends AbstractColumn<AudioObjectProp
 
     @Override
     public AudioObjectProperty getValueFor(IAudioObject audioObject) {
-        return ((IPodcastFeedEntry) audioObject).isOld() ? AudioObjectProperty.OLD_ENTRY : AudioObjectProperty.NO_PROPERTIES;
+    	if (audioObject instanceof IPodcastFeedEntry) {
+    		return ((IPodcastFeedEntry) audioObject).isOld() ? AudioObjectProperty.OLD_ENTRY : AudioObjectProperty.NO_PROPERTIES;
+    	}
+    	return AudioObjectProperty.NO_PROPERTIES;
     }
 
     @Override
     protected int ascendingCompare(IAudioObject o1, IAudioObject o2) {
-        return Boolean.valueOf(((IPodcastFeedEntry) o1).isOld()).compareTo(Boolean.valueOf(((IPodcastFeedEntry) o2).isOld()));
+    	if (o1 instanceof IPodcastFeedEntry && o2 instanceof IPodcastFeedEntry) {
+    		return Boolean.valueOf(((IPodcastFeedEntry) o1).isOld()).compareTo(Boolean.valueOf(((IPodcastFeedEntry) o2).isOld()));
+    	}
+    	return 0;
     }
 }

@@ -35,7 +35,7 @@ import org.apache.log4j.PropertyConfigurator;
 /**
  * A custom logger for aTunes, using log4j.
  */
-public class Logger {
+public final class Logger {
 
     /** Internal logger. */
     private static org.apache.log4j.Logger logger;

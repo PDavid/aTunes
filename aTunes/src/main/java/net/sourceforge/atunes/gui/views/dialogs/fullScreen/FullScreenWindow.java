@@ -325,7 +325,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
             @Override
             public void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                if (background == null) {
+                if (background == null && g instanceof Graphics2D) {
                     Graphics2D g2d = (Graphics2D) g;
                     g2d.setPaint(new GradientPaint(0, 0, Color.BLACK, 0, this.getHeight(), Color.BLACK));
                     g2d.fillRect(0, 0, this.getWidth(), this.getHeight());

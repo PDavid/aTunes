@@ -27,7 +27,7 @@ import javax.swing.ImageIcon;
 
 import org.jdesktop.swingx.geom.Star2D;
 
-public class StarImageIcon {
+final class StarImageIcon {
 
 	private static final int STAR_SIZE = 16;
 	private static final int STAR_GAP = 3;

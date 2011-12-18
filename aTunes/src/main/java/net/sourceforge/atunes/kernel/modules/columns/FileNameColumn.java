@@ -39,16 +39,19 @@ public class FileNameColumn extends AbstractColumn<String> {
 
     @Override
     protected int ascendingCompare(IAudioObject ao1, IAudioObject ao2) {
-        return ((ILocalAudioObject) ao1).getFile().getName().compareTo(((ILocalAudioObject) ao2).getFile().getName());
+    	if (ao1 instanceof ILocalAudioObject) {
+    		return ((ILocalAudioObject) ao1).getFile().getName().compareTo(((ILocalAudioObject) ao2).getFile().getName());
+    	}
+    	return 0;
     }
 
     @Override
     public String getValueFor(IAudioObject audioObject) {
         if (audioObject instanceof IRadio) {
-            return "";
+            return null;
         }
         if (audioObject instanceof IPodcastFeedEntry) {
-            return "";
+            return null;
         }
         return ((ILocalAudioObject) audioObject).getFile().getName();
     }
