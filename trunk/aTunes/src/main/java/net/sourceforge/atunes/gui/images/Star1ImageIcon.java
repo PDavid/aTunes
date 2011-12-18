@@ -25,7 +25,7 @@ import java.awt.Color;
 import javax.swing.ImageIcon;
 
 
-public class Star1ImageIcon extends CachedIconFactory {
+final class Star1ImageIcon extends CachedIconFactory {
 
 	/**
 	 * 

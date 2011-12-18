@@ -31,7 +31,7 @@ import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.model.ILookAndFeel;
 
-class IconGenerator {
+final class IconGenerator {
 
 	private IconGenerator() {}
 	

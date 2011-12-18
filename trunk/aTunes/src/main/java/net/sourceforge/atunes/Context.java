@@ -25,7 +25,7 @@ import java.util.Collection;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-public class Context {
+public final class Context {
 
 	private static ApplicationContext context;
 	

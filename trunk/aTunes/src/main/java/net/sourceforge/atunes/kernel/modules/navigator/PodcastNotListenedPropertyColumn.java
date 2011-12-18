@@ -37,11 +37,17 @@ final class PodcastNotListenedPropertyColumn extends AbstractColumn<AudioObjectP
 
     @Override
     public AudioObjectProperty getValueFor(IAudioObject audioObject) {
-        return ((IPodcastFeedEntry) audioObject).isListened() ? AudioObjectProperty.NO_PROPERTIES : AudioObjectProperty.NOT_LISTENED_ENTRY;
+    	if (audioObject instanceof IPodcastFeedEntry) {
+    		return ((IPodcastFeedEntry) audioObject).isListened() ? AudioObjectProperty.NO_PROPERTIES : AudioObjectProperty.NOT_LISTENED_ENTRY;
+    	}
+    	return AudioObjectProperty.NOT_LISTENED_ENTRY;
     }
 
     @Override
     protected int ascendingCompare(IAudioObject o1, IAudioObject o2) {
-        return Boolean.valueOf(((IPodcastFeedEntry) o1).isListened()).compareTo(Boolean.valueOf(((IPodcastFeedEntry) o2).isListened()));
+    	if (o1 instanceof IPodcastFeedEntry && o2 instanceof IPodcastFeedEntry) {
+    		return Boolean.valueOf(((IPodcastFeedEntry) o1).isListened()).compareTo(Boolean.valueOf(((IPodcastFeedEntry) o2).isListened()));
+    	}
+    	return 0;
     }
 }

@@ -24,7 +24,7 @@ import java.awt.geom.Area;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.RoundRectangle2D;
 
-class RssImageIcon {
+final class RssImageIcon {
 
 	private RssImageIcon() {}
 	

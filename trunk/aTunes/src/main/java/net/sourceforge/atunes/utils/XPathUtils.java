@@ -33,7 +33,7 @@ import org.w3c.dom.NodeList;
  * @author alex
  *
  */
-public class XPathUtils {
+public final class XPathUtils {
 	
 	private XPathUtils() {}
 	
