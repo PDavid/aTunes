@@ -27,7 +27,6 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.UIManager;
 
-import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -42,11 +41,14 @@ class NavigationTableCellRendererCode extends AbstractTableCellRendererCode<JCom
     
     private INavigationHandler navigationHandler;
     
+    private boolean isSubstance;
+    
     public NavigationTableCellRendererCode(AbstractTableCellRendererCode<?, ?> renderer, IState state, ILookAndFeel lookAndFeel, INavigationHandler navigationHandler) {
     	super(lookAndFeel);
         this.renderer = renderer;
         this.state = state;
         this.navigationHandler = navigationHandler;
+        this.isSubstance = lookAndFeel.getName().equalsIgnoreCase("Substance");
     }
 
     @Override
@@ -60,7 +62,7 @@ class NavigationTableCellRendererCode extends AbstractTableCellRendererCode<JCom
                 ((JLabel) c).setForeground(Color.red);
             } else {
             	// Only Substance doesn't need this workaround
-            	if (!getLookAndFeel().getClass().equals(SubstanceLookAndFeel.class)) {
+            	if (!isSubstance) {
             		((JLabel) c).setForeground(c.getForeground());
             		if( isSelected ) {
             			((JLabel) c).setForeground(UIManager.getColor("List.selectionForeground"));
