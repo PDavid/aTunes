@@ -108,8 +108,6 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 
 	private ILookAndFeelManager lookAndFeelManager;
 	
-	private transient ApplicationArguments applicationArguments;
-	
 	private transient IColorBeanFactory colorBeanFactory;
 	
 	private transient ILocaleBeanFactory localeBeanFactory;
@@ -118,15 +116,13 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
      * Instantiates a new general panel.
      * @param osManager
      * @param lookAndFeelManager
-     * @param applicationArguments
      * @param colorBeanFactory
      * @param fontBeanFactory
      */
-    public GeneralPanel(final IOSManager osManager, ILookAndFeelManager lookAndFeelManager, ApplicationArguments applicationArguments, IColorBeanFactory colorBeanFactory, final IFontBeanFactory fontBeanFactory, ILocaleBeanFactory localeBeanFactory) {
+    public GeneralPanel(final IOSManager osManager, ILookAndFeelManager lookAndFeelManager, IColorBeanFactory colorBeanFactory, final IFontBeanFactory fontBeanFactory, ILocaleBeanFactory localeBeanFactory) {
         super(I18nUtils.getString("GENERAL"));
         this.osManager = osManager;
         this.lookAndFeelManager = lookAndFeelManager;
-        this.applicationArguments = applicationArguments;
         this.colorBeanFactory = colorBeanFactory;
         this.localeBeanFactory = localeBeanFactory;
         JLabel windowTypeLabel = new JLabel(I18nUtils.getString("WINDOW_TYPE"));
@@ -205,7 +201,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
                     if (currentSkin == null) {
                     	currentSkin = GeneralPanel.this.lookAndFeelManager.getDefaultSkin(getState().getLookAndFeel().getName());
                     }
-                    GeneralPanel.this.lookAndFeelManager.applySkin(GeneralPanel.this.applicationArguments, currentSkin, getState(), osManager);
+                    GeneralPanel.this.lookAndFeelManager.applySkin(currentSkin, getState(), osManager);
             	}
             	updateSkins((String)lookAndFeel.getSelectedItem(), skinName);
             }
@@ -408,7 +404,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
     @Override
     public void resetImmediateChanges(IState state) {
         if (state.getLookAndFeel().getSkin() == null || !state.getLookAndFeel().getSkin().equals(skin.getSelectedItem())) {
-            lookAndFeelManager.applySkin(applicationArguments, state.getLookAndFeel().getSkin(), getState(), osManager);
+            lookAndFeelManager.applySkin(state.getLookAndFeel().getSkin(), getState(), osManager);
         }
     }
 
@@ -454,7 +450,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
     		String selectedSkin = (String) skin.getSelectedItem();
     		boolean isCurrentLookAndFeel = lookAndFeelManager.getCurrentLookAndFeelName().equals(lookAndFeel.getSelectedItem());
     		if (isCurrentLookAndFeel) {
-    			lookAndFeelManager.applySkin(applicationArguments, selectedSkin, getState(), osManager);
+    			lookAndFeelManager.applySkin(selectedSkin, getState(), osManager);
     		}
     	}
     }

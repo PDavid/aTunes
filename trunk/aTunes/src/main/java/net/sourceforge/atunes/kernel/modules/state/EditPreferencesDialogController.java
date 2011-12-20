@@ -29,7 +29,6 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.DefaultListModel;
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.StateChangeListeners;
@@ -73,7 +72,6 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
      * @param hotkeyHandler
      * @param notificationsHandler
      * @param pluginsHandler
-     * @param applicationArguments
      * @param desktop
      * @param networkHandler
      * @param colorBeanFactory
@@ -83,13 +81,13 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
      */
     EditPreferencesDialogController(EditPreferencesDialog dialog, IState state, IOSManager osManager, IFrame frame, StateChangeListeners stateChangeListeners, 
     		ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler, IHotkeyHandler hotkeyHandler, 
-    		INotificationsHandler notificationsHandler, IPluginsHandler pluginsHandler, ApplicationArguments applicationArguments, IDesktop desktop,
+    		INotificationsHandler notificationsHandler, IPluginsHandler pluginsHandler, IDesktop desktop,
     		INetworkHandler networkHandler, IColorBeanFactory colorBeanFactory, IFontBeanFactory fontBeanFactory, ILocaleBeanFactory localeBeanFactory, IProxyBeanFactory proxyBeanFactory) {
         super(dialog, state);
         this.stateChangeListeners = stateChangeListeners;
         this.lookAndFeelManager = lookAndFeelManager;
         panels = new ArrayList<AbstractPreferencesPanel>();
-        panels.add(new GeneralPanel(osManager, lookAndFeelManager, applicationArguments, colorBeanFactory, fontBeanFactory, localeBeanFactory));
+        panels.add(new GeneralPanel(osManager, lookAndFeelManager, colorBeanFactory, fontBeanFactory, localeBeanFactory));
         panels.add(new RepositoryPanel()); 
         panels.add(new PlayerPanel(osManager, lookAndFeelManager.getCurrentLookAndFeel(), playerHandler, hotkeyHandler)); 
         panels.add(new NavigatorPanel(lookAndFeelManager.getCurrentLookAndFeel())); 
