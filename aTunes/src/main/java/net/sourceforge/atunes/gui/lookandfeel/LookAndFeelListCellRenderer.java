@@ -24,16 +24,16 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComponent;
 import javax.swing.JList;
 
-import net.sourceforge.atunes.gui.AbstractListCellRendererCode;
+import net.sourceforge.atunes.model.IListCellRendererCode;
 
 final class LookAndFeelListCellRenderer extends DefaultListCellRenderer {
-    private final AbstractListCellRendererCode code;
+    private final IListCellRendererCode code;
     /**
 	 * 
 	 */
     private static final long serialVersionUID = 2572603555660744197L;
 
-    LookAndFeelListCellRenderer(AbstractListCellRendererCode code) {
+    LookAndFeelListCellRenderer(IListCellRendererCode code) {
         this.code = code;
     }
 

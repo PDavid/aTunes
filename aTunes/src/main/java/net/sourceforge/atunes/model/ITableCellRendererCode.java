@@ -18,29 +18,31 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.lookandfeel;
+package net.sourceforge.atunes.model;
 
 import javax.swing.JComponent;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
 
-import net.sourceforge.atunes.model.ITableCellRendererCode;
+/**
+ * Code to decorate a cell of a table
+ * @author alex
+ *
+ * @param <T>
+ * @param <U>
+ */
+public interface ITableCellRendererCode<T extends JComponent, U> {
 
-final class LookAndFeelTableHeaderCellRenderer extends DefaultTableCellRenderer {
-	
-    private final ITableCellRendererCode code;
-    /**
-	 * 
+	/**
+	 * @param superComponent
+	 * @param t
+	 * @param value
+	 * @param isSelected
+	 * @param hasFocus
+	 * @param row
+	 * @param column
+	 * @return
 	 */
-    private static final long serialVersionUID = 1L;
+	public T getComponent(T superComponent, JTable t, U value,
+			boolean isSelected, boolean hasFocus, int row, int column);
 
-    LookAndFeelTableHeaderCellRenderer(ITableCellRendererCode code) {
-        this.code = code;
-    }
-
-    @Override
-    public JComponent getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-    	JComponent c = (JComponent) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-        return code.getComponent(c, table, value, isSelected, hasFocus, row, column);
-    }
 }

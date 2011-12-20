@@ -36,9 +36,6 @@ import javax.swing.border.Border;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
-import net.sourceforge.atunes.gui.AbstractListCellRendererCode;
-import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.gui.AbstractTreeCellRendererCode;
 
 /**
  * A look and feel for the application
@@ -97,8 +94,7 @@ public interface ILookAndFeel {
 	 * @param code
 	 * @return
 	 */
-	public TreeCellRenderer getTreeCellRenderer(
-			final AbstractTreeCellRendererCode code);
+	public TreeCellRenderer getTreeCellRenderer(final ITreeCellRendererCode code);
 
 	/**
 	 * Returns a new TableCellRenderer executing given code (default
@@ -107,7 +103,7 @@ public interface ILookAndFeel {
 	 * @param code
 	 * @return
 	 */
-	public TableCellRenderer getTableCellRenderer(AbstractTableCellRendererCode<?, ?> code);
+	public TableCellRenderer getTableCellRenderer(ITableCellRendererCode<?, ?> code);
 
 	/**
 	 * Returns a new TableCellRenderer executing given code (default
@@ -116,7 +112,7 @@ public interface ILookAndFeel {
 	 * @param code
 	 * @return
 	 */
-	public TableCellRenderer getTableHeaderCellRenderer(AbstractTableCellRendererCode<?, ?> code);
+	public TableCellRenderer getTableHeaderCellRenderer(ITableCellRendererCode<?, ?> code);
 
 	/**
 	 * Returns a new ListCellRendeder executing given code (default
@@ -125,8 +121,7 @@ public interface ILookAndFeel {
 	 * @param code
 	 * @return
 	 */
-	public ListCellRenderer getListCellRenderer(
-			final AbstractListCellRendererCode code);
+	public ListCellRenderer getListCellRenderer(final IListCellRendererCode code);
 
 	/**
 	 * Returns if custom combo box renderers are supported

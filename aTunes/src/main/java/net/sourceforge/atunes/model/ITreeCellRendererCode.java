@@ -18,18 +18,35 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui;
+package net.sourceforge.atunes.model;
 
 import java.awt.Component;
 
 import javax.swing.JComponent;
-import javax.swing.JList;
+import javax.swing.JTree;
 
-import net.sourceforge.atunes.model.IListCellRendererCode;
+/**
+ * Code to decorate a cell of a tree
+ * @author alex
+ *
+ * @param <T>
+ * @param <U>
+ */
+public interface ITreeCellRendererCode<T extends Component, U> {
 
-public abstract class AbstractListCellRendererCode<T extends Component, U> implements IListCellRendererCode<T, U> {
-
-    @Override
-	public abstract JComponent getComponent(T superComponent, JList list, U value, int index, boolean isSelected, boolean cellHasFocus);
+	/**
+	 * @param superComponent
+	 * @param tree
+	 * @param value
+	 * @param isSelected
+	 * @param expanded
+	 * @param leaf
+	 * @param row
+	 * @param isHasFocus
+	 * @return
+	 */
+	public JComponent getComponent(T superComponent, JTree tree, U value,
+			boolean isSelected, boolean expanded, boolean leaf, int row,
+			boolean isHasFocus);
 
 }

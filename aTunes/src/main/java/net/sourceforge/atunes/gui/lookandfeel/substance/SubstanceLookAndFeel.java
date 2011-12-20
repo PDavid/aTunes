@@ -39,9 +39,6 @@ import javax.swing.border.Border;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
-import net.sourceforge.atunes.gui.AbstractListCellRendererCode;
-import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.gui.AbstractTreeCellRendererCode;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.lookandfeel.AbstractLookAndFeel;
 import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
@@ -52,6 +49,9 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.SecondaryControl
 import net.sourceforge.atunes.gui.views.controls.playerControls.SecondaryToggleControl;
 import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsSize;
+import net.sourceforge.atunes.model.IListCellRendererCode;
+import net.sourceforge.atunes.model.ITableCellRendererCode;
+import net.sourceforge.atunes.model.ITreeCellRendererCode;
 import net.sourceforge.atunes.utils.Logger;
 
 import org.pushingpixels.lafwidget.animation.AnimationConfigurationManager;
@@ -183,7 +183,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
     }
 
     @Override
-    public TreeCellRenderer getTreeCellRenderer(final AbstractTreeCellRendererCode code) {
+    public TreeCellRenderer getTreeCellRenderer(final ITreeCellRendererCode code) {
         return new SubstanceLookAndFeelTreeCellRenderer(code);
     }
 
@@ -195,7 +195,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
      * @return
      */
     @Override
-    public TableCellRenderer getTableCellRenderer(final AbstractTableCellRendererCode<?, ?> code) {
+    public TableCellRenderer getTableCellRenderer(final ITableCellRendererCode<?, ?> code) {
         return new SubstanceLookAndFeelTableCellRenderer(code);
     }
 
@@ -207,12 +207,12 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
      * @return
      */
     @Override
-    public TableCellRenderer getTableHeaderCellRenderer(final AbstractTableCellRendererCode<?, ?> code) {
+    public TableCellRenderer getTableHeaderCellRenderer(final ITableCellRendererCode<?, ?> code) {
         return new SubstanceLookAndFeelTableHeaderCellRenderer(code);
     }
 
     @Override
-    public ListCellRenderer getListCellRenderer(final AbstractListCellRendererCode code) {
+    public ListCellRenderer getListCellRenderer(final IListCellRendererCode code) {
         return new SubstanceLookAndFeelListCellRenderer(code);
     }
 

@@ -41,6 +41,7 @@ import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.ITableCellRendererCode;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -365,7 +366,7 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
      * @param clazz
      * @return
      */
-    public AbstractTableCellRendererCode<?, ?> getRendererCodeFor(Class<?> clazz) {
+    public ITableCellRendererCode<?, ?> getRendererCodeFor(Class<?> clazz) {
         if (clazz.equals(Integer.class)) {
             return new IntegerTableCellRendererCode(lookAndFeel);
         } else if (clazz.equals(ImageIcon.class)) {

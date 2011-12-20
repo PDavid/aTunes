@@ -32,10 +32,11 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITableCellRendererCode;
 
 class NavigationTableCellRendererCode extends AbstractTableCellRendererCode<JComponent, Object> {
 
-    private AbstractTableCellRendererCode renderer;
+    private ITableCellRendererCode renderer;
 
     private IState state;
     
@@ -43,7 +44,7 @@ class NavigationTableCellRendererCode extends AbstractTableCellRendererCode<JCom
     
     private boolean isSubstance;
     
-    public NavigationTableCellRendererCode(AbstractTableCellRendererCode<?, ?> renderer, IState state, ILookAndFeel lookAndFeel, INavigationHandler navigationHandler) {
+    public NavigationTableCellRendererCode(ITableCellRendererCode<?, ?> renderer, IState state, ILookAndFeel lookAndFeel, INavigationHandler navigationHandler) {
     	super(lookAndFeel);
         this.renderer = renderer;
         this.state = state;

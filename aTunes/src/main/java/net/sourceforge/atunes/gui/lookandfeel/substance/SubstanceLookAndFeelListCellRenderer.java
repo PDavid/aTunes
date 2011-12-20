@@ -23,16 +23,16 @@ package net.sourceforge.atunes.gui.lookandfeel.substance;
 import javax.swing.JComponent;
 import javax.swing.JList;
 
-import net.sourceforge.atunes.gui.AbstractListCellRendererCode;
+import net.sourceforge.atunes.model.IListCellRendererCode;
 
 import org.pushingpixels.substance.api.renderers.SubstanceDefaultListCellRenderer;
 
 final class SubstanceLookAndFeelListCellRenderer extends SubstanceDefaultListCellRenderer {
-    private final AbstractListCellRendererCode code;
+    private final IListCellRendererCode code;
 
     private static final long serialVersionUID = 2572603555660744197L;
 
-    SubstanceLookAndFeelListCellRenderer(AbstractListCellRendererCode code) {
+    SubstanceLookAndFeelListCellRenderer(IListCellRendererCode code) {
         this.code = code;
     }
 
