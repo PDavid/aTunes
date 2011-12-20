@@ -40,12 +40,12 @@ import javax.swing.plaf.FontUIResource;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
-import net.sourceforge.atunes.gui.AbstractListCellRendererCode;
-import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
-import net.sourceforge.atunes.gui.AbstractTreeCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.CustomSplitPane;
+import net.sourceforge.atunes.model.IListCellRendererCode;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.ITableCellRendererCode;
+import net.sourceforge.atunes.model.ITreeCellRendererCode;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -83,22 +83,22 @@ public abstract class AbstractLookAndFeel implements ILookAndFeel {
     }
 
     @Override
-	public TreeCellRenderer getTreeCellRenderer(final AbstractTreeCellRendererCode code) {
+	public TreeCellRenderer getTreeCellRenderer(final ITreeCellRendererCode code) {
         return new LookAndFeelTreeCellRenderer(code);
     }
 
     @Override
-	public TableCellRenderer getTableCellRenderer(final AbstractTableCellRendererCode<?, ?> code) {
+	public TableCellRenderer getTableCellRenderer(final ITableCellRendererCode<?, ?> code) {
         return new LookAndFeelTableCellRenderer(code);
     }
 
     @Override
-	public TableCellRenderer getTableHeaderCellRenderer(final AbstractTableCellRendererCode<?, ?> code) {
+	public TableCellRenderer getTableHeaderCellRenderer(final ITableCellRendererCode<?, ?> code) {
         return new LookAndFeelTableHeaderCellRenderer(code);
     }
 
     @Override
-	public ListCellRenderer getListCellRenderer(final AbstractListCellRendererCode code) {
+	public ListCellRenderer getListCellRenderer(final IListCellRendererCode code) {
         return new LookAndFeelListCellRenderer(code);
     }
 

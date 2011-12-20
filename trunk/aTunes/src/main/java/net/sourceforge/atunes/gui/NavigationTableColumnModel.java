@@ -27,6 +27,7 @@ import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITable;
+import net.sourceforge.atunes.model.ITableCellRendererCode;
 import net.sourceforge.atunes.model.ITaskService;
 
 public final class NavigationTableColumnModel extends AbstractCommonColumnModel {
@@ -63,8 +64,8 @@ public final class NavigationTableColumnModel extends AbstractCommonColumnModel 
     }
 
     @Override
-    public AbstractTableCellRendererCode<?, ?> getRendererCodeFor(Class<?> clazz) {
-        AbstractTableCellRendererCode<?, ?> renderer = super.getRendererCodeFor(clazz);
+    public ITableCellRendererCode<?, ?> getRendererCodeFor(Class<?> clazz) {
+        ITableCellRendererCode<?, ?> renderer = super.getRendererCodeFor(clazz);
         return new NavigationTableCellRendererCode(renderer, state, getLookAndFeel(), navigationHandler);
     }
 

@@ -24,8 +24,9 @@ import javax.swing.JComponent;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.ITableCellRendererCode;
 
-public abstract class AbstractTableCellRendererCode<T extends JComponent, U> {
+public abstract class AbstractTableCellRendererCode<T extends JComponent, U> implements ITableCellRendererCode<T, U> {
 
 	protected ILookAndFeel lookAndFeel;
 	
@@ -46,7 +47,8 @@ public abstract class AbstractTableCellRendererCode<T extends JComponent, U> {
      * @param column
      * @return
      */
-    public abstract T getComponent(T superComponent, JTable t, U value, boolean isSelected, boolean hasFocus, int row, int column);
+    @Override
+	public abstract T getComponent(T superComponent, JTable t, U value, boolean isSelected, boolean hasFocus, int row, int column);
     
     /**
      * Access lookAndFeel

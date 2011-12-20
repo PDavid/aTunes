@@ -63,6 +63,7 @@ import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.ITreeCellRendererCode;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -428,7 +429,7 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
 
 		private static final long serialVersionUID = 5564069979708271654L;
 
-        private transient AbstractTreeCellRendererCode<JComponent, Object> rendererCode;
+        private transient ITreeCellRendererCode<JComponent, Object> rendererCode;
         
         private transient JLabel label;
 

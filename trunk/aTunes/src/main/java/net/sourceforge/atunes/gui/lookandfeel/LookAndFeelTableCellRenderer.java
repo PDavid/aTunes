@@ -24,18 +24,18 @@ import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
+import net.sourceforge.atunes.model.ITableCellRendererCode;
 
 final class LookAndFeelTableCellRenderer extends DefaultTableCellRenderer {
 	
-    private final AbstractTableCellRendererCode code;
+    private final ITableCellRendererCode code;
     
     /**
 	 * 
 	 */
     private static final long serialVersionUID = 1L;
 
-    LookAndFeelTableCellRenderer(AbstractTableCellRendererCode<?, ?> code) {
+    LookAndFeelTableCellRenderer(ITableCellRendererCode<?, ?> code) {
         this.code = code;
     }
 

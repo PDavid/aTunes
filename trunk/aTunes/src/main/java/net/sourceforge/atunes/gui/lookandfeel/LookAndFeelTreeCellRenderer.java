@@ -26,16 +26,16 @@ import javax.swing.JTree;
 import javax.swing.UIManager;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
-import net.sourceforge.atunes.gui.AbstractTreeCellRendererCode;
+import net.sourceforge.atunes.model.ITreeCellRendererCode;
 
 final class LookAndFeelTreeCellRenderer extends DefaultTreeCellRenderer {
-    private final AbstractTreeCellRendererCode code;
+    private final ITreeCellRendererCode code;
     /**
 	 * 
 	 */
     private static final long serialVersionUID = 5424315832943108932L;
 
-    LookAndFeelTreeCellRenderer(AbstractTreeCellRendererCode code) {
+    LookAndFeelTreeCellRenderer(ITreeCellRendererCode code) {
         this.code = code;
     }
 

@@ -25,8 +25,11 @@ import java.awt.Component;
 import javax.swing.JComponent;
 import javax.swing.JList;
 
-public abstract class AbstractListCellRendererCode<T extends Component, U> {
+import net.sourceforge.atunes.model.IListCellRendererCode;
 
-    public abstract JComponent getComponent(T superComponent, JList list, U value, int index, boolean isSelected, boolean cellHasFocus);
+public abstract class AbstractListCellRendererCode<T extends Component, U> implements IListCellRendererCode<T, U> {
+
+    @Override
+	public abstract JComponent getComponent(T superComponent, JList list, U value, int index, boolean isSelected, boolean cellHasFocus);
 
 }

@@ -28,6 +28,7 @@ import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
+import net.sourceforge.atunes.model.ITableCellRendererCode;
 import net.sourceforge.atunes.model.ITaskService;
 
 /**
@@ -67,7 +68,7 @@ public final class PlayListColumnModel extends AbstractCommonColumnModel {
     }
 
     @Override
-    public AbstractTableCellRendererCode<?, ?> getRendererCodeFor(Class<?> clazz) {
+    public ITableCellRendererCode<?, ?> getRendererCodeFor(Class<?> clazz) {
         if (clazz.equals(Integer.class)) {
             return new PlayListIntegerTableCellRendererCode(getLookAndFeel(), playListHandler, this);
         } else if (clazz.equals(String.class)) {

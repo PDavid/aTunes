@@ -25,16 +25,16 @@ import java.awt.Component;
 import javax.swing.JComponent;
 import javax.swing.JTree;
 
-import net.sourceforge.atunes.gui.AbstractTreeCellRendererCode;
+import net.sourceforge.atunes.model.ITreeCellRendererCode;
 
 import org.pushingpixels.substance.api.renderers.SubstanceDefaultTreeCellRenderer;
 
 final class SubstanceLookAndFeelTreeCellRenderer extends SubstanceDefaultTreeCellRenderer {
-    private final AbstractTreeCellRendererCode code;
+    private final ITreeCellRendererCode code;
 
     private static final long serialVersionUID = 3830003466764008228L;
 
-    SubstanceLookAndFeelTreeCellRenderer(AbstractTreeCellRendererCode code) {
+    SubstanceLookAndFeelTreeCellRenderer(ITreeCellRendererCode code) {
         this.code = code;
     }
 

@@ -23,16 +23,16 @@ package net.sourceforge.atunes.gui.lookandfeel.substance;
 import javax.swing.JComponent;
 import javax.swing.JTable;
 
-import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
+import net.sourceforge.atunes.model.ITableCellRendererCode;
 
 import org.pushingpixels.substance.api.renderers.SubstanceDefaultTableHeaderCellRenderer;
 
 final class SubstanceLookAndFeelTableHeaderCellRenderer extends SubstanceDefaultTableHeaderCellRenderer {
-    private final AbstractTableCellRendererCode code;
+    private final ITableCellRendererCode code;
 
     private static final long serialVersionUID = 1L;
 
-    SubstanceLookAndFeelTableHeaderCellRenderer(AbstractTableCellRendererCode code) {
+    SubstanceLookAndFeelTableHeaderCellRenderer(ITableCellRendererCode code) {
         this.code = code;
     }
 
