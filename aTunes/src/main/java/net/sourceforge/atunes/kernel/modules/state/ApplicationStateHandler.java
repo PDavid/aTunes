@@ -76,7 +76,6 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	private IHotkeyHandler hotkeyHandler;
 	private INotificationsHandler notificationsHandler;
 	private IPluginsHandler pluginsHandler;
-	private ApplicationArguments applicationArguments;
 	private IDesktop desktop;
 	private INetworkHandler networkHandler;
 	private IColorBeanFactory colorBeanFactory;
@@ -161,14 +160,6 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	 */
 	public void setPluginsHandler(IPluginsHandler pluginsHandler) {
 		this.pluginsHandler = pluginsHandler;
-	}
-	
-	/**
-	 * @param applicationArguments
-	 */
-	public void setApplicationArguments(
-			ApplicationArguments applicationArguments) {
-		this.applicationArguments = applicationArguments;
 	}
 	
 	/**
@@ -651,6 +642,6 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
     	EditPreferencesDialog dialog = getBean(EditPreferencesDialog.class);
     	new EditPreferencesDialogController(dialog, getState(), getOsManager(), getFrame(), getBean(StateChangeListeners.class), lookAndFeelManager, 
     			playerHandler, hotkeyHandler, notificationsHandler, 
-    			pluginsHandler, applicationArguments, desktop, networkHandler, colorBeanFactory, fontBeanFactory, localeBeanFactory, proxyBeanFactory).start();
+    			pluginsHandler, desktop, networkHandler, colorBeanFactory, fontBeanFactory, localeBeanFactory, proxyBeanFactory).start();
     }
 }

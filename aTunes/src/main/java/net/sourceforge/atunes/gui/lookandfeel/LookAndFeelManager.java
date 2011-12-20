@@ -75,11 +75,20 @@ public final class LookAndFeelManager implements PluginListener, ILookAndFeelMan
     private List<ILookAndFeelChangeListener> changeListeners;
     
     private IFontBeanFactory fontBeanFactory;
+    
+    private ApplicationArguments applicationArguments;
 
     public LookAndFeelManager(IOSManager osManager) {
         lookAndFeels = osManager.getLookAndFeels();
         defaultLookAndFeelClass = osManager.getDefaultLookAndFeel();
     }
+    
+    /**
+     * @param applicationArguments
+     */
+    public void setApplicationArguments(ApplicationArguments applicationArguments) {
+		this.applicationArguments = applicationArguments;
+	}
     
     /**
      * @param fontBeanFactory
@@ -106,8 +115,8 @@ public final class LookAndFeelManager implements PluginListener, ILookAndFeelMan
     }
 
     @Override
-	public void setLookAndFeel(ApplicationArguments arguments, LookAndFeelBean lookAndFeelBean, IState state, IOSManager osManager) {
-        if (arguments.isIgnoreLookAndFeel()) {
+	public void setLookAndFeel(LookAndFeelBean lookAndFeelBean, IState state, IOSManager osManager) {
+        if (applicationArguments.isIgnoreLookAndFeel()) {
             return;
         }
         
@@ -226,11 +235,11 @@ public final class LookAndFeelManager implements PluginListener, ILookAndFeelMan
     }
 
     @Override
-	public void applySkin(ApplicationArguments arguments, String selectedSkin, IState state, IOSManager osManager) {
+	public void applySkin(String selectedSkin, IState state, IOSManager osManager) {
         LookAndFeelBean bean = new LookAndFeelBean();
         bean.setName(currentLookAndFeel.getName());
         bean.setSkin(selectedSkin);
-        setLookAndFeel(arguments, bean, state, osManager);
+        setLookAndFeel(bean, state, osManager);
         for (Window window : Window.getWindows()) {
             SwingUtilities.updateComponentTreeUI(window);
         }

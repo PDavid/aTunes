@@ -108,7 +108,7 @@ public final class Kernel implements IKernel, ApplicationContextAware {
             SwingUtilities.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
-                    context.getBean(ILookAndFeelManager.class).setLookAndFeel(context.getBean(ApplicationArguments.class), state.getLookAndFeel(), state, context.getBean(IOSManager.class));
+                    context.getBean(ILookAndFeelManager.class).setLookAndFeel(state.getLookAndFeel(), state, context.getBean(IOSManager.class));
 
                     context.getBean(HandlerInitializer.class).setFrameForHandlers(context.getBean(IFrame.class));
                 }
