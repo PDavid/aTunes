@@ -23,8 +23,7 @@ package net.sourceforge.atunes.model;
 import java.awt.Dimension;
 
 import javax.swing.JComponent;
-
-import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListTableTransferHandler;
+import javax.swing.TransferHandler;
 
 /**
  * A panel containing play list
@@ -50,8 +49,7 @@ public interface IPlayListPanel {
 	 * Prepares play list for drag and drop operations
 	 * @param playListTableTransferHandler
 	 */
-	public void enableDragAndDrop(
-			PlayListTableTransferHandler playListTableTransferHandler);
+	public void enableDragAndDrop(TransferHandler playListTableTransferHandler);
 
 	/**
 	 * @param playListPanelMinimumSize

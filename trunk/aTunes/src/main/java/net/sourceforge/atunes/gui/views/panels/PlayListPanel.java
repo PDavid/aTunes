@@ -25,8 +25,8 @@ import java.awt.BorderLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.TransferHandler;
 
-import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListTableTransferHandler;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListToDeviceDragAndDropListener;
 import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -109,7 +109,7 @@ public final class PlayListPanel extends JPanel implements IPlayListPanel {
 	}
     
     @Override
-	public void enableDragAndDrop(PlayListTableTransferHandler playListTableTransferHandler) {
+	public void enableDragAndDrop(TransferHandler playListTableTransferHandler) {
         playListTable.setTransferHandler(playListTableTransferHandler);
         playListTableScroll.setTransferHandler(playListTableTransferHandler);
         new PlayListToDeviceDragAndDropListener(navigationHandler, deviceHandler);
