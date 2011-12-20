@@ -44,6 +44,8 @@ import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.ISearchHandler;
 import net.sourceforge.atunes.model.ISearchableObject;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.SearchIndexNotAvailableException;
+import net.sourceforge.atunes.model.SearchQuerySyntaxException;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jdesktop.swingx.combobox.ListComboBoxModel;

@@ -42,6 +42,8 @@ import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.ISearchHandler;
 import net.sourceforge.atunes.model.ISearchableObject;
+import net.sourceforge.atunes.model.SearchIndexNotAvailableException;
+import net.sourceforge.atunes.model.SearchQuerySyntaxException;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -263,9 +265,9 @@ public final class SearchHandler extends AbstractHandler implements ISearchHandl
             Logger.debug("Query: ", queryString, " (", result.size(), " search results)");
             return result;
         } catch (IOException e) {
-            throw new SearchIndexNotAvailableException();
+            throw new SearchIndexNotAvailableException(e);
         } catch (ParseException e) {
-            throw new SearchQuerySyntaxException();
+            throw new SearchQuerySyntaxException(e);
         } finally {
             ClosingUtils.close(searcher);
             searchIndexLock.readLock().unlock();

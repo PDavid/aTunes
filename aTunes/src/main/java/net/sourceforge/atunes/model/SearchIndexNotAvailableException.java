@@ -18,14 +18,21 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.search;
+package net.sourceforge.atunes.model;
 
 /**
- * This class represents an exception thrown when a Lucene query has invalid
- * syntax.
+ * This class represents an exception thrown when an attribute of a query has no
+ * Lucene index.
  */
-public class SearchQuerySyntaxException extends Exception {
+public class SearchIndexNotAvailableException extends Exception {
 
-    private static final long serialVersionUID = -5505599925187273676L;
+    private static final long serialVersionUID = 8535412847849649950L;
+    
+    /**
+     * @param cause
+     */
+    public SearchIndexNotAvailableException(Throwable cause) {
+    	super(cause);
+	}
 
 }
