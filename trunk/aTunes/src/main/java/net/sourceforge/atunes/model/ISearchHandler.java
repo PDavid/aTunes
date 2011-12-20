@@ -22,8 +22,6 @@ package net.sourceforge.atunes.model;
 
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.search.SearchIndexNotAvailableException;
-import net.sourceforge.atunes.kernel.modules.search.SearchQuerySyntaxException;
 
 /**
  * Responsible of searching in collections
@@ -73,9 +71,7 @@ public interface ISearchHandler extends IHandler {
 	 * @throws SearchQuerySyntaxException
 	 *             If the search query has invalid syntax
 	 */
-	public List<IAudioObject> search(ISearchableObject searchableObject,
-			String queryStr) throws SearchIndexNotAvailableException,
-			SearchQuerySyntaxException;
+	public List<IAudioObject> search(ISearchableObject searchableObject, String queryStr) throws SearchIndexNotAvailableException, SearchQuerySyntaxException;
 
 	public void refreshSearchResultColumns();
 
