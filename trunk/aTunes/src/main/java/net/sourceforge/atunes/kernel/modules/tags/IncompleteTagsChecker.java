@@ -29,6 +29,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITreeObject;
+import net.sourceforge.atunes.model.TagAttribute;
 import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 public final class IncompleteTagsChecker {

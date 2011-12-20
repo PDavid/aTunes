@@ -18,8 +18,13 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.tags;
+package net.sourceforge.atunes.model;
 
+/**
+ * Attributes of a tag that can be changed by application (not including cover)
+ * @author alex
+ *
+ */
 public enum TagAttribute {
 
     TITLE, ARTIST, ALBUM, YEAR, COMMENT, GENRE, LYRICS, COMPOSER, ALBUM_ARTIST, TRACK;

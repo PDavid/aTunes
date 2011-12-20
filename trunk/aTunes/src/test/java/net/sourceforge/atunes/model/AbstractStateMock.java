@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeysConfig;
-import net.sourceforge.atunes.kernel.modules.tags.TagAttribute;
 
 /**
  * Abstract state mock allows to override necessary methods
@@ -1043,7 +1042,7 @@ public abstract class AbstractStateMock implements IState {
 	}
 
 	@Override
-	public HotkeysConfig getHotkeysConfig() {
+	public IHotkeysConfig getHotkeysConfig() {
 		
 		return null;
 	}

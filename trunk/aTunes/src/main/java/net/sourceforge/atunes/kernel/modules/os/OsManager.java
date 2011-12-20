@@ -273,7 +273,7 @@ public class OsManager implements IOSManager {
 	 * @see net.sourceforge.atunes.kernel.IOSManager#getLineTerminator()
 	 */
 	@Override
-	public Object getLineTerminator() {
+	public String getLineTerminator() {
 		return adapter.getSystemLineTerminator();
 	}
 
