@@ -27,7 +27,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.model.IApplicationArguments;
@@ -46,16 +45,14 @@ public class OsManager implements IOSManager {
 	private OperatingSystem osType;
 	
 	private OperatingSystemAdapter adapter;
+
+	private IApplicationArguments applicationArguments;
 	
-    /** Path to config folder as passed as argument to app. */
-    private String customConfigFolder = null;
-    
-    /** Path to repository config folder as passed as argument to app. */
-    private String customRepositoryConfigFolder = null;
-    
+    /**
+     * @param applicationArguments
+     */
     public void setApplicationArguments(IApplicationArguments applicationArguments) {
-    	customConfigFolder = applicationArguments.getUserConfigFolder();
-    	customRepositoryConfigFolder = applicationArguments.getRepositoryConfigFolder();
+    	this.applicationArguments = applicationArguments;
 	}
 	
     /**
@@ -74,13 +71,10 @@ public class OsManager implements IOSManager {
     	}    	
     }
     
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#getUserConfigFolder(boolean)
-	 */
 	@Override
-	public String getUserConfigFolder(boolean useWorkDir) {
+	public String getUserConfigFolder() {
 		// Get path depending on parameters
-		String userConfigFolder = getConfigFolder(useWorkDir);
+		String userConfigFolder = getConfigFolder();
 
 		// Test if it's valid
 		if (!isValidConfigFolder(userConfigFolder)) {
@@ -126,22 +120,19 @@ public class OsManager implements IOSManager {
 	 * @param useWorkDir
 	 * @return
 	 */
-	private String getConfigFolder(boolean useWorkDir) {
-		if (useWorkDir) {
+	private String getConfigFolder() {
+		if (applicationArguments.isDebug()) {
 			return "./debug";
-		} else if (customConfigFolder != null) {
-            return customConfigFolder;
+		} else if (applicationArguments.getUserConfigFolder() != null) {
+            return applicationArguments.getUserConfigFolder();
         } else {
         	return adapter.getAppDataFolder();
         }
 	}
 		
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#getFileFromUserConfigFolder(java.lang.String, boolean)
-	 */
     @Override
-	public File getFileFromUserConfigFolder(String name, boolean useWorkDir) {
-        String userConfigFolder = getUserConfigFolder(useWorkDir);
+	public File getFileFromUserConfigFolder(String name) {
+        String userConfigFolder = getUserConfigFolder();
         if (userConfigFolder.equals(".")) {
             return new File(name);
         }
@@ -153,7 +144,7 @@ public class OsManager implements IOSManager {
 	 */
     @Override
 	public String getTempFolder() {
-        String userConfigFolder = getUserConfigFolder(Context.getBean(IApplicationArguments.class).isDebug());
+        String userConfigFolder = getUserConfigFolder();
         String tempFolder = StringUtils.getString(userConfigFolder, adapter.getFileSeparator(), Constants.TEMP_DIR);
         File tempFile = new File(tempFolder);
         if (!tempFile.exists() && !tempFile.mkdir()) {
@@ -194,7 +185,7 @@ public class OsManager implements IOSManager {
 	 */
     @Override
 	public String getCustomRepositoryConfigFolder() {
-        return customRepositoryConfigFolder;
+        return applicationArguments.getRepositoryConfigFolder();
     }
 
     /* (non-Javadoc)

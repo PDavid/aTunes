@@ -23,8 +23,6 @@ package net.sourceforge.atunes.model;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeysConfig;
-
 /**
  * Abstract state mock allows to override necessary methods
  * @author alex

@@ -26,7 +26,6 @@ import static org.mockito.Mockito.when;
 
 import java.io.File;
 
-import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IOSManager;
@@ -40,9 +39,8 @@ public class ShowLogActionTest {
 		ShowLogAction sut = new ShowLogAction();
 		IOSManager osManager = mock(IOSManager.class);
 		File f = new File("dummy");
-		when(osManager.getFileFromUserConfigFolder(Constants.LOG_FILE, false)).thenReturn(f);
+		when(osManager.getFileFromUserConfigFolder(Constants.LOG_FILE)).thenReturn(f);
 		IDesktop desktop = mock(IDesktop.class);
-		sut.setApplicationArguments(new ApplicationArguments());
 		sut.setOsManager(osManager);
 		sut.setDesktop(desktop);
 		

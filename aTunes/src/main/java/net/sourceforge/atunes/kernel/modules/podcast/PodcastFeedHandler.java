@@ -38,7 +38,6 @@ import java.util.concurrent.ScheduledFuture;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IAddPodcastFeedDialog;
-import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -95,8 +94,6 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
     
     private ILookAndFeelManager lookAndFeelManager;
     
-    private IApplicationArguments applicationArguments;
-    
     private INavigationView podcastNavigationView;
     
     /**
@@ -104,13 +101,6 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
      */
     public void setPodcastNavigationView(INavigationView podcastNavigationView) {
 		this.podcastNavigationView = podcastNavigationView;
-	}
-    
-    /**
-     * @param applicationArguments
-     */
-    public void setApplicationArguments(IApplicationArguments applicationArguments) {
-		this.applicationArguments = applicationArguments;
 	}
     
     /**
@@ -389,7 +379,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
 	public String getDownloadPath(IPodcastFeedEntry podcastFeedEntry) {
         String path = getState().getPodcastFeedEntryDownloadPath();
         if (path == null || path.isEmpty()) {
-            path = StringUtils.getString(getOsManager().getUserConfigFolder(applicationArguments.isDebug()), "/", Constants.DEFAULT_PODCAST_FEED_ENTRY_DOWNLOAD_DIR);
+            path = StringUtils.getString(getOsManager().getUserConfigFolder(), "/", Constants.DEFAULT_PODCAST_FEED_ENTRY_DOWNLOAD_DIR);
         }
         File podcastFeedsDownloadFolder = new File(path);
 

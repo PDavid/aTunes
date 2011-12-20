@@ -44,7 +44,6 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.gui.frame.Frames;
 import net.sourceforge.atunes.gui.views.controls.ByImageChoosingPanel;
 import net.sourceforge.atunes.gui.views.controls.ByImageChoosingPanel.ImageEntry;

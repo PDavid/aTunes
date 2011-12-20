@@ -27,7 +27,6 @@ import java.util.List;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -71,7 +70,7 @@ public final class FavoritesSearchableObject extends AbstractCommonAudioFileSear
     @Override
     public FSDirectory getIndexDirectory() throws IOException {
         if (indexDirectory == null) {
-            indexDirectory = new SimpleFSDirectory(new File(StringUtils.getString(Context.getBean(IOSManager.class).getUserConfigFolder(Context.getBean(IApplicationArguments.class).isDebug()), "/", Constants.FAVORITES_INDEX_DIR)));
+            indexDirectory = new SimpleFSDirectory(new File(StringUtils.getString(Context.getBean(IOSManager.class).getUserConfigFolder(), "/", Constants.FAVORITES_INDEX_DIR)));
         }
         return indexDirectory;
     }

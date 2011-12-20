@@ -38,7 +38,6 @@ import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.SystemLookAndFeel;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
-import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -280,7 +279,7 @@ public abstract class OperatingSystemAdapter {
 	 * @return
 	 */
 	private final String getOsPropertiesFileName() {
-		return StringUtils.getString(osManager.getUserConfigFolder(Context.getBean(IApplicationArguments.class).isDebug()), getFileSeparator(), "os.properties");
+		return StringUtils.getString(osManager.getUserConfigFolder(), getFileSeparator(), "os.properties");
 	}
 
 	/**
