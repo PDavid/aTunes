@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.Assert;
+import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.ICommandHandler;
 
 import org.junit.Before;
@@ -35,7 +36,7 @@ import org.junit.Test;
 
 public class ApplicationArgumentsTest {
 
-	private ApplicationArguments sut;
+	private IApplicationArguments sut;
 	
     private List<String> args1;
     private List<String> args2;

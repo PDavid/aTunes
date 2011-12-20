@@ -35,10 +35,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledFuture;
 
-import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IAddPodcastFeedDialog;
+import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -95,7 +95,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
     
     private ILookAndFeelManager lookAndFeelManager;
     
-    private ApplicationArguments applicationArguments;
+    private IApplicationArguments applicationArguments;
     
     private INavigationView podcastNavigationView;
     
@@ -109,7 +109,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
     /**
      * @param applicationArguments
      */
-    public void setApplicationArguments(ApplicationArguments applicationArguments) {
+    public void setApplicationArguments(IApplicationArguments applicationArguments) {
 		this.applicationArguments = applicationArguments;
 	}
     

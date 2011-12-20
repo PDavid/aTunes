@@ -24,8 +24,8 @@ import java.net.URL;
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
-import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IOSManager;
 
 public abstract class AbstractCache {
@@ -37,11 +37,11 @@ public abstract class AbstractCache {
      * @param applicationArguments
      * @param settings
      */
-    public AbstractCache(IOSManager osManager, ApplicationArguments applicationArguments, URL settings) {
+    public AbstractCache(IOSManager osManager, IApplicationArguments applicationArguments, URL settings) {
         init(osManager, applicationArguments, settings);
     }
 
-    private void init(IOSManager osManager, ApplicationArguments applicationArguments, URL settings) {
+    private void init(IOSManager osManager, IApplicationArguments applicationArguments, URL settings) {
         System.setProperty("ehcache.disk.store.dir", StringUtils.getString(osManager.getUserConfigFolder(applicationArguments.isDebug()), osManager.getFileSeparator(), Constants.CACHE_DIR));
         this.cacheManager = new CacheManager(settings);
     }

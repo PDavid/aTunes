@@ -25,8 +25,8 @@ import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.ICommandHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IKernel;
@@ -194,9 +194,9 @@ public final class Kernel implements IKernel, ApplicationContextAware {
         	String parameters = osManager.getLaunchParameters();
             ProcessBuilder pb = null;
             if (parameters != null && !parameters.trim().isEmpty()) {
-            	pb = new ProcessBuilder(osManager.getLaunchCommand(), parameters, context.getBean(ApplicationArguments.class).getSavedArguments(context.getBean(ICommandHandler.class)));
+            	pb = new ProcessBuilder(osManager.getLaunchCommand(), parameters, context.getBean(IApplicationArguments.class).getSavedArguments(context.getBean(ICommandHandler.class)));
             } else {
-            	pb = new ProcessBuilder(osManager.getLaunchCommand(), context.getBean(ApplicationArguments.class).getSavedArguments(context.getBean(ICommandHandler.class)));
+            	pb = new ProcessBuilder(osManager.getLaunchCommand(), context.getBean(IApplicationArguments.class).getSavedArguments(context.getBean(ICommandHandler.class)));
 
             }
 

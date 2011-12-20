@@ -34,11 +34,11 @@ import javax.swing.ImageIcon;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheException;
 import net.sf.ehcache.Element;
-import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAlbumListInfo;
+import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IArtistInfo;
 import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.IOSManager;
@@ -72,7 +72,7 @@ public class LastFmCache extends AbstractCache {
      * @param applicationArguments
      * @param xmlSerializerService
      */
-    public LastFmCache(IOSManager osManager, ApplicationArguments applicationArguments, XMLSerializerService xmlSerializerService) {
+    public LastFmCache(IOSManager osManager, IApplicationArguments applicationArguments, XMLSerializerService xmlSerializerService) {
         super(osManager, applicationArguments, LastFmCache.class.getResource("/settings/ehcache-lastfm.xml"));
         this.xmlSerializerService = xmlSerializerService;
     }
@@ -128,7 +128,7 @@ public class LastFmCache extends AbstractCache {
 
     private synchronized File getSubmissionDataDir() throws IOException {
     	if (submissionCacheDir == null) {
-    		submissionCacheDir = new File(StringUtils.getString(osManager.getUserConfigFolder(Context.getBean(ApplicationArguments.class).isDebug()), osManager.getFileSeparator(),
+    		submissionCacheDir = new File(StringUtils.getString(osManager.getUserConfigFolder(Context.getBean(IApplicationArguments.class).isDebug()), osManager.getFileSeparator(),
     		            Constants.CACHE_DIR, osManager.getFileSeparator(), Constants.LAST_FM_CACHE_DIR, osManager.getFileSeparator(), Constants.LAST_FM_SUBMISSION_CACHE_DIR));
     	}
         if (!submissionCacheDir.exists()) {

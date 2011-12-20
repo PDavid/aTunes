@@ -26,11 +26,11 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Properties;
 
-import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
+import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
@@ -53,7 +53,7 @@ public class OsManager implements IOSManager {
     /** Path to repository config folder as passed as argument to app. */
     private String customRepositoryConfigFolder = null;
     
-    public void setApplicationArguments(ApplicationArguments applicationArguments) {
+    public void setApplicationArguments(IApplicationArguments applicationArguments) {
     	customConfigFolder = applicationArguments.getUserConfigFolder();
     	customRepositoryConfigFolder = applicationArguments.getRepositoryConfigFolder();
 	}
@@ -153,7 +153,7 @@ public class OsManager implements IOSManager {
 	 */
     @Override
 	public String getTempFolder() {
-        String userConfigFolder = getUserConfigFolder(Context.getBean(ApplicationArguments.class).isDebug());
+        String userConfigFolder = getUserConfigFolder(Context.getBean(IApplicationArguments.class).isDebug());
         String tempFolder = StringUtils.getString(userConfigFolder, adapter.getFileSeparator(), Constants.TEMP_DIR);
         File tempFile = new File(tempFolder);
         if (!tempFile.exists() && !tempFile.mkdir()) {

@@ -30,10 +30,10 @@ import java.util.Map;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.ColorDefinitions;
 import net.sourceforge.atunes.model.FontSettings;
+import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IFontBeanFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
@@ -76,7 +76,7 @@ public final class LookAndFeelManager implements PluginListener, ILookAndFeelMan
     
     private IFontBeanFactory fontBeanFactory;
     
-    private ApplicationArguments applicationArguments;
+    private IApplicationArguments applicationArguments;
 
     public LookAndFeelManager(IOSManager osManager) {
         lookAndFeels = osManager.getLookAndFeels();
@@ -86,7 +86,7 @@ public final class LookAndFeelManager implements PluginListener, ILookAndFeelMan
     /**
      * @param applicationArguments
      */
-    public void setApplicationArguments(ApplicationArguments applicationArguments) {
+    public void setApplicationArguments(IApplicationArguments applicationArguments) {
 		this.applicationArguments = applicationArguments;
 	}
     

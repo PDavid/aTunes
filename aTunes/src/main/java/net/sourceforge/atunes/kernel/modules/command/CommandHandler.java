@@ -25,12 +25,12 @@ import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.ShowOSDAction;
+import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.ICommand;
 import net.sourceforge.atunes.model.ICommandHandler;
 
@@ -41,9 +41,9 @@ public final class CommandHandler extends AbstractHandler implements ICommandHan
      */
     private Map<String, ICommand> commands;
     
-    private ApplicationArguments applicationArguments;
+    private IApplicationArguments applicationArguments;
     
-    public void setApplicationArguments(ApplicationArguments arguments) {
+    public void setApplicationArguments(IApplicationArguments arguments) {
 		this.applicationArguments = arguments;
 	}
 

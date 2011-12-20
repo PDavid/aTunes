@@ -32,13 +32,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.SystemLookAndFeel;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
+import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -280,7 +280,7 @@ public abstract class OperatingSystemAdapter {
 	 * @return
 	 */
 	private final String getOsPropertiesFileName() {
-		return StringUtils.getString(osManager.getUserConfigFolder(Context.getBean(ApplicationArguments.class).isDebug()), getFileSeparator(), "os.properties");
+		return StringUtils.getString(osManager.getUserConfigFolder(Context.getBean(IApplicationArguments.class).isDebug()), getFileSeparator(), "os.properties");
 	}
 
 	/**
