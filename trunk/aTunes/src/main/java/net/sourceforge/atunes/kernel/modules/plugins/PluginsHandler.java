@@ -38,7 +38,6 @@ import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnSets;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
 import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
-import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IConfirmationDialogFactory;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
@@ -196,7 +195,7 @@ public class PluginsHandler extends AbstractHandler implements PluginListener, I
      * @return the plugins folder
      */
     private String getUserPluginsFolder() {
-        String userConfigFolder = getOsManager().getUserConfigFolder(getBean(IApplicationArguments.class).isDebug());
+        String userConfigFolder = getOsManager().getUserConfigFolder();
         String pluginsFolder = StringUtils.getString(userConfigFolder, getOsManager().getFileSeparator(), Constants.PLUGINS_DIR);
         File pluginFile = new File(pluginsFolder);
         if (!pluginFile.exists() && !pluginFile.mkdir()) {

@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
@@ -43,8 +42,6 @@ public final class RepositorySearchableObject extends AbstractCommonAudioFileSea
     
     private IOSManager osManager;
     
-    private IApplicationArguments applicationArguments;
-    
     private IRepositoryHandler repositoryHandler;
     
     /**
@@ -52,13 +49,6 @@ public final class RepositorySearchableObject extends AbstractCommonAudioFileSea
      */
     public void setOsManager(IOSManager osManager) {
 		this.osManager = osManager;
-	}
-    
-    /**
-     * @param applicationArguments
-     */
-    public void setApplicationArguments(IApplicationArguments applicationArguments) {
-		this.applicationArguments = applicationArguments;
 	}
     
     /**
@@ -76,7 +66,7 @@ public final class RepositorySearchableObject extends AbstractCommonAudioFileSea
     @Override
     public FSDirectory getIndexDirectory() throws IOException {
         if (indexDirectory == null) {
-            indexDirectory = new SimpleFSDirectory(new File(StringUtils.getString(osManager.getUserConfigFolder(applicationArguments.isDebug()), "/", Constants.REPOSITORY_INDEX_DIR)));
+            indexDirectory = new SimpleFSDirectory(new File(StringUtils.getString(osManager.getUserConfigFolder(), "/", Constants.REPOSITORY_INDEX_DIR)));
         }
         return indexDirectory;
     }

@@ -183,7 +183,7 @@ public final class Logger {
     				if (key.equals("log4j.rootLogger") && debug) {
     					value = value.replace("INFO", "DEBUG");
     				} else if (key.equals("log4j.appender.A2.file")) {
-    					value = StringUtils.getString(osManager.getUserConfigFolder(debug), osManager.getFileSeparator(), "aTunes.log");
+    					value = StringUtils.getString(osManager.getUserConfigFolder(), osManager.getFileSeparator(), "aTunes.log");
     				}
 
     				props.setProperty(key, value);

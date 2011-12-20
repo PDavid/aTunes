@@ -34,7 +34,6 @@ import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.StateChangeListeners;
 import net.sourceforge.atunes.kernel.modules.playlist.ListOfPlayLists;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites;
-import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorBeanFactory;
 import net.sourceforge.atunes.model.IDesktop;
@@ -631,7 +630,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
     }
 
     private String getUserConfigFolder() {
-        return getOsManager().getUserConfigFolder(getBean(IApplicationArguments.class).isDebug());
+        return getOsManager().getUserConfigFolder();
     }
     
     /* (non-Javadoc)

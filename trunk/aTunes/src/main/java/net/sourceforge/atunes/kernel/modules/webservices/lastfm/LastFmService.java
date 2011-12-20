@@ -37,7 +37,6 @@ import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmArtis
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmSimilarArtists;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAlbumListInfo;
-import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IArtistInfo;
 import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -106,14 +105,6 @@ public final class LastFmService {
     
     private XMLSerializerService xmlSerializerService;
 
-    private IApplicationArguments applicationArguments;
-    
-    /**
-     * @param applicationArguments
-     */
-    public void setApplicationArguments(IApplicationArguments applicationArguments) {
-		this.applicationArguments = applicationArguments;
-	}
     /**
      * @param state
      */
@@ -163,7 +154,7 @@ public final class LastFmService {
     
     public void initialize() {
     	Logger.debug("Initializing LastFmCache");
-    	lastFmCache = new LastFmCache(osManager, applicationArguments, xmlSerializerService);
+    	lastFmCache = new LastFmCache(osManager, xmlSerializerService);
     }
     
     /**

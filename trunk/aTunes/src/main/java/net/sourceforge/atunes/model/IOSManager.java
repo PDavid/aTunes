@@ -37,25 +37,19 @@ public interface IOSManager {
 
 	/**
 	 * Gets folder where state is stored. If not exists, it's created
-	 * 
-	 * @param useWorkDir
-	 *            If the current working directory should be used
-	 * 
 	 * @return The folder where the state is stored
 	 */
-	public String getUserConfigFolder(boolean useWorkDir);
+	public String getUserConfigFolder();
 
 	/**
 	 * Returns file from the user config folder.
 	 * 
 	 * @param name
 	 *            The name of the file (Example: aTunes.log or folder/file.abc)
-	 * @param useWorkDir
-	 *            If the current working directory should be used
 	 * 
 	 * @return The file from the user config folder
 	 */
-	public File getFileFromUserConfigFolder(String name, boolean useWorkDir);
+	public File getFileFromUserConfigFolder(String name);
 
 	/**
 	 * Return path to temporal folder, which is inside user's configuration folder.

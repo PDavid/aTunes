@@ -31,7 +31,6 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IAlbum;
-import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
@@ -572,7 +571,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     @Override
 	public String getRepositoryConfigurationFolder() {
         String customRepositoryConfigFolder = getOsManager().getCustomRepositoryConfigFolder();
-        return customRepositoryConfigFolder != null ? customRepositoryConfigFolder : getOsManager().getUserConfigFolder(getBean(IApplicationArguments.class).isDebug());
+        return customRepositoryConfigFolder != null ? customRepositoryConfigFolder : getOsManager().getUserConfigFolder();
     }
     
 	@Override

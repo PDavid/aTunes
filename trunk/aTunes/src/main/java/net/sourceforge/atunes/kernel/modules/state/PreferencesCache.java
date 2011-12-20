@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.state;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheException;
 import net.sf.ehcache.Element;
-import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.AbstractCache;
 import net.sourceforge.atunes.utils.Logger;
@@ -35,11 +34,10 @@ class PreferencesCache extends AbstractCache implements IStateStore {
     /**
      * Creates a new preferences cache
      * @param osManager
-     * @param applicationArguments
      * @param configFile
      */
-    protected PreferencesCache(IOSManager osManager, IApplicationArguments applicationArguments, String configFile) {
-        super(osManager, applicationArguments, PreferencesCache.class.getResource(configFile));
+    protected PreferencesCache(IOSManager osManager, String configFile) {
+        super(osManager, PreferencesCache.class.getResource(configFile));
     }
 
     /* (non-Javadoc)
