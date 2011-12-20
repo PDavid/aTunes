@@ -24,6 +24,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.ICommandHandler;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -32,7 +33,7 @@ import org.commonjukebox.plugins.model.PluginApi;
  * This class defines accepted arguments by application.
  */
 @PluginApi
-public final class ApplicationArguments implements Serializable {
+public final class ApplicationArguments implements Serializable, IApplicationArguments {
 
     /**
 	 * 
@@ -42,34 +43,34 @@ public final class ApplicationArguments implements Serializable {
 	/** 
      * Debug constant This argument makes a big log file. 
      */
-    public static final String DEBUG = "debug";
+    private static final String DEBUG = "debug";
 
     /**
      * Ignore look and feel constant. This argument makes application use OS default Look And Feel.
      */
-    public static final String IGNORE_LOOK_AND_FEEL = "ignore-look-and-feel";
+    private static final String IGNORE_LOOK_AND_FEEL = "ignore-look-and-feel";
 
     /** 
      * Disable multiple instances control. 
      */
-    public static final String ALLOW_MULTIPLE_INSTANCE = "multiple-instance";
+    private static final String ALLOW_MULTIPLE_INSTANCE = "multiple-instance";
 
     /** 
      * Argument to define a custom folder from which to read configuration. 
      */
-    public static final String USE_CONFIG_FOLDER = "use-config-folder=";
+    private static final String USE_CONFIG_FOLDER = "use-config-folder=";
 
     /**
      * Argument to define a custom folder from which to read repository
      * configuration (useful to share a repository configuration) This parameter
      * has priority over USE_CONFIG_FOLDER
      */
-    public static final String USE_REPOSITORY_CONFIG_FOLDER = "use-repository-config-folder=";
+    private static final String USE_REPOSITORY_CONFIG_FOLDER = "use-repository-config-folder=";
 
     /** 
      * Do not try to update the application (useful for Linux packages). 
      */
-    public static final String NO_UPDATE = "no-update";
+    private static final String NO_UPDATE = "no-update";
     
     /**
      * Original arguments passed to application
@@ -95,21 +96,24 @@ public final class ApplicationArguments implements Serializable {
     /**
      * @return the debug
      */
-    public boolean isDebug() {
+    @Override
+	public boolean isDebug() {
         return debug;
     }
 
     /**
      * @return the ignoreLookAndFeel
      */
-    public boolean isIgnoreLookAndFeel() {
+    @Override
+	public boolean isIgnoreLookAndFeel() {
         return ignoreLookAndFeel;
     }
 
     /**
      * @return the noUpdate
      */
-    public boolean isNoUpdate() {
+    @Override
+	public boolean isNoUpdate() {
         return noUpdate;
     }
 
@@ -121,7 +125,8 @@ public final class ApplicationArguments implements Serializable {
      * 
      * @return the user config folder
      */
-    public String getUserConfigFolder() {
+    @Override
+	public String getUserConfigFolder() {
     	return getArgument(originalArguments, USE_CONFIG_FOLDER);
     }
 
@@ -133,7 +138,8 @@ public final class ApplicationArguments implements Serializable {
      * 
      * @return the repository config folder
      */
-    public String getRepositoryConfigFolder() {
+    @Override
+	public String getRepositoryConfigFolder() {
     	return getArgument(originalArguments, USE_REPOSITORY_CONFIG_FOLDER);
     }
     
@@ -141,6 +147,7 @@ public final class ApplicationArguments implements Serializable {
 	 * Returns if application received multiple instance argument
 	 * @return
 	 */
+	@Override
 	public boolean isMultipleInstance() {
 		return originalArguments.contains(ALLOW_MULTIPLE_INSTANCE);
 	}
@@ -164,7 +171,8 @@ public final class ApplicationArguments implements Serializable {
      * 
      * @param arguments
      */
-    public void saveArguments(List<String> arguments) {
+    @Override
+	public void saveArguments(List<String> arguments) {
     	if (arguments == null) {
     		throw new IllegalArgumentException();
     	}
@@ -206,7 +214,8 @@ public final class ApplicationArguments implements Serializable {
      * Returns original arguments of application
      * @return
      */
-    public List<String> getOriginalArguments() {
+    @Override
+	public List<String> getOriginalArguments() {
 		return originalArguments;
 	}
     
@@ -215,7 +224,8 @@ public final class ApplicationArguments implements Serializable {
      * @param commandHandler
      * @return
      */
-    public String getSavedArguments(ICommandHandler commandHandler) {
+    @Override
+	public String getSavedArguments(ICommandHandler commandHandler) {
     	return getSavedArguments(commandHandler, false);
     }
 
@@ -224,7 +234,8 @@ public final class ApplicationArguments implements Serializable {
      * @param commandHandler
      * @return
      */
-    public String getSavedCommands(ICommandHandler commandHandler) {
+    @Override
+	public String getSavedCommands(ICommandHandler commandHandler) {
     	return getSavedArguments(commandHandler, true);
     }
     

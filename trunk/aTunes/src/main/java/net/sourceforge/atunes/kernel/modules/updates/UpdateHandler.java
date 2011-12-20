@@ -23,9 +23,9 @@ package net.sourceforge.atunes.kernel.modules.updates;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
-import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.ApplicationVersion;
+import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IUpdateHandler;
@@ -45,7 +45,7 @@ public final class UpdateHandler extends AbstractHandler implements IUpdateHandl
      */
     private String updatesURL;
     
-    private ApplicationArguments applicationArguments;
+    private IApplicationArguments applicationArguments;
     
     private ITaskService taskService;
     
@@ -68,7 +68,7 @@ public final class UpdateHandler extends AbstractHandler implements IUpdateHandl
     /**
      * @param applicationArguments
      */
-    public void setApplicationArguments(ApplicationArguments applicationArguments) {
+    public void setApplicationArguments(IApplicationArguments applicationArguments) {
 		this.applicationArguments = applicationArguments;
 	}
 

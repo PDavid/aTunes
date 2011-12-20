@@ -23,9 +23,9 @@ package net.sourceforge.atunes.kernel.modules.instances;
 import java.io.IOException;
 import java.net.ServerSocket;
 
-import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.AbstractHandler;
+import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.ICommandHandler;
 import net.sourceforge.atunes.model.IMultipleInstancesHandler;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -44,9 +44,9 @@ public final class MultipleInstancesHandler extends AbstractHandler implements I
     /** The server socket. */
     private ServerSocket serverSocket;
     
-    private ApplicationArguments applicationArguments;
+    private IApplicationArguments applicationArguments;
     
-    public void setApplicationArguments(ApplicationArguments applicationArguments) {
+    public void setApplicationArguments(IApplicationArguments applicationArguments) {
 		this.applicationArguments = applicationArguments;
 	}
 

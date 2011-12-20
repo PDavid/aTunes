@@ -25,8 +25,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
@@ -43,7 +43,7 @@ public final class RepositorySearchableObject extends AbstractCommonAudioFileSea
     
     private IOSManager osManager;
     
-    private ApplicationArguments applicationArguments;
+    private IApplicationArguments applicationArguments;
     
     private IRepositoryHandler repositoryHandler;
     
@@ -57,7 +57,7 @@ public final class RepositorySearchableObject extends AbstractCommonAudioFileSea
     /**
      * @param applicationArguments
      */
-    public void setApplicationArguments(ApplicationArguments applicationArguments) {
+    public void setApplicationArguments(IApplicationArguments applicationArguments) {
 		this.applicationArguments = applicationArguments;
 	}
     

@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.ApplicationArguments;
+import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.model.ILyricsEngineInfo;
 import net.sourceforge.atunes.model.ILyricsService;
@@ -53,7 +53,7 @@ public final class LyricsService implements ILyricsService {
     
     private IOSManager osManager;
     
-    private ApplicationArguments applicationArguments;
+    private IApplicationArguments applicationArguments;
     
     /**
      * @param osManager
@@ -65,7 +65,7 @@ public final class LyricsService implements ILyricsService {
     /**
      * @param applicationArguments
      */
-    public void setApplicationArguments(ApplicationArguments applicationArguments) {
+    public void setApplicationArguments(IApplicationArguments applicationArguments) {
 		this.applicationArguments = applicationArguments;
 	}
     

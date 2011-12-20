@@ -31,13 +31,13 @@ import java.util.Set;
 
 import javax.swing.ImageIcon;
 
-import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmAlbum;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmAlbumList;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmArtistTopTracks;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmSimilarArtists;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAlbumListInfo;
+import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IArtistInfo;
 import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -106,12 +106,12 @@ public final class LastFmService {
     
     private XMLSerializerService xmlSerializerService;
 
-    private ApplicationArguments applicationArguments;
+    private IApplicationArguments applicationArguments;
     
     /**
      * @param applicationArguments
      */
-    public void setApplicationArguments(ApplicationArguments applicationArguments) {
+    public void setApplicationArguments(IApplicationArguments applicationArguments) {
 		this.applicationArguments = applicationArguments;
 	}
     /**

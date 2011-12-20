@@ -20,18 +20,19 @@
 
 package net.sourceforge.atunes;
 
+import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.Logger;
 
 public class ApplicationPropertiesLogger {
 	
-	private ApplicationArguments applicationArguments;
+	private IApplicationArguments applicationArguments;
 	private IOSManager osManager;
 
 	/**
 	 * @param applicationArguments
 	 */
-	public void setApplicationArguments(ApplicationArguments applicationArguments) {
+	public void setApplicationArguments(IApplicationArguments applicationArguments) {
 		this.applicationArguments = applicationArguments;
 	}
 	

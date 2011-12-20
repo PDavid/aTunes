@@ -20,8 +20,8 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import net.sourceforge.atunes.ApplicationArguments;
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -38,7 +38,7 @@ public class ShowLogAction extends CustomAbstractAction {
 
     private IOSManager osManager;
     
-    private ApplicationArguments applicationArguments;
+    private IApplicationArguments applicationArguments;
     
     private IDesktop desktop;
     
@@ -53,7 +53,7 @@ public class ShowLogAction extends CustomAbstractAction {
      * @param applicationArguments
      */
     public void setApplicationArguments(
-			ApplicationArguments applicationArguments) {
+			IApplicationArguments applicationArguments) {
 		this.applicationArguments = applicationArguments;
 	}
     

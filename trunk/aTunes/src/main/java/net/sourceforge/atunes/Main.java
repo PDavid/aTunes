@@ -25,6 +25,7 @@ import java.util.List;
 import javax.swing.RepaintManager;
 
 import net.sourceforge.atunes.gui.debug.CheckThreadViolationRepaintManager;
+import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IKernel;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.Logger;
@@ -35,7 +36,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class Main {
 	
-	private ApplicationArguments applicationArguments;
+	private IApplicationArguments applicationArguments;
 	private IOSManager osManager;
 	private ApplicationPropertiesLogger applicationPropertiesLogger;
 	private MultipleInstancesCheck multipleInstancesCheck;
@@ -44,7 +45,7 @@ public final class Main {
 	/**
 	 * @param applicationArguments
 	 */
-	public void setApplicationArguments(ApplicationArguments applicationArguments) {
+	public void setApplicationArguments(IApplicationArguments applicationArguments) {
 		this.applicationArguments = applicationArguments;
 	}
 	
@@ -88,7 +89,7 @@ public final class Main {
         List<String> arguments = StringUtils.fromStringArrayToList(args);
     	Context.initialize();
         // Save arguments, if application is restarted they will be necessary
-    	Context.getBean(ApplicationArguments.class).saveArguments(arguments);
+    	Context.getBean(IApplicationArguments.class).saveArguments(arguments);
     	// Now start application
     	Context.getBean(Main.class).start(arguments);
     }
