@@ -30,11 +30,9 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.frame.FrameState;
-import net.sourceforge.atunes.kernel.modules.hotkeys.HotkeysConfig;
 import net.sourceforge.atunes.kernel.modules.navigator.RepositoryNavigationView;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
-import net.sourceforge.atunes.kernel.modules.tags.TagAttribute;
 import net.sourceforge.atunes.model.ArtistViewMode;
 import net.sourceforge.atunes.model.ColumnBean;
 import net.sourceforge.atunes.model.FontSettings;
@@ -48,6 +46,7 @@ import net.sourceforge.atunes.model.ILyricsEngineInfo;
 import net.sourceforge.atunes.model.IProxyBean;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LookAndFeelBean;
+import net.sourceforge.atunes.model.TagAttribute;
 import net.sourceforge.atunes.model.ViewMode;
 
 /**
@@ -1683,8 +1682,8 @@ public class ApplicationState implements IState {
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getHotkeysConfig()
 	 */
     @Override
-	public HotkeysConfig getHotkeysConfig() {
-    	return (HotkeysConfig) this.stateStore.retrievePreference(Preferences.HOTKEYS_CONFIG, null);
+	public IHotkeysConfig getHotkeysConfig() {
+    	return (IHotkeysConfig) this.stateStore.retrievePreference(Preferences.HOTKEYS_CONFIG, null);
     }
 
     /* (non-Javadoc)

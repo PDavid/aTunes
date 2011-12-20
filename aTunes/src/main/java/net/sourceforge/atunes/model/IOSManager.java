@@ -134,7 +134,11 @@ public interface IOSManager {
 	 */
 	public Class<? extends AbstractHotkeys> getHotkeysListener();
 
-	public Object getLineTerminator();
+	/**
+	 * Returns line terminator for current OS
+	 * @return
+	 */
+	public String getLineTerminator();
 
 	/**
 	 * Returns <code>true</code> if the current operating system (actually

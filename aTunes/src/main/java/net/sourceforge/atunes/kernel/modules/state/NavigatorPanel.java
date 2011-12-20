@@ -48,12 +48,12 @@ import javax.swing.table.TableModel;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
-import net.sourceforge.atunes.kernel.modules.tags.TagAttribute;
 import net.sourceforge.atunes.model.ArtistViewMode;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.TagAttribute;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class NavigatorPanel extends AbstractPreferencesPanel {
