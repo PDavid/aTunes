@@ -20,12 +20,18 @@
 
 package net.sourceforge.atunes.kernel.modules.search;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import net.sourceforge.atunes.model.ISearchResult;
+
 import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Fieldable;
 
 /**
  * This class represents a raw search result by Lucene.
  */
-public class RawSearchResult {
+public class RawSearchResult implements ISearchResult {
 
     private Document document;
     private float score;
@@ -38,13 +44,19 @@ public class RawSearchResult {
     /**
      * @return the document
      */
-    public Document getDocument() {
-        return document;
+    @Override
+    public Map<String, String> getObject() {
+    	Map<String, String> objects = new HashMap<String, String>();
+    	for (Fieldable field : document.getFields()) {
+    		objects.put(field.name(), document.get(field.name()));
+    	}
+        return objects;
     }
 
     /**
      * @return the score
      */
+    @Override
     public float getScore() {
         return score;
     }
