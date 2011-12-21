@@ -29,7 +29,6 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.kernel.PlaybackStateListeners;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IEqualizer;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IFullScreenHandler;
@@ -39,6 +38,7 @@ import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayerEngine;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IState;
@@ -53,7 +53,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * This class has common logic for all player engines.
  */
-public abstract class AbstractPlayerEngine {
+public abstract class AbstractPlayerEngine implements IPlayerEngine {
 
 	enum SubmissionState {
         NOT_SUBMITTED, PENDING, SUBMITTED;
@@ -95,11 +95,6 @@ public abstract class AbstractPlayerEngine {
      */
     private long currentAudioObjectPlayedTime;
 
-    /**
-     * Equalizer used
-     */
-    private IEqualizer equalizer;
-    
     private IState state;
     
     private IFrame frame;
@@ -130,7 +125,8 @@ public abstract class AbstractPlayerEngine {
     /**
      * @return
      */
-    public IPlayListHandler getPlayListHandler() {
+    @Override
+	public IPlayListHandler getPlayListHandler() {
 		return playListHandler;
 	}
     
@@ -152,7 +148,8 @@ public abstract class AbstractPlayerEngine {
      * 
      * @return <code>true</code> if engine is currently playing
      */
-    public abstract boolean isEnginePlaying();
+    @Override
+	public abstract boolean isEnginePlaying();
 
     /**
      * This method must be implemented by player engines. This method must check
@@ -218,7 +215,8 @@ public abstract class AbstractPlayerEngine {
      * @param perCent
      *            0-100
      */
-    public abstract void setVolume(int perCent);
+    @Override
+	public abstract void setVolume(int perCent);
 
     /**
      * This method must be implemented by player engines. Apply mute state in
@@ -228,7 +226,8 @@ public abstract class AbstractPlayerEngine {
      *            : enabled (<code>true</code>) or disabled (<code>false</code>)
      * 
      */
-    public abstract void applyMuteState(boolean state);
+    @Override
+	public abstract void applyMuteState(boolean state);
 
     /**
      * This method must be implemented by player engines. Method to apply
@@ -236,7 +235,8 @@ public abstract class AbstractPlayerEngine {
      * 
      * @param values
      */
-    public abstract void applyNormalization();
+    @Override
+	public abstract void applyNormalization();
 
     /**
      * This methods checks if the specified player capability is supported by
@@ -247,7 +247,8 @@ public abstract class AbstractPlayerEngine {
      * @return If the specified player capability is supported by this player
      *         engine
      */
-    public abstract boolean supportsCapability(PlayerEngineCapability capability);
+    @Override
+	public abstract boolean supportsCapability(PlayerEngineCapability capability);
 
     /**
      * This method must be implemented by player engines. Method to apply
@@ -301,7 +302,8 @@ public abstract class AbstractPlayerEngine {
      * @param buttonPressed
      *            TODO: Add more javadoc
      */
-    public final void playCurrentAudioObject(boolean buttonPressed) {
+    @Override
+	public final void playCurrentAudioObject(boolean buttonPressed) {
         if (isEnginePlaying() && buttonPressed) { // Pause
             try {
                 paused = true;
@@ -351,7 +353,8 @@ public abstract class AbstractPlayerEngine {
      *            <code>true</code> if user has stopped playback
      * 
      */
-    public final void stopCurrentAudioObject(boolean userStopped) {
+    @Override
+	public final void stopCurrentAudioObject(boolean userStopped) {
         try {
             boolean activateFadeAway = userStopped && state.isUseFadeAway() && !paused;
             if (paused) {
@@ -386,7 +389,8 @@ public abstract class AbstractPlayerEngine {
      *            is called because user has pressed the "NEXT" button
      * 
      */
-    final void playNextAudioObject(boolean audioObjectFinished) {
+    @Override
+    public final void playNextAudioObject(boolean audioObjectFinished) {
         if (!audioObjectFinished) {
             // Call listeners to notify playback was interrupted
             callPlaybackStateListeners(PlaybackState.PLAY_INTERRUPTED);
@@ -404,7 +408,8 @@ public abstract class AbstractPlayerEngine {
      * @param messages
      *            Messages when playback finishes with error
      */
-    public final void currentAudioObjectFinished(boolean ok, final String... errorMessages) {
+    @Override
+	public final void currentAudioObjectFinished(boolean ok, final String... errorMessages) {
         // Call listeners to notify playback finished
         callPlaybackStateListeners(PlaybackState.PLAY_FINISHED);
 
@@ -470,7 +475,8 @@ public abstract class AbstractPlayerEngine {
      *            
      * 
      */
-    public final void seekCurrentAudioObject(long milliseconds) {
+    @Override
+	public final void seekCurrentAudioObject(long milliseconds) {
         // If paused first resume and then seek
         if (paused) {
             paused = false;
@@ -486,14 +492,16 @@ public abstract class AbstractPlayerEngine {
     /**
      * Lower volume
      */
-    public final void volumeDown() {
+    @Override
+	public final void volumeDown() {
         Volume.setVolume(state.getVolume() - 5, state, playerHandler);
     }
 
     /**
      * Raise volume
      */
-    public final void volumeUp() {
+    @Override
+	public final void volumeUp() {
         Volume.setVolume(state.getVolume() + 5, state, playerHandler);
     }
 
@@ -503,19 +511,11 @@ public abstract class AbstractPlayerEngine {
      * @param e
      *            The exception thrown
      */
-    public final void handlePlayerEngineError(final Exception e) {
+    @Override
+	public final void handlePlayerEngineError(final Exception e) {
         Logger.error(StringUtils.getString("Player Error: ", e));
         Logger.error(e);
         Context.getBean(IErrorDialogFactory.class).getDialog().showExceptionDialog(I18nUtils.getString("ERROR"), e);
-    }
-
-    /**
-     * Returns the equalizer of this player engine
-     * 
-     * @return the equalizer of this player engine
-     */
-    public IEqualizer getEqualizer() {
-        return equalizer;
     }
 
     /**
@@ -681,7 +681,7 @@ public abstract class AbstractPlayerEngine {
 			Context.getBean(IWebServicesHandler.class).submitNowPlayingInfo(audioObject);
 		}
 
-		AbstractPlayerEngine.this.audioObject = audioObject;
+		this.audioObject = audioObject;
 
 		// Add audio object to playback history
 		playListHandler.addToPlaybackHistory(audioObject);
@@ -753,15 +753,18 @@ public abstract class AbstractPlayerEngine {
         setCallToPlaybackStateListenersDisabled(false);
     }
     
-    public IAudioObject getAudioObject() {
+    @Override
+	public IAudioObject getAudioObject() {
         return audioObject;
     }
 
-    public long getCurrentAudioObjectPlayedTime() {
+    @Override
+	public long getCurrentAudioObjectPlayedTime() {
         return currentAudioObjectPlayedTime;
     }
 
-    public long getCurrentAudioObjectLength() {
+    @Override
+	public long getCurrentAudioObjectLength() {
         return currentAudioObjectLength;
     }
 
@@ -818,13 +821,6 @@ public abstract class AbstractPlayerEngine {
 		return osManager;
 	}
 
-    /**
-     * @param equalizer
-     */
-    public void setEqualizer(IEqualizer equalizer) {
-		this.equalizer = equalizer;
-	}
-    
     /**
      * @param state
      */

@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.player;
 
+import net.sourceforge.atunes.model.IPlayerEngine;
+
 /**
  * if user wants to ignore play back error then play back continues, if not
  * it's stopped
@@ -28,10 +30,10 @@ package net.sourceforge.atunes.kernel.modules.player;
  */
 final class ApplyUserSelectionRunnable implements Runnable {
 	
-    private AbstractPlayerEngine engine;
+    private IPlayerEngine engine;
     private final boolean ignorePlaybackError;
 
-    ApplyUserSelectionRunnable(AbstractPlayerEngine engine, boolean ignorePlaybackError) {
+    ApplyUserSelectionRunnable(IPlayerEngine engine, boolean ignorePlaybackError) {
         this.engine = engine;
         this.ignorePlaybackError = ignorePlaybackError;
     }

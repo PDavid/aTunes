@@ -26,7 +26,6 @@ import java.util.Collection;
 import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
-import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 
 /**
  * Holds information about specific Operating System data
@@ -147,14 +146,14 @@ public interface IOSManager {
 	 * @param engine
 	 * @return
 	 */
-	public boolean isPlayerEngineSupported(AbstractPlayerEngine engine);
+	public boolean isPlayerEngineSupported(IPlayerEngine engine);
 
 	/**
 	 * Returns command used (if any) to execute player engine
 	 * @param engine
 	 * @return
 	 */
-	public String getPlayerEngineCommand(AbstractPlayerEngine engine);
+	public String getPlayerEngineCommand(IPlayerEngine engine);
 
 	/**
 	 * Returns specific player engine parameters
@@ -162,7 +161,7 @@ public interface IOSManager {
 	 * @return
 	 */
 	public Collection<String> getPlayerEngineParameters(
-			AbstractPlayerEngine engine);
+			IPlayerEngine engine);
 
 	/**
 	 * Returns path where external tools are (cdda2wav, mencoder, etc.)

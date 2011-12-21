@@ -24,10 +24,10 @@ import java.io.File;
 
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.kernel.modules.hotkeys.X11Hotkeys;
-import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPlayerEngine;
 import net.sourceforge.atunes.model.OperatingSystem;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -74,12 +74,12 @@ public class LinuxOperatingSystem extends OperatingSystemAdapter {
 	}
 
 	@Override
-	public boolean isPlayerEngineSupported(AbstractPlayerEngine engine) {
+	public boolean isPlayerEngineSupported(IPlayerEngine engine) {
 		return true; // all supported
 	}
 	
 	@Override
-	public String getPlayerEngineCommand(AbstractPlayerEngine engine) {
+	public String getPlayerEngineCommand(IPlayerEngine engine) {
 		return engine instanceof MPlayerEngine ? MPLAYER_LINUX_COMMAND : null;
 	}
 	

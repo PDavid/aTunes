@@ -37,11 +37,11 @@ import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.SystemLookAndFeel;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
-import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPlayerEngine;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.OperatingSystem;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -176,7 +176,7 @@ public abstract class OperatingSystemAdapter {
 	 * @param engine
 	 * @return
 	 */
-	public abstract boolean isPlayerEngineSupported(AbstractPlayerEngine engine);
+	public abstract boolean isPlayerEngineSupported(IPlayerEngine engine);
 
 	/**
 	 * Returns command used (if any) to execute player engine
@@ -184,7 +184,7 @@ public abstract class OperatingSystemAdapter {
 	 * @param engine
 	 * @return
 	 */
-	public abstract String getPlayerEngineCommand(AbstractPlayerEngine engine);
+	public abstract String getPlayerEngineCommand(IPlayerEngine engine);
 
 	/**
 	 * Returns specific player engine parameters
@@ -193,7 +193,7 @@ public abstract class OperatingSystemAdapter {
 	 * @return
 	 */
 	public Collection<String> getPlayerEngineParameters(
-			AbstractPlayerEngine engine) {
+			IPlayerEngine engine) {
 		return Collections.emptyList();
 	}
 

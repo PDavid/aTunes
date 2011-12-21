@@ -26,13 +26,13 @@ import java.util.Map;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.macos.MacOSXLookAndFeel;
-import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPlayerEngine;
 import net.sourceforge.atunes.model.OperatingSystem;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -74,12 +74,12 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 	}
 	
 	@Override
-	public boolean isPlayerEngineSupported(AbstractPlayerEngine engine) {
+	public boolean isPlayerEngineSupported(IPlayerEngine engine) {
 		return engine instanceof MPlayerEngine ? true : false; // Only MPLAYER
 	}
 	
 	@Override
-	public String getPlayerEngineCommand(AbstractPlayerEngine engine) {
+	public String getPlayerEngineCommand(IPlayerEngine engine) {
 		return engine instanceof MPlayerEngine ? osManager.getOSProperty(MPLAYER_COMMAND) : null;
 	}
 

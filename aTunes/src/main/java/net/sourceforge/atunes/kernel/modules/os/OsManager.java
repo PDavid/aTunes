@@ -28,11 +28,11 @@ import java.util.Properties;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
-import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPlayerEngine;
 import net.sourceforge.atunes.model.OperatingSystem;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -280,7 +280,7 @@ public class OsManager implements IOSManager {
 	 * @see net.sourceforge.atunes.kernel.IOSManager#isPlayerEngineSupported(net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine)
 	 */
 	@Override
-	public boolean isPlayerEngineSupported(AbstractPlayerEngine engine) {
+	public boolean isPlayerEngineSupported(IPlayerEngine engine) {
 		return adapter.isPlayerEngineSupported(engine); 
 	}
 
@@ -288,7 +288,7 @@ public class OsManager implements IOSManager {
 	 * @see net.sourceforge.atunes.kernel.IOSManager#getPlayerEngineCommand(net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine)
 	 */
 	@Override
-	public String getPlayerEngineCommand(AbstractPlayerEngine engine) {
+	public String getPlayerEngineCommand(IPlayerEngine engine) {
 		return adapter.getPlayerEngineCommand(engine);
 	}
 
@@ -296,7 +296,7 @@ public class OsManager implements IOSManager {
 	 * @see net.sourceforge.atunes.kernel.IOSManager#getPlayerEngineParameters(net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine)
 	 */
 	@Override
-	public Collection<String> getPlayerEngineParameters(AbstractPlayerEngine engine) {
+	public Collection<String> getPlayerEngineParameters(IPlayerEngine engine) {
 		return adapter.getPlayerEngineParameters(engine);
 	}
 
