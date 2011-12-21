@@ -34,6 +34,8 @@
 		<constructor-arg value="HELP"/>
 	</bean>
 	
+	<bean id="playListPopupMenu" class="net.sourceforge.atunes.gui.views.menus.PlayListPopupMenu" init-method="initialize"/>
+	
 	<bean id="contextPanelsContainer" class="net.sourceforge.atunes.gui.views.panels.context.ContextPanelContainer">
 		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
@@ -46,6 +48,9 @@
 	<bean id="playListPanel" class="net.sourceforge.atunes.gui.views.panels.PlayListPanel" init-method="initialize"/>
 	<bean id="playListSelectorPanel" class="net.sourceforge.atunes.gui.views.panels.PlayListSelectorPanel" init-method="initialize"/>
 	
+	<bean id="playListTableModel" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListTableModel">
+		<property name="columnSet" ref="playListColumnSet"/>
+	</bean>
 	<bean id="playListTable" class="net.sourceforge.atunes.gui.views.controls.PlayListTable" init-method="initialize"/>
 
 	<bean id="filterPanel" class="net.sourceforge.atunes.gui.views.panels.FilterPanel" init-method="initialize"/>	
