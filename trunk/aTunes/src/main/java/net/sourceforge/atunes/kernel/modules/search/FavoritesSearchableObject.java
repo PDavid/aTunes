@@ -31,6 +31,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.ISearchResult;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -76,10 +77,10 @@ public final class FavoritesSearchableObject extends AbstractCommonAudioFileSear
     }
 
     @Override
-    public List<IAudioObject> getSearchResult(List<RawSearchResult> rawSearchResults) {
+    public List<IAudioObject> getSearchResult(List<ISearchResult> rawSearchResults) {
         List<IAudioObject> result = new ArrayList<IAudioObject>();
-        for (RawSearchResult rawSearchResult : rawSearchResults) {
-        	ILocalAudioObject audioFile = Context.getBean(IFavoritesHandler.class).getFavoriteSongsMap().get(rawSearchResult.getDocument().get("url"));
+        for (ISearchResult rawSearchResult : rawSearchResults) {
+        	ILocalAudioObject audioFile = Context.getBean(IFavoritesHandler.class).getFavoriteSongsMap().get(rawSearchResult.getObject().get("url"));
             if (audioFile != null) {
                 result.add(audioFile);
             }

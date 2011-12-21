@@ -41,6 +41,7 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.ISearchHandler;
+import net.sourceforge.atunes.model.ISearchResult;
 import net.sourceforge.atunes.model.ISearchableObject;
 import net.sourceforge.atunes.model.SearchIndexNotAvailableException;
 import net.sourceforge.atunes.model.SearchQuerySyntaxException;
@@ -257,7 +258,7 @@ public final class SearchHandler extends AbstractHandler implements ISearchHandl
             Query query = new QueryParser(Version.LUCENE_30, DEFAULT_INDEX, new SimpleAnalyzer()).parse(queryString);
             searcher = new IndexSearcher(searchableObject.getIndexDirectory(), true);
             TopDocs topDocs = searcher.search(query, 1000);
-            List<RawSearchResult> rawSearchResults = new ArrayList<RawSearchResult>();
+            List<ISearchResult> rawSearchResults = new ArrayList<ISearchResult>();
             for (ScoreDoc scoreDoc : topDocs.scoreDocs) {
                 rawSearchResults.add(new RawSearchResult(searcher.doc(scoreDoc.doc), scoreDoc.score));
             }
