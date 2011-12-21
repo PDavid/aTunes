@@ -26,9 +26,6 @@ import java.util.List;
 
 import javax.swing.event.TableModelEvent;
 
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.images.AlbumImageSmallIcon;
-import net.sourceforge.atunes.kernel.modules.columns.TypeColumn;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IAudioObject;
 
@@ -101,8 +98,6 @@ public final class AlbumTableModel extends AbstractColumnSetTableModel {
     	IAlbum album = getAlbumAt(rowIndex);
     	if (album == null) {
     		return null;
-    	} else if (getColumn(columnIndex) instanceof TypeColumn) {
-    		return Context.getBean(AlbumImageSmallIcon.class).getColorMutableIcon();
     	}
     	return getColumn(columnIndex).getValueFor(album.getAudioObjects().get(0));
     }

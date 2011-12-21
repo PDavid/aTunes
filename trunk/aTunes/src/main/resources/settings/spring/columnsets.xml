@@ -88,7 +88,6 @@
 	<bean id="albumColumnSetColumns" class="java.util.ArrayList">
 		<constructor-arg>
 			<list>
-				<ref bean="typeColumn"/>
 				<ref bean="albumColumn"/>
 				<ref bean="artistColumn"/>
 				<ref bean="albumArtistColumn"/>
