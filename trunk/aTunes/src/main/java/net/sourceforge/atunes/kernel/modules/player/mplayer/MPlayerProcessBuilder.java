@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IEqualizer;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IOSManager;
@@ -49,6 +50,15 @@ public class MPlayerProcessBuilder {
 	private MPlayerEngine engine;
 	
 	private INetworkHandler networkHandler;
+	
+	private IEqualizer equalizer;
+	
+	/**
+	 * @param equalizer
+	 */
+	public void setEqualizer(IEqualizer equalizer) {
+		this.equalizer = equalizer;
+	}
 	
 	/**
 	 * @param networkHandler
@@ -265,10 +275,10 @@ public class MPlayerProcessBuilder {
 	 */
 	private void prepareEqualizer(IAudioObject audioObject, List<String> command) {
 		// Build equalizer command. Mplayer uses 10 bands
-		float[] equalizer = engine.getEqualizer().getEqualizerValues();
-		if (audioObject instanceof ILocalAudioObject && equalizer != null) {
+		float[] equalizerValues = equalizer.getEqualizerValues();
+		if (audioObject instanceof ILocalAudioObject && equalizerValues != null) {
 			command.add(MPlayerConstants.AUDIO_FILTER);
-			command.add(prepareEqualizerString(equalizer));
+			command.add(prepareEqualizerString(equalizerValues));
 		}
 	}
 

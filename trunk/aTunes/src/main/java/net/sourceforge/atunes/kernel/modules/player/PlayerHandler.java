@@ -82,6 +82,15 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     
     private List<AbstractPlayerEngine> engines;
     
+    private IEqualizer equalizer;
+    
+    /**
+     * @param equalizer
+     */
+    public void setEqualizer(IEqualizer equalizer) {
+		this.equalizer = equalizer;
+	}
+    
     /**
      * @param engines
      */
@@ -247,7 +256,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 	 */
     @Override
 	public IEqualizer getEqualizer() {
-        return playerEngine != null ? playerEngine.getEqualizer() : null;
+        return equalizer;
     }
 
     /* (non-Javadoc)

@@ -29,11 +29,11 @@ import java.util.List;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.kernel.modules.hotkeys.WindowsHotkeys;
-import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.xine.XineEngine;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPlayerEngine;
 import net.sourceforge.atunes.model.OperatingSystem;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -105,17 +105,17 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter {
 	}
 	
 	@Override
-	public boolean isPlayerEngineSupported(AbstractPlayerEngine engine) {
+	public boolean isPlayerEngineSupported(IPlayerEngine engine) {
 		return engine instanceof XineEngine ? false : true; // Xine is not supported
 	}
 	
 	@Override
-	public String getPlayerEngineCommand(AbstractPlayerEngine engine) {		
+	public String getPlayerEngineCommand(IPlayerEngine engine) {		
 		return engine instanceof MPlayerEngine ? MPLAYER_WIN_COMMAND : null;
 	}
 	
 	@Override
-	public Collection<String> getPlayerEngineParameters(AbstractPlayerEngine engine) {
+	public Collection<String> getPlayerEngineParameters(IPlayerEngine engine) {
 		if (engine instanceof MPlayerEngine) {
 			List<String> parameters = new ArrayList<String>(2);
 			parameters.add(WINOPTPRIORITY);

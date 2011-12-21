@@ -32,6 +32,7 @@ import javax.swing.Timer;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IEqualizer;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IUIHandler;
@@ -54,6 +55,15 @@ public class XineEngine extends AbstractPlayerEngine {
     private XineController xineController;
     private Timer durationUpdater;
     private final Object xineLock = new Object();
+    
+    private IEqualizer equalizer;
+    
+    /**
+     * @param equalizer
+     */
+    public void setEqualizer(IEqualizer equalizer) {
+		this.equalizer = equalizer;
+	}
 
     @Override
     protected boolean isEngineAvailable() {
@@ -107,7 +117,7 @@ public class XineEngine extends AbstractPlayerEngine {
     		xineController.setVolume(getState().getVolume());
 
     		// Apply equalizer
-    		applyEqualization(getEqualizer().getEqualizerValues());
+    		applyEqualization(equalizer.getEqualizerValues());
 
     		String errorMessage = null;
     		int streamLength = xineController.getStreamLength();
