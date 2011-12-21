@@ -40,19 +40,16 @@ import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 
+import net.sourceforge.atunes.gui.AbstractColumnSetTableModel;
 import net.sourceforge.atunes.gui.ColumnRenderers;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.PlayListColumnModel;
 import net.sourceforge.atunes.gui.TransferableList;
-import net.sourceforge.atunes.gui.views.menus.PlayListMenuFiller;
 import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListDragableRow;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListTableModel;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
-import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.PlayState;
 
 /**
@@ -63,7 +60,7 @@ public final class PlayListTable extends JTable implements IPlayListTable {
     private static final long serialVersionUID = 9209069236823917569L;
 
     private PlayState playState = PlayState.STOPPED;
-    private JPopupMenu menu;
+    private JPopupMenu playListPopupMenu;
 
     /**
      * Drag source for this play list to drag songs to device
@@ -72,19 +69,17 @@ public final class PlayListTable extends JTable implements IPlayListTable {
     
     private IPlayListHandler playListHandler;
     
-    private IColumnSet playListColumnSet;
-    
     private ILookAndFeelManager lookAndFeelManager;
     
-    private IRepositoryHandler repositoryHandler;
-
-    /**
-     * @param playListColumnSet
-     */
-    public void setPlayListColumnSet(IColumnSet playListColumnSet) {
-		this.playListColumnSet = playListColumnSet;
-	}
+    private AbstractColumnSetTableModel playListTableModel;
     
+    /**
+     * @param playListTableModel
+     */
+    public void setPlayListTableModel(AbstractColumnSetTableModel playListTableModel) {
+		this.playListTableModel = playListTableModel;
+	}
+
     /**
      * @param lookAndFeelManager
      */
@@ -93,17 +88,17 @@ public final class PlayListTable extends JTable implements IPlayListTable {
 	}
     
     /**
-     * @param repositoryHandler
-     */
-    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
-	}
-    
-    /**
      * @param playListHandler
      */
     public void setPlayListHandler(IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
+	}
+    
+    /**
+     * @param playListPopupMenu
+     */
+    public void setPlayListPopupMenu(JPopupMenu playListPopupMenu) {
+		this.playListPopupMenu = playListPopupMenu;
 	}
     
     /**
@@ -115,15 +110,14 @@ public final class PlayListTable extends JTable implements IPlayListTable {
         setDropMode(DropMode.ON);
 
         // Set table model
-        PlayListTableModel model = new PlayListTableModel(playListColumnSet, playListHandler, repositoryHandler);
-        setModel(model);
+        setModel(playListTableModel);
 
         // Set column model
         PlayListColumnModel columnModel = new PlayListColumnModel(this, playListHandler, lookAndFeelManager.getCurrentLookAndFeel());
         setColumnModel(columnModel);
 
         // Set sorter
-        new ColumnSetRowSorter(this, model, columnModel);
+        new ColumnSetRowSorter(this, playListTableModel, columnModel);
 
         // Bind column set popup menu
         new ColumnSetPopupMenu(this, columnModel);
@@ -142,11 +136,6 @@ public final class PlayListTable extends JTable implements IPlayListTable {
         KeyStroke f2 = KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0);
         im.put(f2, "none");
 
-        // Popup menu
-        menu = new JPopupMenu();
-        PlayListMenuFiller.fillPopUpMenu(menu, this);
-        GuiUtils.applyComponentOrientation(menu);
-
         // Create drag source and set listener
         dragSource = new DragSource();
         dragSource.createDefaultDragGestureRecognizer(this, DnDConstants.ACTION_COPY, this);
@@ -164,7 +153,7 @@ public final class PlayListTable extends JTable implements IPlayListTable {
 	 */
 	@Override
 	public JPopupMenu getMenu() {
-        return menu;
+        return playListPopupMenu;
     }
 
 	/* (non-Javadoc)

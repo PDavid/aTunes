@@ -31,15 +31,6 @@ public abstract class AbstractColumnSetTableModel extends AbstractCommonTableMod
 
     private IColumnSet columnSet;
 
-    public AbstractColumnSetTableModel(IColumnSet columnSet) {
-        super();
-        this.columnSet = columnSet;
-    }
-
-    public AbstractColumnSetTableModel() {
-        super();
-    }
-
     /**
      * Returns column data class.
      * 
@@ -100,5 +91,4 @@ public abstract class AbstractColumnSetTableModel extends AbstractCommonTableMod
     public void setColumnSet(IColumnSet columnSet) {
         this.columnSet = columnSet;
     }
-
 }

@@ -24,7 +24,6 @@ import java.util.Comparator;
 
 import net.sourceforge.atunes.gui.AbstractColumnSetTableModel;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 
@@ -45,16 +44,18 @@ public class PlayListTableModel extends AbstractColumnSetTableModel {
     private IRepositoryHandler repositoryHandler;
 
     /**
-     * Constructor.
-     * @param columnSet
      * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    /**
      * @param repositoryHandler
      */
-    public PlayListTableModel(IColumnSet columnSet, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler) {
-        super(columnSet);
-        this.playListHandler = playListHandler;
-        this.repositoryHandler = repositoryHandler;
-    }
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
 
     /**
      * Return row count.

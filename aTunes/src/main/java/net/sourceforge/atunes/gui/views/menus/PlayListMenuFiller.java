@@ -68,7 +68,7 @@ public final class PlayListMenuFiller {
      * 
      * @param menu
      */
-    public static void fillPopUpMenu(JPopupMenu menu, IPlayListTable table) {
+    static void fillPopUpMenu(JPopupMenu menu, IPlayListTable table) {
         List<Object> objectsToAdd = getComponents(table);
         for (Object o : objectsToAdd) {
             // Object can be an action or a swing component
@@ -86,7 +86,7 @@ public final class PlayListMenuFiller {
      * @param menu
      * @param table
      */
-    public static void fillMenu(JMenu menu, IPlayListTable table) {
+    static void fillMenu(JMenu menu, IPlayListTable table) {
         List<Object> objectsToAdd = getComponents(table);
         for (Object o : objectsToAdd) {
             // Object can be an action or a swing component

@@ -108,7 +108,8 @@ final class SearchResultsController extends AbstractSimpleController<SearchResul
     @Override
 	public void addBindings() {
         JTable table = getComponentControlled().getSearchResultsTable();
-        SearchResultTableModel tableModel = new SearchResultTableModel(columnSet);
+        SearchResultTableModel tableModel = new SearchResultTableModel();
+        tableModel.setColumnSet(columnSet);
         table.setModel(tableModel);
 
         SearchResultColumnModel columnModel = new SearchResultColumnModel(table, columnSet, lookAndFeelManager.getCurrentLookAndFeel());
