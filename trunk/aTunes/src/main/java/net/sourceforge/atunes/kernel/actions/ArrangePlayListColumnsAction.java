@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.actions;
 import net.sourceforge.atunes.gui.AbstractCommonColumnModel;
 import net.sourceforge.atunes.model.IColumnSelectorDialog;
 import net.sourceforge.atunes.model.IColumnSelectorDialogFactory;
-import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -40,8 +39,6 @@ public class ArrangePlayListColumnsAction extends CustomAbstractAction {
      */
     private static final long serialVersionUID = 3866441529401824151L;
 
-    private IFrame frame;
-    
     private IColumnSelectorDialogFactory columnSelectorDialogFactory;
     
     private IPlayListTable playListTable;
@@ -58,13 +55,6 @@ public class ArrangePlayListColumnsAction extends CustomAbstractAction {
      */
     public void setPlayListTable(IPlayListTable playListTable) {
 		this.playListTable = playListTable;
-	}
-    
-    /**
-     * @param frame
-     */
-    public void setFrame(IFrame frame) {
-		this.frame = frame;
 	}
     
     public ArrangePlayListColumnsAction() {

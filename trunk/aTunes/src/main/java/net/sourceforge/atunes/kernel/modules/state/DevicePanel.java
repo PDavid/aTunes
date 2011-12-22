@@ -113,9 +113,6 @@ public final class DevicePanel extends AbstractPreferencesPanel {
     /** Text Field used to define custom folder path */
     private JTextField folderPathPatternTextField;
 
-    /** A table to show available pattern transformations */
-    private JTable availablePatternsTable;
-
     /**
      * A check box to set if user wants to copy the same song several times (if
      * song is repeated for different albums)
@@ -174,7 +171,7 @@ public final class DevicePanel extends AbstractPreferencesPanel {
         group2.add(folderPathNoChangeRadioButton);
         group2.add(folderPathCustomizedRadioButton);
 
-        availablePatternsTable = lookAndFeel.getTable();
+        JTable availablePatternsTable = lookAndFeel.getTable();
         availablePatternsTable.setModel(new AvailablePatternsDefaultTableModel());
 
         JPanel patternsPanel = new JPanel(new BorderLayout());

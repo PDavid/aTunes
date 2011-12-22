@@ -35,7 +35,6 @@ import net.sourceforge.atunes.model.IState;
 
 final class EditTitlesDialogController extends AbstractSimpleController<EditTitlesDialog> {
 
-    private List<ILocalAudioObject> filesToEdit;
     private IAlbum album;
     private EditTitlesTableModel model;
     private IProcessFactory processFactory;
@@ -89,7 +88,7 @@ final class EditTitlesDialogController extends AbstractSimpleController<EditTitl
      */
     public void editFiles(IAlbum alb) {
         this.album = alb;
-        filesToEdit = alb.getAudioObjects();
+        List<ILocalAudioObject> filesToEdit = alb.getAudioObjects();
         Collections.sort(filesToEdit);
         model = new EditTitlesTableModel(filesToEdit);
         getComponentControlled().getTable().setModel(model);

@@ -55,9 +55,6 @@ public class ProgressDialog extends AbstractCustomDialog implements IProgressDia
     /** The received label. */
     private JLabel currentLabel;
 
-    /** The separator label. */
-    private JLabel separatorLabel;
-
     /** The total label. */
     private JLabel totalLabel;
 
@@ -88,7 +85,7 @@ public class ProgressDialog extends AbstractCustomDialog implements IProgressDia
         imagelabel = new JLabel(Images.getImage(Images.APP_LOGO_90));
         infoLabel = new JLabel();
         currentLabel = new JLabel();
-        separatorLabel = new JLabel(" / ");
+        JLabel separatorLabel = new JLabel(" / ");
         totalLabel = new JLabel();
         cancelButton = new JButton(I18nUtils.getString("CANCEL"));
 

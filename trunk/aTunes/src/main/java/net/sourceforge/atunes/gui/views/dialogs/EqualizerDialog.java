@@ -55,9 +55,6 @@ public final class EqualizerDialog extends AbstractCustomDialog implements IEqua
     /** The bands. */
     private JSlider[] bands;
 
-    /** The labels. */
-    private JLabel[] labels;
-    
     private IPlayerHandler playerHandler;
 
     /**
@@ -113,7 +110,7 @@ public final class EqualizerDialog extends AbstractCustomDialog implements IEqua
 
         String[] freqs = { "31Hz", "62Hz", "125Hz", "250Hz", "500Hz", "1kHz", "2kHz", "4kHz", "8kHz", "16kHz" };
         bands = new JSlider[10];
-        labels = new JLabel[10];
+        JLabel[] labels = new JLabel[10];
 
         for (int i = 0; i < 10; i++) {
             bands[i] = getNewJSlider();

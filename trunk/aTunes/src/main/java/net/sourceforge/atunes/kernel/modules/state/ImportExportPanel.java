@@ -114,9 +114,6 @@ public final class ImportExportPanel extends AbstractPreferencesPanel {
     /** Text Field used to define custom folder path */
     private JTextField folderPathPatternTextField;
 
-    /** A table to show available pattern transformations */
-    private JTable availablePatternsTable;
-
     /** Check box to enable tag revision before importing */
     private JCheckBox reviewTagsBeforeImportCheckBox;
 
@@ -177,7 +174,7 @@ public final class ImportExportPanel extends AbstractPreferencesPanel {
         group2.add(folderPathNoChangeRadioButton);
         group2.add(folderPathCustomizedRadioButton);
 
-        availablePatternsTable = lookAndFeel.getTable();
+        JTable availablePatternsTable = lookAndFeel.getTable();
         availablePatternsTable.setModel(new AvailablePatternsTableModel());
 
         JPanel patternsPanel = new JPanel(new BorderLayout());

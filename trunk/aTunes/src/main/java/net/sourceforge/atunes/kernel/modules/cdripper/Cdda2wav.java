@@ -43,7 +43,6 @@ public class Cdda2wav extends AbstractCdToWavConverter {
     private static String converterCommand = Cdda2wavConstants.CDDA2WAV_COMMAND_STRING;
 
     private int devNumber;
-    private CDInfo cdRecursive;
     private String device;
     private boolean cdLoaded;
     private boolean doNotRepeatNoCdDialog = true;
@@ -266,7 +265,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
     @Override
     public CDInfo retrieveDiscInformation() {
         Logger.info("Getting cd information...");
-        cdRecursive = null;
+        CDInfo cdRecursive = null;
         // If no devices detected do exit
         if (devNumber == 0) {
             return null;

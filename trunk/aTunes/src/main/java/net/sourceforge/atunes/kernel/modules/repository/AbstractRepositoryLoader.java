@@ -49,7 +49,6 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 	private IRepository repository;
 	private int filesLoaded;
 	private long startReadTime;
-	private String fastRepositoryPath;
 	private int fastFirstChar;
 	private IState state;
 	private ILocalAudioObjectFactory localAudioObjectFactory;
@@ -174,7 +173,7 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 
 		RepositoryFiller filler = new RepositoryFiller(repository, state);
 		for (File folder : folders) {
-			fastRepositoryPath = folder.getAbsolutePath().replace('\\', '/');
+			String fastRepositoryPath = folder.getAbsolutePath().replace('\\', '/');
 			if (fastRepositoryPath.endsWith("/")) {
 				fastRepositoryPath = fastRepositoryPath.substring(0, fastRepositoryPath.length() - 2);
 			}

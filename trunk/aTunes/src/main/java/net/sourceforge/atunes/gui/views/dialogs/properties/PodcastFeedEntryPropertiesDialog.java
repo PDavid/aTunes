@@ -62,7 +62,6 @@ final class PodcastFeedEntryPropertiesDialog extends AudioObjectPropertiesDialog
     private JLabel podcastFeedLabel;
     private JLabel downloadedLabel;
     private JLabel descriptionLabel;
-    private JScrollPane descriptionScrollPane;
     private JTextArea descriptionTextArea;
     private IPodcastFeedEntry entry;
     
@@ -164,7 +163,7 @@ final class PodcastFeedEntryPropertiesDialog extends AudioObjectPropertiesDialog
         c.insets = new Insets(5, 10, 0, 10);
         panel.add(descriptionLabel, c);
 
-        descriptionScrollPane = iLookAndFeel.getScrollPane(null);
+        JScrollPane descriptionScrollPane = iLookAndFeel.getScrollPane(null);
         descriptionScrollPane.setMinimumSize(new Dimension(400, 100));
         c.gridx = 1;
         c.gridy = 8;

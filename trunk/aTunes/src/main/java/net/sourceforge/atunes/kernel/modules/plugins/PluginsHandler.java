@@ -83,11 +83,6 @@ public class PluginsHandler extends AbstractHandler implements PluginListener, I
     }
 
     /**
-     * Contains problems while last plugin load operation
-     */
-    private Map<PluginFolder, PluginSystemException> problemsLoadingPlugins;
-    
-    /**
      * Initializes all plugins found in plugins dir
      */
     private void initPlugins() {
@@ -130,6 +125,7 @@ public class PluginsHandler extends AbstractHandler implements PluginListener, I
         Timer t = new Timer();
         t.start();
 
+        Map<PluginFolder, PluginSystemException> problemsLoadingPlugins = null;
         try {
         	// PLUGINS MUST BE STARTED WHEN APPLICATION IS STARTED, OTHERWISE THEY CAN TRY TO ACCESS TO COMPONENTS NOT CREATED OR INITIALIZED YET
 			problemsLoadingPlugins = factory.start(getPluginClassNames(), false, "net.sourceforge.atunes");

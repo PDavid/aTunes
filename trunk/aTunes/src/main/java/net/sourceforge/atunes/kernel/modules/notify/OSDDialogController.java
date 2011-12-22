@@ -45,7 +45,6 @@ import net.sourceforge.atunes.model.ImageSize;
 final class OSDDialogController extends AbstractSimpleController<OSDDialog> {
 
     private WindowFader windowFader;
-    private Point location;
     private Timer timer;
     private IAudioObjectGenericImageFactory audioObjectGenericImageFactory;
     private ILookAndFeelManager lookAndFeelManager;
@@ -120,7 +119,7 @@ final class OSDDialogController extends AbstractSimpleController<OSDDialog> {
             y = Toolkit.getDefaultToolkit().getScreenSize().height - 20 - getComponentControlled().getHeight();
         }
 
-        location = new Point(x, y);
+        Point location = new Point(x, y);
 
         // By default OSD image has shadow, unless it's a generic image
         getComponentControlled().setShadowBorder(true);

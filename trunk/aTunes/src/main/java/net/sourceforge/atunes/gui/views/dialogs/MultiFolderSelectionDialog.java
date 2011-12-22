@@ -500,9 +500,6 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
     /** The ok button. */
     private JButton okButton;
 
-    /** The cancel button. */
-    private JButton cancelButton;
-
     /** The text. */
     private JLabel text;
 
@@ -550,7 +547,7 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
                 dispose();
             }
         });
-        cancelButton = new JButton(I18nUtils.getString("CANCEL"));
+        JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

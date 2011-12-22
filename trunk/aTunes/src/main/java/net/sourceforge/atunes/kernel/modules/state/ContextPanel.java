@@ -208,9 +208,6 @@ public final class ContextPanel extends AbstractPreferencesPanel {
      */
     private JCheckBox showAlbumsInGrid;
 
-    /** The info label. */
-    private JLabel info;
-
     /** The lyrics engines table. */
     private JTable enginesTable;
 
@@ -257,7 +254,7 @@ public final class ContextPanel extends AbstractPreferencesPanel {
             }
         });
         JButton clearCache = new JButton(Context.getBean(ClearCachesAction.class));
-        info = new JLabel(Images.getImage(Images.POWERED_BY_LAST_FM), GuiUtils.getComponentOrientationAsSwingConstant());
+        JLabel info = new JLabel(Images.getImage(Images.POWERED_BY_LAST_FM), GuiUtils.getComponentOrientationAsSwingConstant());
         info.addMouseListener(new OpenLastFmMouseAdapter(desktop));
         JLabel enginesTableLabel = new JLabel(I18nUtils.getString("LYRICS_ENGINES_SELECTION"));
         final LyricsEnginesTableModel model = new LyricsEnginesTableModel();

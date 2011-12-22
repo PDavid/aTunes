@@ -66,8 +66,6 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 	private JCheckBox useSmartTagViewSorting;
 	private JCheckBox useArtistNamesSorting;
 	private JCheckBox useCaseSensitiveInTree;
-	private JPanel artistViewPanel;
-	private ButtonGroup artistViewOptionGroup;
 	private JRadioButton useOnlyArtist;
 	private JRadioButton useOnlyArtistOfAlbum;
 	private JRadioButton useBothArtist;
@@ -215,11 +213,11 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 		useOnlyArtistOfAlbum = new JRadioButton(I18nUtils.getString("ARTIST_VIEW_USE_ONLY_ARTIST_OF_ALBUM"));
 		useBothArtist = new JRadioButton(I18nUtils.getString("ARTIST_VIEW_USE_BOTH"));
 
-		artistViewOptionGroup = new ButtonGroup();
+		ButtonGroup artistViewOptionGroup = new ButtonGroup();
 		artistViewOptionGroup.add(useOnlyArtist);
 		artistViewOptionGroup.add(useOnlyArtistOfAlbum);
 		artistViewOptionGroup.add(useBothArtist);
-		artistViewPanel = new JPanel(new GridLayout(3,1));
+		JPanel artistViewPanel = new JPanel(new GridLayout(3,1));
 		artistViewPanel.setBorder(new TitledBorder(I18nUtils.getString("ARTIST")));
 		artistViewPanel.add(useBothArtist);
 		artistViewPanel.add(useOnlyArtist);

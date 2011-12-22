@@ -55,7 +55,6 @@ public final class RipCdDialog extends AbstractCustomDialog {
 
     private static final long serialVersionUID = 1987727841297807350L;
 
-    private JTable table;
     private JTextField artistTextField;
     private JTextField albumTextField;
     private JTextField yearTextField;
@@ -147,7 +146,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
         JPanel panel = new JPanel(new GridBagLayout());
 
         tableModel = new CdInfoTableModel();
-        table = iLookAndFeel.getTable();
+        JTable table = iLookAndFeel.getTable();
         table.setModel(tableModel);
         table.getColumnModel().getColumn(0).setMaxWidth(20);
         table.getColumnModel().getColumn(4).setMaxWidth(50);

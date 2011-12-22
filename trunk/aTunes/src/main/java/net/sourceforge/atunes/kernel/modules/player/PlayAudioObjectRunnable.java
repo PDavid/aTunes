@@ -35,7 +35,6 @@ final class PlayAudioObjectRunnable implements Runnable {
 	
 	private AbstractPlayerEngine abstractPlayerEngine;
 	private IAudioObject audioObject;
-	private IAudioObject audioObjectToPlay = null;
 	private IFrame frame;
 	private ITemporalDiskStorage temporalDiskStorage;
 	
@@ -49,7 +48,7 @@ final class PlayAudioObjectRunnable implements Runnable {
 			
 	@Override
 	public void run() {
-	    this.audioObjectToPlay = this.abstractPlayerEngine.cacheAudioObject(audioObject, temporalDiskStorage);
+	    IAudioObject audioObjectToPlay = this.abstractPlayerEngine.cacheAudioObject(audioObject, temporalDiskStorage);
 		// Set default cursor again
 		this.frame.getFrame().setCursor(Cursor.getDefaultCursor());
 		this.abstractPlayerEngine.playAudioObjectAfterCache(audioObjectToPlay, audioObject);

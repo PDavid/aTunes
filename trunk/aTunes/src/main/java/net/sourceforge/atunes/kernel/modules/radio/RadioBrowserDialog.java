@@ -49,22 +49,9 @@ public final class RadioBrowserDialog extends AbstractCustomDialog {
 
     private static final long serialVersionUID = 8523236886848649698L;
 
-    /** Radio icon */
-    private JLabel radioIcon;
-
-    /**
-     * Browser instructions
-     */
-    private JLabel browserInstructions;
-
     /** The table. */
     private JXTreeTable treeTable;
 
-    /**
-     * Close button
-     */
-    private JButton closeButton;
-    
     private ILookAndFeelManager lookAndFeelManager;
     
     private IIconFactory radioMediumIcon;
@@ -103,9 +90,9 @@ public final class RadioBrowserDialog extends AbstractCustomDialog {
         treeTable = new JXTreeTable();
         treeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JPanel topPanel = new JPanel(new BorderLayout(10, 0));
-        radioIcon = new JLabel(radioMediumIcon.getIcon(lookAndFeel.getPaintForSpecialControls()));
-        browserInstructions = new JLabel(I18nUtils.getString("RADIO_BROWSER_INSTRUCTIONS"));
-        closeButton = new JButton(I18nUtils.getString("CLOSE"));
+        JLabel radioIcon = new JLabel(radioMediumIcon.getIcon(lookAndFeel.getPaintForSpecialControls()));
+        JLabel browserInstructions = new JLabel(I18nUtils.getString("RADIO_BROWSER_INSTRUCTIONS"));
+        JButton closeButton = new JButton(I18nUtils.getString("CLOSE"));
         closeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

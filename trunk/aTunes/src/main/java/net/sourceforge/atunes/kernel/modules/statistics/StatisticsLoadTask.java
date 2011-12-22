@@ -29,8 +29,6 @@ final class StatisticsLoadTask implements Runnable {
 	
 	private final IStateHandler stateHandler;
 	
-	private IStatistics statistics;
-
 	/**
 	 * @param statisticsHandler
 	 * @param stateHandler
@@ -42,10 +40,10 @@ final class StatisticsLoadTask implements Runnable {
 
 	@Override
 	public void run() {
-	    statistics = stateHandler.retrieveStatisticsCache();
+	    IStatistics statistics = stateHandler.retrieveStatisticsCache();
 	    if (statistics == null) {
 	    	statistics = new Statistics();
 	    }
-	    this.statisticsHandler.setStatistics(this.statistics);
+	    this.statisticsHandler.setStatistics(statistics);
 	}
 }

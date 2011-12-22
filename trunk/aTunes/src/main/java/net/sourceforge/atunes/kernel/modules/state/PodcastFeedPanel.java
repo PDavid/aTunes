@@ -37,14 +37,8 @@ public final class PodcastFeedPanel extends AbstractPreferencesPanel {
 
     private static final long serialVersionUID = -1298749333908609956L;
 
-    /** The retrieval interval label. */
-    private JLabel retrievalIntervalLabel;
-
     /** The retrieval interval. */
     private JComboBox retrievalInterval;
-
-    /** The download folder label. */
-    private JLabel downloadFolderLabel;
 
     /** The download folder file chooser. */
     private CustomJFileChooser downloadFolderFileChooser;
@@ -60,9 +54,9 @@ public final class PodcastFeedPanel extends AbstractPreferencesPanel {
      */
     public PodcastFeedPanel(IOSManager osManager) {
         super(I18nUtils.getString("PODCAST_FEEDS"));
-        retrievalIntervalLabel = new JLabel(I18nUtils.getString("PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL"));
+        JLabel retrievalIntervalLabel = new JLabel(I18nUtils.getString("PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL"));
         retrievalInterval = new JComboBox(new Long[] { 1l, 3l, 5l, 10l, 15l, 30l, 60l });
-        downloadFolderLabel = new JLabel(I18nUtils.getString("PODCAST_FEED_ENTRIES_DOWNLOAD_FOLDER"));
+        JLabel downloadFolderLabel = new JLabel(I18nUtils.getString("PODCAST_FEED_ENTRIES_DOWNLOAD_FOLDER"));
         downloadFolderFileChooser = new CustomJFileChooser(this, 20, JFileChooser.DIRECTORIES_ONLY, osManager);
         useDownloadedPodcastFeedEntries = new JCheckBox(I18nUtils.getString("USE_DOWNLOADED_PODCAST_FEED_ENTRIES"));
         removePodcastFeedEntriesRemovedFromPodcastFeed = new JCheckBox(I18nUtils.getString("REMOVE_PODCAST_FEED_ENTRIES_REMOVED_FROM_PODCAST_FEED"));

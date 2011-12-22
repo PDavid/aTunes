@@ -90,7 +90,6 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
     private JComboBox language;
     private JCheckBox showIconTray;
     private JCheckBox showTrayPlayer;
-    private JButton fontSettings;
     private JComboBox lookAndFeel;
     private JLabel skinLabel;
     private JComboBox skin;    
@@ -162,7 +161,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
         JLabel lookAndFeelLabel = new JLabel(I18nUtils.getString("LOOK_AND_FEEL"));
         skinLabel = new JLabel(I18nUtils.getString("THEME"));
 
-        fontSettings = new JButton(I18nUtils.getString("CHANGE_FONT_SETTINGS"));
+        JButton fontSettings = new JButton(I18nUtils.getString("CHANGE_FONT_SETTINGS"));
         fontSettings.setEnabled(lookAndFeelManager.getCurrentLookAndFeel().supportsCustomFontSettings());
         fontSettings.addActionListener(new ActionListener() {
 

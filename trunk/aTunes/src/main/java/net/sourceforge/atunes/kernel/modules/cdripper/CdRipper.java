@@ -50,8 +50,6 @@ class CdRipper {
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private String artist;
     private String album;
-    private int year;
-    private String genre;
     private String fileNamePattern;
     private IOSManager osManager;
 
@@ -336,9 +334,8 @@ class CdRipper {
      *            the new genre
      */
     void setGenre(String genre) {
-        this.genre = genre;
         if (encoder != null) {
-            encoder.setGenre(this.genre);
+            encoder.setGenre(genre);
         }
     }
 
@@ -369,9 +366,8 @@ class CdRipper {
      *            the new year
      */
     void setYear(int year) {
-        this.year = year;
         if (encoder != null) {
-            encoder.setYear(this.year);
+            encoder.setYear(year);
         }
     }
 
