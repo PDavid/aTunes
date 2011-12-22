@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.utils;
 
-import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
-import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 
 import com.sun.jna.Library;
@@ -237,43 +235,6 @@ public final class FileNameUtils {
             fileName = fileName.replace("|", "-");
         }
         return fileName;
-    }
-
-    /**
-     * Prepares the filename in order to write it.
-     * 
-     * @param pattern
-     *            Filename pattern
-     * @param song
-     *            Song file to be written
-     * 
-     * @return Returns a (hopefully) valid filename
-     */
-    public static String getNewFileName(String pattern, ILocalAudioObject song, IOSManager osManager) {
-        String result = AbstractPattern.applyPatternTransformations(pattern, song);
-        // We need to place \\ before escape sequences otherwise the ripper hangs. We can not do this later.
-        result = result.replace("\\", "\\\\").replace("$", "\\$");
-        result = StringUtils.getString(result, song.getFile().getName().substring(song.getFile().getName().lastIndexOf('.')));
-        result = getValidFileName(result, osManager);
-        return result;
-    }
-
-    /**
-     * Prepares the folder path in order to write it.
-     * 
-     * @param pattern
-     *            Folder path pattern
-     * @param song
-     *            Song file to be written
-     * 
-     * @return Returns a (hopefully) valid filename
-     */
-    public static String getNewFolderPath(String pattern, ILocalAudioObject song, IOSManager osManager) {
-        String result = AbstractPattern.applyPatternTransformations(pattern, song);
-        // We need to place \\ before escape sequences otherwise the ripper hangs. We can not do this later.
-        result = result.replace("\\", "\\\\").replace("$", "\\$");
-        result = getValidName(result, false, osManager);
-        return result;
     }
 
     /*

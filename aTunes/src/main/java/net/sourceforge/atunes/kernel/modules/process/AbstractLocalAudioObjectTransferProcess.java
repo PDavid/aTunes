@@ -33,6 +33,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectTransferProcess;
@@ -303,7 +304,7 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
     protected String getDirectory(ILocalAudioObject song, File destination, boolean isMp3Device, String pattern) {
         String songRelativePath = "";
         if (pattern != null) {
-            songRelativePath = FileNameUtils.getValidFolderName(FileNameUtils.getNewFolderPath(pattern, song, osManager), isMp3Device, osManager);
+            songRelativePath = FileNameUtils.getValidFolderName(getNewFolderPath(pattern, song, osManager), isMp3Device, osManager);
         }
         return StringUtils.getString(destination.getAbsolutePath(), osManager.getFileSeparator(), songRelativePath);
     }
@@ -332,7 +333,7 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
     protected String getName(ILocalAudioObject file, boolean isMp3Device, String pattern) {
         String newName;
         if (pattern != null) {
-            newName = FileNameUtils.getNewFileName(pattern, file, osManager);
+            newName = getNewFileName(pattern, file, osManager);
         } else {
             newName = FileNameUtils.getValidFileName(file.getFile().getName().replace("\\", "\\\\").replace("$", "\\$"), isMp3Device, osManager);
         }
@@ -343,4 +344,43 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
     protected IOSManager getOsManager() {
 		return osManager;
 	}
+    
+    /**
+     * Prepares the filename in order to write it.
+     * 
+     * @param pattern
+     *            Filename pattern
+     * @param song
+     *            Song file to be written
+     * 
+     * @return Returns a (hopefully) valid filename
+     */
+    protected String getNewFileName(String pattern, ILocalAudioObject song, IOSManager osManager) {
+        String result = AbstractPattern.applyPatternTransformations(pattern, song);
+        // We need to place \\ before escape sequences otherwise the ripper hangs. We can not do this later.
+        result = result.replace("\\", "\\\\").replace("$", "\\$");
+        result = StringUtils.getString(result, song.getFile().getName().substring(song.getFile().getName().lastIndexOf('.')));
+        result = FileNameUtils.getValidFileName(result, osManager);
+        return result;
+    }
+
+    /**
+     * Prepares the folder path in order to write it.
+     * 
+     * @param pattern
+     *            Folder path pattern
+     * @param song
+     *            Song file to be written
+     * 
+     * @return Returns a (hopefully) valid filename
+     */
+    protected String getNewFolderPath(String pattern, ILocalAudioObject song, IOSManager osManager) {
+        String result = AbstractPattern.applyPatternTransformations(pattern, song);
+        // We need to place \\ before escape sequences otherwise the ripper hangs. We can not do this later.
+        result = result.replace("\\", "\\\\").replace("$", "\\$");
+        result = FileNameUtils.getValidFolderName(result, false, osManager);
+        return result;
+    }
+
+
 }
