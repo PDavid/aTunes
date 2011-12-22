@@ -1003,7 +1003,11 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         } else {
             // Store original play list without filter
             if (nonFilteredPlayList == null) {
-                nonFilteredPlayList = getCurrentPlayList(true).clone();
+                try {
+					nonFilteredPlayList = getCurrentPlayList(true).clone();
+				} catch (CloneNotSupportedException e) {
+					Logger.error(e);
+				}
             }
 
             // Create a new play list by filtering elements

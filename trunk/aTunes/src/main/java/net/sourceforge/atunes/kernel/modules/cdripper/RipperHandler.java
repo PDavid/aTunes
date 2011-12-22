@@ -56,9 +56,11 @@ import org.apache.sanselan.ImageWriteException;
 
 public final class RipperHandler extends AbstractHandler implements IRipperHandler {
 
-    private static final String[] FILENAMEPATTERN = { StringUtils.getString(CdRipper.TRACK_NUMBER, " - ", CdRipper.TITLE_PATTERN),
-            StringUtils.getString(CdRipper.ARTIST_PATTERN, " - ", CdRipper.ALBUM_PATTERN, " - ", CdRipper.TRACK_NUMBER, " - ", CdRipper.TITLE_PATTERN),
-            StringUtils.getString(CdRipper.ARTIST_PATTERN, " - ", CdRipper.TITLE_PATTERN) };
+    private static final String SEPARATOR = " - ";
+
+	private static final String[] FILENAMEPATTERN = { StringUtils.getString(CdRipper.TRACK_NUMBER, SEPARATOR, CdRipper.TITLE_PATTERN),
+            StringUtils.getString(CdRipper.ARTIST_PATTERN, SEPARATOR, CdRipper.ALBUM_PATTERN, SEPARATOR, CdRipper.TRACK_NUMBER, SEPARATOR, CdRipper.TITLE_PATTERN),
+            StringUtils.getString(CdRipper.ARTIST_PATTERN, SEPARATOR, CdRipper.TITLE_PATTERN) };
 
     private CdRipper ripper;
     private volatile boolean interrupted;
@@ -341,7 +343,7 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
 
         new SwingWorker<Boolean, Void>() {
             @Override
-            protected Boolean doInBackground() throws Exception {
+            protected Boolean doInBackground() {
                 return ripper.ripTracks(tracks, trckNames, folderFile, artistNames, composerNames, useParanoia);
             }
 
@@ -382,10 +384,8 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
                     } catch (InterruptedException e) {
                         Logger.error(e);
                     }
-                    if (folderCreated) {
-                        if (!folder.delete()) {
-                        	Logger.error(StringUtils.getString(folder, " not deleted"));
-                        }
+                    if (folderCreated && !folder.delete()) {
+                        Logger.error(StringUtils.getString(folder, " not deleted"));
                     }
                 }
             };

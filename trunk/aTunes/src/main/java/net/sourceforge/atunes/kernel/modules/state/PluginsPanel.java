@@ -46,12 +46,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileFilter;
-import javax.swing.table.DefaultTableColumnModel;
-import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.gui.views.dialogs.PluginEditorDialog;
 import net.sourceforge.atunes.model.IDesktop;
@@ -61,7 +58,6 @@ import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -73,6 +69,12 @@ import org.commonjukebox.plugins.model.PluginInfo;
 
 public final class PluginsPanel extends AbstractPreferencesPanel {
 
+	private static final String HTML = "</html>";
+
+	private static final String B = ":</b> ";
+
+	private static final String HTML_B = "<html><b>";
+
 	private static final long serialVersionUID = 8611795969151425262L;
 
 	private JCheckBox enabledPluginBox;
@@ -83,7 +85,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 
 	private JButton uninstallPluginButton;
 
-	private static final int CELL_HEIGHT = 30;
+	static final int CELL_HEIGHT = 30;
 
 	/**
 	 * Plugins modified with their modified configuration
@@ -200,11 +202,11 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 				// Enable preferences button if plugin has any configuration and update detail panel
 				if (pluginsTable.getSelectedRow() != -1) {
 					PluginInfo plugin = ((PluginsTableModel) pluginsTable.getModel()).getPluginAt(pluginsTable.getSelectedRow());
-					pluginNameLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("NAME"), ":</b> ", plugin.getName(), "</html>"));
-					pluginVersionLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("VERSION"), ":</b> ", plugin.getVersion(), "</html>"));
-					pluginClassNameLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("CLASS_NAME"), ":</b> ", plugin.getClassName(), "</html>"));
-					pluginLocationLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("LOCATION"), ":</b> ", plugin.getPluginFolder().getName(), "</html>"));
-					pluginAuthorLabel.setText(StringUtils.getString("<html><b>", I18nUtils.getString("AUTHOR"), ":</b> ", plugin.getAuthor(), "</html>"));
+					pluginNameLabel.setText(StringUtils.getString(HTML_B, I18nUtils.getString("NAME"), B, plugin.getName(), HTML));
+					pluginVersionLabel.setText(StringUtils.getString(HTML_B, I18nUtils.getString("VERSION"), B, plugin.getVersion(), HTML));
+					pluginClassNameLabel.setText(StringUtils.getString(HTML_B, I18nUtils.getString("CLASS_NAME"), B, plugin.getClassName(), HTML));
+					pluginLocationLabel.setText(StringUtils.getString(HTML_B, I18nUtils.getString("LOCATION"), B, plugin.getPluginFolder().getName(), HTML));
+					pluginAuthorLabel.setText(StringUtils.getString(HTML_B, I18nUtils.getString("AUTHOR"), B, plugin.getAuthor(), HTML));
 					pluginUrlLabel.setText(plugin.getUrl(), plugin.getUrl());
 					pluginPreferencesButton.setEnabled(((PluginsTableModel) pluginsTable.getModel()).getPluginConfigurationAt(pluginsTable.getSelectedRow()) != null);
 					uninstallPluginButton.setEnabled(pluginsTable.getSelectedRow() != -1);
@@ -230,9 +232,9 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 				int row = pluginsTable.getSelectedRow();
 				PluginInfo plugin = ((PluginsTableModel) pluginsTable.getModel()).getPluginAt(row);
 				PluginConfiguration configuration = ((PluginsTableModel) pluginsTable.getModel()).getPluginConfigurationAt(row);
-				PluginEditorDialog dialog = new PluginEditorDialog(PluginsPanel.this.dialog, plugin, configuration, lookAndFeel);
-				dialog.setVisible(true);
-				configuration = dialog.getConfiguration();
+				PluginEditorDialog editorDialog = new PluginEditorDialog(PluginsPanel.this.dialog, plugin, configuration, lookAndFeel);
+				editorDialog.setVisible(true);
+				configuration = editorDialog.getConfiguration();
 				if (configuration != null) {
 					// Validate plugin configuration
 					try {
@@ -268,7 +270,6 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 							Context.getBean(IErrorDialogFactory.class).getDialog().showExceptionDialog(I18nUtils.getString("PLUGIN_UNINSTALLATION_ERROR"), pluginFolderEntry.getValue());
 						}
 					}
-
 					// Update panel after uninstalling a plugin
 					updatePanel(null);
 				} catch (Exception e1) {
@@ -288,39 +289,48 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		}
 
 		if (state.isPluginsEnabled()) {
-			try {
-				// if any plugin has been modified then write configuration
-				for (PluginInfo plugin : pluginsModified.keySet()) {
-					Logger.debug("Writting configuration of plugin: ", plugin.getName());
+			restartNeeded = writePluginsConfiguration(restartNeeded);
+		}
+		return restartNeeded;
+	}
 
-					// Avoid plugins throw exceptions when setting configuration
-					try {
-						pluginsHandler.setConfiguration(plugin, pluginsModified.get(plugin));
-					} catch (PluginSystemException t) {
-						StringBuilder sb = new StringBuilder();
-						sb.append(I18nUtils.getString("PLUGIN_CONFIGURATION_ERROR"));
-						sb.append(" ");
-						sb.append(plugin.getName());
-						Context.getBean(IErrorDialogFactory.class).getDialog().showExceptionDialog(sb.toString(), t);
-					}
+	/**
+	 * @param restartNeeded
+	 * @return
+	 */
+	private boolean writePluginsConfiguration(boolean restartNeeded) {
+		try {
+			// if any plugin has been modified then write configuration
+			for (PluginInfo plugin : pluginsModified.keySet()) {
+				Logger.debug("Writting configuration of plugin: ", plugin.getName());
 
-					restartNeeded = restartNeeded || pluginsHandler.pluginNeedsRestart(plugin);
+				// Avoid plugins throw exceptions when setting configuration
+				try {
+					pluginsHandler.setConfiguration(plugin, pluginsModified.get(plugin));
+				} catch (PluginSystemException t) {
+					StringBuilder sb = new StringBuilder();
+					sb.append(I18nUtils.getString("PLUGIN_CONFIGURATION_ERROR"));
+					sb.append(" ");
+					sb.append(plugin.getName());
+					Context.getBean(IErrorDialogFactory.class).getDialog().showExceptionDialog(sb.toString(), t);
 				}
-				// If any plugin has been activated or deactivated then apply changes
-				for (PluginInfo plugin : pluginsActivation.keySet()) {
-					if (pluginsActivation.get(plugin)) {
-						pluginsHandler.activatePlugin(plugin);
-					} else {
-						pluginsHandler.deactivatePlugin(plugin);
-					}
 
-					restartNeeded = restartNeeded || pluginsHandler.pluginNeedsRestart(plugin);
+				restartNeeded = restartNeeded || pluginsHandler.pluginNeedsRestart(plugin);
+			}
+			// If any plugin has been activated or deactivated then apply changes
+			for (PluginInfo plugin : pluginsActivation.keySet()) {
+				if (pluginsActivation.get(plugin)) {
+					pluginsHandler.activatePlugin(plugin);
+				} else {
+					pluginsHandler.deactivatePlugin(plugin);
 				}
-			} catch (PluginSystemException e) {
-				Logger.error(e);
-				if (e.getCause() != null) {
-					Logger.error(e.getCause());
-				}
+
+				restartNeeded = restartNeeded || pluginsHandler.pluginNeedsRestart(plugin);
+			}
+		} catch (PluginSystemException e) {
+			Logger.error(e);
+			if (e.getCause() != null) {
+				Logger.error(e.getCause());
 			}
 		}
 		return restartNeeded;
@@ -362,10 +372,8 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 			pluginsModified = new HashMap<PluginInfo, PluginConfiguration>();
 			pluginsActivation = new HashMap<PluginInfo, Boolean>();
 			// Select first plugin
-			if (state.isPluginsEnabled()) {
-				if (!pluginsHandler.getAvailablePlugins().isEmpty()) {
-					pluginsTable.getSelectionModel().setSelectionInterval(0, 0);
-				}
+			if (state.isPluginsEnabled() && !pluginsHandler.getAvailablePlugins().isEmpty()) {
+				pluginsTable.getSelectionModel().setSelectionInterval(0, 0);
 			}
 		}
 	}
@@ -402,36 +410,6 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 				} catch (Exception e1) {
 					Context.getBean(IErrorDialogFactory.class).getDialog().showExceptionDialog(I18nUtils.getString("PLUGIN_INSTALLATION_ERROR"), e1);
 				}
-			}
-		}
-	}
-
-	private static class PluginsTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, PluginInfo> {
-		public PluginsTableCellRendererCode(ILookAndFeel lookAndFeel) {
-			super(lookAndFeel);
-		}
-
-		@Override
-		public JLabel getComponent(JLabel c, JTable table, PluginInfo value, boolean isSelected, boolean hasFocus, int row, int column) {
-			c.setText(value.getName());
-			if (value.getIcon() != null) {
-				c.setIcon(ImageUtils.scaleImageBicubic(value.getIcon(), CELL_HEIGHT - 5, CELL_HEIGHT - 5));
-			} else {
-				c.setIcon(null);
-			}
-			return c;
-		}
-	}
-
-	private static class PluginsTableDefaultTableColumnModel extends DefaultTableColumnModel {
-		private static final long serialVersionUID = -4128210690358582389L;
-
-		@Override
-		public void addColumn(TableColumn column) {
-			super.addColumn(column);
-			if (column.getHeaderValue().equals(I18nUtils.getString("ACTIVE"))) {
-				column.setMinWidth(80);
-				column.setMaxWidth(100);
 			}
 		}
 	}

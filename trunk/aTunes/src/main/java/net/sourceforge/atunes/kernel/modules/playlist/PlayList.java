@@ -40,7 +40,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  * @author fleax
  */
-public class PlayList implements IPlayList {
+public class PlayList implements IPlayList, Cloneable {
 
     private static final long serialVersionUID = 2756513776762920794L;
 
@@ -111,7 +111,7 @@ public class PlayList implements IPlayList {
      * 
      * @param audioObject
      */
-    protected void add(IAudioObject audioObject) {
+    protected final void add(IAudioObject audioObject) {
         List<IAudioObject> audioObjectsAdded = new ArrayList<IAudioObject>();
         audioObjectsAdded.add(audioObject);
         this.add(audioObjectsAdded);
@@ -133,7 +133,7 @@ public class PlayList implements IPlayList {
      * @param index
      * @param list
      */
-    protected void add(int index, IAudioObject audioObject) {
+    protected final void add(int index, IAudioObject audioObject) {
         List<IAudioObject> audioObjectsAdded = new ArrayList<IAudioObject>();
         audioObjectsAdded.add(audioObject);
         add(index, audioObjectsAdded);
@@ -145,7 +145,7 @@ public class PlayList implements IPlayList {
      * @param index
      * @param audioObjectsList
      */
-    protected void add(int index, List<? extends IAudioObject> audioObjectsList) {
+    protected final void add(int index, List<? extends IAudioObject> audioObjectsList) {
         this.audioObjects.addAll(index, audioObjectsList);
         notifyAudioObjectsAdded(index, audioObjectsList);
     }
@@ -369,7 +369,7 @@ public class PlayList implements IPlayList {
     }
 
     @Override
-    protected PlayList clone() {
+    protected PlayList clone() throws CloneNotSupportedException {
         return new PlayList(this, state);
     }
 
