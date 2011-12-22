@@ -73,6 +73,7 @@ import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITable;
+import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.IWebServicesHandler;
@@ -173,6 +174,8 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
     
     private IAudioObjectImageLocator audioObjectImageLocator;
     
+    private ITagHandler tagHandler;
+    
     /**
      * Instantiates a new navigation controller.
      * @param treePanel
@@ -184,8 +187,9 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
      * @param repositoryHandler
      * @param filterHandler
      * @param audioObjectImageLocator
+     * @param tagHandler
      */
-    NavigationController(INavigationTreePanel treePanel, ITable navigationTable, IState state, INavigationHandler navigationHandler, ITaskService taskService, ILookAndFeelManager lookAndFeelManager, IRepositoryHandler repositoryHandler, IFilterHandler filterHandler, IAudioObjectImageLocator audioObjectImageLocator) {
+    NavigationController(INavigationTreePanel treePanel, ITable navigationTable, IState state, INavigationHandler navigationHandler, ITaskService taskService, ILookAndFeelManager lookAndFeelManager, IRepositoryHandler repositoryHandler, IFilterHandler filterHandler, IAudioObjectImageLocator audioObjectImageLocator, ITagHandler tagHandler) {
         this.navigationTreePanel = treePanel;
         this.navigationTable = navigationTable;
         this.state = state;
@@ -194,6 +198,7 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
         this.lookAndFeelManager = lookAndFeelManager;
         this.filterHandler = filterHandler;
         this.audioObjectImageLocator = audioObjectImageLocator;
+        this.tagHandler = tagHandler;
         addBindings();
         repositoryHandler.addAudioFilesRemovedListener(this);
         this.navigatorColumnSet = (IColumnSet) Context.getBean("navigatorColumnSet");
@@ -207,7 +212,7 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
     public void addBindings() {
         NavigationTableModel model = new NavigationTableModel();
         navigationTable.setModel(model);
-        columnModel = new NavigationTableColumnModel(navigationTable, state, navigationHandler, taskService, lookAndFeelManager.getCurrentLookAndFeel());
+        columnModel = new NavigationTableColumnModel(navigationTable, state, navigationHandler, taskService, lookAndFeelManager.getCurrentLookAndFeel(), tagHandler);
         navigationTable.setColumnModel(columnModel);
         ColumnRenderers.addRenderers(navigationTable.getSwingComponent(), columnModel, lookAndFeelManager.getCurrentLookAndFeel());
 

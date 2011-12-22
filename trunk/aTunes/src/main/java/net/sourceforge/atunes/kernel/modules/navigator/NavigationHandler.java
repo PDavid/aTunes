@@ -46,6 +46,7 @@ import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITable;
+import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -246,7 +247,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
      */
     private NavigationController getNavigationController() {
         if (navigationController == null) {
-            navigationController = new NavigationController(getBean(INavigationTreePanel.class), (ITable)getBean("navigationTable"), getState(), this, getBean(ITaskService.class), getBean(ILookAndFeelManager.class), getBean(IRepositoryHandler.class), getBean(IFilterHandler.class), audioObjectImageLocator);
+            navigationController = new NavigationController(getBean(INavigationTreePanel.class), (ITable)getBean("navigationTable"), getState(), this, getBean(ITaskService.class), getBean(ILookAndFeelManager.class), getBean(IRepositoryHandler.class), getBean(IFilterHandler.class), audioObjectImageLocator, getBean(ITagHandler.class));
         }
         return navigationController;
     }

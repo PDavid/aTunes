@@ -30,6 +30,7 @@ import net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.EditTagSources;
 import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -39,6 +40,7 @@ import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.ITagHandler;
+import net.sourceforge.atunes.model.ITreeObject;
 
 public class TagHandler extends AbstractHandler implements ITagHandler {
 
@@ -180,5 +182,15 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 	@Override
 	public ITag getNewTag(ILocalAudioObject file, Map<String, Object> tagInformation) {
 		return new TagFactory().getNewTag(file, tagInformation);
+	}
+	
+	@Override
+	public boolean hasIncompleteTags(IAudioObject audioObject) {
+		return IncompleteTagsChecker.hasIncompleteTags(audioObject, getState().getHighlightIncompleteTagFoldersAttributes());
+	}
+	
+	@Override
+	public boolean hasIncompleteTags(ITreeObject<? extends IAudioObject> treeObject) {
+		return IncompleteTagsChecker.hasIncompleteTags(treeObject, getState().getHighlightIncompleteTagFoldersAttributes());
 	}
 }

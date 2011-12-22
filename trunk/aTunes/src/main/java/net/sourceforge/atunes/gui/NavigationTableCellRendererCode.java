@@ -27,12 +27,12 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.UIManager;
 
-import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITableCellRendererCode;
+import net.sourceforge.atunes.model.ITagHandler;
 
 class NavigationTableCellRendererCode extends AbstractTableCellRendererCode<JComponent, Object> {
 
@@ -44,11 +44,14 @@ class NavigationTableCellRendererCode extends AbstractTableCellRendererCode<JCom
     
     private boolean isSubstance;
     
-    public NavigationTableCellRendererCode(ITableCellRendererCode<?, ?> renderer, IState state, ILookAndFeel lookAndFeel, INavigationHandler navigationHandler) {
+    private ITagHandler tagHandler;
+    
+    public NavigationTableCellRendererCode(ITableCellRendererCode<?, ?> renderer, IState state, ILookAndFeel lookAndFeel, INavigationHandler navigationHandler, ITagHandler tagHandler) {
     	super(lookAndFeel);
         this.renderer = renderer;
         this.state = state;
         this.navigationHandler = navigationHandler;
+        this.tagHandler = tagHandler;
         this.isSubstance = lookAndFeel.getName().equalsIgnoreCase("Substance");
     }
 
@@ -59,7 +62,7 @@ class NavigationTableCellRendererCode extends AbstractTableCellRendererCode<JCom
         // Check incomplete tags if necessary
         if (state.isHighlightIncompleteTagElements()) {
             IAudioObject audioObject = navigationHandler.getAudioObjectInNavigationTable(row);
-            if (IncompleteTagsChecker.hasIncompleteTags(audioObject, state.getHighlightIncompleteTagFoldersAttributes())) {
+            if (tagHandler.hasIncompleteTags(audioObject)) {
                 ((JLabel) c).setForeground(Color.red);
             } else {
             	// Only Substance doesn't need this workaround
