@@ -210,13 +210,11 @@ public final class AudioFilePictureUtils {
      * @param file
      *            the file
      * 
-     * @throws FileNotFoundException
-     *             the file not found exception
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      * @throws ImageWriteException 
      */
-    private static void savePictureToFile(ILocalAudioObject song, File file) throws FileNotFoundException, IOException, ImageWriteException {
+    private static void savePictureToFile(ILocalAudioObject song, File file) throws IOException, ImageWriteException {
         ImageIcon image = getInsidePicture(song, -1, -1);
         ImageUtils.writeImageToFile(image.getImage(), file.getAbsolutePath());
     }

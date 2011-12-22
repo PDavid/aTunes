@@ -41,7 +41,7 @@ class PluginsLoggerHandler extends java.util.logging.Handler {
     }
 
     @Override
-    public void close() throws SecurityException {
+    public void close() {
     }
 
 }

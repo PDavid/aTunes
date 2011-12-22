@@ -27,7 +27,6 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlaybackStateListener;
 import net.sourceforge.atunes.model.PlaybackState;
 
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
@@ -45,7 +44,7 @@ public class PlaybackStateListeners implements ApplicationContextAware {
 	}
 	
 	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+	public void setApplicationContext(ApplicationContext applicationContext) {
 		// Clone listeners as list can be modified when adding plugins
 		listeners = new ArrayList<IPlaybackStateListener>(applicationContext.getBeansOfType(IPlaybackStateListener.class).values());
 	}

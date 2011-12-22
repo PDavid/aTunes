@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.player.mplayer;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -136,10 +135,9 @@ public class MPlayerProcessBuilder {
 	 * @param isRemoteAudio
 	 * @param url
 	 * @return
-	 * @throws UnknownHostException
 	 * @throws IOException
 	 */
-	private List<String> prepareCommand(IAudioObject audioObject, boolean isRemoteAudio, String url) throws UnknownHostException, IOException {
+	private List<String> prepareCommand(IAudioObject audioObject, boolean isRemoteAudio, String url) throws IOException {
 		List<String> command = new ArrayList<String>();
 		prepareBasicCommand(audioObject, command, isRemoteAudio);
 
@@ -197,9 +195,8 @@ public class MPlayerProcessBuilder {
 	 * @param command
 	 * @param isRemoteAudio
 	 * @throws IOException 
-	 * @throws UnknownHostException 
 	 */
-	private void prepareBasicCommand(IAudioObject audioObject, List<String> command, boolean isRemoteAudio) throws UnknownHostException, IOException {
+	private void prepareBasicCommand(IAudioObject audioObject, List<String> command, boolean isRemoteAudio) throws IOException {
 		command.add(osManager.getPlayerEngineCommand(engine));
         command.addAll(osManager.getPlayerEngineParameters(engine));
         command.add(MPlayerConstants.QUIET);

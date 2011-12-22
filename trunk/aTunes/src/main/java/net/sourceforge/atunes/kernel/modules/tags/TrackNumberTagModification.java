@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.tags;
 
 import org.jaudiotagger.tag.FieldDataInvalidException;
 import org.jaudiotagger.tag.FieldKey;
-import org.jaudiotagger.tag.KeyNotFoundException;
 import org.jaudiotagger.tag.Tag;
 
 final class TrackNumberTagModification implements ITagModification {
@@ -33,7 +32,7 @@ final class TrackNumberTagModification implements ITagModification {
 	}
 
 	@Override
-	public void modify(Tag tag) throws KeyNotFoundException, FieldDataInvalidException {
+	public void modify(Tag tag) throws FieldDataInvalidException {
 		tag.setField(FieldKey.TRACK, track.toString());
 	}
 }

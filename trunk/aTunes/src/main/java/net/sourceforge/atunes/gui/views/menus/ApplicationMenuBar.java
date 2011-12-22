@@ -26,7 +26,6 @@ import javax.swing.JMenuBar;
 import net.sourceforge.atunes.model.IMenuBar;
 import net.sourceforge.atunes.model.IPlayListTable;
 
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
@@ -51,11 +50,8 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar, Appl
     
     private ApplicationContext context;
     
-    /* (non-Javadoc)
-     * @see org.springframework.context.ApplicationContextAware#setApplicationContext(org.springframework.context.ApplicationContext)
-     */
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    public void setApplicationContext(ApplicationContext applicationContext) {
     	this.context = applicationContext;
     }
     

@@ -24,7 +24,6 @@ import java.util.Collection;
 
 import net.sourceforge.atunes.model.IFavoritesListener;
 
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
@@ -38,7 +37,7 @@ public class FavoritesListeners implements ApplicationContextAware {
 	private Collection<IFavoritesListener> listeners;
 	
 	@Override
-	public void setApplicationContext(ApplicationContext ctx) throws BeansException {
+	public void setApplicationContext(ApplicationContext ctx) {
 		listeners = ctx.getBeansOfType(IFavoritesListener.class).values();
 	}
 	

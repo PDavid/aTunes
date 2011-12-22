@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.model;
 
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
@@ -34,7 +33,7 @@ public class ConfirmationDialogFactory implements IConfirmationDialogFactory, Ap
 	}
 
 	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+	public void setApplicationContext(ApplicationContext applicationContext) {
 		this.context = applicationContext;
 	}
 

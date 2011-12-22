@@ -73,7 +73,7 @@ public final class FadingPopupFactory extends PopupFactory {
      * java.awt.Component, int, int)
      */
     @Override
-    public Popup getPopup(Component owner, Component contents, int x, int y) throws IllegalArgumentException {
+    public Popup getPopup(Component owner, Component contents, int x, int y) {
         if (contents instanceof JToolTip) {
             return new FadingPopup(owner, contents, x, y, osManager.areShadowBordersForToolTipsSupported(), lookAndFeel);
         }
