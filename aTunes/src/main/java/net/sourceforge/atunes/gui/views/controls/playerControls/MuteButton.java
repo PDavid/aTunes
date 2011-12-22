@@ -22,9 +22,9 @@ package net.sourceforge.atunes.gui.views.controls.playerControls;
 
 import java.awt.Dimension;
 
+import javax.swing.Action;
 import javax.swing.JToggleButton;
 
-import net.sourceforge.atunes.kernel.actions.MuteAction;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IState;
@@ -43,11 +43,9 @@ public final class MuteButton extends JToggleButton implements ILookAndFeelChang
      * Instantiates a new mute button.
      * 
      * @param size
-     * @param state
-     * @param lookAndFeelManager
      * @param muteAction
      */
-    public MuteButton(Dimension size, MuteAction muteAction) {
+    public MuteButton(Dimension size, Action muteAction) {
         super(muteAction);
 
         // Force size
