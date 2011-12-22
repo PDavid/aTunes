@@ -47,9 +47,6 @@ public final class StatsDialog extends AbstractCustomDialog {
 
     private static final long serialVersionUID = -7822497871738495670L;
 
-    /** The tabbed pane. */
-    private JTabbedPane tabbedPane;
-
     /** The general table. */
     private JTable generalTable;
 
@@ -217,7 +214,7 @@ public final class StatsDialog extends AbstractCustomDialog {
         c.weighty = 0;
         artistPanel.add(artistsChart, c);
 
-        tabbedPane = new JTabbedPane();
+        JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.addTab(I18nUtils.getString("GENERAL"), generalPanel);
         tabbedPane.addTab(I18nUtils.getString("SONG"), songPanel);
         tabbedPane.addTab(I18nUtils.getString("ALBUM"), albumPanel);

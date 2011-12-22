@@ -235,12 +235,6 @@ public final class FileSelectionDialog extends AbstractCustomDialog implements I
     /** The selection. */
     private JLabel selection;
 
-    /** The ok button. */
-    private JButton okButton;
-
-    /** The cancel button. */
-    private JButton cancelButton;
-
     /** The dir only. */
     boolean directoryOnly;
 
@@ -290,9 +284,9 @@ public final class FileSelectionDialog extends AbstractCustomDialog implements I
 
         selection = new JLabel();
 
-        okButton = new JButton(I18nUtils.getString("OK"));
+        JButton okButton = new JButton(I18nUtils.getString("OK"));
         okButton.addActionListener(new OkButtonActionListener());
-        cancelButton = new JButton(I18nUtils.getString("CANCEL"));
+        JButton cancelButton = new JButton(I18nUtils.getString("CANCEL"));
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

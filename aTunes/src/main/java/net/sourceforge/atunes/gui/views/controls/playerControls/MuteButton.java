@@ -35,8 +35,6 @@ public final class MuteButton extends JToggleButton implements ILookAndFeelChang
 
     private IState state;
     
-    private ILookAndFeelManager lookAndFeelManager;
-    
     private VolumeIconCalculator volumeIconCalculator;
     
     /**
@@ -59,9 +57,8 @@ public final class MuteButton extends JToggleButton implements ILookAndFeelChang
      * @param lookAndFeelManager
      */
     public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
-		this.lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(this);
-		this.lookAndFeelManager.addLookAndFeelChangeListener(this);
+		lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(this);
+		lookAndFeelManager.addLookAndFeelChangeListener(this);
 	}
     
     /**

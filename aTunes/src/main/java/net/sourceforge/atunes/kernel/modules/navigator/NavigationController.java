@@ -147,9 +147,6 @@ public final class NavigationController implements IAudioFilesRemovedListener, I
     /** The popupmenu caller. */
     private JComponent popupMenuCaller;
 
-    /** The column model */
-    private AbstractCommonColumnModel columnModel;
-
     private ColumnSetPopupMenu columnSetPopupMenu;
 
     /** The timer. */
@@ -271,7 +268,7 @@ public final class NavigationController implements IAudioFilesRemovedListener, I
     public void addBindings() {
         NavigationTableModel model = new NavigationTableModel();
         navigationTable.setModel(model);
-        columnModel = new NavigationTableColumnModel(navigationTable, state, navigationHandler, taskService, lookAndFeelManager.getCurrentLookAndFeel(), tagHandler);
+        AbstractCommonColumnModel columnModel = new NavigationTableColumnModel(navigationTable, state, navigationHandler, taskService, lookAndFeelManager.getCurrentLookAndFeel(), tagHandler);
         navigationTable.setColumnModel(columnModel);
         ColumnRenderers.addRenderers(navigationTable.getSwingComponent(), columnModel, lookAndFeelManager.getCurrentLookAndFeel());
 

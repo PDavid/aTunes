@@ -66,8 +66,6 @@ public final class FontChooserDialog extends AbstractCustomDialog {
     private JCheckBox useFontSmoothingCheckbox;
     private JCheckBox useFontSmoothingSettingsFromOsCheckbox;
     private JLabel fontPreviewLabel;
-    private JButton okButton;
-    private JButton cancelButton;
 
     private Locale locale;
 
@@ -151,7 +149,7 @@ public final class FontChooserDialog extends AbstractCustomDialog {
             }
         });
         useFontSmoothingSettingsFromOsCheckbox.setSelected(fontSettings.isUseFontSmoothingSettingsFromOs());
-        okButton = new JButton();
+        JButton okButton = new JButton();
         okButton.addActionListener(new ActionListener() {
 
             @Override
@@ -160,7 +158,7 @@ public final class FontChooserDialog extends AbstractCustomDialog {
             }
         });
         okButton.setText(I18nUtils.getString("OK"));
-        cancelButton = new JButton();
+        JButton cancelButton = new JButton();
         cancelButton.addActionListener(new ActionListener() {
 
             @Override

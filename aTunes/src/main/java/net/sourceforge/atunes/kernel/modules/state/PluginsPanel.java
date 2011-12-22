@@ -75,8 +75,6 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 
 	private static final long serialVersionUID = 8611795969151425262L;
 
-	private JPanel mainPanel;
-
 	private JCheckBox enabledPluginBox;
 
 	private JTable pluginsTable;
@@ -133,7 +131,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 
 		add(enabledPluginBox,c);
 
-		mainPanel = new JPanel(new GridBagLayout());
+		JPanel mainPanel = new JPanel(new GridBagLayout());
 		mainPanel.setVisible(state.isPluginsEnabled());
 		c = new GridBagConstraints();
 		c.gridx = 0;

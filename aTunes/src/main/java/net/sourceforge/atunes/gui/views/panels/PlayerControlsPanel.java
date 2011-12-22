@@ -72,15 +72,11 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
     
     private SecondaryControl equalizerButton;
     private SecondaryToggleControl normalizeButton;
-    private PreviousButton previousButton;
     private PlayPauseButton playButton;
-    private StopButton stopButton;
-    private NextButton nextButton;
     private MuteButton volumeButton;
     private VolumeSlider volumeSlider;
     private IProgressSlider progressSlider;
     private JPanel secondaryControls;
-    private IFilterPanel filterPanel;
 
     private IState state;
     
@@ -118,7 +114,7 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
 
     	JPanel mainControls = getMainControlsPanel();
         JPanel secondaryControls = getSecondaryControls();
-        filterPanel = Context.getBean(IFilterPanel.class);
+        IFilterPanel filterPanel = Context.getBean(IFilterPanel.class);
         
         GridBagConstraints c = new GridBagConstraints();
         
@@ -194,10 +190,10 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
     }
 
     private JPanel getMainControlsPanel() {
-        previousButton = new PreviousButton(PlayerControlsSize.PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
+        PreviousButton previousButton = new PreviousButton(PlayerControlsSize.PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
         playButton = new PlayPauseButton(PlayerControlsSize.PLAY_BUTTON_SIZE, lookAndFeelManager);
-        stopButton = new StopButton(PlayerControlsSize.STOP_MUTE_BUTTONS_SIZE, lookAndFeelManager);
-        nextButton = new NextButton(PlayerControlsSize.PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
+        StopButton stopButton = new StopButton(PlayerControlsSize.STOP_MUTE_BUTTONS_SIZE, lookAndFeelManager);
+        NextButton nextButton = new NextButton(PlayerControlsSize.PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
         volumeButton = Context.getBean("volumeButton", MuteButton.class);
         volumeButton.setText("");
         volumeSlider = Context.getBean("volumeSlider", VolumeSlider.class);

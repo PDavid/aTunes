@@ -48,15 +48,6 @@ public final class IndeterminateProgressDialog extends AbstractCustomDialog impl
 
     private static final long serialVersionUID = -3071934230042256578L;
 
-    /** The picture label. */
-    private JLabel pictureLabel;
-
-    /** The label. */
-    private JLabel label;
-
-    /** The progress bar. */
-    private JProgressBar progressBar;
-
     /**
      * Instantiates a new indeterminate progress dialog.
      * 
@@ -89,11 +80,11 @@ public final class IndeterminateProgressDialog extends AbstractCustomDialog impl
      */
     private JPanel getContent() {
         JPanel panel = new JPanel(new GridBagLayout());
-        pictureLabel = new JLabel(Images.getImage(Images.APP_LOGO_90));
-        label = new JLabel(StringUtils.getString(I18nUtils.getString("PLEASE_WAIT"), "..."));
+        JLabel pictureLabel = new JLabel(Images.getImage(Images.APP_LOGO_90));
+        JLabel label = new JLabel(StringUtils.getString(I18nUtils.getString("PLEASE_WAIT"), "..."));
         Font f = label.getFont().deriveFont(Font.PLAIN);
         label.setFont(f);
-        progressBar = new JProgressBar();
+        JProgressBar progressBar = new JProgressBar();
         progressBar.setBorder(BorderFactory.createEmptyBorder());
         progressBar.setIndeterminate(true);
 

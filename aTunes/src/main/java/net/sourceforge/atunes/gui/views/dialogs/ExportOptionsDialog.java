@@ -60,14 +60,8 @@ public final class ExportOptionsDialog extends AbstractCustomDialog implements I
     /** RadioButton to export current navigator selection */
     private JRadioButton currentNavigatorSelectionRadioButton;
 
-    /** RadioButton to export current play list selection */
-    private JRadioButton currentPlayListSelectionRadioButton;
-
     /** The export location. */
     private CustomJFileChooser exportLocationFileChooser;
-
-    /** The export button. */
-    private JButton exportButton;
 
     /**
      * Setted to true when cancelled
@@ -116,7 +110,7 @@ public final class ExportOptionsDialog extends AbstractCustomDialog implements I
         // Export Type
         JPanel exportTypePanel = new JPanel(new GridLayout(2, 1));
         currentNavigatorSelectionRadioButton = new JRadioButton(I18nUtils.getString("CURRENT_NAVIGATOR_SELECTION"));
-        currentPlayListSelectionRadioButton = new JRadioButton(I18nUtils.getString("CURRENT_PLAYLIST_SELECTION"));
+        JRadioButton currentPlayListSelectionRadioButton = new JRadioButton(I18nUtils.getString("CURRENT_PLAYLIST_SELECTION"));
         ButtonGroup group = new ButtonGroup();
         group.add(currentNavigatorSelectionRadioButton);
         group.add(currentPlayListSelectionRadioButton);
@@ -134,7 +128,7 @@ public final class ExportOptionsDialog extends AbstractCustomDialog implements I
         // Buttons
         JPanel buttons = new JPanel(new GridLayout(1, 2, 5, 0));
         buttons.setOpaque(false);
-        exportButton = new JButton(I18nUtils.getString("EXPORT"));
+        JButton exportButton = new JButton(I18nUtils.getString("EXPORT"));
         exportButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

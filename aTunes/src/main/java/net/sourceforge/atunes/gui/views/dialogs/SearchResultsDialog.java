@@ -27,7 +27,6 @@ import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.gui.GuiUtils;
@@ -42,9 +41,6 @@ import net.sourceforge.atunes.utils.I18nUtils;
 public final class SearchResultsDialog extends AbstractCustomDialog {
 
     private static final long serialVersionUID = 7219089044964361102L;
-
-    /** Scroll pane for table. */
-    private JScrollPane tableScrollPane;
 
     /** Table to show search results. */
     private JTable searchResultsTable;
@@ -83,7 +79,6 @@ public final class SearchResultsDialog extends AbstractCustomDialog {
         // Disable autoresize, as we will control it
         searchResultsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        tableScrollPane = iLookAndFeel.getTableScrollPane(searchResultsTable);
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
@@ -91,7 +86,7 @@ public final class SearchResultsDialog extends AbstractCustomDialog {
         c.weightx = 1;
         c.weighty = 1;
         c.fill = GridBagConstraints.BOTH;
-        panel.add(tableScrollPane, c);
+        panel.add(iLookAndFeel.getTableScrollPane(searchResultsTable), c);
 
         c.weighty = 0;
         c.fill = GridBagConstraints.HORIZONTAL;
