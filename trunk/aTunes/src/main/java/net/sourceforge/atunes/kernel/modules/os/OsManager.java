@@ -27,7 +27,6 @@ import java.util.Map;
 import java.util.Properties;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -250,14 +249,6 @@ public class OsManager implements IOSManager {
 	@Override
 	public void setFullScreen(Window window, boolean fullscreen, IFrame frame) {
 		adapter.setFullScreen(window, fullscreen, frame);
-	}
-
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.IOSManager#getHotkeysListener()
-	 */
-	@Override
-	public Class<? extends AbstractHotkeys> getHotkeysListener() {
-		return adapter.getHotkeysListener();
 	}
 
 	/* (non-Javadoc)

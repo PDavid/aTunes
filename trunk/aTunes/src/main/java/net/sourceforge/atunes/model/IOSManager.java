@@ -25,8 +25,6 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
-
 /**
  * Holds information about specific Operating System data
  * @author alex
@@ -120,12 +118,6 @@ public interface IOSManager {
 	 * @param frame
 	 */
 	public void setFullScreen(Window window, boolean fullscreen, IFrame frame);
-
-	/**
-	 * Returns OS hotkey listener
-	 * @return
-	 */
-	public Class<? extends AbstractHotkeys> getHotkeysListener();
 
 	/**
 	 * Returns line terminator for current OS

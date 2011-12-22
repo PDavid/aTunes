@@ -22,8 +22,6 @@ package net.sourceforge.atunes.kernel.modules.os;
 
 import java.io.File;
 
-import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
-import net.sourceforge.atunes.kernel.modules.hotkeys.X11Hotkeys;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
@@ -69,11 +67,6 @@ public class LinuxOperatingSystem extends OperatingSystemAdapter {
 	}
 	
 	@Override
-	public Class<? extends AbstractHotkeys> getHotkeysListener() {
-		return X11Hotkeys.class;
-	}
-
-	@Override
 	public boolean isPlayerEngineSupported(IPlayerEngine engine) {
 		return true; // all supported
 	}
@@ -106,6 +99,4 @@ public class LinuxOperatingSystem extends OperatingSystemAdapter {
 	public boolean isRipSupported() {
 		return true;
 	}
-
-
 }
