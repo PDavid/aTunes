@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui;
+package net.sourceforge.atunes.kernel.modules.tags;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -28,7 +28,6 @@ import java.util.List;
 
 import javax.swing.table.TableCellEditor;
 
-import net.sourceforge.atunes.kernel.modules.tags.TagAttributesReviewed;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ITagAttributesReviewed;
 import net.sourceforge.atunes.utils.I18nUtils;

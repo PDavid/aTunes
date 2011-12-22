@@ -66,7 +66,7 @@
 		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
 	
-	<bean id="reviewImportDialog" class="net.sourceforge.atunes.gui.views.dialogs.ReviewImportDialog" scope="prototype">
+	<bean id="reviewImportDialog" class="net.sourceforge.atunes.kernel.modules.tags.ReviewImportDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 		<constructor-arg ref="state"/>
 		<constructor-arg ref="lookAndFeelManager"/>

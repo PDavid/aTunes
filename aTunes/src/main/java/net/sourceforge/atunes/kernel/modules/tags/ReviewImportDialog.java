@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.dialogs;
+package net.sourceforge.atunes.kernel.modules.tags;
 
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
@@ -44,9 +44,9 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.gui.GuiUtils;
-import net.sourceforge.atunes.gui.ReviewImportTreeTableModel;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
+import net.sourceforge.atunes.gui.views.dialogs.PatternInputDialog;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
