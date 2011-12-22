@@ -22,6 +22,8 @@ package net.sourceforge.atunes.gui.views.decorators;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JLabel;
 
@@ -46,6 +48,8 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, S
 	private IIconFactory rssSmallIcon;
 	
 	private IIconFactory radioSmallIcon;
+	
+	private Map<String, IIconFactory> iconsByString;
 	
 	/**
 	 * @param radioSmallIcon
@@ -119,25 +123,22 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, S
 	 * @return 
 	 */
 	private IIconFactory getIcon(String text, JLabel label, Color color) {
-		if (text.equals(I18nUtils.getString("REPOSITORY"))) {
-		    return audioFileSmallIcon;
-		} else if (text.equals(I18nUtils.getString("DEVICE"))) {
-		    return deviceIcon;
-		} else if (text.equals(I18nUtils.getString("ARTISTS"))) {
-		    return artistImageIcon;
-		} else if (text.equals(I18nUtils.getString("ALBUMS"))) {
-		    return albumSmallIcon;
-		} else if (text.equals(I18nUtils.getString("SONGS"))) {
-		    return audioFileSmallIcon;
-		} else if (text.equals(I18nUtils.getString("FAVORITES"))) {
-		    return favoriteIcon;
-		} else if (text.equals(I18nUtils.getString("PODCAST_FEEDS"))) {
-		    return rssSmallIcon;
-		} else if (text.equals(I18nUtils.getString("RADIO"))) {
-		    return radioSmallIcon;
-		} else {
-		    // For radio view
-		    return folderIcon;
+		IIconFactory factory = getIconsByString().get(text);
+		return factory != null ? factory : folderIcon; // For radio view
+	}
+	
+	private Map<String, IIconFactory> getIconsByString() {
+		if (iconsByString == null) {
+			iconsByString = new HashMap<String, IIconFactory>();
+			iconsByString.put(I18nUtils.getString("REPOSITORY"), audioFileSmallIcon);
+			iconsByString.put(I18nUtils.getString("DEVICE"), deviceIcon);
+			iconsByString.put(I18nUtils.getString("ARTISTS"), artistImageIcon);
+			iconsByString.put(I18nUtils.getString("ALBUMS"), albumSmallIcon);
+			iconsByString.put(I18nUtils.getString("SONGS"), audioFileSmallIcon);
+			iconsByString.put(I18nUtils.getString("FAVORITES"), favoriteIcon);
+			iconsByString.put(I18nUtils.getString("PODCAST_FEEDS"), rssSmallIcon);
+			iconsByString.put(I18nUtils.getString("RADIO"), radioSmallIcon);
 		}
+		return iconsByString;
 	}
 }
