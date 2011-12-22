@@ -36,7 +36,6 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.SystemLookAndFeel;
-import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -159,15 +158,6 @@ public abstract class OperatingSystemAdapter {
 		GraphicsDevice graphicsDevice = GuiUtils
 				.getGraphicsDeviceForLocation(frame.getLocation());
 		graphicsDevice.setFullScreenWindow(fullscreen ? window : null);
-	}
-
-	/**
-	 * Returns hotkeys listener
-	 * 
-	 * @return
-	 */
-	public Class<? extends AbstractHotkeys> getHotkeysListener() {
-		return null; // None by default
 	}
 
 	/**

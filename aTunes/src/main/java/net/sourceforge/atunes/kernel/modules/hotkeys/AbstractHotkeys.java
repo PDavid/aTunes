@@ -28,7 +28,7 @@ import net.sourceforge.atunes.model.IHotkeyListener;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.Logger;
 
-public abstract class AbstractHotkeys {
+abstract class AbstractHotkeys {
 
     private IHotkeyListener hotkeyListener;
 
@@ -55,7 +55,14 @@ public abstract class AbstractHotkeys {
 
     public static AbstractHotkeys createInstance(IHotkeyListener hotkeyListener, IOSManager osManager) {
         try {
-        	Class<?> clazz = osManager.getHotkeysListener();
+        	Class<?> clazz = null;
+        	
+        	if (osManager.isLinux()) {
+        		clazz = X11Hotkeys.class;
+        	} else if (osManager.isWindows()) {
+        		clazz = WindowsHotkeys.isSupported(osManager) ? WindowsHotkeys.class : null;
+        	}
+        	
         	if (clazz != null) {
                 Constructor<?> constructor = clazz.getConstructor(IHotkeyListener.class);
                 return (AbstractHotkeys) constructor.newInstance(hotkeyListener);

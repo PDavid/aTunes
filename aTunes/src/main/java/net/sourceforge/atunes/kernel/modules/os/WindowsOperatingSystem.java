@@ -27,8 +27,6 @@ import java.util.Collection;
 import java.util.List;
 
 import net.sourceforge.atunes.gui.GuiUtils;
-import net.sourceforge.atunes.kernel.modules.hotkeys.AbstractHotkeys;
-import net.sourceforge.atunes.kernel.modules.hotkeys.WindowsHotkeys;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.xine.XineEngine;
 import net.sourceforge.atunes.model.IFrame;
@@ -97,11 +95,6 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter {
 				window.setSize(GuiUtils.getDeviceWidth(), GuiUtils.getDeviceHeight());
 			}
 		}
-	}
-	
-	@Override
-	public Class<? extends AbstractHotkeys> getHotkeysListener() {
-		return WindowsHotkeys.isSupported(osManager) ? WindowsHotkeys.class : null;
 	}
 	
 	@Override
