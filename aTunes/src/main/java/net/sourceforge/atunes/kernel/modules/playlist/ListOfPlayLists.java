@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IListOfPlayLists;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IState;
 
@@ -34,7 +35,7 @@ import net.sourceforge.atunes.model.IState;
  * 
  * @author alex
  */
-public class ListOfPlayLists implements Serializable {
+public class ListOfPlayLists implements IListOfPlayLists {
 
     private static final long serialVersionUID = -9098493526495642598L;
 
@@ -43,13 +44,13 @@ public class ListOfPlayLists implements Serializable {
 
     /** The selected play list. */
     private int selectedPlayListIndex;
-
+    
     /**
      * Returns a list of playlists with an empty playlist.
      * 
      * @return the empty play list
      */
-    public static ListOfPlayLists getEmptyPlayList(IState state) {
+    static ListOfPlayLists getEmptyPlayList(IState state) {
         ListOfPlayLists l = new ListOfPlayLists();
         List<IPlayList> playLists = new ArrayList<IPlayList>();
         playLists.add(new PlayList(state));
@@ -63,7 +64,8 @@ public class ListOfPlayLists implements Serializable {
      * 
      * @return the playLists
      */
-    List<IPlayList> getPlayLists() {
+    @Override
+    public List<IPlayList> getPlayLists() {
         return playLists;
     }
 
@@ -72,7 +74,8 @@ public class ListOfPlayLists implements Serializable {
      * 
      * @return the selectedPlayList
      */
-    int getSelectedPlayList() {
+    @Override
+    public int getSelectedPlayList() {
         return selectedPlayListIndex;
     }
 
@@ -92,7 +95,8 @@ public class ListOfPlayLists implements Serializable {
      * @param selectedPlayList
      *            the selectedPlayList to set
      */
-    void setSelectedPlayList(int selectedPlayList) {
+    @Override
+	public void setSelectedPlayList(int selectedPlayList) {
         this.selectedPlayListIndex = selectedPlayList;
     }
 
@@ -102,7 +106,8 @@ public class ListOfPlayLists implements Serializable {
      * @param contents
      * @param state
      */
-    public void setContents(List<List<IAudioObject>> contents, IState state) {
+    @Override
+	public void setContents(List<List<IAudioObject>> contents, IState state) {
     	if (playLists.size() != contents.size()) {
     		throw new IllegalArgumentException("Invalid play list contents");
     	}

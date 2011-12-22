@@ -49,6 +49,7 @@ import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.IInputDialog;
+import net.sourceforge.atunes.model.IListOfPlayLists;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.ILocalAudioObjectLocator;
@@ -97,7 +98,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     private PlayList nonFilteredPlayList;
 
     /** Play lists stored */
-    private ListOfPlayLists playListsRetrievedFromCache;
+    private IListOfPlayLists playListsRetrievedFromCache;
     
     private Future<?> persistPlayListFuture;
     
@@ -171,7 +172,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	/**
 	 * @param playListsRetrievedFromCache
 	 */
-	public void setPlayListsRetrievedFromCache(ListOfPlayLists playListsRetrievedFromCache) {
+	public void setPlayListsRetrievedFromCache(IListOfPlayLists playListsRetrievedFromCache) {
 		this.playListsRetrievedFromCache = playListsRetrievedFromCache;
 	}
 	
@@ -331,7 +332,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
      * 
      * @return the list of play lists
      */
-    private ListOfPlayLists getListOfPlayLists() {
+    private IListOfPlayLists getListOfPlayLists() {
         ListOfPlayLists l = new ListOfPlayLists();
 
         // Clone play lists to make changes in returned list if current play list is filtered
@@ -687,7 +688,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 
 	private void setPlayLists() {
         // Get playlists from application cache
-        final ListOfPlayLists listOfPlayLists = playListsRetrievedFromCache;
+        final IListOfPlayLists listOfPlayLists = playListsRetrievedFromCache;
 
         // Set selected play list as default 
         int selected = listOfPlayLists.getSelectedPlayList();

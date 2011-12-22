@@ -22,8 +22,6 @@ package net.sourceforge.atunes.model;
 
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.playlist.ListOfPlayLists;
-
 /**
  * Responsible of managing application state
  * @author alex
@@ -50,7 +48,7 @@ public interface IStateHandler extends IHandler {
 	/**
 	 * Stores play lists definition
 	 */
-	public void persistPlayListsDefinition(ListOfPlayLists listOfPlayLists);
+	public void persistPlayListsDefinition(IListOfPlayLists listOfPlayLists);
 
 	/**
 	 * Stores play lists contents
@@ -119,7 +117,7 @@ public interface IStateHandler extends IHandler {
 	 * @return The retrieved playlists
 	 */
 
-	public ListOfPlayLists retrievePlayListsCache();
+	public IListOfPlayLists retrievePlayListsCache();
 
 	/**
 	 * Reads podcast feed cache.
