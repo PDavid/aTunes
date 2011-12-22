@@ -133,7 +133,7 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
         String songPath = song.getFile().getParentFile().getAbsolutePath();
         String songRelativePath = songPath.replaceFirst(baseFolder.getAbsolutePath().replace("\\", "\\\\").replace("$", "\\$"), "");
         if (getState().getImportExportFolderPathPattern() != null) {
-            songRelativePath = FileNameUtils.getValidFolderName(FileNameUtils.getNewFolderPath(getState().getImportExportFolderPathPattern(), song, getOsManager()), getOsManager());
+            songRelativePath = FileNameUtils.getValidFolderName(getNewFolderPath(getState().getImportExportFolderPathPattern(), song, getOsManager()), getOsManager());
         }
         return new File(StringUtils.getString(destinationBaseFolder.getAbsolutePath(), getOsManager().getFileSeparator(), songRelativePath));
     }
@@ -174,7 +174,7 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
         File destDir = getDirectory(file, destination);
         String newName;
         if (getState().getImportExportFileNamePattern() != null) {
-            newName = FileNameUtils.getNewFileName(getState().getImportExportFileNamePattern(), file, getOsManager());
+            newName = getNewFileName(getState().getImportExportFileNamePattern(), file, getOsManager());
         } else {
             newName = FileNameUtils.getValidFileName(file.getFile().getName().replace("\\", "\\\\").replace("$", "\\$"), false, getOsManager());
         }
