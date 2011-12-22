@@ -90,10 +90,8 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter {
 	
 	@Override
 	public void setFullScreen(Window window, boolean fullscreen, IFrame frame) {
-		if (systemType.isOldWindows()) {
-			if (fullscreen) {
-				window.setSize(GuiUtils.getDeviceWidth(), GuiUtils.getDeviceHeight());
-			}
+		if (systemType.isOldWindows() && fullscreen) {
+			window.setSize(GuiUtils.getDeviceWidth(), GuiUtils.getDeviceHeight());
 		}
 	}
 	

@@ -147,10 +147,8 @@ public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
             ClosingUtils.close(input);
             ClosingUtils.close(fout);
             // If has been cancelled then delete file
-            if (cancelled && file.exists()) {
-                if (!file.delete()) {
-                	Logger.error(StringUtils.getString(file, " not deleted"));
-                }
+            if (cancelled && file.exists() && !file.delete()) {
+               	Logger.error(StringUtils.getString(file, " not deleted"));
             }
         }
         return null;
