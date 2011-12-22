@@ -21,17 +21,10 @@
 package net.sourceforge.atunes.gui.views.controls.playerControls;
 
 import java.awt.Dimension;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 
 import javax.swing.JSlider;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import net.sourceforge.atunes.gui.GuiUtils;
-import net.sourceforge.atunes.kernel.modules.player.Volume;
-import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IState;
 
 public final class VolumeSlider extends JSlider {
 
@@ -42,7 +35,7 @@ public final class VolumeSlider extends JSlider {
      * @param state
      * @param playerHandler
      */
-    public VolumeSlider(final IState state, final IPlayerHandler playerHandler) {
+    public VolumeSlider() {
         super();
         setOpaque(false);
         setMinimum(0);
@@ -50,27 +43,5 @@ public final class VolumeSlider extends JSlider {
         setValue(50);
         setFocusable(false);
         setPreferredSize(new Dimension(GuiUtils.getComponentWidthForResolution(0.1f), 20));
-
-        // Add behaviour
-        addMouseWheelListener(new MouseWheelListener() {
-            @Override
-            public void mouseWheelMoved(MouseWheelEvent e) {
-                int notches = e.getWheelRotation();
-                if (notches < 0) {
-                    setValue(getValue() + 5);
-                } else {
-                    setValue(getValue() - 5);
-                }
-
-                Volume.setVolume(getValue(), state, playerHandler);
-            }
-        });
-
-        addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-				Volume.setVolume(getValue(), state, playerHandler);
-            }
-        });
     }
 }

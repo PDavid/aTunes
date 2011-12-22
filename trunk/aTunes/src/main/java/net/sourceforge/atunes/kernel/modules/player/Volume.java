@@ -29,7 +29,7 @@ import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
 
-public final class Volume {
+final class Volume {
 
     private Volume() {
     }
