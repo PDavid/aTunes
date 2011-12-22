@@ -335,7 +335,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         ListOfPlayLists l = new ListOfPlayLists();
 
         // Clone play lists to make changes in returned list if current play list is filtered
-        l.setPlayLists(new ArrayList<PlayList>(playLists));
+        l.setPlayLists(new ArrayList<IPlayList>(playLists));
         l.setSelectedPlayList(activePlayListIndex);
 
         // If current play list is filtered return non-filtered play list
@@ -697,9 +697,9 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 
         // Add playlists
         playLists.clear();
-        for (PlayList playlist : listOfPlayLists.getPlayLists()) {
-            playLists.add(playlist);
-            getPlayListTabController().newPlayList(getNameForPlaylist(playlist));
+        for (IPlayList playlist : listOfPlayLists.getPlayLists()) {
+            playLists.add((PlayList)playlist);
+            getPlayListTabController().newPlayList(getNameForPlaylist((PlayList)playlist));
         }
         activePlayListIndex = selected;
         // Initially active play list and visible play list are the same

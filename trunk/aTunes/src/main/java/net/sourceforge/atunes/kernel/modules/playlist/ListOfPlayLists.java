@@ -21,10 +21,11 @@
 package net.sourceforge.atunes.kernel.modules.playlist;
 
 import java.io.Serializable;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IState;
 
 /**
@@ -38,7 +39,7 @@ public class ListOfPlayLists implements Serializable {
     private static final long serialVersionUID = -9098493526495642598L;
 
     /** The play lists. */
-    private List<PlayList> playLists;
+    private List<IPlayList> playLists;
 
     /** The selected play list. */
     private int selectedPlayListIndex;
@@ -50,7 +51,9 @@ public class ListOfPlayLists implements Serializable {
      */
     public static ListOfPlayLists getEmptyPlayList(IState state) {
         ListOfPlayLists l = new ListOfPlayLists();
-        l.setPlayLists(Collections.singletonList(new PlayList(state)));
+        List<IPlayList> playLists = new ArrayList<IPlayList>();
+        playLists.add(new PlayList(state));
+        l.setPlayLists(playLists);
         l.setSelectedPlayList(0);
         return l;
     }
@@ -60,7 +63,7 @@ public class ListOfPlayLists implements Serializable {
      * 
      * @return the playLists
      */
-    List<PlayList> getPlayLists() {
+    List<IPlayList> getPlayLists() {
         return playLists;
     }
 
@@ -79,7 +82,7 @@ public class ListOfPlayLists implements Serializable {
      * @param playLists
      *            the playLists to set
      */
-    void setPlayLists(List<PlayList> playLists) {
+    void setPlayLists(List<IPlayList> playLists) {
         this.playLists = playLists;
     }
 
@@ -104,7 +107,7 @@ public class ListOfPlayLists implements Serializable {
     		throw new IllegalArgumentException("Invalid play list contents");
     	}
         for (int i = 0; i < playLists.size(); i++) {
-        	PlayList pl = getPlayLists().get(i);
+        	PlayList pl = (PlayList) getPlayLists().get(i);
 			pl.setState(state);
             pl.setContent(contents.get(i));
             pl.setMode(PlayListMode.getPlayListMode(pl, state));
