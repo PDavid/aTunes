@@ -27,7 +27,6 @@ import java.util.Map;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.TagAttribute;
 import net.sourceforge.atunes.utils.UnknownObjectCheck;
@@ -229,11 +228,10 @@ public final class IncompleteTagsChecker {
      * incomplete tags
      * 
      * @param treeObject
-     * @param state
+     * @param tagAttributes
      * @return
      */
-    public static boolean hasIncompleteTags(ITreeObject<? extends IAudioObject> treeObject, IState state) {
-    	List<TagAttribute> tagAttributes = state.getHighlightIncompleteTagFoldersAttributes();
+    static boolean hasIncompleteTags(ITreeObject<? extends IAudioObject> treeObject, List<TagAttribute> tagAttributes) {
         for (IAudioObject f : treeObject.getAudioObjects()) {
             if (hasIncompleteTags(f, tagAttributes)) {
                 return true;
@@ -248,7 +246,7 @@ public final class IncompleteTagsChecker {
      * @param tagAttributes
      * @return
      */
-    public static boolean hasIncompleteTags(IAudioObject audioObject, List<TagAttribute> tagAttributes) {
+    static boolean hasIncompleteTags(IAudioObject audioObject, List<TagAttribute> tagAttributes) {
         if (audioObject instanceof ILocalAudioObject) {
             return !hasTagAttributesFilled((ILocalAudioObject) audioObject, tagAttributes);
         }

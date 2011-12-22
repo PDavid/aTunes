@@ -120,5 +120,21 @@ public interface ITagHandler extends IHandler {
 	 * @return
 	 */
 	ITag getNewTag(ILocalAudioObject file, Map<String, Object> tagInformation);
+	
+    /**
+     * Returns <code>true</code> if tree object contains audio objects with
+     * incomplete tags
+     * 
+     * @param treeObject
+     * @param state
+     * @return
+     */
+    boolean hasIncompleteTags(ITreeObject<? extends IAudioObject> treeObject);
 
+    /**
+     * Returns <code>true</code> if object has incomplete tag tags
+     * @param audioObject
+     * @return
+     */
+    boolean hasIncompleteTags(IAudioObject audioObject);
 }

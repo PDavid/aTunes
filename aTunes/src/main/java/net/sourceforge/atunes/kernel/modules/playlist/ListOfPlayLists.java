@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.playlist;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 

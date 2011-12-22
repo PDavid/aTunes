@@ -28,6 +28,7 @@ import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.model.ITableCellRendererCode;
+import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.model.ITaskService;
 
 public final class NavigationTableColumnModel extends AbstractCommonColumnModel {
@@ -38,17 +39,21 @@ public final class NavigationTableColumnModel extends AbstractCommonColumnModel 
     
     private INavigationHandler navigationHandler;
     
+    private ITagHandler tagHandler;
+    
     /**
      * @param table
      * @param state
      * @param navigationHandler
      * @param taskService
      * @param lookAndFeel
+     * @param tagHandler
      */
-    public NavigationTableColumnModel(ITable table, IState state, INavigationHandler navigationHandler, ITaskService taskService, ILookAndFeel lookAndFeel) {
+    public NavigationTableColumnModel(ITable table, IState state, INavigationHandler navigationHandler, ITaskService taskService, ILookAndFeel lookAndFeel, ITagHandler tagHandler) {
         super(table.getSwingComponent(), taskService, lookAndFeel);
         this.state = state;
         this.navigationHandler = navigationHandler;
+        this.tagHandler = tagHandler;
         enableColumnChange(true);
     }
 
@@ -66,7 +71,7 @@ public final class NavigationTableColumnModel extends AbstractCommonColumnModel 
     @Override
     public ITableCellRendererCode<?, ?> getRendererCodeFor(Class<?> clazz) {
         ITableCellRendererCode<?, ?> renderer = super.getRendererCodeFor(clazz);
-        return new NavigationTableCellRendererCode(renderer, state, getLookAndFeel(), navigationHandler);
+        return new NavigationTableCellRendererCode(renderer, state, getLookAndFeel(), navigationHandler, tagHandler);
     }
 
 }

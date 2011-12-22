@@ -26,14 +26,23 @@ import javax.swing.JLabel;
 
 import net.sourceforge.atunes.gui.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.ColorDefinitions;
-import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
+import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.model.ITreeObject;
 
 public class IncompleteTagsTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, ITreeObject<?>> {
 
+	private ITagHandler tagHandler;
+	
+	/**
+	 * @param tagHandler
+	 */
+	public void setTagHandler(ITagHandler tagHandler) {
+		this.tagHandler = tagHandler;
+	}
+	
 	@Override
     public Component decorateTreeCellComponent(JLabel component, ITreeObject<?> userObject, boolean isSelected) {
-        if (getState().isHighlightIncompleteTagElements() && IncompleteTagsChecker.hasIncompleteTags(userObject, getState())) {
+        if (getState().isHighlightIncompleteTagElements() && tagHandler.hasIncompleteTags(userObject)) {
         	component.setForeground(ColorDefinitions.GENERAL_UNKNOWN_ELEMENT_FOREGROUND_COLOR);
         }
         return component;
