@@ -210,30 +210,27 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            if (columnBeingMoved != -1) {
-                // Swap order in model
-
-            	if (columnBeingMoved != columnMovedTo) {
-            		// Column moved to right
-            		if (columnBeingMoved < columnMovedTo) {
-            			int columnDestinyOrder = getColumnObject(columnMovedTo).getOrder();
-            			for (int i = columnBeingMoved + 1; i <= columnMovedTo; i++) {
-            				int order = getColumnObject(i).getOrder();
-            				getColumnObject(i).setOrder(order - 1);
-            			}
-            			getColumnObject(columnBeingMoved).setOrder(columnDestinyOrder);
-            		} // Column moved to left
-            		else if (columnBeingMoved > columnMovedTo) {
-            			int columnDestinyOrder = getColumnObject(columnMovedTo).getOrder();
-            			for (int i = columnBeingMoved - 1; i >= columnMovedTo; i--) {
-            				int order = getColumnObject(i).getOrder();
-            				getColumnObject(i).setOrder(order + 1);
-            			}
-            			getColumnObject(columnBeingMoved).setOrder(columnDestinyOrder);
+            if (columnBeingMoved != -1 && columnBeingMoved != columnMovedTo) {
+            	// Swap order in model
+            	// Column moved to right
+            	if (columnBeingMoved < columnMovedTo) {
+            		int columnDestinyOrder = getColumnObject(columnMovedTo).getOrder();
+            		for (int i = columnBeingMoved + 1; i <= columnMovedTo; i++) {
+            			int order = getColumnObject(i).getOrder();
+            			getColumnObject(i).setOrder(order - 1);
             		}
-            		
-           			arrangeColumns(false);           			
+            		getColumnObject(columnBeingMoved).setOrder(columnDestinyOrder);
+            	} // Column moved to left
+            	else if (columnBeingMoved > columnMovedTo) {
+            		int columnDestinyOrder = getColumnObject(columnMovedTo).getOrder();
+            		for (int i = columnBeingMoved - 1; i >= columnMovedTo; i--) {
+            			int order = getColumnObject(i).getOrder();
+            			getColumnObject(i).setOrder(order + 1);
+            		}
+            		getColumnObject(columnBeingMoved).setOrder(columnDestinyOrder);
             	}
+
+            	arrangeColumns(false);           			
             }
             columnBeingMoved = -1;
             columnMovedTo = -1;
