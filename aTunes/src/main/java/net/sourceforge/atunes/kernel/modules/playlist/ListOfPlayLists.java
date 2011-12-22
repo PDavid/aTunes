@@ -25,7 +25,6 @@ import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IState;
 
 /**
@@ -106,15 +105,9 @@ public class ListOfPlayLists implements Serializable {
     	}
         for (int i = 0; i < playLists.size(); i++) {
         	PlayList pl = getPlayLists().get(i);
+			pl.setState(state);
             pl.setContent(contents.get(i));
             pl.setMode(PlayListMode.getPlayListMode(pl, state));
         }
     }
-
-	public void setState(IState state) {
-		for (IPlayList p : playLists) {
-			p.setState(state);
-		}
-	}
-
 }

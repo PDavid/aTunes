@@ -457,7 +457,6 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
             // First get list of playlists
             ListOfPlayLists listOfPlayLists = (ListOfPlayLists) xmlSerializerService.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.PLAYLISTS_FILE));
             if (listOfPlayLists != null) {
-            	listOfPlayLists.setState(getState());
             	Logger.info(StringUtils.getString("List of playlists loaded"));
 
             	// Then read contents

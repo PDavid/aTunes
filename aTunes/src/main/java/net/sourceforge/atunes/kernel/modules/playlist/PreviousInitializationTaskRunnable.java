@@ -34,9 +34,10 @@ class PreviousInitializationTaskRunnable implements Runnable {
 	
     @Override
     public void run() {
-    	playListHandler.playListsRetrievedFromCache = Context.getBean(IStateHandler.class).retrievePlayListsCache();
-        if (playListHandler.playListsRetrievedFromCache == null) {
-        	playListHandler.playListsRetrievedFromCache = ListOfPlayLists.getEmptyPlayList(Context.getBean(IState.class));
+    	ListOfPlayLists list = Context.getBean(IStateHandler.class).retrievePlayListsCache();
+        if (list == null) {
+        	list = ListOfPlayLists.getEmptyPlayList(Context.getBean(IState.class));
         }
+        playListHandler.setPlayListsRetrievedFromCache(list);
     }
 }
