@@ -96,7 +96,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     private PlayList nonFilteredPlayList;
 
     /** Play lists stored */
-    ListOfPlayLists playListsRetrievedFromCache;
+    private ListOfPlayLists playListsRetrievedFromCache;
     
     private Future<?> persistPlayListFuture;
     
@@ -144,7 +144,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	 */
 	private PlayListController playListController;
 
-	
 	private IColumnSet playListColumnSet;
 	
 	private IPlayerHandler playerHandler;
@@ -158,6 +157,13 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	private ILocalAudioObjectValidator localAudioObjectValidator;
 	
 	private INavigationHandler navigationHandler;
+	
+	/**
+	 * @param playListsRetrievedFromCache
+	 */
+	public void setPlayListsRetrievedFromCache(ListOfPlayLists playListsRetrievedFromCache) {
+		this.playListsRetrievedFromCache = playListsRetrievedFromCache;
+	}
 	
 	/**
 	 * @param deviceHandler
