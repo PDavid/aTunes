@@ -25,7 +25,6 @@ import java.util.Collection;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IState;
 
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
@@ -58,7 +57,7 @@ public class HandlerInitializer implements ApplicationContextAware {
 	}
 	
 	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+	public void setApplicationContext(ApplicationContext applicationContext) {
 		this.handlers = applicationContext.getBeansOfType(AbstractHandler.class).values();
 	}
 }

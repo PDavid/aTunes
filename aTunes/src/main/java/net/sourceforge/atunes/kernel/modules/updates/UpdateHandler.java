@@ -134,10 +134,9 @@ public final class UpdateHandler extends AbstractHandler implements IUpdateHandl
 
 	/**
 	 * @return xml document retrieved from update url
-	 * @throws UnknownHostException
 	 * @throws IOException
 	 */
-	private Document getVersionXml() throws UnknownHostException, IOException {
+	private Document getVersionXml() throws IOException {
 		return  XMLUtils.getXMLDocument(networkHandler.readURL(networkHandler.getConnection(updatesURL)));
 	}
 }

@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.webservices.lyrics;
 
 import java.io.IOException;
 import java.net.URLConnection;
-import java.net.UnknownHostException;
 
 import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.model.INetworkHandler;
@@ -61,12 +60,10 @@ public abstract class AbstractLyricsEngine {
      * 
      * @return the connection
      * 
-     * @throws UnknownHostException
-     *             the unknown host exception
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    protected final URLConnection getConnection(String url) throws UnknownHostException, IOException {
+    protected final URLConnection getConnection(String url) throws IOException {
         return networkHandler.getConnection(url);
     }
 

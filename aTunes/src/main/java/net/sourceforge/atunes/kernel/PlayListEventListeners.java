@@ -27,7 +27,6 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayListAudioObject;
 import net.sourceforge.atunes.model.IPlayListEventListener;
 
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
@@ -45,7 +44,7 @@ public class PlayListEventListeners implements ApplicationContextAware {
 	}
 	
 	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+	public void setApplicationContext(ApplicationContext applicationContext) {
 		listeners = applicationContext.getBeansOfType(IPlayListEventListener.class).values();
 	}
 	

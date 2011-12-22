@@ -26,7 +26,6 @@ import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
 
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
@@ -73,7 +72,7 @@ public class FavoriteColumn extends AbstractColumn<AudioObjectProperty> implemen
     }
     
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    public void setApplicationContext(ApplicationContext applicationContext) {
     	this.context = applicationContext;
     }
     

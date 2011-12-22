@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.kernel.modules.tags;
 
 import org.jaudiotagger.tag.FieldDataInvalidException;
-import org.jaudiotagger.tag.KeyNotFoundException;
 
 /**
  * Used to define a tag modification
@@ -33,9 +32,8 @@ public interface ITagModification {
 	/**
 	 * Changes tag
 	 * @param tag
-	 * @throws KeyNotFoundException
 	 * @throws FieldDataInvalidException
 	 */
-	public void modify(org.jaudiotagger.tag.Tag tag) throws KeyNotFoundException, FieldDataInvalidException;
+	public void modify(org.jaudiotagger.tag.Tag tag) throws FieldDataInvalidException;
 	
 }

@@ -24,7 +24,6 @@ import java.util.Collection;
 
 import net.sourceforge.atunes.model.IDeviceListener;
 
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
@@ -42,7 +41,7 @@ public class DeviceListeners implements ApplicationContextAware {
 	}
 	
 	@Override
-	public void setApplicationContext(ApplicationContext ctx) throws BeansException {
+	public void setApplicationContext(ApplicationContext ctx) {
 		listeners = ctx.getBeansOfType(IDeviceListener.class).values();
 	}
 	

@@ -26,7 +26,6 @@ import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateChangeListener;
 import net.sourceforge.atunes.utils.Logger;
 
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
@@ -45,7 +44,7 @@ public class StateChangeListeners implements ApplicationContextAware {
 	}
 
 	@Override
-	public void setApplicationContext(ApplicationContext ctx) throws BeansException {
+	public void setApplicationContext(ApplicationContext ctx) {
 		listeners = ctx.getBeansOfType(IStateChangeListener.class).values();
 	}
 	

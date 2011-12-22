@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.tags;
 
 import org.jaudiotagger.tag.FieldDataInvalidException;
 import org.jaudiotagger.tag.FieldKey;
-import org.jaudiotagger.tag.KeyNotFoundException;
 import org.jaudiotagger.tag.Tag;
 
 final class LyricsTagModification implements
@@ -34,7 +33,7 @@ final class LyricsTagModification implements
 	}
 
 	@Override
-	public void modify(Tag tag) throws KeyNotFoundException, FieldDataInvalidException {
+	public void modify(Tag tag) throws FieldDataInvalidException {
 		tag.setField(tag.createField(FieldKey.LYRICS, lyrics));
 	}
 }

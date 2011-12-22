@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.network;
 import java.io.IOException;
 import java.net.Authenticator;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 import net.sourceforge.atunes.model.IProxyBean;
 
@@ -58,12 +57,10 @@ final class ExtendedProxy extends java.net.Proxy {
      * @param password
      *            the password
      * 
-     * @throws UnknownHostException
-     *             the unknown host exception
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    private ExtendedProxy(Type type, String url, int port, String user, String password) throws UnknownHostException, IOException {
+    private ExtendedProxy(Type type, String url, int port, String user, String password) throws IOException {
         super(type, new Socket(url, port).getRemoteSocketAddress());
         this.url = url;
         this.port = port;
@@ -88,12 +85,10 @@ final class ExtendedProxy extends java.net.Proxy {
      * 
      * @return A net.sourceforge.atunes.kernel.modules.proxy.Proxy
      * 
-     * @throws UnknownHostException
-     *             If the host is unknown
      * @throws IOException
      *             If an IO exception occurs
      */
-    public static ExtendedProxy getProxy(IProxyBean proxy) throws UnknownHostException, IOException {
+    public static ExtendedProxy getProxy(IProxyBean proxy) throws IOException {
         if (proxy == null) {
             return null;
         }
