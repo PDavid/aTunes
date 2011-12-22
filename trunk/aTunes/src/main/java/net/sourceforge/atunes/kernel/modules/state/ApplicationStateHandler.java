@@ -32,7 +32,6 @@ import java.util.List;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.StateChangeListeners;
-import net.sourceforge.atunes.kernel.modules.playlist.ListOfPlayLists;
 import net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorBeanFactory;
@@ -40,6 +39,7 @@ import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFavorites;
 import net.sourceforge.atunes.model.IFontBeanFactory;
 import net.sourceforge.atunes.model.IHotkeyHandler;
+import net.sourceforge.atunes.model.IListOfPlayLists;
 import net.sourceforge.atunes.model.ILocaleBeanFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INetworkHandler;
@@ -234,7 +234,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#persistPlayListsDefinition(net.sourceforge.atunes.kernel.modules.playlist.ListOfPlayLists)
 	 */
     @Override
-	public void persistPlayListsDefinition(ListOfPlayLists listOfPlayLists) {
+	public void persistPlayListsDefinition(IListOfPlayLists listOfPlayLists) {
     	if (!playListPersistAllowed) {
     		Logger.debug("Persist play list definition not allowed yet");
     	} else {
@@ -451,11 +451,11 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	 */
     @Override
 	@SuppressWarnings("unchecked")
-    public ListOfPlayLists retrievePlayListsCache() {
+    public IListOfPlayLists retrievePlayListsCache() {
         ObjectInputStream stream = null;
         try {
             // First get list of playlists
-            ListOfPlayLists listOfPlayLists = (ListOfPlayLists) xmlSerializerService.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.PLAYLISTS_FILE));
+            IListOfPlayLists listOfPlayLists = (IListOfPlayLists) xmlSerializerService.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.PLAYLISTS_FILE));
             if (listOfPlayLists != null) {
             	Logger.info(StringUtils.getString("List of playlists loaded"));
 
