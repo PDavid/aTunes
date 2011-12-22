@@ -26,6 +26,7 @@ import javax.swing.JTable;
 import javax.swing.TransferHandler;
 
 import net.sourceforge.atunes.model.IAudioObjectComparator;
+import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.ILocalAudioObjectLocator;
@@ -70,13 +71,14 @@ public class PlayListTableTransferHandler extends TransferHandler {
      * @param frame
      * @param playListHandler
      * @param navigationHandler
+     * @param deviceHandler
      * @param localAudioObjectFactory
      * @param localAudioObjectValidator
      * @param audioObjectComparator
      * @param localAudioObjectLocator
      * @param playListIOService
      */
-    public PlayListTableTransferHandler(IPlayListTable playListTable, IFrame frame, IPlayListHandler playListHandler, INavigationHandler navigationHandler, ILocalAudioObjectFactory localAudioObjectFactory, ILocalAudioObjectValidator localAudioObjectValidator, IAudioObjectComparator audioObjectComparator, ILocalAudioObjectLocator localAudioObjectLocator, IPlayListIOService playListIOService) {
+    public PlayListTableTransferHandler(IPlayListTable playListTable, IFrame frame, IPlayListHandler playListHandler, INavigationHandler navigationHandler, IDeviceHandler deviceHandler, ILocalAudioObjectFactory localAudioObjectFactory, ILocalAudioObjectValidator localAudioObjectValidator, IAudioObjectComparator audioObjectComparator, ILocalAudioObjectLocator localAudioObjectLocator, IPlayListIOService playListIOService) {
     	this.playListTable = playListTable;
     	this.frame = frame;
     	this.playListHandler = playListHandler;
@@ -86,6 +88,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
     	this.audioObjectComparator = audioObjectComparator;
     	this.localAudioObjectLocator = localAudioObjectLocator;
     	this.playListIOService = playListIOService;
+        new PlayListToDeviceDragAndDropListener(navigationHandler, deviceHandler);
 	}
     
     @Override

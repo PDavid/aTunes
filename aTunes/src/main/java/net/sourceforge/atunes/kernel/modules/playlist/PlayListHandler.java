@@ -44,6 +44,7 @@ import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectComparator;
 import net.sourceforge.atunes.model.IColumnSet;
+import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IFilterHandler;
@@ -110,6 +111,8 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     private IPlayListIOService playListIOService;
     
     private IPlayListObjectFilter<ILocalAudioObject> playListLocalAudioObjectFilter;
+    
+    private IDeviceHandler deviceHandler;
 
     /**
      * Filter for play list
@@ -155,6 +158,13 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	private ILocalAudioObjectValidator localAudioObjectValidator;
 	
 	private INavigationHandler navigationHandler;
+	
+	/**
+	 * @param deviceHandler
+	 */
+	public void setDeviceHandler(IDeviceHandler deviceHandler) {
+		this.deviceHandler = deviceHandler;
+	}
 	
 	/**
 	 * @param playListLocalAudioObjectFilter
@@ -232,7 +242,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     @Override
     public void allHandlersInitialized() {
         // Create drag and drop listener
-    	playListPanel.enableDragAndDrop(new PlayListTableTransferHandler(playListTable, getFrame(), this, navigationHandler, localAudioObjectFactory, localAudioObjectValidator, audioObjectComparator, localAudioObjectLocator, playListIOService));
+    	playListPanel.enableDragAndDrop(new PlayListTableTransferHandler(playListTable, getFrame(), this, navigationHandler, deviceHandler, localAudioObjectFactory, localAudioObjectValidator, audioObjectComparator, localAudioObjectLocator, playListIOService));
     }
 
     /**

@@ -27,10 +27,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.TransferHandler;
 
-import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListToDeviceDragAndDropListener;
-import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlayListPanel;
 import net.sourceforge.atunes.model.IPlayListSelectorPanel;
 import net.sourceforge.atunes.model.IPlayListTable;
@@ -53,10 +50,6 @@ public final class PlayListPanel extends JPanel implements IPlayListPanel {
     /** The play list table scroll. */
     private JScrollPane playListTableScroll;
     
-    private INavigationHandler navigationHandler;
-    
-    private IDeviceHandler deviceHandler;
-
 	private ILookAndFeelManager lookAndFeelManager;
 	
     /**
@@ -73,20 +66,6 @@ public final class PlayListPanel extends JPanel implements IPlayListPanel {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
 
-    /**
-     * @param navigationHandler
-     */
-    public void setNavigationHandler(INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
-	}
-    
-    /**
-     * @param deviceHandler
-     */
-    public void setDeviceHandler(IDeviceHandler deviceHandler) {
-		this.deviceHandler = deviceHandler;
-	}
-    
     /**
      * Adds the content.
      * @param lookAndFeelManager 
@@ -112,7 +91,6 @@ public final class PlayListPanel extends JPanel implements IPlayListPanel {
 	public void enableDragAndDrop(TransferHandler playListTableTransferHandler) {
         playListTable.setTransferHandler(playListTableTransferHandler);
         playListTableScroll.setTransferHandler(playListTableTransferHandler);
-        new PlayListToDeviceDragAndDropListener(navigationHandler, deviceHandler);
     }
     
     @Override

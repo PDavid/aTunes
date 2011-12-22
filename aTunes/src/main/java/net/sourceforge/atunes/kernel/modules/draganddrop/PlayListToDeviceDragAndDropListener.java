@@ -41,7 +41,7 @@ import net.sourceforge.atunes.utils.Logger;
 /**
  * The listener interface for receiving dragAndDrop events.
  */
-public class PlayListToDeviceDragAndDropListener implements DropTargetListener {
+class PlayListToDeviceDragAndDropListener implements DropTargetListener {
 
 	private IDeviceHandler deviceHandler;
 	
