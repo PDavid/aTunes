@@ -46,7 +46,6 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
 import net.sourceforge.atunes.model.IFilterPanel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayerControlsPanel;
-import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IProgressSlider;
 import net.sourceforge.atunes.model.IState;
 
@@ -87,8 +86,6 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
     
     private ILookAndFeelManager lookAndFeelManager;
     
-    private IPlayerHandler playerHandler;
-    
     /**
      * Instantiates a new player controls panel.
      */
@@ -110,13 +107,6 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
     
-    /**
-     * @param playerHandler
-     */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
-		this.playerHandler = playerHandler;
-	}
-
     /**
      * Adds the content.
      */
@@ -210,7 +200,7 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
         nextButton = new NextButton(PlayerControlsSize.PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
         volumeButton = Context.getBean("volumeButton", MuteButton.class);
         volumeButton.setText("");
-        volumeSlider = new VolumeSlider(state, playerHandler);
+        volumeSlider = Context.getBean("volumeSlider", VolumeSlider.class);
         JPanel panel = getPanelWithPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider, lookAndFeelManager);
         // add a small border to separate from other components
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 0));

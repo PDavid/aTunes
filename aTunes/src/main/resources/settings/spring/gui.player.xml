@@ -51,5 +51,7 @@
 	</bean>
 	
 	<bean id="volumeIconCalculator" class="net.sourceforge.atunes.gui.views.controls.playerControls.VolumeIconCalculator"/>
+	
+	<bean id="volumeSlider" class="net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider"/>
 
 </beans>

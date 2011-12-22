@@ -20,14 +20,20 @@
 
 package net.sourceforge.atunes.kernel.modules.player;
 
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.PlaybackStateListeners;
 import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine.SubmissionState;
@@ -83,6 +89,15 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     private List<AbstractPlayerEngine> engines;
     
     private IEqualizer equalizer;
+    
+    private VolumeSlider volumeSlider;
+    
+    /**
+     * @param volumeSlider
+     */
+    public void setVolumeSlider(VolumeSlider volumeSlider) {
+		this.volumeSlider = volumeSlider;
+	}
     
     /**
      * @param equalizer
@@ -321,6 +336,27 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     
     @Override
     public void allHandlersInitialized() {
+        // Add volume behaviour
+        volumeSlider.addMouseWheelListener(new MouseWheelListener() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                int notches = e.getWheelRotation();
+                if (notches < 0) {
+                	volumeSlider.setValue(volumeSlider.getValue() + 5);
+                } else {
+                	volumeSlider.setValue(volumeSlider.getValue() - 5);
+                }
+
+                Volume.setVolume(volumeSlider.getValue(), PlayerHandler.this.getState(), PlayerHandler.this);
+            }
+        });
+
+        volumeSlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+				Volume.setVolume(volumeSlider.getValue(), PlayerHandler.this.getState(), PlayerHandler.this);
+            }
+        });
     	initialize();
     }
     
