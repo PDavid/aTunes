@@ -32,6 +32,7 @@ import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.ILocalAudioObjectLocator;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListIOService;
 import net.sourceforge.atunes.model.IPlayListTable;
@@ -72,13 +73,14 @@ public class PlayListTableTransferHandler extends TransferHandler {
      * @param playListHandler
      * @param navigationHandler
      * @param deviceHandler
+     * @param deviceNavigationView
      * @param localAudioObjectFactory
      * @param localAudioObjectValidator
      * @param audioObjectComparator
      * @param localAudioObjectLocator
      * @param playListIOService
      */
-    public PlayListTableTransferHandler(IPlayListTable playListTable, IFrame frame, IPlayListHandler playListHandler, INavigationHandler navigationHandler, IDeviceHandler deviceHandler, ILocalAudioObjectFactory localAudioObjectFactory, ILocalAudioObjectValidator localAudioObjectValidator, IAudioObjectComparator audioObjectComparator, ILocalAudioObjectLocator localAudioObjectLocator, IPlayListIOService playListIOService) {
+    public PlayListTableTransferHandler(IPlayListTable playListTable, IFrame frame, IPlayListHandler playListHandler, INavigationHandler navigationHandler, IDeviceHandler deviceHandler, INavigationView deviceNavigationView, ILocalAudioObjectFactory localAudioObjectFactory, ILocalAudioObjectValidator localAudioObjectValidator, IAudioObjectComparator audioObjectComparator, ILocalAudioObjectLocator localAudioObjectLocator, IPlayListIOService playListIOService) {
     	this.playListTable = playListTable;
     	this.frame = frame;
     	this.playListHandler = playListHandler;
@@ -88,7 +90,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
     	this.audioObjectComparator = audioObjectComparator;
     	this.localAudioObjectLocator = localAudioObjectLocator;
     	this.playListIOService = playListIOService;
-        new PlayListToDeviceDragAndDropListener(navigationHandler, deviceHandler);
+        new PlayListToDeviceDragAndDropListener(deviceNavigationView, deviceHandler);
 	}
     
     @Override
