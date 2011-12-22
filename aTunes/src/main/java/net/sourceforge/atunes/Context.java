@@ -49,7 +49,7 @@ public final class Context {
 				"/settings/spring/gui.player.xml", 
 				"/settings/spring/handlers.xml", 
 				"/settings/spring/lookandfeel.xml", 
-				"/settings/spring/navigationviews.xml", 
+				"/settings/spring/navigator.xml", 
 				"/settings/spring/os.xml", 
 				"/settings/spring/player.xml", 
 				"/settings/spring/playlist.xml",

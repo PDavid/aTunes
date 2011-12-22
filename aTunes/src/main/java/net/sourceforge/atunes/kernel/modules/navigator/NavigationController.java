@@ -80,7 +80,7 @@ import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.Logger;
 
-final class NavigationController implements IAudioFilesRemovedListener, IController {
+public final class NavigationController implements IAudioFilesRemovedListener, IController {
 
     private final class ExtendedToolTipActionListener implements ActionListener {
     	
@@ -176,32 +176,91 @@ final class NavigationController implements IAudioFilesRemovedListener, IControl
     
     private ITagHandler tagHandler;
     
+    private IRepositoryHandler repositoryHandler;
+    
     /**
-     * Instantiates a new navigation controller.
-     * @param treePanel
-     * @param navigationTable
-     * @param state
-     * @param navigationHandler
-     * @param taskService
-     * @param lookAndFeelManager
      * @param repositoryHandler
-     * @param filterHandler
-     * @param audioObjectImageLocator
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+    
+    /**
      * @param tagHandler
      */
-    NavigationController(INavigationTreePanel treePanel, ITable navigationTable, IState state, INavigationHandler navigationHandler, ITaskService taskService, ILookAndFeelManager lookAndFeelManager, IRepositoryHandler repositoryHandler, IFilterHandler filterHandler, IAudioObjectImageLocator audioObjectImageLocator, ITagHandler tagHandler) {
-        this.navigationTreePanel = treePanel;
-        this.navigationTable = navigationTable;
-        this.state = state;
-        this.navigationHandler = navigationHandler;
-        this.taskService = taskService;
-        this.lookAndFeelManager = lookAndFeelManager;
-        this.filterHandler = filterHandler;
-        this.audioObjectImageLocator = audioObjectImageLocator;
-        this.tagHandler = tagHandler;
+    public void setTagHandler(ITagHandler tagHandler) {
+		this.tagHandler = tagHandler;
+	}
+    
+    /**
+     * @param navigationTreePanel
+     */
+    public void setNavigationTreePanel(INavigationTreePanel navigationTreePanel) {
+		this.navigationTreePanel = navigationTreePanel;
+	}
+    
+    /**
+     * @param navigationTable
+     */
+    public void setNavigationTable(ITable navigationTable) {
+		this.navigationTable = navigationTable;
+	}
+    
+    /**
+     * @param state
+     */
+    public void setState(IState state) {
+		this.state = state;
+	}
+    
+    /**
+     * @param navigationHandler
+     */
+    public void setNavigationHandler(INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+    
+    /**
+     * @param taskService
+     */
+    public void setTaskService(ITaskService taskService) {
+		this.taskService = taskService;
+	}
+    
+    /**
+     * @param lookAndFeelManager
+     */
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+    
+    /**
+     * @param filterHandler
+     */
+    public void setFilterHandler(IFilterHandler filterHandler) {
+		this.filterHandler = filterHandler;
+	}
+    
+    /**
+     * @param audioObjectImageLocator
+     */
+    public void setAudioObjectImageLocator(IAudioObjectImageLocator audioObjectImageLocator) {
+		this.audioObjectImageLocator = audioObjectImageLocator;
+	}
+    
+    /**
+     * @param navigatorColumnSet
+     */
+    public void setNavigatorColumnSet(IColumnSet navigatorColumnSet) {
+		this.navigatorColumnSet = navigatorColumnSet;
+	}
+
+    /**
+     * Initializes controller 
+     */
+    public void initialize() {
         addBindings();
         repositoryHandler.addAudioFilesRemovedListener(this);
-        this.navigatorColumnSet = (IColumnSet) Context.getBean("navigatorColumnSet");
     }
 
     protected INavigationTreePanel getNavigationTreePanel() {

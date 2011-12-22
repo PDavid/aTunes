@@ -4,6 +4,11 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
 
 	default-autowire="byName" default-lazy-init="true">
+	
+	<bean id="navigationController" class="net.sourceforge.atunes.kernel.modules.navigator.NavigationController" init-method="initialize" scope="prototype"/>
+	
+	
+	
 
 	<bean id="artistSorter" class="net.sourceforge.atunes.kernel.modules.navigator.ArtistSorter"/>
 	<bean id="albumSorter" class="net.sourceforge.atunes.kernel.modules.navigator.AlbumSorter"/>

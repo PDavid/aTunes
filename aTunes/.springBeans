@@ -9,7 +9,6 @@
 	<configs>
 		<config>src/main/resources/settings/spring/context.xml</config>
 		<config>src/main/resources/settings/spring/columnsets.xml</config>
-		<config>src/main/resources/settings/spring/navigationviews.xml</config>
 		<config>src/main/resources/settings/spring/treecelldecorators.xml</config>
 		<config>src/main/resources/settings/spring/treegenerators.xml</config>
 		<config>src/main/resources/settings/spring/webservices.xml</config>
@@ -30,6 +29,7 @@
 		<config>src/main/resources/settings/spring/device.xml</config>
 		<config>src/main/resources/settings/spring/process.xml</config>
 		<config>src/main/resources/settings/spring/playlist.xml</config>
+		<config>src/main/resources/settings/spring/navigator.xml</config>
 	</configs>
 	<configSets>
 		<configSet>
@@ -39,7 +39,6 @@
 			<configs>
 				<config>src/main/resources/settings/spring/columnsets.xml</config>
 				<config>src/main/resources/settings/spring/context.xml</config>
-				<config>src/main/resources/settings/spring/navigationviews.xml</config>
 				<config>src/main/resources/settings/spring/treecelldecorators.xml</config>
 				<config>src/main/resources/settings/spring/treegenerators.xml</config>
 				<config>src/main/resources/settings/spring/webservices.xml</config>
@@ -60,6 +59,7 @@
 				<config>src/main/resources/settings/spring/device.xml</config>
 				<config>src/main/resources/settings/spring/process.xml</config>
 				<config>src/main/resources/settings/spring/playlist.xml</config>
+				<config>src/main/resources/settings/spring/navigator.xml</config>
 			</configs>
 		</configSet>
 	</configSets>

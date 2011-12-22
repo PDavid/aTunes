@@ -33,21 +33,15 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.modules.draganddrop.TreeNavigationTransferHandler;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IFilterHandler;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
-import net.sourceforge.atunes.model.INavigationTreePanel;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IPluginsHandler;
-import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITable;
-import net.sourceforge.atunes.model.ITagHandler;
-import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -108,16 +102,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 	private IFilterHandler filterHandler;
 	
 	private ITable navigationTable;
-	
-	private IAudioObjectImageLocator audioObjectImageLocator;
-	
-	/**
-	 * @param audioObjectImageLocator
-	 */
-	public void setAudioObjectImageLocator(IAudioObjectImageLocator audioObjectImageLocator) {
-		this.audioObjectImageLocator = audioObjectImageLocator;
-	}
-	
+
 	/**
 	 * @param navigationTable
 	 */
@@ -246,9 +231,9 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
      * @return the navigation controller
      */
     private NavigationController getNavigationController() {
-        if (navigationController == null) {
-            navigationController = new NavigationController(getBean(INavigationTreePanel.class), (ITable)getBean("navigationTable"), getState(), this, getBean(ITaskService.class), getBean(ILookAndFeelManager.class), getBean(IRepositoryHandler.class), getBean(IFilterHandler.class), audioObjectImageLocator, getBean(ITagHandler.class));
-        }
+    	if (navigationController == null) {
+    		navigationController = getBean(NavigationController.class);
+    	}
         return navigationController;
     }
 
