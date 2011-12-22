@@ -34,6 +34,8 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 public class Cdda2wavScanBus {
 	
+	private static final String PROCESS_EXECUTION_CAUSED_EXCEPTION = "Process execution caused exception ";
+
 	private String converterCommand;
 
 	private IOSManager osManager;
@@ -112,10 +114,10 @@ public class Cdda2wavScanBus {
 
                 Logger.info(StringUtils.getString("Found ", devices.size(), " devices with --device method"));
             } catch (IOException e) {
-                Logger.error(StringUtils.getString("Process execution caused exception ", e));
+                Logger.error(StringUtils.getString(PROCESS_EXECUTION_CAUSED_EXCEPTION, e));
                 return null;
             } catch (InterruptedException e) {
-                Logger.error(StringUtils.getString("Process execution caused exception ", e));
+                Logger.error(StringUtils.getString(PROCESS_EXECUTION_CAUSED_EXCEPTION, e));
                 return null;
             } finally {
                 ClosingUtils.close(stdInput);
@@ -210,14 +212,14 @@ public class Cdda2wavScanBus {
 		            // Workaround: Neither of this solutions work on all machines, but first one usually throws an exception
 		            // so we know we should try the second one.
 		            try {
-		                id = line.substring(0, line.indexOf("\t"));
+		                id = line.substring(0, line.indexOf('\t'));
 		                id = id.replace("\t", "");
 		            } catch (Exception e) {
 		                id = line.substring(0, line.indexOf(' '));
 		                id = id.replace(" ", "");
 		            }
 		        } else {
-		            id = line.substring(0, line.indexOf("\t"));
+		            id = line.substring(0, line.indexOf('\t'));
 		            id = id.replace("\t", "");
 		        }
 
@@ -262,31 +264,7 @@ public class Cdda2wavScanBus {
     			stdInput = new BufferedReader(new InputStreamReader(getProcess().getInputStream()));
     		}
 
-    		// Read the output from the command
-    		String s = null;
-    		while ((s = stdInput.readLine()) != null) {
-    			if (s.contains("CD-ROM")) {
-    				String line = s.trim();
-    				String id = null;
-    				// Icedax and cdda2wav seem to behave differently
-    				if (osManager.isLinux() && !converterCommand.equals(Cdda2wavConstants.ICEDAX_COMMAND_STRING)) {
-    					// Workaround: Neither of this solutions work on all machines, but first one usually throws an exception
-    					// so we know we should try the second one.
-    					try {
-    						id = line.substring(0, line.indexOf("\t"));
-    						id = id.replace("\t", "");
-    					} catch (Exception e) {
-    						id = line.substring(0, line.indexOf(' '));
-    						id = id.replace(" ", "");
-    					}
-    				} else {
-    					id = line.substring(0, line.indexOf("\t"));
-    					id = id.replace("\t", "");
-    				}
-    				devices.add(id);
-    				ata = true;
-    			}
-    		}
+    		readATAScanOutput(devices, stdInput);
 
     		int code = getProcess().waitFor();
     		if (code != 0) {
@@ -296,16 +274,49 @@ public class Cdda2wavScanBus {
     		}
     		Logger.info(StringUtils.getString("Found ", devices.size(), " devices with '-scanbus dev=ATA' method"));
     	} catch (IOException e) {
-    		Logger.error(StringUtils.getString("Process execution caused exception ", e));
+    		Logger.error(StringUtils.getString(PROCESS_EXECUTION_CAUSED_EXCEPTION, e));
     		return null;
     	} catch (InterruptedException e) {
-    		Logger.error(StringUtils.getString("Process execution caused exception ", e));
+    		Logger.error(StringUtils.getString(PROCESS_EXECUTION_CAUSED_EXCEPTION, e));
     		return null;
     	} finally {
     		ClosingUtils.close(stdInput);
     	}
     	return devices;
     }
+
+	/**
+	 * @param devices
+	 * @param stdInput
+	 * @throws IOException
+	 */
+	private void readATAScanOutput(List<String> devices, BufferedReader stdInput) throws IOException {
+		// Read the output from the command
+		String s = null;
+		while ((s = stdInput.readLine()) != null) {
+			if (s.contains("CD-ROM")) {
+				String line = s.trim();
+				String id = null;
+				// Icedax and cdda2wav seem to behave differently
+				if (osManager.isLinux() && !converterCommand.equals(Cdda2wavConstants.ICEDAX_COMMAND_STRING)) {
+					// Workaround: Neither of this solutions work on all machines, but first one usually throws an exception
+					// so we know we should try the second one.
+					try {
+						id = line.substring(0, line.indexOf('\t'));
+						id = id.replace("\t", "");
+					} catch (Exception e) {
+						id = line.substring(0, line.indexOf(' '));
+						id = id.replace(" ", "");
+					}
+				} else {
+					id = line.substring(0, line.indexOf('\t'));
+					id = id.replace("\t", "");
+				}
+				devices.add(id);
+				ata = true;
+			}
+		}
+	}
     
     /**
      * @param process

@@ -91,7 +91,7 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
 				}
 
 				@Override
-				protected List<CheckNode> doInBackground() throws Exception {
+				protected List<CheckNode> doInBackground() {
 
 				    List<CheckNode> result = new ArrayList<CheckNode>();
 
@@ -198,7 +198,7 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
 		}
 
 		@Override
-		protected CheckNode doInBackground() throws Exception {
+		protected CheckNode doInBackground() {
 		    File[] roots = fsView.getRoots();
 
 		    CheckNode root = new CheckNode();
@@ -358,11 +358,11 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
             return icon;
         }
 
-        public void setIcon(Icon icon) {
+        public final void setIcon(Icon icon) {
             this.icon = icon;
         }
 
-        public void setDir(Directory dir) {
+        public final void setDir(Directory dir) {
             this.dir = dir;
         }
 
@@ -382,7 +382,7 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
 			@Override
 			public JComponent getComponent(JComponent superComponent, JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
 				JCheckBox check = new JCheckBox();
-	            JLabel label = new JLabel();
+	            JLabel labelComponent = new JLabel();
 
 			    String stringValue = value.toString();
 			    setEnabled(tree.isEnabled());
@@ -390,37 +390,37 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
 			    	check.setIcon(null);
 			        check.setSelected(((CheckNode) value).isSelected());
 			        check.setEnabled(((CheckNode) value).isEnabled());
-			        label.setFont(tree.getFont());
-			        label.setText(stringValue);
-			        label.setForeground(superComponent.getForeground());
+			        labelComponent.setFont(tree.getFont());
+			        labelComponent.setText(stringValue);
+			        labelComponent.setForeground(superComponent.getForeground());
 			        if (((CheckNode) value).getUserObject() instanceof Directory) {
 			            Directory content = (Directory) ((CheckNode) value).getUserObject();
-			            label.setIcon(((CheckNode) value).getIcon());
+			            labelComponent.setIcon(((CheckNode) value).getIcon());
 			            if (isInPathOfSelectedFolders(content.getFile()) || ((CheckNode) value).isSelected()) {
-			                label.setFont(label.getFont().deriveFont(Font.BOLD));
+			                labelComponent.setFont(labelComponent.getFont().deriveFont(Font.BOLD));
 			            }
 			        }
 			    } else if (value instanceof DefaultMutableTreeNode) {
 			        check.setEnabled(false);
 			        check.setSelected(false);
-			        label.setText(stringValue);
-			        label.setIcon(null);
-			        label.setFont(tree.getFont());
-			        label.setForeground(superComponent.getForeground());
+			        labelComponent.setText(stringValue);
+			        labelComponent.setIcon(null);
+			        labelComponent.setFont(tree.getFont());
+			        labelComponent.setForeground(superComponent.getForeground());
 			    }
 			    
 			    check.setOpaque(false);
-			    label.setOpaque(false);
+			    labelComponent.setOpaque(false);
 			    
 			    JPanel panel = new JPanel(new BorderLayout());
 			    panel.add(check, BorderLayout.WEST);
-			    panel.add(label, BorderLayout.CENTER);
+			    panel.add(labelComponent, BorderLayout.CENTER);
 			    
 	        	panel.setOpaque(isSelected);
 	        	if (isSelected) {
 	        		panel.setBackground(UIManager.getColor("Tree.selectionBackground"));
 	        		panel.setForeground(UIManager.getColor("Tree.selectionForeground"));
-	        		label.setForeground(UIManager.getColor("Tree.selectionForeground"));
+	        		labelComponent.setForeground(UIManager.getColor("Tree.selectionForeground"));
 	        	}
 
 			    return panel;
@@ -476,7 +476,7 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
             return displayName;
         }
 
-        public void setFile(File file) {
+        public final void setFile(File file) {
             this.file = file;
         }
 

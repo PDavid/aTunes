@@ -83,6 +83,7 @@ import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
+import net.sourceforge.atunes.utils.Logger;
 
 public final class FullScreenWindow extends AbstractCustomWindow {
 
@@ -308,9 +309,9 @@ public final class FullScreenWindow extends AbstractCustomWindow {
     void setBackground(File file) {
         try {
             background = ImageIO.read(file);
-            FullScreenWindow.this.state.setFullScreenBackground(file.getAbsolutePath());
+            state.setFullScreenBackground(file.getAbsolutePath());
         } catch (IOException e) {
-            e.printStackTrace();
+        	Logger.error(e);
         }
     }
 
@@ -319,28 +320,11 @@ public final class FullScreenWindow extends AbstractCustomWindow {
      * @param lookAndFeelManager 
      */
     private void setContent(ILookAndFeelManager lookAndFeelManager) {
-        final JPanel panel = new JPanel(new BorderLayout()) {
-            private static final long serialVersionUID = 109708757849271173L;
-
-            @Override
-            public void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                if (background == null && g instanceof Graphics2D) {
-                    Graphics2D g2d = (Graphics2D) g;
-                    g2d.setPaint(new GradientPaint(0, 0, Color.BLACK, 0, this.getHeight(), Color.BLACK));
-                    g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
-                } else {
-                    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-                    g.drawImage(ImageUtils.scaleBufferedImageBicubic(background, screenSize.width, screenSize.height), 0, 0, this);
-                }
-            }
-        };
-        panel.setBackground(Color.black);
+        final JPanel panel = getPanel();
         add(panel);
 
         options = new JPopupMenu(I18nUtils.getString("OPTIONS"));
         options.addKeyListener(keyAdapter);
-        options.addMouseListener(clickListener);
 
         panel.addMouseListener(showMenuListener);
 
@@ -348,23 +332,8 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 
         selectBackground.addActionListener(new SelectBackgroundActionListener());
 
-        JMenuItem removeBackground = new JMenuItem(I18nUtils.getString("REMOVE_BACKGROUND"));
-        removeBackground.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                background = null;
-                FullScreenWindow.this.state.setFullScreenBackground(null);
-                FullScreenWindow.this.invalidate();
-                FullScreenWindow.this.repaint();
-            }
-        });
-        JMenuItem exitFullScreen = new JMenuItem(I18nUtils.getString("CLOSE"));
-        exitFullScreen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-            }
-        });
+        JMenuItem removeBackground = getRemoveBackgroundMenuItem();
+        JMenuItem exitFullScreen = getExitFullScreenMenuItem();
 
         options.add(selectBackground);
         options.add(removeBackground);
@@ -378,20 +347,14 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         muteButton.setText("");
         volumeSlider = Context.getBean("volumeSlider", VolumeSlider.class);
 
-        previousButton.addMouseListener(clickListener);
-        playButton.addMouseListener(clickListener);
-        stopButton.addMouseListener(clickListener);
-        nextButton.addMouseListener(clickListener);
-        muteButton.addMouseListener(clickListener);
-        volumeSlider.addMouseListener(clickListener);
-
         covers = new CoverFlow();
         Dimension coverSize = new Dimension(GuiUtils.getDeviceWidth(), GuiUtils.getDeviceHeight() * 5 / 7);
         covers.setMinimumSize(coverSize);
         covers.setMaximumSize(coverSize);
         covers.setPreferredSize(coverSize);
 
-        covers.addMouseListener(clickListener);
+        setClickListener(previousButton, stopButton, nextButton, muteButton);
+
         covers.addMouseListener(showMenuListener);
         covers.addMouseMotionListener(moveListener);
 
@@ -446,8 +409,80 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 
         panel.add(covers, BorderLayout.CENTER);
         panel.add(textAndControlsPanel, BorderLayout.SOUTH);
-
     }
+
+	/**
+	 * @param previousButton
+	 * @param stopButton
+	 * @param nextButton
+	 * @param muteButton
+	 */
+	private void setClickListener(PreviousButton previousButton,
+			StopButton stopButton, NextButton nextButton, MuteButton muteButton) {
+		covers.addMouseListener(clickListener);
+        options.addMouseListener(clickListener);
+        previousButton.addMouseListener(clickListener);
+        playButton.addMouseListener(clickListener);
+        stopButton.addMouseListener(clickListener);
+        nextButton.addMouseListener(clickListener);
+        muteButton.addMouseListener(clickListener);
+        volumeSlider.addMouseListener(clickListener);
+	}
+
+	/**
+	 * @return
+	 */
+	private JMenuItem getExitFullScreenMenuItem() {
+		JMenuItem exitFullScreen = new JMenuItem(I18nUtils.getString("CLOSE"));
+        exitFullScreen.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+            }
+        });
+		return exitFullScreen;
+	}
+
+	/**
+	 * @return
+	 */
+	private JMenuItem getRemoveBackgroundMenuItem() {
+		JMenuItem removeBackground = new JMenuItem(I18nUtils.getString("REMOVE_BACKGROUND"));
+        removeBackground.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                background = null;
+                FullScreenWindow.this.state.setFullScreenBackground(null);
+                FullScreenWindow.this.invalidate();
+                FullScreenWindow.this.repaint();
+            }
+        });
+		return removeBackground;
+	}
+
+	/**
+	 * @return
+	 */
+	private JPanel getPanel() {
+		final JPanel panel = new JPanel(new BorderLayout()) {
+            private static final long serialVersionUID = 109708757849271173L;
+
+            @Override
+            public void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (background == null && g instanceof Graphics2D) {
+                    Graphics2D g2d = (Graphics2D) g;
+                    g2d.setPaint(new GradientPaint(0, 0, Color.BLACK, 0, this.getHeight(), Color.BLACK));
+                    g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
+                } else {
+                    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                    g.drawImage(ImageUtils.scaleBufferedImageBicubic(background, screenSize.width, screenSize.height), 0, 0, this);
+                }
+            }
+        };
+        panel.setBackground(Color.black);
+		return panel;
+	}
 
     /**
      * Sets the full screen.
