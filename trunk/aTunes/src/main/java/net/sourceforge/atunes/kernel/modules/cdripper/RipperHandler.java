@@ -41,7 +41,6 @@ import net.sourceforge.atunes.kernel.actions.RipCDAction;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IRipperHandler;
@@ -428,7 +427,7 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
         SwingUtilities.invokeLater(new Runnable() {
         	@Override
         	public void run() {
-                indeterminateProgressDialog = getBean(IIndeterminateProgressDialogFactory.class).newDialog(getFrame(), getBean(ILookAndFeelManager.class));
+                indeterminateProgressDialog = getBean(IIndeterminateProgressDialogFactory.class).newDialog();
                 indeterminateProgressDialog.setTitle(I18nUtils.getString("RIP_CD"));
                 indeterminateProgressDialog.showDialog();
         	}

@@ -30,10 +30,8 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectDuplicateFinder;
 import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
-import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -57,10 +55,6 @@ public class RemoveDuplicatesFromPlayListAction extends CustomAbstractAction {
     
 	private IIndeterminateProgressDialog dialog;
 
-	private IFrame frame;
-	
-	private ILookAndFeelManager lookAndFeelManager;
-	
 	private IAudioObjectDuplicateFinder audioObjectDuplicateFinder;
 	
 	/**
@@ -68,20 +62,6 @@ public class RemoveDuplicatesFromPlayListAction extends CustomAbstractAction {
 	 */
 	public void setAudioObjectDuplicateFinder(IAudioObjectDuplicateFinder audioObjectDuplicateFinder) {
 		this.audioObjectDuplicateFinder = audioObjectDuplicateFinder;
-	}
-	
-	/**
-	 * @param frame
-	 */
-	public void setFrame(IFrame frame) {
-		this.frame = frame;
-	}
-	
-	/**
-	 * @param lookAndFeelManager
-	 */
-	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
 	}
 	
     /**
@@ -116,7 +96,7 @@ public class RemoveDuplicatesFromPlayListAction extends CustomAbstractAction {
         worker.setActionsAfterBackgroundStarted(new Runnable() {
         	@Override
         	public void run() {
-        		dialog = indeterminateProgressDialogFactory.newDialog(frame, lookAndFeelManager);
+        		dialog = indeterminateProgressDialogFactory.newDialog();
         		dialog.showDialog();
         	}
         });

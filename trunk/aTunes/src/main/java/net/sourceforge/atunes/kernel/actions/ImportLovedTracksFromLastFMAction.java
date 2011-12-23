@@ -32,7 +32,6 @@ import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.ILovedTrack;
 import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -47,8 +46,6 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
 	private IIndeterminateProgressDialog dialog;
 	
 	private IFrame frame;
-	
-	private ILookAndFeelManager lookAndFeelManager;
 	
     private IBackgroundWorkerFactory backgroundWorkerFactory;
     
@@ -78,7 +75,7 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
         worker.setActionsAfterBackgroundStarted(new Runnable() {
         	@Override
         	public void run() {
-        		dialog = indeterminateProgressDialogFactory.newDialog(frame, lookAndFeelManager);
+        		dialog = indeterminateProgressDialogFactory.newDialog();
         		dialog.setTitle(I18nUtils.getString("GETTING_LOVED_TRACKS_FROM_LASTFM"));
         		dialog.showDialog();
         	}
@@ -141,13 +138,6 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
      */
     public void setFrame(IFrame frame) {
 		this.frame = frame;
-	}
-    
-    /**
-     * @param lookAndFeelManager
-     */
-    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
 	}
     
     /**

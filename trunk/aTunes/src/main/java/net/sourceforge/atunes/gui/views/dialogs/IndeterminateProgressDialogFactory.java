@@ -29,14 +29,32 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 public class IndeterminateProgressDialogFactory implements IIndeterminateProgressDialogFactory {
 
+	private IFrame frame;
+	
+	private ILookAndFeelManager lookAndFeelManager;
+	
+	/**
+	 * @param frame
+	 */
+	public void setFrame(IFrame frame) {
+		this.frame = frame;
+	}
+	
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+	
 	@Override
-	public IIndeterminateProgressDialog newDialog(Window parent, ILookAndFeelManager lookAndFeelManager) {
+	public IIndeterminateProgressDialog newDialog(Window parent) {
 		return new IndeterminateProgressDialog(parent, lookAndFeelManager);
 	}
 
 	@Override
-	public IIndeterminateProgressDialog newDialog(IFrame parent, ILookAndFeelManager lookAndFeelManager) {
-		return new IndeterminateProgressDialog(parent, lookAndFeelManager);
+	public IIndeterminateProgressDialog newDialog() {
+		return new IndeterminateProgressDialog(frame, lookAndFeelManager);
 	}
 
 	

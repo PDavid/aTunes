@@ -58,8 +58,6 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
     
     private StateChangeListeners stateChangeListeners;
 
-	private ILookAndFeelManager lookAndFeelManager;
-
     /**
      * Instantiates a new edits the preferences dialog controller.
      * @param dialog
@@ -85,7 +83,6 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
     		INetworkHandler networkHandler, IColorBeanFactory colorBeanFactory, IFontBeanFactory fontBeanFactory, ILocaleBeanFactory localeBeanFactory, IProxyBeanFactory proxyBeanFactory) {
         super(dialog, state);
         this.stateChangeListeners = stateChangeListeners;
-        this.lookAndFeelManager = lookAndFeelManager;
         panels = new ArrayList<AbstractPreferencesPanel>();
         panels.add(new GeneralPanel(osManager, lookAndFeelManager, colorBeanFactory, fontBeanFactory, localeBeanFactory));
         panels.add(new RepositoryPanel()); 
@@ -157,7 +154,7 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
      * @return
      */
     void validatePreferences() throws PreferencesValidationException {
-		final IIndeterminateProgressDialog dialog = Context.getBean(IIndeterminateProgressDialogFactory.class).newDialog(getComponentControlled(), lookAndFeelManager);
+		final IIndeterminateProgressDialog dialog = Context.getBean(IIndeterminateProgressDialogFactory.class).newDialog(getComponentControlled());
 
     	final SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
     		
