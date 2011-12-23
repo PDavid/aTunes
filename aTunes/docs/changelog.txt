@@ -5,6 +5,7 @@ aTunes 2.2.0
 - Removed external pictures support, only pictures exported with application are supported
 - Improved performance of Full Screen Mode
 - Use dynamic heap size in Windows (5% of free memory for initial heap space, 10% for maximum heap space)
+- New action to remove duplicates from play list
 
 aTunes 2.1.1
 ------------

@@ -43,6 +43,7 @@ import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectComparator;
+import net.sourceforge.atunes.model.IAudioObjectDuplicateFinder;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
@@ -161,6 +162,15 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	private ILocalAudioObjectValidator localAudioObjectValidator;
 	
 	private INavigationHandler navigationHandler;
+
+	private IAudioObjectDuplicateFinder audioObjectDuplicateFinder;
+	
+	/**
+	 * @param audioObjectDuplicateFinder
+	 */
+	public void setAudioObjectDuplicateFinder(IAudioObjectDuplicateFinder audioObjectDuplicateFinder) {
+		this.audioObjectDuplicateFinder = audioObjectDuplicateFinder;
+	}
 	
 	/**
 	 * @param deviceNavigationView
@@ -1454,8 +1464,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 		this.playListTable = playListTable;
 	}
     
-    public void setLocalAudioObjectFactory(
-			ILocalAudioObjectFactory localAudioObjectFactory) {
+    public void setLocalAudioObjectFactory(ILocalAudioObjectFactory localAudioObjectFactory) {
 		this.localAudioObjectFactory = localAudioObjectFactory;
 	}
     
@@ -1465,5 +1474,4 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     public void setAudioObjectComparator(IAudioObjectComparator audioObjectComparator) {
 		this.audioObjectComparator = audioObjectComparator;
 	}
-
 }

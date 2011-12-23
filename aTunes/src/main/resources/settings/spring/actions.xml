@@ -173,6 +173,7 @@
 	<bean id="refreshFolderFromNavigatorAction" class="net.sourceforge.atunes.kernel.actions.RefreshFolderFromNavigatorAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RefreshRadioAction"/>
 	<bean id="refreshRepositoryAction" class="net.sourceforge.atunes.kernel.actions.RefreshRepositoryAction"/>
+	<bean id="removeDuplicatesFromPlayListAction" class="net.sourceforge.atunes.kernel.actions.RemoveDuplicatesFromPlayListAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RemoveFromDiskAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RemoveFromFavoritesAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RemoveFromPlayListAction"/>
