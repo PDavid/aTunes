@@ -34,7 +34,6 @@ import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListObjectFilter;
@@ -59,8 +58,6 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 	private IIndeterminateProgressDialogFactory indeterminateProgressDialogFactory;
 	
 	private IFrame frame;
-	
-	private ILookAndFeelManager lookAndFeelManager;
 	
 	private IMessageDialogFactory messageDialogFactory;
 	
@@ -121,13 +118,9 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 		this.indeterminateProgressDialogFactory = indeterminateProgressDialogFactory;
 	}
 	
-	/**
-	 * @param lookAndFeelManager
-	 */
-	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
-	}
-
+    /**
+     * Default constructor
+     */
     public SynchronizeDeviceWithPlayListAction() {
         super(I18nUtils.getString("SYNCHRONIZE_DEVICE_WITH_PLAYLIST"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SYNCHRONIZE_DEVICE_WITH_PLAYLIST"));
@@ -142,7 +135,7 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
         SwingUtilities.invokeLater(new Runnable() {
         	@Override
         	public void run() {
-        		dialog = indeterminateProgressDialogFactory.newDialog(frame, lookAndFeelManager);
+        		dialog = indeterminateProgressDialogFactory.newDialog();
         		dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
         		dialog.showDialog();
         	}

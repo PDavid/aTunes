@@ -33,11 +33,9 @@ import javax.swing.tree.TreePath;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IConfirmationDialogFactory;
 import net.sourceforge.atunes.model.IFolder;
-import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IOSManager;
@@ -65,10 +63,6 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
 	private IConfirmationDialogFactory confirmationDialogFactory;
 	
 	private IIndeterminateProgressDialogFactory indeterminateProgressDialogFactory;
-	
-	private IFrame frame;
-	
-	private ILookAndFeelManager lookAndFeelManager;
 	
 	private IOSManager osManager;
 	
@@ -130,7 +124,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
         repositoryHandler.remove(new LocalAudioObjectFilter().getLocalAudioObjects(files));
         repositoryHandler.endTransaction();
         
-		dialog = indeterminateProgressDialogFactory.newDialog(frame, lookAndFeelManager);
+		dialog = indeterminateProgressDialogFactory.newDialog();
 		dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
         SwingUtilities.invokeLater(new Runnable() {
         	@Override
@@ -158,7 +152,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
         SwingUtilities.invokeLater(new Runnable() {
         	@Override
         	public void run() {
-        		dialog = indeterminateProgressDialogFactory.newDialog(frame, lookAndFeelManager);
+        		dialog = indeterminateProgressDialogFactory.newDialog();
         		dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
         		dialog.showDialog();
         	}
@@ -267,20 +261,6 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
 	 */
 	public void setIndeterminateProgressDialogFactory(IIndeterminateProgressDialogFactory indeterminateProgressDialogFactory) {
 		this.indeterminateProgressDialogFactory = indeterminateProgressDialogFactory;
-	}
-	
-	/**
-	 * @param frame
-	 */
-	public void setFrame(IFrame frame) {
-		this.frame = frame;
-	}
-	
-	/**
-	 * @param lookAndFeelManager
-	 */
-	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
 	}
 	
 	/**

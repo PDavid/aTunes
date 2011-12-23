@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -34,11 +33,9 @@ import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLovedTrack;
 import net.sourceforge.atunes.model.BackgroundWorkerFactoryMock;
 import net.sourceforge.atunes.model.IFavoritesHandler;
-import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.ILovedTrack;
 import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.IMessageDialogFactory;
@@ -91,7 +88,7 @@ public class ImportLovedTracksFromLastFMActionTest {
 		IFavoritesHandler favoritesHandler = mock(IFavoritesHandler.class);
 		
 		IIndeterminateProgressDialogFactory indeterminateProgressDialogFactory = mock(IIndeterminateProgressDialogFactory.class);
-		when(indeterminateProgressDialogFactory.newDialog(any(IFrame.class), any(ILookAndFeelManager.class))).thenReturn(mock(IIndeterminateProgressDialog.class));
+		when(indeterminateProgressDialogFactory.newDialog()).thenReturn(mock(IIndeterminateProgressDialog.class));
 		
 		IMessageDialogFactory messageDialogFactory = mock(IMessageDialogFactory.class);
 		when(messageDialogFactory.getDialog()).thenReturn(mock(IMessageDialog.class));
