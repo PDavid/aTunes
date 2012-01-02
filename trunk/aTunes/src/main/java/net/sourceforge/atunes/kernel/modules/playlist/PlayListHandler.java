@@ -43,7 +43,6 @@ import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectComparator;
-import net.sourceforge.atunes.model.IAudioObjectDuplicateFinder;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
@@ -71,6 +70,7 @@ import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.ITaskService;
+import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -80,7 +80,11 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class PlayListHandler extends AbstractHandler implements IPlayListHandler {
 
-    /**
+    private static final String SLASH = " / ";
+
+	private static final String PLAYLIST = "PLAYLIST";
+
+	/**
      * The play list counter used when creating new play lists with default
      * name.
      */
@@ -126,12 +130,12 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 
         @Override
         public String getName() {
-            return "PLAYLIST";
+            return PLAYLIST;
         };
 
         @Override
         public String getDescription() {
-            return I18nUtils.getString("PLAYLIST");
+            return I18nUtils.getString(PLAYLIST);
         };
 
         @Override
@@ -163,15 +167,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	
 	private INavigationHandler navigationHandler;
 
-	private IAudioObjectDuplicateFinder audioObjectDuplicateFinder;
-	
-	/**
-	 * @param audioObjectDuplicateFinder
-	 */
-	public void setAudioObjectDuplicateFinder(IAudioObjectDuplicateFinder audioObjectDuplicateFinder) {
-		this.audioObjectDuplicateFinder = audioObjectDuplicateFinder;
-	}
-	
 	/**
 	 * @param deviceNavigationView
 	 */
@@ -376,7 +371,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
      */
     private String getNameForPlaylist(PlayList pl) {
         if (pl == null || pl.getName() == null) {
-            String name = StringUtils.getString(I18nUtils.getString("PLAYLIST"), " ", playListNameCounter++);
+            String name = StringUtils.getString(I18nUtils.getString(PLAYLIST), " ", playListNameCounter++);
             // If any play list already has the same name then call method again
             for (PlayList playList : playLists) {
                 if (playList.getName() != null && name.equalsIgnoreCase(playList.getName().trim())) {
@@ -553,7 +548,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     @Override
 	public void addToPlayList(int location, List<? extends IAudioObject> audioObjects, boolean visible) {
         // If null or empty, nothing to do
-        if (audioObjects == null || audioObjects.isEmpty()) {
+    	if (CollectionUtils.isEmpty(audioObjects)) {
             return;
         }
 
@@ -1442,12 +1437,12 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         int audioObjects = playList.size();
 
         // Check if differenciation is required (needed by some slavic languages)
-        String toolTip = StringUtils.getString(I18nUtils.getString("PLAYLIST"), ": ", audioObjects, " ", I18nUtils.getString("SONGS"), " (",
-        		playList.getLength(), ") ", " - ", audioFiles, " ", I18nUtils.getString("SONGS"), " / ", radios, " ", I18nUtils.getString("RADIOS"),
-        		" / ", podcastFeedEntries, " ", (I18nUtils.getString("PODCAST_ENTRIES_COUNTER").isEmpty() ? I18nUtils.getString("PODCAST_ENTRIES") : I18nUtils.getString("PODCAST_ENTRIES_COUNTER")));
+        String toolTip = StringUtils.getString(I18nUtils.getString(PLAYLIST), ": ", audioObjects, " ", I18nUtils.getString("SONGS"), " (",
+        		playList.getLength(), ") ", " - ", audioFiles, " ", I18nUtils.getString("SONGS"), SLASH, radios, " ", I18nUtils.getString("RADIOS"),
+        		SLASH, podcastFeedEntries, " ", (I18nUtils.getString("PODCAST_ENTRIES_COUNTER").isEmpty() ? I18nUtils.getString("PODCAST_ENTRIES") : I18nUtils.getString("PODCAST_ENTRIES_COUNTER")));
 
         
-        String text = StringUtils.getString(I18nUtils.getString("PLAYLIST"), ": ", audioObjects, " - ", audioFiles, " / ", radios, " / ", podcastFeedEntries);
+        String text = StringUtils.getString(I18nUtils.getString(PLAYLIST), ": ", audioObjects, " - ", audioFiles, SLASH, radios, SLASH, podcastFeedEntries);
 
         getFrame().setRightStatusBarText(text, toolTip);
     }
