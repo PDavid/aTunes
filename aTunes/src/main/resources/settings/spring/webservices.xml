@@ -42,5 +42,6 @@
 	</bean>
 
 	<bean id="youtubeService" class="net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService"/>
+	<bean id="youtubeResultXmlAnalyzer" class="net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeResultXmlAnalyzer"/>
 
 </beans>

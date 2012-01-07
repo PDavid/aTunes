@@ -106,7 +106,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
      * @return the artist names
      */
     public List<String> getArtistNames() {
-        return tableModel.artistNames;
+        return tableModel.getArtistNames();
     }
 
     /**
@@ -133,7 +133,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
      * @return the composer names
      */
     public List<String> getComposerNames() {
-        return tableModel.composerNames;
+        return tableModel.getComposerNames();
     }
 
     /**
@@ -403,7 +403,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
      * @return the track names
      */
     public List<String> getTrackNames() {
-        return tableModel.trackNames;
+        return tableModel.getTrackNames();
     }
 
     /**

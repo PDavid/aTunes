@@ -37,9 +37,9 @@ class CdInfoTableModel extends AbstractTableModel {
     private static final long serialVersionUID = -7577681531593039707L;
 
     private transient CDInfo cdInfo;
-    List<String> trackNames = new ArrayList<String>();
-    List<String> artistNames = new ArrayList<String>();
-    List<String> composerNames = new ArrayList<String>();
+    private List<String> trackNames = new ArrayList<String>();
+    private List<String> artistNames = new ArrayList<String>();
+    private List<String> composerNames = new ArrayList<String>();
     private List<Boolean> tracksSelected;
 
     /**
@@ -193,4 +193,25 @@ class CdInfoTableModel extends AbstractTableModel {
         }
         fireTableCellUpdated(rowIndex, columnIndex);
     }
+    
+    /**
+     * @return
+     */
+    public List<String> getTrackNames() {
+		return trackNames;
+	}
+    
+    /**
+     * @return
+     */
+    public List<String> getComposerNames() {
+		return composerNames;
+	}
+    
+    /**
+     * @return
+     */
+    public List<String> getArtistNames() {
+		return artistNames;
+	}
 }

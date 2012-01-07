@@ -20,25 +20,17 @@
 
 package net.sourceforge.atunes.kernel.modules.webservices.youtube;
 
-import java.awt.Image;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.INetworkHandler;
-import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.UnknownObjectCheck;
 import net.sourceforge.atunes.utils.XMLUtils;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  * Calls the YouTube API
@@ -70,6 +62,15 @@ public final class YoutubeService {
             .toString(MAX_RESULTS), "&start-index=", START_INDEX_WILDCARD);
 
     private INetworkHandler networkHandler;
+    
+    private YoutubeResultXmlAnalyzer youtubeResultXmlAnalyzer;
+    
+    /**
+     * @param youtubeResultXmlAnalyzer
+     */
+    public void setYoutubeResultXmlAnalyzer(YoutubeResultXmlAnalyzer youtubeResultXmlAnalyzer) {
+		this.youtubeResultXmlAnalyzer = youtubeResultXmlAnalyzer;
+	}
 
     /**
      * @param networkHandler
@@ -102,7 +103,7 @@ public final class YoutubeService {
                 return Collections.emptyList();
             } else {
                 // parse xml and construct result structure
-                return analyzeResultXml(startIndex, xml);
+                return youtubeResultXmlAnalyzer.analyzeResultXml(xml);
             }
         } catch (Exception e) {
             Logger.error(e);
@@ -111,62 +112,6 @@ public final class YoutubeService {
         return Collections.emptyList();
     }
 
-    private List<YoutubeResultEntry> analyzeResultXml(int startIndex, Document xml) throws IOException {
-        List<YoutubeResultEntry> result = new ArrayList<YoutubeResultEntry>();
-
-        NodeList entryList = xml.getElementsByTagName("entry");
-        for (int i = 0; i < entryList.getLength(); i++) {
-            Node item = entryList.item(i);
-            if (item instanceof Element) {
-                YoutubeResultEntry entry = new YoutubeResultEntry();
-
-                Element el = (Element) item;
-                Element mediaGroup = (Element) el.getElementsByTagName("media:group").item(0);
-                //get title
-                String title = mediaGroup.getElementsByTagName("media:title").item(0).getTextContent();
-                entry.setName(title);
-                //get url
-                NodeList mediaPlayerList = mediaGroup.getElementsByTagName("media:player");
-                if (mediaPlayerList != null) {
-                    Node mpItem = mediaPlayerList.item(0);
-                    if (mpItem != null) {
-                        String url = ((Element) mpItem).getAttribute("url");
-                        entry.setUrl(url);
-                    }
-                }
-
-                //get image
-                NodeList thumbnails = mediaGroup.getElementsByTagName("media:thumbnail");
-                if (thumbnails != null) {
-                    int index = thumbnails.getLength() / 2;
-                    Node tn = thumbnails.item(index);
-                    if (tn != null) {
-                        String tnUrl = ((Element) tn).getAttribute("url");
-                        Image image = networkHandler.getImage(networkHandler.getConnection(tnUrl));
-                        entry.setImage(ImageUtils.scaleImageBicubic(image, Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT));
-                    }
-                }
-
-                //get duration
-                NodeList durationNodes = mediaGroup.getElementsByTagName("yt:duration");
-                if (durationNodes != null) {
-                    Node durationNode = durationNodes.item(0);
-                    if (durationNode != null) {
-                        String duration = ((Element) durationNode).getAttribute("seconds");
-                        if (duration != null) {
-                            entry.setDuration(StringUtils.seconds2String(Long.parseLong(duration)));
-                        }
-                    }
-                }
-
-                if (entry.getUrl() != null) {
-                    result.add(entry);
-                }
-            }
-        }
-
-        return result;
-    }
 
     /**
      * returns a URL which allows to download the youtube video. The html page
@@ -186,7 +131,7 @@ public final class YoutubeService {
             String substr = response.substring(ind, response.length());
             int start = substr.indexOf(':');
             int end = substr.indexOf("\",");
-            String video_id = substr.substring(start + 3, end);
+            String videoId = substr.substring(start + 3, end);
 
             ind = response.indexOf("\"t\":");
             substr = response.substring(ind, response.length());
@@ -199,8 +144,8 @@ public final class YoutubeService {
              * (does not always work) &fmt=13 = 3GP (mobile phone) &fmt=18 = MP4
              * (normal) &fmt=22 = MP4 (hd)
              */
-            String video_quality = "18";
-            String downloadurl = StringUtils.getString("http://youtube.com/get_video?video_id=", video_id, "&t=", t, "&fmt=", video_quality);
+            String videoQuality = "18";
+            String downloadurl = StringUtils.getString("http://youtube.com/get_video?video_id=", videoId, "&t=", t, "&fmt=", videoQuality);
 
             return downloadurl;
         } catch (Exception e) {

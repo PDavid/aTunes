@@ -198,7 +198,7 @@ public final class FileSelectionDialog extends AbstractCustomDialog implements I
     private static class Directory {
 
         /** The file. */
-        public File file;
+        private File file;
 
         /**
          * Instantiates a new directory.
@@ -224,7 +224,7 @@ public final class FileSelectionDialog extends AbstractCustomDialog implements I
     private static final long serialVersionUID = -1612490779910952274L;
 
     /** The fs view. */
-    static transient FileSystemView fsView = FileSystemView.getFileSystemView();
+    private static transient FileSystemView fsView = FileSystemView.getFileSystemView();
 
     /** The file system tree. */
     private JTree fileSystemTree;
@@ -236,10 +236,10 @@ public final class FileSelectionDialog extends AbstractCustomDialog implements I
     private JLabel selection;
 
     /** The dir only. */
-    boolean directoryOnly;
+    private boolean directoryOnly;
 
     /** The canceled. */
-    boolean canceled = true;
+    private boolean canceled = true;
 
     /** The selected dir. */
     private File selectedDir;
