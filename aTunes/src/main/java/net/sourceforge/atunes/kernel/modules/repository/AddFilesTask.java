@@ -110,7 +110,7 @@ public class AddFilesTask {
 		worker.setBackgroundActions(new Callable<Void>() {
 
 			@Override
-			public Void call() throws Exception {
+			public Void call() {
 				repositoryHandler.startTransaction();
 				repositoryAddService.addToRepository(repository, files);
 				repositoryHandler.endTransaction();
