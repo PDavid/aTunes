@@ -23,12 +23,11 @@ package net.sourceforge.atunes.gui.debug;
 import java.awt.Toolkit;
 import java.lang.ref.WeakReference;
 
-import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JEditorPane;
-import javax.swing.JFrame;
 import javax.swing.RepaintManager;
 import javax.swing.SwingUtilities;
+
+import net.sourceforge.atunes.utils.Logger;
 
 /**
  * <p>
@@ -52,8 +51,6 @@ import javax.swing.SwingUtilities;
  */
 public final class CheckThreadViolationRepaintManager extends RepaintManager {
 
-    /** The test. */
-    private static JButton test;
     // it is recommended to pass the complete check  
     /** The complete check. */
     private boolean completeCheck = true;
@@ -76,54 +73,6 @@ public final class CheckThreadViolationRepaintManager extends RepaintManager {
      */
     public CheckThreadViolationRepaintManager(boolean completeCheck) {
         this.completeCheck = completeCheck;
-    }
-
-    //this test must pass
-    /**
-     * Image update test.
-     */
-    static void imageUpdateTest() {
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JEditorPane editor = new JEditorPane();
-        frame.setContentPane(editor);
-        editor.setContentType("text/html");
-        //it works with no valid image as well 
-        editor.setText("<html><img src=\"file:\\lala.png\"></html>");
-        frame.setSize(300, 200);
-        frame.setVisible(true);
-    }
-
-    /**
-     * Repaint test.
-     */
-    static void repaintTest() {
-        try {
-            SwingUtilities.invokeAndWait(new Runnable() {
-                public void run() {
-                    test = new JButton();
-                    test.setSize(100, 100);
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        // repaint(Rectangle) should be ok
-        test.repaint(test.getBounds());
-        test.repaint(0, 0, 100, 100);
-        test.repaint();
-    }
-
-    /**
-     * Test.
-     */
-    static void test() {
-        JFrame frame = new JFrame("Am I on EDT?");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(new JButton("JButton"));
-        frame.pack();
-        frame.setVisible(true);
-        frame.dispose();
     }
 
     /*
@@ -174,46 +123,34 @@ public final class CheckThreadViolationRepaintManager extends RepaintManager {
                     fromSwing = false;
                 }
             }
-            if (imageUpdate) {
-                //assuming it is java.awt.image.ImageObserver.imageUpdate(...) 
-                //image was asynchronously updated, that's ok 
-                return;
-            }
-            if (repaint && !fromSwing) {
-                //no problems here, since repaint() is thread safe
-                return;
-            }
-            //ignore the last processed component
-            if (lastComponent != null && c == lastComponent.get()) {
-                return;
+            if (checkConditions(c, repaint, fromSwing, imageUpdate)) {
+            	return;
             }
 
             lastComponent = new WeakReference<JComponent>(c);
-            System.out.println("EDT violation detected");
-            System.out.println(c);
+            Logger.error("EDT violation detected");
+            Logger.error(c);
             for (StackTraceElement st : stackTrace) {
-                System.out.println("\tat " + st);
+            	Logger.error("\tat ", st.toString());
             }
             Toolkit.getDefaultToolkit().beep();
         }
     }
 
-    /**
-     * Checks if is complete check.
-     * 
-     * @return true, if is complete check
-     */
-    public boolean isCompleteCheck() {
-        return completeCheck;
-    }
-
-    /**
-     * Sets the complete check.
-     * 
-     * @param completeCheck
-     *            the new complete check
-     */
-    public void setCompleteCheck(boolean completeCheck) {
-        this.completeCheck = completeCheck;
-    }
+	private boolean checkConditions(JComponent c, boolean repaint, boolean fromSwing, boolean imageUpdate) {
+        if (imageUpdate) {
+            //assuming it is java.awt.image.ImageObserver.imageUpdate(...) 
+            //image was asynchronously updated, that's ok 
+            return true;
+        }
+        if (repaint && !fromSwing) {
+            //no problems here, since repaint() is thread safe
+            return true;
+        }
+        //ignore the last processed component
+        if (lastComponent != null && c == lastComponent.get()) {
+            return true;
+        }
+		return false;
+	}
 }
