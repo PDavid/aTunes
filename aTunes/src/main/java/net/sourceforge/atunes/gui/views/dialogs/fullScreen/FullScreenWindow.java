@@ -159,21 +159,21 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 
     private Timer hideMouseTimer;
 
-    private transient MouseListener clickListener = new MouseAdapter() {
+    private MouseListener clickListener = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
             activateTimer();
         }
     };
 
-    private transient MouseMotionListener moveListener = new MouseMotionAdapter() {
+    private MouseMotionListener moveListener = new MouseMotionAdapter() {
         @Override
         public void mouseMoved(MouseEvent e) {
             activateTimer();
         }
     };
 
-    private transient MouseListener showMenuListener = new MouseAdapter() {
+    private MouseListener showMenuListener = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
             if (GuiUtils.isSecondaryMouseButton(e)) {
@@ -358,19 +358,11 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         covers.addMouseListener(showMenuListener);
         covers.addMouseMotionListener(moveListener);
 
-        textLabel = new JLabel();
-        textLabel.setFont(lookAndFeelManager.getCurrentLookAndFeel().getFullScreenLine1Font());
-        textLabel.setForeground(Color.WHITE);
+        textLabel = getTextLabel(lookAndFeelManager);
 
-        textLabel2 = new JLabel();
-        textLabel2.setFont(lookAndFeelManager.getCurrentLookAndFeel().getContextInformationBigFont());
-        textLabel2.setForeground(Color.WHITE);
+        textLabel2 = getTextLabel2(lookAndFeelManager);
 
-        progressSlider = Context.getBean(IProgressSlider.class);
-        ProgressBarSeekListener seekListener = new ProgressBarSeekListener(progressSlider, playerHandler);
-        progressSlider.addMouseListener(seekListener);        
-        progressSlider.addKeyListener(keyAdapter);
-        progressSlider.setOpaque(false);
+        progressSlider = getProgressSlider();
 
         JPanel textAndControlsPanel = new JPanel(new GridLayout(2, 1));
         textAndControlsPanel.setOpaque(false);
@@ -378,7 +370,24 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         JPanel textPanel = new JPanel(new GridBagLayout());
         textPanel.setOpaque(false);
 
-        GridBagConstraints c = new GridBagConstraints();
+        JPanel buttonsPanel = PlayerControlsPanel.getPanelWithPlayerControls(stopButton, previousButton, playButton, nextButton, muteButton, volumeSlider, lookAndFeelManager);
+
+        setPanels(textAndControlsPanel, textPanel, buttonsPanel);
+
+        textAndControlsPanel.add(controlsPanel);
+
+        panel.add(covers, BorderLayout.CENTER);
+        panel.add(textAndControlsPanel, BorderLayout.SOUTH);
+    }
+
+	/**
+	 * @param textAndControlsPanel
+	 * @param textPanel
+	 * @param buttonsPanel
+	 */
+	private void setPanels(JPanel textAndControlsPanel, JPanel textPanel,
+			JPanel buttonsPanel) {
+		GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
         c.weighty = 0;
@@ -397,19 +406,44 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         c.fill = GridBagConstraints.HORIZONTAL;
         controlsPanel.add(progressSlider.getSwingComponent(), c);
 
-        JPanel buttonsPanel = PlayerControlsPanel.getPanelWithPlayerControls(stopButton, previousButton, playButton, nextButton, muteButton, volumeSlider, lookAndFeelManager);
-
         c.gridx = 0;
         c.gridwidth = 3;
         c.gridy = 1;
         c.insets = new Insets(20, 0, 5, 0);
         controlsPanel.add(buttonsPanel, c);
+	}
 
-        textAndControlsPanel.add(controlsPanel);
+	/**
+	 * 
+	 */
+	private IProgressSlider getProgressSlider() {
+		IProgressSlider progressSlider = Context.getBean(IProgressSlider.class);
+        ProgressBarSeekListener seekListener = new ProgressBarSeekListener(progressSlider, playerHandler);
+        progressSlider.addMouseListener(seekListener);        
+        progressSlider.addKeyListener(keyAdapter);
+        progressSlider.setOpaque(false);
+        return progressSlider;
+	}
 
-        panel.add(covers, BorderLayout.CENTER);
-        panel.add(textAndControlsPanel, BorderLayout.SOUTH);
-    }
+	/**
+	 * @param lookAndFeelManager
+	 */
+	private JLabel getTextLabel2(ILookAndFeelManager lookAndFeelManager) {
+		JLabel textLabel2 = new JLabel();
+        textLabel2.setFont(lookAndFeelManager.getCurrentLookAndFeel().getContextInformationBigFont());
+        textLabel2.setForeground(Color.WHITE);
+        return textLabel2;
+	}
+
+	/**
+	 * @param lookAndFeelManager
+	 */
+	private JLabel getTextLabel(ILookAndFeelManager lookAndFeelManager) {
+		JLabel textLabel = new JLabel();
+        textLabel.setFont(lookAndFeelManager.getCurrentLookAndFeel().getFullScreenLine1Font());
+        textLabel.setForeground(Color.WHITE);
+        return textLabel;
+	}
 
 	/**
 	 * @param previousButton

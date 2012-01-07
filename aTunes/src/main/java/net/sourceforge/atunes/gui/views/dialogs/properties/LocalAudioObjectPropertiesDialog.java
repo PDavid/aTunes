@@ -63,7 +63,7 @@ final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertiesDialog
 
     private final class FillPictureSwingWorker extends SwingWorker<ImageIcon, Void> {
         @Override
-        protected ImageIcon doInBackground() throws Exception {
+        protected ImageIcon doInBackground() {
             return audioObjectImageLocator.getImage(file, Constants.DIALOG_IMAGE_SIZE);
         }
 
@@ -169,91 +169,24 @@ final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertiesDialog
 
         pictureLabel = new JLabel();
         pictureLabel.setBorder(Context.getBean(DropShadowBorder.class));
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.gridheight = 4;
-        c.insets = new Insets(10, 10, 5, 10);
-        c.anchor = GridBagConstraints.CENTER;
-        c.fill = GridBagConstraints.NONE;
-        panel.add(pictureLabel, c);
-
         songLabel = new ProviderLabel(songProvider);
         songLabel.setFont(iLookAndFeelManager.getCurrentLookAndFeel().getPropertiesDialogBigFont());
-        c.gridx = 1;
-        c.gridy = 0;
-        c.gridheight = 1;
-        c.weightx = 1;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(songLabel, c);
-
         artistLabel = new ProviderLabel(artistProvider);
         artistLabel.setFont(iLookAndFeelManager.getCurrentLookAndFeel().getPropertiesDialogBigFont());
-        c.gridx = 1;
-        c.gridy = 1;
-        panel.add(artistLabel, c);
-
         albumArtistLabel = new ProviderLabel(albumArtistProvider);
         albumArtistLabel.setFont(iLookAndFeelManager.getCurrentLookAndFeel().getPropertiesDialogBigFont());
-        c.gridx = 1;
-        c.gridy = 2;
-        panel.add(albumArtistLabel, c);
-
         albumLabel = new ProviderLabel(albumProvider);
         albumLabel.setFont(iLookAndFeelManager.getCurrentLookAndFeel().getPropertiesDialogBigFont());
-        c.gridx = 1;
-        c.gridy = 3;
-        panel.add(albumLabel, c);
-
         fileNameLabel = new ProviderLabel(fileNameProvider);
-        c.gridx = 1;
-        c.gridy = 4;
-        panel.add(fileNameLabel, c);
-
         pathLabel = new ProviderLabel(filePathProvider);
-        c.gridx = 1;
-        c.gridy = 5;
-        panel.add(pathLabel, c);
-
         durationLabel = new JLabel();
-        c.gridx = 1;
-        c.gridy = 6;
-        panel.add(durationLabel, c);
-
         trackLabel = new JLabel();
-        c.gridx = 1;
-        c.gridy = 7;
-        panel.add(trackLabel, c);
-
         discNumberLabel = new JLabel();
-        c.gridx = 1;
-        c.gridy = 8;
-        panel.add(discNumberLabel, c);
-
         genreLabel = new JLabel();
-        c.gridx = 1;
-        c.gridy = 9;
-        panel.add(genreLabel, c);
-
         yearLabel = new JLabel();
-        c.gridx = 1;
-        c.gridy = 10;
-        panel.add(yearLabel, c);
-
         composerLabel = new JLabel();
-        c.gridx = 1;
-        c.gridy = 11;
-        panel.add(composerLabel, c);
-
         bitrateLabel = new JLabel();
-        c.gridx = 1;
-        c.gridy = 12;
-        panel.add(bitrateLabel, c);
-
         frequencyLabel = new JLabel();
-        c.gridx = 1;
-        c.gridy = 13;
-        panel.add(frequencyLabel, c);
 
         JButton editTagsButton = new JButton();
         editTagsButton.setText(I18nUtils.getString("EDIT_TAG"));
@@ -264,13 +197,89 @@ final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertiesDialog
             }
         });
 
+        setLayout(panel, editTagsButton);
+
+        add(panel);
+    }
+
+	/**
+	 * @param panel
+	 * @param editTagsButton
+	 */
+	private void setLayout(JPanel panel, JButton editTagsButton) {
+		GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridheight = 4;
+        c.insets = new Insets(10, 10, 5, 10);
+        c.anchor = GridBagConstraints.CENTER;
+        c.fill = GridBagConstraints.NONE;
+        panel.add(pictureLabel, c);
+
+        c.gridx = 1;
+        c.gridy = 0;
+        c.gridheight = 1;
+        c.weightx = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        panel.add(songLabel, c);
+
+        c.gridx = 1;
+        c.gridy = 1;
+        panel.add(artistLabel, c);
+
+        c.gridx = 1;
+        c.gridy = 2;
+        panel.add(albumArtistLabel, c);
+
+        c.gridx = 1;
+        c.gridy = 3;
+        panel.add(albumLabel, c);
+
+        c.gridx = 1;
+        c.gridy = 4;
+        panel.add(fileNameLabel, c);
+
+        c.gridx = 1;
+        c.gridy = 5;
+        panel.add(pathLabel, c);
+
+        c.gridx = 1;
+        c.gridy = 6;
+        panel.add(durationLabel, c);
+
+        c.gridx = 1;
+        c.gridy = 7;
+        panel.add(trackLabel, c);
+
+        c.gridx = 1;
+        c.gridy = 8;
+        panel.add(discNumberLabel, c);
+
+        c.gridx = 1;
+        c.gridy = 9;
+        panel.add(genreLabel, c);
+
+        c.gridx = 1;
+        c.gridy = 10;
+        panel.add(yearLabel, c);
+
+        c.gridx = 1;
+        c.gridy = 11;
+        panel.add(composerLabel, c);
+
+        c.gridx = 1;
+        c.gridy = 12;
+        panel.add(bitrateLabel, c);
+
+        c.gridx = 1;
+        c.gridy = 13;
+        panel.add(frequencyLabel, c);
+
         c.gridx = 0;
         c.gridy = 14;
         c.insets = new Insets(10, 5, 15, 10);
         panel.add(editTagsButton, c);
-
-        add(panel);
-    }
+	}
 
     /**
      * Fill picture.
@@ -336,9 +345,10 @@ final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertiesDialog
         
         public ProviderLabel(ValueProvider provider) {
         	super(new BorderLayout(10, 0)); 
-            if ((this.provider = provider) == null) {
+            if (provider == null) {
                 throw new IllegalArgumentException("provider pointer should not be null");
             }
+            this.provider = provider;
         	label = new JLabel();
         	value = new CustomTextField();
         	value.setEditable(false);

@@ -285,8 +285,8 @@ public class XineEngine extends AbstractPlayerEngine {
 		        xineController.setVolume(vol);
 		        try {
 		            Thread.sleep(25);
-		        } catch (Exception e) {
-		            // Nothing to do
+		        } catch (InterruptedException e) {
+		        	Logger.error(e);
 		        }
 		        i++;
 		    }
@@ -300,7 +300,7 @@ public class XineEngine extends AbstractPlayerEngine {
 
 	private final class DurationUpdaterActionListener implements ActionListener {
 		private final IAudioObject audioObjectToPlay;
-		int prevPosition;
+		private int prevPosition;
 
 		private DurationUpdaterActionListener(IAudioObject audioObjectToPlay) {
 			this.audioObjectToPlay = audioObjectToPlay;
@@ -355,9 +355,9 @@ public class XineEngine extends AbstractPlayerEngine {
     @Override
     public void applyEqualization(float[] values) {
         if (xineController != null && values != null) {
-            values = transformEqualizerValues(values);
-            for (int i = 0, p = 18; i < values.length; i++, p++) {
-                xineController.setParam(p, (int) values[i]);
+            float[] transformedValues = transformEqualizerValues(values);
+            for (int i = 0, p = 18; i < transformedValues.length; i++, p++) {
+                xineController.setParam(p, (int) transformedValues[i]);
             }
         }
     }
@@ -365,7 +365,7 @@ public class XineEngine extends AbstractPlayerEngine {
     @Override
     public float[] transformEqualizerValues(float[] eq) {
         if (eq == null) {
-            return null;
+            return new float[0];
         }
         float[] result = new float[eq.length];
         float one = 100f / 12f;

@@ -62,7 +62,13 @@ import org.commonjukebox.plugins.model.PluginApi;
 @PluginApi
 public final class GuiUtils {
 
-    /** The border color. */
+    private static final String OPAQUE_WINDOWS_NOT_SUPPORTED = "opaque windows not supported: ";
+
+	private static final String SHAPED_WINDOWS_NOT_SUPPORTED = "shaped windows not supported: ";
+
+	private static final String ESCAPE2 = "ESCAPE";
+
+	/** The border color. */
     private static Color borderColor = Color.BLACK;
 
     /** The component orientation. */
@@ -148,8 +154,8 @@ public final class GuiUtils {
                 window.setVisible(false);
             }
         };
-        rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escape, "ESCAPE");
-        rootPane.getActionMap().put("ESCAPE", escapeAction);
+        rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escape, ESCAPE2);
+        rootPane.getActionMap().put(ESCAPE2, escapeAction);
     }
 
     /**
@@ -172,8 +178,8 @@ public final class GuiUtils {
                 window.dispose();
             }
         };
-        rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escape, "ESCAPE");
-        rootPane.getActionMap().put("ESCAPE", disposeAction);
+        rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escape, ESCAPE2);
+        rootPane.getActionMap().put(ESCAPE2, disposeAction);
     }
 
     public static void addAppIcons(Window w) {
@@ -380,19 +386,19 @@ public final class GuiUtils {
                 setWindowShapeMethod.invoke(null, window, mask);
                 // any exception will disable call to method
             } catch (SecurityException e) {
-                Logger.info("shaped windows not supported: ", e.getMessage());
+                Logger.info(SHAPED_WINDOWS_NOT_SUPPORTED, e.getMessage());
                 setWindowShapeMethod = null;
             } catch (IllegalArgumentException e) {
-                Logger.info("shaped windows not supported: ", e.getMessage());
+                Logger.info(SHAPED_WINDOWS_NOT_SUPPORTED, e.getMessage());
                 setWindowShapeMethod = null;
             } catch (IllegalAccessException e) {
-                Logger.info("shaped windows not supported: ", e.getMessage());
+                Logger.info(SHAPED_WINDOWS_NOT_SUPPORTED, e.getMessage());
                 setWindowShapeMethod = null;
             } catch (InvocationTargetException e) {
-                Logger.info("shaped windows not supported: ", e.getMessage());
+                Logger.info(SHAPED_WINDOWS_NOT_SUPPORTED, e.getMessage());
                 setWindowShapeMethod = null;
             } catch (UnsupportedOperationException e) {
-                Logger.info("shaped windows not supported: ", e.getMessage());
+                Logger.info(SHAPED_WINDOWS_NOT_SUPPORTED, e.getMessage());
                 setWindowShapeMethod = null;
             }
         }
@@ -413,19 +419,19 @@ public final class GuiUtils {
                 setWindowOpacityMethod.invoke(null, window, opacity);
                 // any exception will disable call to method
             } catch (SecurityException e) {
-                Logger.info("opaque windows not supported: ", e.getMessage());
+                Logger.info(OPAQUE_WINDOWS_NOT_SUPPORTED, e.getMessage());
                 setWindowOpacityMethod = null;
             } catch (IllegalArgumentException e) {
-                Logger.info("opaque windows not supported: ", e.getMessage());
+                Logger.info(OPAQUE_WINDOWS_NOT_SUPPORTED, e.getMessage());
                 setWindowOpacityMethod = null;
             } catch (IllegalAccessException e) {
-                Logger.info("opaque windows not supported: ", e.getMessage());
+                Logger.info(OPAQUE_WINDOWS_NOT_SUPPORTED, e.getMessage());
                 setWindowOpacityMethod = null;
             } catch (InvocationTargetException e) {
-                Logger.info("opaque windows not supported: ", e.getMessage());
+                Logger.info(OPAQUE_WINDOWS_NOT_SUPPORTED, e.getMessage());
                 setWindowOpacityMethod = null;
             } catch (UnsupportedOperationException e) {
-                Logger.info("opaque windows not supported: ", e.getMessage());
+                Logger.info(OPAQUE_WINDOWS_NOT_SUPPORTED, e.getMessage());
                 setWindowOpacityMethod = null;
             }
         }

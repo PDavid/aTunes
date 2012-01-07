@@ -66,6 +66,9 @@ import net.sourceforge.atunes.utils.XMLSerializerService;
  */
 public final class ApplicationStateHandler extends AbstractHandler implements IStateHandler {
 	
+	private static final String NO_SERIALIZED_FAVORITES_INFO_FOUND = "No serialized favorites info found";
+	private static final String DONE = "DONE (";
+	private static final String SECONDS = " seconds)";
 	/**
 	 * After all handlers have been initialized it's possible to persist play list, not before (to prevent saved play lists to be stored again)
 	 */
@@ -321,7 +324,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
             Timer timer = new Timer();
             timer.start();
             oos.writeObject(repository);
-            Logger.info(StringUtils.getString("DONE (", timer.stop(), " seconds)"));
+            Logger.info(StringUtils.getString(DONE, timer.stop(), SECONDS));
         } catch (IOException e) {
             Logger.error("Could not write serialized repository");
             Logger.debug(e);
@@ -335,7 +338,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
                 Timer timer = new Timer();
                 timer.start();
                 xmlSerializerService.writeObjectToFile(repository, StringUtils.getString(folder, "/", Constants.XML_CACHE_REPOSITORY_NAME));
-                Logger.info(StringUtils.getString("DONE (", timer.stop(), " seconds)"));
+                Logger.info(StringUtils.getString(DONE, timer.stop(), SECONDS));
             } catch (IOException e) {
                 Logger.error("Could not write repository as xml");
                 Logger.debug(e);
@@ -357,7 +360,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
             long t0 = System.currentTimeMillis();
             oos.writeObject(deviceRepository);
             long t1 = System.currentTimeMillis();
-            Logger.info(StringUtils.getString("DONE (", (t1 - t0) / 1000.0, " seconds)"));
+            Logger.info(StringUtils.getString(DONE, (t1 - t0) / 1000.0, SECONDS));
         } catch (IOException e) {
             Logger.error("Could not write serialized device");
             Logger.debug(e);
@@ -377,15 +380,15 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
             Logger.info("Reading serialized favorites cache");
             return (IFavorites) stream.readObject();
         } catch (FileNotFoundException e) {
-            Logger.info("No serialized favorites info found");
+            Logger.info(NO_SERIALIZED_FAVORITES_INFO_FOUND);
         } catch (InvalidClassException e) {
-            Logger.info("No serialized favorites info found");
+            Logger.info(NO_SERIALIZED_FAVORITES_INFO_FOUND);
         } catch (IOException e) {
-            Logger.info("No serialized favorites info found");
+            Logger.info(NO_SERIALIZED_FAVORITES_INFO_FOUND);
         } catch (ClassNotFoundException e) {
-            Logger.info("No serialized favorites info found");
+            Logger.info(NO_SERIALIZED_FAVORITES_INFO_FOUND);
         } catch (ClassCastException e) {
-            Logger.info("No serialized favorites info found");
+            Logger.info(NO_SERIALIZED_FAVORITES_INFO_FOUND);
         } finally {
             ClosingUtils.close(stream);
         }
@@ -552,7 +555,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
             // Check repository integrity
             result.validateRepository();
 
-            Logger.info(StringUtils.getString("Reading repository cache done (", timer.stop(), " seconds)"));
+            Logger.info(StringUtils.getString("Reading repository cache done (", timer.stop(), SECONDS));
             return result;
         } catch (FileNotFoundException e) {
         	Logger.info(e.getMessage());
@@ -584,7 +587,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
                 	repository.validateRepository();
 
                 	long t1 = System.currentTimeMillis();
-                	Logger.info(StringUtils.getString("Reading repository cache done (", (t1 - t0) / 1000.0, " seconds)"));
+                	Logger.info(StringUtils.getString("Reading repository cache done (", (t1 - t0) / 1000.0, SECONDS));
 
                 	return repository;
                 }
@@ -611,7 +614,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
             IRepository result = (IRepository) ois.readObject();
             result.setState(getState());
             long t1 = System.currentTimeMillis();
-            Logger.info(StringUtils.getString("Reading device cache done (", (t1 - t0) / 1000.0, " seconds)"));
+            Logger.info(StringUtils.getString("Reading device cache done (", (t1 - t0) / 1000.0, SECONDS));
             return result;
         } catch (IOException e) {
             Logger.info(StringUtils.getString("No serialized device info found for deviceId: ", deviceId));
