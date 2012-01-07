@@ -56,12 +56,12 @@ public final class EnhancedSingleFrame extends MainSplitPaneLeftSingleFrame {
 
     @Override
     public void showContextPanel(boolean show) {
-        applyVisibility(show, RIGHT_SPLIT_PANE, getContextPanel().getSwingComponent(), rightSplitPane);
+        applyVisibility(show, RIGHT_SPLIT_PANE, getContextPanel().getSwingComponent(), getRightSplitPane());
     }
 
     @Override
     public void showNavigationTree(boolean show) {
-        applyVisibility(show, LEFT_SPLIT_PANE, getNavigationTreePanel().getSwingComponent(), leftSplitPane);
+        applyVisibility(show, LEFT_SPLIT_PANE, getNavigationTreePanel().getSwingComponent(), getLeftSplitPane());
     }
 
     @Override

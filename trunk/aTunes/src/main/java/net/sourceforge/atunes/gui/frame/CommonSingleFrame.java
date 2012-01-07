@@ -51,9 +51,22 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
     protected static final String LEFT_SPLIT_PANE = "1";
     protected static final String RIGHT_SPLIT_PANE = "2";
 
-    protected CustomSplitPane leftSplitPane;
-    protected CustomSplitPane rightSplitPane;
-
+    private CustomSplitPane leftSplitPane;
+    private CustomSplitPane rightSplitPane;
+    
+    /**
+     * @return
+     */
+    protected CustomSplitPane getLeftSplitPane() {
+		return leftSplitPane;
+	}
+    
+    /**
+     * @return
+     */
+    protected CustomSplitPane getRightSplitPane() {
+		return rightSplitPane;
+	}
     
 	@Override
 	protected Container getContentPanel() {
@@ -146,14 +159,15 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
 	 */
 	private void applyHorizontalSplitPaneDividerPosition(JSplitPane splitPane, int location, double relPos) {		
 		// Avoid right component to have a width less than its minimum size
+		int l = location;
 		if (splitPane.getWidth() > 0) {
-			int rightWidth = splitPane.getWidth() - location;
+			int rightWidth = splitPane.getWidth() - l;
 			int rightMinWidth = (int) splitPane.getRightComponent().getMinimumSize().getWidth(); 
 			if (rightMinWidth > rightWidth) {
-				location = location - (rightMinWidth - rightWidth + getLookAndFeelManager().getCurrentLookAndFeel().getSplitPaneDividerSize());
+				l = l - (rightMinWidth - rightWidth + getLookAndFeelManager().getCurrentLookAndFeel().getSplitPaneDividerSize());
 			}
 		}
-		super.applySplitPaneDividerPosition(splitPane, location, relPos);
+		super.applySplitPaneDividerPosition(splitPane, l, relPos);
 	}
 
 	/**
@@ -164,14 +178,15 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
 	 */
 	private void applyVerticalSplitPaneDividerPosition(JSplitPane splitPane, int location, double relPos) {		
 		// Avoid bottom component to have a height less than its minimum size
+		int l = location;
 		if (splitPane.getHeight() > 0) {
-			int rightHeight = splitPane.getHeight() - location;
+			int rightHeight = splitPane.getHeight() - l;
 			int rightMinHeight = (int) splitPane.getRightComponent().getMinimumSize().getHeight(); 
 			if (rightMinHeight > rightHeight) {
-				location = location - (rightMinHeight - rightHeight + getLookAndFeelManager().getCurrentLookAndFeel().getSplitPaneDividerSize());
+				l = l - (rightMinHeight - rightHeight + getLookAndFeelManager().getCurrentLookAndFeel().getSplitPaneDividerSize());
 			}
 		}
-		super.applySplitPaneDividerPosition(splitPane, location, relPos);
+		super.applySplitPaneDividerPosition(splitPane, l, relPos);
 	}
 
 	@Override

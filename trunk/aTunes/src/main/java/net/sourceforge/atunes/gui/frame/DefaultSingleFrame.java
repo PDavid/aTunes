@@ -49,7 +49,7 @@ public final class DefaultSingleFrame extends MainSplitPaneLeftSingleFrame {
 
     @Override
     public void showContextPanel(boolean show) {
-        applyVisibility(show, RIGHT_SPLIT_PANE, getContextPanel().getSwingComponent(), rightSplitPane);
+        applyVisibility(show, RIGHT_SPLIT_PANE, getContextPanel().getSwingComponent(), getRightSplitPane());
     }
 
     @Override
@@ -69,7 +69,7 @@ public final class DefaultSingleFrame extends MainSplitPaneLeftSingleFrame {
      */
     private void checkNavigatorSplitPaneVisibility() {
     	boolean navigatorSplitPaneVisible = getNavigationTreePanel().isVisible() || getNavigationTablePanel().isVisible();
-   		applyVisibility(navigatorSplitPaneVisible, LEFT_SPLIT_PANE, navigatorSplitPane, leftSplitPane);
+   		applyVisibility(navigatorSplitPaneVisible, LEFT_SPLIT_PANE, navigatorSplitPane, getLeftSplitPane());
     }
     
     @Override

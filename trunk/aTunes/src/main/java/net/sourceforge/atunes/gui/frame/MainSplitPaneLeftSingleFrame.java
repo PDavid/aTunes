@@ -43,7 +43,7 @@ public abstract class MainSplitPaneLeftSingleFrame extends CommonSingleFrame {
 	
 	@Override
 	protected JComponent getLeftSplitPaneRightComponent() {
-		return rightSplitPane;
+		return getRightSplitPane();
 	}
 	
 	@Override
@@ -58,7 +58,7 @@ public abstract class MainSplitPaneLeftSingleFrame extends CommonSingleFrame {
 	
 	@Override
 	protected JSplitPane getMainSplitPane() {
-		return leftSplitPane;
+		return getLeftSplitPane();
 	}
 	
 }

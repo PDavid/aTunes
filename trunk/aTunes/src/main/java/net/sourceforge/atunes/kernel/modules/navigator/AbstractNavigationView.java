@@ -283,18 +283,18 @@ public abstract class AbstractNavigationView implements INavigationView {
      */
     private void updateTreePopupMenuItems(JPopupMenu menu, boolean rootSelected, List<DefaultMutableTreeNode> selection) {
         for (Component c : menu.getComponents()) {
-            Action action = null;
+            Action a = null;
             if (c instanceof JMenuItem) {
-                action = ((JMenuItem) c).getAction();
+                a = ((JMenuItem) c).getAction();
             }
 
             if (c instanceof JMenu) {
                 updateTreeMenuItems((JMenu) c, rootSelected, selection);
             }
 
-            if (action instanceof net.sourceforge.atunes.kernel.actions.CustomAbstractAction) {
-                boolean enabled = ((net.sourceforge.atunes.kernel.actions.CustomAbstractAction) action).isEnabledForNavigationTreeSelection(rootSelected, selection);
-                action.setEnabled(enabled);
+            if (a instanceof net.sourceforge.atunes.kernel.actions.CustomAbstractAction) {
+                boolean enabled = ((net.sourceforge.atunes.kernel.actions.CustomAbstractAction) a).isEnabledForNavigationTreeSelection(rootSelected, selection);
+                a.setEnabled(enabled);
             }
         }
     }
@@ -311,15 +311,15 @@ public abstract class AbstractNavigationView implements INavigationView {
             JMenuItem menuItem = menu.getItem(i);
             // For some reason getItem can return null
             if (menuItem != null) {
-                Action action = menuItem.getAction();
+                Action a = menuItem.getAction();
 
                 if (menuItem instanceof JMenu) {
                     updateTreeMenuItems((JMenu) menuItem, rootSelected, selection);
                 }
 
-                if (action instanceof net.sourceforge.atunes.kernel.actions.CustomAbstractAction) {
-                    boolean enabled = ((net.sourceforge.atunes.kernel.actions.CustomAbstractAction) action).isEnabledForNavigationTreeSelection(rootSelected, selection);
-                    action.setEnabled(enabled);
+                if (a instanceof net.sourceforge.atunes.kernel.actions.CustomAbstractAction) {
+                    boolean enabled = ((net.sourceforge.atunes.kernel.actions.CustomAbstractAction) a).isEnabledForNavigationTreeSelection(rootSelected, selection);
+                    a.setEnabled(enabled);
                 }
             }
         }
@@ -341,18 +341,18 @@ public abstract class AbstractNavigationView implements INavigationView {
      */
     private void updateTablePopupMenuItems(JPopupMenu menu, List<IAudioObject> selection) {
         for (Component c : menu.getComponents()) {
-            Action action = null;
+            Action a = null;
             if (c instanceof JMenuItem) {
-                action = ((JMenuItem) c).getAction();
+                a = ((JMenuItem) c).getAction();
             }
 
             if (c instanceof JMenu) {
                 updateTableMenuItems((JMenu) c, selection);
             }
 
-            if (action instanceof net.sourceforge.atunes.kernel.actions.CustomAbstractAction) {
-                boolean enabled = ((net.sourceforge.atunes.kernel.actions.CustomAbstractAction) action).isEnabledForNavigationTableSelection(selection);
-                action.setEnabled(enabled);
+            if (a instanceof net.sourceforge.atunes.kernel.actions.CustomAbstractAction) {
+                boolean enabled = ((net.sourceforge.atunes.kernel.actions.CustomAbstractAction) a).isEnabledForNavigationTableSelection(selection);
+                a.setEnabled(enabled);
             }
         }
     }
@@ -368,15 +368,15 @@ public abstract class AbstractNavigationView implements INavigationView {
             JMenuItem menuItem = menu.getItem(i);
             // For some reason getItem can return null
             if (menuItem != null) {
-                Action action = menuItem.getAction();
+                Action a = menuItem.getAction();
 
                 if (menuItem instanceof JMenu) {
                     updateTableMenuItems((JMenu) menuItem, selection);
                 }
 
-                if (action instanceof net.sourceforge.atunes.kernel.actions.CustomAbstractAction) {
-                    boolean enabled = ((net.sourceforge.atunes.kernel.actions.CustomAbstractAction) action).isEnabledForNavigationTableSelection(selection);
-                    action.setEnabled(enabled);
+                if (a instanceof net.sourceforge.atunes.kernel.actions.CustomAbstractAction) {
+                    boolean enabled = ((net.sourceforge.atunes.kernel.actions.CustomAbstractAction) a).isEnabledForNavigationTableSelection(selection);
+                    a.setEnabled(enabled);
                 }
             }
         }
