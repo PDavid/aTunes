@@ -455,7 +455,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 					// Try to find cover and set in progress dialog
 					coverWorker = new SwingWorker<Image, Void>() {
 						@Override
-						protected Image doInBackground() throws Exception {
+						protected Image doInBackground() {
 							return webServicesHandler.getAlbumImage(artist, album);
 						}
 

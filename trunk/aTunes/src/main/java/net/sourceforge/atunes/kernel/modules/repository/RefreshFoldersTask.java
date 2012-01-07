@@ -105,7 +105,7 @@ public final class RefreshFoldersTask {
 		worker.setBackgroundActions(new Callable<Void>() {
 			
 			@Override
-			public Void call() throws Exception {
+			public Void call() {
 				repositoryHandler.startTransaction();
 				folderRefresher.refreshFolders(repository, folders);
 		        repositoryHandler.endTransaction();

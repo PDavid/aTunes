@@ -84,7 +84,7 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
         worker.setBackgroundActions(new Callable<List<ILocalAudioObject>>() {
 			
 			@Override
-			public List<ILocalAudioObject> call() throws Exception {
+			public List<ILocalAudioObject> call() {
 				return fetchFavorites();
 			}
 		});

@@ -159,7 +159,7 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
     	final SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
     		
     		@Override
-    		protected Void doInBackground() throws Exception {
+    		protected Void doInBackground() throws PreferencesValidationException {
     	        for (AbstractPreferencesPanel p : panels) {
     	            p.validatePanel();
     	        }
