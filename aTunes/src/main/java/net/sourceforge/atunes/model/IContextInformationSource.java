@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.model;
 
-import java.util.Map;
-
 import org.commonjukebox.plugins.model.PluginApi;
 
 /**
@@ -35,12 +33,9 @@ import org.commonjukebox.plugins.model.PluginApi;
 public interface IContextInformationSource {
 
     /**
-     * This method returns a map of objects containing information retrieved
-     * from data source given some parameters
-     * 
-     * @param parameters
-     * @return Map of objects containing information
+     * This method must retrieve and store in object all information needed for given audio object
+     * @param audioObject
      */
-    public Map<String, ?> getData(Map<String, ?> parameters);
+    public void getData(IAudioObject audioObject);
     
 }

@@ -21,14 +21,9 @@
 package net.sourceforge.atunes.kernel.modules.context.artist;
 
 import java.awt.Component;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.context.ContextTable;
-import net.sourceforge.atunes.model.IAlbumInfo;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -37,7 +32,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author alex
  * 
  */
-public class ArtistAlbumsContent extends AbstractContextPanelContent {
+public class ArtistAlbumsContent extends AbstractContextPanelContent<ArtistInfoDataSource> {
 
     private static final long serialVersionUID = -5538266144953409867L;
     private ContextTable albumsTable;
@@ -48,19 +43,8 @@ public class ArtistAlbumsContent extends AbstractContextPanelContent {
     }
 
     @Override
-    public Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
-        Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put(ArtistInfoDataSource.INPUT_AUDIO_OBJECT, audioObject);
-        parameters.put(ArtistInfoDataSource.INPUT_ALBUMS, true);
-        return parameters;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public void updateContentWithDataSourceResult(Map<String, ?> result) {
-        if (result.containsKey(ArtistInfoDataSource.OUTPUT_ALBUMS)) {
-            albumsTable.setModel(new ContextAlbumsTableModel((List<IAlbumInfo>) result.get(ArtistInfoDataSource.OUTPUT_ALBUMS)));
-        }
+    public void updateContentFromDataSource(ArtistInfoDataSource source) {
+        albumsTable.setModel(new ContextAlbumsTableModel(source.getAlbumList().getAlbums()));
     }
 
     @Override

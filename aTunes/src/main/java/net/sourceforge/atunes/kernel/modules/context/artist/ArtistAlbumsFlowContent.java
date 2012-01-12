@@ -23,9 +23,7 @@ package net.sourceforge.atunes.kernel.modules.context.artist;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -36,12 +34,11 @@ import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.ScrollableFlowPanel;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.model.IAlbumInfo;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jdesktop.swingx.border.DropShadowBorder;
 
-public class ArtistAlbumsFlowContent extends AbstractContextPanelContent {
+public class ArtistAlbumsFlowContent extends AbstractContextPanelContent<ArtistInfoDataSource> {
 
     private ScrollableFlowPanel coversPanel;
     
@@ -59,25 +56,14 @@ public class ArtistAlbumsFlowContent extends AbstractContextPanelContent {
     }
 
     @Override
-    public Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
-        Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put(ArtistInfoDataSource.INPUT_AUDIO_OBJECT, audioObject);
-        parameters.put(ArtistInfoDataSource.INPUT_ALBUMS, true);
-        return parameters;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public void updateContentWithDataSourceResult(Map<String, ?> result) {
-        if (result != null && result.containsKey(ArtistInfoDataSource.OUTPUT_ALBUMS)) {
-            List<IAlbumInfo> albums = (List<IAlbumInfo>) result.get(ArtistInfoDataSource.OUTPUT_ALBUMS);
-            for (IAlbumInfo album : albums) {
-                coversPanel.add(getLabelForAlbum(album));
-            }
-            coversPanel.revalidate();
-            coversPanel.repaint();
-            coversPanel.validate();
-        }
+    public void updateContentFromDataSource(ArtistInfoDataSource source) {
+    	List<IAlbumInfo> albums = source.getAlbumList().getAlbums();
+    	for (IAlbumInfo album : albums) {
+    		coversPanel.add(getLabelForAlbum(album));
+    	}
+    	coversPanel.revalidate();
+    	coversPanel.repaint();
+    	coversPanel.validate();
     }
 
     @Override

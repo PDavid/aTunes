@@ -25,8 +25,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -38,7 +36,6 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.CustomTextPane;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 
@@ -50,7 +47,7 @@ import org.jdesktop.swingx.border.DropShadowBorder;
  * @author fleax
  * 
  */
-public class ArtistBasicInfoContent extends AbstractContextPanelContent {
+public class ArtistBasicInfoContent extends AbstractContextPanelContent<ArtistInfoDataSource> {
 
     private static final long serialVersionUID = -5538266144953409867L;
 
@@ -65,32 +62,23 @@ public class ArtistBasicInfoContent extends AbstractContextPanelContent {
     }
 
     @Override
-    public Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
-        Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put(ArtistInfoDataSource.INPUT_AUDIO_OBJECT, audioObject);
-        // Want image too 
-        parameters.put(ArtistInfoDataSource.INPUT_BOOLEAN_IMAGE, true);
-        return parameters;
-    }
-
-    @Override
-    public void updateContentWithDataSourceResult(Map<String, ?> result) {
-        Image artistImage = (Image) result.get(ArtistInfoDataSource.OUTPUT_IMAGE);
+    public void updateContentFromDataSource(ArtistInfoDataSource source) {
+        Image artistImage = source.getArtistImage();
         if (artistImage != null) {
             artistImageLabel.setIcon(ImageUtils.scaleImageBicubic(artistImage, Constants.ARTIST_IMAGE_SIZE, Constants.ARTIST_IMAGE_SIZE));
             artistImageLabel.setBorder(Context.getBean(DropShadowBorder.class));
         }
-        String artistName = (String) result.get(ArtistInfoDataSource.OUTPUT_ARTIST_NAME);
-        String artistUrl = (String) result.get(ArtistInfoDataSource.OUTPUT_ARTIST_URL);
+        String artistName = source.getArtistName();
+        String artistUrl = source.getArtistUrl();
         if (artistName != null && artistUrl != null) {
             artistNameLabel.setText(artistName, artistUrl);
         }
-        String wikiText = (String) result.get(ArtistInfoDataSource.OUTPUT_WIKI_TEXT);
+        String wikiText = source.getWikiText();
         if (wikiText != null) {
             artistWikiAbstract.setText(wikiText);
             artistWikiAbstract.setCaretPosition(0);
         }
-        String wikiUrl = (String) result.get(ArtistInfoDataSource.OUTPUT_WIKI_URL);
+        String wikiUrl = source.getWikiUrl();
         if (wikiUrl != null) {
             artistWikiReadMore.setText(I18nUtils.getString("READ_MORE"), wikiUrl);
         }

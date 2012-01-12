@@ -20,9 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.context.artist;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextInformationSource;
@@ -37,32 +34,23 @@ import net.sourceforge.atunes.utils.UnknownObjectCheck;
  */
 public class ArtistPopularTracksDataSource implements IContextInformationSource {
 
-    /**
-     * Input parameter
-     */
-    public static final String INPUT_AUDIO_OBJECT = "AUDIO_OBJECT";
-
-    /**
-     * Output parameter
-     */
-    public static final String OUTPUT_TRACKS = "TRACKS";
-
     private IWebServicesHandler webServicesHandler;
     
+    private IArtistTopTracks topTracks;
+    
     @Override
-    public Map<String, ?> getData(Map<String, ?> parameters) {
-        Map<String, Object> result = new HashMap<String, Object>();
-        if (parameters.containsKey(INPUT_AUDIO_OBJECT)) {
-            IAudioObject audioObject = (IAudioObject) parameters.get(INPUT_AUDIO_OBJECT);
-            IArtistTopTracks topTracks = getTopTracks(audioObject);
-            if (topTracks != null) {
-            	result.put(OUTPUT_TRACKS, topTracks);
-            }
-        }
-        return result;
+    public void getData(IAudioObject audioObject) {
+    	this.topTracks = getTopTracksData(audioObject);
     }
+    
+    /**
+     * @return
+     */
+    public IArtistTopTracks getTopTracks() {
+		return topTracks;
+	}
 
-    private IArtistTopTracks getTopTracks(IAudioObject audioObject) {
+    private IArtistTopTracks getTopTracksData(IAudioObject audioObject) {
     	if (!UnknownObjectCheck.isUnknownArtist(audioObject.getArtist())) {
     		return webServicesHandler.getTopTracks(audioObject.getArtist());
     	}

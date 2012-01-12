@@ -20,9 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.context.youtube;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeResultEntry;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
@@ -30,34 +28,29 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextInformationSource;
 
 /**
- * Similar artists data source
+ * Youtube data source
  * 
  * @author alex
  * 
  */
 public class YoutubeDataSource implements IContextInformationSource {
 
-    /**
-     * Input parameter
-     */
-    public static final String INPUT_AUDIO_OBJECT = "AUDIO_OBJECT";
-
-    /**
-     * Output parameter
-     */
-    public static final String OUTPUT_VIDEOS = "VIDEOS";
-
     private YoutubeService youtubeService;
     
+    private List<YoutubeResultEntry> videos;
+    
     @Override
-    public Map<String, ?> getData(Map<String, ?> parameters) {
-        Map<String, Object> result = new HashMap<String, Object>();
-        if (parameters.containsKey(INPUT_AUDIO_OBJECT)) {
-            result.put(OUTPUT_VIDEOS, getYoutubeVideos((IAudioObject) parameters.get(INPUT_AUDIO_OBJECT)));
-        }
-        return result;
+    public void getData(IAudioObject audioObject) {
+    	this.videos = getYoutubeVideos(audioObject);
     }
-
+    
+    /**
+     * @return videos found
+     */
+    public List<YoutubeResultEntry> getVideos() {
+		return videos;
+	}
+    
     private List<YoutubeResultEntry> getYoutubeVideos(IAudioObject audioObject) {
         String searchString = youtubeService.getSearchForAudioObject(audioObject);
         if (searchString.length() > 0) {
@@ -66,6 +59,9 @@ public class YoutubeDataSource implements IContextInformationSource {
         return null;
     }
     
+    /**
+     * @param youtubeService
+     */
     public void setYoutubeService(YoutubeService youtubeService) {
 		this.youtubeService = youtubeService;
 	}

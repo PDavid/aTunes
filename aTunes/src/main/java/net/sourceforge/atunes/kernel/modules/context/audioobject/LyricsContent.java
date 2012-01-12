@@ -24,9 +24,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.swing.AbstractAction;
@@ -52,7 +50,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author alex
  * 
  */
-public class LyricsContent extends AbstractContextPanelContent {
+public class LyricsContent extends AbstractContextPanelContent<LyricsDataSource> {
 
     private static final long serialVersionUID = 962229017133714396L;
 
@@ -105,38 +103,28 @@ public class LyricsContent extends AbstractContextPanelContent {
     }
 
     @Override
-    public Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
-        Map<String, IAudioObject> parameters = new HashMap<String, IAudioObject>();
-        parameters.put(LyricsDataSource.INPUT_AUDIO_OBJECT, audioObject);
-        this.audioObject = audioObject;
-        return parameters;
-    }
+    public void updateContentFromDataSource(LyricsDataSource source) {
+    	this.audioObject = source.getAudioObject();
+        ILyrics lyrics = source.getLyrics();
+        lyricsContainer.setText(lyrics != null ? lyrics.getLyrics() : null);
+        lyricsContainer.setCaretPosition(0);
 
-    @Override
-    public void updateContentWithDataSourceResult(Map<String, ?> result) {
-        if (result.containsKey(LyricsDataSource.OUTPUT_LYRIC)) {
-            ILyrics lyrics = (ILyrics) result.get(LyricsDataSource.OUTPUT_LYRIC);
-            lyricsContainer.setText(lyrics != null ? lyrics.getLyrics() : null);
-            lyricsContainer.setCaretPosition(0);
-
-            boolean lyricsNotEmpty = lyrics != null && !lyrics.getLyrics().trim().isEmpty();
-            copyLyrics.setEnabled(lyricsNotEmpty);
-            addLyrics.setEnabled(!lyricsNotEmpty);
-            lyricsSourceUrl = lyrics != null ? lyrics.getUrl() : null;
-            openLyrics.setEnabled(lyricsNotEmpty);
-            if (!lyricsNotEmpty) {
-                addLyrics.removeAll();
-                for (final Entry<String, String> entry : lyricsService.getUrlsForAddingNewLyrics(audioObject.getArtist(), audioObject.getTitle()).entrySet()) {
-                    JMenuItem mi = new JMenuItem(entry.getKey());
-                    mi.addActionListener(new OpenUrlActionListener(entry, getDesktop()));
-                    addLyrics.add(mi);
-                }
-                addLyrics.setEnabled(addLyrics.getMenuComponentCount() > 0);
+        boolean lyricsNotEmpty = lyrics != null && !lyrics.getLyrics().trim().isEmpty();
+        copyLyrics.setEnabled(lyricsNotEmpty);
+        addLyrics.setEnabled(!lyricsNotEmpty);
+        lyricsSourceUrl = lyrics != null ? lyrics.getUrl() : null;
+        openLyrics.setEnabled(lyricsNotEmpty);
+        if (!lyricsNotEmpty) {
+            addLyrics.removeAll();
+            for (final Entry<String, String> entry : lyricsService.getUrlsForAddingNewLyrics(audioObject.getArtist(), audioObject.getTitle()).entrySet()) {
+                JMenuItem mi = new JMenuItem(entry.getKey());
+                mi.addActionListener(new OpenUrlActionListener(entry, getDesktop()));
+                addLyrics.add(mi);
             }
-
+            addLyrics.setEnabled(addLyrics.getMenuComponentCount() > 0);
         }
     }
-
+    
     @Override
     public void clearContextPanelContent() {
         super.clearContextPanelContent();

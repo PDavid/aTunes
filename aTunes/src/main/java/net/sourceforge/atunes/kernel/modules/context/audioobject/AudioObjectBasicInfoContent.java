@@ -25,9 +25,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -39,13 +37,12 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.actions.AddBannedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jdesktop.swingx.border.DropShadowBorder;
 
-public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
+public class AudioObjectBasicInfoContent extends AbstractContextPanelContent<AudioObjectBasicInfoDataSource> {
 
     private static final long serialVersionUID = 996227362636450601L;
 
@@ -82,39 +79,25 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent {
     }
 
     @Override
-    public Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
-        Map<String, IAudioObject> parameters = new HashMap<String, IAudioObject>();
-        parameters.put(AudioObjectBasicInfoDataSource.INPUT_AUDIO_OBJECT, audioObject);
-        return parameters;
-    }
-
-    @Override
-    public void updateContentWithDataSourceResult(Map<String, ?> result) {
-        ImageIcon image = (ImageIcon) result.get(AudioObjectBasicInfoDataSource.OUTPUT_IMAGE);
+    public void updateContentFromDataSource(AudioObjectBasicInfoDataSource source) {
+        ImageIcon image = source.getImage();
         if (image != null) {
             audioObjectImage.setIcon(image);
         }
-        if (result.containsKey(AudioObjectBasicInfoDataSource.OUTPUT_AUDIO_OBJECT)) {
-            if (result.get(AudioObjectBasicInfoDataSource.OUTPUT_AUDIO_OBJECT) instanceof ILocalAudioObject && image != null) {
-                audioObjectImage.setBorder(Context.getBean(DropShadowBorder.class));
-            } else {
-                audioObjectImage.setBorder(null);
-            }
+        
+        if (source.getAudioObject() instanceof ILocalAudioObject && image != null) {
+        	audioObjectImage.setBorder(Context.getBean(DropShadowBorder.class));
+        } else {
+        	audioObjectImage.setBorder(null);
         }
 
-        if (result.containsKey(AudioObjectBasicInfoDataSource.OUTPUT_TITLE)) {
-            audioObjectTitle.setText((String) result.get(AudioObjectBasicInfoDataSource.OUTPUT_TITLE));
-        }
-        if (result.containsKey(AudioObjectBasicInfoDataSource.OUTPUT_ARTIST)) {
-            audioObjectArtist.setText((String) result.get(AudioObjectBasicInfoDataSource.OUTPUT_ARTIST));
-        }
-        if (result.containsKey(AudioObjectBasicInfoDataSource.OUTPUT_LASTPLAYDATE)) {
-            audioObjectLastPlayDate.setText((String) result.get(AudioObjectBasicInfoDataSource.OUTPUT_LASTPLAYDATE));
-        }
+        audioObjectTitle.setText(source.getTitle());
+        audioObjectArtist.setText(source.getArtist());
+        audioObjectLastPlayDate.setText(source.getLastPlayDate());
 
         // TODO: Allow these options for radios where song information is available
-        Context.getBean(AddLovedSongInLastFMAction.class).setEnabled(getState().isLastFmEnabled() && result.get(AudioObjectBasicInfoDataSource.OUTPUT_AUDIO_OBJECT) instanceof ILocalAudioObject);
-        Context.getBean(AddBannedSongInLastFMAction.class).setEnabled(getState().isLastFmEnabled() && result.get(AudioObjectBasicInfoDataSource.OUTPUT_AUDIO_OBJECT) instanceof ILocalAudioObject);
+        Context.getBean(AddLovedSongInLastFMAction.class).setEnabled(getState().isLastFmEnabled() && source.getAudioObject() instanceof ILocalAudioObject);
+        Context.getBean(AddBannedSongInLastFMAction.class).setEnabled(getState().isLastFmEnabled() && source.getAudioObject() instanceof ILocalAudioObject);
     }
 
     @Override

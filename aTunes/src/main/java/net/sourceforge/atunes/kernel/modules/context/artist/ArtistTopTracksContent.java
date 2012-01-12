@@ -24,7 +24,6 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +51,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author alex
  * 
  */
-public class ArtistTopTracksContent extends AbstractContextPanelContent {
+public class ArtistTopTracksContent extends AbstractContextPanelContent<ArtistPopularTracksDataSource> {
 
     private static final long serialVersionUID = -5538266144953409867L;
 
@@ -101,18 +100,9 @@ public class ArtistTopTracksContent extends AbstractContextPanelContent {
     }
 
     @Override
-    public Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
-    	return Collections.singletonMap(ArtistPopularTracksDataSource.INPUT_AUDIO_OBJECT, audioObject);
-    }
-
-    @Override
-    public void updateContentWithDataSourceResult(Map<String, ?> result) {
-        if (result.containsKey(ArtistPopularTracksDataSource.OUTPUT_TRACKS)) {
-        	lastTopTracks = (IArtistTopTracks) result.get(ArtistPopularTracksDataSource.OUTPUT_TRACKS);
-            tracksTable.setModel(new ContextArtistTracksTableModel(lastTopTracks));
-        } else {
-        	lastTopTracks = null;
-        }
+    public void updateContentFromDataSource(ArtistPopularTracksDataSource source) {
+        lastTopTracks = source.getTopTracks();
+        tracksTable.setModel(new ContextArtistTracksTableModel(lastTopTracks));
     }
 
     @Override
