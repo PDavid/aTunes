@@ -23,9 +23,7 @@ package net.sourceforge.atunes.kernel.modules.context.album;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.StringTokenizer;
 
 import net.sourceforge.atunes.model.IAlbumInfo;
@@ -54,31 +52,6 @@ import org.apache.sanselan.ImageWriteException;
  */
 public class AlbumInfoDataSource implements IContextInformationSource {
 
-    /**
-     * Input parameter
-     */
-    public static final String INPUT_AUDIO_OBJECT = "AUDIO_OBJECT";
-
-    /**
-     * Input parameter
-     */
-    public static final String INPUT_BOOLEAN_IMAGE = "IMAGE";
-
-    /**
-     * Output parameter
-     */
-    public static final String OUTPUT_AUDIO_OBJECT = INPUT_AUDIO_OBJECT;
-
-    /**
-     * Output parameter
-     */
-    public static final String OUTPUT_IMAGE = "IMAGE";
-
-    /**
-     * Output parameter
-     */
-    public static final String OUTPUT_ALBUM = "ALBUM";
-
     private IState state;
     
     private IWebServicesHandler webServicesHandler;
@@ -87,30 +60,51 @@ public class AlbumInfoDataSource implements IContextInformationSource {
     
     private IAudioObjectImageLocator audioObjectImageLocator;
     
+    private IAlbumInfo albumInfo;
+    
+    private Image image;
+    
+    private IAudioObject audioObject;
+    
     @Override
-    public Map<String, ?> getData(Map<String, ?> parameters) {
-        Map<String, Object> result = new HashMap<String, Object>();
-        if (parameters.containsKey(INPUT_AUDIO_OBJECT)) {
-            IAudioObject audioObject = (IAudioObject) parameters.get(INPUT_AUDIO_OBJECT);
-            result.put(OUTPUT_AUDIO_OBJECT, audioObject);
-            IAlbumInfo albumInfo = getAlbumInfo(audioObject);
-            if (albumInfo != null) {
-                result.put(OUTPUT_ALBUM, albumInfo);
-                if (parameters.containsKey(INPUT_BOOLEAN_IMAGE)) {
-                    result.put(OUTPUT_IMAGE, getImage(albumInfo, audioObject));
-                }
-            }
-        }
-        return result;
+    public void getData(IAudioObject audioObject) {
+    	this.audioObject = audioObject;
+    	this.albumInfo = getAlbumInfoData(audioObject);
+    	if (this.albumInfo != null) {
+   			this.image = getImageData(albumInfo, audioObject);
+    	} else {
+    		this.image = null;
+    	}
     }
+    
+    /**
+     * @return
+     */
+    public IAudioObject getAudioObject() {
+		return audioObject;
+	}
 
+    /**
+     * @return
+     */
+    public IAlbumInfo getAlbumInfo() {
+		return albumInfo;
+	}
+    
+    /**
+     * @return
+     */
+    public Image getImage() {
+		return image;
+	}
+    
     /**
      * Returns album information
      * 
      * @param audioObject
      * @return
      */
-    private IAlbumInfo getAlbumInfo(IAudioObject audioObject) {
+    private IAlbumInfo getAlbumInfoData(IAudioObject audioObject) {
         // If possible use album artist
         String artist = audioObject.getAlbumArtist().isEmpty() ? audioObject.getArtist() : audioObject.getAlbumArtist();
 
@@ -188,7 +182,7 @@ public class AlbumInfoDataSource implements IContextInformationSource {
      * @param audioObject
      * @return
      */
-    private Image getImage(IAlbumInfo albumInfo, IAudioObject audioObject) {
+    private Image getImageData(IAlbumInfo albumInfo, IAudioObject audioObject) {
         Image image = null;
         if (albumInfo != null) {
             image = webServicesHandler.getAlbumImage(albumInfo);

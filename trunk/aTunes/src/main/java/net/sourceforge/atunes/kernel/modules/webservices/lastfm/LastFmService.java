@@ -521,7 +521,7 @@ public final class LastFmService {
         }
         return null;
     }
-
+    
     /**
      * Gets the wiki url.
      * 

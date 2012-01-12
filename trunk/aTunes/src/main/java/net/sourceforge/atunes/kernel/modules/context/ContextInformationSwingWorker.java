@@ -20,12 +20,11 @@
 
 package net.sourceforge.atunes.kernel.modules.context;
 
-import java.util.Map;
 import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingWorker;
 
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextInformationSource;
 import net.sourceforge.atunes.model.IContextPanelContent;
 import net.sourceforge.atunes.utils.Logger;
@@ -37,7 +36,7 @@ import net.sourceforge.atunes.utils.Logger;
  * @author alex
  * 
  */
-class ContextInformationSwingWorker extends SwingWorker<Map<String, ?>, Void> {
+class ContextInformationSwingWorker extends SwingWorker<Void, Void> {
 
     /**
      * The context panel content where information must be shown after
@@ -51,42 +50,39 @@ class ContextInformationSwingWorker extends SwingWorker<Map<String, ?>, Void> {
     private IContextInformationSource dataSource;
 
     /**
-     * Parameters used to call data source
+     * audio object
      */
-    private Map<String, ?> parameters;
+    private IAudioObject audioObject;
 
     /**
      * Constructor used to create a new ContextInformationSwingWorker
-     * 
      * @param content
      * @param dataSource
-     * @param parameters
+     * @param audioObject
      */
-    ContextInformationSwingWorker(IContextPanelContent content, IContextInformationSource dataSource, Map<String, ?> parameters) {
+    ContextInformationSwingWorker(IContextPanelContent content, IContextInformationSource dataSource, IAudioObject audioObject) {
         this.content = content;
         this.dataSource = dataSource;
-        this.parameters = parameters;
+        this.audioObject = audioObject;
     }
 
     @Override
-    protected Map<String, ?> doInBackground() throws Exception {
-   		return dataSource.getData(parameters);
+    protected Void doInBackground() {
+   		dataSource.getData(audioObject);
+   		return null;
     }
 
     @Override
     protected void done() {
         super.done();
         try {
-            content.updateContentWithDataSourceResult(get());
+            content.updateContentFromDataSource(dataSource);
             // Enable task pane so user can expand or collapse
             content.getParentPanel().setEnabled(true);
             // After update data expand content
             content.getParentPanel().setVisible(true);
         } catch (CancellationException e) {
             // thrown when cancelled
-        } catch (InterruptedException e) {
-            Logger.error(e);
-        } catch (ExecutionException e) {
             Logger.error(e);
         }
     }

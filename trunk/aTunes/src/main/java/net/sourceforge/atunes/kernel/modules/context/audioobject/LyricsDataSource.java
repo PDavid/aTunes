@@ -20,9 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.context.audioobject;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.Lyrics;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextInformationSource;
@@ -32,41 +29,39 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 public class LyricsDataSource implements IContextInformationSource {
 
-    /**
-     * Input parameter
-     */
-    public static final String INPUT_AUDIO_OBJECT = "AUDIO_OBJECT";
-
-    /**
-     * Ouput parameter
-     */
-    public static final String OUTPUT_LYRIC = "LYRIC";
-
-    /**
-     * Ouput parameter
-     */
-    public static final String OUTPUT_AUDIO_OBJECT = INPUT_AUDIO_OBJECT;
-
     private ILyricsService lyricsService;
     
+    private ILyrics lyrics;
+    
+    private IAudioObject audioObject;
+    
 	@Override
-    public Map<String, ?> getData(Map<String, ?> parameters) {
-        Map<String, Object> result = new HashMap<String, Object>();
-        if (parameters.containsKey(INPUT_AUDIO_OBJECT)) {
-            IAudioObject audioObject = (IAudioObject) parameters.get(INPUT_AUDIO_OBJECT);
-            result.put(OUTPUT_AUDIO_OBJECT, audioObject);
-            result.put(OUTPUT_LYRIC, getLyrics(audioObject));
-        }
-        return result;
+    public void getData(IAudioObject audioObject) {
+		this.audioObject = audioObject;
+		this.lyrics = getLyricsData(audioObject);
     }
+	
+	/**
+	 * @return
+	 */
+	public IAudioObject getAudioObject() {
+		return audioObject;
+	}
 
+	/**
+	 * @return
+	 */
+	public ILyrics getLyrics() {
+		return lyrics;
+	}
+	
     /**
      * Returns lyrics
      * 
      * @param audioObject
      * @return
      */
-    private ILyrics getLyrics(IAudioObject audioObject) {
+    private ILyrics getLyricsData(IAudioObject audioObject) {
         ILyrics lyrics = null;
         // First check if tag contains the lyrics. Favour this over internet services.
         if (!audioObject.getLyrics().trim().isEmpty()) {
@@ -86,8 +81,10 @@ public class LyricsDataSource implements IContextInformationSource {
         return lyrics;
     }
     
+    /**
+     * @param lyricsService
+     */
     public void setLyricsService(ILyricsService lyricsService) {
 		this.lyricsService = lyricsService;
 	}
-
 }

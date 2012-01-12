@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.context;
 
 import java.awt.Component;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.JPanel;
 
@@ -44,7 +43,7 @@ import org.commonjukebox.plugins.model.PluginApi;
  * 
  */
 @PluginApi
-public abstract class AbstractContextPanelContent implements IContextPanelContent {
+public abstract class AbstractContextPanelContent<T extends IContextInformationSource> implements IContextPanelContent<T> {
 
     private static final long serialVersionUID = 7059398864514654378L;
 
@@ -80,23 +79,22 @@ public abstract class AbstractContextPanelContent implements IContextPanelConten
 	 */
     @Override
 	public final void updateContextPanelContent(IAudioObject audioObject) {
-        // Get data source parameters and call data source
-        callDataSource(getDataSourceParameters(audioObject));
+        callDataSource(audioObject);
     }
 
     /**
      * Calls data source to get context information
      * 
-     * @param parameters
+     * @param audioObject
      */
-    private void callDataSource(Map<String, ?> parameters) {
+    private void callDataSource(IAudioObject audioObject) {
         // Cancel previous worker if it's not done
         if (worker != null && !worker.isDone()) {
             worker.cancel(true);
         }
 
         // Create a new worker and call it
-        worker = new ContextInformationSwingWorker(this, this.dataSource, parameters);
+        worker = new ContextInformationSwingWorker(this, this.dataSource, audioObject);
         worker.execute();
     }
 
@@ -119,30 +117,6 @@ public abstract class AbstractContextPanelContent implements IContextPanelConten
 	public boolean isScrollNeeded() {
         return false;
     }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#getDataSourceParameters(net.sourceforge.atunes.model.IAudioObject)
-	 */
-    @Override
-	public abstract Map<String, ?> getDataSourceParameters(IAudioObject audioObject);
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#updateContentWithDataSourceResult(java.util.Map)
-	 */
-    @Override
-	public abstract void updateContentWithDataSourceResult(Map<String, ?> result);
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#getContentName()
-	 */
-    @Override
-	public abstract String getContentName();
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#getComponent()
-	 */
-    @Override
-	public abstract Component getComponent();
 
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#getOptions()

@@ -21,9 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.context.similar;
 
 import java.awt.Image;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import net.sourceforge.atunes.Constants;
@@ -59,18 +57,20 @@ public class SimilarArtistsDataSource implements IContextInformationSource {
 
 	private IRepositoryHandler repositoryHandler;
 	
-    @Override
-    public Map<String, ?> getData(Map<String, ?> parameters) {
-        Map<String, Object> result = new HashMap<String, Object>();
-        if (parameters.containsKey(INPUT_AUDIO_OBJECT)) {
-        	ISimilarArtistsInfo info = getSimilarArtists((IAudioObject) parameters.get(INPUT_AUDIO_OBJECT));
-        	if (info != null) {
-        		result.put(OUTPUT_ARTISTS, info);
-        	}
-        }
-        return result;
-    }
-
+	private ISimilarArtistsInfo similarArtistsInfo;
+	
+	@Override
+	public void getData(IAudioObject audioObject) {
+    	this.similarArtistsInfo = getSimilarArtists(audioObject);
+	}
+	
+	/**
+	 * @return
+	 */
+	public ISimilarArtistsInfo getSimilarArtistsInfo() {
+		return similarArtistsInfo;
+	}
+	
     /**
      * Returns similar artists
      * 

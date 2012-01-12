@@ -25,8 +25,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -51,7 +49,7 @@ import org.jdesktop.swingx.border.DropShadowBorder;
  * @author alex
  * 
  */
-public class AlbumBasicInfoContent extends AbstractContextPanelContent {
+public class AlbumBasicInfoContent extends AbstractContextPanelContent<AlbumInfoDataSource> {
 
     private static final long serialVersionUID = -5538266144953409867L;
 
@@ -66,19 +64,9 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent {
     }
 
     @Override
-    public Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
-        Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put(AlbumInfoDataSource.INPUT_AUDIO_OBJECT, audioObject);
-        // Want image too 
-        parameters.put(AlbumInfoDataSource.INPUT_BOOLEAN_IMAGE, true);
-        return parameters;
-    }
-
-    @Override
-    public void updateContentWithDataSourceResult(Map<String, ?> result) {
-        IAudioObject audioObject = (IAudioObject) result.get(AlbumInfoDataSource.OUTPUT_AUDIO_OBJECT);
-        if (result.containsKey(AlbumInfoDataSource.OUTPUT_ALBUM)) {
-            IAlbumInfo album = (IAlbumInfo) result.get(AlbumInfoDataSource.OUTPUT_ALBUM);
+    public void updateContentFromDataSource(AlbumInfoDataSource source) {
+        IAudioObject audioObject = source.getAudioObject();
+            IAlbumInfo album = source.getAlbumInfo();
             artistLabel.setText(album != null ? album.getArtist() : audioObject.getArtist(), album != null ? album.getArtistUrl() : null);
             artistLabel.setEnabled(album != null && album.getArtistUrl() != null);
             albumLabel.setText(album != null ? album.getTitle() : I18nUtils.getString("UNKNOWN_ALBUM"), album != null ? album.getUrl() : null);
@@ -87,13 +75,12 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent {
             yearLabel.setText(album != null ? album.getYear() : "", album != null && album.getYear() != null ? StringUtils.getString("http://en.wikipedia.org/wiki/", album
                     .getYear()) : null);
 
-            Image image = (Image) result.get(AlbumInfoDataSource.OUTPUT_IMAGE);
+            Image image = source.getImage();
             if (image != null) {
                 ImageIcon imageIcon = ImageUtils.resize(new ImageIcon(image), Constants.ALBUM_IMAGE_SIZE.getSize(), Constants.ALBUM_IMAGE_SIZE.getSize());
                 albumCoverLabel.setIcon(imageIcon);
                 albumCoverLabel.setBorder(Context.getBean(DropShadowBorder.class));
             }
-        }
     }
 
     @Override

@@ -24,9 +24,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.JMenuItem;
 
@@ -35,7 +33,6 @@ import net.sourceforge.atunes.kernel.modules.context.ContextTable;
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeResultEntry;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -45,7 +42,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author alex
  * 
  */
-public class YoutubeContent extends AbstractContextPanelContent {
+public class YoutubeContent extends AbstractContextPanelContent<YoutubeDataSource> {
 
     private static final long serialVersionUID = 5041098100868186051L;
 
@@ -84,22 +81,12 @@ public class YoutubeContent extends AbstractContextPanelContent {
     }
 
     @Override
-    public Map<String, ?> getDataSourceParameters(IAudioObject audioObject) {
-        Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put(YoutubeDataSource.INPUT_AUDIO_OBJECT, audioObject);
-        return parameters;
+    public void updateContentFromDataSource(YoutubeDataSource source) {
+        youtubeResultTable.setModel(new YoutubeResultTableModel(source.getVideos()));
+        moreResults.setEnabled(true);
+        openYoutube.setEnabled(true);    	
     }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public void updateContentWithDataSourceResult(Map<String, ?> result) {
-        if (result.containsKey(YoutubeDataSource.OUTPUT_VIDEOS)) {
-            youtubeResultTable.setModel(new YoutubeResultTableModel((List<YoutubeResultEntry>) result.get(YoutubeDataSource.OUTPUT_VIDEOS)));
-            moreResults.setEnabled(true);
-            openYoutube.setEnabled(true);
-        }        
-    }
-
+    
     @Override
     public void clearContextPanelContent() {
         super.clearContextPanelContent();

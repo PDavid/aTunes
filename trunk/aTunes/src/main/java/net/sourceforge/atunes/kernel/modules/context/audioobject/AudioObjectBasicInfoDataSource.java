@@ -21,8 +21,6 @@
 package net.sourceforge.atunes.kernel.modules.context.audioobject;
 
 import java.awt.Image;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.swing.ImageIcon;
 
@@ -54,36 +52,6 @@ import org.joda.time.format.DateTimeFormat;
  */
 public class AudioObjectBasicInfoDataSource implements IContextInformationSource {
 
-    /**
-     * Input parameter
-     */
-    public static final String INPUT_AUDIO_OBJECT = "AUDIO_OBJECT";
-
-    /**
-     * Output parameter
-     */
-    public static final String OUTPUT_AUDIO_OBJECT = INPUT_AUDIO_OBJECT;
-
-    /**
-     * Output parameter
-     */
-    public static final String OUTPUT_IMAGE = "IMAGE";
-
-    /**
-     * Output parameter
-     */
-    public static final String OUTPUT_TITLE = "TITLE";
-
-    /**
-     * Output parameter
-     */
-    public static final String OUTPUT_ARTIST = "ARTIST";
-
-    /**
-     * Output parameter
-     */
-    public static final String OUTPUT_LASTPLAYDATE = "LAST_PLAY_DATE";
-    
     private IWebServicesHandler webServicesHandler;
     
     private ILookAndFeelManager lookAndFeelManager;
@@ -93,6 +61,17 @@ public class AudioObjectBasicInfoDataSource implements IContextInformationSource
     private IIconFactory radioMediumIcon;
     
     private IAudioObjectImageLocator audioObjectImageLocator;
+    
+    private IAudioObject audioObject;
+    
+    private ImageIcon image;
+    
+    private String title;
+    
+    private String artist;
+    
+    private String lastPlayDate;
+    
     
     /**
      * @param audioObjectImageLocator
@@ -114,27 +93,57 @@ public class AudioObjectBasicInfoDataSource implements IContextInformationSource
     public void setRssMediumIcon(IIconFactory rssMediumIcon) {
 		this.rssMediumIcon = rssMediumIcon;
 	}
-
+    
     @Override
-    public Map<String, ?> getData(Map<String, ?> parameters) {
-        Map<String, Object> result = new HashMap<String, Object>();
-        if (parameters.containsKey(INPUT_AUDIO_OBJECT)) {
-            IAudioObject audioObject = (IAudioObject) parameters.get(INPUT_AUDIO_OBJECT);
-            result.put(OUTPUT_AUDIO_OBJECT, audioObject);
-            result.put(OUTPUT_IMAGE, getImage(audioObject));
-            if (audioObject instanceof ILocalAudioObject) {
-                result.put(OUTPUT_TITLE, audioObject.getTitleOrFileName());
-                result.put(OUTPUT_ARTIST, audioObject.getArtist());
-                result.put(OUTPUT_LASTPLAYDATE, getLastPlayDate(audioObject));
-            } else if (audioObject instanceof IRadio) {
-                result.put(OUTPUT_TITLE, ((IRadio) audioObject).getName());
-                result.put(OUTPUT_ARTIST, ((IRadio) audioObject).getUrl());
-            } else if (audioObject instanceof IPodcastFeedEntry) {
-                result.put(OUTPUT_TITLE, ((IPodcastFeedEntry) audioObject).getTitle());
-            }
-        }
-        return result;
+    public void getData(IAudioObject audioObject) {
+    	this.audioObject = audioObject;
+    	this.image = getImageData(audioObject);
+    	if (audioObject instanceof ILocalAudioObject) {
+    		this.title = audioObject.getTitleOrFileName();
+    		this.artist = audioObject.getArtist();
+    		this.lastPlayDate = getLastPlayDateData(audioObject);
+    	} else if (audioObject instanceof IRadio) {
+    		this.title = ((IRadio) audioObject).getName();
+    		this.artist = ((IRadio) audioObject).getUrl();
+    	} else if (audioObject instanceof IPodcastFeedEntry) {
+    		this.title = ((IPodcastFeedEntry) audioObject).getTitle();
+    	}
     }
+    
+    /**
+     * @return
+     */
+    public IAudioObject getAudioObject() {
+		return audioObject;
+	}
+    
+    /**
+     * @return
+     */
+    public ImageIcon getImage() {
+		return image;
+	}
+    
+    /**
+     * @return
+     */
+    public String getTitle() {
+		return title;
+	}
+    
+    /**
+     * @return
+     */
+    public String getArtist() {
+		return artist;
+	}
+    
+    /**
+     * @return
+     */
+    public String getLastPlayDate() {
+		return lastPlayDate;
+	}
 
     /**
      * Returns image for audio object
@@ -142,7 +151,7 @@ public class AudioObjectBasicInfoDataSource implements IContextInformationSource
      * @param audioObject
      * @return
      */
-    private ImageIcon getImage(IAudioObject audioObject) {
+    private ImageIcon getImageData(IAudioObject audioObject) {
         if (audioObject instanceof ILocalAudioObject) {
             ImageIcon localImage = audioObjectImageLocator.getImage(audioObject, Constants.ALBUM_IMAGE_SIZE);
             if (localImage == null) {
@@ -166,7 +175,7 @@ public class AudioObjectBasicInfoDataSource implements IContextInformationSource
      * @param audioObject
      * @return
      */
-    private String getLastPlayDate(IAudioObject audioObject) {
+    private String getLastPlayDateData(IAudioObject audioObject) {
         // Get last date played
         IAudioObjectStatistics stats = Context.getBean(IStatisticsHandler.class).getAudioObjectStatistics((ILocalAudioObject) audioObject);
         if (stats == null) {
@@ -182,10 +191,16 @@ public class AudioObjectBasicInfoDataSource implements IContextInformationSource
         }
     }
     
+    /**
+     * @param webServicesHandler
+     */
     public final void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
 	}
     
+    /**
+     * @param lookAndFeelManager
+     */
     public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}

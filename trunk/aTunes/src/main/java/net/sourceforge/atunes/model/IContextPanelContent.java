@@ -22,7 +22,6 @@ package net.sourceforge.atunes.model;
 
 import java.awt.Component;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.JPanel;
 
@@ -34,7 +33,7 @@ import javax.swing.JPanel;
  * @author alex
  *
  */
-public interface IContextPanelContent {
+public interface IContextPanelContent<T extends IContextInformationSource> {
 
 	/**
 	 * Updates the context panel content with information of the given audio
@@ -58,20 +57,11 @@ public interface IContextPanelContent {
 	public boolean isScrollNeeded();
 
 	/**
-	 * Given an audio object returns a map with necessary parameters to call
-	 * data source
+	 * Given an audio object updates its content
 	 * 
-	 * @param audioObject
-	 * @return Map with parameters to call data source
+	 * @param source
 	 */
-	public Map<String, ?> getDataSourceParameters(IAudioObject audioObject);
-
-	/**
-	 * Given a map containing result from data source updates this content
-	 * 
-	 * @param result
-	 */
-	public void updateContentWithDataSourceResult(Map<String, ?> result);
+	public void updateContentFromDataSource(T source);
 
 	/**
 	 * Returns the content name to be shown in context panel
