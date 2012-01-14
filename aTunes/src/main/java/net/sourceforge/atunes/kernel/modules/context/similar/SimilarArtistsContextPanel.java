@@ -71,5 +71,13 @@ public class SimilarArtistsContextPanel extends AbstractContextPanel {
         // Enable panel for LocalAudioObject objects or Radios with song information available
         return audioObject instanceof ILocalAudioObject || audioObject instanceof IRadio && ((IRadio) audioObject).isSongInfoAvailable();
     }
-
+    
+    @Override
+    public boolean panelNeedsToBeUpdated(IAudioObject previousAudioObject, IAudioObject newAudioObject) {
+    	if (previousAudioObject == null || newAudioObject == null) {
+    		return true;
+    	}
+    	
+    	return !previousAudioObject.getArtist().equalsIgnoreCase(newAudioObject.getArtist());
+    }
 }

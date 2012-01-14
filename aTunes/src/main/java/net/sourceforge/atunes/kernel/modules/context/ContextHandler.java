@@ -157,8 +157,8 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
                 if (audioObjectModified) {
                     clearTabsContent();
                 }
-                // Retrieve data for audio object. Force Update since audio file is different or has been modified
-                retrieveInfo(ao, true);
+                // Retrieve data for audio object. Force Update since audio file has been modified
+                retrieveInfo(ao, audioObjectModified);
             }
         }
     }

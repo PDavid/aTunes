@@ -64,4 +64,9 @@ public class YoutubeContextPanel extends AbstractContextPanel {
         return (audioObject instanceof ILocalAudioObject) || (audioObject instanceof IRadio && ((IRadio) audioObject).isSongInfoAvailable());
     }
 
+    @Override
+    public boolean panelNeedsToBeUpdated(IAudioObject previousAudioObject, IAudioObject newAudioObject) {
+   		return true;
+    }
+
 }
