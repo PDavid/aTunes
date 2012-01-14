@@ -88,6 +88,8 @@
 		class="net.sourceforge.atunes.kernel.modules.context.album.AlbumInfoDataSource" />
 	<bean id="artistInfoDataSource"
 		class="net.sourceforge.atunes.kernel.modules.context.artist.ArtistInfoDataSource" />
+	<bean id="artistAlbumsImagesDataSource"
+	    class="net.sourceforge.atunes.kernel.modules.context.artist.ArtistAlbumListImagesDataSource"/>
 	<bean id="artistPopularTracksDataSource"
 		class="net.sourceforge.atunes.kernel.modules.context.artist.ArtistPopularTracksDataSource" />
 	<bean id="lyricsDataSource"
@@ -125,13 +127,13 @@
 	<bean id="artistAlbumsContent"
 		class="net.sourceforge.atunes.kernel.modules.context.artist.ArtistAlbumsContent"
 		parent="contextPanelContent">
-		<property name="dataSource" ref="artistInfoDataSource" />
+		<property name="dataSource" ref="artistAlbumsImagesDataSource" />
 	</bean>
 
 	<bean id="artistAlbumsFlowContent"
 		class="net.sourceforge.atunes.kernel.modules.context.artist.ArtistAlbumsFlowContent"
 		parent="contextPanelContent">
-		<property name="dataSource" ref="artistInfoDataSource" />
+		<property name="dataSource" ref="artistAlbumsImagesDataSource" />
 	</bean>
 
 	<bean id="artistBasicInfoContent"

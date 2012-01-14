@@ -22,12 +22,15 @@ package net.sourceforge.atunes.kernel.modules.context.artist;
 
 import java.awt.Image;
 
+import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextInformationSource;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.ImageUtils;
 
 /**
  * Data Source for basic album object information Retrieves basic information
@@ -36,7 +39,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author alex
  * 
  */
-public class ArtistInfoDataSource implements IContextInformationSource {
+public class ArtistAlbumListImagesDataSource implements IContextInformationSource {
 
 	private IState state;
 	
@@ -44,30 +47,17 @@ public class ArtistInfoDataSource implements IContextInformationSource {
     
     private IAudioObject audioObject;
     
-    private String wikiText;
-    
-    private String wikiUrl;
-    
-    private String artistName;
-    
-    private String artistUrl;
-    
-    private Image artistImage;
-    
     private IAlbumListInfo albumList;
     
     @Override
     public void getData(IAudioObject audioObject) {
     	this.audioObject = audioObject;
-    	this.wikiText = getWikiTextData(audioObject);
-        this.wikiUrl = getWikiUrlData(audioObject);
-        this.artistImage = getArtistImageData(audioObject);
         this.albumList = getAlbumListData(audioObject);
         if (albumList != null && !albumList.getAlbums().isEmpty()) {
-        	this.artistName = albumList.getArtist();
-        	this.artistUrl = albumList.getAlbums().get(0).getArtistUrl();
+            for (IAlbumInfo album : albumList.getAlbums()) {
+                album.setCover(ImageUtils.scaleImageBicubic(getAlbumImageData(album), Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT));
+            }
         }
-
     }
     
     /**
@@ -92,6 +82,16 @@ public class ArtistInfoDataSource implements IContextInformationSource {
     }
 
     /**
+     * Returns image for album
+     * 
+     * @param album
+     * @return
+     */
+    private Image getAlbumImageData(IAlbumInfo album) {
+        return webServicesHandler.getAlbumImage(album);
+    }
+    
+    /**
      * @param state
      */
     public void setState(IState state) {
@@ -106,81 +106,9 @@ public class ArtistInfoDataSource implements IContextInformationSource {
 	}
     
     /**
-     * @return
-     */
-    public String getWikiText() {
-		return wikiText;
-	}
-    
-    /**
-     * @return
-     */
-    public String getWikiUrl() {
-		return wikiUrl;
-	}
-    
-    /**
-     * @return
-     */
-    public Image getArtistImage() {
-		return artistImage;
-	}
-    
-    /**
-     * @return
-     */
-    public String getArtistName() {
-		return artistName;
-	}
-    
-    /**
-     * @return
-     */
-    public String getArtistUrl() {
-		return artistUrl;
-	}
-    
-    /**
-     * Return wiki text for artist
-     * 
-     * @param audioObject
-     * @return
-     */
-    private String getWikiTextData(IAudioObject audioObject) {
-        if (!audioObject.getArtist().equals(I18nUtils.getString("UNKNOWN_ARTIST"))) {
-            return webServicesHandler.getBioText(audioObject.getArtist());
-        }
-        return null;
-    }
-
-    /**
-     * Return wiki url for artist
-     * 
-     * @param audioObject
-     * @return
-     */
-    private String getWikiUrlData(IAudioObject audioObject) {
-        if (!audioObject.getArtist().equals(I18nUtils.getString("UNKNOWN_ARTIST"))) {
-            return webServicesHandler.getBioURL(audioObject.getArtist());
-        }
-        return null;
-    }
-
-    /**
-     * Returns image for artist
-     * 
-     * @param audioObject
-     * @return
-     */
-    private Image getArtistImageData(IAudioObject audioObject) {
-        return webServicesHandler.getArtistImage(audioObject.getArtist());
-    }
-
-    /**
      * @param webServicesHandler
      */
     public final void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
 	}
-
 }
