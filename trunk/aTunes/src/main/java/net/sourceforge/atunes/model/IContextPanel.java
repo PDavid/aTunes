@@ -89,6 +89,14 @@ public interface IContextPanel {
 	 * tab showing this panel method updateContextPanel must be called again
 	 */
 	public void clearContextPanel();
+	
+	/**
+	 * Returns if with the change of audio objects, panel needs to update its contents
+	 * @param previousAudioObject
+	 * @param newAudioObject
+	 * @return
+	 */
+	public boolean panelNeedsToBeUpdated(IAudioObject previousAudioObject, IAudioObject newAudioObject);
 
 	/**
 	 * Returns a graphical component with all contents of the context panel

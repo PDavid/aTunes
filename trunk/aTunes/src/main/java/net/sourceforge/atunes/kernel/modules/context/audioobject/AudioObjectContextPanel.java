@@ -90,5 +90,10 @@ public class AudioObjectContextPanel extends AbstractContextPanel {
     public boolean isPanelVisibleForAudioObject(IAudioObject audioObject) {
         return audioObject != null;
     }
+    
+    @Override
+    public boolean panelNeedsToBeUpdated(IAudioObject previousAudioObject, IAudioObject newAudioObject) {
+    	return true;
+    }
 
 }

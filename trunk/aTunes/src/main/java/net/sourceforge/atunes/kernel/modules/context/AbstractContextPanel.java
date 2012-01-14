@@ -73,37 +73,22 @@ public abstract class AbstractContextPanel implements IContextPanel {
     
     private ILookAndFeel lookAndFeel;
     
-    
-    // BEGIN OF METHODS TO BE IMPLEMENTED BY CONCRETE CONTEXT PANELS
-
     @Override
-	public abstract String getContextPanelName();
-
-    @Override
-	public abstract String getContextPanelTitle(IAudioObject audioObject);
-
-    @Override
-	public abstract IColorMutableImageIcon getContextPanelIcon(IAudioObject audioObject);
-
-    @Override
-	public abstract boolean isPanelVisibleForAudioObject(IAudioObject audioObject);
-
-    // END OF METHODS TO BE IMPLEMENTED BY CONCRETE CONTEXT PANELS
-
-    @Override
-	public final void updateContextPanel(final IAudioObject audioObject, final boolean forceUpdate) {
+	public final void updateContextPanel(final IAudioObject newAudioObject, final boolean forceUpdate) {
         // If the AudioObject is the same as used before to update panel then do nothing if forceUpdate is false
-        if (!forceUpdate && this.audioObject != null && this.audioObject.equals(audioObject)) {
+        if (!forceUpdate && this.audioObject != null && this.audioObject.equals(newAudioObject)) {
             return;
         }
 
-        Logger.debug("Updating panel: ", getContextPanelName());
-        for (IContextPanelContent content : getContents()) {
-            content.clearContextPanelContent();
-            content.updateContextPanelContent(audioObject);
+        if (panelNeedsToBeUpdated(this.audioObject, newAudioObject)) {
+            Logger.debug("Updating panel: ", getContextPanelName());
+            for (IContextPanelContent content : getContents()) {
+                content.clearContextPanelContent();
+                content.updateContextPanelContent(newAudioObject);
+            }
         }
 
-        this.audioObject = audioObject;
+        this.audioObject = newAudioObject;
     }
 
     @Override
