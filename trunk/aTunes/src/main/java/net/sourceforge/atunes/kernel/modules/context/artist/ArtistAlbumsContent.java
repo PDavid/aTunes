@@ -32,7 +32,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author alex
  * 
  */
-public class ArtistAlbumsContent extends AbstractContextPanelContent<ArtistInfoDataSource> {
+public class ArtistAlbumsContent extends AbstractContextPanelContent<ArtistAlbumListImagesDataSource> {
 
     private static final long serialVersionUID = -5538266144953409867L;
     private ContextTable albumsTable;
@@ -43,7 +43,7 @@ public class ArtistAlbumsContent extends AbstractContextPanelContent<ArtistInfoD
     }
 
     @Override
-    public void updateContentFromDataSource(ArtistInfoDataSource source) {
+    public void updateContentFromDataSource(ArtistAlbumListImagesDataSource source) {
         albumsTable.setModel(new ContextAlbumsTableModel(source.getAlbumList().getAlbums()));
     }
 

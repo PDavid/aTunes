@@ -38,7 +38,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jdesktop.swingx.border.DropShadowBorder;
 
-public class ArtistAlbumsFlowContent extends AbstractContextPanelContent<ArtistInfoDataSource> {
+public class ArtistAlbumsFlowContent extends AbstractContextPanelContent<ArtistAlbumListImagesDataSource> {
 
     private ScrollableFlowPanel coversPanel;
     
@@ -56,7 +56,7 @@ public class ArtistAlbumsFlowContent extends AbstractContextPanelContent<ArtistI
     }
 
     @Override
-    public void updateContentFromDataSource(ArtistInfoDataSource source) {
+    public void updateContentFromDataSource(ArtistAlbumListImagesDataSource source) {
     	List<IAlbumInfo> albums = source.getAlbumList().getAlbums();
     	for (IAlbumInfo album : albums) {
     		coversPanel.add(getLabelForAlbum(album));

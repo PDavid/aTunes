@@ -22,15 +22,12 @@ package net.sourceforge.atunes.kernel.modules.context.artist;
 
 import java.awt.Image;
 
-import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextInformationSource;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.ImageUtils;
 
 /**
  * Data Source for basic album object information Retrieves basic information
@@ -69,9 +66,6 @@ public class ArtistInfoDataSource implements IContextInformationSource {
         if (albumList != null && !albumList.getAlbums().isEmpty()) {
         	this.artistName = albumList.getArtist();
         	this.artistUrl = albumList.getAlbums().get(0).getArtistUrl();
-            for (IAlbumInfo album : albumList.getAlbums()) {
-                album.setCover(ImageUtils.scaleImageBicubic(getAlbumImageData(album), Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT));
-            }
         }
 
     }
@@ -97,16 +91,6 @@ public class ArtistInfoDataSource implements IContextInformationSource {
         return null;
     }
 
-    /**
-     * Returns image for album
-     * 
-     * @param album
-     * @return
-     */
-    private Image getAlbumImageData(IAlbumInfo album) {
-        return webServicesHandler.getAlbumImage(album);
-    }
-    
     /**
      * @param state
      */
