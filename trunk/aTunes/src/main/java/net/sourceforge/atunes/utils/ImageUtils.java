@@ -131,7 +131,7 @@ public final class ImageUtils {
             return thumbImage;
         } else {
             // If scaled image is smaller then use SwingX utilities (looks much better)
-            return GraphicsUtilities.createThumbnail(toBufferedImage(image), calculatedWidth, calculatedHeight);
+            return GraphicsUtilities.createThumbnailFast(toBufferedImage(image), calculatedWidth, calculatedHeight);
         }
     }
     
