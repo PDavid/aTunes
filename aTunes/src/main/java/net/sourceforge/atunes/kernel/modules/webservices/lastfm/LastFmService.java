@@ -235,7 +235,7 @@ public final class LastFmService {
 
 		        List<IAlbumInfo> result = new ArrayList<IAlbumInfo>();
 		        for (IAlbumInfo a : albums.getAlbums()) {
-		            if (a.getBigCoverURL() != null && !a.getBigCoverURL().isEmpty()) {
+		        	if (!StringUtils.isEmpty(a.getBigCoverURL()) && !a.getBigCoverURL().contains("noimage")) {
 		                result.add(a);
 		            }
 		        }
