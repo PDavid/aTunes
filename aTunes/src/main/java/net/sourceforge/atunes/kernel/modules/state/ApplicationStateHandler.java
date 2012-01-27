@@ -32,7 +32,6 @@ import java.util.List;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.StateChangeListeners;
-import net.sourceforge.atunes.kernel.modules.repository.favorites.Favorites;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorBeanFactory;
 import net.sourceforge.atunes.model.IDesktop;
@@ -193,16 +192,6 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
         } finally {
             ClosingUtils.close(stream);
         }
-
-        if (getState().isSaveRepositoryAsXml()) {
-            try {
-                xmlSerializerService.writeObjectToFile(favorites, StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_FAVORITES_NAME));
-                Logger.info("Storing favorites information...");
-            } catch (Exception e) {
-                Logger.error("Could not write favorites");
-                Logger.debug(e);
-            }
-        }
     }
 
     /* (non-Javadoc)
@@ -220,16 +209,6 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
             Logger.debug(e);
         } finally {
             ClosingUtils.close(stream);
-        }
-
-        if (getState().isSaveRepositoryAsXml()) {
-            try {
-                xmlSerializerService.writeObjectToFile(statistics, StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_STATISTICS_NAME));
-                Logger.info("Storing statistics information...");
-            } catch (Exception e) {
-                Logger.error("Could not write statistics");
-                Logger.debug(e);
-            }
         }
     }
 
@@ -309,11 +288,10 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
     }
 
     /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#persistRepositoryCache(net.sourceforge.atunes.model.Repository, boolean)
+	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#persistRepositoryCache(net.sourceforge.atunes.model.Repository)
 	 */
-
     @Override
-	public void persistRepositoryCache(IRepository repository, boolean asXmlIfEnabled) {
+	public void persistRepositoryCache(IRepository repository) {
         String folder = getBean(IRepositoryHandler.class).getRepositoryConfigurationFolder();
 
         ObjectOutputStream oos = null;
@@ -331,19 +309,6 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
         } finally {
             ClosingUtils.close(oos);
         }
-
-        if (asXmlIfEnabled && getState().isSaveRepositoryAsXml()) {
-            try {
-                Logger.info("Storing repository information as xml...");
-                Timer timer = new Timer();
-                timer.start();
-                xmlSerializerService.writeObjectToFile(repository, StringUtils.getString(folder, "/", Constants.XML_CACHE_REPOSITORY_NAME));
-                Logger.info(StringUtils.getString(DONE, timer.stop(), SECONDS));
-            } catch (IOException e) {
-                Logger.error("Could not write repository as xml");
-                Logger.debug(e);
-            }
-        }        
     }
 
     /* (non-Javadoc)
@@ -392,23 +357,9 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
         } finally {
             ClosingUtils.close(stream);
         }
-        return retrieveFavoritesCacheFromXML();
-    }
-    
-    private Favorites retrieveFavoritesCacheFromXML() {
-        if (getState().isSaveRepositoryAsXml()) {
-            try {
-                Logger.info("Reading xml favorites cache");
-                return (Favorites) xmlSerializerService.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_FAVORITES_NAME));
-            } catch (IOException e1) {
-                Logger.info("No xml favorites info found");
-            } catch (InstantiationError e) {
-                Logger.info("No xml favorites info found");
-            }
-        }
         return null;
     }
-
+    
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#retrieveStatisticsCache()
 	 */
@@ -425,24 +376,8 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
             Logger.error(e);
         } catch (IOException e) {
             Logger.info("No serialized statistics info found");
-            if (getState().isSaveRepositoryAsXml()) {
-                try {
-                    Logger.info("Reading xml statistics cache");
-                    return (IStatistics) xmlSerializerService.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_STATISTICS_NAME));
-                } catch (IOException e1) {
-                    Logger.info("No xml statistics info found");
-                }
-            }
         } catch (ClassNotFoundException e) {
             Logger.info("No serialized statistics info found");
-            if (getState().isSaveRepositoryAsXml()) {
-                try {
-                    Logger.info("Reading xml statistics cache");
-                    return (IStatistics) xmlSerializerService.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.XML_CACHE_STATISTICS_NAME));
-                } catch (IOException e1) {
-                    Logger.info("No xml statistics info found");
-                }
-            }
         } finally {
             ClosingUtils.close(stream);
         }
@@ -570,36 +505,9 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
         } finally {
             ClosingUtils.close(ois);
         }
-    	return readRepositoryFromXml(folder);
+    	return null;
     }
     
-    private IRepository readRepositoryFromXml(String folder) {
-        Logger.info("No serialized repository info found");
-        if (getState().isSaveRepositoryAsXml()) {
-            try {
-                Logger.info("Reading xml repository cache");
-                long t0 = System.currentTimeMillis();
-                IRepository repository = (IRepository) xmlSerializerService.readObjectFromFile(StringUtils.getString(folder, "/", Constants.XML_CACHE_REPOSITORY_NAME));
-                if (repository != null) {
-                	repository.setState(getState());
-
-                	// Check repository integrity
-                	repository.validateRepository();
-
-                	long t1 = System.currentTimeMillis();
-                	Logger.info(StringUtils.getString("Reading repository cache done (", (t1 - t0) / 1000.0, SECONDS));
-
-                	return repository;
-                }
-            } catch (IOException e1) {
-                Logger.info("No xml repository info found");
-            } catch (InconsistentRepositoryException e1) {
-                Logger.info("No xml repository info found");
-            }
-        }
-        return null;    	
-    }
-
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#retrieveDeviceCache(java.lang.String)
 	 */

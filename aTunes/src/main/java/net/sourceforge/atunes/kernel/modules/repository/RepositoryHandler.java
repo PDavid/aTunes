@@ -297,7 +297,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
         if (!isRepositoryVoid()) {
             // Only store repository if it's dirty
             if (transactionPending()) {
-            	stateHandler.persistRepositoryCache(repository, true);
+            	stateHandler.persistRepositoryCache(repository);
             } else {
                 Logger.info("Repository is clean");
             }

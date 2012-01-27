@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.state;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -41,9 +40,6 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
 
     /** The refresh time. */
     private JComboBox refreshTime;
-
-    /** The save repository as xml. */
-    private JCheckBox saveRepositoryAsXml;
 
     /**
      * Text field to specify command to execute before access repository
@@ -63,7 +59,6 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
         super(I18nUtils.getString("REPOSITORY"));
         JLabel label = new JLabel(I18nUtils.getString("REPOSITORY_REFRESH_TIME"));
         refreshTime = new JComboBox(new Integer[] { 0, 5, 10, 15, 30, 60 });
-        saveRepositoryAsXml = new JCheckBox(I18nUtils.getString("SAVE_REPOSITORY_AS_XML"));
         JLabel label2 = new JLabel(I18nUtils.getString("COMMAND_BEFORE_REPOSITORY_ACCESS"));
         commandBeforeAccessRepository = new CustomTextField(20);
         JLabel label3 = new JLabel(I18nUtils.getString("COMMAND_AFTER_REPOSITORY_ACCESS"));
@@ -79,13 +74,7 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
         c.weightx = 1;
         c.insets = new Insets(0, 10, 0, 0);
         add(refreshTime, c);
-        c.gridx = 0;
         c.gridy = 1;
-        c.anchor = GridBagConstraints.FIRST_LINE_START;
-        c.gridwidth = 2;
-        c.insets = new Insets(0, 0, 10, 0);
-        add(saveRepositoryAsXml, c);
-        c.gridy = 2;
         c.gridwidth = 0;
         c.weightx = 1;
         add(label2, c);
@@ -93,7 +82,7 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
         c.weightx = 1;
         add(commandBeforeAccessRepository, c);
         c.gridx = 0;
-        c.gridy = 3;
+        c.gridy = 2;
         c.weightx = 0;
         c.weighty = 1;
         add(label3, c);
@@ -106,7 +95,6 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
     public boolean applyPreferences(IState state) {
         state.setAutoRepositoryRefreshTime((Integer) refreshTime.getSelectedItem());
         
-        state.setSaveRepositoryAsXml(saveRepositoryAsXml.isSelected());
         state.setCommandBeforeAccessRepository(commandBeforeAccessRepository.getText());
         state.setCommandAfterAccessRepository(commandAfterAccessRepository.getText());
         return false;
@@ -120,16 +108,6 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
      */
     private void setRefreshTime(int time) {
         refreshTime.setSelectedItem(time);
-    }
-
-    /**
-     * Sets the save repository as xml.
-     * 
-     * @param b
-     *            the new save repository as xml
-     */
-    private void setSaveRepositoryAsXml(boolean b) {
-        saveRepositoryAsXml.setSelected(b);
     }
 
     /**
@@ -153,7 +131,6 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
     @Override
     public void updatePanel(IState state) {
         setRefreshTime(state.getAutoRepositoryRefreshTime());
-        setSaveRepositoryAsXml(state.isSaveRepositoryAsXml());
         setCommandBeforeAccessRepository(state.getCommandBeforeAccessRepository());
         setCommandAfterAccessRepository(state.getCommandAfterAccessRepository());
     }

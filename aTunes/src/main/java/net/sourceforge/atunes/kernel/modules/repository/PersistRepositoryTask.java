@@ -62,6 +62,6 @@ public class PersistRepositoryTask implements Runnable {
 	
 	@Override
 	public void run() {
-		stateHandler.persistRepositoryCache(repository, true);
+		stateHandler.persistRepositoryCache(repository);
 	}
 }

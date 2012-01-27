@@ -416,18 +416,6 @@ public abstract class AbstractStateMock implements IState {
 	}
 
 	@Override
-	public boolean isSaveRepositoryAsXml() {
-		
-		return false;
-	}
-
-	@Override
-	public void setSaveRepositoryAsXml(boolean saveRepositoryAsXml) {
-		
-		
-	}
-
-	@Override
 	public boolean isShowFavoritesInNavigator() {
 		
 		return false;

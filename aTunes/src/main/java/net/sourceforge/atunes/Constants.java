@@ -82,20 +82,11 @@ public final class Constants {
     /** File where repository information is stored. */
     public static final String CACHE_REPOSITORY_NAME = "repository.dat";
 
-    /** The Constant XML_CACHE_REPOSITORY_NAME. */
-    public static final String XML_CACHE_REPOSITORY_NAME = "repository.xml";
-
     /** The Constant CACHE_FAVORITES_NAME. */
     public static final String CACHE_FAVORITES_NAME = "favorites.dat";
 
-    /** The Constant XML_CACHE_FAVORITES_NAME. */
-    public static final String XML_CACHE_FAVORITES_NAME = "favorites.xml";
-
     /** The Constant CACHE_STATISTICS_NAME. */
     public static final String CACHE_STATISTICS_NAME = "statistics.dat";
-
-    /** The Constant XML_CACHE_STATISTICS_NAME. */
-    public static final String XML_CACHE_STATISTICS_NAME = "statistics.xml";
 
     /** Image size at audio object properties panel. */
     public static final ImageSize IMAGE_SIZE = ImageSize.SIZE_90;
