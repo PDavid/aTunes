@@ -99,4 +99,9 @@ public class LinuxOperatingSystem extends OperatingSystemAdapter {
 	public boolean isRipSupported() {
 		return true;
 	}
+	
+	@Override
+	public boolean isMultipleInstancesSupported() {
+		return true;
+	}
 }

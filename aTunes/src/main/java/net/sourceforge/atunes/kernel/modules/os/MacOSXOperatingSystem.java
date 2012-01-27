@@ -129,4 +129,10 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 	public boolean isRipSupported() {
 		return false;
 	}
+	
+	@Override
+	public boolean isMultipleInstancesSupported() {
+		return false;
+	}
+
 }

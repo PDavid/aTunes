@@ -146,4 +146,9 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter {
 		return true;
 	}
 
+	@Override
+	public boolean isMultipleInstancesSupported() {
+		return true;
+	}
+
 }
