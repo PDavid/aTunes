@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.context;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -61,9 +62,11 @@ public class ContextHandlerTest {
 		
 		p1 = mock(IContextPanel.class);
 		when(p1.getContextPanelName()).thenReturn("PANEL1");
+		when(p1.panelNeedsToBeUpdated(any(IAudioObject.class), any(IAudioObject.class))).thenReturn(true);
 	
 		p2 = mock(IContextPanel.class);
 		when(p2.getContextPanelName()).thenReturn("PANEL2");
+		when(p2.panelNeedsToBeUpdated(any(IAudioObject.class), any(IAudioObject.class))).thenReturn(true);
 
 		panels = new ArrayList<IContextPanel>();
 		panels.add(p1);
@@ -107,8 +110,8 @@ public class ContextHandlerTest {
 		
 		// Context information updated
 		verify(playListHandler, times(1)).getCurrentAudioObjectFromVisiblePlayList();
-		verify(p1, times(0)).updateContextPanel(ao, true);
-		verify(p2, times(1)).updateContextPanel(ao, true);
+		verify(p1, times(0)).updateContextPanel(ao, false);
+		verify(p2, times(1)).updateContextPanel(ao, false);
 	}
 	
 	@Test
@@ -134,8 +137,8 @@ public class ContextHandlerTest {
 		
 		// Context information NOT updated
 		verify(playListHandler, times(0)).getCurrentAudioObjectFromVisiblePlayList();
-		verify(p1, times(0)).updateContextPanel(ao, true);
-		verify(p2, times(0)).updateContextPanel(ao, true);
+		verify(p1, times(0)).updateContextPanel(ao, false);
+		verify(p2, times(0)).updateContextPanel(ao, false);
 	}
 
 	@Test
@@ -153,8 +156,8 @@ public class ContextHandlerTest {
 
 		// Context information updated
 		verify(playListHandler, times(1)).getCurrentAudioObjectFromVisiblePlayList();
-		verify(p1, times(0)).updateContextPanel(ao, true);
-		verify(p2, times(1)).updateContextPanel(ao, true);		
+		verify(p1, times(0)).updateContextPanel(ao, false);
+		verify(p2, times(1)).updateContextPanel(ao, false);		
 	}
 	
 	private static class StateMock extends AbstractStateMock {
