@@ -32,7 +32,8 @@ import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
 
 /**
- * The Class MultipleInstancesHandler.
+ * @author alex
+ *
  */
 public final class MultipleInstancesHandler extends AbstractHandler implements IMultipleInstancesHandler {
 
@@ -46,6 +47,9 @@ public final class MultipleInstancesHandler extends AbstractHandler implements I
     
     private IApplicationArguments applicationArguments;
     
+    /**
+     * @param applicationArguments
+     */
     public void setApplicationArguments(IApplicationArguments applicationArguments) {
 		this.applicationArguments = applicationArguments;
 	}
@@ -62,7 +66,7 @@ public final class MultipleInstancesHandler extends AbstractHandler implements I
 
     @Override
     public void allHandlersInitialized() {
-    	if (!applicationArguments.isMultipleInstance()) {
+    	if (getOsManager().isMultipleInstancesSupported() && !applicationArguments.isMultipleInstance()) {
     		startListening();
     	}
     }

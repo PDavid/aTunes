@@ -436,4 +436,9 @@ public class OsManager implements IOSManager {
 	public boolean isWindows() {
 		return osType.isWindows();
 	}
+	
+	@Override
+	public boolean isMultipleInstancesSupported() {
+		return adapter.isMultipleInstancesSupported();
+	}
 }

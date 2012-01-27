@@ -118,4 +118,10 @@ public class SolarisOperatingSystem extends OperatingSystemAdapter {
 	public boolean isRipSupported() {
 		return true;
 	}
+	
+	@Override
+	public boolean isMultipleInstancesSupported() {
+		return true;
+	}
+
 }

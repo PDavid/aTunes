@@ -302,4 +302,10 @@ public abstract class OperatingSystemAdapter {
 	 * @return
 	 */
 	public abstract boolean isRipSupported();
+	
+	/**
+	 * Returns true if OS allows to run more than one instance of application
+	 * @return
+	 */
+	public abstract boolean isMultipleInstancesSupported();
 }

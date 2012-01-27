@@ -223,6 +223,12 @@ public interface IOSManager {
 	 * @return
 	 */
 	public boolean isRipSupported();
+	
+	/**
+	 * Returns if OS allows to run more than one instance of application
+	 * @return
+	 */
+	public boolean isMultipleInstancesSupported();
 
 	/**
 	 * @return
