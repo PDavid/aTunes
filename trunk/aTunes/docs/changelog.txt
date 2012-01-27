@@ -6,6 +6,7 @@ aTunes 2.2.0
 - Improved performance of Full Screen Mode
 - Use dynamic heap size in Windows (5% of free memory for initial heap space, 10% for maximum heap space)
 - New action to remove duplicates from play list
+- Removed xml serialization of repository as it can cause OutOfMemory with large repositories
 
 aTunes 2.1.1
 ------------

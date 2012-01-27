@@ -179,10 +179,6 @@ public interface IState {
 
 	public void setAutoRepositoryRefreshTime(int autoRepositoryRefreshTime);
 
-	public boolean isSaveRepositoryAsXml();
-
-	public void setSaveRepositoryAsXml(boolean saveRepositoryAsXml);
-
 	public boolean isShowFavoritesInNavigator();
 
 	public void setShowFavoritesInNavigator(boolean showFavoritesInNavigator);

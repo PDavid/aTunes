@@ -728,24 +728,6 @@ public class ApplicationState implements IState {
     
 
     /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isSaveRepositoryAsXml()
-	 */
-    @Override
-	public boolean isSaveRepositoryAsXml() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.SAVE_REPOSITORY_AS_XML, true);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setSaveRepositoryAsXml(boolean)
-	 */
-    @Override
-	public void setSaveRepositoryAsXml(boolean saveRepositoryAsXml) {
-    	this.stateStore.storePreference(Preferences.SAVE_REPOSITORY_AS_XML, saveRepositoryAsXml);
-    }
-    
-    
-
-    /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isShowFavoritesInNavigator()
 	 */
     @Override
