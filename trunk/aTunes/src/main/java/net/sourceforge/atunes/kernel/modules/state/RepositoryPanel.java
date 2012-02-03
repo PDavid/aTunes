@@ -38,7 +38,9 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
 
     private static final long serialVersionUID = 3331810461314007217L;
 
-    /** The refresh time. */
+    /** 
+     * The refresh time of repository 
+     */
     private JComboBox refreshTime;
 
     /**
@@ -47,7 +49,7 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
     private JTextField commandBeforeAccessRepository;
 
     /**
-     * Test field to specify command to execute after access repository (when
+     * Text field to specify command to execute after access repository (when
      * application finish)
      */
     private JTextField commandAfterAccessRepository;
@@ -57,27 +59,33 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
      */
     public RepositoryPanel() {
         super(I18nUtils.getString("REPOSITORY"));
-        JLabel label = new JLabel(I18nUtils.getString("REPOSITORY_REFRESH_TIME"));
         refreshTime = new JComboBox(new Integer[] { 0, 5, 10, 15, 30, 60 });
-        JLabel label2 = new JLabel(I18nUtils.getString("COMMAND_BEFORE_REPOSITORY_ACCESS"));
         commandBeforeAccessRepository = new CustomTextField(20);
-        JLabel label3 = new JLabel(I18nUtils.getString("COMMAND_AFTER_REPOSITORY_ACCESS"));
         commandAfterAccessRepository = new CustomTextField(20);
+        setupPanel();
+    }
 
-        GridBagConstraints c = new GridBagConstraints();
+	/**
+	 * Add components to panel
+	 */
+	private void setupPanel() {
+		GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 0;
-        c.anchor = GridBagConstraints.LINE_START;
-        add(label, c);
+        c.anchor = GridBagConstraints.WEST;
+        c.insets = new Insets(0, 10, 0, 0);
+        add(new JLabel(I18nUtils.getString("REPOSITORY_REFRESH_TIME")), c);
         c.gridx = 1;
         c.weightx = 1;
         c.insets = new Insets(0, 10, 0, 0);
         add(refreshTime, c);
+        c.gridx = 0;
         c.gridy = 1;
         c.gridwidth = 0;
         c.weightx = 1;
-        add(label2, c);
+        c.insets = new Insets(10, 10, 0, 0);
+        add(new JLabel(I18nUtils.getString("COMMAND_BEFORE_REPOSITORY_ACCESS")), c);
         c.gridx = 1;
         c.weightx = 1;
         add(commandBeforeAccessRepository, c);
@@ -85,11 +93,12 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
         c.gridy = 2;
         c.weightx = 0;
         c.weighty = 1;
-        add(label3, c);
+        c.anchor = GridBagConstraints.NORTHWEST;
+        add(new JLabel(I18nUtils.getString("COMMAND_AFTER_REPOSITORY_ACCESS")), c);
         c.gridx = 1;
         c.weightx = 1;
         add(commandAfterAccessRepository, c);
-    }
+	}
 
     @Override
     public boolean applyPreferences(IState state) {
@@ -148,5 +157,4 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
     public void resetImmediateChanges(IState state) {
         // Do nothing
     }
-
 }
