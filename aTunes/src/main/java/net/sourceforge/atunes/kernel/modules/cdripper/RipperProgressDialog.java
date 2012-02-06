@@ -57,6 +57,8 @@ public final class RipperProgressDialog extends AbstractCustomDialog implements 
     private JLabel encodeProgressValueLabel;
     private JButton cancelButton;
     
+    private ILookAndFeelManager lookAndFeelManager;
+    
     private IIconFactory albumBigIcon;
     
     /**
@@ -64,6 +66,13 @@ public final class RipperProgressDialog extends AbstractCustomDialog implements 
      */
     public void setAlbumBigIcon(IIconFactory albumBigIcon) {
 		this.albumBigIcon = albumBigIcon;
+	}
+    
+    /**
+     * @param lookAndFeelManager
+     */
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
 	}
 
     /**
@@ -75,7 +84,6 @@ public final class RipperProgressDialog extends AbstractCustomDialog implements 
         super(frame, 420, 200, true, CloseAction.NOTHING, lookAndFeelManager.getCurrentLookAndFeel());
         setTitle(I18nUtils.getString("RIPPING_CD"));
         setResizable(false);
-        setContent();
     }
 
     /* (non-Javadoc)
@@ -97,10 +105,10 @@ public final class RipperProgressDialog extends AbstractCustomDialog implements 
     /**
      * Sets the content.
      */
-    private void setContent() {
+    public void initialize() {
         JPanel panel = new JPanel(new GridBagLayout());
 
-        cover = new JLabel(albumBigIcon.getIcon(null));
+        cover = new JLabel(albumBigIcon.getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls()));
 
         JLabel totalProgressLabel = new JLabel(I18nUtils.getString("TOTAL_PROGRESS"));
         totalProgressBar = new JProgressBar();
