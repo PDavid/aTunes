@@ -22,8 +22,6 @@ package net.sourceforge.atunes.kernel.modules.cdripper;
 
 import java.io.File;
 
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -74,7 +72,7 @@ public class WavEncoder extends AbstractEncoder {
      * Creates a new wav encoder
      */
     public WavEncoder() {
-    	super("wav", new String[0], "", FORMAT_NAME, Context.getBean(ITagHandler.class));
+    	super("wav", new String[0], "", FORMAT_NAME);
     }
  
     @Override
