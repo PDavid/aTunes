@@ -35,6 +35,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
@@ -45,7 +46,6 @@ import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 /**
@@ -77,8 +77,9 @@ public final class RipCdDialog extends AbstractCustomDialog {
      *            the owner
      */
     public RipCdDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
-        super(frame, 750, 540, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
+        super(frame, 650, 450, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
         setTitle(I18nUtils.getString("RIP_CD"));
+        setResizable(false);
         add(getContent(lookAndFeelManager.getCurrentLookAndFeel()));
     }
 
@@ -137,6 +138,141 @@ public final class RipCdDialog extends AbstractCustomDialog {
     }
 
     /**
+     * Panel with basic fields: artist, album, ...
+     * @return
+     */
+    private JPanel getBasicPanel() {
+        JPanel basicPanel = new JPanel(new GridBagLayout());
+
+        JLabel artistLabel = new JLabel(I18nUtils.getString("ALBUM_ARTIST"));
+        artistTextField = new CustomTextField();
+        JLabel albumLabel = new JLabel(I18nUtils.getString("ALBUM"));
+        albumTextField = new CustomTextField();
+        JLabel yearLabel = new JLabel();
+        yearLabel.setText(I18nUtils.getString("YEAR"));
+        yearTextField = new CustomTextField();
+        JLabel genreLabel = new JLabel(I18nUtils.getString("GENRE"));
+
+        genreComboBox = new JComboBox();
+        genreComboBox.setEditable(true);
+        titlesButton = new JButton(I18nUtils.getString("GET_TITLES"));
+        
+        arrangeBasicPanel(basicPanel, artistLabel, albumLabel, yearLabel, genreLabel);
+        
+        return basicPanel;
+    }
+
+	/**
+	 * @param basicPanel
+	 * @param artistLabel
+	 * @param albumLabel
+	 * @param yearLabel
+	 * @param genreLabel
+	 */
+	private void arrangeBasicPanel(JPanel basicPanel, JLabel artistLabel, JLabel albumLabel, JLabel yearLabel, JLabel genreLabel) {
+		GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(5, 10, 5, 10);
+        
+        c.gridx = 0;
+        c.gridy = 0;
+        c.weightx = 0;
+        basicPanel.add(artistLabel, c);
+        c.gridx = 1;
+        c.weightx = 0.9;
+        basicPanel.add(artistTextField, c);
+        
+        c.gridx = 2;
+        c.weightx = 0;
+        basicPanel.add(genreLabel, c);
+        c.gridx = 3;
+        c.weightx = 0.1;
+        basicPanel.add(genreComboBox, c);
+        
+        c.gridx = 0;
+        c.gridy = 1;
+        c.weightx = 0;
+        basicPanel.add(albumLabel, c);
+        
+        c.gridx = 1;
+        c.weightx = 0.9;
+        basicPanel.add(albumTextField, c);
+        
+        c.gridx = 2;
+        c.weightx = 0;
+        basicPanel.add(yearLabel, c);
+        
+        c.gridx = 3;
+        c.weightx = 0.1;
+        basicPanel.add(yearTextField, c);
+
+        c.gridx = 0;
+        c.gridy = 2;
+        c.weightx = 0;
+        c.gridwidth = 4;
+        c.anchor = GridBagConstraints.CENTER;
+        c.fill = GridBagConstraints.NONE;
+        c.insets = new Insets(15, 0, 0, 0);
+        basicPanel.add(titlesButton, c);
+	}
+    
+	private JPanel getAdvancedPanel() {
+		JPanel advancedPanel = new JPanel(new GridBagLayout());
+		
+		JLabel formatLabel = new JLabel(I18nUtils.getString("ENCODE_TO"));
+
+		format = new JComboBox();
+		JLabel qualityLabel = new JLabel(I18nUtils.getString("QUALITY"));
+
+		quality = new JComboBox(new String[] {});
+		quality.setMinimumSize(new Dimension(150, 20));
+		JLabel filePatternLabel = new JLabel(I18nUtils.getString("FILEPATTERN"));
+
+		filePattern = new JComboBox();
+		JLabel dir = new JLabel(I18nUtils.getString("FOLDER"));
+
+		folderName = new CustomTextField();
+		folderSelectionButton = new JButton("...");
+
+		useCdErrorCorrection = new JCheckBox(I18nUtils.getString("USE_CD_ERROR_CORRECTION"));
+
+		GridBagConstraints c = new GridBagConstraints();
+		c.insets = new Insets(5, 5, 5, 5);
+		
+		c.gridx = 0;
+		c.gridy = 0;
+		advancedPanel.add(formatLabel, c);
+		c.gridx = 1;
+		advancedPanel.add(format, c);
+		
+		c.gridx = 0;
+		c.gridy = 1;
+		advancedPanel.add(qualityLabel, c);
+		c.gridx = 1;
+		advancedPanel.add(quality, c);
+		
+		c.gridx = 2;
+		c.gridy = 1;
+		advancedPanel.add(dir, c);
+		c.gridx = 3;
+		c.weightx = 0.8;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		advancedPanel.add(folderName, c);
+		c.gridx = 4;
+		c.fill = GridBagConstraints.NONE;
+		c.weightx = 0;
+		advancedPanel.add(folderSelectionButton, c);
+		
+		c.gridx = 0;
+		c.gridy = 3;
+		c.gridwidth = 5;
+		advancedPanel.add(useCdErrorCorrection, c);
+		
+		
+		return advancedPanel;
+	}
+	
+    /**
      * Defines the content of the dialog box.
      * @param iLookAndFeel 
      * 
@@ -146,12 +282,66 @@ public final class RipCdDialog extends AbstractCustomDialog {
         JPanel panel = new JPanel(new GridBagLayout());
 
         tableModel = new CdInfoTableModel();
-        JTable table = iLookAndFeel.getTable();
+        
+        JTable table = getTable(iLookAndFeel);
+        JScrollPane scrollPane = iLookAndFeel.getTableScrollPane(table);
+        
+        // Here we define the cd ripper dialog display layout
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 0;
+        c.weightx = 1;
+        c.weighty = 0.8;
+        c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(20, 20, 10, 20);
+        panel.add(scrollPane, c);
+        
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.add(getBasicPanel(), I18nUtils.getString("BASIC"));
+        tabbedPane.add(getAdvancedPanel(), I18nUtils.getString("ADVANCED"));
+        
+        c.gridy = 1;
+        c.weighty = 0.2;
+        c.insets = new Insets(0, 20, 5, 20);
+        c.anchor = GridBagConstraints.WEST;
+        panel.add(tabbedPane, c);
+                
+        c.gridy = 2;
+        c.weighty = 0;
+        c.anchor = GridBagConstraints.CENTER;
+        panel.add(getOkCancelPanel(), c);
+
+        return panel;
+    }
+
+	/**
+	 * @return
+	 */
+	private JPanel getOkCancelPanel() {
+		ok = new JButton(I18nUtils.getString("OK"));
+        cancel = new JButton(I18nUtils.getString("CANCEL"));
+
+        JPanel okCancelPanel = new JPanel();
+        okCancelPanel.setOpaque(false);
+        okCancelPanel.add(ok);
+        okCancelPanel.add(cancel);
+		return okCancelPanel;
+	}
+
+	/**
+	 * @param iLookAndFeel
+	 * @return
+	 */
+	private JTable getTable(ILookAndFeel iLookAndFeel) {
+		JTable table = iLookAndFeel.getTable();
         table.setModel(tableModel);
-        table.getColumnModel().getColumn(0).setMaxWidth(20);
-        table.getColumnModel().getColumn(4).setMaxWidth(50);
+        
+        table.getColumnModel().getColumn(0).setMaxWidth(20); // Width of check 
+        table.getColumnModel().getColumn(4).setMaxWidth(50); // Width of duration
+        
         JCheckBox checkBox = new JCheckBox();
         table.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(checkBox));
+        
         JTextField textfield1 = new CustomTextField();
         JTextField textfield2 = new CustomTextField();
         JTextField textfield3 = new CustomTextField();
@@ -166,155 +356,9 @@ public final class RipCdDialog extends AbstractCustomDialog {
         table.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(textfield2));
         table.getColumnModel().getColumn(3).setCellEditor(new DefaultCellEditor(textfield3));
 
-        table.setDefaultRenderer(String.class, iLookAndFeel.getTableCellRenderer(
-                GuiUtils.getComponentOrientationTableCellRendererCode(iLookAndFeel)));
-
-        JScrollPane scrollPane = iLookAndFeel.getTableScrollPane(table);
-        JLabel artistLabel = new JLabel(I18nUtils.getString("ALBUM_ARTIST"));
-        artistTextField = new CustomTextField();
-        JLabel albumLabel = new JLabel(I18nUtils.getString("ALBUM"));
-        albumTextField = new CustomTextField();
-        JLabel yearLabel = new JLabel();
-        yearLabel.setText(I18nUtils.getString("YEAR"));
-        yearTextField = new CustomTextField();
-        JLabel genreLabel = new JLabel(I18nUtils.getString("GENRE"));
-
-        genreComboBox = new JComboBox();
-        genreComboBox.setEditable(true);
-        titlesButton = new JButton(I18nUtils.getString("GET_TITLES"));
-        JLabel formatLabel = new JLabel(I18nUtils.getString("ENCODE_TO"));
-
-        format = new JComboBox();
-        JLabel qualityLabel = new JLabel(I18nUtils.getString("QUALITY"));
-
-        quality = new JComboBox(new String[] {});
-        quality.setMinimumSize(new Dimension(150, 20));
-        JLabel filePatternLabel = new JLabel(I18nUtils.getString("FILEPATTERN"));
-
-        filePattern = new JComboBox();
-        JLabel dir = new JLabel(I18nUtils.getString("FOLDER"));
-
-        folderName = new CustomTextField();
-        folderSelectionButton = new JButton(I18nUtils.getString("SELECT_FOLDER"));
-
-        // Explain what the file name pattern means
-        JLabel explainPatterns = new JLabel(StringUtils.getString("%A=", I18nUtils.getString("ARTIST"), "  -  %L=", I18nUtils.getString("ALBUM"), "  -  %N=", I18nUtils
-                .getString("TRACK"), "  -  %T=", I18nUtils.getString("TITLE")));
-
-        useCdErrorCorrection = new JCheckBox(I18nUtils.getString("USE_CD_ERROR_CORRECTION"));
-        ok = new JButton(I18nUtils.getString("OK"));
-        cancel = new JButton(I18nUtils.getString("CANCEL"));
-
-        JPanel auxPanel = new JPanel();
-        auxPanel.setOpaque(false);
-        auxPanel.add(ok);
-        auxPanel.add(cancel);
-
-        // Here we define the cd ripper dialog display layout
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridwidth = 4;
-        c.gridy = 0;
-        c.weightx = 1;
-        c.weighty = 1;
-        c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(20, 20, 10, 20);
-        panel.add(scrollPane, c);
-        c.gridy = 1;
-        c.gridwidth = 1;
-        c.weightx = 0;
-        c.weighty = 0;
-        c.fill = GridBagConstraints.NONE;
-        c.insets = new Insets(0, 20, 5, 20);
-        c.anchor = GridBagConstraints.WEST;
-        panel.add(artistLabel, c);
-        c.gridx = 1;
-        c.gridwidth = 3;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(artistTextField, c);
-        c.gridx = 0;
-        c.gridwidth = 1;
-        c.gridy = 2;
-        c.fill = GridBagConstraints.NONE;
-        panel.add(albumLabel, c);
-        c.gridx = 1;
-        c.gridwidth = 3;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(albumTextField, c);
-        c.gridx = 0;
-        c.gridy = 3;
-        c.fill = GridBagConstraints.NONE;
-        c.gridwidth = 1;
-        panel.add(genreLabel, c);
-        c.gridx = 1;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(genreComboBox, c);
-        c.gridx = 2;
-        c.gridwidth = 1;
-        c.fill = GridBagConstraints.NONE;
-        panel.add(yearLabel, c);
-        c.gridx = 3;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(yearTextField, c);
-        c.gridx = 1;
-        c.gridwidth = 3;
-        c.gridy = 4;
-        panel.add(titlesButton, c);
-        c.gridx = 0;
-        c.gridy = 5;
-        c.fill = GridBagConstraints.NONE;
-        c.gridwidth = 1;
-        panel.add(formatLabel, c);
-        c.gridx = 1;
-        c.weightx = 0.3;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(format, c);
-        c.gridx = 2;
-        c.gridwidth = 1;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(qualityLabel, c);
-        c.gridx = 3;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(quality, c);
-        c.gridx = 1;
-        c.gridy = 6;
-        c.gridwidth = 3;
-        panel.add(useCdErrorCorrection, c);
-        c.gridx = 0;
-        c.gridy = 7;
-        c.gridwidth = 1;
-        c.fill = GridBagConstraints.NONE;
-        panel.add(dir, c);
-        c.gridx = 1;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridwidth = 3;
-        panel.add(folderName, c);
-        c.gridx = 0;
-        c.gridy = 8;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridwidth = 1;
-        panel.add(filePatternLabel, c);
-        c.gridx = 1;
-        c.weightx = 0.3;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(filePattern, c);
-        c.gridx = 2;
-        c.gridwidth = 2;
-        panel.add(folderSelectionButton, c);
-        c.gridx = 1;
-        c.gridy = 9;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.anchor = GridBagConstraints.CENTER;
-        c.gridwidth = 3;
-        panel.add(explainPatterns, c);
-        c.gridx = 0;
-        c.gridy = 10;
-        c.gridwidth = 8;
-        c.anchor = GridBagConstraints.CENTER;
-        panel.add(auxPanel, c);
-
-        return panel;
-    }
+        table.setDefaultRenderer(String.class, iLookAndFeel.getTableCellRenderer(GuiUtils.getComponentOrientationTableCellRendererCode(iLookAndFeel)));
+		return table;
+	}
 
     /**
      * Returns the filename pattern selected in the CD ripper dialog.
