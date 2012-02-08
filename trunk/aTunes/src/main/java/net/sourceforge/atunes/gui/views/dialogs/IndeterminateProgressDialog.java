@@ -67,7 +67,7 @@ public final class IndeterminateProgressDialog extends AbstractCustomDialog impl
      *            the parent
      */
     public IndeterminateProgressDialog(IFrame parent, ILookAndFeelManager lookAndFeelManager) {
-        super(parent, 400, 130, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
+        super(parent, 450, 160, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
         add(getContent());
         setResizable(false);
     }
