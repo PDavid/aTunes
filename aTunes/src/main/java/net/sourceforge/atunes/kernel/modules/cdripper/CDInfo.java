@@ -58,6 +58,9 @@ public class CDInfo implements Serializable {
 
     /** The composers. */
     private List<String> composers;
+    
+    /** Genre of CD */
+    private String genre;
 
     /**
      * Gets the album.
@@ -229,6 +232,20 @@ public class CDInfo implements Serializable {
     public void setTracks(int tracks) {
         this.tracks = tracks;
     }
+    
+    /**
+     * @param genre
+     */
+    public void setGenre(String genre) {
+		this.genre = genre;
+	}
+    
+    /**
+     * @return
+     */
+    public String getGenre() {
+		return genre;
+	}
 
     /*
      * (non-Javadoc)
