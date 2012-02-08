@@ -265,22 +265,12 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
      * @param repositoryPath
      */
     void showCdInfo(CDInfo cdInfo, String path, String repositoryPath) {
-        setArtist(cdInfo.getArtist());
-        getComponentControlled().getArtistTextField().setText(cdInfo.getArtist());
-        setAlbum(cdInfo.getAlbum());
-        getComponentControlled().getAlbumTextField().setText(cdInfo.getAlbum());
-        setYear(DateUtils.getCurrentYear());
-        getComponentControlled().getYearTextField().setText(Integer.toString(DateUtils.getCurrentYear()));
-        setGenre(getComponentControlled().getGenreComboBox().getSelectedItem().toString());
-        // Creates folders when information is coming from cdda2wav
-        if (cdInfo.getArtist() != null && cdInfo.getAlbum() != null) {
-            getComponentControlled().getFolderName().setText(
-                    StringUtils.getString(repositoryPath, osManager.getFileSeparator(), cdInfo.getArtist(),
-                    		osManager.getFileSeparator(), cdInfo.getAlbum()));
-        } else {
-            getComponentControlled().getFolderName().setText(path);
-        }
-        getComponentControlled().getTitlesButton().setEnabled(false);
+        showArtist(cdInfo);
+        showAlbum(cdInfo);
+        showYear();
+        showGenre(cdInfo);
+        showFolder(cdInfo, path, repositoryPath);
+        enableGetTitlesButton(cdInfo);
         getComponentControlled().getFormat().setSelectedItem(ripperHandler.getEncoderName());
         getComponentControlled().getQualityComboBox().setSelectedItem(getState().getEncoderQuality());
         getComponentControlled().getUseCdErrorCorrection().setSelected(getState().isUseCdErrorCorrection());
@@ -293,5 +283,51 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
         getComponentControlled().updateComposerNames(cdInfo.getComposers());
         getComponentControlled().setVisible(true);
     }
+    
+    private boolean artistAndAlbumRetrieved(CDInfo cdInfo) {
+    	return cdInfo.getArtist() != null && cdInfo.getAlbum() != null;
+    }
+
+	private void enableGetTitlesButton(CDInfo cdInfo) {
+		getComponentControlled().getTitlesButton().setEnabled(artistAndAlbumRetrieved(cdInfo));
+	}
+
+	private void showFolder(CDInfo cdInfo, String path, String repositoryPath) {
+		// Creates folders when information is coming from cdda2wav
+        if (artistAndAlbumRetrieved(cdInfo)) {
+            getComponentControlled().getFolderName().setText(
+                    StringUtils.getString(repositoryPath, osManager.getFileSeparator(), cdInfo.getArtist(),
+                    		osManager.getFileSeparator(), cdInfo.getAlbum()));
+        } else {
+            getComponentControlled().getFolderName().setText(path);
+        }
+	}
+
+	private void showGenre(CDInfo cdInfo) {
+		if (artistAndAlbumRetrieved(cdInfo)) {
+			if (cdInfo.getGenre() != null) {
+				getComponentControlled().getGenreComboBox().setSelectedItem(cdInfo.getGenre());
+				setGenre(cdInfo.getGenre());
+			}
+        } else {
+        	getComponentControlled().getGenreComboBox().setSelectedItem("");
+			setGenre(null);
+        }
+	}
+
+	private void showYear() {
+		setYear(0);
+        getComponentControlled().getYearTextField().setText("");
+	}
+
+	private void showAlbum(CDInfo cdInfo) {
+		setAlbum(cdInfo.getAlbum());
+        getComponentControlled().getAlbumTextField().setText(cdInfo.getAlbum());
+	}
+
+	private void showArtist(CDInfo cdInfo) {
+		setArtist(cdInfo.getArtist());
+        getComponentControlled().getArtistTextField().setText(cdInfo.getArtist());
+	}
 
 }

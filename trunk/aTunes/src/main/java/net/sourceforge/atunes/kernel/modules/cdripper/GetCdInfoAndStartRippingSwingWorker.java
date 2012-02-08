@@ -31,6 +31,7 @@ import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -41,13 +42,23 @@ final class GetCdInfoAndStartRippingSwingWorker extends	SwingWorker<CDInfo, Void
 	private RipperHandler ripperHandler;
 	private IFrame frame;
 	private RipCdDialog dialog;
+	private IWebServicesHandler webServicesHandler;
 
-	GetCdInfoAndStartRippingSwingWorker(IOSManager osManager, IState state, RipperHandler ripperHandler, IFrame frame, RipCdDialog dialog) {
+	/**
+	 * @param osManager
+	 * @param state
+	 * @param ripperHandler
+	 * @param frame
+	 * @param dialog
+	 * @param webServicesHandler
+	 */
+	GetCdInfoAndStartRippingSwingWorker(IOSManager osManager, IState state, RipperHandler ripperHandler, IFrame frame, RipCdDialog dialog, IWebServicesHandler webServicesHandler) {
 		this.osManager = osManager;
 		this.state = state;
 		this.ripperHandler = ripperHandler;
 		this.frame = frame;
 		this.dialog = dialog;
+		this.webServicesHandler = webServicesHandler;
 	}
 
 	@Override
@@ -71,7 +82,11 @@ final class GetCdInfoAndStartRippingSwingWorker extends	SwingWorker<CDInfo, Void
 	        }
 	    });
 	    this.ripperHandler.setRipper(ripper);
-	    return ripper.getCDInfo();
+	    CDInfo cdInfo = ripper.getCDInfo();
+	    
+	    tryToGetGenre(cdInfo);
+	    
+	    return cdInfo;
 	}
 
 	@Override
@@ -108,5 +123,16 @@ final class GetCdInfoAndStartRippingSwingWorker extends	SwingWorker<CDInfo, Void
 	    	this.ripperHandler.getRipCdDialogController().getComponentControlled().setVisible(false);
 	        Logger.error(e);
 	    }
+	}
+	
+	private void tryToGetGenre(CDInfo cdInfo) {
+		if (cdInfo != null && cdInfo.getArtist() != null) {
+			Logger.debug("Retrieving artist top tag");
+			String tag = webServicesHandler.getArtistTopTag(cdInfo.getArtist());
+			if (tag != null) {
+				Logger.debug("Tag retrieved for artist ", cdInfo.getArtist(), ": ", tag);
+				cdInfo.setGenre(tag);
+			}
+		}
 	}
 }

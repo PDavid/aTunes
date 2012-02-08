@@ -72,6 +72,8 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
     
     private IRepositoryHandler repositoryHandler;
     
+    private IWebServicesHandler webServicesHandler;
+    
     /**
      * Map of available encoders in the system: key is format name, value is
      * encoder
@@ -145,6 +147,13 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
      */
     public void setTaskService(TaskService taskService) {
 		this.taskService = taskService;
+	}
+    
+    /**
+     * @param webServicesHandler
+     */
+    public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+		this.webServicesHandler = webServicesHandler;
 	}
     
     @Override
@@ -433,7 +442,7 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
         	}
         });
 
-        SwingWorker<CDInfo, Void> getCdInfoAndStartRipping = new GetCdInfoAndStartRippingSwingWorker(getBean(IOSManager.class), getState(), this, getFrame(), dialog);
+        SwingWorker<CDInfo, Void> getCdInfoAndStartRipping = new GetCdInfoAndStartRippingSwingWorker(getOsManager(), getState(), this, getFrame(), dialog, webServicesHandler);
         getCdInfoAndStartRipping.execute();
     }
 
