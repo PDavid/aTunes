@@ -63,13 +63,18 @@ public abstract class AbstractEncoder implements Encoder {
 	 * @param availableQualities
 	 * @param defaultQuality
 	 * @param formatName
-	 * @param tagHandler
 	 */
-	public AbstractEncoder(String extensionOfEncodedFiles, String[] availableQualities, String defaultQuality, String formatName, ITagHandler tagHandler) {
+	public AbstractEncoder(String extensionOfEncodedFiles, String[] availableQualities, String defaultQuality, String formatName) {
 		this.extensionOfEncodedFiles = extensionOfEncodedFiles;
 		this.availableQualities = availableQualities;
 		this.defaultQuality = defaultQuality;
 		this.formatName = formatName;
+	}
+	
+	/**
+	 * @param tagHandler
+	 */
+	public void setTagHandler(ITagHandler tagHandler) {
 		this.tagHandler = tagHandler;
 	}
 	

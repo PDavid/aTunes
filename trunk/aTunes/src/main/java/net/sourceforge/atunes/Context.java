@@ -38,6 +38,7 @@ public final class Context {
 	public static void initialize() {
 		context = new ClassPathXmlApplicationContext(
 				"/settings/spring/actions.xml", 
+				"/settings/spring/cdripper.xml", 
 				"/settings/spring/columnsets.xml", 
 				"/settings/spring/context.xml", 
 				"/settings/spring/core.xml",

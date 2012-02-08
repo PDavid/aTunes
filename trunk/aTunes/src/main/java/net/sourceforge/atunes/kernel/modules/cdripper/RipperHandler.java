@@ -41,7 +41,6 @@ import net.sourceforge.atunes.kernel.actions.RipCDAction;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IRipperHandler;
 import net.sourceforge.atunes.model.IRipperProgressDialog;
@@ -88,21 +87,15 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
     /**
      * List of encoder classes
      */
-    private static List<String> allEncoders;
+    private List<String> allEncoders;
 
-    static {
-        // TODO: Add here every new encoder
-        // The order of entries is used to determine default encoder. 
-        // First entry is default encoder, if it's not available then second entry is default encoder...  
-        allEncoders = new ArrayList<String>();
-        allEncoders.add("net.sourceforge.atunes.kernel.modules.cdripper.OggEncoder");
-        allEncoders.add("net.sourceforge.atunes.kernel.modules.cdripper.LameEncoder");
-        allEncoders.add("net.sourceforge.atunes.kernel.modules.cdripper.Mp4Encoder");
-        allEncoders.add("net.sourceforge.atunes.kernel.modules.cdripper.NeroAacEncoder");
-        allEncoders.add("net.sourceforge.atunes.kernel.modules.cdripper.FlacEncoder");
-        allEncoders.add("net.sourceforge.atunes.kernel.modules.cdripper.WavEncoder");
-    }
-    
+    /**
+     * @param allEncoders
+     */
+    public void setAllEncoders(List<String> allEncoders) {
+		this.allEncoders = allEncoders;
+	}
+  
     /**
      * @return
      */
@@ -260,8 +253,8 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
                 try {
                     Class<?> encoderClass = Class.forName(encoderName);
                     if (Encoder.class.isAssignableFrom(encoderClass)) {
-                        Encoder instancedEncoder = (Encoder) encoderClass.newInstance();
-                        ((AbstractEncoder)instancedEncoder).setOsManager(getOsManager());
+                        @SuppressWarnings("unchecked")
+						Encoder instancedEncoder = getBean((Class<Encoder>)encoderClass);
                         if (instancedEncoder.testEncoder()) {
                             availableEncoders.put(instancedEncoder.getFormatName(), instancedEncoder);
                         }
@@ -269,10 +262,6 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
                         Logger.error(encoderClass.getName(), " is not a subtype of ", Encoder.class.getName());
                     }
                 } catch (ClassNotFoundException e) {
-                    Logger.error(e);
-                } catch (IllegalAccessException e) {
-                    Logger.error(e);
-                } catch (InstantiationException e) {
                     Logger.error(e);
                 }
             }
