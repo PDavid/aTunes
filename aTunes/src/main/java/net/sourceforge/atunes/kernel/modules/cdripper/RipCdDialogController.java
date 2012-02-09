@@ -33,7 +33,6 @@ import net.sourceforge.atunes.kernel.modules.tags.Genres;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
