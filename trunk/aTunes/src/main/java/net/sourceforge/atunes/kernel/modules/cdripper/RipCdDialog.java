@@ -61,6 +61,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
     private JComboBox genreComboBox;
     private JButton titlesButton;
     private JComboBox format;
+    private JLabel qualityLabel;
     private JComboBox quality;
     private JComboBox filePattern;
     private JTextField folderName;
@@ -222,10 +223,9 @@ public final class RipCdDialog extends AbstractCustomDialog {
 		JLabel formatLabel = new JLabel(I18nUtils.getString("ENCODE_TO"));
 
 		format = new JComboBox();
-		JLabel qualityLabel = new JLabel(I18nUtils.getString("QUALITY"));
+		qualityLabel = new JLabel(I18nUtils.getString("QUALITY"));
 
 		quality = new JComboBox(new String[] {});
-		quality.setMinimumSize(new Dimension(150, 20));
 		JLabel filePatternLabel = new JLabel(I18nUtils.getString("FILEPATTERN"));
 
 		filePattern = new JComboBox();
@@ -245,29 +245,25 @@ public final class RipCdDialog extends AbstractCustomDialog {
 		c.gridx = 1;
 		advancedPanel.add(format, c);
 		
-		c.gridx = 0;
-		c.gridy = 1;
+		c.gridx = 2;
 		advancedPanel.add(qualityLabel, c);
-		c.gridx = 1;
+		c.gridx = 3;
 		advancedPanel.add(quality, c);
 		
-		c.gridx = 2;
+		c.gridx = 4;
+		advancedPanel.add(useCdErrorCorrection, c);
+		
+		c.gridx = 1;
 		c.gridy = 1;
 		advancedPanel.add(dir, c);
-		c.gridx = 3;
+		c.gridx = 2;
 		c.weightx = 0.8;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		advancedPanel.add(folderName, c);
-		c.gridx = 4;
+		c.gridx = 3;
 		c.fill = GridBagConstraints.NONE;
 		c.weightx = 0;
 		advancedPanel.add(folderSelectionButton, c);
-		
-		c.gridx = 0;
-		c.gridy = 3;
-		c.gridwidth = 5;
-		advancedPanel.add(useCdErrorCorrection, c);
-		
 		
 		return advancedPanel;
 	}
@@ -440,6 +436,13 @@ public final class RipCdDialog extends AbstractCustomDialog {
     public JComboBox getQualityComboBox() {
         return quality;
     }
+    
+    /**
+     * @return
+     */
+    public JLabel getQualityLabel() {
+		return qualityLabel;
+	}
 
     /**
      * Gets the track names.

@@ -100,6 +100,7 @@ final class RipCdDialogListener extends KeyAdapter implements ActionListener {
             // Fill quality combo
             String[] qualities = ripperHandler.getEncoderQualities((String) ripCdDialog.getFormat().getSelectedItem());
             ripCdDialog.getQualityComboBox().setEnabled(qualities.length > 0);
+            ripCdDialog.getQualityLabel().setEnabled(qualities.length > 0);
             ripCdDialog.getQualityComboBox().setModel(new DefaultComboBoxModel(qualities));
             ripCdDialog.getQualityComboBox().setSelectedItem(ripperHandler.getEncoderDefaultQuality((String) ripCdDialog.getFormat().getSelectedItem()));
         } else if (e.getSource() == ripCdDialog.getTitlesButton()) {
