@@ -28,7 +28,7 @@ import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.ImageIcon;
 
-public class RadioImageIcon {
+public final class RadioImageIcon {
 	
 	private RadioImageIcon() {}
 

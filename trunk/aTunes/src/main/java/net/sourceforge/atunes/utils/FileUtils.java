@@ -28,7 +28,7 @@ import java.io.FileNotFoundException;
  * @author alex
  *
  */
-public class FileUtils {
+public final class FileUtils {
 	
 	private FileUtils() {}
 

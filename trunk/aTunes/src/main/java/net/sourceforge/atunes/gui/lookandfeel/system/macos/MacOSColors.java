@@ -22,7 +22,7 @@ package net.sourceforge.atunes.gui.lookandfeel.system.macos;
 
 import java.awt.Color;
 
-class MacOSColors {
+final class MacOSColors {
 
 	static final Color EVEN_ROW_COLOR = new Color(241, 245, 250);
 	

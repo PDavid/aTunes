@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.cdripper;
 
-class Cdda2wavConstants {
+final class Cdda2wavConstants {
 
 	static final String CDDA2WAV_COMMAND_STRING = "cdda2wav";
 	static final String ICEDAX_COMMAND_STRING = "icedax";

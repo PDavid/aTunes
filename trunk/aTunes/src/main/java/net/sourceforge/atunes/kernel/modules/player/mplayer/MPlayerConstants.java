@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.player.mplayer;
 
-class MPlayerConstants {
+final class MPlayerConstants {
 
     /** Argument to not display more information than needed. */
     static final String QUIET = "-quiet";

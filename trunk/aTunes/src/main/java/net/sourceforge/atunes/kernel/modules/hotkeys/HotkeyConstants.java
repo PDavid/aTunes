@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.hotkeys;
 
-public class HotkeyConstants {
+final class HotkeyConstants {
 
 	public static final int RIGHT_ARROW = 39;
 	public static final int LEFT_ARROW = 37;

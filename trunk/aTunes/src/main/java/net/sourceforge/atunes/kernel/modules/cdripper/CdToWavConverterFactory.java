@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.cdripper;
 
 import net.sourceforge.atunes.model.IOSManager;
 
-class CdToWavConverterFactory {
+final class CdToWavConverterFactory {
 	
 	private CdToWavConverterFactory() {}
 	
