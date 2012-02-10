@@ -20,20 +20,27 @@
 
 package net.sourceforge.atunes.gui.views.controls.playerControls;
 
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.RenderingHints;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.model.IProgressSlider;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class ProgressSlider extends JPanel implements IProgressSlider {
@@ -44,8 +51,28 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
     private JLabel remainingTime;
     private JSlider progressBar;
     
+    private boolean paintIcon = true;
+    
+    private boolean paintIconAllowed;
+    
+    /**
+     * @param paintIconAllowed
+     */
+    public void setPaintIconAllowed(boolean paintIconAllowed) {
+		this.paintIconAllowed = paintIconAllowed;
+	}
+    
+    /**
+     * Builds a new progress slider
+     */
     public ProgressSlider() {
         super(new GridBagLayout());
+    }
+    
+    /**
+     * Initialize component
+     */
+    public void initialize() {
         time = new JLabel();
         time.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -61,7 +88,7 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
 
         setLayout();
     }
-
+    
     /**
      * Sets played time
      * @param time in milliseconds
@@ -71,6 +98,14 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
         this.time.setText(time > 0 ? StringUtils.milliseconds2String(time) : "");
         this.remainingTime.setText(remainingTime > 0 ? StringUtils.getString("- ", StringUtils.milliseconds2String(remainingTime)) : "");
        	this.progressBar.setVisible(time != 0 || remainingTime != 0);
+       	
+       	if (paintIconAllowed) {
+       		boolean previousPaintIcon = paintIcon;
+       		this.paintIcon = !this.progressBar.isVisible();
+       		if (previousPaintIcon != paintIcon) {
+       			repaint();
+       		}
+       	}
     }
 
     /**
@@ -79,7 +114,7 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
     @Override
 	public void setLayout() {
         removeAll();
-
+        
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.weightx = 0.1;
@@ -189,5 +224,25 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
 	public JPanel getSwingComponent() {
 		return this;
 	}    
+	
+	/** Double values for Horizontal and Vertical radius of corner arcs */
+    protected Dimension arcs = new Dimension(20, 20);
+    
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		if (paintIcon && paintIconAllowed) {
+			int width = getWidth();
+			int height = getHeight();
+
+			Graphics2D graphics = (Graphics2D) g;
+			graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+			ImageIcon icon = ImageUtils.resize(Images.getImage(Images.APP_LOGO_90), width, height - 4);
+
+			graphics.drawImage(icon.getImage(), width / 2 - icon.getIconWidth() / 2, 2, null);
+		}
+
+	}
 }
 

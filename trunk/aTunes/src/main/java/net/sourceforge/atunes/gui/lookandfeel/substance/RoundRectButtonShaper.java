@@ -42,7 +42,7 @@ public final class RoundRectButtonShaper extends AbstractButtonShaper {
         int width = w - 1;
         int height = h - 1;
 
-        Shape shape = new RoundRectangle2D.Double(0, 0, width, height, width / 3d, height / 3d);
+        Shape shape = new RoundRectangle2D.Double(0, 0, width, height, 10, 10);
         GeneralPath generalPath = new GeneralPath(shape);
 
         return generalPath;
