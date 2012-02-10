@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.modules.tags;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.table.TableCellEditor;
 
@@ -43,7 +44,7 @@ abstract class AbstractTagAttributeReviewed {
     /**
      * Keeps changes made in files of a given folder for this tag attribute
      */
-    private HashMap<File, String> changesMade = new HashMap<File, String>();
+    private Map<File, String> changesMade = new HashMap<File, String>();
 
     AbstractTagAttributeReviewed(String name) {
         this.name = name;
@@ -59,7 +60,7 @@ abstract class AbstractTagAttributeReviewed {
     /**
      * @return the changesMade
      */
-    HashMap<File, String> getChangesMade() {
+    Map<File, String> getChangesMade() {
         return changesMade;
     }
 

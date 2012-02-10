@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.table.TableCellEditor;
 
@@ -50,7 +51,7 @@ public final class ReviewImportTreeTableModel extends AbstractTreeTableModel {
     private List<ILocalAudioObject> audioFilesToImport;
 
     /** A hash map to store folders and its children folders */
-    private HashMap<File, List<File>> foldersMap = new HashMap<File, List<File>>();
+    private Map<File, List<File>> foldersMap = new HashMap<File, List<File>>();
 
     /** JXTreeTable that uses this model */
     private JXTreeTable treeTable;

@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.modules.repository.data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeSet;
 
 import net.sourceforge.atunes.model.IAlbum;
@@ -46,7 +47,7 @@ public class Album implements IAlbum {
     private IArtist artist;
 
     /** List of songs of this album. */
-    private TreeSet<ILocalAudioObject> audioFiles;
+    private Set<ILocalAudioObject> audioFiles;
 
     /**
      * Constructor.
@@ -63,7 +64,7 @@ public class Album implements IAlbum {
      * Returns audio files
      * @return
      */
-    private TreeSet<ILocalAudioObject> getAudioFiles() {
+    private Set<ILocalAudioObject> getAudioFiles() {
     	if (audioFiles == null) {
     		audioFiles = new TreeSet<ILocalAudioObject>(new TrackNumberComparator());
     	}
