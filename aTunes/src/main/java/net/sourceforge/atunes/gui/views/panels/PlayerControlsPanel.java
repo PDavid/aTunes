@@ -60,16 +60,6 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
 
     private static final long serialVersionUID = -8647737014195638177L;
 
-    /** 
-     * Height of progress bar when has no ticks 
-     */
-    private static final int PROGRESS_BAR_NO_TICKS_HEIGHT = 26;
-
-    /** 
-     * Height of progress bar when has ticks 
-     */
-    private static final int PROGRESS_BAR_TICKS_HEIGHT = 40;
-    
     private SecondaryControl equalizerButton;
     private SecondaryToggleControl normalizeButton;
     private PlayPauseButton playButton;
@@ -181,12 +171,6 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
     @Override
 	public void setPlaying(boolean playing) {
         playButton.setPlaying(playing);
-    }
-
-    @Override
-	public void setShowTicksAndLabels(boolean showTicks) {
-        getProgressSlider().setShowTicksAndLabels(showTicks);
-        getProgressSlider().setPreferredSize(new Dimension(getProgressSlider().getPreferredSize().width, showTicks ? PROGRESS_BAR_TICKS_HEIGHT : PROGRESS_BAR_NO_TICKS_HEIGHT));
     }
 
     private JPanel getMainControlsPanel() {

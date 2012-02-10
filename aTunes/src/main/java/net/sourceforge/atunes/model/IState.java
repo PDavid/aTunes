@@ -143,10 +143,6 @@ public interface IState {
 
 	public void setUseFadeAway(boolean useFadeAway);
 
-	public boolean isShowTicks();
-
-	public void setShowTicks(boolean showTicks);
-
 	public boolean isShowAdvancedPlayerControls();
 
 	public void setShowAdvancedPlayerControls(boolean show);

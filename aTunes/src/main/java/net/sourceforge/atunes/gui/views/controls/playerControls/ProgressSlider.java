@@ -20,17 +20,12 @@
 
 package net.sourceforge.atunes.gui.views.controls.playerControls;
 
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
-import java.util.Dictionary;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -38,7 +33,6 @@ import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.model.IProgressSlider;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -46,20 +40,10 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
 
     private static final long serialVersionUID = 8921834666233975274L;
 
-    private static final int SECONDS_10 = 10000;
-    private static final int SECONDS_30 = 30000;
-    private static final int MINUTES_1 = 60000;
-    private static final int MINUTES_2 = 120000;
-    private static final int MINUTES_5 = 300000;
-    private static final int MINUTES_10 = 600000;
-    private static final int MINUTES_30 = 1800000;
-
     private JLabel time;
     private JLabel remainingTime;
     private JSlider progressBar;
     
-    private IState state;
-
     public ProgressSlider() {
         super(new GridBagLayout());
         time = new JLabel();
@@ -78,14 +62,6 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
         setLayout();
     }
 
-    /**
-     * @param state
-     */
-    @Override
-	public void setState(IState state) {
-		this.state = state;
-	}
-    
     /**
      * Sets played time
      * @param time in milliseconds
@@ -123,39 +99,6 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
         add(remainingTime, c);
 
     }
-
-    /**
-     * Shows or hides ticks and labels in progress bar
-     * @param showTicks
-     */
-    @Override
-	public void setShowTicksAndLabels(boolean showTicks) {
-        setPaintLabels(showTicks);
-        setPaintTicks(showTicks);
-    }
-    
-	/**
-	 * Delegate method
-	 * @param showTicks
-	 */
-	private void setPaintLabels(boolean showTicks) {
-		progressBar.setPaintLabels(showTicks);
-	}
-
-	/**
-	 * Delegate method
-	 * @param showTicks
-	 */
-	private void setPaintTicks(boolean showTicks) {
-		progressBar.setPaintTicks(showTicks);
-		
-		// Some look and feels (system look and feel) need to invalidate and repaint component to show/hide ticks
-		progressBar.invalidate();
-		progressBar.repaint();
-		
-		// Update minimum size
-        setMinimumSize(new Dimension(progressBar.getPreferredSize().width + time.getPreferredSize().width * 2, progressBar.getPreferredSize().height + time.getPreferredSize().height));
-	}
 
 	/**
 	 * Delegate method
@@ -202,31 +145,6 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
 		return progressBar.getValue();
 	}
 
-	/**
-	 * Delegate method
-	 * @param dictionary
-	 */
-	private void setSliderLabels(Dictionary<?, ?> dictionary) {
-		progressBar.setLabelTable(dictionary);
-	}
-
-	/**
-	 * Delegate method
-	 * @param majorTickSpacing
-	 */
-	private void setMajorTickSpacing(int majorTickSpacing) {
-		progressBar.setMajorTickSpacing(majorTickSpacing);
-		
-	}
-
-	/**
-	 * Delegate method
-	 * @param minorTickSpacing
-	 */
-	private void setMinorTickSpacing(int minorTickSpacing) {
-		progressBar.setMinorTickSpacing(minorTickSpacing);
-	}
-	
 	@Override
 	public void setFont(Font font) {
 		// Can be null when calling "super"
@@ -267,85 +185,6 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
 		}
 	}
 	
-    /**
-     * Setup ticks spacing
-     * 
-     * @param length
-     */
-    @Override
-	public void setupProgressTicks(long length) {
-        int minorTickSpacing = SECONDS_10;
-        int majorTickSpacing = SECONDS_30;
-
-        if (length > MINUTES_10 && length <= MINUTES_30) {
-            minorTickSpacing = SECONDS_30;
-            majorTickSpacing = MINUTES_1;
-
-        } else if (length > MINUTES_30) {
-            minorTickSpacing = MINUTES_1;
-            majorTickSpacing = MINUTES_5;
-        }
-
-        //avoid NullPointerException 
-        setSliderLabels(null);
-
-        setPaintTicks(state.isShowTicks());
-        setMajorTickSpacing(majorTickSpacing);
-        setMinorTickSpacing(minorTickSpacing);
-        setupTicksLabels(length);
-    }
-
-    /**
-     * Setup ticks labels
-     * 
-     * @param length
-     */
-    private void setupTicksLabels(long length) {
-        Map<Integer, JLabel> ticksLabels = new HashMap<Integer, JLabel>();
-
-        for (int k = 0; k < length; k++) {
-
-            if (length < MINUTES_1) {
-                if (k % SECONDS_10 == 0 && k != 0) {
-                    ticksLabels.put(k, getLabelForDuration(k));
-                }
-
-            } else if (length > MINUTES_1 && length <= MINUTES_10) {
-                if (k % MINUTES_1 == 0 && k != 0) {
-                    ticksLabels.put(k, getLabelForDuration(k));
-                }
-
-            } else if (length > MINUTES_10 && length <= MINUTES_30) {
-                if (k % MINUTES_2 == 0 && k != 0) {
-                    ticksLabels.put(k, getLabelForDuration(k));
-                }
-
-            } else {
-                if (k % MINUTES_10 == 0 && k != 0) {
-                    ticksLabels.put(k, getLabelForDuration(k));
-                }
-            }
-        }
-        setPaintLabels(state.isShowTicks() && ticksLabels.size() > 0);
-        if (ticksLabels.size() > 0) {
-        	setSliderLabels(new Hashtable<Integer, JLabel>(ticksLabels));
-        }
-    }
-    
-    /**
-     * Get label for duration
-     * 
-     * @param duration
-     * @return the label for duration
-     */
-    private JLabel getLabelForDuration(int unit) {
-        String duration = StringUtils.milliseconds2String(unit);
-        JLabel label = new JLabel(duration, SwingConstants.CENTER);
-        Font currentFont = label.getFont();
-        label.setFont(new Font(currentFont.getFontName(), currentFont.getStyle(), Math.max(currentFont.getSize() - 3, 7)));
-        return label;
-    }
-
 	@Override
 	public JPanel getSwingComponent() {
 		return this;

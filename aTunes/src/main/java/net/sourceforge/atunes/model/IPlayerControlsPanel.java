@@ -56,12 +56,6 @@ public interface IPlayerControlsPanel extends IPanel {
 	public void setPlaying(boolean playing);
 
 	/**
-	 * Set to show progress slider ticks
-	 * @param showTicks
-	 */
-	public void setShowTicksAndLabels(boolean showTicks);
-
-	/**
 	 * Adds a secondary control
 	 * 
 	 * @param button
