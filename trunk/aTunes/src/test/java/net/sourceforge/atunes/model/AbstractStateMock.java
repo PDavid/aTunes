@@ -308,18 +308,6 @@ public abstract class AbstractStateMock implements IState {
 	}
 
 	@Override
-	public boolean isShowTicks() {
-		
-		return false;
-	}
-
-	@Override
-	public void setShowTicks(boolean showTicks) {
-		
-		
-	}
-
-	@Override
 	public boolean isShowAdvancedPlayerControls() {
 		
 		return false;

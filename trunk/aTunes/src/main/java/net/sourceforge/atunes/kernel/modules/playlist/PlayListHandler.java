@@ -640,11 +640,9 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
             // Update audio object number
             showPlayListInformation(playList);
 
-            // hide the ticks and labels
+            // disable progress slider
             if (!getState().isStopPlayerOnPlayListClear()) {
             	getBean(IPlayerControlsPanel.class).getProgressSlider().setEnabled(false);
-            } else {
-            	getBean(IPlayerControlsPanel.class).setShowTicksAndLabels(false);
             }
             playListPanel.getSwingComponent().repaint();
 
@@ -924,7 +922,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         if (currentPlayList.isEmpty()) {
             getBean(SavePlayListAction.class).setEnabled(false);
             getBean(ShufflePlayListAction.class).setEnabled(false);
-            getBean(IPlayerControlsPanel.class).setShowTicksAndLabels(false);
         }
         showPlayListInformation(currentPlayList);
         Logger.info(StringUtils.getString(rows.length, " objects removed from play list"));

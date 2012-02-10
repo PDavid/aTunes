@@ -31,11 +31,6 @@ package net.sourceforge.atunes.model;
 public interface IProgressSlider extends IPanel {
 
 	/**
-	 * @param state
-	 */
-	public void setState(IState state);
-
-	/**
 	 * Sets played time
 	 * @param time in milliseconds
 	 */
@@ -45,12 +40,6 @@ public interface IProgressSlider extends IPanel {
 	 * Sets layout
 	 */
 	public void setLayout();
-
-	/**
-	 * Shows or hides ticks and labels in progress bar
-	 * @param showTicks
-	 */
-	public void setShowTicksAndLabels(boolean showTicks);
 
 	/**
 	 * Delegate method
@@ -81,12 +70,5 @@ public interface IProgressSlider extends IPanel {
 	 * @return
 	 */
 	public int getValue();
-
-	/**
-	 * Setup ticks spacing
-	 * 
-	 * @param length
-	 */
-	public void setupProgressTicks(long length);
 
 }

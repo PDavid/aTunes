@@ -565,23 +565,6 @@ public class ApplicationState implements IState {
     
     
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isShowTicks()
-	 */
-    @Override
-	public boolean isShowTicks() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.SHOW_TICKS, false);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setShowTicks(boolean)
-	 */
-    @Override
-	public void setShowTicks(boolean showTicks) {
-    	this.stateStore.storePreference(Preferences.SHOW_TICKS, showTicks);
-    }
-    
-    
     
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isShowAdvancedPlayerControls()

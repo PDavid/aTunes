@@ -67,7 +67,6 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
         Logger.debug(Long.toString(length));
 
         getComponentControlled().getProgressSlider().setMaximum((int) length);
-        getComponentControlled().getProgressSlider().setupProgressTicks(length);
     }
 
     /**

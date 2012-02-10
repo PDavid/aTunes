@@ -9,6 +9,7 @@ aTunes 2.2.0
 - Removed xml serialization of repository as it can cause OutOfMemory with large repositories
 - Multiple instances not allowed in Max OS X
 - Replaced combo boxes to select navigation and context panels. Use buttons with icons instead
+- Removed option to show ticks and labels in progress slider
 
 aTunes 2.1.1
 ------------
