@@ -42,6 +42,6 @@ public final class VolumeSlider extends JSlider {
         setMaximum(100);
         setValue(50);
         setFocusable(false);
-        setPreferredSize(new Dimension(GuiUtils.getComponentWidthForResolution(0.1f), 20));
+        setPreferredSize(new Dimension(GuiUtils.getComponentWidthForResolution(0.05f, 100), 20));
     }
 }
