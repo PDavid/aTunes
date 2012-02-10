@@ -25,7 +25,7 @@ import java.awt.Dimension;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
-public class PlayerControlsSize {
+public final class PlayerControlsSize {
 
     /**
      * Size of main controls by standard layout (not Substance)

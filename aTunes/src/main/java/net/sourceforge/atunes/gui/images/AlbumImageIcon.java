@@ -23,7 +23,7 @@ package net.sourceforge.atunes.gui.images;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 
-class AlbumImageIcon {
+final class AlbumImageIcon {
 	
 	private AlbumImageIcon() {}
 

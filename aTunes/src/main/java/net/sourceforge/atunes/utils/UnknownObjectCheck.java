@@ -22,7 +22,7 @@ package net.sourceforge.atunes.utils;
 
 import net.sourceforge.atunes.model.IArtist;
 
-public class UnknownObjectCheck {
+public final class UnknownObjectCheck {
 	
 	private UnknownObjectCheck() {}
 

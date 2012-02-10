@@ -25,7 +25,7 @@ import java.awt.datatransfer.DataFlavor;
 import net.sourceforge.atunes.gui.TransferableList;
 import net.sourceforge.atunes.utils.Logger;
 
-class DragAndDropHelper {
+final class DragAndDropHelper {
 	
     /**
      * Data flavor of a list of objects dragged from inside application

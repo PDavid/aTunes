@@ -22,7 +22,7 @@ package net.sourceforge.atunes.utils;
 
 import java.util.Collection;
 
-public class CollectionUtils {
+public final class CollectionUtils {
 	
 	private CollectionUtils() {}
 

@@ -22,7 +22,7 @@ package net.sourceforge.atunes.gui.frame;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 
-class CommonSingleFrameSizes {
+final class CommonSingleFrameSizes {
 
 	static final int NOT_SIGNIFICANT_DIMENSION = 1;
 	
