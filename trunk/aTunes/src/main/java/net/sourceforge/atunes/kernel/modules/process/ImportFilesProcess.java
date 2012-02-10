@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -51,7 +52,7 @@ public class ImportFilesProcess extends AbstractLocalAudioObjectTransferProcess 
     private List<File> folders;
 
     /** Set of audio files whose tag must be written */
-    private HashSet<ILocalAudioObject> filesToChangeTag;
+    private Set<ILocalAudioObject> filesToChangeTag;
     
     private ILocalAudioObjectFactory localAudioObjectFactory;
     

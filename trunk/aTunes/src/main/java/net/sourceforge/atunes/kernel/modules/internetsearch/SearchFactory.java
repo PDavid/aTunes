@@ -25,6 +25,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -35,7 +36,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 public final class SearchFactory {
 
     /** The searches. */
-    private static HashMap<String, ISearch> searches;
+    private static Map<String, ISearch> searches;
 
     /** The you tube search. */
     private static ISearch youTubeSearch = new ISearch() {
