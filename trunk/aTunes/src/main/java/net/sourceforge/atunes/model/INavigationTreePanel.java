@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.model;
 
-import javax.swing.JComboBox;
 import javax.swing.TransferHandler;
 
 
@@ -36,11 +35,6 @@ public interface INavigationTreePanel extends IPanel {
 	 * @param view
 	 */
 	public void showNavigationView(INavigationView view);
-
-	/**
-	 * @return the treeComboBox
-	 */
-	public JComboBox getTreeComboBox();
 
 	/**
 	 * Prepares component for drag and drop

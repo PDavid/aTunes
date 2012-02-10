@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.model;
 
-import java.awt.event.ItemListener;
 
 
 /**
@@ -66,11 +65,5 @@ public interface IContextPanelsContainer extends IPanel {
 	 * @param selectedContextPanel
 	 */
 	public void setSelectedContextPanel(String selectedContextPanel);
-
-	/**
-	 * Enables user to change context panels
-	 * @param listener
-	 */
-	public void enableContextPanelSelection(ItemListener listener);
 
 }
