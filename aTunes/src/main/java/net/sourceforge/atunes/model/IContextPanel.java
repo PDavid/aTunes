@@ -23,6 +23,8 @@ package net.sourceforge.atunes.model;
 import java.awt.Component;
 import java.util.List;
 
+import javax.swing.Action;
+
 
 /**
  * This class represents a context panel shown in a context tab. Context panel
@@ -140,6 +142,15 @@ public interface IContextPanel {
 	 */
 	public List<Component> getOptions();
 
+	/**
+	 * Action when context panel selected
+	 * @return
+	 */
+	public Action getAction();
+	
+	/**
+	 * @param state
+	 */
 	public void setState(IState state);
 
 	/**

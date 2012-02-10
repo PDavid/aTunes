@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.cdripper;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;

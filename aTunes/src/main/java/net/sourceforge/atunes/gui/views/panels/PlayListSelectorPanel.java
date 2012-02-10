@@ -20,13 +20,15 @@
 
 package net.sourceforge.atunes.gui.views.panels;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.ComponentOrientation;
+import java.awt.FlowLayout;
 
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
 import net.sourceforge.atunes.kernel.actions.ArrangePlayListColumnsAction;
 import net.sourceforge.atunes.kernel.actions.CloseOtherPlaylistsAction;
@@ -53,7 +55,9 @@ public final class PlayListSelectorPanel extends JPanel implements IPlayListSele
      * Instantiates a new play list tab panel.
      */
     public PlayListSelectorPanel() {
-        super(new BorderLayout());
+        super();
+		ComponentOrientation orientation = GuiUtils.getComponentOrientation();
+		setLayout(new FlowLayout(orientation == ComponentOrientation.LEFT_TO_RIGHT ? FlowLayout.LEFT : FlowLayout.RIGHT, 0, 0));
     }
     
     /**
@@ -70,8 +74,8 @@ public final class PlayListSelectorPanel extends JPanel implements IPlayListSele
     	options = new PopUpButton(PopUpButton.BOTTOM_RIGHT, lookAndFeelManager);
     	playListCombo = new JComboBox();
 
-    	add(options, BorderLayout.WEST);
-        add(playListCombo, BorderLayout.CENTER);
+    	add(options);
+        add(playListCombo);
 
         options.add(Context.getBean(NewPlayListAction.class));
         options.add(Context.getBean(RenamePlaylistAction.class));

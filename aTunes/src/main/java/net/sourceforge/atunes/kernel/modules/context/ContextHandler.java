@@ -23,8 +23,6 @@ package net.sourceforge.atunes.kernel.modules.context;
 import java.util.Collection;
 import java.util.List;
 
-import javax.swing.SwingUtilities;
-
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextHandler;
@@ -70,9 +68,6 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     	
         // Set previous selected tab
     	setContextTab(getState().getSelectedContextTab());
-    	
-    	// Enable listener for user selections
-    	enableContextComboListener(getState().getSelectedContextTab());
     	
     	getFrame().showContextPanel(getState().isUseContext());
     }
@@ -256,7 +251,8 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 	 * Selects context tab
 	 * @param selectedContextTab
 	 */
-    void setContextTab(String selectedContextTab) {
+    @Override
+    public void setContextTab(String selectedContextTab) {
 		contextPanelsContainer.setSelectedContextPanel(selectedContextTab);
 		contextPanelChanged();
 	}
@@ -287,19 +283,6 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 		}		
 	}
 
-	/**
-	 * Enables listening for combo box selections by user
-	 */
-	private void enableContextComboListener(final String initialContextPanel) {
-		// Wait until initial context panel selection is done
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				contextPanelsContainer.enableContextPanelSelection(new ContextPanelListener(ContextHandler.this, initialContextPanel));	
-			}
-		});
-	}
-	
 	public void setContextPanels(List<IContextPanel> contextPanels) {
 		this.contextPanels = contextPanels;
 	}

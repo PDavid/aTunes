@@ -53,5 +53,11 @@ public interface IContextHandler extends IHandler {
      * Called when user changes context tab
      */
     public void contextPanelChanged();
+    
+	/**
+	 * Selects context tab
+	 * @param selectedContextTab
+	 */
+    public void setContextTab(String selectedContextTab);
 
 }

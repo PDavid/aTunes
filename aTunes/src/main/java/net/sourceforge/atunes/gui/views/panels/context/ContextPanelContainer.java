@@ -24,27 +24,24 @@ import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
+import net.sourceforge.atunes.gui.views.panels.ColorMutableIconToggleButtonFlowPanel;
 import net.sourceforge.atunes.model.IContextPanel;
 import net.sourceforge.atunes.model.IContextPanelsContainer;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.Logger;
 
-import org.jdesktop.swingx.combobox.ListComboBoxModel;
-
 public final class ContextPanelContainer extends JPanel implements IContextPanelsContainer {
 
 	private static final long serialVersionUID = 707242790413122482L;
 
-    private JComboBox contextSelector;
+    private ColorMutableIconToggleButtonFlowPanel contextSelector;
     
     private PopUpButton options;
     
@@ -58,20 +55,24 @@ public final class ContextPanelContainer extends JPanel implements IContextPanel
     
     /**
      * Instantiates a new context panel
+     */
+    public ContextPanelContainer() {
+        super(new GridBagLayout());
+    }
+    
+    /**
      * @param lookAndFeelManager
      */
-    public ContextPanelContainer(ILookAndFeelManager lookAndFeelManager) {
-        super(new GridBagLayout());
-        this.lookAndFeelManager = lookAndFeelManager;
-        setContent(lookAndFeelManager);
-    }
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
 
     /**
      * Sets the content.
      * @param lookAndFeelManager 
      */
-    private void setContent(final ILookAndFeelManager lookAndFeelManager) {
-    	contextSelector = new JComboBox(); 
+    public void initialize() {
+    	contextSelector = new ColorMutableIconToggleButtonFlowPanel(lookAndFeelManager); 
     	options = new PopUpButton(PopUpButton.BOTTOM_RIGHT, lookAndFeelManager);
     	container = new JPanel(new CardLayout());
     	GridBagConstraints c = new GridBagConstraints();
@@ -90,10 +91,6 @@ public final class ContextPanelContainer extends JPanel implements IContextPanel
         c.gridwidth = 2;
         c.fill = GridBagConstraints.BOTH;
         add(container, c);
-        
-		if (lookAndFeelManager.getCurrentLookAndFeel().customComboBoxRenderersSupported()) {
-			contextSelector.setRenderer(lookAndFeelManager.getCurrentLookAndFeel().getListCellRenderer(new ContextSelectorListCellRendererCode(lookAndFeelManager)));
-		}
     }
 
     @Override
@@ -106,15 +103,17 @@ public final class ContextPanelContainer extends JPanel implements IContextPanel
     	IContextPanel selectedPanel = contextSelector.getSelectedItem() != null ? (IContextPanel) contextSelector.getSelectedItem() : null;
     	container.removeAll();
     	visiblePanels.clear();
-        for (IContextPanel panel : panels) {
+    	contextSelector.clear();
+        for (final IContextPanel panel : panels) {
         	if (panel.isVisible()) {
         		visiblePanels.add(panel);
         		container.add(panel.getContextPanelName(), panel.getUIComponent(lookAndFeelManager.getCurrentLookAndFeel()));
         		panel.getUIComponent(lookAndFeelManager.getCurrentLookAndFeel()).setEnabled(panel.isEnabled());
+        		
+        		contextSelector.addButton(panel.getContextPanelName(), panel.getIcon(), panel.getTitle(), panel.getAction(), panel);
         	}
         }
-        contextSelector.setModel(new ListComboBoxModel<IContextPanel>(visiblePanels));
-        contextSelector.setSelectedIndex(selectedPanel != null ? visiblePanels.indexOf(selectedPanel) : 0);
+        contextSelector.setSelectedButton(selectedPanel != null ? selectedPanel.getContextPanelName() : visiblePanels.get(0).getContextPanelName());
         ((CardLayout)container.getLayout()).show(container, selectedPanel != null ? selectedPanel.getContextPanelName() : visiblePanels.get(0).getContextPanelName());
     }
 
@@ -156,10 +155,6 @@ public final class ContextPanelContainer extends JPanel implements IContextPanel
     	return (IContextPanel) contextSelector.getSelectedItem();
     }
     
-	protected JComboBox getContextPanelSelector() {
-		return contextSelector;
-	}
-
 	@Override
 	public void setSelectedContextPanel(String selectedContextTab) {
 		Logger.debug("Setting context view: ", selectedContextTab);
@@ -172,12 +167,7 @@ public final class ContextPanelContainer extends JPanel implements IContextPanel
 				}
 			}
 		}
-		contextSelector.setSelectedIndex(panel != null ? visiblePanels.indexOf(panel) : 0); // Show panel or first one
+        contextSelector.setSelectedButton(panel != null ? panel.getContextPanelName() : visiblePanels.get(0).getContextPanelName()); // Show panel or first one
 		showContextPanel(panel);
 	}
-	
-	@Override
-	public void enableContextPanelSelection(ItemListener listener) {
-		contextSelector.addItemListener(listener);
-	}	
 }

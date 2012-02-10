@@ -25,9 +25,12 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -204,6 +207,22 @@ public abstract class AbstractContextPanel implements IContextPanel {
 			}
 		}
 		return components;
+	}
+	
+	@Override
+	public Action getAction() {
+		return new AbstractAction() {
+			
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -9078018024869169623L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				contextHandler.setContextTab(getContextPanelName());
+			}
+		};
 	}
 
 	@Override

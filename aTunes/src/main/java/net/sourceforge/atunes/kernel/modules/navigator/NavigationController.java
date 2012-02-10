@@ -299,20 +299,8 @@ public final class NavigationController implements IAudioFilesRemovedListener, I
         }
 
         navigationTable.addMouseListener(new NavigationTableMouseListener(this, navigationTable, navigationHandler));
-        
-        if (lookAndFeelManager.getCurrentLookAndFeel().customComboBoxRenderersSupported()) {
-        	navigationTreePanel.getTreeComboBox().setRenderer(lookAndFeelManager.getCurrentLookAndFeel().getListCellRenderer(new NavigationTreePanelCustomComboBoxRenderer(lookAndFeelManager)));
-        }
     }
     
-    /**
-     * Enable navigation tree combo listener
-     */
-    protected void enableNavigationTreeComboListener() {
-        // Add combo listener
-        navigationTreePanel.getTreeComboBox().addItemListener(new NavigationTreeComboListener(navigationHandler));       
-    }
-
     @Override
     public void addStateBindings() {
     }
@@ -399,7 +387,7 @@ public final class NavigationController implements IAudioFilesRemovedListener, I
             columnSet = navigatorColumnSet;
         }
 
-        IColumn columnSorted = columnSet.getSortedColumn();
+        IColumn<?> columnSorted = columnSet.getSortedColumn();
         if (columnSorted != null) {
             Collections.sort(audioObjects, columnSorted.getComparator(false));
         }

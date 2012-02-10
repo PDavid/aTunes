@@ -159,21 +159,21 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 
     private Timer hideMouseTimer;
 
-    private MouseListener clickListener = new MouseAdapter() {
+    private transient MouseListener clickListener = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
             activateTimer();
         }
     };
 
-    private MouseMotionListener moveListener = new MouseMotionAdapter() {
+    private transient MouseMotionListener moveListener = new MouseMotionAdapter() {
         @Override
         public void mouseMoved(MouseEvent e) {
             activateTimer();
         }
     };
 
-    private MouseListener showMenuListener = new MouseAdapter() {
+    private transient MouseListener showMenuListener = new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
             if (GuiUtils.isSecondaryMouseButton(e)) {

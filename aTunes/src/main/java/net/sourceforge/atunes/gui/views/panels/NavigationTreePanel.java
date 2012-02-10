@@ -27,7 +27,6 @@ import java.awt.GridBagLayout;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
@@ -44,7 +43,7 @@ public final class NavigationTreePanel extends JPanel implements INavigationTree
 
     private static final long serialVersionUID = -2900418193013495812L;
 
-    private JComboBox treeComboBox;
+    private ColorMutableIconToggleButtonFlowPanel viewButtonsPanel;
     
     private JPanel treePanel;
 
@@ -143,7 +142,7 @@ public final class NavigationTreePanel extends JPanel implements INavigationTree
      * Adds the content.
      */
     public void initialize() {
-    	treeComboBox = new JComboBox();
+    	viewButtonsPanel = new ColorMutableIconToggleButtonFlowPanel(lookAndFeelManager);
         treePanel = new JPanel(new CardLayout());
         addTrees();
         GridBagConstraints c = new GridBagConstraints();
@@ -153,7 +152,7 @@ public final class NavigationTreePanel extends JPanel implements INavigationTree
         add(getOptionsPopUpButton(lookAndFeelManager), c);
         c.gridx = 1;
         c.weightx = 1;
-        add(treeComboBox, c);
+        add(viewButtonsPanel, c);
         c.gridx = 0;
         c.gridy = 1;
         c.gridwidth = 2;
@@ -201,11 +200,11 @@ public final class NavigationTreePanel extends JPanel implements INavigationTree
      * Updates panel to show all trees
      */
     private void addTrees() {
-    	treeComboBox.removeAllItems();
+    	viewButtonsPanel.clear();
     	treePanel.removeAll();
 
         for (INavigationView view : navigationHandler.getNavigationViews()) {
-        	treeComboBox.addItem(view);
+        	viewButtonsPanel.addButton(view.getClass().getName(), view.getIcon(), view.getTitle(), view.getActionToShowView(), view);
         	treePanel.add(view.getClass().getName(), view.getTreeScrollPane());
         }
     }
@@ -218,14 +217,9 @@ public final class NavigationTreePanel extends JPanel implements INavigationTree
 	@Override
 	public void showNavigationView(INavigationView view) {		
 		((CardLayout)treePanel.getLayout()).show(treePanel, view.getClass().getName());
-		treeComboBox.setSelectedItem(view);
+		viewButtonsPanel.setSelectedButton(view.getClass().getName());
 	}
 
-	@Override
-	public JComboBox getTreeComboBox() {
-		return treeComboBox;
-	}
-	
 	@Override
 	public JPanel getSwingComponent() {
 		return this;

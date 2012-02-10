@@ -8,6 +8,7 @@ aTunes 2.2.0
 - New action to remove duplicates from play list
 - Removed xml serialization of repository as it can cause OutOfMemory with large repositories
 - Multiple instances not allowed in Max OS X
+- Replaced combo boxes to select navigation and context panels. Use buttons with icons instead
 
 aTunes 2.1.1
 ------------
