@@ -36,7 +36,7 @@
 	
 	<bean id="playListPopupMenu" class="net.sourceforge.atunes.gui.views.menus.PlayListPopupMenu" init-method="initialize"/>
 	
-	<bean id="contextPanelsContainer" class="net.sourceforge.atunes.gui.views.panels.context.ContextPanelContainer" init-method="initialize"/>
+	<bean id="contextPanelsContainer" class="net.sourceforge.atunes.gui.views.panels.ContextPanelContainer" init-method="initialize"/>
 	
 	<bean id="navigationTreePanel" class="net.sourceforge.atunes.gui.views.panels.NavigationTreePanel" init-method="initialize"/>
 	<bean id="navigationTablePanel" class="net.sourceforge.atunes.gui.views.panels.NavigationTablePanel" init-method="initialize"/>

@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.panels.context;
+package net.sourceforge.atunes.gui.views.panels;
 
 import java.awt.CardLayout;
 import java.awt.Component;
@@ -31,7 +31,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
-import net.sourceforge.atunes.gui.views.panels.ColorMutableIconToggleButtonFlowPanel;
 import net.sourceforge.atunes.model.IContextPanel;
 import net.sourceforge.atunes.model.IContextPanelsContainer;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
