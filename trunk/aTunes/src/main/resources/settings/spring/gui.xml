@@ -51,7 +51,24 @@
 	</bean>
 	<bean id="playListTable" class="net.sourceforge.atunes.gui.views.controls.PlayListTable" init-method="initialize"/>
 
-	<bean id="filterPanel" class="net.sourceforge.atunes.gui.views.panels.FilterPanel" init-method="initialize"/>	
+    <!-- Filters -->
+	<bean id="playListFilterPanel" class="net.sourceforge.atunes.gui.views.panels.FilterPanel" init-method="initialize"/>	
+	<bean id="navigatorFilterPanel" class="net.sourceforge.atunes.gui.views.panels.FilterPanel" init-method="initialize"/>
+	
+	<bean id="playListFilterPanelController" class="net.sourceforge.atunes.kernel.modules.filter.FilterController" init-method="initialize">
+		<constructor-arg ref="playListFilterPanel"/>
+		<constructor-arg ref="state"/>
+	</bean>
+
+	<bean id="navigatorFilterPanelController" class="net.sourceforge.atunes.kernel.modules.filter.FilterController" init-method="initialize">
+		<constructor-arg ref="navigatorFilterPanel"/>
+		<constructor-arg ref="state"/>
+	</bean>
+	
+	<bean id="navigationTreeFilter" class="net.sourceforge.atunes.kernel.modules.filter.NavigationTreeFilter"/>
+	<bean id="playListFilter" class="net.sourceforge.atunes.kernel.modules.filter.PlayListFilter"/>
+	
+	<!-- End filters -->
 	
 	<!--  This object can be reused across all components with this border -->
 	<bean id="shadowBorder" class="org.jdesktop.swingx.border.DropShadowBorder"/>

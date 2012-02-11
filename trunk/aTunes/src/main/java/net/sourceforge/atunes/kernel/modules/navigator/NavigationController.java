@@ -62,6 +62,7 @@ import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IController;
+import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -174,6 +175,15 @@ public final class NavigationController implements IAudioFilesRemovedListener, I
     private ITagHandler tagHandler;
     
     private IRepositoryHandler repositoryHandler;
+    
+    private IFilter navigationTreeFilter;
+    
+    /**
+     * @param navigationTreeFilter
+     */
+    public void setNavigationTreeFilter(IFilter navigationTreeFilter) {
+		this.navigationTreeFilter = navigationTreeFilter;
+	}
     
     /**
      * @param repositoryHandler
@@ -380,7 +390,7 @@ public final class NavigationController implements IAudioFilesRemovedListener, I
      */
     public List<? extends IAudioObject> getAudioObjectsForTreeNode(Class<? extends INavigationView> navigationViewClass, DefaultMutableTreeNode node) {
         List<? extends IAudioObject> audioObjects = navigationHandler.getView(navigationViewClass).getAudioObjectForTreeNode(node, state.getViewMode(),
-                filterHandler.isFilterSelected(navigationHandler.getTreeFilter()) ? filterHandler.getFilter() : null);
+        			filterHandler.getFilterText(navigationTreeFilter));
 
         IColumnSet columnSet = navigationHandler.getCurrentView().getCustomColumnSet();
         if (columnSet == null) {
@@ -504,30 +514,7 @@ public final class NavigationController implements IAudioFilesRemovedListener, I
                 audioObjects.addAll(getAudioObjectsForTreeNode(navigationHandler.getViewByName(state.getNavigationView()), node));
             }
 
-            // Filter objects
-            audioObjects = filterNavigationTable(audioObjects);
-
             ((NavigationTableModel) navigationTable.getModel()).setSongs(audioObjects);
-        }
-    }
-
-    /**
-     * Returns a filtered list of audio objects using the current table filter
-     * 
-     * @param audioObjects
-     * @return
-     */
-    private List<IAudioObject> filterNavigationTable(List<IAudioObject> audioObjects) {
-        if (!filterHandler.isFilterSelected(navigationHandler.getTableFilter())) {
-            return audioObjects;
-        }
-
-        if (navigationHandler.getCurrentView().isUseDefaultNavigatorColumnSet()) {
-            // Use column set filtering
-            return navigatorColumnSet.filterAudioObjects(audioObjects, filterHandler.getFilter());
-        } else {
-            // Use custom filter
-            return navigationHandler.getCurrentView().getCustomColumnSet().filterAudioObjects(audioObjects, filterHandler.getFilter());
         }
     }
 

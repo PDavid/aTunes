@@ -29,7 +29,6 @@ import javax.swing.event.TableModelEvent;
 
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
-import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListPanel;
 import net.sourceforge.atunes.model.IPlayListTable;
@@ -46,8 +45,6 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
     
     private IPlayerHandler playerHandler;
     
-    private IFilterHandler filterHandler;
-    
     private IPlayListTable playListTable;
 
     /**
@@ -58,14 +55,12 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
      * @param state
      * @param playListHandler
      * @param playerHandler
-     * @param filterHandler
      */
-    PlayListController(IPlayListTable playListTable, IPlayListPanel panel, IState state, IPlayListHandler playListHandler, IPlayerHandler playerHandler, IFilterHandler filterHandler) {
+    PlayListController(IPlayListTable playListTable, IPlayListPanel panel, IState state, IPlayListHandler playListHandler, IPlayerHandler playerHandler) {
         super((PlayListPanel)panel.getSwingComponent(), state);
         this.playListTable = playListTable;
         this.playListHandler = playListHandler;
         this.playerHandler = playerHandler;
-        this.filterHandler = filterHandler;
         addBindings();
         addStateBindings();
     }
@@ -238,11 +233,4 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
         	playListTable.getSelectionModel().addSelectionInterval(selectedRow, selectedRow);
         }
     }
-
-    void reapplyFilter() {
-        if (playListHandler.isFiltered()) {
-            playListHandler.setFilter(filterHandler.getFilter());
-        }
-    }
-
 }

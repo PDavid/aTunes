@@ -20,39 +20,35 @@
 
 package net.sourceforge.atunes.kernel.modules.filter;
 
+import net.sourceforge.atunes.kernel.modules.playlist.PlayListHandler;
 import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-final class AllFilter implements IFilter {
+public final class PlayListFilter implements IFilter {
 	
-	/**
-	 * 
-	 */
-	private final FilterHandler filterHandler;
+	private static final String PLAYLIST = "PLAYLIST";
+	
+	private PlayListHandler playListHandler;
 
 	/**
-	 * @param filterHandler
+	 * @param playListHandler
 	 */
-	AllFilter(FilterHandler filterHandler) {
-		this.filterHandler = filterHandler;
+	public void setPlayListHandler(PlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
 	}
-
+	
 	@Override
     public String getName() {
-        return "ALL";
+        return PLAYLIST;
     }
 
 	@Override
     public String getDescription() {
-        return I18nUtils.getString("ALL");
+        return I18nUtils.getString(PLAYLIST);
     }
 
 	@Override
-    public void applyFilter(String filterString) {
-        for (IFilter filter : this.filterHandler.getFilters().values()) {
-            if (!filter.equals(this)) {
-                filter.applyFilter(filterString);
-            }
-        }
+    public void applyFilter(String filter) {
+        this.playListHandler.setFilter(filter);
     }
 }

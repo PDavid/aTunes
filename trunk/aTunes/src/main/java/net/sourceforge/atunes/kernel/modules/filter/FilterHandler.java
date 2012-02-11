@@ -26,125 +26,74 @@ import java.util.Map;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IFilterHandler;
-import net.sourceforge.atunes.model.IFilterPanel;
-import net.sourceforge.atunes.model.INavigationHandler;
-import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.Logger;
 
 public final class FilterHandler extends AbstractHandler implements IFilterHandler {
 
     /**
-     * Controller
-     */
-    private FilterController toolBarFilterController;
-    
-    /**
-     * Available filters
-     */
-    private Map<String, IFilter> filters;
-
-    /**
-     * Filter for all current filters at the same time
-     */
-    private IFilter allFilter = new AllFilter(this);
-
-    /**
-     * Selected filter (by default all)
-     */
-    private String selectedFilter = allFilter.getName();
-
-    /**
      * Text used as filter
      */
-    private String currentFilterText;
+    private Map<IFilter, String> currentFilterText;
+    
+    private FilterController playListFilterPanelController;
+    
+    private FilterController navigatorFilterPanelController;
+    
+    private IFilter navigationTreeFilter;
+    
+    private IFilter playListFilter;
     
     /**
-     * Adds a new filter
-     * 
-     * @param filter
+     * @param playListFilter
      */
-    private void addFilter(IFilter filter) {
-    	getFilters().put(filter.getName(), filter);
-        // Update UI to show new available filter
-        getToolBarFilterController().addFilter(filter);
-    }
-
+    public void setPlayListFilter(IFilter playListFilter) {
+		this.playListFilter = playListFilter;
+	}
+    
+    /**
+     * @param navigationTreeFilter
+     */
+    public void setNavigationTreeFilter(IFilter navigationTreeFilter) {
+		this.navigationTreeFilter = navigationTreeFilter;
+	}
+    
+    /**
+     * @param navigatorFilterPanelController
+     */
+    public void setNavigatorFilterPanelController(FilterController navigatorFilterPanelController) {
+		this.navigatorFilterPanelController = navigatorFilterPanelController;
+	}
+    
+    /**
+     * @param playListFilterPanelController
+     */
+    public void setPlayListFilterPanelController(FilterController playListFilterPanelController) {
+		this.playListFilterPanelController = playListFilterPanelController;
+	}
+    
+    /**
+     * Default constructor
+     */
+    public FilterHandler() {
+    	this.currentFilterText = new HashMap<IFilter, String>();
+	}
+    
     @Override
-	public void removeFilter(IFilter filter) {
-    	getFilters().remove(filter.getName());
-        // Update UI to hide filter
-        getToolBarFilterController().removeFilter(filter.getName());
-    }
-
-    @Override
-	public void applyFilter(String filter) {
-        this.currentFilterText = filter;
-        Logger.debug("Applying filter: ", filter);
-        getFilters().get(selectedFilter).applyFilter(filter);
+	public void applyFilter(IFilter filter, String filterText) {
+        this.currentFilterText.put(filter, filterText);
+        Logger.debug("Applying filter: ", filter.getName(), " with text: ", filterText);
+        filter.applyFilter(filterText);
     }
 
     @Override
     public void allHandlersInitialized() {
-        addFilter(allFilter);
-
-        addFilter(getBean(INavigationHandler.class).getTreeFilter());
-        setFilterEnabled(getBean(INavigationHandler.class).getTreeFilter(), getState().isShowNavigationTree());
-
-        addFilter(getBean(INavigationHandler.class).getTableFilter());
-        setFilterEnabled(getBean(INavigationHandler.class).getTableFilter(), getState().isShowNavigationTable());
-
-        addFilter(getBean(IPlayListHandler.class).getPlayListFilter());
-
-        getToolBarFilterController().setSelectedFilter(allFilter.getName());
+    	// Set filter for each filter panel
+    	playListFilterPanelController.setFilter(playListFilter);
+    	navigatorFilterPanelController.setFilter(navigationTreeFilter);
     }
 
     @Override
-	public void setSelectedFilter(String selectedFilter) {
-        this.selectedFilter = selectedFilter;
-    }
-
-    @Override
-	public String getFilter() {
-        return this.currentFilterText;
-    }
-
-    @Override
-	public boolean isFilterSelected(IFilter filter) {
-        return (this.selectedFilter.equals(allFilter.getName()) || this.selectedFilter.equals(filter.getName())) && getFilter() != null;
-    }
-
-    @Override
-	public void setFilterEnabled(IFilter filter, boolean enabled) {
-        // If filter is selected and must be disabled change to "all" and set filter null
-        if (this.selectedFilter.equals(filter.getName()) && !enabled) {
-            this.selectedFilter = allFilter.getName();
-            getToolBarFilterController().setSelectedFilter(allFilter.getName());
-            applyFilter(null);
-        }
-        getToolBarFilterController().setFilterEnabled(filter.getName(), enabled);
-
-    }
-    
-    /**
-     * Gets the tool bar filter controller
-     * 
-     * @return
-     */
-    private FilterController getToolBarFilterController() {
-        if (toolBarFilterController == null) {
-            toolBarFilterController = new FilterController(getBean(IFilterPanel.class), getState(), this);
-        }
-        return toolBarFilterController;
-    }
-    
-    /**
-     * Return filters
-     * @return
-     */
-    Map<String, IFilter> getFilters() {
-    	if (filters == null) {
-    		filters = new HashMap<String, IFilter>();
-    	}
-    	return filters;
+	public String getFilterText(IFilter filter) {
+        return this.currentFilterText.get(filter);
     }
 }

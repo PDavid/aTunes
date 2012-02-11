@@ -46,6 +46,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectComparator;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
+import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -91,6 +92,15 @@ public abstract class AbstractNavigationView implements INavigationView {
 	private IFilterHandler filterHandler;
 	
 	private ITable navigationTable;
+	
+	private IFilter navigationTreeFilter;
+	
+	/**
+	 * @param navigationTreeFilter
+	 */
+	public void setNavigationTreeFilter(IFilter navigationTreeFilter) {
+		this.navigationTreeFilter = navigationTreeFilter;
+	}
 	
 	/**
 	 * @param navigationTable
@@ -412,7 +422,7 @@ public abstract class AbstractNavigationView implements INavigationView {
             if (paths != null) {
                 for (TreePath path : paths) {
                     audioObjectsSelected.addAll(getAudioObjectForTreeNode((DefaultMutableTreeNode) path.getLastPathComponent(), getCurrentViewMode(), 
-                    		filterHandler.isFilterSelected(navigationHandler.getTreeFilter()) ? filterHandler.getFilter() : null));
+                    		filterHandler.getFilterText(navigationTreeFilter)));
                     audioObjectComparator.sort(audioObjectsSelected);
                 }
             }

@@ -29,47 +29,17 @@ package net.sourceforge.atunes.model;
 public interface IFilterHandler extends IHandler {
 
 	/**
-	 * Removes a filter
+	 * Applies given filter text to given filter
 	 * 
 	 * @param filter
+	 * @param filterText
 	 */
-	public void removeFilter(IFilter filter);
+	public void applyFilter(IFilter filter, String filterText);
 
 	/**
-	 * Applies given filter which is the current filter
-	 * 
-	 * @param filter
-	 */
-	public void applyFilter(String filter);
-
-	/**
-	 * @param selectedFilter
-	 *            the selectedFilter to set
-	 */
-	public void setSelectedFilter(String selectedFilter);
-
-	/**
-	 * Returns filter
+	 * Returns filter text for given filter
 	 * 
 	 * @return
 	 */
-	public String getFilter();
-
-	/**
-	 * Returns <code>true</code> if given filter is selected (or "all" is
-	 * selected) and filter text is not null
-	 * 
-	 * @param filter
-	 * @return
-	 */
-	public boolean isFilterSelected(IFilter filter);
-
-	/**
-	 * Sets filter enabled or disabled
-	 * 
-	 * @param filter
-	 * @param enabled
-	 */
-	public void setFilterEnabled(IFilter filter, boolean enabled);
-
+	public String getFilterText(IFilter filter);
 }

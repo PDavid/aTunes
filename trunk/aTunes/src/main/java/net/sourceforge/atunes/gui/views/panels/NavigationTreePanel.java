@@ -34,6 +34,7 @@ import javax.swing.TransferHandler;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
+import net.sourceforge.atunes.model.IFilterPanel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationTreePanel;
@@ -60,6 +61,8 @@ public final class NavigationTreePanel extends JPanel implements INavigationTree
 	private Action collapseTreesAction;
 	private Action showNavigationTableAction;
 	
+	private IFilterPanel navigatorFilterPanel;
+	
     
     /**
      * Instantiates a new navigation panel.
@@ -67,6 +70,13 @@ public final class NavigationTreePanel extends JPanel implements INavigationTree
     public NavigationTreePanel()  {
         super(new GridBagLayout(), true);
     }
+    
+    /**
+     * @param navigatorFilterPanel
+     */
+    public void setNavigatorFilterPanel(IFilterPanel navigatorFilterPanel) {
+		this.navigatorFilterPanel = navigatorFilterPanel;
+	}
 
     /**
      * @param showArtistsInNavigatorAction
@@ -153,9 +163,14 @@ public final class NavigationTreePanel extends JPanel implements INavigationTree
         c.gridx = 1;
         c.weightx = 1;
         add(viewButtonsPanel, c);
+        
+        c.gridx = 2;
+        c.weightx = 0;
+        add(navigatorFilterPanel.getSwingComponent(), c);
+        
         c.gridx = 0;
         c.gridy = 1;
-        c.gridwidth = 2;
+        c.gridwidth = 3;
         c.weighty = 1;
         add(treePanel, c);
 
