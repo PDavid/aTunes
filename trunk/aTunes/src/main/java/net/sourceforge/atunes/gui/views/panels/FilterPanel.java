@@ -55,7 +55,7 @@ public class FilterPanel extends JPanel implements IFilterPanel {
      * @param lookAndFeelManager
      */
     public FilterPanel() {
-        super(new BorderLayout());
+        super(new BorderLayout(3, 0));
     }
     
     /**
@@ -69,7 +69,7 @@ public class FilterPanel extends JPanel implements IFilterPanel {
      * Initializes panel
      */
     public void initialize() {
-        filterTextField = new CustomTextField(12);
+        filterTextField = new CustomTextField(8);
         filterTextField.setText(StringUtils.getString(I18nUtils.getString("FILTER"), "..."));
         filterTextField.setToolTipText(I18nUtils.getString("FILTER_TEXTFIELD_TOOLTIP"));
         clearButton = new LookAndFeelAwareButton(lookAndFeelManager) {
