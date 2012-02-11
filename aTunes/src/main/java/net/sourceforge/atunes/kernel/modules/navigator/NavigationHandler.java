@@ -43,7 +43,6 @@ import net.sourceforge.atunes.model.ISearchDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.model.ViewMode;
-import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 
 import org.commonjukebox.plugins.exceptions.PluginSystemException;
@@ -55,53 +54,20 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 
     private List<INavigationView> navigationViews;
 
-	/**
-     * Filter for navigation table
-     */
-    private IFilter tableFilter = new IFilter() {
-
-        @Override
-        public String getName() {
-            return "NAVIGATION_TABLE";
-        }
-
-        @Override
-        public String getDescription() {
-            return I18nUtils.getString("NAVIGATION_TABLE");
-        }
-
-        @Override
-        public void applyFilter(String filter) {
-            getNavigationController().updateTableContent(getCurrentView().getTree());
-        }
-    };
-
-    /**
-     * Filter for tree
-     */
-    private IFilter treeFilter = new IFilter() {
-
-        @Override
-        public String getName() {
-            return "NAVIGATION_TREE";
-        };
-
-        @Override
-        public String getDescription() {
-            return I18nUtils.getString("NAVIGATOR");
-        };
-
-        @Override
-        public void applyFilter(String filter) {
-            refreshCurrentView();
-        };
-    };
-
 	private NavigationController navigationController;
 	
 	private IFilterHandler filterHandler;
 	
 	private ITable navigationTable;
+	
+	private IFilter navigationTreeFilter;
+	
+	/**
+	 * @param navigationTreeFilter
+	 */
+	public void setNavigationTreeFilter(IFilter navigationTreeFilter) {
+		this.navigationTreeFilter = navigationTreeFilter;
+	}
 
 	/**
 	 * @param navigationTable
@@ -163,14 +129,14 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
     @Override
 	public void refreshCurrentView() {
         getCurrentView().refreshView(getState().getViewMode(),
-                filterHandler.isFilterSelected(getTreeFilter()) ? filterHandler.getFilter() : null);
+                filterHandler.getFilterText(navigationTreeFilter));
     }
 
 	@Override
 	public void refreshView(INavigationView navigationView) {
         if (navigationView.equals(getCurrentView())) {
         	navigationView.refreshView(getState().getViewMode(),
-                    filterHandler.isFilterSelected(getTreeFilter()) ? filterHandler.getFilter() : null);
+        			filterHandler.getFilterText(navigationTreeFilter));
         }
 	}
 
@@ -213,16 +179,6 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
         refreshCurrentView();
     }
 
-    @Override
-	public IFilter getTableFilter() {
-        return tableFilter;
-    }
-
-    @Override
-	public IFilter getTreeFilter() {
-        return treeFilter;
-    }
-    
     /**
      * Gets the navigation controller.
      * 
@@ -310,8 +266,6 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
         }
     	
         getFrame().showNavigationTree(show);
-        // Depending if is visible or not filtering is allowed or not
-        filterHandler.setFilterEnabled(getTreeFilter(), show);
         
         applyNavigationTableVisibility(show && getState().isShowNavigationTable());
     }
@@ -328,8 +282,6 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
      */
     private void applyNavigationTableVisibility(boolean show) {
     	getFrame().showNavigationTable(show);
-        // Depending if is visible or not filtering is allowed or not
-        filterHandler.setFilterEnabled(getTableFilter(), show);
         
         updateTableContent(getCurrentView().getTree());
     }

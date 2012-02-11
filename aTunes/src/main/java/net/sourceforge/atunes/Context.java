@@ -64,20 +64,43 @@ public final class Context {
 				);
 	}
 	
+	/**
+	 * Returns bean of type
+	 * @param <T>
+	 * @param beanType
+	 * @return
+	 */
 	public static <T> T getBean(Class<T> beanType) {
 		return context.getBean(beanType);
 	}
 	
+	/**
+	 * Returns bean with given name
+	 * @param name
+	 * @return
+	 */
 	public static Object getBean(String name) {
 		return context.getBean(name);
 	}
 
+	/**
+	 * Returns bean with given name and type
+	 * @param <T>
+	 * @param name
+	 * @param clazz
+	 * @return
+	 */
 	public static <T> T getBean(String name, Class<T> clazz) {
 		return context.getBean(name, clazz);
 	}
+
+	/**
+	 * Returns all beans of a given type
+	 * @param <T>
+	 * @param beanType
+	 * @return
+	 */
 	public static <T> Collection<T> getBeans(Class<T> beanType) {
 		return context.getBeansOfType(beanType).values();
 	}
-	
-	
 }

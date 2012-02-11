@@ -18,28 +18,35 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.kernel.modules.filter;
 
+import net.sourceforge.atunes.model.IFilter;
+import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.utils.I18nUtils;
 
-/**
- * Responsible of filtering navigator, playlist, etc
- * @author alex
- *
- */
-public interface IFilterHandler extends IHandler {
-
+public final class NavigationTreeFilter implements IFilter {
+	
+	private INavigationHandler navigationHandler;
+	
 	/**
-	 * Applies given filter text to given filter
-	 * 
-	 * @param filter
-	 * @param filterText
+	 * @param navigationHandler
 	 */
-	public void applyFilter(IFilter filter, String filterText);
+	public void setNavigationHandler(INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+	
+	@Override
+    public String getName() {
+        return "NAVIGATION_TREE";
+    }
 
-	/**
-	 * Returns filter text for given filter
-	 * 
-	 * @return
-	 */
-	public String getFilterText(IFilter filter);
+	@Override
+    public String getDescription() {
+        return I18nUtils.getString("NAVIGATOR");
+    }
+
+	@Override
+    public void applyFilter(String filter) {
+        navigationHandler.refreshCurrentView();
+    }
 }

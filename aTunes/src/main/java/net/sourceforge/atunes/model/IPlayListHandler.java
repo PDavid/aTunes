@@ -308,11 +308,6 @@ public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
 	public void movePlaylistToPosition(int from, int to);
 
 	/**
-	 * @return the playListFilter
-	 */
-	public IFilter getPlayListFilter();
-
-	/**
 	 * Returns play list name at given index
 	 * 
 	 * @param index

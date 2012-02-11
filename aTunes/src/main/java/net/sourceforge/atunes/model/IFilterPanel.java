@@ -32,11 +32,6 @@ import javax.swing.JTextField;
 public interface IFilterPanel extends IPanel {
 
 	/**
-	 * @return the filterButton
-	 */
-	public IPopUpButton getFilterButton();
-
-	/**
 	 * @return the filterTextField
 	 */
 	public JTextField getFilterTextField();

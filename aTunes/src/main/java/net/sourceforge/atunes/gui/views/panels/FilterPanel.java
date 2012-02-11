@@ -34,11 +34,8 @@ import javax.swing.JTextField;
 
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.gui.views.controls.LookAndFeelAwareButton;
-import net.sourceforge.atunes.gui.views.controls.PopUpButton;
 import net.sourceforge.atunes.model.IFilterPanel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.model.IPopUpButton;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -46,13 +43,11 @@ public class FilterPanel extends JPanel implements IFilterPanel {
 
     private static final long serialVersionUID = 1801321624657098000L;
 
-    private PopUpButton filterButton;
     private JTextField filterTextField;
     private JButton clearButton;
     
     private boolean filterApplied;
 
-    private IState state;
     private ILookAndFeelManager lookAndFeelManager;
     
     /**
@@ -62,13 +57,6 @@ public class FilterPanel extends JPanel implements IFilterPanel {
     public FilterPanel() {
         super(new BorderLayout());
     }
-    
-    /**
-     * @param state
-     */
-    public void setState(IState state) {
-		this.state = state;
-	}
     
     /**
      * @param lookAndFeelManager
@@ -81,7 +69,6 @@ public class FilterPanel extends JPanel implements IFilterPanel {
      * Initializes panel
      */
     public void initialize() {
-        filterButton = new PopUpButton(state.isShowPlayerControlsOnTop() ? PopUpButton.BOTTOM_RIGHT : PopUpButton.TOP_RIGHT, lookAndFeelManager);
         filterTextField = new CustomTextField(12);
         filterTextField.setText(StringUtils.getString(I18nUtils.getString("FILTER"), "..."));
         filterTextField.setToolTipText(I18nUtils.getString("FILTER_TEXTFIELD_TOOLTIP"));
@@ -134,17 +121,8 @@ public class FilterPanel extends JPanel implements IFilterPanel {
 		        g2.dispose();
         	};
         };
-        add(filterButton, BorderLayout.WEST);
         add(filterTextField, BorderLayout.CENTER);
         add(clearButton, BorderLayout.EAST);
-    }
-
-    /**
-     * @return the filterButton
-     */
-    @Override
-	public IPopUpButton getFilterButton() {
-        return filterButton;
     }
 
     /**

@@ -82,7 +82,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 
     private static final String SLASH = " / ";
 
-	private static final String PLAYLIST = "PLAYLIST";
+	static final String PLAYLIST = "PLAYLIST";
 
 	/**
      * The play list counter used when creating new play lists with default
@@ -123,28 +123,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 
     private INavigationView deviceNavigationView;
     
-    /**
-     * Filter for play list
-     */
-    private IFilter playListFilter = new IFilter() {
-
-        @Override
-        public String getName() {
-            return PLAYLIST;
-        };
-
-        @Override
-        public String getDescription() {
-            return I18nUtils.getString(PLAYLIST);
-        };
-
-        @Override
-        public void applyFilter(String filter) {
-            setFilter(filter);
-        }
-
-    };
-    
     /** The play list tab controller. */
     private PlayListTabController playListTabController;
 
@@ -166,6 +144,24 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	private ILocalAudioObjectValidator localAudioObjectValidator;
 	
 	private INavigationHandler navigationHandler;
+	
+	private IFilter playListFilter;
+	
+	private IFilterHandler filterHandler;
+	
+	/**
+	 * @param filterHandler
+	 */
+	public void setFilterHandler(IFilterHandler filterHandler) {
+		this.filterHandler = filterHandler;
+	}
+	
+	/**
+	 * @param playListFilter
+	 */
+	public void setPlayListFilter(IFilter playListFilter) {
+		this.playListFilter = playListFilter;
+	}
 
 	/**
 	 * @param deviceNavigationView
@@ -1183,14 +1179,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     }
 
     /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#getPlayListFilter()
-	 */
-    @Override
-	public IFilter getPlayListFilter() {
-        return playListFilter;
-    }
-
-    /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#getPlayListNameAtIndex(int)
 	 */
     @Override
@@ -1263,7 +1251,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 
 	private PlayListController getPlayListController() {
         if (playListController == null) {
-            playListController = new PlayListController(playListTable, playListPanel, getState(), this, playerHandler, getBean(IFilterHandler.class));
+            playListController = new PlayListController(playListTable, playListPanel, getState(), this, playerHandler);
         }
         return playListController;
     }
@@ -1334,12 +1322,11 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 		playListsChanged(true, true);
 	}
 	
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#reapplyFilter()
-	 */
 	@Override
 	public void reapplyFilter() {
-		getPlayListController().reapplyFilter();
+        if (isFiltered()) {
+            setFilter(filterHandler.getFilterText(playListFilter));
+        }
 	}
 
 	@Override

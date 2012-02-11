@@ -32,14 +32,30 @@ import javax.swing.tree.DefaultMutableTreeNode;
  */
 public interface INavigationHandler extends IHandler {
 
+	/**
+	 * Returns list of all navigation views
+	 * @return
+	 */
 	public List<INavigationView> getNavigationViews();
 
+	/**
+	 * Returns current view
+	 * @return
+	 */
 	public INavigationView getCurrentView();
 
+	/**
+	 * Returns current view mode
+	 * @return
+	 */
 	public ViewMode getCurrentViewMode();
 
-	public INavigationView getView(
-			Class<? extends INavigationView> navigationViewClass);
+	/**
+	 * Returns view by its class
+	 * @param navigationViewClass
+	 * @return
+	 */
+	public INavigationView getView(Class<? extends INavigationView> navigationViewClass);
 
 	/**
 	 * Refreshes current view to update data shown
@@ -62,15 +78,8 @@ public interface INavigationHandler extends IHandler {
 	public Class<? extends INavigationView> getViewByName(String className);
 
 	/**
-	 * @return the tableFilter
+	 * Refreshes navigation table
 	 */
-	public IFilter getTableFilter();
-
-	/**
-	 * @return the treeFilter
-	 */
-	public IFilter getTreeFilter();
-
 	public void refreshNavigationTable();
 
 	/**
@@ -79,8 +88,18 @@ public interface INavigationHandler extends IHandler {
 	 */
 	public List<IAudioObject> getFilesSelectedInNavigator();
 
+	/**
+	 * Set given navigation name as the current one
+	 * @param name
+	 */
 	public void setNavigationView(String name);
 
+	/**
+	 * Opens search dialog
+	 * @param dialog
+	 * @param b
+	 * @return
+	 */
 	public ISearch openSearchDialog(ISearchDialog dialog, boolean b);
 
 	/**

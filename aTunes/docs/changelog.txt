@@ -11,6 +11,7 @@ aTunes 2.2.0
 - Replaced combo boxes to select navigation and context panels. Use buttons with icons instead
 - Removed option to show ticks and labels in progress slider
 - UI changes in player controls
+- Filter text field separated for play list and navigator
 
 aTunes 2.1.1
 ------------

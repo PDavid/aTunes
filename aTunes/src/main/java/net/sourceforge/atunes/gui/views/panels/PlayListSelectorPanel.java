@@ -52,7 +52,7 @@ public final class PlayListSelectorPanel extends JPanel implements IPlayListSele
 
 	private ILookAndFeelManager lookAndFeelManager;
 	
-	private IFilterPanel filterPanel;
+	private IFilterPanel playListFilterPanel;
     
     /**
      * Instantiates a new play list tab panel.
@@ -60,12 +60,12 @@ public final class PlayListSelectorPanel extends JPanel implements IPlayListSele
     public PlayListSelectorPanel() {
         super(new GridBagLayout());
     }
-    
+
     /**
-     * @param filterPanel
+     * @param playListFilterPanel
      */
-    public void setFilterPanel(IFilterPanel filterPanel) {
-		this.filterPanel = filterPanel;
+    public void setPlayListFilterPanel(IFilterPanel playListFilterPanel) {
+		this.playListFilterPanel = playListFilterPanel;
 	}
     
     /**
@@ -95,7 +95,7 @@ public final class PlayListSelectorPanel extends JPanel implements IPlayListSele
         c.weightx = 1;
         c.anchor = GridBagConstraints.EAST;
         c.insets = new Insets(0, 0, 0, 5);
-        add(filterPanel.getSwingComponent(), c);
+        add(playListFilterPanel.getSwingComponent(), c);
 
         options.add(Context.getBean(NewPlayListAction.class));
         options.add(Context.getBean(RenamePlaylistAction.class));
@@ -108,17 +108,11 @@ public final class PlayListSelectorPanel extends JPanel implements IPlayListSele
         options.add(Context.getBean(SynchronizeDeviceWithPlayListAction.class));
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.panels.IPlayListSelectorPanel#getPlayListCombo()
-	 */
 	@Override
 	public JComboBox getPlayListCombo() {
 		return playListCombo;
 	}
 	
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.panels.IPlayListSelectorPanel#getOptions()
-	 */
 	@Override
 	public IPopUpButton getOptions() {
 		return options;

@@ -172,5 +172,15 @@ public abstract class AbstractHandler implements IHandler {
 	protected Object getBean(String name) {
 		return Context.getBean(name);
 	}
-
+	
+	/**
+	 * Delegate method Returns bean with given name and type
+	 * @param <T>
+	 * @param name
+	 * @param clazz
+	 * @return
+	 */
+	protected <T> T getBean(String name, Class<T> clazz) {
+		return Context.getBean(name, clazz);
+	}
 }

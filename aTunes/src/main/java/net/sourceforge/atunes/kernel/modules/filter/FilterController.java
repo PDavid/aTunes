@@ -26,11 +26,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.HashMap;
-import java.util.Map;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JRadioButtonMenuItem;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.panels.FilterPanel;
@@ -42,37 +38,49 @@ import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-class FilterController extends AbstractSimpleController<FilterPanel> {
+public class FilterController extends AbstractSimpleController<FilterPanel> {
 
 	private FilterTextFieldDocumentListener listener;
 	
 	boolean filterApplied = false;
 	
-    /**
-     * Group of controls (filters)
-     */
-    private ButtonGroup group;
-
-    /**
-     * Filters and UI controls
-     */
-    private Map<String, JRadioButtonMenuItem> filters;
-    
     private IFilterHandler filterHandler;
+    
+    /**
+     * Filter to apply when user types in filter panel managed by this controller
+     */
+    private IFilter filter;
 
     /**
      * @param panel
      * @param state
-     * @param filterHandler
      */
-    FilterController(IFilterPanel panel, IState state, IFilterHandler filterHandler) {
+    public FilterController(IFilterPanel panel, IState state) {
         super((FilterPanel)panel.getSwingComponent(), state);
-        this.group = new ButtonGroup();
-        this.filters = new HashMap<String, JRadioButtonMenuItem>();
+    }
+    
+    /**
+     * Initializes controller
+     */
+    public void initialize() {
         this.listener = new FilterTextFieldDocumentListener(this);
-        this.filterHandler = filterHandler;
         addBindings();
     }
+    
+    /**
+     * Set filter to apply
+     * @param filter
+     */
+    public void setFilter(IFilter filter) {
+		this.filter = filter;
+	}
+    
+    /**
+     * @param filterHandler
+     */
+    public void setFilterHandler(IFilterHandler filterHandler) {
+		this.filterHandler = filterHandler;
+	}
 
     @Override
 	public void addBindings() {
@@ -126,61 +134,13 @@ class FilterController extends AbstractSimpleController<FilterPanel> {
     }
     
     /**
-     * Adds a new filter to controls
-     * 
-     * @param name
-     * @param filterListener
-     */
-    void addFilter(final IFilter filter) {
-        JRadioButtonMenuItem radioButton = new JRadioButtonMenuItem(filter.getDescription());
-        radioButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	// Filter should be executed only if user has typed something...
-				if (filterApplied) {
-					// Remove previous filter
-					applyFilter(null);
-
-					// Set selected filter and apply
-					filterHandler.setSelectedFilter(filter.getName());
-					applyFilter(getFilter());
-				}
-            }
-        });
-        filters.put(filter.getName(), radioButton);
-        group.add(radioButton);
-        getComponentControlled().getFilterButton().add(radioButton);
-    }
-
-    /**
-     * Removes a filter
-     * 
-     * @param name
-     */
-    void removeFilter(String name) {
-        JRadioButtonMenuItem radioButton = filters.get(name);
-        filters.remove(name);
-        group.remove(radioButton);
-        getComponentControlled().getFilterButton().remove(radioButton);
-    }
-
-    /**
-     * Sets filter selected
-     * 
-     * @param filterName
-     */
-    void setSelectedFilter(String filterName) {
-        this.filters.get(filterName).setSelected(true);
-    }
-
-    /**
      * Applies filter by calling FilterHandler
      * 
-     * @param filter
+     * @param filterText
      */
-    void applyFilter(String filter) {
-    	filterApplied = filter != null && !filter.equals("");
-        filterHandler.applyFilter(filter);
+    void applyFilter(String filterText) {
+    	filterApplied = filterText != null && !filterText.equals("");
+        filterHandler.applyFilter(filter, filterText);
     }
 
     /**
@@ -192,19 +152,4 @@ class FilterController extends AbstractSimpleController<FilterPanel> {
         String filter = getComponentControlled().getFilterTextField().getText();
         return filter.trim().equals("") ? null : filter;
     }
-
-    /**
-     * Sets filter enabled
-     * 
-     * @param name
-     * @param enabled
-     */
-    void setFilterEnabled(String name, boolean enabled) {
-        JRadioButtonMenuItem filter = this.filters.get(name);
-        // Filter can be null if filters have not been added yet
-        if (filter != null) {
-            filter.setEnabled(enabled);
-        }
-    }
-
 }
