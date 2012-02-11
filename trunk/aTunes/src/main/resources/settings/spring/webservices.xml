@@ -5,7 +5,7 @@
 
 	default-autowire="byName" default-lazy-init="true">
 
-	<bean id="lastFmService" class="net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService" init-method="initialize"/>
+	<bean id="lastFmService" class="net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService"/>
 
 	<bean id="lyricsService"
 		class="net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService">

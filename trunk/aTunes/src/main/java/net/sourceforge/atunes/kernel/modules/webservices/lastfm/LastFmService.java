@@ -144,18 +144,20 @@ public final class LastFmService {
      * @return
      */
     private LastFmCache getCache() {
+    	if (lastFmCache == null) {
+        	Logger.debug("Initializing LastFmCache");
+        	lastFmCache = new LastFmCache(osManager, xmlSerializerService);
+    	}
     	return lastFmCache;
     }
     
+    /**
+     * Default constructor
+     */
     public LastFmService() {
         Caller.getInstance().setCache(null);
         Caller.getInstance().setUserAgent(CLIENT_ID);    	
 	}
-    
-    public void initialize() {
-    	Logger.debug("Initializing LastFmCache");
-    	lastFmCache = new LastFmCache(osManager, xmlSerializerService);
-    }
     
     /**
      * Finishes service
