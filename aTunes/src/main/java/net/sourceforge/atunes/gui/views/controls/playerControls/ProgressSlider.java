@@ -73,7 +73,7 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
      */
     public void initialize() {
         time = new JLabel();
-        time.setHorizontalAlignment(SwingConstants.CENTER);
+        time.setHorizontalAlignment(SwingConstants.RIGHT);
 
         progressBar = new JSlider();
         progressBar.setToolTipText(I18nUtils.getString("CLICK_TO_SEEK"));
@@ -82,8 +82,7 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
         progressBar.setFocusable(false);
         
         remainingTime = new JLabel();
-        remainingTime.setHorizontalAlignment(SwingConstants.CENTER);
-        setOpaque(false);
+        remainingTime.setHorizontalAlignment(SwingConstants.LEFT);
 
         setLayout();
     }
@@ -117,18 +116,18 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.weightx = 0.1;
-        c.insets = new Insets(2, 10, 0, 0);
+        c.insets = new Insets(0, 0, 3, 0);
         c.weighty = 1;
         c.fill = GridBagConstraints.BOTH;
         add(time, c);
         c.gridx = 1;
         c.weightx = 0.8;
-        c.insets = new Insets(0, 5, 0, 5);
+        c.insets = new Insets(0, 0, 0, 0);
         c.fill = GridBagConstraints.HORIZONTAL;
         add(progressBar, c);
         c.gridx = 2;
         c.weightx = 0.1;
-        c.insets = new Insets(2, 5, 0, 5);
+        c.insets = new Insets(0, 0, 3, 0);
         c.fill = GridBagConstraints.BOTH;
         add(remainingTime, c);
 
