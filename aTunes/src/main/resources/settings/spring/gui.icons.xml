@@ -19,6 +19,7 @@
 	<bean id="downloadIcon" class="net.sourceforge.atunes.gui.images.DownloadImageIcon"/>
 	<bean id="equalizerIcon" class="net.sourceforge.atunes.gui.images.EqualizerImageIcon"/>
 	<bean id="favoriteIcon" class="net.sourceforge.atunes.gui.images.FavoriteImageIcon"/>
+	<bean id="filterIcon" class="net.sourceforge.atunes.gui.images.FilterImageIcon"/>
 	<bean id="folderIcon" class="net.sourceforge.atunes.gui.images.FolderImageIcon"/>
 	<bean id="genreIcon" class="net.sourceforge.atunes.gui.images.GenreImageIcon"/>
 	<bean id="newIcon" class="net.sourceforge.atunes.gui.images.NewImageIcon"/>
