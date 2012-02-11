@@ -35,8 +35,6 @@ import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.IFilterPanel;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.StringUtils;
 
 public class FilterController extends AbstractSimpleController<FilterPanel> {
 
@@ -90,7 +88,6 @@ public class FilterController extends AbstractSimpleController<FilterPanel> {
 			public void focusLost(FocusEvent e) {
 				if (!filterApplied) {
 					getComponentControlled().getFilterTextField().getDocument().removeDocumentListener(listener);
-					getComponentControlled().getFilterTextField().setText(StringUtils.getString(I18nUtils.getString("FILTER"), "..."));
 				}
 			}
 			
@@ -125,7 +122,6 @@ public class FilterController extends AbstractSimpleController<FilterPanel> {
 					public void run() {
 						if (!filterApplied) {
 							getComponentControlled().getFilterTextField().getDocument().removeDocumentListener(listener);
-							getComponentControlled().getFilterTextField().setText(StringUtils.getString(I18nUtils.getString("FILTER"), "..."));
 						}
 					}
 				});
