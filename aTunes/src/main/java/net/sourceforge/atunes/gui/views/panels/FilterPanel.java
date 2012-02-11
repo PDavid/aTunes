@@ -39,7 +39,6 @@ import net.sourceforge.atunes.model.IFilterPanel;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.StringUtils;
 
 public class FilterPanel extends JPanel implements IFilterPanel {
 
@@ -82,7 +81,6 @@ public class FilterPanel extends JPanel implements IFilterPanel {
     public void initialize() {
         setMinimumSize(new Dimension(120, 0));
         filterTextField = new CustomTextField(8);
-        filterTextField.setText(StringUtils.getString(I18nUtils.getString("FILTER"), "..."));
         filterTextField.setToolTipText(I18nUtils.getString("FILTER_TEXTFIELD_TOOLTIP"));
         clearButton = new LookAndFeelAwareButton(lookAndFeelManager) {
         	/**
