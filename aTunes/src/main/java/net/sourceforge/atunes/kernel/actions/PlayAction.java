@@ -38,7 +38,7 @@ public class PlayAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -1122746023245126869L;
 
-    private IFilterPanel filterPanel;
+    private IFilterPanel playListFilterPanel;
     
     private IPlayListHandler playListHandler;
     
@@ -47,10 +47,10 @@ public class PlayAction extends CustomAbstractAction {
     private IPlayListTable playListTable;
 
     /**
-     * @param filterPanel
+     * @param playListFilterPanel
      */
-    public void setFilterPanel(IFilterPanel filterPanel) {
-		this.filterPanel = filterPanel;
+    public void setPlayListFilterPanel(IFilterPanel playListFilterPanel) {
+		this.playListFilterPanel = playListFilterPanel;
 	}
     
     /**
@@ -77,7 +77,7 @@ public class PlayAction extends CustomAbstractAction {
     @Override
     protected void executeAction() {
         // disable enter key when focus is on filter text field (so event is not fired from PLAY/PAUSE button)
-        if (filterPanel.getFilterTextField().isFocusOwner()
+        if (playListFilterPanel.getFilterTextField().isFocusOwner()
                 && getSource() != null && !(getSource().getClass().equals(PlayPauseButton.class))) {
         	Logger.debug("Skipping play action");
             return;
