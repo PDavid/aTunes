@@ -21,14 +21,14 @@
 package net.sourceforge.atunes.gui.views.panels;
 
 import java.awt.Component;
-import java.awt.ComponentOrientation;
-import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
 import net.sourceforge.atunes.kernel.actions.ArrangePlayListColumnsAction;
 import net.sourceforge.atunes.kernel.actions.CloseOtherPlaylistsAction;
@@ -37,6 +37,7 @@ import net.sourceforge.atunes.kernel.actions.CopyPlayListToDeviceAction;
 import net.sourceforge.atunes.kernel.actions.NewPlayListAction;
 import net.sourceforge.atunes.kernel.actions.RenamePlaylistAction;
 import net.sourceforge.atunes.kernel.actions.SynchronizeDeviceWithPlayListAction;
+import net.sourceforge.atunes.model.IFilterPanel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListSelectorPanel;
 import net.sourceforge.atunes.model.IPopUpButton;
@@ -50,15 +51,22 @@ public final class PlayListSelectorPanel extends JPanel implements IPlayListSele
     private JComboBox playListCombo;
 
 	private ILookAndFeelManager lookAndFeelManager;
+	
+	private IFilterPanel filterPanel;
     
     /**
      * Instantiates a new play list tab panel.
      */
     public PlayListSelectorPanel() {
-        super();
-		ComponentOrientation orientation = GuiUtils.getComponentOrientation();
-		setLayout(new FlowLayout(orientation == ComponentOrientation.LEFT_TO_RIGHT ? FlowLayout.LEFT : FlowLayout.RIGHT, 0, 0));
+        super(new GridBagLayout());
     }
+    
+    /**
+     * @param filterPanel
+     */
+    public void setFilterPanel(IFilterPanel filterPanel) {
+		this.filterPanel = filterPanel;
+	}
     
     /**
      * @param lookAndFeelManager
@@ -74,8 +82,20 @@ public final class PlayListSelectorPanel extends JPanel implements IPlayListSele
     	options = new PopUpButton(PopUpButton.BOTTOM_RIGHT, lookAndFeelManager);
     	playListCombo = new JComboBox();
 
-    	add(options);
-        add(playListCombo);
+    	GridBagConstraints c = new GridBagConstraints();
+    	
+    	c.weighty = 1;
+    	c.fill = GridBagConstraints.VERTICAL;
+    	add(options, c);
+    	
+    	c.gridx = 1;
+        add(playListCombo, c);
+        
+        c.gridx = 2;
+        c.weightx = 1;
+        c.anchor = GridBagConstraints.EAST;
+        c.insets = new Insets(0, 0, 0, 5);
+        add(filterPanel.getSwingComponent(), c);
 
         options.add(Context.getBean(NewPlayListAction.class));
         options.add(Context.getBean(RenamePlaylistAction.class));

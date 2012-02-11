@@ -40,7 +40,6 @@ import javax.swing.SwingConstants;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.model.IProgressSlider;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class ProgressSlider extends JPanel implements IProgressSlider {
@@ -233,13 +232,12 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
 		super.paintComponent(g);
 		if (paintIcon && paintIconAllowed) {
 			int width = getWidth();
-			int height = getHeight();
 
 			Graphics2D graphics = (Graphics2D) g;
 			graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-			ImageIcon icon = ImageUtils.resize(Images.getImage(Images.APP_LOGO_90), width, height - 4);
-
+			ImageIcon icon = Images.getImage(Images.APP_LOGO_48);
+			
 			graphics.drawImage(icon.getImage(), width / 2 - icon.getIconWidth() / 2, 2, null);
 		}
 
