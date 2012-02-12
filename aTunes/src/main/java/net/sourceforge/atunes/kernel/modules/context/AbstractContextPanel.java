@@ -142,9 +142,9 @@ public abstract class AbstractContextPanel implements IContextPanel {
 		}
 		content.setParentPanel(panel);
 		if (c.gridy == numberOfContents - 1) {
-			// Last component will fill also vertically
+			// Last component will be locate in north
 			c.weighty = 1;
-			c.fill = GridBagConstraints.BOTH;
+			c.anchor = GridBagConstraints.NORTH;
 		}
 		panel.add(componentToAdd, c);
 		c.gridy++;

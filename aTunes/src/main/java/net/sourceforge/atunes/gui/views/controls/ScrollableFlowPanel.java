@@ -34,10 +34,20 @@ public class ScrollableFlowPanel extends JPanel implements Scrollable {
     private static final long serialVersionUID = -6868667863386961211L;
 
     @Override
+    public Dimension getMinimumSize() {
+    	return getPreferredSize();
+    }
+    
+    @Override
     public Dimension getPreferredSize() {
         return new Dimension(getWidth(), getPreferredHeight());
     }
-
+    
+    @Override
+    public Dimension getMaximumSize() {
+    	return getPreferredSize();
+    }
+    
     @Override
     public Dimension getPreferredScrollableViewportSize() {
         return getPreferredSize();
