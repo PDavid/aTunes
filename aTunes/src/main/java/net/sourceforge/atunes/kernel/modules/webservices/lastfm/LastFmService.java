@@ -143,7 +143,7 @@ public final class LastFmService {
     /**
      * @return
      */
-    private LastFmCache getCache() {
+    private synchronized LastFmCache getCache() {
     	if (lastFmCache == null) {
         	Logger.debug("Initializing LastFmCache");
         	lastFmCache = new LastFmCache(osManager, xmlSerializerService);
