@@ -63,13 +63,6 @@ public interface IAlbumInfo extends Serializable {
     public ImageIcon getCover();
 
     /**
-     * Gets the cover url.
-     * 
-     * @return the cover url
-     */
-    public String getCoverURL();
-
-    /**
      * Gets the release date.
      * 
      * @return the release date
@@ -82,13 +75,6 @@ public interface IAlbumInfo extends Serializable {
      * @return the releaseDateString
      */
     public String getReleaseDateString();
-
-    /**
-     * Gets the small cover url.
-     * 
-     * @return the small cover url
-     */
-    public String getSmallCoverURL();
 
     /**
      * Gets the title.
@@ -143,28 +129,12 @@ public interface IAlbumInfo extends Serializable {
     public void setCover(ImageIcon cover);
 
     /**
-     * Sets the cover url.
-     * 
-     * @param coverURL
-     *            the coverURL to set
-     */
-    public void setCoverURL(String coverURL);
-
-    /**
      * Sets the release date string.
      * 
      * @param releaseDateString
      *            the releaseDateString to set
      */
     public void setReleaseDateString(String releaseDateString);
-
-    /**
-     * Sets the small cover url.
-     * 
-     * @param smallCoverURL
-     *            the smallCoverURL to set
-     */
-    public void setSmallCoverURL(String smallCoverURL);
 
     /**
      * Sets the title.

@@ -48,8 +48,6 @@ public class LastFmAlbum implements IAlbumInfo {
     private String releaseDateString;
     private String mbid; // music brainz id
     private String bigCoverURL;
-    private String coverURL;
-    private String smallCoverURL;
     private List<ITrackInfo> tracks;
     // Used by renderers   
     private ImageIcon cover;
@@ -68,8 +66,6 @@ public class LastFmAlbum implements IAlbumInfo {
         album.mbid = a.getMbid();
         album.releaseDateString = a.getReleaseDate() != null ? a.getReleaseDate().toString() : "";
         album.bigCoverURL = getBiggestPosible(a);
-        album.coverURL = a.getImageURL(ImageSize.ORIGINAL);
-        album.smallCoverURL = a.getImageURL(ImageSize.SMALL);
 
         processPlayList(pl, album);
 
@@ -186,16 +182,6 @@ public class LastFmAlbum implements IAlbumInfo {
     }
 
     /**
-     * Gets the cover url.
-     * 
-     * @return the cover url
-     */
-    @Override
-    public String getCoverURL() {
-        return coverURL;
-    }
-
-    /**
      * Gets the release date.
      * 
      * @return the release date
@@ -217,16 +203,6 @@ public class LastFmAlbum implements IAlbumInfo {
     @Override
     public String getReleaseDateString() {
         return releaseDateString;
-    }
-
-    /**
-     * Gets the small cover url.
-     * 
-     * @return the small cover url
-     */
-    @Override
-    public String getSmallCoverURL() {
-        return smallCoverURL;
     }
 
     /**
@@ -307,17 +283,6 @@ public class LastFmAlbum implements IAlbumInfo {
     }
 
     /**
-     * Sets the cover url.
-     * 
-     * @param coverURL
-     *            the coverURL to set
-     */
-    @Override
-    public void setCoverURL(String coverURL) {
-        this.coverURL = coverURL;
-    }
-
-    /**
      * Sets the release date string.
      * 
      * @param releaseDateString
@@ -326,17 +291,6 @@ public class LastFmAlbum implements IAlbumInfo {
     @Override
     public void setReleaseDateString(String releaseDateString) {
         this.releaseDateString = releaseDateString;
-    }
-
-    /**
-     * Sets the small cover url.
-     * 
-     * @param smallCoverURL
-     *            the smallCoverURL to set
-     */
-    @Override
-    public void setSmallCoverURL(String smallCoverURL) {
-        this.smallCoverURL = smallCoverURL;
     }
 
     /**
