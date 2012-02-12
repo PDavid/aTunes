@@ -318,7 +318,7 @@ public final class LastFmService {
             Image img = null;
             // Try to retrieve from cache
             img = getCache().retrieveAlbumCover(album);
-            if (img == null && album.getBigCoverURL() != null && !album.getBigCoverURL().isEmpty()) {
+            if (img == null && !StringUtils.isEmpty(album.getBigCoverURL())) {
                 img = networkHandler.getImage(networkHandler.getConnection(album.getBigCoverURL()));
                 getCache().storeAlbumCover(album, new ImageIcon(img));
             }
