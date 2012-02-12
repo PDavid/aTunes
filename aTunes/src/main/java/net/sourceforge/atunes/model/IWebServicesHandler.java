@@ -23,6 +23,8 @@ package net.sourceforge.atunes.model;
 import java.awt.Image;
 import java.util.List;
 
+import javax.swing.ImageIcon;
+
 public interface IWebServicesHandler extends IHandler {
 
 	/**
@@ -91,7 +93,7 @@ public interface IWebServicesHandler extends IHandler {
 	 * @param albumInfo
 	 * @return
 	 */
-	public Image getAlbumThumbImage(IAlbumInfo albumInfo);
+	public ImageIcon getAlbumThumbImage(IAlbumInfo albumInfo);
 
 	/**
 	 * Returns image of an album

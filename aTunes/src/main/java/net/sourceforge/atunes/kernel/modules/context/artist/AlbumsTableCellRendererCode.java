@@ -58,8 +58,8 @@ class AlbumsTableCellRendererCode extends ContextTableRowPanel<IAlbumInfo> {
         								StringUtils.getString("<html>", value.getTitle(), "</html>"), 
         								superComponent.getBackground(),
         								superComponent.getForeground(), 
-        								Constants.CONTEXT_IMAGE_WIDTH, 
-        								Constants.CONTEXT_IMAGE_HEIGHT,
+        								Constants.THUMB_IMAGE_WIDTH, 
+        								Constants.THUMB_IMAGE_HEIGHT,
         								hasFocus);
     }
 	

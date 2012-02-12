@@ -87,7 +87,7 @@ public class SimilarArtistsDataSource implements IContextInformationSource {
                 for (int i = 0; i < artists.getArtists().size(); i++) {
                     IArtistInfo a = artists.getArtists().get(i);
                     Image img = webServicesHandler.getArtistThumbImage(a);
-                    a.setImage(ImageUtils.scaleImageBicubic(img, Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT));
+                    a.setImage(ImageUtils.scaleImageBicubic(img, Constants.THUMB_IMAGE_WIDTH, Constants.THUMB_IMAGE_HEIGHT));
                     a.setAvailable(artistNamesSet.contains(a.getName().toUpperCase()));
                 }
             }

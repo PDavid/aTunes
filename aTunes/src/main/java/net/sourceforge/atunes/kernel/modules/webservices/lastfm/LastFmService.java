@@ -31,6 +31,7 @@ import java.util.Set;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmAlbum;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmAlbumList;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmArtistTopTracks;
@@ -50,6 +51,7 @@ import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.ITrackInfo;
 import net.sourceforge.atunes.utils.CryptoUtils;
+import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.UnknownObjectCheck;
@@ -340,14 +342,18 @@ public final class LastFmService {
      * 
      * @return the image
      */
-    public Image getAlbumThumbImage(IAlbumInfo album) {
+    public ImageIcon getAlbumThumbImage(IAlbumInfo album) {
         try {
-            Image img = null;
+            ImageIcon img = null;
             // Try to retrieve from cache
             img = getCache().retrieveAlbumCoverThumb(album);
             if (img == null && !StringUtils.isEmpty(album.getThumbCoverURL())) {
-                img = networkHandler.getImage(networkHandler.getConnection(album.getThumbCoverURL()));
-                getCache().storeAlbumCoverThumb(album, new ImageIcon(img));
+                Image tmp = networkHandler.getImage(networkHandler.getConnection(album.getThumbCoverURL()));
+                if (tmp != null) {
+                	// Resize image for thumb images
+                	img = new ImageIcon(ImageUtils.scaleBufferedImageBicubic(tmp, Constants.THUMB_IMAGE_WIDTH, Constants.THUMB_IMAGE_HEIGHT));
+                	getCache().storeAlbumCoverThumb(album, img);
+                }
             }
 
             return img;

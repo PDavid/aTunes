@@ -54,8 +54,8 @@ class SimilarArtistTableCellRendererCode extends ContextTableRowPanel<IArtistInf
         							    StringUtils.getString("<html><br>", value.getName(), "<br>", value.getMatch(), "%<br>", value.isAvailable() ? I18nUtils.getString("AVAILABLE_IN_REPOSITORY") : "", "</html>"), 
         							    superComponent.getBackground(),
         							    superComponent.getForeground(),
-        							    Constants.CONTEXT_IMAGE_WIDTH, 
-        							    Constants.CONTEXT_IMAGE_HEIGHT,
+        							    Constants.THUMB_IMAGE_WIDTH, 
+        							    Constants.THUMB_IMAGE_HEIGHT,
         							    hasFocus);
     }
 

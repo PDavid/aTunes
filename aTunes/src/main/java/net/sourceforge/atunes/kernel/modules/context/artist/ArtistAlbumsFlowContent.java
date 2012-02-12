@@ -93,7 +93,7 @@ public class ArtistAlbumsFlowContent extends AbstractContextPanelContent<ArtistA
         final JLabel coverLabel = new JLabel(cover);
         coverLabel.setToolTipText(album.getTitle());
         if (cover == null) {
-            coverLabel.setPreferredSize(new Dimension(Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT));
+            coverLabel.setPreferredSize(new Dimension(Constants.THUMB_IMAGE_WIDTH, Constants.THUMB_IMAGE_HEIGHT));
             coverLabel.setBorder(BorderFactory.createLineBorder(GuiUtils.getBorderColor()));
         } else {
             coverLabel.setBorder(shadowBorder);

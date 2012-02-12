@@ -13,6 +13,7 @@ aTunes 2.2.0
 - UI changes in player controls
 - Filter text field separated for play list and navigator
 - Improved filters to retrieve albums from last.fm (mbid, artist match) Removed filters as preferences
+- Optimizations retrieving list of covers of albums in artist panel
 
 aTunes 2.1.1
 ------------

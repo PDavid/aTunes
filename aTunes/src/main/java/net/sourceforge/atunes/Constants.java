@@ -124,11 +124,11 @@ public final class Constants {
     /** Directory where Mac OS X binaries are found (i.e. mplayer, lame, etc) */
     public static final String MAC_TOOLS_DIR = "mac_tools";
 
-    /** Image Width at context panel. */
-    public static final int CONTEXT_IMAGE_WIDTH = 75;
+    /** Image Width for thumb images. */
+    public static final int THUMB_IMAGE_WIDTH = 75;
 
-    /** Image Height at context panel. */
-    public static final int CONTEXT_IMAGE_HEIGHT = 75;
+    /** Image Height fot thumb images. */
+    public static final int THUMB_IMAGE_HEIGHT = 75;
 
     /** File where radios are stored. */
     public static final String RADIO_CACHE = "radios.xml";
