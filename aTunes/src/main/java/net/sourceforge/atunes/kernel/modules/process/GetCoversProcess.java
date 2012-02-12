@@ -20,11 +20,12 @@
 
 package net.sourceforge.atunes.kernel.modules.process;
 
-import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
@@ -84,10 +85,10 @@ public class GetCoversProcess extends AbstractProcess {
         for (int i = 0; i < albums.size() && !isCanceled(); i++) {
         	IAlbum album = albums.get(i);
             if (!hasCoverDownloaded(album)) {
-                Image albumImage = webServicesHandler.getAlbumImage(artist.getName(), album.getName());
+                ImageIcon albumImage = webServicesHandler.getAlbumImage(artist.getName(), album.getName());
                 if (albumImage != null) {
                     try {
-                        ImageUtils.writeImageToFile(albumImage, AudioFilePictureUtils.getFileNameForCover((ILocalAudioObject)album.getAudioObjects().get(0), osManager));
+                        ImageUtils.writeImageToFile(albumImage.getImage(), AudioFilePictureUtils.getFileNameForCover((ILocalAudioObject)album.getAudioObjects().get(0), osManager));
                     } catch (IOException e1) {
                         Logger.error(StringUtils.getString("Error writing image for artist: ", artist.getName(), " album: ", album.getName(), " Error: ", e1.getMessage()));
                     } catch (ImageWriteException e) {

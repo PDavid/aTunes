@@ -204,8 +204,8 @@ public final class LastFmService {
      * @param album
      * @return
      */
-    public Image getAlbumImage(String artist, String album) {
-        Image image = null;
+    public ImageIcon getAlbumImage(String artist, String album) {
+        ImageIcon image = null;
         IAlbumInfo a = getAlbum(artist, album);
         if (a != null) {
             image = getAlbumImage(a);
@@ -315,14 +315,17 @@ public final class LastFmService {
      * 
      * @return the image
      */
-    public Image getAlbumImage(IAlbumInfo album) {
+    public ImageIcon getAlbumImage(IAlbumInfo album) {
         try {
-            Image img = null;
+            ImageIcon img = null;
             // Try to retrieve from cache
             img = getCache().retrieveAlbumCover(album);
             if (img == null && !StringUtils.isEmpty(album.getBigCoverURL())) {
-                img = networkHandler.getImage(networkHandler.getConnection(album.getBigCoverURL()));
-                getCache().storeAlbumCover(album, new ImageIcon(img));
+            	Image tmp = networkHandler.getImage(networkHandler.getConnection(album.getBigCoverURL())); 
+                if (tmp != null) {
+                	img = new ImageIcon(tmp);
+                    getCache().storeAlbumCover(album, img);
+                }
             }
 
             return img;
@@ -373,20 +376,20 @@ public final class LastFmService {
      * 
      * @return the image
      */
-    public Image getThumbImage(IArtistInfo artist) {
+    public ImageIcon getArtistThumbImage(IArtistInfo artist) {
         try {
             // Try to retrieve from cache
-            Image img = getCache().retrieveArtistThumbImage(artist);
+            ImageIcon img = getCache().retrieveArtistThumbImage(artist);
             if (img == null && artist.getImageUrl() != null && !artist.getImageUrl().isEmpty()) {
                 // Try to get from Artist.getImages() method 
                 img = getArtistImageFromLastFM(artist.getName(), ImageSize.LARGE);
 
                 // if not then get from artist info
                 if (img == null) {
-                    img = networkHandler.getImage(networkHandler.getConnection(artist.getImageUrl()));
+                    img = new ImageIcon(networkHandler.getImage(networkHandler.getConnection(artist.getImageUrl())));
                 }
 
-                getCache().storeArtistThumbImage(artist, new ImageIcon(img));
+                getCache().storeArtistThumbImage(artist, img);
             }
             return img;
         } catch (Exception e) {
@@ -403,10 +406,10 @@ public final class LastFmService {
      * 
      * @return the image
      */
-    public Image getImage(String artistName) {
+    public ImageIcon getArtistImage(String artistName) {
         try {
             // Try to retrieve from cache
-            Image img = getCache().retrieveArtistImage(artistName);
+            ImageIcon img = getCache().retrieveArtistImage(artistName);
 
             if (img != null) {
                 return img;
@@ -419,12 +422,12 @@ public final class LastFmService {
             if (img == null) {
                 String similarUrl = getSimilarArtists(artistName).getPicture();
                 if (!similarUrl.trim().isEmpty()) {
-                    img = networkHandler.getImage(networkHandler.getConnection(similarUrl));
+                    img = new ImageIcon(networkHandler.getImage(networkHandler.getConnection(similarUrl)));
                 }
             }
 
             if (img != null) {
-                getCache().storeArtistImage(artistName, new ImageIcon(img));
+                getCache().storeArtistImage(artistName, img);
             }
 
             return img;
@@ -464,7 +467,7 @@ public final class LastFmService {
      * @param size
      * @return
      */
-    private Image getArtistImageFromLastFM(String artistName, ImageSize size) {
+    private ImageIcon getArtistImageFromLastFM(String artistName, ImageSize size) {
         try {
             // Try to get from Artist.getImages() method 
             PaginatedResult<de.umass.lastfm.Image> images = Artist.getImages(artistName, 1, 1, getApiKey());
@@ -473,7 +476,7 @@ public final class LastFmService {
                 Set<ImageSize> sizes = imageList.get(0).availableSizes();
                 // Try to get the given size
                 if (sizes.contains(size)) {
-                    return networkHandler.getImage(networkHandler.getConnection(imageList.get(0).getImageURL(size)));
+                    return new ImageIcon(networkHandler.getImage(networkHandler.getConnection(imageList.get(0).getImageURL(size))));
                 }
             }
         } catch (IOException e) {

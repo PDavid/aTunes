@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.webservices.lastfm;
 
-import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -157,12 +156,12 @@ public class LastFmCache extends AbstractCache {
      * 
      * @return the image
      */
-    public synchronized Image retrieveAlbumCover(IAlbumInfo album) {
+    public synchronized ImageIcon retrieveAlbumCover(IAlbumInfo album) {
         Element element = getAlbumCoverCache().get(album);
         if (element == null) {
             return null;
         } else {
-            return ((ImageIcon) element.getValue()).getImage();
+            return (ImageIcon) element.getValue();
         }
     }
 
@@ -179,7 +178,7 @@ public class LastFmCache extends AbstractCache {
         if (element == null) {
             return null;
         } else {
-            return ((ImageIcon) element.getValue());
+            return (ImageIcon) element.getValue();
         }
     }
 
@@ -210,12 +209,12 @@ public class LastFmCache extends AbstractCache {
      * 
      * @return the image
      */
-    public synchronized Image retrieveArtistImage(String artist) {
+    public synchronized ImageIcon retrieveArtistImage(String artist) {
         Element element = getArtistImageCache().get(artist);
         if (element == null) {
             return null;
         } else {
-            return ((ImageIcon) element.getValue()).getImage();
+            return (ImageIcon) element.getValue();
         }
     }
 
@@ -275,12 +274,12 @@ public class LastFmCache extends AbstractCache {
      * 
      * @return the image
      */
-    public synchronized Image retrieveArtistThumbImage(IArtistInfo artist) {
+    public synchronized ImageIcon retrieveArtistThumbImage(IArtistInfo artist) {
         Element element = getArtistThumbsCache().get(artist);
         if (element == null) {
             return null;
         } else {
-            return ((ImageIcon) element.getValue()).getImage();
+            return (ImageIcon) element.getValue();
         }
     }
 

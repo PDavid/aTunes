@@ -23,7 +23,6 @@ package net.sourceforge.atunes.gui.views.dialogs.fullScreen;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -63,11 +62,11 @@ public final class CoverFlow extends JPanel {
 
 		@Override
 		protected Void doInBackground() throws Exception {
-			Image image = null;
+			ImageIcon image = null;
 		    if (audioObject instanceof IRadio) {
-		        image = Context.getBean("radioBigIcon", IIconFactory.class).getIcon(Color.WHITE).getImage();
+		        image = Context.getBean("radioBigIcon", IIconFactory.class).getIcon(Color.WHITE);
 		    } else if (audioObject instanceof IPodcastFeedEntry) {
-		        image = Context.getBean("rssBigIcon", IIconFactory.class).getIcon(Color.WHITE).getImage();
+		        image = Context.getBean("rssBigIcon", IIconFactory.class).getIcon(Color.WHITE);
 		    } else if (audioObject instanceof ILocalAudioObject){
 	    		image = getPicture((ILocalAudioObject)audioObject, osManager);
 		    }
@@ -78,7 +77,7 @@ public final class CoverFlow extends JPanel {
 	            } else if (audioObject == null) {
 	                cover.setImage(Images.getImage(Images.APP_LOGO_300).getImage(), getImageSize(covers.indexOf(cover)), getImageSize(covers.indexOf(cover)));
 	            } else {
-	                cover.setImage(image, getImageSize(index), getImageSize(index));
+	                cover.setImage(image.getImage(), getImageSize(index), getImageSize(index));
 	            }
 	        }
 	        
@@ -165,20 +164,20 @@ public final class CoverFlow extends JPanel {
      * @param osManager
      * @return
      */
-    protected Image getPicture(ILocalAudioObject audioFile, IOSManager osManager) {
-    	Image result = Context.getBean(IWebServicesHandler.class).getAlbumImage(audioFile.getArtist(), audioFile.getAlbum());
+    protected ImageIcon getPicture(ILocalAudioObject audioFile, IOSManager osManager) {
+    	ImageIcon result = Context.getBean(IWebServicesHandler.class).getAlbumImage(audioFile.getArtist(), audioFile.getAlbum());
         if (result == null) {
         	// Get inside picture
         	ImageIcon icon = AudioFilePictureUtils.getInsidePicture(audioFile, -1, -1);
-        	result = icon != null ? icon.getImage() : null;
+        	result = icon != null ? icon : null;
         }
         if (result == null) {
         	// Get external picture
         	ImageIcon icon = AudioFilePictureUtils.getExternalPicture(audioFile, -1, -1, osManager);
-        	result = icon != null ? icon.getImage() : null;
+        	result = icon != null ? icon : null;
         }
         if (result == null) {
-            result = Images.getImage(Images.APP_LOGO_300).getImage();
+            result = Images.getImage(Images.APP_LOGO_300);
         }
         return result;
     }

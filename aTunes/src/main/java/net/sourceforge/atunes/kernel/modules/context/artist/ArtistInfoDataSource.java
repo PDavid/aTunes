@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.context.artist;
 
-import java.awt.Image;
+import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -50,7 +50,7 @@ public class ArtistInfoDataSource implements IContextInformationSource {
     
     private String artistUrl;
     
-    private Image artistImage;
+    private ImageIcon artistImage;
     
     private IAlbumListInfo albumList;
     
@@ -112,7 +112,7 @@ public class ArtistInfoDataSource implements IContextInformationSource {
     /**
      * @return
      */
-    public Image getArtistImage() {
+    public ImageIcon getArtistImage() {
 		return artistImage;
 	}
     
@@ -162,7 +162,7 @@ public class ArtistInfoDataSource implements IContextInformationSource {
      * @param audioObject
      * @return
      */
-    private Image getArtistImageData(IAudioObject audioObject) {
+    private ImageIcon getArtistImageData(IAudioObject audioObject) {
         return webServicesHandler.getArtistImage(audioObject.getArtist());
     }
 

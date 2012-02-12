@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.api;
 
-import java.awt.Image;
+import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.ISimilarArtistsInfo;
@@ -45,7 +45,7 @@ public final class WebServicesApi {
         return Context.getBean(IWebServicesHandler.class).getSimilarArtists(artistName);
     }
 
-    public static Image getAlbumImage(String artist, String album) {
+    public static ImageIcon getAlbumImage(String artist, String album) {
         return Context.getBean(IWebServicesHandler.class).getAlbumImage(artist, album);
     }
 }

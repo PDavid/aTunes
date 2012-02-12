@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.context.audioobject;
 
-import java.awt.Image;
-
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.Constants;
@@ -155,9 +153,9 @@ public class AudioObjectBasicInfoDataSource implements IContextInformationSource
         if (audioObject instanceof ILocalAudioObject) {
             ImageIcon localImage = audioObjectImageLocator.getImage(audioObject, Constants.ALBUM_IMAGE_SIZE);
             if (localImage == null) {
-                Image image = webServicesHandler.getAlbumImage(audioObject.getArtist(), audioObject.getAlbum());
+                ImageIcon image = webServicesHandler.getAlbumImage(audioObject.getArtist(), audioObject.getAlbum());
                 if (image != null) {
-                    localImage = ImageUtils.resize(new ImageIcon(image), Constants.ALBUM_IMAGE_SIZE.getSize(), Constants.ALBUM_IMAGE_SIZE.getSize());
+                    localImage = ImageUtils.resize(image, Constants.ALBUM_IMAGE_SIZE.getSize(), Constants.ALBUM_IMAGE_SIZE.getSize());
                 }
             }
             return localImage;

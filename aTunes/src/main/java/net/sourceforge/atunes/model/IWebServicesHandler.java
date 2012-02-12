@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.model;
 
-import java.awt.Image;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -86,7 +85,7 @@ public interface IWebServicesHandler extends IHandler {
 	 * @param albumInfo
 	 * @return
 	 */
-	public Image getAlbumImage(IAlbumInfo albumInfo);
+	public ImageIcon getAlbumImage(IAlbumInfo albumInfo);
 
 	/**
 	 * Returns thumb image of an album
@@ -101,14 +100,14 @@ public interface IWebServicesHandler extends IHandler {
 	 * @param album
 	 * @return
 	 */
-	public Image getAlbumImage(String artist, String album);
+	public ImageIcon getAlbumImage(String artist, String album);
 
 	/**
 	 * Returns image for given artist
 	 * @param artist
 	 * @return
 	 */
-	public Image getArtistImage(String artist);
+	public ImageIcon getArtistImage(String artist);
 
 	/**
 	 * Gets biographic information about artist
@@ -171,7 +170,7 @@ public interface IWebServicesHandler extends IHandler {
 	 * @param a
 	 * @return
 	 */
-	public Image getArtistThumbImage(IArtistInfo a);
+	public ImageIcon getArtistThumbImage(IArtistInfo a);
 
 	/**
 	 * Returns track number for given audio object

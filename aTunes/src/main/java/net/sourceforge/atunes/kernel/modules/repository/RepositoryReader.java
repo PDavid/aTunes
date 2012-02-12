@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.repository;
 
-import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -29,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
@@ -58,7 +58,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	
 	private String lastAlbumRead;
 	
-	private SwingWorker<Image, Void> coverWorker;
+	private SwingWorker<ImageIcon, Void> coverWorker;
 	
     private int filesLoaded;
 
@@ -453,9 +453,9 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 				lastAlbumRead = album;
 				if (coverWorker == null || coverWorker.isDone()) {
 					// Try to find cover and set in progress dialog
-					coverWorker = new SwingWorker<Image, Void>() {
+					coverWorker = new SwingWorker<ImageIcon, Void>() {
 						@Override
-						protected Image doInBackground() {
+						protected ImageIcon doInBackground() {
 							return webServicesHandler.getAlbumImage(artist, album);
 						}
 
@@ -464,7 +464,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 							super.done();
 							if (progressDialog != null) {
 								try {
-									progressDialog.setImage(get());
+									progressDialog.setImage(get().getImage());
 								} catch (InterruptedException e) {
 									progressDialog.setImage(null);
 								} catch (ExecutionException e) {
