@@ -39,14 +39,22 @@ class AlbumsTableCellRendererCode extends ContextTableRowPanel<IAlbumInfo> {
 	
 	private IDesktop desktop;
 	
-	public AlbumsTableCellRendererCode(ILookAndFeel lookAndFeel, IDesktop desktop) {
+	private ArtistAlbumListImagesDataSource source;
+	
+	/**
+	 * @param source
+	 * @param lookAndFeel
+	 * @param desktop
+	 */
+	public AlbumsTableCellRendererCode(ArtistAlbumListImagesDataSource source, ILookAndFeel lookAndFeel, IDesktop desktop) {
 		super(lookAndFeel);
+		this.source = source;
 		this.desktop = desktop;
 	}
 
 	@Override
     public JComponent getComponent(JComponent superComponent, JTable table, IAlbumInfo value, boolean isSelected, boolean hasFocus, int row, int column) {
-        return getPanelForTableRenderer(value.getCover(), 
+        return getPanelForTableRenderer(source.getCovers().get(value), 
         								StringUtils.getString("<html>", value.getTitle(), "</html>"), 
         								superComponent.getBackground(),
         								superComponent.getForeground(), 

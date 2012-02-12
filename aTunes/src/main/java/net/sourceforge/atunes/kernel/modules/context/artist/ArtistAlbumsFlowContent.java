@@ -26,10 +26,10 @@ import java.awt.FlowLayout;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.JLabel;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.ScrollableFlowPanel;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
@@ -41,6 +41,15 @@ import org.jdesktop.swingx.border.DropShadowBorder;
 public class ArtistAlbumsFlowContent extends AbstractContextPanelContent<ArtistAlbumListImagesDataSource> {
 
     private ScrollableFlowPanel coversPanel;
+    
+    private DropShadowBorder shadowBorder;
+    
+    /**
+     * @param shadowBorder
+     */
+    public void setShadowBorder(DropShadowBorder shadowBorder) {
+		this.shadowBorder = shadowBorder;
+	}
     
     @Override
     public Component getComponent() {
@@ -59,7 +68,7 @@ public class ArtistAlbumsFlowContent extends AbstractContextPanelContent<ArtistA
     public void updateContentFromDataSource(ArtistAlbumListImagesDataSource source) {
     	List<IAlbumInfo> albums = source.getAlbumList().getAlbums();
     	for (IAlbumInfo album : albums) {
-    		coversPanel.add(getLabelForAlbum(album));
+    		coversPanel.add(getLabelForAlbum(source, album));
     	}
     	coversPanel.revalidate();
     	coversPanel.repaint();
@@ -75,18 +84,19 @@ public class ArtistAlbumsFlowContent extends AbstractContextPanelContent<ArtistA
     /**
      * Gets the Label for album.
      * 
+     * @param source
      * @param album
-     *            the album
-     * @return the label for album
+     * @return
      */
-    JLabel getLabelForAlbum(final IAlbumInfo album) {
-        final JLabel coverLabel = new JLabel(album.getCover());
+    private JLabel getLabelForAlbum(ArtistAlbumListImagesDataSource source, final IAlbumInfo album) {
+    	Icon cover = source.getCovers().get(album);
+        final JLabel coverLabel = new JLabel(cover);
         coverLabel.setToolTipText(album.getTitle());
-        if (album.getCover() == null) {
+        if (cover == null) {
             coverLabel.setPreferredSize(new Dimension(Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT));
             coverLabel.setBorder(BorderFactory.createLineBorder(GuiUtils.getBorderColor()));
         } else {
-            coverLabel.setBorder(Context.getBean(DropShadowBorder.class));
+            coverLabel.setBorder(shadowBorder);
         }
 
         coverLabel.addMouseListener(new CoverMouseAdapter(album, coverLabel, getDesktop()));

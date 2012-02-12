@@ -21,6 +21,10 @@
 package net.sourceforge.atunes.kernel.modules.context.artist;
 
 import java.awt.Image;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.model.IAlbumInfo;
@@ -46,13 +50,16 @@ public class ArtistAlbumListImagesDataSource implements IContextInformationSourc
     
     private IAlbumListInfo albumList;
     
+    private Map<IAlbumInfo, ImageIcon> covers; 
+    
     @Override
     public void getData(IAudioObject audioObject) {
     	this.audioObject = audioObject;
         this.albumList = getAlbumListData(audioObject);
+        this.covers = new HashMap<IAlbumInfo, ImageIcon>();
         if (albumList != null && !albumList.getAlbums().isEmpty()) {
             for (IAlbumInfo album : albumList.getAlbums()) {
-                album.setCover(ImageUtils.scaleImageBicubic(getAlbumImageData(album), Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT));
+                covers.put(album, ImageUtils.scaleImageBicubic(getAlbumImageData(album), Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT));
             }
         }
     }
@@ -62,6 +69,13 @@ public class ArtistAlbumListImagesDataSource implements IContextInformationSourc
      */
     public IAlbumListInfo getAlbumList() {
 		return albumList;
+	}
+    
+    /**
+     * @return
+     */
+    public Map<IAlbumInfo, ImageIcon> getCovers() {
+		return covers;
 	}
     
     /**

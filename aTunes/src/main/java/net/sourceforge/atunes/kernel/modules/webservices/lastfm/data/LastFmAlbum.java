@@ -24,8 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import javax.swing.ImageIcon;
-
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.ITrackInfo;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -49,8 +47,6 @@ public class LastFmAlbum implements IAlbumInfo {
     private String mbid; // music brainz id
     private String bigCoverURL;
     private List<ITrackInfo> tracks;
-    // Used by renderers   
-    private ImageIcon cover;
 
     /**
      * Gets the album.
@@ -172,16 +168,6 @@ public class LastFmAlbum implements IAlbumInfo {
     }
 
     /**
-     * Gets the cover.
-     * 
-     * @return the cover
-     */
-    @Override
-    public ImageIcon getCover() {
-        return cover;
-    }
-
-    /**
      * Gets the release date.
      * 
      * @return the release date
@@ -269,17 +255,6 @@ public class LastFmAlbum implements IAlbumInfo {
     @Override
     public void setBigCoverURL(String bigCoverURL) {
         this.bigCoverURL = bigCoverURL;
-    }
-
-    /**
-     * Sets the cover.
-     * 
-     * @param cover
-     *            the cover to set
-     */
-    @Override
-    public void setCover(ImageIcon cover) {
-        this.cover = cover;
     }
 
     /**

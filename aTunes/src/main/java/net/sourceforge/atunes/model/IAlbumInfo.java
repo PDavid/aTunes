@@ -23,8 +23,6 @@ package net.sourceforge.atunes.model;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.swing.ImageIcon;
-
 import org.joda.time.DateTime;
 
 /**
@@ -54,13 +52,6 @@ public interface IAlbumInfo extends Serializable {
      * @return the bigCoverURL
      */
     public String getBigCoverURL();
-
-    /**
-     * Gets the cover.
-     * 
-     * @return the cover
-     */
-    public ImageIcon getCover();
 
     /**
      * Gets the release date.
@@ -119,14 +110,6 @@ public interface IAlbumInfo extends Serializable {
      *            the bigCoverURL to set
      */
     public void setBigCoverURL(String bigCoverURL);
-
-    /**
-     * Sets the cover.
-     * 
-     * @param cover
-     *            the cover to set
-     */
-    public void setCover(ImageIcon cover);
 
     /**
      * Sets the release date string.
