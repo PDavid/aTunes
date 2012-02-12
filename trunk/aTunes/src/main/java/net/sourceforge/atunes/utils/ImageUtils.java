@@ -89,6 +89,13 @@ public final class ImageUtils {
      * @return the image icon
      */
     public static ImageIcon scaleImageBicubic(Image image, int width, int height) {
+        int imageWidth = image.getWidth(null);
+        int imageHeight = image.getHeight(null);
+
+        if (imageWidth == width && imageHeight == height) {
+        	return new ImageIcon(image);
+        }
+
     	BufferedImage bi = scaleBufferedImageBicubic(image, width, height);
     	return bi != null ? new ImageIcon(bi) : null;
     }
@@ -110,9 +117,14 @@ public final class ImageUtils {
             return null;
         }
 
-        double thumbRatio = (double) width / (double) height;
         int imageWidth = image.getWidth(null);
         int imageHeight = image.getHeight(null);
+
+        if (imageWidth == width && imageHeight == height) {
+        	return toBufferedImage(image);
+        }
+        
+        double thumbRatio = (double) width / (double) height;
         double imageRatio = (double) imageWidth / (double) imageHeight;
         int calculatedWidth = width;
         int calculatedHeight = height;
@@ -122,7 +134,7 @@ public final class ImageUtils {
             calculatedWidth = (int) (height * imageRatio);
         }
 
-        if (imageWidth <= calculatedWidth && imageHeight <= calculatedHeight) {
+        if (imageWidth <= calculatedWidth || imageHeight <= calculatedHeight) {
             BufferedImage thumbImage = new BufferedImage(calculatedWidth, calculatedHeight, BufferedImage.TYPE_INT_ARGB);
             Graphics2D graphics2D = thumbImage.createGraphics();
             graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
@@ -131,7 +143,7 @@ public final class ImageUtils {
             return thumbImage;
         } else {
             // If scaled image is smaller then use SwingX utilities (looks much better)
-            return GraphicsUtilities.createThumbnailFast(toBufferedImage(image), calculatedWidth, calculatedHeight);
+       		return GraphicsUtilities.createThumbnailFast(toBufferedImage(image), calculatedWidth, calculatedHeight);
         }
     }
     

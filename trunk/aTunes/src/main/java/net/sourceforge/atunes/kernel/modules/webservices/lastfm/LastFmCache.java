@@ -174,12 +174,12 @@ public class LastFmCache extends AbstractCache {
      * 
      * @return the image
      */
-    public synchronized Image retrieveAlbumCoverThumb(IAlbumInfo album) {
+    public synchronized ImageIcon retrieveAlbumCoverThumb(IAlbumInfo album) {
         Element element = getAlbumCoverThumbCache().get(album);
         if (element == null) {
             return null;
         } else {
-            return ((ImageIcon) element.getValue()).getImage();
+            return ((ImageIcon) element.getValue());
         }
     }
 

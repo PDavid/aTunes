@@ -148,7 +148,7 @@ public class YoutubeResultXmlAnalyzer {
 		    if (tn != null) {
 		        String tnUrl = ((Element) tn).getAttribute("url");
 		        Image image = networkHandler.getImage(networkHandler.getConnection(tnUrl));
-		        entry.setImage(ImageUtils.scaleImageBicubic(image, Constants.CONTEXT_IMAGE_WIDTH, Constants.CONTEXT_IMAGE_HEIGHT));
+		        entry.setImage(ImageUtils.scaleImageBicubic(image, Constants.THUMB_IMAGE_WIDTH, Constants.THUMB_IMAGE_HEIGHT));
 		    }
 		}
 	}

@@ -52,7 +52,7 @@ public class ContextTable extends JTable {
     
     @Override
     public void setRowHeight(int heigth) {
-        super.setRowHeight(Constants.CONTEXT_IMAGE_HEIGHT + 5);
+        super.setRowHeight(Constants.THUMB_IMAGE_HEIGHT + 5);
     }
 
 	/**
