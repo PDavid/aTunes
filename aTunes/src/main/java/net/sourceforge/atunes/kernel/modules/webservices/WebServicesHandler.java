@@ -110,8 +110,8 @@ public class WebServicesHandler extends AbstractHandler implements IWebServicesH
 	}
 	
 	@Override
-	public IAlbumListInfo getAlbumList(String artist, boolean hideVariousArtistsAlbums, int minimumSongNumberPerAlbum) {
-		return lastFmService.getAlbumList(artist, hideVariousArtistsAlbums, minimumSongNumberPerAlbum);
+	public IAlbumListInfo getAlbumList(String artist) {
+		return lastFmService.getAlbumList(artist);
 	}
 	
 	@Override

@@ -20,22 +20,18 @@
 
 package net.sourceforge.atunes.kernel.modules.state;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.swing.Box;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -43,7 +39,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
@@ -52,7 +47,6 @@ import javax.swing.table.TableModel;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.kernel.actions.ClearCachesAction;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -189,21 +183,6 @@ public final class ContextPanel extends AbstractPreferencesPanel {
     private JCheckBox savePictures;
 
     /**
-     * Checkbox to let user select if want to hide albums of "Various Artists"
-     */
-    private JCheckBox hideVariousArtistsAlbums;
-
-    /**
-     * Checkbox to select minimum song number for each album
-     */
-    private JCheckBox minimumSongNumberPerAlbum;
-
-    /**
-     * Text field to set minimum song number for each album
-     */
-    private JTextField minimumSongNumber;
-
-    /**
      * Checkbox to select if want to show albums in a grid
      */
     private JCheckBox showAlbumsInGrid;
@@ -220,37 +199,12 @@ public final class ContextPanel extends AbstractPreferencesPanel {
         super(I18nUtils.getString("CONTEXT_INFORMATION"));
         activateContext = new JCheckBox(I18nUtils.getString("ACTIVATE_CONTEXT_INFORMATION"));
         savePictures = new JCheckBox(I18nUtils.getString("SAVE_PICTURES_TO_AUDIO_FOLDERS"));
-        hideVariousArtistsAlbums = new JCheckBox(I18nUtils.getString("HIDE_VARIOUS_ARTISTS_ALBUMS"));
-        minimumSongNumberPerAlbum = new JCheckBox(I18nUtils.getString("MINIMUM_SONG_NUMBER_PER_ALBUM"));
-        minimumSongNumber = new CustomTextField(4);
-        minimumSongNumber.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-                if (!Character.isDigit(e.getKeyChar()) || minimumSongNumber.getText().length() > 2) {
-                    e.consume();
-                }
-            }
-        });
-        minimumSongNumberPerAlbum.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                minimumSongNumber.setEnabled(minimumSongNumberPerAlbum.isSelected());
-            }
-        });
-        Box minimumSongNumberBox = Box.createHorizontalBox();
-        minimumSongNumberBox.setAlignmentX(Component.LEFT_ALIGNMENT);
-        minimumSongNumberBox.add(minimumSongNumberPerAlbum);
-        minimumSongNumberBox.add(Box.createHorizontalStrut(6));
-        minimumSongNumberBox.add(minimumSongNumber);
-        minimumSongNumberBox.add(Box.createHorizontalGlue());
-        minimumSongNumber.setMinimumSize(new Dimension(50, 20));
         showAlbumsInGrid = new JCheckBox(I18nUtils.getString("SHOW_ALBUMS_IN_GRID"));
 
         activateContext.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 savePictures.setEnabled(activateContext.isSelected());
-                hideVariousArtistsAlbums.setEnabled(activateContext.isSelected());
             }
         });
         JButton clearCache = new JButton(Context.getBean(ClearCachesAction.class));
@@ -299,31 +253,26 @@ public final class ContextPanel extends AbstractPreferencesPanel {
         c.gridy = 1;
         add(savePictures, c);
         c.gridy = 2;
-        add(hideVariousArtistsAlbums, c);
-        c.gridy = 3;
-        // c.fill = GridBagConstraints.HORIZONTAL;
-        add(minimumSongNumberBox, c);
-        c.gridy = 4;
         add(showAlbumsInGrid, c);
         c.fill = GridBagConstraints.NONE;
-        c.gridy = 5;
+        c.gridy = 3;
         c.insets = new Insets(10, 0, 10, 0);
         add(clearCache, c);
-        c.gridy = 6;
+        c.gridy = 4;
         c.insets = new Insets(0, 0, 5, 0);
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         add(enginesTableLabel, c);
-        c.gridy = 7;
+        c.gridy = 5;
         c.insets = new Insets(0, 10, 0, 0);
         add(enginesScrollPane, c);
-        c.gridy = 8;
+        c.gridy = 6;
         c.gridheight = 1;
         c.insets = new Insets(0, 0, 0, 0);
         JPanel p = new JPanel(new FlowLayout());
         p.add(upButton);
         p.add(downButton);
         add(p, c);
-        c.gridy = 9;
+        c.gridy = 7;
         c.insets = new Insets(20, 0, 0, 0);
         c.weighty = 1;
         add(info, c);
@@ -333,8 +282,6 @@ public final class ContextPanel extends AbstractPreferencesPanel {
     public boolean applyPreferences(IState state) {
         state.setUseContext(activateContext.isSelected());
         state.setSaveContextPicture(savePictures.isSelected());
-        state.setHideVariousArtistsAlbums(hideVariousArtistsAlbums.isSelected());
-        state.setMinimumSongNumberPerAlbum(minimumSongNumberPerAlbum.isSelected() ? Integer.parseInt(minimumSongNumber.getText()) : 0);
         state.setLyricsEnginesInfo(((LyricsEnginesTableModel) enginesTable.getModel()).getLyricsEnginesInfo());
         boolean showAlbumsInGridPreviousValue = state.isShowContextAlbumsInGrid();
         state.setShowContextAlbumsInGrid(showAlbumsInGrid.isSelected());
@@ -350,7 +297,6 @@ public final class ContextPanel extends AbstractPreferencesPanel {
     private void setActivateContext(boolean activate) {
         activateContext.setSelected(activate);
         savePictures.setEnabled(activate);
-        hideVariousArtistsAlbums.setEnabled(activate);
     }
 
     /**
@@ -361,21 +307,6 @@ public final class ContextPanel extends AbstractPreferencesPanel {
      */
     private void setSavePictures(boolean save) {
         savePictures.setSelected(save);
-    }
-
-    /**
-     * Sets the hide various artists albums checkbox value
-     * 
-     * @param hide
-     */
-    private void setHideVariousArtistsAlbums(boolean hide) {
-        hideVariousArtistsAlbums.setSelected(hide);
-    }
-
-    private void setMinimumSongNumberPerAlbum(int number) {
-        minimumSongNumberPerAlbum.setSelected(number != 0);
-        minimumSongNumber.setEnabled(number != 0);
-        minimumSongNumber.setText(Integer.toString(number));
     }
 
     /**
@@ -405,8 +336,6 @@ public final class ContextPanel extends AbstractPreferencesPanel {
     public void updatePanel(IState state) {
         setActivateContext(state.isUseContext());
         setSavePictures(state.isSaveContextPicture());
-        setHideVariousArtistsAlbums(state.isHideVariousArtistsAlbums());
-        setMinimumSongNumberPerAlbum(state.getMinimumSongNumberPerAlbum());
         setLyricsEnginesInfo(state.getLyricsEnginesInfo());
         setShowAlbumsInGrid(state.isShowContextAlbumsInGrid());
     }

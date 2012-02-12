@@ -75,11 +75,9 @@ public interface IWebServicesHandler extends IHandler {
 	/**
 	 * Gets album list 
 	 * @param artist
-	 * @param hideVariousArtistsAlbums
-	 * @param minimumSongNumberPerAlbum
 	 * @return
 	 */
-	public IAlbumListInfo getAlbumList(String artist, boolean hideVariousArtistsAlbums, int minimumSongNumberPerAlbum);
+	public IAlbumListInfo getAlbumList(String artist);
 
 	/**
 	 * Returns image of an album

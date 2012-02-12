@@ -25,9 +25,9 @@ import java.awt.Image;
 import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextInformationSource;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 /**
  * Data Source for basic album object information Retrieves basic information
@@ -38,8 +38,6 @@ import net.sourceforge.atunes.utils.I18nUtils;
  */
 public class ArtistInfoDataSource implements IContextInformationSource {
 
-	private IState state;
-	
     private IWebServicesHandler webServicesHandler;
     
     private IAudioObject audioObject;
@@ -84,20 +82,12 @@ public class ArtistInfoDataSource implements IContextInformationSource {
      * @return
      */
     private IAlbumListInfo getAlbumListData(IAudioObject audioObject) {
-        if (!audioObject.getArtist().equals(I18nUtils.getString("UNKNOWN_ARTIST"))) {
-            return webServicesHandler.getAlbumList(audioObject.getArtist(), state.isHideVariousArtistsAlbums(),
-                    state.getMinimumSongNumberPerAlbum());
+        if (!UnknownObjectCheck.isUnknownArtist(audioObject.getArtist())) {
+            return webServicesHandler.getAlbumList(audioObject.getArtist());
         }
         return null;
     }
 
-    /**
-     * @param state
-     */
-    public void setState(IState state) {
-		this.state = state;
-	}
-    
     /**
      * @return
      */

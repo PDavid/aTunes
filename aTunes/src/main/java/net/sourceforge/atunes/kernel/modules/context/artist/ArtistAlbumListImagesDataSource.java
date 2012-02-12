@@ -27,10 +27,9 @@ import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextInformationSource;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
-import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
+import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 /**
  * Data Source for basic album object information Retrieves basic information
@@ -41,8 +40,6 @@ import net.sourceforge.atunes.utils.ImageUtils;
  */
 public class ArtistAlbumListImagesDataSource implements IContextInformationSource {
 
-	private IState state;
-	
     private IWebServicesHandler webServicesHandler;
     
     private IAudioObject audioObject;
@@ -74,9 +71,8 @@ public class ArtistAlbumListImagesDataSource implements IContextInformationSourc
      * @return
      */
     private IAlbumListInfo getAlbumListData(IAudioObject audioObject) {
-        if (!audioObject.getArtist().equals(I18nUtils.getString("UNKNOWN_ARTIST"))) {
-            return webServicesHandler.getAlbumList(audioObject.getArtist(), state.isHideVariousArtistsAlbums(),
-                    state.getMinimumSongNumberPerAlbum());
+        if (!UnknownObjectCheck.isUnknownArtist(audioObject.getArtist())) {
+            return webServicesHandler.getAlbumList(audioObject.getArtist());
         }
         return null;
     }
@@ -90,13 +86,6 @@ public class ArtistAlbumListImagesDataSource implements IContextInformationSourc
     private Image getAlbumImageData(IAlbumInfo album) {
         return webServicesHandler.getAlbumImage(album);
     }
-    
-    /**
-     * @param state
-     */
-    public void setState(IState state) {
-		this.state = state;
-	}
     
     /**
      * @return

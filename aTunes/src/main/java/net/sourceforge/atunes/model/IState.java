@@ -293,14 +293,6 @@ public interface IState {
 	public void setRemovePodcastFeedEntriesRemovedFromPodcastFeed(
 			boolean removePodcastFeedEntriesRemovedFromPodcastFeed);
 
-	public boolean isHideVariousArtistsAlbums();
-
-	public void setHideVariousArtistsAlbums(boolean hideVariousArtistsAlbums);
-
-	public int getMinimumSongNumberPerAlbum();
-
-	public void setMinimumSongNumberPerAlbum(int minimumSongNumberPerAlbum);
-
 	public boolean isHighlightIncompleteTagElements();
 
 	public void setHighlightIncompleteTagElements(

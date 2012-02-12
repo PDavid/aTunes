@@ -189,6 +189,18 @@ public interface IAlbumInfo extends Serializable {
      *            the url to set
      */
     public void setUrl(String url);
+    
+    /**
+     * Returns Music Brainz ID
+     * @return
+     */
+    public String getMbid();
+    
+    /**
+     * Sets Music Brainz ID
+     * @param mbid
+     */
+    public void setMbid(String mbid);
 
     /*
      * (non-Javadoc)
