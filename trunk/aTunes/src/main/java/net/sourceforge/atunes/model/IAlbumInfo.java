@@ -52,6 +52,12 @@ public interface IAlbumInfo extends Serializable {
      * @return the bigCoverURL
      */
     public String getBigCoverURL();
+    
+    /**
+     * Gets the URL to get a thumb of cover
+     * @return
+     */
+    public String getThumbCoverURL();
 
     /**
      * Gets the release date.
@@ -96,64 +102,10 @@ public interface IAlbumInfo extends Serializable {
     public String getYear();
 
     /**
-     * Sets the artist.
-     * 
-     * @param artist
-     *            the artist to set
-     */
-    public void setArtist(String artist);
-
-    /**
-     * Sets the big cover url.
-     * 
-     * @param bigCoverURL
-     *            the bigCoverURL to set
-     */
-    public void setBigCoverURL(String bigCoverURL);
-
-    /**
-     * Sets the release date string.
-     * 
-     * @param releaseDateString
-     *            the releaseDateString to set
-     */
-    public void setReleaseDateString(String releaseDateString);
-
-    /**
-     * Sets the title.
-     * 
-     * @param title
-     *            the title to set
-     */
-    public void setTitle(String title);
-
-    /**
-     * Sets the tracks.
-     * 
-     * @param tracks
-     *            the tracks to set
-     */
-    public void setTracks(List<? extends ITrackInfo> tracks);
-
-    /**
-     * Sets the url.
-     * 
-     * @param url
-     *            the url to set
-     */
-    public void setUrl(String url);
-    
-    /**
      * Returns Music Brainz ID
      * @return
      */
     public String getMbid();
-    
-    /**
-     * Sets Music Brainz ID
-     * @param mbid
-     */
-    public void setMbid(String mbid);
 
     /*
      * (non-Javadoc)

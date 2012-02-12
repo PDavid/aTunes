@@ -73,7 +73,7 @@ public final class ImageUtils {
         int newWidth = (int) ((float) image.getIconWidth() / (float) maxSize * width);
         int newHeight = (int) ((float) image.getIconHeight() / (float) maxSize * height);
         
-        return ImageUtils.scaleImageBicubic(image.getImage(), newWidth, newHeight);
+        return scaleImageBicubic(image.getImage(), newWidth, newHeight);
     }
 
     /**

@@ -206,7 +206,7 @@ public final class LastFmService {
         Image image = null;
         IAlbumInfo a = getAlbum(artist, album);
         if (a != null) {
-            image = getImage(a);
+            image = getAlbumImage(a);
         }
         return image;
     }
@@ -270,7 +270,7 @@ public final class LastFmService {
 	 * @return
 	 */
 	private boolean hasImage(IAlbumInfo a) {
-		return !StringUtils.isEmpty(a.getBigCoverURL()) && !a.getBigCoverURL().contains("noimage");
+		return !StringUtils.isEmpty(a.getThumbCoverURL()) && !a.getThumbCoverURL().contains("noimage");
 	}
 	
 	/**
@@ -313,7 +313,7 @@ public final class LastFmService {
      * 
      * @return the image
      */
-    public Image getImage(IAlbumInfo album) {
+    public Image getAlbumImage(IAlbumInfo album) {
         try {
             Image img = null;
             // Try to retrieve from cache
@@ -321,6 +321,33 @@ public final class LastFmService {
             if (img == null && !StringUtils.isEmpty(album.getBigCoverURL())) {
                 img = networkHandler.getImage(networkHandler.getConnection(album.getBigCoverURL()));
                 getCache().storeAlbumCover(album, new ImageIcon(img));
+            }
+
+            return img;
+        } catch (IOException e) {
+        	// Sometimes urls given by last.fm are forbidden, so avoid show full error stack traces
+        	Logger.error(e.getMessage());
+            Logger.debug(e);
+        }
+        return null;
+    }
+
+    /**
+     * Gets the thumbnail image of album
+     * 
+     * @param album
+     *            the album
+     * 
+     * @return the image
+     */
+    public Image getAlbumThumbImage(IAlbumInfo album) {
+        try {
+            Image img = null;
+            // Try to retrieve from cache
+            img = getCache().retrieveAlbumCoverThumb(album);
+            if (img == null && !StringUtils.isEmpty(album.getThumbCoverURL())) {
+                img = networkHandler.getImage(networkHandler.getConnection(album.getThumbCoverURL()));
+                getCache().storeAlbumCoverThumb(album, new ImageIcon(img));
             }
 
             return img;

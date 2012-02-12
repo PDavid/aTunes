@@ -46,6 +46,7 @@ public class LastFmAlbum implements IAlbumInfo {
     private String releaseDateString;
     private String mbid; // music brainz id
     private String bigCoverURL;
+    private String thumbCoverURL;
     private List<ITrackInfo> tracks;
 
     /**
@@ -62,6 +63,7 @@ public class LastFmAlbum implements IAlbumInfo {
         album.mbid = a.getMbid();
         album.releaseDateString = a.getReleaseDate() != null ? a.getReleaseDate().toString() : "";
         album.bigCoverURL = getBiggestPosible(a);
+        album.thumbCoverURL = getThumbURL(a);
 
         processPlayList(pl, album);
 
@@ -115,6 +117,11 @@ public class LastFmAlbum implements IAlbumInfo {
         }
 	}
 
+    /**
+     * Returns URL of the biggest album cover
+     * @param a
+     * @return
+     */
     private static String getBiggestPosible(Album a) {
 //    	SMALL: 0
 //    	MEDIUM: 1
@@ -136,6 +143,35 @@ public class LastFmAlbum implements IAlbumInfo {
     	
     	return null;
 	}
+    
+    /**
+     * Returns URL of the smallest album cover
+     * @param a
+     * @return
+     */
+    private static String getThumbURL(Album a) {
+//    	SMALL: 0
+//    	MEDIUM: 1
+//    	LARGE: 2
+//    	LARGESQUARE: 3
+//    	HUGE: 4
+//    	EXTRALARGE: 5
+//    	MEGA: 6
+//    	ORIGINAL: 7
+
+    	ImageSize[] sizes = ImageSize.values();
+    	// Start from large
+    	for (int i = 2; i < sizes.length; i++) {
+    		String url = a.getImageURL(sizes[i]);
+    		if (url != null) {
+    			return url;
+    		}
+    	}
+
+    	return null;
+    }
+    
+    
 
 	/**
      * Gets the artist.
@@ -235,72 +271,11 @@ public class LastFmAlbum implements IAlbumInfo {
         return Integer.toString(releaseDate.getYear());
     }
 
-    /**
-     * Sets the artist.
-     * 
-     * @param artist
-     *            the artist to set
-     */
     @Override
-    public void setArtist(String artist) {
-        this.artist = artist;
+    public String getThumbCoverURL() {
+    	return thumbCoverURL;
     }
-
-    /**
-     * Sets the big cover url.
-     * 
-     * @param bigCoverURL
-     *            the bigCoverURL to set
-     */
-    @Override
-    public void setBigCoverURL(String bigCoverURL) {
-        this.bigCoverURL = bigCoverURL;
-    }
-
-    /**
-     * Sets the release date string.
-     * 
-     * @param releaseDateString
-     *            the releaseDateString to set
-     */
-    @Override
-    public void setReleaseDateString(String releaseDateString) {
-        this.releaseDateString = releaseDateString;
-    }
-
-    /**
-     * Sets the title.
-     * 
-     * @param title
-     *            the title to set
-     */
-    @Override
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    /**
-     * Sets the tracks.
-     * 
-     * @param tracks
-     *            the tracks to set
-     */
-    @Override
-    public void setTracks(List<? extends ITrackInfo> tracks) {
-        this.tracks = tracks != null ? new ArrayList<ITrackInfo>(tracks) : null;
-    }
-
-    /**
-     * Sets the url.
-     * 
-     * @param url
-     *            the url to set
-     */
-    @Override
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
+    
     @Override
     public String toString() {
         return StringUtils.getString(artist, " - ", title);
@@ -341,9 +316,4 @@ public class LastFmAlbum implements IAlbumInfo {
     	return mbid;
     }
     
-    @Override
-    public void setMbid(String mbid) {
-    	this.mbid = mbid;
-    }
-
 }
