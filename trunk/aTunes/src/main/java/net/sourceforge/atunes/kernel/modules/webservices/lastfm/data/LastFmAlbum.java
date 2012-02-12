@@ -46,6 +46,7 @@ public class LastFmAlbum implements IAlbumInfo {
     private String title;
     private String url;
     private String releaseDateString;
+    private String mbid; // music brainz id
     private String bigCoverURL;
     private String coverURL;
     private String smallCoverURL;
@@ -64,12 +65,23 @@ public class LastFmAlbum implements IAlbumInfo {
         album.artist = a.getArtist();
         album.title = a.getName();
         album.url = a.getUrl();
+        album.mbid = a.getMbid();
         album.releaseDateString = a.getReleaseDate() != null ? a.getReleaseDate().toString() : "";
         album.bigCoverURL = getBiggestPosible(a);
         album.coverURL = a.getImageURL(ImageSize.ORIGINAL);
         album.smallCoverURL = a.getImageURL(ImageSize.SMALL);
 
-        if (pl != null) {
+        processPlayList(pl, album);
+
+        return album;
+    }
+
+	/**
+	 * @param pl
+	 * @param album
+	 */
+	private static void processPlayList(Playlist pl, LastFmAlbum album) {
+		if (pl != null) {
             List<ITrackInfo> ts = new ArrayList<ITrackInfo>();
             for (Track t : pl.getTracks()) {
                 ts.add(LastFmTrack.getTrack(t));
@@ -109,9 +121,7 @@ public class LastFmAlbum implements IAlbumInfo {
 
             album.tracks = ts;
         }
-
-        return album;
-    }
+	}
 
     private static String getBiggestPosible(Album a) {
 //    	SMALL: 0
@@ -395,6 +405,16 @@ public class LastFmAlbum implements IAlbumInfo {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public String getMbid() {
+    	return mbid;
+    }
+    
+    @Override
+    public void setMbid(String mbid) {
+    	this.mbid = mbid;
     }
 
 }

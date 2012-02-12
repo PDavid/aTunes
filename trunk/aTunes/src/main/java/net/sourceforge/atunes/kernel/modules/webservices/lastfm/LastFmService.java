@@ -90,7 +90,6 @@ public final class LastFmService {
     private static final String LANGUAGE_PARAM = "?setlang=";
     private static final String LANGUAGE_WILDCARD = "(%LANGUAGE%)";
     private static final String ARTIST_WIKI_URL = StringUtils.getString("http://www.lastfm.com/music/", ARTIST_WILDCARD, "/+wiki", LANGUAGE_PARAM, LANGUAGE_WILDCARD);
-    private static final String VARIOUS_ARTISTS = "Various Artists";
     private static final int MIN_DURATION_TO_SUBMIT = 30;
     private static final int MAX_SUBMISSIONS = 50;
     private LastFmCache lastFmCache;
@@ -218,16 +217,9 @@ public final class LastFmService {
      * @param artist
      *            the artist
      * 
-     * @param hideVariousArtists
-     *            if <code>true</code> albums with artist name "Various Artists"
-     *            are nor returned
-     * 
-     * @param minimumSongNumber
-     *            albums with less songs than this argument won't be returned
-     * 
      * @return the album list
      */
-    public IAlbumListInfo getAlbumList(String artist, boolean hideVariousArtists, int minimumSongNumber) {
+    public IAlbumListInfo getAlbumList(String artist) {
         // Try to get from cache
 		IAlbumListInfo albumList = getCache().retrieveAbumList(artist);
 		if (albumList == null) {
@@ -235,12 +227,7 @@ public final class LastFmService {
 		    if (as != null) {
 		        IAlbumListInfo albums = LastFmAlbumList.getAlbumList(as, artist);
 
-		        List<IAlbumInfo> result = new ArrayList<IAlbumInfo>();
-		        for (IAlbumInfo a : albums.getAlbums()) {
-		        	if (!StringUtils.isEmpty(a.getBigCoverURL()) && !a.getBigCoverURL().contains("noimage")) {
-		                result.add(a);
-		            }
-		        }
+		        List<IAlbumInfo> result = filterAlbumsFromSource(artist, albums);
 
 		        albumList = new LastFmAlbumList();
 		        albumList.setArtist(artist);
@@ -249,37 +236,52 @@ public final class LastFmService {
 		    }
 		}
 
-		if (albumList != null) {
-		    List<IAlbumInfo> albumsFiltered = null;
-
-		    // Apply filter to hide "Various Artists" albums
-		    if (hideVariousArtists) {
-		        albumsFiltered = new ArrayList<IAlbumInfo>();
-		        for (IAlbumInfo albumInfo : albumList.getAlbums()) {
-		            if (!albumInfo.getArtist().equals(VARIOUS_ARTISTS)) {
-		                albumsFiltered.add(albumInfo);
-		            }
-		        }
-		        albumList.setAlbums(albumsFiltered);
-		    }
-
-		    // Apply filter to hide albums with less than X songs
-		    if (minimumSongNumber > 0) {
-		        albumsFiltered = new ArrayList<IAlbumInfo>();
-		        for (IAlbumInfo albumInfo : albumList.getAlbums()) {
-		            IAlbumInfo extendedAlbumInfo = getAlbum(artist, albumInfo.getTitle());
-		            if (extendedAlbumInfo != null && extendedAlbumInfo.getTracks() != null && extendedAlbumInfo.getTracks().size() >= minimumSongNumber) {
-		                albumsFiltered.add(albumInfo);
-		            }
-		        }
-		    }
-
-		    if (albumsFiltered != null) {
-		        albumList.setAlbums(albumsFiltered);
-		    }
-		}
 		return albumList;
     }
+
+	/**
+	 * Removes albums with no image or no mbid and with correct artist 
+	 * @param artist
+	 * @param albums
+	 * @return
+	 */
+	private List<IAlbumInfo> filterAlbumsFromSource(String artist, IAlbumListInfo albums) {
+		List<IAlbumInfo> result = new ArrayList<IAlbumInfo>();
+		for (IAlbumInfo a : albums.getAlbums()) {
+			if (hasMbid(a) && artistMatches(artist, a) && hasImage(a)) {
+		        result.add(a);
+		    }
+		}
+		return result;
+	}
+	
+	/**
+	 * Returns if album has mbid
+	 * @param a
+	 * @return
+	 */
+	private boolean hasMbid(IAlbumInfo a) {
+		return !StringUtils.isEmpty(a.getMbid());
+	}
+	
+	/**
+	 * Returns if album has image
+	 * @param a
+	 * @return
+	 */
+	private boolean hasImage(IAlbumInfo a) {
+		return !StringUtils.isEmpty(a.getBigCoverURL()) && !a.getBigCoverURL().contains("noimage");
+	}
+	
+	/**
+	 * Checks if artist of album is equal to given artist
+	 * @param artist
+	 * @param album
+	 * @return
+	 */
+	private boolean artistMatches(String artist, IAlbumInfo album) {
+		return album.getArtist().equalsIgnoreCase(artist);
+	}
 
     /**
      * Gets the artist top tag.

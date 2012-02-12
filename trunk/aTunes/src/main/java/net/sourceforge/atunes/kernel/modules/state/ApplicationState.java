@@ -1228,42 +1228,6 @@ public class ApplicationState implements IState {
     
 
     /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isHideVariousArtistsAlbums()
-	 */
-    @Override
-	public boolean isHideVariousArtistsAlbums() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.HIDE_VARIOUS_ARTISTS_ALBUMS, true);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setHideVariousArtistsAlbums(boolean)
-	 */
-    @Override
-	public void setHideVariousArtistsAlbums(boolean hideVariousArtistsAlbums) {
-    	this.stateStore.storePreference(Preferences.HIDE_VARIOUS_ARTISTS_ALBUMS, hideVariousArtistsAlbums);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getMinimumSongNumberPerAlbum()
-	 */
-    @Override
-	public int getMinimumSongNumberPerAlbum() {
-    	return (Integer) this.stateStore.retrievePreference(Preferences.MINIMUM_SONG_NUMER_PER_ALBUM, 0);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setMinimumSongNumberPerAlbum(int)
-	 */
-    @Override
-	public void setMinimumSongNumberPerAlbum(int minimumSongNumberPerAlbum) {
-    	this.stateStore.storePreference(Preferences.MINIMUM_SONG_NUMER_PER_ALBUM, minimumSongNumberPerAlbum);
-    }
-    
-    
-
-    /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isHighlightIncompleteTagElements()
 	 */
     @Override

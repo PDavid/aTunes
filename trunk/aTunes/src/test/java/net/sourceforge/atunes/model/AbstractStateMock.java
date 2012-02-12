@@ -734,30 +734,6 @@ public abstract class AbstractStateMock implements IState {
 	}
 
 	@Override
-	public boolean isHideVariousArtistsAlbums() {
-		
-		return false;
-	}
-
-	@Override
-	public void setHideVariousArtistsAlbums(boolean hideVariousArtistsAlbums) {
-		
-		
-	}
-
-	@Override
-	public int getMinimumSongNumberPerAlbum() {
-		
-		return 0;
-	}
-
-	@Override
-	public void setMinimumSongNumberPerAlbum(int minimumSongNumberPerAlbum) {
-		
-		
-	}
-
-	@Override
 	public boolean isHighlightIncompleteTagElements() {
 		
 		return false;

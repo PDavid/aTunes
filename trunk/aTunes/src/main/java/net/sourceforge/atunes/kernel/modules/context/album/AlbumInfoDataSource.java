@@ -122,8 +122,7 @@ public class AlbumInfoDataSource implements IContextInformationSource {
             List<IAlbumInfo> albums = null;
             if (!audioObject.getArtist().equals(I18nUtils.getString("UNKNOWN_ARTIST"))) {
                 // Get 
-                IAlbumListInfo albumList = webServicesHandler.getAlbumList(audioObject.getArtist(), state.isHideVariousArtistsAlbums(),
-                        state.getMinimumSongNumberPerAlbum());
+                IAlbumListInfo albumList = webServicesHandler.getAlbumList(audioObject.getArtist());
                 if (albumList != null) {
                     albums = albumList.getAlbums();
                 }
