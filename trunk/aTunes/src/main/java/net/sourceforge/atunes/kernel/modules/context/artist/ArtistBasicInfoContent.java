@@ -23,10 +23,10 @@ package net.sourceforge.atunes.kernel.modules.context.artist;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Image;
 import java.awt.Insets;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.text.StyleConstants;
@@ -63,9 +63,9 @@ public class ArtistBasicInfoContent extends AbstractContextPanelContent<ArtistIn
 
     @Override
     public void updateContentFromDataSource(ArtistInfoDataSource source) {
-        Image artistImage = source.getArtistImage();
+        ImageIcon artistImage = source.getArtistImage();
         if (artistImage != null) {
-            artistImageLabel.setIcon(ImageUtils.scaleImageBicubic(artistImage, Constants.ARTIST_IMAGE_SIZE, Constants.ARTIST_IMAGE_SIZE));
+            artistImageLabel.setIcon(ImageUtils.resize(artistImage, Constants.ARTIST_IMAGE_SIZE, Constants.ARTIST_IMAGE_SIZE));
             artistImageLabel.setBorder(Context.getBean(DropShadowBorder.class));
         }
         String artistName = source.getArtistName();

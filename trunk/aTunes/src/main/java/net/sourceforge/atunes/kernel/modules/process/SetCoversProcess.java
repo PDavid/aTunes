@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.process;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -29,6 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -42,7 +42,7 @@ import net.sourceforge.atunes.utils.UnknownObjectCheck;
  */
 public class SetCoversProcess extends AbstractChangeTagProcess {
 
-    private Map<ILocalAudioObject, Image> filesAndCovers;
+    private Map<ILocalAudioObject, ImageIcon> filesAndCovers;
     
     private IWebServicesHandler webServicesHandler;
     
@@ -61,7 +61,7 @@ public class SetCoversProcess extends AbstractChangeTagProcess {
 
     @Override
     protected void changeTag(ILocalAudioObject file) throws IOException {
-        BufferedImage bufferedCover = ImageUtils.toBufferedImage(this.filesAndCovers.get(file));
+        BufferedImage bufferedCover = ImageUtils.toBufferedImage(this.filesAndCovers.get(file).getImage());
         ITag newTag = getTagHandler().getNewTag(file, new HashMap<String, Object>());
         newTag.setInternalImage(true);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -77,14 +77,14 @@ public class SetCoversProcess extends AbstractChangeTagProcess {
      * 
      * @return the covers for files
      */
-    private Map<ILocalAudioObject, Image> getCoversForFiles(Collection<ILocalAudioObject> files) {
-        Map<ILocalAudioObject, Image> result = new HashMap<ILocalAudioObject, Image>();
+    private Map<ILocalAudioObject, ImageIcon> getCoversForFiles(Collection<ILocalAudioObject> files) {
+        Map<ILocalAudioObject, ImageIcon> result = new HashMap<ILocalAudioObject, ImageIcon>();
 
-        Map<Integer, Image> coverCache = new HashMap<Integer, Image>();
+        Map<Integer, ImageIcon> coverCache = new HashMap<Integer, ImageIcon>();
 
         for (ILocalAudioObject f : files) {
             if (!UnknownObjectCheck.isUnknownArtist(f.getArtist()) && !UnknownObjectCheck.isUnknownAlbum(f.getAlbum())) {
-                Image cover = null;
+                ImageIcon cover = null;
                 int cacheKey = f.getArtist().hashCode() + f.getAlbum().hashCode();
                 if (coverCache.containsKey(cacheKey)) {
                     cover = coverCache.get(cacheKey);

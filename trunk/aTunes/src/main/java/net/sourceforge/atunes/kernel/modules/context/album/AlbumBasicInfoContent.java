@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.context.album;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Image;
 import java.awt.Insets;
 
 import javax.swing.ImageIcon;
@@ -75,9 +74,9 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent<AlbumInfo
             yearLabel.setText(album != null ? album.getYear() : "", album != null && album.getYear() != null ? StringUtils.getString("http://en.wikipedia.org/wiki/", album
                     .getYear()) : null);
 
-            Image image = source.getImage();
+            ImageIcon image = source.getImage();
             if (image != null) {
-                ImageIcon imageIcon = ImageUtils.resize(new ImageIcon(image), Constants.ALBUM_IMAGE_SIZE.getSize(), Constants.ALBUM_IMAGE_SIZE.getSize());
+                ImageIcon imageIcon = ImageUtils.resize(image, Constants.ALBUM_IMAGE_SIZE.getSize(), Constants.ALBUM_IMAGE_SIZE.getSize());
                 albumCoverLabel.setIcon(imageIcon);
                 albumCoverLabel.setBorder(Context.getBean(DropShadowBorder.class));
             }

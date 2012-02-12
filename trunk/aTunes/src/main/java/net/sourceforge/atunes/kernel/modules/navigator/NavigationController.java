@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -99,11 +98,7 @@ public final class NavigationController implements IAudioFilesRemovedListener, I
 		        if (currentObject instanceof ITreeObject) {
 		        	if (currentObject instanceof IArtist) {
 		        		IArtist a = (IArtist) currentObject;
-		                Image img = Context.getBean(IWebServicesHandler.class).getArtistImage(a.getName());
-		                if (img != null) {
-		                    return new ImageIcon(img);
-		                }
-		                return null;
+		                return Context.getBean(IWebServicesHandler.class).getArtistImage(a.getName());
 		        	} else if (currentObject instanceof IAlbum) {
 		        		return audioObjectImageLocator.getImage((IAlbum)currentObject, ImageSize.SIZE_MAX);
 		        	}

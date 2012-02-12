@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.kernel.modules.cdripper;
 
 import java.awt.Cursor;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -32,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
@@ -320,7 +320,7 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
         
         // Get image from amazon if necessary
         if (albumInfo != null) {
-            Image cover = getBean(IWebServicesHandler.class).getAlbumImage(albumInfo);
+            ImageIcon cover = getBean(IWebServicesHandler.class).getAlbumImage(albumInfo);
             dialog.setCover(cover);
             savePicture(cover, folderFile, artist, album);
         }
@@ -404,10 +404,10 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
      * @param album
      *            the album
      */
-    private void savePicture(Image image, File path, String artist, String album) {
+    private void savePicture(ImageIcon image, File path, String artist, String album) {
         String imageFileName = StringUtils.getString(path.getAbsolutePath(), getOsManager().getFileSeparator(), artist, "_", album, "_Cover.png");
         try {
-            ImageUtils.writeImageToFile(image, imageFileName);
+            ImageUtils.writeImageToFile(image.getImage(), imageFileName);
         } catch (IOException e) {
             Logger.error(e);
         } catch (ImageWriteException e) {

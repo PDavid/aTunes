@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.webservices;
 
-import java.awt.Image;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -117,7 +116,7 @@ public class WebServicesHandler extends AbstractHandler implements IWebServicesH
 	}
 	
 	@Override
-	public Image getAlbumImage(IAlbumInfo albumInfo) {
+	public ImageIcon getAlbumImage(IAlbumInfo albumInfo) {
 		return lastFmService.getAlbumImage(albumInfo);
 	}
 
@@ -127,13 +126,13 @@ public class WebServicesHandler extends AbstractHandler implements IWebServicesH
 	}
 	
 	@Override
-	public Image getAlbumImage(String artist, String album) {
+	public ImageIcon getAlbumImage(String artist, String album) {
 		return lastFmService.getAlbumImage(artist, album);
 	}
 
 	@Override
-	public Image getArtistImage(String artist) {
-		return lastFmService.getImage(artist);
+	public ImageIcon getArtistImage(String artist) {
+		return lastFmService.getArtistImage(artist);
 	}
 
 	@Override
@@ -180,8 +179,8 @@ public class WebServicesHandler extends AbstractHandler implements IWebServicesH
 	}
 	
 	@Override
-	public Image getArtistThumbImage(IArtistInfo artist) {
-		return lastFmService.getThumbImage(artist);
+	public ImageIcon getArtistThumbImage(IArtistInfo artist) {
+		return lastFmService.getArtistThumbImage(artist);
 	}
 
 	@Override

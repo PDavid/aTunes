@@ -20,8 +20,9 @@
 
 package net.sourceforge.atunes.model;
 
-import java.awt.Image;
 import java.awt.event.ActionListener;
+
+import javax.swing.ImageIcon;
 
 /**
  * Shows progress of ripper tasks
@@ -54,7 +55,7 @@ public interface IRipperProgressDialog {
 	 * @param img
 	 *            the new cover
 	 */
-	public void setCover(Image img);
+	public void setCover(ImageIcon img);
 
 	/**
 	 * Sets the decode progress value.

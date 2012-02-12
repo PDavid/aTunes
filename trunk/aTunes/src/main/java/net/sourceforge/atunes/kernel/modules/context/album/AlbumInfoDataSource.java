@@ -20,11 +20,12 @@
 
 package net.sourceforge.atunes.kernel.modules.context.album;
 
-import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.StringTokenizer;
+
+import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAlbumListInfo;
@@ -62,7 +63,7 @@ public class AlbumInfoDataSource implements IContextInformationSource {
     
     private IAlbumInfo albumInfo;
     
-    private Image image;
+    private ImageIcon image;
     
     private IAudioObject audioObject;
     
@@ -94,7 +95,7 @@ public class AlbumInfoDataSource implements IContextInformationSource {
     /**
      * @return
      */
-    public Image getImage() {
+    public ImageIcon getImage() {
 		return image;
 	}
     
@@ -181,8 +182,8 @@ public class AlbumInfoDataSource implements IContextInformationSource {
      * @param audioObject
      * @return
      */
-    private Image getImageData(IAlbumInfo albumInfo, IAudioObject audioObject) {
-        Image image = null;
+    private ImageIcon getImageData(IAlbumInfo albumInfo, IAudioObject audioObject) {
+        ImageIcon image = null;
         if (albumInfo != null) {
             image = webServicesHandler.getAlbumImage(albumInfo);
             // This data source should only be used with audio files but anyway check if audioObject is an LocalAudioObject before save picture
@@ -190,7 +191,7 @@ public class AlbumInfoDataSource implements IContextInformationSource {
                 savePicture(image, (ILocalAudioObject) audioObject);
             }
         } else {
-            image = audioObjectImageLocator.getImage(audioObject, ImageSize.SIZE_MAX).getImage();
+            image = audioObjectImageLocator.getImage(audioObject, ImageSize.SIZE_MAX);
         }
         return image;
     }
@@ -202,7 +203,7 @@ public class AlbumInfoDataSource implements IContextInformationSource {
      * @param img
      * @param file
      */
-    private void savePicture(Image img, ILocalAudioObject file) {
+    private void savePicture(ImageIcon img, ILocalAudioObject file) {
         if (img != null && state.isSaveContextPicture()) { // save image in folder of file
             String imageFileName = AudioFilePictureUtils.getFileNameForCover(file, osManager);
 
@@ -210,7 +211,7 @@ public class AlbumInfoDataSource implements IContextInformationSource {
             if (!imageFile.exists()) {
                 // Save picture
                 try {
-                    ImageUtils.writeImageToFile(img, imageFileName);
+                    ImageUtils.writeImageToFile(img.getImage(), imageFileName);
                 } catch (IOException e) {
                     Logger.error(e);
                 } catch (ImageWriteException e) {

@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.cdripper;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -211,12 +210,9 @@ public final class RipperProgressDialog extends AbstractCustomDialog implements 
         add(panel);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IRipperProgressDialog#setCover(java.awt.Image)
-	 */
     @Override
-	public void setCover(Image img) {
-        cover.setIcon(ImageUtils.resize(new ImageIcon(img), 90, 90));
+	public void setCover(ImageIcon img) {
+        cover.setIcon(ImageUtils.resize(img, 90, 90));
     }
 
     /**

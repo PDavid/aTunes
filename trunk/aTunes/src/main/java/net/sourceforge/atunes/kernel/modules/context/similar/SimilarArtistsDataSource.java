@@ -20,9 +20,10 @@
 
 package net.sourceforge.atunes.kernel.modules.context.similar;
 
-import java.awt.Image;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.model.IArtist;
@@ -86,8 +87,8 @@ public class SimilarArtistsDataSource implements IContextInformationSource {
             	}
                 for (int i = 0; i < artists.getArtists().size(); i++) {
                     IArtistInfo a = artists.getArtists().get(i);
-                    Image img = webServicesHandler.getArtistThumbImage(a);
-                    a.setImage(ImageUtils.scaleImageBicubic(img, Constants.THUMB_IMAGE_WIDTH, Constants.THUMB_IMAGE_HEIGHT));
+                    ImageIcon img = webServicesHandler.getArtistThumbImage(a);
+                    a.setImage(ImageUtils.resize(img, Constants.THUMB_IMAGE_WIDTH, Constants.THUMB_IMAGE_HEIGHT));
                     a.setAvailable(artistNamesSet.contains(a.getName().toUpperCase()));
                 }
             }
