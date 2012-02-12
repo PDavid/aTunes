@@ -98,7 +98,7 @@ public class ArtistAlbumListImagesDataSource implements IContextInformationSourc
      * @return
      */
     private Image getAlbumImageData(IAlbumInfo album) {
-        return webServicesHandler.getAlbumImage(album);
+        return webServicesHandler.getAlbumThumbImage(album);
     }
     
     /**

@@ -116,7 +116,12 @@ public class WebServicesHandler extends AbstractHandler implements IWebServicesH
 	
 	@Override
 	public Image getAlbumImage(IAlbumInfo albumInfo) {
-		return lastFmService.getImage(albumInfo);
+		return lastFmService.getAlbumImage(albumInfo);
+	}
+
+	@Override
+	public Image getAlbumThumbImage(IAlbumInfo albumInfo) {
+		return lastFmService.getAlbumThumbImage(albumInfo);
 	}
 	
 	@Override

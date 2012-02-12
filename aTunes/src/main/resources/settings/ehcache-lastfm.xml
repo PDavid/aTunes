@@ -14,6 +14,11 @@
 		diskSpoolBufferSizeMB="5" diskPersistent="true"
 		memoryStoreEvictionPolicy="LFU" />
 
+	<cache name="albumCoverThumb" maxElementsInMemory="1"
+		maxElementsOnDisk="10000" eternal="true" overflowToDisk="true"
+		diskSpoolBufferSizeMB="5" diskPersistent="true"
+		memoryStoreEvictionPolicy="LFU" />
+
 	<cache name="albumInfo" maxElementsInMemory="1"
 		maxElementsOnDisk="10000" eternal="true" overflowToDisk="true"
 		diskSpoolBufferSizeMB="5" diskPersistent="true"

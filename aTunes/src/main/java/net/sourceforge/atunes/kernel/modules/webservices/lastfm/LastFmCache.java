@@ -50,7 +50,8 @@ import org.apache.commons.io.FileUtils;
 
 public class LastFmCache extends AbstractCache {
 
-    private static final String ARTIST_WIKI = "artistWiki";
+    private static final String COULD_NOT_DELETE_ALL_FILES_FROM_CACHE = "Could not delete all files from cache: ";
+	private static final String ARTIST_WIKI = "artistWiki";
     private static final String ARTIST_THUMB = "artistThumb";
     private static final String ARTIST_SIMILAR = "artistSimilar";
     private static final String ALBUM_LIST = "albumList";
@@ -58,6 +59,7 @@ public class LastFmCache extends AbstractCache {
     private static final String ARTIST_TOP_TRACKS = "artistTopTracks";
     private static final String ALBUM_INFO = "albumInfo";
     private static final String ALBUM_COVER = "albumCover";
+    private static final String ALBUM_COVER_THUMB = "albumCoverThumb";
 
     private File submissionCacheDir;
     
@@ -77,11 +79,14 @@ public class LastFmCache extends AbstractCache {
     /**
      * Clears the cache.
      * 
-     * @return If an Exception occured during clearing
+     * @return If an Exception happens during clearing
      */
     public synchronized boolean clearCache() {
         boolean exception = false;
         if (clearCache(getAlbumCoverCache())) {
+        	exception = true;
+        }
+        if (clearCache(getAlbumCoverThumbCache())) {
         	exception = true;
         }
         if (clearCache(getAlbumInfoCache())) {
@@ -114,10 +119,10 @@ public class LastFmCache extends AbstractCache {
         try {
             cache.removeAll();
         } catch (IllegalStateException e) {
-            Logger.info("Could not delete all files from cache: ", cache.getName());
+            Logger.info(COULD_NOT_DELETE_ALL_FILES_FROM_CACHE, cache.getName());
             return true;
         } catch (CacheException e) {
-        	Logger.info("Could not delete all files from cache: ", cache.getName());
+        	Logger.info(COULD_NOT_DELETE_ALL_FILES_FROM_CACHE, cache.getName());
         	return true;
         }
         return false;
@@ -154,6 +159,23 @@ public class LastFmCache extends AbstractCache {
      */
     public synchronized Image retrieveAlbumCover(IAlbumInfo album) {
         Element element = getAlbumCoverCache().get(album);
+        if (element == null) {
+            return null;
+        } else {
+            return ((ImageIcon) element.getValue()).getImage();
+        }
+    }
+
+    /**
+     * Retrieves an Album Cover Thumb from cache.
+     * 
+     * @param album
+     *            the album
+     * 
+     * @return the image
+     */
+    public synchronized Image retrieveAlbumCoverThumb(IAlbumInfo album) {
+        Element element = getAlbumCoverThumbCache().get(album);
         if (element == null) {
             return null;
         } else {
@@ -294,7 +316,25 @@ public class LastFmCache extends AbstractCache {
 
         Element element = new Element(album, cover);
         getAlbumCoverCache().put(element);
-        Logger.debug("Stored album Cover for album ", album.getTitle());
+        Logger.debug("Stored Album Cover for album ", album.getTitle());
+    }
+
+    /**
+     * Stores an Album Cover thumb at cache.
+     * 
+     * @param album
+     *            the album
+     * @param cover
+     *            the cover
+     */
+    public synchronized void storeAlbumCoverThumb(IAlbumInfo album, ImageIcon cover) {
+        if (cover == null || album == null) {
+            return;
+        }
+
+        Element element = new Element(album, cover);
+        getAlbumCoverThumbCache().put(element);
+        Logger.debug("Stored Album Cover Thumb for album ", album.getTitle());
     }
 
     /**
@@ -422,6 +462,10 @@ public class LastFmCache extends AbstractCache {
         Logger.debug("Stored artist wiki for ", artist);
     }
 
+    /**
+     * Adds submission (scrobbling) data
+     * @param submissionData
+     */
     public synchronized void addSubmissionData(SubmissionData submissionData) {
         List<SubmissionData> submissionDataList = getSubmissionData();
         submissionDataList.add(submissionData);
@@ -438,6 +482,10 @@ public class LastFmCache extends AbstractCache {
 
     }
 
+    /**
+     * Returns submission data
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public synchronized List<SubmissionData> getSubmissionData() {
     	List<SubmissionData> data = null;
@@ -455,6 +503,9 @@ public class LastFmCache extends AbstractCache {
         return data;
     }
 
+    /**
+     * Clears all submission data
+     */
     public synchronized void removeSubmissionData() {
         try {
             String path = getFileNameForSubmissionCache();
@@ -497,9 +548,17 @@ public class LastFmCache extends AbstractCache {
     private Cache getAlbumCoverCache() {
         return getCache(ALBUM_COVER);
     }
+    
+    private Cache getAlbumCoverThumbCache() {
+    	return getCache(ALBUM_COVER_THUMB);
+    }
 
+    /**
+     * Shutdowns cache
+     */
     public void shutdown() {
         getAlbumCoverCache().dispose();
+        getAlbumCoverThumbCache().dispose();
         getAlbumInfoCache().dispose();
         getAlbumListCache().dispose();
         getArtistImageCache().dispose();

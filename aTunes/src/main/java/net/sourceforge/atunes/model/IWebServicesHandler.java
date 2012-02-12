@@ -85,7 +85,14 @@ public interface IWebServicesHandler extends IHandler {
 	 * @return
 	 */
 	public Image getAlbumImage(IAlbumInfo albumInfo);
-	
+
+	/**
+	 * Returns thumb image of an album
+	 * @param albumInfo
+	 * @return
+	 */
+	public Image getAlbumThumbImage(IAlbumInfo albumInfo);
+
 	/**
 	 * Returns image of an album
 	 * @param artist
