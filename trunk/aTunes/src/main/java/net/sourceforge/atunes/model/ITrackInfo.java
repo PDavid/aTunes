@@ -37,6 +37,18 @@ public interface ITrackInfo extends Serializable {
     public String getTitle();
 
     /**
+     * Gets the artist
+     * @return
+     */
+    public String getArtist();
+    
+    /**
+     * Gets the album
+     * @return
+     */
+    public String getAlbum();
+    
+    /**
      * Gets the url.
      * 
      * @return the url
@@ -58,5 +70,17 @@ public interface ITrackInfo extends Serializable {
      *            the url to set
      */
     public void setUrl(String url);    
+    
+    /**
+     * Sets the artist
+     * @param artist
+     */
+    public void setArtist(String artist);
+    
+    /**
+     * Sets the album
+     * @param album
+     */
+    public void setAlbum(String album);
 
 }

@@ -46,7 +46,7 @@ public class AlbumTracksContent extends AbstractContextPanelContent<AlbumInfoDat
     private JTable tracksTable;
     
     private JScrollPane scrollPane;
-
+    
     @Override
     public String getContentName() {
         return I18nUtils.getString("SONGS");
@@ -62,6 +62,7 @@ public class AlbumTracksContent extends AbstractContextPanelContent<AlbumInfoDat
     public void clearContextPanelContent() {
         super.clearContextPanelContent();
         tracksTable.setModel(new ContextTracksTableModel(null));
+        scrollPane.setVisible(false);
     }
 
     @Override
@@ -77,6 +78,7 @@ public class AlbumTracksContent extends AbstractContextPanelContent<AlbumInfoDat
 			}
 		});
     	scrollPane = getLookAndFeelManager().getCurrentLookAndFeel().getTableScrollPane(tracksTable);
+        scrollPane.setVisible(false);
     	scrollPane.setPreferredSize(new Dimension(100, 250));
     	return scrollPane;
     }
