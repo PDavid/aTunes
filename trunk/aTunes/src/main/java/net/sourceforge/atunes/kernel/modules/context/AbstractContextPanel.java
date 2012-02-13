@@ -118,6 +118,13 @@ public abstract class AbstractContextPanel implements IContextPanel {
     		for (IContextPanelContent content : getContents()) {
     			addContextPanelContent(lookAndFeel, panel, c, numberOfContents, content);
     		}
+    		
+    		// Add a dummy panel at the end
+    		c.weighty = 1;
+    		c.anchor = GridBagConstraints.NORTH;
+    		panel.add(new JPanel(), c);
+
+    		
     		JScrollPane scrollPane = lookAndFeel.getScrollPane(panel);
     		scrollPane.getVerticalScrollBar().setUnitIncrement(50);
     		component = scrollPane;
@@ -141,11 +148,6 @@ public abstract class AbstractContextPanel implements IContextPanel {
 			componentToAdd = getContentWithScroll(lookAndFeel, componentToAdd);
 		}
 		content.setParentPanel(panel);
-		if (c.gridy == numberOfContents - 1) {
-			// Last component will be locate in north
-			c.weighty = 1;
-			c.anchor = GridBagConstraints.NORTH;
-		}
 		panel.add(componentToAdd, c);
 		c.gridy++;
 	}

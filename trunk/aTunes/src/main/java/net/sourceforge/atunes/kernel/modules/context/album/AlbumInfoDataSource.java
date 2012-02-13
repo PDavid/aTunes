@@ -38,9 +38,9 @@ import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
-import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.Logger;
+import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 import org.apache.sanselan.ImageWriteException;
 
@@ -71,11 +71,7 @@ public class AlbumInfoDataSource implements IContextInformationSource {
     public void getData(IAudioObject audioObject) {
     	this.audioObject = audioObject;
     	this.albumInfo = getAlbumInfoData(audioObject);
-    	if (this.albumInfo != null) {
-   			this.image = getImageData(albumInfo, audioObject);
-    	} else {
-    		this.image = null;
-    	}
+		this.image = getImageData(albumInfo, audioObject);
     }
     
     /**
@@ -106,74 +102,100 @@ public class AlbumInfoDataSource implements IContextInformationSource {
      * @return
      */
     private IAlbumInfo getAlbumInfoData(IAudioObject audioObject) {
-        // If possible use album artist
-        String artist = audioObject.getAlbumArtist().isEmpty() ? audioObject.getArtist() : audioObject.getAlbumArtist();
-
         // Get album info
-        IAlbumInfo album = webServicesHandler.getAlbum(artist, audioObject.getAlbum());
+        IAlbumInfo album = webServicesHandler.getAlbum(audioObject.getAlbumArtistOrArtist(), audioObject.getAlbum());
 
         // If album was not found try to get an album from the same artist that match
         if (album == null) {
-            // Wait a second to prevent IP banning
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-            }
-
-            List<IAlbumInfo> albums = null;
-            if (!audioObject.getArtist().equals(I18nUtils.getString("UNKNOWN_ARTIST"))) {
-                // Get 
-                IAlbumListInfo albumList = webServicesHandler.getAlbumList(audioObject.getArtist());
-                if (albumList != null) {
-                    albums = albumList.getAlbums();
-                }
-            }
-
-            if (albums != null) {
-                // Try to find an album which fits 
-                IAlbumInfo auxAlbum = null;
-                int i = 0;
-                while (auxAlbum == null && i < albums.size()) {
-                    IAlbumInfo a = albums.get(i);
-                    StringTokenizer st = new StringTokenizer(a.getTitle(), " ");
-                    boolean matches = true;
-                    int tokensAnalyzed = 0;
-                    while (st.hasMoreTokens() && matches) {
-                        String t = st.nextToken();
-                        if (forbiddenToken(t)) { // Ignore album if contains forbidden chars
-                            matches = false;
-                            break;
-                        }
-                        if (!validToken(t)) { // Ignore tokens without alphanumerics
-                            if (tokensAnalyzed == 0 && !st.hasMoreTokens()) {
-                                matches = false;
-                            } else {
-                                continue;
-                            }
-                        }
-                        if (!audioObject.getAlbum().toLowerCase().contains(t.toLowerCase())) {
-                            matches = false;
-                        }
-                        tokensAnalyzed++;
-                    }
-                    if (matches) {
-                        auxAlbum = a;
-                    }
-                    i++;
-                }
-                if (auxAlbum != null) {
-                    // Get full information for album
-                    auxAlbum = webServicesHandler.getAlbum(auxAlbum.getArtist(), auxAlbum.getTitle());
-                    if (auxAlbum != null) {
-                        album = auxAlbum;
-                    }
-                }
-            }
+            album = tryToFindAnotherAlbumFromSameArtist(audioObject);
         }
 
         return album;
         // Get image of album or custom image for audio object
     }
+
+	/**
+	 * @param audioObject
+	 * @return
+	 */
+	private IAlbumInfo tryToFindAnotherAlbumFromSameArtist(IAudioObject audioObject) {
+		
+		// Wait a second to prevent IP banning
+		try {
+		    Thread.sleep(1000);
+		} catch (InterruptedException e) {
+		}
+
+		List<IAlbumInfo> albums = null;
+		if (!UnknownObjectCheck.isUnknownArtist(audioObject.getAlbumArtistOrArtist())) {
+		    // Get album list
+		    albums = getAlbumList(audioObject.getAlbumArtistOrArtist());
+		}
+
+		if (albums != null) {
+		    // Try to find an album which fits 
+		    IAlbumInfo matchingAlbum = analyseAlbums(audioObject, albums);
+		    if (matchingAlbum != null) {
+		        // Get full information for album
+		        matchingAlbum = webServicesHandler.getAlbum(matchingAlbum.getArtist(), matchingAlbum.getTitle());
+		        if (matchingAlbum != null) {
+		            return matchingAlbum;
+		        }
+		    }
+		}
+		return null;
+	}
+
+	/**
+	 * @param audioObject
+	 * @param albums
+	 * @return
+	 */
+	private IAlbumInfo analyseAlbums(IAudioObject audioObject, List<IAlbumInfo> albums) {
+		IAlbumInfo auxAlbum = null;
+		int i = 0;
+		while (auxAlbum == null && i < albums.size()) {
+		    IAlbumInfo a = albums.get(i);
+		    StringTokenizer st = new StringTokenizer(a.getTitle(), " ");
+		    boolean matches = true;
+		    int tokensAnalyzed = 0;
+		    while (st.hasMoreTokens() && matches) {
+		        String t = st.nextToken();
+		        if (forbiddenToken(t)) { // Ignore album if contains forbidden chars
+		            matches = false;
+		            break;
+		        }
+		        if (!validToken(t)) { // Ignore tokens without alphanumerics
+		            if (tokensAnalyzed == 0 && !st.hasMoreTokens()) {
+		                matches = false;
+		            } else {
+		                continue;
+		            }
+		        }
+		        if (!audioObject.getAlbum().toLowerCase().contains(t.toLowerCase())) {
+		            matches = false;
+		        }
+		        tokensAnalyzed++;
+		    }
+		    if (matches) {
+		        auxAlbum = a;
+		    }
+		    i++;
+		}
+		return auxAlbum;
+	}
+
+	/**
+	 * @param artist
+	 * @return
+	 */
+	private List<IAlbumInfo> getAlbumList(String artist) {
+		IAlbumListInfo albumList = webServicesHandler.getAlbumList(artist);
+		if (albumList != null) {
+		    return albumList.getAlbums();
+		}
+		return null;
+	}
 
     /**
      * Returns image from lastfm or from custom image
@@ -193,6 +215,7 @@ public class AlbumInfoDataSource implements IContextInformationSource {
         } else {
             image = audioObjectImageLocator.getImage(audioObject, ImageSize.SIZE_MAX);
         }
+        
         return image;
     }
 

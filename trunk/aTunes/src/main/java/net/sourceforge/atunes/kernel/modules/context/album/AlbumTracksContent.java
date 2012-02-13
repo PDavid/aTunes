@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.modules.context.album;
 
 import java.awt.Component;
 
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -29,6 +30,7 @@ import javax.swing.event.ListSelectionListener;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.context.TracksTableFactory;
 import net.sourceforge.atunes.model.ITrackInfo;
+import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -42,6 +44,8 @@ public class AlbumTracksContent extends AbstractContextPanelContent<AlbumInfoDat
     private static final long serialVersionUID = -5538266144953409867L;
 
     private JTable tracksTable;
+    
+    private JScrollPane scrollPane;
 
     @Override
     public String getContentName() {
@@ -50,7 +54,8 @@ public class AlbumTracksContent extends AbstractContextPanelContent<AlbumInfoDat
     
     @Override
     public void updateContentFromDataSource(AlbumInfoDataSource source) {
-    	tracksTable.setModel(new ContextTracksTableModel(source.getAlbumInfo()));
+   		tracksTable.setModel(new ContextTracksTableModel(source.getAlbumInfo()));
+   		scrollPane.setVisible(!CollectionUtils.isEmpty(source.getAlbumInfo().getTracks()));
     }
     
     @Override
@@ -76,6 +81,7 @@ public class AlbumTracksContent extends AbstractContextPanelContent<AlbumInfoDat
                 }
             }
         });
-        return getLookAndFeelManager().getCurrentLookAndFeel().getTableScrollPane(tracksTable);
+    	scrollPane = getLookAndFeelManager().getCurrentLookAndFeel().getTableScrollPane(tracksTable);
+    	return scrollPane;
     }
 }

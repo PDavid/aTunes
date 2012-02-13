@@ -32,6 +32,7 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.model.IAlbumInfo;
@@ -50,76 +51,79 @@ import org.jdesktop.swingx.border.DropShadowBorder;
  */
 public class AlbumBasicInfoContent extends AbstractContextPanelContent<AlbumInfoDataSource> {
 
-    private static final long serialVersionUID = -5538266144953409867L;
+	private static final long serialVersionUID = -5538266144953409867L;
 
-    private JLabel albumCoverLabel;
-    private UrlLabel albumLabel;
-    private UrlLabel artistLabel;
-    private UrlLabel yearLabel;
-    
-    @Override
-    public String getContentName() {
-        return I18nUtils.getString("INFO");
-    }
+	private JLabel albumCoverLabel;
+	private UrlLabel albumLabel;
+	private UrlLabel artistLabel;
+	private UrlLabel yearLabel;
 
-    @Override
-    public void updateContentFromDataSource(AlbumInfoDataSource source) {
-        IAudioObject audioObject = source.getAudioObject();
-            IAlbumInfo album = source.getAlbumInfo();
-            artistLabel.setText(album != null ? album.getArtist() : audioObject.getArtist(), album != null ? album.getArtistUrl() : null);
-            artistLabel.setEnabled(album != null && album.getArtistUrl() != null);
-            albumLabel.setText(album != null ? album.getTitle() : I18nUtils.getString("UNKNOWN_ALBUM"), album != null ? album.getUrl() : null);
-            albumLabel.setEnabled(album != null && album.getUrl() != null);
-            // TODO: wikipedia is opened in English
-            yearLabel.setText(album != null ? album.getYear() : "", album != null && album.getYear() != null ? StringUtils.getString("http://en.wikipedia.org/wiki/", album
-                    .getYear()) : null);
+	@Override
+	public String getContentName() {
+		return I18nUtils.getString("INFO");
+	}
 
-            ImageIcon image = source.getImage();
-            if (image != null) {
-                ImageIcon imageIcon = ImageUtils.resize(image, Constants.ALBUM_IMAGE_SIZE.getSize(), Constants.ALBUM_IMAGE_SIZE.getSize());
-                albumCoverLabel.setIcon(imageIcon);
-                albumCoverLabel.setBorder(Context.getBean(DropShadowBorder.class));
-            }
-    }
+	@Override
+	public void updateContentFromDataSource(AlbumInfoDataSource source) {
+		IAudioObject audioObject = source.getAudioObject();
+		IAlbumInfo album = source.getAlbumInfo();
+		artistLabel.setText(album != null ? album.getArtist() : audioObject.getArtist(), album != null ? album.getArtistUrl() : null);
+		artistLabel.setEnabled(album != null && album.getArtistUrl() != null);
+		albumLabel.setText(album != null ? album.getTitle() : I18nUtils.getString("UNKNOWN_ALBUM"), album != null ? album.getUrl() : null);
+		albumLabel.setEnabled(album != null && album.getUrl() != null);
+		// TODO: wikipedia is opened in English
+		yearLabel.setText(album != null ? album.getYear() : "", album != null && album.getYear() != null ? StringUtils.getString("http://en.wikipedia.org/wiki/", album
+				.getYear()) : null);
 
-    @Override
-    public void clearContextPanelContent() {
-        super.clearContextPanelContent();
-        albumCoverLabel.setIcon(null);
-        albumCoverLabel.setBorder(null);
-        albumLabel.setText(null);
-        artistLabel.setText(null);
-        yearLabel.setText(null);
-    }
+		ImageIcon image = source.getImage();
+		ImageIcon imageIcon = null;
+		if (image != null) {
+			imageIcon = ImageUtils.resize(image, Constants.ALBUM_IMAGE_SIZE.getSize(), Constants.ALBUM_IMAGE_SIZE.getSize());
+			albumCoverLabel.setBorder(Context.getBean(DropShadowBorder.class));
+		} else {
+			imageIcon = Images.getImage(Images.APP_LOGO_150);
+		}
+		albumCoverLabel.setIcon(imageIcon);
+	}
 
-    @Override
-    public Component getComponent() {
-        // Create components
-        albumCoverLabel = new JLabel();
-        albumLabel = new UrlLabel(getDesktop());
-        albumLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        albumLabel.setFont(getLookAndFeelManager().getCurrentLookAndFeel().getContextInformationBigFont());
-        artistLabel = new UrlLabel(getDesktop());
-        artistLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        yearLabel = new UrlLabel(getDesktop());
-        yearLabel.setHorizontalAlignment(SwingConstants.CENTER);
+	@Override
+	public void clearContextPanelContent() {
+		super.clearContextPanelContent();
+		albumCoverLabel.setIcon(null);
+		albumCoverLabel.setBorder(null);
+		albumLabel.setText(null);
+		artistLabel.setText(null);
+		yearLabel.setText(null);
+	}
 
-        // Add components
-        JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.insets = new Insets(15, 0, 0, 0);
-        panel.add(albumCoverLabel, c);
-        c.gridy = 1;
-        c.insets = new Insets(5, 5, 0, 5);
-        panel.add(albumLabel, c);
-        c.gridy = 2;
-        panel.add(artistLabel, c);
-        c.gridy = 3;
-        panel.add(yearLabel, c);
+	@Override
+	public Component getComponent() {
+		// Create components
+		albumCoverLabel = new JLabel();
+		albumLabel = new UrlLabel(getDesktop());
+		albumLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		albumLabel.setFont(getLookAndFeelManager().getCurrentLookAndFeel().getContextInformationBigFont());
+		artistLabel = new UrlLabel(getDesktop());
+		artistLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		yearLabel = new UrlLabel(getDesktop());
+		yearLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        return panel;
-    }
+		// Add components
+		JPanel panel = new JPanel(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.insets = new Insets(15, 0, 0, 0);
+		panel.add(albumCoverLabel, c);
+		c.gridy = 1;
+		c.insets = new Insets(5, 5, 0, 5);
+		panel.add(albumLabel, c);
+		c.gridy = 2;
+		panel.add(artistLabel, c);
+		c.gridy = 3;
+		panel.add(yearLabel, c);
+
+		return panel;
+	}
 
 }
