@@ -22,25 +22,30 @@ package net.sourceforge.atunes.kernel.modules.context;
 
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.ITrackInfo;
 
 public class TracksTableFactory {
 
 	private ILookAndFeelManager lookAndFeelManager;
 	
+	/**
+	 * @param lookAndFeelManager
+	 */
 	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
 	
 	/**
 	 * Returns a new table to show tracks information from context
-	 * @param listSelectionListener
+	 * @param listener
 	 * @return
 	 */
-	public JTable getNewTracksTable(ListSelectionListener listSelectionListener) {
+	public JTable getNewTracksTable(final ITracksTableListener listener) {
         final JTable tracksTable = lookAndFeelManager.getCurrentLookAndFeel().getTable();
         tracksTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tracksTable.setDefaultRenderer(String.class, lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(
@@ -53,7 +58,18 @@ public class TracksTableFactory {
         tracksTable.getTableHeader().setResizingAllowed(false);
         tracksTable.setColumnModel(new TracksDefaultTableColumnModel());
 
-        tracksTable.getSelectionModel().addListSelectionListener(listSelectionListener);
+        tracksTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    int selectedTrack = tracksTable.getSelectedRow();
+                    if (selectedTrack != -1) {
+                        ITrackInfo track = ((ITrackTableModel) tracksTable.getModel()).getTrack(selectedTrack);
+                        listener.trackSelected(track);
+                    }
+                }
+            }
+        });
 
         return tracksTable;
 	}
