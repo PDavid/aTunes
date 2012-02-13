@@ -30,11 +30,10 @@ import java.util.Map;
 
 import javax.swing.JMenuItem;
 import javax.swing.JTable;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
+import net.sourceforge.atunes.kernel.modules.context.ITracksTableListener;
 import net.sourceforge.atunes.kernel.modules.context.TracksTableFactory;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IArtistTopTracks;
@@ -89,6 +88,9 @@ public class ArtistTopTracksContent extends AbstractContextPanelContent<ArtistPo
         }
     }
 
+    /**
+     * Default constructor
+     */
     public ArtistTopTracksContent() {
     	createPlayList = new JMenuItem(I18nUtils.getString("CREATE_PLAYLIST_WITH_TOP_TRACKS"));
     	createPlayList.addActionListener(new CreatePlaylistWithPopularTracksActionListener());
@@ -116,17 +118,12 @@ public class ArtistTopTracksContent extends AbstractContextPanelContent<ArtistPo
         // Create components
     	TracksTableFactory factory = new TracksTableFactory();
     	factory.setLookAndFeelManager(getLookAndFeelManager());
-    	tracksTable = factory.getNewTracksTable(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    int selectedTrack = tracksTable.getSelectedRow();
-                    if (selectedTrack != -1) {
-                        ITrackInfo track = ((ContextArtistTracksTableModel) tracksTable.getModel()).getTrack(selectedTrack);
-                        getDesktop().openURL(track.getUrl());
-                    }
-                }
-            }
+    	tracksTable = factory.getNewTracksTable(new ITracksTableListener() {
+			
+			@Override
+			public void trackSelected(ITrackInfo track) {
+                getDesktop().openURL(track.getUrl());
+			}
         });
         return tracksTable;
     }
@@ -143,6 +140,9 @@ public class ArtistTopTracksContent extends AbstractContextPanelContent<ArtistPo
         return options;
     }
     
+    /**
+     * @param repositoryHandler
+     */
     public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}

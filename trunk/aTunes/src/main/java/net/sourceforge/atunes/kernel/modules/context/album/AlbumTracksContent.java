@@ -25,10 +25,9 @@ import java.awt.Dimension;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
+import net.sourceforge.atunes.kernel.modules.context.ITracksTableListener;
 import net.sourceforge.atunes.kernel.modules.context.TracksTableFactory;
 import net.sourceforge.atunes.model.ITrackInfo;
 import net.sourceforge.atunes.utils.CollectionUtils;
@@ -70,18 +69,13 @@ public class AlbumTracksContent extends AbstractContextPanelContent<AlbumInfoDat
         // Create components
     	TracksTableFactory factory = new TracksTableFactory();
     	factory.setLookAndFeelManager(getLookAndFeelManager());
-    	tracksTable = factory.getNewTracksTable(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    int selectedTrack = tracksTable.getSelectedRow();
-                    if (selectedTrack != -1) {
-                        ITrackInfo track = ((ContextTracksTableModel) tracksTable.getModel()).getTrack(selectedTrack);
-                        getDesktop().openURL(track.getUrl());
-                    }
-                }
-            }
-        });
+    	tracksTable = factory.getNewTracksTable(new ITracksTableListener() {
+			
+			@Override
+			public void trackSelected(ITrackInfo track) {
+                getDesktop().openURL(track.getUrl());
+			}
+		});
     	scrollPane = getLookAndFeelManager().getCurrentLookAndFeel().getTableScrollPane(tracksTable);
     	scrollPane.setPreferredSize(new Dimension(100, 250));
     	return scrollPane;

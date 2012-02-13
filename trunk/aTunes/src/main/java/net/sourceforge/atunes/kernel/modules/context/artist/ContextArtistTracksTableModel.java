@@ -26,12 +26,13 @@ import java.util.List;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
+import net.sourceforge.atunes.kernel.modules.context.ITrackTableModel;
 import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.ITrackInfo;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-class ContextArtistTracksTableModel implements TableModel {
+class ContextArtistTracksTableModel implements TableModel, ITrackTableModel {
 
     private IArtistTopTracks topTracks;
     private List<TableModelListener> listeners;
@@ -80,6 +81,7 @@ class ContextArtistTracksTableModel implements TableModel {
      * 
      * @return the track
      */
+    @Override
     public ITrackInfo getTrack(int index) {
         return topTracks != null ? topTracks.getTracks().get(index) : null;
     }
@@ -97,12 +99,13 @@ class ContextArtistTracksTableModel implements TableModel {
         return false;
     }
 
+    @Override
     public void removeTableModelListener(TableModelListener l) {
         listeners.remove(l);
     }
 
+    @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         // Nothing to do
     }
-
 }
