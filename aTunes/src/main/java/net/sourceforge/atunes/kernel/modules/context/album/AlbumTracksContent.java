@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.context.album;
 
 import java.awt.Component;
+import java.awt.Dimension;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -82,6 +83,7 @@ public class AlbumTracksContent extends AbstractContextPanelContent<AlbumInfoDat
             }
         });
     	scrollPane = getLookAndFeelManager().getCurrentLookAndFeel().getTableScrollPane(tracksTable);
+    	scrollPane.setPreferredSize(new Dimension(100, 250));
     	return scrollPane;
     }
 }
