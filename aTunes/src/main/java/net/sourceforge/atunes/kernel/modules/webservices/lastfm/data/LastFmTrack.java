@@ -29,6 +29,9 @@ public class LastFmTrack implements ITrackInfo {
 
     private String title;
     private String url;
+    private String artist;
+    private String album;
+    
 
     /**
      * Gets the track.
@@ -40,6 +43,8 @@ public class LastFmTrack implements ITrackInfo {
 
         track.title = t.getName();
         track.url = t.getUrl();
+        track.artist = t.getArtist();
+        track.album = t.getAlbum();
 
         return track;
     }
@@ -86,4 +91,23 @@ public class LastFmTrack implements ITrackInfo {
         this.url = url;
     }
 
+    @Override
+    public String getArtist() {
+		return artist;
+	}
+    
+    @Override
+    public String getAlbum() {
+		return album;
+	}
+    
+    @Override
+    public void setAlbum(String album) {
+		this.album = album;
+	}
+
+    @Override
+    public void setArtist(String artist) {
+		this.artist = artist;
+	}
 }
