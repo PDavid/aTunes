@@ -319,7 +319,6 @@ public class XineEngine extends AbstractPlayerEngine {
 		            setTime(prevPosition);
 		            //if ((audioObjectToPlay instanceof PodcastFeedEntry || audioObjectToPlay instanceof Radio) && s < 1000) {
 		            if (s < 1000) {
-		            	getFrame().updateStatusBarWithObjectBeingPlayed(audioObjectToPlay);
 		                Context.getBean(IUIHandler.class).updateTitleBar(audioObjectToPlay);
 		            }
 		        }

@@ -47,7 +47,6 @@ import net.sourceforge.atunes.model.ISystemTrayHandler;
 import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.model.PlayState;
 import net.sourceforge.atunes.model.PlaybackState;
-import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.JVMProperties;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -213,16 +212,6 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
         getFrame().getFrame().setState(java.awt.Frame.NORMAL);
     }
 
-    /**
-     * Update status bar.
-     * 
-     * @param text
-     *            the text
-     */
-    private void updateStatusBar(String text) {
-    	getFrame().setLeftStatusBarText(text, text);
-    }
-
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.ui.IUIHandler#updateTitleBar(net.sourceforge.atunes.model.IAudioObject)
 	 */
@@ -249,20 +238,17 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
         if (newState == PlaybackState.PAUSED) {
             // Pause
             setPlaying(false);
-            updateStatusBar(I18nUtils.getString("PAUSED"));
             setTitleBar("");
             playListTable.setPlayState(PlayState.PAUSED);
 
         } else if (newState == PlaybackState.RESUMING) {
             // Resume
             setPlaying(true);
-            getFrame().updateStatusBarWithObjectBeingPlayed(getBean(IPlayListHandler.class).getCurrentAudioObjectFromCurrentPlayList());
             updateTitleBar(getBean(IPlayListHandler.class).getCurrentAudioObjectFromCurrentPlayList());
             playListTable.setPlayState(PlayState.PLAYING);
 
         } else if (newState == PlaybackState.PLAYING) {
             // Playing
-        	getFrame().updateStatusBarWithObjectBeingPlayed(currentAudioObject);
             updateTitleBar(currentAudioObject);
             setPlaying(true);
             playListTable.setPlayState(PlayState.PLAYING);
@@ -270,7 +256,6 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
         } else if (newState == PlaybackState.STOPPED) {
             // Stop
             setPlaying(false);
-            updateStatusBar(I18nUtils.getString("STOPPED"));
             setTitleBar("");
             playListTable.setPlayState(PlayState.STOPPED);
         }
