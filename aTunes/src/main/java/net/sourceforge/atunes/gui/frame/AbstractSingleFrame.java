@@ -43,7 +43,6 @@ import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomFrame;
 import net.sourceforge.atunes.kernel.modules.navigator.PodcastNavigationView;
 import net.sourceforge.atunes.model.ApplicationVersion;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextPanelsContainer;
 import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.IIconFactory;
@@ -62,7 +61,6 @@ import net.sourceforge.atunes.model.IUpdateDialog;
 import net.sourceforge.atunes.model.IWindowListener;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
-import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jdesktop.swingx.JXStatusBar;
 import org.springframework.context.ApplicationContext;
@@ -79,7 +77,6 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
 
     private INavigationTreePanel navigationTreePanel;
     private INavigationTablePanel navigationTablePanel;
-    private JLabel leftStatusBar;
     private JLabel centerStatusBar;
     private JLabel rightStatusBar;
     private JLabel statusBarDeviceLabel;
@@ -197,18 +194,6 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     }
 
     /**
-     * Gets the left status bar.
-     * 
-     * @return the left status bar
-     */
-    private JLabel getLeftStatusBar() {
-        if (leftStatusBar == null) {
-            leftStatusBar = new JLabel(I18nUtils.getString("STOPPED"));
-        }
-        return leftStatusBar;
-    }
-
-    /**
      * @return navigation tree panel
      */
     protected INavigationTreePanel getNavigationTreePanel() {
@@ -305,10 +290,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
         if (statusBar == null) {
             statusBar = new JXStatusBar();
             JXStatusBar.Constraint c = new JXStatusBar.Constraint(JXStatusBar.Constraint.ResizeBehavior.FILL);
-            statusBar.add(getLeftStatusBar(), c);
-            c = new JXStatusBar.Constraint(JXStatusBar.Constraint.ResizeBehavior.FILL);
             statusBar.add(getCenterStatusBar(), c);
-            c = new JXStatusBar.Constraint(JXStatusBar.Constraint.ResizeBehavior.FILL);
             statusBar.add(getRightStatusBar(), c);
             c = new JXStatusBar.Constraint(JXStatusBar.Constraint.ResizeBehavior.FIXED);
             statusBar.add(getProgressBar(), c);
@@ -362,12 +344,6 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     public void setCenterStatusBarText(String text, String toolTip) {
         getCenterStatusBar().setText(text);
         getCenterStatusBar().setToolTipText(toolTip);
-    }
-
-    @Override
-    public void setLeftStatusBarText(String text, String toolTip) {
-        getLeftStatusBar().setText(text);
-        getLeftStatusBar().setToolTipText(toolTip);
     }
 
     @Override
@@ -535,16 +511,6 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     	// and work both in Windows and Linux
     	new WindowSizeCalculator().setWindowSize(AbstractSingleFrame.this, state);
     	setupSplitPaneDividerPosition(frameState);
-    }
-    
-    @Override
-    public void updateStatusBarWithObjectBeingPlayed(IAudioObject audioObject) {
-    	// TODO: Playing / Buffering for radios and podcasts
-    	String text = null;
-    	if (audioObject != null) {
-    		text = StringUtils.getString(I18nUtils.getString("PLAYING"), ": ", audioObject.getAudioObjectDescription());
-    	}
-    	setLeftStatusBarText(text != null ? text : "", text != null ? text : "");    	
     }
     
     @Override

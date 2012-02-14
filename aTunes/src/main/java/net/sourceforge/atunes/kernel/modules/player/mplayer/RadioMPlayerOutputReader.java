@@ -73,7 +73,6 @@ class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
 
         // When starting playback, update status bar
         if (line.startsWith("Starting playback")) {
-        	frame.updateStatusBarWithObjectBeingPlayed(radio);
             if (!started) {
                 getEngine().notifyRadioOrPodcastFeedEntry();
                 started = true;

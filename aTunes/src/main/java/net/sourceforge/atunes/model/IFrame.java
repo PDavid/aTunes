@@ -123,16 +123,6 @@ public interface IFrame {
     public void setExtendedState(int state);
 
     /**
-     * Sets the test of the left status bar text.
-     * 
-     * @param text
-     *            the text
-     * @param toolTip
-     *            the tool tip
-     */
-    public void setLeftStatusBarText(String text, String toolTip);
-
-    /**
      * Sets the location.
      * 
      * @param location
@@ -256,12 +246,6 @@ public interface IFrame {
 	 * @param state
 	 */
 	public void setState(IState state);
-
-	/**
-	 * Updates status bar with information about given audio object
-	 * @param audioObject
-	 */
-	public void updateStatusBarWithObjectBeingPlayed(IAudioObject audioObject);
 
 	/**
 	 * Shows progress bar with given text and determinate or indeterminate

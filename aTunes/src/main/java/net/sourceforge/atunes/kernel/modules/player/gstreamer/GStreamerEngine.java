@@ -176,7 +176,6 @@ public class GStreamerEngine extends AbstractPlayerEngine {
         ScheduledExecutorService scheduledExecutorService = Gst.getScheduledExecutorService();
         scheduledFuture = scheduledExecutorService.scheduleWithFixedDelay(remainingTimeRunnable, 0, 100, TimeUnit.MILLISECONDS);
 
-        getFrame().updateStatusBarWithObjectBeingPlayed(audioObjectToPlay);
         Context.getBean(IUIHandler.class).updateTitleBar(audioObjectToPlay);
     }
 
