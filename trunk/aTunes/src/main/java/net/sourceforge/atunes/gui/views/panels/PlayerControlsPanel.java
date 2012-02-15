@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.gui.views.panels;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -96,10 +97,9 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
      * Adds the content.
      */
     public void initialize() {
-    	JPanel topProgressSliderContainer = new JPanel(new BorderLayout());
     	JPanel bottomProgressSliderContainer = new JPanel(new BorderLayout());
     	progressSlider = Context.getBean(IProgressSlider.class);
-    	bottomProgressSliderContainer.addComponentListener(new PlayerControlsPanelBottomProgressSliderPanelComponentAdapter(progressSlider, bottomProgressSliderContainer, topProgressSliderContainer));
+    	bottomProgressSliderContainer.add(progressSlider.getSwingComponent(), BorderLayout.CENTER);
 
     	JPanel mainControls = getMainControlsPanel();
         JPanel secondaryControls = getSecondaryControls();
@@ -108,45 +108,31 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
         secondaryControls.setMaximumSize(mainControls.getPreferredSize());
         mainControls.setMaximumSize(mainControls.getPreferredSize());
         
-        
-//        mainControls.setBorder(BorderFactory.createLineBorder(Color.red));
-//        secondaryControls.setBorder(BorderFactory.createLineBorder(Color.red));
-//        bottomProgressSliderContainer.setBorder(BorderFactory.createLineBorder(Color.red));
+        mainControls.setBorder(BorderFactory.createLineBorder(Color.red));
+        secondaryControls.setBorder(BorderFactory.createLineBorder(Color.red));
+        bottomProgressSliderContainer.setBorder(BorderFactory.createLineBorder(Color.red));
         
         GridBagConstraints c = new GridBagConstraints();
         
         c.gridx = 0;
         c.gridy = 0;
-        c.weightx = 1;
-        c.weighty = 0;
-        c.gridwidth = 5;
-        c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(5, 40, 0, 40);
-        add(topProgressSliderContainer, c);
-                
-        c.gridx = 1;
-        c.gridy = 1;
-        c.gridwidth = 1;
-        c.weightx = 0;
-        c.weighty = 0.5;
-        c.insets = new Insets(0, 10, 5, 0);
+        c.weighty = 1;
+        c.insets = new Insets(5, 10, 5, 0);
         c.fill = GridBagConstraints.BOTH;
         add(mainControls, c);
         
-        c.gridx = 2;
+        c.gridx = 1;
         c.weightx = 1;
-        c.insets = new Insets(5, 70, 8, 70);
-        c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(10, 70, 8, 70);
         add(bottomProgressSliderContainer, c);
 
-        c.gridx = 3;
+        c.gridx = 2;
         c.weightx = 0;
         c.anchor = GridBagConstraints.WEST;
         c.fill = GridBagConstraints.NONE;
         c.anchor = GridBagConstraints.EAST;
-        c.insets = new Insets(5, 0, 0, 10);
+        c.insets = new Insets(5, 0, 5, 10);
         add(secondaryControls, c);
-        
                 
         GuiUtils.applyComponentOrientation(this);
     }

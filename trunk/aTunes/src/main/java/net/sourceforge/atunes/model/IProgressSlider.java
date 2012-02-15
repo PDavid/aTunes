@@ -37,11 +37,6 @@ public interface IProgressSlider extends IPanel {
 	public void setProgress(long time, long remainingTime);
 
 	/**
-	 * Sets layout
-	 */
-	public void setLayout();
-
-	/**
 	 * Delegate method
 	 * @param value
 	 */
