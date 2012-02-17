@@ -417,7 +417,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 	 * 
 	 */
 	private IProgressSlider getProgressSlider() {
-		IProgressSlider progressSlider = Context.getBean(IProgressSlider.class);
+		IProgressSlider progressSlider = Context.getBean("fullScreenProgressSlider", IProgressSlider.class);
         ProgressBarSeekListener seekListener = new ProgressBarSeekListener(progressSlider, playerHandler);
         progressSlider.addMouseListener(seekListener);        
         progressSlider.addKeyListener(keyAdapter);
