@@ -131,7 +131,7 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.EditRadioAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.EditTagNavigatorAction" scope="prototype"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.EditTagPlaylistAction" scope="prototype"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.EditTitlesAction"/>
+	<bean id="editTitlesAction" class="net.sourceforge.atunes.kernel.actions.EditTitlesAction"/>
 	<bean id="exitAction" class="net.sourceforge.atunes.kernel.actions.ExitAction"/>
 	<bean id="exportAction" class="net.sourceforge.atunes.kernel.actions.ExportAction"/>
 	<bean id="expandTreesAction" class="net.sourceforge.atunes.kernel.actions.ExpandTreesAction"/>

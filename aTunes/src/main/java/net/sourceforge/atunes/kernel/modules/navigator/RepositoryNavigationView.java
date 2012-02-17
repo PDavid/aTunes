@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.navigator;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.Action;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.JTree;
@@ -38,11 +39,9 @@ import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedTreeObjec
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAction;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAfterCurrentAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.CopyToDeviceAction;
-import net.sourceforge.atunes.kernel.actions.EditTitlesAction;
 import net.sourceforge.atunes.kernel.actions.ExtractPictureAction;
 import net.sourceforge.atunes.kernel.actions.OpenFolderFromNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.PlayNowAction;
-import net.sourceforge.atunes.kernel.actions.RefreshFolderFromNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.RemoveFromDiskAction;
 import net.sourceforge.atunes.kernel.actions.RenameAudioFileInNavigationTableAction;
 import net.sourceforge.atunes.kernel.actions.SearchArtistAction;
@@ -75,6 +74,51 @@ public class RepositoryNavigationView extends AbstractNavigationView {
     private IRepositoryHandler repositoryHandler;
 
     private IIconFactory audioFileSmallIcon;
+    
+    private AbstractActionOverSelectedObjects<IAudioObject> addToPlayListFromRepositoryNavigationView;
+    
+    private AbstractActionOverSelectedObjects<IAudioObject> setAsPlaylistFromRepositoryNavigationView;
+    
+    private AbstractActionOverSelectedObjects<IAudioObject> openFolderFromRepositoryNavigationView;
+    
+    private AbstractActionOverSelectedTreeObjects<IFolder> refreshFolderFromNavigatorAction;
+    
+    private Action editTitlesAction;
+    
+    /**
+     * @param editTitlesAction
+     */
+    public void setEditTitlesAction(Action editTitlesAction) {
+		this.editTitlesAction = editTitlesAction;
+	}
+    
+    /**
+     * @param refreshFolderFromNavigatorAction
+     */
+    public void setRefreshFolderFromNavigatorAction(AbstractActionOverSelectedTreeObjects<IFolder> refreshFolderFromNavigatorAction) {
+		this.refreshFolderFromNavigatorAction = refreshFolderFromNavigatorAction;
+	}
+    
+    /**
+     * @param openFolderFromRepositoryNavigationView
+     */
+    public void setOpenFolderFromRepositoryNavigationView(AbstractActionOverSelectedObjects<IAudioObject> openFolderFromRepositoryNavigationView) {
+		this.openFolderFromRepositoryNavigationView = openFolderFromRepositoryNavigationView;
+	}
+    
+    /**
+     * @param setAsPlaylistFromRepositoryNavigationView
+     */
+    public void setSetAsPlaylistFromRepositoryNavigationView(AbstractActionOverSelectedObjects<IAudioObject> setAsPlaylistFromRepositoryNavigationView) {
+		this.setAsPlaylistFromRepositoryNavigationView = setAsPlaylistFromRepositoryNavigationView;
+	}
+    
+    /**
+     * @param addToPlayListFromRepositoryNavigationView
+     */
+    public void setAddToPlayListFromRepositoryNavigationView(AbstractActionOverSelectedObjects<IAudioObject> addToPlayListFromRepositoryNavigationView) {
+		this.addToPlayListFromRepositoryNavigationView = addToPlayListFromRepositoryNavigationView;
+	}
     
     /**
      * @param audioFileSmallIcon
@@ -114,27 +158,23 @@ public class RepositoryNavigationView extends AbstractNavigationView {
         if (treePopupMenu == null) {
             treePopupMenu = new JPopupMenu();
             
-            AbstractActionOverSelectedObjects<IAudioObject> addToPlayListAction = Context.getBean("addToPlayListFromRepositoryNavigationView", AddToPlayListAction.class);
-            addToPlayListAction.setAudioObjectsSource(this);
-            treePopupMenu.add(addToPlayListAction);
+            addToPlayListFromRepositoryNavigationView.setAudioObjectsSource(this);
+            treePopupMenu.add(addToPlayListFromRepositoryNavigationView);
             
-            SetAsPlayListAction setAsPlayListAction = Context.getBean("setAsPlaylistFromRepositoryNavigationView", SetAsPlayListAction.class);
-            setAsPlayListAction.setAudioObjectsSource(this);
-            treePopupMenu.add(setAsPlayListAction);
+            setAsPlaylistFromRepositoryNavigationView.setAudioObjectsSource(this);
+            treePopupMenu.add(setAsPlaylistFromRepositoryNavigationView);
             
             treePopupMenu.add(new JSeparator());
             
-            OpenFolderFromNavigatorAction openFolderFromNavigatorAction = Context.getBean("openFolderFromRepositoryNavigationView", OpenFolderFromNavigatorAction.class);
-            openFolderFromNavigatorAction.setAudioObjectsSource(this);
-            treePopupMenu.add(openFolderFromNavigatorAction);
+            openFolderFromRepositoryNavigationView.setAudioObjectsSource(this);
+            treePopupMenu.add(openFolderFromRepositoryNavigationView);
             
-            AbstractActionOverSelectedTreeObjects<IFolder> refreshFolderFromNavigatorAction = Context.getBean(RefreshFolderFromNavigatorAction.class);
             refreshFolderFromNavigatorAction.setTreeObjectsSource(this);
             treePopupMenu.add(refreshFolderFromNavigatorAction);
             
             treePopupMenu.add(new JSeparator());
             treePopupMenu.add(new EditTagMenu(false, this));
-            treePopupMenu.add(Context.getBean(EditTitlesAction.class));
+            treePopupMenu.add(editTitlesAction);
             treePopupMenu.add(new JSeparator());
             treePopupMenu.add(Context.getBean(RemoveFromDiskAction.class));
             treePopupMenu.add(new JSeparator());
