@@ -33,7 +33,6 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JToggleButton;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.NextButton;
@@ -62,7 +61,6 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
     private SecondaryControl equalizerButton;
     private SecondaryToggleControl normalizeButton;
     private PlayPauseButton playButton;
-    private MuteButton volumeButton;
     private VolumeSlider volumeSlider;
     private JPanel secondaryControls;
 
@@ -72,12 +70,60 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
     
     private IProgressSlider playerControlsProgressSlider;
     
+    private MuteButton volumeButton;
+    
+    private SecondaryPlayerControlsBuilder secondaryPlayerControlsBuilder;
+    
+    private Dimension secondaryControlSize;
+    
     /**
      * Instantiates a new player controls panel.
      */
     public PlayerControlsPanel() {
         super(new GridBagLayout());
     }
+    
+    /**
+     * @param secondaryControlSize
+     */
+    public void setSecondaryControlSize(Dimension secondaryControlSize) {
+		this.secondaryControlSize = secondaryControlSize;
+	}
+    
+    /**
+     * @param secondaryPlayerControlsBuilder
+     */
+    public void setSecondaryPlayerControlsBuilder(SecondaryPlayerControlsBuilder secondaryPlayerControlsBuilder) {
+		this.secondaryPlayerControlsBuilder = secondaryPlayerControlsBuilder;
+	}
+    
+    /**
+     * @param equalizerButton
+     */
+    public void setEqualizerButton(SecondaryControl equalizerButton) {
+		this.equalizerButton = equalizerButton;
+	}
+    
+    /**
+     * @param normalizeButton
+     */
+    public void setNormalizeButton(SecondaryToggleControl normalizeButton) {
+		this.normalizeButton = normalizeButton;
+	}
+    
+    /**
+     * @param volumeSlider
+     */
+    public void setVolumeSlider(VolumeSlider volumeSlider) {
+		this.volumeSlider = volumeSlider;
+	}
+    
+    /**
+     * @param volumeButton
+     */
+    public void setVolumeButton(MuteButton volumeButton) {
+		this.volumeButton = volumeButton;
+	}
     
     /**
      * @param playerControlsProgressSlider
@@ -169,9 +215,7 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
         playButton = new PlayPauseButton(PlayerControlsSize.PLAY_BUTTON_SIZE, lookAndFeelManager);
         StopButton stopButton = new StopButton(PlayerControlsSize.STOP_MUTE_BUTTONS_SIZE, lookAndFeelManager);
         NextButton nextButton = new NextButton(PlayerControlsSize.PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
-        volumeButton = Context.getBean("volumeButton", MuteButton.class);
         volumeButton.setText("");
-        volumeSlider = Context.getBean("volumeSlider", VolumeSlider.class);
         JPanel panel = getPanelWithPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider, lookAndFeelManager);
         // add a small border to separate from other components
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 0));
@@ -201,10 +245,7 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
 
     private JPanel getSecondaryControls() {
         if (secondaryControls == null) {
-            equalizerButton = (SecondaryControl)Context.getBean("equalizerButton");
-            normalizeButton = (SecondaryToggleControl)Context.getBean("normalizeButton");
-
-            secondaryControls = Context.getBean(SecondaryPlayerControlsBuilder.class).getSecondaryControls();
+            secondaryControls = secondaryPlayerControlsBuilder.getSecondaryControls();
         }
         return secondaryControls;
     }
@@ -221,7 +262,7 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
         c.gridy = 0;
         c.insets = new Insets(0, 1, 0, 0);
         JButton button = new SecondaryControl(action);
-        button.setPreferredSize((Dimension)Context.getBean("secondaryControlSize"));
+        button.setPreferredSize(secondaryControlSize);
         getSecondaryControls().add(button, c);
         getSecondaryControls().repaint();
     }
@@ -238,7 +279,7 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
         c.gridy = 0;
         c.insets = new Insets(0, 1, 0, 0);
         JToggleButton button = new SecondaryToggleControl(action);
-        button.setPreferredSize((Dimension)Context.getBean("secondaryControlSize"));
+        button.setPreferredSize(secondaryControlSize);
         getSecondaryControls().add(button, c);
         getSecondaryControls().repaint();
     }
