@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.gui.views.panels;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -65,12 +64,13 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
     private PlayPauseButton playButton;
     private MuteButton volumeButton;
     private VolumeSlider volumeSlider;
-    private IProgressSlider progressSlider;
     private JPanel secondaryControls;
 
     private IState state;
     
     private ILookAndFeelManager lookAndFeelManager;
+    
+    private IProgressSlider playerControlsProgressSlider;
     
     /**
      * Instantiates a new player controls panel.
@@ -78,6 +78,13 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
     public PlayerControlsPanel() {
         super(new GridBagLayout());
     }
+    
+    /**
+     * @param playerControlsProgressSlider
+     */
+    public void setPlayerControlsProgressSlider(IProgressSlider playerControlsProgressSlider) {
+		this.playerControlsProgressSlider = playerControlsProgressSlider;
+	}
     
     /**
      * @param state
@@ -98,8 +105,7 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
      */
     public void initialize() {
     	JPanel bottomProgressSliderContainer = new JPanel(new BorderLayout());
-    	progressSlider = Context.getBean(IProgressSlider.class);
-    	bottomProgressSliderContainer.add(progressSlider.getSwingComponent(), BorderLayout.CENTER);
+    	bottomProgressSliderContainer.add(playerControlsProgressSlider.getSwingComponent(), BorderLayout.CENTER);
 
     	JPanel mainControls = getMainControlsPanel();
         JPanel secondaryControls = getSecondaryControls();
@@ -107,10 +113,6 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
         secondaryControls.setPreferredSize(mainControls.getPreferredSize());
         secondaryControls.setMaximumSize(mainControls.getPreferredSize());
         mainControls.setMaximumSize(mainControls.getPreferredSize());
-        
-        mainControls.setBorder(BorderFactory.createLineBorder(Color.red));
-        secondaryControls.setBorder(BorderFactory.createLineBorder(Color.red));
-        bottomProgressSliderContainer.setBorder(BorderFactory.createLineBorder(Color.red));
         
         GridBagConstraints c = new GridBagConstraints();
         
@@ -139,12 +141,12 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
 
     @Override
 	public IProgressSlider getProgressSlider() {
-        return progressSlider;
+        return playerControlsProgressSlider;
     }
 
     @Override
 	public void setProgress(long time, long remainingTime) {
-        progressSlider.setProgress(time, remainingTime);
+    	playerControlsProgressSlider.setProgress(time, remainingTime);
     }
     
     /**
