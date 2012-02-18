@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.ImageIcon;
 
@@ -389,7 +388,11 @@ public final class LastFmService {
                     img = new ImageIcon(networkHandler.getImage(networkHandler.getConnection(artist.getImageUrl())));
                 }
 
-                getCache().storeArtistThumbImage(artist, img);
+                if (img != null) {
+                	// Resize image for thumb images
+                	img = new ImageIcon(ImageUtils.scaleBufferedImageBicubic(img.getImage(), Constants.THUMB_IMAGE_WIDTH, Constants.THUMB_IMAGE_HEIGHT));
+                    getCache().storeArtistThumbImage(artist, img);
+                }
             }
             return img;
         } catch (Exception e) {
@@ -416,7 +419,7 @@ public final class LastFmService {
             }
 
             // Try to get from LastFM
-            img = getArtistImageFromLastFM(artistName, ImageSize.ORIGINAL);
+            img = getArtistImageFromLastFM(artistName, ImageSize.HUGE);
 
             // Get from similar artist info
             if (img == null) {
@@ -427,6 +430,8 @@ public final class LastFmService {
             }
 
             if (img != null) {
+            	// Resize image for thumb images
+            	img = new ImageIcon(ImageUtils.scaleBufferedImageBicubic(img.getImage(), Constants.ARTIST_IMAGE_SIZE, Constants.ARTIST_IMAGE_SIZE));
                 getCache().storeArtistImage(artistName, img);
             }
 
@@ -473,10 +478,9 @@ public final class LastFmService {
             PaginatedResult<de.umass.lastfm.Image> images = Artist.getImages(artistName, 1, 1, getApiKey());
             List<de.umass.lastfm.Image> imageList = new ArrayList<de.umass.lastfm.Image>(images.getPageResults());
             if (!imageList.isEmpty()) {
-                Set<ImageSize> sizes = imageList.get(0).availableSizes();
-                // Try to get the given size
-                if (sizes.contains(size)) {
-                    return new ImageIcon(networkHandler.getImage(networkHandler.getConnection(imageList.get(0).getImageURL(size))));
+            	String url = getSmallestURL(imageList.get(0), size);
+                if (url != null) {
+                    return new ImageIcon(networkHandler.getImage(networkHandler.getConnection(url)));
                 }
             }
         } catch (IOException e) {
@@ -484,6 +488,33 @@ public final class LastFmService {
         }
         return null;
     }
+    
+    /**
+     * Returns URL of the smallest image
+     * @param a
+     * @return
+     */
+    private static String getSmallestURL(de.umass.lastfm.Image a, ImageSize start) {
+//    	SMALL: 0
+//    	MEDIUM: 1
+//    	LARGE: 2
+//    	LARGESQUARE: 3
+//    	HUGE: 4
+//    	EXTRALARGE: 5
+//    	MEGA: 6
+//    	ORIGINAL: 7
+
+    	ImageSize[] sizes = ImageSize.values();
+    	for (int i = start.ordinal(); i < sizes.length; i++) {
+    		String url = a.getImageURL(sizes[i]);
+    		if (url != null) {
+    			return url;
+    		}
+    	}
+
+    	return null;
+    }
+
 
     /**
      * Gets the similar artists.
