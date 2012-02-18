@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.modules.context;
 
 import java.awt.Component;
 import java.util.List;
+import java.util.concurrent.ScheduledFuture;
 
 import javax.swing.JPanel;
 
@@ -31,6 +32,7 @@ import net.sourceforge.atunes.model.IContextPanelContent;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITaskService;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -56,6 +58,11 @@ public abstract class AbstractContextPanelContent<T extends IContextInformationS
      * Worker used to retrieve data
      */
     private ContextInformationSwingWorker worker;
+    
+    /**
+     * Future to access worker once submitted
+     */
+    private ScheduledFuture<?> future;
 
     /**
      * panel that handles this content
@@ -73,7 +80,19 @@ public abstract class AbstractContextPanelContent<T extends IContextInformationS
      * Access to desktop
      */
     private IDesktop desktop;
+    
+    /**
+     * Task Service
+     */
+    private ITaskService taskService;
 
+    /**
+     * @param taskService
+     */
+    public void setTaskService(ITaskService taskService) {
+		this.taskService = taskService;
+	}
+    
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#updateContextPanelContent(net.sourceforge.atunes.model.IAudioObject)
 	 */
@@ -88,14 +107,11 @@ public abstract class AbstractContextPanelContent<T extends IContextInformationS
      * @param audioObject
      */
     private void callDataSource(IAudioObject audioObject) {
-        // Cancel previous worker if it's not done
-        if (worker != null && !worker.isDone()) {
-            worker.cancel(true);
-        }
+    	cancelWorker();
 
         // Create a new worker and call it
         worker = new ContextInformationSwingWorker(this, this.dataSource, audioObject);
-        worker.execute();
+        future = taskService.submitNow(this.getClass().getName(), worker);
     }
 
     /* (non-Javadoc)
@@ -105,6 +121,13 @@ public abstract class AbstractContextPanelContent<T extends IContextInformationS
 	public void clearContextPanelContent() {
         parentPanel.setEnabled(false);
         parentPanel.setVisible(false);
+        cancelWorker();
+    }
+    
+    private void cancelWorker() {
+    	if (future != null) {
+    		future.cancel(true);
+    	}
         if (worker != null) {
             worker.cancel(true);
         }
