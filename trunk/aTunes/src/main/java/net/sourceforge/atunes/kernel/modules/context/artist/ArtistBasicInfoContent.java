@@ -31,13 +31,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.text.StyleConstants;
 
-import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.CustomTextPane;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.ImageUtils;
 
 import org.jdesktop.swingx.border.DropShadowBorder;
 
@@ -65,7 +63,7 @@ public class ArtistBasicInfoContent extends AbstractContextPanelContent<ArtistIn
     public void updateContentFromDataSource(ArtistInfoDataSource source) {
         ImageIcon artistImage = source.getArtistImage();
         if (artistImage != null) {
-            artistImageLabel.setIcon(ImageUtils.resize(artistImage, Constants.ARTIST_IMAGE_SIZE, Constants.ARTIST_IMAGE_SIZE));
+            artistImageLabel.setIcon(artistImage);
             artistImageLabel.setBorder(Context.getBean(DropShadowBorder.class));
         }
         String artistName = source.getArtistName();

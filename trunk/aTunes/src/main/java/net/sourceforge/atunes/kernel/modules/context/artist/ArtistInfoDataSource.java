@@ -22,11 +22,13 @@ package net.sourceforge.atunes.kernel.modules.context.artist;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextInformationSource;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 /**
@@ -65,7 +67,6 @@ public class ArtistInfoDataSource implements IContextInformationSource {
         	this.artistName = albumList.getArtist();
         	this.artistUrl = albumList.getAlbums().get(0).getArtistUrl();
         }
-
     }
     
     /**
@@ -163,7 +164,11 @@ public class ArtistInfoDataSource implements IContextInformationSource {
      * @return
      */
     private ImageIcon getArtistImageData(IAudioObject audioObject) {
-        return webServicesHandler.getArtistImage(audioObject.getArtist());
+        ImageIcon image = webServicesHandler.getArtistImage(audioObject.getArtist());
+        if (image != null) {
+        	image = ImageUtils.resize(image, Constants.ARTIST_IMAGE_SIZE, Constants.ARTIST_IMAGE_SIZE);
+        }
+        return image;
     }
 
     /**
