@@ -171,7 +171,7 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
         
         c.gridx = 1;
         c.weightx = 1;
-        c.insets = new Insets(10, 70, 8, 70);
+        c.insets = new Insets(10, 40, 8, 40);
         add(bottomProgressSliderContainer, c);
 
         c.gridx = 2;
