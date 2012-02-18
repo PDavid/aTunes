@@ -20,14 +20,16 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorFrame;
+import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorDialog;
 import net.sourceforge.atunes.kernel.modules.covernavigator.CoverNavigatorController;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
-import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
+
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 /**
  * This action shows cover navigator
@@ -35,19 +37,17 @@ import net.sourceforge.atunes.utils.I18nUtils;
  * @author fleax
  * 
  */
-public class ShowCoverNavigatorAction extends CustomAbstractAction {
+public class ShowCoverNavigatorAction extends CustomAbstractAction implements ApplicationContextAware {
 
     private static final long serialVersionUID = 4927892497869144235L;
 
     private IRepositoryHandler repositoryHandler;
     
-    private IFrame frame;
-    
-    private ILookAndFeelManager lookAndFeelManager;
-    
     private IAudioObjectImageLocator audioObjectImageLocator;
     
     private IProcessFactory processFactory;
+    
+    private ApplicationContext context;
     
     /**
      * @param processFactory
@@ -69,21 +69,15 @@ public class ShowCoverNavigatorAction extends CustomAbstractAction {
     public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    	this.context = applicationContext;
+    }
     
     /**
-     * @param frame
+     * Default constructor
      */
-    public void setFrame(IFrame frame) {
-		this.frame = frame;
-	}
-    
-    /**
-     * @param lookAndFeelManager
-     */
-    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
-	}
-    
     public ShowCoverNavigatorAction() {
         super(I18nUtils.getString("COVER_NAVIGATOR"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("COVER_NAVIGATOR"));
@@ -91,11 +85,9 @@ public class ShowCoverNavigatorAction extends CustomAbstractAction {
 
     @Override
     protected void executeAction() {
-        CoverNavigatorFrame coverNavigator = new CoverNavigatorFrame(repositoryHandler.getArtists(), 
-        															 frame.getFrame(),
-        															 lookAndFeelManager);
+        CoverNavigatorDialog coverNavigator = context.getBean(CoverNavigatorDialog.class); 
+        coverNavigator.setArtists(repositoryHandler.getArtists());
         new CoverNavigatorController(coverNavigator, getState(), audioObjectImageLocator, processFactory);
         coverNavigator.setVisible(true);
     }
-
 }

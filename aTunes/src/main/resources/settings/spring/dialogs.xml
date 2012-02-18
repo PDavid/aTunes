@@ -128,4 +128,9 @@
 		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
 	
+	<bean id="coverNavigatorDialog" class="net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorDialog" scope="prototype">
+		<constructor-arg ref="frame"/>
+		<constructor-arg ref="lookAndFeelManager"/>
+	</bean>
+	
 </beans>
