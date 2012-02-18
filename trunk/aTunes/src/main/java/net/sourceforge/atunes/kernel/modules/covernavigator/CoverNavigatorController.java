@@ -44,7 +44,7 @@ import javax.swing.event.ListSelectionListener;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
-import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorFrame;
+import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.process.GetCoversProcess;
 import net.sourceforge.atunes.model.IAlbum;
@@ -57,7 +57,7 @@ import net.sourceforge.atunes.utils.Logger;
 
 import org.jdesktop.swingx.border.DropShadowBorder;
 
-public final class CoverNavigatorController extends AbstractSimpleController<CoverNavigatorFrame> {
+public final class CoverNavigatorController extends AbstractSimpleController<CoverNavigatorDialog> {
 
     private static final int COVER_PANEL_WIDTH = Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize() + 20;
     private static final int COVER_PANEL_HEIGHT = Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize() + 40;
@@ -133,9 +133,9 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
 			}
 		}
 
-		private final CoverNavigatorFrame frame;
+		private final CoverNavigatorDialog frame;
 
-		private GetCoversButtonActionListener(CoverNavigatorFrame frame) {
+		private GetCoversButtonActionListener(CoverNavigatorDialog frame) {
 			this.frame = frame;
 		}
 
@@ -158,7 +158,7 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
      * @param audioObjectImageLocator
      * @param processFactory
      */
-    public CoverNavigatorController(CoverNavigatorFrame frame, IState state, IAudioObjectImageLocator audioObjectImageLocator, IProcessFactory processFactory) {
+    public CoverNavigatorController(CoverNavigatorDialog frame, IState state, IAudioObjectImageLocator audioObjectImageLocator, IProcessFactory processFactory) {
         super(frame, state);
         this.audioObjectImageLocator = audioObjectImageLocator;
         this.processFactory = processFactory;
@@ -167,7 +167,7 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
 
     @Override
 	public void addBindings() {
-        final CoverNavigatorFrame frame = getComponentControlled();
+        final CoverNavigatorDialog frame = getComponentControlled();
         frame.getList().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
