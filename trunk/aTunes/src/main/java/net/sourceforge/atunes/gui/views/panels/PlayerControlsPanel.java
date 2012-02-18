@@ -164,21 +164,21 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
         
         c.gridx = 0;
         c.gridy = 0;
+        c.weightx = 0.1;
         c.weighty = 1;
         c.insets = new Insets(5, 10, 5, 0);
-        c.fill = GridBagConstraints.BOTH;
+        c.anchor = GridBagConstraints.WEST;
+        c.fill = GridBagConstraints.VERTICAL;
         add(mainControls, c);
         
         c.gridx = 1;
-        c.weightx = 1;
         c.insets = new Insets(10, 40, 8, 40);
+        c.fill = GridBagConstraints.BOTH;
         add(bottomProgressSliderContainer, c);
 
         c.gridx = 2;
-        c.weightx = 0;
-        c.anchor = GridBagConstraints.WEST;
-        c.fill = GridBagConstraints.NONE;
         c.anchor = GridBagConstraints.EAST;
+        c.fill = GridBagConstraints.VERTICAL;
         c.insets = new Insets(5, 0, 5, 10);
         add(secondaryControls, c);
                 
