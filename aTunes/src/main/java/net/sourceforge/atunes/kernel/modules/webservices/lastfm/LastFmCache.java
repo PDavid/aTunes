@@ -578,4 +578,20 @@ public class LastFmCache extends AbstractCache {
             return Integer.valueOf(o1.getStartTime()).compareTo(o2.getStartTime());
         }
     }
+
+	/**
+	 * Flushes cache 
+	 */
+	public void flush() {
+		Logger.debug("Flushing last.fm cache");
+        getAlbumCoverCache().flush();
+        getAlbumCoverThumbCache().flush();
+        getAlbumInfoCache().flush();
+        getAlbumListCache().flush();
+        getArtistImageCache().flush();
+        getSimilarArtistsCache().flush();
+        getArtistThumbsCache().flush();
+        getArtistWikiCache().flush();
+        getArtistTopTracksCache().flush();
+	}
 }
