@@ -191,37 +191,37 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
 
 	@Override
 	protected Dimension getContextPanelMinimumSize() {
-		return new Dimension(CommonSingleFrameSizes.CONTEXT_PANEL_MINIMUM_WIDTH, CommonSingleFrameSizes.NOT_SIGNIFICANT_DIMENSION);
+		return getContext().getBean("contextMinimumSize", Dimension.class);
 	}
 	
 	@Override
 	protected Dimension getContextPanelPreferredSize() {
-		return new Dimension(CommonSingleFrameSizes.CONTEXT_PANEL_PREFERRED_WIDTH, CommonSingleFrameSizes.NOT_SIGNIFICANT_DIMENSION);
+		return getContext().getBean("contextPreferredSize", Dimension.class);
 	}
 	
 	@Override
 	protected Dimension getContextPanelMaximumSize() {
-		return new Dimension(CommonSingleFrameSizes.CONTEXT_PANEL_MAXIMUM_WIDTH, CommonSingleFrameSizes.NOT_SIGNIFICANT_DIMENSION);
+		return getContext().getBean("contextMaximumSize", Dimension.class);
 	}
 	
 	@Override
 	protected Dimension getPlayListPanelMinimumSize() {
-		return new Dimension(CommonSingleFrameSizes.PLAY_LIST_PANEL_MINIMUM_WIDTH, CommonSingleFrameSizes.PLAY_LIST_PANEL_MINIMUM_HEIGHT);
+		return getContext().getBean("playListMinimumSize", Dimension.class);
 	}
 	
 	@Override
 	protected Dimension getPlayListPanelPreferredSize() {
-		return new Dimension(CommonSingleFrameSizes.PLAY_LIST_PANEL_PREFERRED_WIDTH, CommonSingleFrameSizes.PLAY_LIST_PANEL_PREFERRED_HEIGHT);
+		return getContext().getBean("playListPreferredSize", Dimension.class);
 	}
 	
 	@Override
 	protected Dimension getPlayListPanelMaximumSize() {
-		return new Dimension(CommonSingleFrameSizes.PLAY_LIST_PANEL_MAXIMUM_WIDTH, CommonSingleFrameSizes.PLAY_LIST_PANEL_MAXIMUM_HEIGHT);
+		return getContext().getBean("playListMaximumSize", Dimension.class);
 	}
 	
 	@Override
 	protected Dimension getWindowMinimumSize() {
-		return new Dimension(CommonSingleFrameSizes.WINDOW_MINIMUM_WIDTH, CommonSingleFrameSizes.WINDOW_MINIMUM_HEIGHT);
+		return getContext().getBean("windowMinimumSize", Dimension.class);
 	}
 	
 	

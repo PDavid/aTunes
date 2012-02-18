@@ -27,7 +27,6 @@ import java.util.Map;
 import javax.swing.JComponent;
 import javax.swing.JSplitPane;
 
-import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.CustomSplitPane;
 import net.sourceforge.atunes.model.IFrameState;
 
@@ -38,15 +37,6 @@ public final class NavigatorTopPlayListBottomSingleFrame extends MainSplitPaneRi
     private static final String NAVIGATOR_SPLIT_PANE = "3";
 
     private CustomSplitPane navigatorSplitPane;
-
-    private static final int NAVIGATION_TABLE_MINIMUM_WIDTH = CommonSingleFrameSizes.PLAY_LIST_PANEL_MINIMUM_WIDTH;
-    private static final int NAVIGATION_TABLE_MINIMUM_HEIGHT = GuiUtils.getComponentHeightForResolution(0.1f);
-   
-    private static final int NAVIGATION_TABLE_PREFERRED_WIDTH = CommonSingleFrameSizes.PLAY_LIST_PANEL_PREFERRED_WIDTH;
-    private static final int NAVIGATION_TABLE_PREFERRED_HEIGHT = GuiUtils.getComponentHeightForResolution(0.25f);
-    
-    private static final int NAVIGATION_TABLE_MAXIMUM_WIDTH = CommonSingleFrameSizes.PLAY_LIST_PANEL_MAXIMUM_WIDTH;
-    private static final int NAVIGATION_TABLE_MAXIMUM_HEIGHT = GuiUtils.getComponentHeightForResolution(0.4f);
 
     @Override
     protected void setupSplitPaneDividerPosition(IFrameState frameState) {
@@ -90,32 +80,32 @@ public final class NavigatorTopPlayListBottomSingleFrame extends MainSplitPaneRi
     
 	@Override
 	protected Dimension getNavigationTablePanelMinimumSize() {
-		return new Dimension(NAVIGATION_TABLE_MINIMUM_WIDTH, NAVIGATION_TABLE_MINIMUM_HEIGHT);
+		return getContext().getBean("navigationTableMinimumSize", Dimension.class);
 	}
 	
 	@Override
 	protected Dimension getNavigationTablePanelPreferredSize() {
-		return new Dimension(NAVIGATION_TABLE_PREFERRED_WIDTH, NAVIGATION_TABLE_PREFERRED_HEIGHT);
+		return getContext().getBean("navigationTablePreferredSize", Dimension.class);
 	}
 
 	@Override
 	protected Dimension getNavigationTablePanelMaximumSize() {
-		return new Dimension(NAVIGATION_TABLE_MAXIMUM_WIDTH, NAVIGATION_TABLE_MAXIMUM_HEIGHT);
+		return getContext().getBean("navigationTableMaximumSize", Dimension.class);
 	}
 	
 	@Override
 	protected Dimension getNavigationTreePanelMinimumSize() {
-		return new Dimension(CommonSingleFrameSizes.NAVIGATION_MINIMUM_WIDTH, CommonSingleFrameSizes.NAVIGATION_MINIMUM_HEIGHT);
+		return getContext().getBean("navigationMinimumSize", Dimension.class);
 	}
 	
 	@Override
 	protected Dimension getNavigationTreePanelPreferredSize() {
-		return new Dimension(CommonSingleFrameSizes.NAVIGATION_PREFERRED_WIDTH, CommonSingleFrameSizes.NAVIGATION_PREFERRED_HEIGHT);
+		return getContext().getBean("navigationPreferredSize", Dimension.class);
 	}
 	
 	@Override
 	protected Dimension getNavigationTreePanelMaximumSize() {
-		return new Dimension(CommonSingleFrameSizes.NAVIGATION_MAXIMUM_WIDTH, CommonSingleFrameSizes.NAVIGATION_MAXIMUM_HEIGHT);
+		return getContext().getBean("navigationMaximumSize", Dimension.class);
 	}
 	
 	@Override
@@ -136,7 +126,4 @@ public final class NavigatorTopPlayListBottomSingleFrame extends MainSplitPaneRi
 	protected int getRightSplitType() {
 		return JSplitPane.HORIZONTAL_SPLIT;
 	}
-
-
-
 }

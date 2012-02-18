@@ -25,11 +25,22 @@ import net.sourceforge.atunes.model.IFrameFactory;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.Logger;
 
-public class FrameFactory implements IFrameFactory {
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
+public class FrameFactory implements IFrameFactory, ApplicationContextAware {
 
 	private IState state;
 	
 	private String defaultFrameClass;
+	
+	private ApplicationContext context;
+	
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.context = applicationContext;
+	}
 	
 	@Override
 	public void setState(IState state) {
@@ -64,6 +75,10 @@ public class FrameFactory implements IFrameFactory {
         
         if (frame == null) {
         	throw new IllegalArgumentException("Could not create main frame");
+        }
+        
+        if (frame != null) {
+        	frame.setApplicationContext(context);
         }
         
         return frame;

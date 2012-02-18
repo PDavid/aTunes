@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beansProjectDescription>
 	<version>1</version>
-	<pluginVersion><![CDATA[2.3.0.200912170948-RELEASE]]></pluginVersion>
+	<pluginVersion><![CDATA[2.7.1.201107082359-RELEASE]]></pluginVersion>
 	<configSuffixes>
 		<configSuffix><![CDATA[xml]]></configSuffix>
 	</configSuffixes>
@@ -31,6 +31,7 @@
 		<config>src/main/resources/settings/spring/playlist.xml</config>
 		<config>src/main/resources/settings/spring/navigator.xml</config>
 		<config>src/main/resources/settings/spring/cdripper.xml</config>
+		<config>src/main/resources/settings/spring/gui.dimensions.xml</config>
 	</configs>
 	<configSets>
 		<configSet>
@@ -62,6 +63,7 @@
 				<config>src/main/resources/settings/spring/playlist.xml</config>
 				<config>src/main/resources/settings/spring/navigator.xml</config>
 				<config>src/main/resources/settings/spring/cdripper.xml</config>
+				<config>src/main/resources/settings/spring/gui.dimensions.xml</config>
 			</configs>
 		</configSet>
 	</configSets>

@@ -28,10 +28,12 @@ import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JProgressBar;
 
+import org.springframework.context.ApplicationContextAware;
+
 /**
  * The interface for all frames
  */
-public interface IFrame {
+public interface IFrame extends ApplicationContextAware {
 
     /**
      * Creates the frame.
