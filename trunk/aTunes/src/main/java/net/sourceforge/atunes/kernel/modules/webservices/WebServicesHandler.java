@@ -202,4 +202,9 @@ public class WebServicesHandler extends AbstractHandler implements IWebServicesH
 	public ILyrics getLyrics(String artist, String title) {
 		return lyricsService.getLyrics(artist, title);
 	}
+	
+	@Override
+	public void consolidateWebContent() {
+		lastFmService.flush();
+	}
 }

@@ -1013,4 +1013,11 @@ public final class LastFmService {
     private Session getSession() {
         return Authenticator.getMobileSession(state.getLastFmUser(), state.getLastFmPassword(), getApiKey(), getApiSecret());
     }
+
+	/**
+	 * Flush cache
+	 */
+	public void flush() {
+		getCache().flush();
+	}
 }

@@ -33,6 +33,8 @@ import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITaskService;
+import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.Logger;
 
 import org.commonjukebox.plugins.exceptions.PluginSystemException;
@@ -61,6 +63,24 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     private IContextPanelsContainer contextPanelsContainer;
     
     private IPlayListHandler playListHandler;
+    
+    private ITaskService taskService;
+    
+    private IWebServicesHandler webServicesHandler;
+    
+    /**
+     * @param webServicesHandler
+     */
+    public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
+		this.webServicesHandler = webServicesHandler;
+	}
+    
+    /**
+     * @param taskService
+     */
+    public void setTaskService(ITaskService taskService) {
+		this.taskService = taskService;
+	}
 
 	@Override
     public void applicationStarted() {
@@ -283,15 +303,34 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 		}		
 	}
 
+	/**
+	 * @param contextPanels
+	 */
 	public void setContextPanels(List<IContextPanel> contextPanels) {
 		this.contextPanels = contextPanels;
 	}
 	
+	/**
+	 * @param contextPanelsContainer
+	 */
 	public void setContextPanelsContainer(IContextPanelsContainer contextPanelsContainer) {
 		this.contextPanelsContainer = contextPanelsContainer;
 	}
 	
+	/**
+	 * @param playListHandler
+	 */
 	public void setPlayListHandler(IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
+	}
+	
+	@Override
+	public void finishedContextPanelUpdate() {
+		taskService.submitNow("Consolidate Web Content", new Runnable() {
+			@Override
+			public void run() {
+				webServicesHandler.consolidateWebContent();
+			}
+		});
 	}
 }

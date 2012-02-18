@@ -85,10 +85,12 @@ public abstract class AbstractContextPanel implements IContextPanel {
 
         if (panelNeedsToBeUpdated(this.audioObject, newAudioObject)) {
             Logger.debug("Updating panel: ", getContextPanelName());
-            for (IContextPanelContent content : getContents()) {
+            for (IContextPanelContent<?> content : getContents()) {
                 content.clearContextPanelContent();
                 content.updateContextPanelContent(newAudioObject);
             }
+            
+            contextHandler.finishedContextPanelUpdate();
         }
 
         this.audioObject = newAudioObject;
@@ -97,7 +99,7 @@ public abstract class AbstractContextPanel implements IContextPanel {
     @Override
 	public final void clearContextPanel() {
         Logger.debug("Clearing panel: ", getContextPanelName());
-        for (IContextPanelContent content : getContents()) {
+        for (IContextPanelContent<?> content : getContents()) {
             content.clearContextPanelContent();
         }
         audioObject = null;
@@ -115,7 +117,7 @@ public abstract class AbstractContextPanel implements IContextPanel {
     		c.fill = GridBagConstraints.HORIZONTAL;
     		c.insets = new Insets(10, 10, 10, 10);
     		int numberOfContents = getContents().size();
-    		for (IContextPanelContent content : getContents()) {
+    		for (IContextPanelContent<?> content : getContents()) {
     			addContextPanelContent(lookAndFeel, panel, c, numberOfContents, content);
     		}
     		
@@ -202,7 +204,7 @@ public abstract class AbstractContextPanel implements IContextPanel {
 	@Override
 	public List<Component> getOptions() {
 		List<Component> components = new ArrayList<Component>();
-		for (IContextPanelContent content : getContents()) {
+		for (IContextPanelContent<?> content : getContents()) {
 			List<Component> options = content.getOptions();
 			if (options != null && !options.isEmpty()) {
 				components.addAll(options);

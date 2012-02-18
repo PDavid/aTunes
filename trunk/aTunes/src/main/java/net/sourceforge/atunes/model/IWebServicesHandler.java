@@ -187,4 +187,9 @@ public interface IWebServicesHandler extends IHandler {
 	 */
 	public ILyrics getLyrics(String artist, String title);
 
+	/**
+	 * Consolidates web content
+	 */
+	public void consolidateWebContent();
+
 }
