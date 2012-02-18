@@ -29,8 +29,8 @@ final class CommonSingleFrameSizes {
 	/*
 	 * Frame minimum size
 	 */
-	static final int WINDOW_MINIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(0.5f);
-	static final int WINDOW_MINIMUM_HEIGHT = GuiUtils.getComponentHeightForResolution(0.5f);
+	static final int WINDOW_MINIMUM_WIDTH = GuiUtils.getComponentWidthForResolution(0.5f, 800);
+	static final int WINDOW_MINIMUM_HEIGHT = GuiUtils.getComponentHeightForResolution(0.5f, 600);
 	
     /*
      * Navigation panel sizes
