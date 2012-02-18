@@ -111,7 +111,6 @@ public class ArtistBasicInfoContent extends AbstractContextPanelContent<ArtistIn
         c.gridy = 0;
         c.insets = new Insets(15, 5, 0, 5);
         panel.add(artistImageLabel, c);
-        c.gridx = 0;
         c.gridy = 1;
         c.insets = new Insets(5, 5, 5, 5);
         panel.add(artistNameLabel, c);
@@ -122,6 +121,9 @@ public class ArtistBasicInfoContent extends AbstractContextPanelContent<ArtistIn
         panel.add(artistWikiAbstract, c);
         c.gridy = 3;
         c.weighty = 0;
+        c.weightx = 0;
+        c.fill = GridBagConstraints.NONE;
+        c.anchor = GridBagConstraints.EAST;
         panel.add(artistWikiReadMore, c);
 
         return panel;
