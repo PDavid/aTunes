@@ -24,12 +24,18 @@ import java.awt.Dimension;
 
 import javax.swing.JSlider;
 
-import net.sourceforge.atunes.gui.GuiUtils;
-
 public final class VolumeSlider extends JSlider {
 
     private static final long serialVersionUID = -7802263658163323018L;
 
+    /**
+     * @param volumeSliderSize
+     */
+    public void setVolumeSliderSize(Dimension volumeSliderSize) {
+        setMinimumSize(volumeSliderSize);
+        setPreferredSize(volumeSliderSize);
+	}
+    
     /**
      * Slider to control volume
      * @param state
@@ -42,8 +48,5 @@ public final class VolumeSlider extends JSlider {
         setMaximum(100);
         setValue(50);
         setFocusable(false);
-        Dimension size = new Dimension(GuiUtils.getComponentWidthForResolution(0.035f, 70), 20);
-        setMinimumSize(size);
-        setPreferredSize(size);
     }
 }

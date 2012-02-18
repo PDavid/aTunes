@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+	default-autowire="byName" default-lazy-init="true">
+	
+	<bean id="windowMinimumSize" class="net.sourceforge.atunes.gui.DimensionBuilder" factory-method="getVariableDimension">
+		<constructor-arg value="0.5"/>
+		<constructor-arg value="800"/>
+		<constructor-arg value="0.5"/>
+		<constructor-arg value="600"/>
+	</bean>
+	
+	<bean id="navigationMinimumSize" class="net.sourceforge.atunes.gui.DimensionBuilder" factory-method="getVariableDimension">
+		<constructor-arg value="0.15"/>
+		<constructor-arg value="0.15"/>
+	</bean>
+	<bean id="navigationPreferredSize" class="net.sourceforge.atunes.gui.DimensionBuilder" factory-method="getVariableDimension">
+		<constructor-arg value="0.2"/>
+		<constructor-arg value="0.3"/>
+	</bean>
+	<bean id="navigationMaximumSize" class="net.sourceforge.atunes.gui.DimensionBuilder" factory-method="getVariableDimension">
+		<constructor-arg value="0.4"/>
+		<constructor-arg value="0.6"/>
+	</bean>
+	
+	<bean id="contextMinimumSize" class="net.sourceforge.atunes.gui.DimensionBuilder" factory-method="getVariableWidthDimension">
+		<constructor-arg value="0.15"/>
+		<constructor-arg value="1"/>
+	</bean>
+	<bean id="contextPreferredSize" class="net.sourceforge.atunes.gui.DimensionBuilder" factory-method="getVariableWidthDimension">
+		<constructor-arg value="0.2"/>
+		<constructor-arg value="1"/>
+	</bean>
+	<bean id="contextMaximumSize" class="net.sourceforge.atunes.gui.DimensionBuilder" factory-method="getVariableWidthDimension">
+		<constructor-arg value="0.4"/>
+		<constructor-arg value="1"/>
+	</bean>
+
+	<bean id="playListMinimumSize" class="net.sourceforge.atunes.gui.DimensionBuilder" factory-method="getVariableDimension">
+		<constructor-arg value="0.2"/>
+		<constructor-arg value="0.2"/>
+	</bean>
+	<bean id="playListPreferredSize" class="net.sourceforge.atunes.gui.DimensionBuilder" factory-method="getVariableDimension">
+		<constructor-arg value="0.4"/>
+		<constructor-arg value="0.3"/>
+	</bean>
+	<bean id="playListMaximumSize" class="net.sourceforge.atunes.gui.DimensionBuilder" factory-method="getVariableDimension">
+		<constructor-arg value="0.55"/>
+		<constructor-arg value="0.5"/>
+	</bean>
+	
+	<!-- Specific for EnhancedSingleFrame and NavigatorTopPlayListBottomSingleFrame, width must match with play list width -->
+	<bean id="navigationTableMinimumSize" class="net.sourceforge.atunes.gui.DimensionBuilder" factory-method="getVariableDimension">
+		<constructor-arg value="0.2"/>
+		<constructor-arg value="0.1"/>
+	</bean>
+	<bean id="navigationTablePreferredSize" class="net.sourceforge.atunes.gui.DimensionBuilder" factory-method="getVariableDimension">
+		<constructor-arg value="0.4"/>
+		<constructor-arg value="0.25"/>
+	</bean>
+	<bean id="navigationTableMaximumSize" class="net.sourceforge.atunes.gui.DimensionBuilder" factory-method="getVariableDimension">
+		<constructor-arg value="0.55"/>
+		<constructor-arg value="0.4"/>
+	</bean>
+	
+	
+	
+	
+	
+	<bean id="volumeSliderSize" class="net.sourceforge.atunes.gui.DimensionBuilder" factory-method="getVariableWidthDimension">
+		<constructor-arg value="0.035"/>
+		<constructor-arg value="70"/>
+		<constructor-arg value="20"/>
+	</bean>
+
+
+</beans>

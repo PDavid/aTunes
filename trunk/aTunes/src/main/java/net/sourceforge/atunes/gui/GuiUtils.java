@@ -296,6 +296,7 @@ public final class GuiUtils {
      * @param screenWidthFactor
      * @return the component width for resolution
      */
+    @Deprecated
     public static int getComponentWidthForResolution(float screenWidthFactor) {
     	if (mainDeviceBounds != null) {
     		int currentScreenWidth = mainDeviceBounds.width > MAX_COMPONENTS_WIDTH ? MAX_COMPONENTS_WIDTH : mainDeviceBounds.width;
@@ -312,6 +313,7 @@ public final class GuiUtils {
      * @param minimumWidth
      * @return
      */
+    @Deprecated
     public static int getComponentWidthForResolution(float screenWidthFactor, int minimumWidth) {
     	return Math.max(getComponentWidthForResolution(screenWidthFactor), minimumWidth);
     }
@@ -326,6 +328,7 @@ public final class GuiUtils {
      * 
      * @return the component height for resolution
      */
+    @Deprecated
     public static int getComponentHeightForResolution(float screenHeightFactor) {
     	if (mainDeviceBounds != null) {
     		int currentScreenHeight = mainDeviceBounds.height;
@@ -343,6 +346,7 @@ public final class GuiUtils {
      * @param minimumHeight
      * @return
      */
+    @Deprecated
     public static int getComponentHeightForResolution(float screenHeightFactor, int minimumHeight) {
     	return Math.max(getComponentHeightForResolution(screenHeightFactor), minimumHeight);
     }

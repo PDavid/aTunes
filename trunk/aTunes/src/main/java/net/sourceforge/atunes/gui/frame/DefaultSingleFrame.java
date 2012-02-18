@@ -93,17 +93,17 @@ public final class DefaultSingleFrame extends MainSplitPaneLeftSingleFrame {
     
 	@Override
 	protected Dimension getNavigationTablePanelMinimumSize() {
-		return new Dimension(CommonSingleFrameSizes.NAVIGATION_MINIMUM_WIDTH, CommonSingleFrameSizes.NAVIGATION_MINIMUM_HEIGHT);
+		return getContext().getBean("navigationMinimumSize", Dimension.class);
 	}
 	
 	@Override
 	protected Dimension getNavigationTablePanelPreferredSize() {
-		return new Dimension(CommonSingleFrameSizes.NAVIGATION_PREFERRED_WIDTH, CommonSingleFrameSizes.NAVIGATION_PREFERRED_HEIGHT);
+		return getContext().getBean("navigationPreferredSize", Dimension.class);
 	}
 
 	@Override
 	protected Dimension getNavigationTablePanelMaximumSize() {
-		return new Dimension(CommonSingleFrameSizes.NAVIGATION_MAXIMUM_WIDTH, CommonSingleFrameSizes.NAVIGATION_MAXIMUM_HEIGHT);
+		return getContext().getBean("navigationMaximumSize", Dimension.class);
 	}
 	
 	@Override
