@@ -30,9 +30,7 @@ import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.xine.XineEngine;
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayerEngine;
-import net.sourceforge.atunes.model.OperatingSystem;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class WindowsOperatingSystem extends OperatingSystemAdapter {
@@ -54,14 +52,6 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter {
     private static final String WINOPTPRIORITY = "-priority";
     
     private static final String WINOPTPRIORITY_DEFAULT = "abovenormal";
-
-    /**
-     * @param systemType
-     * @param osManager
-     */
-    public WindowsOperatingSystem(OperatingSystem systemType, IOSManager osManager) {
-		super(systemType, osManager);
-	}
 
 	@Override
 	public String getAppDataFolder() {

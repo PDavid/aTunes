@@ -27,9 +27,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayerEngine;
-import net.sourceforge.atunes.model.OperatingSystem;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class SolarisOperatingSystem extends OperatingSystemAdapter {
@@ -49,14 +47,6 @@ public class SolarisOperatingSystem extends OperatingSystemAdapter {
     private static final String MPLAYER_SOLARISOPTAO = "-ao";
     
     private static final String MPLAYER_SOLARISOPTTYPE = "sun"; 
-
-    /**
-     * @param systemType
-     * @param osManager
-     */
-    public SolarisOperatingSystem(OperatingSystem systemType, IOSManager osManager) {
-		super(systemType, osManager);
-	}
 
 	@Override
 	public String getAppDataFolder() {

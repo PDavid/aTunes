@@ -6,6 +6,15 @@
 	default-autowire="byName" default-lazy-init="true">
 	
 	<bean id="osManager" class="net.sourceforge.atunes.kernel.modules.os.OsManager" init-method="initialize"/>
+	
+	
+	<bean class="net.sourceforge.atunes.kernel.modules.os.LinuxOperatingSystem" scope="prototype"/>
+	<bean class="net.sourceforge.atunes.kernel.modules.os.MacOSXOperatingSystem" scope="prototype"/>
+	<bean class="net.sourceforge.atunes.kernel.modules.os.SolarisOperatingSystem" scope="prototype"/>
+	<bean class="net.sourceforge.atunes.kernel.modules.os.WindowsOperatingSystem" scope="prototype"/>
+
+
+
 
 	<bean id="macOsApplication" class="net.sourceforge.atunes.kernel.modules.os.MacOSXApplication" scope="prototype"/>
 	<bean id="macOsDockMenu" class="net.sourceforge.atunes.kernel.modules.os.MacOSXDockMenu" scope="prototype"/>

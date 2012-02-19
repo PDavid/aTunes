@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.os;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.macos.MacOSXLookAndFeel;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
@@ -31,12 +30,14 @@ import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayerEngine;
-import net.sourceforge.atunes.model.OperatingSystem;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class MacOSXOperatingSystem extends OperatingSystemAdapter {
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
+public class MacOSXOperatingSystem extends OperatingSystemAdapter implements ApplicationContextAware {
 
 	/**
      * Name of the MacOsX command
@@ -45,14 +46,13 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
     
     protected static final String MPLAYER_COMMAND = "mplayer.command";
     
-    /**
-     * @param systemType
-     * @param osManager
-     */
-    public MacOSXOperatingSystem(OperatingSystem systemType, IOSManager osManager) {
-		super(systemType, osManager);
-	}
-
+    private ApplicationContext context;
+    
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    	this.context = applicationContext;
+    }
+    
 	@Override
 	public String getAppDataFolder() {
 		return StringUtils.getString(getUserHome(), "/Library/Preferences/aTunes");
@@ -70,7 +70,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 	
 	@Override
 	public void setUpFrame(IFrame frame) {
-		Context.getBean(MacOSXInitializer.class).initialize();
+		context.getBean(MacOSXInitializer.class).initialize();
 	}
 	
 	@Override
@@ -106,7 +106,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter {
 	
 	@Override
 	public void manageNoPlayerEngine(IFrame frame) {
-		MacOSXPlayerSelectionDialog dialog = new MacOSXPlayerSelectionDialog(frame, osManager, Context.getBean(ILookAndFeelManager.class), Context.getBean(IDesktop.class));
+		MacOSXPlayerSelectionDialog dialog = new MacOSXPlayerSelectionDialog(frame, osManager, context.getBean(ILookAndFeelManager.class), context.getBean(IDesktop.class));
 		dialog.setVisible(true);
 	}
 	
