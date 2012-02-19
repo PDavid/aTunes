@@ -20,9 +20,9 @@
 
 package net.sourceforge.atunes.kernel.modules.repository;
 
-import net.sourceforge.atunes.kernel.TaskService;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IStateHandler;
+import net.sourceforge.atunes.model.ITaskService;
 
 /**
  * Executed to save repository cache
@@ -35,12 +35,12 @@ public class PersistRepositoryTask implements Runnable {
 	
 	private IStateHandler stateHandler;
 	
-	private TaskService taskService;
+	private ITaskService taskService;
 	
 	/**
 	 * @param taskService
 	 */
-	public void setTaskService(TaskService taskService) {
+	public void setTaskService(ITaskService taskService) {
 		this.taskService = taskService;
 	}
 	

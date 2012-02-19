@@ -70,10 +70,16 @@ public class TaskService implements ITaskService {
 	 */
 	private String threadSuffix;
 	
+	/**
+	 * @param threadSuffix
+	 */
 	public void setThreadSuffix(String threadSuffix) {
 		this.threadSuffix = threadSuffix;
 	}
 	
+	/**
+	 * @param poolSize
+	 */
 	public void setPoolSize(int poolSize) {
 		this.poolSize = poolSize;
 	}

@@ -22,8 +22,8 @@ package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.util.concurrent.ScheduledFuture;
 
-import net.sourceforge.atunes.kernel.TaskService;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -36,7 +36,7 @@ import org.joda.time.DateTime;
  */
 public class RepositoryAutoRefresher implements Runnable {
 
-	private TaskService taskService;
+	private ITaskService taskService;
 	
 	private IState state;
 	
@@ -54,7 +54,7 @@ public class RepositoryAutoRefresher implements Runnable {
 	/**
 	 * @param taskService
 	 */
-	public void setTaskService(TaskService taskService) {
+	public void setTaskService(ITaskService taskService) {
 		this.taskService = taskService;
 	}
 	
