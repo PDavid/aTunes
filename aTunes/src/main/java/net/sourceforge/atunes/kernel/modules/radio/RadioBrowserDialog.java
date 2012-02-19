@@ -32,7 +32,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 
-import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIconFactory;
@@ -62,7 +61,7 @@ public final class RadioBrowserDialog extends AbstractCustomDialog {
      * @param lookAndFeelManager
      */
     public RadioBrowserDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
-        super(frame, GuiUtils.getComponentWidthForResolution(0.5f), GuiUtils.getComponentHeightForResolution(0.5f), true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
+        super(frame, 800, 600, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
         this.lookAndFeelManager = lookAndFeelManager;
     }
     

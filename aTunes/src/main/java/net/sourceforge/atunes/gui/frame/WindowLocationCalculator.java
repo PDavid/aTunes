@@ -31,7 +31,16 @@ import net.sourceforge.atunes.model.IFrameState;
  * @author alex
  *
  */
-class WindowLocationCalculator {
+public class WindowLocationCalculator {
+	
+	private WindowSizeCalculator windowSizeCalculator;
+	
+	/**
+	 * @param windowSizeCalculator
+	 */
+	public void setWindowSizeCalculator(WindowSizeCalculator windowSizeCalculator) {
+		this.windowSizeCalculator = windowSizeCalculator;
+	}
 
 	/**
 	 * Returns window location based on frame state or null
@@ -45,7 +54,7 @@ class WindowLocationCalculator {
             windowLocation = new Point(frameState.getXPosition(), frameState.getYPosition());
         } else {
         	// Setting location centered in screen according to default size
-        	Dimension defSize = new WindowSizeCalculator().getDefaultWindowSize();
+        	Dimension defSize = windowSizeCalculator.getDefaultWindowSize();
             windowLocation = new Point((GuiUtils.getDeviceWidth() - defSize.width) / 2, (GuiUtils.getDeviceHeight() - defSize.height) / 2);
         }
         

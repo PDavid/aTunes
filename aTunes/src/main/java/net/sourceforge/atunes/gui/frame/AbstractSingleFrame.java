@@ -376,7 +376,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (Toolkit.getDefaultToolkit().getScreenSize().width + 15 < getSize().width) {
-                    new WindowSizeCalculator().setWindowSize(AbstractSingleFrame.this, state);
+                	getContext().getBean(WindowSizeCalculator.class).setWindowSize(AbstractSingleFrame.this, state);
                 }
             }
         });
@@ -515,7 +515,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     public void applicationStarted(IFrameState frameState) {
     	// Setting window size after frame is visible avoids using workarounds to set extended state in Linux
     	// and work both in Windows and Linux
-    	new WindowSizeCalculator().setWindowSize(AbstractSingleFrame.this, state);
+    	getContext().getBean(WindowSizeCalculator.class).setWindowSize(AbstractSingleFrame.this, state);
     	setupSplitPaneDividerPosition(frameState);
     }
     

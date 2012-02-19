@@ -32,11 +32,17 @@ import net.sourceforge.atunes.model.IState;
  * @author alex
  *
  */
-class WindowSizeCalculator {
+public class WindowSizeCalculator {
 
-	private static final int HORIZONTAL_MARGIN = GuiUtils.getComponentWidthForResolution(0.3f);
-    private static final int VERTICAL_MARGIN = GuiUtils.getComponentHeightForResolution(0.2f);
-    
+	private Dimension margin;
+	
+	/**
+	 * @param margin
+	 */
+	public void setMargin(Dimension margin) {
+		this.margin = margin;
+	}
+	
 	/**
      * Sets the window size.
      */
@@ -64,7 +70,7 @@ class WindowSizeCalculator {
      */
     private final void setWindowSizeMaximized(AbstractSingleFrame frame) {
         Dimension screen = frame.getToolkit().getScreenSize();
-        frame.setSize(screen.width - HORIZONTAL_MARGIN, screen.height - VERTICAL_MARGIN);
+        frame.setSize(screen.width - margin.width, screen.height - margin.height);
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
     }
     
@@ -74,6 +80,6 @@ class WindowSizeCalculator {
      */
     public Dimension getDefaultWindowSize() {
         // Set size always according to main device dimension 
-    	return new Dimension(GuiUtils.getDeviceWidth() - HORIZONTAL_MARGIN, GuiUtils.getDeviceHeight() - VERTICAL_MARGIN);
+    	return new Dimension(GuiUtils.getDeviceWidth() - margin.width, GuiUtils.getDeviceHeight() - margin.height);
     }
 }

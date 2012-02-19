@@ -4,6 +4,16 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
 	default-autowire="byName" default-lazy-init="true">
 	
+	<bean id="windowLocationCalculator" class="net.sourceforge.atunes.gui.frame.WindowLocationCalculator"/>
+	<bean id="windowSizeCalculator" class="net.sourceforge.atunes.gui.frame.WindowSizeCalculator">
+		<property name="margin">
+			<bean class="net.sourceforge.atunes.gui.DimensionBuilder" factory-method="getVariableDimension">
+				<constructor-arg value="0.3"/>
+				<constructor-arg value="0.2"/>
+			</bean>
+		</property>
+	</bean>
+	
 	<bean id="windowMinimumSize" class="net.sourceforge.atunes.gui.DimensionBuilder" factory-method="getVariableDimension">
 		<constructor-arg value="0.5"/>
 		<constructor-arg value="800"/>
