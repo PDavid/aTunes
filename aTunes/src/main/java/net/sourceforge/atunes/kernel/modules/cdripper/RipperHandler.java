@@ -36,7 +36,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.TaskService;
 import net.sourceforge.atunes.kernel.actions.RipCDAction;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
@@ -44,6 +43,7 @@ import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IRipperHandler;
 import net.sourceforge.atunes.model.IRipperProgressDialog;
+import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -65,7 +65,7 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
     private boolean folderCreated;
     private IAlbumInfo albumInfo;
     
-    private TaskService taskService;
+    private ITaskService taskService;
     
     private IIndeterminateProgressDialog indeterminateProgressDialog;
     
@@ -138,7 +138,7 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
     /**
      * @param taskService
      */
-    public void setTaskService(TaskService taskService) {
+    public void setTaskService(ITaskService taskService) {
 		this.taskService = taskService;
 	}
     
