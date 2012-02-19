@@ -104,6 +104,8 @@ public final class Logger {
         	Throwable throwable = (Throwable) o;
             StackTraceElement[] trace = throwable.getStackTrace();
 
+            error(throwable.getMessage());
+            
             for (StackTraceElement element : trace) {
                 error(className, methodName, element);
             }

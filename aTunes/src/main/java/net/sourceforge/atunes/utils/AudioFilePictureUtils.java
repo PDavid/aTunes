@@ -145,8 +145,7 @@ public final class AudioFilePictureUtils {
         if (file == null || file.getFile() == null) {
             return null;
         }
-        return StringUtils.getString(file.getFile().getParentFile().getAbsolutePath(), osManager.getFileSeparator(), file.getArtist(), '_', file.getAlbum(), "_Cover.",
-                ImageUtils.FILES_EXTENSION);
+        return StringUtils.getString(file.getFile().getParentFile().getAbsolutePath(), osManager.getFileSeparator(), file.getArtist(), '_', file.getAlbum(), "_Cover.", ImageUtils.FILES_EXTENSION);
     }
 
     /**
