@@ -14,6 +14,11 @@
 		</property>
 	</bean>
 	
+	<bean id="screenSize" class="net.sourceforge.atunes.gui.DimensionBuilder" factory-method="getVariableDimension">
+		<constructor-arg value="1.0"/>
+		<constructor-arg value="1.0"/>
+	</bean>
+	
 	<bean id="windowMinimumSize" class="net.sourceforge.atunes.gui.DimensionBuilder" factory-method="getVariableDimension">
 		<constructor-arg value="0.5"/>
 		<constructor-arg value="800"/>

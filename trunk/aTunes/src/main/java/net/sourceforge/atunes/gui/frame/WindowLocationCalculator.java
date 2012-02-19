@@ -23,7 +23,6 @@ package net.sourceforge.atunes.gui.frame;
 import java.awt.Dimension;
 import java.awt.Point;
 
-import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IFrameState;
 
 /**
@@ -34,6 +33,15 @@ import net.sourceforge.atunes.model.IFrameState;
 public class WindowLocationCalculator {
 	
 	private WindowSizeCalculator windowSizeCalculator;
+	
+	private Dimension screenSize;
+	
+	/**
+	 * @param screenSize
+	 */
+	public void setScreenSize(Dimension screenSize) {
+		this.screenSize = screenSize;
+	}
 	
 	/**
 	 * @param windowSizeCalculator
@@ -55,7 +63,7 @@ public class WindowLocationCalculator {
         } else {
         	// Setting location centered in screen according to default size
         	Dimension defSize = windowSizeCalculator.getDefaultWindowSize();
-            windowLocation = new Point((GuiUtils.getDeviceWidth() - defSize.width) / 2, (GuiUtils.getDeviceHeight() - defSize.height) / 2);
+            windowLocation = new Point((screenSize.width - defSize.width) / 2, (screenSize.height - defSize.height) / 2);
         }
         
         return windowLocation;

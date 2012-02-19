@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.fullscreen;
 
+import java.awt.Dimension;
 import java.util.List;
 
 import javax.swing.JDialog;
@@ -40,13 +41,14 @@ class FullScreenController extends AbstractSimpleController<FullScreenWindow> {
 	 * @param frame
 	 * @param osManager
 	 * @param lookAndFeelManager
-	 * @param playerHandler 
+	 * @param playerHandler
+	 * @param screenSize
 	 */
-	FullScreenController(IState state, IFrame frame, IOSManager osManager, ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler) {
+	FullScreenController(IState state, IFrame frame, IOSManager osManager, ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler, Dimension screenSize) {
 		super();
         setState(state);
 		JDialog.setDefaultLookAndFeelDecorated(false);
-		FullScreenWindow window = new FullScreenWindow(frame.getFrame(), getState(), frame, osManager, lookAndFeelManager, playerHandler);
+		FullScreenWindow window = new FullScreenWindow(frame.getFrame(), getState(), frame, osManager, lookAndFeelManager, playerHandler, screenSize);
         JDialog.setDefaultLookAndFeelDecorated(lookAndFeelManager.getCurrentLookAndFeel().isDialogUndecorated());
         setComponentControlled(window);
 	}

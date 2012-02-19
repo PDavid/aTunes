@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.fullscreen;
 
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +36,15 @@ public class FullScreenHandler extends AbstractHandler implements IFullScreenHan
 	private FullScreenController controller;
 	
 	private IPlayListHandler playListHandler;
+	
+	private Dimension screenSize;
+	
+	/**
+	 * @param screenSize
+	 */
+	public void setScreenSize(Dimension screenSize) {
+		this.screenSize = screenSize;
+	}
 	
 	@Override
 	public void allHandlersInitialized() {
@@ -71,7 +81,7 @@ public class FullScreenHandler extends AbstractHandler implements IFullScreenHan
 	 */
 	private void createFullScreenController() {
 		if (controller == null) {
-			controller = new FullScreenController(getState(), getFrame(), getOsManager(), getBean(ILookAndFeelManager.class), getBean(IPlayerHandler.class));
+			controller = new FullScreenController(getState(), getFrame(), getOsManager(), getBean(ILookAndFeelManager.class), getBean(IPlayerHandler.class), screenSize);
 		}
 	}
 	

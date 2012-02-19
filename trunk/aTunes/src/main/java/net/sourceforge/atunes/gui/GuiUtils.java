@@ -26,7 +26,6 @@ import java.awt.Container;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -83,11 +82,6 @@ public final class GuiUtils {
     /** The set window opaque method. */
     private static Method setWindowOpaqueMethod;
 
-    /**
-     * Bounds of the main screen device, used to calculate sizes
-     */
-    private static Rectangle mainDeviceBounds;
-
     static {
         try {
             Class<?> awtUtilities = Class.forName("com.sun.awt.AWTUtilities");
@@ -101,34 +95,9 @@ public final class GuiUtils {
         } catch (NoSuchMethodException e) {
             Logger.info("method in class com.sun.awt.AWTUtilities not found");
         }
-
-        try {
-        	mainDeviceBounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getBounds();
-        } catch (Exception e) {
-        	Logger.error("error obtaining main device bounds");
-        	Logger.error(e);
-        }
     }
 
     private GuiUtils() {
-    }
-
-    /**
-     * Returns the width in pixels of the main device
-     * 
-     * @return
-     */
-    public static int getDeviceWidth() {
-        return mainDeviceBounds != null ? mainDeviceBounds.width : 0;
-    }
-
-    /**
-     * Returns the height in pixels of the main device
-     * 
-     * @return
-     */
-    public static int getDeviceHeight() {
-        return mainDeviceBounds != null ? mainDeviceBounds.height: 0;
     }
 
     /**

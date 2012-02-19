@@ -194,23 +194,26 @@ public final class FullScreenWindow extends AbstractCustomWindow {
     private IOSManager osManager;
     
     private IPlayerHandler playerHandler;
+    
+    private Dimension screenSize;
 
     /**
      * Instantiates a new full screen dialog.
-     * 
      * @param owner
      * @param state
      * @param frame
      * @param osManager
      * @param lookAndFeelManager
      * @param playerHandler
+     * @param screenSize
      */
-    public FullScreenWindow(JFrame owner, IState state, IFrame frame, IOSManager osManager, ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler) {
+    public FullScreenWindow(JFrame owner, IState state, IFrame frame, IOSManager osManager, ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler, Dimension screenSize) {
         super(owner, 0, 0);
         this.state = state;
         this.frame = frame;
         this.osManager = osManager;
         this.playerHandler = playerHandler;
+        this.screenSize = screenSize;
         setLocation(0, 0);
         setAlwaysOnTop(true);
         setContent(lookAndFeelManager);
@@ -348,7 +351,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         volumeSlider = Context.getBean("volumeSlider", VolumeSlider.class);
 
         covers = new CoverFlow();
-        Dimension coverSize = new Dimension(GuiUtils.getDeviceWidth(), GuiUtils.getDeviceHeight() * 5 / 7);
+        Dimension coverSize = new Dimension(screenSize.width, screenSize.height * 5 / 7);
         covers.setMinimumSize(coverSize);
         covers.setMaximumSize(coverSize);
         covers.setPreferredSize(coverSize);
