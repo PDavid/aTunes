@@ -23,7 +23,6 @@ package net.sourceforge.atunes.gui.frame;
 import java.awt.Dimension;
 import java.awt.Frame;
 
-import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.IState;
 
@@ -34,7 +33,16 @@ import net.sourceforge.atunes.model.IState;
  */
 public class WindowSizeCalculator {
 
+	private Dimension screenSize;
+	
 	private Dimension margin;
+	
+	/**
+	 * @param screenSize
+	 */
+	public void setScreenSize(Dimension screenSize) {
+		this.screenSize = screenSize;
+	}
 	
 	/**
 	 * @param margin
@@ -80,6 +88,6 @@ public class WindowSizeCalculator {
      */
     public Dimension getDefaultWindowSize() {
         // Set size always according to main device dimension 
-    	return new Dimension(GuiUtils.getDeviceWidth() - margin.width, GuiUtils.getDeviceHeight() - margin.height);
+    	return new Dimension(screenSize.width - margin.width, screenSize.height - margin.height);
     }
 }

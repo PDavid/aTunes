@@ -20,13 +20,13 @@
 
 package net.sourceforge.atunes.kernel.modules.os;
 
+import java.awt.Dimension;
 import java.awt.Window;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.xine.XineEngine;
 import net.sourceforge.atunes.model.IFrame;
@@ -52,6 +52,15 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter {
     private static final String WINOPTPRIORITY = "-priority";
     
     private static final String WINOPTPRIORITY_DEFAULT = "abovenormal";
+    
+    private Dimension screenSize;
+    
+    /**
+     * @param screenSize
+     */
+    public void setScreenSize(Dimension screenSize) {
+		this.screenSize = screenSize;
+	}
 
 	@Override
 	public String getAppDataFolder() {
@@ -81,7 +90,7 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter {
 	@Override
 	public void setFullScreen(Window window, boolean fullscreen, IFrame frame) {
 		if (systemType.isOldWindows() && fullscreen) {
-			window.setSize(GuiUtils.getDeviceWidth(), GuiUtils.getDeviceHeight());
+			window.setSize(screenSize.width, screenSize.height);
 		}
 	}
 	
