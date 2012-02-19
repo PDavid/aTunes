@@ -29,7 +29,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
-import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -61,7 +60,7 @@ public final class SearchResultsDialog extends AbstractCustomDialog {
      * @param lookAndFeelManager
      */
     public SearchResultsDialog(JFrame owner, ILookAndFeelManager lookAndFeelManager) {
-        super(owner, GuiUtils.getComponentWidthForResolution(0.75f), GuiUtils.getComponentHeightForResolution(0.75f), true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
+        super(owner, 800, 600, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
         setResizable(true);
         setTitle(I18nUtils.getString("SEARCH_RESULTS"));
         add(getContent(lookAndFeelManager.getCurrentLookAndFeel()));

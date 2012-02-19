@@ -37,7 +37,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -64,7 +63,7 @@ public class PluginEditorDialog extends AbstractCustomDialog {
      * @param lookAndFeel
      */
     public PluginEditorDialog(Window owner, PluginInfo plugin, PluginConfiguration configuration, ILookAndFeel lookAndFeel) {
-        super(owner, GuiUtils.getComponentWidthForResolution(0.5f), GuiUtils.getComponentHeightForResolution(0.5f), true, CloseAction.DISPOSE, lookAndFeel);
+        super(owner, 800, 600, true, CloseAction.DISPOSE, lookAndFeel);
         this.configuration = configuration;
         setResizable(true);
         setTitle(StringUtils.getString(I18nUtils.getString("PLUGIN_PROPERTIES_EDITOR"), ": ", plugin.getName()));

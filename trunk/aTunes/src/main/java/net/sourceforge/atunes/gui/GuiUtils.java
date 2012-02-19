@@ -88,8 +88,6 @@ public final class GuiUtils {
      */
     private static Rectangle mainDeviceBounds;
 
-    public static final int MAX_COMPONENTS_WIDTH = 3280;
-
     static {
         try {
             Class<?> awtUtilities = Class.forName("com.sun.awt.AWTUtilities");
@@ -289,66 +287,6 @@ public final class GuiUtils {
             setComponentOrientation();
         }
         return componentOrientation.isLeftToRight() ? StyleConstants.ALIGN_LEFT : StyleConstants.ALIGN_RIGHT;
-    }
-
-    /**
-     * Returns a proportional width according to given factor for the current screen resolution.
-     * @param screenWidthFactor
-     * @return the component width for resolution
-     */
-    @Deprecated
-    public static int getComponentWidthForResolution(float screenWidthFactor) {
-    	if (mainDeviceBounds != null) {
-    		int currentScreenWidth = mainDeviceBounds.width > MAX_COMPONENTS_WIDTH ? MAX_COMPONENTS_WIDTH : mainDeviceBounds.width;
-    		return (int) (currentScreenWidth * screenWidthFactor);
-    	} else {
-    		return 0;
-    	}
-    }
-
-    /**
-     * Returns a proportional width according to given factor for the current screen resolution or the given minimum width if
-     * calculated value is lower
-     * @param screenWidthFactor
-     * @param minimumWidth
-     * @return
-     */
-    @Deprecated
-    public static int getComponentWidthForResolution(float screenWidthFactor, int minimumWidth) {
-    	return Math.max(getComponentWidthForResolution(screenWidthFactor), minimumWidth);
-    }
-
-    /**
-     * Returns a proportional height according to given screen height factor for the current screen resolution.
-     * 
-     * @param screenHeight
-     *            the screen height
-     * @param desiredHeight
-     *            the desired height
-     * 
-     * @return the component height for resolution
-     */
-    @Deprecated
-    public static int getComponentHeightForResolution(float screenHeightFactor) {
-    	if (mainDeviceBounds != null) {
-    		int currentScreenHeight = mainDeviceBounds.height;
-    		return (int) (currentScreenHeight * screenHeightFactor);
-    	} else {
-    		return 0;
-    	}
-    }
-
-    /**
-     * Returns a proportional height according to given screen height factor for the current screen resolution or the given minimum height
-     * if calculated value is lower
-     * 
-     * @param screenHeightFactor
-     * @param minimumHeight
-     * @return
-     */
-    @Deprecated
-    public static int getComponentHeightForResolution(float screenHeightFactor, int minimumHeight) {
-    	return Math.max(getComponentHeightForResolution(screenHeightFactor), minimumHeight);
     }
 
     /**

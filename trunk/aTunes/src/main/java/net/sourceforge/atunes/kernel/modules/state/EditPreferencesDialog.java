@@ -64,7 +64,7 @@ public final class EditPreferencesDialog extends AbstractCustomDialog {
      * @param lookAndFeelManager
      */
     public EditPreferencesDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
-        super(frame, GuiUtils.getComponentWidthForResolution(0.5f, 800),GuiUtils.getComponentHeightForResolution(0.6f, 600), true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
+        super(frame, 800, 600, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
         this.lookAndFeelManager = lookAndFeelManager;
     }
     

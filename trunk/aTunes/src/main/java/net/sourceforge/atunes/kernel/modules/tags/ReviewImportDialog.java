@@ -43,7 +43,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.tree.TreePath;
 
-import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.gui.views.dialogs.PatternInputDialog;
@@ -88,7 +87,7 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements IR
      * @param lookAndFeelManager
      */
     public ReviewImportDialog(IFrame frame, IState state, ILookAndFeelManager lookAndFeelManager) {
-        super(frame, GuiUtils.getComponentWidthForResolution(0.80f), GuiUtils.getComponentHeightForResolution(0.75f), true, CloseAction.NOTHING, lookAndFeelManager.getCurrentLookAndFeel());
+        super(frame, 800, 600, true, CloseAction.NOTHING, lookAndFeelManager.getCurrentLookAndFeel());
         this.state = state;
         setTitle(I18nUtils.getString("REVIEW_TAGS"));
         setContent(lookAndFeelManager.getCurrentLookAndFeel());
