@@ -26,13 +26,11 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-import org.apache.sanselan.ImageFormat;
 import org.apache.sanselan.ImageWriteException;
-import org.apache.sanselan.Sanselan;
 import org.commonjukebox.plugins.model.PluginApi;
 import org.jdesktop.swingx.graphics.GraphicsUtilities;
 
@@ -185,7 +183,8 @@ public final class ImageUtils {
         if (!fileName.toUpperCase().endsWith(StringUtils.getString(".", FILES_EXTENSION).toUpperCase())) {
             fileNameWithExtension = StringUtils.getString(fileName, ".", FILES_EXTENSION);
         }
-        Sanselan.writeImage(toBufferedImage(image), new File(fileNameWithExtension), ImageFormat.IMAGE_FORMAT_PNG, Collections.emptyMap());
+        
+        ImageIO.write(toBufferedImage(image), FILES_EXTENSION, new File(fileNameWithExtension));
     }
 
 }
