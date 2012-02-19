@@ -43,6 +43,15 @@ public final class SmartPlayListHandler extends AbstractHandler implements ISmar
     
     private IAudioObjectComparator audioObjectComparator;
     
+    private IRepositoryHandler repositoryHandler;
+    
+    /**
+     * @param repositoryHandler
+     */
+    public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+    
     /**
      * @param audioObjectComparator
      */
@@ -74,7 +83,7 @@ public final class SmartPlayListHandler extends AbstractHandler implements ISmar
 
         // Add album songs
         for (IAlbum a : albums) {
-            songsSelected.addAll(getBean(IRepositoryHandler.class).getAudioFilesForAlbums(Collections.singletonMap(a.getName(), a)));
+            songsSelected.addAll(repositoryHandler.getAudioFilesForAlbums(Collections.singletonMap(a.getName(), a)));
         }
 
         // Sort

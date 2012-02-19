@@ -47,9 +47,6 @@ public abstract class AbstractHandler implements IHandler {
 		return state;
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IHandler#setState(net.sourceforge.atunes.model.IState)
-	 */
 	@Override
 	public void setState(IState state) {
 		this.state = state;
@@ -171,16 +168,5 @@ public abstract class AbstractHandler implements IHandler {
 	 */
 	protected Object getBean(String name) {
 		return Context.getBean(name);
-	}
-	
-	/**
-	 * Delegate method Returns bean with given name and type
-	 * @param <T>
-	 * @param name
-	 * @param clazz
-	 * @return
-	 */
-	protected <T> T getBean(String name, Class<T> clazz) {
-		return Context.getBean(name, clazz);
 	}
 }
