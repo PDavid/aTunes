@@ -36,7 +36,11 @@ import net.sourceforge.atunes.model.OperatingSystem;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class OsManager implements IOSManager {
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
+public class OsManager implements IOSManager, ApplicationContextAware {
 
 	/**
 	 * Current OS
@@ -46,6 +50,13 @@ public class OsManager implements IOSManager {
 	private OperatingSystemAdapter adapter;
 
 	private IApplicationArguments applicationArguments;
+	
+	private ApplicationContext context;
+	
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.context = applicationContext;
+	}
 	
     /**
      * @param applicationArguments
@@ -60,14 +71,15 @@ public class OsManager implements IOSManager {
     public void initialize() {
     	osType = detectOperatingSystem();
     	if (osType.isLinux()) {
-    		adapter = new LinuxOperatingSystem(osType, this);
+    		adapter = context.getBean(LinuxOperatingSystem.class);
     	} else if (osType.isMacOsX()) {
-    		adapter = new MacOSXOperatingSystem(osType, this);
+    		adapter = context.getBean(MacOSXOperatingSystem.class);
     	} else if (osType.isSolaris()) {
-    		adapter = new SolarisOperatingSystem(osType, this);
+    		adapter = context.getBean(SolarisOperatingSystem.class);
     	} else {
-    		adapter = new WindowsOperatingSystem(osType, this);
+    		adapter = context.getBean(WindowsOperatingSystem.class);
     	}    	
+		adapter.setSystemType(osType);
     }
     
 	@Override

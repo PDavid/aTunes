@@ -56,11 +56,15 @@ public abstract class OperatingSystemAdapter {
 	
 	/**
 	 * @param systemType
-	 * @param osManager
-	 * @param playerHandler
 	 */
-	public OperatingSystemAdapter(OperatingSystem systemType, IOSManager osManager) {
+	public void setSystemType(OperatingSystem systemType) {
 		this.systemType = systemType;
+	}
+	
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(IOSManager osManager) {
 		this.osManager = osManager;
 	}
 
