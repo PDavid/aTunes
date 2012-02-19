@@ -49,16 +49,25 @@ import org.apache.commons.io.FileUtils;
 
 public class LastFmCache extends AbstractCache {
 
-    private static final String COULD_NOT_DELETE_ALL_FILES_FROM_CACHE = "Could not delete all files from cache: ";
-	private static final String ARTIST_WIKI = "artistWiki";
-    private static final String ARTIST_THUMB = "artistThumb";
-    private static final String ARTIST_SIMILAR = "artistSimilar";
-    private static final String ALBUM_LIST = "albumList";
-    private static final String ARTIST_IMAGE = "artistImage";
-    private static final String ARTIST_TOP_TRACKS = "artistTopTracks";
-    private static final String ALBUM_INFO = "albumInfo";
-    private static final String ALBUM_COVER = "albumCover";
-    private static final String ALBUM_COVER_THUMB = "albumCoverThumb";
+    private static final String ARTIST_WIKI = "ARTIST_WIKI";
+
+	private static final String ARTIST_THUMB = "ARTIST_THUMB";
+
+	private static final String ARTIST_SIMILAR = "ARTIST_SIMILAR";
+
+	private static final String ALBUM_LIST = "ALBUM_LIST";
+
+	private static final String ARTIST_TOP_TRACKS = "ARTIST_TOP_TRACKS";
+
+	private static final String ARTIST_IMAGE = "ARTIST_IMAGE";
+
+	private static final String ALBUM_INFO = "ALBUM_INFO";
+
+	private static final String ALBUM_COVER_THUMB = "ALBUM_COVER_THUMB";
+
+	private static final String ALBUM_COVER = "ALBUM_COVER";
+
+	private static final String COULD_NOT_DELETE_ALL_FILES_FROM_CACHE = "Could not delete all files from cache: ";
 
     private File submissionCacheDir;
     
@@ -74,6 +83,10 @@ public class LastFmCache extends AbstractCache {
         super(osManager, LastFmCache.class.getResource("/settings/ehcache-lastfm.xml"));
         this.xmlSerializerService = xmlSerializerService;
     }
+    
+    private Cache getCache() {
+    	return getCache("cache");
+    }
 
     /**
      * Clears the cache.
@@ -82,28 +95,7 @@ public class LastFmCache extends AbstractCache {
      */
     public synchronized boolean clearCache() {
         boolean exception = false;
-        if (clearCache(getAlbumCoverCache())) {
-        	exception = true;
-        }
-        if (clearCache(getAlbumCoverThumbCache())) {
-        	exception = true;
-        }
-        if (clearCache(getAlbumInfoCache())) {
-        	exception = true;
-        }
-        if (clearCache(getArtistImageCache())) {
-        	exception = true;
-        }
-        if (clearCache(getAlbumListCache())) {
-        	exception = true;
-        }
-        if (clearCache(getSimilarArtistsCache())) {
-        	exception = true;
-        }
-        if (clearCache(getArtistThumbsCache())) {
-        	exception = true;
-        }
-        if (clearCache(getArtistWikiCache())) {
+        if (clearCache(getCache())) {
         	exception = true;
         }
         return exception;
@@ -157,7 +149,7 @@ public class LastFmCache extends AbstractCache {
      * @return the image
      */
     public synchronized ImageIcon retrieveAlbumCover(IAlbumInfo album) {
-        Element element = getAlbumCoverCache().get(album);
+        Element element = getCache().get(new CacheKey(ALBUM_COVER, album));
         if (element == null) {
             return null;
         } else {
@@ -174,7 +166,7 @@ public class LastFmCache extends AbstractCache {
      * @return the image
      */
     public synchronized ImageIcon retrieveAlbumCoverThumb(IAlbumInfo album) {
-        Element element = getAlbumCoverThumbCache().get(album);
+        Element element = getCache().get(new CacheKey(ALBUM_COVER_THUMB, album));
         if (element == null) {
             return null;
         } else {
@@ -193,7 +185,7 @@ public class LastFmCache extends AbstractCache {
      * @return the audio scrobbler album
      */
     public synchronized IAlbumInfo retrieveAlbumInfo(String artist, String album) {
-        Element element = getAlbumInfoCache().get(artist + album);
+        Element element = getCache().get(new CacheKey(ALBUM_INFO, artist + album));
         if (element == null) {
             return null;
         } else {
@@ -210,7 +202,7 @@ public class LastFmCache extends AbstractCache {
      * @return the image
      */
     public synchronized ImageIcon retrieveArtistImage(String artist) {
-        Element element = getArtistImageCache().get(artist);
+        Element element = getCache().get(new CacheKey(ARTIST_IMAGE, artist));
         if (element == null) {
             return null;
         } else {
@@ -224,7 +216,7 @@ public class LastFmCache extends AbstractCache {
      * @return
      */
     public synchronized IArtistTopTracks retrieveArtistTopTracks(String artist) {
-    	Element element = getArtistTopTracksCache().get(artist);
+    	Element element = getCache().get(new CacheKey(ARTIST_TOP_TRACKS, artist));
     	if (element == null) {
     		return null;
     	} else {
@@ -241,7 +233,7 @@ public class LastFmCache extends AbstractCache {
      * @return the audio scrobbler album list
      */
     public synchronized IAlbumListInfo retrieveAbumList(String artist) {
-        Element element = getAlbumListCache().get(artist);
+        Element element = getCache().get(new CacheKey(ALBUM_LIST, artist));
         if (element == null) {
             return null;
         } else {
@@ -258,7 +250,7 @@ public class LastFmCache extends AbstractCache {
      * @return the audio scrobbler similar artists
      */
     public synchronized ISimilarArtistsInfo retrieveArtistSimilar(String artist) {
-        Element element = getSimilarArtistsCache().get(artist);
+        Element element = getCache().get(new CacheKey(ARTIST_SIMILAR, artist));
         if (element == null) {
             return null;
         } else {
@@ -275,7 +267,7 @@ public class LastFmCache extends AbstractCache {
      * @return the image
      */
     public synchronized ImageIcon retrieveArtistThumbImage(IArtistInfo artist) {
-        Element element = getArtistThumbsCache().get(artist);
+        Element element = getCache().get(new CacheKey(ARTIST_THUMB, artist));
         if (element == null) {
             return null;
         } else {
@@ -292,7 +284,7 @@ public class LastFmCache extends AbstractCache {
      * @return the string
      */
     public synchronized String retrieveArtistWiki(String artist) {
-        Element element = getArtistWikiCache().get(artist);
+        Element element = getCache().get(new CacheKey(ARTIST_WIKI, artist));
         if (element == null) {
             return null;
         } else {
@@ -313,8 +305,8 @@ public class LastFmCache extends AbstractCache {
             return;
         }
 
-        Element element = new Element(album, cover);
-        getAlbumCoverCache().put(element);
+        Element element = new Element(new CacheKey(ALBUM_COVER, album), cover);
+        getCache().put(element);
         Logger.debug("Stored Album Cover for album ", album.getTitle());
     }
 
@@ -331,8 +323,8 @@ public class LastFmCache extends AbstractCache {
             return;
         }
 
-        Element element = new Element(album, cover);
-        getAlbumCoverThumbCache().put(element);
+        Element element = new Element(new CacheKey(ALBUM_COVER_THUMB, album), cover);
+        getCache().put(element);
         Logger.debug("Stored Album Cover Thumb for album ", album.getTitle());
     }
 
@@ -351,8 +343,8 @@ public class LastFmCache extends AbstractCache {
             return;
         }
 
-        Element element = new Element(artist + album, albumObject);
-        getAlbumInfoCache().put(element);
+        Element element = new Element(new CacheKey(ALBUM_INFO, artist + album), albumObject);
+        getCache().put(element);
         Logger.debug("Stored album info for album ", artist, " ", album);
     }
 
@@ -369,8 +361,8 @@ public class LastFmCache extends AbstractCache {
             return;
         }
 
-        Element element = new Element(artist, image);
-        getArtistImageCache().put(element);
+        Element element = new Element(new CacheKey(ARTIST_IMAGE, artist), image);
+        getCache().put(element);
         Logger.debug("Stored artist image for ", artist);
     }
     
@@ -384,8 +376,8 @@ public class LastFmCache extends AbstractCache {
     		return;
     	}
     	
-    	Element element = new Element(artist, topTracks);
-    	getArtistTopTracksCache().put(element);
+    	Element element = new Element(new CacheKey(ARTIST_TOP_TRACKS, artist), topTracks);
+    	getCache().put(element);
     	Logger.debug("Stored artist top tracks for ", artist);
     }
 
@@ -402,8 +394,8 @@ public class LastFmCache extends AbstractCache {
             return;
         }
 
-        Element element = new Element(artist, list);
-        getAlbumListCache().put(element);
+        Element element = new Element(new CacheKey(ALBUM_LIST, artist), list);
+        getCache().put(element);
         Logger.debug("Stored album list for ", artist);
     }
 
@@ -420,8 +412,8 @@ public class LastFmCache extends AbstractCache {
             return;
         }
 
-        Element element = new Element(artist, similar);
-        getSimilarArtistsCache().put(element);
+        Element element = new Element(new CacheKey(ARTIST_SIMILAR, artist), similar);
+        getCache().put(element);
         Logger.debug("Stored artist similar for ", artist);
     }
 
@@ -438,8 +430,8 @@ public class LastFmCache extends AbstractCache {
             return;
         }
 
-        Element element = new Element(artist, image);
-        getArtistThumbsCache().put(element);
+        Element element = new Element(new CacheKey(ARTIST_THUMB, artist), image);
+        getCache().put(element);
         Logger.debug("Stored artist thumb for ", artist.getName());
     }
 
@@ -456,8 +448,8 @@ public class LastFmCache extends AbstractCache {
             return;
         }
 
-        Element element = new Element(artist, wikiText);
-        getArtistWikiCache().put(element);
+        Element element = new Element(new CacheKey(ARTIST_WIKI, artist), wikiText);
+        getCache().put(element);
         Logger.debug("Stored artist wiki for ", artist);
     }
 
@@ -516,55 +508,11 @@ public class LastFmCache extends AbstractCache {
         }
     }
 
-    private Cache getArtistWikiCache() {
-        return getCache(ARTIST_WIKI);
-    }
-
-    private Cache getArtistThumbsCache() {
-        return getCache(ARTIST_THUMB);
-    }
-
-    private Cache getSimilarArtistsCache() {
-        return getCache(ARTIST_SIMILAR);
-    }
-
-    private Cache getAlbumListCache() {
-        return getCache(ALBUM_LIST);
-    }
-
-    private Cache getArtistImageCache() {
-        return getCache(ARTIST_IMAGE);
-    }
-    
-    private Cache getArtistTopTracksCache() {
-    	return getCache(ARTIST_TOP_TRACKS);
-    }
-
-    private Cache getAlbumInfoCache() {
-        return getCache(ALBUM_INFO);
-    }
-
-    private Cache getAlbumCoverCache() {
-        return getCache(ALBUM_COVER);
-    }
-    
-    private Cache getAlbumCoverThumbCache() {
-    	return getCache(ALBUM_COVER_THUMB);
-    }
-
     /**
      * Shutdowns cache
      */
     public void shutdown() {
-        getAlbumCoverCache().dispose();
-        getAlbumCoverThumbCache().dispose();
-        getAlbumInfoCache().dispose();
-        getAlbumListCache().dispose();
-        getArtistImageCache().dispose();
-        getSimilarArtistsCache().dispose();
-        getArtistThumbsCache().dispose();
-        getArtistWikiCache().dispose();
-        getArtistTopTracksCache().dispose();
+        getCache().dispose();
     }
 
     private static class SubmissionDataComparator implements Comparator<SubmissionData>, Serializable {
@@ -584,14 +532,6 @@ public class LastFmCache extends AbstractCache {
 	 */
 	public void flush() {
 		Logger.debug("Flushing last.fm cache");
-        getAlbumCoverCache().flush();
-        getAlbumCoverThumbCache().flush();
-        getAlbumInfoCache().flush();
-        getAlbumListCache().flush();
-        getArtistImageCache().flush();
-        getSimilarArtistsCache().flush();
-        getArtistThumbsCache().flush();
-        getArtistWikiCache().flush();
-        getArtistTopTracksCache().flush();
+        getCache().flush();
 	}
 }

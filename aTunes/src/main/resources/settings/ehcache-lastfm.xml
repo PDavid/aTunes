@@ -9,48 +9,8 @@
 		diskPersistent="true" diskExpiryThreadIntervalSeconds="1"
 		memoryStoreEvictionPolicy="LFU" />
 
-	<cache name="albumCover" maxElementsInMemory="1"
-		maxElementsOnDisk="10000" eternal="true" overflowToDisk="true"
-		diskSpoolBufferSizeMB="5" diskPersistent="true"
-		memoryStoreEvictionPolicy="LFU" />
-
-	<cache name="albumCoverThumb" maxElementsInMemory="1"
-		maxElementsOnDisk="10000" eternal="true" overflowToDisk="true"
-		diskSpoolBufferSizeMB="5" diskPersistent="true"
-		memoryStoreEvictionPolicy="LFU" />
-
-	<cache name="albumInfo" maxElementsInMemory="1"
-		maxElementsOnDisk="10000" eternal="true" overflowToDisk="true"
-		diskSpoolBufferSizeMB="5" diskPersistent="true"
-		memoryStoreEvictionPolicy="LFU" />
-
-	<cache name="artistImage" maxElementsInMemory="1"
-		maxElementsOnDisk="10000" eternal="true" overflowToDisk="true"
-		diskSpoolBufferSizeMB="5" diskPersistent="true"
-		memoryStoreEvictionPolicy="LFU" />
-
-	<cache name="albumList" maxElementsInMemory="1"
-		maxElementsOnDisk="10000" eternal="true" overflowToDisk="true"
-		diskSpoolBufferSizeMB="5" diskPersistent="true"
-		memoryStoreEvictionPolicy="LFU" />
-
-	<cache name="artistSimilar" maxElementsInMemory="1"
-		maxElementsOnDisk="10000" eternal="true" overflowToDisk="true"
-		diskSpoolBufferSizeMB="5" diskPersistent="true"
-		memoryStoreEvictionPolicy="LFU" />
-
-	<cache name="artistThumb" maxElementsInMemory="1"
-		maxElementsOnDisk="10000" eternal="true" overflowToDisk="true"
-		diskSpoolBufferSizeMB="5" diskPersistent="true"
-		memoryStoreEvictionPolicy="LFU" />
-
-	<cache name="artistWiki" maxElementsInMemory="1"
-		maxElementsOnDisk="10000" eternal="true" overflowToDisk="true"
-		diskSpoolBufferSizeMB="5" diskPersistent="true"
-		memoryStoreEvictionPolicy="LFU" />
-
-	<cache name="artistTopTracks" maxElementsInMemory="1"
-		maxElementsOnDisk="10000" eternal="true" overflowToDisk="true"
+	<cache name="cache" maxElementsInMemory="1"
+		maxElementsOnDisk="1000000" eternal="true" overflowToDisk="true"
 		diskSpoolBufferSizeMB="5" diskPersistent="true"
 		memoryStoreEvictionPolicy="LFU" />
 
