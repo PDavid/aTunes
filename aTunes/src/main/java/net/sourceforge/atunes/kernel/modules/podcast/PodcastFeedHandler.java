@@ -51,6 +51,7 @@ import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.model.ITaskService;
+import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -81,7 +82,9 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
     private volatile List<PodcastFeedEntryDownloader> runningDownloads = Collections.synchronizedList(new ArrayList<PodcastFeedEntryDownloader>());
     
     private ScheduledFuture<?> scheduledPodcastFeedEntryRetrieverFuture;
-    
+
+    private ScheduledFuture<?> scheduledPodcastFeedEntryDownloadCheckerFuture;
+
     private IIconFactory rssMediumIcon;
     
     private INetworkHandler networkHandler;
@@ -160,6 +163,8 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
             addPodcastFeed(podcastFeed);
             navigationHandler.refreshView(podcastNavigationView);
             retrievePodcastFeedEntries();
+            startPodcastFeedEntryDownloadChecker();
+            startPodcastFeedEntryRetriever();
         }
     }
 
@@ -222,17 +227,11 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
         };
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#getPodcastFeeds()
-	 */
     @Override
 	public List<IPodcastFeed> getPodcastFeeds() {
         return podcastFeeds;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#getPodcastFeedEntries()
-	 */
     @Override
 	public List<IPodcastFeedEntry> getPodcastFeedEntries() {
         List<IPodcastFeedEntry> podcastFeedEntries = new ArrayList<IPodcastFeedEntry>();
@@ -242,22 +241,19 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
         return podcastFeedEntries;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#removePodcastFeed(net.sourceforge.atunes.model.IPodcastFeed)
-	 */
     @Override
 	public void removePodcastFeed(IPodcastFeed podcastFeed) {
         Logger.info("Removing podcast feed");
         getPodcastFeeds().remove(podcastFeed);
         podcastFeedsDirty = true;
         navigationHandler.refreshView(podcastNavigationView);
+        if (CollectionUtils.isEmpty(getPodcastFeeds())) {
+        	stopPodcastFeedEntryDownloadChecker();
+        	stopPodcastFeedEntryRetriever();
+        }
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#startPodcastFeedEntryRetriever()
-	 */
-    @Override
-	public void startPodcastFeedEntryRetriever() {
+	private void startPodcastFeedEntryRetriever() {
         // When upgrading from a previous version, retrievel interval can be 0
         long retrieval = getState().getPodcastFeedEntriesRetrievalInterval();
         long retrievalInterval = retrieval > 0 ? retrieval : DEFAULT_PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL;
@@ -265,10 +261,28 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
         schedulePodcastFeedEntryRetriever(retrievalInterval);
     }
 
-    @Override
-	public void startPodcastFeedEntryDownloadChecker() {
-    	taskService.submitPeriodically("PodcastFeedEntryDownloadChecker", 30, 30, new PodcastFeedEntryDownloadChecker((ITable)getBean("navigationTable"), this));
+	private void startPodcastFeedEntryDownloadChecker() {
+    	// Start only if podcast feeds created
+    	if (!CollectionUtils.isEmpty(getPodcastFeeds())) {
+    		scheduledPodcastFeedEntryDownloadCheckerFuture = taskService.submitPeriodically("PodcastFeedEntryDownloadChecker", 30, 30, new PodcastFeedEntryDownloadChecker((ITable)getBean("navigationTable"), this));
+    	} else {
+    		Logger.debug("Not scheduling PodcastFeedEntryDownloadChecker");
+    	}
     }
+	
+	private void stopPodcastFeedEntryRetriever() {
+		if (scheduledPodcastFeedEntryRetrieverFuture != null) {
+			scheduledPodcastFeedEntryRetrieverFuture.cancel(true);
+			Logger.debug("Stopped PodcastFeedEntryRetrieverChecker");
+		}
+	}
+	
+	private void stopPodcastFeedEntryDownloadChecker() {
+		if (scheduledPodcastFeedEntryDownloadCheckerFuture != null) {
+			scheduledPodcastFeedEntryDownloadCheckerFuture.cancel(true);
+			Logger.debug("Stopped PodcastFeedEntryDownloadChecker");
+		}
+	}
 
     /**
      * Sets the Podcast Feed Entry retrieval interval.
@@ -290,23 +304,21 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
      *            The Podcast Feed Entry retrieval interval
      */
     private void schedulePodcastFeedEntryRetriever(long newRetrievalInterval) {
-        if (scheduledPodcastFeedEntryRetrieverFuture != null) {
-            scheduledPodcastFeedEntryRetrieverFuture.cancel(true);
+    	stopPodcastFeedEntryRetriever();
+    	
+        // Start only if podcast feeds created
+        if (!CollectionUtils.isEmpty(getPodcastFeeds())) {
+        	scheduledPodcastFeedEntryRetrieverFuture = taskService.submitPeriodically("Periodically Retrieve Podcast Feed Entries", newRetrievalInterval, newRetrievalInterval, new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame(), navigationHandler, networkHandler, podcastNavigationView));
+        } else {
+        	Logger.debug("Not scheduling PodcastFeedEntryRetriever");
         }
-        scheduledPodcastFeedEntryRetrieverFuture = taskService.submitPeriodically("Periodically Retrieve Podcast Feed Entries", newRetrievalInterval, newRetrievalInterval, new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame(), navigationHandler, networkHandler, podcastNavigationView));
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#retrievePodcastFeedEntries()
-	 */
     @Override
 	public void retrievePodcastFeedEntries() {
     	taskService.submitNow("Retrieve Podcast Feed Entries", new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame(), navigationHandler, networkHandler, podcastNavigationView));
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#downloadPodcastFeedEntry(net.sourceforge.atunes.model.IPodcastFeedEntry)
-	 */
     @Override
 	public void downloadPodcastFeedEntry(final IPodcastFeedEntry podcastFeedEntry) {
         if (isDownloading(podcastFeedEntry)) {

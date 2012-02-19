@@ -52,16 +52,6 @@ public interface IPodcastFeedHandler extends IHandler {
 	public void removePodcastFeed(IPodcastFeed podcastFeed);
 
 	/**
-	 * Starts the Podcast Feed Entry Retriever.
-	 */
-	public void startPodcastFeedEntryRetriever();
-
-	/**
-	 * Start podcast feed entry download checker.
-	 */
-	public void startPodcastFeedEntryDownloadChecker();
-
-	/**
 	 * Retrieves Podcast Feed Entries and refreshes view asynchronously.
 	 * 
 	 * @see net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedEntryRetriever#retrievePodcastFeedEntries()
