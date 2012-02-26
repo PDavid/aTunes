@@ -22,21 +22,15 @@ package net.sourceforge.atunes.kernel.modules.tray;
 
 import java.awt.AWTException;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.images.NextTrayImageIcon;
 import net.sourceforge.atunes.gui.images.PauseTrayImageIcon;
@@ -44,28 +38,18 @@ import net.sourceforge.atunes.gui.images.PlayTrayImageIcon;
 import net.sourceforge.atunes.gui.images.PreviousTrayImageIcon;
 import net.sourceforge.atunes.gui.images.StopTrayImageIcon;
 import net.sourceforge.atunes.gui.views.controls.ActionTrayIcon;
-import net.sourceforge.atunes.gui.views.controls.JTrayIcon;
-import net.sourceforge.atunes.gui.views.controls.JTrayIconPopupMenu;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.actions.ExitAction;
-import net.sourceforge.atunes.kernel.actions.MuteAction;
 import net.sourceforge.atunes.kernel.actions.PlayAction;
 import net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectAction;
-import net.sourceforge.atunes.kernel.actions.RepeatModeAction;
-import net.sourceforge.atunes.kernel.actions.ShowAboutAction;
-import net.sourceforge.atunes.kernel.actions.ShuffleModeAction;
 import net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectAction;
-import net.sourceforge.atunes.kernel.actions.ToggleOSDSettingAction;
-import net.sourceforge.atunes.kernel.actions.ToggleWindowVisibilityAction;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ISystemTrayHandler;
+import net.sourceforge.atunes.model.ITrayIcon;
 import net.sourceforge.atunes.model.PlaybackState;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.Logger;
-import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * The system tray handler.
@@ -76,12 +60,11 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
     private boolean trayIconVisible;
     private boolean trayPlayerVisible;
     private SystemTray tray;
-    private JTrayIcon trayIcon;
+    private TrayIcon trayIcon;
     private TrayIcon previousIcon;
     private TrayIcon playIcon;
     private TrayIcon stopIcon;
     private TrayIcon nextIcon;
-    private JMenuItem playMenuItem;
     
     private boolean playing;
 
@@ -90,6 +73,8 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
     private PlayTrayImageIcon playTrayIcon;
     private PreviousTrayImageIcon previousTrayIcon;
     private StopTrayImageIcon stopTrayIcon;
+    
+    private ITrayIcon customTrayIcon;
     
     /**
      * @param stopTrayIcon
@@ -129,6 +114,7 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
     @Override
     public void allHandlersInitialized() {
     	if (getOsManager().areTrayIconsSupported()) {
+    		customTrayIcon = getOsManager().getTrayIcon();
     		// System tray player
     		if (getState().isShowTrayPlayer()) {
     			initTrayPlayerIcons();
@@ -138,37 +124,7 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
     		if (getState().isShowSystemTray()) {
     			initTrayIcon();
     		}
-    	}
-    }
-
-    /**
-     * Fill menu.
-     * 
-     * @param menu
-     *            the menu
-     * 
-     * @return the j tray icon popup menu
-     */
-    private JPopupMenu fillMenu(JPopupMenu menu) {
-        menu.add(getPlayMenuItem());
-        menu.add(getStopMenuItem());
-        menu.add(getPreviousMenuItem());
-        menu.add(getNextMenuItem());
-        menu.add(new JSeparator());
-        menu.add(getMuteCheckBoxMenuItem());
-        menu.add(new JSeparator());
-        menu.add(getShuffleCheckBoxMenuItem());
-        menu.add(getRepeatCheckBoxMenuItem());
-        menu.add(new JSeparator());
-        menu.add(getShowOSDCheckBoxMenuItem());
-        menu.add(new JSeparator());
-        menu.add(getAboutMenuItem());
-        menu.add(new JSeparator());
-        menu.add(getExitMenuItem());
-
-        GuiUtils.applyComponentOrientation(menu);
-
-        return menu;
+    	}    	
     }
 
     /**
@@ -240,11 +196,11 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
         	Color color = getState().getTrayPlayerIconsColor().getColor();
         	Image icon = null;
             if (playing) {
-                getPlayMenuItem().setText(I18nUtils.getString("PAUSE"));
+                customTrayIcon.setPlayMenuItemText(I18nUtils.getString("PAUSE"));
                 pauseTrayIcon.setSize(tray.getTrayIconSize());
             	icon = pauseTrayIcon.getIcon(color).getImage();
             } else {
-                getPlayMenuItem().setText(I18nUtils.getString("PLAY"));
+                customTrayIcon.setPlayMenuItemText(I18nUtils.getString("PLAY"));
                 playTrayIcon.setSize(tray.getTrayIconSize());
             	icon = playTrayIcon.getIcon(color).getImage();
             }
@@ -338,112 +294,14 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
     	}
 	}
 
-	/**
-     * Getter of play menu item
-     * 
-     * @return
-     */
-    private JMenuItem getPlayMenuItem() {
-        if (playMenuItem == null) {
-            playMenuItem = new JMenuItem(getBean(PlayAction.class));
-        }
-        return playMenuItem;
-    }
-
-    /**
-     * Getter of stop menu item
-     * 
-     * @return
-     */
-    private JMenuItem getStopMenuItem() {
-        return new JMenuItem(getBean(StopCurrentAudioObjectAction.class));
-    }
-
-    /**
-     * Getter of previous menu item
-     * 
-     * @return
-     */
-    private JMenuItem getPreviousMenuItem() {
-        return new JMenuItem(getBean(PlayPreviousAudioObjectAction.class));
-    }
-
-    /**
-     * Getter for next menu item
-     * 
-     * @return
-     */
-    private JMenuItem getNextMenuItem() {
-        return new JMenuItem(getBean(PlayNextAudioObjectAction.class));
-    }
-
-    /**
-     * Getter for mute menu item
-     * 
-     * @return
-     */
-    private JCheckBoxMenuItem getMuteCheckBoxMenuItem() {
-        JCheckBoxMenuItem mute = new JCheckBoxMenuItem(getBean(MuteAction.class));
-        mute.setIcon(null);
-        return mute;
-    }
-
-    /**
-     * Getter for shuffle menu item
-     * 
-     * @return
-     */
-    private JCheckBoxMenuItem getShuffleCheckBoxMenuItem() {
-        return new JCheckBoxMenuItem(getBean(ShuffleModeAction.class));
-    }
-
-    /**
-     * Getter for repeat menu item
-     */
-    private JCheckBoxMenuItem getRepeatCheckBoxMenuItem() {
-        return new JCheckBoxMenuItem(getBean(RepeatModeAction.class));
-    }
-
-    /**
-     * Getter for showOSD menu item
-     * 
-     * @return
-     */
-    private JCheckBoxMenuItem getShowOSDCheckBoxMenuItem() {
-        return new JCheckBoxMenuItem(getBean(ToggleOSDSettingAction.class));
-    }
-
-    /**
-     * Getter for about menu item
-     * 
-     * @return
-     */
-    private JMenuItem getAboutMenuItem() {
-        return new JMenuItem(getBean(ShowAboutAction.class));
-    }
-
-    /**
-     * Getter for exit menu item
-     * 
-     * @return
-     */
-    private JMenuItem getExitMenuItem() {
-        return new JMenuItem(getBean(ExitAction.class));
-    }
-
     /**
      * Getter for trayIcon
      * 
      * @return
      */
-    private JTrayIcon getTrayIcon() {
+    private TrayIcon getTrayIcon() {
         if (trayIcon == null) {
-        	Dimension iconSize = tray.getTrayIconSize();
-        	Image icon = ImageUtils.scaleImageBicubic(Images.getImage(Images.APP_LOGO_32).getImage(), iconSize.width, iconSize.height).getImage();
-            trayIcon = new JTrayIcon(icon, getOsManager().isLinux(), getBean(ToggleWindowVisibilityAction.class));
-            trayIcon.setToolTip(StringUtils.getString(Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
-            JPopupMenu popupmenu = fillMenu(new JTrayIconPopupMenu(trayIcon));
-            trayIcon.setJTrayIconJPopupMenu(popupmenu);
+        	trayIcon = customTrayIcon.getTrayIcon(Images.getImage(Images.APP_LOGO_32).getImage(), tray.getTrayIconSize().width);
         }
         return trayIcon;
     }

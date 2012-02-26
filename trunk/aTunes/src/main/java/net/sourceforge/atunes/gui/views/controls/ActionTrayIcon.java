@@ -96,8 +96,9 @@ public class ActionTrayIcon extends TrayIcon {
             this.action = action;
         }
 
+        
         @Override
-        public void mouseClicked(MouseEvent e) {
+        public void mousePressed(MouseEvent e) {
             if (GuiUtils.isPrimaryMouseButton(e)) {
                 action.actionPerformed(null);
             }

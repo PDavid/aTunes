@@ -112,7 +112,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter implements App
 	
 	@Override
 	public boolean areTrayIconsSupported() {
-		return false;
+		return true;
 	}
 	
 	@Override

@@ -170,7 +170,15 @@ public final class JTrayIcon extends TrayIcon {
         popupMenu.addPopupMenuListener(popupMenuListener);
         setTrayIconMouseListener();
     }
-
+    
+    /**
+     * Returns popup menu
+     * @return
+     */
+    public JPopupMenu getJTrayIconPopup() {
+    	return popupMenu;
+    }
+    
     @Override
     public void setPopupMenu(PopupMenu popup) {
         throw new UnsupportedOperationException("use setJTrayIconPopupMenu(JTrayIconPopupMenu popup) instead");

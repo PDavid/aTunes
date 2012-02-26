@@ -16,6 +16,7 @@ aTunes 2.2.0
 - Optimizations retrieving list of covers of albums in artist panel
 - Removed status bar text showing current element being played
 - Last.fm cache simplified to use only one ehcache cache
+- Support for tray icons in Mac OS X
 
 aTunes 2.1.1
 ------------

@@ -32,6 +32,7 @@ import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayerEngine;
+import net.sourceforge.atunes.model.ITrayIcon;
 import net.sourceforge.atunes.model.OperatingSystem;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -452,5 +453,10 @@ public class OsManager implements IOSManager, ApplicationContextAware {
 	@Override
 	public boolean isMultipleInstancesSupported() {
 		return adapter.isMultipleInstancesSupported();
+	}
+	
+	@Override
+	public ITrayIcon getTrayIcon() {
+		return adapter.getTrayIcon();
 	}
 }
