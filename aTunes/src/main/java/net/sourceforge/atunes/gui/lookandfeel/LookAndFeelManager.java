@@ -78,6 +78,9 @@ public final class LookAndFeelManager implements PluginListener, ILookAndFeelMan
     
     private IApplicationArguments applicationArguments;
 
+    /**
+     * @param osManager
+     */
     public LookAndFeelManager(IOSManager osManager) {
         lookAndFeels = osManager.getLookAndFeels();
         defaultLookAndFeelClass = osManager.getDefaultLookAndFeel();

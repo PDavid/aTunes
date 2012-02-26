@@ -29,11 +29,24 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.player.xine.XineEngine;
+import net.sourceforge.atunes.kernel.modules.tray.CommonPlayerTrayIconsHandler;
+import net.sourceforge.atunes.kernel.modules.tray.IPlayerTrayIconsHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPlayerEngine;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class WindowsOperatingSystem extends OperatingSystemAdapter {
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
+public class WindowsOperatingSystem extends OperatingSystemAdapter implements ApplicationContextAware {
+	
+	private ApplicationContext context;
+	
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.context = applicationContext;
+	}
 
 	/**
      * Name of the Windows command
@@ -148,6 +161,11 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter {
 	@Override
 	public boolean isMultipleInstancesSupported() {
 		return true;
+	}
+
+	@Override
+	public IPlayerTrayIconsHandler getPlayerTrayIcons() {
+		return context.getBean(CommonPlayerTrayIconsHandler.class);
 	}
 
 }

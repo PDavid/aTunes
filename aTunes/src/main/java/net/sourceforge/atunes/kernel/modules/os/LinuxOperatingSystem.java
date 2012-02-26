@@ -23,12 +23,25 @@ package net.sourceforge.atunes.kernel.modules.os;
 import java.io.File;
 
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
+import net.sourceforge.atunes.kernel.modules.tray.CommonPlayerTrayIconsHandler;
+import net.sourceforge.atunes.kernel.modules.tray.IPlayerTrayIconsHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPlayerEngine;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class LinuxOperatingSystem extends OperatingSystemAdapter {
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
+public class LinuxOperatingSystem extends OperatingSystemAdapter implements ApplicationContextAware {
+
+	private ApplicationContext context;
+	
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.context = applicationContext;
+	}
+	
 	/**
      * Name of the Linux command
      */
@@ -93,4 +106,10 @@ public class LinuxOperatingSystem extends OperatingSystemAdapter {
 	public boolean isMultipleInstancesSupported() {
 		return true;
 	}
+	
+	@Override
+	public IPlayerTrayIconsHandler getPlayerTrayIcons() {
+		return context.getBean(CommonPlayerTrayIconsHandler.class);
+	}
+
 }

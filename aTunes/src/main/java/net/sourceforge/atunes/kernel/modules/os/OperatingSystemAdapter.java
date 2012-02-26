@@ -36,6 +36,7 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.SystemLookAndFeel;
+import net.sourceforge.atunes.kernel.modules.tray.IPlayerTrayIconsHandler;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -330,4 +331,10 @@ public abstract class OperatingSystemAdapter {
 	public final ITrayIcon getTrayIcon() {
 		return trayIcon;
 	}
+
+	/**
+	 * Returns implementor of player tray icons for this OS
+	 * @return
+	 */
+	public abstract IPlayerTrayIconsHandler getPlayerTrayIcons();
 }
