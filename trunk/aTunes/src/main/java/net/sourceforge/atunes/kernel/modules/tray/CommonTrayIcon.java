@@ -31,7 +31,6 @@ import net.sourceforge.atunes.gui.views.controls.JTrayIconPopupMenu;
 import net.sourceforge.atunes.kernel.actions.ToggleWindowVisibilityAction;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ITrayIcon;
-import net.sourceforge.atunes.model.ITrayIconFiller;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 

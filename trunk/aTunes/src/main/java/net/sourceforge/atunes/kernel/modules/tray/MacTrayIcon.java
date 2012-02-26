@@ -27,7 +27,6 @@ import java.awt.TrayIcon;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.model.ITrayIcon;
-import net.sourceforge.atunes.model.ITrayIconFiller;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**

@@ -25,6 +25,8 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Map;
 
+import net.sourceforge.atunes.kernel.modules.tray.IPlayerTrayIconsHandler;
+
 /**
  * Holds information about specific Operating System data
  * @author alex
@@ -277,5 +279,11 @@ public interface IOSManager {
 	 * @return
 	 */
 	public ITrayIcon getTrayIcon();
+
+	/**
+	 * Returns responsible of player tray icons
+	 * @return
+	 */
+	public IPlayerTrayIconsHandler getPlayerTrayIcons();
 
 }

@@ -41,7 +41,6 @@ import net.sourceforge.atunes.kernel.actions.ShowAboutAction;
 import net.sourceforge.atunes.kernel.actions.ShuffleModeAction;
 import net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.ToggleOSDSettingAction;
-import net.sourceforge.atunes.model.ITrayIconFiller;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.springframework.beans.BeansException;
