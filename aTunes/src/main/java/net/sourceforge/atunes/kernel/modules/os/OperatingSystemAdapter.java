@@ -42,6 +42,7 @@ import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayerEngine;
 import net.sourceforge.atunes.model.IPlayerHandler;
+import net.sourceforge.atunes.model.ITrayIcon;
 import net.sourceforge.atunes.model.OperatingSystem;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -53,6 +54,15 @@ public abstract class OperatingSystemAdapter {
 	protected OperatingSystem systemType;
 	
 	protected IOSManager osManager;
+	
+	private ITrayIcon trayIcon;
+	
+	/**
+	 * @param trayIcon
+	 */
+	public final void setTrayIcon(ITrayIcon trayIcon) {
+		this.trayIcon = trayIcon;
+	}
 	
 	/**
 	 * @param systemType
@@ -312,4 +322,12 @@ public abstract class OperatingSystemAdapter {
 	 * @return
 	 */
 	public abstract boolean isMultipleInstancesSupported();
+	
+	/**
+	 * Returns implementor of tray icon for this OS
+	 * @return
+	 */
+	public final ITrayIcon getTrayIcon() {
+		return trayIcon;
+	}
 }

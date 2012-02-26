@@ -272,4 +272,10 @@ public interface IOSManager {
 	 */
 	public boolean isWindows();
 
+	/**
+	 * Returns tray icon implementor for current OS
+	 * @return
+	 */
+	public ITrayIcon getTrayIcon();
+
 }
