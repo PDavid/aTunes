@@ -90,5 +90,6 @@
 	<bean id="playerTrayIconsBuilder" class="net.sourceforge.atunes.kernel.modules.tray.PlayerTrayIconsBuilder" scope="prototype"/>
 
     <bean id="commonPlayerTrayIconsHandler" class="net.sourceforge.atunes.kernel.modules.tray.CommonPlayerTrayIconsHandler" scope="prototype"/>
+    <bean id="macPlayerTrayIconsHandler" class="net.sourceforge.atunes.kernel.modules.tray.MacPlayerTrayIconsHandler" scope="prototype"/>
 	
 </beans>
