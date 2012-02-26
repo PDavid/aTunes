@@ -20,62 +20,12 @@
 
 package net.sourceforge.atunes;
 
-import java.util.List;
-
-import javax.swing.RepaintManager;
-
-import net.sourceforge.atunes.gui.debug.CheckThreadViolationRepaintManager;
-import net.sourceforge.atunes.model.IApplicationArguments;
-import net.sourceforge.atunes.model.IKernel;
-import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * Main class to launch aTunes.
  */
 public final class Main {
-	
-	private IApplicationArguments applicationArguments;
-	private IOSManager osManager;
-	private ApplicationPropertiesLogger applicationPropertiesLogger;
-	private MultipleInstancesCheck multipleInstancesCheck;
-	private ApplicationArgumentsSender applicationArgumentsSender;
-
-	/**
-	 * @param applicationArguments
-	 */
-	public void setApplicationArguments(IApplicationArguments applicationArguments) {
-		this.applicationArguments = applicationArguments;
-	}
-	
-	/**
-	 * @param osManager
-	 */
-	public void setOsManager(IOSManager osManager) {
-		this.osManager = osManager;
-	}
-	
-	/**
-	 * @param applicationPropertiesLogger
-	 */
-	public void setApplicationPropertiesLogger(ApplicationPropertiesLogger applicationPropertiesLogger) {
-		this.applicationPropertiesLogger = applicationPropertiesLogger;
-	}
-	
-	/**
-	 * @param multipleInstancesCheck
-	 */
-	public void setMultipleInstancesCheck(MultipleInstancesCheck multipleInstancesCheck) {
-		this.multipleInstancesCheck = multipleInstancesCheck;
-	}
-	
-	/**
-	 * @param applicationArgumentsSender
-	 */
-	public void setApplicationArgumentsSender(ApplicationArgumentsSender applicationArgumentsSender) {
-		this.applicationArgumentsSender = applicationArgumentsSender;
-	}
 	
     /**
      * Main method for calling aTunes.
@@ -85,38 +35,10 @@ public final class Main {
         // Enable uncaught exception catching
         Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler());
 
-        // Fetch arguments into a list
-        List<String> arguments = StringUtils.fromStringArrayToList(args);
+        // Initialize Spring
     	Context.initialize();
-        // Save arguments, if application is restarted they will be necessary
-    	Context.getBean(IApplicationArguments.class).saveArguments(arguments);
+    	
     	// Now start application
-    	Context.getBean(Main.class).start(arguments);
-    }
-    
-    private void start(List<String> arguments) {
-        // For detecting Swing threading violations
-        if (applicationArguments.isDebug()) {
-            RepaintManager.setCurrentManager(new CheckThreadViolationRepaintManager());
-        }
-
-        // Set log4j properties
-        Logger.loadProperties(applicationArguments.isDebug(), osManager);
-
-        // First, look up for other instances running
-        if (!applicationArguments.isMultipleInstance() && !multipleInstancesCheck.isFirstInstance()) {
-            // Is not first aTunes instance running, so send parameters and finalize
-        	applicationArgumentsSender.sendArgumentsToFirstInstance(arguments);
-        } else {
-            // WE ARE CLOSING ERROR STREAM!!!
-            // THIS IS DONE TO AVOID ANNOYING MESSAGES FROM SOME LIBRARIES
-            System.err.close();
-
-            // Log program properties
-            applicationPropertiesLogger.logProgramProperties();
-
-            // Start the Kernel, which really starts application
-            Context.getBean(IKernel.class).start();
-        }
-    }
+    	Context.getBean(ApplicationStarter.class).start(StringUtils.fromStringArrayToList(args));
+    }    
 }
