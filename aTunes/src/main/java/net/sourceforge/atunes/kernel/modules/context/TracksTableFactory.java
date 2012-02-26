@@ -22,12 +22,9 @@ package net.sourceforge.atunes.kernel.modules.context;
 
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.model.ITrackInfo;
 
 public class TracksTableFactory {
 
@@ -58,18 +55,7 @@ public class TracksTableFactory {
         tracksTable.getTableHeader().setResizingAllowed(false);
         tracksTable.setColumnModel(new TracksDefaultTableColumnModel());
 
-        tracksTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    int selectedTrack = tracksTable.getSelectedRow();
-                    if (selectedTrack != -1) {
-                        ITrackInfo track = ((ITrackTableModel) tracksTable.getModel()).getTrack(selectedTrack);
-                        listener.trackSelected(track);
-                    }
-                }
-            }
-        });
+        tracksTable.getSelectionModel().addListSelectionListener(new TracksTableListSelectionListener(listener, tracksTable));
 
         return tracksTable;
 	}
