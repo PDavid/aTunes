@@ -43,6 +43,11 @@ public final class Images {
     public static final String APP_LOGO_300 = "logo300x300.png";
     public static final String APP_LOGO_TRAY_ICON_MAC = "trayIconMac.png";
     public static final String POWERED_BY_LAST_FM = "poweredByLastFm.png";
+    public static final String PREVIOUS_TRAY_ICON_MAC = "previousTrayIconMac.png";
+    public static final String NEXT_TRAY_ICON_MAC = "nextTrayIconMac.png";
+    public static final String STOP_TRAY_ICON_MAC = "stopTrayIconMac.png";
+    public static final String PLAY_TRAY_ICON_MAC = "playTrayIconMac.png";
+    public static final String PAUSE_TRAY_ICON_MAC = "pauseTrayIconMac.png";
     
     private Images() {}
 

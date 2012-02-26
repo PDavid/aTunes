@@ -26,8 +26,8 @@ import java.util.Map;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.macos.MacOSXLookAndFeel;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
-import net.sourceforge.atunes.kernel.modules.tray.CommonPlayerTrayIconsHandler;
 import net.sourceforge.atunes.kernel.modules.tray.IPlayerTrayIconsHandler;
+import net.sourceforge.atunes.kernel.modules.tray.MacPlayerTrayIconsHandler;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -139,7 +139,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter implements App
 	
 	@Override
 	public IPlayerTrayIconsHandler getPlayerTrayIcons() {
-		return context.getBean(CommonPlayerTrayIconsHandler.class);
+		return context.getBean(MacPlayerTrayIconsHandler.class);
 	}
 
 }
