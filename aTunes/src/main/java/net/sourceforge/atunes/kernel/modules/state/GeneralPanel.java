@@ -150,12 +150,10 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 			}
 		});
         
-        // Hide tray icons controls if not supported by opertating system
-        if (!osManager.areTrayIconsSupported()) {
-        	showIconTray.setVisible(false);
-        	showTrayPlayer.setVisible(false);
-        	trayPlayerColorSelector.setVisible(false);
-        }
+        // Hide tray icons controls if not supported by operating system
+        showIconTray.setVisible(osManager.areTrayIconsSupported());
+        showTrayPlayer.setVisible(osManager.areTrayIconsSupported());
+        trayPlayerColorSelector.setVisible(osManager.areTrayIconsSupported() && osManager.areTrayIconsColorsSupported());
         
         
         JLabel lookAndFeelLabel = new JLabel(I18nUtils.getString("LOOK_AND_FEEL"));

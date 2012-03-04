@@ -337,4 +337,12 @@ public abstract class OperatingSystemAdapter {
 	 * @return
 	 */
 	public abstract IPlayerTrayIconsHandler getPlayerTrayIcons();
+
+	/**
+	 * Returns if icons in system tray support change their colors
+	 * @return
+	 */
+	public boolean areTrayIconsColorsSupported() {
+		return true;
+	}
 }

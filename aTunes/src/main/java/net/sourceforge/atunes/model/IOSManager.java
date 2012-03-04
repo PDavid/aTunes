@@ -286,4 +286,10 @@ public interface IOSManager {
 	 */
 	public IPlayerTrayIconsHandler getPlayerTrayIcons();
 
+	/**
+	 * Returns if icons in system tray support change their colors
+	 * @return
+	 */
+	public boolean areTrayIconsColorsSupported();
+
 }

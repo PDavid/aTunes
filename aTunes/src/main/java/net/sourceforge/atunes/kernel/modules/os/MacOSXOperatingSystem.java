@@ -142,4 +142,8 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter implements App
 		return context.getBean(MacPlayerTrayIconsHandler.class);
 	}
 
+	@Override
+	public boolean areTrayIconsColorsSupported() {
+		return false;
+	}
 }

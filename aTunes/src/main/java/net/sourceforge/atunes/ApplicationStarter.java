@@ -86,9 +86,6 @@ public class ApplicationStarter {
      * @param arguments
      */
     public void start(List<String> arguments) {
-        // Save arguments, if application is restarted they will be necessary
-    	applicationArguments.saveArguments(arguments);
-
         // For detecting Swing threading violations
         if (applicationArguments.isDebug()) {
             RepaintManager.setCurrentManager(new CheckThreadViolationRepaintManager());
