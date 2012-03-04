@@ -24,6 +24,7 @@ import java.awt.Dimension;
 import java.awt.Image;
 
 import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.model.IPlayerTrayIconsHandler;
 
 public class MacPlayerTrayIconsHandler implements IPlayerTrayIconsHandler {
 	

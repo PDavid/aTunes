@@ -27,12 +27,12 @@ import java.util.Map;
 import java.util.Properties;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.modules.tray.IPlayerTrayIconsHandler;
 import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayerEngine;
+import net.sourceforge.atunes.model.IPlayerTrayIconsHandler;
 import net.sourceforge.atunes.model.ITrayIcon;
 import net.sourceforge.atunes.model.OperatingSystem;
 import net.sourceforge.atunes.utils.Logger;

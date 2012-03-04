@@ -29,6 +29,7 @@ import net.sourceforge.atunes.gui.images.PauseTrayImageIcon;
 import net.sourceforge.atunes.gui.images.PlayTrayImageIcon;
 import net.sourceforge.atunes.gui.images.PreviousTrayImageIcon;
 import net.sourceforge.atunes.gui.images.StopTrayImageIcon;
+import net.sourceforge.atunes.model.IPlayerTrayIconsHandler;
 import net.sourceforge.atunes.model.IState;
 
 import org.springframework.beans.BeansException;
