@@ -174,22 +174,7 @@ public final class AudioFilePictureUtils {
             byte[] imageRawData = artwork != null ? artwork.getBinaryData() : null;
 
             if (imageRawData != null) {
-                BufferedImage bi = ImageIO.read(new ByteArrayInputStream(imageRawData));
-                if (bi != null) {
-                    ImageIcon imageIcon = new ImageIcon(bi);
-                    if (width != -1 || height != -1) {
-                        int maxSize = (imageIcon.getIconWidth() > imageIcon.getIconHeight()) ? imageIcon.getIconWidth() : imageIcon.getIconHeight();
-                        int newWidth = (int) ((float) imageIcon.getIconWidth() / (float) maxSize * width);
-                        int newHeight = (int) ((float) imageIcon.getIconHeight() / (float) maxSize * height);
-
-                        BufferedImage resizedImage = ImageUtils.toBufferedImage(ImageUtils.scaleImageBicubic(imageIcon.getImage(), newWidth, newHeight).getImage());
-                        if (resizedImage != null) {
-                            return new ImageIcon(resizedImage);
-                        }
-                    } else {
-                        return new ImageIcon(bi);
-                    }
-                }
+                return processInternalPicture(width, height, imageRawData);
             }
             return null;
         } catch (FileNotFoundException e) {
@@ -200,6 +185,32 @@ public final class AudioFilePictureUtils {
             return null;
         }
     }
+
+	/**
+	 * @param width
+	 * @param height
+	 * @param imageRawData
+	 * @throws IOException
+	 */
+	private static ImageIcon processInternalPicture(int width, int height, byte[] imageRawData) throws IOException {
+		BufferedImage bi = ImageIO.read(new ByteArrayInputStream(imageRawData));
+		if (bi != null) {
+		    ImageIcon imageIcon = new ImageIcon(bi);
+		    if (width != -1 || height != -1) {
+		        int maxSize = (imageIcon.getIconWidth() > imageIcon.getIconHeight()) ? imageIcon.getIconWidth() : imageIcon.getIconHeight();
+		        int newWidth = (int) ((float) imageIcon.getIconWidth() / (float) maxSize * width);
+		        int newHeight = (int) ((float) imageIcon.getIconHeight() / (float) maxSize * height);
+
+		        BufferedImage resizedImage = ImageUtils.toBufferedImage(ImageUtils.scaleImageBicubic(imageIcon.getImage(), newWidth, newHeight).getImage());
+		        if (resizedImage != null) {
+		            return new ImageIcon(resizedImage);
+		        }
+		    } else {
+		        return new ImageIcon(bi);
+		    }
+		}
+		return null;
+	}
 
     /**
      * Saves and internal image of an audio file to a file.
