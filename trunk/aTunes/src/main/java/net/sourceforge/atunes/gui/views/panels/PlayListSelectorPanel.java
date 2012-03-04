@@ -81,6 +81,7 @@ public final class PlayListSelectorPanel extends JPanel implements IPlayListSele
     public void initialize() {
     	options = new PopUpButton(PopUpButton.BOTTOM_RIGHT, lookAndFeelManager);
     	playListCombo = new JComboBox();
+    	playListCombo.setMaximumRowCount(30);
 
     	GridBagConstraints c = new GridBagConstraints();
     	
