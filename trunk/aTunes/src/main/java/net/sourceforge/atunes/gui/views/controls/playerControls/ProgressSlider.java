@@ -80,6 +80,7 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
         progressBar.setMinimum(0);
         progressBar.setValue(0);
         progressBar.setFocusable(false);
+        progressBar.setVisible(false);
         
         remainingTime = new JLabel();
         remainingTime.setHorizontalAlignment(SwingConstants.LEFT);
