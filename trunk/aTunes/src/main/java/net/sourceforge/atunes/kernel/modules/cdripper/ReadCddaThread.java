@@ -121,36 +121,30 @@ final class ReadCddaThread extends Thread {
 	 * @param outputLine
 	 */
 	private void analyzeOutputLine(String outputLine) {
-        // Used to detect if a CD is present. Don't know if this gets returned on
-        // all drive, so may not work as expected. But if it does, this means a CD
-        // is present and we don't have to wait until the disk info is read out. This 
-        // means we can give the "no CD" error much faster!
-        if (outputLine.contains("bytes buffer memory requested")) {
-            cdda2wav.setCdLoaded(true);
-        }
+        checkCdLoaded(outputLine);
+        checkNoAudioTracks(outputLine);
+        analyzeTracks(outputLine); 
+        analyzeCDDBId(outputLine);
+        checkCDDBConnection(outputLine);
+        analyzeAlbumAndTrackInformation(outputLine);
+        analyzeDataTrack(outputLine);
+	}
 
-        // Sometimes cdda2wav gives an error message 
-        // when a data CD is inserted
-        if (outputLine.contains("This disk has no audio tracks")) {
-        	cdda2wav.setCdLoaded(false);
+	/**
+	 * @param outputLine
+	 */
+	private void analyzeDataTrack(String outputLine) {
+		// If there is a data track do remove one track.
+        if (outputLine.matches("......................data.*")) {
+            tracks = tracks - 1;
         }
+	}
 
-        if (outputLine.matches("Tracks:.*")) {
-        	cdda2wav.setCdLoaded(true);
-            tracks = Integer.parseInt(outputLine.substring(outputLine.indexOf(':') + 1, outputLine.indexOf(' ')));
-            totalDuration = outputLine.substring(outputLine.indexOf(' ') + 1);
-        } else if (outputLine.matches("CDDB discid.*")) {
-        	cdda2wav.setCdLoaded(true);
-            id = outputLine.substring(outputLine.indexOf('0'));
-        }
-
-        // We need to check if there was an connection error to avoid an exception
-        // In this case aTunes will behave as previously (no Artist/Album info).
-        if (outputLine.matches(".cddb connect failed.*")) {
-            cddbError = true;
-        }
-
-        // Get album info (only if connection to cddb could be established)
+	/**
+	 * @param outputLine
+	 */
+	private void analyzeAlbumAndTrackInformation(String outputLine) {
+		// Get album info (only if connection to cddb could be established)
         if (outputLine.matches("Album title:.*") && !cddbError) {
         	cdda2wav.setCdLoaded(true);
         	readAlbumAndArtist(outputLine);
@@ -161,10 +155,61 @@ final class ReadCddaThread extends Thread {
         	cdda2wav.setCdLoaded(true);
         	readTrackInfo(outputLine);
         }
+	}
 
-        // If there is a data track do remove one track.
-        if (outputLine.matches("......................data.*")) {
-            tracks = tracks - 1;
+	/**
+	 * @param outputLine
+	 */
+	private void checkCDDBConnection(String outputLine) {
+		// We need to check if there was an connection error to avoid an exception
+        // In this case aTunes will behave as previously (no Artist/Album info).
+        if (outputLine.matches(".cddb connect failed.*")) {
+            cddbError = true;
+        }
+	}
+
+	/**
+	 * @param outputLine
+	 */
+	private void analyzeCDDBId(String outputLine) {
+		if (outputLine.matches("CDDB discid.*")) {
+        	cdda2wav.setCdLoaded(true);
+            id = outputLine.substring(outputLine.indexOf('0'));
+        }
+	}
+
+	/**
+	 * @param outputLine
+	 */
+	private void analyzeTracks(String outputLine) {
+		if (outputLine.matches("Tracks:.*")) {
+        	cdda2wav.setCdLoaded(true);
+            tracks = Integer.parseInt(outputLine.substring(outputLine.indexOf(':') + 1, outputLine.indexOf(' ')));
+            totalDuration = outputLine.substring(outputLine.indexOf(' ') + 1);
+        }
+	}
+
+	/**
+	 * @param outputLine
+	 */
+	private void checkCdLoaded(String outputLine) {
+		// Used to detect if a CD is present. Don't know if this gets returned on
+        // all drive, so may not work as expected. But if it does, this means a CD
+        // is present and we don't have to wait until the disk info is read out. This 
+        // means we can give the "no CD" error much faster!
+        if (outputLine.contains("bytes buffer memory requested")) {
+            cdda2wav.setCdLoaded(true);
+        }
+	}
+
+	/**
+	 * @param outputLine
+	 */
+	private void checkNoAudioTracks(String outputLine) {
+		// Sometimes cdda2wav gives an error message 
+        // when a data CD is inserted
+        if (outputLine.contains("This disk has no audio tracks")) {
+        	cdda2wav.setCdLoaded(false);
         }
 	}
 	

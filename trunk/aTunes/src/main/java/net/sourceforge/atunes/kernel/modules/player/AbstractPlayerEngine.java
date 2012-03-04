@@ -305,46 +305,59 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
     @Override
 	public final void playCurrentAudioObject(boolean buttonPressed) {
         if (isEnginePlaying() && buttonPressed) { // Pause
-            try {
-                paused = true;
-                pausePlayback();
-                Logger.info("Pause");
-                callPlaybackStateListeners(PlaybackState.PAUSED);
-            } catch (Exception e) {
-                handlePlayerEngineError(e);
-                stopCurrentAudioObject(false);
-            }
+            playButtonCausesPause();
+        } else if (paused && buttonPressed) { // Resume
+           	playButtonCausesResume();
         } else {
-            IAudioObject nextAudioObject = null;
-            try {
-                if (paused && buttonPressed) { // Resume
-                    if (!playListHandler.getCurrentPlayList(false).isEmpty()) {
-                        paused = false;
-                        resumePlayback();
-                        callPlaybackStateListeners(PlaybackState.RESUMING);
-                        Logger.info("Resumed paused song");
-                    }
-                } else {
-                    nextAudioObject = playListHandler.getCurrentAudioObjectFromVisiblePlayList();
-                    if (nextAudioObject != null) {
-                        if (isEnginePlaying() || paused) {
-                            stopCurrentAudioObject(false);
-                        }
-
-                        // We need to update current object and active playlist first
-                        playListHandler.setVisiblePlayListActive();
-                        playListEventListeners.selectedAudioObjectHasChanged(nextAudioObject);
-
-                        playAudioObject(nextAudioObject);
-                    }
-                }
-            } catch (Exception e) {
-                handlePlayerEngineError(e);
-                stopCurrentAudioObject(false);
-            }
+          	playAnotherAudioObject();
         }
-
     }
+
+	/**
+	 * 
+	 */
+	private void playAnotherAudioObject() {
+		IAudioObject nextAudioObject;
+		nextAudioObject = playListHandler.getCurrentAudioObjectFromVisiblePlayList();
+		if (nextAudioObject != null) {
+			if (isEnginePlaying() || paused) {
+				stopCurrentAudioObject(false);
+			}
+
+			// We need to update current object and active playlist first
+			playListHandler.setVisiblePlayListActive();
+			playListEventListeners.selectedAudioObjectHasChanged(nextAudioObject);
+
+			playAudioObject(nextAudioObject);
+		}
+	}
+
+	/**
+	 * 
+	 */
+	private void playButtonCausesResume() {
+		if (!playListHandler.getCurrentPlayList(false).isEmpty()) {
+			paused = false;
+			resumePlayback();
+			callPlaybackStateListeners(PlaybackState.RESUMING);
+			Logger.info("Resumed paused song");
+		}
+	}
+
+	/**
+	 * 
+	 */
+	private void playButtonCausesPause() {
+		try {
+		    paused = true;
+		    pausePlayback();
+		    Logger.info("Pause");
+		    callPlaybackStateListeners(PlaybackState.PAUSED);
+		} catch (Exception e) {
+		    handlePlayerEngineError(e);
+		    stopCurrentAudioObject(false);
+		}
+	}
 
     /**
      * Stops playing current audio object

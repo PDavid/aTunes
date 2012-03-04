@@ -563,7 +563,26 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         }
         playList.add(newLocation, audioObjects);
 
-        // If active play list was empty, then set audio object as selected for play
+        setSelectedItemAfterAddToPlayList(audioObjects, playList);
+
+        getBean(SavePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
+        getBean(ShufflePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
+
+        // Update play list number in status bar
+        showPlayListInformation(playList);
+
+        // Update play list table
+        getPlayListController().refreshPlayList();
+
+        Logger.info(StringUtils.getString(audioObjects.size(), " audio objects added to play list"));
+    }
+
+	/**
+	 * @param audioObjects
+	 * @param playList
+	 */
+	private void setSelectedItemAfterAddToPlayList(List<? extends IAudioObject> audioObjects, PlayList playList) {
+		// If active play list was empty, then set audio object as selected for play
         if (isActivePlayListVisible() && playList.size() == audioObjects.size()) {
             int selectedAudioObject = 0;
 
@@ -583,18 +602,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
             playListEventListeners.selectedAudioObjectHasChanged(audioObjects.get(selectedAudioObject));
             playList.setCurrentAudioObjectIndex(selectedAudioObject);
         }
-
-        getBean(SavePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
-        getBean(ShufflePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
-
-        // Update play list number in status bar
-        showPlayListInformation(playList);
-
-        // Update play list table
-        getPlayListController().refreshPlayList();
-
-        Logger.info(StringUtils.getString(audioObjects.size(), " audio objects added to play list"));
-    }
+	}
 
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#addToActivePlayList(java.util.List)
@@ -891,21 +899,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         }
 
         if (hasToBeRemoved) {
-            // Only stop if this is the active play list
-            if (isActivePlayListVisible()) {
-                playerHandler.stopCurrentAudioObject(false);
-            }
-            if (currentPlayList.isEmpty()) {
-                clear();
-            } else {
-                // If current audio object is removed, check if it's necessary to move current audio object (after remove current index is greater than play list size)
-                if (currentPlayList.getCurrentAudioObjectIndex() >= currentPlayList.size()) {
-                    currentPlayList.setCurrentAudioObjectIndex(currentPlayList.size() - 1);
-                }
-                if (isActivePlayListVisible()) {
-                	playListEventListeners.selectedAudioObjectHasChanged(currentPlayList.getCurrentAudioObject());
-                }
-            }
+            currentAudioObjectHasToBeRemoved(currentPlayList);
         } else {
             currentPlayList.setCurrentAudioObjectIndex(currentPlayList.indexOf(playingAudioObject));
             if (isActivePlayListVisible()) {
@@ -922,6 +916,27 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         showPlayListInformation(currentPlayList);
         Logger.info(StringUtils.getString(rows.length, " objects removed from play list"));
     }
+
+	/**
+	 * @param currentPlayList
+	 */
+	private void currentAudioObjectHasToBeRemoved(PlayList currentPlayList) {
+		// Only stop if this is the active play list
+		if (isActivePlayListVisible()) {
+		    playerHandler.stopCurrentAudioObject(false);
+		}
+		if (currentPlayList.isEmpty()) {
+		    clear();
+		} else {
+		    // If current audio object is removed, check if it's necessary to move current audio object (after remove current index is greater than play list size)
+		    if (currentPlayList.getCurrentAudioObjectIndex() >= currentPlayList.size()) {
+		        currentPlayList.setCurrentAudioObjectIndex(currentPlayList.size() - 1);
+		    }
+		    if (isActivePlayListVisible()) {
+		    	playListEventListeners.selectedAudioObjectHasChanged(currentPlayList.getCurrentAudioObject());
+		    }
+		}
+	}
 
     /**
      * Called when play list is cleared. Calls to all PlayListEventListener
