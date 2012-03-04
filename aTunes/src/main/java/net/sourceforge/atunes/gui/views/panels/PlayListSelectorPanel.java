@@ -25,18 +25,11 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+import javax.swing.AbstractAction;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
-import net.sourceforge.atunes.kernel.actions.ArrangePlayListColumnsAction;
-import net.sourceforge.atunes.kernel.actions.CloseOtherPlaylistsAction;
-import net.sourceforge.atunes.kernel.actions.ClosePlaylistAction;
-import net.sourceforge.atunes.kernel.actions.CopyPlayListToDeviceAction;
-import net.sourceforge.atunes.kernel.actions.NewPlayListAction;
-import net.sourceforge.atunes.kernel.actions.RenamePlaylistAction;
-import net.sourceforge.atunes.kernel.actions.SynchronizeDeviceWithPlayListAction;
 import net.sourceforge.atunes.model.IFilterPanel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListSelectorPanel;
@@ -53,13 +46,76 @@ public final class PlayListSelectorPanel extends JPanel implements IPlayListSele
 	private ILookAndFeelManager lookAndFeelManager;
 	
 	private IFilterPanel playListFilterPanel;
+	
+	private AbstractAction newPlayListAction;
     
+	private AbstractAction renamePlayListAction;
+	
+	private AbstractAction closePlayListAction;
+	
+	private AbstractAction closeOtherPlayListsAction;
+	
+	private AbstractAction arrangePlayListColumnsAction;
+	
+	private AbstractAction copyPlayListToDeviceAction;
+	
+	private AbstractAction syncDeviceWithPlayListAction;
+	
     /**
      * Instantiates a new play list tab panel.
      */
     public PlayListSelectorPanel() {
         super(new GridBagLayout());
     }
+    
+    /**
+     * @param syncDeviceWithPlayListAction
+     */
+    public void setSyncDeviceWithPlayListAction(AbstractAction syncDeviceWithPlayListAction) {
+		this.syncDeviceWithPlayListAction = syncDeviceWithPlayListAction;
+	}
+    
+    /**
+     * @param copyPlayListToDeviceAction
+     */
+    public void setCopyPlayListToDeviceAction(AbstractAction copyPlayListToDeviceAction) {
+		this.copyPlayListToDeviceAction = copyPlayListToDeviceAction;
+	}
+    
+    /**
+     * @param arrangePlayListColumnsAction
+     */
+    public void setArrangePlayListColumnsAction(AbstractAction arrangePlayListColumnsAction) {
+		this.arrangePlayListColumnsAction = arrangePlayListColumnsAction;
+	}
+    
+    /**
+     * @param closeOtherPlayListsAction
+     */
+    public void setCloseOtherPlayListsAction(AbstractAction closeOtherPlayListsAction) {
+		this.closeOtherPlayListsAction = closeOtherPlayListsAction;
+	}
+    
+    /**
+     * @param closePlayListAction
+     */
+    public void setClosePlayListAction(AbstractAction closePlayListAction) {
+		this.closePlayListAction = closePlayListAction;
+	}
+    
+    /**
+     * @param renamePlayListAction
+     */
+    public void setRenamePlayListAction(AbstractAction renamePlayListAction) {
+		this.renamePlayListAction = renamePlayListAction;
+	}
+    
+    /**
+     * @param newPlayListAction
+     */
+    public void setNewPlayListAction(AbstractAction newPlayListAction) {
+		this.newPlayListAction = newPlayListAction;
+	}
 
     /**
      * @param playListFilterPanel
@@ -98,16 +154,23 @@ public final class PlayListSelectorPanel extends JPanel implements IPlayListSele
         c.insets = new Insets(0, 0, 0, 5);
         add(playListFilterPanel.getSwingComponent(), c);
 
-        options.add(Context.getBean(NewPlayListAction.class));
-        options.add(Context.getBean(RenamePlaylistAction.class));
-        options.add(Context.getBean(ClosePlaylistAction.class));
-        options.add(Context.getBean(CloseOtherPlaylistsAction.class));
-        options.addSeparator();
-        options.add(Context.getBean(ArrangePlayListColumnsAction.class));
-        options.addSeparator();
-        options.add(Context.getBean(CopyPlayListToDeviceAction.class));
-        options.add(Context.getBean(SynchronizeDeviceWithPlayListAction.class));
+        addActions();
     }
+
+	/**
+	 * Add actions to popup 
+	 */
+	private void addActions() {
+		options.add(newPlayListAction);
+        options.add(renamePlayListAction);
+        options.add(closePlayListAction);
+        options.add(closeOtherPlayListsAction);
+        options.addSeparator();
+        options.add(arrangePlayListColumnsAction);
+        options.addSeparator();
+        options.add(copyPlayListToDeviceAction);
+        options.add(syncDeviceWithPlayListAction);
+	}
 
 	@Override
 	public JComboBox getPlayListCombo() {
