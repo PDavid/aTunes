@@ -20,6 +20,9 @@
 
 package net.sourceforge.atunes;
 
+import java.util.List;
+
+import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -34,11 +37,16 @@ public final class Main {
     public static void main(String[] args) {
         // Enable uncaught exception catching
         Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler());
-
+        
         // Initialize Spring
     	Context.initialize();
+
+    	List<String> arguments = StringUtils.fromStringArrayToList(args);
     	
+        // Save arguments, if application is restarted they will be necessary
+    	Context.getBean(IApplicationArguments.class).saveArguments(arguments);
+
     	// Now start application
-    	Context.getBean(ApplicationStarter.class).start(StringUtils.fromStringArrayToList(args));
+    	Context.getBean(ApplicationStarter.class).start(arguments);
     }    
 }

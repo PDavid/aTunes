@@ -85,7 +85,7 @@ public class OsManager implements IOSManager, ApplicationContextAware {
     }
     
 	@Override
-	public String getUserConfigFolder() {
+	public final String getUserConfigFolder() {
 		// Get path depending on parameters
 		String userConfigFolder = getConfigFolder();
 
@@ -464,5 +464,10 @@ public class OsManager implements IOSManager, ApplicationContextAware {
 	@Override
 	public IPlayerTrayIconsHandler getPlayerTrayIcons() {
 		return adapter.getPlayerTrayIcons();
+	}
+	
+	@Override
+	public boolean areTrayIconsColorsSupported() {
+		return adapter.areTrayIconsColorsSupported();
 	}
 }
