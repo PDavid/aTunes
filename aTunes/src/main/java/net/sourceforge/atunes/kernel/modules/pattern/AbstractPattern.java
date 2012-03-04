@@ -51,13 +51,7 @@ public abstract class AbstractPattern {
     /**
      * DUMMY PATTERN, USED TO MATCH ANYTHING
      */
-    private static final AbstractPattern ANY_PATTERN = new AbstractPattern('?', "ANY", true, true) {
-        @Override
-        public String getAudioFileStringValue(ILocalAudioObject audioFile) {
-            // This is a dummy pattern
-            return null;
-        }
-    };
+    private static final AbstractPattern ANY_PATTERN = new AnyPattern('?', "ANY", true, true);
     
     static {
         patterns = new ArrayList<AbstractPattern>();
@@ -65,67 +59,16 @@ public abstract class AbstractPattern {
         // DUMMY PATTERN, USED TO MATCH ANYTHING
         patterns.add(ANY_PATTERN);
 
-        patterns.add(new AbstractPattern('T', "TITLE", true, false) {
-            @Override
-            public String getAudioFileStringValue(ILocalAudioObject audioFile) {
-                return audioFile.getTitleOrFileName();
-            }
-        });
-        patterns.add(new AbstractPattern('A', "ARTIST", true, true) {
-            @Override
-            public String getAudioFileStringValue(ILocalAudioObject audioFile) {
-                return audioFile.getArtist();
-            }
-        });
-        patterns.add(new AbstractPattern('L', "ALBUM", true, true) {
-            @Override
-            public String getAudioFileStringValue(ILocalAudioObject audioFile) {
-                return audioFile.getAlbum();
-            }
-        });
-        patterns.add(new AbstractPattern('R', "ALBUM_ARTIST", true, true) {
-            @Override
-            public String getAudioFileStringValue(ILocalAudioObject audioFile) {
-                return audioFile.getAlbumArtist();
-            }
-        });
-        patterns.add(new AbstractPattern('N', "TRACK", true, false) {
-            @Override
-            public String getAudioFileStringValue(ILocalAudioObject audioFile) {
-                String track = String.valueOf(audioFile.getTrackNumber());
-                return track.length() < 2 ? StringUtils.getString("0", track) : track;
-            }
-        });
-        patterns.add(new AbstractPattern('G', "GENRE", true, true) {
-            @Override
-            public String getAudioFileStringValue(ILocalAudioObject audioFile) {
-                return audioFile.getGenre();
-            }
-        });
-        patterns.add(new AbstractPattern('Y', "YEAR", true, true) {
-            @Override
-            public String getAudioFileStringValue(ILocalAudioObject audioFile) {
-                return audioFile.getYear();
-            }
-        });
-        patterns.add(new AbstractPattern('C', "COMPOSER", true, true) {
-            @Override
-            public String getAudioFileStringValue(ILocalAudioObject audioFile) {
-                return audioFile.getComposer();
-            }
-        });
-        patterns.add(new AbstractPattern('S', "ARTIST_FIRST_CHAR", false, false) {
-            @Override
-            public String getAudioFileStringValue(ILocalAudioObject audioFile) {
-                return audioFile.getArtist().substring(0, 1);
-            }
-        });
-        patterns.add(new AbstractPattern('D', "DISC_NUMBER", true, true) {
-            @Override
-            public String getAudioFileStringValue(ILocalAudioObject audioFile) {
-                return String.valueOf(audioFile.getDiscNumber());
-            }
-        });
+        patterns.add(new TitlePattern('T', "TITLE", true, false));
+        patterns.add(new ArtistPattern('A', "ARTIST", true, true));
+        patterns.add(new AlbumPattern('L', "ALBUM", true, true));
+        patterns.add(new AlbumArtistPattern('R', "ALBUM_ARTIST", true, true));
+        patterns.add(new TrackPattern('N', "TRACK", true, false));
+        patterns.add(new GenrePattern('G', "GENRE", true, true));
+        patterns.add(new YearPattern('Y', "YEAR", true, true));
+        patterns.add(new ComposerPattern('C', "COMPOSER", true, true));
+        patterns.add(new ArtistFirstCharPattern('S', "ARTIST_FIRST_CHAR", false, false));
+        patterns.add(new DiscNumberPattern('D', "DISC_NUMBER", true, true));
     }
 
     /**
