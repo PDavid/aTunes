@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.tray;
+package net.sourceforge.atunes.model;
 
 import java.awt.Dimension;
 import java.awt.Image;

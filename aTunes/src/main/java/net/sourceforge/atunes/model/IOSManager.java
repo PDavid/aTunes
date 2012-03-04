@@ -25,7 +25,6 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.tray.IPlayerTrayIconsHandler;
 
 /**
  * Holds information about specific Operating System data

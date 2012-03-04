@@ -27,9 +27,9 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
 import net.sourceforge.atunes.kernel.modules.tray.CommonPlayerTrayIconsHandler;
-import net.sourceforge.atunes.kernel.modules.tray.IPlayerTrayIconsHandler;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPlayerEngine;
+import net.sourceforge.atunes.model.IPlayerTrayIconsHandler;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.springframework.beans.BeansException;
