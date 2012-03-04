@@ -31,22 +31,10 @@ import java.util.List;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.StateChangeListeners;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IColorBeanFactory;
-import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFavorites;
-import net.sourceforge.atunes.model.IFontBeanFactory;
-import net.sourceforge.atunes.model.IHotkeyHandler;
 import net.sourceforge.atunes.model.IListOfPlayLists;
-import net.sourceforge.atunes.model.ILocaleBeanFactory;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.model.INetworkHandler;
-import net.sourceforge.atunes.model.INotificationsHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.IPodcastFeed;
-import net.sourceforge.atunes.model.IProxyBeanFactory;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -72,17 +60,6 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	 * After all handlers have been initialized it's possible to persist play list, not before (to prevent saved play lists to be stored again)
 	 */
 	private boolean playListPersistAllowed = false;
-	private ILookAndFeelManager lookAndFeelManager;
-	private IPlayerHandler playerHandler;
-	private IHotkeyHandler hotkeyHandler;
-	private INotificationsHandler notificationsHandler;
-	private IPluginsHandler pluginsHandler;
-	private IDesktop desktop;
-	private INetworkHandler networkHandler;
-	private IColorBeanFactory colorBeanFactory;
-	private IFontBeanFactory fontBeanFactory;
-	private ILocaleBeanFactory localeBeanFactory;
-	private IProxyBeanFactory proxyBeanFactory;
 	private XMLSerializerService xmlSerializerService;
 	
 	/**
@@ -90,84 +67,6 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	 */
 	public void setXmlSerializerService(XMLSerializerService xmlSerializerService) {
 		this.xmlSerializerService = xmlSerializerService;
-	}
-	
-	/**
-	 * @param proxyBeanFactory
-	 */
-	public void setProxyBeanFactory(IProxyBeanFactory proxyBeanFactory) {
-		this.proxyBeanFactory = proxyBeanFactory;
-	}
-	
-	/**
-	 * @param localeBeanFactory
-	 */
-	public void setLocaleBeanFactory(ILocaleBeanFactory localeBeanFactory) {
-		this.localeBeanFactory = localeBeanFactory;
-	}
-	
-	/**
-	 * @param fontBeanFactory
-	 */
-	public void setFontBeanFactory(IFontBeanFactory fontBeanFactory) {
-		this.fontBeanFactory = fontBeanFactory;
-	}
-	
-	/**
-	 * @param colorBeanFactory
-	 */
-	public void setColorBeanFactory(IColorBeanFactory colorBeanFactory) {
-		this.colorBeanFactory = colorBeanFactory;
-	}
-	
-	/**
-	 * @param networkHandler
-	 */
-	public void setNetworkHandler(INetworkHandler networkHandler) {
-		this.networkHandler = networkHandler;
-	}
-	
-	/**
-	 * @param lookAndFeelManager
-	 */
-	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
-	}
-	
-	/**
-	 * @param playerHandler
-	 */
-	public void setPlayerHandler(IPlayerHandler playerHandler) {
-		this.playerHandler = playerHandler;
-	}
-	
-	/**
-	 * @param hotkeyHandler
-	 */
-	public void setHotkeyHandler(IHotkeyHandler hotkeyHandler) {
-		this.hotkeyHandler = hotkeyHandler;
-	}
-	
-	/**
-	 * @param notificationsHandler
-	 */
-	public void setNotificationsHandler(
-			INotificationsHandler notificationsHandler) {
-		this.notificationsHandler = notificationsHandler;
-	}
-	
-	/**
-	 * @param pluginsHandler
-	 */
-	public void setPluginsHandler(IPluginsHandler pluginsHandler) {
-		this.pluginsHandler = pluginsHandler;
-	}
-	
-	/**
-	 * @param desktop
-	 */
-	public void setDesktop(IDesktop desktop) {
-		this.desktop = desktop;
 	}
 	
 	@Override
@@ -548,9 +447,6 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	 */
     @Override
 	public void editPreferences() {
-    	EditPreferencesDialog dialog = getBean(EditPreferencesDialog.class);
-    	new EditPreferencesDialogController(dialog, getState(), getOsManager(), getFrame(), getBean(StateChangeListeners.class), lookAndFeelManager, 
-    			playerHandler, hotkeyHandler, notificationsHandler, 
-    			pluginsHandler, desktop, networkHandler, colorBeanFactory, fontBeanFactory, localeBeanFactory, proxyBeanFactory).start();
+    	getBean(EditPreferencesDialogController.class).start();
     }
 }

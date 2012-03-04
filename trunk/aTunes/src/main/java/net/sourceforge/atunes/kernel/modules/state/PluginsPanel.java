@@ -54,7 +54,7 @@ import net.sourceforge.atunes.gui.views.dialogs.PluginEditorDialog;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -100,26 +100,62 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	/**
 	 * Preferences dialog
 	 */
-	private EditPreferencesDialog dialog;
-	
-	private IState state;
+	private EditPreferencesDialog editPreferencesDialog;
 	
 	private IPluginsHandler pluginsHandler;
+	
+	private IFrame frame;
+	
+	private ILookAndFeelManager lookAndFeelManager;
+	
+	private IDesktop desktop;
+	
+	/**
+	 * @param editPreferencesDialog
+	 */
+	public void setEditPreferencesDialog(EditPreferencesDialog editPreferencesDialog) {
+		this.editPreferencesDialog = editPreferencesDialog;
+	}
+	
+	/**
+	 * @param pluginsHandler
+	 */
+	public void setPluginsHandler(IPluginsHandler pluginsHandler) {
+		this.pluginsHandler = pluginsHandler;
+	}
+	
+	/**
+	 * @param frame
+	 */
+	public void setFrame(IFrame frame) {
+		this.frame = frame;
+	}
+	
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+	
+	/**
+	 * @param desktop
+	 */
+	public void setDesktop(IDesktop desktop) {
+		this.desktop = desktop;
+	}
 
 	/**
 	 * Instantiates a new plugins panel.
-	 * @param dialog
-	 * @param frame
-	 * @param lookAndFeel
-	 * @param state
-	 * @param pluginsHandler
-	 * @param desktop 
 	 */
-	public PluginsPanel(EditPreferencesDialog dialog, final IFrame frame, final ILookAndFeel lookAndFeel, IState state, IPluginsHandler pluginsHandler, IDesktop desktop) {
+	public PluginsPanel() {
 		super(I18nUtils.getString("PLUGINS"));
-		this.state = state;
-		this.dialog = dialog;
-		this.pluginsHandler = pluginsHandler;
+	}
+	
+	/**
+	 * Initializes panel
+	 */
+	public void initialize() {
 
 		enabledPluginBox = new JCheckBox(I18nUtils.getString("ENABLED_PLUGINS"));
 
@@ -127,14 +163,14 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		c.gridx = 0;
 		c.gridy = 0;
 		c.weightx = 1;
-		c.weighty = state.isPluginsEnabled() ? 0 : 1;
+		c.weighty = getState().isPluginsEnabled() ? 0 : 1;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.anchor = GridBagConstraints.NORTHWEST;
 
 		add(enabledPluginBox,c);
 
 		JPanel mainPanel = new JPanel(new GridBagLayout());
-		mainPanel.setVisible(state.isPluginsEnabled());
+		mainPanel.setVisible(getState().isPluginsEnabled());
 		c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 1;
@@ -143,12 +179,12 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		c.fill = GridBagConstraints.BOTH;
 		add(mainPanel,c);
 
-		pluginsTable = lookAndFeel.getTable();
+		pluginsTable = lookAndFeelManager.getCurrentLookAndFeel().getTable();
 		pluginsTable.setRowHeight(CELL_HEIGHT);
 		pluginsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		pluginsTable.setColumnModel(new PluginsTableDefaultTableColumnModel());
 
-		JScrollPane scrollPane = lookAndFeel.getTableScrollPane(pluginsTable);
+		JScrollPane scrollPane = lookAndFeelManager.getCurrentLookAndFeel().getTableScrollPane(pluginsTable);
 		c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
@@ -194,7 +230,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		c.fill = GridBagConstraints.HORIZONTAL;
 		mainPanel.add(pluginDetailPanel, c);
 
-		pluginsTable.setDefaultRenderer(PluginInfo.class, lookAndFeel.getTableCellRenderer(new PluginsTableCellRendererCode(lookAndFeel)));
+		pluginsTable.setDefaultRenderer(PluginInfo.class, lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(new PluginsTableCellRendererCode(lookAndFeelManager.getCurrentLookAndFeel())));
 
 		pluginsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
@@ -232,7 +268,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 				int row = pluginsTable.getSelectedRow();
 				PluginInfo plugin = ((PluginsTableModel) pluginsTable.getModel()).getPluginAt(row);
 				PluginConfiguration configuration = ((PluginsTableModel) pluginsTable.getModel()).getPluginConfigurationAt(row);
-				PluginEditorDialog editorDialog = new PluginEditorDialog(PluginsPanel.this.dialog, plugin, configuration, lookAndFeel);
+				PluginEditorDialog editorDialog = new PluginEditorDialog(PluginsPanel.this.editPreferencesDialog, plugin, configuration, lookAndFeelManager.getCurrentLookAndFeel());
 				editorDialog.setVisible(true);
 				configuration = editorDialog.getConfiguration();
 				if (configuration != null) {
@@ -372,7 +408,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 			pluginsModified = new HashMap<PluginInfo, PluginConfiguration>();
 			pluginsActivation = new HashMap<PluginInfo, Boolean>();
 			// Select first plugin
-			if (state.isPluginsEnabled() && !pluginsHandler.getAvailablePlugins().isEmpty()) {
+			if (getState().isPluginsEnabled() && !pluginsHandler.getAvailablePlugins().isEmpty()) {
 				pluginsTable.getSelectionModel().setSelectionInterval(0, 0);
 			}
 		}

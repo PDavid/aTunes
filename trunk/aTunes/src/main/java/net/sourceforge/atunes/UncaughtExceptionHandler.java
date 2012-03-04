@@ -31,8 +31,8 @@ final class UncaughtExceptionHandler implements Thread.UncaughtExceptionHandler 
 	public void uncaughtException(Thread t, Throwable e) {
 		Logger.error(StringUtils.getString("Thread: ", t.getName()));
 		Logger.error(e);
-		if (e instanceof InvocationTargetException) {
-			Logger.error(((InvocationTargetException)e).getCause());
+		if (e instanceof InvocationTargetException && ((InvocationTargetException)e).getCause() != null) {
+			uncaughtException(t, ((InvocationTargetException)e).getCause());
 		}
 	}
 }

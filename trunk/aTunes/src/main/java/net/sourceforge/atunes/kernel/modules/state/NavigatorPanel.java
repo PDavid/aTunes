@@ -26,9 +26,6 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultCellEditor;
@@ -42,18 +39,15 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
 import net.sourceforge.atunes.model.ArtistViewMode;
-import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.TagAttribute;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class NavigatorPanel extends AbstractPreferencesPanel {
@@ -91,110 +85,27 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 	 * Table model to select tag attributes
 	 */
 	private TagAttributesTableModel tagAttributesTableModel;
-
+	
+	private ILookAndFeelManager lookAndFeelManager;
+	
 	/**
-	 * The Class TagAttributesTableModel.
+	 * @param lookAndFeelManager
 	 */
-	private static class TagAttributesTableModel implements TableModel {
-
-		private static final long serialVersionUID = 5251001708812824836L;
-
-		/** The tag attributes hash map. */
-		private Map<TagAttribute, Boolean> tagAttributes;
-
-		/** The listeners. */
-		private List<TableModelListener> listeners = new ArrayList<TableModelListener>();
-
-		/**
-		 * Instantiates a new tag attributes table model
-		 */
-		TagAttributesTableModel() {
-			// Nothing to do
-		}
-
-		@Override
-		public void addTableModelListener(TableModelListener l) {
-			listeners.add(l);
-		}
-
-		@Override
-		public Class<?> getColumnClass(int columnIndex) {
-			return columnIndex == 0 ? Boolean.class : String.class;
-		}
-
-		@Override
-		public int getColumnCount() {
-			return 2;
-		}
-
-		@Override
-		public String getColumnName(int column) {
-			return "";
-		}
-
-		@Override
-		public int getRowCount() {
-			if (this.tagAttributes != null) {
-				return this.tagAttributes.size();
-			}
-			return 0;
-		}
-
-		@Override
-		public Object getValueAt(int rowIndex, int columnIndex) {
-			if (columnIndex == 0) {
-				return tagAttributes.get(TagAttribute.values()[rowIndex]);
-			}
-			return I18nUtils.getString(TagAttribute.values()[rowIndex].name());
-		}
-
-		@Override
-		public boolean isCellEditable(int rowIndex, int columnIndex) {
-			return columnIndex == 0;
-		}
-
-		@Override
-		public void removeTableModelListener(TableModelListener l) {
-			listeners.remove(l);
-		}
-
-		/**
-		 * Sets the columns.
-		 * 
-		 * @param columns
-		 *            the new columns
-		 */
-		 public void setTagAttributes(Map<TagAttribute, Boolean> attrs) {
-			 this.tagAttributes = attrs;
-		 }
-
-		 @Override
-		 public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-			 if (columnIndex == 0) {
-				 tagAttributes.put(TagAttribute.values()[rowIndex], (Boolean) aValue);
-			 }
-		 }
-
-		 /**
-		  * @return the tagAttributes selected by user
-		  */
-		 public List<TagAttribute> getSelectedTagAttributes() {
-			 List<TagAttribute> result = new ArrayList<TagAttribute>();
-			 for (TagAttribute attr : tagAttributes.keySet()) {
-				 if (tagAttributes.get(attr)) {
-					 result.add(attr);
-				 }
-			 }
-			 return result;
-		 }
+	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
 	}
 
 	/**
 	 * Instantiates a new navigator panel.
-	 * @param lookAndFeel
 	 */
-	public NavigatorPanel(ILookAndFeel lookAndFeel) {
+	public NavigatorPanel() {
 		super(I18nUtils.getString("NAVIGATOR"));
+	}
+	
+	/**
+	 * Initializes panel
+	 */
+	public void initialize() {
 		showFavorites = new JCheckBox(I18nUtils.getString("SHOW_FAVORITES"));
 		showExtendedToolTip = new JCheckBox(I18nUtils.getString("SHOW_EXTENDED_TOOLTIP"));
 		final JLabel label = new JLabel(I18nUtils.getString("EXTENDED_TOOLTIP_DELAY"));
@@ -240,16 +151,16 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 		});
 
 		tagAttributesTableModel = new TagAttributesTableModel();
-		highlighTagAttributesTable = lookAndFeel.getTable();
+		highlighTagAttributesTable = lookAndFeelManager.getCurrentLookAndFeel().getTable();
 		highlighTagAttributesTable.setModel(tagAttributesTableModel);
 		highlighTagAttributesTable.setTableHeader(null);
 		highlighTagAttributesTable.getColumnModel().getColumn(0).setMaxWidth(20);
 		highlighTagAttributesTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JCheckBox()));
 		highlighTagAttributesTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		highlighTagAttributesTable.setDefaultRenderer(String.class, lookAndFeel.getTableCellRenderer(
-				GuiUtils.getComponentOrientationTableCellRendererCode(lookAndFeel)));
+		highlighTagAttributesTable.setDefaultRenderer(String.class, lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(
+				GuiUtils.getComponentOrientationTableCellRendererCode(lookAndFeelManager.getCurrentLookAndFeel())));
 
-		highlightTagAttributesScrollPane = lookAndFeel.getTableScrollPane(highlighTagAttributesTable);
+		highlightTagAttributesScrollPane = lookAndFeelManager.getCurrentLookAndFeel().getTableScrollPane(highlighTagAttributesTable);
 		highlightTagAttributesScrollPane.setMinimumSize(new Dimension(300, 150));
 
 		GridBagConstraints c = new GridBagConstraints();

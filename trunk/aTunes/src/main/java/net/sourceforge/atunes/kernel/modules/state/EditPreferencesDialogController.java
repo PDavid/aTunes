@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.state;
 
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -32,82 +31,55 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.StateChangeListeners;
-import net.sourceforge.atunes.model.IColorBeanFactory;
-import net.sourceforge.atunes.model.IDesktop;
-import net.sourceforge.atunes.model.IFontBeanFactory;
-import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.IHotkeyHandler;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
-import net.sourceforge.atunes.model.ILocaleBeanFactory;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.model.INetworkHandler;
-import net.sourceforge.atunes.model.INotificationsHandler;
-import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IPluginsHandler;
-import net.sourceforge.atunes.model.IProxyBeanFactory;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 
-final class EditPreferencesDialogController extends AbstractSimpleController<EditPreferencesDialog> {
+public final class EditPreferencesDialogController extends AbstractSimpleController<EditPreferencesDialog> {
 
     /** The panels of the edit preferences dialog */
-    private List<AbstractPreferencesPanel> panels;
+    private List<AbstractPreferencesPanel> preferencesPanels;
     
     private StateChangeListeners stateChangeListeners;
-
+    
+    /**
+     * @param preferencesPanels
+     */
+    public void setPreferencesPanels(List<AbstractPreferencesPanel> preferencesPanels) {
+		this.preferencesPanels = preferencesPanels;
+	}
+    
+    /**
+     * @param stateChangeListeners
+     */
+    public void setStateChangeListeners(StateChangeListeners stateChangeListeners) {
+		this.stateChangeListeners = stateChangeListeners;
+	}
+    
     /**
      * Instantiates a new edits the preferences dialog controller.
      * @param dialog
      * @param state
-     * @param osManager
-     * @param frame
-     * @param stateChangeListeners
-     * @param lookAndFeelManager
-     * @param playerHandler
-     * @param hotkeyHandler
-     * @param notificationsHandler
-     * @param pluginsHandler
-     * @param desktop
-     * @param networkHandler
-     * @param colorBeanFactory
-     * @param fontBeanFactory
-     * @param localeBeanFactory
-     * @param proxyBeanFactory
      */
-    EditPreferencesDialogController(EditPreferencesDialog dialog, IState state, IOSManager osManager, IFrame frame, StateChangeListeners stateChangeListeners, 
-    		ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler, IHotkeyHandler hotkeyHandler, 
-    		INotificationsHandler notificationsHandler, IPluginsHandler pluginsHandler, IDesktop desktop,
-    		INetworkHandler networkHandler, IColorBeanFactory colorBeanFactory, IFontBeanFactory fontBeanFactory, ILocaleBeanFactory localeBeanFactory, IProxyBeanFactory proxyBeanFactory) {
+    public EditPreferencesDialogController(EditPreferencesDialog dialog, IState state) {
         super(dialog, state);
-        this.stateChangeListeners = stateChangeListeners;
-        panels = new ArrayList<AbstractPreferencesPanel>();
-        panels.add(new GeneralPanel(osManager, lookAndFeelManager, colorBeanFactory, fontBeanFactory, localeBeanFactory));
-        panels.add(new RepositoryPanel()); 
-        panels.add(new PlayerPanel(osManager, lookAndFeelManager.getCurrentLookAndFeel(), playerHandler, hotkeyHandler)); 
-        panels.add(new NavigatorPanel(lookAndFeelManager.getCurrentLookAndFeel())); 
-        panels.add(new PlayListPrefPanel());
-        panels.add(new OSDPanel(notificationsHandler, desktop)); 
-        panels.add(new ContextPanel(lookAndFeelManager.getCurrentLookAndFeel(), desktop)); 
-        panels.add(new InternetPanel(networkHandler, proxyBeanFactory)); 
-        panels.add(new LastFmPanel()); 
-        panels.add(new DevicePanel(osManager, lookAndFeelManager.getCurrentLookAndFeel())); 
-        panels.add(new RadioPanel()); 
-        panels.add(new PodcastFeedPanel(osManager)); 
-        panels.add(new ImportExportPanel(lookAndFeelManager.getCurrentLookAndFeel()));
-    	panels.add(new PluginsPanel(dialog, frame, lookAndFeelManager.getCurrentLookAndFeel(), state, pluginsHandler, desktop));
-    	
-        for (AbstractPreferencesPanel panel : panels) {
-        	panel.setState(state);
+    }
+    
+    /**
+     * Initializes controller
+     */
+    public void initialize() {
+        for (AbstractPreferencesPanel panel : preferencesPanels) {
+        	panel.setState(getState());
         }
         
-        getComponentControlled().setPanels(panels);
+        getComponentControlled().setPanels(preferencesPanels);
         buildList();
         addBindings();
         
-        dialog.pack();
+        getComponentControlled().pack();
     }
 
     @Override
@@ -120,7 +92,7 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
             @Override
             public void componentShown(ComponentEvent e) {
                 // Call dialogVisibilityChanged
-                for (AbstractPreferencesPanel panel : panels) {
+                for (AbstractPreferencesPanel panel : preferencesPanels) {
                     panel.dialogVisibilityChanged(true);
                 }
             }
@@ -128,7 +100,7 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
             @Override
             public void componentHidden(ComponentEvent e) {
                 // Call dialogVisibilityChanged
-                for (AbstractPreferencesPanel panel : panels) {
+                for (AbstractPreferencesPanel panel : preferencesPanels) {
                     panel.dialogVisibilityChanged(false);
                 }
             }
@@ -141,7 +113,7 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
     private void buildList() {
         DefaultListModel listModel = new DefaultListModel();
 
-        for (AbstractPreferencesPanel p : panels) {
+        for (AbstractPreferencesPanel p : preferencesPanels) {
             listModel.addElement(p);
         }
 
@@ -160,7 +132,7 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
     		
     		@Override
     		protected Void doInBackground() throws PreferencesValidationException {
-    	        for (AbstractPreferencesPanel p : panels) {
+    	        for (AbstractPreferencesPanel p : preferencesPanels) {
     	            p.validatePanel();
     	        }
     	        return null;
@@ -197,7 +169,7 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
     boolean processPreferences() {
         boolean needRestart = false;
         // Apply preferences from panels
-        for (AbstractPreferencesPanel p : panels) {
+        for (AbstractPreferencesPanel p : preferencesPanels) {
         	if (p.isDirty()) {
         		Logger.debug("Panel ", p.getTitle(), " is dirty");
         		// WARNING: There was a bug when call to applyPreferences was made as second operand of OR due to shortcut
@@ -216,7 +188,7 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
      * reset immediate changes of panels
      */
     void resetImmediateChanges() {
-        for (AbstractPreferencesPanel p : panels) {
+        for (AbstractPreferencesPanel p : preferencesPanels) {
             p.resetImmediateChanges(getState());
         }
     }
@@ -226,19 +198,19 @@ final class EditPreferencesDialogController extends AbstractSimpleController<Edi
      */
     public void start() {
         // Update panels
-        for (AbstractPreferencesPanel panel : panels) {
+        for (AbstractPreferencesPanel panel : preferencesPanels) {
             panel.updatePanel(getState());
         }
 
         // Call dialogVisibilityChanged
-        for (AbstractPreferencesPanel panel : panels) {
+        for (AbstractPreferencesPanel panel : preferencesPanels) {
             panel.dialogVisibilityChanged(true);
         }
 
         getComponentControlled().resetPanels();
 
         // Set first panel (selected) dirty
-        panels.get(0).setDirty(true);
+        preferencesPanels.get(0).setDirty(true);
         getComponentControlled().getList().setSelectedIndex(0);
         
         getComponentControlled().setVisible(true);

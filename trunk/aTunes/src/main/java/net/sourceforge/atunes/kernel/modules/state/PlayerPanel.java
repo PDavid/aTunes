@@ -53,6 +53,7 @@ import net.sourceforge.atunes.model.IHotkey;
 import net.sourceforge.atunes.model.IHotkeyHandler;
 import net.sourceforge.atunes.model.IHotkeysConfig;
 import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
@@ -180,18 +181,50 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
     private IOSManager osManager;
     
     private IHotkeyHandler hotkeyHandler;
+    
+    private ILookAndFeelManager lookAndFeelManager;
+    
+    private IPlayerHandler playerHandler;
+    
+    /**
+     * @param osManager
+     */
+    public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
+    
+    /**
+     * @param lookAndFeelManager
+     */
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+    
+    /**
+     * @param playerHandler
+     */
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
+    
+    /**
+     * @param hotkeyHandler
+     */
+    public void setHotkeyHandler(IHotkeyHandler hotkeyHandler) {
+		this.hotkeyHandler = hotkeyHandler;
+	}
 
     /**
      * Instantiates a new player panel.
-     * @param osManager
-     * @param lookAndFeel
-     * @param playerHandler
-     * @param hotkeyHandler
      */
-    public PlayerPanel(IOSManager osManager, ILookAndFeel lookAndFeel, IPlayerHandler playerHandler, IHotkeyHandler hotkeyHandler) {
+    public PlayerPanel() {
         super(I18nUtils.getString("PLAYER"));
-        this.osManager = osManager;
-        this.hotkeyHandler = hotkeyHandler;
+    }
+    
+    /**
+     * Initializes panel
+     */
+    public void initialize() {
         Box engineBox = Box.createHorizontalBox();
         engineBox.setAlignmentX(Component.LEFT_ALIGNMENT);
         engineBox.add(new JLabel(I18nUtils.getString("PLAYER_ENGINE")));
@@ -209,13 +242,13 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         enableGlobalHotkeys = new JCheckBox(I18nUtils.getString("ENABLE_GLOBAL_HOTKEYS"));
         showPlayerControlsOnTop = new JCheckBox(I18nUtils.getString("SHOW_PLAYER_CONTROLS_ON_TOP"));
 
-        hotkeyTable = lookAndFeel.getTable();
+        hotkeyTable = lookAndFeelManager.getCurrentLookAndFeel().getTable();
         hotkeyTable.setModel(tableModel);
         hotkeyTable.getTableHeader().setReorderingAllowed(false);
         hotkeyTable.getTableHeader().setResizingAllowed(false);
         hotkeyTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         hotkeyTable.setEnabled(hotkeyHandler.areHotkeysSupported());
-        hotkeyTable.setDefaultRenderer(Object.class, lookAndFeel.getTableCellRenderer(new HotkeyTableTableCellRendererCode(lookAndFeel)));
+        hotkeyTable.setDefaultRenderer(Object.class, lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(new HotkeyTableTableCellRendererCode(lookAndFeelManager.getCurrentLookAndFeel())));
 
         hotkeyTable.addKeyListener(new KeyAdapter() {
             @Override
@@ -252,7 +285,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
             }
         });
 
-        hotkeyScrollPane = lookAndFeel.getTableScrollPane(hotkeyTable);
+        hotkeyScrollPane = lookAndFeelManager.getCurrentLookAndFeel().getTableScrollPane(hotkeyTable);
         hotkeyScrollPane.setMinimumSize(new Dimension(400, 200));
         cacheFilesBeforePlaying = new JCheckBox(I18nUtils.getString("CACHE_FILES_BEFORE_PLAYING"));
 

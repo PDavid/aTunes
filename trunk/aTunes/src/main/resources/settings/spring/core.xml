@@ -31,4 +31,44 @@
 	<bean id="playListEventListeners" class="net.sourceforge.atunes.kernel.PlayListEventListeners"/>
 	<bean id="stateChangeListeners" class="net.sourceforge.atunes.kernel.StateChangeListeners"/>
 
+	<bean id="preferencesPanels" class="java.util.ArrayList">
+		<constructor-arg>
+			<list>
+				<ref bean="generalPreferencesPanel"/>
+				<ref bean="repositoryPreferencesPanel"/>
+				<ref bean="playerPreferencesPanel"/>				
+				<ref bean="navigatorPreferencesPanel"/>
+				<ref bean="playListPreferencesPanel"/>
+				<ref bean="osdPreferencesPanel"/>
+				<ref bean="contextPreferencesPanel"/>
+				<ref bean="internetPreferencesPanel"/>
+				<ref bean="lastfmPreferencesPanel"/>
+				<ref bean="devicePreferencesPanel"/>
+				<ref bean="radioPreferencesPanel"/>
+				<ref bean="podcastFeedPreferencesPanel"/>
+				<ref bean="importExportPreferencesPanel"/>
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="generalPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.GeneralPanel" scope="prototype" init-method="initialize"/>
+	<bean id="repositoryPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.RepositoryPanel" scope="prototype"/>
+	<bean id="playerPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.PlayerPanel" scope="prototype" init-method="initialize"/>
+	<bean id="navigatorPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.NavigatorPanel" scope="prototype" init-method="initialize"/>
+	<bean id="playListPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.PlayListPrefPanel" scope="prototype"/>
+	<bean id="osdPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.OSDPanel" scope="prototype" init-method="initialize"/>
+	<bean id="contextPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.ContextPanel" scope="prototype" init-method="initialize"/>
+	<bean id="internetPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.InternetPanel" scope="prototype" init-method="initialize"/>
+	<bean id="lastfmPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.LastFmPanel" scope="prototype"/>	
+	<bean id="devicePreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.DevicePanel" scope="prototype" init-method="initialize"/>
+	<bean id="radioPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.RadioPanel" scope="prototype"/>
+	<bean id="podcastFeedPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.PodcastFeedPanel" scope="prototype" init-method="initialize"/>
+	<bean id="importExportPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.ImportExportPanel" scope="prototype" init-method="initialize"/>
+	<bean id="pluginsPreferencesPanel" class="net.sourceforge.atunes.kernel.modules.state.PluginsPanel" scope="prototype" init-method="initialize"/>
+	
+	<bean id="editPreferencesDialogController" class="net.sourceforge.atunes.kernel.modules.state.EditPreferencesDialogController" scope="prototype" init-method="initialize">
+		<constructor-arg ref="editPreferencesDialog"/>
+		<constructor-arg ref="state"/>
+	</bean>
+	
 </beans>
