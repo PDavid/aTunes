@@ -49,11 +49,26 @@ public final class PodcastFeedPanel extends AbstractPreferencesPanel {
     /** The remove podcast feed entries removed from podcast feed. */
     private JCheckBox removePodcastFeedEntriesRemovedFromPodcastFeed;
 
+    private IOSManager osManager;
+    
+    /**
+     * @param osManager
+     */
+    public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
+    
     /**
      * Instantiates a new podcast feed panel.
      */
-    public PodcastFeedPanel(IOSManager osManager) {
+    public PodcastFeedPanel() {
         super(I18nUtils.getString("PODCAST_FEEDS"));
+    }
+    
+    /**
+     * Initializes panel
+     */
+    public void initialize() {
         JLabel retrievalIntervalLabel = new JLabel(I18nUtils.getString("PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL"));
         retrievalInterval = new JComboBox(new Long[] { 1l, 3l, 5l, 10l, 15l, 30l, 60l });
         JLabel downloadFolderLabel = new JLabel(I18nUtils.getString("PODCAST_FEED_ENTRIES_DOWNLOAD_FOLDER"));

@@ -36,51 +36,14 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
 
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
-import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
-import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public final class ImportExportPanel extends AbstractPreferencesPanel {
-
-    private static class AvailablePatternsTableModel extends DefaultTableModel {
-        /**
-		 * 
-		 */
-        private static final long serialVersionUID = -3054134384773947174L;
-
-        @Override
-        public int getRowCount() {
-            return AbstractPattern.getPatterns().size();
-        }
-
-        @Override
-        public int getColumnCount() {
-            return 2;
-        }
-
-        @Override
-        public boolean isCellEditable(int row, int column) {
-            return false;
-        }
-
-        @Override
-        public Object getValueAt(int row, int column) {
-            if (column == 0) {
-                return AbstractPattern.getPatterns().get(row).getPattern();
-            }
-            return AbstractPattern.getPatterns().get(row).getDescription();
-        }
-
-        @Override
-        public String getColumnName(int column) {
-            return column == 0 ? I18nUtils.getString("PATTERN") : I18nUtils.getString("VALUE");
-        }
-    }
 
     private static final long serialVersionUID = 3331810461314007217L;
 
@@ -125,13 +88,27 @@ public final class ImportExportPanel extends AbstractPreferencesPanel {
 
     /** Check box to enable title auto complete when importing */
     private JCheckBox setTitlesWhenImportingCheckBox;
+    
+    private ILookAndFeelManager lookAndFeelManager;
+    
+    /**
+     * @param lookAndFeelManager
+     */
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
 
     /**
      * Instantiates a new import / export panel.
-     * @param lookAndFeel
      */
-    public ImportExportPanel(ILookAndFeel lookAndFeel) {
+    public ImportExportPanel() {
         super(StringUtils.getString(I18nUtils.getString("IMPORT"), "/", I18nUtils.getString("EXPORT")));
+    }
+    
+    /**
+     * Initializes panel
+     */
+    public void initialize() {
         JPanel fileNamePanel = new JPanel(new GridBagLayout());
         fileNamePanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0,0,10,0), I18nUtils.getString("FILE_NAME")));
         fileNameNoChangeRadioButton = new JRadioButton(I18nUtils.getString("NO_CHANGE"));
@@ -174,13 +151,13 @@ public final class ImportExportPanel extends AbstractPreferencesPanel {
         group2.add(folderPathNoChangeRadioButton);
         group2.add(folderPathCustomizedRadioButton);
 
-        JTable availablePatternsTable = lookAndFeel.getTable();
+        JTable availablePatternsTable = lookAndFeelManager.getCurrentLookAndFeel().getTable();
         availablePatternsTable.setModel(new AvailablePatternsTableModel());
 
         JPanel patternsPanel = new JPanel(new BorderLayout());
         patternsPanel.setPreferredSize(new Dimension(250, 200));
         patternsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0,0,0,0), I18nUtils.getString("AVAILABLE_PATTERNS")));
-        patternsPanel.add(lookAndFeel.getTableScrollPane(availablePatternsTable), BorderLayout.CENTER);
+        patternsPanel.add(lookAndFeelManager.getCurrentLookAndFeel().getTableScrollPane(availablePatternsTable), BorderLayout.CENTER);
 
         reviewTagsBeforeImportCheckBox = new JCheckBox(I18nUtils.getString("REVIEW_TAGS_BEFORE_IMPORTING"));
         reviewTagsBeforeImportCheckBox.addActionListener(new ActionListener() {

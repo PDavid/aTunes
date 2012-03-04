@@ -65,15 +65,33 @@ public final class OSDPanel extends AbstractPreferencesPanel {
 
     private INotificationsHandler notificationsHandler;
     
+    private IDesktop desktop;
+    
     /**
-     * Instantiates a new oSD panel.
-     * @param notificationsHandler
      * @param desktop
      */
-    public OSDPanel(INotificationsHandler notificationsHandler, IDesktop desktop) {
+    public void setDesktop(IDesktop desktop) {
+		this.desktop = desktop;
+	}
+    
+    /**
+     * @param notificationsHandler
+     */
+    public void setNotificationsHandler(INotificationsHandler notificationsHandler) {
+		this.notificationsHandler = notificationsHandler;
+	}
+    
+    /**
+     * Instantiates a new OSD panel.
+     */
+    public OSDPanel() {
         super(I18nUtils.getString("OSD"));
-        this.notificationsHandler = notificationsHandler;
-        
+    }
+    
+    /**
+     * Initializes panel
+     */
+    public void initialize() {
         JLabel enginesLabel = new JLabel(I18nUtils.getString("NOTIFICATION_ENGINE"));
         notificationEngines = new JComboBox(notificationsHandler.getNotificationEngines().toArray());
         notificationEngines.addItemListener(new ItemListener() {

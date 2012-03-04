@@ -64,18 +64,32 @@ public final class InternetPanel extends AbstractPreferencesPanel {
     private INetworkHandler networkHandler;
     
     private transient IProxyBeanFactory proxyBeanFactory;
+    
+    /**
+     * @param networkHandler
+     */
+    public void setNetworkHandler(INetworkHandler networkHandler) {
+		this.networkHandler = networkHandler;
+	}
+    
+    /**
+     * @param proxyBeanFactory
+     */
+    public void setProxyBeanFactory(IProxyBeanFactory proxyBeanFactory) {
+		this.proxyBeanFactory = proxyBeanFactory;
+	}
 
     /**
      * Instantiates a new internet panel.
-     * @param networkHandler
-     * @param proxyBeanFactory
      */
-    public InternetPanel(INetworkHandler networkHandler, IProxyBeanFactory proxyBeanFactory) {
+    public InternetPanel() {
         super(I18nUtils.getString("INTERNET"));
-        
-        this.networkHandler = networkHandler;
-        this.proxyBeanFactory = proxyBeanFactory;
-
+    }
+    
+    /**
+     * Initializes panel 
+     */
+    public void initialize() {
         GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1;
         c.fill = GridBagConstraints.HORIZONTAL;

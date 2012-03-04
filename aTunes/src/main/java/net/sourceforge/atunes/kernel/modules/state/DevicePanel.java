@@ -37,52 +37,15 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
 
 import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
-import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
-import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class DevicePanel extends AbstractPreferencesPanel {
-
-    private static class AvailablePatternsDefaultTableModel extends DefaultTableModel {
-        /**
-		 * 
-		 */
-        private static final long serialVersionUID = -3054134384773947174L;
-
-        @Override
-        public int getRowCount() {
-            return AbstractPattern.getPatterns().size();
-        }
-
-        @Override
-        public int getColumnCount() {
-            return 2;
-        }
-
-        @Override
-        public boolean isCellEditable(int row, int column) {
-            return false;
-        }
-
-        @Override
-        public Object getValueAt(int row, int column) {
-            if (column == 0) {
-                return AbstractPattern.getPatterns().get(row).getPattern();
-            }
-            return AbstractPattern.getPatterns().get(row).getDescription();
-        }
-
-        @Override
-        public String getColumnName(int column) {
-            return column == 0 ? I18nUtils.getString("PATTERN") : I18nUtils.getString("VALUE");
-        }
-    }
 
     private static final long serialVersionUID = 3331810461314007217L;
 
@@ -118,14 +81,36 @@ public final class DevicePanel extends AbstractPreferencesPanel {
      * song is repeated for different albums)
      */
     private JCheckBox copySameSongForDifferentAlbums;
+    
+    private IOSManager osManager;
+    
+    private ILookAndFeelManager lookAndFeelManager;
+    
+    /**
+     * @param osManager
+     */
+    public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
+    
+    /**
+     * @param lookAndFeelManager
+     */
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
 
     /**
      * Instantiates a new device panel.
-     * @param osManager
-     * @param lookAndFeel
      */
-    public DevicePanel(IOSManager osManager, ILookAndFeel lookAndFeel) {
+    public DevicePanel() {
         super(I18nUtils.getString("DEVICE"));
+    }
+    
+    /**
+     * Initializes panel
+     */
+    public void initialize() {
         JLabel label = new JLabel(I18nUtils.getString("DEVICE_DEFAULT_LOCATION"));
         locationFileChooser = new CustomJFileChooser(this, 20, JFileChooser.DIRECTORIES_ONLY, osManager);
 
@@ -171,13 +156,13 @@ public final class DevicePanel extends AbstractPreferencesPanel {
         group2.add(folderPathNoChangeRadioButton);
         group2.add(folderPathCustomizedRadioButton);
 
-        JTable availablePatternsTable = lookAndFeel.getTable();
+        JTable availablePatternsTable = lookAndFeelManager.getCurrentLookAndFeel().getTable();
         availablePatternsTable.setModel(new AvailablePatternsDefaultTableModel());
 
         JPanel patternsPanel = new JPanel(new BorderLayout());
         patternsPanel.setPreferredSize(new Dimension(250, 200));
         patternsPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0,0,0,0), I18nUtils.getString("AVAILABLE_PATTERNS")));
-        patternsPanel.add(lookAndFeel.getTableScrollPane(availablePatternsTable), BorderLayout.CENTER);
+        patternsPanel.add(lookAndFeelManager.getCurrentLookAndFeel().getTableScrollPane(availablePatternsTable), BorderLayout.CENTER);
 
         copySameSongForDifferentAlbums = new JCheckBox(I18nUtils.getString("ALLOW_COPY_TO_DEVICE_SAME_SONG_FOR_DIFFERENT_ALBUMS"));
 

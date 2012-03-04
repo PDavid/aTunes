@@ -18,21 +18,22 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes;
+package net.sourceforge.atunes.kernel.modules.state;
 
-import java.lang.reflect.InvocationTargetException;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-import net.sourceforge.atunes.utils.Logger;
-import net.sourceforge.atunes.utils.StringUtils;
+import net.sourceforge.atunes.model.IDesktop;
 
-final class UncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
+class OpenLastFmMouseAdapter extends MouseAdapter {
+	private IDesktop desktop;
 	
-	@Override
-	public void uncaughtException(Thread t, Throwable e) {
-		Logger.error(StringUtils.getString("Thread: ", t.getName()));
-		Logger.error(e);
-		if (e instanceof InvocationTargetException && ((InvocationTargetException)e).getCause() != null) {
-			uncaughtException(t, ((InvocationTargetException)e).getCause());
-		}
+	public OpenLastFmMouseAdapter(IDesktop desktop) {
+		this.desktop = desktop;
 	}
+	
+    @Override
+    public void mousePressed(MouseEvent e) {
+    	desktop.openURL("http://www.last.fm");
+    }
 }

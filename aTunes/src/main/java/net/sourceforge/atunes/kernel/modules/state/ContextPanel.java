@@ -26,8 +26,6 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -49,25 +47,12 @@ import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.actions.ClearCachesAction;
 import net.sourceforge.atunes.model.IDesktop;
-import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.ILyricsEngineInfo;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class ContextPanel extends AbstractPreferencesPanel {
-
-    private static class OpenLastFmMouseAdapter extends MouseAdapter {
-    	private IDesktop desktop;
-    	
-    	public OpenLastFmMouseAdapter(IDesktop desktop) {
-    		this.desktop = desktop;
-		}
-    	
-        @Override
-        public void mousePressed(MouseEvent e) {
-        	desktop.openURL("http://www.last.fm");
-        }
-    }
 
     private class LyricsEnginesTableModel implements TableModel {
 
@@ -189,14 +174,36 @@ public final class ContextPanel extends AbstractPreferencesPanel {
 
     /** The lyrics engines table. */
     private JTable enginesTable;
+    
+    private ILookAndFeelManager lookAndFeelManager;
+    
+    private IDesktop desktop;
+    
+    /**
+     * @param lookAndFeelManager
+     */
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+    
+    /**
+     * @param desktop
+     */
+    public void setDesktop(IDesktop desktop) {
+		this.desktop = desktop;
+	}
 
     /**
      * Instantiates a new context panel.
-     * @param lookAndFeel
-     * @param desktop
      */
-    public ContextPanel(ILookAndFeel lookAndFeel, IDesktop desktop) {
+    public ContextPanel() {
         super(I18nUtils.getString("CONTEXT_INFORMATION"));
+    }
+    
+    /**
+     * Initializes panel
+     */
+    public void initialize() {
         activateContext = new JCheckBox(I18nUtils.getString("ACTIVATE_CONTEXT_INFORMATION"));
         savePictures = new JCheckBox(I18nUtils.getString("SAVE_PICTURES_TO_AUDIO_FOLDERS"));
         showAlbumsInGrid = new JCheckBox(I18nUtils.getString("SHOW_ALBUMS_IN_GRID"));
@@ -212,14 +219,14 @@ public final class ContextPanel extends AbstractPreferencesPanel {
         info.addMouseListener(new OpenLastFmMouseAdapter(desktop));
         JLabel enginesTableLabel = new JLabel(I18nUtils.getString("LYRICS_ENGINES_SELECTION"));
         final LyricsEnginesTableModel model = new LyricsEnginesTableModel();
-        enginesTable = lookAndFeel.getTable();
+        enginesTable = lookAndFeelManager.getCurrentLookAndFeel().getTable();
         enginesTable.setModel(model);
         enginesTable.setTableHeader(null);
         enginesTable.getColumnModel().getColumn(0).setMaxWidth(20);
         enginesTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JCheckBox()));
         enginesTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        enginesTable.setDefaultRenderer(String.class, lookAndFeel.getTableCellRenderer(
-                GuiUtils.getComponentOrientationTableCellRendererCode(lookAndFeel)));
+        enginesTable.setDefaultRenderer(String.class, lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(
+                GuiUtils.getComponentOrientationTableCellRendererCode(lookAndFeelManager.getCurrentLookAndFeel())));
         JButton upButton = new JButton(I18nUtils.getString("MOVE_UP"));
         upButton.addActionListener(new ActionListener() {
             @Override
@@ -240,7 +247,7 @@ public final class ContextPanel extends AbstractPreferencesPanel {
                 }
             }
         });
-        JScrollPane enginesScrollPane = lookAndFeel.getTableScrollPane(enginesTable);
+        JScrollPane enginesScrollPane = lookAndFeelManager.getCurrentLookAndFeel().getTableScrollPane(enginesTable);
         enginesScrollPane.setMinimumSize(new Dimension(200, 100));
 
         GridBagConstraints c = new GridBagConstraints();

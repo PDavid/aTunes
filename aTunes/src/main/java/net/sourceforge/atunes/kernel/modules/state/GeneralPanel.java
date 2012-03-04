@@ -110,6 +110,43 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 	
 	private transient ILocaleBeanFactory localeBeanFactory;
 	
+	private transient IFontBeanFactory fontBeanFactory;
+	
+	/**
+	 * @param fontBeanFactory
+	 */
+	public void setFontBeanFactory(IFontBeanFactory fontBeanFactory) {
+		this.fontBeanFactory = fontBeanFactory;
+	}
+	
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
+	
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+	
+	/**
+	 * @param colorBeanFactory
+	 */
+	public void setColorBeanFactory(IColorBeanFactory colorBeanFactory) {
+		this.colorBeanFactory = colorBeanFactory;
+	}
+	
+	/**
+	 * @param localeBeanFactory
+	 */
+	public void setLocaleBeanFactory(ILocaleBeanFactory localeBeanFactory) {
+		this.localeBeanFactory = localeBeanFactory;
+	}
+	
     /**
      * Instantiates a new general panel.
      * @param osManager
@@ -117,12 +154,14 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
      * @param colorBeanFactory
      * @param fontBeanFactory
      */
-    public GeneralPanel(final IOSManager osManager, ILookAndFeelManager lookAndFeelManager, IColorBeanFactory colorBeanFactory, final IFontBeanFactory fontBeanFactory, ILocaleBeanFactory localeBeanFactory) {
+    public GeneralPanel() {
         super(I18nUtils.getString("GENERAL"));
-        this.osManager = osManager;
-        this.lookAndFeelManager = lookAndFeelManager;
-        this.colorBeanFactory = colorBeanFactory;
-        this.localeBeanFactory = localeBeanFactory;
+    }
+    
+    /**
+     * Initialize panel
+     */
+    public void initialize() {
         JLabel windowTypeLabel = new JLabel(I18nUtils.getString("WINDOW_TYPE"));
         JLabel languageLabel = new JLabel(I18nUtils.getString("LANGUAGE"));
         language = new JComboBox();
