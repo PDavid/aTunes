@@ -91,7 +91,7 @@
 	</bean> 
 
 
-	<bean class="net.sourceforge.atunes.kernel.actions.ArrangePlayListColumnsAction"/>
+	<bean id="arrangePlayListColumnsAction" class="net.sourceforge.atunes.kernel.actions.ArrangePlayListColumnsAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.AutoScrollPlayListAction"/>
 	
 	<bean class="net.sourceforge.atunes.kernel.actions.AutoSetCoversAction" scope="prototype"/>
@@ -107,11 +107,11 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.ClearPlayListAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ClearTagNavigatorAction" scope="prototype"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ClearTagPlaylistAction" scope="prototype"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.CloseOtherPlaylistsAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.ClosePlaylistAction"/>
+	<bean id="closeOtherPlayListsAction" class="net.sourceforge.atunes.kernel.actions.CloseOtherPlaylistsAction"/>
+	<bean id="closePlayListAction" class="net.sourceforge.atunes.kernel.actions.ClosePlaylistAction"/>
 	<bean id="collapseTreesAction" class="net.sourceforge.atunes.kernel.actions.CollapseTreesAction"/>
 	<bean id="connectDeviceAction" class="net.sourceforge.atunes.kernel.actions.ConnectDeviceAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.CopyPlayListToDeviceAction">
+	<bean id="copyPlayListToDeviceAction" class="net.sourceforge.atunes.kernel.actions.CopyPlayListToDeviceAction">
 		<property name="playListObjectFilter">
 			<bean class="net.sourceforge.atunes.kernel.modules.playlist.PlayListLocalAudioObjectFilter" scope="prototype"/>
 		</property>
@@ -157,7 +157,7 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.MoveToTopAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.MoveUpAction"/>
 	<bean id="muteAction" class="net.sourceforge.atunes.kernel.actions.MuteAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.NewPlayListAction"/>
+	<bean id="newPlayListAction" class="net.sourceforge.atunes.kernel.actions.NewPlayListAction"/>
 	<bean id="normalizeModeAction" class="net.sourceforge.atunes.kernel.actions.NormalizeModeAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.OpenFolderAction"/>
 	
@@ -182,7 +182,7 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.RemovePodcastFeedAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RemoveRadioAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RenameAudioFileInNavigationTableAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.RenamePlaylistAction"/>
+	<bean id="renamePlayListAction" class="net.sourceforge.atunes.kernel.actions.RenamePlaylistAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RenamePodcastFeedAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.RenameRadioLabelAction"/>
 	<bean id="repairAlbumNamesAction" class="net.sourceforge.atunes.kernel.actions.RepairAlbumNamesAction"/>
@@ -231,7 +231,7 @@
 	<bean id="shuffleModeAction" class="net.sourceforge.atunes.kernel.actions.ShuffleModeAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ShufflePlayListAction"/>
 	<bean id="stopAction" class="net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectAction"/>
-	<bean class="net.sourceforge.atunes.kernel.actions.SynchronizeDeviceWithPlayListAction"/>
+	<bean id="syncDeviceWithPlayListAction" class="net.sourceforge.atunes.kernel.actions.SynchronizeDeviceWithPlayListAction"/>
 	<bean id="toggleOSDSettingAction" class="net.sourceforge.atunes.kernel.actions.ToggleOSDSettingAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.ToggleWindowVisibilityAction"/>
 	<bean id="volumeDownAction" class="net.sourceforge.atunes.kernel.actions.VolumeDownAction"/>
