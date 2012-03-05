@@ -55,13 +55,7 @@ abstract class AbstractHotkeys {
 
     public static AbstractHotkeys createInstance(IHotkeyListener hotkeyListener, IOSManager osManager) {
         try {
-        	Class<?> clazz = null;
-        	
-        	if (osManager.isLinux()) {
-        		clazz = X11Hotkeys.class;
-        	} else if (osManager.isWindows()) {
-        		clazz = WindowsHotkeys.isSupported(osManager) ? WindowsHotkeys.class : null;
-        	}
+        	Class<?> clazz = getHotkeysClass(osManager);
         	
         	if (clazz != null) {
                 Constructor<?> constructor = clazz.getConstructor(IHotkeyListener.class);
@@ -89,6 +83,19 @@ abstract class AbstractHotkeys {
             return null;
 		}
     }
+
+	/**
+	 * @param osManager
+	 * @return
+	 */
+	private static Class<?> getHotkeysClass(IOSManager osManager) {
+		if (osManager.isLinux()) {
+			return X11Hotkeys.class;
+		} else if (osManager.isWindows()) {
+			return WindowsHotkeys.isSupported(osManager) ? WindowsHotkeys.class : null;
+		}
+		return null;
+	}
 
     protected IHotkeyListener getHotkeyListener() {
         return hotkeyListener;
