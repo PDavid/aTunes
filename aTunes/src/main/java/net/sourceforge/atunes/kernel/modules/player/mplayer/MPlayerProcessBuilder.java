@@ -273,7 +273,7 @@ public class MPlayerProcessBuilder {
 	private void prepareEqualizer(IAudioObject audioObject, List<String> command) {
 		// Build equalizer command. Mplayer uses 10 bands
 		float[] equalizerValues = equalizer.getEqualizerValues();
-		if (audioObject instanceof ILocalAudioObject && equalizerValues != null) {
+		if (audioObject instanceof ILocalAudioObject && equalizerValues != null && equalizerValues.length != 0) {
 			command.add(MPlayerConstants.AUDIO_FILTER);
 			command.add(prepareEqualizerString(equalizerValues));
 		}

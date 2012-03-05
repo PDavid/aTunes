@@ -66,11 +66,12 @@ public final class EnhancedSingleFrame extends MainSplitPaneLeftSingleFrame {
     
     @Override
     protected JComponent getComponentB() {
-    	return (playListSplitPane = new SplitPaneFactory().getSplitPane(this, 
+    	playListSplitPane = new SplitPaneFactory().getSplitPane(this, 
     																    PLAYLIST_SPLIT_PANE, 
     																    JSplitPane.VERTICAL_SPLIT, 
     																    getNavigationTablePanel().getSwingComponent(),
-    																    getPlayListPanel().getSwingComponent()));
+    																    getPlayListPanel().getSwingComponent());
+    	return playListSplitPane;
     }
     
     @Override
