@@ -55,7 +55,7 @@ public final class SmartPlayListHandler extends AbstractHandler implements ISmar
     /**
      * @param audioObjectComparator
      */
-    public void setaudioObjectComparator(IAudioObjectComparator audioObjectComparator) {
+    public void setAudioObjectComparator(IAudioObjectComparator audioObjectComparator) {
 		this.audioObjectComparator = audioObjectComparator;
 	}
     

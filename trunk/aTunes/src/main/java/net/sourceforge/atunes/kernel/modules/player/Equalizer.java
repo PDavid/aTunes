@@ -103,7 +103,7 @@ public class Equalizer implements IEqualizer {
     @Override
 	public int[] getEqualizerSettingsToShowInGUI() {
         float[] eqSettings = getEqualizerValues();
-        if (eqSettings == null) {
+        if (eqSettings == null || eqSettings.length == 0) {
             return new int[10];
         }
         int[] result = new int[eqSettings.length];
@@ -118,6 +118,6 @@ public class Equalizer implements IEqualizer {
     @Override
 	public float[] getEqualizerValues() {
         float[] equalizerSettings = state.getEqualizerSettings();
-        return equalizerSettings != null ? Arrays.copyOf(equalizerSettings, equalizerSettings.length) : null;
+        return equalizerSettings != null ? Arrays.copyOf(equalizerSettings, equalizerSettings.length) : new float[0];
     }
 }

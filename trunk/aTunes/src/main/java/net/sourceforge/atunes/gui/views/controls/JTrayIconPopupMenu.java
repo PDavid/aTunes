@@ -39,7 +39,7 @@ public class JTrayIconPopupMenu extends JPopupMenu {
 
 	@Override
     public void removePopupMenuListener(PopupMenuListener l) {
-        if (l == listener) {
+        if (l.equals(listener)) {
             return;
         }
         super.removePopupMenuListener(l);

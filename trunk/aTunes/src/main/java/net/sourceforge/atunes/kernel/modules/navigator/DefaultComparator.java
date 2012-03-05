@@ -20,11 +20,16 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
+import java.io.Serializable;
 import java.text.Collator;
 import java.util.Comparator;
 
-final class DefaultComparator implements Comparator<String> {
+final class DefaultComparator implements Comparator<String>, Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7737153282909609592L;
 	private Collator collator;
 	
 	/**

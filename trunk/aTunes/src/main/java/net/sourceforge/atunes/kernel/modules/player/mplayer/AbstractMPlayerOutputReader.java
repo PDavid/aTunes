@@ -76,9 +76,9 @@ abstract class AbstractMPlayerOutputReader extends Thread {
         if (ao instanceof ILocalAudioObject) {
             return new AudioFileMPlayerOutputReader(engine, process, (ILocalAudioObject) ao, localAudioObjectValidator);
         } else if (ao instanceof IRadio) {
-            return new RadioMPlayerOutputReader(engine, process, (IRadio) ao, state, frame, playListHandler);
+            return new RadioMPlayerOutputReader(engine, process, (IRadio) ao, state, playListHandler);
         } else if (ao instanceof IPodcastFeedEntry) {
-            return new PodcastFeedEntryMPlayerOutputReader(engine, process, frame, (IPodcastFeedEntry) ao);
+            return new PodcastFeedEntryMPlayerOutputReader(engine, process, (IPodcastFeedEntry) ao);
         } else {
             throw new IllegalArgumentException("audio object is not from type AudioFile, Radio or PodcastFeedEntry");
         }

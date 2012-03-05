@@ -281,8 +281,8 @@ public final class RadioNavigationView extends AbstractNavigationView {
         }
         
         // Sort and add labels 
-        List<String> RadioLabels = radioHandler.sortRadioLabels();
-        for (String label : RadioLabels) {
+        List<String> radioLabels = radioHandler.sortRadioLabels();
+        for (String label : radioLabels) {
             for (DefaultMutableTreeNode labelNode : radioGroups.values()) {
                 if (labelNode.toString().equals(label)) {
                     root.add(labelNode);

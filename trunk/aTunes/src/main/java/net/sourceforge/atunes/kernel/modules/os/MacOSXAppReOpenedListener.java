@@ -21,8 +21,10 @@
 package net.sourceforge.atunes.kernel.modules.os;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.ReflectionUtils;
 
 /**
@@ -41,8 +43,16 @@ final class MacOSXAppReOpenedListener implements InvocationHandler {
 	}
 	
 	@Override
-	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-		targetMethod.invoke(targetObject, (Object[]) null);
+	public Object invoke(Object proxy, Method method, Object[] args) {
+		try {
+			targetMethod.invoke(targetObject, (Object[]) null);
+		} catch (IllegalArgumentException e) {
+			Logger.error(e);
+		} catch (IllegalAccessException e) {
+			Logger.error(e);
+		} catch (InvocationTargetException e) {
+			Logger.error(e);
+		}
 		return null;
 	}
 }
