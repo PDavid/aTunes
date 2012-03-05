@@ -129,12 +129,7 @@ abstract class AbstractMPlayerOutputReader extends Thread {
             line = in.readLine();
             while (line != null && getEngine().isEnginePlaying()) {
                 final String lineHelp = line;
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
                         read(lineHelp);
-                    }
-                });
                 line = in.readLine();
             }
         } catch (final IOException e) {

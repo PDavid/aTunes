@@ -31,7 +31,6 @@ import net.sourceforge.atunes.model.IPlayerControlsPanel;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.utils.Logger;
 
 final class PlayerControlsController extends AbstractSimpleController<PlayerControlsPanel> {
 
@@ -63,10 +62,13 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
      * @param length
      *            the new length
      */
-    void setAudioObjectLength(long length) {
-        Logger.debug(Long.toString(length));
-
-        getComponentControlled().getProgressSlider().setMaximum((int) length);
+    void setAudioObjectLength(final long length) {
+    	SwingUtilities.invokeLater(new Runnable() {
+    		@Override
+    		public void run() {
+    	        getComponentControlled().getProgressSlider().setMaximum((int) length);
+    		}
+    	});
     }
 
     /**
