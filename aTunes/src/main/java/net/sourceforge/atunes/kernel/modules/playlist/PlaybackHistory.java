@@ -115,7 +115,7 @@ class PlaybackHistory {
     }
 
     void addToHistory(IAudioObject audioObject) {
-        if (currentAudioObject != null && currentAudioObject != audioObject) {
+        if (currentAudioObject != null && !currentAudioObject.equals(audioObject)) {
             if (previousHeap.get(1) == audioObject) {
                 currentAudioObject = previousHeap.pop();
             } else if (nextHeap.get(1) == audioObject) {

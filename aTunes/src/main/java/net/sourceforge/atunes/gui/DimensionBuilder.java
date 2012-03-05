@@ -26,10 +26,12 @@ import java.awt.Rectangle;
 
 import net.sourceforge.atunes.utils.Logger;
 
-public class DimensionBuilder {
+public final class DimensionBuilder {
 
 	private static Rectangle screenSize;
 	
+	private DimensionBuilder() {}
+	 
 	static {
 		retrieveScreenSize();
 	}

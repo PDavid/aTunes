@@ -184,7 +184,7 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
         ILocaleBean locale = getState().getLocale();
         ILocaleBean oldLocale = getState().getOldLocale();
         // Reset fame state if no frame state in state or if component orientation of locale has changed
-        if (frameState == null || locale == null || locale != null && oldLocale != null
+        if (frameState == null || locale == null || oldLocale != null
                 && !(ComponentOrientation.getOrientation(locale.getLocale()).equals(ComponentOrientation.getOrientation(oldLocale.getLocale())))) {
             frameState = new FrameState();
             getState().setFrameState(getFrame().getClass(), frameState);

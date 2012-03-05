@@ -194,8 +194,8 @@ public abstract class AbstractContextPanelContent<T extends IContextInformationS
 	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#setLookAndFeelManager(net.sourceforge.atunes.model.ILookAndFeelManager)
 	 */
     @Override
-	public void setLookAndFeelManager(ILookAndFeelManager ILookAndFeelManager) {
-		this.lookAndFeelManager = ILookAndFeelManager;
+	public void setLookAndFeelManager(ILookAndFeelManager iLookAndFeelManager) {
+		this.lookAndFeelManager = iLookAndFeelManager;
 	}
     
     protected ILookAndFeelManager getLookAndFeelManager() {

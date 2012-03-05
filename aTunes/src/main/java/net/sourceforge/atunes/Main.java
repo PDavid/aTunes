@@ -30,6 +30,8 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class Main {
 	
+	private Main() {}
+	
     /**
      * Main method for calling aTunes.
      * @param args

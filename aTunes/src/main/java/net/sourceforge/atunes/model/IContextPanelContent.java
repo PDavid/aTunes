@@ -90,13 +90,28 @@ public interface IContextPanelContent<T extends IContextInformationSource> {
 	 */
 	public void setParentPanel(JPanel parentPanel);
 
+	/**
+	 * @return
+	 */
 	public IState getState();
 
+	/**
+	 * @param state
+	 */
 	public void setState(IState state);
 
+	/**
+	 * @param dataSource
+	 */
 	public void setDataSource(IContextInformationSource dataSource);
 
-	public void setLookAndFeelManager(ILookAndFeelManager ILookAndFeelManager);
+	/**
+	 * @param iLookAndFeelManager
+	 */
+	public void setLookAndFeelManager(ILookAndFeelManager iLookAndFeelManager);
 
+	/**
+	 * @return
+	 */
 	public JPanel getParentPanel();
 }

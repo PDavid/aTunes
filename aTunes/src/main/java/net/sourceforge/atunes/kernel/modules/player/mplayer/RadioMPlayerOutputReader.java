@@ -24,7 +24,6 @@ import java.util.regex.Pattern;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IContextHandler;
-import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IState;
@@ -40,7 +39,6 @@ class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
     private String lastTitle = "";
     private boolean started;
     private IState state;
-    private IFrame frame;
     private IPlayListHandler playListHandler;
 
     /**
@@ -50,14 +48,12 @@ class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
      * @param process
      * @param radio
      * @param state
-     * @param frame
      * @param playListHandler
      */
-    RadioMPlayerOutputReader(MPlayerEngine engine, Process process, IRadio radio, IState state, IFrame frame, IPlayListHandler playListHandler) {
+    RadioMPlayerOutputReader(MPlayerEngine engine, Process process, IRadio radio, IState state, IPlayListHandler playListHandler) {
         super(engine, process);
         this.radio = radio;
         this.state = state;
-        this.frame = frame;
         this.playListHandler = playListHandler;
     }
 

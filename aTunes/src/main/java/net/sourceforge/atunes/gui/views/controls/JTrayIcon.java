@@ -137,7 +137,7 @@ public final class JTrayIcon extends TrayIcon {
 
     @Override
     public synchronized void removeMouseListener(MouseListener listener) {
-        if (listener == trayIconMouseListener) {
+        if (listener.equals(trayIconMouseListener)) {
             return;
         }
         super.removeMouseListener(listener);

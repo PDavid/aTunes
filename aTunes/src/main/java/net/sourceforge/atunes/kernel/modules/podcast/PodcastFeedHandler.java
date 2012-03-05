@@ -27,7 +27,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -62,8 +61,6 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class PodcastFeedHandler extends AbstractHandler implements IPodcastFeedHandler {
 
-    private final Comparator<IPodcastFeed> COMPARATOR = new PodcastFeedComparator();
-	
     public static final long DEFAULT_PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL = 180;
 
     private List<IPodcastFeed> podcastFeeds;
@@ -179,7 +176,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
         // Note: Do not use Collection.sort(...);
         boolean added = false;
         for (int i = 0; i < getPodcastFeeds().size(); i++) {
-            if (COMPARATOR.compare(podcastFeed, getPodcastFeeds().get(i)) < 0) {
+            if (new PodcastFeedComparator().compare(podcastFeed, getPodcastFeeds().get(i)) < 0) {
                 getPodcastFeeds().add(i, podcastFeed);
                 added = true;
                 break;

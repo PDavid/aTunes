@@ -451,7 +451,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 
     @Override
     public void playbackStateChanged(PlaybackState newState, IAudioObject currentAudioObject) {
-    	if (playbackState != newState) {
+    	if (!playbackState.equals(newState)) {
     		this.playbackState = newState;
     		Logger.debug("Playback state changed to:", newState);
 

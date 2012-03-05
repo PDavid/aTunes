@@ -22,8 +22,6 @@ package net.sourceforge.atunes.kernel.modules.columns;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IPodcastFeedEntry;
-import net.sourceforge.atunes.model.IRadio;
 
 public class FileNameColumn extends AbstractColumn<String> {
 
@@ -47,13 +45,10 @@ public class FileNameColumn extends AbstractColumn<String> {
 
     @Override
     public String getValueFor(IAudioObject audioObject) {
-        if (audioObject instanceof IRadio) {
-            return null;
-        }
-        if (audioObject instanceof IPodcastFeedEntry) {
-            return null;
-        }
-        return ((ILocalAudioObject) audioObject).getFile().getName();
+    	if (audioObject instanceof ILocalAudioObject) { 
+    		return ((ILocalAudioObject) audioObject).getFile().getName();
+    	}
+    	return null;
     }
 
 }

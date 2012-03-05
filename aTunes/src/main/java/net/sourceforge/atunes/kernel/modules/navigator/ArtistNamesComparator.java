@@ -20,13 +20,18 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
+import java.io.Serializable;
 import java.text.Collator;
 import java.util.Comparator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-final class ArtistNamesComparator implements Comparator<String> {
+final class ArtistNamesComparator implements Comparator<String>, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 681733305318937293L;
 	private final Collator collator;
 
 	/**
@@ -36,7 +41,7 @@ final class ArtistNamesComparator implements Comparator<String> {
 		this.collator = collator;
 	}
 
-	private final Pattern PATTERN = Pattern.compile("(.*)\\s+(.*?)");
+	private static final Pattern PATTERN = Pattern.compile("(.*)\\s+(.*?)");
 
 	@Override
 	public int compare(String s1, String s2) {
