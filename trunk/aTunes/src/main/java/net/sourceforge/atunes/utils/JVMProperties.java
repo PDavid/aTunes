@@ -52,10 +52,7 @@ public final class JVMProperties {
     				int v2 = Integer.parseInt(matcher.group(2));
     				int v3 = Integer.parseInt(matcher.group(3));
     				int update = Integer.parseInt(matcher.group(4));
-    				return (v1 > 1) || 
-    				       (v1 == 1 && v2 > 6) || 
-    				       (v1 == 1 && v2 == 6 && v3 > 0) ||
-    				       (v1 == 1 && v2 == 6 && v3 == 0 && update >= 10);
+    				return isVersionEqualOrLater(v1, v2, v3, update);
     			} catch (NumberFormatException e) {
     				return false;
     			}
@@ -63,4 +60,19 @@ public final class JVMProperties {
     	}
     	return false;
     }
+
+	/**
+	 * Returns if version is equal or later to 1.6.0_10
+	 * @param v1
+	 * @param v2
+	 * @param v3
+	 * @param update
+	 * @return
+	 */
+	private boolean isVersionEqualOrLater(int v1, int v2, int v3, int update) {
+		return (v1 > 1) || 
+		       (v1 == 1 && v2 > 6) || 
+		       (v1 == 1 && v2 == 6 && v3 > 0) ||
+		       (v1 == 1 && v2 == 6 && v3 == 0 && update >= 10);
+	}
 }
