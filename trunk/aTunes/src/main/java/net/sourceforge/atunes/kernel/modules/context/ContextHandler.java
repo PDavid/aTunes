@@ -23,6 +23,8 @@ package net.sourceforge.atunes.kernel.modules.context;
 import java.util.Collection;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextHandler;
@@ -286,7 +288,12 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 	}
 
 	private void updateContextTabs() {
-		contextPanelsContainer.updateContextPanels();
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				contextPanelsContainer.updateContextPanels();
+			}
+		});
 	}
 
 	private void removeContextPanel(IContextPanel instance) {
