@@ -75,8 +75,7 @@ public class PodcastFeedEntryDownloader extends SwingWorker<Boolean, Void> {
     }
 
     @Override
-    protected Boolean doInBackground() throws Exception {
-
+    protected Boolean doInBackground() {
         Logger.info("Downloading PodcastEntry: ", podcastFeedEntry.getUrl());
 
         OutputStream out = null;

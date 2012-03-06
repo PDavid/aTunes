@@ -94,7 +94,7 @@ public class RemoveLovedSongInLastFmAction extends CustomAbstractAction {
         worker.setBackgroundActions(new Callable<Void>() {
 			
 			@Override
-			public Void call() throws Exception {
+			public Void call() {
 				webServicesHandler.removeLovedSong(song);
 				return null;
 			}

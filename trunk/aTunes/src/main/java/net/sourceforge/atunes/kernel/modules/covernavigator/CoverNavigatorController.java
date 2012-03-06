@@ -75,7 +75,7 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
 		}
 
 		@Override
-		protected Void doInBackground() throws Exception {
+		protected Void doInBackground() {
 
 		    final List<IAlbum> albums = new ArrayList<IAlbum>(artistSelected.getAlbums().values());
 		    Collections.sort(albums);

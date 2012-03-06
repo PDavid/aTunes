@@ -73,7 +73,7 @@ public class RepositoryRefreshLoader extends AbstractRepositoryLoader {
 		worker.setBackgroundActions(new Callable<Void>() {
 			
 			@Override
-			public Void call() throws Exception {
+			public Void call() {
 				run();
 				return null;
 			}

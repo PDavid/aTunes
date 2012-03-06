@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.radio;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -62,7 +63,7 @@ final class RetrieveRadiosSwingWorker extends SwingWorker<List<IRadio>, Void> {
 	
     @SuppressWarnings("unchecked")
     @Override
-    protected List<IRadio> doInBackground() throws Exception {
+    protected List<IRadio> doInBackground() throws IOException {
         String xml = networkHandler.readURL(networkHandler.getConnection(Constants.RADIO_LIST_DOWNLOAD));
         return (List<IRadio>) xmlSerializerService.readObjectFromString(xml);
     }

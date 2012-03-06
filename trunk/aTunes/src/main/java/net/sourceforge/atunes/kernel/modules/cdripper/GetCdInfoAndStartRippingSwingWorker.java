@@ -62,7 +62,7 @@ final class GetCdInfoAndStartRippingSwingWorker extends	SwingWorker<CDInfo, Void
 	}
 
 	@Override
-	protected CDInfo doInBackground() throws Exception {
+	protected CDInfo doInBackground() {
 	    if (!this.ripperHandler.testTools()) {
 	        return null;
 	    }
