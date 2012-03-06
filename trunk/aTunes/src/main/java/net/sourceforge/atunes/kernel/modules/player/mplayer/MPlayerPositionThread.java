@@ -27,7 +27,7 @@ import net.sourceforge.atunes.utils.Logger;
  */
 class MPlayerPositionThread extends Thread {
 
-    private static final int STEP = 250;
+    private static final int STEP = 500;
 
     private MPlayerEngine engine;
 
@@ -55,7 +55,7 @@ class MPlayerPositionThread extends Thread {
                 Thread.sleep(STEP);
             }
         } catch (InterruptedException e) {
-            // Interrupted when playback is stopped
+        	Logger.debug("Finished MPlayerPositionThread");
         }
     }
 }
