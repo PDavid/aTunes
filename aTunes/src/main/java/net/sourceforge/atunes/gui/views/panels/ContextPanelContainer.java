@@ -99,21 +99,26 @@ public final class ContextPanelContainer extends JPanel implements IContextPanel
     
     @Override
 	public void updateContextPanels() {
-    	IContextPanel selectedPanel = contextSelector.getSelectedItem() != null ? (IContextPanel) contextSelector.getSelectedItem() : null;
-    	container.removeAll();
-    	visiblePanels.clear();
-    	contextSelector.clear();
-        for (final IContextPanel panel : panels) {
-        	if (panel.isVisible()) {
-        		visiblePanels.add(panel);
-        		container.add(panel.getContextPanelName(), panel.getUIComponent(lookAndFeelManager.getCurrentLookAndFeel()));
-        		panel.getUIComponent(lookAndFeelManager.getCurrentLookAndFeel()).setEnabled(panel.isEnabled());
-        		
-        		contextSelector.addButton(panel.getContextPanelName(), panel.getIcon(), panel.getTitle(), panel.getAction(), panel);
-        	}
-        }
-        contextSelector.setSelectedButton(selectedPanel != null ? selectedPanel.getContextPanelName() : visiblePanels.get(0).getContextPanelName());
-        ((CardLayout)container.getLayout()).show(container, selectedPanel != null ? selectedPanel.getContextPanelName() : visiblePanels.get(0).getContextPanelName());
+    	SwingUtilities.invokeLater(new Runnable() {
+    		@Override
+    		public void run() {
+    	    	IContextPanel selectedPanel = contextSelector.getSelectedItem() != null ? (IContextPanel) contextSelector.getSelectedItem() : null;
+    	    	container.removeAll();
+    	    	visiblePanels.clear();
+    	    	contextSelector.clear();
+    	        for (final IContextPanel panel : panels) {
+    	        	if (panel.isVisible()) {
+    	        		visiblePanels.add(panel);
+    	        		container.add(panel.getContextPanelName(), panel.getUIComponent(lookAndFeelManager.getCurrentLookAndFeel()));
+    	        		panel.getUIComponent(lookAndFeelManager.getCurrentLookAndFeel()).setEnabled(panel.isEnabled());
+    	        		
+    	        		contextSelector.addButton(panel.getContextPanelName(), panel.getIcon(), panel.getTitle(), panel.getAction(), panel);
+    	        	}
+    	        }
+    	        contextSelector.setSelectedButton(selectedPanel != null ? selectedPanel.getContextPanelName() : visiblePanels.get(0).getContextPanelName());
+    	        ((CardLayout)container.getLayout()).show(container, selectedPanel != null ? selectedPanel.getContextPanelName() : visiblePanels.get(0).getContextPanelName());
+    		}
+    	});
     }
 
     @Override

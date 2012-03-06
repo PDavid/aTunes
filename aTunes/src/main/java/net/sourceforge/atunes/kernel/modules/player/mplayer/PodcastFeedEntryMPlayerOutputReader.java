@@ -43,6 +43,10 @@ class PodcastFeedEntryMPlayerOutputReader extends AbstractMPlayerOutputReader {
         super(engine, process);
         this.podcastFeedEntry = podcastFeedEntry;
     }
+    
+    @Override
+    protected void init() {
+    }
 
     @Override
     protected void read(String line) {

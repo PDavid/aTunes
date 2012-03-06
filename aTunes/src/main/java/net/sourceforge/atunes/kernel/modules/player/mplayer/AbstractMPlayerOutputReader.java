@@ -25,8 +25,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.regex.Pattern;
 
-import javax.swing.SwingUtilities;
-
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -47,6 +45,8 @@ abstract class AbstractMPlayerOutputReader extends Thread {
     private int length;
     private int time;
 
+    private Process process;
+    
     private volatile boolean readStopped = false;
 
     /**
@@ -59,7 +59,7 @@ abstract class AbstractMPlayerOutputReader extends Thread {
      */
     protected AbstractMPlayerOutputReader(MPlayerEngine engine, Process process) {
         this.engine = engine;
-        this.in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        this.process = process;
     }
 
     /**
@@ -82,13 +82,6 @@ abstract class AbstractMPlayerOutputReader extends Thread {
         } else {
             throw new IllegalArgumentException("audio object is not from type AudioFile, Radio or PodcastFeedEntry");
         }
-    }
-
-    /**
-     * Init
-     */
-    protected void init() {
-        // Nothing to do
     }
 
     /**
@@ -115,21 +108,18 @@ abstract class AbstractMPlayerOutputReader extends Thread {
     protected void stopRead() {
         readStopped = true;
     }
+    
+    protected abstract void init();
 
     @Override
     public final void run() {
         String line = null;
+        this.in = new BufferedReader(new InputStreamReader(process.getInputStream()));
         try {
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    init();
-                }
-            });
+        	init();
             line = in.readLine();
             while (line != null && getEngine().isEnginePlaying()) {
-                final String lineHelp = line;
-                        read(lineHelp);
+                read(line);
                 line = in.readLine();
             }
         } catch (final IOException e) {
@@ -139,7 +129,7 @@ abstract class AbstractMPlayerOutputReader extends Thread {
         }
     }
 
-    protected void readAndApplyLength(IAudioObject audioObject, String line, boolean readOnlyFromTags) {
+    protected final void readAndApplyLength(IAudioObject audioObject, String line, boolean readOnlyFromTags) {
         if (line.contains("ANS_LENGTH")) {
             // Length still inaccurate with mp3 VBR files!
             // Apply workaround to get length from audio file properties (read by jaudiotagger) instead of mplayer
