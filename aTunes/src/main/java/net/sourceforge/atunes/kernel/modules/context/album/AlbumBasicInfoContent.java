@@ -67,14 +67,16 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent<AlbumInfo
 	public void updateContentFromDataSource(AlbumInfoDataSource source) {
 		IAudioObject audioObject = source.getAudioObject();
 		IAlbumInfo album = source.getAlbumInfo();
-		artistLabel.setText(album != null ? album.getArtist() : audioObject.getArtist(), album != null ? album.getArtistUrl() : null);
-		artistLabel.setEnabled(album != null && album.getArtistUrl() != null);
-		albumLabel.setText(album != null ? album.getTitle() : I18nUtils.getString("UNKNOWN_ALBUM"), album != null ? album.getUrl() : null);
-		albumLabel.setEnabled(album != null && album.getUrl() != null);
-		// TODO: wikipedia is opened in English
-		yearLabel.setText(album != null ? album.getYear() : "", album != null && album.getYear() != null ? StringUtils.getString("http://en.wikipedia.org/wiki/", album
-				.getYear()) : null);
+		updateArtist(audioObject, album);
+		updateAlbum(album);
+		updateYear(album);
+		updateAlbumCover(source);
+	}
 
+	/**
+	 * @param source
+	 */
+	private void updateAlbumCover(AlbumInfoDataSource source) {
 		ImageIcon image = source.getImage();
 		ImageIcon imageIcon = null;
 		if (image != null) {
@@ -84,6 +86,32 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent<AlbumInfo
 			imageIcon = Images.getImage(Images.APP_LOGO_150);
 		}
 		albumCoverLabel.setIcon(imageIcon);
+	}
+
+	/**
+	 * @param album
+	 */
+	private void updateYear(IAlbumInfo album) {
+		// TODO: wikipedia is opened in English
+		yearLabel.setText(album != null ? album.getYear() : "", album != null && album.getYear() != null ? StringUtils.getString("http://en.wikipedia.org/wiki/", album
+				.getYear()) : null);
+	}
+
+	/**
+	 * @param album
+	 */
+	private void updateAlbum(IAlbumInfo album) {
+		albumLabel.setText(album != null ? album.getTitle() : I18nUtils.getString("UNKNOWN_ALBUM"), album != null ? album.getUrl() : null);
+		albumLabel.setEnabled(album != null && album.getUrl() != null);
+	}
+
+	/**
+	 * @param audioObject
+	 * @param album
+	 */
+	private void updateArtist(IAudioObject audioObject, IAlbumInfo album) {
+		artistLabel.setText(album != null ? album.getArtist() : audioObject.getArtist(), album != null ? album.getArtistUrl() : null);
+		artistLabel.setEnabled(album != null && album.getArtistUrl() != null);
 	}
 
 	@Override
@@ -109,6 +137,13 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent<AlbumInfo
 		yearLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
 		// Add components
+		return arrangeComponents();
+	}
+
+	/**
+	 * @return
+	 */
+	private Component arrangeComponents() {
 		JPanel panel = new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
@@ -122,8 +157,6 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent<AlbumInfo
 		panel.add(artistLabel, c);
 		c.gridy = 3;
 		panel.add(yearLabel, c);
-
 		return panel;
 	}
-
 }
