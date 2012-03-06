@@ -44,7 +44,7 @@ class MPlayerPositionThread extends Thread {
     @Override
     public void run() {
         try {
-            while (true) {
+            while (!isInterrupted()) {
                 if (!engine.isPlaybackPaused()) {
                     engine.getCommandWriter().sendGetPositionCommand();
                     if (this.engine.getCurrentAudioObjectLength() == 0 && engine.getAudioObject().isSeekable()) {

@@ -27,6 +27,7 @@ import java.io.InputStreamReader;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.Logger;
 
 /**
  * The Class MPlayerErrorReader.
@@ -67,6 +68,7 @@ class MPlayerErrorReader extends Thread {
                     engine.currentAudioObjectFinished(false, I18nUtils.getString("FILE_NOT_FOUND"), ": ", audioObject.getUrl());
                 }
             }
+        	Logger.debug("Finished MPlayerErrorReader");
         } catch (final IOException e) {
             engine.handlePlayerEngineError(e);
         } finally {
