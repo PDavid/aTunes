@@ -24,6 +24,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.event.TableModelEvent;
 
@@ -225,12 +226,20 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
         t.start();
     }
 
+    /**
+     * Forces refresh of play list
+     */
     void refreshPlayList() {
-        int[] selectedRows = playListTable.getSelectedRows();
-        ((PlayListTableModel) playListTable.getModel()).refresh(TableModelEvent.UPDATE);
-        // Select previous selected rows
-        for (int selectedRow : selectedRows) {
-        	playListTable.getSelectionModel().addSelectionInterval(selectedRow, selectedRow);
-        }
+    	SwingUtilities.invokeLater(new Runnable() {
+    		@Override
+    		public void run() {
+    	        int[] selectedRows = playListTable.getSelectedRows();
+    	        ((PlayListTableModel) playListTable.getModel()).refresh(TableModelEvent.UPDATE);
+    	        // Select previous selected rows
+    	        for (int selectedRow : selectedRows) {
+    	        	playListTable.getSelectionModel().addSelectionInterval(selectedRow, selectedRow);
+    	        }
+    		}
+    	});
     }
 }

@@ -59,7 +59,6 @@ class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
 
     @Override
     protected void init() {
-        super.init();
         getEngine().setCurrentLength(radio.getDuration() * 1000L);
     }
 
