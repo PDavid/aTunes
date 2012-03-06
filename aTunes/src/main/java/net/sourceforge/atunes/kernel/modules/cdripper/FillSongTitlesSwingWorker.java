@@ -49,7 +49,7 @@ final class FillSongTitlesSwingWorker extends SwingWorker<IAlbumInfo, Void> {
 	}
 
 	@Override
-	protected IAlbumInfo doInBackground() throws Exception {
+	protected IAlbumInfo doInBackground() {
 	    return webServicesHandler.getAlbum(artist, album);
 	}
 

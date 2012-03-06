@@ -62,7 +62,7 @@ final class CheckUpdatesSwingWorker extends
 	}
 
 	@Override
-	protected ApplicationVersion doInBackground() throws Exception {
+	protected ApplicationVersion doInBackground() {
 	    return this.updateHandler.getLastVersion();
 	}
 

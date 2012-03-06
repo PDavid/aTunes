@@ -104,7 +104,7 @@ public class RemoveDuplicatesFromPlayListAction extends CustomAbstractAction {
         worker.setBackgroundActions(new Callable<List<Integer>>() {
 			
 			@Override
-			public List<Integer> call() throws Exception {
+			public List<Integer> call() {
 				IPlayList playList = playListHandler.getCurrentPlayList(true);
 				List<IAudioObject> audioObjectsToCheck = new ArrayList<IAudioObject>();
 				for (int i = 0; i < playList.size(); i++) {

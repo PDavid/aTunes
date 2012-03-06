@@ -118,7 +118,7 @@ public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
     }
 
     @Override
-    protected Void doInBackground() throws Exception {
+    protected Void doInBackground() {
         String url = youtubeService.getDirectUrlToBeAbleToPlaySong(entry.getUrl());
         InputStream input = null;
         FileOutputStream fout = null;
