@@ -127,81 +127,10 @@ public class PodcastFeedEntryRetriever implements Runnable {
 
                     final List<IPodcastFeedEntry> newEntries = new ArrayList<IPodcastFeedEntry>();
                     for (int i = 0; i < entries.getLength(); i++) {
-
-                        String title = "";
-                        String url = "";
-                        String author = "";
-                        String description = "";
-                        DateTime date = null;
-                        int duration = 0;
-
-                        // Check if audio podcast feed entry
-                        Node typeNode = XPathUtils.evaluateXPathExpressionAndReturnNode(feedType.getTypeXPath(), entries.item(i));
-                        if (typeNode == null || !typeNode.getTextContent().matches(".*audio.*")) {
-                            Logger.info(                                    StringUtils.getString("podcast feed entry is not from type audio: ", (typeNode != null ? typeNode.getTextContent() : "no type node")));
-                            continue;
-                        }
-
-                        // Get title of podcast entry
-                        Node titleNode = XPathUtils.evaluateXPathExpressionAndReturnNode(feedType.getTitleXPath(), entries.item(i));
-
-                        if (titleNode != null) {
-                            title = titleNode.getTextContent();
-                        }
-
-                        // Get url of podcast entry
-                        Node urlNode = XPathUtils.evaluateXPathExpressionAndReturnNode(feedType.getUrlXPath(), entries.item(i));
-
-                        if (urlNode != null) {
-                            url = urlNode.getTextContent();
-                        } else {
-                            continue;
-                        }
-
-                        // Get Author of podcast entry
-                        Node authorNode = XPathUtils.evaluateXPathExpressionAndReturnNode(feedType.getAuthorXPath(), entries.item(i));
-
-                        if (authorNode != null) {
-                            author = authorNode.getTextContent();
-                        }
-
-                        // Get description of podcast entry
-                        Node descriptionNode = XPathUtils.evaluateXPathExpressionAndReturnNode(feedType.getDescriptionXPath(), entries.item(i));
-
-                        if (descriptionNode != null) {
-                            description = descriptionNode.getTextContent();
-                            description = description.replaceAll("\\<.*?\\>", "");
-                        }
-
-                        // Get date of podcast entry
-                        Node dateNode = XPathUtils.evaluateXPathExpressionAndReturnNode(feedType.getDateXPath(), entries.item(i));
-
-                        if (dateNode != null) {
-                            date = DateUtils.parseRFC822Date(dateNode.getTextContent());
-                            if (date == null) {
-                                date = DateUtils.parseRFC3339Date(dateNode.getTextContent());
-                            }
-                        }
-
-                        // Try to find out duration
-                        Node durationNode = XPathUtils.evaluateXPathExpressionAndReturnNode(feedType.getDurationXPath(), entries.item(i));
-
-                        if (durationNode != null) {
-                            String durationText = durationNode.getTextContent();
-                            // Transform "01:01:22" to seconds
-                            if (durationText != null) {
-                                String[] result = durationText.split(":");
-                                try {
-                                    for (int j = result.length - 1; j >= 0; j--) {
-                                        duration = duration + Integer.parseInt(result[j]) * (int) Math.pow(60, result.length - 1 - j);
-                                    }
-                                } catch (NumberFormatException e) {
-                                    duration = 0;
-                                    Logger.info("could not extract podcast feed entry duration");
-                                }
-                            }
-                        }
-                        newEntries.add(new PodcastFeedEntry(title, author, url, description, date, duration, podcastFeed));
+                    	PodcastFeedEntry entry = getEntry(feedType, entries.item(i), podcastFeed);
+                    	if (entry != null) {
+                    		newEntries.add(entry);
+                    	}
                     }
 
                     podcastFeed.addEntries(newEntries, removePodcastFeedEntriesRemovedFromPodcastFeed);
@@ -218,7 +147,83 @@ public class PodcastFeedEntryRetriever implements Runnable {
         }
 
         return podcastFeedsWithNewEntries;
+    }
+    
+    private PodcastFeedEntry getEntry(FeedType feedType, Node entry, IPodcastFeed podcastFeed) {
+        String title = "";
+        String url = "";
+        String author = "";
+        String description = "";
+        DateTime date = null;
+        int duration = 0;
 
+        // Check if audio podcast feed entry
+        Node typeNode = XPathUtils.evaluateXPathExpressionAndReturnNode(feedType.getTypeXPath(), entry);
+        if (typeNode == null || !typeNode.getTextContent().matches(".*audio.*")) {
+            Logger.info(StringUtils.getString("podcast feed entry is not from type audio: ", (typeNode != null ? typeNode.getTextContent() : "no type node")));
+            return null;
+        }
+
+        // Get title of podcast entry
+        Node titleNode = XPathUtils.evaluateXPathExpressionAndReturnNode(feedType.getTitleXPath(), entry);
+
+        if (titleNode != null) {
+            title = titleNode.getTextContent();
+        }
+
+        // Get url of podcast entry
+        Node urlNode = XPathUtils.evaluateXPathExpressionAndReturnNode(feedType.getUrlXPath(), entry);
+
+        if (urlNode != null) {
+            url = urlNode.getTextContent();
+        } else {
+            return null;
+        }
+
+        // Get Author of podcast entry
+        Node authorNode = XPathUtils.evaluateXPathExpressionAndReturnNode(feedType.getAuthorXPath(), entry);
+
+        if (authorNode != null) {
+            author = authorNode.getTextContent();
+        }
+
+        // Get description of podcast entry
+        Node descriptionNode = XPathUtils.evaluateXPathExpressionAndReturnNode(feedType.getDescriptionXPath(), entry);
+
+        if (descriptionNode != null) {
+            description = descriptionNode.getTextContent();
+            description = description.replaceAll("\\<.*?\\>", "");
+        }
+
+        // Get date of podcast entry
+        Node dateNode = XPathUtils.evaluateXPathExpressionAndReturnNode(feedType.getDateXPath(), entry);
+
+        if (dateNode != null) {
+            date = DateUtils.parseRFC822Date(dateNode.getTextContent());
+            if (date == null) {
+                date = DateUtils.parseRFC3339Date(dateNode.getTextContent());
+            }
+        }
+
+        // Try to find out duration
+        Node durationNode = XPathUtils.evaluateXPathExpressionAndReturnNode(feedType.getDurationXPath(), entry);
+
+        if (durationNode != null) {
+            String durationText = durationNode.getTextContent();
+            // Transform "01:01:22" to seconds
+            if (durationText != null) {
+                String[] result = durationText.split(":");
+                try {
+                    for (int j = result.length - 1; j >= 0; j--) {
+                        duration = duration + Integer.parseInt(result[j]) * (int) Math.pow(60, result.length - 1 - j);
+                    }
+                } catch (NumberFormatException e) {
+                    duration = 0;
+                    Logger.info("could not extract podcast feed entry duration");
+                }
+            }
+        }
+        return new PodcastFeedEntry(title, author, url, description, date, duration, podcastFeed);
     }
 
     private void refreshView() {

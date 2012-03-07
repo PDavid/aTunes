@@ -22,6 +22,8 @@ package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.io.File;
 
+import org.apache.commons.lang.StringUtils;
+
 import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.data.Folder;
@@ -227,20 +229,9 @@ final class RepositoryFiller {
      * @param file
      */
     private void updateArtistStructure(ITag oldTag, ILocalAudioObject file) {
-		String albumArtist = null;
-		String artist = null;
-		String album = null;
-		if (oldTag != null) {
-			albumArtist = oldTag.getAlbumArtist();
-			artist = oldTag.getArtist();
-			album = oldTag.getAlbum();
-		}
-		if (artist == null || artist.equals("")) {
-			artist = UnknownObjectCheck.getUnknownArtist();
-		}
-		if (album == null || album.equals("")) {
-			album = UnknownObjectCheck.getUnknownAlbum();
-		}
+		String albumArtist = getAlbumArtist(oldTag);
+		String artist = getArtist(oldTag);
+		String album = getAlbum(oldTag);
 		
 		boolean albumArtistPresent = true;
 		IArtist a = repository.getArtist(albumArtist);
@@ -249,39 +240,70 @@ final class RepositoryFiller {
 			albumArtistPresent = false;
 		}
 		if (a != null) {
-			IAlbum alb = a.getAlbum(album);
-			if (alb != null) {
-				if (alb.size() == 1) {
-					a.removeAlbum(alb);
-				} else {
-					alb.removeAudioFile(file);
-				}
+			storeArtistInStructure(file, artist, album, albumArtistPresent, a);
+		}
+    }
 
-				if (a.size() <= 0) {
-					repository.removeArtist(a);
-				}
+	/**
+	 * @param file
+	 * @param artist
+	 * @param album
+	 * @param albumArtistPresent
+	 * @param a
+	 */
+	private void storeArtistInStructure(ILocalAudioObject file, String artist, String album, boolean albumArtistPresent, IArtist a) {
+		IAlbum alb = a.getAlbum(album);
+		if (alb != null) {
+			if (alb.size() == 1) {
+				a.removeAlbum(alb);
+			} else {
+				alb.removeAudioFile(file);
 			}
-			// If album artist field is present, audio file might still be
-			// present under artist name so check
-			if (albumArtistPresent) {
-				a = repository.getArtist(artist);
-				if (a != null) {
-					alb = a.getAlbum(album);
-					if (alb != null) {
-						if (alb.size() == 1) {
-							a.removeAlbum(alb);
-						} else {
-							alb.removeAudioFile(file);
-						}
-						// Maybe needs to be set to 0 in case node gets
-						// deleted
-						if (a.size() <= 1) {
-							repository.removeArtist(a);
-						}
+
+			if (a.size() <= 0) {
+				repository.removeArtist(a);
+			}
+		}
+		// If album artist field is present, audio file might still be
+		// present under artist name so check
+		if (albumArtistPresent) {
+			a = repository.getArtist(artist);
+			if (a != null) {
+				alb = a.getAlbum(album);
+				if (alb != null) {
+					if (alb.size() == 1) {
+						a.removeAlbum(alb);
+					} else {
+						alb.removeAudioFile(file);
+					}
+					// Maybe needs to be set to 0 in case node gets
+					// deleted
+					if (a.size() <= 1) {
+						repository.removeArtist(a);
 					}
 				}
 			}
 		}
+	}
+    
+    private String getAlbumArtist(ITag tag) {
+    	return tag != null ? tag.getAlbumArtist() : null;
+    }
+    
+    private String getArtist(ITag tag) {
+    	String artist = tag != null ? tag.getArtist() : null;
+		if (StringUtils.isBlank(artist)) {
+			artist = UnknownObjectCheck.getUnknownArtist();
+		}
+		return artist;
+    }
+    
+    private String getAlbum(ITag tag) {
+    	String album = tag != null ? tag.getAlbum() : null;
+		if (StringUtils.isBlank(album)) {
+			album = UnknownObjectCheck.getUnknownAlbum();
+		}
+		return album;
     }
     
     /**
