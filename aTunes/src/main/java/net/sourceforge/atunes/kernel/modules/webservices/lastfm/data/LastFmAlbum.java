@@ -84,37 +84,44 @@ public class LastFmAlbum implements IAlbumInfo {
             // Process track list: if all tracks have a common string between (), [], {} as "(Live)" then it's removed from all of them
             // In this way track names are more accurate
             if (!ts.isEmpty()) {
-                String firstTrackTitle = ts.get(0).getTitle();
-                // Get all text between () [] {}
-                List<String> tokensOfFirstTrackTitle = StringUtils.getTextBetweenChars(firstTrackTitle, '(', ')');
-                tokensOfFirstTrackTitle.addAll(StringUtils.getTextBetweenChars(firstTrackTitle, '[', ']'));
-                tokensOfFirstTrackTitle.addAll(StringUtils.getTextBetweenChars(firstTrackTitle, '{', '}'));
-
-                // Check what tokens are present in all track titles
-                List<String> commonTokens = new ArrayList<String>();
-                for (String token : tokensOfFirstTrackTitle) {
-                    boolean common = true;
-                    for (int i = 1; i < ts.size() && common; i++) {
-                        if (!ts.get(i).getTitle().contains(token)) {
-                            common = false;
-                        }
-                    }
-                    if (common) {
-                        commonTokens.add(token);
-                    }
-                }
-
-                // Then remove common tokens from all titles
-                for (ITrackInfo ti : ts) {
-                    for (String token : commonTokens) {
-                        ti.setTitle(ti.getTitle().replace(token, ""));
-                    }
-                    ti.setTitle(ti.getTitle().trim());
-                }
+                processListOfTracks(ts);
             }
 
             album.tracks = ts;
         }
+	}
+
+	/**
+	 * @param ts
+	 */
+	private static void processListOfTracks(List<ITrackInfo> ts) {
+		String firstTrackTitle = ts.get(0).getTitle();
+		// Get all text between () [] {}
+		List<String> tokensOfFirstTrackTitle = StringUtils.getTextBetweenChars(firstTrackTitle, '(', ')');
+		tokensOfFirstTrackTitle.addAll(StringUtils.getTextBetweenChars(firstTrackTitle, '[', ']'));
+		tokensOfFirstTrackTitle.addAll(StringUtils.getTextBetweenChars(firstTrackTitle, '{', '}'));
+
+		// Check what tokens are present in all track titles
+		List<String> commonTokens = new ArrayList<String>();
+		for (String token : tokensOfFirstTrackTitle) {
+		    boolean common = true;
+		    for (int i = 1; i < ts.size() && common; i++) {
+		        if (!ts.get(i).getTitle().contains(token)) {
+		            common = false;
+		        }
+		    }
+		    if (common) {
+		        commonTokens.add(token);
+		    }
+		}
+
+		// Then remove common tokens from all titles
+		for (ITrackInfo ti : ts) {
+		    for (String token : commonTokens) {
+		        ti.setTitle(ti.getTitle().replace(token, ""));
+		    }
+		    ti.setTitle(ti.getTitle().trim());
+		}
 	}
 
     /**

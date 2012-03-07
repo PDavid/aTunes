@@ -155,30 +155,47 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
         currentAudioObject = ao;
 
         // Update modification time if necessary
-        if (ao instanceof ILocalAudioObject) {
+        updateModificationTimeOfLastAudioObject(ao);
+
+        // Call to retrieve and show information
+        if (getState().isUseContext()) {
+            retrieveInfoAndShowInPanel(ao, audioObjectModified);
+        }
+    }
+
+	/**
+	 * @param ao
+	 */
+	private void updateModificationTimeOfLastAudioObject(IAudioObject ao) {
+		if (ao instanceof ILocalAudioObject) {
         	if ( ((ILocalAudioObject) ao).getFile() != null) {
             	lastAudioObjectModificationTime = ((ILocalAudioObject) ao).getFile().lastModified();
         	}
         } else {
             lastAudioObjectModificationTime = 0;
         }
+	}
 
-        if (getState().isUseContext()) {
-            // Enable or disable tabs
-            updateContextTabs();
+	/**
+	 * @param ao
+	 * @param audioObjectModified
+	 */
+	private void retrieveInfoAndShowInPanel(IAudioObject ao, boolean audioObjectModified) {
+		
+		// Enable or disable tabs
+		updateContextTabs();
 
-            if (ao == null) {
-                // Clear all tabs
-                clearContextPanels();
-            } else {
-                if (audioObjectModified) {
-                    clearTabsContent();
-                }
-                // Retrieve data for audio object. Force Update since audio file has been modified
-                retrieveInfo(ao, audioObjectModified);
-            }
-        }
-    }
+		if (ao == null) {
+		    // Clear all tabs
+		    clearContextPanels();
+		} else {
+		    if (audioObjectModified) {
+		        clearTabsContent();
+		    }
+		    // Retrieve data for audio object. Force Update since audio file has been modified
+		    retrieveInfo(ao, audioObjectModified);
+		}
+	}
 
     /**
      * Retrieve info.
