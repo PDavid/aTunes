@@ -169,7 +169,18 @@ public final class FontChooserDialog extends AbstractCustomDialog {
         });
         cancelButton.setText(I18nUtils.getString("CANCEL"));
 
-        JPanel panel = new JPanel(new GridBagLayout());
+        return createPanel(iLookAndFeel, okButton, cancelButton);
+    }
+
+	/**
+	 * @param iLookAndFeel
+	 * @param okButton
+	 * @param cancelButton
+	 * @return
+	 */
+	private JPanel createPanel(ILookAndFeel iLookAndFeel, JButton okButton,
+			JButton cancelButton) {
+		JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
@@ -224,7 +235,7 @@ public final class FontChooserDialog extends AbstractCustomDialog {
         c.anchor = GridBagConstraints.CENTER;
         panel.add(buttonPanel, c);
         return panel;
-    }
+	}
 
     private void updatePreview() {
         fontPreviewLabel.setFont(fontSettings.getFont().toFont());
