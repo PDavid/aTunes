@@ -23,6 +23,8 @@ package net.sourceforge.atunes.kernel.modules.hotkeys;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.beans.ConstructorProperties;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.sourceforge.atunes.model.IHotkey;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -33,6 +35,33 @@ public class Hotkey implements IHotkey {
 	 * 
 	 */
 	private static final long serialVersionUID = -1438992610049688867L;
+	
+	private static List<Integer> F_KEYS;
+	
+	private static List<Integer> KEY_MODIFIERS;
+	
+	static {
+		F_KEYS = new ArrayList<Integer>();
+        F_KEYS.add(KeyEvent.VK_F1);
+        F_KEYS.add(KeyEvent.VK_F2);
+        F_KEYS.add(KeyEvent.VK_F3);
+        F_KEYS.add(KeyEvent.VK_F4);
+        F_KEYS.add(KeyEvent.VK_F5);
+        F_KEYS.add(KeyEvent.VK_F6);
+        F_KEYS.add(KeyEvent.VK_F7);
+        F_KEYS.add(KeyEvent.VK_F8);
+        F_KEYS.add(KeyEvent.VK_F9);
+        F_KEYS.add(KeyEvent.VK_F10);
+        F_KEYS.add(KeyEvent.VK_F11);
+        F_KEYS.add(KeyEvent.VK_F12);
+        
+        KEY_MODIFIERS = new ArrayList<Integer>();
+        KEY_MODIFIERS.add(KeyEvent.VK_ALT);
+        KEY_MODIFIERS.add(KeyEvent.VK_ALT_GRAPH);
+        KEY_MODIFIERS.add(KeyEvent.VK_CONTROL);
+        KEY_MODIFIERS.add(KeyEvent.VK_META);
+        KEY_MODIFIERS.add(KeyEvent.VK_SHIFT);
+	}
 	
 	private int id;
     private int mod;
@@ -104,12 +133,11 @@ public class Hotkey implements IHotkey {
     }
 
     private boolean isFKey(int key) {
-        return key == KeyEvent.VK_F1 || key == KeyEvent.VK_F2 || key == KeyEvent.VK_F3 || key == KeyEvent.VK_F4 || key == KeyEvent.VK_F5 || key == KeyEvent.VK_F6
-                || key == KeyEvent.VK_F7 || key == KeyEvent.VK_F8 || key == KeyEvent.VK_F9 || key == KeyEvent.VK_F10 || key == KeyEvent.VK_F11 || key == KeyEvent.VK_F12;
+        return F_KEYS.contains(key);
     }
 
     private boolean isKeyModifier(int keyCode) {
-        return (keyCode == KeyEvent.VK_ALT || keyCode == KeyEvent.VK_ALT_GRAPH || keyCode == KeyEvent.VK_CONTROL || keyCode == KeyEvent.VK_META || keyCode == KeyEvent.VK_SHIFT);
+        return KEY_MODIFIERS.contains(keyCode);
     }
 
     @Override
