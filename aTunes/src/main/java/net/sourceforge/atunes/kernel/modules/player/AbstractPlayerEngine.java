@@ -729,7 +729,6 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
     private void switchPlaybackTo(IAudioObject audioObjectToSwitchTo, boolean resetIfNoObject, boolean autoNext) {
         if (audioObjectToSwitchTo != null) {
             try {
-            	playListEventListeners.selectedAudioObjectHasChanged(audioObjectToSwitchTo);
                 if (isEnginePlaying() || isPaused() || autoNext) {
                     stopCurrentAudioObject(false);
                     if (!isPaused()) {
