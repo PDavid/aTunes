@@ -200,8 +200,6 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
         if (cover == null) {
             coverLabel.setPreferredSize(new Dimension(Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize(), Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize()));
             coverLabel.setBorder(BorderFactory.createLineBorder(GuiUtils.getBorderColor()));
-        } else {
-            coverLabel.setBorder(Context.getBean(DropShadowBorder.class));
         }
 
         JLabel label = new JLabel(album.getName(), SwingConstants.CENTER);

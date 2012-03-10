@@ -64,7 +64,6 @@ public class ArtistBasicInfoContent extends AbstractContextPanelContent<ArtistIn
         ImageIcon artistImage = source.getArtistImage();
         if (artistImage != null) {
             artistImageLabel.setIcon(artistImage);
-            artistImageLabel.setBorder(Context.getBean(DropShadowBorder.class));
         }
         String artistName = source.getArtistName();
         String artistUrl = source.getArtistUrl();
