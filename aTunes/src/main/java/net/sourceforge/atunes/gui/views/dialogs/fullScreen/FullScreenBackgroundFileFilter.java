@@ -20,33 +20,25 @@
 
 package net.sourceforge.atunes.gui.views.dialogs.fullScreen;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.io.File;
 
-import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
 
+import net.sourceforge.atunes.utils.I18nUtils;
 
-final class SelectBackgroundActionListener implements ActionListener {
-	
-	private FullScreenWindow fullScreenWindow;
-	
-	/**
-	 * @param fullScreenWindow
-	 */
-	SelectBackgroundActionListener(FullScreenWindow fullScreenWindow) {
-		this.fullScreenWindow = fullScreenWindow;
-	}
+final class FullScreenBackgroundFileFilter extends FileFilter {
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		fullScreenWindow.setVisible(false);
-	    JFileChooser fileChooser = new JFileChooser();
-	    fileChooser.setFileFilter(new FullScreenBackgroundFileFilter());
-	    if (fileChooser.showOpenDialog(fullScreenWindow) == JFileChooser.APPROVE_OPTION) {
-	        fullScreenWindow.setBackground(fileChooser.getSelectedFile());
-	        fullScreenWindow.invalidate();
-	        fullScreenWindow.repaint();
+	public boolean accept(File pathname) {
+	    if (pathname.isDirectory()) {
+	        return true;
 	    }
-	    fullScreenWindow.setVisible(true);
+	    String fileName = pathname.getName().toUpperCase();
+	    return fileName.endsWith("JPG") || fileName.endsWith("JPEG") || fileName.endsWith("PNG");
+	}
+
+	@Override
+	public String getDescription() {
+	    return I18nUtils.getString("IMAGES");
 	}
 }
