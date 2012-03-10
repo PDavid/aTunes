@@ -168,7 +168,6 @@ final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertiesDialog
         JPanel panel = new JPanel(new GridBagLayout());
 
         pictureLabel = new JLabel();
-        pictureLabel.setBorder(Context.getBean(DropShadowBorder.class));
         songLabel = new ProviderLabel(songProvider);
         songLabel.setFont(iLookAndFeelManager.getCurrentLookAndFeel().getPropertiesDialogBigFont());
         artistLabel = new ProviderLabel(artistProvider);

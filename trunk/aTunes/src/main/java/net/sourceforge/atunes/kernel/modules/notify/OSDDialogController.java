@@ -121,13 +121,9 @@ final class OSDDialogController extends AbstractSimpleController<OSDDialog> {
 
         Point location = new Point(x, y);
 
-        // By default OSD image has shadow, unless it's a generic image
-        getComponentControlled().setShadowBorder(true);
-
         ImageIcon i = audioObjectImageLocator.getImage(audioObject, ImageSize.SIZE_MAX);
         if (i == null) {
             i = audioObjectGenericImageFactory.getGenericImage(audioObject, GenericImageSize.MEDIUM).getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls());
-            getComponentControlled().setShadowBorder(false);
         }
         getComponentControlled().setImage(i);
         getComponentControlled().setLine1(audioObject.getTitleOrFileName());

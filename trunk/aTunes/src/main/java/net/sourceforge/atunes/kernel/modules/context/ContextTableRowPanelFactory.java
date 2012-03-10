@@ -163,7 +163,6 @@ class ContextTableRowPanelFactory<T> {
 	private JLabel setImageLabel(ImageIcon image) {
 		JLabel imageLabel = new JLabel(image);
         imageLabel.setOpaque(false);
-        imageLabel.setBorder(image != null ? Context.getBean(DropShadowBorder.class) : null);
 		return imageLabel;
 	}
 

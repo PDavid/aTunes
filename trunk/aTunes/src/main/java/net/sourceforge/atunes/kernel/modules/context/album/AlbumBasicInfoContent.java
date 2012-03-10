@@ -81,7 +81,6 @@ public class AlbumBasicInfoContent extends AbstractContextPanelContent<AlbumInfo
 		ImageIcon imageIcon = null;
 		if (image != null) {
 			imageIcon = ImageUtils.resize(image, Constants.ALBUM_IMAGE_SIZE.getSize(), Constants.ALBUM_IMAGE_SIZE.getSize());
-			albumCoverLabel.setBorder(Context.getBean(DropShadowBorder.class));
 		} else {
 			imageIcon = Images.getImage(Images.APP_LOGO_150);
 		}

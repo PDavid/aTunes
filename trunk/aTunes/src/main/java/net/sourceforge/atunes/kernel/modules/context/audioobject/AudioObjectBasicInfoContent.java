@@ -40,8 +40,6 @@ import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-import org.jdesktop.swingx.border.DropShadowBorder;
-
 public class AudioObjectBasicInfoContent extends AbstractContextPanelContent<AudioObjectBasicInfoDataSource> {
 
     private static final long serialVersionUID = 996227362636450601L;
@@ -85,12 +83,6 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent<Aud
             audioObjectImage.setIcon(image);
         }
         
-        if (source.getAudioObject() instanceof ILocalAudioObject && image != null) {
-        	audioObjectImage.setBorder(Context.getBean(DropShadowBorder.class));
-        } else {
-        	audioObjectImage.setBorder(null);
-        }
-
         audioObjectTitle.setText(source.getTitle());
         audioObjectArtist.setText(source.getArtist());
         audioObjectLastPlayDate.setText(source.getLastPlayDate());
