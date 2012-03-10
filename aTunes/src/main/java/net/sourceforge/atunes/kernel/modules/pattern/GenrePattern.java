@@ -23,10 +23,12 @@ package net.sourceforge.atunes.kernel.modules.pattern;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
 final class GenrePattern extends AbstractPattern {
-	GenrePattern(char patternChar, String name,
-			boolean recognitionPattern, boolean massiveRecognitionPattern) {
-		super(patternChar, name, recognitionPattern,
-				massiveRecognitionPattern);
+	
+	/**
+	 * Default constructor
+	 */
+	GenrePattern() {
+		super('G', "GENRE", true, true);
 	}
 
 	@Override

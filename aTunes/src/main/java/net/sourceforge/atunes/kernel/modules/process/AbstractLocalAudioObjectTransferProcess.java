@@ -33,7 +33,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
+import net.sourceforge.atunes.kernel.modules.pattern.Patterns;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectTransferProcess;
@@ -356,7 +356,7 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
      * @return Returns a (hopefully) valid filename
      */
     protected String getNewFileName(String pattern, ILocalAudioObject song, IOSManager osManager) {
-        String result = AbstractPattern.applyPatternTransformations(pattern, song);
+        String result = Patterns.applyPatternTransformations(pattern, song);
         // We need to place \\ before escape sequences otherwise the ripper hangs. We can not do this later.
         result = result.replace("\\", "\\\\").replace("$", "\\$");
         result = StringUtils.getString(result, song.getFile().getName().substring(song.getFile().getName().lastIndexOf('.')));
@@ -375,7 +375,7 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
      * @return Returns a (hopefully) valid filename
      */
     protected String getNewFolderPath(String pattern, ILocalAudioObject song, IOSManager osManager) {
-        String result = AbstractPattern.applyPatternTransformations(pattern, song);
+        String result = Patterns.applyPatternTransformations(pattern, song);
         // We need to place \\ before escape sequences otherwise the ripper hangs. We can not do this later.
         result = result.replace("\\", "\\\\").replace("$", "\\$");
         result = FileNameUtils.getValidFolderName(result, false, osManager);

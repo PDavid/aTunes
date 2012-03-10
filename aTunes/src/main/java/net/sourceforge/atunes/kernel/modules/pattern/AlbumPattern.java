@@ -23,10 +23,12 @@ package net.sourceforge.atunes.kernel.modules.pattern;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
 final class AlbumPattern extends AbstractPattern {
-	AlbumPattern(char patternChar, String name,
-			boolean recognitionPattern, boolean massiveRecognitionPattern) {
-		super(patternChar, name, recognitionPattern,
-				massiveRecognitionPattern);
+	
+	/**
+	 * Default constructor
+	 */
+	AlbumPattern() {
+		super('L', "ALBUM", true, true);
 	}
 
 	@Override

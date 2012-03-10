@@ -25,7 +25,7 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.gui.views.dialogs.PatternInputDialog;
-import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
+import net.sourceforge.atunes.kernel.modules.pattern.Patterns;
 import net.sourceforge.atunes.kernel.modules.process.EditTagFromFolderNamePatternProcess;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
@@ -81,7 +81,7 @@ public class AutoSetTagFromFolderNamePatternAction extends AbstractActionOverSel
     protected void executeAction(List<ILocalAudioObject> objects) {
         // Show pattern input dialog
         PatternInputDialog inputDialog = new PatternInputDialog(frame.getFrame(), false, getState(), lookAndFeelManager.getCurrentLookAndFeel());
-        inputDialog.show(AbstractPattern.getRecognitionPatterns(), objects.get(0).getFile().getParentFile().getAbsolutePath());
+        inputDialog.show(Patterns.getRecognitionPatterns(), objects.get(0).getFile().getParentFile().getAbsolutePath());
         String pattern = inputDialog.getResult();
 
         // If user entered a pattern apply to files

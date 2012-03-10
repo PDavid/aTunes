@@ -46,7 +46,7 @@ import javax.swing.tree.TreePath;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.gui.views.dialogs.PatternInputDialog;
-import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
+import net.sourceforge.atunes.kernel.modules.pattern.Patterns;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -139,12 +139,12 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements IR
                     PatternInputDialog inputDialog = new PatternInputDialog(ReviewImportDialog.this, true, state, lookAndFeel);
                     Object node = selectedNodes[0].getLastPathComponent();
                     Object folder = ((DefaultMutableTreeTableNode)node).getUserObject();
-                    inputDialog.show(AbstractPattern.getMassiveRecognitionPatterns(), ((File)folder).getAbsolutePath());
+                    inputDialog.show(Patterns.getMassiveRecognitionPatterns(), ((File)folder).getAbsolutePath());
                     String pattern = inputDialog.getResult();
                     for (TreePath treePath : selectedNodes) {
                         node = treePath.getLastPathComponent();                        
                         folder = ((DefaultMutableTreeTableNode)node).getUserObject();
-                        Map<String, String> matches = AbstractPattern.getPatternMatches(pattern, ((File)folder).getAbsolutePath(), true);
+                        Map<String, String> matches = Patterns.getPatternMatches(pattern, ((File)folder).getAbsolutePath(), true);
                         for (Entry<String, String> entry : matches.entrySet()) {
                             ((ReviewImportTreeTableModel) treeTable.getTreeTableModel()).setValueForColumn(treeTable.getRowForPath(treePath), entry.getKey(), entry.getValue());
                         }

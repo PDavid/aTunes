@@ -55,6 +55,7 @@ import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
+import net.sourceforge.atunes.kernel.modules.pattern.Patterns;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -81,7 +82,7 @@ public final class PatternInputDialog extends AbstractCustomDialog {
 
 		    if (result != null && !result.trim().equals("")) {
 		        // Upper case all patterns found in result
-		        for (AbstractPattern pattern : AbstractPattern.getPatterns()) {
+		        for (AbstractPattern pattern : Patterns.getPatterns()) {
 		            result = result.replaceAll(pattern.getPattern().toLowerCase(), pattern.getPattern());
 		        }
 
@@ -349,7 +350,7 @@ public final class PatternInputDialog extends AbstractCustomDialog {
      * @param massiveRecognition
      */
     void previewPattern(boolean massiveRecognition) {
-        Map<String, String> matches = AbstractPattern.getPatternMatches(((JTextField) patternComboBox.getEditor().getEditorComponent()).getText(), previewString,
+        Map<String, String> matches = Patterns.getPatternMatches(((JTextField) patternComboBox.getEditor().getEditorComponent()).getText(), previewString,
                 massiveRecognition);
 
         String[][] data = new String[matches.size()][2];

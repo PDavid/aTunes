@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.state;
 
 import javax.swing.table.DefaultTableModel;
 
-import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
+import net.sourceforge.atunes.kernel.modules.pattern.Patterns;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 class AvailablePatternsDefaultTableModel extends DefaultTableModel {
@@ -33,7 +33,7 @@ class AvailablePatternsDefaultTableModel extends DefaultTableModel {
 
     @Override
     public int getRowCount() {
-        return AbstractPattern.getPatterns().size();
+        return Patterns.getPatterns().size();
     }
 
     @Override
@@ -49,9 +49,9 @@ class AvailablePatternsDefaultTableModel extends DefaultTableModel {
     @Override
     public Object getValueAt(int row, int column) {
         if (column == 0) {
-            return AbstractPattern.getPatterns().get(row).getPattern();
+            return Patterns.getPatterns().get(row).getPattern();
         }
-        return AbstractPattern.getPatterns().get(row).getDescription();
+        return Patterns.getPatterns().get(row).getDescription();
     }
 
     @Override
