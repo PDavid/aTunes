@@ -337,7 +337,7 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
          * @param isSelected
          *            the new selected
          */
-        public void setSelected(boolean isSelected) {
+        public final void setSelected(boolean isSelected) {
             this.isSelected = isSelected;
 
             if (children != null) {
@@ -354,19 +354,31 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
             ((DefaultTreeModel) fileSystemTree.getModel()).nodeChanged(this);
         }
 
+        /**
+         * @return
+         */
         public Icon getIcon() {
             return icon;
         }
 
+        /**
+         * @param icon
+         */
         public final void setIcon(Icon icon) {
             this.icon = icon;
         }
 
+        /**
+         * @param dir
+         */
         public final void setDir(Directory dir) {
             this.dir = dir;
         }
 
-        public Directory getDir() {
+        /**
+         * @return
+         */
+        public final Directory getDir() {
             return dir;
         }
 
