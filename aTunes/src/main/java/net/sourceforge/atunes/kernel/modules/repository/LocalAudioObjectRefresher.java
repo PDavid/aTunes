@@ -131,15 +131,15 @@ public class LocalAudioObjectRefresher {
 	 * @param oldArtistRemoved
 	 * @return
 	 */
-	private boolean updateArtistStatistics(IRepository repository, ITag oldTag,
-			ITag newTag, boolean oldArtistRemoved) {
+	private boolean updateArtistStatistics(IRepository repository, ITag oldTag, ITag newTag, boolean oldArtistRemoved) {
+		boolean removed = oldArtistRemoved;
 		IArtist oldArtist = repository.getArtist(oldTag.getArtist());
 		if (oldArtist == null) {
 			// Artist has been renamed -> Update statistics
 			statisticsHandler.replaceArtist(oldTag.getArtist(), newTag.getArtist());
-			oldArtistRemoved = true;
+			removed = true;
 		}
-		return oldArtistRemoved;
+		return removed;
 	}
 
 	/**
@@ -149,10 +149,39 @@ public class LocalAudioObjectRefresher {
 	 * @return
 	 */
 	private boolean isAlbumChanged(ITag oldTag, ITag newTag) {
-		return oldTag.getAlbum() == null && newTag.getAlbum() != null ||
-							   oldTag.getAlbum() != null && newTag.getAlbum() == null ||
-							   !oldTag.getAlbum().equals(newTag.getAlbum());
+		return albumAddedToTag(oldTag, newTag) ||
+			   albumRemovedFromTag(oldTag, newTag) ||
+			   albumChangedInTag(oldTag, newTag);
 	}
+
+	/**
+	 * @param oldTag
+	 * @param newTag
+	 * @return
+	 */
+	private boolean albumChangedInTag(ITag oldTag, ITag newTag) {
+		return !oldTag.getAlbum().equals(newTag.getAlbum());
+	}
+
+	/**
+	 * @param oldTag
+	 * @param newTag
+	 * @return
+	 */
+	private boolean albumRemovedFromTag(ITag oldTag, ITag newTag) {
+		return oldTag.getAlbum() != null && newTag.getAlbum() == null;
+	}
+
+	/**
+	 * @param oldTag
+	 * @param newTag
+	 * @return
+	 */
+	private boolean albumAddedToTag(ITag oldTag, ITag newTag) {
+		return oldTag.getAlbum() == null && newTag.getAlbum() != null;
+	}
+	
+	
 
 	/**
 	 * Returns if artist changed between the two tags
@@ -161,8 +190,35 @@ public class LocalAudioObjectRefresher {
 	 * @return
 	 */
 	private boolean isArtistChanged(ITag oldTag, ITag newTag) {
-		return  oldTag.getArtist() == null && newTag.getArtist() != null ||
-				oldTag.getArtist() != null && newTag.getArtist() == null || 
-				!oldTag.getArtist().equals(newTag.getArtist());
+		return  artistAddedToTag(oldTag, newTag) ||
+				artistRemovedFromTag(oldTag, newTag) || 
+				artistChangedInTag(oldTag, newTag);
+	}
+
+	/**
+	 * @param oldTag
+	 * @param newTag
+	 * @return
+	 */
+	private boolean artistChangedInTag(ITag oldTag, ITag newTag) {
+		return !oldTag.getArtist().equals(newTag.getArtist());
+	}
+
+	/**
+	 * @param oldTag
+	 * @param newTag
+	 * @return
+	 */
+	private boolean artistRemovedFromTag(ITag oldTag, ITag newTag) {
+		return oldTag.getArtist() != null && newTag.getArtist() == null;
+	}
+
+	/**
+	 * @param oldTag
+	 * @param newTag
+	 * @return
+	 */
+	private boolean artistAddedToTag(ITag oldTag, ITag newTag) {
+		return oldTag.getArtist() == null && newTag.getArtist() != null;
 	}
 }

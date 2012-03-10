@@ -36,12 +36,11 @@ public class Hotkey implements IHotkey {
 	 */
 	private static final long serialVersionUID = -1438992610049688867L;
 	
-	private static List<Integer> F_KEYS;
+	private static final List<Integer> F_KEYS = new ArrayList<Integer>();
 	
-	private static List<Integer> KEY_MODIFIERS;
+	private static final List<Integer> KEY_MODIFIERS = new ArrayList<Integer>();
 	
 	static {
-		F_KEYS = new ArrayList<Integer>();
         F_KEYS.add(KeyEvent.VK_F1);
         F_KEYS.add(KeyEvent.VK_F2);
         F_KEYS.add(KeyEvent.VK_F3);
@@ -55,7 +54,6 @@ public class Hotkey implements IHotkey {
         F_KEYS.add(KeyEvent.VK_F11);
         F_KEYS.add(KeyEvent.VK_F12);
         
-        KEY_MODIFIERS = new ArrayList<Integer>();
         KEY_MODIFIERS.add(KeyEvent.VK_ALT);
         KEY_MODIFIERS.add(KeyEvent.VK_ALT_GRAPH);
         KEY_MODIFIERS.add(KeyEvent.VK_CONTROL);
