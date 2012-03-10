@@ -33,24 +33,17 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -58,10 +51,8 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.filechooser.FileFilter;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
 import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.NextButton;
@@ -87,38 +78,7 @@ import net.sourceforge.atunes.utils.Logger;
 
 public final class FullScreenWindow extends AbstractCustomWindow {
 
-    private final class SelectBackgroundActionListener implements
-			ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			setVisible(false);
-		    JFileChooser fileChooser = new JFileChooser();
-		    fileChooser.setFileFilter(new FileFilter() {
-		        @Override
-		        public boolean accept(File pathname) {
-		            if (pathname.isDirectory()) {
-		                return true;
-		            }
-		            String fileName = pathname.getName().toUpperCase();
-		            return fileName.endsWith("JPG") || fileName.endsWith("JPEG") || fileName.endsWith("PNG");
-		        }
-
-		        @Override
-		        public String getDescription() {
-		            return I18nUtils.getString("IMAGES");
-		        }
-		    });
-		    if (fileChooser.showOpenDialog(FullScreenWindow.this) == JFileChooser.APPROVE_OPTION) {
-		        File selectedBackground = fileChooser.getSelectedFile();
-		        setBackground(selectedBackground);
-		        FullScreenWindow.this.invalidate();
-		        FullScreenWindow.this.repaint();
-		    }
-			setVisible(true);
-		}
-	}
-
-	private static final long serialVersionUID = 3422799994808333945L;
+    private static final long serialVersionUID = 3422799994808333945L;
 
     private CoverFlow covers;
 
@@ -148,39 +108,13 @@ public final class FullScreenWindow extends AbstractCustomWindow {
     private transient Image background;
 
     /** The key adapter. */
-    private transient KeyAdapter keyAdapter = new KeyAdapter() {
-        @Override
-        public void keyPressed(KeyEvent e) {
-            if (e.getKeyCode() == KeyEvent.VK_F11) {
-                setVisible(false);
-            }
-        }
-    };
+    private KeyAdapter keyAdapter = new FullScreenKeyAdapter(this);
 
     private Timer hideMouseTimer;
 
-    private transient MouseListener clickListener = new MouseAdapter() {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            activateTimer();
-        }
-    };
+    private MouseListener clickListener = new FullScreenMouseListener(this);
 
-    private transient MouseMotionListener moveListener = new MouseMotionAdapter() {
-        @Override
-        public void mouseMoved(MouseEvent e) {
-            activateTimer();
-        }
-    };
-
-    private transient MouseListener showMenuListener = new MouseAdapter() {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            if (GuiUtils.isSecondaryMouseButton(e)) {
-                options.show(e.getComponent(), e.getX(), e.getY());
-            }
-        }
-    };
+    private MouseMotionListener moveListener = new FullScreenMouseMotionAdapter(this);
 
     /**
      * Audio Objects to show in full screen
@@ -232,26 +166,19 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         }
 
         addMouseMotionListener(moveListener);
-
         addMouseListener(clickListener);
     }
 
+    /**
+     * Activates timer to hide mouse cursor
+     */
     void activateTimer() {
         setCursor(Cursor.getDefaultCursor());
         controlsPanel.setVisible(true);
         if (hideMouseTimer != null) {
             hideMouseTimer.restart();
         } else {
-            hideMouseTimer = new Timer(5000, new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    controlsPanel.setVisible(false);
-                    setCursor(Toolkit.getDefaultToolkit().createCustomCursor(new BufferedImage(1, 1, BufferedImage.TYPE_3BYTE_BGR), new Point(0, 0), "invisibleCursor"));
-                    if (options.isVisible()) {
-                        options.setVisible(false);
-                    }
-                }
-            });
+            hideMouseTimer = new Timer(5000, new HideMouseActionListener(this, controlsPanel, options));
         }
     }
 
@@ -329,11 +256,13 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         options = new JPopupMenu(I18nUtils.getString("OPTIONS"));
         options.addKeyListener(keyAdapter);
 
-        panel.addMouseListener(showMenuListener);
+        FullScreenShowMenuMouseAdapter optionsAdapter = new FullScreenShowMenuMouseAdapter(options);
+        
+        panel.addMouseListener(optionsAdapter);
 
         JMenuItem selectBackground = new JMenuItem(I18nUtils.getString("SELECT_BACKGROUND"));
 
-        selectBackground.addActionListener(new SelectBackgroundActionListener());
+        selectBackground.addActionListener(new SelectBackgroundActionListener(this));
 
         JMenuItem removeBackground = getRemoveBackgroundMenuItem();
         JMenuItem exitFullScreen = getExitFullScreenMenuItem();
@@ -358,7 +287,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 
         setClickListener(previousButton, stopButton, nextButton, muteButton);
 
-        covers.addMouseListener(showMenuListener);
+        covers.addMouseListener(optionsAdapter);
         covers.addMouseMotionListener(moveListener);
 
         textLabel = getTextLabel(lookAndFeelManager);
@@ -388,8 +317,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 	 * @param textPanel
 	 * @param buttonsPanel
 	 */
-	private void setPanels(JPanel textAndControlsPanel, JPanel textPanel,
-			JPanel buttonsPanel) {
+	private void setPanels(JPanel textAndControlsPanel, JPanel textPanel, JPanel buttonsPanel) {
 		GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
@@ -420,32 +348,32 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 	 * 
 	 */
 	private IProgressSlider getProgressSlider() {
-		IProgressSlider progressSlider = Context.getBean("fullScreenProgressSlider", IProgressSlider.class);
-        ProgressBarSeekListener seekListener = new ProgressBarSeekListener(progressSlider, playerHandler);
-        progressSlider.addMouseListener(seekListener);        
-        progressSlider.addKeyListener(keyAdapter);
-        progressSlider.setOpaque(false);
-        return progressSlider;
+		IProgressSlider slider = Context.getBean("fullScreenProgressSlider", IProgressSlider.class);
+        ProgressBarSeekListener seekListener = new ProgressBarSeekListener(slider, playerHandler);
+        slider.addMouseListener(seekListener);        
+        slider.addKeyListener(keyAdapter);
+        slider.setOpaque(false);
+        return slider;
 	}
 
 	/**
 	 * @param lookAndFeelManager
 	 */
 	private JLabel getTextLabel2(ILookAndFeelManager lookAndFeelManager) {
-		JLabel textLabel2 = new JLabel();
-        textLabel2.setFont(lookAndFeelManager.getCurrentLookAndFeel().getContextInformationBigFont());
-        textLabel2.setForeground(Color.WHITE);
-        return textLabel2;
+		JLabel label = new JLabel();
+        label.setFont(lookAndFeelManager.getCurrentLookAndFeel().getContextInformationBigFont());
+        label.setForeground(Color.WHITE);
+        return label;
 	}
 
 	/**
 	 * @param lookAndFeelManager
 	 */
 	private JLabel getTextLabel(ILookAndFeelManager lookAndFeelManager) {
-		JLabel textLabel = new JLabel();
-        textLabel.setFont(lookAndFeelManager.getCurrentLookAndFeel().getFullScreenLine1Font());
-        textLabel.setForeground(Color.WHITE);
-        return textLabel;
+		JLabel label = new JLabel();
+        label.setFont(lookAndFeelManager.getCurrentLookAndFeel().getFullScreenLine1Font());
+        label.setForeground(Color.WHITE);
+        return label;
 	}
 
 	/**
@@ -454,8 +382,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 	 * @param nextButton
 	 * @param muteButton
 	 */
-	private void setClickListener(PreviousButton previousButton,
-			StopButton stopButton, NextButton nextButton, MuteButton muteButton) {
+	private void setClickListener(PreviousButton previousButton, StopButton stopButton, NextButton nextButton, MuteButton muteButton) {
 		covers.addMouseListener(clickListener);
         options.addMouseListener(clickListener);
         previousButton.addMouseListener(clickListener);
@@ -512,8 +439,8 @@ public final class FullScreenWindow extends AbstractCustomWindow {
                     g2d.setPaint(new GradientPaint(0, 0, Color.BLACK, 0, this.getHeight(), Color.BLACK));
                     g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
                 } else {
-                    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-                    g.drawImage(ImageUtils.scaleBufferedImageBicubic(background, screenSize.width, screenSize.height), 0, 0, this);
+                    Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
+                    g.drawImage(ImageUtils.scaleBufferedImageBicubic(background, scrSize.width, scrSize.height), 0, 0, this);
                 }
             }
         };
@@ -588,6 +515,9 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         setFullScreen(visible, frame);
     }
 
+    /**
+     * @param volume
+     */
     public void setVolume(int volume) {
         volumeSlider.setValue(volume);
     }
