@@ -22,12 +22,9 @@ package net.sourceforge.atunes.gui.views.dialogs.fullScreen;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileFilter;
 
-import net.sourceforge.atunes.utils.I18nUtils;
 
 final class SelectBackgroundActionListener implements ActionListener {
 	
@@ -44,21 +41,7 @@ final class SelectBackgroundActionListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		fullScreenWindow.setVisible(false);
 	    JFileChooser fileChooser = new JFileChooser();
-	    fileChooser.setFileFilter(new FileFilter() {
-	        @Override
-	        public boolean accept(File pathname) {
-	            if (pathname.isDirectory()) {
-	                return true;
-	            }
-	            String fileName = pathname.getName().toUpperCase();
-	            return fileName.endsWith("JPG") || fileName.endsWith("JPEG") || fileName.endsWith("PNG");
-	        }
-
-	        @Override
-	        public String getDescription() {
-	            return I18nUtils.getString("IMAGES");
-	        }
-	    });
+	    fileChooser.setFileFilter(new FullScreenBackgroundFileFilter());
 	    if (fileChooser.showOpenDialog(fullScreenWindow) == JFileChooser.APPROVE_OPTION) {
 	        fullScreenWindow.setBackground(fileChooser.getSelectedFile());
 	        fullScreenWindow.invalidate();
