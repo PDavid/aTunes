@@ -242,4 +242,11 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
     		}
     	});
     }
+    
+    /**
+     * Soft refresh of play list, only repaints
+     */
+    void updatePlayList() {
+    	playListTable.repaint();
+    }
 }

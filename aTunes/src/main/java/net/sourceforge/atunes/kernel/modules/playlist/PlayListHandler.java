@@ -948,7 +948,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	@Override
 	public void selectedAudioObjectChanged(IAudioObject audioObject) {
         addToPlaybackHistory(audioObject);
-        getPlayListController().refreshPlayList();
+        getPlayListController().updatePlayList();
         getPlayListController().scrollPlayList(false);
         playListsChanged(true, false);
 	};
