@@ -23,10 +23,12 @@ package net.sourceforge.atunes.kernel.modules.pattern;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
 final class YearPattern extends AbstractPattern {
-	YearPattern(char patternChar, String name,
-			boolean recognitionPattern, boolean massiveRecognitionPattern) {
-		super(patternChar, name, recognitionPattern,
-				massiveRecognitionPattern);
+	
+	/**
+	 * Default constructor
+	 */
+	YearPattern() {
+		super('Y', "YEAR", true, true);
 	}
 
 	@Override

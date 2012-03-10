@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.modules.process;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
+import net.sourceforge.atunes.kernel.modules.pattern.Patterns;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
 /**
@@ -52,8 +52,8 @@ public class EditTagFromFolderNamePatternProcess extends AbstractChangeTagProces
         if (filesAndTags == null) {
             filesAndTags = new HashMap<ILocalAudioObject, Map<String, Object>>();
             for (ILocalAudioObject file : getFilesToChange()) {
-                Map<String, String> matches = AbstractPattern.getPatternMatches(pattern, file.getFile().getParentFile().getAbsolutePath(), true);
-                Map<String, Object> editTagInfo = AbstractPattern.getEditTagInfoFromMatches(matches);
+                Map<String, String> matches = Patterns.getPatternMatches(pattern, file.getFile().getParentFile().getAbsolutePath(), true);
+                Map<String, Object> editTagInfo = Patterns.getEditTagInfoFromMatches(matches);
                 filesAndTags.put(file, editTagInfo);
             }
         }

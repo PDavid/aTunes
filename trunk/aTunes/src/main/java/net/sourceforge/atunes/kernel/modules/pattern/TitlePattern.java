@@ -24,10 +24,11 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 
 final class TitlePattern extends AbstractPattern {
 	
-	TitlePattern(char patternChar, String name,
-			boolean recognitionPattern, boolean massiveRecognitionPattern) {
-		super(patternChar, name, recognitionPattern,
-				massiveRecognitionPattern);
+	/**
+	 * Default constructor
+	 */
+	TitlePattern() {
+		super('T', "TITLE", true, false);
 	}
 
 	@Override

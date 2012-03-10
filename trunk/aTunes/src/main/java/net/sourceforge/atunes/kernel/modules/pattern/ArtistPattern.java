@@ -23,10 +23,12 @@ package net.sourceforge.atunes.kernel.modules.pattern;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 
 final class ArtistPattern extends AbstractPattern {
-	ArtistPattern(char patternChar, String name,
-			boolean recognitionPattern, boolean massiveRecognitionPattern) {
-		super(patternChar, name, recognitionPattern,
-				massiveRecognitionPattern);
+	
+	/**
+	 * Default constructor
+	 */
+	ArtistPattern() {
+		super('A', "ARTIST", true, true);
 	}
 
 	@Override

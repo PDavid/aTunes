@@ -24,10 +24,12 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
 
 final class TrackPattern extends AbstractPattern {
-	TrackPattern(char patternChar, String name,
-			boolean recognitionPattern, boolean massiveRecognitionPattern) {
-		super(patternChar, name, recognitionPattern,
-				massiveRecognitionPattern);
+	
+	/**
+	 * Default constructor
+	 */
+	TrackPattern() {
+		super('N', "TRACK", true, false);
 	}
 
 	@Override
