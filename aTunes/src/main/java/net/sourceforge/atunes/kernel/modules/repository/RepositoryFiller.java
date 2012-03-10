@@ -22,8 +22,6 @@ package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.io.File;
 
-import org.apache.commons.lang.StringUtils;
-
 import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.repository.data.Folder;
@@ -40,6 +38,8 @@ import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.utils.UnknownObjectCheck;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * A class responsible of load repository structure

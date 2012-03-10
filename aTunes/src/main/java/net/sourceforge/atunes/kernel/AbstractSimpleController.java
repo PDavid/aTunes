@@ -48,18 +48,30 @@ public abstract class AbstractSimpleController<T extends Component> implements I
         this.state = state;
     }
     
+    /**
+     * @param componentControlled
+     */
     public final void setComponentControlled(T componentControlled) {
 		this.componentControlled = componentControlled;
 	}
     
+    /**
+     * @param state
+     */
     public final void setState(IState state) {
 		this.state = state;
 	}
     
+    /**
+     * @return
+     */
     public T getComponentControlled() {
         return componentControlled;
     }
     
+    /**
+     * @return
+     */
     protected IState getState() {
     	return state;
     }

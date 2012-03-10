@@ -20,37 +20,29 @@
 
 package net.sourceforge.atunes.kernel.modules.fullscreen;
 
-import java.awt.Dimension;
 import java.util.List;
 
-import javax.swing.JDialog;
-
 import net.sourceforge.atunes.gui.views.dialogs.fullScreen.FullScreenWindow;
+import net.sourceforge.atunes.gui.views.dialogs.fullScreen.FullScreenWindowFactory;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IState;
 
-class FullScreenController extends AbstractSimpleController<FullScreenWindow> {
+public class FullScreenController extends AbstractSimpleController<FullScreenWindow> {
 
+	private FullScreenWindowFactory fullScreenWindowFactory;
+	
 	/**
-	 * @param state
-	 * @param frame
-	 * @param osManager
-	 * @param lookAndFeelManager
-	 * @param playerHandler
-	 * @param screenSize
+	 * @param fullScreenWindowFactory
 	 */
-	FullScreenController(IState state, IFrame frame, IOSManager osManager, ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler, Dimension screenSize) {
-		super();
-        setState(state);
-		JDialog.setDefaultLookAndFeelDecorated(false);
-		FullScreenWindow window = new FullScreenWindow(frame.getFrame(), getState(), frame, osManager, lookAndFeelManager, playerHandler, screenSize);
-        JDialog.setDefaultLookAndFeelDecorated(lookAndFeelManager.getCurrentLookAndFeel().isDialogUndecorated());
-        setComponentControlled(window);
+	public void setFullScreenWindowFactory(FullScreenWindowFactory fullScreenWindowFactory) {
+		this.fullScreenWindowFactory = fullScreenWindowFactory;
+	}
+	
+	/**
+	 * Initializes controller
+	 */
+	public void initialize() {
+        setComponentControlled(fullScreenWindowFactory.getFullScreenWindow());
 	}
 
 	/**

@@ -31,13 +31,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.text.StyleConstants;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.CustomTextPane;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.utils.I18nUtils;
-
-import org.jdesktop.swingx.border.DropShadowBorder;
 
 /**
  * Basic information about an artist

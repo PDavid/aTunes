@@ -32,6 +32,12 @@ public abstract class AbstractCustomWindow extends JWindow {
 
     private static final long serialVersionUID = -8846047318549650938L;
 
+    /**
+     * Creates a window with given parent (owner) and size
+     * @param owner
+     * @param width
+     * @param height
+     */
     public AbstractCustomWindow(JFrame owner, int width, int height) {
         super(owner);
         setSize(width, height);

@@ -42,7 +42,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
@@ -54,8 +53,6 @@ import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.Logger;
-
-import org.jdesktop.swingx.border.DropShadowBorder;
 
 public final class CoverNavigatorController extends AbstractSimpleController<CoverNavigatorDialog> {
 
