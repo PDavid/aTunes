@@ -88,5 +88,9 @@
 
     <bean id="commonPlayerTrayIconsHandler" class="net.sourceforge.atunes.kernel.modules.tray.CommonPlayerTrayIconsHandler" scope="prototype"/>
     <bean id="macPlayerTrayIconsHandler" class="net.sourceforge.atunes.kernel.modules.tray.MacPlayerTrayIconsHandler" scope="prototype"/>
+    
+    
+    
+    <bean class="net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenController" scope="prototype" init-method="initialize"/>
 	
 </beans>

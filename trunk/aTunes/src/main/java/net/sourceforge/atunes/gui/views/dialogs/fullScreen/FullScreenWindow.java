@@ -44,7 +44,6 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -52,12 +51,12 @@ import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
 import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.NextButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PreviousButton;
+import net.sourceforge.atunes.gui.views.controls.playerControls.ProgressSlider;
 import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
@@ -96,9 +95,6 @@ public final class FullScreenWindow extends AbstractCustomWindow {
     /** The play button. */
     private PlayPauseButton playButton;
 
-    /** The volume slider */
-    private VolumeSlider volumeSlider;
-
     private JPanel controlsPanel;
 
     /** The playing. */
@@ -130,24 +126,84 @@ public final class FullScreenWindow extends AbstractCustomWindow {
     private IPlayerHandler playerHandler;
     
     private Dimension screenSize;
+    
+    private ILookAndFeelManager lookAndFeelManager;
+    
+    private MuteButton volumeButton;
+    
+    private VolumeSlider volumeSlider;
+    
+    private ProgressSlider fullScreenProgressSlider;
+    
+    /**
+     * @param fullScreenProgressSlider
+     */
+    public void setFullScreenProgressSlider(ProgressSlider fullScreenProgressSlider) {
+		this.fullScreenProgressSlider = fullScreenProgressSlider;
+	}
+    
+    /**
+     * @param volumeSlider
+     */
+    public void setVolumeSlider(VolumeSlider volumeSlider) {
+		this.volumeSlider = volumeSlider;
+	}
+    
+    /**
+     * @param volumeButton
+     */
+    public void setVolumeButton(MuteButton volumeButton) {
+		this.volumeButton = volumeButton;
+	}
+    
+    /**
+     * @param state
+     */
+    public void setState(IState state) {
+		this.state = state;
+	}
 
     /**
-     * Instantiates a new full screen dialog.
-     * @param owner
-     * @param state
-     * @param frame
      * @param osManager
-     * @param lookAndFeelManager
+     */
+    public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
+    
+    /**
      * @param playerHandler
+     */
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
+    
+    /**
      * @param screenSize
      */
-    public FullScreenWindow(JFrame owner, IState state, IFrame frame, IOSManager osManager, ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler, Dimension screenSize) {
-        super(owner, 0, 0);
-        this.state = state;
+    public void setScreenSize(Dimension screenSize) {
+		this.screenSize = screenSize;
+	}
+    
+    /**
+     * @param lookAndFeelManager
+     */
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		this.lookAndFeelManager = lookAndFeelManager;
+	}
+    
+    /**
+     * Instantiates a new full screen dialog.
+     * @param frame
+     */
+    public FullScreenWindow(IFrame frame) {
+        super(frame.getFrame(), 0, 0);
         this.frame = frame;
-        this.osManager = osManager;
-        this.playerHandler = playerHandler;
-        this.screenSize = screenSize;
+    }
+    
+    /**
+     * Initializes window
+     */
+    public void initialize() {
         setLocation(0, 0);
         setAlwaysOnTop(true);
         setContent(lookAndFeelManager);
@@ -275,9 +331,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         playButton = new PlayPauseButton(PlayerControlsSize.PLAY_BUTTON_SIZE, lookAndFeelManager);
         StopButton stopButton = new StopButton(PlayerControlsSize.STOP_MUTE_BUTTONS_SIZE, lookAndFeelManager);
         NextButton nextButton = new NextButton(PlayerControlsSize.PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
-        MuteButton muteButton = Context.getBean("volumeButton", MuteButton.class);
-        muteButton.setText("");
-        volumeSlider = Context.getBean("volumeSlider", VolumeSlider.class);
+        volumeButton.setText("");
 
         covers = new CoverFlow();
         Dimension coverSize = new Dimension(screenSize.width, screenSize.height * 5 / 7);
@@ -285,7 +339,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         covers.setMaximumSize(coverSize);
         covers.setPreferredSize(coverSize);
 
-        setClickListener(previousButton, stopButton, nextButton, muteButton);
+        setClickListener(previousButton, stopButton, nextButton, volumeButton);
 
         covers.addMouseListener(optionsAdapter);
         covers.addMouseMotionListener(moveListener);
@@ -302,7 +356,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         JPanel textPanel = new JPanel(new GridBagLayout());
         textPanel.setOpaque(false);
 
-        JPanel buttonsPanel = PlayerControlsPanel.getPanelWithPlayerControls(stopButton, previousButton, playButton, nextButton, muteButton, volumeSlider, lookAndFeelManager);
+        JPanel buttonsPanel = PlayerControlsPanel.getPanelWithPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider, lookAndFeelManager);
 
         setPanels(textAndControlsPanel, textPanel, buttonsPanel);
 
@@ -348,7 +402,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 	 * 
 	 */
 	private IProgressSlider getProgressSlider() {
-		IProgressSlider slider = Context.getBean("fullScreenProgressSlider", IProgressSlider.class);
+		IProgressSlider slider = fullScreenProgressSlider;
         ProgressBarSeekListener seekListener = new ProgressBarSeekListener(slider, playerHandler);
         slider.addMouseListener(seekListener);        
         slider.addKeyListener(keyAdapter);

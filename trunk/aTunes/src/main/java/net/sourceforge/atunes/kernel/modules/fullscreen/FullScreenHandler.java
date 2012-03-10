@@ -20,16 +20,13 @@
 
 package net.sourceforge.atunes.kernel.modules.fullscreen;
 
-import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFullScreenHandler;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerHandler;
 
 public class FullScreenHandler extends AbstractHandler implements IFullScreenHandler {
 
@@ -37,18 +34,11 @@ public class FullScreenHandler extends AbstractHandler implements IFullScreenHan
 	
 	private IPlayListHandler playListHandler;
 	
-	private Dimension screenSize;
-	
 	/**
-	 * @param screenSize
+	 * @param playListHandler
 	 */
-	public void setScreenSize(Dimension screenSize) {
-		this.screenSize = screenSize;
-	}
-	
-	@Override
-	public void allHandlersInitialized() {
-		playListHandler = getBean(IPlayListHandler.class);
+	public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
 	}
 	
     @Override
@@ -81,10 +71,13 @@ public class FullScreenHandler extends AbstractHandler implements IFullScreenHan
 	 */
 	private void createFullScreenController() {
 		if (controller == null) {
-			controller = new FullScreenController(getState(), getFrame(), getOsManager(), getBean(ILookAndFeelManager.class), getBean(IPlayerHandler.class), screenSize);
+			controller = getBean(FullScreenController.class);
 		}
 	}
 	
+	/**
+	 * @param audioObject
+	 */
 	private void updateAudioObjectsToShow(IAudioObject audioObject) {
 		if (getFullScreenController() != null) {
 			getFullScreenController().setAudioObjects(getAudioObjectsToShow(audioObject));

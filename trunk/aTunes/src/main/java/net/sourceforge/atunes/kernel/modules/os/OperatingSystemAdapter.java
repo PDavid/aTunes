@@ -170,8 +170,7 @@ public abstract class OperatingSystemAdapter {
 	public void setFullScreen(Window window, boolean fullscreen, IFrame frame) {
 		// Default behaviour
 		// Get in which screen is application and set full screen in that screen
-		GraphicsDevice graphicsDevice = GuiUtils
-				.getGraphicsDeviceForLocation(frame.getLocation());
+		GraphicsDevice graphicsDevice = GuiUtils.getGraphicsDeviceForLocation(frame.getLocation());
 		graphicsDevice.setFullScreenWindow(fullscreen ? window : null);
 	}
 

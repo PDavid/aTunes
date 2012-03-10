@@ -36,7 +36,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 import net.sourceforge.atunes.kernel.modules.tags.EditTagDialogController;
@@ -53,8 +52,6 @@ import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
-
-import org.jdesktop.swingx.border.DropShadowBorder;
 
 /**
  * The properties dialog for audio files
