@@ -56,11 +56,25 @@ public abstract class AbstractColumnSet implements IColumnSet {
 	/**
 	 * State of app
 	 */
-	protected IState state;	
+	private IState state;	
 	
-    protected IFrame frame;
+    private IFrame frame;
     
 	private List<IColumn<?>> allowedColumns;
+	
+	/**
+	 * @return
+	 */
+	public IState getState() {
+		return state;
+	}
+	
+	/**
+	 * @return
+	 */
+	public IFrame getFrame() {
+		return frame;
+	}
 	
 	/**
 	 * @param allowedColumns

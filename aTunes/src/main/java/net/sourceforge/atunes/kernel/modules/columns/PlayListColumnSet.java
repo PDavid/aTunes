@@ -44,12 +44,12 @@ public final class PlayListColumnSet extends AbstractColumnSet {
 	
     @Override
     protected Map<String, ColumnBean> getColumnsConfiguration() {
-        return state.getColumns();
+        return getState().getColumns();
     }
 
     @Override
     protected void setColumnsConfiguration(Map<String, ColumnBean> columnsConfiguration) {
-        state.setColumns(columnsConfiguration);
+    	getState().setColumns(columnsConfiguration);
     }
 
     @Override

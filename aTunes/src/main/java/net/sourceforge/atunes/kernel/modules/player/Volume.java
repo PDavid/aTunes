@@ -41,13 +41,18 @@ final class Volume {
      * @param playerHandler
      */
     public static void setVolume(int volume, boolean saveVolume, IState state, IPlayerHandler playerHandler) {
-        if (volume < 0) {
-            volume = 0;
-        } else if (volume > 100) {
-            volume = 100;
-        }
-        final int finalVolume = volume;
-        if (saveVolume) {
+        applyVolume(saveVolume, state, playerHandler, getVolumeLevel(volume));
+    }
+
+	/**
+	 * @param saveVolume
+	 * @param state
+	 * @param playerHandler
+	 * @param finalVolume
+	 */
+	private static void applyVolume(boolean saveVolume, IState state,
+			IPlayerHandler playerHandler, final int finalVolume) {
+		if (saveVolume) {
         	state.setVolume(finalVolume);
         }
         playerHandler.setVolume(finalVolume);
@@ -62,7 +67,21 @@ final class Volume {
         } else {
         	Context.getBean(IFullScreenHandler.class).setVolume(finalVolume);
         }
-    }
+	}
+
+	/**
+	 * @param volume
+	 * @return
+	 */
+	private static int getVolumeLevel(int volume) {
+		int volumeLevel = volume;
+        if (volumeLevel < 0) {
+            volumeLevel = 0;
+        } else if (volumeLevel > 100) {
+            volumeLevel = 100;
+        }
+		return volumeLevel;
+	}
     
     /**
      * @param volume

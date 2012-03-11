@@ -53,7 +53,7 @@ public class OggEncoder extends AbstractEncoder {
     static final String[] OGG_QUALITIES = { "-1", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" };
     static final String DEFAULT_OGG_QUALITY = "5";
 
-    private Process p;
+    private Process process;
 
     @Override
     public boolean testEncoder() {
@@ -119,50 +119,18 @@ public class OggEncoder extends AbstractEncoder {
         try {
             // Encode the file using oggenc. We could pass the infos for the tag, but 
             // oggenc is very difficult with special characters so we don't use it.
-            List<String> command = new ArrayList<String>();
-            command.add(StringUtils.getString(getOsManager().getExternalToolsPath(), OGGENC));
-            command.add(wavFile.getAbsolutePath());
-            command.add(OUTPUT);
-            command.add(oggFile.getAbsolutePath());
-            command.add(QUALITY);
-            command.add(getQuality());
-            p = new ProcessBuilder(command).start();
-            stdInput = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+            List<String> command = createCommand(wavFile, oggFile);
+            process = new ProcessBuilder(command).start();
+            stdInput = new BufferedReader(new InputStreamReader(process.getErrorStream()));
             String s = null;
             int percent = -1;
 
             // Read progress
             while ((s = stdInput.readLine()) != null) {
-                if (getListener() != null) {
-                    if (s.matches("\t\\[.....%.*")) {
-                        // Percent values can be for example 0.3% or 0,3%, so be careful with "." and ","
-                        int decimalPointPosition = s.indexOf('.');
-                        if (decimalPointPosition == -1) {
-                            decimalPointPosition = s.indexOf(',');
-                        }
-                        int aux = Integer.parseInt((s.substring(s.indexOf('[') + 1, decimalPointPosition).trim()));
-                        if (aux != percent) {
-                            percent = aux;
-                            final int percentHelp = percent;
-                            SwingUtilities.invokeLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                	getListener().notifyProgress(percentHelp);
-                                }
-                            });
-                        }
-                    } else if (s.startsWith("Done")) {
-                        SwingUtilities.invokeLater(new Runnable() {
-                            @Override
-                            public void run() {
-                            	getListener().notifyProgress(100);
-                            }
-                        });
-                    }
-                }
+                percent = analizeLine(s, percent);
             }
 
-            int code = p.waitFor();
+            int code = process.waitFor();
             if (code != 0) {
                 Logger.error(StringUtils.getString("Process returned code ", code));
                 return false;
@@ -189,10 +157,62 @@ public class OggEncoder extends AbstractEncoder {
         }
     }
 
+	/**
+	 * @param s
+	 * @param percent
+	 * @return
+	 */
+	private int analizeLine(String s, int percent) {
+		if (getListener() != null) {
+		    if (s.matches("\t\\[.....%.*")) {
+		        // Percent values can be for example 0.3% or 0,3%, so be careful with "." and ","
+		        int decimalPointPosition = s.indexOf('.');
+		        if (decimalPointPosition == -1) {
+		            decimalPointPosition = s.indexOf(',');
+		        }
+		        int aux = Integer.parseInt((s.substring(s.indexOf('[') + 1, decimalPointPosition).trim()));
+		        if (aux != percent) {
+		            percent = aux;
+		            final int percentHelp = percent;
+		            SwingUtilities.invokeLater(new Runnable() {
+		                @Override
+		                public void run() {
+		                	getListener().notifyProgress(percentHelp);
+		                }
+		            });
+		        }
+		    } else if (s.startsWith("Done")) {
+		        SwingUtilities.invokeLater(new Runnable() {
+		            @Override
+		            public void run() {
+		            	getListener().notifyProgress(100);
+		            }
+		        });
+		    }
+		}
+		return percent;
+	}
+
+	/**
+	 * @param wavFile
+	 * @param oggFile
+	 * @return
+	 */
+	private List<String> createCommand(File wavFile, File oggFile) {
+		List<String> command = new ArrayList<String>();
+		command.add(StringUtils.getString(getOsManager().getExternalToolsPath(), OGGENC));
+		command.add(wavFile.getAbsolutePath());
+		command.add(OUTPUT);
+		command.add(oggFile.getAbsolutePath());
+		command.add(QUALITY);
+		command.add(getQuality());
+		return command;
+	}
+
     @Override
     public void stop() {
-        if (p != null) {
-            p.destroy();
+        if (process != null) {
+            process.destroy();
         }
     }
 }

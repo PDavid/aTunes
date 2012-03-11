@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.cdripper;
 
 import java.io.File;
+import java.util.Arrays;
 
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
@@ -66,7 +67,7 @@ public abstract class AbstractEncoder implements Encoder {
 	 */
 	public AbstractEncoder(String extensionOfEncodedFiles, String[] availableQualities, String defaultQuality, String formatName) {
 		this.extensionOfEncodedFiles = extensionOfEncodedFiles;
-		this.availableQualities = availableQualities;
+		this.availableQualities = Arrays.copyOf(availableQualities, availableQualities.length);
 		this.defaultQuality = defaultQuality;
 		this.formatName = formatName;
 	}
@@ -159,7 +160,7 @@ public abstract class AbstractEncoder implements Encoder {
 
     @Override
     public final String[] getAvailableQualities() {
-        return availableQualities;
+        return Arrays.copyOf(availableQualities, availableQualities.length);
     }
 
     @Override
