@@ -48,11 +48,17 @@ final class MacOSXPlayerEngineSelectionDialogSearchPlayerEngineWorker extends Sw
 	}
 	
 	@Override
-	protected List<String> doInBackground() throws Exception {
+	protected List<String> doInBackground() {
 		List<String> matches = new ArrayList<String>();
 		// first try path where MPlayerX is installed to find faster, if not, then search all applications path
-		if (executeFind(matches, "find", "/Applications/MPlayerX.app/", "-name", "mplayer") != 0) {
-			executeFind(matches, "find", "/Applications/", "-name", "mplayer");
+		try {
+			if (executeFind(matches, "find", "/Applications/MPlayerX.app/", "-name", "mplayer") != 0) {
+				executeFind(matches, "find", "/Applications/", "-name", "mplayer");
+			}
+		} catch (InterruptedException e) {
+			Logger.error(e);
+		} catch (IOException e) {
+			Logger.error(e);
 		}
 		return matches;
 	}
