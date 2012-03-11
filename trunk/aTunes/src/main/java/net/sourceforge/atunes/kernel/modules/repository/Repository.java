@@ -193,14 +193,24 @@ public class Repository implements Serializable, IRepository {
 	 */
     @Override
 	public void validateRepository() throws InconsistentRepositoryException {
-        if (filesStructure == null || 
-            getRepositoryFolders() == null || 
-            artistsStructure == null || 
-            foldersStructure == null || 
-            genresStructure == null ||
-            yearStructure == null) {
-                throw new InconsistentRepositoryException();
+    	checkConsistency(filesStructure);
+    	checkConsistency(artistsStructure);
+    	checkConsistency(foldersStructure);
+    	checkConsistency(genresStructure);
+    	checkConsistency(yearStructure);
+        if (folders == null) {
+        	throw new InconsistentRepositoryException();
         }
+    }
+    
+    /**
+     * @param structure
+     * @throws InconsistentRepositoryException
+     */
+    private void checkConsistency(RepositoryStructure<?> structure) throws InconsistentRepositoryException {
+    	if (structure == null) {
+    		throw new InconsistentRepositoryException();
+    	}
     }
 	
 	/* (non-Javadoc)

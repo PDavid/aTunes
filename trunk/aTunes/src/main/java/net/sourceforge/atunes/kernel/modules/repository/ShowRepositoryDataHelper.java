@@ -47,7 +47,7 @@ public class ShowRepositoryDataHelper {
      *            the duration
      */
     void showRepositoryAudioFileNumber(long size, long sizeInBytes, long duration) {
-    	frame.setCenterStatusBarText(getText(size, sizeInBytes, duration), 
+    	frame.setCenterStatusBarText(getText(size, sizeInBytes), 
     							     getToolTip(size, sizeInBytes, duration));
     }
     
@@ -55,9 +55,8 @@ public class ShowRepositoryDataHelper {
      * Returns text with repository numbers
      * @param size
      * @param sizeInBytes
-     * @param duration
      */
-    private String getText(long size, long sizeInBytes, long duration) {
+    private String getText(long size, long sizeInBytes) {
         // Check if differenciation is required (needed by some slavic languages)
     	return StringUtils.getString(I18nUtils.getString("REPOSITORY"), ": ", size, " ", 
     			(I18nUtils.getString("SONGS_IN_REPOSITORY").isEmpty() ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONGS_IN_REPOSITORY")));
@@ -71,7 +70,7 @@ public class ShowRepositoryDataHelper {
      * @return
      */
     private String getToolTip(long size, long sizeInBytes, long duration) {
-        return StringUtils.getString(getText(size, sizeInBytes, duration), " - ", 
+        return StringUtils.getString(getText(size, sizeInBytes), " - ", 
         		StringUtils.fromByteToMegaOrGiga(sizeInBytes), " - ", StringUtils.fromSecondsToHoursAndDays(duration));
     }
 }

@@ -33,12 +33,12 @@ public final class AlbumColumnSet extends AbstractColumnSet {
 	
     @Override
     protected Map<String, ColumnBean> getColumnsConfiguration() {
-    	return state.getAlbumsColumns();
+    	return getState().getAlbumsColumns();
     }
 
     @Override
     protected void setColumnsConfiguration(Map<String, ColumnBean> columnsConfiguration) {
-        state.setAlbumColumns(columnsConfiguration);
+    	getState().setAlbumColumns(columnsConfiguration);
     }
 
     @Override

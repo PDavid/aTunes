@@ -27,22 +27,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.SwingWorker;
-
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
-import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
-import net.sourceforge.atunes.model.ILocalAudioObjectLocator;
-import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.INavigationHandler;
-import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -79,8 +72,6 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	
 	private ISearchHandler searchHandler;
 	
-	private IErrorDialogFactory errorDialogFactory;
-	
 	private IStateHandler stateHandler;
 	
 	private IRepository repository;
@@ -102,24 +93,9 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	
 	private PersistRepositoryTask persistRepositoryTask;
 	
-	private ILocalAudioObjectFactory localAudioObjectFactory;
-	
-	private ILocalAudioObjectValidator localAudioObjectValidator;
-	
-	private IProcessFactory processFactory;
-	
 	private LocalAudioObjectRefresher localAudioObjectRefresher;
 	
 	private RepositoryRemover repositoryRemover;
-	
-	private ILocalAudioObjectLocator localAudioObjectLocator;
-	
-	/**
-	 * @param localAudioObjectLocator
-	 */
-	public void setLocalAudioObjectLocator(ILocalAudioObjectLocator localAudioObjectLocator) {
-		this.localAudioObjectLocator = localAudioObjectLocator;
-	}
 	
 	/**
 	 * @param repositoryRemover
@@ -133,27 +109,6 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	 */
 	public void setLocalAudioObjectRefresher(LocalAudioObjectRefresher localAudioObjectRefresher) {
 		this.localAudioObjectRefresher = localAudioObjectRefresher;
-	}
-	
-	/**
-	 * @param processFactory
-	 */
-	public void setProcessFactory(IProcessFactory processFactory) {
-		this.processFactory = processFactory;
-	}
-	
-	/**
-	 * @param localAudioObjectValidator
-	 */
-	public void setLocalAudioObjectValidator(ILocalAudioObjectValidator localAudioObjectValidator) {
-		this.localAudioObjectValidator = localAudioObjectValidator;
-	}
-	
-	/**
-	 * @param localAudioObjectFactory
-	 */
-	public void setLocalAudioObjectFactory(ILocalAudioObjectFactory localAudioObjectFactory) {
-		this.localAudioObjectFactory = localAudioObjectFactory;
 	}
 	
 	/**
@@ -219,13 +174,6 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 		this.searchHandler = searchHandler;
 	}
 
-	/**
-	 * @param errorDialogFactory
-	 */
-	public void setErrorDialogFactory(IErrorDialogFactory errorDialogFactory) {
-		this.errorDialogFactory = errorDialogFactory;
-	}
-	
 	/**
 	 * @param statisticsHandler
 	 */
@@ -538,7 +486,9 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     	progressDialog.setTitle(StringUtils.getString(I18nUtils.getString("READING_FILES_TO_IMPORT"), "..."));
         progressDialog.disableCancelButton();
         progressDialog.showDialog();
-        SwingWorker<List<ILocalAudioObject>, Void> worker = new ImportFoldersSwingWorker(this, folders, path, progressDialog, getFrame(), getState(), errorDialogFactory, localAudioObjectFactory, localAudioObjectValidator, processFactory, localAudioObjectLocator);
+        ImportFoldersSwingWorker worker = getBean(ImportFoldersSwingWorker.class);
+        worker.setFolders(folders);
+        worker.setPath(path);
         worker.execute();
     }
 

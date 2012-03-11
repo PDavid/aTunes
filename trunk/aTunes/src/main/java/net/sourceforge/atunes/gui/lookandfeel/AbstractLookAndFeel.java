@@ -55,9 +55,16 @@ public abstract class AbstractLookAndFeel implements ILookAndFeel {
 	/**
 	 * Base font
 	 */
-	protected Font baseFont;
+	private Font baseFont;
 	
-	protected IOSManager osManager;
+	private IOSManager osManager;
+	
+	/**
+	 * @return
+	 */
+	public IOSManager getOsManager() {
+		return osManager;
+	}
 	
     @Override
 	public abstract String getName();

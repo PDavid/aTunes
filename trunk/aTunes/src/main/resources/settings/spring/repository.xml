@@ -35,5 +35,10 @@
 	<bean id="abstractRepositoryLoader" class="net.sourceforge.atunes.kernel.modules.repository.AbstractRepositoryLoader" abstract="true"/>
 	<bean id="repositoryReadLoader" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryReadLoader" parent="abstractRepositoryLoader" scope="prototype"/>
 	<bean id="repositoryRefreshLoader" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryRefreshLoader" parent="abstractRepositoryLoader" scope="prototype"/>
+	
+	<bean id="importFoldersSwingWorker" class="net.sourceforge.atunes.kernel.modules.repository.ImportFoldersSwingWorker" scope="prototype">
+	    <!-- state property conflicts with SwingWorker property, so use appState and wire manually -->
+		<property name="appState" ref="state"/>
+	</bean>
 
 </beans>

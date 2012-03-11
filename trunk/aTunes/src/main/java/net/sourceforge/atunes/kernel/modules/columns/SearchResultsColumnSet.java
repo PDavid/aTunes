@@ -43,12 +43,12 @@ public final class SearchResultsColumnSet extends AbstractColumnSet {
 	
     @Override
     protected Map<String, ColumnBean> getColumnsConfiguration() {
-        return state.getSearchResultsColumns();
+        return getState().getSearchResultsColumns();
     }
 
     @Override
     protected void setColumnsConfiguration(Map<String, ColumnBean> columnsConfiguration) {
-        state.setSearchResultsColumns(columnsConfiguration);
+    	getState().setSearchResultsColumns(columnsConfiguration);
     }
 
     @Override

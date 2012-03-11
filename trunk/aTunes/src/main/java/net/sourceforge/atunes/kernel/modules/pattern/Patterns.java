@@ -29,7 +29,7 @@ import java.util.Map.Entry;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class Patterns {
+public final class Patterns {
 
     /**
      * All available patterns
@@ -58,6 +58,8 @@ public class Patterns {
         patterns.add(new ArtistFirstCharPattern());
         patterns.add(new DiscNumberPattern());
     }
+    
+    private Patterns() {}
     
     /**
      * Returns "any" pattern

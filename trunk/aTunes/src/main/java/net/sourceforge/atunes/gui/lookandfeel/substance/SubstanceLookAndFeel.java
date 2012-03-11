@@ -131,7 +131,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
         AnimationConfigurationManager.getInstance().setTimelineDuration(0);
         UIManager.put(org.pushingpixels.substance.api.SubstanceLookAndFeel.TABBED_PANE_CONTENT_BORDER_KIND, SubstanceConstants.TabContentPaneBorderKind.SINGLE_FULL);
 
-        if (!osManager.isMacOsX()) {
+        if (!getOsManager().isMacOsX()) {
         	// Avoid custom window decoration in mac os to draw window controls at left
         	JFrame.setDefaultLookAndFeelDecorated(true);
             JDialog.setDefaultLookAndFeelDecorated(true);
@@ -152,7 +152,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
                 UIManager.setLookAndFeel(skins.get(DEFAULT_SKIN));
             }
 
-            if (osManager.isMacOsX()) {
+            if (getOsManager().isMacOsX()) {
             	UIManager.put("MenuBarUI", menuBarUI);
             }
             
@@ -218,7 +218,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
 
     @Override
     public boolean isDialogUndecorated() {
-    	  return osManager.isMacOsX() ? false: true;
+    	  return getOsManager().isMacOsX() ? false: true;
     }
 
     @Override

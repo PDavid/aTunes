@@ -190,36 +190,7 @@ public final class LyricsService implements ILyricsService {
         // If some engine can't be loaded will be removed from settings
         List<ILyricsEngineInfo> enginesToUnload = new ArrayList<ILyricsEngineInfo>();
         for (ILyricsEngineInfo lyricsEngineInfo : lyricsEnginesInfo) {
-            if (lyricsEngineInfo.isEnabled()) {
-                try {
-                    Class<?> clazz = Class.forName(lyricsEngineInfo.getClazz());
-                    Constructor<?> constructor = clazz.getConstructor();
-                    AbstractLyricsEngine engine = (AbstractLyricsEngine) constructor.newInstance();
-                    engine.setNetworkHandler(networkHandler);
-                    result.add(engine);
-                } catch (ClassNotFoundException e) {
-                	enginesToUnload.add(lyricsEngineInfo);
-                	logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
-                } catch (InstantiationException e) {
-                	enginesToUnload.add(lyricsEngineInfo);
-                	logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
-                } catch (IllegalAccessException e) {
-                	enginesToUnload.add(lyricsEngineInfo);
-                	logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
-                } catch (SecurityException e) {
-                	enginesToUnload.add(lyricsEngineInfo);
-                	logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
-                } catch (NoSuchMethodException e) {
-                	enginesToUnload.add(lyricsEngineInfo);
-                	logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
-                } catch (IllegalArgumentException e) {
-                	enginesToUnload.add(lyricsEngineInfo);
-                	logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
-                } catch (InvocationTargetException e) {
-                	enginesToUnload.add(lyricsEngineInfo);
-                	logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
-                }
-            }
+            loadLyricEngine(result, enginesToUnload, lyricsEngineInfo);
         }
 
         for (ILyricsEngineInfo engineToUnload : enginesToUnload) {
@@ -233,6 +204,46 @@ public final class LyricsService implements ILyricsService {
         
         return result;
     }
+
+	/**
+	 * @param result
+	 * @param enginesToUnload
+	 * @param lyricsEngineInfo
+	 */
+	private void loadLyricEngine(List<AbstractLyricsEngine> result,
+			List<ILyricsEngineInfo> enginesToUnload,
+			ILyricsEngineInfo lyricsEngineInfo) {
+		if (lyricsEngineInfo.isEnabled()) {
+		    try {
+		        Class<?> clazz = Class.forName(lyricsEngineInfo.getClazz());
+		        Constructor<?> constructor = clazz.getConstructor();
+		        AbstractLyricsEngine engine = (AbstractLyricsEngine) constructor.newInstance();
+		        engine.setNetworkHandler(networkHandler);
+		        result.add(engine);
+		    } catch (ClassNotFoundException e) {
+		    	enginesToUnload.add(lyricsEngineInfo);
+		    	logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
+		    } catch (InstantiationException e) {
+		    	enginesToUnload.add(lyricsEngineInfo);
+		    	logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
+		    } catch (IllegalAccessException e) {
+		    	enginesToUnload.add(lyricsEngineInfo);
+		    	logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
+		    } catch (SecurityException e) {
+		    	enginesToUnload.add(lyricsEngineInfo);
+		    	logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
+		    } catch (NoSuchMethodException e) {
+		    	enginesToUnload.add(lyricsEngineInfo);
+		    	logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
+		    } catch (IllegalArgumentException e) {
+		    	enginesToUnload.add(lyricsEngineInfo);
+		    	logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
+		    } catch (InvocationTargetException e) {
+		    	enginesToUnload.add(lyricsEngineInfo);
+		    	logLyricEngineLoadError(lyricsEngineInfo.getClazz(), e);
+		    }
+		}
+	}
     
     /**
      * Logs an error loading a lyric engine
@@ -257,8 +268,10 @@ public final class LyricsService implements ILyricsService {
     	}
     }
     
+    /**
+     * @param defaultLyricsEngines
+     */
     public void setDefaultLyricsEngines(List<LyricsEngineInfo> defaultLyricsEngines) {
 		this.defaultLyricsEngines = defaultLyricsEngines;
 	}
-
 }

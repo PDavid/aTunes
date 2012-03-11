@@ -32,7 +32,6 @@ import net.sourceforge.atunes.kernel.modules.process.ImportFilesProcess;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.ILocalAudioObjectLocator;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IProcessFactory;
@@ -44,49 +43,98 @@ import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITagAttributesReviewed;
 import net.sourceforge.atunes.utils.Logger;
 
-final class ImportFoldersSwingWorker extends SwingWorker<List<ILocalAudioObject>, Void> {
+/**
+ * @author alex
+ *
+ */
+public final class ImportFoldersSwingWorker extends SwingWorker<List<ILocalAudioObject>, Void> {
 	
-	private final IRepositoryHandler repositoryHandler;
-	private final List<File> folders;
-	private final String path;
-	private final IProgressDialog progressDialog;
-	private final IFrame frame;
-	private final IState state;
-	private final IErrorDialogFactory errorDialogFactory;
-	private final ILocalAudioObjectFactory localAudioObjectFactory;
-	private final ILocalAudioObjectValidator localAudioObjectValidator;
-	private final IProcessFactory processFactory;
-	private final ILocalAudioObjectLocator localAudioObjectLocator;
-
+	private IRepositoryHandler repositoryHandler;
+	private List<File> folders;
+	private String path;
+	private IProgressDialog progressDialog;
+	private IFrame frame;
+	private IState appState;
+	private IErrorDialogFactory errorDialogFactory;
+	private ILocalAudioObjectValidator localAudioObjectValidator;
+	private IProcessFactory processFactory;
+	private ILocalAudioObjectLocator localAudioObjectLocator;
+	
 	/**
 	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
+	
+	/**
 	 * @param folders
+	 */
+	public void setFolders(List<File> folders) {
+		this.folders = folders;
+	}
+	
+	/**
 	 * @param path
+	 */
+	public void setPath(String path) {
+		this.path = path;
+	}
+	
+	/**
 	 * @param progressDialog
+	 */
+	public void setProgressDialog(IProgressDialog progressDialog) {
+		this.progressDialog = progressDialog;
+	}
+	
+	/**
 	 * @param frame
+	 */
+	public void setFrame(IFrame frame) {
+		this.frame = frame;
+	}
+	
+	/**
 	 * @param state
+	 */
+	public void setAppState(IState state) {
+		this.appState = state;
+	}
+	
+	/**
 	 * @param errorDialogFactory
-	 * @param localAudioObjectFactory
+	 */
+	public void setErrorDialogFactory(IErrorDialogFactory errorDialogFactory) {
+		this.errorDialogFactory = errorDialogFactory;
+	}
+	
+	/**
 	 * @param localAudioObjectValidator
+	 */
+	public void setLocalAudioObjectValidator(
+			ILocalAudioObjectValidator localAudioObjectValidator) {
+		this.localAudioObjectValidator = localAudioObjectValidator;
+	}
+	
+	/**
 	 * @param processFactory
 	 */
-	public ImportFoldersSwingWorker(IRepositoryHandler repositoryHandler, List<File> folders, String path, IProgressDialog progressDialog, IFrame frame, IState state, IErrorDialogFactory errorDialogFactory, ILocalAudioObjectFactory localAudioObjectFactory, ILocalAudioObjectValidator localAudioObjectValidator, IProcessFactory processFactory, ILocalAudioObjectLocator localAudioObjectLocator) {
-		this.repositoryHandler = repositoryHandler;
-		this.folders = folders;
-		this.path = path;
-		this.progressDialog = progressDialog;
-		this.frame = frame;
-		this.state = state;
-		this.errorDialogFactory = errorDialogFactory;
-		this.localAudioObjectFactory = localAudioObjectFactory;
-		this.localAudioObjectValidator = localAudioObjectValidator;
+	public void setProcessFactory(IProcessFactory processFactory) {
 		this.processFactory = processFactory;
+	}
+	
+	/**
+	 * @param localAudioObjectLocator
+	 */
+	public void setLocalAudioObjectLocator(
+			ILocalAudioObjectLocator localAudioObjectLocator) {
 		this.localAudioObjectLocator = localAudioObjectLocator;
 	}
-
+	
 	@Override
-	protected List<ILocalAudioObject> doInBackground() throws Exception {
-	    return getSongsForFolders(folders, new ImportFoldersLoaderListener(progressDialog), localAudioObjectFactory, localAudioObjectValidator);
+	protected List<ILocalAudioObject> doInBackground() {
+	    return getSongsForFolders(folders, new ImportFoldersLoaderListener(progressDialog), localAudioObjectValidator);
 	}
 
 	@Override
@@ -98,7 +146,7 @@ final class ImportFoldersSwingWorker extends SwingWorker<List<ILocalAudioObject>
 
 	        ITagAttributesReviewed tagAttributesReviewed = null;
 	        // Review tags if selected in settings
-	        if (state.isReviewTagsBeforeImport()) {
+	        if (appState.isReviewTagsBeforeImport()) {
 	            IReviewImportDialog reviewImportDialog = Context.getBean(IReviewImportDialog.class);
 	            reviewImportDialog.showDialog(folders, filesToLoad);
 	            if (reviewImportDialog.isDialogCancelled()) {
@@ -126,11 +174,10 @@ final class ImportFoldersSwingWorker extends SwingWorker<List<ILocalAudioObject>
 	 * Gets the songs of a list of folders. Used in import
 	 * @param folders
 	 * @param listener
-	 * @param localAudioObjectFactory
 	 * @param localAudioObjectValidator
 	 * @return
 	 */
-	private List<ILocalAudioObject> getSongsForFolders(List<File> folders, IRepositoryLoaderListener listener, ILocalAudioObjectFactory localAudioObjectFactory, ILocalAudioObjectValidator localAudioObjectValidator) {
+	private List<ILocalAudioObject> getSongsForFolders(List<File> folders, IRepositoryLoaderListener listener, ILocalAudioObjectValidator localAudioObjectValidator) {
 		int filesCount = 0;
 		for (File folder : folders) {
 			filesCount = filesCount + countFiles(folder, localAudioObjectValidator);

@@ -110,7 +110,7 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, S
     @Override
     public Component decorateTreeCellComponent(JLabel component, String userObject, boolean isSelected) {
     	Color color = getLookAndFeel().getPaintForColorMutableIcon(component, isSelected);
-    	component.setIcon(getIcon(userObject, component, color).getIcon(color));
+    	component.setIcon(getIcon(userObject).getIcon(color));
     	component.setToolTipText(null);
         return component;
     }
@@ -118,11 +118,9 @@ public class StringTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, S
 	/**
 	 * Returns icon to use depending on text
 	 * @param text
-	 * @param label
-	 * @param color
 	 * @return 
 	 */
-	private IIconFactory getIcon(String text, JLabel label, Color color) {
+	private IIconFactory getIcon(String text) {
 		IIconFactory factory = getIconsByString().get(text);
 		return factory != null ? factory : folderIcon; // For radio view
 	}
