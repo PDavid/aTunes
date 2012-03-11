@@ -42,7 +42,60 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 public class FilterPanel extends JPanel implements IFilterPanel {
 
-    private static final long serialVersionUID = 1801321624657098000L;
+    private final class ClearButton extends LookAndFeelAwareButton {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -8082456165867297443L;
+		private final Dimension size = new Dimension(16, 16);
+
+		private ClearButton(ILookAndFeelManager lookAndFeelManager) {
+			super(lookAndFeelManager);
+		}
+
+		public Dimension getPreferredSize() {
+			return size;
+		}
+
+		public Dimension getMinimumSize() {
+			return size;
+		}
+
+		public Dimension getMaximumSize() {
+			return size;
+		}
+
+		protected void paintComponent(java.awt.Graphics g) {
+			if (!filterApplied) {
+				return;
+			}
+			Ellipse2D.Float e = new Ellipse2D.Float(-7, -7, 14, 14);
+			Polygon p = new Polygon();
+			p.addPoint(-4, -2);
+			p.addPoint(-2, -4);
+			p.addPoint(0, -2);
+			p.addPoint(2, -4);
+			p.addPoint(4, -2);
+			p.addPoint(2, 0);
+			p.addPoint(4, 2);
+			p.addPoint(2, 4);
+			p.addPoint(0, 2);
+			p.addPoint(-2, 4);
+			p.addPoint(-4, 2);
+			p.addPoint(-2, 0);
+
+		    Graphics2D g2 = (Graphics2D) g;
+		    g2.translate(getBounds().width / 2, getBounds().height / 2);
+		    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		    g2.setPaint(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls());
+		    Area a = new Area(e);
+		    a.subtract(new Area(p));
+		    g2.fill(a);
+		    g2.dispose();
+		}
+	}
+
+	private static final long serialVersionUID = 1801321624657098000L;
 
     private JTextField filterTextField;
     private JButton clearButton;
@@ -82,55 +135,7 @@ public class FilterPanel extends JPanel implements IFilterPanel {
         setMinimumSize(new Dimension(120, 0));
         filterTextField = new CustomTextField(8);
         filterTextField.setToolTipText(I18nUtils.getString("FILTER_TEXTFIELD_TOOLTIP"));
-        clearButton = new LookAndFeelAwareButton(lookAndFeelManager) {
-        	/**
-			 * 
-			 */
-			private static final long serialVersionUID = -8082456165867297443L;
-			
-			private final Dimension size = new Dimension(16, 16);
-			
-			public Dimension getPreferredSize() {
-				return size;
-			};
-			
-			public Dimension getMinimumSize() {
-				return size;
-			};
-			
-			public Dimension getMaximumSize() {
-				return size;
-			}
-			
-			protected void paintComponent(java.awt.Graphics g) {
-				if (!filterApplied) {
-					return;
-				}
-				Ellipse2D.Float e = new Ellipse2D.Float(-7, -7, 14, 14);
-				Polygon p = new Polygon();
-				p.addPoint(-4, -2);
-				p.addPoint(-2, -4);
-				p.addPoint(0, -2);
-				p.addPoint(2, -4);
-				p.addPoint(4, -2);
-				p.addPoint(2, 0);
-				p.addPoint(4, 2);
-				p.addPoint(2, 4);
-				p.addPoint(0, 2);
-				p.addPoint(-2, 4);
-				p.addPoint(-4, 2);
-				p.addPoint(-2, 0);
-
-		        Graphics2D g2 = (Graphics2D) g;
-		        g2.translate(getBounds().width / 2, getBounds().height / 2);
-		        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		        g2.setPaint(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls());
-		        Area a = new Area(e);
-		        a.subtract(new Area(p));
-		        g2.fill(a);
-		        g2.dispose();
-        	};
-        };
+        clearButton = new ClearButton(lookAndFeelManager);
         
         LookAndFeelAwareLabel icon = new LookAndFeelAwareLabel(lookAndFeelManager, filterIcon.getColorMutableIcon());
         

@@ -65,7 +65,11 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class FavoritesNavigationView extends AbstractNavigationView {
 
-    private JTree favoritesTree;
+    private static final String ALBUMS = "ALBUMS";
+
+	private static final String ARTISTS = "ARTISTS";
+
+	private JTree favoritesTree;
 
     /** The favorite tree menu. */
     private JPopupMenu favoriteTreeMenu;
@@ -206,8 +210,8 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
     @Override
     public Map<String, ?> getViewData(ViewMode viewMode) {
         Map<String, Map<?, ?>> data = new HashMap<String, Map<?, ?>>();
-        data.put("ARTISTS", favoritesHandler.getFavoriteArtistsInfo());
-        data.put("ALBUMS", favoritesHandler.getFavoriteAlbumsInfo());
+        data.put(ARTISTS, favoritesHandler.getFavoriteArtistsInfo());
+        data.put(ALBUMS, favoritesHandler.getFavoriteAlbumsInfo());
         return data;
     }
 
@@ -235,15 +239,15 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
         root.removeAllChildren();
 
         DefaultMutableTreeNode artistsNode = new DefaultMutableTreeNode();
-        artistsNode.setUserObject(I18nUtils.getString("ARTISTS"));
+        artistsNode.setUserObject(I18nUtils.getString(ARTISTS));
         nodesToExpand.add(artistsNode);
-        addArtistNodes(artistsNode, treeFilter, (Map<String, IArtist>) data.get("ARTISTS"), objectsSelected, objectsExpanded, nodesToSelect, nodesToExpand);
+        addArtistNodes(artistsNode, treeFilter, (Map<String, IArtist>) data.get(ARTISTS), objectsSelected, objectsExpanded, nodesToSelect, nodesToExpand);
         root.add(artistsNode);
 
         DefaultMutableTreeNode albumsNode = new DefaultMutableTreeNode();
-        albumsNode.setUserObject(I18nUtils.getString("ALBUMS"));
+        albumsNode.setUserObject(I18nUtils.getString(ALBUMS));
         nodesToExpand.add(albumsNode);
-        addAlbumNodes(albumsNode, treeFilter, (Map<String, IAlbum>) data.get("ALBUMS"), objectsSelected, objectsExpanded, nodesToSelect, nodesToExpand);
+        addAlbumNodes(albumsNode, treeFilter, (Map<String, IAlbum>) data.get(ALBUMS), objectsSelected, objectsExpanded, nodesToSelect, nodesToExpand);
         root.add(albumsNode);
 
         DefaultMutableTreeNode songsNode = new DefaultMutableTreeNode();
@@ -274,9 +278,9 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
                 songs = ((ITreeObject<ILocalAudioObject>) node.getUserObject()).getAudioObjects();
             } else {
                 songs = new ArrayList<ILocalAudioObject>();
-                if (node.getUserObject().toString().equals(I18nUtils.getString("ARTISTS"))) {
+                if (node.getUserObject().toString().equals(I18nUtils.getString(ARTISTS))) {
                     songs.addAll(repositoryHandler.getAudioFilesForArtists(favoritesHandler.getFavoriteArtistsInfo()));
-                } else if (node.getUserObject().toString().equals(I18nUtils.getString("ALBUMS"))) {
+                } else if (node.getUserObject().toString().equals(I18nUtils.getString(ALBUMS))) {
                     songs.addAll(repositoryHandler.getAudioFilesForAlbums(favoritesHandler.getFavoriteAlbumsInfo()));
                 } else {
                     songs.addAll(new ArrayList<ILocalAudioObject>(favoritesHandler.getFavoriteSongsInfo().values()));

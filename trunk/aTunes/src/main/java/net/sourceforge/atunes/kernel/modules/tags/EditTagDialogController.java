@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.tags;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -69,7 +70,7 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
         }
 
         @Override
-        protected ImageIcon doInBackground() throws Exception {
+        protected ImageIcon doInBackground() {
             return AudioFilePictureUtils.getInsidePicture(audioFiles.get(0), Constants.DIALOG_LARGE_IMAGE_WIDTH, Constants.DIALOG_LARGE_IMAGE_HEIGHT);
         }
 
@@ -591,18 +592,30 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
         process.execute();
     }
 
+    /**
+     * @param newCover
+     */
     public void setNewCover(byte[] newCover) {
-        this.newCover = newCover;
+        this.newCover = Arrays.copyOf(newCover, newCover.length);
     }
 
+    /**
+     * @param coverEdited
+     */
     public void setCoverEdited(boolean coverEdited) {
         this.coverEdited = coverEdited;
     }
 
+    /**
+     * @return
+     */
     public List<ILocalAudioObject> getAudioFilesEditing() {
         return new ArrayList<ILocalAudioObject>(audioFilesEditing);
     }
 
+    /**
+     * Clear dialog
+     */
     public void clear() {
         audioFilesEditing = Collections.emptyList();
         newCover = null;

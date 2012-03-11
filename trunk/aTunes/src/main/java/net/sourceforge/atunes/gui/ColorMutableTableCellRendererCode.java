@@ -40,7 +40,7 @@ public class ColorMutableTableCellRendererCode extends AbstractTableCellRenderer
     @Override
     public JLabel getComponent(JLabel c, JTable table, IColorMutableImageIcon value, boolean isSelected, boolean hasFocus, int row, int column) {
         c.setText(null);
-        Color color = lookAndFeel.getPaintForColorMutableIcon(c, isSelected);
+        Color color = getLookAndFeel().getPaintForColorMutableIcon(c, isSelected);
         c.setIcon(value.getIcon(color));
 
         // Get alignment from model

@@ -61,7 +61,7 @@ public final class CoverFlow extends JPanel {
 		}
 
 		@Override
-		protected Void doInBackground() throws Exception {
+		protected Void doInBackground() {
 			ImageIcon image = null;
 		    if (audioObject instanceof IRadio) {
 		        image = Context.getBean("radioBigIcon", IIconFactory.class).getIcon(Color.WHITE);
@@ -142,12 +142,12 @@ public final class CoverFlow extends JPanel {
     void paint(final List<IAudioObject> objects, IOSManager osManager) {
         int i = 0;
         for (IAudioObject ao : objects) {
-            paint(ao, i < covers.size() ? covers.get(i) : null, i == 2, i, osManager);
+            paint(ao, i < covers.size() ? covers.get(i) : null, i, osManager);
             i++;
         }
     }
 
-    private void paint(final IAudioObject audioObject, final Cover3D cover, boolean current, int index, IOSManager osManager) {
+    private void paint(final IAudioObject audioObject, final Cover3D cover, int index, IOSManager osManager) {
         // No object
         if (audioObject == null) {
             return;

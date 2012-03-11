@@ -102,7 +102,7 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter implements Ap
 	
 	@Override
 	public void setFullScreen(Window window, boolean fullscreen, IFrame frame) {
-		if (systemType.isOldWindows() && fullscreen) {
+		if (getSystemType().isOldWindows() && fullscreen) {
 			window.setSize(screenSize.width, screenSize.height);
 		}
 	}

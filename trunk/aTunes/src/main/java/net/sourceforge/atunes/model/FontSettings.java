@@ -30,7 +30,7 @@ public class FontSettings implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -8438133427543514976L;
-	IFontBean font;
+	private IFontBean font;
     private boolean useFontSmoothing;
     private boolean useFontSmoothingSettingsFromOs;
 
@@ -42,29 +42,50 @@ public class FontSettings implements Serializable {
         this.useFontSmoothingSettingsFromOs = useFontSmoothingSettingsFromOs;
     }
 
+    /**
+     * Default constructor
+     */
     public FontSettings() {
     }
 
+    /**
+     * @param font
+     */
     public void setFont(IFontBean font) {
         this.font = font;
     }
 
+    /**
+     * @return font
+     */
     public IFontBean getFont() {
         return font;
     }
 
+    /**
+     * @param useFontSmoothing
+     */
     public void setUseFontSmoothing(boolean useFontSmoothing) {
         this.useFontSmoothing = useFontSmoothing;
     }
 
+    /**
+     * @return use font smoothing
+     */
     public boolean isUseFontSmoothing() {
         return useFontSmoothing;
     }
 
+    /**
+     * @param useFontSmoothingSettingsFromOs
+     */
     public void setUseFontSmoothingSettingsFromOs(boolean useFontSmoothingSettingsFromOs) {
         this.useFontSmoothingSettingsFromOs = useFontSmoothingSettingsFromOs;
     }
 
+    /**
+     * @return use font smotthing settings from os
+     */
     public boolean isUseFontSmoothingSettingsFromOs() {
         return useFontSmoothingSettingsFromOs;
     }

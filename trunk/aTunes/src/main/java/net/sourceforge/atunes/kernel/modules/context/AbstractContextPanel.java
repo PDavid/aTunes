@@ -116,9 +116,8 @@ public abstract class AbstractContextPanel implements IContextPanel {
     		c.weightx = 1;
     		c.fill = GridBagConstraints.HORIZONTAL;
     		c.insets = new Insets(10, 10, 10, 10);
-    		int numberOfContents = getContents().size();
     		for (IContextPanelContent<?> content : getContents()) {
-    			addContextPanelContent(lookAndFeel, panel, c, numberOfContents, content);
+    			addContextPanelContent(lookAndFeel, panel, c, content);
     		}
     		
     		// Add a dummy panel at the end
@@ -138,10 +137,9 @@ public abstract class AbstractContextPanel implements IContextPanel {
 	 * @param lookAndFeel
 	 * @param panel
 	 * @param c
-	 * @param numberOfContents
 	 * @param content
 	 */
-	private void addContextPanelContent(ILookAndFeel lookAndFeel, JPanel panel, GridBagConstraints c, int numberOfContents, IContextPanelContent content) {
+	private void addContextPanelContent(ILookAndFeel lookAndFeel, JPanel panel, GridBagConstraints c, IContextPanelContent content) {
 		Component componentToAdd = content.getComponent();
 		if (componentToAdd instanceof JComponent) {
 			((JComponent) componentToAdd).setOpaque(false);

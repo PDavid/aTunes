@@ -207,7 +207,7 @@ public class PopUpButton extends JButton implements IPopUpButton {
      * @param location
      *            the new menu location
      */
-    void setMenuLocation(int location) {
+    final void setMenuLocation(int location) {
         if (!items.isEmpty()) {
             if (location == TOP_LEFT || location == TOP_RIGHT) {
                 yLocation = -(int) items.get(0).getPreferredSize().getHeight() * items.size() - 5;

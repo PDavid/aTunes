@@ -89,8 +89,8 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     private IPlayerControlsPanel playerControls;
     private JXStatusBar statusBar;
 
-    protected IState state;
-    protected IOSManager osManager;
+    private IState state;
+    private IOSManager osManager;
     private INavigationHandler navigationHandler;
     private ILookAndFeelManager lookAndFeelManager;
     private IUIHandler uiHandler;
@@ -102,6 +102,13 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) {
     	this.context = applicationContext;
+    }
+
+    /**
+     * @return
+     */
+    IState getAppState() {
+    	return state;
     }
     
     /**

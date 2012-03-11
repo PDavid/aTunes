@@ -221,7 +221,7 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
 	}    
 	
 	/** Double values for Horizontal and Vertical radius of corner arcs */
-    protected Dimension arcs = new Dimension(20, 20);
+    private Dimension arcs = new Dimension(20, 20);
     
 	@Override
 	protected void paintComponent(Graphics g) {

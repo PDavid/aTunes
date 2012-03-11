@@ -172,8 +172,8 @@ public class Artist implements IArtist {
 
     @Override
     public String getToolTip() {
-        int albums = getAlbums().size();
-        return StringUtils.getString(getName(), " (", albums, " ", (albums > 1 ? I18nUtils.getString("ALBUMS") : I18nUtils.getString("ALBUM")), ")");
+        int albumSize = getAlbums().size();
+        return StringUtils.getString(getName(), " (", albumSize, " ", (albumSize > 1 ? I18nUtils.getString("ALBUMS") : I18nUtils.getString("ALBUM")), ")");
     }
 
     @Override

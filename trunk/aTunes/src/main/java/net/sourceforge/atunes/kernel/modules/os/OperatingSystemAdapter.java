@@ -52,11 +52,25 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 public abstract class OperatingSystemAdapter {
 
-	protected OperatingSystem systemType;
+	private OperatingSystem systemType;
 	
-	protected IOSManager osManager;
+	private IOSManager osManager;
 	
 	private ITrayIcon trayIcon;
+	
+	/**
+	 * @return
+	 */
+	public IOSManager getOsManager() {
+		return osManager;
+	}
+	
+	/**
+	 * @return
+	 */
+	public OperatingSystem getSystemType() {
+		return systemType;
+	}
 	
 	/**
 	 * @param trayIcon

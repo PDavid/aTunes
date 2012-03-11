@@ -166,7 +166,18 @@ public final class DevicePanel extends AbstractPreferencesPanel {
 
         copySameSongForDifferentAlbums = new JCheckBox(I18nUtils.getString("ALLOW_COPY_TO_DEVICE_SAME_SONG_FOR_DIFFERENT_ALBUMS"));
 
-        GridBagConstraints c = new GridBagConstraints();
+        arrangePanel(label, fileNamePanel, folderPathPanel, patternsPanel);
+    }
+
+	/**
+	 * @param label
+	 * @param fileNamePanel
+	 * @param folderPathPanel
+	 * @param patternsPanel
+	 */
+	private void arrangePanel(JLabel label, JPanel fileNamePanel,
+			JPanel folderPathPanel, JPanel patternsPanel) {
+		GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
         c.anchor = GridBagConstraints.WEST;
@@ -230,7 +241,7 @@ public final class DevicePanel extends AbstractPreferencesPanel {
         c.gridy = 3;
         c.weighty = 1;
         add(copySameSongForDifferentAlbums, c);
-    }
+	}
 
     @Override
     public boolean applyPreferences(IState state) {

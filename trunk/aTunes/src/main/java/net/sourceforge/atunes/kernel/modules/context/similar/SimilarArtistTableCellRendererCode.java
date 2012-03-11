@@ -27,15 +27,12 @@ import javax.swing.JComponent;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.context.ContextTable;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanel;
 import net.sourceforge.atunes.model.IArtistInfo;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -43,6 +40,10 @@ class SimilarArtistTableCellRendererCode extends ContextTableRowPanel<IArtistInf
 
 	private IDesktop desktop;
 	
+	/**
+	 * @param lookAndFeel
+	 * @param desktop
+	 */
 	public SimilarArtistTableCellRendererCode(ILookAndFeel lookAndFeel, IDesktop desktop) {
 		super(lookAndFeel);
 		this.desktop = desktop;
@@ -62,51 +63,9 @@ class SimilarArtistTableCellRendererCode extends ContextTableRowPanel<IArtistInf
 	@Override
 	public List<ContextTableAction<IArtistInfo>> getActions() {
 		List<ContextTableAction<IArtistInfo>> actions = new ArrayList<ContextTableAction<IArtistInfo>>();
-		actions.add(new ContextTableAction<IArtistInfo>(I18nUtils.getString("READ_MORE"), (ContextTable) table, desktop) {
-			
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = -4964635263019533125L;
-
-			@Override
-			protected void execute(IArtistInfo object) {
-				desktop.openURL(object.getUrl());
-			}
-
-			@Override
-			protected IArtistInfo getSelectedObject(int row) {
-				return ((SimilarArtistsTableModel) table.getModel()).getArtist(row);
-			}
-			
-			@Override
-			protected boolean isEnabledForObject(IArtistInfo object) {
-				return true;
-			}
-			
-		});
-		actions.add(new ContextTableAction<IArtistInfo>(I18nUtils.getString("ADD_ALBUM_ARTIST_TO_PLAYLIST"), (ContextTable) table, desktop) {
-			
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = -3920095074089169426L;
-
-			@Override
-			protected void execute(IArtistInfo object) {
-				Context.getBean(IPlayListHandler.class).showAddArtistDragDialog(Context.getBean(IRepositoryHandler.class).getArtist(object.getName()));
-			}
-			
-			@Override
-			protected IArtistInfo getSelectedObject(int row) {
-				return ((SimilarArtistsTableModel) table.getModel()).getArtist(row);
-			}
-			
-			@Override
-			protected boolean isEnabledForObject(IArtistInfo object) {
-				return Context.getBean(IRepositoryHandler.class).getArtist(object.getName()) != null;
-			}				
-		});
+		actions.add(new ReadMoreContextTableAction(I18nUtils.getString("READ_MORE"), (ContextTable) table, desktop));
+		actions.add(new AddAlbumArtistToPlayListContextTableAction(I18nUtils.getString("ADD_ALBUM_ARTIST_TO_PLAYLIST"),
+				(ContextTable) table, desktop));
 		
 		return actions;
 	}

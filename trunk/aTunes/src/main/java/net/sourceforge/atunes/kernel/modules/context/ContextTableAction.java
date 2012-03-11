@@ -59,6 +59,16 @@ public abstract class ContextTableAction<T> extends AbstractAction {
 		}
 	}
 
+	/**
+	 * @return context table
+	 */
+	public ContextTable getTable() {
+		return table;
+	}
+	
+	/**
+	 * @return desktop
+	 */
 	protected IDesktop getDesktop() {
 		return desktop;
 	}

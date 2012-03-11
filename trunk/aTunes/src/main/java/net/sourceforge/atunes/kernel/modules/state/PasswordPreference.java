@@ -34,9 +34,15 @@ public class PasswordPreference extends Preference {
 	 */
 	private static final long serialVersionUID = -6072746075893564924L;
 
+	/**
+	 * Default constructor
+	 */
 	public PasswordPreference() {		
 	}
 	
+	/**
+	 * @param value
+	 */
 	public PasswordPreference(String value) {
 		super();
 		setPassword(value);
@@ -52,7 +58,10 @@ public class PasswordPreference extends Preference {
 		throw new IllegalArgumentException("Use getPassword");
 	}
 
-	public void setPassword(String password) {
+	/**
+	 * @param password
+	 */
+	public final void setPassword(String password) {
 		try {
 			byte[] encrypted = CryptoUtils.encrypt(password.getBytes());
 			Logger.debug("Encrypted password: ", Arrays.toString(encrypted));
@@ -64,6 +73,9 @@ public class PasswordPreference extends Preference {
 		}
 	}
 
+	/**
+	 * @return password
+	 */
 	public String getPassword() {
 		try {
 			return new String(CryptoUtils.decrypt((byte[])super.getValue()));

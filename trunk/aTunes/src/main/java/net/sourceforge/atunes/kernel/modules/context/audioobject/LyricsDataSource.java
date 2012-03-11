@@ -62,23 +62,23 @@ public class LyricsDataSource implements IContextInformationSource {
      * @return
      */
     private ILyrics getLyricsData(IAudioObject audioObject) {
-        ILyrics lyrics = null;
+        ILyrics lyricsData = null;
         // First check if tag contains the lyrics. Favour this over internet services.
         if (!audioObject.getLyrics().trim().isEmpty()) {
-            lyrics = new Lyrics(audioObject.getLyrics(), null);
+            lyricsData = new Lyrics(audioObject.getLyrics(), null);
         }
         // Query internet service for lyrics
         else {
             if (!audioObject.getTitle().trim().isEmpty() && !audioObject.getArtist().trim().isEmpty() && !audioObject.getArtist().equals(I18nUtils.getString("UNKNOWN_ARTIST"))) {
-                lyrics = lyricsService.getLyrics(audioObject.getArtist().trim(), audioObject.getTitle().trim());
+                lyricsData = lyricsService.getLyrics(audioObject.getArtist().trim(), audioObject.getTitle().trim());
             }
         }
 
-        if (lyrics == null) {
-            lyrics = new Lyrics("", "");
+        if (lyricsData == null) {
+            lyricsData = new Lyrics("", "");
         }
 
-        return lyrics;
+        return lyricsData;
     }
     
     /**

@@ -366,10 +366,37 @@ public final class EditTagDialog extends AbstractCustomDialog {
         nextButton = new JButton(I18nUtils.getString("NEXT"));
         prevButton = new JButton(I18nUtils.getString("PREVIOUS"));
 
-        GridBagConstraints c = new GridBagConstraints();
+        arrangePanel(panel, titleLabel, albumLabel, artistLabel, yearLabel,
+				genreLabel, commentLabel, scrollPane, lyricsLabel, scrollPane2,
+				trackNumberLabel, discNumberLabel, composerLabel,
+				albumArtistLabel);
 
-        //
+        return panel;
+    }
 
+	/**
+	 * @param panel
+	 * @param titleLabel
+	 * @param albumLabel
+	 * @param artistLabel
+	 * @param yearLabel
+	 * @param genreLabel
+	 * @param commentLabel
+	 * @param scrollPane
+	 * @param lyricsLabel
+	 * @param scrollPane2
+	 * @param trackNumberLabel
+	 * @param discNumberLabel
+	 * @param composerLabel
+	 * @param albumArtistLabel
+	 */
+	private void arrangePanel(JPanel panel, JLabel titleLabel,
+			JLabel albumLabel, JLabel artistLabel, JLabel yearLabel,
+			JLabel genreLabel, JLabel commentLabel, JScrollPane scrollPane,
+			JLabel lyricsLabel, JScrollPane scrollPane2,
+			JLabel trackNumberLabel, JLabel discNumberLabel,
+			JLabel composerLabel, JLabel albumArtistLabel) {
+		GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(10, 10, 2, 2);
         c.gridx = 0;
         c.gridy = 0;
@@ -648,9 +675,7 @@ public final class EditTagDialog extends AbstractCustomDialog {
         c.weighty = 0;
         c.gridwidth = 2;
         panel.add(scrollPane2, c);
-
-        return panel;
-    }
+	}
 
     /**
      * Gets the genre combo box.

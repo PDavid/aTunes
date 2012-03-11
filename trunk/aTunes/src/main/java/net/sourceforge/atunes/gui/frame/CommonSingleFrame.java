@@ -113,11 +113,11 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
         c.weightx = 1;
         c.fill = GridBagConstraints.BOTH;
 
-        c.gridy = state.isShowPlayerControlsOnTop() ? 1 : 0;
+        c.gridy = getAppState().isShowPlayerControlsOnTop() ? 1 : 0;
         c.weighty = 1;
         panel.add(getMainSplitPane(), c);
 
-        c.gridy = state.isShowPlayerControlsOnTop() ? 0 : 1;
+        c.gridy = getAppState().isShowPlayerControlsOnTop() ? 0 : 1;
         c.weighty = 0;
         panel.add(getPlayerControls().getSwingComponent(), c);
 
