@@ -115,6 +115,15 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
     
     private INavigationView podcastNavigationView;
     
+    private Volume volumeController;
+    
+    /**
+     * @param volumeController
+     */
+    public void setVolumeController(Volume volumeController) {
+		this.volumeController = volumeController;
+	}
+    
     /**
      * @param podcastNavigationView
      */
@@ -507,7 +516,7 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
      */
     @Override
 	public final void volumeDown() {
-        Volume.setVolume(state.getVolume() - 5, state, playerHandler);
+    	volumeController.setVolume(state.getVolume() - 5);
     }
 
     /**
@@ -515,7 +524,7 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
      */
     @Override
 	public final void volumeUp() {
-        Volume.setVolume(state.getVolume() + 5, state, playerHandler);
+    	volumeController.setVolume(state.getVolume() + 5);
     }
 
     /**

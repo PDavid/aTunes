@@ -24,34 +24,61 @@ import java.awt.EventQueue;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
 
-final class Volume {
+public final class Volume {
 
-    private Volume() {
-    }
-
+	private IState state;
+	
+	private IPlayerHandler playerHandler;
+	
+	private IFullScreenHandler fullScreenHandler;
+	
+	/**
+	 * @param state
+	 */
+	public void setState(IState state) {
+		this.state = state;
+	}
+	
+	/**
+	 * @param playerHandler
+	 */
+	public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
+	
+	/**
+	 * @param fullScreenHandler
+	 */
+	public void setFullScreenHandler(IFullScreenHandler fullScreenHandler) {
+		this.fullScreenHandler = fullScreenHandler;
+	}
+	
     /**
      * @param volume
      * @param saveVolume
+     */
+    public void setVolume(int volume, boolean saveVolume) {
+        applyVolume(saveVolume, getVolumeLevel(volume));
+    }
+    
+    /**
+     * @param volume
      * @param state
      * @param playerHandler
      */
-    public static void setVolume(int volume, boolean saveVolume, IState state, IPlayerHandler playerHandler) {
-        applyVolume(saveVolume, state, playerHandler, getVolumeLevel(volume));
+    public void setVolume(int volume) {
+    	setVolume(volume, true);
     }
 
 	/**
 	 * @param saveVolume
-	 * @param state
-	 * @param playerHandler
 	 * @param finalVolume
 	 */
-	private static void applyVolume(boolean saveVolume, IState state,
-			IPlayerHandler playerHandler, final int finalVolume) {
+	private void applyVolume(boolean saveVolume, final int finalVolume) {
 		if (saveVolume) {
         	state.setVolume(finalVolume);
         }
@@ -61,11 +88,11 @@ final class Volume {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                	Context.getBean(IFullScreenHandler.class).setVolume(finalVolume);
+                	fullScreenHandler.setVolume(finalVolume);
                 }
             });
         } else {
-        	Context.getBean(IFullScreenHandler.class).setVolume(finalVolume);
+        	fullScreenHandler.setVolume(finalVolume);
         }
 	}
 
@@ -73,7 +100,7 @@ final class Volume {
 	 * @param volume
 	 * @return
 	 */
-	private static int getVolumeLevel(int volume) {
+	private int getVolumeLevel(int volume) {
 		int volumeLevel = volume;
         if (volumeLevel < 0) {
             volumeLevel = 0;
@@ -81,14 +108,5 @@ final class Volume {
             volumeLevel = 100;
         }
 		return volumeLevel;
-	}
-    
-    /**
-     * @param volume
-     * @param state
-     * @param playerHandler
-     */
-    public static void setVolume(int volume, IState state, IPlayerHandler playerHandler) {
-    	setVolume(volume, true, state, playerHandler);
-    }
+	}    
 }
