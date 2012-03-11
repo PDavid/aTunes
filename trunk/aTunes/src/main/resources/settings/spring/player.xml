@@ -30,6 +30,8 @@
 			</list>
 		</constructor-arg>
 	</bean>
+	
+	<bean id="volumeController" class="net.sourceforge.atunes.kernel.modules.player.Volume"/>
 
 
 </beans>

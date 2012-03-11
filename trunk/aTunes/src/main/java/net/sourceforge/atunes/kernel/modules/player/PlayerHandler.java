@@ -92,6 +92,15 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     
     private VolumeSlider volumeSlider;
     
+    private Volume volumeController;
+    
+    /**
+     * @param volumeController
+     */
+    public void setVolumeController(Volume volumeController) {
+		this.volumeController = volumeController;
+	}
+    
     /**
      * @param volumeSlider
      */
@@ -344,14 +353,14 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
                 	volumeSlider.setValue(volumeSlider.getValue() - 5);
                 }
 
-                Volume.setVolume(volumeSlider.getValue(), PlayerHandler.this.getState(), PlayerHandler.this);
+                volumeController.setVolume(volumeSlider.getValue());
             }
         });
 
         volumeSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-				Volume.setVolume(volumeSlider.getValue(), PlayerHandler.this.getState(), PlayerHandler.this);
+            	volumeController.setVolume(volumeSlider.getValue());
             }
         });
     	initialize();
@@ -386,7 +395,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     	initPlayerEngine();
     	
         // Set volume on visual components
-        Volume.setVolume(getState().getVolume(), false, getState(), this);
+    	volumeController.setVolume(getState().getVolume(), false);
 
         // Mute
         applyMuteState(getState().isMuteEnabled());
