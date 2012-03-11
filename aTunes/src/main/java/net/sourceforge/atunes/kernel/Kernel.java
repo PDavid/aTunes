@@ -147,9 +147,9 @@ public final class Kernel implements IKernel, ApplicationContextAware {
 
     @Override
 	public void finish() {
-        Timer timer = new Timer();
+        Timer finishTimer = new Timer();
         try {
-            timer.start();
+            finishTimer.start();
             Logger.info(StringUtils.getString("Closing ", Constants.APP_NAME, " ", Constants.VERSION.toString()));
             context.getBean(ITemporalDiskStorage.class).removeAll();
             
@@ -158,7 +158,7 @@ public final class Kernel implements IKernel, ApplicationContextAware {
             context.getBean(ITaskService.class).shutdownService();
             
         } finally {
-            Logger.info(StringUtils.getString("Application finished (", StringUtils.toString(timer.stop(), 3), " seconds)"));
+            Logger.info(StringUtils.getString("Application finished (", StringUtils.toString(finishTimer.stop(), 3), " seconds)"));
             Logger.info("Goodbye!!");
             // Exit normally
             System.exit(0);

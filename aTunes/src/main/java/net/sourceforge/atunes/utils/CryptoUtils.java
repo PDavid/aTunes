@@ -44,7 +44,8 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public final class CryptoUtils {
 
-    /* Length: 8 Bytes for DES */
+    private static final String DES = "DES";
+	/* Length: 8 Bytes for DES */
     private static final String SECRET_KEY = "5Gjd9T0b";
 
     private CryptoUtils() {
@@ -68,8 +69,8 @@ public final class CryptoUtils {
             return new byte[0];
         }
 
-        Cipher c = Cipher.getInstance("DES");
-        Key k = new SecretKeySpec(SECRET_KEY.getBytes(), "DES");
+        Cipher c = Cipher.getInstance(DES);
+        Key k = new SecretKeySpec(SECRET_KEY.getBytes(), DES);
         c.init(Cipher.DECRYPT_MODE, k);
 
         ByteArrayInputStream input = new ByteArrayInputStream(bytes);
@@ -98,8 +99,8 @@ public final class CryptoUtils {
             return new byte[0];
         }
 
-        Cipher c = Cipher.getInstance("DES");
-        Key k = new SecretKeySpec(SECRET_KEY.getBytes(), "DES");
+        Cipher c = Cipher.getInstance(DES);
+        Key k = new SecretKeySpec(SECRET_KEY.getBytes(), DES);
         c.init(Cipher.ENCRYPT_MODE, k);
 
         ByteArrayOutputStream output = new ByteArrayOutputStream();

@@ -40,12 +40,12 @@ public class Lyrics implements Serializable, ILyrics {
     }
 
     @Override
-	public void setLyrics(String lyrics) {
-        if (lyrics == null) {
+	public final void setLyrics(String lyricsText) {
+        if (lyricsText == null) {
             throw new IllegalArgumentException();
         }
         // Many lyrics contain html escape sequences so unescape
-        lyrics = StringUtils.unescapeHTML(lyrics, 0);
+        this.lyrics = StringUtils.unescapeHTML(lyricsText, 0);
         this.lyrics = lyrics != null ? lyrics : "";
     }
 

@@ -77,7 +77,37 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class DeviceHandler extends AbstractHandler implements IDeviceHandler {
 
-    private IRepository deviceRepository;
+    private final class CopyFilesToDeviceProcessListener implements
+			IProcessListener {
+		private final ILocalAudioObjectTransferProcess process;
+
+		private CopyFilesToDeviceProcessListener(
+				ILocalAudioObjectTransferProcess process) {
+			this.process = process;
+		}
+
+		@Override
+		public void processCanceled() {
+		    // Nothing to do
+		}
+
+		@Override
+		public void processFinished(final boolean ok) {
+		    SwingUtilities.invokeLater(new Runnable() {
+
+		        @Override
+		        public void run() {
+		            refreshDevice();
+		            filesCopiedToDevice = process.getFilesTransferred().size();
+		            if (!ok) {
+		            	getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(getFrame(), I18nUtils.getString("ERRORS_IN_EXPORT_PROCESS"));
+		            }
+		        }
+		    });
+		}
+	}
+
+	private IRepository deviceRepository;
     private IRepositoryLoader currentLoader;
     private File devicePath;
     /**
@@ -239,7 +269,8 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 	 * @see net.sourceforge.atunes.kernel.modules.device.IDeviceHandler#copyFilesToDevice(java.util.Collection, net.sourceforge.atunes.model.IProcessListener)
 	 */
     @Override
-	public void copyFilesToDevice(Collection<ILocalAudioObject> collection, IProcessListener listener) {
+	public void copyFilesToDevice(Collection<ILocalAudioObject> collectionToCopy, IProcessListener listener) {
+    	Collection<ILocalAudioObject> collection = collectionToCopy;
         filesCopiedToDevice = 0;
         if (collection.isEmpty()) {
             return;
@@ -282,37 +313,24 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
         	}
         }
 
-        final ILocalAudioObjectTransferProcess process = (ILocalAudioObjectTransferProcess) processFactory.getProcessByName("transferToDeviceProcess");
+        runProcessToCopyFiles(collection, listener);
+    }
+
+	/**
+	 * @param collection
+	 * @param listener
+	 */
+	private void runProcessToCopyFiles(Collection<ILocalAudioObject> collection, IProcessListener listener) {
+		final ILocalAudioObjectTransferProcess process = (ILocalAudioObjectTransferProcess) processFactory.getProcessByName("transferToDeviceProcess");
         process.setFilesToTransfer(collection);
         process.setDestination(deviceRepository.getRepositoryFolders().get(0).getAbsolutePath());
-        process.addProcessListener(new IProcessListener() {
-
-            @Override
-            public void processCanceled() {
-                // Nothing to do
-            }
-
-            @Override
-            public void processFinished(final boolean ok) {
-                SwingUtilities.invokeLater(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        refreshDevice();
-                        filesCopiedToDevice = process.getFilesTransferred().size();
-                        if (!ok) {
-                        	getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(getFrame(), I18nUtils.getString("ERRORS_IN_EXPORT_PROCESS"));
-                        }
-                    }
-                });
-            }
-        });
+        process.addProcessListener(new CopyFilesToDeviceProcessListener(process));
         // Add this listener second so when this is called filesCopiedToDevice has been updated
         if (listener != null) {
             process.addProcessListener(listener);
         }
         process.execute();
-    }
+	}
 
     /**
      * Called when a device monitor detects a device connected.

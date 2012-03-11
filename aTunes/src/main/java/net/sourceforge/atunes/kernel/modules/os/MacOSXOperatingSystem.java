@@ -82,7 +82,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter implements App
 	
 	@Override
 	public String getPlayerEngineCommand(IPlayerEngine engine) {
-		return engine instanceof MPlayerEngine ? osManager.getOSProperty(MPLAYER_COMMAND) : null;
+		return engine instanceof MPlayerEngine ? getOsManager().getOSProperty(MPLAYER_COMMAND) : null;
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter implements App
 	
 	@Override
 	public void manageNoPlayerEngine(IFrame frame) {
-		MacOSXPlayerSelectionDialog dialog = new MacOSXPlayerSelectionDialog(frame, osManager, context.getBean(ILookAndFeelManager.class), context.getBean(IDesktop.class));
+		MacOSXPlayerSelectionDialog dialog = new MacOSXPlayerSelectionDialog(frame, getOsManager(), context.getBean(ILookAndFeelManager.class), context.getBean(IDesktop.class));
 		dialog.setVisible(true);
 	}
 	

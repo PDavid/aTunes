@@ -463,21 +463,35 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     	if (playbackState == null || !playbackState.equals(newState)) {
     		this.playbackState = newState;
     		Logger.debug("Playback state changed to:", newState);
-
-    		if (newState == PlaybackState.PLAY_FINISHED || newState == PlaybackState.PLAY_INTERRUPTED || newState == PlaybackState.STOPPED) {
-    			if (playerEngine != null && playerEngine.getSubmissionState() == SubmissionState.PENDING && currentAudioObject instanceof ILocalAudioObject) {
-    				getBean(IWebServicesHandler.class).submit((ILocalAudioObject) currentAudioObject, getCurrentAudioObjectPlayedTime() / 1000);
-    				getBean(IStatisticsHandler.class).updateAudioObjectStatistics(currentAudioObject);
-    				playerEngine.setSubmissionState(SubmissionState.SUBMITTED);
-    			}
-    		}
-
-    		if (playerEngine != null && newState == PlaybackState.STOPPED) {
-    			playerEngine.setCurrentAudioObjectPlayedTime(0);
-    			playerEngine.interruptPlayAudioObjectThread();
-    		}
+    		submitAudioObjectIfNecessary(newState, currentAudioObject);
+    		stopPlayerEngineIfNecessary(newState);
     	}
     }
+
+	/**
+	 * @param newState
+	 * @param currentAudioObject
+	 */
+	private void submitAudioObjectIfNecessary(PlaybackState newState,
+			IAudioObject currentAudioObject) {
+		if (newState == PlaybackState.PLAY_FINISHED || newState == PlaybackState.PLAY_INTERRUPTED || newState == PlaybackState.STOPPED) {
+			if (playerEngine != null && playerEngine.getSubmissionState() == SubmissionState.PENDING && currentAudioObject instanceof ILocalAudioObject) {
+				getBean(IWebServicesHandler.class).submit((ILocalAudioObject) currentAudioObject, getCurrentAudioObjectPlayedTime() / 1000);
+				getBean(IStatisticsHandler.class).updateAudioObjectStatistics(currentAudioObject);
+				playerEngine.setSubmissionState(SubmissionState.SUBMITTED);
+			}
+		}
+	}
+
+	/**
+	 * @param newState
+	 */
+	private void stopPlayerEngineIfNecessary(PlaybackState newState) {
+		if (playerEngine != null && newState == PlaybackState.STOPPED) {
+			playerEngine.setCurrentAudioObjectPlayedTime(0);
+			playerEngine.interruptPlayAudioObjectThread();
+		}
+	}
 
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.player.IPlayerHandler#getPlaybackState()

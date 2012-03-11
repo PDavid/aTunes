@@ -51,7 +51,7 @@ public class LameEncoder extends AbstractEncoder {
     static final String[] MP3_QUALITIES = { "insane", "extreme", "medium", "standard", "128", "160", "192", "224", "256", "320" };
     static final String MP3_DEFAULT_QUALITY = "medium";
 
-    private Process p;
+    private Process process;
 
     /**
      * Creates a new lame encoder
@@ -114,50 +114,16 @@ public class LameEncoder extends AbstractEncoder {
         BufferedReader stdInput = null;
         try {
             // Prepare and execute the lame command
-            List<String> command = new ArrayList<String>();
-            command.add(StringUtils.getString(getOsManager().getExternalToolsPath(), LAME));
-            // Presets don't need the -b option, but --preset, so check if preset is used
-            if (getQuality().contains("insane") || getQuality().contains("extreme") || getQuality().contains("medium") || getQuality().contains("standard")) {
-                command.add(PRESET);
-            } else {
-                command.add(QUALITY);
-            }
-            command.add(getQuality());
-
-            command.add(wavFile.getAbsolutePath());
-            command.add(mp3File.getAbsolutePath());
-            p = new ProcessBuilder(command).start();
-            stdInput = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+            List<String> command = createCommand(wavFile, mp3File);
+            process = new ProcessBuilder(command).start();
+            stdInput = new BufferedReader(new InputStreamReader(process.getErrorStream()));
             String s = null;
             int percent = -1;
             while ((s = stdInput.readLine()) != null) {
-                if (getListener() != null) {
-                    if (s.matches(".*\\(..%\\).*")) {
-                        int aux = Integer.parseInt((s.substring(s.indexOf('(') + 1, s.indexOf('%'))).trim());
-                        if (aux != percent) {
-                            percent = aux;
-                            final int percentHelp = percent;
-
-                            SwingUtilities.invokeLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                	getListener().notifyProgress(percentHelp);
-                                }
-                            });
-                        }
-                    } else if (s.matches(".*\\(100%\\).*") && percent != 100) {
-                    	percent = 100;
-                    	SwingUtilities.invokeLater(new Runnable() {
-                    		@Override
-                    		public void run() {
-                    			getListener().notifyProgress(100);
-                    		}
-                    	});
-                    }
-                }
+                percent = processOutput(s, percent);
             }
 
-            int code = p.waitFor();
+            int code = process.waitFor();
             if (code != 0) {
                 Logger.error(StringUtils.getString("Process returned code ", code));
                 return false;
@@ -185,10 +151,64 @@ public class LameEncoder extends AbstractEncoder {
         }
     }
 
+	/**
+	 * @param s
+	 * @param percent
+	 * @return
+	 */
+	private int processOutput(String s, int percent) {
+		if (getListener() != null) {
+		    if (s.matches(".*\\(..%\\).*")) {
+		        int aux = Integer.parseInt((s.substring(s.indexOf('(') + 1, s.indexOf('%'))).trim());
+		        if (aux != percent) {
+		            percent = aux;
+		            final int percentHelp = percent;
+
+		            SwingUtilities.invokeLater(new Runnable() {
+		                @Override
+		                public void run() {
+		                	getListener().notifyProgress(percentHelp);
+		                }
+		            });
+		        }
+		    } else if (s.matches(".*\\(100%\\).*") && percent != 100) {
+		    	percent = 100;
+		    	SwingUtilities.invokeLater(new Runnable() {
+		    		@Override
+		    		public void run() {
+		    			getListener().notifyProgress(100);
+		    		}
+		    	});
+		    }
+		}
+		return percent;
+	}
+
+	/**
+	 * @param wavFile
+	 * @param mp3File
+	 * @return
+	 */
+	private List<String> createCommand(File wavFile, File mp3File) {
+		List<String> command = new ArrayList<String>();
+		command.add(StringUtils.getString(getOsManager().getExternalToolsPath(), LAME));
+		// Presets don't need the -b option, but --preset, so check if preset is used
+		if (getQuality().contains("insane") || getQuality().contains("extreme") || getQuality().contains("medium") || getQuality().contains("standard")) {
+		    command.add(PRESET);
+		} else {
+		    command.add(QUALITY);
+		}
+		command.add(getQuality());
+
+		command.add(wavFile.getAbsolutePath());
+		command.add(mp3File.getAbsolutePath());
+		return command;
+	}
+
     @Override
     public void stop() {
-        if (p != null) {
-            p.destroy();
+        if (process != null) {
+            process.destroy();
         }
     }
 }

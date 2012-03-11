@@ -152,7 +152,19 @@ public final class RepositoryProgressDialog extends AbstractCustomDialog impleme
 
         container.add(pictureLabel, BorderLayout.WEST);
         
-        GridBagConstraints c = new GridBagConstraints();
+        arrangePanel(panel, buttonsPanel);
+        
+        container.add(panel, BorderLayout.CENTER);
+        
+        return container;
+    }
+
+	/**
+	 * @param panel
+	 * @param buttonsPanel
+	 */
+	private void arrangePanel(JPanel panel, JPanel buttonsPanel) {
+		GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 1;
@@ -192,11 +204,7 @@ public final class RepositoryProgressDialog extends AbstractCustomDialog impleme
         c.fill = GridBagConstraints.NONE;
         c.anchor = GridBagConstraints.CENTER;
         panel.add(buttonsPanel, c);
-        
-        container.add(panel, BorderLayout.CENTER);
-        
-        return container;
-    }
+	}
 
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.gui.views.dialogs.IRepositoryProgressDialog#setCurrentTask(java.lang.String)

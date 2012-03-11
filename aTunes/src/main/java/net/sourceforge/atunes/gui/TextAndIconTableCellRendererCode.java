@@ -39,7 +39,7 @@ public class TextAndIconTableCellRendererCode extends AbstractTableCellRendererC
     	if (value != null) {
     		c.setText(value.getText());
     		if (value.getIcon() != null) {
-    			c.setIcon(value.getIcon().getIcon(lookAndFeel.getPaintForColorMutableIcon(c, isSelected)));
+    			c.setIcon(value.getIcon().getIcon(getLookAndFeel().getPaintForColorMutableIcon(c, isSelected)));
     		} else {
     			c.setIcon(null);
     		}        

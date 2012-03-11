@@ -156,31 +156,42 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 		int i = 0;
 		while (auxAlbum == null && i < albums.size()) {
 		    IAlbumInfo a = albums.get(i);
-		    StringTokenizer st = new StringTokenizer(a.getTitle(), " ");
-		    boolean matches = true;
-		    int tokensAnalyzed = 0;
-		    while (st.hasMoreTokens() && matches) {
-		        String t = st.nextToken();
-		        if (forbiddenToken(t)) { // Ignore album if contains forbidden chars
-		            matches = false;
-		            break;
-		        }
-		        if (!validToken(t)) { // Ignore tokens without alphanumerics
-		            if (tokensAnalyzed == 0 && !st.hasMoreTokens()) {
-		                matches = false;
-		            } else {
-		                continue;
-		            }
-		        }
-		        if (!audioObject.getAlbum().toLowerCase().contains(t.toLowerCase())) {
-		            matches = false;
-		        }
-		        tokensAnalyzed++;
-		    }
-		    if (matches) {
-		        auxAlbum = a;
-		    }
+		    auxAlbum = getMacthingAlbum(audioObject, auxAlbum, a);
 		    i++;
+		}
+		return auxAlbum;
+	}
+
+	/**
+	 * @param audioObject
+	 * @param auxAlbum
+	 * @param a
+	 * @return
+	 */
+	private IAlbumInfo getMacthingAlbum(IAudioObject audioObject, IAlbumInfo auxAlbum, IAlbumInfo a) {
+		StringTokenizer st = new StringTokenizer(a.getTitle(), " ");
+		boolean matches = true;
+		int tokensAnalyzed = 0;
+		while (st.hasMoreTokens() && matches) {
+		    String t = st.nextToken();
+		    if (forbiddenToken(t)) { // Ignore album if contains forbidden chars
+		        matches = false;
+		        break;
+		    }
+		    if (!validToken(t)) { // Ignore tokens without alphanumerics
+		        if (tokensAnalyzed == 0 && !st.hasMoreTokens()) {
+		            matches = false;
+		        } else {
+		            continue;
+		        }
+		    }
+		    if (!audioObject.getAlbum().toLowerCase().contains(t.toLowerCase())) {
+		        matches = false;
+		    }
+		    tokensAnalyzed++;
+		}
+		if (matches) {
+		    auxAlbum = a;
 		}
 		return auxAlbum;
 	}
@@ -205,18 +216,18 @@ public class AlbumInfoDataSource implements IContextInformationSource {
      * @return
      */
     private ImageIcon getImageData(IAlbumInfo albumInfo, IAudioObject audioObject) {
-        ImageIcon image = null;
+        ImageIcon imageIcon = null;
         if (albumInfo != null) {
-            image = webServicesHandler.getAlbumImage(albumInfo);
+            imageIcon = webServicesHandler.getAlbumImage(albumInfo);
             // This data source should only be used with audio files but anyway check if audioObject is an LocalAudioObject before save picture
             if (audioObject instanceof ILocalAudioObject) {
-                savePicture(image, (ILocalAudioObject) audioObject);
+                savePicture(imageIcon, (ILocalAudioObject) audioObject);
             }
         } else {
-            image = audioObjectImageLocator.getImage(audioObject, ImageSize.SIZE_MAX);
+            imageIcon = audioObjectImageLocator.getImage(audioObject, ImageSize.SIZE_MAX);
         }
         
-        return image;
+        return imageIcon;
     }
 
     /**

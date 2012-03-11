@@ -54,7 +54,7 @@ public abstract class ContextTableRowPanel<T> extends AbstractTableCellRendererC
 	 */
 	public void bind(ContextTable table) {
 		this.table = table;
-        this.table.setDefaultRenderer(clazz, lookAndFeel.getTableCellRenderer(this));
+        this.table.setDefaultRenderer(clazz, getLookAndFeel().getTableCellRenderer(this));
         this.table.setDefaultEditor(clazz, this);
 	}
 	

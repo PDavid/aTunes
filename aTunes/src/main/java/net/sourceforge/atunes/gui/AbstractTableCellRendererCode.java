@@ -28,7 +28,7 @@ import net.sourceforge.atunes.model.ITableCellRendererCode;
 
 public abstract class AbstractTableCellRendererCode<T extends JComponent, U> implements ITableCellRendererCode<T, U> {
 
-	protected ILookAndFeel lookAndFeel;
+	private ILookAndFeel lookAndFeel;
 	
 	/**
 	 * @param lookAndFeel

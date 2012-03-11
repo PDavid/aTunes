@@ -219,55 +219,42 @@ final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertiesDialog
         c.fill = GridBagConstraints.HORIZONTAL;
         panel.add(songLabel, c);
 
-        c.gridx = 1;
         c.gridy = 1;
         panel.add(artistLabel, c);
 
-        c.gridx = 1;
         c.gridy = 2;
         panel.add(albumArtistLabel, c);
 
-        c.gridx = 1;
         c.gridy = 3;
         panel.add(albumLabel, c);
 
-        c.gridx = 1;
         c.gridy = 4;
         panel.add(fileNameLabel, c);
 
-        c.gridx = 1;
         c.gridy = 5;
         panel.add(pathLabel, c);
 
-        c.gridx = 1;
         c.gridy = 6;
         panel.add(durationLabel, c);
 
-        c.gridx = 1;
         c.gridy = 7;
         panel.add(trackLabel, c);
 
-        c.gridx = 1;
         c.gridy = 8;
         panel.add(discNumberLabel, c);
 
-        c.gridx = 1;
         c.gridy = 9;
         panel.add(genreLabel, c);
 
-        c.gridx = 1;
         c.gridy = 10;
         panel.add(yearLabel, c);
 
-        c.gridx = 1;
         c.gridy = 11;
         panel.add(composerLabel, c);
 
-        c.gridx = 1;
         c.gridy = 12;
         panel.add(bitrateLabel, c);
 
-        c.gridx = 1;
         c.gridy = 13;
         panel.add(frequencyLabel, c);
 

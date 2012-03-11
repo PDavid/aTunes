@@ -133,7 +133,21 @@ public final class RipperProgressDialog extends AbstractCustomDialog implements 
         setDecodeProgressBarLimits(0, 100);
         setEncodeProgressBarLimits(0, 100);
 
-        GridBagConstraints c = new GridBagConstraints();
+        arrangePanel(panel, totalProgressLabel, decodeProgressLabel,
+				encodeProgressLabel);
+
+        add(panel);
+    }
+
+	/**
+	 * @param panel
+	 * @param totalProgressLabel
+	 * @param decodeProgressLabel
+	 * @param encodeProgressLabel
+	 */
+	private void arrangePanel(JPanel panel, JLabel totalProgressLabel,
+			JLabel decodeProgressLabel, JLabel encodeProgressLabel) {
+		GridBagConstraints c = new GridBagConstraints();
 
         c.gridx = 0;
         c.gridy = 0;
@@ -206,9 +220,7 @@ public final class RipperProgressDialog extends AbstractCustomDialog implements 
         c.anchor = GridBagConstraints.CENTER;
         c.insets = new Insets(10, 0, 5, 0);
         panel.add(cancelButton, c);
-
-        add(panel);
-    }
+	}
 
     @Override
 	public void setCover(ImageIcon img) {

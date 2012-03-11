@@ -63,6 +63,7 @@ public final class ProxyBean implements IProxyBean {
         this.type = type;
         this.url = url;
         this.port = port;
+        this.user = user;
         this.password = password != null ? new PasswordPreference(password) : null;
     }
 
