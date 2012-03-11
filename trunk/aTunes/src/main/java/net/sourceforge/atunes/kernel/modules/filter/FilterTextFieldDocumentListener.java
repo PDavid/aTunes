@@ -56,14 +56,14 @@ final class FilterTextFieldDocumentListener implements DocumentListener {
 	    SwingUtilities.invokeLater(new Runnable() {
 	        @Override
 	        public void run() {
-	            FilterTextFieldDocumentListener.this.filterController.applyFilter(FilterTextFieldDocumentListener.this.filterController.getFilter());
+	            FilterTextFieldDocumentListener.this.filterController.applyFilter(FilterTextFieldDocumentListener.this.filterController.getFilterText());
 	            updateFilterPanel();
 	        }
 	    });
 	}
 	
 	private void updateFilterPanel() {
-        this.filterController.getComponentControlled().setFilterApplied(this.filterController.filterApplied);
+        this.filterController.getComponentControlled().setFilterApplied(this.filterController.isFilterApplied());
 	}
 	
 }
