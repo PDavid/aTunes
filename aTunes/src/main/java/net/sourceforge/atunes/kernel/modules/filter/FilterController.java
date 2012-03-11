@@ -20,14 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.filter;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
-import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.panels.FilterPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
@@ -40,7 +33,7 @@ public class FilterController extends AbstractSimpleController<FilterPanel> {
 
 	private FilterTextFieldDocumentListener listener;
 	
-	boolean filterApplied = false;
+	private boolean filterApplied = false;
 	
     private IFilterHandler filterHandler;
     
@@ -66,6 +59,20 @@ public class FilterController extends AbstractSimpleController<FilterPanel> {
     }
     
     /**
+     * @return
+     */
+    FilterTextFieldDocumentListener getListener() {
+		return listener;
+	}
+    
+    /**
+     * @return
+     */
+    boolean isFilterApplied() {
+		return filterApplied;
+	}
+    
+    /**
      * Set filter to apply
      * @param filter
      */
@@ -82,51 +89,9 @@ public class FilterController extends AbstractSimpleController<FilterPanel> {
 
     @Override
 	public void addBindings() {
-    	getComponentControlled().getFilterTextField().addFocusListener(new FocusListener() {
-			
-			@Override
-			public void focusLost(FocusEvent e) {
-				if (!filterApplied) {
-					getComponentControlled().getFilterTextField().getDocument().removeDocumentListener(listener);
-				}
-			}
-			
-			@Override
-			public void focusGained(FocusEvent e) {
-				if (!filterApplied) {
-					getComponentControlled().getFilterTextField().setText("");
-					getComponentControlled().getFilterTextField().getDocument().addDocumentListener(listener);
-				}
-			}
-		});
-    	
-        getComponentControlled().getFilterTextField().addKeyListener(new KeyAdapter() {
-        	@Override
-        	public void keyTyped(KeyEvent e) {
-        		super.keyTyped(e);
-        		if (e.getKeyChar() == KeyEvent.VK_ESCAPE) {
-        			getComponentControlled().getFilterTextField().setText("");
-        			// Next is a trick to remove focus from filter text field
-        			getComponentControlled().getClearButton().requestFocus();
-        		}
-        	}
-		});        
-        
-        getComponentControlled().getClearButton().addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				getComponentControlled().getFilterTextField().setText("");
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						if (!filterApplied) {
-							getComponentControlled().getFilterTextField().getDocument().removeDocumentListener(listener);
-						}
-					}
-				});
-			}
-		});
+    	getComponentControlled().getFilterTextField().addFocusListener(new FilterControllerFocusListener(this));
+        getComponentControlled().getFilterTextField().addKeyListener(new FilterControllerKeyAdapter(this));        
+        getComponentControlled().getClearButton().addActionListener(new FilterControllerActionListener(this));
     }
     
     /**
@@ -140,12 +105,12 @@ public class FilterController extends AbstractSimpleController<FilterPanel> {
     }
 
     /**
-     * Returns filter
+     * Returns filter text or null
      * 
      * @return
      */
-    String getFilter() {
-        String filter = getComponentControlled().getFilterTextField().getText();
-        return filter.trim().equals("") ? null : filter;
+    String getFilterText() {
+        String filterText = getComponentControlled().getFilterTextField().getText();
+        return filterText.trim().equals("") ? null : filterText;
     }
 }
