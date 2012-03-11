@@ -5,7 +5,9 @@
 
 	default-autowire="byName" default-lazy-init="true">
 	
-	<bean id="navigationController" class="net.sourceforge.atunes.kernel.modules.navigator.NavigationController" init-method="initialize" scope="prototype"/>
+	<bean id="navigationController" class="net.sourceforge.atunes.kernel.modules.navigator.NavigationController" init-method="initialize"/>
+	<bean id="extendedToolTipActionListener" class="net.sourceforge.atunes.kernel.modules.navigator.ExtendedToolTipActionListener"/>
+	<bean id="extendedToolTipGetAndSetImage" class="net.sourceforge.atunes.kernel.modules.navigator.ExtendedToolTipGetAndSetImageSwingWorker" scope="prototype"/>
 	
 	
 	

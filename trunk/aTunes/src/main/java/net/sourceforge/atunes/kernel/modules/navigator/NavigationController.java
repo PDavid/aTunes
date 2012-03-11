@@ -20,25 +20,24 @@
 
 package net.sourceforge.atunes.kernel.modules.navigator;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JTable;
 import javax.swing.JTree;
-import javax.swing.SwingWorker;
 import javax.swing.Timer;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
+
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.AbstractCommonColumnModel;
@@ -53,11 +52,8 @@ import net.sourceforge.atunes.kernel.actions.ShowArtistsInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowFoldersInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowGenresInNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowYearsInNavigatorAction;
-import net.sourceforge.atunes.model.IAlbum;
-import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IController;
@@ -76,61 +72,8 @@ import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.ITreeObject;
-import net.sourceforge.atunes.model.IWebServicesHandler;
-import net.sourceforge.atunes.model.ImageSize;
-import net.sourceforge.atunes.utils.Logger;
 
-public final class NavigationController implements IAudioFilesRemovedListener, IController {
-
-    private final class ExtendedToolTipActionListener implements ActionListener {
-    	
-		private final class GetAndSetImageSwingWorker extends SwingWorker<ImageIcon, Void> {
-			
-			private final Object currentObject;
-
-			private GetAndSetImageSwingWorker(Object currentObject) {
-				this.currentObject = currentObject;
-			}
-
-			@Override
-			protected ImageIcon doInBackground() throws Exception {
-			    // Get image for albums
-		        if (currentObject instanceof ITreeObject) {
-		        	if (currentObject instanceof IArtist) {
-		        		IArtist a = (IArtist) currentObject;
-		                return Context.getBean(IWebServicesHandler.class).getArtistImage(a.getName());
-		        	} else if (currentObject instanceof IAlbum) {
-		        		return audioObjectImageLocator.getImage((IAlbum)currentObject, ImageSize.SIZE_MAX);
-		        	}
-		        }
-		        return null;
-			}
-
-			@Override
-			protected void done() {
-			    try {
-			        // Set image in tooltip when done (tooltip can be not visible then)
-			        if (currentExtendedToolTipContent != null && currentExtendedToolTipContent.equals(currentObject)) {
-			            getExtendedToolTip().setImage(get());
-			        }
-			    } catch (InterruptedException e) {
-			        Logger.error(e);
-			    } catch (ExecutionException e) {
-			        Logger.error(e);
-			    }
-			}
-		}
-
-		@Override
-        public void actionPerformed(ActionEvent arg0) {
-            getExtendedToolTip().setVisible(true);
-
-            final Object currentObject = currentExtendedToolTipContent;
-            SwingWorker<ImageIcon, Void> getAndSetImage = new GetAndSetImageSwingWorker(currentObject);
-            getAndSetImage.execute();
-
-        }
-	}
+public final class NavigationController implements IAudioFilesRemovedListener, IController, ApplicationContextAware {
 
     private INavigationTreePanel navigationTreePanel;
 
@@ -146,7 +89,7 @@ public final class NavigationController implements IAudioFilesRemovedListener, I
     private ColumnSetPopupMenu columnSetPopupMenu;
 
     /** The timer. */
-    private Timer timer = new Timer(0, new ExtendedToolTipActionListener());
+    private Timer timer;
 
     /**
      * State of app
@@ -155,7 +98,7 @@ public final class NavigationController implements IAudioFilesRemovedListener, I
     
     private IColumnSet navigatorColumnSet;
     
-    INavigationHandler navigationHandler;
+    private INavigationHandler navigationHandler;
     
     private ITaskService taskService;
     
@@ -165,13 +108,21 @@ public final class NavigationController implements IAudioFilesRemovedListener, I
     
     private ITable navigationTable;
     
-    private IAudioObjectImageLocator audioObjectImageLocator;
-    
     private ITagHandler tagHandler;
     
     private IRepositoryHandler repositoryHandler;
     
     private IFilter navigationTreeFilter;
+    
+    private ApplicationContext context;
+    
+    /* (non-Javadoc)
+     * @see org.springframework.context.ApplicationContextAware#setApplicationContext(org.springframework.context.ApplicationContext)
+     */
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    	this.context = applicationContext;
+    }
     
     /**
      * @param navigationTreeFilter
@@ -244,13 +195,6 @@ public final class NavigationController implements IAudioFilesRemovedListener, I
 	}
     
     /**
-     * @param audioObjectImageLocator
-     */
-    public void setAudioObjectImageLocator(IAudioObjectImageLocator audioObjectImageLocator) {
-		this.audioObjectImageLocator = audioObjectImageLocator;
-	}
-    
-    /**
      * @param navigatorColumnSet
      */
     public void setNavigatorColumnSet(IColumnSet navigatorColumnSet) {
@@ -313,7 +257,10 @@ public final class NavigationController implements IAudioFilesRemovedListener, I
     /**
      * @return the timer
      */
-    public Timer getToolTipTimer() {
+    public synchronized Timer getToolTipTimer() {
+    	if (timer == null) {
+    		timer = new Timer(0, context.getBean(ExtendedToolTipActionListener.class));
+    	}
         return timer;
     }
 
