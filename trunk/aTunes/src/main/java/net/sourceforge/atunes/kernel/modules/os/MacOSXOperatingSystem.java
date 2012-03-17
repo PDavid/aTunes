@@ -71,7 +71,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter implements App
 	}	
 	
 	@Override
-	public void setUpFrame(IFrame frame) {
+	public void setupFrame(IFrame frame) {
 		context.getBean(MacOSXInitializer.class).initialize();
 	}
 	
