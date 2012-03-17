@@ -242,39 +242,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         enableGlobalHotkeys = new JCheckBox(I18nUtils.getString("ENABLE_GLOBAL_HOTKEYS"));
         showPlayerControlsOnTop = new JCheckBox(I18nUtils.getString("SHOW_PLAYER_CONTROLS_ON_TOP"));
 
-        hotkeyTable = lookAndFeelManager.getCurrentLookAndFeel().getTable();
-        hotkeyTable.setModel(tableModel);
-        hotkeyTable.getTableHeader().setReorderingAllowed(false);
-        hotkeyTable.getTableHeader().setResizingAllowed(false);
-        hotkeyTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        hotkeyTable.setEnabled(hotkeyHandler.areHotkeysSupported());
-        hotkeyTable.setDefaultRenderer(Object.class, lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(new HotkeyTableTableCellRendererCode(lookAndFeelManager.getCurrentLookAndFeel())));
-
-        hotkeyTable.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                int selectedRow = hotkeyTable.getSelectedRow();
-                int modifiersEx = e.getModifiersEx();
-                int keyCode = e.getKeyCode();
-                if (selectedRow != -1 && keyCode != KeyEvent.VK_UNDEFINED && (modifiersEx & InputEvent.BUTTON1_DOWN_MASK) == 0 && (modifiersEx & InputEvent.BUTTON2_DOWN_MASK) == 0
-                        && (modifiersEx & InputEvent.BUTTON3_DOWN_MASK) == 0) {
-                    IHotkey hotkey = tableModel.getHotkeysConfig().getHotkeyByOrder(selectedRow);
-                    hotkey.setMod(modifiersEx);
-                    hotkey.setKey(keyCode);
-
-                    conflicts = tableModel.getHotkeysConfig().conflicts();
-                    notRecommendedKeys = tableModel.getHotkeysConfig().notRecommendedKeys();
-
-                    tableModel.fireTableRowsUpdated(0, tableModel.getRowCount());
-                }
-            }
-
-        });
-
-        InputMap inputMap = hotkeyTable.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        for (KeyStroke keyStroke : inputMap.allKeys()) {
-            inputMap.put(keyStroke, "none");
-        }
+        hotkeyTable = getHotkeyTable();
 
         resetHotkeys = new JButton(I18nUtils.getString("RESET"));
         resetHotkeys.addActionListener(new ActionListener() {
@@ -289,7 +257,72 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         hotkeyScrollPane.setMinimumSize(new Dimension(400, 200));
         cacheFilesBeforePlaying = new JCheckBox(I18nUtils.getString("CACHE_FILES_BEFORE_PLAYING"));
 
-        GridBagConstraints c = new GridBagConstraints();
+        arrangePanel(engineBox);
+    }
+
+	/**
+	 * 
+	 */
+	private JTable getHotkeyTable() {
+		final JTable table = lookAndFeelManager.getCurrentLookAndFeel().getTable();
+        table.setModel(tableModel);
+        table.getTableHeader().setReorderingAllowed(false);
+        table.getTableHeader().setResizingAllowed(false);
+        table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        table.setEnabled(hotkeyHandler.areHotkeysSupported());
+        table.setDefaultRenderer(Object.class, lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(new HotkeyTableTableCellRendererCode(lookAndFeelManager.getCurrentLookAndFeel())));
+
+        table.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow != -1) {
+                	int modifiersEx = e.getModifiersEx();
+                	int keyCode = e.getKeyCode();
+                	if (validKeyPressed(modifiersEx, keyCode)) {
+                		IHotkey hotkey = tableModel.getHotkeysConfig().getHotkeyByOrder(selectedRow);
+                		hotkey.setMod(modifiersEx);
+                		hotkey.setKey(keyCode);
+
+                		conflicts = tableModel.getHotkeysConfig().conflicts();
+                		notRecommendedKeys = tableModel.getHotkeysConfig().notRecommendedKeys();
+
+                		tableModel.fireTableRowsUpdated(0, tableModel.getRowCount());
+                	}
+                } 
+            }
+
+			/**
+			 * @param modifiersEx
+			 * @param keyCode
+			 * @return
+			 */
+			private boolean validKeyPressed(int modifiersEx, int keyCode) {
+				return keyCode != KeyEvent.VK_UNDEFINED && 
+					   isButton(modifiersEx, InputEvent.BUTTON1_DOWN_MASK) &&
+					   isButton(modifiersEx, InputEvent.BUTTON2_DOWN_MASK) &&
+					   isButton(modifiersEx, InputEvent.BUTTON3_DOWN_MASK);
+			}
+
+			private boolean isButton(int modifiersEx, int button) {
+				return (modifiersEx & button) == 0; 
+			}
+			
+        });
+
+        InputMap inputMap = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        for (KeyStroke keyStroke : inputMap.allKeys()) {
+            inputMap.put(keyStroke, "none");
+        }
+        
+        return table;
+	}
+
+	/**
+	 * @param engineBox
+	 */
+	private void arrangePanel(Box engineBox) {
+		GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 1;
@@ -324,7 +357,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         JPanel resetHotkeysPanel = new JPanel();
         resetHotkeysPanel.add(resetHotkeys);
         add(resetHotkeysPanel, c);
-    }
+	}
 
     /**
      * Gets the enable global hotkeys.
