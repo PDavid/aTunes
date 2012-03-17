@@ -92,16 +92,17 @@ public class PodcastFeedEntryDownloader extends SwingWorker<Boolean, Void> {
             setTotalBytes(conn.getContentLength());
 
             byte[] buffer = new byte[1024];
-            int numRead;
             long numWritten = 0;
             int bytesRead = 0;
 
-            while ((numRead = in.read(buffer)) != -1 && !isCancelled()) {
+            int numRead = in.read(buffer);
+            while (numRead != -1 && !isCancelled()) {
                 bytesRead = numRead + bytesRead;
                 out.write(buffer, 0, numRead);
                 numWritten += numRead;
                 setByteProgress(bytesRead);
                 out.flush();
+                numRead = in.read(buffer);
             }
             return !isCancelled();
         } catch (FileNotFoundException e) {

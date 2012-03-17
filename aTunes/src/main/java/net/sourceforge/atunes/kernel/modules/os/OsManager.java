@@ -222,7 +222,7 @@ public class OsManager implements IOSManager, ApplicationContextAware {
 	 */
     @Override
 	public void setupFrame(IFrame frame) {
-    	adapter.setUpFrame(frame);
+    	adapter.setupFrame(frame);
     }
 
 	/* (non-Javadoc)

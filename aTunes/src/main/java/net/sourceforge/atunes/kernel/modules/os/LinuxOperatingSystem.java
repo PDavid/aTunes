@@ -84,7 +84,7 @@ public class LinuxOperatingSystem extends OperatingSystemAdapter implements Appl
 	}
 	
 	@Override
-	public void setUpFrame(IFrame frame) {
+	public void setupFrame(IFrame frame) {
 	}
 	
 	@Override

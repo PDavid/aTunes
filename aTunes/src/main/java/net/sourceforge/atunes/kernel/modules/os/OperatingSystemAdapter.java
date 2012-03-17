@@ -155,7 +155,7 @@ public abstract class OperatingSystemAdapter {
 	 * 
 	 * @param frame
 	 */
-	public abstract void setUpFrame(IFrame frame);
+	public abstract void setupFrame(IFrame frame);
 
 	/**
 	 * Returns if shadow borders are supported

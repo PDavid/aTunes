@@ -140,7 +140,7 @@ public class WindowsOperatingSystem extends OperatingSystemAdapter implements Ap
 	}
 
 	@Override
-	public void setUpFrame(IFrame frame) {
+	public void setupFrame(IFrame frame) {
 	}
 	
 	@Override

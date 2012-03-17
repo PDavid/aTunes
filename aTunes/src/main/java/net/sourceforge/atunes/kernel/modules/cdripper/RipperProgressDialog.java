@@ -149,51 +149,32 @@ public final class RipperProgressDialog extends AbstractCustomDialog implements 
 			JLabel decodeProgressLabel, JLabel encodeProgressLabel) {
 		GridBagConstraints c = new GridBagConstraints();
 
+        addCover(panel, c);
+
+        addTotalProgress(panel, totalProgressLabel, c);
+
+        addDecodeProgress(panel, decodeProgressLabel, c);
+
+        addEncodeProgress(panel, encodeProgressLabel, c);
+
         c.gridx = 0;
-        c.gridy = 0;
-        c.gridheight = 6;
-        c.insets = new Insets(10, 20, 0, 20);
-        panel.add(cover, c);
-
-        c.gridx = 1;
-        c.weightx = 1;
-        c.gridy = 0;
-        c.gridheight = 1;
-        c.anchor = GridBagConstraints.WEST;
-        c.insets = new Insets(20, 0, 0, 20);
-        panel.add(totalProgressLabel, c);
-        c.gridx = 2;
-        c.weightx = 0;
-        c.anchor = GridBagConstraints.EAST;
-        panel.add(totalProgressValueLabel, c);
-        c.gridx = 1;
-        c.gridy = 1;
-        c.gridwidth = 2;
-        c.weightx = 1;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(0, 0, 0, 20);
-        panel.add(totalProgressBar, c);
-
-        c.gridy = 2;
-        c.gridwidth = 1;
-        c.weightx = 0;
-        c.anchor = GridBagConstraints.WEST;
+        c.gridy = 6;
+        c.gridwidth = 3;
         c.fill = GridBagConstraints.NONE;
-        c.insets = new Insets(3, 0, 0, 20);
-        panel.add(decodeProgressLabel, c);
-        c.gridx = 2;
-        c.weightx = 0;
-        c.anchor = GridBagConstraints.EAST;
-        panel.add(decodeProgressValueLabel, c);
-        c.gridx = 1;
-        c.gridy = 3;
-        c.gridwidth = 2;
         c.weightx = 1;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(0, 0, 0, 20);
-        panel.add(decodeProgressBar, c);
+        c.anchor = GridBagConstraints.CENTER;
+        c.insets = new Insets(10, 0, 5, 0);
+        panel.add(cancelButton, c);
+	}
 
-        c.gridy = 4;
+	/**
+	 * @param panel
+	 * @param encodeProgressLabel
+	 * @param c
+	 */
+	private void addEncodeProgress(JPanel panel, JLabel encodeProgressLabel,
+			GridBagConstraints c) {
+		c.gridy = 4;
         c.gridwidth = 1;
         c.weightx = 0;
         c.anchor = GridBagConstraints.WEST;
@@ -211,15 +192,72 @@ public final class RipperProgressDialog extends AbstractCustomDialog implements 
         c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(0, 0, 0, 20);
         panel.add(encodeProgressBar, c);
+	}
 
-        c.gridx = 0;
-        c.gridy = 6;
-        c.gridwidth = 3;
+	/**
+	 * @param panel
+	 * @param decodeProgressLabel
+	 * @param c
+	 */
+	private void addDecodeProgress(JPanel panel, JLabel decodeProgressLabel,
+			GridBagConstraints c) {
+		c.gridy = 2;
+        c.gridwidth = 1;
+        c.weightx = 0;
+        c.anchor = GridBagConstraints.WEST;
         c.fill = GridBagConstraints.NONE;
+        c.insets = new Insets(3, 0, 0, 20);
+        panel.add(decodeProgressLabel, c);
+        c.gridx = 2;
+        c.weightx = 0;
+        c.anchor = GridBagConstraints.EAST;
+        panel.add(decodeProgressValueLabel, c);
+        c.gridx = 1;
+        c.gridy = 3;
+        c.gridwidth = 2;
         c.weightx = 1;
-        c.anchor = GridBagConstraints.CENTER;
-        c.insets = new Insets(10, 0, 5, 0);
-        panel.add(cancelButton, c);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(0, 0, 0, 20);
+        panel.add(decodeProgressBar, c);
+	}
+
+	/**
+	 * @param panel
+	 * @param totalProgressLabel
+	 * @param c
+	 */
+	private void addTotalProgress(JPanel panel, JLabel totalProgressLabel,
+			GridBagConstraints c) {
+		c.gridx = 1;
+        c.weightx = 1;
+        c.gridy = 0;
+        c.gridheight = 1;
+        c.anchor = GridBagConstraints.WEST;
+        c.insets = new Insets(20, 0, 0, 20);
+        panel.add(totalProgressLabel, c);
+        c.gridx = 2;
+        c.weightx = 0;
+        c.anchor = GridBagConstraints.EAST;
+        panel.add(totalProgressValueLabel, c);
+        c.gridx = 1;
+        c.gridy = 1;
+        c.gridwidth = 2;
+        c.weightx = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(0, 0, 0, 20);
+        panel.add(totalProgressBar, c);
+	}
+
+	/**
+	 * @param panel
+	 * @param c
+	 */
+	private void addCover(JPanel panel, GridBagConstraints c) {
+		c.gridx = 0;
+        c.gridy = 0;
+        c.gridheight = 6;
+        c.insets = new Insets(10, 20, 0, 20);
+        panel.add(cover, c);
 	}
 
     @Override

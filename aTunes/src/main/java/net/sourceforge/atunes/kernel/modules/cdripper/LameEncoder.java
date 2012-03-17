@@ -157,12 +157,13 @@ public class LameEncoder extends AbstractEncoder {
 	 * @return
 	 */
 	private int processOutput(String s, int percent) {
+		int percentResult = percent;
 		if (getListener() != null) {
 		    if (s.matches(".*\\(..%\\).*")) {
 		        int aux = Integer.parseInt((s.substring(s.indexOf('(') + 1, s.indexOf('%'))).trim());
-		        if (aux != percent) {
-		            percent = aux;
-		            final int percentHelp = percent;
+		        if (aux != percentResult) {
+		            percentResult = aux;
+		            final int percentHelp = percentResult;
 
 		            SwingUtilities.invokeLater(new Runnable() {
 		                @Override
@@ -171,8 +172,8 @@ public class LameEncoder extends AbstractEncoder {
 		                }
 		            });
 		        }
-		    } else if (s.matches(".*\\(100%\\).*") && percent != 100) {
-		    	percent = 100;
+		    } else if (s.matches(".*\\(100%\\).*") && percentResult != 100) {
+		    	percentResult = 100;
 		    	SwingUtilities.invokeLater(new Runnable() {
 		    		@Override
 		    		public void run() {
@@ -181,7 +182,7 @@ public class LameEncoder extends AbstractEncoder {
 		    	});
 		    }
 		}
-		return percent;
+		return percentResult;
 	}
 
 	/**

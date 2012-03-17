@@ -240,126 +240,35 @@ public final class EditTagDialog extends AbstractCustomDialog {
      */
     private JPanel getTagEditTab(ILookAndFeel iLookAndFeel) {
         JPanel panel = new JPanel(new GridBagLayout());
-        titleCheckBox = new JCheckBox();
-        titleCheckBox.setFocusable(false);
+        
         JLabel titleLabel = new JLabel(I18nUtils.getString("TITLE"));
-        titleTextField = new CustomTextField();
-        titleCheckBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setTitleSelected(titleCheckBox.isSelected());
-            }
-        });
-        titleCheckBox.setSelected(true);
-        albumCheckBox = new JCheckBox();
         JLabel albumLabel = new JLabel(I18nUtils.getString("ALBUM"));
-        albumTextField = new JComboBox();
-        albumTextField.setEditable(true);
-        albumCheckBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setAlbumSelected(albumCheckBox.isSelected());
-            }
-        });
-        albumCheckBox.setSelected(true);
-        artistCheckBox = new JCheckBox();
         JLabel artistLabel = new JLabel(I18nUtils.getString("ARTIST"));
-        artistTextField = new JComboBox();
-        artistTextField.setEditable(true);
-        artistCheckBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setArtistSelected(artistCheckBox.isSelected());
-            }
-        });
-        artistCheckBox.setSelected(true);
-        yearCheckBox = new JCheckBox();
         JLabel yearLabel = new JLabel(I18nUtils.getString("YEAR"));
-        yearTextField = new CustomTextField();
-        yearCheckBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setYearSelected(yearCheckBox.isSelected());
-            }
-        });
-        yearCheckBox.setSelected(true);
-        genreCheckBox = new JCheckBox();
         JLabel genreLabel = new JLabel(I18nUtils.getString("GENRE"));
-        genreComboBox = new JComboBox();
-        genreCheckBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setGenreSelected(genreCheckBox.isSelected());
-            }
-        });
-        genreCheckBox.setSelected(true);
-
-        commentCheckBox = new JCheckBox();
         JLabel commentLabel = new JLabel(I18nUtils.getString("COMMENT"));
-        commentTextArea = new CustomTextArea();
-        commentTextArea.setBorder(BorderFactory.createEmptyBorder());
-        commentCheckBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setCommentSelected(commentCheckBox.isSelected());
-            }
-        });
-        commentCheckBox.setSelected(true);
-        JScrollPane scrollPane = iLookAndFeel.getScrollPane(commentTextArea);
-        lyricsCheckBox = new JCheckBox();
         JLabel lyricsLabel = new JLabel(I18nUtils.getString("LYRICS"));
-        lyricsTextArea = new CustomTextArea();
-        lyricsTextArea.setBorder(BorderFactory.createEmptyBorder());
-        lyricsCheckBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setLyricsSelected(lyricsCheckBox.isSelected());
-            }
-        });
-        lyricsCheckBox.setSelected(true);
-        JScrollPane scrollPane2 = iLookAndFeel.getScrollPane(lyricsTextArea);
-        trackNumberCheckBox = new JCheckBox();
         JLabel trackNumberLabel = new JLabel(I18nUtils.getString("TRACK"));
-        trackNumberTextField = new CustomTextField();
-        trackNumberCheckBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setTrackNumberSelected(trackNumberCheckBox.isSelected());
-
-            }
-        });
-        trackNumberCheckBox.setSelected(true);
-        discNumberCheckBox = new JCheckBox();
         JLabel discNumberLabel = new JLabel(I18nUtils.getString("DISC_NUMBER"));
-        discNumberTextField = new CustomTextField();
-        discNumberCheckBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setDiscNumberSelected(discNumberCheckBox.isSelected());
-
-            }
-        });
-        discNumberCheckBox.setSelected(true);
-        composerCheckBox = new JCheckBox();
         JLabel composerLabel = new JLabel(I18nUtils.getString("COMPOSER"));
-        composerTextField = new CustomTextField();
-        composerCheckBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setComposerSelected(composerCheckBox.isSelected());
-            }
-        });
-        composerCheckBox.setSelected(true);
-        albumArtistCheckBox = new JCheckBox();
         JLabel albumArtistLabel = new JLabel(I18nUtils.getString("ALBUM_ARTIST"));
-        albumArtistTextField = new CustomTextField();
-        albumArtistCheckBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setAlbumArtistSelected(albumArtistCheckBox.isSelected());
-            }
-        });
-        albumArtistCheckBox.setSelected(true);
+
+        createTitle();
+        createAlbum();
+        createArtist();
+        createYear();
+        createGenre();
+        
+        createComment();
+        JScrollPane scrollPane = iLookAndFeel.getScrollPane(commentTextArea);
+        
+        createLyrics();
+        JScrollPane scrollPane2 = iLookAndFeel.getScrollPane(lyricsTextArea);
+        
+        createTrackNumber();
+        createDiscNumber();
+        createComposer();
+        createAlbumArtist();
 
         okButton = new JButton(I18nUtils.getString("OK"));
         cancelButton = new JButton(I18nUtils.getString("CANCEL"));
@@ -373,6 +282,178 @@ public final class EditTagDialog extends AbstractCustomDialog {
 
         return panel;
     }
+
+	/**
+	 * 
+	 */
+	private void createAlbumArtist() {
+		albumArtistCheckBox = new JCheckBox();
+        albumArtistTextField = new CustomTextField();
+        albumArtistCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setAlbumArtistSelected(albumArtistCheckBox.isSelected());
+            }
+        });
+        albumArtistCheckBox.setSelected(true);
+	}
+
+	/**
+	 * 
+	 */
+	private void createComposer() {
+		composerCheckBox = new JCheckBox();
+        composerTextField = new CustomTextField();
+        composerCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setComposerSelected(composerCheckBox.isSelected());
+            }
+        });
+        composerCheckBox.setSelected(true);
+	}
+
+	/**
+	 * 
+	 */
+	private void createDiscNumber() {
+		discNumberCheckBox = new JCheckBox();
+        discNumberTextField = new CustomTextField();
+        discNumberCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setDiscNumberSelected(discNumberCheckBox.isSelected());
+
+            }
+        });
+        discNumberCheckBox.setSelected(true);
+	}
+
+	/**
+	 * 
+	 */
+	private void createTrackNumber() {
+		trackNumberCheckBox = new JCheckBox();
+        trackNumberTextField = new CustomTextField();
+        trackNumberCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setTrackNumberSelected(trackNumberCheckBox.isSelected());
+
+            }
+        });
+        trackNumberCheckBox.setSelected(true);
+	}
+
+	/**
+	 * 
+	 */
+	private void createLyrics() {
+		lyricsCheckBox = new JCheckBox();
+        lyricsTextArea = new CustomTextArea();
+        lyricsTextArea.setBorder(BorderFactory.createEmptyBorder());
+        lyricsCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setLyricsSelected(lyricsCheckBox.isSelected());
+            }
+        });
+        lyricsCheckBox.setSelected(true);
+	}
+
+	/**
+	 * 
+	 */
+	private void createComment() {
+		commentCheckBox = new JCheckBox();
+        commentTextArea = new CustomTextArea();
+        commentTextArea.setBorder(BorderFactory.createEmptyBorder());
+        commentCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setCommentSelected(commentCheckBox.isSelected());
+            }
+        });
+        commentCheckBox.setSelected(true);
+	}
+
+	/**
+	 * 
+	 */
+	private void createGenre() {
+		genreCheckBox = new JCheckBox();
+        genreComboBox = new JComboBox();
+        genreCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setGenreSelected(genreCheckBox.isSelected());
+            }
+        });
+        genreCheckBox.setSelected(true);
+	}
+
+	/**
+	 * 
+	 */
+	private void createYear() {
+		yearCheckBox = new JCheckBox();
+        yearTextField = new CustomTextField();
+        yearCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setYearSelected(yearCheckBox.isSelected());
+            }
+        });
+        yearCheckBox.setSelected(true);
+	}
+
+	/**
+	 * 
+	 */
+	private void createArtist() {
+		artistCheckBox = new JCheckBox();
+        artistTextField = new JComboBox();
+        artistTextField.setEditable(true);
+        artistCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setArtistSelected(artistCheckBox.isSelected());
+            }
+        });
+        artistCheckBox.setSelected(true);
+	}
+
+	/**
+	 * 
+	 */
+	private void createAlbum() {
+		albumCheckBox = new JCheckBox();
+        albumTextField = new JComboBox();
+        albumTextField.setEditable(true);
+        albumCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setAlbumSelected(albumCheckBox.isSelected());
+            }
+        });
+        albumCheckBox.setSelected(true);
+	}
+
+	/**
+	 * 
+	 */
+	private void createTitle() {
+		titleCheckBox = new JCheckBox();
+        titleCheckBox.setFocusable(false);
+        titleTextField = new CustomTextField();
+        titleCheckBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setTitleSelected(titleCheckBox.isSelected());
+            }
+        });
+        titleCheckBox.setSelected(true);
+	}
 
 	/**
 	 * @param panel
@@ -396,85 +477,248 @@ public final class EditTagDialog extends AbstractCustomDialog {
 			JLabel lyricsLabel, JScrollPane scrollPane2,
 			JLabel trackNumberLabel, JLabel discNumberLabel,
 			JLabel composerLabel, JLabel albumArtistLabel) {
+
 		GridBagConstraints c = new GridBagConstraints();
-        c.insets = new Insets(10, 10, 2, 2);
+		
+        addTitle(panel, titleLabel, c);
+        addAlbumArtist(panel, albumArtistLabel, c);
+        addArtist(panel, artistLabel, c);
+        addAlbum(panel, albumLabel, c);
+        addYear(panel, yearLabel, c);
+        addTrackNumber(panel, trackNumberLabel, c);
+        addDiscNumber(panel, discNumberLabel, c);
+        addGenre(panel, genreLabel, c);
+        addComposer(panel, composerLabel, c);
+        addComment(panel, commentLabel, scrollPane, c);
+        addLyrics(panel, lyricsLabel, scrollPane2, c);
+	}
+
+	/**
+	 * @param panel
+	 * @param lyricsLabel
+	 * @param scrollPane2
+	 * @param c
+	 */
+	private void addLyrics(JPanel panel, JLabel lyricsLabel,
+			JScrollPane scrollPane2, GridBagConstraints c) {
+		c.insets = new Insets(2, 10, 2, 2);
         c.gridx = 0;
-        c.gridy = 0;
-        c.gridwidth = 1;
-        c.fill = GridBagConstraints.NONE;
-        c.anchor = GridBagConstraints.LINE_START;
-        c.weightx = 0;
-        panel.add(titleCheckBox, c);
-
-        c.insets = new Insets(10, 2, 2, 10);
-        c.gridx = 1;
-        c.gridy = 0;
-        c.gridwidth = 1;
-        c.fill = GridBagConstraints.NONE;
-        c.anchor = GridBagConstraints.LINE_START;
-        c.weightx = 0;
-        panel.add(titleLabel, c);
-
-        c.insets = new Insets(10, 10, 2, 10);
-        c.gridx = 2;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 1;
-        c.gridwidth = 2;
-        panel.add(titleTextField, c);
-
-        //
-
-        c.insets = new Insets(2, 10, 2, 2);
-        c.gridx = 0;
-        c.gridy = 1;
+        c.gridy = 10;
         c.fill = GridBagConstraints.NONE;
         c.weightx = 0;
         c.gridwidth = 1;
-        panel.add(albumArtistCheckBox, c);
+        panel.add(lyricsCheckBox, c);
 
         c.insets = new Insets(2, 2, 2, 10);
         c.gridx = 1;
-        c.gridy = 1;
+        c.gridy = 10;
         c.fill = GridBagConstraints.NONE;
         c.weightx = 0;
         c.gridwidth = 1;
-        panel.add(albumArtistLabel, c);
+        panel.add(lyricsLabel, c);
+
+        c.insets = new Insets(2, 10, 2, 10);
+        c.gridx = 2;
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.weighty = 0;
+        c.gridwidth = 2;
+        panel.add(scrollPane2, c);
+	}
+
+	/**
+	 * @param panel
+	 * @param commentLabel
+	 * @param scrollPane
+	 * @param c
+	 */
+	private void addComment(JPanel panel, JLabel commentLabel,
+			JScrollPane scrollPane, GridBagConstraints c) {
+		c.insets = new Insets(2, 10, 2, 2);
+        c.gridx = 0;
+        c.gridy = 9;
+        c.fill = GridBagConstraints.NONE;
+        c.weightx = 0;
+        c.gridwidth = 1;
+        panel.add(commentCheckBox, c);
+
+        c.insets = new Insets(2, 2, 2, 10);
+        c.gridx = 1;
+        c.gridy = 9;
+        c.fill = GridBagConstraints.NONE;
+        c.weightx = 0;
+        c.gridwidth = 1;
+        panel.add(commentLabel, c);
+
+        c.insets = new Insets(2, 10, 2, 10);
+        c.gridx = 2;
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1;
+        c.weighty = 1;
+        c.gridwidth = 2;
+        panel.add(scrollPane, c);
+	}
+
+	/**
+	 * @param panel
+	 * @param composerLabel
+	 * @param c
+	 */
+	private void addComposer(JPanel panel, JLabel composerLabel,
+			GridBagConstraints c) {
+		c.insets = new Insets(2, 10, 2, 2);
+        c.gridx = 0;
+        c.gridy = 8;
+        c.fill = GridBagConstraints.NONE;
+        c.weightx = 0;
+        c.gridwidth = 1;
+        panel.add(composerCheckBox, c);
+
+        c.insets = new Insets(2, 2, 2, 10);
+        c.gridx = 1;
+        c.gridy = 8;
+        c.fill = GridBagConstraints.NONE;
+        c.weightx = 0;
+        c.gridwidth = 1;
+        panel.add(composerLabel, c);
 
         c.insets = new Insets(2, 10, 2, 10);
         c.gridx = 2;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 1;
         c.gridwidth = 2;
-        panel.add(albumArtistTextField, c);
+        panel.add(composerTextField, c);
+	}
 
-        //
-
-        c.insets = new Insets(2, 10, 2, 2);
+	/**
+	 * @param panel
+	 * @param genreLabel
+	 * @param c
+	 */
+	private void addGenre(JPanel panel, JLabel genreLabel, GridBagConstraints c) {
+		c.insets = new Insets(2, 10, 2, 2);
         c.gridx = 0;
-        c.gridy = 2;
+        c.gridy = 7;
         c.fill = GridBagConstraints.NONE;
         c.weightx = 0;
         c.gridwidth = 1;
-        panel.add(artistCheckBox, c);
+        panel.add(genreCheckBox, c);
 
         c.insets = new Insets(2, 2, 2, 10);
         c.gridx = 1;
-        c.gridy = 2;
+        c.gridy = 7;
         c.fill = GridBagConstraints.NONE;
         c.weightx = 0;
         c.gridwidth = 1;
-        panel.add(artistLabel, c);
+        panel.add(genreLabel, c);
 
         c.insets = new Insets(2, 10, 2, 10);
         c.gridx = 2;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 1;
         c.gridwidth = 2;
-        panel.add(artistTextField, c);
+        panel.add(genreComboBox, c);
+	}
 
-        //
+	/**
+	 * @param panel
+	 * @param discNumberLabel
+	 * @param c
+	 */
+	private void addDiscNumber(JPanel panel, JLabel discNumberLabel,
+			GridBagConstraints c) {
+		c.insets = new Insets(2, 10, 2, 2);
+        c.gridx = 0;
+        c.gridy = 6;
+        c.fill = GridBagConstraints.NONE;
+        c.weightx = 0;
+        c.gridwidth = 1;
+        panel.add(discNumberCheckBox, c);
 
-        c.insets = new Insets(2, 10, 2, 2);
+        c.insets = new Insets(2, 2, 2, 10);
+        c.gridx = 1;
+        c.gridy = 6;
+        c.fill = GridBagConstraints.NONE;
+        c.weightx = 0;
+        c.gridwidth = 1;
+        panel.add(discNumberLabel, c);
+
+        c.insets = new Insets(2, 10, 2, 10);
+        c.gridx = 2;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 1;
+        c.gridwidth = 2;
+        panel.add(discNumberTextField, c);
+	}
+
+	/**
+	 * @param panel
+	 * @param trackNumberLabel
+	 * @param c
+	 */
+	private void addTrackNumber(JPanel panel, JLabel trackNumberLabel,
+			GridBagConstraints c) {
+		c.insets = new Insets(2, 10, 2, 2);
+        c.gridx = 0;
+        c.gridy = 5;
+        c.fill = GridBagConstraints.NONE;
+        c.weightx = 0;
+        c.gridwidth = 1;
+        panel.add(trackNumberCheckBox, c);
+
+        c.insets = new Insets(2, 2, 2, 10);
+        c.gridx = 1;
+        c.gridy = 5;
+        c.fill = GridBagConstraints.NONE;
+        c.weightx = 0;
+        c.gridwidth = 1;
+        panel.add(trackNumberLabel, c);
+
+        c.insets = new Insets(2, 10, 2, 10);
+        c.gridx = 2;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 1;
+        c.gridwidth = 2;
+        panel.add(trackNumberTextField, c);
+	}
+
+	/**
+	 * @param panel
+	 * @param yearLabel
+	 * @param c
+	 */
+	private void addYear(JPanel panel, JLabel yearLabel, GridBagConstraints c) {
+		c.insets = new Insets(2, 10, 2, 2);
+        c.gridx = 0;
+        c.gridy = 4;
+        c.fill = GridBagConstraints.NONE;
+        c.weightx = 0;
+        c.gridwidth = 1;
+        panel.add(yearCheckBox, c);
+
+        c.insets = new Insets(2, 2, 2, 10);
+        c.gridx = 1;
+        c.gridy = 4;
+        c.fill = GridBagConstraints.NONE;
+        c.weightx = 0;
+        c.gridwidth = 1;
+        panel.add(yearLabel, c);
+
+        c.insets = new Insets(2, 10, 2, 10);
+        c.gridx = 2;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 1;
+        c.gridwidth = 2;
+        panel.add(yearTextField, c);
+	}
+
+	/**
+	 * @param panel
+	 * @param albumLabel
+	 * @param c
+	 */
+	private void addAlbum(JPanel panel, JLabel albumLabel, GridBagConstraints c) {
+		c.insets = new Insets(2, 10, 2, 2);
         c.gridx = 0;
         c.gridy = 3;
         c.fill = GridBagConstraints.NONE;
@@ -498,183 +742,100 @@ public final class EditTagDialog extends AbstractCustomDialog {
         c.weightx = 1;
         c.gridwidth = 2;
         panel.add(albumTextField, c);
+	}
 
-        //
-
-        c.insets = new Insets(2, 10, 2, 2);
+	/**
+	 * @param panel
+	 * @param artistLabel
+	 * @param c
+	 */
+	private void addArtist(JPanel panel, JLabel artistLabel,
+			GridBagConstraints c) {
+		c.insets = new Insets(2, 10, 2, 2);
         c.gridx = 0;
-        c.gridy = 4;
+        c.gridy = 2;
         c.fill = GridBagConstraints.NONE;
         c.weightx = 0;
         c.gridwidth = 1;
-        panel.add(yearCheckBox, c);
+        panel.add(artistCheckBox, c);
 
         c.insets = new Insets(2, 2, 2, 10);
         c.gridx = 1;
-        c.gridy = 4;
+        c.gridy = 2;
         c.fill = GridBagConstraints.NONE;
         c.weightx = 0;
         c.gridwidth = 1;
-        panel.add(yearLabel, c);
+        panel.add(artistLabel, c);
 
         c.insets = new Insets(2, 10, 2, 10);
         c.gridx = 2;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 1;
         c.gridwidth = 2;
-        panel.add(yearTextField, c);
+        panel.add(artistTextField, c);
+	}
 
-        //
-
-        c.insets = new Insets(2, 10, 2, 2);
+	/**
+	 * @param panel
+	 * @param albumArtistLabel
+	 * @param c
+	 */
+	private void addAlbumArtist(JPanel panel, JLabel albumArtistLabel,
+			GridBagConstraints c) {
+		c.insets = new Insets(2, 10, 2, 2);
         c.gridx = 0;
-        c.gridy = 5;
+        c.gridy = 1;
         c.fill = GridBagConstraints.NONE;
         c.weightx = 0;
         c.gridwidth = 1;
-        panel.add(trackNumberCheckBox, c);
+        panel.add(albumArtistCheckBox, c);
 
         c.insets = new Insets(2, 2, 2, 10);
         c.gridx = 1;
-        c.gridy = 5;
+        c.gridy = 1;
         c.fill = GridBagConstraints.NONE;
         c.weightx = 0;
         c.gridwidth = 1;
-        panel.add(trackNumberLabel, c);
+        panel.add(albumArtistLabel, c);
 
         c.insets = new Insets(2, 10, 2, 10);
         c.gridx = 2;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 1;
         c.gridwidth = 2;
-        panel.add(trackNumberTextField, c);
+        panel.add(albumArtistTextField, c);
+	}
 
-        //
-
-        c.insets = new Insets(2, 10, 2, 2);
+	/**
+	 * @param panel
+	 * @param titleLabel
+	 * @param c
+	 */
+	private void addTitle(JPanel panel, JLabel titleLabel, GridBagConstraints c) {
+		c.insets = new Insets(10, 10, 2, 2);
         c.gridx = 0;
-        c.gridy = 6;
-        c.fill = GridBagConstraints.NONE;
-        c.weightx = 0;
+        c.gridy = 0;
         c.gridwidth = 1;
-        panel.add(discNumberCheckBox, c);
+        c.fill = GridBagConstraints.NONE;
+        c.anchor = GridBagConstraints.LINE_START;
+        c.weightx = 0;
+        panel.add(titleCheckBox, c);
 
-        c.insets = new Insets(2, 2, 2, 10);
+        c.insets = new Insets(10, 2, 2, 10);
         c.gridx = 1;
-        c.gridy = 6;
-        c.fill = GridBagConstraints.NONE;
-        c.weightx = 0;
+        c.gridy = 0;
         c.gridwidth = 1;
-        panel.add(discNumberLabel, c);
+        c.fill = GridBagConstraints.NONE;
+        c.anchor = GridBagConstraints.LINE_START;
+        c.weightx = 0;
+        panel.add(titleLabel, c);
 
-        c.insets = new Insets(2, 10, 2, 10);
+        c.insets = new Insets(10, 10, 2, 10);
         c.gridx = 2;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 1;
         c.gridwidth = 2;
-        panel.add(discNumberTextField, c);
-
-        //
-
-        c.insets = new Insets(2, 10, 2, 2);
-        c.gridx = 0;
-        c.gridy = 7;
-        c.fill = GridBagConstraints.NONE;
-        c.weightx = 0;
-        c.gridwidth = 1;
-        panel.add(genreCheckBox, c);
-
-        c.insets = new Insets(2, 2, 2, 10);
-        c.gridx = 1;
-        c.gridy = 7;
-        c.fill = GridBagConstraints.NONE;
-        c.weightx = 0;
-        c.gridwidth = 1;
-        panel.add(genreLabel, c);
-
-        c.insets = new Insets(2, 10, 2, 10);
-        c.gridx = 2;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 1;
-        c.gridwidth = 2;
-        panel.add(genreComboBox, c);
-
-        //
-
-        c.insets = new Insets(2, 10, 2, 2);
-        c.gridx = 0;
-        c.gridy = 8;
-        c.fill = GridBagConstraints.NONE;
-        c.weightx = 0;
-        c.gridwidth = 1;
-        panel.add(composerCheckBox, c);
-
-        c.insets = new Insets(2, 2, 2, 10);
-        c.gridx = 1;
-        c.gridy = 8;
-        c.fill = GridBagConstraints.NONE;
-        c.weightx = 0;
-        c.gridwidth = 1;
-        panel.add(composerLabel, c);
-
-        c.insets = new Insets(2, 10, 2, 10);
-        c.gridx = 2;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 1;
-        c.gridwidth = 2;
-        panel.add(composerTextField, c);
-
-        //
-
-        c.insets = new Insets(2, 10, 2, 2);
-        c.gridx = 0;
-        c.gridy = 9;
-        c.fill = GridBagConstraints.NONE;
-        c.weightx = 0;
-        c.gridwidth = 1;
-        panel.add(commentCheckBox, c);
-
-        c.insets = new Insets(2, 2, 2, 10);
-        c.gridx = 1;
-        c.gridy = 9;
-        c.fill = GridBagConstraints.NONE;
-        c.weightx = 0;
-        c.gridwidth = 1;
-        panel.add(commentLabel, c);
-
-        c.insets = new Insets(2, 10, 2, 10);
-        c.gridx = 2;
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 1;
-        c.weighty = 1;
-        c.gridwidth = 2;
-        panel.add(scrollPane, c);
-
-        //
-
-        c.insets = new Insets(2, 10, 2, 2);
-        c.gridx = 0;
-        c.gridy = 10;
-        c.fill = GridBagConstraints.NONE;
-        c.weightx = 0;
-        c.gridwidth = 1;
-        panel.add(lyricsCheckBox, c);
-
-        c.insets = new Insets(2, 2, 2, 10);
-        c.gridx = 1;
-        c.gridy = 10;
-        c.fill = GridBagConstraints.NONE;
-        c.weightx = 0;
-        c.gridwidth = 1;
-        panel.add(lyricsLabel, c);
-
-        c.insets = new Insets(2, 10, 2, 10);
-        c.gridx = 2;
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 1;
-        c.weighty = 0;
-        c.gridwidth = 2;
-        panel.add(scrollPane2, c);
+        panel.add(titleTextField, c);
 	}
 
     /**
