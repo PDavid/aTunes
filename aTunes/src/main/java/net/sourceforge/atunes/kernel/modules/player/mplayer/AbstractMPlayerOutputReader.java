@@ -41,7 +41,6 @@ abstract class AbstractMPlayerOutputReader extends Thread {
     private static final Pattern END_PATTERN = Pattern.compile(".*\\x2e\\x2e\\x2e\\x20\\(.*\\x20.*\\).*");
 
     private MPlayerEngine engine;
-    private BufferedReader in;
     private int length;
     private int time;
 
@@ -114,7 +113,7 @@ abstract class AbstractMPlayerOutputReader extends Thread {
     @Override
     public final void run() {
         String line = null;
-        this.in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
         try {
         	init();
             line = in.readLine();

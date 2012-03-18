@@ -40,7 +40,6 @@ import net.sourceforge.atunes.kernel.actions.ShuffleModeAction;
 import net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.ToggleOSDSettingAction;
 
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
@@ -51,7 +50,7 @@ public class CommonTrayIconFiller implements ITrayIconFiller, ApplicationContext
 	private JMenuItem playMenuItem;
 	
 	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+	public void setApplicationContext(ApplicationContext applicationContext) {
 		this.context = applicationContext;
 	}
 		

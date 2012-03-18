@@ -44,12 +44,8 @@ public class FullScreenHandler extends AbstractHandler implements IFullScreenHan
     @Override
     public void playListCleared() {
         // Next actions must be done ONLY if stopPlayerWhenPlayListClear is enabled
-        if (getState().isStopPlayerOnPlayListClear()) {
-
-            // Remove audio object information from full screen mode
-        	if (getFullScreenController() != null) {
-        		getFullScreenController().setAudioObjects(null);
-        	}
+        if (getState().isStopPlayerOnPlayListClear() && getFullScreenController() != null) {
+        	getFullScreenController().setAudioObjects(null);
         }
     }
     

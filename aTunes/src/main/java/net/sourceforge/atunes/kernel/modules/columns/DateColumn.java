@@ -30,7 +30,7 @@ import org.joda.time.format.DateTimeFormatter;
 public class DateColumn extends AbstractColumn<String> {
 
     private static final long serialVersionUID = 6832826017182272636L;
-    private static final DateTimeFormatter dateFormat = DateTimeFormat.mediumDateTime();
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormat.mediumDateTime();
 
     public DateColumn() {
         super("DATE");
@@ -53,7 +53,7 @@ public class DateColumn extends AbstractColumn<String> {
     @Override
     public String getValueFor(IAudioObject audioObject) {
         if (audioObject.getDate() != null) {
-            return dateFormat.print(audioObject.getDate());
+            return DATE_FORMAT.print(audioObject.getDate());
         } else {
             return "";
         }
@@ -62,7 +62,7 @@ public class DateColumn extends AbstractColumn<String> {
     @Override
     public String getValueForFilter(IAudioObject audioObject) {
     	if (audioObject != null) {
-    		return dateFormat.print(audioObject.getDate());
+    		return DATE_FORMAT.print(audioObject.getDate());
     	} else {
     		return "";
     	}

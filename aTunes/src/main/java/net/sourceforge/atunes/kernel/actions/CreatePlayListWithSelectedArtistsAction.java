@@ -85,10 +85,8 @@ public class CreatePlayListWithSelectedArtistsAction extends AbstractActionOverS
         for (IAudioObject ao : objects) {
             String artist = ao.getArtist();
             IArtist a = repositoryHandler.getArtist(artist);
-            if (a != null) {
-                if (!selectedArtists.contains(a)) {
-                    selectedArtists.add(a);
-                }
+            if (a != null && !selectedArtists.contains(a)) {
+            	selectedArtists.add(a);
             }
         }
 

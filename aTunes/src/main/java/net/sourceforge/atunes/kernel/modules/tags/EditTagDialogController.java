@@ -317,13 +317,10 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
         getComponentControlled().getComposerCheckBox().setEnabled(enable);
         getComponentControlled().getCoverCheckBox().setEnabled(enable && supportsInternalPicture);
         
-		if (audioFiles.size() == 1) {
-            if (supportsInternalPicture) {
-                getEditTagDialog().getOkButton().setEnabled(false);
-                getComponentControlled().getCoverCheckBox().setSelected(true);
-
-                new GetInsidePictureSwingWorker(audioFiles).execute();
-            }
+        if (audioFiles.size() == 1 && supportsInternalPicture) {
+        	getEditTagDialog().getOkButton().setEnabled(false);
+        	getComponentControlled().getCoverCheckBox().setSelected(true);
+        	new GetInsidePictureSwingWorker(audioFiles).execute();
         }
 	}
 

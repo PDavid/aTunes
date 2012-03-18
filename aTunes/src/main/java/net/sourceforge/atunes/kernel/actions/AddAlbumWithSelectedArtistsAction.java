@@ -76,10 +76,8 @@ public class AddAlbumWithSelectedArtistsAction extends AbstractActionOverSelecte
         for (IAudioObject ao : objects) {
             String artistName = ao.getArtist();
             IArtist a = repositoryHandler.getArtist(artistName);
-            if (a != null) {
-                if (!selectedArtists.contains(a)) {
-                    selectedArtists.add(a);
-                }
+            if (a != null && !selectedArtists.contains(a)) {
+            	selectedArtists.add(a);
             }
         }
 

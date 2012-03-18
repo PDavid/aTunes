@@ -43,7 +43,6 @@ import net.sourceforge.atunes.kernel.actions.StopCurrentAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.ToggleOSDSettingAction;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
@@ -54,7 +53,7 @@ public class MacTrayIconFiller implements ITrayIconFiller, ApplicationContextAwa
 	private MenuItem playMenuItem;
 	
 	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+	public void setApplicationContext(ApplicationContext applicationContext) {
 		this.context = applicationContext;
 	}
 		

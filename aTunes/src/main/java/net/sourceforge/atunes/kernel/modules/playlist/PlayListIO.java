@@ -300,10 +300,8 @@ public final class PlayListIO implements IPlayListIOService {
 	public boolean write(IPlayList playlist, File file) {
         FileWriter writer = null;
         try {
-            if (file.exists()) {
-                if (!file.delete()) {
-                	Logger.error(StringUtils.getString(file, " not deleted"));
-                }
+            if (file.exists() && !file.delete()) {
+            	Logger.error(StringUtils.getString(file, " not deleted"));
             }
             writer = new FileWriter(file);
             writer.append(StringUtils.getString(M3U_HEADER, osManager.getLineTerminator()));

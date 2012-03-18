@@ -162,9 +162,6 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
      */
     private JScrollPane hotkeyScrollPane;
     
-    /** The hotkey table. */
-    private JTable hotkeyTable;
-
     /** The table model. */
     private HotkeyTableModel tableModel = new HotkeyTableModel();
 
@@ -242,7 +239,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         enableGlobalHotkeys = new JCheckBox(I18nUtils.getString("ENABLE_GLOBAL_HOTKEYS"));
         showPlayerControlsOnTop = new JCheckBox(I18nUtils.getString("SHOW_PLAYER_CONTROLS_ON_TOP"));
 
-        hotkeyTable = getHotkeyTable();
+        JTable hotkeyTable = getHotkeyTable();
 
         resetHotkeys = new JButton(I18nUtils.getString("RESET"));
         resetHotkeys.addActionListener(new ActionListener() {

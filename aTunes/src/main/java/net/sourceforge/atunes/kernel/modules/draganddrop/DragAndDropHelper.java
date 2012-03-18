@@ -40,7 +40,7 @@ final class DragAndDropHelper {
     static DataFlavor getInternalDataFlavor() {
     	if (internalDataFlavor == null) {
     		try {
-				internalDataFlavor = new DataFlavor(TransferableList.mimeType);
+				internalDataFlavor = new DataFlavor(TransferableList.MIMETYPE);
 			} catch (ClassNotFoundException e) {
 				Logger.error(e);
 			}
