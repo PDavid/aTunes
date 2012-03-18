@@ -131,13 +131,7 @@ public class LastFmCache extends AbstractCache {
     }
 
     private String getFileNameForSubmissionCache() throws IOException {
-        File submissionDataDirFile = getSubmissionDataDir();
-
-        if (submissionDataDirFile == null) {
-            return null;
-        }
-
-        return StringUtils.getString(submissionDataDirFile.getAbsolutePath(), osManager.getFileSeparator(), "submissionDataCache.xml");
+        return StringUtils.getString(getSubmissionDataDir().getAbsolutePath(), osManager.getFileSeparator(), "submissionDataCache.xml");
     }
 
     /**

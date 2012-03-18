@@ -288,9 +288,9 @@ final class ReadCddaThread extends Thread {
             }
             title = sb.toString();
 
-            title = title != null ? title.trim() : null;
+            title = title.trim();
 
-            title = title != null && !title.equals("") ? title.replace("\\", "\'") : null;
+            title = !title.equals("") ? title.replace("\\", "\'") : null;
 
             if (title != null) {
                 titles.add(title);

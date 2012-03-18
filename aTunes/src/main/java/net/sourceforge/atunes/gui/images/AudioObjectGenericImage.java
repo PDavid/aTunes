@@ -75,11 +75,9 @@ public class AudioObjectGenericImage implements IAudioObjectGenericImageFactory 
 	 */
 	private IColorMutableImageIcon getLocalAudioObjectIcon(GenericImageSize imageSize) {
 		switch (imageSize) {
-		case SMALL:  return audioFileSmallIcon.getColorMutableIcon();         
-		case MEDIUM: return audioFileMediumIcon.getColorMutableIcon();     
-		case BIG:    return audioFileMediumIcon.getColorMutableIcon();     
+		case SMALL:  return audioFileSmallIcon.getColorMutableIcon();
+		default: return audioFileMediumIcon.getColorMutableIcon();
 		}
-		return null;
 	}
 
 	/**

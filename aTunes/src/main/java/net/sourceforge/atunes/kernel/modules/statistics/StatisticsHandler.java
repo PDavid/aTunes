@@ -202,20 +202,17 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
     @Override
     public List<IAlbum> getMostPlayedAlbums(int n) {
         List<IStatisticsAlbum> statisticsAlbums = statistics.getAlbumsRanking().getNFirstElements(n);
-        if (statisticsAlbums != null) {
-            List<IAlbum> albums = new ArrayList<IAlbum>();
-            for (IStatisticsAlbum statisticAlbum : statisticsAlbums) {
-            	IArtist artist = repositoryHandler.getArtist(statisticAlbum.getArtist());
-            	if (artist != null) {
-            		IAlbum album = artist.getAlbum(statisticAlbum.getAlbum());
-            		if (album != null) {
-            			albums.add(album);
-            		}
-            	}
-            }
-            return albums;
+        List<IAlbum> albums = new ArrayList<IAlbum>();
+        for (IStatisticsAlbum statisticAlbum : statisticsAlbums) {
+        	IArtist artist = repositoryHandler.getArtist(statisticAlbum.getArtist());
+        	if (artist != null) {
+        		IAlbum album = artist.getAlbum(statisticAlbum.getAlbum());
+        		if (album != null) {
+        			albums.add(album);
+        		}
+        	}
         }
-        return null;
+        return albums;
     }
 
     @Override
@@ -226,14 +223,11 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
     @Override
     public List<IArtist> getMostPlayedArtists(int n) {
         List<String> artistsNames = statistics.getArtistsRanking().getNFirstElements(n);
-        if (artistsNames != null) {
-            List<IArtist> artists = new ArrayList<IArtist>();
-            for (String artistName : artistsNames) {
-                artists.add(repositoryHandler.getArtist(artistName));
-            }
-            return artists;
+        List<IArtist> artists = new ArrayList<IArtist>();
+        for (String artistName : artistsNames) {
+        	artists.add(repositoryHandler.getArtist(artistName));
         }
-        return null;
+        return artists;
     }
 
     @Override
@@ -244,14 +238,11 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
     @Override
     public List<IAudioObject> getMostPlayedAudioObjects(int n) {
         List<String> audioFilesUrls = statistics.getAudioFilesRanking().getNFirstElements(n);
-        if (audioFilesUrls != null) {
-            List<IAudioObject> audioFiles = new ArrayList<IAudioObject>();
-            for (String audioFileUrl : audioFilesUrls) {
-                audioFiles.add(repositoryHandler.getFileIfLoaded(audioFileUrl));
-            }
-            return audioFiles;
+        List<IAudioObject> audioFiles = new ArrayList<IAudioObject>();
+        for (String audioFileUrl : audioFilesUrls) {
+        	audioFiles.add(repositoryHandler.getFileIfLoaded(audioFileUrl));
         }
-        return null;
+        return audioFiles;
     }
 
     /**

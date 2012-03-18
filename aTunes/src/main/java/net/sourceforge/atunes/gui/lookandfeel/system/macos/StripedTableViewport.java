@@ -129,7 +129,7 @@ class StripedTableViewport extends JViewport {
     @SuppressWarnings("unused")
 	private void paintVerticalGridLines(Graphics g) {
         // paint the column grid dividers for the non-existent rows.
-        int x = - (getViewPosition() != null ? getViewPosition().x : 0);
+        int x = - getViewPosition().x;
         for (int i = 0; i < fTable.getColumnCount(); i++) {
             TableColumn column = fTable.getColumnModel().getColumn(i);
             // increase the x position by the width of the current column.
