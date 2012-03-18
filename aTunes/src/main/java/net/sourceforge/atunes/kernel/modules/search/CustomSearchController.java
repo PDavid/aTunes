@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.search;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -419,23 +421,111 @@ final class CustomSearchController extends AbstractSimpleController<CustomSearch
 
     @Override
 	public void addBindings() {
-        CustomSearchListener listener = new CustomSearchListener(this, getComponentControlled(), getState());
-        getComponentControlled().getSearchAtComboBox().addActionListener(listener);
-        getComponentControlled().getSimpleRulesAddButton().addActionListener(listener);
+        getComponentControlled().getSearchAtComboBox().addActionListener(new SearchAtComboBoxActionListener());
+        
+        getComponentControlled().getSimpleRulesAddButton().addActionListener(new SimpleRulesAddButtonActionListener());
+        
         getComponentControlled().getComplexRulesTree().setModel(new DefaultTreeModel(null));
-        getComponentControlled().getComplexRulesAndButton().addActionListener(listener);
-        getComponentControlled().getComplexRulesOrButton().addActionListener(listener);
-        getComponentControlled().getComplexRulesNotButton().addActionListener(listener);
-        getComponentControlled().getComplexRulesRemoveButton().addActionListener(listener);
-        getComponentControlled().getAdvancedSearchCheckBox().addActionListener(listener);
-        getComponentControlled().getSearchButton().addActionListener(listener);
-        ComplexTreeSelectionListener selListener = new ComplexTreeSelectionListener(getComponentControlled(), getComponentControlled().getComplexRulesTree());
-        getComponentControlled().getComplexRulesTree().addTreeSelectionListener(selListener);
-        getComponentControlled().getCancelButton().addActionListener(listener);
-        getComponentControlled().getAdvancedSearchTextField().addActionListener(listener);
+        getComponentControlled().getComplexRulesAndButton().addActionListener(new ComplexRulesAndButtonActionListener());
+        
+        getComponentControlled().getComplexRulesOrButton().addActionListener(new ComplexRulesOrButtonActionListener());
+        
+        
+        getComponentControlled().getComplexRulesNotButton().addActionListener(new ComplexRulesNotButtonActionListener());
+        
+        
+        getComponentControlled().getComplexRulesRemoveButton().addActionListener(new ComplexRulesRemoveButtonActionListener());
+        
+        getComponentControlled().getAdvancedSearchCheckBox().addActionListener(new AdvancedSearchSearchBoxActionListener());
+        
+        getComponentControlled().getSearchButton().addActionListener(new SearchButtonActionListener());
+        
+        getComponentControlled().getComplexRulesTree().addTreeSelectionListener(new ComplexTreeSelectionListener(getComponentControlled(), getComponentControlled().getComplexRulesTree()));
+        getComponentControlled().getCancelButton().addActionListener(new CancelButtonActionListener());
+        getComponentControlled().getAdvancedSearchTextField().addActionListener(new SearchButtonActionListener());
     }
 
-    private static class TranslatedAttributesList implements Comparator<String>, Serializable {
+    private final class CancelButtonActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		    // Pressed cancel button
+		    getComponentControlled().setVisible(false);
+		}
+	}
+
+	private final class SearchButtonActionListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		    // Pressed Search button
+		    search();
+		}
+	}
+
+	private final class AdvancedSearchSearchBoxActionListener implements
+			ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		    // Pressed Advanced Search Check Box
+		    enableAdvancedSearch(getComponentControlled().getAdvancedSearchCheckBox().isSelected());
+		    getState().setEnableAdvancedSearch(getComponentControlled().getAdvancedSearchCheckBox().isSelected());
+		}
+	}
+
+	private final class ComplexRulesRemoveButtonActionListener implements
+			ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		    // Pressed Remove button
+		    removeRuleNode();
+		}
+	}
+
+	private final class ComplexRulesNotButtonActionListener implements
+			ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		    // Pressed NOT button
+		    addNotOperator();
+		}
+	}
+
+	private final class ComplexRulesOrButtonActionListener implements
+			ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		    // Pressed OR button
+		    addOrOperator();
+		}
+	}
+
+	private final class ComplexRulesAndButtonActionListener implements
+			ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		    // Pressed AND button
+		    addAndOperator();
+		}
+	}
+
+	private final class SimpleRulesAddButtonActionListener implements
+			ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		    // Pressed Add button
+		    createSimpleRule();
+		}
+	}
+
+	private final class SearchAtComboBoxActionListener implements
+			ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+		    // When changing combo box selected value change attributes list
+		    updateAttributesList();
+		}
+	}
+
+	private static class TranslatedAttributesList implements Comparator<String>, Serializable {
 
         /**
 		 * 

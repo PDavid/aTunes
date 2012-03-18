@@ -193,15 +193,18 @@ class CdRipper {
 			File folder, final List<String> artistNames,
 			final List<String> composerNames, boolean useParanoia,
 			String extension, File resultFile, int i) {
+		
+		File result = resultFile;
+		
 		if (!interrupted) {
 		    final int trackNumber = tracks.get(i);
 		    File wavFile = new File(StringUtils.getString(folder.getAbsolutePath(), "/track", trackNumber, ".wav"));
 		    final boolean ripResultFinal;
 
 		    if (encoder != null) {
-		        resultFile = new File(StringUtils.getString(folder.getAbsolutePath(), '/', getFileName(titles, trackNumber, extension)));
+		    	result = new File(StringUtils.getString(folder.getAbsolutePath(), '/', getFileName(titles, trackNumber, extension)));
 		    }
-		    final File resultFileTemp = resultFile;
+		    final File resultFileTemp = result;
 		    final File wavFileTemp = wavFile;
 		    final File infFileTemp = new File(StringUtils.getString(folder.getAbsolutePath(), "/track", trackNumber, ".inf"));
 
@@ -248,7 +251,7 @@ class CdRipper {
 		        });
 		    }
 		}
-		return resultFile;
+		return result;
 	}
 
     /**
