@@ -167,6 +167,16 @@ public final class FrameState implements Serializable, IFrameState {
 		if (maximized != other.maximized) {
 			return false;
 		}
+		if (!isSameSplitPaneDividerPositions(other) || !isEqualSize(other) || !isSamePosition(other)) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * @param other
+	 */
+	private boolean isSameSplitPaneDividerPositions(FrameState other) {
 		if (splitPaneDividerPositions == null) {
 			if (other.splitPaneDividerPositions != null) {
 				return false;
@@ -175,16 +185,30 @@ public final class FrameState implements Serializable, IFrameState {
 				.equals(other.splitPaneDividerPositions)) {
 			return false;
 		}
-		if (windowHeight != other.windowHeight) {
-			return false;
-		}
-		if (windowWidth != other.windowWidth) {
-			return false;
-		}
+		return true;
+	}
+
+	/**
+	 * @param other
+	 */
+	private boolean isSamePosition(FrameState other) {
 		if (xPosition != other.xPosition) {
 			return false;
 		}
 		if (yPosition != other.yPosition) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * @param other
+	 */
+	private boolean isEqualSize(FrameState other) {
+		if (windowHeight != other.windowHeight) {
+			return false;
+		}
+		if (windowWidth != other.windowWidth) {
 			return false;
 		}
 		return true;

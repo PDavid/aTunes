@@ -34,7 +34,9 @@ import net.sourceforge.atunes.utils.UnknownObjectCheck;
  */
 class CdInfoTableModel extends AbstractTableModel {
 
-    private static final long serialVersionUID = -7577681531593039707L;
+    private static final String TRACK = "TRACK";
+
+	private static final long serialVersionUID = -7577681531593039707L;
 
     private transient CDInfo cdInfo;
     private List<String> trackNames = new ArrayList<String>();
@@ -94,15 +96,15 @@ class CdInfoTableModel extends AbstractTableModel {
             return tracksSelected.get(rowIndex);
         } else if (columnIndex == 1) {
             if (rowIndex > trackNames.size() - 1) {
-                trackNames.add(rowIndex, StringUtils.getString(I18nUtils.getString("TRACK"), " ", (rowIndex + 1)));
-                return StringUtils.getString(I18nUtils.getString("TRACK"), " ", (rowIndex + 1));
+                trackNames.add(rowIndex, StringUtils.getString(I18nUtils.getString(TRACK), " ", (rowIndex + 1)));
+                return StringUtils.getString(I18nUtils.getString(TRACK), " ", (rowIndex + 1));
             }
             if (rowIndex < trackNames.size()) {
                 return trackNames.get(rowIndex);
             }
 
-            trackNames.add(rowIndex, StringUtils.getString(I18nUtils.getString("TRACK"), " ", (rowIndex + 1)));
-            return StringUtils.getString(I18nUtils.getString("TRACK"), " ", (rowIndex + 1));
+            trackNames.add(rowIndex, StringUtils.getString(I18nUtils.getString(TRACK), " ", (rowIndex + 1)));
+            return StringUtils.getString(I18nUtils.getString(TRACK), " ", (rowIndex + 1));
 
         } else if (columnIndex == 2) {
             if (rowIndex > artistNames.size() - 1) {
