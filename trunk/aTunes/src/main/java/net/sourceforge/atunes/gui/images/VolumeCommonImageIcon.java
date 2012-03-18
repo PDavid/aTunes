@@ -25,8 +25,8 @@ import java.awt.Rectangle;
 
 final class VolumeCommonImageIcon {
 
-	protected static final int WIDTH = 24;
-	protected static final int HEIGHT = 24;
+	static final int WIDTH = 24;
+	static final int HEIGHT = 24;
 
 	private VolumeCommonImageIcon() {}
 	

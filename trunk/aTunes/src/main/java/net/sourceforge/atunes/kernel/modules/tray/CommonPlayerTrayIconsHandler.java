@@ -32,7 +32,6 @@ import net.sourceforge.atunes.gui.images.StopTrayImageIcon;
 import net.sourceforge.atunes.model.IPlayerTrayIconsHandler;
 import net.sourceforge.atunes.model.IState;
 
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
@@ -43,7 +42,7 @@ public class CommonPlayerTrayIconsHandler implements IPlayerTrayIconsHandler, Ap
 	private ApplicationContext context;
 	
 	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+	public void setApplicationContext(ApplicationContext applicationContext) {
 		this.context = applicationContext;
 	}
 	

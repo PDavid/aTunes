@@ -51,7 +51,7 @@ public class TreeNavigationTransferHandler extends TransferHandler {
    
     static {
         try {
-            internalDataFlavor = new DataFlavor(TransferableList.mimeType);
+            internalDataFlavor = new DataFlavor(TransferableList.MIMETYPE);
         } catch (ClassNotFoundException e) {
             Logger.error(e);
         }

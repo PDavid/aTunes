@@ -55,11 +55,9 @@ class PodcastFeedEntryMPlayerOutputReader extends AbstractMPlayerOutputReader {
         readAndApplyLength(podcastFeedEntry, line, false);
 
         // When starting playback, update status bar
-        if (line.startsWith("Starting playback")) {
-            if (!started) {
-                getEngine().notifyRadioOrPodcastFeedEntry();
-                started = true;
-            }
+        if (!started && line.startsWith("Starting playback")) {
+        	getEngine().notifyRadioOrPodcastFeedEntry();
+        	started = true;
         }
     }
 

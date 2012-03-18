@@ -65,11 +65,9 @@ public final class EditPreferencesDialogListener implements ListSelectionListene
 	        	boolean needRestart = editPreferencesDialogController.processPreferences();
 	        	editPreferencesDialog.setVisible(false);
 	        	listeners.notifyApplicationStateChanged();
-	        	if (needRestart) {
-	        		// Let user decide if want to restart
-	        		if (Context.getBean(IConfirmationDialogFactory.class).getDialog().showDialog(I18nUtils.getString("APPLICATION_NEEDS_RESTART"))) {
-	        			Context.getBean(IKernel.class).restart();
-	        		}
+        		// Let user decide if want to restart
+	        	if (needRestart && Context.getBean(IConfirmationDialogFactory.class).getDialog().showDialog(I18nUtils.getString("APPLICATION_NEEDS_RESTART"))) {
+	        		Context.getBean(IKernel.class).restart();
 	        	}
 			} catch (PreferencesValidationException e1) {
 				Context.getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(e1.getMessage(), editPreferencesDialog);
