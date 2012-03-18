@@ -386,19 +386,10 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
 	 */
     @Override
 	public String getDownloadPath(IPodcastFeedEntry podcastFeedEntry) {
-        String path = getState().getPodcastFeedEntryDownloadPath();
-        if (path == null || path.isEmpty()) {
-            path = StringUtils.getString(getOsManager().getUserConfigFolder(), "/", Constants.DEFAULT_PODCAST_FEED_ENTRY_DOWNLOAD_DIR);
-        }
-        File podcastFeedsDownloadFolder = new File(path);
+        File podcastFeedsDownloadFolder = getPodcastFeedsDownloadFolder();
 
-        // Check if podcast folder exists
-        if (!podcastFeedsDownloadFolder.exists()) {
-            boolean check = podcastFeedsDownloadFolder.mkdir();
-            if (!check) {
-                Logger.error("Problem Creating file!");
-                return "";
-            }
+        if (!createFolder(podcastFeedsDownloadFolder)) {
+        	return "";
         }
 
         if (podcastFeedEntry.getPodcastFeed().getName() == null || podcastFeedEntry.getPodcastFeed().getName().trim().isEmpty()) {
@@ -408,12 +399,9 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
         // Check if subfolder exists and otherwise create
         File podcastFeedDownloadFolder = new File(podcastFeedsDownloadFolder, FileNameUtils
                 .getValidFileName(String.valueOf(podcastFeedEntry.getPodcastFeed().getName().hashCode()), getOsManager()));
-        if (!podcastFeedDownloadFolder.exists()) {
-            boolean check = podcastFeedDownloadFolder.mkdir();
-            if (!check) {
-                Logger.error("Problem Creating file!");
-                return "";
-            }
+        
+        if (!createFolder(podcastFeedDownloadFolder)) {
+        	return "";
         }
 
         try {
@@ -434,6 +422,33 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
         }
         throw new IllegalArgumentException();
     }
+
+	/**
+	 * @param podcastFeedsDownloadFolder
+	 */
+	private boolean createFolder(File podcastFeedsDownloadFolder) {
+		// Check if podcast folder exists
+        if (!podcastFeedsDownloadFolder.exists()) {
+            boolean check = podcastFeedsDownloadFolder.mkdir();
+            if (!check) {
+                Logger.error("Problem Creating file!");
+                return false;
+            }
+        }
+        return true;
+	}
+
+	/**
+	 * @return
+	 */
+	private File getPodcastFeedsDownloadFolder() {
+		String path = getState().getPodcastFeedEntryDownloadPath();
+        if (path == null || path.isEmpty()) {
+            path = StringUtils.getString(getOsManager().getUserConfigFolder(), "/", Constants.DEFAULT_PODCAST_FEED_ENTRY_DOWNLOAD_DIR);
+        }
+        File podcastFeedsDownloadFolder = new File(path);
+		return podcastFeedsDownloadFolder;
+	}
 
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#isDownloaded(net.sourceforge.atunes.model.IPodcastFeedEntry)
