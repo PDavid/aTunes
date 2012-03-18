@@ -92,8 +92,6 @@ final class PlayListIntegerTableCellRendererCode extends AbstractTableCellRender
             return Context.getBean("playListStopStateIcon", IIconFactory.class).getIcon(color);
         case PAUSED:
             return Context.getBean("playListPauseStateIcon", IIconFactory.class).getIcon(color);
-        case NONE:
-            return null;
         default:
             return null;
         }

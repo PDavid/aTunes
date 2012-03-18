@@ -206,19 +206,11 @@ final class RepositoryFiller {
         IFolder parentFolder = relativeFolder;
         IFolder f = null;
         for (String folderName : foldersInPath) {
-            if (parentFolder != null) {
-                f = parentFolder.getFolder(folderName);
-                if (f == null) {
-                    f = new Folder(folderName);
-                    parentFolder.addFolder(f);
-                }
-            } else {
-                f = repository.getFolder(folderName);
-                if (f == null) {
-                    f = new Folder(folderName);
-                    repository.putFolder(f);
-                }
-            }
+        	f = parentFolder.getFolder(folderName);
+        	if (f == null) {
+        		f = new Folder(folderName);
+        		parentFolder.addFolder(f);
+        	}
             parentFolder = f;
         }
         parentFolder.addAudioFile(file);

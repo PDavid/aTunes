@@ -77,9 +77,7 @@ public class FrameFactory implements IFrameFactory, ApplicationContextAware {
         	throw new IllegalArgumentException("Could not create main frame");
         }
         
-        if (frame != null) {
-        	frame.setApplicationContext(context);
-        }
+        frame.setApplicationContext(context);
         
         return frame;
     }
