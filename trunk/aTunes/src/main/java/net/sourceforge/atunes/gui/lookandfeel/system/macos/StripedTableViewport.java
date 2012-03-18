@@ -31,7 +31,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.TableColumn;
 
 /**
  * Based in work: 
@@ -95,8 +94,6 @@ class StripedTableViewport extends JViewport {
     @Override
     protected void paintComponent(Graphics g) {
         paintStripedBackground(g);
-        // alex: removed vertical grid linex in tables as it can be too much lines (for example in play list)
-//        paintVerticalGridLines(g);
         super.paintComponent(g);
     }
 
@@ -125,20 +122,4 @@ class StripedTableViewport extends JViewport {
     private Color getRowColor(int row) {
         return row % 2 == 0 ? MacOSColors.EVEN_ROW_COLOR : getBackground();
     }
-
-    @SuppressWarnings("unused")
-	private void paintVerticalGridLines(Graphics g) {
-        // paint the column grid dividers for the non-existent rows.
-        int x = - getViewPosition().x;
-        for (int i = 0; i < fTable.getColumnCount(); i++) {
-            TableColumn column = fTable.getColumnModel().getColumn(i);
-            // increase the x position by the width of the current column.
-            x += column.getWidth();
-            g.setColor(MacOSColors.TABLE_GRID_COLOR);
-            // draw the grid line (not sure what the -1 is for, but BasicTableUI
-            // also does it.
-            g.drawLine(x - 1, g.getClipBounds().y, x - 1, getHeight());
-        }
-    }
-
 }
