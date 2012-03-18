@@ -22,6 +22,11 @@ package net.sourceforge.atunes.kernel.modules.state;
 
 import java.io.Serializable;
 
+/**
+ * Represents a value of a preference
+ * @author alex
+ *
+ */
 public class Preference implements Serializable {
 
 	/**
@@ -31,18 +36,17 @@ public class Preference implements Serializable {
 
 	private Object value;
 
-	public Preference() {
-		
-	}
-	
-	public Preference(Object value) {
-		setValue(value);
-	}
-
+	/**
+	 * @return
+	 */
 	public Object getValue() {
 		return value;
 	}
 
+	/**
+	 * Sets value of this preference
+	 * @param value
+	 */
 	public void setValue(Object value) {
 		this.value = value;
 	}	

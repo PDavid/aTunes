@@ -86,7 +86,12 @@ class PreferencesCache extends AbstractCache implements IStateStore {
         }
 
         // Store same preferences even if value is equal, otherwise could cause problems with collections (where equals is always true)
-        Element element = new Element(preferenceId.toString(), value != null ? new Preference(value) : null);
+        Preference pref = null;
+        if (value != null) {
+        	pref = new Preference();
+        	pref.setValue(value);
+        }
+        Element element = new Element(preferenceId.toString(), pref);
         getCache().put(element);
         getCache().flush();
         Logger.debug("Stored Preference: ", preferenceId, " Value: ", value != null ? value.toString() : null);

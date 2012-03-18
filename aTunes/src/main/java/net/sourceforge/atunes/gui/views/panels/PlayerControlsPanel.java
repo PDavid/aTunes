@@ -154,10 +154,10 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
     	bottomProgressSliderContainer.add(playerControlsProgressSlider.getSwingComponent(), BorderLayout.CENTER);
 
     	JPanel mainControls = getMainControlsPanel();
-        JPanel secondaryControls = getSecondaryControls();
-        secondaryControls.setMinimumSize(mainControls.getPreferredSize());
-        secondaryControls.setPreferredSize(mainControls.getPreferredSize());
-        secondaryControls.setMaximumSize(mainControls.getPreferredSize());
+        JPanel secondaryControlsPanel = getSecondaryControls();
+        secondaryControlsPanel.setMinimumSize(mainControls.getPreferredSize());
+        secondaryControlsPanel.setPreferredSize(mainControls.getPreferredSize());
+        secondaryControlsPanel.setMaximumSize(mainControls.getPreferredSize());
         mainControls.setMaximumSize(mainControls.getPreferredSize());
         
         GridBagConstraints c = new GridBagConstraints();
@@ -180,7 +180,7 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
         c.anchor = GridBagConstraints.EAST;
         c.fill = GridBagConstraints.VERTICAL;
         c.insets = new Insets(5, 0, 5, 10);
-        add(secondaryControls, c);
+        add(secondaryControlsPanel, c);
                 
         GuiUtils.applyComponentOrientation(this);
     }

@@ -122,8 +122,8 @@ public final class OSDDialog extends AbstractCustomWindow {
      *            the new image
      */
     public void setImage(ImageIcon img) {
-        ImageIcon imgResized;
-        if (img != null && (imgResized = ImageUtils.resize(img, IMAGE_SIZE, IMAGE_SIZE)) != null) {
+        ImageIcon imgResized = img != null ? ImageUtils.resize(img, IMAGE_SIZE, IMAGE_SIZE) : null;
+        if (imgResized != null) {
             image.setIcon(imgResized);
             image.setSize(imgResized.getIconWidth() + 5, imgResized.getIconHeight() + 5);
             image.setLocation(10, (height - IMAGE_SIZE) / 2);
