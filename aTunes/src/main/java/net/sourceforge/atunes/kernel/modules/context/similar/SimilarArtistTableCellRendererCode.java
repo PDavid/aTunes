@@ -63,9 +63,9 @@ class SimilarArtistTableCellRendererCode extends ContextTableRowPanel<IArtistInf
 	@Override
 	public List<ContextTableAction<IArtistInfo>> getActions() {
 		List<ContextTableAction<IArtistInfo>> actions = new ArrayList<ContextTableAction<IArtistInfo>>();
-		actions.add(new ReadMoreContextTableAction(I18nUtils.getString("READ_MORE"), (ContextTable) table, desktop));
+		actions.add(new ReadMoreContextTableAction(I18nUtils.getString("READ_MORE"), (ContextTable) getTable(), desktop));
 		actions.add(new AddAlbumArtistToPlayListContextTableAction(I18nUtils.getString("ADD_ALBUM_ARTIST_TO_PLAYLIST"),
-				(ContextTable) table, desktop));
+				(ContextTable) getTable(), desktop));
 		
 		return actions;
 	}

@@ -40,7 +40,7 @@ public abstract class ContextTableRowPanel<T> extends AbstractTableCellRendererC
 	
 	private Class<?> clazz;
 	
-	protected ContextTable table;
+	private ContextTable table;
 	
 	@SuppressWarnings("unchecked")
 	public ContextTableRowPanel(ILookAndFeel lookAndFeel) {
@@ -56,6 +56,13 @@ public abstract class ContextTableRowPanel<T> extends AbstractTableCellRendererC
 		this.table = table;
         this.table.setDefaultRenderer(clazz, getLookAndFeel().getTableCellRenderer(this));
         this.table.setDefaultEditor(clazz, this);
+	}
+	
+	/**
+	 * @return
+	 */
+	protected ContextTable getTable() {
+		return table;
 	}
 	
 	@Override

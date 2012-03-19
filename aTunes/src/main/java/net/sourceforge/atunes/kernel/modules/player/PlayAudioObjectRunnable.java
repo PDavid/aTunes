@@ -52,6 +52,6 @@ final class PlayAudioObjectRunnable implements Runnable {
 		// Set default cursor again
 		this.frame.getFrame().setCursor(Cursor.getDefaultCursor());
 		this.abstractPlayerEngine.playAudioObjectAfterCache(audioObjectToPlay, audioObject);
-		this.abstractPlayerEngine.playAudioObjectThread = null;
+		this.abstractPlayerEngine.setPlayAudioObjectThread(null);
 	}		
 }

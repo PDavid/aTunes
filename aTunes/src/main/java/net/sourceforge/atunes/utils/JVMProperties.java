@@ -70,9 +70,18 @@ public final class JVMProperties {
 	 * @return
 	 */
 	private boolean isVersionEqualOrLater(int v1, int v2, int v3, int update) {
-		return (v1 > 1) || 
-		       (v1 == 1 && v2 > 6) || 
-		       (v1 == 1 && v2 == 6 && v3 > 0) ||
-		       (v1 == 1 && v2 == 6 && v3 == 0 && update >= 10);
+		if (v1 >= 2) {
+			return true;
+		}
+		if (v1 == 1 && v2 > 6) {
+			return true;
+		}
+		if (v1 == 1 && v2 == 6 && v3 > 0) {
+			return true;
+		}
+		if (v1 == 1 && v2 == 6 && v3 == 0 && update >= 10) {
+			return true;
+		}
+		return false;
 	}
 }

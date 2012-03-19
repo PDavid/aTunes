@@ -60,7 +60,7 @@ public class YoutubeResultsTableCellRendererCode extends ContextTableRowPanel<Yo
 	@Override
 	public List<ContextTableAction<YoutubeResultEntry>> getActions() {
 		List<ContextTableAction<YoutubeResultEntry>> actions = new ArrayList<ContextTableAction<YoutubeResultEntry>>();
-		actions.add(new ContextTableAction<YoutubeResultEntry>(I18nUtils.getString("PLAY_VIDEO_AT_YOUTUBE"), table, desktop) {
+		actions.add(new ContextTableAction<YoutubeResultEntry>(I18nUtils.getString("PLAY_VIDEO_AT_YOUTUBE"), getTable(), desktop) {
 
 			/**
 			 * 
@@ -79,7 +79,7 @@ public class YoutubeResultsTableCellRendererCode extends ContextTableRowPanel<Yo
 			
 			@Override
 			protected YoutubeResultEntry getSelectedObject(int row) {
-				return ((YoutubeResultTableModel) table.getModel()).getEntry(row);
+				return ((YoutubeResultTableModel) getTable().getModel()).getEntry(row);
 			}
 			
 			@Override
