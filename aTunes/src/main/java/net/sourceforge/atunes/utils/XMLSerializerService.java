@@ -37,7 +37,7 @@ import com.thoughtworks.xstream.converters.ConversionException;
  */
 public class XMLSerializerService {
 	
-	XStreamFactory xstreamFactory;
+	private XStreamFactory xstreamFactory;
 	
 	/**
 	 * @param xstreamFactory

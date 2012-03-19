@@ -74,45 +74,12 @@ class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
 
         // Read bitrate and frequency of radios
         if (line.startsWith("AUDIO:")) {
-            final String[] s = line.split(" ");
-            if (s.length >= 2) {
-                try {
-                    radio.setFrequency(Integer.parseInt(s[1]));
-                } catch (NumberFormatException e) {
-                    Logger.info("Could not read radio frequency");
-                }
-            }
-            if (s.length >= 7) {
-                try {
-                    radio.setBitrate((long) Double.parseDouble(s[6]));
-                } catch (NumberFormatException e) {
-                    Logger.info("Could not read radio bitrate");
-                }
-            }
-            playListHandler.refreshPlayList();
+            readBitrateAndFrequencyOfRadio(line);
         }
 
         // Read song info from radio stream
         if (state.isReadInfoFromRadioStream() && line.startsWith("ICY Info:")) {
-            try {
-                int i = line.indexOf("StreamTitle=");
-                int j = line.indexOf(';', i);
-                String info = line.substring(i + 13, j - 1);
-                int k = info.indexOf('-');
-                String artist = info.substring(0, k).trim();
-                radio.setArtist(artist);
-                String title = info.substring(k + 1, info.length()).trim();
-                radio.setTitle(title);
-                radio.setSongInfoAvailable(true);
-                playListHandler.refreshPlayList();
-                if ((!title.equals(lastTitle) || !artist.equals(lastArtist)) && radio.equals(playListHandler.getCurrentAudioObjectFromCurrentPlayList())) {
-                    Context.getBean(IContextHandler.class).retrieveInfoAndShowInPanel(radio);
-                }
-                lastArtist = artist;
-                lastTitle = title;
-            } catch (IndexOutOfBoundsException e) {
-                Logger.info("Could not read song info from radio");
-            }
+            readInfoFromRadioStream(line);
         }
 
         // End (Quit)
@@ -121,5 +88,52 @@ class RadioMPlayerOutputReader extends AbstractMPlayerOutputReader {
             playListHandler.refreshPlayList();
         }
     }
+
+	/**
+	 * @param line
+	 */
+	private void readBitrateAndFrequencyOfRadio(String line) {
+		final String[] s = line.split(" ");
+		if (s.length >= 2) {
+		    try {
+		        radio.setFrequency(Integer.parseInt(s[1]));
+		    } catch (NumberFormatException e) {
+		        Logger.info("Could not read radio frequency");
+		    }
+		}
+		if (s.length >= 7) {
+		    try {
+		        radio.setBitrate((long) Double.parseDouble(s[6]));
+		    } catch (NumberFormatException e) {
+		        Logger.info("Could not read radio bitrate");
+		    }
+		}
+		playListHandler.refreshPlayList();
+	}
+
+	/**
+	 * @param line
+	 */
+	private void readInfoFromRadioStream(String line) {
+		try {
+		    int i = line.indexOf("StreamTitle=");
+		    int j = line.indexOf(';', i);
+		    String info = line.substring(i + 13, j - 1);
+		    int k = info.indexOf('-');
+		    String artist = info.substring(0, k).trim();
+		    radio.setArtist(artist);
+		    String title = info.substring(k + 1, info.length()).trim();
+		    radio.setTitle(title);
+		    radio.setSongInfoAvailable(true);
+		    playListHandler.refreshPlayList();
+		    if ((!title.equals(lastTitle) || !artist.equals(lastArtist)) && radio.equals(playListHandler.getCurrentAudioObjectFromCurrentPlayList())) {
+		        Context.getBean(IContextHandler.class).retrieveInfoAndShowInPanel(radio);
+		    }
+		    lastArtist = artist;
+		    lastTitle = title;
+		} catch (IndexOutOfBoundsException e) {
+		    Logger.info("Could not read song info from radio");
+		}
+	}
 
 }

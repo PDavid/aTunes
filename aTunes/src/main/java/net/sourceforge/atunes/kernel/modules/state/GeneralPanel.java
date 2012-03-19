@@ -248,7 +248,19 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
         }
         windowTypeChoosingPanel = new ByImageChoosingPanel<Class<? extends IFrame>>(data);
 
-        GridBagConstraints c = new GridBagConstraints();
+        arrangePanel(windowTypeLabel, languageLabel, lookAndFeelLabel,
+				fontSettings);
+    }
+
+	/**
+	 * @param windowTypeLabel
+	 * @param languageLabel
+	 * @param lookAndFeelLabel
+	 * @param fontSettings
+	 */
+	private void arrangePanel(JLabel windowTypeLabel, JLabel languageLabel,
+			JLabel lookAndFeelLabel, JButton fontSettings) {
+		GridBagConstraints c = new GridBagConstraints();
         c.gridy = 0;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         c.insets = new Insets(5, 0, 0, 0);
@@ -312,7 +324,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
         c.gridy = 7;
         c.insets = new Insets(5, 0, 0, 0);
         add(showIconTray, c);
-    }
+	}
 
     @Override
     public boolean applyPreferences(IState state) {

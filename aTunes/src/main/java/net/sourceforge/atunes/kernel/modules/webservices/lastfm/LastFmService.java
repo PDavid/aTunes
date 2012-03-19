@@ -607,6 +607,14 @@ public final class LastFmService {
     }
 
     /**
+     * Check last.fm user and password
+     * @return
+     */
+    private boolean checkCredentials() {
+    	return checkUser() && checkPassword();
+    }
+    
+    /**
      * Submits song to Last.fm
      * 
      * @param file
@@ -617,7 +625,7 @@ public final class LastFmService {
      */
     void submit(IAudioObject file, long secondsPlayed) throws ScrobblerException {
         // Do all necessary checks
-        if (!checkUser() || !checkPassword() || !checkArtist(file) || !checkTitle(file) || !checkDuration(file)) {
+        if (!checkCredentials() || !checkArtist(file) || !checkTitle(file) || !checkDuration(file)) {
             return;
         }
 
@@ -642,7 +650,7 @@ public final class LastFmService {
      */
     public void addLovedSong(IAudioObject song) {
         // Check all necessary conditions to submit request to Last.fm
-        if (!checkUser() || !checkAudioFile(song) || !checkPassword() || !checkArtist(song)) {
+        if (!checkCredentials() || !checkAudioFile(song) || !checkArtist(song)) {
             return;
         }
 
@@ -664,7 +672,7 @@ public final class LastFmService {
      */
     public void removeLovedSong(IAudioObject song) {
         // Check all necessary conditions to submit request to Last.fm
-        if (!checkUser() || !checkAudioFile(song) || !checkPassword() || !checkArtist(song)) {
+        if (!checkCredentials() || !checkAudioFile(song) || !checkArtist(song)) {
             return;
         }
 
@@ -686,7 +694,7 @@ public final class LastFmService {
      */
     public void addBannedSong(IAudioObject song) {
         // Check all necessary conditions to submit request to Last.fm
-        if (!checkUser() || !checkAudioFile(song) || !checkPassword() || !checkArtist(song)) {
+        if (!checkCredentials() || !checkAudioFile(song) || !checkArtist(song)) {
             return;
         }
 
@@ -707,7 +715,7 @@ public final class LastFmService {
      */
     private void submitCache() throws ScrobblerException {
         // Do all necessary checks
-        if (!checkUser() || !checkPassword()) {
+        if (!checkCredentials()) {
             return;
         }
 
@@ -747,7 +755,7 @@ public final class LastFmService {
      */
     void submitNowPlayingInfo(ILocalAudioObject file) throws ScrobblerException {
         // Do all necessary checks
-        if (!checkUser() || !checkPassword() || !checkArtist(file) || !checkTitle(file)) {
+        if (!checkCredentials() || !checkArtist(file) || !checkTitle(file)) {
             return;
         }
 

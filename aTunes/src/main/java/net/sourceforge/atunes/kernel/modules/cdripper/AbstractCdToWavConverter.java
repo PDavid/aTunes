@@ -120,7 +120,7 @@ public abstract class AbstractCdToWavConverter {
      * @param cdInfo
      *            the cdInfo to set
      */
-    protected void setCdInfo(CDInfo cdInfo) {
+    protected void setCDInfo(CDInfo cdInfo) {
         this.cdInfo = cdInfo;
     }
 

@@ -34,7 +34,6 @@ import net.sourceforge.atunes.api.RepositoryApi;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectComparator;
-import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
@@ -48,8 +47,6 @@ import net.sourceforge.atunes.utils.Logger;
  */
 class InternalImportProcessor {
 
-	private final IFrame frame;
-	
 	private final INavigationHandler navigationHandler;
 	
     private final IPlayListTable playListTable;
@@ -59,14 +56,12 @@ class InternalImportProcessor {
     private final IAudioObjectComparator audioObjectComparator;
 	
 	/**
-	 * @param frame
 	 * @param navigationHandler
 	 * @param playListTable
 	 * @param playListHandler
 	 * @param audioObjectComparator
 	 */
-	public InternalImportProcessor(IFrame frame, INavigationHandler navigationHandler, IPlayListTable playListTable, IPlayListHandler playListHandler, IAudioObjectComparator audioObjectComparator) {
-		this.frame = frame;
+	public InternalImportProcessor(INavigationHandler navigationHandler, IPlayListTable playListTable, IPlayListHandler playListHandler, IAudioObjectComparator audioObjectComparator) {
 		this.navigationHandler = navigationHandler;
 		this.playListTable = playListTable;
 		this.playListHandler = playListHandler;
@@ -86,7 +81,7 @@ class InternalImportProcessor {
     	if (!CollectionUtils.isEmpty(listOfObjectsDragged)) {
     		// DRAG AND DROP FROM PLAY LIST -> MOVE			
     		if (listOfObjectsDragged.get(0) instanceof PlayListDragableRow) {
-    			return moveRowsInPlayList((List<PlayListDragableRow>) listOfObjectsDragged, ((JTable.DropLocation) support.getDropLocation()).getRow(), frame);
+    			return moveRowsInPlayList((List<PlayListDragableRow>) listOfObjectsDragged, ((JTable.DropLocation) support.getDropLocation()).getRow());
     		}
 
     		// DRAG AND DROP OF AN ARTIST -> add songs from this artist			
@@ -166,7 +161,7 @@ class InternalImportProcessor {
      * @param targetRow
      * @return
      */
-    private boolean moveRowsInPlayList(List<PlayListDragableRow> rowsDragged, int targetRow, IFrame frame) {
+    private boolean moveRowsInPlayList(List<PlayListDragableRow> rowsDragged, int targetRow) {
         if (rowsDragged == null || rowsDragged.isEmpty()) {
             return true;
         }

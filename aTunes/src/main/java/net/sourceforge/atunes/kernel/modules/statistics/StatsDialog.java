@@ -143,8 +143,57 @@ public final class StatsDialog extends AbstractCustomDialog {
         JScrollPane generalScrollPane = iLookAndFeel.getTableScrollPane(generalTable);
         generalChart = new JLabel();
         generalChart.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        // Songs stats
+        JPanel songPanel = new JPanel(new GridBagLayout());
+        songsTable = iLookAndFeel.getTable();
+        JScrollPane songsScrollPane = iLookAndFeel.getTableScrollPane(songsTable);
+        songsChart = new JLabel();
+        songsChart.setHorizontalAlignment(SwingConstants.CENTER);
 
-        GridBagConstraints c = new GridBagConstraints();
+        // Albums stats
+        JPanel albumPanel = new JPanel(new GridBagLayout());
+        albumsTable = iLookAndFeel.getTable();
+        JScrollPane albumsScrollPane = iLookAndFeel.getTableScrollPane(albumsTable);
+        albumsChart = new JLabel();
+        albumsChart.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // Artists stats
+        JPanel artistPanel = new JPanel(new GridBagLayout());
+        artistsTable = iLookAndFeel.getTable();
+        JScrollPane artistsScrollPane = iLookAndFeel.getTableScrollPane(artistsTable);
+        artistsChart = new JLabel();
+        artistsChart.setHorizontalAlignment(SwingConstants.CENTER);
+
+        arrangePanel(generalPanel, generalScrollPane, songPanel,
+				songsScrollPane, albumPanel, albumsScrollPane, artistPanel,
+				artistsScrollPane);
+
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.addTab(I18nUtils.getString("GENERAL"), generalPanel);
+        tabbedPane.addTab(I18nUtils.getString("SONG"), songPanel);
+        tabbedPane.addTab(I18nUtils.getString("ALBUM"), albumPanel);
+        tabbedPane.addTab(I18nUtils.getString("ARTIST"), artistPanel);
+        panel.add(tabbedPane, BorderLayout.CENTER);
+        return panel;
+    }
+
+	/**
+	 * @param generalPanel
+	 * @param generalScrollPane
+	 * @param songPanel
+	 * @param songsScrollPane
+	 * @param albumPanel
+	 * @param albumsScrollPane
+	 * @param artistPanel
+	 * @param artistsScrollPane
+	 */
+	private void arrangePanel(JPanel generalPanel,
+			JScrollPane generalScrollPane, JPanel songPanel,
+			JScrollPane songsScrollPane, JPanel albumPanel,
+			JScrollPane albumsScrollPane, JPanel artistPanel,
+			JScrollPane artistsScrollPane) {
+		GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 1;
@@ -157,13 +206,6 @@ public final class StatsDialog extends AbstractCustomDialog {
         c.weightx = 0;
         c.weighty = 0;
         generalPanel.add(generalChart, c);
-
-        // Songs stats
-        JPanel songPanel = new JPanel(new GridBagLayout());
-        songsTable = iLookAndFeel.getTable();
-        JScrollPane songsScrollPane = iLookAndFeel.getTableScrollPane(songsTable);
-        songsChart = new JLabel();
-        songsChart.setHorizontalAlignment(SwingConstants.CENTER);
 
         c.gridx = 0;
         c.gridy = 0;
@@ -178,13 +220,6 @@ public final class StatsDialog extends AbstractCustomDialog {
         c.weighty = 0;
         songPanel.add(songsChart, c);
 
-        // Albums stats
-        JPanel albumPanel = new JPanel(new GridBagLayout());
-        albumsTable = iLookAndFeel.getTable();
-        JScrollPane albumsScrollPane = iLookAndFeel.getTableScrollPane(albumsTable);
-        albumsChart = new JLabel();
-        albumsChart.setHorizontalAlignment(SwingConstants.CENTER);
-
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 1;
@@ -196,13 +231,6 @@ public final class StatsDialog extends AbstractCustomDialog {
         c.weighty = 0;
         albumPanel.add(albumsChart, c);
 
-        // Artists stats
-        JPanel artistPanel = new JPanel(new GridBagLayout());
-        artistsTable = iLookAndFeel.getTable();
-        JScrollPane artistsScrollPane = iLookAndFeel.getTableScrollPane(artistsTable);
-        artistsChart = new JLabel();
-        artistsChart.setHorizontalAlignment(SwingConstants.CENTER);
-
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 1;
@@ -213,15 +241,7 @@ public final class StatsDialog extends AbstractCustomDialog {
         c.weightx = 0;
         c.weighty = 0;
         artistPanel.add(artistsChart, c);
-
-        JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.addTab(I18nUtils.getString("GENERAL"), generalPanel);
-        tabbedPane.addTab(I18nUtils.getString("SONG"), songPanel);
-        tabbedPane.addTab(I18nUtils.getString("ALBUM"), albumPanel);
-        tabbedPane.addTab(I18nUtils.getString("ARTIST"), artistPanel);
-        panel.add(tabbedPane, BorderLayout.CENTER);
-        return panel;
-    }
+	}
 
     /**
      * Gets the general chart.
