@@ -149,7 +149,14 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
     /**
      * A thread invoking play in engine
      */
-    Thread playAudioObjectThread;
+    private Thread playAudioObjectThread;
+    
+    /**
+     * @param playAudioObjectThread
+     */
+    protected void setPlayAudioObjectThread(Thread playAudioObjectThread) {
+		this.playAudioObjectThread = playAudioObjectThread;
+	}
 
     /**
      * Checks if engine is currently playing (<code>true</code>) or not (

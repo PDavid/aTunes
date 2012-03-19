@@ -65,7 +65,7 @@ class AlbumsTableCellRendererCode extends ContextTableRowPanel<IAlbumInfo> {
 	
 	@Override
 	public List<ContextTableAction<IAlbumInfo>> getActions() {
-		ContextTableAction<IAlbumInfo> action = new ContextTableAction<IAlbumInfo>(I18nUtils.getString("READ_MORE"), table, desktop) {
+		ContextTableAction<IAlbumInfo> action = new ContextTableAction<IAlbumInfo>(I18nUtils.getString("READ_MORE"), getTable(), desktop) {
 			/**
 			 * 
 			 */
@@ -78,7 +78,7 @@ class AlbumsTableCellRendererCode extends ContextTableRowPanel<IAlbumInfo> {
 			
 			@Override
 			protected IAlbumInfo getSelectedObject(int row) {
-				return  ((ContextAlbumsTableModel) table.getModel()).getAlbum(row);
+				return  ((ContextAlbumsTableModel) getTable().getModel()).getAlbum(row);
 			}
 			
 			@Override

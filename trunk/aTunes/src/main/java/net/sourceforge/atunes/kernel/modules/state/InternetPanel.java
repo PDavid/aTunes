@@ -90,11 +90,6 @@ public final class InternetPanel extends AbstractPreferencesPanel {
      * Initializes panel 
      */
     public void initialize() {
-        GridBagConstraints c = new GridBagConstraints();
-        c.weightx = 1;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(10, 0, 10, 10);
-
         noProxyRadioButton = new JRadioButton(I18nUtils.getString("NO_PROXY"));
         noProxyRadioButton.addActionListener(new ActionListener() {
             @Override
@@ -141,6 +136,17 @@ public final class InternetPanel extends AbstractPreferencesPanel {
         proxyPassword = new JPasswordField(15);
         proxyPassword.setEnabled(false);
 
+        arrangePanel();
+    }
+
+	/**
+	 * 
+	 */
+	private void arrangePanel() {
+		GridBagConstraints c = new GridBagConstraints();
+        c.weightx = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(10, 0, 10, 10);
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 0;
@@ -187,7 +193,7 @@ public final class InternetPanel extends AbstractPreferencesPanel {
         c.weightx = 1;
         c.weighty = 1;
         add(proxyPassword, c);
-    }
+	}
 
     /**
      * Enable proxy settings.

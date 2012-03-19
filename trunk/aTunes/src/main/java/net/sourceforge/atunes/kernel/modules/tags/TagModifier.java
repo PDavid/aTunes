@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.tags;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
 
@@ -156,32 +157,10 @@ final class TagModifier {
         String albumArtist = tag.getAlbumArtist();
 
         try {
-            // Be sure file is writable before setting info
-            FileUtils.setWritable(file.getFile());
-
-            org.jaudiotagger.audio.AudioFile audioFile = org.jaudiotagger.audio.AudioFileIO.read(file.getFile());
-            org.jaudiotagger.tag.Tag newTag = audioFile.getTagOrCreateAndSetDefault();
-
-            if (localAudioObjectValidator.isOneOfTheseFormats(file.getFile().getName(), LocalAudioObjectFormat.MP3)) {
-                org.jaudiotagger.audio.mp3.MP3File mp3file = (org.jaudiotagger.audio.mp3.MP3File) audioFile;
-                if (mp3file.hasID3v1Tag() && !mp3file.hasID3v2Tag()) {
-                    deleteTags(file);
-                    audioFile = org.jaudiotagger.audio.AudioFileIO.read(file.getFile());
-                    newTag = audioFile.getTagOrCreateAndSetDefault();
-                }
-            }
-
-            editCover(file, shouldEditCover, cover, newTag);
-
-            // Workaround for mp4 files - strings outside genre list might not be written otherwise
-            if (localAudioObjectValidator.isOneOfTheseFormats(file.getFile().getName(), LocalAudioObjectFormat.MP4_1, LocalAudioObjectFormat.MP4_2)) {
-                newTag.deleteField(FieldKey.GENRE);
-            }
-
-            setTagFields(file, title, album, artist, year, comment, genre, lyrics, composer, track, discNumber, albumArtist, newTag);
-
-            audioFile.setTag(newTag);
-            audioFile.commit();
+            writeTagToFile(file, shouldEditCover, cover,
+					localAudioObjectValidator, title, album, artist, year,
+					comment, genre, lyrics, composer, track, discNumber,
+					albumArtist);
         } catch (IOException e) {
             reportWriteError(file, e);
         } catch (CannotReadException e) {
@@ -199,6 +178,69 @@ final class TagModifier {
 			reportWriteError(file, e);
 		}
     }
+
+	/**
+	 * @param file
+	 * @param shouldEditCover
+	 * @param cover
+	 * @param localAudioObjectValidator
+	 * @param title
+	 * @param album
+	 * @param artist
+	 * @param year
+	 * @param comment
+	 * @param genre
+	 * @param lyrics
+	 * @param composer
+	 * @param track
+	 * @param discNumber
+	 * @param albumArtist
+	 * @throws FileNotFoundException
+	 * @throws CannotReadException
+	 * @throws IOException
+	 * @throws TagException
+	 * @throws ReadOnlyFileException
+	 * @throws InvalidAudioFrameException
+	 * @throws ImageReadException
+	 * @throws FieldDataInvalidException
+	 * @throws CannotWriteException
+	 */
+	private void writeTagToFile(ILocalAudioObject file,
+			boolean shouldEditCover, byte[] cover,
+			ILocalAudioObjectValidator localAudioObjectValidator, String title,
+			String album, String artist, int year, String comment,
+			String genre, String lyrics, String composer, int track,
+			int discNumber, String albumArtist) throws FileNotFoundException,
+			CannotReadException, IOException, TagException,
+			ReadOnlyFileException, InvalidAudioFrameException,
+			ImageReadException, FieldDataInvalidException, CannotWriteException {
+		// Be sure file is writable before setting info
+		FileUtils.setWritable(file.getFile());
+
+		org.jaudiotagger.audio.AudioFile audioFile = org.jaudiotagger.audio.AudioFileIO.read(file.getFile());
+		org.jaudiotagger.tag.Tag newTag = audioFile.getTagOrCreateAndSetDefault();
+
+		if (localAudioObjectValidator.isOneOfTheseFormats(file.getFile().getName(), LocalAudioObjectFormat.MP3)) {
+		    org.jaudiotagger.audio.mp3.MP3File mp3file = (org.jaudiotagger.audio.mp3.MP3File) audioFile;
+		    if (mp3file.hasID3v1Tag() && !mp3file.hasID3v2Tag()) {
+		        deleteTags(file);
+		        audioFile = org.jaudiotagger.audio.AudioFileIO.read(file.getFile());
+		        newTag = audioFile.getTagOrCreateAndSetDefault();
+		    }
+		}
+
+		editCover(file, shouldEditCover, cover, newTag);
+
+		// Workaround for mp4 files - strings outside genre list might not be written otherwise
+		if (localAudioObjectValidator.isOneOfTheseFormats(file.getFile().getName(), LocalAudioObjectFormat.MP4_1, LocalAudioObjectFormat.MP4_2)) {
+		    newTag.deleteField(FieldKey.GENRE);
+		}
+
+		setTagFields(file, title, album, artist, year, comment, genre, lyrics, composer, track, discNumber, albumArtist, newTag);
+
+		audioFile.setTag(newTag);
+		audioFile.commit();
+	}
 
 	/**
 	 * @param file
