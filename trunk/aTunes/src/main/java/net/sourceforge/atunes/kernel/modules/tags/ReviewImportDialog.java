@@ -62,7 +62,36 @@ import org.jdesktop.swingx.treetable.DefaultMutableTreeTableNode;
 
 public final class ReviewImportDialog extends AbstractCustomDialog implements IReviewImportDialog {
 
-    private static final long serialVersionUID = 8523236886848649698L;
+    private final class FillTagsFromFolderNameActionListener implements
+			ActionListener {
+		private final ILookAndFeel lookAndFeel;
+
+		private FillTagsFromFolderNameActionListener(ILookAndFeel lookAndFeel) {
+			this.lookAndFeel = lookAndFeel;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		    TreePath[] selectedNodes = treeTable.getTreeSelectionModel().getSelectionPaths();
+		    if (selectedNodes.length > 0) {
+		        PatternInputDialog inputDialog = new PatternInputDialog(ReviewImportDialog.this, true, state, lookAndFeel);
+		        Object node = selectedNodes[0].getLastPathComponent();
+		        Object folder = ((DefaultMutableTreeTableNode)node).getUserObject();
+		        inputDialog.show(Patterns.getMassiveRecognitionPatterns(), ((File)folder).getAbsolutePath());
+		        String pattern = inputDialog.getResult();
+		        for (TreePath treePath : selectedNodes) {
+		            node = treePath.getLastPathComponent();                        
+		            folder = ((DefaultMutableTreeTableNode)node).getUserObject();
+		            Map<String, String> matches = Patterns.getPatternMatches(pattern, ((File)folder).getAbsolutePath(), true);
+		            for (Entry<String, String> entry : matches.entrySet()) {
+		                ((ReviewImportTreeTableModel) treeTable.getTreeTableModel()).setValueForColumn(treeTable.getRowForPath(treePath), entry.getKey(), entry.getValue());
+		            }
+		        }
+		    }
+		}
+	}
+
+	private static final long serialVersionUID = 8523236886848649698L;
 
     /**
      * Review instructions
@@ -131,27 +160,7 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements IR
         final JButton fillTagsFromFolderName = new JButton(StringUtils.getString(I18nUtils.getString("FILL_TAGS_FROM_FOLDER_NAME"), "..."));
         // Disabled as initially there is no row selected
         fillTagsFromFolderName.setEnabled(false);
-        fillTagsFromFolderName.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                TreePath[] selectedNodes = treeTable.getTreeSelectionModel().getSelectionPaths();
-                if (selectedNodes.length > 0) {
-                    PatternInputDialog inputDialog = new PatternInputDialog(ReviewImportDialog.this, true, state, lookAndFeel);
-                    Object node = selectedNodes[0].getLastPathComponent();
-                    Object folder = ((DefaultMutableTreeTableNode)node).getUserObject();
-                    inputDialog.show(Patterns.getMassiveRecognitionPatterns(), ((File)folder).getAbsolutePath());
-                    String pattern = inputDialog.getResult();
-                    for (TreePath treePath : selectedNodes) {
-                        node = treePath.getLastPathComponent();                        
-                        folder = ((DefaultMutableTreeTableNode)node).getUserObject();
-                        Map<String, String> matches = Patterns.getPatternMatches(pattern, ((File)folder).getAbsolutePath(), true);
-                        for (Entry<String, String> entry : matches.entrySet()) {
-                            ((ReviewImportTreeTableModel) treeTable.getTreeTableModel()).setValueForColumn(treeTable.getRowForPath(treePath), entry.getKey(), entry.getValue());
-                        }
-                    }
-                }
-            }
-        });
+        fillTagsFromFolderName.addActionListener(new FillTagsFromFolderNameActionListener(lookAndFeel));
 
         treeTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override

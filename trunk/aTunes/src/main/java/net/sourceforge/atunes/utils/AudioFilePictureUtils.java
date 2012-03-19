@@ -95,26 +95,13 @@ public final class AudioFilePictureUtils {
      * Gets the external picture.
      * 
      * @param file
-     * @param width
-     * @param height
-     * @param osManager
-     * @return
-     */
-    public static ImageIcon getExternalPicture(ILocalAudioObject file, int width, int height, IOSManager osManager) {
-        return getExternalPicture(file, 0, width, height, osManager);
-    }
-
-    /**
-     * Gets the external picture.
-     * 
-     * @param file
      * @param index
      * @param width
      * @param height
      * @param osManager
      * @return
      */
-    private static ImageIcon getExternalPicture(ILocalAudioObject file, int index, int width, int height, IOSManager osManager) {
+    public static ImageIcon getExternalPicture(ILocalAudioObject file, int width, int height, IOSManager osManager) {
         // Try first to get picture with file name "ARTIST_ALBUM_COVER" pattern
         String coverFileName = getFileNameForCover(file, osManager);
         ImageIcon image = null;

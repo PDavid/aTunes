@@ -89,7 +89,17 @@ public class ProgressDialog extends AbstractCustomDialog implements IProgressDia
         totalLabel = new JLabel();
         cancelButton = new JButton(I18nUtils.getString("CANCEL"));
 
-        GridBagConstraints c = new GridBagConstraints();
+        arrangePanel(panel, separatorLabel);
+
+        return panel;
+    }
+
+	/**
+	 * @param panel
+	 * @param separatorLabel
+	 */
+	private void arrangePanel(JPanel panel, JLabel separatorLabel) {
+		GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
         c.gridheight = 5;
@@ -127,9 +137,7 @@ public class ProgressDialog extends AbstractCustomDialog implements IProgressDia
         c.fill = GridBagConstraints.NONE;
         c.anchor = GridBagConstraints.CENTER;
         panel.add(cancelButton, c);
-
-        return panel;
-    }
+	}
 
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.gui.views.dialogs.IProgressDialog#setInfoText(java.lang.String)

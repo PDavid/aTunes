@@ -315,7 +315,7 @@ public class Cdda2wav extends AbstractCdToWavConverter {
 
             // If the recursive function had some result, assign it to cd
             if (cdRecursive != null) {
-                setCdInfo(cdRecursive);
+                setCDInfo(cdRecursive);
             }
             // If no tracks are found, assuming no CD inserted.
             if (!cdLoaded || getCdInfo().getTracks() == 0) {

@@ -118,11 +118,12 @@ public final class LookAndFeelManager implements PluginListener, ILookAndFeelMan
     }
 
     @Override
-	public void setLookAndFeel(LookAndFeelBean lookAndFeelBean, IState state, IOSManager osManager) {
+	public void setLookAndFeel(LookAndFeelBean bean, IState state, IOSManager osManager) {
         if (applicationArguments.isIgnoreLookAndFeel()) {
             return;
         }
         
+        LookAndFeelBean lookAndFeelBean = bean;
         if (lookAndFeelBean == null || lookAndFeelBean.getName() == null) {
             lookAndFeelBean = new LookAndFeelBean();
             ILookAndFeel defaultLookAndFeel = null;

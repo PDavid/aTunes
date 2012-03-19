@@ -27,7 +27,6 @@ import javax.swing.TransferHandler;
 
 import net.sourceforge.atunes.model.IAudioObjectComparator;
 import net.sourceforge.atunes.model.IDeviceHandler;
-import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.ILocalAudioObjectLocator;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
@@ -49,8 +48,6 @@ public class PlayListTableTransferHandler extends TransferHandler {
 
     private static final long serialVersionUID = 4366983690375897364L;
 
-    private IFrame frame;
-    
     private IPlayListHandler playListHandler;
 
     private INavigationHandler navigationHandler;
@@ -69,7 +66,6 @@ public class PlayListTableTransferHandler extends TransferHandler {
     
     /**
      * @param playListTable
-     * @param frame
      * @param playListHandler
      * @param navigationHandler
      * @param deviceHandler
@@ -80,9 +76,8 @@ public class PlayListTableTransferHandler extends TransferHandler {
      * @param localAudioObjectLocator
      * @param playListIOService
      */
-    public PlayListTableTransferHandler(IPlayListTable playListTable, IFrame frame, IPlayListHandler playListHandler, INavigationHandler navigationHandler, IDeviceHandler deviceHandler, INavigationView deviceNavigationView, ILocalAudioObjectFactory localAudioObjectFactory, ILocalAudioObjectValidator localAudioObjectValidator, IAudioObjectComparator audioObjectComparator, ILocalAudioObjectLocator localAudioObjectLocator, IPlayListIOService playListIOService) {
+    public PlayListTableTransferHandler(IPlayListTable playListTable, IPlayListHandler playListHandler, INavigationHandler navigationHandler, IDeviceHandler deviceHandler, INavigationView deviceNavigationView, ILocalAudioObjectFactory localAudioObjectFactory, ILocalAudioObjectValidator localAudioObjectValidator, IAudioObjectComparator audioObjectComparator, ILocalAudioObjectLocator localAudioObjectLocator, IPlayListIOService playListIOService) {
     	this.playListTable = playListTable;
-    	this.frame = frame;
     	this.playListHandler = playListHandler;
     	this.navigationHandler = navigationHandler;
     	this.localAudioObjectFactory = localAudioObjectFactory;
@@ -138,7 +133,7 @@ public class PlayListTableTransferHandler extends TransferHandler {
         }
 
         if (support.getTransferable().isDataFlavorSupported(DragAndDropHelper.getInternalDataFlavor())) {
-            return new InternalImportProcessor(frame, navigationHandler, playListTable, playListHandler, audioObjectComparator).processInternalImport(support);
+            return new InternalImportProcessor(navigationHandler, playListTable, playListHandler, audioObjectComparator).processInternalImport(support);
         }
 
         return new ExternalImportProcessor(localAudioObjectFactory, localAudioObjectValidator, localAudioObjectLocator, playListIOService, playListTable, playListHandler, audioObjectComparator).processExternalImport(support);

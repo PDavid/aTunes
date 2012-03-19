@@ -153,9 +153,9 @@ public class AudioObjectBasicInfoDataSource implements IContextInformationSource
         if (audioObject instanceof ILocalAudioObject) {
             ImageIcon localImage = audioObjectImageLocator.getImage(audioObject, Constants.ALBUM_IMAGE_SIZE);
             if (localImage == null) {
-                ImageIcon image = webServicesHandler.getAlbumImage(audioObject.getArtist(), audioObject.getAlbum());
-                if (image != null) {
-                    localImage = ImageUtils.resize(image, Constants.ALBUM_IMAGE_SIZE.getSize(), Constants.ALBUM_IMAGE_SIZE.getSize());
+                ImageIcon albumImage = webServicesHandler.getAlbumImage(audioObject.getArtist(), audioObject.getAlbum());
+                if (albumImage != null) {
+                    localImage = ImageUtils.resize(albumImage, Constants.ALBUM_IMAGE_SIZE.getSize(), Constants.ALBUM_IMAGE_SIZE.getSize());
                 }
             }
             return localImage;

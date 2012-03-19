@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.gui.views.controls.playerControls;
 
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -220,9 +219,6 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
 		return this;
 	}    
 	
-	/** Double values for Horizontal and Vertical radius of corner arcs */
-    private Dimension arcs = new Dimension(20, 20);
-    
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);

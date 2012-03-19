@@ -107,7 +107,38 @@ final class PodcastFeedEntryPropertiesDialog extends AudioObjectPropertiesDialog
         JPanel panel = new JPanel(new GridBagLayout());
         
         pictureLabel = new JLabel();
-        GridBagConstraints c = new GridBagConstraints();
+        titleLabel = new JLabel();
+        titleLabel.setFont(iLookAndFeel.getPropertiesDialogBigFont());
+        artistLabel = new JLabel();
+        artistLabel.setFont(iLookAndFeel.getPropertiesDialogBigFont());
+        urlLabel = new JLabel();
+        urlLabel.setFont(iLookAndFeel.getPropertiesDialogBigFont());
+        durationLabel = new JLabel();
+        dateLabel = new JLabel();       
+        podcastFeedLabel = new JLabel();
+        downloadedLabel = new JLabel();
+        descriptionLabel = new JLabel();
+        JScrollPane descriptionScrollPane = iLookAndFeel.getScrollPane(null);
+        descriptionScrollPane.setMinimumSize(new Dimension(400, 100));
+        descriptionTextArea = new CustomTextArea();
+        descriptionTextArea.setEditable(false);
+        descriptionTextArea.setLineWrap(true);
+        descriptionTextArea.setWrapStyleWord(true);
+        descriptionTextArea.setOpaque(false);
+        descriptionTextArea.setBorder(BorderFactory.createEmptyBorder());
+        descriptionScrollPane.setViewportView(descriptionTextArea);
+        
+        arrangePanel(panel, descriptionScrollPane);
+
+        add(panel);
+    }
+
+	/**
+	 * @param panel
+	 * @param descriptionScrollPane
+	 */
+	private void arrangePanel(JPanel panel, JScrollPane descriptionScrollPane) {
+		GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
         c.gridheight = 3;
@@ -116,8 +147,6 @@ final class PodcastFeedEntryPropertiesDialog extends AudioObjectPropertiesDialog
         c.fill = GridBagConstraints.VERTICAL;
         panel.add(pictureLabel, c);
 
-        titleLabel = new JLabel();
-        titleLabel.setFont(iLookAndFeel.getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 0;
         c.gridheight = 1;
@@ -125,62 +154,47 @@ final class PodcastFeedEntryPropertiesDialog extends AudioObjectPropertiesDialog
         c.fill = GridBagConstraints.HORIZONTAL;
         panel.add(titleLabel, c);
 
-        artistLabel = new JLabel();
-        artistLabel.setFont(iLookAndFeel.getPropertiesDialogBigFont());
         c.gridx = 1;
         c.gridy = 1;
         panel.add(artistLabel, c);
 
-        urlLabel = new JLabel();
-        urlLabel.setFont(iLookAndFeel.getPropertiesDialogBigFont());
+
         c.gridx = 1;
         c.gridy = 2;
         panel.add(urlLabel, c);
 
-        durationLabel = new JLabel();
+  
         c.gridx = 1;
         c.gridy = 3;
         panel.add(durationLabel, c);
 
-        dateLabel = new JLabel();
+ 
         c.gridx = 1;
         c.gridy = 4;
         panel.add(dateLabel, c);
 
-        podcastFeedLabel = new JLabel();
+     
         c.gridx = 1;
         c.gridy = 5;
         panel.add(podcastFeedLabel, c);
 
-        downloadedLabel = new JLabel();
+   
         c.gridx = 1;
         c.gridy = 6;
         panel.add(downloadedLabel, c);
 
-        descriptionLabel = new JLabel();
+   
         c.gridx = 1;
         c.gridy = 7;
         c.insets = new Insets(5, 10, 0, 10);
         panel.add(descriptionLabel, c);
 
-        JScrollPane descriptionScrollPane = iLookAndFeel.getScrollPane(null);
-        descriptionScrollPane.setMinimumSize(new Dimension(400, 100));
+   
         c.gridx = 1;
         c.gridy = 8;
         c.insets = new Insets(0, 10, 5, 10);
         panel.add(descriptionScrollPane, c);
-
-        descriptionTextArea = new CustomTextArea();
-        descriptionTextArea.setEditable(false);
-        descriptionTextArea.setLineWrap(true);
-        descriptionTextArea.setWrapStyleWord(true);
-        descriptionTextArea.setOpaque(false);
-        descriptionTextArea.setBorder(BorderFactory.createEmptyBorder());
-        descriptionScrollPane.setViewportView(descriptionTextArea);
-
-        add(panel);
-
-    }
+	}
 
     /**
      * Fill picture.

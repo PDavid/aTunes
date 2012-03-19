@@ -315,20 +315,20 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
 	}
 	
 	@Override
-	public void playbackStateChanged(final PlaybackState newState, final IAudioObject currentAudioObject) {
+	public void playbackStateChanged(PlaybackState newState, final IAudioObject currentAudioObject) {
         if (!EventQueue.isDispatchThread()) {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    playbackStateChangedEDT(newState, currentAudioObject);
+                    playbackStateChangedEDT(currentAudioObject);
                 }
             });
         } else {
-            playbackStateChangedEDT(newState, currentAudioObject);
+            playbackStateChangedEDT(currentAudioObject);
         }
 	}
 	
-    private void playbackStateChangedEDT(PlaybackState newState, IAudioObject currentAudioObject) {
+    private void playbackStateChangedEDT(IAudioObject currentAudioObject) {
     	String text = currentAudioObject != null ? currentAudioObject.getAudioObjectDescription() : "";
         StringBuilder strBuilder = new StringBuilder();
         if (!text.equals("")) {

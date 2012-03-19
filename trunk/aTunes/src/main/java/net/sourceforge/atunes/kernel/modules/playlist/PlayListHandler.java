@@ -260,7 +260,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     @Override
     public void allHandlersInitialized() {
         // Create drag and drop listener
-    	playListPanel.enableDragAndDrop(new PlayListTableTransferHandler(playListTable, getFrame(), this, navigationHandler, deviceHandler, deviceNavigationView, localAudioObjectFactory, localAudioObjectValidator, audioObjectComparator, localAudioObjectLocator, playListIOService));
+    	playListPanel.enableDragAndDrop(new PlayListTableTransferHandler(playListTable, this, navigationHandler, deviceHandler, deviceNavigationView, localAudioObjectFactory, localAudioObjectValidator, audioObjectComparator, localAudioObjectLocator, playListIOService));
     }
 
     /**
