@@ -65,7 +65,9 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 public class RepositoryNavigationView extends AbstractNavigationView {
 
-    private JTree tree;
+    private static final String REPOSITORY = "REPOSITORY";
+
+	private JTree tree;
 
     private JPopupMenu treePopupMenu;
 
@@ -134,7 +136,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
 
     @Override
     public String getTitle() {
-        return I18nUtils.getString("REPOSITORY");
+        return I18nUtils.getString(REPOSITORY);
     }
 
     @Override
@@ -145,7 +147,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
     @Override
     public JTree getTree() {
         if (tree == null) {
-            tree = new NavigationTree(new DefaultTreeModel(new DefaultMutableTreeNode(I18nUtils.getString("REPOSITORY"))));
+            tree = new NavigationTree(new DefaultTreeModel(new DefaultMutableTreeNode(I18nUtils.getString(REPOSITORY))));
             tree.setToggleClickCount(0);
             tree.setCellRenderer(getTreeRenderer());
             ToolTipManager.sharedInstance().registerComponent(tree);
@@ -281,7 +283,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
         List<ITreeObject<? extends IAudioObject>> objectsExpanded = getTreeObjectsExpanded(tree, root);
         
         // Build treeN
-        getTreeGeneratorFactory().getTreeGenerator(viewMode).buildTree("REPOSITORY", this, (Map<String, IYear>) getViewData(viewMode), treeFilter, root, treeModel, objectsSelected, objectsExpanded);
+        getTreeGeneratorFactory().getTreeGenerator(viewMode).buildTree(REPOSITORY, this, (Map<String, IYear>) getViewData(viewMode), treeFilter, root, treeModel, objectsSelected, objectsExpanded);
         
         getTree().expandRow(0);
     }
@@ -315,7 +317,7 @@ public class RepositoryNavigationView extends AbstractNavigationView {
      */
     static String getToolTipForRepository(IRepositoryHandler repositoryHandler) {
         int songs = repositoryHandler.getAudioFilesList().size();
-        return StringUtils.getString(I18nUtils.getString("REPOSITORY"), " (", songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG")), ")");
+        return StringUtils.getString(I18nUtils.getString(REPOSITORY), " (", songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG")), ")");
     }
     
     public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {

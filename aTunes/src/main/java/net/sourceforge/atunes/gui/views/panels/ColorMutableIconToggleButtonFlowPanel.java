@@ -123,7 +123,7 @@ public class ColorMutableIconToggleButtonFlowPanel extends JPanel implements ILo
 	
 	private void addButtonToPanel(final ColorMutableIconToggleButton button) {
 		JToggleButton toggle = new JToggleButton(button.getIcon().getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls()));
-		toggle.setToolTipText(button.getTooltip());
+		toggle.setToolTipText(button.getToolTip());
 		// Use action listener to encapsulate action to avoid toggle button use text and icon from action object
 		toggle.addActionListener(new ToggleButtonActionListener(button));
 		group.add(toggle);
@@ -192,7 +192,7 @@ public class ColorMutableIconToggleButtonFlowPanel extends JPanel implements ILo
 		/**
 		 * @return
 		 */
-		public String getTooltip() {
+		public String getToolTip() {
 			return tooltip;
 		}
 		

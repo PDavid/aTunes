@@ -163,6 +163,7 @@ public class OggEncoder extends AbstractEncoder {
 	 * @return
 	 */
 	private int analizeLine(String s, int percent) {
+		int percentAux = percent;
 		if (getListener() != null) {
 		    if (s.matches("\t\\[.....%.*")) {
 		        // Percent values can be for example 0.3% or 0,3%, so be careful with "." and ","
@@ -171,9 +172,9 @@ public class OggEncoder extends AbstractEncoder {
 		            decimalPointPosition = s.indexOf(',');
 		        }
 		        int aux = Integer.parseInt((s.substring(s.indexOf('[') + 1, decimalPointPosition).trim()));
-		        if (aux != percent) {
-		            percent = aux;
-		            final int percentHelp = percent;
+		        if (aux != percentAux) {
+		            percentAux = aux;
+		            final int percentHelp = percentAux;
 		            SwingUtilities.invokeLater(new Runnable() {
 		                @Override
 		                public void run() {
@@ -190,7 +191,7 @@ public class OggEncoder extends AbstractEncoder {
 		        });
 		    }
 		}
-		return percent;
+		return percentAux;
 	}
 
 	/**

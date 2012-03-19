@@ -244,34 +244,35 @@ final class RepositoryFiller {
 	 * @param a
 	 */
 	private void storeArtistInStructure(ILocalAudioObject file, String artist, String album, boolean albumArtistPresent, IArtist a) {
-		IAlbum alb = a.getAlbum(album);
+		IArtist artistObject = a;
+		IAlbum alb = artistObject.getAlbum(album);
 		if (alb != null) {
 			if (alb.size() == 1) {
-				a.removeAlbum(alb);
+				artistObject.removeAlbum(alb);
 			} else {
 				alb.removeAudioFile(file);
 			}
 
-			if (a.size() <= 0) {
-				repository.removeArtist(a);
+			if (artistObject.size() <= 0) {
+				repository.removeArtist(artistObject);
 			}
 		}
 		// If album artist field is present, audio file might still be
 		// present under artist name so check
 		if (albumArtistPresent) {
-			a = repository.getArtist(artist);
-			if (a != null) {
-				alb = a.getAlbum(album);
+			artistObject = repository.getArtist(artist);
+			if (artistObject != null) {
+				alb = artistObject.getAlbum(album);
 				if (alb != null) {
 					if (alb.size() == 1) {
-						a.removeAlbum(alb);
+						artistObject.removeAlbum(alb);
 					} else {
 						alb.removeAudioFile(file);
 					}
 					// Maybe needs to be set to 0 in case node gets
 					// deleted
-					if (a.size() <= 1) {
-						repository.removeArtist(a);
+					if (artistObject.size() <= 1) {
+						repository.removeArtist(artistObject);
 					}
 				}
 			}

@@ -107,35 +107,48 @@ public final class CheckThreadViolationRepaintManager extends RepaintManager {
      */
     private void checkThreadViolations(JComponent c) {
         if (!SwingUtilities.isEventDispatchThread() && (completeCheck || c.isShowing())) {
-            boolean repaint = false;
-            boolean fromSwing = false;
-            boolean imageUpdate = false;
-            StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-            for (StackTraceElement st : stackTrace) {
-                if (repaint && st.getClassName().startsWith("javax.swing.")) {
-                    fromSwing = true;
-                }
-                if (repaint && "imageUpdate".equals(st.getMethodName())) {
-                    imageUpdate = true;
-                }
-                if ("repaint".equals(st.getMethodName())) {
-                    repaint = true;
-                    fromSwing = false;
-                }
-            }
-            if (checkConditions(c, repaint, fromSwing, imageUpdate)) {
-            	return;
-            }
-
-            lastComponent = new WeakReference<JComponent>(c);
-            Logger.error("EDT violation detected");
-            Logger.error(c);
-            for (StackTraceElement st : stackTrace) {
-            	Logger.error("\tat ", st.toString());
-            }
-            Toolkit.getDefaultToolkit().beep();
+            checkPossibleViolation(c);
         }
     }
+
+	/**
+	 * @param c
+	 */
+	private void checkPossibleViolation(JComponent c) {
+		boolean repaint = false;
+		boolean fromSwing = false;
+		boolean imageUpdate = false;
+		StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+		for (StackTraceElement st : stackTrace) {
+		    if (repaint && st.getClassName().startsWith("javax.swing.")) {
+		        fromSwing = true;
+		    }
+		    if (repaint && "imageUpdate".equals(st.getMethodName())) {
+		        imageUpdate = true;
+		    }
+		    if ("repaint".equals(st.getMethodName())) {
+		        repaint = true;
+		        fromSwing = false;
+		    }
+		}
+		if (!checkConditions(c, repaint, fromSwing, imageUpdate)) {
+			lastComponent = new WeakReference<JComponent>(c);
+			logViolation(c, stackTrace);
+		}
+	}
+
+	/**
+	 * @param c
+	 * @param stackTrace
+	 */
+	private void logViolation(JComponent c, StackTraceElement[] stackTrace) {
+		Logger.error("EDT violation detected");
+		Logger.error(c);
+		for (StackTraceElement st : stackTrace) {
+			Logger.error("\tat ", st.toString());
+		}
+		Toolkit.getDefaultToolkit().beep();
+	}
 
 	private boolean checkConditions(JComponent c, boolean repaint, boolean fromSwing, boolean imageUpdate) {
         if (imageUpdate) {

@@ -30,7 +30,8 @@ import net.sourceforge.atunes.utils.Logger;
 
 abstract class AbstractHotkeys {
 
-    private IHotkeyListener hotkeyListener;
+    private static final String NO_HOTKEYS_SUPPORTED = "No hotkeys supported";
+	private IHotkeyListener hotkeyListener;
 
     protected AbstractHotkeys(IHotkeyListener hotkeyListener) {
         this.hotkeyListener = hotkeyListener;
@@ -64,22 +65,22 @@ abstract class AbstractHotkeys {
                 return null;
             }
         } catch (SecurityException e) {
-            Logger.info("No hotkeys supported", e.getMessage());
+            Logger.info(NO_HOTKEYS_SUPPORTED, e.getMessage());
             return null;
 		} catch (NoSuchMethodException e) {
-            Logger.info("No hotkeys supported", e.getMessage());
+            Logger.info(NO_HOTKEYS_SUPPORTED, e.getMessage());
             return null;
 		} catch (IllegalArgumentException e) {
-            Logger.info("No hotkeys supported", e.getMessage());
+            Logger.info(NO_HOTKEYS_SUPPORTED, e.getMessage());
             return null;
 		} catch (InstantiationException e) {
-            Logger.info("No hotkeys supported", e.getMessage());
+            Logger.info(NO_HOTKEYS_SUPPORTED, e.getMessage());
             return null;
 		} catch (IllegalAccessException e) {
-            Logger.info("No hotkeys supported", e.getMessage());
+            Logger.info(NO_HOTKEYS_SUPPORTED, e.getMessage());
             return null;
 		} catch (InvocationTargetException e) {
-            Logger.info("No hotkeys supported", e.getMessage());
+            Logger.info(NO_HOTKEYS_SUPPORTED, e.getMessage());
             return null;
 		}
     }

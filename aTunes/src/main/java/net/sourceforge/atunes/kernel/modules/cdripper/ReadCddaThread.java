@@ -98,7 +98,7 @@ final class ReadCddaThread extends Thread {
 	 * Fills cd info object
 	 */
 	private void fillCdInfo() {
-		CDInfo info = cdda2wav.getCdInfo();
+		CDInfo info = cdda2wav.getCDInfo();
         info.setTracks(tracks);
         info.setDurations(durations);
         info.setDuration(totalDuration);

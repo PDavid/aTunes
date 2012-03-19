@@ -62,6 +62,10 @@ public interface IHotkeyHandler extends IHandler {
 	 */
 	public IHotkeysConfig getHotkeysConfig();
 
-	public void onHotKey(final int id);
+	/**
+	 * Called when a hotkey is pressed
+	 * @param id
+	 */
+	public void onHotkey(final int id);
 
 }

@@ -74,11 +74,12 @@ public final class DefaultSingleFrame extends MainSplitPaneLeftSingleFrame {
     
     @Override
     protected JComponent getComponentA() {
-    	return (navigatorSplitPane = new SplitPaneFactory().getSplitPane(this, 
+    	navigatorSplitPane = new SplitPaneFactory().getSplitPane(this, 
     														             NAVIGATOR_SPLIT_PANE, 
     														             JSplitPane.VERTICAL_SPLIT, 
     														             getNavigationTreePanel().getSwingComponent(),
-    														             getNavigationTablePanel().getSwingComponent()));
+    														             getNavigationTablePanel().getSwingComponent());
+    	return navigatorSplitPane;
     }
     
     @Override

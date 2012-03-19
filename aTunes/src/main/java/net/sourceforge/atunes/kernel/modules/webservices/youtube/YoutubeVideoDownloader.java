@@ -132,14 +132,15 @@ public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
             // Update every second
             long lastTime = System.currentTimeMillis();
             long allBytes = 0;
-            int len;
-            while ((len = input.read(buf)) > 0 && !cancelled) {
+            int len = input.read(buf);
+            while (len > 0 && !cancelled) {
                 fout.write(buf, 0, len);
                 allBytes += len;
                 if (System.currentTimeMillis() - lastTime > 1000) {
                     publish(StringUtils.getString(CURRENT, Long.toString(allBytes)));
                     lastTime = System.currentTimeMillis();
                 }
+                len = input.read(buf);
             }
         } catch (IOException e) {
             Logger.error(e);

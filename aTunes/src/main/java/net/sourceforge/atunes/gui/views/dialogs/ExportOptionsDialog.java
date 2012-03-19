@@ -146,7 +146,21 @@ public final class ExportOptionsDialog extends AbstractCustomDialog implements I
         buttons.add(exportButton);
         buttons.add(cancelButton);
 
-        GridBagConstraints c = new GridBagConstraints();
+        arrangePanel(container, exportInstructions, exportTypePanel,
+				exportLocationPanel, buttons);
+        return container;
+    }
+
+	/**
+	 * @param container
+	 * @param exportInstructions
+	 * @param exportTypePanel
+	 * @param exportLocationPanel
+	 * @param buttons
+	 */
+	private void arrangePanel(JPanel container, JTextArea exportInstructions,
+			JPanel exportTypePanel, JPanel exportLocationPanel, JPanel buttons) {
+		GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 1;
@@ -170,8 +184,7 @@ public final class ExportOptionsDialog extends AbstractCustomDialog implements I
         c.fill = GridBagConstraints.NONE;
         c.insets = new Insets(10, 0, 10, 10);
         container.add(buttons, c);
-        return container;
-    }
+	}
 
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.gui.views.dialogs.IExportOptionsDialog#getExportLocation()

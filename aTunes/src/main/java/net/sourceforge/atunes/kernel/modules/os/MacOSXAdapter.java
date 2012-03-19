@@ -62,12 +62,11 @@ class MacOSXAdapter implements InvocationHandler {
 
     /**
      * Call to method of target class
-     * @param appleEvent
      * @return
      * @throws InvocationTargetException
      * @throws IllegalAccessException
      */
-    private boolean callTarget(Object appleEvent) throws InvocationTargetException, IllegalAccessException {
+    private boolean callTarget() throws InvocationTargetException, IllegalAccessException {
         Object result = targetMethod.invoke(targetObject, (Object[]) null);
         if (result == null) {
             return true;
@@ -83,7 +82,7 @@ class MacOSXAdapter implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws InvocationTargetException, IllegalAccessException {
         if (isCorrectMethod(method, args)) {
-            boolean handled = callTarget(args[0]);
+            boolean handled = callTarget();
             setApplicationEventHandled(args[0], handled);
         }
         // All of the ApplicationListener methods are void; return null regardless of what happens

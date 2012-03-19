@@ -52,7 +52,7 @@ public class Mp4Encoder extends AbstractEncoder {
 
     static final String DEFAULT_MP4_QUALITY = "200";
 
-    private Process p;
+    private Process process;
 
     /**
      * Creates a new mp4 encoder
@@ -119,8 +119,8 @@ public class Mp4Encoder extends AbstractEncoder {
             command.add(getQuality());
             command.add(WRAP);
             command.add(wavFile.getAbsolutePath());
-            p = new ProcessBuilder(command).start();
-            stdInput = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+            process = new ProcessBuilder(command).start();
+            stdInput = new BufferedReader(new InputStreamReader(process.getErrorStream()));
             String s = null;
             int percent = -1;
 
@@ -152,7 +152,7 @@ public class Mp4Encoder extends AbstractEncoder {
                 }
             }
 
-            int code = p.waitFor();
+            int code = process.waitFor();
             if (code != 0) {
                 Logger.error(StringUtils.getString("Process returned code ", code));
                 return false;
@@ -181,8 +181,8 @@ public class Mp4Encoder extends AbstractEncoder {
 
     @Override
     public void stop() {
-        if (p != null) {
-            p.destroy();
+        if (process != null) {
+            process.destroy();
         }
     }
 }

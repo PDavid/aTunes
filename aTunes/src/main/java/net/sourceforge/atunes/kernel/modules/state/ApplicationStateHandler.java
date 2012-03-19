@@ -287,7 +287,6 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#retrievePlayListsCache()
 	 */
     @Override
-	@SuppressWarnings("unchecked")
     public IListOfPlayLists retrievePlayListsCache() {
         ObjectInputStream stream = null;
         try {
@@ -321,7 +320,6 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#retrievePodcastFeedCache()
 	 */
     @Override
-	@SuppressWarnings("unchecked")
     public List<IPodcastFeed> retrievePodcastFeedCache() {
         try {
             return (List<IPodcastFeed>) xmlSerializerService.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.PODCAST_FEED_CACHE));
@@ -337,7 +335,6 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#retrieveRadioCache()
 	 */
     @Override
-	@SuppressWarnings("unchecked")
     public List<IRadio> retrieveRadioCache() {
         try {
             return (List<IRadio>) xmlSerializerService.readObjectFromFile(StringUtils.getString(getUserConfigFolder(), "/", Constants.RADIO_CACHE));
@@ -353,7 +350,6 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	 * @see net.sourceforge.atunes.kernel.modules.state.IStateHandler#retrieveRadioPreset()
 	 */
     @Override
-	@SuppressWarnings("unchecked")
     public List<IRadio> retrieveRadioPreset() {
         try {
             // First try user settings folder
