@@ -122,7 +122,23 @@ public final class RadioDialog extends AbstractCustomDialog implements IRadioDia
             }
         });
 
-        GridBagConstraints c = new GridBagConstraints();
+        arrangePanel(panel, nameLabel, urlLabel, labelLabel, okButton,
+				cancelButton);
+
+        return panel;
+    }
+
+	/**
+	 * @param panel
+	 * @param nameLabel
+	 * @param urlLabel
+	 * @param labelLabel
+	 * @param okButton
+	 * @param cancelButton
+	 */
+	private void arrangePanel(JPanel panel, JLabel nameLabel, JLabel urlLabel,
+			JLabel labelLabel, JButton okButton, JButton cancelButton) {
+		GridBagConstraints c = new GridBagConstraints();
         c.gridx = 1;
         c.gridy = 0;
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -162,9 +178,7 @@ public final class RadioDialog extends AbstractCustomDialog implements IRadioDia
         c.gridwidth = 3;
         c.insets = new Insets(0, 0, 0, 0);
         panel.add(auxPanel, c);
-
-        return panel;
-    }
+	}
 
     @Override
 	public IRadio getRadio() {

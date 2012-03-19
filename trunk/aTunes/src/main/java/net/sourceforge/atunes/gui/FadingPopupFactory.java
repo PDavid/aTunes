@@ -75,7 +75,7 @@ public final class FadingPopupFactory extends PopupFactory {
     @Override
     public Popup getPopup(Component owner, Component contents, int x, int y) {
         if (contents instanceof JToolTip) {
-            return new FadingPopup(owner, contents, x, y, osManager.areShadowBordersForToolTipsSupported(), lookAndFeel);
+            return new FadingPopup(contents, x, y, osManager.areShadowBordersForToolTipsSupported(), lookAndFeel);
         }
         return popupFactory.getPopup(owner, contents, x, y);
     }

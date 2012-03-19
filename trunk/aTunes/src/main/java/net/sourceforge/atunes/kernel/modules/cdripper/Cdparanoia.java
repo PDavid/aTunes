@@ -206,13 +206,13 @@ public class Cdparanoia extends AbstractCdToWavConverter {
                     }
                 }
 
-                getCdInfo().setTracks(tracks);
-                getCdInfo().setDurations(durations);
-                getCdInfo().setDuration(null);
-                getCdInfo().setID(null);
-                getCdInfo().setTitles(titles);
-                getCdInfo().setArtists(artists);
-                getCdInfo().setComposers(composers);
+                getCDInfo().setTracks(tracks);
+                getCDInfo().setDurations(durations);
+                getCDInfo().setDuration(null);
+                getCDInfo().setID(null);
+                getCDInfo().setTitles(titles);
+                getCDInfo().setArtists(artists);
+                getCDInfo().setComposers(composers);
 
             } catch (IOException e) {
                 Logger.error(e);
@@ -220,8 +220,8 @@ public class Cdparanoia extends AbstractCdToWavConverter {
                 ClosingUtils.close(stdInput);
             }
 
-            Logger.info(StringUtils.getString("CD info: ", getCdInfo()));
-            return getCdInfo();
+            Logger.info(StringUtils.getString("CD info: ", getCDInfo()));
+            return getCDInfo();
 
         } catch (IOException e) {
             Logger.error(e);

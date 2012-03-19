@@ -41,14 +41,13 @@ final class FadingPopup extends Popup {
     /**
      * Instantiates a new fading popup.
      * 
-     * @param owner
      * @param contents
      * @param ownerX
      * @param ownerY
      * @param shadowBorder
      * @param lookAndFeel
      */
-    FadingPopup(Component owner, Component contents, int ownerX, int ownerY, boolean shadowBorder, ILookAndFeel lookAndFeel) {
+    FadingPopup(Component contents, int ownerX, int ownerY, boolean shadowBorder, ILookAndFeel lookAndFeel) {
         // create a new heavyweighht window
         this.popupWindow = new JWindow();
         // determine the popup location

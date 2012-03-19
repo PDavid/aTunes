@@ -145,7 +145,6 @@ public final class InternetPanel extends AbstractPreferencesPanel {
 	private void arrangePanel() {
 		GridBagConstraints c = new GridBagConstraints();
         c.weightx = 1;
-        c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(10, 0, 10, 10);
         c.gridx = 0;
         c.gridy = 0;
@@ -163,7 +162,6 @@ public final class InternetPanel extends AbstractPreferencesPanel {
         c.gridy = 3;
         c.weightx = 0;
         c.gridwidth = 1;
-        c.fill = GridBagConstraints.NONE;
         add(proxyURLLabel, c);
         c.gridx = 1;
         c.weightx = 1;
@@ -171,7 +169,6 @@ public final class InternetPanel extends AbstractPreferencesPanel {
         c.gridx = 0;
         c.gridy = 4;
         c.weightx = 0;
-        c.fill = GridBagConstraints.NONE;
         add(proxyPortLabel, c);
         c.gridx = 1;
         c.weightx = 1;
@@ -179,7 +176,6 @@ public final class InternetPanel extends AbstractPreferencesPanel {
         c.gridx = 0;
         c.gridy = 5;
         c.weightx = 0;
-        c.fill = GridBagConstraints.NONE;
         add(proxyUserLabel, c);
         c.gridx = 1;
         c.weightx = 1;

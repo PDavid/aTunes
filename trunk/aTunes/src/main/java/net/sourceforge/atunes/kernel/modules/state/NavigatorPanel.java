@@ -128,12 +128,7 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 		artistViewOptionGroup.add(useOnlyArtist);
 		artistViewOptionGroup.add(useOnlyArtistOfAlbum);
 		artistViewOptionGroup.add(useBothArtist);
-		JPanel artistViewPanel = new JPanel(new GridLayout(3,1));
-		artistViewPanel.setBorder(new TitledBorder(I18nUtils.getString("ARTIST")));
-		artistViewPanel.add(useBothArtist);
-		artistViewPanel.add(useOnlyArtist);
-		artistViewPanel.add(useOnlyArtistOfAlbum);
-		
+		JPanel artistViewPanel = getArtistViewPanel();
 
 		useCaseSensitiveInTree = new JCheckBox(I18nUtils.getString("CASE_SENSITIVE_TREE"));
 		highlightElementsWithIncompleteBasicTags = new JCheckBox(I18nUtils.getString("HIGHLIGHT_INCOMPLETE_TAG_ELEMENTS"));
@@ -151,18 +146,46 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 		});
 
 		tagAttributesTableModel = new TagAttributesTableModel();
-		highlighTagAttributesTable = lookAndFeelManager.getCurrentLookAndFeel().getTable();
-		highlighTagAttributesTable.setModel(tagAttributesTableModel);
-		highlighTagAttributesTable.setTableHeader(null);
-		highlighTagAttributesTable.getColumnModel().getColumn(0).setMaxWidth(20);
-		highlighTagAttributesTable.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JCheckBox()));
-		highlighTagAttributesTable.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		highlighTagAttributesTable.setDefaultRenderer(String.class, lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(
-				GuiUtils.getComponentOrientationTableCellRendererCode(lookAndFeelManager.getCurrentLookAndFeel())));
+		highlighTagAttributesTable = getHighlighTagAttributesTable();
 
 		highlightTagAttributesScrollPane = lookAndFeelManager.getCurrentLookAndFeel().getTableScrollPane(highlighTagAttributesTable);
 		highlightTagAttributesScrollPane.setMinimumSize(new Dimension(300, 150));
 
+		arrangePanel(label, artistViewPanel);
+	}
+
+	/**
+	 * @return
+	 */
+	private JPanel getArtistViewPanel() {
+		JPanel artistViewPanel = new JPanel(new GridLayout(3,1));
+		artistViewPanel.setBorder(new TitledBorder(I18nUtils.getString("ARTIST")));
+		artistViewPanel.add(useBothArtist);
+		artistViewPanel.add(useOnlyArtist);
+		artistViewPanel.add(useOnlyArtistOfAlbum);
+		return artistViewPanel;
+	}
+
+	/**
+	 * 
+	 */
+	private JTable getHighlighTagAttributesTable() {
+		JTable table = lookAndFeelManager.getCurrentLookAndFeel().getTable();
+		table.setModel(tagAttributesTableModel);
+		table.setTableHeader(null);
+		table.getColumnModel().getColumn(0).setMaxWidth(20);
+		table.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JCheckBox()));
+		table.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setDefaultRenderer(String.class, lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(
+				GuiUtils.getComponentOrientationTableCellRendererCode(lookAndFeelManager.getCurrentLookAndFeel())));
+		return table;
+	}
+
+	/**
+	 * @param label
+	 * @param artistViewPanel
+	 */
+	private void arrangePanel(final JLabel label, JPanel artistViewPanel) {
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;

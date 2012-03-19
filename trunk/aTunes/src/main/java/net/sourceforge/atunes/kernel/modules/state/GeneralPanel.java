@@ -248,8 +248,12 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
         }
         windowTypeChoosingPanel = new ByImageChoosingPanel<Class<? extends IFrame>>(data);
 
+        JScrollPane sp = lookAndFeelManager.getCurrentLookAndFeel().getScrollPane(windowTypeChoosingPanel);
+        sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        sp.getVerticalScrollBar().setUnitIncrement(20);
+
         arrangePanel(windowTypeLabel, languageLabel, lookAndFeelLabel,
-				fontSettings);
+				fontSettings, sp);
     }
 
 	/**
@@ -257,9 +261,9 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 	 * @param languageLabel
 	 * @param lookAndFeelLabel
 	 * @param fontSettings
+	 * @param sp
 	 */
-	private void arrangePanel(JLabel windowTypeLabel, JLabel languageLabel,
-			JLabel lookAndFeelLabel, JButton fontSettings) {
+	private void arrangePanel(JLabel windowTypeLabel, JLabel languageLabel, JLabel lookAndFeelLabel, JButton fontSettings, JScrollPane sp) {
 		GridBagConstraints c = new GridBagConstraints();
         c.gridy = 0;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
@@ -291,18 +295,13 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
         c.gridy = 4;
         c.insets = new Insets(20, 0, 0, 0);
         add(windowTypeLabel, c);
-        c.gridx = 0;
         c.gridy = 5;
         c.insets = new Insets(5, 0, 0, 0);
         c.gridwidth = 3;
         c.weightx = 1;
         c.weighty = 1;
         c.fill = GridBagConstraints.BOTH;
-        JScrollPane sp = lookAndFeelManager.getCurrentLookAndFeel().getScrollPane(windowTypeChoosingPanel);
-        sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        sp.getVerticalScrollBar().setUnitIncrement(20);
         add(sp, c);
-        c.gridx = 0;
         c.gridy = 6;
         c.gridwidth = 1;
         c.weightx = 0;
@@ -310,7 +309,6 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
         c.fill = GridBagConstraints.NONE;
         c.insets = new Insets(20, 0, 20, 0);
         add(fontSettings, c);
-        c.gridx = 0;
         c.gridy = 7;
         c.weighty = 0.2;
         c.insets = new Insets(5, 0, 0, 0);
@@ -318,11 +316,9 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
         c.gridx = 1;
         c.gridy = 7;
         c.weighty = 0.2;
-        c.insets = new Insets(5, 0, 0, 0);
         add(trayPlayerColorSelector, c);
         c.gridx = 2;
         c.gridy = 7;
-        c.insets = new Insets(5, 0, 0, 0);
         add(showIconTray, c);
 	}
 

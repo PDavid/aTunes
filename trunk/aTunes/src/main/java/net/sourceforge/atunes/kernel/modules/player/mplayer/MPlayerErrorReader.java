@@ -60,13 +60,15 @@ class MPlayerErrorReader extends Thread {
     public void run() {
         String line = null;
         try {
-            while ((line = in.readLine()) != null && !isInterrupted()) {
+        	line = in.readLine();
+            while (line != null && !isInterrupted()) {
                 if (line.startsWith("File not found")) {
                     // Stop output reader
                     outputReader.stopRead();
                     // Playback finished with error
                     engine.currentAudioObjectFinished(false, I18nUtils.getString("FILE_NOT_FOUND"), ": ", audioObject.getUrl());
                 }
+                line = in.readLine();
             }
         	Logger.debug("Finished MPlayerErrorReader");
         } catch (final IOException e) {

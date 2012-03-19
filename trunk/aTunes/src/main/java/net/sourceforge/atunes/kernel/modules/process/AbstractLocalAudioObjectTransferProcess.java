@@ -176,14 +176,14 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
     @Override
     protected boolean runProcess() {
         boolean errors = false;
-        File destination = new File(getDestination());
+        File destinationFile = new File(getDestination());
         long bytesTransferred = 0;
         boolean ignoreAllErrors = false;
-        Logger.info(StringUtils.getString("Transferring ", this.filesToTransfer.size(), " files to ", destination));
+        Logger.info(StringUtils.getString("Transferring ", this.filesToTransfer.size(), " files to ", destinationFile));
         for (Iterator<ILocalAudioObject> it = this.filesToTransfer.iterator(); it.hasNext() && !isCanceled();) {
         	ILocalAudioObject file = it.next();
             final List<Exception> thrownExceptions = new ArrayList<Exception>();
-            File transferredFile = transferAudioFile(destination, file, thrownExceptions);
+            File transferredFile = transferAudioFile(destinationFile, file, thrownExceptions);
             filesTransferred.add(transferredFile);
             if (!thrownExceptions.isEmpty()) {
                 for (Exception e : thrownExceptions) {

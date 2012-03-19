@@ -61,6 +61,49 @@ import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class PlayerPanel extends AbstractPreferencesPanel {
 
+	private final class HotkeyKeyAdapter extends KeyAdapter {
+		private final JTable table;
+
+		private HotkeyKeyAdapter(JTable table) {
+			this.table = table;
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+		    int selectedRow = table.getSelectedRow();
+		    if (selectedRow != -1) {
+		    	int modifiersEx = e.getModifiersEx();
+		    	int keyCode = e.getKeyCode();
+		    	if (validKeyPressed(modifiersEx, keyCode)) {
+		    		IHotkey hotkey = tableModel.getHotkeysConfig().getHotkeyByOrder(selectedRow);
+		    		hotkey.setMod(modifiersEx);
+		    		hotkey.setKey(keyCode);
+
+		    		conflicts = tableModel.getHotkeysConfig().conflicts();
+		    		notRecommendedKeys = tableModel.getHotkeysConfig().notRecommendedKeys();
+
+		    		tableModel.fireTableRowsUpdated(0, tableModel.getRowCount());
+		    	}
+		    } 
+		}
+
+		/**
+		 * @param modifiersEx
+		 * @param keyCode
+		 * @return
+		 */
+		private boolean validKeyPressed(int modifiersEx, int keyCode) {
+			return keyCode != KeyEvent.VK_UNDEFINED && 
+				   isButton(modifiersEx, InputEvent.BUTTON1_DOWN_MASK) &&
+				   isButton(modifiersEx, InputEvent.BUTTON2_DOWN_MASK) &&
+				   isButton(modifiersEx, InputEvent.BUTTON3_DOWN_MASK);
+		}
+
+		private boolean isButton(int modifiersEx, int button) {
+			return (modifiersEx & button) == 0; 
+		}
+	}
+
 	private final class HotkeyTableTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, Object> {
 		
 		public HotkeyTableTableCellRendererCode(ILookAndFeel lookAndFeel) {
@@ -269,43 +312,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         table.setEnabled(hotkeyHandler.areHotkeysSupported());
         table.setDefaultRenderer(Object.class, lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(new HotkeyTableTableCellRendererCode(lookAndFeelManager.getCurrentLookAndFeel())));
 
-        table.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                int selectedRow = table.getSelectedRow();
-                if (selectedRow != -1) {
-                	int modifiersEx = e.getModifiersEx();
-                	int keyCode = e.getKeyCode();
-                	if (validKeyPressed(modifiersEx, keyCode)) {
-                		IHotkey hotkey = tableModel.getHotkeysConfig().getHotkeyByOrder(selectedRow);
-                		hotkey.setMod(modifiersEx);
-                		hotkey.setKey(keyCode);
-
-                		conflicts = tableModel.getHotkeysConfig().conflicts();
-                		notRecommendedKeys = tableModel.getHotkeysConfig().notRecommendedKeys();
-
-                		tableModel.fireTableRowsUpdated(0, tableModel.getRowCount());
-                	}
-                } 
-            }
-
-			/**
-			 * @param modifiersEx
-			 * @param keyCode
-			 * @return
-			 */
-			private boolean validKeyPressed(int modifiersEx, int keyCode) {
-				return keyCode != KeyEvent.VK_UNDEFINED && 
-					   isButton(modifiersEx, InputEvent.BUTTON1_DOWN_MASK) &&
-					   isButton(modifiersEx, InputEvent.BUTTON2_DOWN_MASK) &&
-					   isButton(modifiersEx, InputEvent.BUTTON3_DOWN_MASK);
-			}
-
-			private boolean isButton(int modifiersEx, int button) {
-				return (modifiersEx & button) == 0; 
-			}
-			
-        });
+        table.addKeyListener(new HotkeyKeyAdapter(table));
 
         InputMap inputMap = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         for (KeyStroke keyStroke : inputMap.allKeys()) {

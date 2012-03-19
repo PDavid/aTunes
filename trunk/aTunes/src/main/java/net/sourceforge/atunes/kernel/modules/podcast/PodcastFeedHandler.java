@@ -446,8 +446,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
         if (path == null || path.isEmpty()) {
             path = StringUtils.getString(getOsManager().getUserConfigFolder(), "/", Constants.DEFAULT_PODCAST_FEED_ENTRY_DOWNLOAD_DIR);
         }
-        File podcastFeedsDownloadFolder = new File(path);
-		return podcastFeedsDownloadFolder;
+		return new File(path);
 	}
 
     /* (non-Javadoc)

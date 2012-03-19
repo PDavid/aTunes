@@ -112,7 +112,7 @@ public abstract class AbstractCdToWavConverter {
     /**
      * @return the cd
      */
-    protected CDInfo getCdInfo() {
+    protected CDInfo getCDInfo() {
         return cdInfo;
     }
 

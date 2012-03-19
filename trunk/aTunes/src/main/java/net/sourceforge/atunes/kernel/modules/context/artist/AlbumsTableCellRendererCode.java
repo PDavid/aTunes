@@ -27,6 +27,7 @@ import javax.swing.JComponent;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.kernel.modules.context.ContextTable;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanel;
 import net.sourceforge.atunes.model.IAlbumInfo;
@@ -37,6 +38,34 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 class AlbumsTableCellRendererCode extends ContextTableRowPanel<IAlbumInfo> {
 	
+	private final class OpenAlbumUrlAction extends
+			ContextTableAction<IAlbumInfo> {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 4367597772680455920L;
+
+		private OpenAlbumUrlAction(String name, ContextTable table,
+				IDesktop desktop) {
+			super(name, table, desktop);
+		}
+
+		@Override
+		protected void execute(IAlbumInfo object) {
+			getDesktop().openURL(object.getUrl());
+		}
+
+		@Override
+		protected IAlbumInfo getSelectedObject(int row) {
+			return  ((ContextAlbumsTableModel) getTable().getModel()).getAlbum(row);
+		}
+
+		@Override
+		protected boolean isEnabledForObject(IAlbumInfo object) {
+			return true;
+		}
+	}
+
 	private IDesktop desktop;
 	
 	private ArtistAlbumListImagesDataSource source;
@@ -65,28 +94,7 @@ class AlbumsTableCellRendererCode extends ContextTableRowPanel<IAlbumInfo> {
 	
 	@Override
 	public List<ContextTableAction<IAlbumInfo>> getActions() {
-		ContextTableAction<IAlbumInfo> action = new ContextTableAction<IAlbumInfo>(I18nUtils.getString("READ_MORE"), getTable(), desktop) {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 4367597772680455920L;
-
-			@Override
-			protected void execute(IAlbumInfo object) {
-				getDesktop().openURL(object.getUrl());
-			}
-			
-			@Override
-			protected IAlbumInfo getSelectedObject(int row) {
-				return  ((ContextAlbumsTableModel) getTable().getModel()).getAlbum(row);
-			}
-			
-			@Override
-			protected boolean isEnabledForObject(IAlbumInfo object) {
-				return true;
-			}
-			
-		};
+		ContextTableAction<IAlbumInfo> action = new OpenAlbumUrlAction(I18nUtils.getString("READ_MORE"), getTable(), desktop);
 		return Collections.singletonList(action);		
 	}
 }

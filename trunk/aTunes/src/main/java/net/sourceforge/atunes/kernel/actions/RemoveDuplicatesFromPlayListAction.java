@@ -45,7 +45,35 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class RemoveDuplicatesFromPlayListAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = 7784228526804232608L;
+    private final class RemoveDuplicatesCallable implements
+			Callable<List<Integer>> {
+		@Override
+		public List<Integer> call() {
+			IPlayList playList = playListHandler.getCurrentPlayList(true);
+			List<IAudioObject> audioObjectsToCheck = new ArrayList<IAudioObject>();
+			for (int i = 0; i < playList.size(); i++) {
+				audioObjectsToCheck.add(playList.get(i));
+			}
+			List<IAudioObject> duplicated = audioObjectDuplicateFinder.findDuplicates(audioObjectsToCheck);
+			List<Integer> rows = new ArrayList<Integer>();
+			for (IAudioObject ao : duplicated) {
+				rows.add(playList.indexOf(ao));
+			}
+			// List of rows must be sorted in order to remove from play list to work
+			Collections.sort(rows, new Comparator<Integer>() {
+				
+				@Override
+				public int compare(Integer o1, Integer o2) {
+					return o1.compareTo(o2);
+				}
+			});
+			
+			Logger.info(StringUtils.getString(duplicated.size(), " items duplicated"));
+			return rows;
+		}
+	}
+
+	private static final long serialVersionUID = 7784228526804232608L;
 
     private IPlayListHandler playListHandler;
     
@@ -101,33 +129,7 @@ public class RemoveDuplicatesFromPlayListAction extends CustomAbstractAction {
         	}
         });
         
-        worker.setBackgroundActions(new Callable<List<Integer>>() {
-			
-			@Override
-			public List<Integer> call() {
-				IPlayList playList = playListHandler.getCurrentPlayList(true);
-				List<IAudioObject> audioObjectsToCheck = new ArrayList<IAudioObject>();
-				for (int i = 0; i < playList.size(); i++) {
-					audioObjectsToCheck.add(playList.get(i));
-				}
-				List<IAudioObject> duplicated = audioObjectDuplicateFinder.findDuplicates(audioObjectsToCheck);
-				List<Integer> rows = new ArrayList<Integer>();
-				for (IAudioObject ao : duplicated) {
-					rows.add(playList.indexOf(ao));
-				}
-				// List of rows must be sorted in order to remove from play list to work
-				Collections.sort(rows, new Comparator<Integer>() {
-					
-					@Override
-					public int compare(Integer o1, Integer o2) {
-						return o1.compareTo(o2);
-					}
-				});
-				
-		    	Logger.info(StringUtils.getString(duplicated.size(), " items duplicated"));
-		    	return rows;
-			}
-		});
+        worker.setBackgroundActions(new RemoveDuplicatesCallable());
         
         worker.setActionsWhenDone(new IBackgroundWorker.IActionsWithBackgroundResult<List<Integer>>() {
         	@Override

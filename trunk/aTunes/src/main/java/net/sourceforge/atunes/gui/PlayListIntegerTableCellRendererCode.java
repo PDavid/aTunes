@@ -68,7 +68,7 @@ final class PlayListIntegerTableCellRendererCode extends AbstractTableCellRender
 	    c.setText(null);
 	    if (playListHandler.isCurrentVisibleRowPlaying(row)) {
 	        c.setIcon(getPlayStateIcon(getLookAndFeel().getPaintForColorMutableIcon(c, isSelected), 
-	        		((IPlayListTable) columnModel.getTable()).getPlayState(), getLookAndFeel()));
+	        		((IPlayListTable) columnModel.getTable()).getPlayState()));
 	    } else {
 	        c.setIcon(null); // was using Images.getImage(Images.EMPTY) previously
 	    }
@@ -81,10 +81,9 @@ final class PlayListIntegerTableCellRendererCode extends AbstractTableCellRender
     /**
      * @param color
      * @param state
-     * @param lookAndFeel
      * @return
      */
-    private ImageIcon getPlayStateIcon(Color color, PlayState state, ILookAndFeel lookAndFeel) {
+    private ImageIcon getPlayStateIcon(Color color, PlayState state) {
         switch (state) {
         case PLAYING:
             return Context.getBean("playListPlayStateIcon", IIconFactory.class).getIcon(color);

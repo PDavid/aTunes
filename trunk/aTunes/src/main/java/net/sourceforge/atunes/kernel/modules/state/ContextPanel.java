@@ -250,7 +250,22 @@ public final class ContextPanel extends AbstractPreferencesPanel {
         JScrollPane enginesScrollPane = lookAndFeelManager.getCurrentLookAndFeel().getTableScrollPane(enginesTable);
         enginesScrollPane.setMinimumSize(new Dimension(200, 100));
 
-        GridBagConstraints c = new GridBagConstraints();
+        arrangePanel(clearCache, info, enginesTableLabel, upButton, downButton,
+				enginesScrollPane);
+    }
+
+	/**
+	 * @param clearCache
+	 * @param info
+	 * @param enginesTableLabel
+	 * @param upButton
+	 * @param downButton
+	 * @param enginesScrollPane
+	 */
+	private void arrangePanel(JButton clearCache, JLabel info,
+			JLabel enginesTableLabel, JButton upButton, JButton downButton,
+			JScrollPane enginesScrollPane) {
+		GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 1;
@@ -283,7 +298,7 @@ public final class ContextPanel extends AbstractPreferencesPanel {
         c.insets = new Insets(20, 0, 0, 0);
         c.weighty = 1;
         add(info, c);
-    }
+	}
 
     @Override
     public boolean applyPreferences(IState state) {
