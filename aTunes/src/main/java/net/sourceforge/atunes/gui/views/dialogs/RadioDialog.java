@@ -151,7 +151,7 @@ public final class RadioDialog extends AbstractCustomDialog implements IRadioDia
         c.gridheight = 2;
         c.fill = GridBagConstraints.NONE;
         c.weightx = -1;
-        panel.add(new JLabel(Context.getBean("radioMediumIcon", IIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls())), c);
+        panel.add(new JLabel(Context.getBean("radioMediumIcon", IIconFactory.class).getIcon(getLookAndFeel().getPaintForSpecialControls())), c);
 
         JPanel auxPanel = new JPanel();
         auxPanel.add(okButton);

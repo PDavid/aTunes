@@ -33,7 +33,7 @@ import net.sourceforge.atunes.model.ILookAndFeel;
 
 public abstract class AbstractCustomDialog extends JDialog {
 
-	protected ILookAndFeel lookAndFeel;
+	private ILookAndFeel lookAndFeel;
 	
 	protected enum CloseAction {
 		
@@ -115,6 +115,13 @@ public abstract class AbstractCustomDialog extends JDialog {
         	enableCloseActionWithEscapeKey();
         }
     }
+    
+    /**
+     * @return look and feel
+     */
+    protected ILookAndFeel getLookAndFeel() {
+		return lookAndFeel;
+	}
     
     /**
      * Enable close action with escape key.

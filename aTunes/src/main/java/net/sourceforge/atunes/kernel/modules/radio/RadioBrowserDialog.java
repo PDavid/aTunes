@@ -89,7 +89,7 @@ public final class RadioBrowserDialog extends AbstractCustomDialog {
         treeTable = new JXTreeTable();
         treeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JPanel topPanel = new JPanel(new BorderLayout(10, 0));
-        JLabel radioIcon = new JLabel(radioMediumIcon.getIcon(lookAndFeel.getPaintForSpecialControls()));
+        JLabel radioIcon = new JLabel(radioMediumIcon.getIcon(getLookAndFeel().getPaintForSpecialControls()));
         JLabel browserInstructions = new JLabel(I18nUtils.getString("RADIO_BROWSER_INSTRUCTIONS"));
         JButton closeButton = new JButton(I18nUtils.getString("CLOSE"));
         closeButton.addActionListener(new ActionListener() {

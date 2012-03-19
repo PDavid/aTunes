@@ -244,24 +244,9 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 
 		mainPanel.add(scrollPane, c);
 
-		GridBagConstraints c2 = new GridBagConstraints();
-
-		c2.gridx = 0;
-		c2.weightx = 1;
-		c2.fill = GridBagConstraints.HORIZONTAL;
-		c2.anchor = GridBagConstraints.WEST;
-		c2.gridy = 0;
-		pluginDetailPanel.add(pluginNameLabel, c2);
-		c2.gridy = 1;
-		pluginDetailPanel.add(pluginVersionLabel, c2);
-		c2.gridy = 2;
-		pluginDetailPanel.add(pluginClassNameLabel, c2);
-		c2.gridy = 3;
-		pluginDetailPanel.add(pluginLocationLabel, c2);
-		c2.gridy = 4;
-		pluginDetailPanel.add(pluginAuthorLabel, c2);
-		c2.gridy = 5;
-		pluginDetailPanel.add(pluginUrlLabel, c2);
+		arrangePluginDetailPanel(pluginDetailPanel, pluginNameLabel,
+				pluginVersionLabel, pluginClassNameLabel, pluginLocationLabel,
+				pluginAuthorLabel, pluginUrlLabel);
 
 		c.gridy = 3;
 		c.insets = new Insets(10, 5, 10, 5);
@@ -286,6 +271,39 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 
 		c.gridy = 2;
 		mainPanel.add(uninstallPluginButton, c);
+	}
+
+	/**
+	 * @param pluginDetailPanel
+	 * @param pluginNameLabel
+	 * @param pluginVersionLabel
+	 * @param pluginClassNameLabel
+	 * @param pluginLocationLabel
+	 * @param pluginAuthorLabel
+	 * @param pluginUrlLabel
+	 */
+	private void arrangePluginDetailPanel(JPanel pluginDetailPanel,
+			final JLabel pluginNameLabel, final JLabel pluginVersionLabel,
+			final JLabel pluginClassNameLabel,
+			final JLabel pluginLocationLabel, final JLabel pluginAuthorLabel,
+			final UrlLabel pluginUrlLabel) {
+		GridBagConstraints c2 = new GridBagConstraints();
+		c2.gridx = 0;
+		c2.weightx = 1;
+		c2.fill = GridBagConstraints.HORIZONTAL;
+		c2.anchor = GridBagConstraints.WEST;
+		c2.gridy = 0;
+		pluginDetailPanel.add(pluginNameLabel, c2);
+		c2.gridy = 1;
+		pluginDetailPanel.add(pluginVersionLabel, c2);
+		c2.gridy = 2;
+		pluginDetailPanel.add(pluginClassNameLabel, c2);
+		c2.gridy = 3;
+		pluginDetailPanel.add(pluginLocationLabel, c2);
+		c2.gridy = 4;
+		pluginDetailPanel.add(pluginAuthorLabel, c2);
+		c2.gridy = 5;
+		pluginDetailPanel.add(pluginUrlLabel, c2);
 	}
 
 	@Override

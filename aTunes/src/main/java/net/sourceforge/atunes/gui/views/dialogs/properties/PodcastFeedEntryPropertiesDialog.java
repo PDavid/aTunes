@@ -200,7 +200,7 @@ final class PodcastFeedEntryPropertiesDialog extends AudioObjectPropertiesDialog
      * Fill picture.
      */
     private void fillPicture() {
-        ImageIcon picture = Context.getBean("rssMediumIcon", IIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls());
+        ImageIcon picture = Context.getBean("rssMediumIcon", IIconFactory.class).getIcon(getLookAndFeel().getPaintForSpecialControls());
         pictureLabel.setPreferredSize(new Dimension(picture.getIconWidth(), picture.getIconHeight()));
         pictureLabel.setIcon(picture);
         pictureLabel.setVisible(true);

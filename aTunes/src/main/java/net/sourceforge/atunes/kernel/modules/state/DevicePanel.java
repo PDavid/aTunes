@@ -177,35 +177,10 @@ public final class DevicePanel extends AbstractPreferencesPanel {
 	 */
 	private void arrangePanel(JLabel label, JPanel fileNamePanel,
 			JPanel folderPathPanel, JPanel patternsPanel) {
-		GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.anchor = GridBagConstraints.WEST;
-        fileNamePanel.add(fileNameNoChangeRadioButton, c);
-        c.gridx = 0;
-        c.gridy = 1;
-        fileNamePanel.add(fileNameCustomizedRadioButton, c);
-        c.gridx = 2;
-        c.gridy = 1;
-        c.weightx = 1;
-        c.insets = new Insets(0, 20, 0, 20);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        fileNamePanel.add(fileNamePatternTextField, c);
-
-        c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.anchor = GridBagConstraints.WEST;
-        folderPathPanel.add(folderPathNoChangeRadioButton, c);
-        c.gridx = 0;
-        c.gridy = 1;
-        folderPathPanel.add(folderPathCustomizedRadioButton, c);
-        c.gridx = 2;
-        c.gridy = 1;
-        c.weightx = 1;
-        c.insets = new Insets(0, 20, 0, 20);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        folderPathPanel.add(folderPathPatternTextField, c);
+		
+		GridBagConstraints c;
+		arrangeFileNamePanel(fileNamePanel);
+        arrangeFolderPathPanel(folderPathPanel);
 
         c = new GridBagConstraints();
         c.gridx = 0;
@@ -241,6 +216,47 @@ public final class DevicePanel extends AbstractPreferencesPanel {
         c.gridy = 3;
         c.weighty = 1;
         add(copySameSongForDifferentAlbums, c);
+	}
+
+	/**
+	 * @param folderPathPanel
+	 */
+	private void arrangeFolderPathPanel(JPanel folderPathPanel) {
+		GridBagConstraints c;
+		c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 0;
+        c.anchor = GridBagConstraints.WEST;
+        folderPathPanel.add(folderPathNoChangeRadioButton, c);
+        c.gridx = 0;
+        c.gridy = 1;
+        folderPathPanel.add(folderPathCustomizedRadioButton, c);
+        c.gridx = 2;
+        c.gridy = 1;
+        c.weightx = 1;
+        c.insets = new Insets(0, 20, 0, 20);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        folderPathPanel.add(folderPathPatternTextField, c);
+	}
+
+	/**
+	 * @param fileNamePanel
+	 */
+	private void arrangeFileNamePanel(JPanel fileNamePanel) {
+		GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 0;
+        c.anchor = GridBagConstraints.WEST;
+        fileNamePanel.add(fileNameNoChangeRadioButton, c);
+        c.gridx = 0;
+        c.gridy = 1;
+        fileNamePanel.add(fileNameCustomizedRadioButton, c);
+        c.gridx = 2;
+        c.gridy = 1;
+        c.weightx = 1;
+        c.insets = new Insets(0, 20, 0, 20);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        fileNamePanel.add(fileNamePatternTextField, c);
 	}
 
     @Override

@@ -82,7 +82,7 @@ public final class EqualizerDialog extends AbstractCustomDialog implements IEqua
 		    String[] names = playerHandler.getEqualizer().getPresetsNames();
 
 		    // Show selector
-		    SelectorDialog selector = new SelectorDialog(EqualizerDialog.this, I18nUtils.getString("LOAD_PRESET"), names, null, lookAndFeel);
+		    SelectorDialog selector = new SelectorDialog(EqualizerDialog.this, I18nUtils.getString("LOAD_PRESET"), names, null, getLookAndFeel());
 		    selector.setVisible(true);
 
 		    // Get result

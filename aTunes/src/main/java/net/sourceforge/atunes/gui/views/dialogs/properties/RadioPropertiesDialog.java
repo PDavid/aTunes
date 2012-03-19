@@ -139,7 +139,7 @@ final class RadioPropertiesDialog extends AudioObjectPropertiesDialog {
      * Fill picture.
      */
     private void fillPicture() {
-        ImageIcon picture = Context.getBean("radioMediumIcon", IIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls());
+        ImageIcon picture = Context.getBean("radioMediumIcon", IIconFactory.class).getIcon(getLookAndFeel().getPaintForSpecialControls());
         pictureLabel.setPreferredSize(new Dimension(picture.getIconWidth(), picture.getIconHeight()));
         pictureLabel.setIcon(picture);
         pictureLabel.setVisible(true);
