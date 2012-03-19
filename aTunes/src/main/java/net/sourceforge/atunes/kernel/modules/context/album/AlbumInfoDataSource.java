@@ -169,6 +169,7 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 	 * @return
 	 */
 	private IAlbumInfo getMacthingAlbum(IAudioObject audioObject, IAlbumInfo auxAlbum, IAlbumInfo a) {
+		IAlbumInfo album = auxAlbum;
 		StringTokenizer st = new StringTokenizer(a.getTitle(), " ");
 		boolean matches = true;
 		int tokensAnalyzed = 0;
@@ -191,9 +192,9 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 		    tokensAnalyzed++;
 		}
 		if (matches) {
-		    auxAlbum = a;
+		    album = a;
 		}
-		return auxAlbum;
+		return album;
 	}
 
 	/**
