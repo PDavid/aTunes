@@ -209,7 +209,7 @@ public class Cdparanoia extends AbstractCdToWavConverter {
                 getCdInfo().setTracks(tracks);
                 getCdInfo().setDurations(durations);
                 getCdInfo().setDuration(null);
-                getCdInfo().setId(null);
+                getCdInfo().setID(null);
                 getCdInfo().setTitles(titles);
                 getCdInfo().setArtists(artists);
                 getCdInfo().setComposers(composers);

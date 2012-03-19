@@ -121,7 +121,7 @@ public final class AddPodcastFeedDialog extends AbstractCustomDialog implements 
         c.gridheight = 2;
         c.fill = GridBagConstraints.NONE;
         c.weightx = -1;
-        panel.add(new JLabel(rssMediumIcon.getIcon(lookAndFeel.getPaintForSpecialControls())), c);
+        panel.add(new JLabel(rssMediumIcon.getIcon(getLookAndFeel().getPaintForSpecialControls())), c);
 
         JPanel auxPanel = new JPanel();
         auxPanel.add(okButton);

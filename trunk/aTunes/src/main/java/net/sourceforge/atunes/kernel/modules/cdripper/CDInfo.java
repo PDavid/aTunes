@@ -121,7 +121,7 @@ public class CDInfo implements Serializable {
      * 
      * @return the id
      */
-    public String getId() {
+    public String getID() {
         return id;
     }
 
@@ -209,7 +209,7 @@ public class CDInfo implements Serializable {
      * @param id
      *            the new id
      */
-    public void setId(String id) {
+    public void setID(String id) {
         this.id = id;
     }
 

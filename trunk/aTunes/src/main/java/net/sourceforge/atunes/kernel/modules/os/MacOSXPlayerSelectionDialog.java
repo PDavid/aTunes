@@ -188,7 +188,7 @@ class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 	private JPanel getSearchResultsPanel() {
 		SimpleTextPane instructions = new SimpleTextPane(I18nUtils.getString("MAC_PLAYER_ENGINE_SELECTION"), lookAndFeelManager);
 		
-		matchesList = lookAndFeel.getList();
+		matchesList = getLookAndFeel().getList();
 		matchesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		JButton previousButton = new JButton(I18nUtils.getString("PREVIOUS"));
 		final JButton finishButton = new JButton(I18nUtils.getString("FINISH"));
@@ -223,7 +223,7 @@ class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 		panel.add(instructions, c);
 		c.gridy = 1;
 		c.weighty = 0.8;
-		panel.add(lookAndFeel.getListScrollPane(matchesList), c);
+		panel.add(getLookAndFeel().getListScrollPane(matchesList), c);
 		c.gridy = 2;
 		c.weighty = 0;
 		c.fill = GridBagConstraints.HORIZONTAL;

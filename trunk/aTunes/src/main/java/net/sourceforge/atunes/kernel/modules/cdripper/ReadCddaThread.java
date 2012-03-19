@@ -102,7 +102,7 @@ final class ReadCddaThread extends Thread {
         info.setTracks(tracks);
         info.setDurations(durations);
         info.setDuration(totalDuration);
-        info.setId(id);
+        info.setID(id);
         if (album != null && !album.equals("")) {
         	info.setAlbum(album);
         }
