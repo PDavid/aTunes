@@ -593,7 +593,11 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
      * @param newCover
      */
     public void setNewCover(byte[] newCover) {
-        this.newCover = Arrays.copyOf(newCover, newCover.length);
+    	if (newCover != null) {
+    		this.newCover = Arrays.copyOf(newCover, newCover.length);
+    	} else {
+    		this.newCover = null;
+    	}
     }
 
     /**

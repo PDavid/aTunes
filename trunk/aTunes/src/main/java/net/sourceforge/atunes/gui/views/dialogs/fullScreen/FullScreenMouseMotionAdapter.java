@@ -22,9 +22,14 @@ package net.sourceforge.atunes.gui.views.dialogs.fullScreen;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.io.Serializable;
 
-final class FullScreenMouseMotionAdapter extends MouseMotionAdapter {
+final class FullScreenMouseMotionAdapter extends MouseMotionAdapter implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2501796497424349860L;
 	private FullScreenWindow fullScreenWindow;
 	
 	/**
