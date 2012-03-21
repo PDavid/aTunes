@@ -22,8 +22,14 @@ package net.sourceforge.atunes.gui.views.dialogs.fullScreen;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.Serializable;
 
-final class FullScreenKeyAdapter extends KeyAdapter {
+final class FullScreenKeyAdapter extends KeyAdapter implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2812173804533310176L;
 	
 	private FullScreenWindow fullScreenWindow;
 	

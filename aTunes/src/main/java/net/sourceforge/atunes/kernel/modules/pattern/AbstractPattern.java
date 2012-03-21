@@ -125,7 +125,7 @@ public abstract class AbstractPattern {
      * @return
      */
     public final String applyPattern(String sourceString, ILocalAudioObject audioFile) {
-        if (!pattern.equals(Patterns.getAnyPattern())) {
+        if (!pattern.equals(Patterns.getAnyPattern().getPattern())) {
             return sourceString.replaceAll(pattern, getAudioFileStringValue(audioFile));
         }
         return sourceString;
