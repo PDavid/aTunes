@@ -494,7 +494,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
      *            the new table data
      */
     public void setTableData(CDInfo cdInfo) {
-        tableModel.setCdInfo(cdInfo);
+        tableModel.setCDInfo(cdInfo);
         tableModel.fireTableDataChanged();
     }
 

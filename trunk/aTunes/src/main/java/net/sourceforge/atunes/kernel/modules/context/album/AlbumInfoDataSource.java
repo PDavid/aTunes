@@ -152,14 +152,13 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 	 * @return
 	 */
 	private IAlbumInfo analyseAlbums(IAudioObject audioObject, List<IAlbumInfo> albums) {
-		IAlbumInfo auxAlbum = null;
-		int i = 0;
-		while (auxAlbum == null && i < albums.size()) {
-		    IAlbumInfo a = albums.get(i);
-		    auxAlbum = getMacthingAlbum(audioObject, auxAlbum, a);
-		    i++;
+		for (IAlbumInfo a : albums) {
+			IAlbumInfo auxAlbum = getMacthingAlbum(audioObject, a);
+			if (auxAlbum != null) {
+				return auxAlbum;
+			}
 		}
-		return auxAlbum;
+		return null;
 	}
 
 	/**
@@ -168,8 +167,7 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 	 * @param a
 	 * @return
 	 */
-	private IAlbumInfo getMacthingAlbum(IAudioObject audioObject, IAlbumInfo auxAlbum, IAlbumInfo a) {
-		IAlbumInfo album = auxAlbum;
+	private IAlbumInfo getMacthingAlbum(IAudioObject audioObject, IAlbumInfo a) {
 		StringTokenizer st = new StringTokenizer(a.getTitle(), " ");
 		boolean matches = true;
 		int tokensAnalyzed = 0;
@@ -192,9 +190,9 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 		    tokensAnalyzed++;
 		}
 		if (matches) {
-		    album = a;
+		    return a;
 		}
-		return album;
+		return null;
 	}
 
 	/**

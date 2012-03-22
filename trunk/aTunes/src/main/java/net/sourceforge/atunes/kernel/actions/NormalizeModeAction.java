@@ -35,7 +35,7 @@ public class NormalizeModeAction extends ActionWithColorMutableIcon {
 
     private final class WarningActionListener implements ActionListener {
     	
-		boolean showWarning;
+		private boolean showWarning;
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {

@@ -113,14 +113,12 @@ public final class NavigationController implements IAudioFilesRemovedListener, I
     
     private IFilter navigationTreeFilter;
     
-    private ApplicationContext context;
-    
     /* (non-Javadoc)
      * @see org.springframework.context.ApplicationContextAware#setApplicationContext(org.springframework.context.ApplicationContext)
      */
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) {
-    	this.context = applicationContext;
+    	timer = new Timer(0, applicationContext.getBean(ExtendedToolTipActionListener.class));
     }
     
     /**
@@ -256,10 +254,7 @@ public final class NavigationController implements IAudioFilesRemovedListener, I
     /**
      * @return the timer
      */
-    public synchronized Timer getToolTipTimer() {
-    	if (timer == null) {
-    		timer = new Timer(0, context.getBean(ExtendedToolTipActionListener.class));
-    	}
+    public Timer getToolTipTimer() {
         return timer;
     }
 
