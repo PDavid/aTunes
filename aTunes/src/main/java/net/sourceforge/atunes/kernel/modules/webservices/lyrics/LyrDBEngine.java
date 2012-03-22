@@ -58,9 +58,10 @@ public class LyrDBEngine extends AbstractLyricsEngine {
 
 			// Parse result
 			BufferedReader br = new BufferedReader(new StringReader(searchResult));
-			String line = null;
-			while ((line = br.readLine()) != null && lyrics == null) {
+			String line = br.readLine();
+			while (line != null && lyrics == null) {
 				lyrics = retrieveSearchResult(line);
+				line = br.readLine();
 			}
 			br.close();
 			

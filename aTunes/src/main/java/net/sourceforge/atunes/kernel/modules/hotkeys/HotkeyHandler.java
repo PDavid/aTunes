@@ -151,7 +151,7 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
     }
 
 	@Override
-    public void onHotkey(final int id) {
+    public void onHotKey(final int id) {
         Logger.debug("Hotkey ", id);
         switch (id) {
         case HotkeyConstants.HOTKEY_NEXT: {

@@ -38,8 +38,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 class AlbumsTableCellRendererCode extends ContextTableRowPanel<IAlbumInfo> {
 	
-	private final class OpenAlbumUrlAction extends
-			ContextTableAction<IAlbumInfo> {
+	private static final class OpenAlbumUrlAction extends ContextTableAction<IAlbumInfo> {
 		/**
 		 * 
 		 */

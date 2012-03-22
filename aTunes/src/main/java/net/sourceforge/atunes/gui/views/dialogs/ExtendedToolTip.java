@@ -54,7 +54,9 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class ExtendedToolTip extends AbstractCustomWindow {
 
-    private static final String SONGS2 = "SONGS";
+    private static final String SONG = "SONG";
+
+	private static final String SONGS2 = "SONGS";
 
 	private static final long serialVersionUID = -5041702404982493070L;
 
@@ -227,7 +229,7 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
 		int artistNumber = y.getArtistSet().size();
 		setLine2(StringUtils.getString(artistNumber, " ", (artistNumber > 1 ? I18nUtils.getString("ARTISTS") : I18nUtils.getString("ARTIST"))));
 		int songs = y.size();
-		setLine3(StringUtils.getString(songs, " ", (songs > 1 ? I18nUtils.getString(SONGS2) : I18nUtils.getString("SONG"))));
+		setLine3(StringUtils.getString(songs, " ", (songs > 1 ? I18nUtils.getString(SONGS2) : I18nUtils.getString(SONG))));
 	}
 
 	/**
@@ -239,7 +241,7 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
 		int artistNumber = g.getArtistSet().size();
 		setLine2(StringUtils.getString(artistNumber, " ", (artistNumber > 1 ? I18nUtils.getString("ARTISTS") : I18nUtils.getString("ARTIST"))));
 		int songs = g.size();
-		setLine3(StringUtils.getString(songs, " ", (songs > 1 ? I18nUtils.getString(SONGS2) : I18nUtils.getString("SONG"))));
+		setLine3(StringUtils.getString(songs, " ", (songs > 1 ? I18nUtils.getString(SONGS2) : I18nUtils.getString(SONG))));
 	}
 
 	/**
@@ -255,7 +257,7 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
 		    setLine2(null);
 		}
 		int songs = f.getAudioObjects().size();
-		setLine3(StringUtils.getString(songs, " ", (songs > 1 ? I18nUtils.getString(SONGS2) : I18nUtils.getString("SONG"))));
+		setLine3(StringUtils.getString(songs, " ", (songs > 1 ? I18nUtils.getString(SONGS2) : I18nUtils.getString(SONG))));
 	}
 
 	/**
@@ -276,7 +278,7 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
 		setLine1(a.getName());
 		setLine2(a.getArtist().getName());
 		int songNumber = a.size();
-		setLine3(StringUtils.getString(songNumber, " ", (songNumber > 1 ? I18nUtils.getString(SONGS2) : I18nUtils.getString("SONG"))));
+		setLine3(StringUtils.getString(songNumber, " ", (songNumber > 1 ? I18nUtils.getString(SONGS2) : I18nUtils.getString(SONG))));
 	}
 
     /**

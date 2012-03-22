@@ -210,10 +210,9 @@ final class TagModifier {
 			ILocalAudioObjectValidator localAudioObjectValidator, String title,
 			String album, String artist, int year, String comment,
 			String genre, String lyrics, String composer, int track,
-			int discNumber, String albumArtist) throws FileNotFoundException,
-			CannotReadException, IOException, TagException,
+			int discNumber, String albumArtist) throws CannotReadException, IOException, TagException,
 			ReadOnlyFileException, InvalidAudioFrameException,
-			ImageReadException, FieldDataInvalidException, CannotWriteException {
+			ImageReadException, CannotWriteException {
 		// Be sure file is writable before setting info
 		FileUtils.setWritable(file.getFile());
 

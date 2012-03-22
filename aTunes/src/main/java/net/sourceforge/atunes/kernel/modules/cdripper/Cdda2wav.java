@@ -265,7 +265,6 @@ public class Cdda2wav extends AbstractCdToWavConverter {
     @Override
     public CDInfo retrieveDiscInformation() {
         Logger.info("Getting cd information...");
-        CDInfo cdRecursive = null;
         // If no devices detected do exit
         if (devNumber == 0) {
             return null;
@@ -278,52 +277,21 @@ public class Cdda2wav extends AbstractCdToWavConverter {
             setProcess(new ProcessBuilder(command).start());
             cdLoaded = false;
 
-            Thread readCdda = new ReadCddaThread(this);
-
-            // Here we control the thread. The join() is needed in case there is no cd to
-            // avoid hanging. Increase join() waiting time if "no CD" errors are occuring 
-            // on slow drives. The thread is interupted to avoid a hang when no CD is present
-            readCdda.start();
-            readCdda.join(650);
-            if (cdLoaded) {
-                // If a CD is detected, give more time
-                readCdda.join(80000);
-            }
-
-            // This produces error outputs but is necessary to avoid cdda2wav 
-            // blocking the drive
-            getProcess().destroy();
-            readCdda.interrupt();
-            Logger.info("Interrupt");
-            // cdMonitor.join();
+            readCddaThread();
 
             // Check if we have either a data CD or no CD inserted at all
             // If this is the case we must check the other devices
-            try {
-                if (getCDInfo().getTracks() == 0 || !cdLoaded) {
-                    devCounter = devCounter + 1;
-                    // Go to next drive
-                    devices.remove(0);
-                    //if there is another drive, try it
-                    if (getDriveId() != null && devCounter <= devNumber) {
-                        cdRecursive = retrieveDiscInformation();
-                    }
+            if (getCDInfo().getTracks() == 0 || !cdLoaded) {
+            	CDInfo cdRecursive = checkAnotherDrive();
+                // If the recursive function had some result, assign it to cd
+                if (cdRecursive != null) {
+                    setCDInfo(cdRecursive);
                 }
-            } catch (Exception e) {
-                Logger.error(e);
             }
 
-            // If the recursive function had some result, assign it to cd
-            if (cdRecursive != null) {
-                setCDInfo(cdRecursive);
-            }
             // If no tracks are found, assuming no CD inserted.
             if (!cdLoaded || getCDInfo().getTracks() == 0) {
-                // Only print no CD dialog once
-                if (doNotRepeatNoCdDialog) {
-                    notifyNoCd();
-                }
-                doNotRepeatNoCdDialog = false;
+                noCdInserted();
                 return null;
             }
 
@@ -338,6 +306,56 @@ public class Cdda2wav extends AbstractCdToWavConverter {
             return null;
         }
     }
+
+	/**
+	 * 
+	 */
+	private void noCdInserted() {
+		// Only print no CD dialog once
+		if (doNotRepeatNoCdDialog) {
+		    notifyNoCd();
+		}
+		doNotRepeatNoCdDialog = false;
+	}
+
+	/**
+	 * @param cdRecursive
+	 * @return
+	 */
+	private CDInfo checkAnotherDrive() {
+		devCounter = devCounter + 1;
+		// Go to next drive
+		devices.remove(0);
+		//if there is another drive, try it
+		if (getDriveId() != null && devCounter <= devNumber) {
+			return retrieveDiscInformation();
+		}
+		return null;
+	}
+
+	/**
+	 * @throws InterruptedException
+	 */
+	private void readCddaThread() throws InterruptedException {
+		Thread readCdda = new ReadCddaThread(this);
+
+		// Here we control the thread. The join() is needed in case there is no cd to
+		// avoid hanging. Increase join() waiting time if "no CD" errors are occuring 
+		// on slow drives. The thread is interupted to avoid a hang when no CD is present
+		readCdda.start();
+		readCdda.join(650);
+		if (cdLoaded) {
+		    // If a CD is detected, give more time
+		    readCdda.join(80000);
+		}
+
+		// This produces error outputs but is necessary to avoid cdda2wav 
+		// blocking the drive
+		getProcess().destroy();
+		readCdda.interrupt();
+		Logger.info("Interrupt");
+		// cdMonitor.join();
+	}
 
 	/**
 	 * @return

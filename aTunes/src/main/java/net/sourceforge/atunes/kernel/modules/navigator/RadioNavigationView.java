@@ -309,52 +309,96 @@ public final class RadioNavigationView extends AbstractNavigationView {
     	
         for (IRadio r : radios) {
             if (currentFilter == null || r.getName().toUpperCase().contains(currentFilter.toUpperCase())) {
-                // Create radio node
-                DefaultMutableTreeNode radioNode = new DefaultMutableTreeNode(r);
-                // If node was selected before refreshing...
-                if (objectsSelected.contains(radioNode.getUserObject())) {
-                    nodesToSelect.add(radioNode);
-                }
-                // If node was expanded before refreshing...
-                if (objectsExpanded.contains(radioNode.getUserObject())) {
-                    nodesToExpand.add(radioNode);
-                }
-
-                // Insert radio node into label node; "REMOVED" tag means we should not display this station
-                if (radioGroups.containsKey(r.getLabel()) && !r.isRemoved()) {
-                    radioGroups.get(r.getLabel()).add(radioNode);
-                } else if (r.isRemoved()) {
-                	if (presetRadios != null) {
-                		if (!presetRadios.isEmpty()) {
-                			presetRadios.remove(r);
-                		}
-                	} else {
-                		radioHandler.removeRadio(r);
-                	}
-                } else {
-                    DefaultMutableTreeNode labelNode;
-                    if (r.getLabel() == null || r.getLabel().trim().equals("")) {
-                        //labelNode = new DefaultMutableTreeNode(LanguageTool.getString("UNLABELED"));
-                        radioGroupNoLabel.put(r.getName(), radioNode);
-                    } else {
-                        if (!r.isRemoved()) {
-                            labelNode = new DefaultMutableTreeNode(r.getLabel());
-                            labelNode.add(radioNode);
-                            // If node was selected before refreshing...
-                            if (objectsSelected.contains(labelNode.getUserObject())) {
-                                nodesToSelect.add(labelNode);
-                            }
-                            // If node was expanded before refreshing...
-                            if (objectsExpanded.contains(labelNode.getUserObject())) {
-                                nodesToExpand.add(labelNode);
-                            }
-                            radioGroups.put(r.getLabel(), labelNode);
-                        }
-                    }
-                }
+                createRadioNode(presetRadios, objectsExpanded, objectsSelected,
+						nodesToExpand, nodesToSelect, radioGroups,
+						radioGroupNoLabel, r);
             }
         }
     }
+
+	/**
+	 * @param presetRadios
+	 * @param objectsExpanded
+	 * @param objectsSelected
+	 * @param nodesToExpand
+	 * @param nodesToSelect
+	 * @param radioGroups
+	 * @param radioGroupNoLabel
+	 * @param r
+	 */
+	private void createRadioNode(List<IRadio> presetRadios,
+			List<ITreeObject<? extends IAudioObject>> objectsExpanded,
+			List<ITreeObject<? extends IAudioObject>> objectsSelected,
+			List<DefaultMutableTreeNode> nodesToExpand,
+			List<DefaultMutableTreeNode> nodesToSelect,
+			Map<String, DefaultMutableTreeNode> radioGroups,
+			Map<String, DefaultMutableTreeNode> radioGroupNoLabel, IRadio r) {
+		
+		// Create radio node
+		DefaultMutableTreeNode radioNode = new DefaultMutableTreeNode(r);
+		
+		markNodeAsSelected(objectsSelected, nodesToSelect, radioNode);
+		
+		markNodeAsExpanded(objectsExpanded, nodesToExpand, radioNode);
+
+		// Insert radio node into label node; "REMOVED" tag means we should not display this station
+		if (radioGroups.containsKey(r.getLabel()) && !r.isRemoved()) {
+		    radioGroups.get(r.getLabel()).add(radioNode);
+		} else if (r.isRemoved()) {
+			if (presetRadios != null) {
+				if (!presetRadios.isEmpty()) {
+					presetRadios.remove(r);
+				}
+			} else {
+				radioHandler.removeRadio(r);
+			}
+		} else {
+		    if (r.getLabel() == null || r.getLabel().trim().equals("")) {
+		        radioGroupNoLabel.put(r.getName(), radioNode);
+		    } else {
+		        if (!r.isRemoved()) {
+		        	DefaultMutableTreeNode labelNode = new DefaultMutableTreeNode(r.getLabel());
+		            labelNode.add(radioNode);
+		            
+		            markNodeAsSelected(objectsSelected, nodesToSelect, labelNode);
+		            markNodeAsExpanded(objectsExpanded, nodesToExpand, labelNode);
+		            
+		            radioGroups.put(r.getLabel(), labelNode);
+		        }
+		    }
+		}
+	}
+
+	/**
+	 * @param objectsExpanded
+	 * @param nodesToExpand
+	 * @param radioNode
+	 */
+	private void markNodeAsExpanded(
+			List<ITreeObject<? extends IAudioObject>> objectsExpanded,
+			List<DefaultMutableTreeNode> nodesToExpand,
+			DefaultMutableTreeNode radioNode) {
+		// If node was expanded before refreshing...
+		if (objectsExpanded.contains(radioNode.getUserObject())) {
+		    nodesToExpand.add(radioNode);
+		}
+	}
+
+	/**
+	 * @param objectsSelected
+	 * @param nodesToSelect
+	 * @param radioNode
+	 */
+	private void markNodeAsSelected(
+			List<ITreeObject<? extends IAudioObject>> objectsSelected,
+			List<DefaultMutableTreeNode> nodesToSelect,
+			DefaultMutableTreeNode radioNode) {
+		// If node was selected before refreshing...
+
+		if (objectsSelected.contains(radioNode.getUserObject())) {
+		    nodesToSelect.add(radioNode);
+		}
+	}
     
     @Override
     public boolean isUseDefaultNavigatorColumnSet() {

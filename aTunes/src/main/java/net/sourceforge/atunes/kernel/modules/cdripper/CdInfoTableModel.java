@@ -148,7 +148,7 @@ class CdInfoTableModel extends AbstractTableModel {
      * @param cdInfo
      *            the new cd info
      */
-    public void setCdInfo(CDInfo cdInfo) {
+    public void setCDInfo(CDInfo cdInfo) {
         if (cdInfo != null) {
             this.cdInfo = cdInfo;
             if (tracksSelected == null) {
