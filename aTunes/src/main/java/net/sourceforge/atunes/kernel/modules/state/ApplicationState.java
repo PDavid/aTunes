@@ -58,7 +58,9 @@ import net.sourceforge.atunes.model.ViewMode;
  */
 public class ApplicationState implements IState {
 
-    /**
+    private static final String UNCHECKED = "unchecked";
+
+	/**
      * Component responsible of store state
      */
     private IStateStore stateStore;
@@ -388,7 +390,7 @@ public class ApplicationState implements IState {
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getFrameClass()
 	 */
     @Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings(UNCHECKED)
 	public Class<? extends IFrame> getFrameClass() {
         return (Class<? extends IFrame>) this.stateStore.retrievePreference(Preferences.FRAME_CLASS, null);
     }
@@ -912,7 +914,7 @@ public class ApplicationState implements IState {
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getLyricsEnginesInfo()
 	 */
     @Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings(UNCHECKED)
 	public List<ILyricsEngineInfo> getLyricsEnginesInfo() {
     	return (List<ILyricsEngineInfo>) this.stateStore.retrievePreference(Preferences.LYRICS_ENGINES_INFO, null);
     }
@@ -1039,7 +1041,7 @@ public class ApplicationState implements IState {
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getColumns()
 	 */
     @Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings(UNCHECKED)
 	public Map<String, ColumnBean> getColumns() {
     	Map<String, ColumnBean> map = (Map<String, ColumnBean>) this.stateStore.retrievePreference(Preferences.COLUMNS, null);
     	return map != null ? Collections.unmodifiableMap(map) : null;
@@ -1061,7 +1063,7 @@ public class ApplicationState implements IState {
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getNavigatorColumns()
 	 */
     @Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings(UNCHECKED)
 	public Map<String, ColumnBean> getNavigatorColumns() {
     	Map<String, ColumnBean> map = (Map<String, ColumnBean>) this.stateStore.retrievePreference(Preferences.NAVIGATOR_COLUMNS, null);
     	return map != null ? Collections.unmodifiableMap(map) : null;
@@ -1083,7 +1085,7 @@ public class ApplicationState implements IState {
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getSearchResultsColumns()
 	 */
     @Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings(UNCHECKED)
 	public Map<String, ColumnBean> getSearchResultsColumns() {
     	Map<String, ColumnBean> map = (Map<String, ColumnBean>) this.stateStore.retrievePreference(Preferences.SEARCH_RESULTS_COLUMNS, null);
     	return map != null ? Collections.unmodifiableMap(map) : null;
@@ -1107,7 +1109,7 @@ public class ApplicationState implements IState {
     @Override
 	public FrameState getFrameState(Class<? extends IFrame> frame) {
     	// Map creation is controlled in this class to avoid modification without persistence 
-    	@SuppressWarnings("unchecked")
+    	@SuppressWarnings(UNCHECKED)
 		Map<Class<? extends IFrame>, FrameState> state = (Map<Class<? extends IFrame>, FrameState>) this.stateStore.retrievePreference(Preferences.FRAME_STATES, null);
     	if (state == null) {
     		state = new HashMap<Class<? extends IFrame>, FrameState>();
@@ -1125,7 +1127,7 @@ public class ApplicationState implements IState {
     	// Clone object to be sure changes made by application to frame state are not made over object in cache
     	FrameState frameState = new FrameState(fs);
     	if (getFrameState(frame) == null || !getFrameState(frame).equals(frameState)) {
-        	@SuppressWarnings("unchecked")
+        	@SuppressWarnings(UNCHECKED)
     		Map<Class<? extends IFrame>, FrameState> state = (Map<Class<? extends IFrame>, FrameState>) this.stateStore.retrievePreference(Preferences.FRAME_STATES, null);
     		if (state == null) {
     			state = new HashMap<Class<? extends IFrame>, FrameState>();
@@ -1249,7 +1251,7 @@ public class ApplicationState implements IState {
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getHighlightIncompleteTagFoldersAttributes()
 	 */
     @Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings(UNCHECKED)
 	public List<TagAttribute> getHighlightIncompleteTagFoldersAttributes() {
     	return (List<TagAttribute> ) this.stateStore.retrievePreference(Preferences.HIGHLIGHT_INCOMPLETE_TAG_FOLDERS_ATTRIBUTES, IncompleteTagsChecker.getDefaultTagAttributesToHighlightFolders());
     }
@@ -1304,7 +1306,7 @@ public class ApplicationState implements IState {
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getLastRepositoryFolders()
 	 */
     @Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings(UNCHECKED)
 	public List<String> getLastRepositoryFolders() {
     	return (List<String>) this.stateStore.retrievePreference(Preferences.LAST_REPOSITORY_FOLDERS, null);
     }
@@ -1629,7 +1631,7 @@ public class ApplicationState implements IState {
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getRecognitionPatterns()
 	 */
     @Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings(UNCHECKED)
 	public List<String> getRecognitionPatterns() {
     	return (List<String>) this.stateStore.retrievePreference(Preferences.RECOGNITION_PATTERNS, null);
     }
@@ -1648,7 +1650,7 @@ public class ApplicationState implements IState {
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getMassiveRecognitionPatterns()
 	 */
     @Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings(UNCHECKED)
 	public List<String> getMassiveRecognitionPatterns() {
     	return (List<String>) this.stateStore.retrievePreference(Preferences.MASSIVE_RECOGNITION_PATTERNS, null);
     }
@@ -1777,7 +1779,7 @@ public class ApplicationState implements IState {
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getCustomNavigatorColumns()
 	 */
     @Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings(UNCHECKED)
 	public Map<String, Map<String, ColumnBean>> getCustomNavigatorColumns() {
     	// This map is not unmodifiable
     	return (Map<String, Map<String, ColumnBean>>) this.stateStore.retrievePreference(Preferences.CUSTOM_NAVIGATOR_COLUMNS, null); 
@@ -1833,7 +1835,7 @@ public class ApplicationState implements IState {
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getAlbumsColumns()
 	 */
     @Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings(UNCHECKED)
     public Map<String, ColumnBean> getAlbumsColumns() {
     	Map<String, ColumnBean> map = (Map<String, ColumnBean>) this.stateStore.retrievePreference(Preferences.ALBUM_COLUMNS, null);
     	return map != null ? Collections.unmodifiableMap(map) : null;

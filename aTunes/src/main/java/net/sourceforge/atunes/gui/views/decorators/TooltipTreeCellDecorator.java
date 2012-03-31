@@ -36,7 +36,7 @@ public class TooltipTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, 
     public Component decorateTreeCellComponent(JLabel component, Object userObject, boolean isSelected) {
         if (!getState().isShowExtendedTooltip() || !ExtendedToolTip.canObjectBeShownInExtendedToolTip(userObject)) {
             if (userObject instanceof ITreeObject) {
-                component.setToolTipText(((ITreeObject<? extends IAudioObject>) userObject).getToolTip());
+                component.setToolTipText(((ITreeObject<? extends IAudioObject>) userObject).getTooltip());
             } else {
                 component.setToolTipText(userObject.toString());
             }

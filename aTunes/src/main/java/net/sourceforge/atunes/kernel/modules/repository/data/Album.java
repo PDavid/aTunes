@@ -156,18 +156,18 @@ public class Album implements IAlbum {
     }
 
     @Override
-    public String getToolTip() {
+    public String getTooltip() {
         int songs = size();
         return StringUtils.getString(getName(), " - ", getArtist(), " (", songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG")), ")");
     }
 
     @Override
-    public boolean isExtendedToolTipSupported() {
+    public boolean isExtendedTooltipSupported() {
         return true;
     }
 
     @Override
-    public boolean isExtendedToolTipImageSupported() {
+    public boolean isExtendedTooltipImageSupported() {
         return true;
     }
 

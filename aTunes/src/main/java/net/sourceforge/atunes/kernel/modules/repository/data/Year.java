@@ -126,19 +126,19 @@ public class Year implements IYear {
     }
 
     @Override
-    public String getToolTip() {
+    public String getTooltip() {
         int artistNumber = getArtistSet().size();
         int songs = size();
         return StringUtils.getString(getName(), " (", I18nUtils.getString("ARTISTS"), ": ", artistNumber, ", ", I18nUtils.getString("SONGS"), ": ", songs, ")");
     }
 
     @Override
-    public boolean isExtendedToolTipSupported() {
+    public boolean isExtendedTooltipSupported() {
         return true;
     }
 
     @Override
-    public boolean isExtendedToolTipImageSupported() {
+    public boolean isExtendedTooltipImageSupported() {
         return false;
     }
 

@@ -53,8 +53,25 @@ public class EditTagsProcess extends AbstractChangeTagProcess {
             if (cover != null) {
                 c = (byte[]) cover;
             }
-            newTag.setInternalImage((oldTag != null && oldTag.hasInternalImage() && !shouldEditCover) || (shouldEditCover && cover != null));
+            
+            setInternalImage(newTag, oldTag, shouldEditCover, cover);
         }
         getTagHandler().setTag(audioFile, newTag, shouldEditCover, c);
     }
+
+	/**
+	 * @param newTag
+	 * @param oldTag
+	 * @param shouldEditCover
+	 * @param cover
+	 */
+	private void setInternalImage(ITag newTag, ITag oldTag, boolean shouldEditCover, Object cover) {
+		if (oldTag != null && oldTag.hasInternalImage() && !shouldEditCover) {
+			newTag.setInternalImage(true);
+		} else if (shouldEditCover && cover != null) {
+			newTag.setInternalImage(true);
+		} else {
+			newTag.setInternalImage(false);
+		}
+	}
 }

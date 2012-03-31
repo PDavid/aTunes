@@ -43,14 +43,14 @@ public interface ITreeObject<T extends IAudioObject> {
      * 
      * @return ToolTip
      */
-    public String getToolTip();
+    public String getTooltip();
 
     /**
      * Returns <code>true</code> if this object supports extended tool tip
      * 
      * @return
      */
-    public boolean isExtendedToolTipSupported();
+    public boolean isExtendedTooltipSupported();
 
     /**
      * Returns <code>true</code> if this object supports image in extended tool
@@ -58,7 +58,7 @@ public interface ITreeObject<T extends IAudioObject> {
      * 
      * @return
      */
-    public boolean isExtendedToolTipImageSupported();
+    public boolean isExtendedTooltipImageSupported();
 
 	/**
 	 * Returns number of audio objects

@@ -227,17 +227,17 @@ public class PodcastFeed implements IPodcastFeed {
     }
 
     @Override
-    public synchronized String getToolTip() {
+    public synchronized String getTooltip() {
         return name;
     }
 
     @Override
-    public boolean isExtendedToolTipSupported() {
+    public boolean isExtendedTooltipSupported() {
         return true;
     }
 
     @Override
-    public boolean isExtendedToolTipImageSupported() {
+    public boolean isExtendedTooltipImageSupported() {
         return false;
     }
     
