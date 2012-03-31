@@ -25,6 +25,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.INetworkHandler;
+import net.sourceforge.atunes.model.IVideoEntry;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.UnknownObjectCheck;
@@ -88,7 +89,7 @@ public final class YoutubeService {
      * @param startIndex
      * @return
      */
-    public List<YoutubeResultEntry> searchInYoutube(String searchString, int startIndex) {
+    public List<IVideoEntry> searchInYoutube(String searchString, int startIndex) {
         try {
             String searchStringEncoded = networkHandler.encodeString(searchString);
             searchStringEncoded = searchStringEncoded.replaceAll("\\+", "%20");

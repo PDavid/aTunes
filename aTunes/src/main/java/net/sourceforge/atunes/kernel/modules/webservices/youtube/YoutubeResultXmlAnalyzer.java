@@ -27,6 +27,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.model.INetworkHandler;
+import net.sourceforge.atunes.model.IVideoEntry;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -35,7 +36,12 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class YoutubeResultXmlAnalyzer {
+/**
+ * Parses XML from Youtube
+ * @author alex
+ *
+ */
+public final class YoutubeResultXmlAnalyzer {
 	
 	private INetworkHandler networkHandler;
 	
@@ -52,14 +58,14 @@ public class YoutubeResultXmlAnalyzer {
      * @return
      * @throws IOException
      */
-    protected List<YoutubeResultEntry> analyzeResultXml(Document xml) throws IOException {
-        List<YoutubeResultEntry> result = new ArrayList<YoutubeResultEntry>();
+    List<IVideoEntry> analyzeResultXml(Document xml) throws IOException {
+        List<IVideoEntry> result = new ArrayList<IVideoEntry>();
 
         NodeList entryList = xml.getElementsByTagName("entry");
         for (int i = 0; i < entryList.getLength(); i++) {
             Node item = entryList.item(i);
             if (item instanceof Element) {
-                analizeEntry(result, item);
+                analizeEntry(result, (Element) item);
             }
         }
 
@@ -71,11 +77,10 @@ public class YoutubeResultXmlAnalyzer {
 	 * @param item
 	 * @throws IOException 
 	 */
-	private void analizeEntry(List<YoutubeResultEntry> result, Node item) throws IOException {
-		YoutubeResultEntry entry = new YoutubeResultEntry();
+	private void analizeEntry(List<IVideoEntry> result, Element item) throws IOException {
+		IVideoEntry entry = new YoutubeResultEntry();
 
-		Element el = (Element) item;
-		Element mediaGroup = (Element) el.getElementsByTagName("media:group").item(0);
+		Element mediaGroup = (Element) item.getElementsByTagName("media:group").item(0);
 		
 		//get title
 		getTitle(entry, mediaGroup);
@@ -98,7 +103,7 @@ public class YoutubeResultXmlAnalyzer {
 	 * @param entry
 	 * @param mediaGroup
 	 */
-	private void getTitle(YoutubeResultEntry entry, Element mediaGroup) {
+	private void getTitle(IVideoEntry entry, Element mediaGroup) {
 		String title = mediaGroup.getElementsByTagName("media:title").item(0).getTextContent();
 		entry.setName(title);
 	}
@@ -107,7 +112,7 @@ public class YoutubeResultXmlAnalyzer {
 	 * @param entry
 	 * @param mediaGroup
 	 */
-	private void getUrl(YoutubeResultEntry entry, Element mediaGroup) {
+	private void getUrl(IVideoEntry entry, Element mediaGroup) {
 		NodeList mediaPlayerList = mediaGroup.getElementsByTagName("media:player");
 		if (mediaPlayerList != null) {
 		    Node mpItem = mediaPlayerList.item(0);
@@ -122,7 +127,7 @@ public class YoutubeResultXmlAnalyzer {
 	 * @param entry
 	 * @param mediaGroup
 	 */
-	private void getDuration(YoutubeResultEntry entry, Element mediaGroup) {
+	private void getDuration(IVideoEntry entry, Element mediaGroup) {
 		NodeList durationNodes = mediaGroup.getElementsByTagName("yt:duration");
 		if (durationNodes != null) {
 		    Node durationNode = durationNodes.item(0);
@@ -140,7 +145,7 @@ public class YoutubeResultXmlAnalyzer {
 	 * @param mediaGroup
 	 * @throws IOException
 	 */
-	private void getImage(YoutubeResultEntry entry, Element mediaGroup) throws IOException {
+	private void getImage(IVideoEntry entry, Element mediaGroup) throws IOException {
 		NodeList thumbnails = mediaGroup.getElementsByTagName("media:thumbnail");
 		if (thumbnails != null) {
 		    int index = thumbnails.getLength() / 2;

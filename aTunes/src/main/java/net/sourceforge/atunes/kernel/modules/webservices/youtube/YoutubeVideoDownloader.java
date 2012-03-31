@@ -34,6 +34,7 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IProgressDialog;
+import net.sourceforge.atunes.model.IVideoEntry;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -65,7 +66,7 @@ public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
     /**
      * The entry containing data about the video
      */
-    private YoutubeResultEntry entry;
+    private IVideoEntry entry;
 
     /**
      * The file where video should be downloaded
@@ -94,7 +95,7 @@ public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
      * @param youtubeService
      * @param networkHandler
      */
-    public YoutubeVideoDownloader(YoutubeResultEntry entry, File file, YoutubeService youtubeService, INetworkHandler networkHandler) {
+    public YoutubeVideoDownloader(IVideoEntry entry, File file, YoutubeService youtubeService, INetworkHandler networkHandler) {
         this.entry = entry;
         this.youtubeService = youtubeService;
         File f = file;

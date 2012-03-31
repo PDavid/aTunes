@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.covernavigator;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorDialog;
 import net.sourceforge.atunes.kernel.modules.process.GetCoversProcess;
 import net.sourceforge.atunes.model.IArtist;

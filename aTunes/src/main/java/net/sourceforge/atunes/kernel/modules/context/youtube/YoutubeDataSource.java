@@ -22,10 +22,10 @@ package net.sourceforge.atunes.kernel.modules.context.youtube;
 
 import java.util.List;
 
-import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeResultEntry;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextInformationSource;
+import net.sourceforge.atunes.model.IVideoEntry;
 
 /**
  * Youtube data source
@@ -37,7 +37,7 @@ public class YoutubeDataSource implements IContextInformationSource {
 
     private YoutubeService youtubeService;
     
-    private List<YoutubeResultEntry> videos;
+    private List<IVideoEntry> videos;
     
     @Override
     public void getData(IAudioObject audioObject) {
@@ -47,11 +47,11 @@ public class YoutubeDataSource implements IContextInformationSource {
     /**
      * @return videos found
      */
-    public List<YoutubeResultEntry> getVideos() {
+    public List<IVideoEntry> getVideos() {
 		return videos;
 	}
     
-    private List<YoutubeResultEntry> getYoutubeVideos(IAudioObject audioObject) {
+    private List<IVideoEntry> getYoutubeVideos(IAudioObject audioObject) {
         String searchString = youtubeService.getSearchForAudioObject(audioObject);
         if (searchString.length() > 0) {
             return youtubeService.searchInYoutube(searchString, 1);

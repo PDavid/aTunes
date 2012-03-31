@@ -31,16 +31,16 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.context.ContextTable;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanel;
-import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeResultEntry;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IPlayerHandler;
+import net.sourceforge.atunes.model.IVideoEntry;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class YoutubeResultsTableCellRendererCode extends ContextTableRowPanel<YoutubeResultEntry> {
+public class YoutubeResultsTableCellRendererCode extends ContextTableRowPanel<IVideoEntry> {
 	
-	private final class OpenYoutubeVideoAction extends ContextTableAction<YoutubeResultEntry> {
+	private final class OpenYoutubeVideoAction extends ContextTableAction<IVideoEntry> {
 		
 		/**
 		 * 
@@ -52,7 +52,7 @@ public class YoutubeResultsTableCellRendererCode extends ContextTableRowPanel<Yo
 		}
 
 		@Override
-		protected void execute(YoutubeResultEntry entry) {
+		protected void execute(IVideoEntry entry) {
 		     //open youtube url
 			desktop.openURL(entry.getUrl());
 		    // When playing a video in web browser automatically pause current song
@@ -62,12 +62,12 @@ public class YoutubeResultsTableCellRendererCode extends ContextTableRowPanel<Yo
 		}
 
 		@Override
-		protected YoutubeResultEntry getSelectedObject(int row) {
+		protected IVideoEntry getSelectedObject(int row) {
 			return ((YoutubeResultTableModel) getTable().getModel()).getEntry(row);
 		}
 
 		@Override
-		protected boolean isEnabledForObject(YoutubeResultEntry object) {
+		protected boolean isEnabledForObject(IVideoEntry object) {
 			return true;
 		}
 	}
@@ -80,7 +80,7 @@ public class YoutubeResultsTableCellRendererCode extends ContextTableRowPanel<Yo
 	}
 
 	@Override
-    public JComponent getComponent(JComponent superComponent, JTable t, YoutubeResultEntry value, boolean isSelected, boolean hasFocus, int row, int column) {
+    public JComponent getComponent(JComponent superComponent, JTable t, IVideoEntry value, boolean isSelected, boolean hasFocus, int row, int column) {
         return getPanelForTableRenderer(value.getImage(), 
         								StringUtils.getString("<html>", value.getName(), "<br>(", value.getDuration(), ")</html>"), 
         								superComponent.getBackground(), 
@@ -91,8 +91,8 @@ public class YoutubeResultsTableCellRendererCode extends ContextTableRowPanel<Yo
     }
 	
 	@Override
-	public List<ContextTableAction<YoutubeResultEntry>> getActions() {
-		List<ContextTableAction<YoutubeResultEntry>> actions = new ArrayList<ContextTableAction<YoutubeResultEntry>>();
+	public List<ContextTableAction<IVideoEntry>> getActions() {
+		List<ContextTableAction<IVideoEntry>> actions = new ArrayList<ContextTableAction<IVideoEntry>>();
 		actions.add(new OpenYoutubeVideoAction(I18nUtils.getString("PLAY_VIDEO_AT_YOUTUBE"), getTable(), desktop));
 		
 		// DOWNLOAD NOT WORKING AS API HAS CHANGED AND MP4 FILES ARE NOT AVAILABLE

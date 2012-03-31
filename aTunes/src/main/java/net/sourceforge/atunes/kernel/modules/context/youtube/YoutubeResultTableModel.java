@@ -27,7 +27,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeResultEntry;
+import net.sourceforge.atunes.model.IVideoEntry;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -41,7 +41,7 @@ public class YoutubeResultTableModel implements TableModel {
     /**
      * List of videos from a search at YouTube
      */
-    private List<YoutubeResultEntry> entries;
+    private List<IVideoEntry> entries;
 
     /**
      * Listeners of this table model
@@ -51,7 +51,7 @@ public class YoutubeResultTableModel implements TableModel {
     /**
      * Default constructor
      */
-    public YoutubeResultTableModel(List<YoutubeResultEntry> entries) {
+    public YoutubeResultTableModel(List<IVideoEntry> entries) {
         this.entries = entries;
         listeners = new ArrayList<TableModelListener>();
     }
@@ -61,7 +61,7 @@ public class YoutubeResultTableModel implements TableModel {
      * 
      * @param entriesToBeAdded
      */
-    public void addEntries(List<YoutubeResultEntry> entriesToBeAdded) {
+    public void addEntries(List<IVideoEntry> entriesToBeAdded) {
         entries.addAll(entriesToBeAdded);
         // Refresh model
         refresh();
@@ -82,7 +82,7 @@ public class YoutubeResultTableModel implements TableModel {
      * @param row
      * @return
      */
-    public YoutubeResultEntry getEntry(int row) {
+    public IVideoEntry getEntry(int row) {
         return entries.get(row);
     }
 
@@ -94,7 +94,7 @@ public class YoutubeResultTableModel implements TableModel {
     @Override
     public Class<?> getColumnClass(int arg0) {
         if (arg0 == 0) {
-            return YoutubeResultEntry.class;
+            return IVideoEntry.class;
         }
         return null;
     }
