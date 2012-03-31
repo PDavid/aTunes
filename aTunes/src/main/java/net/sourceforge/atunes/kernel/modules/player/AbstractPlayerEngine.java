@@ -316,7 +316,6 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
      * Starts playing current audio object from play list
      * 
      * @param buttonPressed
-     *            TODO: Add more javadoc
      */
     @Override
 	public final void playCurrentAudioObject(boolean buttonPressed) {

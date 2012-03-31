@@ -72,9 +72,8 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     
     /**
      * The player engine
-     * NOTE: This attribute can be null if no player engine has been found, so it must be checked against null
      */
-    private AbstractPlayerEngine playerEngine;
+    private AbstractPlayerEngine playerEngine = new VoidPlayerEngine();
 
     /**
      * The current playback state
@@ -133,7 +132,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 	 */
     @Override
 	public boolean isEnginePlaying() {
-        return playerEngine != null ? playerEngine.isEnginePlaying() : false;
+        return playerEngine.isEnginePlaying();
     }
 
     /* (non-Javadoc)
@@ -141,9 +140,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 	 */
     @Override
 	public void setVolume(int perCent) {
-    	if (playerEngine != null) {
-    		playerEngine.setVolume(perCent);
-    	}
+    	playerEngine.setVolume(perCent);
         getPlayerControlsController().setVolume(perCent);
     }
 
@@ -152,9 +149,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 	 */
     @Override
 	public void applyMuteState(boolean state) {
-    	if (playerEngine != null) {
-    		playerEngine.applyMuteState(state);
-    	}
+    	playerEngine.applyMuteState(state);
     }
 
     /* (non-Javadoc)
@@ -162,9 +157,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 	 */
     @Override
 	public void applyNormalization() {
-    	if (playerEngine != null) {
-    		playerEngine.applyNormalization();
-    	}
+    	playerEngine.applyNormalization();
     }
 
     /* (non-Javadoc)
@@ -172,14 +165,12 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 	 */
     @Override
 	public boolean supportsCapability(PlayerEngineCapability capability) {
-        return playerEngine != null ? playerEngine.supportsCapability(capability) : false;
+        return playerEngine.supportsCapability(capability);
     }
 
     @Override
     public void applyEqualization(float[] values) {
-    	if (playerEngine != null) {
-    		playerEngine.applyEqualization(values);
-    	}
+    	playerEngine.applyEqualization(values);
     }
 
     /**
@@ -190,7 +181,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
      * @return
      */
     float[] transformEqualizerValues(float[] values) {
-        return playerEngine != null ? playerEngine.transformEqualizerValues(values) : new float[0];
+        return playerEngine.transformEqualizerValues(values);
     }
 
     /* (non-Javadoc)
@@ -198,9 +189,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 	 */
     @Override
 	public final void playCurrentAudioObject(boolean buttonPressed) {
-    	if (playerEngine != null) {
-    		playerEngine.playCurrentAudioObject(buttonPressed);
-    	}
+    	playerEngine.playCurrentAudioObject(buttonPressed);
     }
 
     /* (non-Javadoc)
@@ -208,9 +197,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 	 */
     @Override
 	public final void stopCurrentAudioObject(boolean userStopped) {
-    	if (playerEngine != null) {
-    		playerEngine.stopCurrentAudioObject(userStopped);
-    	}
+    	playerEngine.stopCurrentAudioObject(userStopped);
     }
 
     /* (non-Javadoc)
@@ -218,9 +205,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 	 */
     @Override
 	public final void playPreviousAudioObject() {
-    	if (playerEngine != null) {
-    		playerEngine.playPreviousAudioObject();
-    	}
+    	playerEngine.playPreviousAudioObject();
     }
 
     /* (non-Javadoc)
@@ -228,9 +213,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 	 */
     @Override
 	public final void playNextAudioObject() {
-    	if (playerEngine != null) {
-    		playerEngine.playNextAudioObject(false);
-    	}
+    	playerEngine.playNextAudioObject(false);
     }
 
     /* (non-Javadoc)
@@ -238,9 +221,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 	 */
     @Override
 	public final void seekCurrentAudioObject(long milliseconds) {
-    	if (playerEngine != null) {
-    		playerEngine.seekCurrentAudioObject(milliseconds);
-    	}
+    	playerEngine.seekCurrentAudioObject(milliseconds);
     }
 
     /* (non-Javadoc)
@@ -248,9 +229,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 	 */
     @Override
 	public final void volumeDown() {
-    	if (playerEngine != null) {
-    		playerEngine.volumeDown();
-    	}
+    	playerEngine.volumeDown();
     }
 
     /* (non-Javadoc)
@@ -258,18 +237,14 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 	 */
     @Override
 	public final void volumeUp() {
-    	if (playerEngine != null) {
-    		playerEngine.volumeUp();
-    	}
+    	playerEngine.volumeUp();
     }
 
     @Override
     public void applicationFinish() {
         // Stop must be called explicitly to avoid playback after user closed app
         stopCurrentAudioObject(true);
-        if (playerEngine != null) {
-        	playerEngine.finishPlayer();
-        }
+        playerEngine.finishPlayer();
     }
 
     /* (non-Javadoc)
@@ -285,7 +260,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 	 */
     @Override
 	public IAudioObject getAudioObject() {
-    	return playerEngine != null ? playerEngine.getAudioObject() : null;
+    	return playerEngine.getAudioObject();
     }
 
     /**
@@ -373,7 +348,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     
     @Override
     public void doUserInteraction() {
-        if (playerEngine == null) {
+        if (playerEngine instanceof VoidPlayerEngine) {
             manageNoPlayerEngine(getOsManager(), getFrame());
         }
     }
@@ -401,9 +376,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
         applyMuteState(getState().isMuteEnabled());
     	
         // Initial playback state is stopped
-        if (playerEngine != null) {
-        	playerEngine.callPlaybackStateListeners(PlaybackState.STOPPED);
-        }
+        playerEngine.callPlaybackStateListeners(PlaybackState.STOPPED);
 
         if (getState().isPlayAtStartup()) {
             playCurrentAudioObject(true);
@@ -412,10 +385,8 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
         // Show advanced controls
         getPlayerControlsController().getComponentControlled().showAdvancedPlayerControls(getState().isShowAdvancedPlayerControls());
 
-    	if (playerEngine != null) {
-            // Init engine
-            playerEngine.initializePlayerEngine();
-    	}
+        // Init engine
+        playerEngine.initializePlayerEngine();
     	
         // Add a shutdown hook to perform some actions before killing the JVM
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
@@ -423,9 +394,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
             @Override
             public void run() {
                 Logger.debug("Final check for Zombie player engines");
-                if (playerEngine != null) {
-                	playerEngine.killPlayer();
-                }
+                playerEngine.killPlayer();
                 Logger.debug("Closing player ...");
             }
 
@@ -481,7 +450,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 	}
 	
 	private boolean isSubmissionNeeded(PlaybackState newState, IAudioObject currentAudioObject) {
-		if (isStateForSubmission(newState) && playerEngine != null && playerEngine.getSubmissionState() == SubmissionState.PENDING && currentAudioObject instanceof ILocalAudioObject) {
+		if (isStateForSubmission(newState) && playerEngine.getSubmissionState() == SubmissionState.PENDING && currentAudioObject instanceof ILocalAudioObject) {
 			return true;
 		}
 		return false;
@@ -497,7 +466,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 	 * @param newState
 	 */
 	private void stopPlayerEngineIfNecessary(PlaybackState newState) {
-		if (playerEngine != null && newState == PlaybackState.STOPPED) {
+		if (newState == PlaybackState.STOPPED) {
 			playerEngine.setCurrentAudioObjectPlayedTime(0);
 			playerEngine.interruptPlayAudioObjectThread();
 		}
@@ -516,7 +485,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 	 */
     @Override
 	public long getCurrentAudioObjectPlayedTime() {
-        return playerEngine != null ? playerEngine.getCurrentAudioObjectPlayedTime() : 0;
+        return playerEngine.getCurrentAudioObjectPlayedTime();
     }
 
     /* (non-Javadoc)
@@ -524,7 +493,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 	 */
     @Override
 	public long getCurrentAudioObjectLength() {
-        return playerEngine != null ? playerEngine.getCurrentAudioObjectLength() : 0;
+        return playerEngine.getCurrentAudioObjectLength();
     }
     
     /**
@@ -575,7 +544,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 	@Override
 	public void initializeAndCheck() {
 		initialize();
-        if (playerEngine == null) {
+        if (playerEngine instanceof VoidPlayerEngine) {
         	manageNoPlayerEngine(getOsManager(), getFrame());
         }
 	}
