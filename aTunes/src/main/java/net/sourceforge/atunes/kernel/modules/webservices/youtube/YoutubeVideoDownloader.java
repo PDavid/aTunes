@@ -104,7 +104,16 @@ public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
             f = new File(StringUtils.getString(file.getAbsolutePath(), ".mp4"));
         }
         this.file = f;
-        this.progressDialog = (IProgressDialog) Context.getBean("transferDialog");
+        prepareProgressDialog(entry);
+        this.networkHandler = networkHandler;
+        this.progressDialog.showDialog();
+    }
+
+	/**
+	 * @param entry
+	 */
+	private void prepareProgressDialog(IVideoEntry entry) {
+		this.progressDialog = (IProgressDialog) Context.getBean("transferDialog");
         this.progressDialog.setTitle(entry.getName());
         this.progressDialog.setIcon(entry.getImage());
         this.progressDialog.setInfoText(I18nUtils.getString("DOWNLOADING"));
@@ -114,9 +123,7 @@ public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
                 cancelled = true;
             }
         });
-        this.networkHandler = networkHandler;
-        this.progressDialog.showDialog();
-    }
+	}
 
     @Override
     protected Void doInBackground() {
