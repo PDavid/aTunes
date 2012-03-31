@@ -21,134 +21,30 @@
 package net.sourceforge.atunes.kernel.modules.covernavigator;
 
 import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorDialog;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
-import net.sourceforge.atunes.kernel.modules.process.GetCoversProcess;
-import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IProcessFactory;
-import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.utils.Logger;
 
 public final class CoverNavigatorController extends AbstractSimpleController<CoverNavigatorDialog> {
 
-    private static final int COVER_PANEL_WIDTH = Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize() + 20;
-    private static final int COVER_PANEL_HEIGHT = Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize() + 40;
-    
-    private IAudioObjectImageLocator audioObjectImageLocator;
+    static final int COVER_PANEL_WIDTH = Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize() + 20;
+    static final int COVER_PANEL_HEIGHT = Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize() + 40;
     
     private IProcessFactory processFactory;
-    
-    private final class GenerateAndShowAlbumPanelsSwingWorker extends SwingWorker<Void, IntermediateResult> {
-    	
-		private final IArtist artistSelected;
-		
-		private GenerateAndShowAlbumPanelsSwingWorker(IArtist artistSelected) {
-			this.artistSelected = artistSelected;
-		}
 
-		@Override
-		protected Void doInBackground() {
+    private final IAudioObjectImageLocator audioObjectImageLocator;
 
-		    final List<IAlbum> albums = new ArrayList<IAlbum>(artistSelected.getAlbums().values());
-		    Collections.sort(albums);
-
-		    for (IAlbum album : albums) {
-		        ImageIcon cover = audioObjectImageLocator.getImage(album, Constants.COVER_NAVIGATOR_IMAGE_SIZE);
-		        publish(new IntermediateResult(album, cover));
-		    }
-		    return null;
-		}
-
-		@Override
-		protected void done() {
-		    getComponentControlled().setCursor(Cursor.getDefaultCursor());
-		    getComponentControlled().getList().setEnabled(true);
-		    getComponentControlled().getCoversButton().setEnabled(true);
-		}
-
-		@Override
-		protected void process(List<IntermediateResult> intermediateResults) {
-		    for (IntermediateResult intermediateResult : intermediateResults) {
-		        getComponentControlled().getCoversPanel().add(getPanelForAlbum(intermediateResult.getAlbum(), intermediateResult.getCover()));
-		        getComponentControlled().getCoversPanel().revalidate();
-		        getComponentControlled().getCoversPanel().repaint();
-		        getComponentControlled().getCoversPanel().validate();
-		    }
-		}
-	}
-
-	private final class GetCoversButtonActionListener implements ActionListener {
-		private final class GetCoversProcessListener implements IProcessListener {
-			@Override
-			public void processCanceled() {
-			    update();
-			}
-
-			@Override
-			public void processFinished(boolean ok) {
-			    update();
-			}
-
-			private void update() {
-			    try {
-			        SwingUtilities.invokeAndWait(new Runnable() {
-			            @Override
-			            public void run() {
-			                updateCovers();
-			            }
-			        });
-			    } catch (InvocationTargetException e) {
-			    	Logger.error(e);
-				} catch (InterruptedException e) {
-			    	Logger.error(e);
-				}
-			}
-		}
-
-		private final CoverNavigatorDialog frame;
-
-		private GetCoversButtonActionListener(CoverNavigatorDialog frame) {
-			this.frame = frame;
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-		    IArtist selectedArtist = (IArtist) frame.getList().getSelectedValue();
-		    if (selectedArtist != null) {
-		        GetCoversProcess process = (GetCoversProcess) processFactory.getProcessByName("getCoversProcess");
-		        process.setArtist(selectedArtist);
-		        process.addProcessListener(new GetCoversProcessListener());
-		        process.execute();
-		    }
-		}
-	}
-
-	/**
+    /**
      * Instantiates a new cover navigator controller.
      * @param frame
      * @param state
@@ -174,41 +70,7 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
             }
 
         });
-        frame.getCoversButton().addActionListener(new GetCoversButtonActionListener(frame));
-    }
-
-    /**
-     * Gets the panel for album.
-     * 
-     * @param album
-     *            the album
-     * @param cover
-     *            the cover
-     * @param coversSize
-     *            the covers size
-     * 
-     * @return the panel for album
-     */
-    JPanel getPanelForAlbum(IAlbum album, ImageIcon cover) {
-        JPanel panel = new JPanel(new FlowLayout());
-
-        JLabel coverLabel = new JLabel(cover);
-        coverLabel.setToolTipText(album.getName());
-        if (cover == null) {
-            coverLabel.setPreferredSize(new Dimension(Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize(), Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize()));
-            coverLabel.setBorder(BorderFactory.createLineBorder(GuiUtils.getBorderColor()));
-        }
-
-        JLabel label = new JLabel(album.getName(), SwingConstants.CENTER);
-        label.setPreferredSize(new Dimension(Constants.COVER_NAVIGATOR_IMAGE_SIZE.getSize(), 20));
-
-        panel.add(coverLabel);
-        panel.add(label);
-        panel.setPreferredSize(new Dimension(COVER_PANEL_WIDTH, COVER_PANEL_HEIGHT));
-        panel.setOpaque(false);
-
-        GuiUtils.applyComponentOrientation(panel);
-        return panel;
+        frame.getCoversButton().addActionListener(new GetCoversButtonActionListener(this, processFactory, frame));
     }
 
     /**
@@ -226,7 +88,7 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
         getComponentControlled().getCoversButton().setEnabled(false);
         getComponentControlled().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-        SwingWorker<Void, IntermediateResult> generateAndShowAlbumPanels = new GenerateAndShowAlbumPanelsSwingWorker(artistSelected);
+        SwingWorker<Void, IntermediateResult> generateAndShowAlbumPanels = new GenerateAndShowAlbumPanelsSwingWorker(getComponentControlled(), audioObjectImageLocator, artistSelected);
         generateAndShowAlbumPanels.execute();
     }
 

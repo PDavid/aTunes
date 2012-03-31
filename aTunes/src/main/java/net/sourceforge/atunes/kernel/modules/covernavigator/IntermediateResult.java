@@ -24,21 +24,36 @@ import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.model.IAlbum;
 
+/**
+ * A cover associated to an album
+ * @author alex
+ *
+ */
 class IntermediateResult {
 
     private IAlbum album;
     private ImageIcon cover;
 
-    public IntermediateResult(IAlbum album, ImageIcon cover) {
+    /**
+     * @param album
+     * @param cover
+     */
+    IntermediateResult(IAlbum album, ImageIcon cover) {
         this.album = album;
         this.cover = cover;
     }
 
-    public IAlbum getAlbum() {
+    /**
+     * @return album
+     */
+    IAlbum getAlbum() {
         return album;
     }
 
-    public ImageIcon getCover() {
+    /**
+     * @return cover
+     */
+    ImageIcon getCover() {
         return cover;
     }
 
