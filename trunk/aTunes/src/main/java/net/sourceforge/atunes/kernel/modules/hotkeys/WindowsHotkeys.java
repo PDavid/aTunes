@@ -64,38 +64,38 @@ public class WindowsHotkeys extends AbstractHotkeys implements com.melloware.jin
 
     @Override
     public void onHotKey(int arg0) {
-        getHotkeyListener().onHotKey(arg0);
+        getHotkeyListener().onHotkey(arg0);
     }
 
     @Override
     public void onIntellitype(int command) {
         switch (command) {
         case JIntellitypeConstants.APPCOMMAND_MEDIA_NEXTTRACK: {
-            getHotkeyListener().onHotKey(HotkeyConstants.HOTKEY_NEXT);
+            getHotkeyListener().onHotkey(HotkeyConstants.HOTKEY_NEXT);
             break;
         }
         case JIntellitypeConstants.APPCOMMAND_MEDIA_PREVIOUSTRACK: {
-            getHotkeyListener().onHotKey(HotkeyConstants.HOTKEY_PREVIOUS);
+            getHotkeyListener().onHotkey(HotkeyConstants.HOTKEY_PREVIOUS);
             break;
         }
         case JIntellitypeConstants.APPCOMMAND_MEDIA_PLAY_PAUSE: {
-            getHotkeyListener().onHotKey(HotkeyConstants.HOTKEY_PAUSE);
+            getHotkeyListener().onHotkey(HotkeyConstants.HOTKEY_PAUSE);
             break;
         }
         case JIntellitypeConstants.APPCOMMAND_MEDIA_STOP: {
-            getHotkeyListener().onHotKey(HotkeyConstants.HOTKEY_STOP);
+            getHotkeyListener().onHotkey(HotkeyConstants.HOTKEY_STOP);
             break;
         }
         case JIntellitypeConstants.APPCOMMAND_VOLUME_UP: {
-            getHotkeyListener().onHotKey(HotkeyConstants.HOTKEY_VOLUME_UP);
+            getHotkeyListener().onHotkey(HotkeyConstants.HOTKEY_VOLUME_UP);
             break;
         }
         case JIntellitypeConstants.APPCOMMAND_VOLUME_DOWN: {
-            getHotkeyListener().onHotKey(HotkeyConstants.HOTKEY_VOLUME_DOWN);
+            getHotkeyListener().onHotkey(HotkeyConstants.HOTKEY_VOLUME_DOWN);
             break;
         }
         case JIntellitypeConstants.APPCOMMAND_VOLUME_MUTE: {
-            getHotkeyListener().onHotKey(HotkeyConstants.HOTKEY_MUTE);
+            getHotkeyListener().onHotkey(HotkeyConstants.HOTKEY_MUTE);
             break;
         }
         default: {

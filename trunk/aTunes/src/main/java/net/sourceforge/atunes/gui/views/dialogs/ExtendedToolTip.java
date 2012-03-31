@@ -169,7 +169,7 @@ public final class ExtendedToolTip extends AbstractCustomWindow {
     @SuppressWarnings("unchecked")
 	public static boolean canObjectBeShownInExtendedToolTip(Object object) {
         if (object instanceof ITreeObject) {
-            return ((ITreeObject<? extends IAudioObject>) object).isExtendedToolTipSupported();
+            return ((ITreeObject<? extends IAudioObject>) object).isExtendedTooltipSupported();
         }
         return false;
     }

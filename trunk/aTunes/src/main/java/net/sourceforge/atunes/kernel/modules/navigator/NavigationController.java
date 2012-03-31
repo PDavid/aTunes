@@ -360,7 +360,7 @@ public final class NavigationController implements IAudioFilesRemovedListener, I
     @SuppressWarnings("unchecked")
 	public void setCurrentExtendedToolTipContent(Object currentAlbumToolTipContent) {
         this.currentExtendedToolTipContent = currentAlbumToolTipContent;
-        getExtendedToolTip().setSizeToFitImage(currentAlbumToolTipContent instanceof ITreeObject && ((ITreeObject<? extends IAudioObject>) currentAlbumToolTipContent).isExtendedToolTipImageSupported());
+        getExtendedToolTip().setSizeToFitImage(currentAlbumToolTipContent instanceof ITreeObject && ((ITreeObject<? extends IAudioObject>) currentAlbumToolTipContent).isExtendedTooltipImageSupported());
     }
 
     /**

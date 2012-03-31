@@ -31,6 +31,6 @@ public interface IHotkeyListener {
      * Called when hotkey pressed
      * @param id
      */
-    public void onHotKey(int id);
+    public void onHotkey(int id);
 
 }

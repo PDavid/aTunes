@@ -345,17 +345,17 @@ public final class Radio implements IRadio {
     }
 
     @Override
-    public String getToolTip() {
+    public String getTooltip() {
         return name;
     }
 
     @Override
-    public boolean isExtendedToolTipSupported() {
+    public boolean isExtendedTooltipSupported() {
         return false;
     }
 
     @Override
-    public boolean isExtendedToolTipImageSupported() {
+    public boolean isExtendedTooltipImageSupported() {
         return false;
     }
 

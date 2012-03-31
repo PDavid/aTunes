@@ -272,18 +272,18 @@ public class Folder implements IFolder {
     }
 
     @Override
-    public String getToolTip() {
+    public String getTooltip() {
         int songs = getAudioObjects().size();
         return StringUtils.getString(getName(), " (", songs, " ", (songs > 1 ? I18nUtils.getString("SONGS") : I18nUtils.getString("SONG")), ")");
     }
 
     @Override
-    public boolean isExtendedToolTipSupported() {
+    public boolean isExtendedTooltipSupported() {
         return true;
     }
 
     @Override
-    public boolean isExtendedToolTipImageSupported() {
+    public boolean isExtendedTooltipImageSupported() {
         return false;
     }
     

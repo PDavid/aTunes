@@ -265,33 +265,67 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 	 */
 	private void arrangePanel(JLabel windowTypeLabel, JLabel languageLabel, JLabel lookAndFeelLabel, JButton fontSettings, JScrollPane sp) {
 		GridBagConstraints c = new GridBagConstraints();
-        c.gridy = 0;
-        c.anchor = GridBagConstraints.FIRST_LINE_START;
+        addLanguage(languageLabel, c);
+        addLookAndFeel(lookAndFeelLabel, c);
+        addSkin(c);
+        addWindowType(windowTypeLabel, sp, c);
+        addFontSettings(fontSettings, c);
+        addShowTrayPlayer(c);
+        addTrayPlayerColorSelector(c);
+        addShowIconTray(c);
+	}
+
+	/**
+	 * @param c
+	 */
+	private void addShowIconTray(GridBagConstraints c) {
+		c.gridx = 2;
+        c.gridy = 7;
+        add(showIconTray, c);
+	}
+
+	/**
+	 * @param c
+	 */
+	private void addTrayPlayerColorSelector(GridBagConstraints c) {
+		c.gridx = 1;
+        c.gridy = 7;
+        c.weighty = 0.2;
+        add(trayPlayerColorSelector, c);
+	}
+
+	/**
+	 * @param c
+	 */
+	private void addShowTrayPlayer(GridBagConstraints c) {
+		c.gridy = 7;
+        c.weighty = 0.2;
         c.insets = new Insets(5, 0, 0, 0);
-        c.fill=GridBagConstraints.HORIZONTAL;
-        add(languageLabel, c);
-        c.gridx = 1;
-        c.fill=GridBagConstraints.NONE;
-        add(language, c);
-        c.gridx = 0;
-        c.gridy = 2;
-        c.insets = new Insets(25, 0, 5, 0);
-        c.fill=GridBagConstraints.HORIZONTAL;
-        add(lookAndFeelLabel, c);
-        c.gridx = 1;
-        c.insets = new Insets(25, 0, 0, 0);
-        c.fill=GridBagConstraints.NONE;
-        add(lookAndFeel, c);
-        c.gridx = 0;
-        c.gridy = 3;
-        c.insets = new Insets(10, 0, 5, 0);
-        c.fill=GridBagConstraints.HORIZONTAL;
-        add(skinLabel, c);
-        c.gridx = 1;
-        c.insets = new Insets(10, 0, 0, 0);
-        c.fill=GridBagConstraints.NONE;
-        add(skin, c);
-        c.gridx = 0;
+        add(showTrayPlayer, c);
+	}
+
+	/**
+	 * @param fontSettings
+	 * @param c
+	 */
+	private void addFontSettings(JButton fontSettings, GridBagConstraints c) {
+		c.gridy = 6;
+        c.gridwidth = 1;
+        c.weightx = 0;
+        c.weighty = 0;
+        c.fill = GridBagConstraints.NONE;
+        c.insets = new Insets(20, 0, 20, 0);
+        add(fontSettings, c);
+	}
+
+	/**
+	 * @param windowTypeLabel
+	 * @param sp
+	 * @param c
+	 */
+	private void addWindowType(JLabel windowTypeLabel, JScrollPane sp,
+			GridBagConstraints c) {
+		c.gridx = 0;
         c.gridy = 4;
         c.insets = new Insets(20, 0, 0, 0);
         add(windowTypeLabel, c);
@@ -302,24 +336,52 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
         c.weighty = 1;
         c.fill = GridBagConstraints.BOTH;
         add(sp, c);
-        c.gridy = 6;
-        c.gridwidth = 1;
-        c.weightx = 0;
-        c.weighty = 0;
-        c.fill = GridBagConstraints.NONE;
-        c.insets = new Insets(20, 0, 20, 0);
-        add(fontSettings, c);
-        c.gridy = 7;
-        c.weighty = 0.2;
-        c.insets = new Insets(5, 0, 0, 0);
-        add(showTrayPlayer, c);
+	}
+
+	/**
+	 * @param c
+	 */
+	private void addSkin(GridBagConstraints c) {
+		c.gridx = 0;
+        c.gridy = 3;
+        c.insets = new Insets(10, 0, 5, 0);
+        c.fill=GridBagConstraints.HORIZONTAL;
+        add(skinLabel, c);
         c.gridx = 1;
-        c.gridy = 7;
-        c.weighty = 0.2;
-        add(trayPlayerColorSelector, c);
-        c.gridx = 2;
-        c.gridy = 7;
-        add(showIconTray, c);
+        c.insets = new Insets(10, 0, 0, 0);
+        c.fill=GridBagConstraints.NONE;
+        add(skin, c);
+	}
+
+	/**
+	 * @param lookAndFeelLabel
+	 * @param c
+	 */
+	private void addLookAndFeel(JLabel lookAndFeelLabel, GridBagConstraints c) {
+		c.gridx = 0;
+        c.gridy = 2;
+        c.insets = new Insets(25, 0, 5, 0);
+        c.fill=GridBagConstraints.HORIZONTAL;
+        add(lookAndFeelLabel, c);
+        c.gridx = 1;
+        c.insets = new Insets(25, 0, 0, 0);
+        c.fill=GridBagConstraints.NONE;
+        add(lookAndFeel, c);
+	}
+
+	/**
+	 * @param languageLabel
+	 * @param c
+	 */
+	private void addLanguage(JLabel languageLabel, GridBagConstraints c) {
+		c.gridy = 0;
+        c.anchor = GridBagConstraints.FIRST_LINE_START;
+        c.insets = new Insets(5, 0, 0, 0);
+        c.fill=GridBagConstraints.HORIZONTAL;
+        add(languageLabel, c);
+        c.gridx = 1;
+        c.fill=GridBagConstraints.NONE;
+        add(language, c);
 	}
 
     @Override
