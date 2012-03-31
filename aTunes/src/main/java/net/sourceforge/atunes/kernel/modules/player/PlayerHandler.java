@@ -472,15 +472,25 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 	 * @param newState
 	 * @param currentAudioObject
 	 */
-	private void submitAudioObjectIfNecessary(PlaybackState newState,
-			IAudioObject currentAudioObject) {
-		if (newState == PlaybackState.PLAY_FINISHED || newState == PlaybackState.PLAY_INTERRUPTED || newState == PlaybackState.STOPPED) {
-			if (playerEngine != null && playerEngine.getSubmissionState() == SubmissionState.PENDING && currentAudioObject instanceof ILocalAudioObject) {
-				getBean(IWebServicesHandler.class).submit((ILocalAudioObject) currentAudioObject, getCurrentAudioObjectPlayedTime() / 1000);
-				getBean(IStatisticsHandler.class).updateAudioObjectStatistics(currentAudioObject);
-				playerEngine.setSubmissionState(SubmissionState.SUBMITTED);
-			}
+	private void submitAudioObjectIfNecessary(PlaybackState newState, IAudioObject currentAudioObject) {
+		if (isSubmissionNeeded(newState, currentAudioObject)) { 
+			getBean(IWebServicesHandler.class).submit((ILocalAudioObject) currentAudioObject, getCurrentAudioObjectPlayedTime() / 1000);
+			getBean(IStatisticsHandler.class).updateAudioObjectStatistics(currentAudioObject);
+			playerEngine.setSubmissionState(SubmissionState.SUBMITTED);
 		}
+	}
+	
+	private boolean isSubmissionNeeded(PlaybackState newState, IAudioObject currentAudioObject) {
+		if (isStateForSubmission(newState) && playerEngine != null && playerEngine.getSubmissionState() == SubmissionState.PENDING && currentAudioObject instanceof ILocalAudioObject) {
+			return true;
+		}
+		return false;
+	}
+	
+	private boolean isStateForSubmission(PlaybackState newState) {
+		return newState == PlaybackState.PLAY_FINISHED || 
+		       newState == PlaybackState.PLAY_INTERRUPTED || 
+		       newState == PlaybackState.STOPPED;
 	}
 
 	/**
