@@ -22,13 +22,15 @@ package net.sourceforge.atunes.kernel.modules.webservices.youtube;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.model.IVideoEntry;
+
 /**
  * Result entry from YouTube service
  * 
  * @author Tobias Melcher
  * 
  */
-public class YoutubeResultEntry {
+class YoutubeResultEntry implements IVideoEntry {
 
     /**
      * Name of video
@@ -53,7 +55,8 @@ public class YoutubeResultEntry {
     /**
      * @return the name
      */
-    public String getName() {
+    @Override
+	public String getName() {
         return name;
     }
 
@@ -61,14 +64,16 @@ public class YoutubeResultEntry {
      * @param name
      *            the name to set
      */
-    public void setName(String name) {
+    @Override
+	public void setName(String name) {
         this.name = name;
     }
 
     /**
      * @return the url
      */
-    public String getUrl() {
+    @Override
+	public String getUrl() {
         return url;
     }
 
@@ -76,14 +81,16 @@ public class YoutubeResultEntry {
      * @param url
      *            the url to set
      */
-    public void setUrl(String url) {
+    @Override
+	public void setUrl(String url) {
         this.url = url;
     }
 
     /**
      * @return the image
      */
-    public ImageIcon getImage() {
+    @Override
+	public ImageIcon getImage() {
         return image;
     }
 
@@ -91,14 +98,16 @@ public class YoutubeResultEntry {
      * @param image
      *            the image to set
      */
-    public void setImage(ImageIcon image) {
+    @Override
+	public void setImage(ImageIcon image) {
         this.image = image;
     }
 
     /**
      * @return the duration
      */
-    public String getDuration() {
+    @Override
+	public String getDuration() {
         return duration;
     }
 
@@ -106,7 +115,8 @@ public class YoutubeResultEntry {
      * @param duration
      *            the duration to set
      */
-    public void setDuration(String duration) {
+    @Override
+	public void setDuration(String duration) {
         this.duration = duration;
     }
 }

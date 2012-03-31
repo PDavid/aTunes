@@ -31,9 +31,9 @@ import javax.swing.JMenuItem;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.context.ContextTable;
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
-import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeResultEntry;
 import net.sourceforge.atunes.kernel.modules.webservices.youtube.YoutubeService;
 import net.sourceforge.atunes.model.IContextHandler;
+import net.sourceforge.atunes.model.IVideoEntry;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -119,7 +119,7 @@ public class YoutubeContent extends AbstractContextPanelContent<YoutubeDataSourc
     protected void searchMoreResultsInYoutube() {
         String searchString = youtubeService.getSearchForAudioObject(contextHandler.getCurrentAudioObject());
         if (searchString.length() > 0) {
-            final List<YoutubeResultEntry> result = youtubeService.searchInYoutube(searchString, youtubeResultTable.getRowCount() + 1);
+            final List<IVideoEntry> result = youtubeService.searchInYoutube(searchString, youtubeResultTable.getRowCount() + 1);
             ((YoutubeResultTableModel) youtubeResultTable.getModel()).addEntries(result);
         }
     }
