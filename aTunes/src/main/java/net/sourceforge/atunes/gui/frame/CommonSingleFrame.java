@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.gui.frame;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -69,9 +68,8 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
 	}
     
 	@Override
-	protected Container getContentPanel() {
-        // Main Container
-        JPanel panel = new JPanel(new GridBagLayout());
+	protected void setContent() {
+		setLayout(new GridBagLayout());
 
         // Main Split Pane          
         leftSplitPane = new CustomSplitPane(getLeftSplitType());
@@ -115,19 +113,17 @@ public abstract class CommonSingleFrame extends AbstractSingleFrame {
 
         c.gridy = getAppState().isShowPlayerControlsOnTop() ? 1 : 0;
         c.weighty = 1;
-        panel.add(getMainSplitPane(), c);
+        add(getMainSplitPane(), c);
 
         c.gridy = getAppState().isShowPlayerControlsOnTop() ? 0 : 1;
         c.weighty = 0;
-        panel.add(getPlayerControls().getSwingComponent(), c);
+        add(getPlayerControls().getSwingComponent(), c);
 
         
         
         c.gridy = 2;
         c.weighty = 0;
-        panel.add(getStatusBar(), c);
-
-        return panel;
+        add(getStatusBar(), c);
 	}
 
 	protected abstract JSplitPane getMainSplitPane();

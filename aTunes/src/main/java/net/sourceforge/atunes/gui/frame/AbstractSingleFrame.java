@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.gui.frame;
 
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Toolkit;
@@ -131,7 +130,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
         decorator.decorate();
 
         // Create frame content
-        setContentPane(getContentPanel());
+        setContent();
 
         // Add menu bar
         addMenuBar();
@@ -199,7 +198,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
      * 
      * @return the content panel
      */
-    protected abstract Container getContentPanel();
+    protected abstract void setContent();
 
     @Override
     public JFrame getFrame() {
