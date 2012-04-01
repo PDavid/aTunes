@@ -158,10 +158,5 @@ public interface IContextPanel {
 	 * in context tab
 	 * @param contents
 	 */
-	public void setContents(List<IContextPanelContent> contents);
-
-	public void setContextHandler(IContextHandler contextHandler);
-
-	public void setLookAndFeel(ILookAndFeel lookAndFeel);
-
+	public void setContents(List<IContextPanelContent<?>> contents);
 }

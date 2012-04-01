@@ -70,7 +70,7 @@ public abstract class AbstractContextPanel implements IContextPanel {
     
     private IState state;
     
-    private List<IContextPanelContent> contents;
+    private List<IContextPanelContent<?>> contents;
     
     private IContextHandler contextHandler;
     
@@ -139,7 +139,7 @@ public abstract class AbstractContextPanel implements IContextPanel {
 	 * @param c
 	 * @param content
 	 */
-	private void addContextPanelContent(ILookAndFeel lookAndFeel, JPanel panel, GridBagConstraints c, IContextPanelContent content) {
+	private void addContextPanelContent(ILookAndFeel lookAndFeel, JPanel panel, GridBagConstraints c, IContextPanelContent<?> content) {
 		Component componentToAdd = content.getComponent();
 		if (componentToAdd instanceof JComponent) {
 			((JComponent) componentToAdd).setOpaque(false);
@@ -271,25 +271,32 @@ public abstract class AbstractContextPanel implements IContextPanel {
 		this.state = state;
 	}
 	
-    final List<IContextPanelContent> getContents() {
+    final List<IContextPanelContent<?>> getContents() {
     	return contents;
     }
     
     @Override
-	public final void setContents(List<IContextPanelContent> contents) {
+	public final void setContents(List<IContextPanelContent<?>> contents) {
 		this.contents = contents;
 	}
     
-    @Override
+	/**
+	 * @param contextHandler
+	 */
 	public void setContextHandler(IContextHandler contextHandler) {
 		this.contextHandler = contextHandler;
 	}
     
-    @Override
+	/**
+	 * @param lookAndFeel
+	 */
 	public void setLookAndFeel(ILookAndFeel lookAndFeel) {
 		this.lookAndFeel = lookAndFeel;
 	}
     
+    /**
+     * @return
+     */
     protected ILookAndFeel getLookAndFeel() {
 		return lookAndFeel;
 	}
