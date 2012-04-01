@@ -53,6 +53,36 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 public class RepositoryReader implements IRepositoryLoaderListener {
 
+	private final class GetCoverSwingWorker extends
+			SwingWorker<ImageIcon, Void> {
+		private final String album;
+		private final String artist;
+
+		private GetCoverSwingWorker(String album, String artist) {
+			this.album = album;
+			this.artist = artist;
+		}
+
+		@Override
+		protected ImageIcon doInBackground() {
+			return webServicesHandler.getAlbumImage(artist, album);
+		}
+
+		@Override
+		protected void done() {
+			super.done();
+			if (progressDialog != null) {
+				try {
+					progressDialog.setImage(get().getImage());
+				} catch (InterruptedException e) {
+					progressDialog.setImage(null);
+				} catch (ExecutionException e) {
+					progressDialog.setImage(null);
+				}
+			}
+		}
+	}
+
 	// Used to retrieve covers and show in progress dialog
 	private String lastArtistRead;
 	
@@ -447,36 +477,31 @@ public class RepositoryReader implements IRepositoryLoaderListener {
     
 	@Override
 	public void notifyCurrentAlbum(final String artist, final String album) {
-		if (progressDialog != null && progressDialog.isVisible()) {
-			if (lastArtistRead == null || lastAlbumRead == null || !lastArtistRead.equals(artist) || !lastAlbumRead.equals(album)) {
-				lastArtistRead = artist;
-				lastAlbumRead = album;
-				if (coverWorker == null || coverWorker.isDone()) {
-					// Try to find cover and set in progress dialog
-					coverWorker = new SwingWorker<ImageIcon, Void>() {
-						@Override
-						protected ImageIcon doInBackground() {
-							return webServicesHandler.getAlbumImage(artist, album);
-						}
-
-						@Override
-						protected void done() {
-							super.done();
-							if (progressDialog != null) {
-								try {
-									progressDialog.setImage(get().getImage());
-								} catch (InterruptedException e) {
-									progressDialog.setImage(null);
-								} catch (ExecutionException e) {
-									progressDialog.setImage(null);
-								}
-							}
-						}
-					};
-					coverWorker.execute();
-				}
+		if (isProgressDialogVisible() && albumNotReadBefore(artist, album)) {
+			lastArtistRead = artist;
+			lastAlbumRead = album;
+			if (coverWorker == null || coverWorker.isDone()) {
+				// Try to find cover and set in progress dialog
+				coverWorker = new GetCoverSwingWorker(album, artist);
+				coverWorker.execute();
 			}
 		}
+	}
+
+	/**
+	 * @param artist
+	 * @param album
+	 * @return
+	 */
+	private boolean albumNotReadBefore(final String artist, final String album) {
+		return lastArtistRead == null || lastAlbumRead == null || !lastArtistRead.equals(artist) || !lastAlbumRead.equals(album);
+	}
+
+	/**
+	 * @return
+	 */
+	private boolean isProgressDialogVisible() {
+		return progressDialog != null && progressDialog.isVisible();
 	}
 
 	public void doInBackground() {
