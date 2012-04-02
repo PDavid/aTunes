@@ -41,12 +41,12 @@ public final class SubstanceATunesBlueSkin extends net.sourceforge.atunes.gui.lo
 				new Color(246, 246, 246));
 		
 		SubstanceColorScheme defaultScheme = new SubstanceBaseColorScheme("Metallic", false,
-				new Color(87, 91, 95),
-				new Color(123, 127, 131),
-				new Color(198, 202, 206),
-				new Color(213, 221, 228),
-				new Color(243, 247, 251),
-				new Color(251, 252, 255),
+				new Color(90, 91, 92),
+				new Color(125, 126, 127),
+				new Color(200, 201, 202),
+				new Color(220, 221, 222),
+				new Color(245, 246, 247),
+				new Color(250, 251, 252),
 				new Color(80, 80, 80));
 
 		SubstanceColorScheme disabledScheme = new SubstanceBaseColorScheme("Disabled Metallic", false,
