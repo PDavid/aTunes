@@ -26,7 +26,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Future;
 
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
@@ -60,8 +59,6 @@ import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.IStateHandler;
-import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -90,8 +87,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 
     /** Play lists stored */
     private IListOfPlayLists playListsRetrievedFromCache;
-    
-    private Future<?> persistPlayListFuture;
     
     private IProcessFactory processFactory;
     
@@ -124,6 +119,24 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	private IRepositoryHandler repositoryHandler;
 	
 	private PlayListNameCreator playListNameCreator;
+	
+	private PlayListPersistor playListPersistor;
+	
+	private ListOfPlayListsCreator listOfPlayListsCreator;
+	
+	/**
+	 * @param listOfPlayListsCreator
+	 */
+	public void setListOfPlayListsCreator(ListOfPlayListsCreator listOfPlayListsCreator) {
+		this.listOfPlayListsCreator = listOfPlayListsCreator;
+	}
+	
+	/**
+	 * @param playListPersistor
+	 */
+	public void setPlayListPersistor(PlayListPersistor playListPersistor) {
+		this.playListPersistor = playListPersistor;
+	}
 	
 	/**
 	 * @param playListNameCreator
@@ -576,27 +589,8 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
      * Called when play lists needs to be persisted
      */
     private void playListsChanged(boolean definition, boolean contents) {
-    	final IListOfPlayLists listOfPlayLists = new ListOfPlayListsCreator().getListOfPlayLists(playLists, activePlayListIndex, isFiltered(), nonFilteredPlayList);
-    	
-    	// If content must be saved then do in a task service, otherwise persist definition inmediately
-    	if (definition && !contents) {
-    		getBean(IStateHandler.class).persistPlayListsDefinition(listOfPlayLists);
-    	} else {
-    		// Wait 5 seconds and persist play list 
-    		if (persistPlayListFuture != null) {
-    			persistPlayListFuture.cancel(false);
-    		}
-
-    		persistPlayListFuture = getBean(ITaskService.class).submitOnce("Persist PlayList", 5, new Runnable() {
-    			@Override
-    			public void run() {
-    				// Store play list definition
-    				getBean(IStateHandler.class).persistPlayListsDefinition(listOfPlayLists);
-    				// Store play list contents
-    				getBean(IStateHandler.class).persistPlayListsContents(getPlayListsContents());
-    			}
-    		});
-    	}
+    	IListOfPlayLists listOfPlayLists = listOfPlayListsCreator.getListOfPlayLists(playLists, activePlayListIndex, isFiltered(), nonFilteredPlayList);
+    	playListPersistor.persistPlayLists(listOfPlayLists, definition, contents);
     }
 
     @Override
@@ -1085,19 +1079,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         playLists.add(to, playList);
         activePlayListIndex = playLists.indexOf(activePlayList);
         visiblePlayListIndex = playLists.indexOf(visiblePlayList);
-    }
-
-    /**
-     * Returns content of all play lists
-     * 
-     * @return
-     */
-    private List<List<IAudioObject>> getPlayListsContents() {
-        List<List<IAudioObject>> result = new ArrayList<List<IAudioObject>>(playLists.size());
-        for (IPlayList playList : playLists) {
-            result.add(playList.getAudioObjectsList());
-        }
-        return result;
     }
 
     /* (non-Javadoc)
