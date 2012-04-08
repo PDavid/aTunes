@@ -74,13 +74,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 
     private static final String SLASH = " / ";
 
-	static final String PLAYLIST = "PLAYLIST";
-
-	/**
-     * The play list counter used when creating new play lists with default
-     * name.
-     */
-    private static int playListNameCounter = 1;
+	private static final String PLAYLIST = "PLAYLIST";
 
     /** The play lists currently opened. */
     private List<IPlayList> playLists = new ArrayList<IPlayList>();
@@ -128,6 +122,15 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	private IFilterHandler filterHandler;
 	
 	private IRepositoryHandler repositoryHandler;
+	
+	private PlayListNameCreator playListNameCreator;
+	
+	/**
+	 * @param playListNameCreator
+	 */
+	public void setPlayListNameCreator(PlayListNameCreator playListNameCreator) {
+		this.playListNameCreator = playListNameCreator;
+	}
 	
 	/**
 	 * @param repositoryHandler
@@ -288,34 +291,9 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         return this.playLists.size();
     }
 
-    /**
-     * Gets the name for playlist.
-     * 
-     * @param pl
-     *            the pl
-     * 
-     * @return the name for playlist
-     */
-    private String getNameForPlaylist(PlayList pl) {
-        if (pl == null || pl.getName() == null) {
-            String name = StringUtils.getString(I18nUtils.getString(PLAYLIST), " ", playListNameCounter++);
-            // If any play list already has the same name then call method again
-            for (IPlayList playList : playLists) {
-                if (playList.getName() != null && name.equalsIgnoreCase(playList.getName().trim())) {
-                    return getNameForPlaylist(pl);
-                }
-            }
-            return name;
-        }
-        return pl.getName();
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#newPlayList(java.util.List)
-	 */
     @Override
 	public void newPlayList(List<IAudioObject> audioObjects) {
-        newPlayList(getNameForPlaylist(null), audioObjects);
+        newPlayList(playListNameCreator.getNameForPlaylist(playLists, null), audioObjects);
     }
 
     /* (non-Javadoc)
@@ -640,7 +618,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         playLists.clear();
         for (IPlayList playlist : listOfPlayLists.getPlayLists()) {
             playLists.add((PlayList)playlist);
-            getPlayListTabController().newPlayList(getNameForPlaylist((PlayList)playlist));
+            getPlayListTabController().newPlayList(playListNameCreator.getNameForPlaylist(playLists, (PlayList)playlist));
         }
         activePlayListIndex = selected;
         // Initially active play list and visible play list are the same

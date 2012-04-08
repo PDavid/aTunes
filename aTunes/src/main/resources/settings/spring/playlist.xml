@@ -10,4 +10,6 @@
 	
 	<bean id="playListTableTransferHandler" class="net.sourceforge.atunes.kernel.modules.draganddrop.PlayListTableTransferHandler"/>
 	<bean id="playListToDeviceDragAndDropListener" class="net.sourceforge.atunes.kernel.modules.draganddrop.PlayListToDeviceDragAndDropListener"/>
+	
+	<bean id="playListNameCreator" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListNameCreator"/>
 </beans>
