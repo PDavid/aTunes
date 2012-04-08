@@ -22,26 +22,21 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
-import javax.swing.filechooser.FileFilter;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
-import net.sourceforge.atunes.kernel.modules.process.LoadPlayListProcess;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumnSet;
-import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.IInputDialog;
@@ -50,13 +45,11 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayListIOService;
 import net.sourceforge.atunes.model.IPlayListObjectFilter;
 import net.sourceforge.atunes.model.IPlayListPanel;
 import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.IPlayerControlsPanel;
 import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.CollectionUtils;
@@ -87,10 +80,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 
     /** Play lists stored */
     private IListOfPlayLists playListsRetrievedFromCache;
-    
-    private IProcessFactory processFactory;
-    
-    private IPlayListIOService playListIOService;
     
     private IPlayListObjectFilter<ILocalAudioObject> playListLocalAudioObjectFilter;
     
@@ -123,6 +112,15 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	private PlayListPersistor playListPersistor;
 	
 	private ListOfPlayListsCreator listOfPlayListsCreator;
+	
+	private PlayListLoader playListLoader;
+	
+	/**
+	 * @param playListLoader
+	 */
+	public void setPlayListLoader(PlayListLoader playListLoader) {
+		this.playListLoader = playListLoader;
+	}
 	
 	/**
 	 * @param listOfPlayListsCreator
@@ -178,20 +176,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	 */
 	public void setPlayListLocalAudioObjectFilter(IPlayListObjectFilter<ILocalAudioObject> playListLocalAudioObjectFilter) {
 		this.playListLocalAudioObjectFilter = playListLocalAudioObjectFilter;
-	}
-	
-	/**
-	 * @param playListIOService
-	 */
-	public void setPlayListIOService(IPlayListIOService playListIOService) {
-		this.playListIOService = playListIOService;
-	}
-	
-	/**
-	 * @param processFactory
-	 */
-	public void setProcessFactory(IProcessFactory processFactory) {
-		this.processFactory = processFactory;
 	}
 	
     /**
@@ -631,34 +615,9 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         playListsRetrievedFromCache = null;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#loadPlaylist()
-	 */
     @Override
 	public void loadPlaylist() {
-        JFileChooser fileChooser = new JFileChooser(getState().getLoadPlaylistPath());
-        FileFilter filter = playListIOService.getPlaylistFileFilter();
-        // Open file chooser
-        fileChooser.setFileFilter(filter);
-        if (fileChooser.showOpenDialog(getFrame().getFrame()) == JFileChooser.APPROVE_OPTION) {
-            // Get selected file
-            File file = fileChooser.getSelectedFile();
-
-            // If exists...
-            if (file.exists()) {
-                getState().setLoadPlaylistPath(file.getParentFile().getAbsolutePath());
-                // Read file names
-                List<String> filesToLoad = playListIOService.read(file);
-                // Background loading - but only when returned array is not null (Progress dialog hangs otherwise)
-                if (filesToLoad != null) {
-                    LoadPlayListProcess process = (LoadPlayListProcess) processFactory.getProcessByName("loadPlayListProcess");
-                    process.setFilenamesToLoad(filesToLoad);
-                    process.execute();
-                }
-            } else {
-            	getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(getFrame(), I18nUtils.getString("FILE_NOT_FOUND"));
-            }
-        }
+    	playListLoader.loadPlaylist();
     }
 
     private void moveRows(int[] rows, final boolean up) {
