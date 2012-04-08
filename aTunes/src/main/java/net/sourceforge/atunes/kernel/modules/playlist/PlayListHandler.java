@@ -91,7 +91,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     private static int playListNameCounter = 1;
 
     /** The play lists currently opened. */
-    private List<PlayList> playLists = new ArrayList<PlayList>();
+    private List<IPlayList> playLists = new ArrayList<IPlayList>();
 
     /** Index of the active play list */
     private int activePlayListIndex = 0;
@@ -100,7 +100,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     private int visiblePlayListIndex = 0;
 
     /** Stores original play list without filter. */
-    private PlayList nonFilteredPlayList;
+    private IPlayList nonFilteredPlayList;
 
     /** Play lists stored */
     private IListOfPlayLists playListsRetrievedFromCache;
@@ -148,6 +148,15 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	private IFilter playListFilter;
 	
 	private IFilterHandler filterHandler;
+	
+	private IRepositoryHandler repositoryHandler;
+	
+	/**
+	 * @param repositoryHandler
+	 */
+	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
+		this.repositoryHandler = repositoryHandler;
+	}
 	
 	/**
 	 * @param filterHandler
@@ -244,11 +253,17 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 		this.playListEventListeners = playListEventListeners;
 	}
     
+    /**
+     * @param playerHandler
+     */
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
+    
     @Override
     protected void initHandler() {
         // Add audio file removed listener
-        getBean(IRepositoryHandler.class).addAudioFilesRemovedListener(this);
-        playerHandler = getBean(IPlayerHandler.class);
+        repositoryHandler.addAudioFilesRemovedListener(this);
     }
 
     @Override
@@ -327,28 +342,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         
         playListsChanged(true, true);
     }
-
-    /**
-     * Gets the list of play lists.
-     * 
-     * @return the list of play lists
-     */
-    private IListOfPlayLists getListOfPlayLists() {
-        ListOfPlayLists l = new ListOfPlayLists();
-
-        // Clone play lists to make changes in returned list if current play list is filtered
-        l.setPlayLists(new ArrayList<IPlayList>(playLists));
-        l.setSelectedPlayList(activePlayListIndex);
-
-        // If current play list is filtered return non-filtered play list
-        if (isFiltered()) {
-            l.getPlayLists().remove(activePlayListIndex);
-            l.getPlayLists().add(activePlayListIndex, nonFilteredPlayList);
-        }
-
-        return l;
-    }
-
+    
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#getPlayListCount()
 	 */
@@ -369,7 +363,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         if (pl == null || pl.getName() == null) {
             String name = StringUtils.getString(I18nUtils.getString(PLAYLIST), " ", playListNameCounter++);
             // If any play list already has the same name then call method again
-            for (PlayList playList : playLists) {
+            for (IPlayList playList : playLists) {
                 if (playList.getName() != null && name.equalsIgnoreCase(playList.getName().trim())) {
                     return getNameForPlaylist(pl);
                 }
@@ -454,7 +448,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 
         visiblePlayListIndex = index;
 
-        PlayList newSelectedPlayList = playLists.get(index);
+        IPlayList newSelectedPlayList = playLists.get(index);
 
         // Set selection interval to none
         playListTable.getSelectionModel().clearSelection();
@@ -476,7 +470,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
      * @param playList
      *            the new play list
      */
-    private void setPlayList(PlayList playList) {
+    private void setPlayList(IPlayList playList) {
     	getBean(SavePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
         getBean(ShufflePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
         showPlayListInformation(playList);
@@ -519,7 +513,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#getCurrentPlayList(boolean)
 	 */
     @Override
-	public PlayList getCurrentPlayList(boolean visible) {
+	public IPlayList getCurrentPlayList(boolean visible) {
         if (playLists.isEmpty()) {
             return null;
         }
@@ -549,7 +543,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         }
 
         // Get play list
-        PlayList playList = getCurrentPlayList(visible);
+        IPlayList playList = getCurrentPlayList(visible);
 
         // If play list is filtered remove filter
         if (isFiltered()) {
@@ -581,7 +575,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	 * @param audioObjects
 	 * @param playList
 	 */
-	private void setSelectedItemAfterAddToPlayList(List<? extends IAudioObject> audioObjects, PlayList playList) {
+	private void setSelectedItemAfterAddToPlayList(List<? extends IAudioObject> audioObjects, IPlayList playList) {
 		// If active play list was empty, then set audio object as selected for play
         if (isActivePlayListVisible() && playList.size() == audioObjects.size()) {
             int selectedAudioObject = 0;
@@ -609,7 +603,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	 */
     @Override
 	public void addToActivePlayList(List<? extends IAudioObject> audioObjects) {
-        PlayList playList = getCurrentPlayList(false);
+        IPlayList playList = getCurrentPlayList(false);
         addToPlayList(playList.getCurrentAudioObjectIndex() + 1, audioObjects, false);
     }
 
@@ -624,7 +618,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         // Set selection interval to none
         playListTable.getSelectionModel().clearSelection();
 
-        PlayList playList = getCurrentPlayList(true);
+        IPlayList playList = getCurrentPlayList(true);
         if (!playList.isEmpty()) {
             // Clear play list
             playList.clear();
@@ -667,9 +661,11 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
      * Called when play lists needs to be persisted
      */
     private void playListsChanged(boolean definition, boolean contents) {
+    	final IListOfPlayLists listOfPlayLists = new ListOfPlayListsCreator().getListOfPlayLists(playLists, activePlayListIndex, isFiltered(), nonFilteredPlayList);
+    	
     	// If content must be saved then do in a task service, otherwise persist definition inmediately
     	if (definition && !contents) {
-    		getBean(IStateHandler.class).persistPlayListsDefinition(getListOfPlayLists());
+    		getBean(IStateHandler.class).persistPlayListsDefinition(listOfPlayLists);
     	} else {
     		// Wait 5 seconds and persist play list 
     		if (persistPlayListFuture != null) {
@@ -680,7 +676,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     			@Override
     			public void run() {
     				// Store play list definition
-    				getBean(IStateHandler.class).persistPlayListsDefinition(getListOfPlayLists());
+    				getBean(IStateHandler.class).persistPlayListsDefinition(listOfPlayLists);
     				// Store play list contents
     				getBean(IStateHandler.class).persistPlayListsContents(getPlayListsContents());
     			}
@@ -791,7 +787,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	 */
     @Override
 	public void moveToBottom(int[] rows) {
-        PlayList currentPlayList = getCurrentPlayList(true);
+        IPlayList currentPlayList = getCurrentPlayList(true);
         int j = 0;
         for (int i = rows.length - 1; i >= 0; i--) {
             IAudioObject aux = currentPlayList.get(rows[i]);
@@ -810,7 +806,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	 */
     @Override
 	public void moveToTop(int[] rows) {
-        PlayList currentPlayList = getCurrentPlayList(true);
+        IPlayList currentPlayList = getCurrentPlayList(true);
         for (int i = 0; i < rows.length; i++) {
             IAudioObject aux = currentPlayList.get(rows[i]);
             currentPlayList.remove(rows[i]);
@@ -886,7 +882,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	 */
     @Override
 	public void removeAudioObjects(int[] rows) {
-        PlayList currentPlayList = getCurrentPlayList(true);
+        IPlayList currentPlayList = getCurrentPlayList(true);
         IAudioObject playingAudioObject = currentPlayList.getCurrentAudioObject();
         boolean hasToBeRemoved = false;
         for (int element : rows) {
@@ -920,7 +916,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	/**
 	 * @param currentPlayList
 	 */
-	private void currentAudioObjectHasToBeRemoved(PlayList currentPlayList) {
+	private void currentAudioObjectHasToBeRemoved(IPlayList currentPlayList) {
 		// Only stop if this is the active play list
 		if (isActivePlayListVisible()) {
 		    playerHandler.stopCurrentAudioObject(false);
@@ -958,7 +954,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	 */
     @Override
 	public void shuffle() {
-        PlayList currentPlaylist = getCurrentPlayList(true);
+        IPlayList currentPlaylist = getCurrentPlayList(true);
 
         // If current play list is empty, don't shuffle
         if (currentPlaylist.isEmpty()) {
@@ -1016,15 +1012,11 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         } else {
             // Store original play list without filter
             if (nonFilteredPlayList == null) {
-                try {
-					nonFilteredPlayList = getCurrentPlayList(true).clone();
-				} catch (CloneNotSupportedException e) {
-					Logger.error(e);
-				}
+				nonFilteredPlayList = getCurrentPlayList(true).clone();
             }
 
             // Create a new play list by filtering elements
-            PlayList newPlayList = new PlayList(playListColumnSet.filterAudioObjects(nonFilteredPlayList.getAudioObjects(), filterText), getState());
+            PlayList newPlayList = new PlayList(playListColumnSet.filterAudioObjects(nonFilteredPlayList.getAudioObjectsList(), filterText), getState());
             setPlayListAfterFiltering(newPlayList);
         }
     }
@@ -1035,7 +1027,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
      * @param playList
      *            the new play list after filtering
      */
-    private void setPlayListAfterFiltering(PlayList playList) {
+    private void setPlayListAfterFiltering(IPlayList playList) {
         playLists.remove(visiblePlayListIndex);
         playLists.add(visiblePlayListIndex, playList);
 
@@ -1153,7 +1145,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     @Override
     public void audioFilesRemoved(List<ILocalAudioObject> audioFiles) {
         // Remove these objects from all play lists
-        for (PlayList pl : playLists) {
+        for (IPlayList pl : playLists) {
             pl.remove(audioFiles);
         }
         // Update status bar
@@ -1174,7 +1166,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	public void movePlaylistToPosition(int from, int to) {
         IPlayList activePlayList = playLists.get(activePlayListIndex);
         IPlayList visiblePlayList = playLists.get(visiblePlayListIndex);
-        PlayList playList = playLists.remove(from);
+        IPlayList playList = playLists.remove(from);
         playLists.add(to, playList);
         activePlayListIndex = playLists.indexOf(activePlayList);
         visiblePlayListIndex = playLists.indexOf(visiblePlayList);
@@ -1187,8 +1179,8 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
      */
     private List<List<IAudioObject>> getPlayListsContents() {
         List<List<IAudioObject>> result = new ArrayList<List<IAudioObject>>(playLists.size());
-        for (PlayList playList : playLists) {
-            result.add(playList.getAudioObjects());
+        for (IPlayList playList : playLists) {
+            result.add(playList.getAudioObjectsList());
         }
         return result;
     }
@@ -1429,7 +1421,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
      * @param playList
      *            the play list
      */
-    private void showPlayListInformation(PlayList playList) {
+    private void showPlayListInformation(IPlayList playList) {
         int audioFiles = playListLocalAudioObjectFilter.getObjects(playList).size();
         int radios = new PlayListRadioFilter().getObjects(playList).size();
         int podcastFeedEntries = new PlayListPodcastFeedEntryFilter().getObjects(playList).size();

@@ -21,11 +21,11 @@
 package net.sourceforge.atunes.model;
 
 import java.io.Serializable;
+import java.util.Comparator;
+import java.util.List;
 
 
 public interface IPlayList extends Serializable, Cloneable {
-
-	public void setState(IState state);
 
 	/**
 	 * Moves one row in play list
@@ -33,7 +33,7 @@ public interface IPlayList extends Serializable, Cloneable {
 	 * @param sourceRow
 	 * @param targetRow
 	 */
-	public void moveRowTo(int sourceRow, int targetRow);
+	void moveRowTo(int sourceRow, int targetRow);
 
 	/**
 	 * Returns first index position of given audio object
@@ -41,21 +41,21 @@ public interface IPlayList extends Serializable, Cloneable {
 	 * @param audioObject
 	 * @return
 	 */
-	public int indexOf(IAudioObject audioObject);
+	int indexOf(IAudioObject audioObject);
 
 	/**
 	 * Returns size of this play list
 	 * 
 	 * @return
 	 */
-	public int size();
+	int size();
 
 	/**
 	 * Returns <code>true</code> if this play list is empty
 	 * 
 	 * @return
 	 */
-	public boolean isEmpty();
+	boolean isEmpty();
 
 	/**
 	 * Returns AudioObject at given index
@@ -63,7 +63,7 @@ public interface IPlayList extends Serializable, Cloneable {
 	 * @param index
 	 * @return
 	 */
-	public IAudioObject get(int index);
+	IAudioObject get(int index);
 
 	/**
 	 * Returns <code>true</code> if audio object is in play list
@@ -71,22 +71,140 @@ public interface IPlayList extends Serializable, Cloneable {
 	 * @param audioObject
 	 * @return
 	 */
-	public boolean contains(IAudioObject audioObject);
+	boolean contains(IAudioObject audioObject);
 
-	public IAudioObject getNextAudioObject(int index);
+	/**
+	 * Returns next audio object
+	 * @param index 1 for next, 2 for next of next'...
+	 * @return
+	 */
+	IAudioObject getNextAudioObject(int index);
 
-	public IAudioObject getPreviousAudioObject(int index);
+	/**
+	 * Returns previous audio object
+	 * @param index 1 for previous, 2 for previous of previous'...
+	 * @return
+	 */
+	IAudioObject getPreviousAudioObject(int index);
 
 	/**
 	 * Returns play list length in string format.
 	 * 
 	 * @return the length
 	 */
-	public String getLength();
+	String getLength();
 
 	/**
 	 * Resets play list
 	 */
-	public void reset();
+	void reset();
+
+	/**
+	 * Returns name of play list
+	 * @return
+	 */
+	String getName();
+
+	/**
+	 * Sets name to play list
+	 * @param newName
+	 */
+	void setName(String newName);
+
+	/**
+	 * Returns currently selected audio object in this play list
+	 * @return
+	 */
+	IAudioObject getCurrentAudioObject();
+
+	/**
+	 * Sorts play list with given comparator
+	 * @param comparator
+	 */
+	void sort(Comparator<IAudioObject> comparator);
+
+	/**
+	 * Adds a list of audio objects in a location of play list
+	 * @param newLocation
+	 * @param audioObjects
+	 */
+	void add(int newLocation, List<? extends IAudioObject> audioObjects);
+
+	/**
+	 * Returns a random position of play list
+	 * @return
+	 */
+	int getRandomPosition();
+
+	/**
+	 * Changes current audio object
+	 * @param selectedAudioObject
+	 */
+	void setCurrentAudioObjectIndex(int selectedAudioObject);
+
+	/**
+	 * Returns current audio object index
+	 * @return
+	 */
+	int getCurrentAudioObjectIndex();
+
+	/**
+	 * Clears play list
+	 */
+	void clear();
+
+	/**
+	 * Removes audio object by given index
+	 * @param i
+	 */
+	void remove(int i);
+
+	/**
+	 * Adds an object at given location
+	 * @param newLocation
+	 * @param aux
+	 */
+	void add(int newLocation, IAudioObject aux);
+
+	/**
+	 * Shuffles play list
+	 */
+	void shuffle();
+
+	/**
+	 * Creates a copy
+	 * @return
+	 */
+	IPlayList clone();
+
+	/**
+	 * Moves to next audio object
+	 * @return
+	 */
+	IAudioObject moveToNextAudioObject();
+
+	/**
+	 * Moves to previous audio object
+	 * @return
+	 */
+	IAudioObject moveToPreviousAudioObject();
+
+	/**
+	 * Adds an audio object to playback history
+	 * @param object
+	 */
+	void addToPlaybackHistory(IAudioObject object);
+
+	/**
+	 * Removes a list of audio objects
+	 * @param audioObjects
+	 */
+	void remove(List<? extends IAudioObject> audioObjects);
+
+	/**
+	 * Returns a list with audio object contents
+	 * @return
+	 */
+	List<IAudioObject> getAudioObjectsList();
 
 }

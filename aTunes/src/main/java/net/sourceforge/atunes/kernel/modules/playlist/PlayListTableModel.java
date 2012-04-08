@@ -24,6 +24,7 @@ import java.util.Comparator;
 
 import net.sourceforge.atunes.gui.AbstractColumnSetTableModel;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 
@@ -37,7 +38,7 @@ public class PlayListTableModel extends AbstractColumnSetTableModel {
     /**
      * Reference to the visible play list
      */
-    private PlayList visiblePlayList = null;
+    private IPlayList visiblePlayList = null;
     
     private IPlayListHandler playListHandler;
     
@@ -136,7 +137,7 @@ public class PlayListTableModel extends AbstractColumnSetTableModel {
      * @param visiblePlayList
      *            the visiblePlayList to set
      */
-    public void setVisiblePlayList(PlayList visiblePlayList) {
+    public void setVisiblePlayList(IPlayList visiblePlayList) {
         this.visiblePlayList = visiblePlayList;
     }
 

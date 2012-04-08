@@ -40,7 +40,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * 
  * @author fleax
  */
-public class PlayList implements IPlayList, Cloneable {
+public class PlayList implements IPlayList {
 
     private static final long serialVersionUID = 2756513776762920794L;
 
@@ -95,10 +95,9 @@ public class PlayList implements IPlayList, Cloneable {
         this.mode = PlayListMode.getPlayListMode(this, state);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayList#setState(net.sourceforge.atunes.model.IState)
+	/**
+	 * @param state
 	 */
-    @Override
 	public void setState(IState state) {
 		this.state = state;
 		((PlayListPointedList)this.audioObjects).setState(state);
@@ -112,9 +111,7 @@ public class PlayList implements IPlayList, Cloneable {
      * @param audioObject
      */
     protected final void add(IAudioObject audioObject) {
-        List<IAudioObject> audioObjectsAdded = new ArrayList<IAudioObject>();
-        audioObjectsAdded.add(audioObject);
-        this.add(audioObjectsAdded);
+        add(Collections.singletonList(audioObject));
     }
 
     /**
@@ -123,8 +120,7 @@ public class PlayList implements IPlayList, Cloneable {
      * @param audioObjectsList
      */
     private void add(List<? extends IAudioObject> audioObjectsList) {
-        int position = this.audioObjects.size();
-        add(position, audioObjectsList);
+        add(this.audioObjects.size(), audioObjectsList);
     }
 
     /**
@@ -133,10 +129,9 @@ public class PlayList implements IPlayList, Cloneable {
      * @param index
      * @param list
      */
-    protected final void add(int index, IAudioObject audioObject) {
-        List<IAudioObject> audioObjectsAdded = new ArrayList<IAudioObject>();
-        audioObjectsAdded.add(audioObject);
-        add(index, audioObjectsAdded);
+    @Override
+    public final void add(int index, IAudioObject audioObject) {
+        add(index, Collections.singletonList(audioObject));
     }
 
     /**
@@ -145,7 +140,8 @@ public class PlayList implements IPlayList, Cloneable {
      * @param index
      * @param audioObjectsList
      */
-    protected final void add(int index, List<? extends IAudioObject> audioObjectsList) {
+    @Override
+	public final void add(int index, List<? extends IAudioObject> audioObjectsList) {
         this.audioObjects.addAll(index, audioObjectsList);
         notifyAudioObjectsAdded(index, audioObjectsList);
     }
@@ -157,7 +153,8 @@ public class PlayList implements IPlayList, Cloneable {
      * 
      * @param list
      */
-    protected void remove(int index) {
+    @Override
+    public void remove(int index) {
         IAudioObject ao = get(index);
         if (ao != null) {
             PlayListAudioObject plao = new PlayListAudioObject();
@@ -176,7 +173,8 @@ public class PlayList implements IPlayList, Cloneable {
      * 
      * @param list
      */
-    protected void remove(List<? extends IAudioObject> list) {
+    @Override
+    public void remove(List<? extends IAudioObject> list) {
         // First get all positions of objects to remove
         List<IPlayListAudioObject> playListAudioObjects = new ArrayList<IPlayListAudioObject>();
         for (IAudioObject ao : list) {
@@ -203,7 +201,8 @@ public class PlayList implements IPlayList, Cloneable {
     /**
      * Clears play list
      */
-    protected void clear() {
+    @Override
+    public void clear() {
         this.audioObjects.clear();
         notifyAudioObjectsRemovedAll();
     }
@@ -254,7 +253,8 @@ public class PlayList implements IPlayList, Cloneable {
      * 
      * @param c
      */
-    protected void sort(Comparator<IAudioObject> c) {
+    @Override
+    public void sort(Comparator<IAudioObject> c) {
         this.audioObjects.sort(c);
         notifyCurrentAudioObjectChanged(this.audioObjects.getCurrentObject());
     }
@@ -262,40 +262,29 @@ public class PlayList implements IPlayList, Cloneable {
     /**
      * Shuffles this play list
      */
-    protected void shuffle() {
+    @Override
+	public void shuffle() {
         this.audioObjects.shuffle();
         notifyCurrentAudioObjectChanged(this.audioObjects.getCurrentObject());
     }
 
     //////////////////////////////////////////////////////////////// OTHER OPERATIONS /////////////////////////////////////////////////////////////
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayList#indexOf(net.sourceforge.atunes.model.IAudioObject)
-	 */
     @Override
 	public int indexOf(IAudioObject audioObject) {
         return this.audioObjects.indexOf(audioObject);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayList#size()
-	 */
     @Override
 	public int size() {
         return this.audioObjects.size();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayList#isEmpty()
-	 */
     @Override
 	public boolean isEmpty() {
         return this.audioObjects.isEmpty();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayList#get(int)
-	 */
     @Override
 	public IAudioObject get(int index) {
         if (index < 0 || index >= this.audioObjects.size()) {
@@ -309,7 +298,8 @@ public class PlayList implements IPlayList, Cloneable {
      * 
      * @return the current audio object
      */
-    protected IAudioObject getCurrentAudioObject() {
+    @Override
+    public IAudioObject getCurrentAudioObject() {
         return this.audioObjects.getCurrentObject();
     }
 
@@ -318,7 +308,8 @@ public class PlayList implements IPlayList, Cloneable {
      * 
      * @param index
      */
-    protected void setCurrentAudioObjectIndex(int index) {
+    @Override
+    public void setCurrentAudioObjectIndex(int index) {
         this.audioObjects.setPointer(index);
         notifyCurrentAudioObjectChanged(this.audioObjects.getCurrentObject());
     }
@@ -328,14 +319,12 @@ public class PlayList implements IPlayList, Cloneable {
      * 
      * @return
      */
-    protected int getCurrentAudioObjectIndex() {
+    @Override
+    public int getCurrentAudioObjectIndex() {
         // If pointer is not null return index, otherwise return 0
         return this.audioObjects.getPointer() != null ? this.audioObjects.getPointer() : 0;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayList#contains(net.sourceforge.atunes.model.IAudioObject)
-	 */
     @Override
 	public boolean contains(IAudioObject audioObject) {
         return this.audioObjects.contains(audioObject);
@@ -346,7 +335,8 @@ public class PlayList implements IPlayList, Cloneable {
      * 
      * @return the name
      */
-    protected String getName() {
+    @Override
+    public String getName() {
         return this.name;
     }
 
@@ -355,7 +345,8 @@ public class PlayList implements IPlayList, Cloneable {
      * 
      * @param name
      */
-    protected void setName(String name) {
+    @Override
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -364,12 +355,13 @@ public class PlayList implements IPlayList, Cloneable {
      * 
      * @return
      */
-    protected int getRandomPosition() {
+    @Override
+    public int getRandomPosition() {
         return new Random(System.currentTimeMillis()).nextInt(this.audioObjects.size());
     }
 
     @Override
-    protected PlayList clone() throws CloneNotSupportedException {
+    public PlayList clone() {
         return new PlayList(this, state);
     }
 
@@ -378,7 +370,8 @@ public class PlayList implements IPlayList, Cloneable {
      * 
      * @return
      */
-    protected IAudioObject moveToNextAudioObject() {
+    @Override
+    public IAudioObject moveToNextAudioObject() {
         IAudioObject nextObject = getMode().moveToNextAudioObject();
         notifyCurrentAudioObjectChanged(nextObject);
         return nextObject;
@@ -389,7 +382,8 @@ public class PlayList implements IPlayList, Cloneable {
      * 
      * @return
      */
-    protected IAudioObject moveToPreviousAudioObject() {
+    @Override
+    public IAudioObject moveToPreviousAudioObject() {
         IAudioObject previousObject = getMode().moveToPreviousAudioObject();
         notifyCurrentAudioObjectChanged(previousObject);
         return previousObject;
@@ -502,7 +496,8 @@ public class PlayList implements IPlayList, Cloneable {
         return this.audioObjects;
     }
 
-    void addToPlaybackHistory(IAudioObject object) {
+    @Override 
+    public void addToPlaybackHistory(IAudioObject object) {
         this.mode.addToPlaybackHistory(object);
     }
 
@@ -524,5 +519,10 @@ public class PlayList implements IPlayList, Cloneable {
 	public void reset() {
 		setCurrentAudioObjectIndex(0);
 		getMode().reset();
+	}
+	
+	@Override
+	public List<IAudioObject> getAudioObjectsList() {
+		return new ArrayList<IAudioObject>(audioObjects.getList());
 	}
 }
