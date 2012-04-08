@@ -40,63 +40,50 @@ import net.sourceforge.atunes.utils.Logger;
 /**
  * The listener interface for receiving dragAndDrop events.
  */
-class PlayListToDeviceDragAndDropListener implements DropTargetListener {
+public class PlayListToDeviceDragAndDropListener implements DropTargetListener {
 
 	private IDeviceHandler deviceHandler;
 	
+	private INavigationView deviceNavigationView;
+	
+	/**
+	 * @param deviceHandler
+	 */
+	public void setDeviceHandler(IDeviceHandler deviceHandler) {
+		this.deviceHandler = deviceHandler;
+	}
+	
+	/**
+	 * @param deviceNavigationView
+	 */
+	public void setDeviceNavigationView(INavigationView deviceNavigationView) {
+		this.deviceNavigationView = deviceNavigationView;
+	}
+	
     /**
-     * Instantiates a new drag and drop listener.
-     * @param navigationHandler
-     * @param deviceHandler
+     * Initializes
      */
-    public PlayListToDeviceDragAndDropListener(INavigationView deviceNavigationView, IDeviceHandler deviceHandler) {
-    	this.deviceHandler = deviceHandler;
+    public void initialize() {
         // Drop targets for drag and drops operations from playlist to device tree
         new DropTarget(deviceNavigationView.getTreeScrollPane(), this);
         new DropTarget(deviceNavigationView.getTree(), this);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * java.awt.dnd.DropTargetListener#dragEnter(java.awt.dnd.DropTargetDragEvent
-     * )
-     */
     @Override
     public void dragEnter(DropTargetDragEvent dtde) {
         // Nothing to do
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * java.awt.dnd.DropTargetListener#dragExit(java.awt.dnd.DropTargetEvent)
-     */
     @Override
     public void dragExit(DropTargetEvent dte) {
         // Nothing to do
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * java.awt.dnd.DropTargetListener#dragOver(java.awt.dnd.DropTargetDragEvent
-     * )
-     */
     @Override
     public void dragOver(DropTargetDragEvent dtde) {
         // Nothing to do
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * java.awt.dnd.DropTargetListener#drop(java.awt.dnd.DropTargetDropEvent)
-     */
     @Override
     public void drop(DropTargetDropEvent dtde) {
         Transferable transferable = dtde.getTransferable();
@@ -130,12 +117,6 @@ class PlayListToDeviceDragAndDropListener implements DropTargetListener {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @seejava.awt.dnd.DropTargetListener#dropActionChanged(java.awt.dnd.
-     * DropTargetDragEvent)
-     */
     @Override
     public void dropActionChanged(DropTargetDragEvent dtde) {
         // Nothing to do

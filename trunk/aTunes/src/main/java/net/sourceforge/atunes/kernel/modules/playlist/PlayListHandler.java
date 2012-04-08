@@ -36,26 +36,18 @@ import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
-import net.sourceforge.atunes.kernel.modules.draganddrop.PlayListTableTransferHandler;
 import net.sourceforge.atunes.kernel.modules.process.LoadPlayListProcess;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IAudioObjectComparator;
 import net.sourceforge.atunes.model.IColumnSet;
-import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.IInputDialog;
 import net.sourceforge.atunes.model.IListOfPlayLists;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
-import net.sourceforge.atunes.model.ILocalAudioObjectLocator;
-import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
-import net.sourceforge.atunes.model.INavigationHandler;
-import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -107,21 +99,11 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     
     private Future<?> persistPlayListFuture;
     
-    private ILocalAudioObjectFactory localAudioObjectFactory;
-    
-    private IAudioObjectComparator audioObjectComparator;
-    
     private IProcessFactory processFactory;
-    
-    private ILocalAudioObjectLocator localAudioObjectLocator;
     
     private IPlayListIOService playListIOService;
     
     private IPlayListObjectFilter<ILocalAudioObject> playListLocalAudioObjectFilter;
-    
-    private IDeviceHandler deviceHandler;
-
-    private INavigationView deviceNavigationView;
     
     /** The play list tab controller. */
     private PlayListTabController playListTabController;
@@ -140,10 +122,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	private IPlayListTable playListTable;
 	
 	private IPlayListPanel playListPanel;
-	
-	private ILocalAudioObjectValidator localAudioObjectValidator;
-	
-	private INavigationHandler navigationHandler;
 	
 	private IFilter playListFilter;
 	
@@ -173,24 +151,10 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	}
 
 	/**
-	 * @param deviceNavigationView
-	 */
-	public void setDeviceNavigationView(INavigationView deviceNavigationView) {
-		this.deviceNavigationView = deviceNavigationView;
-	}
-	
-	/**
 	 * @param playListsRetrievedFromCache
 	 */
 	public void setPlayListsRetrievedFromCache(IListOfPlayLists playListsRetrievedFromCache) {
 		this.playListsRetrievedFromCache = playListsRetrievedFromCache;
-	}
-	
-	/**
-	 * @param deviceHandler
-	 */
-	public void setDeviceHandler(IDeviceHandler deviceHandler) {
-		this.deviceHandler = deviceHandler;
 	}
 	
 	/**
@@ -208,31 +172,10 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	}
 	
 	/**
-	 * @param localAudioObjectLocator
-	 */
-	public void setLocalAudioObjectLocator(ILocalAudioObjectLocator localAudioObjectLocator) {
-		this.localAudioObjectLocator = localAudioObjectLocator;
-	}
-	
-	/**
 	 * @param processFactory
 	 */
 	public void setProcessFactory(IProcessFactory processFactory) {
 		this.processFactory = processFactory;
-	}
-	
-	/**
-	 * @param navigationHandler
-	 */
-	public void setNavigationHandler(INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
-	}
-	
-	/**
-	 * @param localAudioObjectValidator
-	 */
-	public void setLocalAudioObjectValidator(ILocalAudioObjectValidator localAudioObjectValidator) {
-		this.localAudioObjectValidator = localAudioObjectValidator;
 	}
 	
     /**
@@ -275,7 +218,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     @Override
     public void allHandlersInitialized() {
         // Create drag and drop listener
-    	playListPanel.enableDragAndDrop(new PlayListTableTransferHandler(playListTable, this, navigationHandler, deviceHandler, deviceNavigationView, localAudioObjectFactory, localAudioObjectValidator, audioObjectComparator, localAudioObjectLocator, playListIOService));
+    	playListPanel.enableDragAndDrop();
     }
 
     /**
@@ -286,9 +229,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         activePlayListIndex = visiblePlayListIndex;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#removePlayList(int)
-	 */
     @Override
 	public void removePlayList(int index) {
         // If index is not valid, do nothing
@@ -343,9 +283,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         playListsChanged(true, true);
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#getPlayListCount()
-	 */
     @Override
 	public int getPlayListCount() {
         return this.playLists.size();
@@ -1448,16 +1385,5 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
      */
     public void setPlayListTable(IPlayListTable playListTable) {
 		this.playListTable = playListTable;
-	}
-    
-    public void setLocalAudioObjectFactory(ILocalAudioObjectFactory localAudioObjectFactory) {
-		this.localAudioObjectFactory = localAudioObjectFactory;
-	}
-    
-    /**
-     * @param audioObjectComparator
-     */
-    public void setAudioObjectComparator(IAudioObjectComparator audioObjectComparator) {
-		this.audioObjectComparator = audioObjectComparator;
 	}
 }

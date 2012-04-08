@@ -26,12 +26,10 @@ import javax.swing.JTable;
 import javax.swing.TransferHandler;
 
 import net.sourceforge.atunes.model.IAudioObjectComparator;
-import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.ILocalAudioObjectLocator;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.INavigationHandler;
-import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListIOService;
 import net.sourceforge.atunes.model.IPlayListTable;
@@ -66,26 +64,62 @@ public class PlayListTableTransferHandler extends TransferHandler {
     
     /**
      * @param playListTable
+     */
+    public void setPlayListTable(IPlayListTable playListTable) {
+		this.playListTable = playListTable;
+	}
+    
+    /**
      * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    /**
      * @param navigationHandler
-     * @param deviceHandler
-     * @param deviceNavigationView
+     */
+    public void setNavigationHandler(INavigationHandler navigationHandler) {
+		this.navigationHandler = navigationHandler;
+	}
+    
+    /**
      * @param localAudioObjectFactory
+     */
+    public void setLocalAudioObjectFactory(
+			ILocalAudioObjectFactory localAudioObjectFactory) {
+		this.localAudioObjectFactory = localAudioObjectFactory;
+	}
+    
+    /**
      * @param localAudioObjectValidator
+     */
+    public void setLocalAudioObjectValidator(
+			ILocalAudioObjectValidator localAudioObjectValidator) {
+		this.localAudioObjectValidator = localAudioObjectValidator;
+	}
+    
+    /**
      * @param audioObjectComparator
+     */
+    public void setAudioObjectComparator(
+			IAudioObjectComparator audioObjectComparator) {
+		this.audioObjectComparator = audioObjectComparator;
+	}
+    
+    /**
      * @param localAudioObjectLocator
+     */
+    public void setLocalAudioObjectLocator(
+			ILocalAudioObjectLocator localAudioObjectLocator) {
+		this.localAudioObjectLocator = localAudioObjectLocator;
+	}
+    
+    /**
      * @param playListIOService
      */
-    public PlayListTableTransferHandler(IPlayListTable playListTable, IPlayListHandler playListHandler, INavigationHandler navigationHandler, IDeviceHandler deviceHandler, INavigationView deviceNavigationView, ILocalAudioObjectFactory localAudioObjectFactory, ILocalAudioObjectValidator localAudioObjectValidator, IAudioObjectComparator audioObjectComparator, ILocalAudioObjectLocator localAudioObjectLocator, IPlayListIOService playListIOService) {
-    	this.playListTable = playListTable;
-    	this.playListHandler = playListHandler;
-    	this.navigationHandler = navigationHandler;
-    	this.localAudioObjectFactory = localAudioObjectFactory;
-    	this.localAudioObjectValidator = localAudioObjectValidator;
-    	this.audioObjectComparator = audioObjectComparator;
-    	this.localAudioObjectLocator = localAudioObjectLocator;
-    	this.playListIOService = playListIOService;
-        new PlayListToDeviceDragAndDropListener(deviceNavigationView, deviceHandler);
+    public void setPlayListIOService(IPlayListIOService playListIOService) {
+		this.playListIOService = playListIOService;
 	}
     
     @Override
