@@ -8,4 +8,6 @@
 	
 	<bean id="playListLocalAudioObjectFilter" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListLocalAudioObjectFilter"/>
 	
+	<bean id="playListTableTransferHandler" class="net.sourceforge.atunes.kernel.modules.draganddrop.PlayListTableTransferHandler"/>
+	<bean id="playListToDeviceDragAndDropListener" class="net.sourceforge.atunes.kernel.modules.draganddrop.PlayListToDeviceDragAndDropListener"/>
 </beans>
