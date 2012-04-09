@@ -66,15 +66,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 
 	private static final String PLAYLIST = "PLAYLIST";
 
-    /** The play lists currently opened. */
-    private List<IPlayList> playLists = new ArrayList<IPlayList>();
-
-    /** Index of the active play list */
-    private int activePlayListIndex = 0;
-
-    /** Index of the visible play list: can be different of active play list */
-    private int visiblePlayListIndex = 0;
-
     /** Stores original play list without filter. */
     private IPlayList nonFilteredPlayList;
 
@@ -114,6 +105,15 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	private ListOfPlayListsCreator listOfPlayListsCreator;
 	
 	private PlayListLoader playListLoader;
+	
+	private IPlayListsContainer playListsContainer;
+	
+	/**
+	 * @param playListsContainer
+	 */
+	public void setPlayListsContainer(IPlayListsContainer playListsContainer) {
+		this.playListsContainer = playListsContainer;
+	}
 	
 	/**
 	 * @param playListTabController
@@ -240,41 +240,41 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
      */
     @Override
     public void setVisiblePlayListActive() {
-        activePlayListIndex = visiblePlayListIndex;
+    	playListsContainer.setVisiblePlayListActive();
     }
 
     @Override
 	public void removePlayList(int index) {
         // If index is not valid, do nothing
-        if (index < 0 || playLists.size() <= index) {
+        if (index < 0 || playListsContainer.getPlayListsCount() <= index) {
             return;
         }
         // if there is only one play list, don't delete
-        if (playLists.size() <= 1) {
+        if (playListsContainer.getPlayListsCount() <= 1) {
             return;
         }
         
         // remove tab and playlist
         // NOTE: removing visible tab play list calls automatically to switchToPlayList method
-        if (index != visiblePlayListIndex) {
+        if (index != playListsContainer.getVisiblePlayListIndex()) {
             // Remove playlist from list
-            playLists.remove(index);
+            playListsContainer.removePlayList(index);
 
-            boolean activePlayListIsBeingRemoved = index == activePlayListIndex;
+            boolean activePlayListIsBeingRemoved = index == playListsContainer.getActivePlayListIndex();
 
             // If index < visiblePlayListIndex, visible play list has been moved to left, so
             // decrease in 1
-            if (index < visiblePlayListIndex) {
+            if (index < playListsContainer.getVisiblePlayListIndex()) {
                 // If active play list visible then decrease in 1 too
-                if (activePlayListIndex == visiblePlayListIndex) {
-                    activePlayListIndex--;
+                if (playListsContainer.getActivePlayListIndex() == playListsContainer.getVisiblePlayListIndex()) {
+                    playListsContainer.setActivePlayListIndex(playListsContainer.getActivePlayListIndex() - 1);
                 }
-                visiblePlayListIndex--;
+                playListsContainer.setVisiblePlayListIndex(playListsContainer.getVisiblePlayListIndex() - 1);
             }
 
             // Removed play list is active, then set visible play list as active and stop player
             if (activePlayListIsBeingRemoved) {
-                activePlayListIndex = visiblePlayListIndex;
+                playListsContainer.setVisiblePlayListActive();
                 playerHandler.stopCurrentAudioObject(false);
             }
 
@@ -289,7 +289,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
             if (index == 0) {
                 switchToPlaylist(1);
             } else {
-                switchToPlaylist(visiblePlayListIndex - 1);
+                switchToPlaylist(playListsContainer.getVisiblePlayListIndex() - 1);
             }
             removePlayList(index);
         }
@@ -299,17 +299,14 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     
     @Override
 	public int getPlayListCount() {
-        return this.playLists.size();
+        return this.playListsContainer.getPlayListsCount();
     }
 
     @Override
 	public void newPlayList(List<IAudioObject> audioObjects) {
-        newPlayList(playListNameCreator.getNameForPlaylist(playLists, null), audioObjects);
+        newPlayList(playListNameCreator.getNameForPlaylist(playListsContainer, null), audioObjects);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#newPlayList(java.lang.String, java.util.List)
-	 */
     @Override
 	public void newPlayList(String nameOfNewPlayList, List<? extends IAudioObject> audioObjects) {
         PlayList newPlayList;
@@ -319,15 +316,12 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
             newPlayList = new PlayList(audioObjects, getState());
         }
         newPlayList.setName(nameOfNewPlayList);
-        playLists.add(newPlayList);
+        playListsContainer.addPlayList(newPlayList);
         playListTabController.newPlayList(nameOfNewPlayList);
         
         playListsChanged(true, true);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#renamePlayList()
-	 */
     @Override
 	public void renamePlayList() {
         int selectedPlaylist = playListTabController.getSelectedPlayListIndex();
@@ -350,17 +344,14 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
      *            the new name
      */
     private void renamePlayList(int index, String newName) {
-        playLists.get(index).setName(newName);
+        playListsContainer.getPlayListAt(index).setName(newName);
         playListTabController.renamePlayList(index, newName);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#switchToPlaylist(int)
-	 */
     @Override
 	public void switchToPlaylist(int index) {
         // If play list is the same, do nothing, except if this method is called when deleting a play list
-        if (index == visiblePlayListIndex) {
+        if (index == playListsContainer.getVisiblePlayListIndex()) {
             return;
         }
 
@@ -372,9 +363,9 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         // Remove filter from current play list before change play list
         setFilter(null);
 
-        visiblePlayListIndex = index;
+        playListsContainer.setVisiblePlayListIndex(index);
 
-        IPlayList newSelectedPlayList = playLists.get(index);
+        IPlayList newSelectedPlayList = playListsContainer.getPlayListAt(index);
 
         // Set selection interval to none
         playListTable.getSelectionModel().clearSelection();
@@ -405,17 +396,11 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         }
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#isVisiblePlayList(int)
-	 */
     @Override
 	public boolean isVisiblePlayList(int index) {
-        return visiblePlayListIndex == index;
+        return playListsContainer.getVisiblePlayListIndex() == index;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#getCurrentAudioObjectFromVisiblePlayList()
-	 */
     @Override
 	public IAudioObject getCurrentAudioObjectFromVisiblePlayList() {
         if (getCurrentPlayList(true) != null) {
@@ -424,9 +409,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         return null;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#getCurrentAudioObjectFromCurrentPlayList()
-	 */
     @Override
 	public IAudioObject getCurrentAudioObjectFromCurrentPlayList() {
         if (getCurrentPlayList(false) != null) {
@@ -435,32 +417,16 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         return null;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#getCurrentPlayList(boolean)
-	 */
     @Override
 	public IPlayList getCurrentPlayList(boolean visible) {
-        if (playLists.isEmpty()) {
-            return null;
-        }
-
-        if (visible) {
-            return playLists.get(visiblePlayListIndex);
-        }
-        return playLists.get(activePlayListIndex);
+    	return playListsContainer.getCurrentPlayList(visible);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#addToPlayList(java.util.List)
-	 */
     @Override
 	public void addToPlayList(List<? extends IAudioObject> audioObjects) {
         addToPlayList(getCurrentPlayList(true).size(), audioObjects, true);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#addToPlayList(int, java.util.List, boolean)
-	 */
     @Override
 	public void addToPlayList(int location, List<? extends IAudioObject> audioObjects, boolean visible) {
         // If null or empty, nothing to do
@@ -524,18 +490,12 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         }
 	}
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#addToActivePlayList(java.util.List)
-	 */
     @Override
 	public void addToActivePlayList(List<? extends IAudioObject> audioObjects) {
         IPlayList playList = getCurrentPlayList(false);
         addToPlayList(playList.getCurrentAudioObjectIndex() + 1, audioObjects, false);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#clearPlayList()
-	 */
     @Override
 	public void clearPlayList() {
         // Remove filter
@@ -587,7 +547,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
      * Called when play lists needs to be persisted
      */
     private void playListsChanged(boolean definition, boolean contents) {
-    	IListOfPlayLists listOfPlayLists = listOfPlayListsCreator.getListOfPlayLists(playLists, activePlayListIndex, isFiltered(), nonFilteredPlayList);
+    	IListOfPlayLists listOfPlayLists = listOfPlayListsCreator.getListOfPlayLists(playListsContainer, isFiltered(), nonFilteredPlayList);
     	playListPersistor.persistPlayLists(listOfPlayLists, definition, contents);
     }
 
@@ -607,17 +567,17 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         }
 
         // Add playlists
-        playLists.clear();
+        playListsContainer.clear();
         for (IPlayList playlist : listOfPlayLists.getPlayLists()) {
-            playLists.add((PlayList)playlist);
-            playListTabController.newPlayList(playListNameCreator.getNameForPlaylist(playLists, (PlayList)playlist));
+            playListsContainer.addPlayList(playlist);
+            playListTabController.newPlayList(playListNameCreator.getNameForPlaylist(playListsContainer, playlist));
         }
-        activePlayListIndex = selected;
         // Initially active play list and visible play list are the same
-        visiblePlayListIndex = activePlayListIndex;
-        playListTabController.forceSwitchTo(visiblePlayListIndex);
+        playListsContainer.setActivePlayListIndex(selected);
+        playListsContainer.setVisiblePlayListIndex(selected);
+        playListTabController.forceSwitchTo(selected);
 
-        setPlayList(playLists.get(activePlayListIndex));
+        setPlayList(playListsContainer.getPlayListAt(selected));
 
         // Update table model
         ((PlayListTableModel) playListTable.getModel()).setVisiblePlayList(getCurrentPlayList(true));
@@ -648,25 +608,16 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         }
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#moveUp(int[])
-	 */
     @Override
 	public void moveUp(int[] rows) {
         moveRows(rows, true);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#moveDown(int[])
-	 */
     @Override
 	public void moveDown(int[] rows) {
         moveRows(rows, false);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#moveToBottom(int[])
-	 */
     @Override
 	public void moveToBottom(int[] rows) {
         IPlayList currentPlayList = getCurrentPlayList(true);
@@ -683,9 +634,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         }
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#moveToTop(int[])
-	 */
     @Override
 	public void moveToTop(int[] rows) {
         IPlayList currentPlayList = getCurrentPlayList(true);
@@ -701,17 +649,11 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         }
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#moveRowTo(int, int)
-	 */
     @Override
 	public void moveRowTo(int sourceRow, int targetRow) {
         getCurrentPlayList(true).moveRowTo(sourceRow, targetRow);
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#moveSelectionAfterCurrentAudioObject()
-	 */
     @Override
 	public void moveSelectionAfterCurrentAudioObject() {
         IPlayList currentPlayList = getCurrentPlayList(true);
@@ -744,9 +686,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         playListTable.getSelectionModel().setSelectionInterval(getCurrentAudioObjectIndexInVisiblePlayList() + 1, getCurrentAudioObjectIndexInVisiblePlayList() + selectedAudioObjects.size());
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#playNow(net.sourceforge.atunes.model.IAudioObject)
-	 */
     @Override
 	public void playNow(IAudioObject audioObject) {
         if (!getCurrentPlayList(true).contains(audioObject)) {
@@ -759,9 +698,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         }
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#removeAudioObjects(int[])
-	 */
     @Override
 	public void removeAudioObjects(int[] rows) {
         IPlayList currentPlayList = getCurrentPlayList(true);
@@ -831,9 +767,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         playListsChanged(true, false);
 	};
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#shuffle()
-	 */
     @Override
 	public void shuffle() {
         IPlayList currentPlaylist = getCurrentPlayList(true);
@@ -846,17 +779,11 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         currentPlaylist.shuffle();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#isActivePlayListVisible()
-	 */
     @Override
 	public boolean isActivePlayListVisible() {
         return getCurrentPlayList(true) == getCurrentPlayList(false);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#addToPlayListAndPlay(java.util.List)
-	 */
     @Override
 	public void addToPlayListAndPlay(List<IAudioObject> audioObjects) {
         if (audioObjects == null || audioObjects.isEmpty()) {
@@ -869,17 +796,11 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         playerHandler.playCurrentAudioObject(false);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#isFiltered()
-	 */
     @Override
 	public boolean isFiltered() {
         return nonFilteredPlayList != null;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#setFilter(java.lang.String)
-	 */
     @Override
 	public void setFilter(String filter) {
         String filterText = filter;
@@ -910,8 +831,8 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
      *            the new play list after filtering
      */
     private void setPlayListAfterFiltering(IPlayList playList) {
-        playLists.remove(visiblePlayListIndex);
-        playLists.add(visiblePlayListIndex, playList);
+        playListsContainer.removePlayList(playListsContainer.getVisiblePlayListIndex());
+        playListsContainer.addPlayList(playListsContainer.getVisiblePlayListIndex(), playList);
 
         // Set selection interval to none
         playListTable.getSelectionModel().clearSelection();
@@ -925,65 +846,41 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         playListController.scrollPlayList(false);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#setPositionToPlayInVisiblePlayList(int)
-	 */
     @Override
 	public final void setPositionToPlayInVisiblePlayList(int pos) {
         getCurrentPlayList(true).setCurrentAudioObjectIndex(pos);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#resetCurrentPlayList()
-	 */
     @Override
 	public final void resetCurrentPlayList() {
         getCurrentPlayList(false).reset();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#getNextAudioObject()
-	 */
     @Override
 	public IAudioObject getNextAudioObject() {
         return getCurrentPlayList(false).moveToNextAudioObject();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#getPreviousAudioObject()
-	 */
     @Override
 	public IAudioObject getPreviousAudioObject() {
         return getCurrentPlayList(false).moveToPreviousAudioObject();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#getIndexOfAudioObject(net.sourceforge.atunes.model.IAudioObject)
-	 */
     @Override
 	public int getIndexOfAudioObject(IAudioObject aObject) {
         return getCurrentPlayList(false).indexOf(aObject);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#getAudioObjectAtIndex(int)
-	 */
     @Override
 	public IAudioObject getAudioObjectAtIndex(int index) {
         return getCurrentPlayList(false).getNextAudioObject(index);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#changeSelectedAudioObjectToIndex(int)
-	 */
     @Override
 	public void changeSelectedAudioObjectToIndex(int index) {
         playListTable.changeSelection(index, 0, false, false);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#getSelectedAudioObjects()
-	 */
     @Override
 	public List<IAudioObject> getSelectedAudioObjects() {
         List<IAudioObject> audioObjects = new ArrayList<IAudioObject>();
@@ -999,25 +896,16 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         return audioObjects;
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#isCurrentVisibleRowPlaying(int)
-	 */
     @Override
 	public boolean isCurrentVisibleRowPlaying(int row) {
         return getCurrentPlayList(true).getCurrentAudioObjectIndex() == row && isActivePlayListVisible();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#getCurrentAudioObjectIndexInVisiblePlayList()
-	 */
     @Override
 	public int getCurrentAudioObjectIndexInVisiblePlayList() {
         return getCurrentPlayList(true).getCurrentAudioObjectIndex();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#addToPlaybackHistory(net.sourceforge.atunes.model.IAudioObject)
-	 */
     @Override
 	public void addToPlaybackHistory(IAudioObject object) {
         getCurrentPlayList(false).addToPlaybackHistory(object);
@@ -1027,8 +915,8 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     @Override
     public void audioFilesRemoved(List<ILocalAudioObject> audioFiles) {
         // Remove these objects from all play lists
-        for (IPlayList pl : playLists) {
-            pl.remove(audioFiles);
+    	for (int i = 0; i < playListsContainer.getPlayListsCount(); i++) {
+    		playListsContainer.getPlayListAt(i).remove(audioFiles);
         }
         // Update status bar
         showPlayListInformation(getCurrentPlayList(true));
@@ -1041,47 +929,24 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         }
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#movePlaylistToPosition(int, int)
-	 */
     @Override
 	public void movePlaylistToPosition(int from, int to) {
-        IPlayList activePlayList = playLists.get(activePlayListIndex);
-        IPlayList visiblePlayList = playLists.get(visiblePlayListIndex);
-        IPlayList playList = playLists.remove(from);
-        playLists.add(to, playList);
-        activePlayListIndex = playLists.indexOf(activePlayList);
-        visiblePlayListIndex = playLists.indexOf(visiblePlayList);
+    	playListsContainer.movePlayListToPosition(from, to);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#getPlayListNameAtIndex(int)
-	 */
     @Override
 	public String getPlayListNameAtIndex(int index) {
-        return this.playLists.get(index).getName();
+        return playListsContainer.getPlayListAt(index).getName();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#getPlayListContent(int)
-	 */
     @Override
 	public List<IAudioObject> getPlayListContent(int index) {
-        if (index >= this.playLists.size()) {
+        if (index >= this.playListsContainer.getPlayListsCount() || index < 0) {
             throw new IllegalArgumentException(new StringBuilder().append("Invalid play list index ").append(index).toString());
-        } else {
-            List<IAudioObject> result = new ArrayList<IAudioObject>();
-            IPlayList playlist = this.playLists.get(index);
-            for (int i = 0; i < playlist.size(); i++) {
-                result.add(playlist.get(i));
-            }
-            return result;
         }
+        return playListsContainer.getPlayListAt(index).getAudioObjectsList();
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#closeCurrentPlaylist()
-	 */
     @Override
 	public void closeCurrentPlaylist() {
         // The current selected play list when this action is fired
@@ -1092,9 +957,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         }
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#closeOtherPlaylists()
-	 */
     @Override
 	public void closeOtherPlaylists() {
         // The current selected play list when this action is fired
@@ -1113,57 +975,36 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         }
     }
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#scrollPlayList(boolean)
-	 */
 	@Override
 	public void scrollPlayList(boolean isUserAction) {
 		playListController.scrollPlayList(isUserAction);		
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#refreshPlayList()
-	 */
 	@Override
 	public void refreshPlayList() {
 		playListController.refreshPlayList();		
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#moveDown()
-	 */
 	@Override
 	public void moveDown() {
 		playListController.moveDown();		
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#moveToBottom()
-	 */
 	@Override
 	public void moveToBottom() {
 		playListController.moveToBottom();
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#moveToTop()
-	 */
 	@Override
 	public void moveToTop() {
 		playListController.moveToTop();
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#moveUp()
-	 */
 	@Override
 	public void moveUp() {
 		playListController.moveUp();		
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#deleteSelection()
-	 */
 	@Override
 	public void deleteSelection() {
 		playListController.deleteSelection();
@@ -1216,14 +1057,11 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         }
 	}
 	
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#getMenuItemsToSwitchPlayLists()
-	 */
 	@Override
 	public List<JMenuItem> getMenuItemsToSwitchPlayLists() {
 		List<JMenuItem> menuItems = new ArrayList<JMenuItem>(); 
         List<String> playlists = playListTabController.getNamesOfPlayLists();
-        for (int i = 0; i < playlists.size(); i++) {
+        for (int i = 0; i < playListsContainer.getPlayListsCount(); i++) {
             final int index = i;
             JMenuItem plMenuItem;
             if (isVisiblePlayList(index)) {
@@ -1253,9 +1091,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         }
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#showAddArtistDragDialog(net.sourceforge.atunes.model.Artist)
-	 */
     @Override
 	public void showAddArtistDragDialog(IArtist currentArtist) {
     	IArtistAlbumSelectorDialog dialog = getBean(IArtistAlbumSelectorDialog.class);

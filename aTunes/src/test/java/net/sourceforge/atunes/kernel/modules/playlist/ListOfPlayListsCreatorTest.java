@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,32 +56,50 @@ public class ListOfPlayListsCreatorTest {
 		list = new ArrayList<IPlayList>();
 		list.add(playList1);
 		list.add(playList2);
-		list.add(playList3);
+		list.add(playList3);		
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testNull() {
-		sut.getListOfPlayLists(null, 0, false, null);
+		sut.getListOfPlayLists(null, false, null);
 	}	
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testEmpty() {
-		sut.getListOfPlayLists(new ArrayList<IPlayList>(), 0, false, null);
+		IPlayListsContainer container = mock(IPlayListsContainer.class);
+		when(container.getPlayListsCount()).thenReturn(0);
+
+		sut.getListOfPlayLists(container, false, null);
 	}	
 	
 	@Test
 	public void testWithoutFilter() {
-		IListOfPlayLists result = sut.getListOfPlayLists(list, 1, false, null);
+		IPlayListsContainer container = mock(IPlayListsContainer.class);
+		when(container.getPlayListsCount()).thenReturn(3);
+		when(container.getPlayListAt(0)).thenReturn(playList1);
+		when(container.getPlayListAt(1)).thenReturn(playList2);
+		when(container.getPlayListAt(2)).thenReturn(playList3);
+		when(container.getActivePlayListIndex()).thenReturn(1);
+
+		IListOfPlayLists result = sut.getListOfPlayLists(container, false, null);
 
 		assertEquals(list.size(), result.getPlayLists().size());
 		assertEquals(playList1, result.getPlayLists().get(0));
 		assertEquals(playList2, result.getPlayLists().get(1));
 		assertEquals(playList3, result.getPlayLists().get(2));
+		assertEquals(1, result.getSelectedPlayList());
 	}
 
 	@Test
 	public void testWithFilter() {
-		IListOfPlayLists result = sut.getListOfPlayLists(list, 1, true, playList4);
+		IPlayListsContainer container = mock(IPlayListsContainer.class);
+		when(container.getPlayListsCount()).thenReturn(3);
+		when(container.getPlayListAt(0)).thenReturn(playList1);
+		when(container.getPlayListAt(1)).thenReturn(playList2);
+		when(container.getPlayListAt(2)).thenReturn(playList3);
+		when(container.getActivePlayListIndex()).thenReturn(1);
+
+		IListOfPlayLists result = sut.getListOfPlayLists(container, true, playList4);
 
 		assertEquals(list.size(), result.getPlayLists().size());
 		assertEquals(playList1, result.getPlayLists().get(0));
