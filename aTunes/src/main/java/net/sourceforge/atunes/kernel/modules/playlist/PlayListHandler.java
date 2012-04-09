@@ -116,6 +116,13 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	private PlayListLoader playListLoader;
 	
 	/**
+	 * @param playListController
+	 */
+	public void setPlayListController(PlayListController playListController) {
+		this.playListController = playListController;
+	}
+	
+	/**
 	 * @param playListLoader
 	 */
 	public void setPlayListLoader(PlayListLoader playListLoader) {
@@ -268,7 +275,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
            	getPlayListTabController().deletePlayList(index);
 
             // Refresh table
-            getPlayListController().refreshPlayList();
+            playListController.refreshPlayList();
         } else {
             // index == visiblePlayList
             // switch play list and then delete
@@ -368,11 +375,11 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         setPlayList(newSelectedPlayList);
         // Update table model
         ((PlayListTableModel) playListTable.getModel()).setVisiblePlayList(getCurrentPlayList(true));
-        getPlayListController().refreshPlayList();
+        playListController.refreshPlayList();
 
         // If playlist is active then perform an auto scroll
         if (isActivePlayListVisible()) {
-            getPlayListController().scrollPlayList(false);
+            playListController.scrollPlayList(false);
         }
     }
 
@@ -478,7 +485,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         showPlayListInformation(playList);
 
         // Update play list table
-        getPlayListController().refreshPlayList();
+        playListController.refreshPlayList();
 
         Logger.info(StringUtils.getString(audioObjects.size(), " audio objects added to play list"));
     }
@@ -557,7 +564,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
             playListPanel.getSwingComponent().repaint();
 
             // Refresh play list
-            getPlayListController().refreshPlayList();
+            playListController.refreshPlayList();
 
             Logger.info("Play list clear");
         }
@@ -610,7 +617,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 
         // Refresh play list
         // For some strange reason, this is needed even if play list is empty
-        getPlayListController().refreshPlayList();
+        playListController.refreshPlayList();
 
         playListsRetrievedFromCache = null;
     }
@@ -771,7 +778,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
             }
         }
 
-        getPlayListController().refreshPlayList();
+        playListController.refreshPlayList();
 
         if (currentPlayList.isEmpty()) {
             getBean(SavePlayListAction.class).setEnabled(false);
@@ -812,8 +819,8 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	@Override
 	public void selectedAudioObjectChanged(IAudioObject audioObject) {
         addToPlaybackHistory(audioObject);
-        getPlayListController().updatePlayList();
-        getPlayListController().scrollPlayList(false);
+        playListController.updatePlayList();
+        playListController.scrollPlayList(false);
         playListsChanged(true, false);
 	};
 
@@ -880,7 +887,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         } else {
             // Store original play list without filter
             if (nonFilteredPlayList == null) {
-				nonFilteredPlayList = getCurrentPlayList(true).clone();
+				nonFilteredPlayList = getCurrentPlayList(true).copyPlayList();
             }
 
             // Create a new play list by filtering elements
@@ -906,9 +913,9 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 
         // Update table model
         ((PlayListTableModel) playListTable.getModel()).setVisiblePlayList(playList);
-        getPlayListController().refreshPlayList();
+        playListController.refreshPlayList();
 
-        getPlayListController().scrollPlayList(false);
+        playListController.scrollPlayList(false);
     }
 
     /* (non-Javadoc)
@@ -1023,7 +1030,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     @Override
     public void applicationStateChanged(IState newState) {
         if (newState.isAutoScrollPlayListEnabled()) {
-            getPlayListController().scrollPlayList(true);
+            playListController.scrollPlayList(true);
         }
     }
 
@@ -1111,19 +1118,12 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         }
     }
 
-	private PlayListController getPlayListController() {
-        if (playListController == null) {
-            playListController = new PlayListController(playListTable, playListPanel, getState(), this, playerHandler);
-        }
-        return playListController;
-    }
-
 	/* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#scrollPlayList(boolean)
 	 */
 	@Override
 	public void scrollPlayList(boolean isUserAction) {
-		getPlayListController().scrollPlayList(isUserAction);		
+		playListController.scrollPlayList(isUserAction);		
 	}
 
 	/* (non-Javadoc)
@@ -1131,7 +1131,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	 */
 	@Override
 	public void refreshPlayList() {
-		getPlayListController().refreshPlayList();		
+		playListController.refreshPlayList();		
 	}
 
 	/* (non-Javadoc)
@@ -1139,7 +1139,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	 */
 	@Override
 	public void moveDown() {
-		getPlayListController().moveDown();		
+		playListController.moveDown();		
 	}
 
 	/* (non-Javadoc)
@@ -1147,7 +1147,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	 */
 	@Override
 	public void moveToBottom() {
-		getPlayListController().moveToBottom();
+		playListController.moveToBottom();
 	}
 
 	/* (non-Javadoc)
@@ -1155,7 +1155,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	 */
 	@Override
 	public void moveToTop() {
-		getPlayListController().moveToTop();
+		playListController.moveToTop();
 	}
 
 	/* (non-Javadoc)
@@ -1163,7 +1163,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	 */
 	@Override
 	public void moveUp() {
-		getPlayListController().moveUp();		
+		playListController.moveUp();		
 	}
 
 	/* (non-Javadoc)
@@ -1171,7 +1171,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	 */
 	@Override
 	public void deleteSelection() {
-		getPlayListController().deleteSelection();
+		playListController.deleteSelection();
 	}
 
 	@Override

@@ -16,4 +16,6 @@
 	<bean id="playListPersistor" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListPersistor"/>
 	
 	<bean id="playListLoader" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListLoader"/>
+	
+	<bean id="playListController" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListController" init-method="initialize"/>
 </beans>

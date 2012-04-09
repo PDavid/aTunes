@@ -361,7 +361,7 @@ public class PlayList implements IPlayList {
     }
 
     @Override
-    public PlayList clone() {
+    public PlayList copyPlayList() {
         return new PlayList(this, state);
     }
 
