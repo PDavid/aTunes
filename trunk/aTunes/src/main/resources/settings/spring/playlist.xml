@@ -18,4 +18,5 @@
 	<bean id="playListLoader" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListLoader"/>
 	
 	<bean id="playListController" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListController" init-method="initialize"/>
+	<bean id="playListTabController" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListTabController" init-method="initialize"/>
 </beans>

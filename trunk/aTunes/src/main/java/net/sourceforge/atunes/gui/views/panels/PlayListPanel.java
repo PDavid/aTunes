@@ -96,12 +96,9 @@ public final class PlayListPanel extends JPanel implements IPlayListPanel {
         add(playListTableScroll, BorderLayout.CENTER);
     }
 
-    @Override
-	public IPlayListSelectorPanel getPlayListTabPanel() {
-        return playListSelectorPanel;
-    }
-    
-    @Override
+	/**
+	 * @param playListSelectorPanel
+	 */
 	public void setPlayListSelectorPanel(IPlayListSelectorPanel playListSelectorPanel) {
 		this.playListSelectorPanel = playListSelectorPanel;
 	}

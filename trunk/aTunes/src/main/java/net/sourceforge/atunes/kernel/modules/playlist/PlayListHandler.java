@@ -116,6 +116,13 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	private PlayListLoader playListLoader;
 	
 	/**
+	 * @param playListTabController
+	 */
+	public void setPlayListTabController(PlayListTabController playListTabController) {
+		this.playListTabController = playListTabController;
+	}
+	
+	/**
 	 * @param playListController
 	 */
 	public void setPlayListController(PlayListController playListController) {
@@ -272,7 +279,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
             }
 
             // Delete tab
-           	getPlayListTabController().deletePlayList(index);
+           	playListTabController.deletePlayList(index);
 
             // Refresh table
             playListController.refreshPlayList();
@@ -313,7 +320,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         }
         newPlayList.setName(nameOfNewPlayList);
         playLists.add(newPlayList);
-        getPlayListTabController().newPlayList(nameOfNewPlayList);
+        playListTabController.newPlayList(nameOfNewPlayList);
         
         playListsChanged(true, true);
     }
@@ -323,8 +330,8 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	 */
     @Override
 	public void renamePlayList() {
-        int selectedPlaylist = getPlayListTabController().getSelectedPlayListIndex();
-        String currentName = getPlayListTabController().getPlayListName(selectedPlaylist);
+        int selectedPlaylist = playListTabController.getSelectedPlayListIndex();
+        String currentName = playListTabController.getPlayListName(selectedPlaylist);
         IInputDialog dialog = getBean(IInputDialog.class);
         dialog.setTitle(I18nUtils.getString("RENAME_PLAYLIST"));
         dialog.showDialog(currentName);
@@ -344,7 +351,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
      */
     private void renamePlayList(int index, String newName) {
         playLists.get(index).setName(newName);
-        getPlayListTabController().renamePlayList(index, newName);
+        playListTabController.renamePlayList(index, newName);
     }
 
     /* (non-Javadoc)
@@ -603,12 +610,12 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         playLists.clear();
         for (IPlayList playlist : listOfPlayLists.getPlayLists()) {
             playLists.add((PlayList)playlist);
-            getPlayListTabController().newPlayList(playListNameCreator.getNameForPlaylist(playLists, (PlayList)playlist));
+            playListTabController.newPlayList(playListNameCreator.getNameForPlaylist(playLists, (PlayList)playlist));
         }
         activePlayListIndex = selected;
         // Initially active play list and visible play list are the same
         visiblePlayListIndex = activePlayListIndex;
-        getPlayListTabController().forceSwitchTo(visiblePlayListIndex);
+        playListTabController.forceSwitchTo(visiblePlayListIndex);
 
         setPlayList(playLists.get(activePlayListIndex));
 
@@ -1072,25 +1079,13 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         }
     }
     
-    /**
-     * Gets the play list tab controller.
-     * 
-     * @return the play list tab controller
-     */
-    private PlayListTabController getPlayListTabController() {
-        if (playListTabController == null) {
-            playListTabController = new PlayListTabController(playListPanel.getPlayListTabPanel(), getState(), this);
-        }
-        return playListTabController;
-    }
-
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.playlist.IPlayListHandler#closeCurrentPlaylist()
 	 */
     @Override
 	public void closeCurrentPlaylist() {
         // The current selected play list when this action is fired
-        int i = getPlayListTabController().getSelectedPlayListIndex();
+        int i = playListTabController.getSelectedPlayListIndex();
         if (i != -1) {
         	// As this action is not called when pressing close button in tab set removeTab argument to true
             removePlayList(i);
@@ -1103,7 +1098,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     @Override
 	public void closeOtherPlaylists() {
         // The current selected play list when this action is fired
-        int i = getPlayListTabController().getSelectedPlayListIndex();
+        int i = playListTabController.getSelectedPlayListIndex();
         if (i != -1) {
             // Remove play lists from 0 to i. Remove first play list until current play list is at index 0  
             for (int j = 0; j < i; j++) {
@@ -1227,7 +1222,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	@Override
 	public List<JMenuItem> getMenuItemsToSwitchPlayLists() {
 		List<JMenuItem> menuItems = new ArrayList<JMenuItem>(); 
-        List<String> playlists = getPlayListTabController().getNamesOfPlayLists();
+        List<String> playlists = playListTabController.getNamesOfPlayLists();
         for (int i = 0; i < playlists.size(); i++) {
             final int index = i;
             JMenuItem plMenuItem;
@@ -1236,7 +1231,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
             } else {
                 plMenuItem = new JMenuItem(playlists.get(i));
             }
-            plMenuItem.addActionListener(new SwitchPlayListListener(getPlayListTabController(), index));
+            plMenuItem.addActionListener(new SwitchPlayListListener(playListTabController, index));
             menuItems.add(plMenuItem);
         }
         return menuItems;
