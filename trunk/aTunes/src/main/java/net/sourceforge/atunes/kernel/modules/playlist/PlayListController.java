@@ -34,10 +34,9 @@ import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListPanel;
 import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.Logger;
 
-final class PlayListController extends AbstractSimpleController<PlayListPanel> {
+public final class PlayListController extends AbstractSimpleController<PlayListPanel> {
 
     /** The visible rect. */
     private Rectangle visibleRect;
@@ -47,25 +46,46 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> {
     private IPlayerHandler playerHandler;
     
     private IPlayListTable playListTable;
-
+    
+    private IPlayListPanel playListPanel;
+    
     /**
-     * Instantiates a new play list controller.
-     * 
+     * @param playListPanel
+     */
+    public void setPlayListPanel(IPlayListPanel playListPanel) {
+		this.playListPanel = playListPanel;
+	}
+    
+    /**
      * @param playListTable
-     * @param panel
-     * @param state
+     */
+    public void setPlayListTable(IPlayListTable playListTable) {
+		this.playListTable = playListTable;
+	}
+    
+    /**
      * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    /**
      * @param playerHandler
      */
-    PlayListController(IPlayListTable playListTable, IPlayListPanel panel, IState state, IPlayListHandler playListHandler, IPlayerHandler playerHandler) {
-        super((PlayListPanel)panel.getSwingComponent(), state);
-        this.playListTable = playListTable;
-        this.playListHandler = playListHandler;
-        this.playerHandler = playerHandler;
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
+
+    /**
+     * Initializes controller
+     */
+    public void initialize() {
+    	setComponentControlled((PlayListPanel)playListPanel.getSwingComponent());
         addBindings();
         addStateBindings();
     }
-
+    
     @Override
 	public void addBindings() {
         // Set key listener for table

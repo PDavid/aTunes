@@ -175,7 +175,7 @@ public interface IPlayList extends Serializable, Cloneable {
 	 * Creates a copy
 	 * @return
 	 */
-	IPlayList clone();
+	IPlayList copyPlayList();
 
 	/**
 	 * Moves to next audio object
