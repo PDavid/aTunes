@@ -25,33 +25,35 @@ import java.util.List;
 
 import net.sourceforge.atunes.model.IListOfPlayLists;
 import net.sourceforge.atunes.model.IPlayList;
-import net.sourceforge.atunes.utils.CollectionUtils;
 
 class ListOfPlayListsCreator {
 
     /**
      * Gets the list of play lists.
      * @param playLists
-     * @param activePlayListIndex
      * @param filtered
      * @param nonFilteredPlayList 
      * @return the list of play lists
      */
-    IListOfPlayLists getListOfPlayLists(List<IPlayList> playLists, int activePlayListIndex, boolean filtered, IPlayList nonFilteredPlayList) {
-    	if (CollectionUtils.isEmpty(playLists)) {
+    IListOfPlayLists getListOfPlayLists(IPlayListsContainer playLists, boolean filtered, IPlayList nonFilteredPlayList) {
+    	if (playLists == null || playLists.getPlayListsCount() == 0) {
     		throw new IllegalArgumentException("Playlists empty or null");
     	}
     	
         ListOfPlayLists l = new ListOfPlayLists();
 
         // Clone play lists to make changes in returned list if current play list is filtered
-        l.setPlayLists(new ArrayList<IPlayList>(playLists));
-        l.setSelectedPlayList(activePlayListIndex);
+        List<IPlayList> lists = new ArrayList<IPlayList>();
+        for (int i = 0; i < playLists.getPlayListsCount(); i++) {
+        	lists.add(playLists.getPlayListAt(i));
+        }
+        l.setPlayLists(lists);
+        l.setSelectedPlayList(playLists.getActivePlayListIndex());
 
         // If current play list is filtered return non-filtered play list
         if (filtered) {
-            l.getPlayLists().remove(activePlayListIndex);
-            l.getPlayLists().add(activePlayListIndex, nonFilteredPlayList);
+            l.getPlayLists().remove(playLists.getActivePlayListIndex());
+            l.getPlayLists().add(playLists.getActivePlayListIndex(), nonFilteredPlayList);
         }
 
         return l;

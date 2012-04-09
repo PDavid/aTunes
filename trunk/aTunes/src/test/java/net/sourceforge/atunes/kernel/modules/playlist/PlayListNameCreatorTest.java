@@ -23,10 +23,6 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import net.sourceforge.atunes.model.IPlayList;
 
 import org.junit.Before;
@@ -36,17 +32,18 @@ public class PlayListNameCreatorTest {
 
 	private PlayListNameCreator sut;
 	
-	private List<IPlayList> list;
+	private IPlayListsContainer container;
 	
 	private IPlayList playList;
 	
 	@Before
 	public void init() {
 		sut = new PlayListNameCreator();
-		list = new ArrayList<IPlayList>();
+		container = mock(IPlayListsContainer.class);
 		playList = mock(IPlayList.class);
 		when(playList.getName()).thenReturn("PLAYLIST 1");
-		list.add(playList);
+		when(container.getPlayListAt(0)).thenReturn(playList);
+		when(container.getPlayListsCount()).thenReturn(1);
 	}
 
 	@Test
@@ -57,7 +54,7 @@ public class PlayListNameCreatorTest {
 
 	@Test
 	public void testCreateExistingName() {
-		assertEquals("PLAYLIST 2", sut.getNameForPlaylist(list, null));
+		assertEquals("PLAYLIST 2", sut.getNameForPlaylist(container, null));
 	}
 
 	@Test

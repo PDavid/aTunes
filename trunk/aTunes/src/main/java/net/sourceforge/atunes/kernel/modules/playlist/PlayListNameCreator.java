@@ -20,8 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.playlist;
 
-import java.util.List;
-
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -42,7 +40,7 @@ public class PlayListNameCreator {
      * 
      * @return the name for playlist
      */
-    String getNameForPlaylist(List<IPlayList> playLists, IPlayList pl) {
+    String getNameForPlaylist(IPlayListsContainer playLists, IPlayList pl) {
         if (pl == null || StringUtils.isEmpty(pl.getName())) {
             return createPlayListName(playLists, pl);
         }
@@ -54,7 +52,7 @@ public class PlayListNameCreator {
 	 * @param pl
 	 * @return
 	 */
-	private String createPlayListName(List<IPlayList> playLists, IPlayList pl) {
+	private String createPlayListName(IPlayListsContainer playLists, IPlayList pl) {
 		String name = null;
 		do {
 			name = StringUtils.getString(I18nUtils.getString("PLAYLIST"), " ", playListNameCounter++);
@@ -67,9 +65,10 @@ public class PlayListNameCreator {
      * @param name
      * @return
      */
-    private boolean checkIfNameExists(List<IPlayList> playLists, String name) {
+    private boolean checkIfNameExists(IPlayListsContainer playLists, String name) {
     	if (playLists != null) {
-    		for (IPlayList playList : playLists) {
+    		for (int i = 0; i < playLists.getPlayListsCount(); i++) {
+    			IPlayList playList = playLists.getPlayListAt(i);
     			if (playList.getName() != null && name.trim().equalsIgnoreCase(playList.getName().trim())) {
     				return true;
     			}
