@@ -26,21 +26,33 @@ import net.sourceforge.atunes.gui.views.panels.PlayListSelectorPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListSelectorPanel;
-import net.sourceforge.atunes.model.IState;
 
 final class PlayListTabController extends AbstractSimpleController<PlayListSelectorPanel> {
 
 	private IPlayListHandler playListHandler;
 	
+	private IPlayListSelectorPanel playListSelectorPanel;
+	
+	/**
+	 * @param playListSelectorPanel
+	 */
+	public void setPlayListSelectorPanel(
+			IPlayListSelectorPanel playListSelectorPanel) {
+		this.playListSelectorPanel = playListSelectorPanel;
+	}
+	
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+	
     /**
-     * Instantiates a new play list tab controller.
-     * 
-     * @param panel
-     * @param state
+     * Initializes controller
      */
-    PlayListTabController(IPlayListSelectorPanel panel, IState state, IPlayListHandler playListHandler) {
-        super((PlayListSelectorPanel) panel.getSwingComponent(), state);
-        this.playListHandler = playListHandler;
+    public void initialize() {
+    	setComponentControlled((PlayListSelectorPanel)playListSelectorPanel);
         addBindings();
         addStateBindings();
     }

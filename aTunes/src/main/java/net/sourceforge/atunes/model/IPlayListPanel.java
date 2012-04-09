@@ -32,19 +32,6 @@ import javax.swing.JComponent;
 public interface IPlayListPanel {
 
 	/**
-	 * Gets the play list tab panel.
-	 * 
-	 * @return the playListTabPanel
-	 */
-	public IPlayListSelectorPanel getPlayListTabPanel();
-
-	/**
-	 * @param playListSelectorPanel
-	 */
-	public void setPlayListSelectorPanel(
-			IPlayListSelectorPanel playListSelectorPanel);
-
-	/**
 	 * Prepares play list for drag and drop operations
 	 */
 	public void enableDragAndDrop();
