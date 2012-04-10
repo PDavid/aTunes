@@ -77,6 +77,9 @@ public final class PlayListsContainer implements IPlayListsContainer {
 	 */
 	@Override
 	public void setActivePlayListIndex(int activePlayListIndex) {
+		if (activePlayListIndex < 0 || activePlayListIndex >= playLists.size()) {
+			throw new IllegalArgumentException(StringUtils.getString("Wrong activePlayListIndex: ", activePlayListIndex));
+		}
 		this.activePlayListIndex = activePlayListIndex;
 	}
 	
@@ -85,6 +88,9 @@ public final class PlayListsContainer implements IPlayListsContainer {
 	 */
 	@Override
 	public void setVisiblePlayListIndex(int visiblePlayListIndex) {
+		if (visiblePlayListIndex < 0 || visiblePlayListIndex >= playLists.size()) {
+			throw new IllegalArgumentException(StringUtils.getString("Wrong visiblePlayListIndex: ", visiblePlayListIndex));
+		}
 		this.visiblePlayListIndex = visiblePlayListIndex;
 	}
 
