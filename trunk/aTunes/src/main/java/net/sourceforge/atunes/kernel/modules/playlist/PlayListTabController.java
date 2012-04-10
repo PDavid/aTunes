@@ -27,7 +27,7 @@ import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListSelectorPanel;
 
-final class PlayListTabController extends AbstractSimpleController<PlayListSelectorPanel> {
+final class PlayListTabController extends AbstractSimpleController<PlayListSelectorPanel> implements IPlayListTabController {
 
 	private IPlayListHandler playListHandler;
 	
@@ -71,7 +71,8 @@ final class PlayListTabController extends AbstractSimpleController<PlayListSelec
      * @param index
      *            the index
      */
-    void deletePlayList(int index) {
+    @Override
+    public void deletePlayList(int index) {
     	int selectedPlaylist = getSelectedPlayListIndex();
    		((PlayListComboModel)getComponentControlled().getPlayListCombo().getModel()).removeItemAt(index);
    		if (index == selectedPlaylist) {

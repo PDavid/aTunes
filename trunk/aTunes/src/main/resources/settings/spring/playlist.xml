@@ -21,4 +21,6 @@
 	<bean id="playListTabController" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListTabController" init-method="initialize"/>
 	
 	<bean id="playListsContainer" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListsContainer"/>
+	
+	<bean id="playListRemover" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListRemover"/>
 </beans>
