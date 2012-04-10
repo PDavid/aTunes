@@ -36,7 +36,7 @@ import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.Logger;
 
-public final class PlayListController extends AbstractSimpleController<PlayListPanel> {
+final class PlayListController extends AbstractSimpleController<PlayListPanel> implements IPlayListController {
 
     /** The visible rect. */
     private Rectangle visibleRect;
@@ -249,7 +249,7 @@ public final class PlayListController extends AbstractSimpleController<PlayListP
     /**
      * Forces refresh of play list
      */
-    void refreshPlayList() {
+    public void refreshPlayList() {
     	SwingUtilities.invokeLater(new Runnable() {
     		@Override
     		public void run() {

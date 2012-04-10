@@ -108,6 +108,15 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	
 	private IPlayListsContainer playListsContainer;
 	
+	private PlayListRemover playListRemover;
+	
+	/**
+	 * @param playListRemover
+	 */
+	public void setPlayListRemover(PlayListRemover playListRemover) {
+		this.playListRemover = playListRemover;
+	}
+	
 	/**
 	 * @param playListsContainer
 	 */
@@ -245,56 +254,9 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 
     @Override
 	public void removePlayList(int index) {
-        // If index is not valid, do nothing
-        if (index < 0 || playListsContainer.getPlayListsCount() <= index) {
-            return;
-        }
-        // if there is only one play list, don't delete
-        if (playListsContainer.getPlayListsCount() <= 1) {
-            return;
-        }
-        
-        // remove tab and playlist
-        // NOTE: removing visible tab play list calls automatically to switchToPlayList method
-        if (index != playListsContainer.getVisiblePlayListIndex()) {
-            // Remove playlist from list
-            playListsContainer.removePlayList(index);
-
-            boolean activePlayListIsBeingRemoved = index == playListsContainer.getActivePlayListIndex();
-
-            // If index < visiblePlayListIndex, visible play list has been moved to left, so
-            // decrease in 1
-            if (index < playListsContainer.getVisiblePlayListIndex()) {
-                // If active play list visible then decrease in 1 too
-                if (playListsContainer.getActivePlayListIndex() == playListsContainer.getVisiblePlayListIndex()) {
-                    playListsContainer.setActivePlayListIndex(playListsContainer.getActivePlayListIndex() - 1);
-                }
-                playListsContainer.setVisiblePlayListIndex(playListsContainer.getVisiblePlayListIndex() - 1);
-            }
-
-            // Removed play list is active, then set visible play list as active and stop player
-            if (activePlayListIsBeingRemoved) {
-                playListsContainer.setVisiblePlayListActive();
-                playerHandler.stopCurrentAudioObject(false);
-            }
-
-            // Delete tab
-           	playListTabController.deletePlayList(index);
-
-            // Refresh table
-            playListController.refreshPlayList();
-        } else {
-            // index == visiblePlayList
-            // switch play list and then delete
-            if (index == 0) {
-                switchToPlaylist(1);
-            } else {
-                switchToPlaylist(playListsContainer.getVisiblePlayListIndex() - 1);
-            }
-            removePlayList(index);
-        }
-        
-        playListsChanged(true, true);
+    	if (playListRemover.removePlayList(index)) {
+    		playListsChanged(true, true);
+    	}
     }
     
     @Override
