@@ -32,6 +32,8 @@
 	</bean>
 	
 	<bean id="volumeController" class="net.sourceforge.atunes.kernel.modules.player.Volume"/>
+	
+	<bean id="playerEngineInitializer" class="net.sourceforge.atunes.kernel.modules.player.PlayerEngineSelector" scope="prototype"/>
 
 
 </beans>

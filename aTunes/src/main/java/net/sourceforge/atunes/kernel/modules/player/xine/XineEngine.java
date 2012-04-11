@@ -66,7 +66,7 @@ public class XineEngine extends AbstractPlayerEngine {
 	}
 
     @Override
-    protected boolean isEngineAvailable() {
+    public boolean isEngineAvailable() {
     	try {
     		String v = Xine.getLibXineVersion();
     		info(StringUtils.getString("Engine version: ", v));
@@ -80,21 +80,21 @@ public class XineEngine extends AbstractPlayerEngine {
     }
 
     @Override
-    protected void pausePlayback() {
+    public void pausePlayback() {
         if (xineController != null) {
             xineController.pause();
         }
     }
 
     @Override
-    protected void resumePlayback() {
+    public void resumePlayback() {
         if (xineController != null) {
             xineController.resume();
         }
     }
 
     @Override
-    protected void startPlayback(final IAudioObject audioObjectToPlay, final IAudioObject audioObject) {
+    public void startPlayback(final IAudioObject audioObjectToPlay, final IAudioObject audioObject) {
 
     	if (audioObjectToPlay.getUrl() == null) {
     		handlePlayerEngineError(new FileNotFoundException(audioObjectToPlay.getTitleOrFileName()));
@@ -157,7 +157,7 @@ public class XineEngine extends AbstractPlayerEngine {
     }
 
     @Override
-    protected void stopPlayback(final boolean userStopped, boolean useFadeAway) {
+    public void stopPlayback(final boolean userStopped, boolean useFadeAway) {
         if (xineController == null) {
             return;
         }
@@ -172,7 +172,7 @@ public class XineEngine extends AbstractPlayerEngine {
     }
 
     @Override
-    protected void seekTo(long milliseconds) {
+    public void seekTo(long milliseconds) {
         if (xineController != null) {
             startPlayback(milliseconds);
         }
@@ -379,12 +379,12 @@ public class XineEngine extends AbstractPlayerEngine {
     }
 
     @Override
-    protected String getEngineName() {
+    public String getEngineName() {
         return "Xine";
     }
 
     @Override
-    protected void killPlayer() {
+    public void destroyPlayer() {
         if (xineController != null) {
             synchronized (xineLock) {
                 stopDurationUpdater();
@@ -398,5 +398,9 @@ public class XineEngine extends AbstractPlayerEngine {
     @Override
     public void applyNormalization() {
         // TODO normalization must be applied here
+    }
+    
+    @Override
+    public void initializePlayerEngine() {
     }
 }
