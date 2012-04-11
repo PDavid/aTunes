@@ -375,9 +375,6 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
         // Mute
         applyMuteState(getState().isMuteEnabled());
     	
-        // Initial playback state is stopped
-        playerEngine.callPlaybackStateListeners(PlaybackState.STOPPED);
-
         if (getState().isPlayAtStartup()) {
             playCurrentAudioObject(true);
         }
