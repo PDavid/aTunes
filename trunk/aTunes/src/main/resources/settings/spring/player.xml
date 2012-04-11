@@ -35,5 +35,6 @@
 	
 	<bean id="playerEngineInitializer" class="net.sourceforge.atunes.kernel.modules.player.PlayerEngineSelector" scope="prototype"/>
 
+	<bean id="playerControlsController" class="net.sourceforge.atunes.kernel.modules.player.PlayerControlsController" init-method="initialize"/>
 
 </beans>
