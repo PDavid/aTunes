@@ -37,7 +37,6 @@ import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlaybackStateListener;
-import net.sourceforge.atunes.model.IPlayerControlsPanel;
 import net.sourceforge.atunes.model.IPlayerEngine;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPluginsHandler;
@@ -82,6 +81,14 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     private Volume volumeController;
     
     /**
+     * @param playerControlsController
+     */
+    public void setPlayerControlsController(
+			PlayerControlsController playerControlsController) {
+		this.playerControlsController = playerControlsController;
+	}
+    
+    /**
      * @param volumeController
      */
     public void setVolumeController(Volume volumeController) {
@@ -105,7 +112,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     @Override
     public void applicationStateChanged(IState newState) {
     	// Show advanced controls
-    	getPlayerControlsController().getComponentControlled().showAdvancedPlayerControls(newState.isShowAdvancedPlayerControls());
+    	playerControlsController.getComponentControlled().showAdvancedPlayerControls(newState.isShowAdvancedPlayerControls());
     }
 
     @Override
@@ -116,7 +123,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     @Override
 	public void setVolume(int perCent) {
     	playerEngine.setVolume(perCent);
-        getPlayerControlsController().setVolume(perCent);
+        playerControlsController.setVolume(perCent);
     }
 
     @Override
@@ -271,7 +278,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
         }
         
         // Show advanced controls
-        getPlayerControlsController().getComponentControlled().showAdvancedPlayerControls(getState().isShowAdvancedPlayerControls());
+        playerControlsController.getComponentControlled().showAdvancedPlayerControls(getState().isShowAdvancedPlayerControls());
 
         // Init engine
         playerEngine.initializePlayerEngine();
@@ -367,43 +374,24 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
         return playerEngine.getCurrentAudioObjectLength();
     }
     
-    /**
-     * Gets the player controls controller.
-     * 
-     * @return the player controls controller
-     */
-    private PlayerControlsController getPlayerControlsController() {
-        if (playerControlsController == null) {
-            playerControlsController = new PlayerControlsController(getBean(IPlayerControlsPanel.class), getState(), this);
-        }
-        return playerControlsController;
-    }
-
 	@Override
 	public void setPlaying(boolean playing) {
-		getPlayerControlsController().setPlaying(playing);
+		playerControlsController.setPlaying(playing);
 	}
 
 	@Override
 	public void setAudioObjectLength(long currentLength) {
-		getPlayerControlsController().setAudioObjectLength(currentLength);		
+		playerControlsController.setAudioObjectLength(currentLength);		
 	}
 
 	@Override
 	public void setCurrentAudioObjectTimePlayed(long actualPlayedTime, long currentAudioObjectLength) {
-		getPlayerControlsController().setCurrentAudioObjectTimePlayed(actualPlayedTime, currentAudioObjectLength);
+		playerControlsController.setCurrentAudioObjectTimePlayed(actualPlayedTime, currentAudioObjectLength);
 	}
-
-	@Override
-	public void playListCleared() {}
 
 	@Override
 	public void selectedAudioObjectChanged(IAudioObject audioObject) {
-		getPlayerControlsController().updatePlayerControls(audioObject);
-	}
-
-	@Override
-	protected void initHandler() {
+		playerControlsController.updatePlayerControls(audioObject);
 	}
 
 	@Override
