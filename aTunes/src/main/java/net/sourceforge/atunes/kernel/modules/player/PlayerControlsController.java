@@ -24,6 +24,7 @@ import java.awt.EventQueue;
 
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -36,6 +37,33 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
 	private IPlayerControlsPanel playerControls;
 	
     private IPlayerHandler playerHandler;
+    
+    private VolumeSlider volumeSlider;
+    
+    private VolumeSliderMouseWheelListener volumeSliderMouseWheelListener;
+    
+    private VolumeSliderChangeListener volumeSliderChangeListener;
+    
+    /**
+     * @param volumeSliderChangeListener
+     */
+    public void setVolumeSliderChangeListener(VolumeSliderChangeListener volumeSliderChangeListener) {
+		this.volumeSliderChangeListener = volumeSliderChangeListener;
+	}
+    
+    /**
+     * @param volumeSliderMouseWheelListener
+     */
+    public void setVolumeSliderMouseWheelListener(VolumeSliderMouseWheelListener volumeSliderMouseWheelListener) {
+		this.volumeSliderMouseWheelListener = volumeSliderMouseWheelListener;
+	}
+    
+    /**
+     * @param volumeSlider
+     */
+    public void setVolumeSlider(VolumeSlider volumeSlider) {
+		this.volumeSlider = volumeSlider;
+	}
     
     /**
      * @param playerControls
@@ -68,6 +96,9 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
 	public void addBindings() {
         ProgressBarSeekListener seekListener = new ProgressBarSeekListener(getComponentControlled().getProgressSlider(), playerHandler);        
         getComponentControlled().getProgressSlider().addMouseListener(seekListener);
+        // Add volume behavior
+        volumeSlider.addMouseWheelListener(volumeSliderMouseWheelListener);
+        volumeSlider.addChangeListener(volumeSliderChangeListener);
     }
 
     /**

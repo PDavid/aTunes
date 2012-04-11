@@ -20,15 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.player;
 
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.util.Collection;
 
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.PlaybackStateListeners;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -76,30 +69,21 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     
     private IEqualizer equalizer;
     
-    private VolumeSlider volumeSlider;
-    
     private Volume volumeController;
-    
-    /**
-     * @param playerControlsController
-     */
-    public void setPlayerControlsController(
-			PlayerControlsController playerControlsController) {
-		this.playerControlsController = playerControlsController;
-	}
-    
+
     /**
      * @param volumeController
      */
     public void setVolumeController(Volume volumeController) {
 		this.volumeController = volumeController;
 	}
-    
+        
     /**
-     * @param volumeSlider
+     * @param playerControlsController
      */
-    public void setVolumeSlider(VolumeSlider volumeSlider) {
-		this.volumeSlider = volumeSlider;
+    public void setPlayerControlsController(
+			PlayerControlsController playerControlsController) {
+		this.playerControlsController = playerControlsController;
 	}
     
     /**
@@ -211,27 +195,6 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     
     @Override
     public void allHandlersInitialized() {
-        // Add volume behaviour
-        volumeSlider.addMouseWheelListener(new MouseWheelListener() {
-            @Override
-            public void mouseWheelMoved(MouseWheelEvent e) {
-                int notches = e.getWheelRotation();
-                if (notches < 0) {
-                	volumeSlider.setValue(volumeSlider.getValue() + 5);
-                } else {
-                	volumeSlider.setValue(volumeSlider.getValue() - 5);
-                }
-
-                volumeController.setVolume(volumeSlider.getValue());
-            }
-        });
-
-        volumeSlider.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-            	volumeController.setVolume(volumeSlider.getValue());
-            }
-        });
     	initialize();
     }
     
@@ -300,7 +263,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     public void pluginActivated(PluginInfo plugin) {
         try {
             IPlaybackStateListener listener = (IPlaybackStateListener) getBean(IPluginsHandler.class).getNewInstance(plugin);
-            Context.getBean(PlaybackStateListeners.class).addPlaybackStateListener(listener);
+            getBean(PlaybackStateListeners.class).addPlaybackStateListener(listener);
         } catch (PluginSystemException e) {
             Logger.error(e);
         }
@@ -310,7 +273,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     public void pluginDeactivated(PluginInfo plugin, Collection<Plugin> createdInstances) {
         Logger.info(StringUtils.getString("Plugin deactivated: ", plugin.getName(), " (", plugin.getClassName(), ")"));
         for (Plugin createdInstance : createdInstances) {
-        	Context.getBean(PlaybackStateListeners.class).removePlaybackStateListener((IPlaybackStateListener) createdInstance);
+        	getBean(PlaybackStateListeners.class).removePlaybackStateListener((IPlaybackStateListener) createdInstance);
         }
     }
 
