@@ -45,7 +45,7 @@ import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITemporalDiskStorage;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.model.PlaybackState;
-import net.sourceforge.atunes.model.PlayerEngineCapability;
+import net.sourceforge.atunes.model.SubmissionState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -55,11 +55,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public abstract class AbstractPlayerEngine implements IPlayerEngine {
 
-	enum SubmissionState {
-        NOT_SUBMITTED, PENDING, SUBMITTED;
-    }
-
-    /**
+	/**
      * Setting this attribute to <code>true</code> avoid calling playback state listeners
      */
     private boolean callToPlaybackStateListenersDisabled = false;
@@ -132,9 +128,8 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 	}
     
     /**
-     * @return
+     * @return play list handler
      */
-    @Override
 	public IPlayListHandler getPlayListHandler() {
 		return playListHandler;
 	}
@@ -158,145 +153,6 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 		this.playAudioObjectThread = playAudioObjectThread;
 	}
 
-    /**
-     * Checks if engine is currently playing (<code>true</code>) or not (
-     * <code>false</code>)
-     * 
-     * @return <code>true</code> if engine is currently playing
-     */
-    @Override
-	public abstract boolean isEnginePlaying();
-
-    /**
-     * This method must be implemented by player engines. This method must check
-     * system to determine if player engine is available (check for libraries or
-     * commands)
-     * 
-     * @return <code>true</code> if engine is available in the system and can be
-     *         used to play, <code>false</code> otherwise
-     */
-    protected abstract boolean isEngineAvailable();
-
-    /**
-     * play this audio object
-     * 
-     * @param audioObjectToPlay
-     *            audio object to play. May be cashed to temp dirs or the same
-     *            as audioObject.
-     * @param audioObject
-     *            original audio object to update statistics
-     */
-    protected abstract void startPlayback(IAudioObject audioObjectToPlay, IAudioObject audioObject);
-
-    /**
-     * This method must be implemented by player engines. This method pauses
-     * playback of current audio object without stopping it. Resuming after this
-     * called should continue playback from the position when paused
-     */
-    protected abstract void pausePlayback();
-
-    /**
-     * This method must be implemented by player engines. This method resumes
-     * playback of current audio object previously paused. Call this method
-     * should continue playback from the position when paused
-     */
-    protected abstract void resumePlayback();
-
-    /**
-     * This method must be implemented by player engines. Stop playing current
-     * song
-     * 
-     * @param userStopped
-     *            {@code true} if stopped by user input, {@code false}
-     *            otherwise.
-     * @param useFadeAway
-     *            if {@code true} - fade away then stop. Stop immediately
-     *            otherwise.
-     */
-    protected abstract void stopPlayback(boolean userStopped, boolean useFadeAway);
-
-    /**
-     * This method must be implemented by player engines. Applies a seek
-     * operation in player engine
-     * 
-     * @param milliseconds
-     *           
-     */
-    protected abstract void seekTo(long milliseconds);
-
-    /**
-     * This method must be implemented by player engines. Applies volume value
-     * in player engine
-     * 
-     * @param perCent
-     *            0-100
-     */
-    @Override
-	public abstract void setVolume(int perCent);
-
-    /**
-     * This method must be implemented by player engines. Apply mute state in
-     * player engine
-     * 
-     * @param state
-     *            : enabled (<code>true</code>) or disabled (<code>false</code>)
-     * 
-     */
-    @Override
-	public abstract void applyMuteState(boolean state);
-
-    /**
-     * This method must be implemented by player engines. Method to apply
-     * normalization in player engine
-     * 
-     * @param values
-     */
-    @Override
-	public abstract void applyNormalization();
-
-    /**
-     * This methods checks if the specified player capability is supported by
-     * this player engine
-     * 
-     * @param capability
-     *            The capability that should be checked
-     * @return If the specified player capability is supported by this player
-     *         engine
-     */
-    @Override
-	public abstract boolean supportsCapability(PlayerEngineCapability capability);
-
-    /**
-     * This method must be implemented by player engines. Method to apply
-     * equalizer values in player engine
-     * 
-     * @param values
-     */
-    protected abstract void applyEqualization(float[] values);
-
-    /**
-     * This method must be implemented by player engines. Transform values
-     * retrieved from equalizer dialog to values for player engine
-     * 
-     * @param values
-     * @return
-     */
-    protected abstract float[] transformEqualizerValues(float[] values);
-
-    /**
-     * This method must be implemented by player engines It's called when
-     * application finishes
-     */
-    protected abstract void finishPlayer();
-
-    /**
-     * Returns the name of this engine
-     * 
-     * @return the name of this engine
-     */
-    protected abstract String getEngineName();
-
-    ///////////////////////////////////////// END OF METHODS TO IMPLEMENT BY ENGINES ////////////////////////////////////////
 
     /**
      * Calls all playback listeners with new state and current audio object When
@@ -401,7 +257,8 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
     /**
      * Starts playing previous audio object from play list
      */
-    final void playPreviousAudioObject() {
+    @Override
+    public final void playPreviousAudioObject() {
         // Call listeners to notify playback was interrupted
         callPlaybackStateListeners(PlaybackState.PLAY_INTERRUPTED);
 
@@ -547,11 +404,6 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
     }
 
     /**
-     * Kills player resources
-     */
-    protected abstract void killPlayer();
-
-    /**
      * Checks if mute is enabled (<code>true</code>) or not (<code>false</code>)
      * 
      * @return <code>true</code> if mute is enabled
@@ -580,7 +432,8 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
      * @param playedTime
      *            played time in milliseconds (ms)
      */
-    protected final void setCurrentAudioObjectPlayedTime(long playedTime) {
+    @Override
+    public final void setCurrentAudioObjectPlayedTime(long playedTime) {
         long actualPlayedTime = playedTime;
         this.currentAudioObjectPlayedTime = actualPlayedTime;
         playerHandler.setCurrentAudioObjectTimePlayed(actualPlayedTime, currentAudioObjectLength);
@@ -619,16 +472,6 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
             applyMuteState(true);
         }
         Logger.debug("MPlayer bug (ignoring muting and volume settings after streamed file starts playing) workaround applied");
-    }
-
-    /**
-     * Actions to initialize engine. This method is called just after selecting
-     * an available player engine.
-     * 
-     * <b>NOTE: The overriding method MUST call
-     * super.initializePlayerEngine()</b>
-     */
-    protected void initializePlayerEngine() {
     }
 
     /**
@@ -813,7 +656,8 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 	/**
 	 * Interrupts playing thread
 	 */
-	void interruptPlayAudioObjectThread() {
+	@Override
+	public final void interruptPlayAudioObjectThread() {
         if (playAudioObjectThread != null) {
         	playAudioObjectThread.interrupt();
         }
@@ -822,14 +666,16 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 	/**
 	 * @return the submissionState
 	 */
-	protected SubmissionState getSubmissionState() {
+	@Override
+	public SubmissionState getSubmissionState() {
 		return submissionState;
 	}
 
 	/**
 	 * @param submissionState the submissionState to set
 	 */
-	protected void setSubmissionState(SubmissionState submissionState) {
+	@Override
+	public void setSubmissionState(SubmissionState submissionState) {
 		this.submissionState = submissionState;
 	}
 	

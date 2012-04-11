@@ -55,7 +55,6 @@ import net.sourceforge.atunes.model.IHotkeysConfig;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -180,6 +179,8 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
 
     private static final long serialVersionUID = 4489293347321979288L;
 
+    private String[] engineNames;
+    
     /** The play at startup. */
     private JCheckBox playAtStartup;
 
@@ -224,7 +225,12 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
     
     private ILookAndFeelManager lookAndFeelManager;
     
-    private IPlayerHandler playerHandler;
+    /**
+     * @param engineNames
+     */
+    public void setEngineNames(String[] engineNames) {
+		this.engineNames = engineNames;
+	}
     
     /**
      * @param osManager
@@ -238,13 +244,6 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
      */
     public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
-	}
-    
-    /**
-     * @param playerHandler
-     */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
-		this.playerHandler = playerHandler;
 	}
     
     /**
@@ -269,7 +268,6 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         engineBox.setAlignmentX(Component.LEFT_ALIGNMENT);
         engineBox.add(new JLabel(I18nUtils.getString("PLAYER_ENGINE")));
         engineBox.add(Box.createHorizontalStrut(6));
-        String[] engineNames = playerHandler.getEngineNames();
         engineCombo = new JComboBox(engineNames);
         // Disable combo if no player engine available
         engineCombo.setEnabled(engineNames.length > 0);

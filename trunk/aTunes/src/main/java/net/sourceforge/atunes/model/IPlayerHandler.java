@@ -135,15 +135,6 @@ public interface IPlayerHandler extends IHandler {
 	public IAudioObject getAudioObject();
 
 	/**
-	 * Return list of engine names as configured in settings file This method is
-	 * mainly designed to be used in preferences window to select a player
-	 * engine by its name
-	 * 
-	 * @return list of engine names
-	 */
-	public String[] getEngineNames();
-
-	/**
 	 * @return the playbackState
 	 */
 	public PlaybackState getPlaybackState();

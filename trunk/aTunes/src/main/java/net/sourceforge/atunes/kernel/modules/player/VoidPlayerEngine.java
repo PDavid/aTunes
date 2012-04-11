@@ -36,28 +36,28 @@ class VoidPlayerEngine extends AbstractPlayerEngine {
 	}
 
 	@Override
-	protected boolean isEngineAvailable() {
+	public boolean isEngineAvailable() {
 		return false;
 	}
 
 	@Override
-	protected void startPlayback(IAudioObject audioObjectToPlay, IAudioObject audioObject) {
+	public void startPlayback(IAudioObject audioObjectToPlay, IAudioObject audioObject) {
 	}
 
 	@Override
-	protected void pausePlayback() {
+	public void pausePlayback() {
 	}
 
 	@Override
-	protected void resumePlayback() {
+	public void resumePlayback() {
 	}
 
 	@Override
-	protected void stopPlayback(boolean userStopped, boolean useFadeAway) {
+	public void stopPlayback(boolean userStopped, boolean useFadeAway) {
 	}
 
 	@Override
-	protected void seekTo(long milliseconds) {
+	public void seekTo(long milliseconds) {
 	}
 
 	@Override
@@ -78,24 +78,28 @@ class VoidPlayerEngine extends AbstractPlayerEngine {
 	}
 
 	@Override
-	protected void applyEqualization(float[] values) {
+	public void applyEqualization(float[] values) {
 	}
 
 	@Override
-	protected float[] transformEqualizerValues(float[] values) {
+	public float[] transformEqualizerValues(float[] values) {
 		return new float[0];
 	}
 
 	@Override
-	protected void finishPlayer() {
+	public void finishPlayer() {
 	}
 
 	@Override
-	protected String getEngineName() {
+	public String getEngineName() {
 		return null;
 	}
 
 	@Override
-	protected void killPlayer() {
+	public void destroyPlayer() {
+	}
+
+	@Override
+	public void initializePlayerEngine() {
 	}
 }

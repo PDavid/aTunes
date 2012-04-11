@@ -22,21 +22,15 @@ package net.sourceforge.atunes.kernel.modules.player;
 
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.PlaybackStateListeners;
-import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine.SubmissionState;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IEqualizer;
 import net.sourceforge.atunes.model.IFrame;
@@ -44,6 +38,7 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlaybackStateListener;
 import net.sourceforge.atunes.model.IPlayerControlsPanel;
+import net.sourceforge.atunes.model.IPlayerEngine;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.IState;
@@ -51,10 +46,10 @@ import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.model.PlaybackState;
 import net.sourceforge.atunes.model.PlayerEngineCapability;
+import net.sourceforge.atunes.model.SubmissionState;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.commonjukebox.plugins.exceptions.PluginSystemException;
 import org.commonjukebox.plugins.model.Plugin;
 import org.commonjukebox.plugins.model.PluginInfo;
@@ -66,14 +61,9 @@ import org.commonjukebox.plugins.model.PluginListener;
 public final class PlayerHandler extends AbstractHandler implements PluginListener, IPlayerHandler {
 
     /**
-     * Names of all engines
-     */
-    private String[] engineNames;
-    
-    /**
      * The player engine
      */
-    private AbstractPlayerEngine playerEngine = new VoidPlayerEngine();
+    private IPlayerEngine playerEngine = new VoidPlayerEngine();
 
     /**
      * The current playback state
@@ -84,8 +74,6 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
      * Controller
      */
     private PlayerControlsController playerControlsController;
-    
-    private List<AbstractPlayerEngine> engines;
     
     private IEqualizer equalizer;
     
@@ -114,55 +102,33 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 		this.equalizer = equalizer;
 	}
     
-    /**
-     * @param engines
-     */
-    public void setEngines(List<AbstractPlayerEngine> engines) {
-		this.engines = engines;
-	}
-    
     @Override
     public void applicationStateChanged(IState newState) {
     	// Show advanced controls
     	getPlayerControlsController().getComponentControlled().showAdvancedPlayerControls(newState.isShowAdvancedPlayerControls());
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.player.IPlayerHandler#isEnginePlaying()
-	 */
     @Override
 	public boolean isEnginePlaying() {
         return playerEngine.isEnginePlaying();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.player.IPlayerHandler#setVolume(int)
-	 */
     @Override
 	public void setVolume(int perCent) {
     	playerEngine.setVolume(perCent);
         getPlayerControlsController().setVolume(perCent);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.player.IPlayerHandler#applyMuteState(boolean)
-	 */
     @Override
 	public void applyMuteState(boolean state) {
     	playerEngine.applyMuteState(state);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.player.IPlayerHandler#applyNormalization()
-	 */
     @Override
 	public void applyNormalization() {
     	playerEngine.applyNormalization();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.player.IPlayerHandler#supportsCapability(net.sourceforge.atunes.kernel.modules.player.PlayerEngineCapability)
-	 */
     @Override
 	public boolean supportsCapability(PlayerEngineCapability capability) {
         return playerEngine.supportsCapability(capability);
@@ -184,57 +150,36 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
         return playerEngine.transformEqualizerValues(values);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.player.IPlayerHandler#playCurrentAudioObject(boolean)
-	 */
     @Override
 	public final void playCurrentAudioObject(boolean buttonPressed) {
     	playerEngine.playCurrentAudioObject(buttonPressed);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.player.IPlayerHandler#stopCurrentAudioObject(boolean)
-	 */
     @Override
 	public final void stopCurrentAudioObject(boolean userStopped) {
     	playerEngine.stopCurrentAudioObject(userStopped);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.player.IPlayerHandler#playPreviousAudioObject()
-	 */
     @Override
 	public final void playPreviousAudioObject() {
     	playerEngine.playPreviousAudioObject();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.player.IPlayerHandler#playNextAudioObject()
-	 */
     @Override
 	public final void playNextAudioObject() {
     	playerEngine.playNextAudioObject(false);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.player.IPlayerHandler#seekCurrentAudioObject(long)
-	 */
     @Override
 	public final void seekCurrentAudioObject(long milliseconds) {
     	playerEngine.seekCurrentAudioObject(milliseconds);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.player.IPlayerHandler#volumeDown()
-	 */
     @Override
 	public final void volumeDown() {
     	playerEngine.volumeDown();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.player.IPlayerHandler#volumeUp()
-	 */
     @Override
 	public final void volumeUp() {
     	playerEngine.volumeUp();
@@ -247,72 +192,14 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
         playerEngine.finishPlayer();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.player.IPlayerHandler#getEqualizer()
-	 */
     @Override
 	public IEqualizer getEqualizer() {
         return equalizer;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.player.IPlayerHandler#getAudioObject()
-	 */
     @Override
 	public IAudioObject getAudioObject() {
     	return playerEngine.getAudioObject();
-    }
-
-    /**
-     * Initializes player engine
-     */
-    private void initPlayerEngine() {
-        // Remove unsupported engines
-    	// To do that create a clone of list to be able to remove from
-    	List<AbstractPlayerEngine> availableEngines = new ArrayList<AbstractPlayerEngine>(engines);
-        Iterator<AbstractPlayerEngine> it = availableEngines.iterator();
-        while (it.hasNext()) {
-        	AbstractPlayerEngine engine = it.next();
-        	// Engines must be supported for given OS and available
-            if (!getOsManager().isPlayerEngineSupported(engine) || !engine.isEngineAvailable()) {
-                it.remove();
-            }
-        }
-
-        if (!availableEngines.isEmpty()) {
-            // Update engine names
-            engineNames = new String[availableEngines.size()];
-            for (int i = 0; i < availableEngines.size(); i++) {
-                engineNames[i] = availableEngines.get(i).getEngineName();
-            }
-
-            Logger.info("List of availables engines : ", ArrayUtils.toString(engineNames));
-
-        	// Get engine of application state (default or selected by user)
-            String selectedEngine = getState().getPlayerEngine();
-
-            // If selected engine is not available then try default engine or another one
-            if (!ArrayUtils.contains(engineNames, selectedEngine)) {
-
-                Logger.info(selectedEngine, " is not availaible");
-                if (ArrayUtils.contains(engineNames, Constants.DEFAULT_ENGINE)) {
-                    selectedEngine = Constants.DEFAULT_ENGINE;
-                } else {
-                    // If default engine is not available, then get the first engine of map returned
-                    selectedEngine = availableEngines.iterator().next().getEngineName();
-                }
-                // Update application state with this engine
-                getState().setPlayerEngine(selectedEngine);
-            }
-
-            for (AbstractPlayerEngine engine : availableEngines) {
-                if (engine.getEngineName().equals(selectedEngine)) {
-                	playerEngine = engine;
-                    Logger.info("Engine initialized : ", selectedEngine);
-                    break;
-                }
-            }
-        }
     }
     
     @Override
@@ -367,7 +254,11 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
      * Initializes all related to player engine
      */
     private void initialize() {
-    	initPlayerEngine();
+    	IPlayerEngine selectedPlayerEngine = getBean(PlayerEngineSelector.class).selectPlayerEngine();
+    	if (selectedPlayerEngine != null) {
+    		playerEngine = selectedPlayerEngine;
+    		Logger.info("Selected player engine: ", playerEngine);
+    	}
     	
         // Set volume on visual components
     	volumeController.setVolume(getState().getVolume(), false);
@@ -391,19 +282,11 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
             @Override
             public void run() {
                 Logger.debug("Final check for Zombie player engines");
-                playerEngine.killPlayer();
+                playerEngine.destroyPlayer();
                 Logger.debug("Closing player ...");
             }
 
         }));        
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.player.IPlayerHandler#getEngineNames()
-	 */
-    @Override
-	public final String[] getEngineNames() {
-        return engineNames != null ? Arrays.copyOf(engineNames, engineNames.length) : new String[0];
     }
 
     @Override
@@ -469,25 +352,16 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 		}
 	}
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.player.IPlayerHandler#getPlaybackState()
-	 */
     @Override
 	public PlaybackState getPlaybackState() {
         return playbackState;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.player.IPlayerHandler#getCurrentAudioObjectPlayedTime()
-	 */
     @Override
 	public long getCurrentAudioObjectPlayedTime() {
         return playerEngine.getCurrentAudioObjectPlayedTime();
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.player.IPlayerHandler#getCurrentAudioObjectLength()
-	 */
     @Override
 	public long getCurrentAudioObjectLength() {
         return playerEngine.getCurrentAudioObjectLength();
@@ -505,9 +379,6 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
         return playerControlsController;
     }
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.player.IPlayerHandler#setPlaying(boolean)
-	 */
 	@Override
 	public void setPlaying(boolean playing) {
 		getPlayerControlsController().setPlaying(playing);
@@ -535,9 +406,6 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 	protected void initHandler() {
 	}
 
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.player.IPlayerHandler#initializeAndCheck()
-	 */
 	@Override
 	public void initializeAndCheck() {
 		initialize();

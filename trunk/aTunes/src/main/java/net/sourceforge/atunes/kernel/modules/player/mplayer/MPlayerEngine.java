@@ -85,12 +85,12 @@ public class MPlayerEngine extends AbstractPlayerEngine {
     }
 
     @Override
-    protected void pausePlayback() {
+    public void pausePlayback() {
         commandWriter.sendPauseCommand();
     }
 
     @Override
-    protected void resumePlayback() {
+    public void resumePlayback() {
         commandWriter.sendResumeCommand();
         /*
          * Mplayer volume problem workaround If player was paused, set volume
@@ -105,7 +105,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
     }
 
     @Override
-    protected void startPlayback(IAudioObject audioObjectToPlay, IAudioObject audioObject) {
+    public void startPlayback(IAudioObject audioObjectToPlay, IAudioObject audioObject) {
         try {
             // If there is a fade away working, stop it inmediately
             if (currentFadeAwayRunnable != null) {
@@ -140,7 +140,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
     }
 
     @Override
-    protected void stopPlayback(boolean userStopped, boolean useFadeAway) {
+    public void stopPlayback(boolean userStopped, boolean useFadeAway) {
         if (!isEnginePlaying()) {
             return;
         }
@@ -202,7 +202,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
     }
 
     @Override
-    protected void seekTo(long position) {
+    public void seekTo(long position) {
         commandWriter.sendSeekCommand(position);
     }
 
@@ -305,12 +305,16 @@ public class MPlayerEngine extends AbstractPlayerEngine {
     }
 
     @Override
-    protected String getEngineName() {
+    public String getEngineName() {
         return "MPlayer";
     }
 
     @Override
-    protected void killPlayer() {
+    public void destroyPlayer() {
         commandWriter.sendStopCommand();
     }
+
+	@Override
+	public void initializePlayerEngine() {
+	}
 }

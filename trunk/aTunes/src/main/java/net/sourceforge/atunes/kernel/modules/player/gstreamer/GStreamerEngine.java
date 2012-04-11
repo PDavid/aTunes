@@ -81,7 +81,7 @@ public class GStreamerEngine extends AbstractPlayerEngine {
     }
 
     @Override
-    protected void applyEqualization(float[] values) {
+    public void applyEqualization(float[] values) {
     }
 
     @Override
@@ -98,17 +98,17 @@ public class GStreamerEngine extends AbstractPlayerEngine {
     }
 
     @Override
-    protected void finishPlayer() {
+    public void finishPlayer() {
         playBin.stop();
     }
 
     @Override
-    protected String getEngineName() {
+    public String getEngineName() {
         return "GStreamer";
     }
 
     @Override
-    protected boolean isEngineAvailable() {
+    public boolean isEngineAvailable() {
         try {
             Gst.init();
         } catch (Exception e) {
@@ -123,22 +123,22 @@ public class GStreamerEngine extends AbstractPlayerEngine {
     }
 
     @Override
-    protected void killPlayer() {
+    public void destroyPlayer() {
         playBin.dispose();
     }
 
     @Override
-    protected void pausePlayback() {
+    public void pausePlayback() {
         playBin.pause();
     }
 
     @Override
-    protected void resumePlayback() {
+    public void resumePlayback() {
         playBin.play();
     }
 
     @Override
-    protected void seekTo(long milliseconds) {
+    public void seekTo(long milliseconds) {
         playBin.seek(milliseconds, TimeUnit.MILLISECONDS);
     }
 
@@ -150,7 +150,7 @@ public class GStreamerEngine extends AbstractPlayerEngine {
     }
 
     @Override
-    protected void startPlayback(IAudioObject audioObjectToPlay, IAudioObject audioObject) {
+    public void startPlayback(IAudioObject audioObjectToPlay, IAudioObject audioObject) {
 
         if (audioObjectToPlay instanceof ILocalAudioObject) {
             playBin.setInputFile(new File(audioObjectToPlay.getUrl()));
@@ -180,7 +180,7 @@ public class GStreamerEngine extends AbstractPlayerEngine {
     }
 
     @Override
-    protected void stopPlayback(boolean userStopped, boolean useFadeAway) {
+    public void stopPlayback(boolean userStopped, boolean useFadeAway) {
         stopTimeRunnable();
         playBin.stop();
     }
@@ -198,8 +198,12 @@ public class GStreamerEngine extends AbstractPlayerEngine {
     }
 
     @Override
-    protected float[] transformEqualizerValues(float[] values) {
+    public float[] transformEqualizerValues(float[] values) {
         return values;
     }
+
+	@Override
+	public void initializePlayerEngine() {
+	}
 
 }
