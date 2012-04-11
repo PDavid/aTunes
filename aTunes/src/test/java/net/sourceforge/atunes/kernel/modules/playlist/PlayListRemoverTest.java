@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.playlist;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -32,8 +31,6 @@ import net.sourceforge.atunes.model.IPlayerHandler;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
-import org.mockito.verification.VerificationMode;
 
 public class PlayListRemoverTest {
 
