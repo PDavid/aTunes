@@ -43,6 +43,7 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar, Appl
     private JMenu fileMenu;
     private JMenu editMenu;
     private JMenu viewMenu;
+    private JMenu playerMenu;
     private PlayListMenu playListMenu;
     private JMenu toolsMenu;
     private JMenu deviceMenu;
@@ -54,6 +55,13 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar, Appl
     public void setApplicationContext(ApplicationContext applicationContext) {
     	this.context = applicationContext;
     }
+    
+    /**
+     * @param playerMenu
+     */
+    public void setPlayerMenu(JMenu playerMenu) {
+		this.playerMenu = playerMenu;
+	}
     
     /**
      * @param fileMenu
@@ -112,6 +120,7 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar, Appl
         add(fileMenu);
         add(editMenu);
         add(viewMenu);
+        add(playerMenu);
         playListMenu.setPlayListTable(context.getBean(IPlayListTable.class));
         playListMenu.initialize();
         add(playListMenu);

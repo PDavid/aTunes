@@ -20,6 +20,11 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+
+import javax.swing.KeyStroke;
+
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -38,6 +43,7 @@ public class StopCurrentAudioObjectAction extends CustomAbstractAction {
     
     public StopCurrentAudioObjectAction() {
     	super(I18nUtils.getString("STOP"));
+    	putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
     }
 
     @Override

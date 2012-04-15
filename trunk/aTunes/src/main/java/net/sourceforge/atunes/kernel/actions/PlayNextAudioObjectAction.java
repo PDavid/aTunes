@@ -20,6 +20,11 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+
+import javax.swing.KeyStroke;
+
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -35,6 +40,7 @@ public class PlayNextAudioObjectAction extends CustomAbstractAction {
     
     public PlayNextAudioObjectAction() {
     	super(I18nUtils.getString("NEXT"));
+    	putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_T, ActionEvent.CTRL_MASK));
     }
 
     @Override
