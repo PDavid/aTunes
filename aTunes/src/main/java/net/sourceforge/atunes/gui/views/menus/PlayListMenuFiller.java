@@ -45,7 +45,6 @@ import net.sourceforge.atunes.kernel.actions.MoveToBottomAction;
 import net.sourceforge.atunes.kernel.actions.MoveToTopAction;
 import net.sourceforge.atunes.kernel.actions.MoveUpAction;
 import net.sourceforge.atunes.kernel.actions.OpenFolderAction;
-import net.sourceforge.atunes.kernel.actions.PlayAction;
 import net.sourceforge.atunes.kernel.actions.RemoveDuplicatesFromPlayListAction;
 import net.sourceforge.atunes.kernel.actions.RemoveFromPlayListAction;
 import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
@@ -106,7 +105,7 @@ public final class PlayListMenuFiller {
      */
     private static List<Object> getComponents(IPlayListTable table) {
         List<Object> objects = new ArrayList<Object>();
-        objects.add(Context.getBean(PlayAction.class));
+        
         objects.add(Context.getBean(ShowPlayListItemInfoAction.class));
         
         OpenFolderAction openFolderAction = Context.getBean(OpenFolderAction.class);

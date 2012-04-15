@@ -17,6 +17,7 @@ aTunes 2.2.0
 - Removed status bar text showing current element being played
 - Last.fm cache simplified to use only one ehcache cache
 - Support for tray icons in Mac OS X
+- Added player menu with key shortcuts to playback action
 
 aTunes 2.1.1
 ------------

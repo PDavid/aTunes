@@ -20,39 +20,25 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.KeyEvent;
 import java.util.List;
-
-import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IFilterPanel;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.Logger;
 
 public class PlayAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -1122746023245126869L;
 
-    private IFilterPanel playListFilterPanel;
-    
     private IPlayListHandler playListHandler;
     
     private IPlayerHandler playerHandler;
     
     private IPlayListTable playListTable;
 
-    /**
-     * @param playListFilterPanel
-     */
-    public void setPlayListFilterPanel(IFilterPanel playListFilterPanel) {
-		this.playListFilterPanel = playListFilterPanel;
-	}
-    
     /**
      * @param playListTable
      */
@@ -71,18 +57,10 @@ public class PlayAction extends CustomAbstractAction {
     public PlayAction() {
         super(I18nUtils.getString("PLAY"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("PLAY"));
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0));
     }
 
     @Override
     protected void executeAction() {
-        // disable enter key when focus is on filter text field (so event is not fired from PLAY/PAUSE button)
-        if (playListFilterPanel.getFilterTextField().isFocusOwner()
-                && getSource() != null && !(getSource().getClass().equals(PlayPauseButton.class))) {
-        	Logger.debug("Skipping play action");
-            return;
-        }
-        
         int selAudioObject = playListTable.getSelectedRow();
         int currPlayingAudioObject = playListHandler.getIndexOfAudioObject(playerHandler.getAudioObject());
 

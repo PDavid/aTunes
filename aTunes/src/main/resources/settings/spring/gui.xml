@@ -27,6 +27,9 @@
 	<bean id="playListMenu" class="net.sourceforge.atunes.gui.views.menus.PlayListMenu">
 		<constructor-arg value="PLAYLIST"/>
 	</bean>
+	<bean id="playerMenu" class="net.sourceforge.atunes.gui.views.menus.PlayerMenu" init-method="initialize">
+		<constructor-arg value="PLAYER"/>
+	</bean>
 	<bean id="deviceMenu" class="net.sourceforge.atunes.gui.views.menus.DeviceMenu" init-method="initialize">
 		<constructor-arg value="DEVICE"/>
 	</bean>
