@@ -94,7 +94,7 @@ public interface ILookAndFeel {
 	 * @param code
 	 * @return
 	 */
-	public TreeCellRenderer getTreeCellRenderer(final ITreeCellRendererCode code);
+	public TreeCellRenderer getTreeCellRenderer(final ITreeCellRendererCode<?, ?> code);
 
 	/**
 	 * Returns a new TableCellRenderer executing given code (default
@@ -121,7 +121,7 @@ public interface ILookAndFeel {
 	 * @param code
 	 * @return
 	 */
-	public ListCellRenderer getListCellRenderer(final IListCellRendererCode code);
+	public ListCellRenderer getListCellRenderer(final IListCellRendererCode<?, ?> code);
 
 	/**
 	 * Returns if custom combo box renderers are supported
