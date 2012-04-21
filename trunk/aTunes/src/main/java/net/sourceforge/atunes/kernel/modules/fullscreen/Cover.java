@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.controls;
+package net.sourceforge.atunes.kernel.modules.fullscreen;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -30,14 +30,15 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
+import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.ImageUtils;
-
-import com.jhlabs.image.PerspectiveFilter;
+import net.sourceforge.atunes.utils.Logger;
 
 /**
- * A three dimensional cover.
+ * A cover.
  */
-public final class Cover3D extends JPanel {
+public final class Cover extends JPanel {
 
     private static final long serialVersionUID = -3836270786764203330L;
 
@@ -45,22 +46,23 @@ public final class Cover3D extends JPanel {
     private static final float OPACITY = 0.3f;
     private static final float FADE_HEIGHT = 0f;
 
-    private int angle;
     private BufferedImage image;
     private BufferedImage reflectedImage;
+    
+    private String previousArtist;
+    private String previousAlbum;
 
     /**
-     * Instantiates a new three dimensional cover.
+     * Instantiates a cover.
      */
-    public Cover3D(int angle) {
+    public Cover() {
         super(false);
-        this.angle = angle;
         setOpaque(false);
     }
 
     @Override
     public void paintComponent(Graphics g) {
-        if (image == null || !(g instanceof Graphics2D)) {
+    	if (image == null || !(g instanceof Graphics2D)) {
             super.paintComponent(g);
             return;
         }
@@ -80,14 +82,10 @@ public final class Cover3D extends JPanel {
      * @param image
      *            the image to set
      */
-    public void setImage(Image image, int width, int height) {
+    void setImage(Image image, int width, int height) {
         if (image != null) {
             // IMAGE
             this.image = ImageUtils.scaleBufferedImageBicubic(image, width, height);
-            if (angle != 0) {
-                PerspectiveFilter filter1 = new PerspectiveFilter(0, angle, width - angle / 2, (int) (angle * (5.0 / 3.0)), width - angle / 2, height, 0, height + angle);
-                this.image = filter1.filter(this.image, null);
-            }
 
             // REFLECTED IMAGE
             BufferedImage reflection = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -98,15 +96,28 @@ public final class Cover3D extends JPanel {
             rg.fillRect(0, 0, width, height);
             rg.dispose();
 
-            if (angle != 0) {
-                PerspectiveFilter filter2 = new PerspectiveFilter(0, 0, width - angle / 2, angle * 2, width - angle / 2, height + angle * 2, 0, height);
-                reflectedImage = filter2.filter(reflection, null);
-            } else {
-                reflectedImage = reflection;
-            }
+            reflectedImage = reflection;
         } else {
             this.image = null;
             this.reflectedImage = null;
         }
     }
+    
+    void paint(final IAudioObject audioObject, int index, IOSManager osManager, int coverSize) {
+        // No object
+        if (audioObject == null) {
+            return;
+        }
+        
+        if (previousArtist == null || previousAlbum == null || !previousArtist.equals(audioObject.getArtist()) || !previousAlbum.equals(audioObject.getAlbum())) {
+            // Fetch cover
+            new PaintCoversSwingWorker(this, audioObject, index, osManager, coverSize).execute();
+            
+            previousArtist = audioObject.getArtist();
+            previousAlbum = audioObject.getAlbum();
+        } else {
+        	Logger.debug("Not updating cover: ", audioObject.getArtist(), " ", audioObject.getAlbum());
+        }
+    }
+
 }
