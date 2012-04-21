@@ -18,30 +18,32 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.dialogs.fullScreen;
+package net.sourceforge.atunes.kernel.modules.fullscreen;
 
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.Serializable;
 
-final class FullScreenMouseMotionAdapter extends MouseMotionAdapter implements Serializable {
+final class FullScreenKeyAdapter extends KeyAdapter implements Serializable {
 	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -2501796497424349860L;
+	private static final long serialVersionUID = 2812173804533310176L;
+	
 	private FullScreenWindow fullScreenWindow;
 	
 	/**
 	 * @param fullScreenWindow
 	 */
-	FullScreenMouseMotionAdapter(FullScreenWindow fullScreenWindow) {
-		super();
+	public FullScreenKeyAdapter(FullScreenWindow fullScreenWindow) {
 		this.fullScreenWindow = fullScreenWindow;
 	}
-
+	
 	@Override
-    public void mouseMoved(MouseEvent e) {
-        fullScreenWindow.activateTimer();
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_F11) {
+            fullScreenWindow.setVisible(false);
+        }
     }
 }

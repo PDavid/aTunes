@@ -18,35 +18,42 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.dialogs.fullScreen;
+package net.sourceforge.atunes.kernel.modules.fullscreen;
 
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 
-import javax.swing.JFileChooser;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 
-
-final class SelectBackgroundActionListener implements ActionListener {
+final class HideMouseActionListener implements ActionListener {
 	
 	private FullScreenWindow fullScreenWindow;
 	
+	private JPanel controlsPanel;
+	
+	private JPopupMenu options;
+	
 	/**
 	 * @param fullScreenWindow
+	 * @param controlsPanel
+	 * @param options
 	 */
-	SelectBackgroundActionListener(FullScreenWindow fullScreenWindow) {
+	public HideMouseActionListener(FullScreenWindow fullScreenWindow, JPanel controlsPanel, JPopupMenu options) {
 		this.fullScreenWindow = fullScreenWindow;
+		this.controlsPanel = controlsPanel;
+		this.options = options;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		fullScreenWindow.setVisible(false);
-	    JFileChooser fileChooser = new JFileChooser();
-	    fileChooser.setFileFilter(new FullScreenBackgroundFileFilter());
-	    if (fileChooser.showOpenDialog(fullScreenWindow) == JFileChooser.APPROVE_OPTION) {
-	        fullScreenWindow.setBackground(fileChooser.getSelectedFile());
-	        fullScreenWindow.invalidate();
-	        fullScreenWindow.repaint();
+	    controlsPanel.setVisible(false);
+	    fullScreenWindow.setCursor(Toolkit.getDefaultToolkit().createCustomCursor(new BufferedImage(1, 1, BufferedImage.TYPE_3BYTE_BGR), new Point(0, 0), "invisibleCursor"));
+	    if (options.isVisible()) {
+	        options.setVisible(false);
 	    }
-	    fullScreenWindow.setVisible(true);
 	}
 }

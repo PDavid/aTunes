@@ -241,6 +241,11 @@ public interface ILookAndFeel {
 	 * @return the fullScreenLine1Font
 	 */
 	public Font getFullScreenLine1Font();
+	
+	/**
+	 * @return font for second line of full scren
+	 */
+	public Font getFullScreenLine2Font();
 
 	/**
 	 * Returns split pane divider size for this look and feel. Default implementation returns current look and feel's default value

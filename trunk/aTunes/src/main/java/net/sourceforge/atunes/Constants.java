@@ -139,9 +139,6 @@ public final class Constants {
     /** File where podcast feeds are stored. */
     public static final String PODCAST_FEED_CACHE = "podcastFeeds.xml";
 
-    /** Size in pixels of Full Screen Covers. */
-    public static final int FULL_SCREEN_COVER = 300;
-
     /** Port number for multiple instances socket communication. */
     public static final int MULTIPLE_INSTANCES_SOCKET = 7777;
 

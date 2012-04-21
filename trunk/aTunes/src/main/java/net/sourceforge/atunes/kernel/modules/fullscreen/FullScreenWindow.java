@@ -18,14 +18,12 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.dialogs.fullScreen;
+package net.sourceforge.atunes.kernel.modules.fullscreen;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
@@ -48,6 +46,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.OverlayLayout;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
@@ -125,8 +124,6 @@ public final class FullScreenWindow extends AbstractCustomWindow {
     
     private IPlayerHandler playerHandler;
     
-    private Dimension screenSize;
-    
     private ILookAndFeelManager lookAndFeelManager;
     
     private MuteButton volumeButton;
@@ -134,6 +131,24 @@ public final class FullScreenWindow extends AbstractCustomWindow {
     private VolumeSlider volumeSlider;
     
     private ProgressSlider fullScreenProgressSlider;
+    
+    private Dimension fullScreenCoverSize;
+    
+    private Dimension screenSize;
+    
+    /**
+     * @param screenSize
+     */
+    public void setScreenSize(Dimension screenSize) {
+		this.screenSize = screenSize;
+	}
+    
+    /**
+     * @param fullScreenCoverSize
+     */
+    public void setFullScreenCoverSize(Dimension fullScreenCoverSize) {
+		this.fullScreenCoverSize = fullScreenCoverSize;
+	}
     
     /**
      * @param fullScreenProgressSlider
@@ -175,13 +190,6 @@ public final class FullScreenWindow extends AbstractCustomWindow {
      */
     public void setPlayerHandler(IPlayerHandler playerHandler) {
 		this.playerHandler = playerHandler;
-	}
-    
-    /**
-     * @param screenSize
-     */
-    public void setScreenSize(Dimension screenSize) {
-		this.screenSize = screenSize;
 	}
     
     /**
@@ -333,11 +341,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         NextButton nextButton = new NextButton(PlayerControlsSize.PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
         volumeButton.setText("");
 
-        covers = new CoverFlow();
-        Dimension coverSize = new Dimension(screenSize.width, screenSize.height * 5 / 7);
-        covers.setMinimumSize(coverSize);
-        covers.setMaximumSize(coverSize);
-        covers.setPreferredSize(coverSize);
+        covers = new CoverFlow(fullScreenCoverSize.height);
 
         setClickListener(previousButton, stopButton, nextButton, volumeButton);
 
@@ -362,8 +366,16 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 
         textAndControlsPanel.add(controlsPanel);
 
-        panel.add(covers, BorderLayout.CENTER);
-        panel.add(textAndControlsPanel, BorderLayout.SOUTH);
+        covers.setAlignmentX(0.0f);
+        covers.setAlignmentY(0.8f);
+        
+        textAndControlsPanel.setMaximumSize(new Dimension(screenSize.width, screenSize.height / 5));
+        
+        textAndControlsPanel.setAlignmentX(0.0f);
+        textAndControlsPanel.setAlignmentY(1f);
+        
+        panel.add(textAndControlsPanel);
+        panel.add(covers);
     }
 
 	/**
@@ -415,7 +427,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 	 */
 	private JLabel getTextLabel2(ILookAndFeelManager lookAndFeelManager) {
 		JLabel label = new JLabel();
-        label.setFont(lookAndFeelManager.getCurrentLookAndFeel().getContextInformationBigFont());
+        label.setFont(lookAndFeelManager.getCurrentLookAndFeel().getFullScreenLine2Font());
         label.setForeground(Color.WHITE);
         return label;
 	}
@@ -482,7 +494,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 	 * @return
 	 */
 	private JPanel getPanel() {
-		final JPanel panel = new JPanel(new BorderLayout()) {
+		final JPanel panel = new JPanel() {
             private static final long serialVersionUID = 109708757849271173L;
 
             @Override
@@ -490,7 +502,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
                 super.paintComponent(g);
                 if (background == null && g instanceof Graphics2D) {
                     Graphics2D g2d = (Graphics2D) g;
-                    g2d.setPaint(new GradientPaint(0, 0, Color.BLACK, 0, this.getHeight(), Color.BLACK));
+                    g2d.setPaint(Color.BLACK);
                     g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
                 } else {
                     Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -498,6 +510,11 @@ public final class FullScreenWindow extends AbstractCustomWindow {
                 }
             }
         };
+
+        OverlayLayout overlay = new OverlayLayout(panel);
+        panel.setLayout(overlay);
+
+        
         panel.setBackground(Color.black);
 		return panel;
 	}

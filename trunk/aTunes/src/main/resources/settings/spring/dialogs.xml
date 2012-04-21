@@ -133,8 +133,8 @@
 		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
 	
-	<bean id="fullScreenWindowFactory" class="net.sourceforge.atunes.gui.views.dialogs.fullScreen.FullScreenWindowFactory" scope="prototype"/>
-	<bean id="fullScreenWindow" class="net.sourceforge.atunes.gui.views.dialogs.fullScreen.FullScreenWindow" scope="prototype" init-method="initialize">
+	<bean id="fullScreenWindowFactory" class="net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenWindowFactory" scope="prototype"/>
+	<bean id="fullScreenWindow" class="net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenWindow" scope="prototype" init-method="initialize">
 		<constructor-arg ref="frame"/>
 	</bean>
 	

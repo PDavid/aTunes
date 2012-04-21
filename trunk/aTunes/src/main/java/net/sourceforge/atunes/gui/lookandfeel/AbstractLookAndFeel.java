@@ -231,7 +231,12 @@ public abstract class AbstractLookAndFeel implements ILookAndFeel {
 
     @Override
 	public final Font getFullScreenLine1Font() {
-        return  getDefaultFont().deriveFont(getDefaultFont().getSize() + 25f);
+        return  getDefaultFont().deriveFont(getDefaultFont().getSize() + 35f);
+    }
+
+    @Override
+	public final Font getFullScreenLine2Font() {
+        return  getDefaultFont().deriveFont(getDefaultFont().getSize() + 20f);
     }
 
     @Override
