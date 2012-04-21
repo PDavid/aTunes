@@ -18,29 +18,30 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.dialogs.fullScreen;
+package net.sourceforge.atunes.kernel.modules.fullscreen;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.Serializable;
 
-final class FullScreenMouseListener extends MouseAdapter implements Serializable {
+import javax.swing.JPopupMenu;
+
+import net.sourceforge.atunes.gui.GuiUtils;
+
+final class FullScreenShowMenuMouseAdapter extends MouseAdapter {
+	
+	private JPopupMenu options;
 	
 	/**
-	 * 
+	 * @param options
 	 */
-	private static final long serialVersionUID = -6007223357434368880L;
-	private FullScreenWindow fullScreenWindow;
-	
-	/**
-	 * @param fullScreenWindow
-	 */
-	public FullScreenMouseListener(FullScreenWindow fullScreenWindow) {
-		this.fullScreenWindow = fullScreenWindow;
+	public FullScreenShowMenuMouseAdapter(JPopupMenu options) {
+		this.options = options;
 	}
 	
 	@Override
     public void mouseClicked(MouseEvent e) {
-        fullScreenWindow.activateTimer();
+        if (GuiUtils.isSecondaryMouseButton(e)) {
+            options.show(e.getComponent(), e.getX(), e.getY());
+        }
     }
 }

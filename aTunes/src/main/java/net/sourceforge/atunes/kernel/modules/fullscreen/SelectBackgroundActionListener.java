@@ -18,32 +18,35 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.dialogs.fullScreen;
+package net.sourceforge.atunes.kernel.modules.fullscreen;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.io.Serializable;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-final class FullScreenKeyAdapter extends KeyAdapter implements Serializable {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2812173804533310176L;
+import javax.swing.JFileChooser;
+
+
+final class SelectBackgroundActionListener implements ActionListener {
 	
 	private FullScreenWindow fullScreenWindow;
 	
 	/**
 	 * @param fullScreenWindow
 	 */
-	public FullScreenKeyAdapter(FullScreenWindow fullScreenWindow) {
+	SelectBackgroundActionListener(FullScreenWindow fullScreenWindow) {
 		this.fullScreenWindow = fullScreenWindow;
 	}
 	
 	@Override
-    public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_F11) {
-            fullScreenWindow.setVisible(false);
-        }
-    }
+	public void actionPerformed(ActionEvent e) {
+		fullScreenWindow.setVisible(false);
+	    JFileChooser fileChooser = new JFileChooser();
+	    fileChooser.setFileFilter(new FullScreenBackgroundFileFilter());
+	    if (fileChooser.showOpenDialog(fullScreenWindow) == JFileChooser.APPROVE_OPTION) {
+	        fullScreenWindow.setBackground(fileChooser.getSelectedFile());
+	        fullScreenWindow.invalidate();
+	        fullScreenWindow.repaint();
+	    }
+	    fullScreenWindow.setVisible(true);
+	}
 }

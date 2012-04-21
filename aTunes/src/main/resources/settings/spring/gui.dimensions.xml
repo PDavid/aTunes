@@ -80,6 +80,10 @@
 	</bean>
 	
 	
+	<bean id="fullScreenCoverSize" class="net.sourceforge.atunes.gui.DimensionBuilder" factory-method="getVariableDimension">
+		<constructor-arg value="0.4"/>
+		<constructor-arg value="0.4"/>
+	</bean>
 	
 	
 	

@@ -22,8 +22,6 @@ package net.sourceforge.atunes.kernel.modules.fullscreen;
 
 import java.util.List;
 
-import net.sourceforge.atunes.gui.views.dialogs.fullScreen.FullScreenWindow;
-import net.sourceforge.atunes.gui.views.dialogs.fullScreen.FullScreenWindowFactory;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IAudioObject;
 

@@ -42,8 +42,8 @@ public final class Cover3D extends JPanel {
     private static final long serialVersionUID = -3836270786764203330L;
 
     private static final int GAP = 10;
-    private static final float OPACITY = 0.5f;
-    private static final float FADE_HEIGHT = 0.4f;
+    private static final float OPACITY = 0.3f;
+    private static final float FADE_HEIGHT = 0f;
 
     private int angle;
     private BufferedImage image;
@@ -66,7 +66,7 @@ public final class Cover3D extends JPanel {
         }
 
         Graphics2D g2d = (Graphics2D) g;
-        g2d.translate((getWidth() - image.getWidth()) / 2, getHeight() / 2 - image.getHeight() / 2);
+        g2d.translate((getWidth() - image.getWidth()) / 2, getHeight() / 2 - image.getHeight() * 2 / 3 - 100 );
         g2d.drawRenderedImage(image, null);
         g2d.translate(0, 2 * image.getHeight() + GAP);
         g2d.scale(1, -1);

@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.dialogs.fullScreen;
+package net.sourceforge.atunes.kernel.modules.fullscreen;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -31,7 +31,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.Cover3D;
@@ -97,15 +96,43 @@ public final class CoverFlow extends JPanel {
 		        Logger.error(e);
 		    }
 		}
+		
+	    /**
+	     * Returns picture for audio file
+	     * 
+	     * @param audioFile
+	     * @param osManager
+	     * @return
+	     */
+	    protected ImageIcon getPicture(ILocalAudioObject audioFile, IOSManager osManager) {
+	    	ImageIcon result = Context.getBean(IWebServicesHandler.class).getAlbumImage(audioFile.getArtist(), audioFile.getAlbum());
+	        if (result == null) {
+	        	// Get inside picture
+	        	ImageIcon icon = AudioFilePictureUtils.getInsidePicture(audioFile, -1, -1);
+	        	result = icon != null ? icon : null;
+	        }
+	        if (result == null) {
+	        	// Get external picture
+	        	ImageIcon icon = AudioFilePictureUtils.getExternalPicture(audioFile, -1, -1, osManager);
+	        	result = icon != null ? icon : null;
+	        }
+	        if (result == null) {
+	            result = Images.getImage(Images.APP_LOGO_300);
+	        }
+	        return result;
+	    }
 	}
 
 	private static final long serialVersionUID = -5982158797052430789L;
 
     private List<Cover3D> covers;
     
-    CoverFlow() {
+    private int coverSize;
+    
+    CoverFlow(int coverSize) {
         super(new GridBagLayout());
-        covers = new ArrayList<Cover3D>();
+        this.coverSize = coverSize;
+        covers = new ArrayList<Cover3D>(5);
         covers.add(new Cover3D(0));
         covers.add(new Cover3D(0));
         covers.add(new Cover3D(0));
@@ -157,38 +184,13 @@ public final class CoverFlow extends JPanel {
         new PaintCoversSwingWorker(cover, audioObject, index, osManager).execute();
     }
 
-    /**
-     * Returns picture for audio file
-     * 
-     * @param audioFile
-     * @param osManager
-     * @return
-     */
-    protected ImageIcon getPicture(ILocalAudioObject audioFile, IOSManager osManager) {
-    	ImageIcon result = Context.getBean(IWebServicesHandler.class).getAlbumImage(audioFile.getArtist(), audioFile.getAlbum());
-        if (result == null) {
-        	// Get inside picture
-        	ImageIcon icon = AudioFilePictureUtils.getInsidePicture(audioFile, -1, -1);
-        	result = icon != null ? icon : null;
-        }
-        if (result == null) {
-        	// Get external picture
-        	ImageIcon icon = AudioFilePictureUtils.getExternalPicture(audioFile, -1, -1, osManager);
-        	result = icon != null ? icon : null;
-        }
-        if (result == null) {
-            result = Images.getImage(Images.APP_LOGO_300);
-        }
-        return result;
-    }
-
     private int getImageSize(int index) {
         if (index == 2) {
-            return Constants.FULL_SCREEN_COVER;
+            return coverSize;
         } else if (index == 1 || index == 3) {
-            return Constants.FULL_SCREEN_COVER * 3 / 4;
+            return coverSize * 3 / 4;
         } else {
-            return Constants.FULL_SCREEN_COVER * 9 / 16;
+            return coverSize * 9 / 16;
         }
     }
 }
