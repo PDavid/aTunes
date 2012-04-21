@@ -170,6 +170,8 @@ public final class LastFmService {
     /**
      * Gets the album.
      * 
+     * This method is synchronized as it's used from more than one thread at a time (from full screen)
+     * 
      * @param artist
      *            the artist
      * @param album
@@ -177,7 +179,7 @@ public final class LastFmService {
      * 
      * @return the album
      */
-    public IAlbumInfo getAlbum(String artist, String album) {
+    public synchronized IAlbumInfo getAlbum(String artist, String album) {
         try {
             // Try to get from cache
             IAlbumInfo albumObject = getCache().retrieveAlbumInfo(artist, album);
@@ -309,12 +311,14 @@ public final class LastFmService {
     /**
      * Gets the image.
      * 
+     * This method is synchronized as it's used from more than one thread at a time (from full screen)
+     * 
      * @param album
      *            the album
      * 
      * @return the image
      */
-    public ImageIcon getAlbumImage(IAlbumInfo album) {
+    public synchronized ImageIcon getAlbumImage(IAlbumInfo album) {
         try {
             ImageIcon img = null;
             // Try to retrieve from cache
