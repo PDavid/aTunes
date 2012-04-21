@@ -33,7 +33,7 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.Images;
-import net.sourceforge.atunes.gui.views.controls.Cover3D;
+import net.sourceforge.atunes.gui.views.controls.Cover;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -47,12 +47,12 @@ import net.sourceforge.atunes.utils.Logger;
 public final class CoverFlow extends JPanel {
 
     private final class PaintCoversSwingWorker extends SwingWorker<Void, Void> {
-		private final Cover3D cover;
+		private final Cover cover;
 		private final IAudioObject audioObject;
 		private final int index;
 		private IOSManager osManager;
 
-		private PaintCoversSwingWorker(Cover3D cover, IAudioObject audioObject, int index, IOSManager osManager) {
+		private PaintCoversSwingWorker(Cover cover, IAudioObject audioObject, int index, IOSManager osManager) {
 			this.cover = cover;
 			this.audioObject = audioObject;
 			this.index = index;
@@ -125,19 +125,19 @@ public final class CoverFlow extends JPanel {
 
 	private static final long serialVersionUID = -5982158797052430789L;
 
-    private List<Cover3D> covers;
+    private List<Cover> covers;
     
     private int coverSize;
     
     CoverFlow(int coverSize) {
         super(new GridBagLayout());
         this.coverSize = coverSize;
-        covers = new ArrayList<Cover3D>(5);
-        covers.add(new Cover3D(0));
-        covers.add(new Cover3D(0));
-        covers.add(new Cover3D(0));
-        covers.add(new Cover3D(0));
-        covers.add(new Cover3D(0));
+        covers = new ArrayList<Cover>(5);
+        covers.add(new Cover());
+        covers.add(new Cover());
+        covers.add(new Cover());
+        covers.add(new Cover());
+        covers.add(new Cover());
 
         setOpaque(false);
 
@@ -174,7 +174,7 @@ public final class CoverFlow extends JPanel {
         }
     }
 
-    private void paint(final IAudioObject audioObject, final Cover3D cover, int index, IOSManager osManager) {
+    private void paint(final IAudioObject audioObject, final Cover cover, int index, IOSManager osManager) {
         // No object
         if (audioObject == null) {
             return;
