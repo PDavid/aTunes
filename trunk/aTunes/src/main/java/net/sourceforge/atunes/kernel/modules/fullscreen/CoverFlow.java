@@ -119,6 +119,7 @@ public final class CoverFlow extends JPanel {
 	        if (result == null) {
 	            result = Images.getImage(Images.APP_LOGO_300);
 	        }
+	        
 	        return result;
 	    }
 	}

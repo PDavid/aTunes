@@ -56,7 +56,7 @@ public final class Cover extends JPanel {
 
     @Override
     public void paintComponent(Graphics g) {
-        if (image == null || !(g instanceof Graphics2D)) {
+    	if (image == null || !(g instanceof Graphics2D)) {
             super.paintComponent(g);
             return;
         }
