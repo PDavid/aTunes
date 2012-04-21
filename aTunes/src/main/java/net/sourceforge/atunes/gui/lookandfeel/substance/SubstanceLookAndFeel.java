@@ -183,7 +183,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
     }
 
     @Override
-    public TreeCellRenderer getTreeCellRenderer(final ITreeCellRendererCode code) {
+    public TreeCellRenderer getTreeCellRenderer(final ITreeCellRendererCode<?, ?> code) {
         return new SubstanceLookAndFeelTreeCellRenderer(code);
     }
 
@@ -212,7 +212,7 @@ public final class SubstanceLookAndFeel extends AbstractLookAndFeel {
     }
 
     @Override
-    public ListCellRenderer getListCellRenderer(final IListCellRendererCode code) {
+    public ListCellRenderer getListCellRenderer(final IListCellRendererCode<?, ?> code) {
         return new SubstanceLookAndFeelListCellRenderer(code);
     }
 

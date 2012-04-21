@@ -90,7 +90,7 @@ public abstract class AbstractLookAndFeel implements ILookAndFeel {
     }
 
     @Override
-	public TreeCellRenderer getTreeCellRenderer(final ITreeCellRendererCode code) {
+	public TreeCellRenderer getTreeCellRenderer(final ITreeCellRendererCode<?, ?> code) {
         return new LookAndFeelTreeCellRenderer(code);
     }
 
@@ -105,7 +105,7 @@ public abstract class AbstractLookAndFeel implements ILookAndFeel {
     }
 
     @Override
-	public ListCellRenderer getListCellRenderer(final IListCellRendererCode code) {
+	public ListCellRenderer getListCellRenderer(final IListCellRendererCode<?, ?> code) {
         return new LookAndFeelListCellRenderer(code);
     }
 
