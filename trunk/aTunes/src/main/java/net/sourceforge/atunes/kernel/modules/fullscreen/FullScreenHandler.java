@@ -92,6 +92,9 @@ public class FullScreenHandler extends AbstractHandler implements IFullScreenHan
         objects.add(current);
         objects.add(playListHandler.getCurrentPlayList(false).getNextAudioObject(1));
         objects.add(playListHandler.getCurrentPlayList(false).getNextAudioObject(2));
+        
+        // This object is not shown, but image is prefetched
+        objects.add(playListHandler.getCurrentPlayList(false).getNextAudioObject(3));
         return objects;
 	}
 	

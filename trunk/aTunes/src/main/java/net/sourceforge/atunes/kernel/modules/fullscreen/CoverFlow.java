@@ -41,11 +41,14 @@ public final class CoverFlow extends JPanel {
     CoverFlow(int coverSize) {
         super(new GridBagLayout());
         this.coverSize = coverSize;
-        covers = new ArrayList<Cover>(5);
+        covers = new ArrayList<Cover>(6);
         covers.add(new Cover());
         covers.add(new Cover());
         covers.add(new Cover());
         covers.add(new Cover());
+        covers.add(new Cover());
+        
+        // This last cover is not shown
         covers.add(new Cover());
 
         setOpaque(false);
