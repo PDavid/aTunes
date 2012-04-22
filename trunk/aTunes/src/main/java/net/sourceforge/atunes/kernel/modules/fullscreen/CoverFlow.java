@@ -105,21 +105,21 @@ public final class CoverFlow extends JPanel implements ApplicationContextAware {
     void paint(final List<IAudioObject> objects) {
         int i = 0;
         for (IAudioObject ao : objects) {
-        	paintCover(covers.get(i), ao, !(covers.get(i) instanceof HiddenCover));
+        	paintCover(covers.get(i), ao);
             i++;
         }
     }
     
-    private void paintCover(Cover cover, IAudioObject audioObject, boolean showCover) {
+    private void paintCover(Cover cover, IAudioObject audioObject) {
         // No object
         if (audioObject == null) {
             return;
         }
         
         if (coverNeedsUpdate(cover, audioObject)) {
-            fetchCover(cover, audioObject, showCover);
             cover.setPreviousArtist(audioObject.getArtist());
             cover.setPreviousAlbum(audioObject.getAlbum());
+            fetchCover(cover, audioObject);
         } else {
         	Logger.debug("Not updating cover: ", audioObject.getArtist(), " ", audioObject.getAlbum());
         }
@@ -129,11 +129,9 @@ public final class CoverFlow extends JPanel implements ApplicationContextAware {
 	 * @param cover
 	 * @param audioObject
 	 */
-	private void fetchCover(Cover cover, final IAudioObject audioObject, boolean showCover) {
-		if (showCover) {
-			// Fetch cover and show
-			context.getBean(PaintCoversSwingWorker.class).getCover(cover, audioObject, cover.getImageSize());
-		}
+	private void fetchCover(Cover cover, final IAudioObject audioObject) {
+		// Fetch cover and show
+		context.getBean(PaintCoversSwingWorker.class).getCover(cover, audioObject, cover.getImageSize());
 	}
     
     private boolean coverNeedsUpdate(Cover cover, IAudioObject audioObject) {

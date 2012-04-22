@@ -28,7 +28,6 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.utils.Logger;
-import net.sourceforge.atunes.utils.Timer;
 
 public final class PaintCoversSwingWorker extends SwingWorker<Void, Void> {
 	
@@ -54,8 +53,6 @@ public final class PaintCoversSwingWorker extends SwingWorker<Void, Void> {
 	
 	@Override
 	protected Void doInBackground() {
-		Timer t = new Timer();
-		t.start();
 		ImageIcon image = fullScreenCoverImageRetriever.getPicture(audioObject);
 	    
         if (cover != null) {
@@ -67,9 +64,6 @@ public final class PaintCoversSwingWorker extends SwingWorker<Void, Void> {
                 cover.setImage(image.getImage(), imageSize, imageSize);
             }
         }
-        
-        Logger.debug("PaintCoversSwingWorker background time: ", t.stop());
-        
         return null;
 	}
 

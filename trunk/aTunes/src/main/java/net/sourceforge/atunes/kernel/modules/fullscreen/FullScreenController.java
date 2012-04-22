@@ -21,8 +21,6 @@
 package net.sourceforge.atunes.kernel.modules.fullscreen;
 
 import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -89,15 +87,7 @@ public class FullScreenController extends AbstractSimpleController<FullScreenWin
 
         window.getSelectBackground().addActionListener(new SelectBackgroundActionListener(this));
         
-        window.getRemoveBackground().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	window.setBackground((File)null);
-                getState().setFullScreenBackground(null);
-                window.invalidate();
-                window.repaint();
-            }
-        });
+        window.getRemoveBackground().addActionListener(new RemoveBackgroundActionListener(window, getState()));
 
         ProgressBarSeekListener seekListener = new ProgressBarSeekListener(fullScreenProgressSlider, playerHandler);
         fullScreenProgressSlider.addMouseListener(seekListener);        
@@ -106,12 +96,7 @@ public class FullScreenController extends AbstractSimpleController<FullScreenWin
         window.getBackgroundPanel().addMouseListener(optionsAdapter);
         window.getCovers().addMouseListener(optionsAdapter);
 
-        window.getExitFullScreen().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                window.setVisible(false);
-            }
-        });
+        window.getExitFullScreen().addActionListener(new ExitFullScreenActionListener(window));
 
         setBackground();
 
