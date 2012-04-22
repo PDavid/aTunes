@@ -104,8 +104,6 @@ public final class FullScreenWindow extends AbstractCustomWindow {
     
     private ProgressSlider fullScreenProgressSlider;
     
-    private Dimension fullScreenCoverSize;
-    
     private Dimension screenSize;
 
 	private StopButton stopButton;
@@ -125,13 +123,6 @@ public final class FullScreenWindow extends AbstractCustomWindow {
      */
     public void setScreenSize(Dimension screenSize) {
 		this.screenSize = screenSize;
-	}
-    
-    /**
-     * @param fullScreenCoverSize
-     */
-    public void setFullScreenCoverSize(Dimension fullScreenCoverSize) {
-		this.fullScreenCoverSize = fullScreenCoverSize;
 	}
     
     /**
@@ -281,8 +272,6 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         nextButton = new NextButton(PlayerControlsSize.PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
         volumeButton.setText("");
 
-        covers = new CoverFlow(fullScreenCoverSize.height);
-
         textLabel = getTextLabel();
         textLabel2 = getTextLabel2();
         progressSlider = getProgressSlider();
@@ -299,6 +288,13 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         backgroundPanel.add(covers);
     }
 
+    /**
+     * @param covers
+     */
+    public void setCovers(CoverFlow covers) {
+		this.covers = covers;
+	}
+    
 	/**
 	 * 
 	 */
@@ -502,7 +498,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
      */
     private void updateWindow() {
         setText(objects.get(2));
-        covers.paint(objects, osManager);
+        covers.paint(objects);
     }
 
 	/**
