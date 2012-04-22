@@ -20,11 +20,17 @@
 
 package net.sourceforge.atunes.kernel.modules.fullscreen;
 
+import java.awt.Color;
+
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.gui.images.Images;
+import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPodcastFeedEntry;
+import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 
@@ -33,6 +39,24 @@ public class FullScreenCoverImageRetriever {
 	private IWebServicesHandler webServicesHandler;
 	
 	private IOSManager osManager;
+	
+	private IIconFactory radioBigIcon;
+	
+	private IIconFactory rssBigIcon;
+	
+	/**
+	 * @param radioBigIcon
+	 */
+	public void setRadioBigIcon(IIconFactory radioBigIcon) {
+		this.radioBigIcon = radioBigIcon;
+	}
+	
+	/**
+	 * @param rssBigIcon
+	 */
+	public void setRssBigIcon(IIconFactory rssBigIcon) {
+		this.rssBigIcon = rssBigIcon;
+	}
 	
 	/**
 	 * @param webServicesHandler
@@ -49,28 +73,42 @@ public class FullScreenCoverImageRetriever {
 	}
 	
     /**
-     * Returns picture for audio file
+     * Returns picture for audio object
      * 
      * @param audioObject
      * @param osManager
      * @return
      */
-    ImageIcon getPicture(ILocalAudioObject audioObject) {
-    	ImageIcon result = webServicesHandler.getAlbumImage(audioObject.getArtist(), audioObject.getAlbum());
-        if (result == null) {
-        	// Get inside picture
-        	ImageIcon icon = AudioFilePictureUtils.getInsidePicture(audioObject, -1, -1);
-        	result = icon != null ? icon : null;
-        }
-        if (result == null) {
-        	// Get external picture
-        	ImageIcon icon = AudioFilePictureUtils.getExternalPicture(audioObject, -1, -1, osManager);
-        	result = icon != null ? icon : null;
-        }
-        if (result == null) {
-            result = Images.getImage(Images.APP_LOGO_300);
-        }
-        
-        return result;
-    }    
+    ImageIcon getPicture(IAudioObject audioObject) {
+    	ImageIcon image = null;
+    	if (audioObject instanceof IRadio) {
+    		image = radioBigIcon.getIcon(Color.WHITE);
+    	} else if (audioObject instanceof IPodcastFeedEntry) {
+    		image = rssBigIcon.getIcon(Color.WHITE);
+    	} else if (audioObject instanceof ILocalAudioObject){
+    		image = getPictureForLocalAudioObject(audioObject);
+    	}
+
+    	return image;
+    }
+
+	/**
+	 * @param audioObject
+	 * @return
+	 */
+	private ImageIcon getPictureForLocalAudioObject(IAudioObject audioObject) {
+		ImageIcon image = webServicesHandler.getAlbumImage(audioObject.getArtist(), audioObject.getAlbum());
+		if (image == null) {
+			// Get inside picture
+			image = AudioFilePictureUtils.getInsidePicture(audioObject, -1, -1);
+		}
+		if (image == null) {
+			// Get external picture
+			image = AudioFilePictureUtils.getExternalPicture(audioObject, -1, -1, osManager);
+		}
+		if (image == null) {
+			image = Images.getImage(Images.APP_LOGO_300);
+		}
+		return image;
+	}    
 }
