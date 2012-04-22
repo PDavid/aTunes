@@ -35,7 +35,7 @@ import net.sourceforge.atunes.utils.ImageUtils;
 /**
  * A cover.
  */
-public final class Cover extends JPanel {
+public class Cover extends JPanel {
 
     private static final long serialVersionUID = -3836270786764203330L;
 

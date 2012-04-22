@@ -64,9 +64,10 @@ public final class CoverFlow extends JPanel implements ApplicationContextAware {
      */
     public void initialize() {
         covers = new ArrayList<Cover>(6);
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 5; i++) {
         	covers.add(new Cover(fullScreenImageSizeCalculator.getImageSize(i)));
         }
+        covers.add(new HiddenCover());
 
         setOpaque(false);
         arrangeCovers();
@@ -93,8 +94,6 @@ public final class CoverFlow extends JPanel implements ApplicationContextAware {
         add(covers.get(3), c);
         c.gridx = 4;
         add(covers.get(4), c);
-        
-        // The last cover is not shown
 	}
 
     /**
@@ -106,27 +105,36 @@ public final class CoverFlow extends JPanel implements ApplicationContextAware {
     void paint(final List<IAudioObject> objects) {
         int i = 0;
         for (IAudioObject ao : objects) {
-        	paintCover(covers.get(i), ao);
+        	paintCover(covers.get(i), ao, !(covers.get(i) instanceof HiddenCover));
             i++;
         }
     }
     
-    private void paintCover(Cover cover, IAudioObject audioObject) {
+    private void paintCover(Cover cover, IAudioObject audioObject, boolean showCover) {
         // No object
         if (audioObject == null) {
             return;
         }
         
         if (coverNeedsUpdate(cover, audioObject)) {
-            // Fetch cover
-        	context.getBean(PaintCoversSwingWorker.class).getCover(cover, audioObject, cover.getImageSize());
-            
+            fetchCover(cover, audioObject, showCover);
             cover.setPreviousArtist(audioObject.getArtist());
             cover.setPreviousAlbum(audioObject.getAlbum());
         } else {
         	Logger.debug("Not updating cover: ", audioObject.getArtist(), " ", audioObject.getAlbum());
         }
     }
+
+	/**
+	 * @param cover
+	 * @param audioObject
+	 */
+	private void fetchCover(Cover cover, final IAudioObject audioObject, boolean showCover) {
+		if (showCover) {
+			// Fetch cover and show
+			context.getBean(PaintCoversSwingWorker.class).getCover(cover, audioObject, cover.getImageSize());
+		}
+	}
     
     private boolean coverNeedsUpdate(Cover cover, IAudioObject audioObject) {
     	return cover.getPreviousArtist() == null || 

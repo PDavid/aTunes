@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.fullscreen;
 
 import java.awt.Color;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.ImageIcon;
 import javax.swing.SwingWorker;
@@ -29,11 +30,10 @@ import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
-import net.sourceforge.atunes.model.IWebServicesHandler;
-import net.sourceforge.atunes.utils.AudioFilePictureUtils;
+import net.sourceforge.atunes.utils.Logger;
+import net.sourceforge.atunes.utils.Timer;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -60,13 +60,15 @@ public final class PaintCoversSwingWorker extends SwingWorker<Void, Void> implem
 	
 	@Override
 	protected Void doInBackground() {
+		Timer t = new Timer();
+		t.start();
 		ImageIcon image = null;
 	    if (audioObject instanceof IRadio) {
 	        image = context.getBean("radioBigIcon", IIconFactory.class).getIcon(Color.WHITE);
 	    } else if (audioObject instanceof IPodcastFeedEntry) {
 	        image = context.getBean("rssBigIcon", IIconFactory.class).getIcon(Color.WHITE);
 	    } else if (audioObject instanceof ILocalAudioObject){
-    		image = getPicture((ILocalAudioObject)audioObject, context.getBean(IOSManager.class));
+    		image = context.getBean(FullScreenCoverImageRetriever.class).getPicture((ILocalAudioObject)audioObject);
 	    }
 	    
         if (cover != null) {
@@ -79,39 +81,22 @@ public final class PaintCoversSwingWorker extends SwingWorker<Void, Void> implem
             }
         }
         
+        Logger.debug("PaintCoversSwingWorker background time: ", t.stop());
+        
         return null;
 	}
 
 	@Override
 	protected void done() {
-	        if (cover != null) {
-	        	cover.repaint();
-	        }
-	}
-	
-    /**
-     * Returns picture for audio file
-     * 
-     * @param audioFile
-     * @param osManager
-     * @return
-     */
-    protected ImageIcon getPicture(ILocalAudioObject audioFile, IOSManager osManager) {
-    	ImageIcon result = context.getBean(IWebServicesHandler.class).getAlbumImage(audioFile.getArtist(), audioFile.getAlbum());
-        if (result == null) {
-        	// Get inside picture
-        	ImageIcon icon = AudioFilePictureUtils.getInsidePicture(audioFile, -1, -1);
-        	result = icon != null ? icon : null;
-        }
-        if (result == null) {
-        	// Get external picture
-        	ImageIcon icon = AudioFilePictureUtils.getExternalPicture(audioFile, -1, -1, osManager);
-        	result = icon != null ? icon : null;
-        }
-        if (result == null) {
-            result = Images.getImage(Images.APP_LOGO_300);
-        }
-        
-        return result;
-    }    
+		try {
+			get();
+		} catch (InterruptedException e) {
+			Logger.error(e);
+		} catch (ExecutionException e) {
+			Logger.error(e);
+		}
+		if (cover != null) {
+			cover.repaint();
+		}
+	}	
 }
