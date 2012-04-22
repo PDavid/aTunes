@@ -322,7 +322,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         JPanel buttonsPanel = PlayerControlsPanel.getPanelWithPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider, lookAndFeelManager);
         setPanels(textAndControlsPanel, textPanel, buttonsPanel);
         textAndControlsPanel.add(controlsPanel);
-        textAndControlsPanel.setMaximumSize(new Dimension(screenSize.width, screenSize.height / 5));
+        textAndControlsPanel.setMaximumSize(new Dimension(screenSize.width, screenSize.height / 4));
 		return textAndControlsPanel;
 	}
     
