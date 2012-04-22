@@ -33,6 +33,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 
@@ -94,14 +95,20 @@ public final class AudioFilePictureUtils {
     /**
      * Gets the external picture.
      * 
-     * @param file
+     * @param audioObject
      * @param index
      * @param width
      * @param height
      * @param osManager
      * @return
      */
-    public static ImageIcon getExternalPicture(ILocalAudioObject file, int width, int height, IOSManager osManager) {
+    public static ImageIcon getExternalPicture(IAudioObject audioObject, int width, int height, IOSManager osManager) {
+    	if (!(audioObject instanceof ILocalAudioObject)) {
+    		return null;
+    	}
+    	
+    	ILocalAudioObject file = (ILocalAudioObject) audioObject;
+
         // Try first to get picture with file name "ARTIST_ALBUM_COVER" pattern
         String coverFileName = getFileNameForCover(file, osManager);
         ImageIcon image = null;
@@ -138,8 +145,8 @@ public final class AudioFilePictureUtils {
     /**
      * Returns image stored into audio file, if exists.
      * 
-     * @param file
-     *            the file
+     * @param audioObject
+     *            the audioObject
      * @param width
      *            Width in pixels or -1 to keep original width
      * @param height
@@ -147,7 +154,12 @@ public final class AudioFilePictureUtils {
      * 
      * @return the inside picture
      */
-    public static ImageIcon getInsidePicture(ILocalAudioObject file, int width, int height) {
+    public static ImageIcon getInsidePicture(IAudioObject audioObject, int width, int height) {
+    	if (!(audioObject instanceof ILocalAudioObject)) {
+    		return null;
+    	}
+    	
+    	ILocalAudioObject file = (ILocalAudioObject) audioObject;
     	if (file.getFile() == null) {
     		return null;
     	}

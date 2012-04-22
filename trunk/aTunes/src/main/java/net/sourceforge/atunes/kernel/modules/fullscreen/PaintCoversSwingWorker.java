@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.fullscreen;
 
-import java.awt.Color;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.ImageIcon;
@@ -28,27 +27,22 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IIconFactory;
-import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IPodcastFeedEntry;
-import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.Timer;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-
-public final class PaintCoversSwingWorker extends SwingWorker<Void, Void> implements ApplicationContextAware {
+public final class PaintCoversSwingWorker extends SwingWorker<Void, Void> {
 	
 	private Cover cover;
 	private IAudioObject audioObject;
 	private int imageSize;
 	
-	private ApplicationContext context;
+	private FullScreenCoverImageRetriever fullScreenCoverImageRetriever;
 	
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) {
-		this.context = applicationContext;
+	/**
+	 * @param fullScreenCoverImageRetriever
+	 */
+	public void setFullScreenCoverImageRetriever(FullScreenCoverImageRetriever fullScreenCoverImageRetriever) {
+		this.fullScreenCoverImageRetriever = fullScreenCoverImageRetriever;
 	}
 	
 	void getCover(Cover cover, IAudioObject audioObject, int imageSize) {
@@ -62,14 +56,7 @@ public final class PaintCoversSwingWorker extends SwingWorker<Void, Void> implem
 	protected Void doInBackground() {
 		Timer t = new Timer();
 		t.start();
-		ImageIcon image = null;
-	    if (audioObject instanceof IRadio) {
-	        image = context.getBean("radioBigIcon", IIconFactory.class).getIcon(Color.WHITE);
-	    } else if (audioObject instanceof IPodcastFeedEntry) {
-	        image = context.getBean("rssBigIcon", IIconFactory.class).getIcon(Color.WHITE);
-	    } else if (audioObject instanceof ILocalAudioObject){
-    		image = context.getBean(FullScreenCoverImageRetriever.class).getPicture((ILocalAudioObject)audioObject);
-	    }
+		ImageIcon image = fullScreenCoverImageRetriever.getPicture(audioObject);
 	    
         if (cover != null) {
             if (image == null) {
