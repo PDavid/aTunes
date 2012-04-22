@@ -28,32 +28,55 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.utils.Logger;
 
-public final class CoverFlow extends JPanel {
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
+public final class CoverFlow extends JPanel implements ApplicationContextAware {
 
     private static final long serialVersionUID = -5982158797052430789L;
 
     private List<Cover> covers;
     
-    private int coverSize;
+    private FullScreenImageSizeCalculator fullScreenImageSizeCalculator;
     
-    CoverFlow(int coverSize) {
+    private ApplicationContext context;
+    
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) {
+    	this.context = applicationContext;
+    }
+    
+    /**
+     * @param fullScreenImageSizeCalculator
+     */
+    public void setFullScreenImageSizeCalculator(FullScreenImageSizeCalculator fullScreenImageSizeCalculator) {
+		this.fullScreenImageSizeCalculator = fullScreenImageSizeCalculator;
+	}
+    
+    CoverFlow() {
         super(new GridBagLayout());
-        this.coverSize = coverSize;
+    }
+    
+    /**
+     * Initializes cover flow
+     */
+    public void initialize() {
         covers = new ArrayList<Cover>(6);
-        covers.add(new Cover());
-        covers.add(new Cover());
-        covers.add(new Cover());
-        covers.add(new Cover());
-        covers.add(new Cover());
-        
-        // This last cover is not shown
-        covers.add(new Cover());
+        for (int i = 0; i < 6; i++) {
+        	covers.add(new Cover(fullScreenImageSizeCalculator.getImageSize(i)));
+        }
 
         setOpaque(false);
+        arrangeCovers();
+    }
 
-        GridBagConstraints c = new GridBagConstraints();
+	/**
+	 * 
+	 */
+	private void arrangeCovers() {
+		GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 0.2;
@@ -70,7 +93,9 @@ public final class CoverFlow extends JPanel {
         add(covers.get(3), c);
         c.gridx = 4;
         add(covers.get(4), c);
-    }
+        
+        // The last cover is not shown
+	}
 
     /**
      * Paint.
@@ -78,11 +103,36 @@ public final class CoverFlow extends JPanel {
      * @param objects
      * @param osManager
      */
-    void paint(final List<IAudioObject> objects, IOSManager osManager) {
+    void paint(final List<IAudioObject> objects) {
         int i = 0;
         for (IAudioObject ao : objects) {
-        	covers.get(i).paint(ao, i, osManager, coverSize);
+        	paintCover(covers.get(i), ao);
             i++;
         }
     }
+    
+    private void paintCover(Cover cover, IAudioObject audioObject) {
+        // No object
+        if (audioObject == null) {
+            return;
+        }
+        
+        if (coverNeedsUpdate(cover, audioObject)) {
+            // Fetch cover
+        	context.getBean(PaintCoversSwingWorker.class).getCover(cover, audioObject, cover.getImageSize());
+            
+            cover.setPreviousArtist(audioObject.getArtist());
+            cover.setPreviousAlbum(audioObject.getAlbum());
+        } else {
+        	Logger.debug("Not updating cover: ", audioObject.getArtist(), " ", audioObject.getAlbum());
+        }
+    }
+    
+    private boolean coverNeedsUpdate(Cover cover, IAudioObject audioObject) {
+    	return cover.getPreviousArtist() == null || 
+    	       cover.getPreviousAlbum() == null || 
+    	       !cover.getPreviousArtist().equals(audioObject.getArtist()) || 
+    	       !cover.getPreviousAlbum().equals(audioObject.getAlbum());
+    }
+
 }

@@ -21,12 +21,10 @@
 package net.sourceforge.atunes.kernel.modules.fullscreen;
 
 import java.awt.Color;
-import java.util.concurrent.ExecutionException;
 
 import javax.swing.ImageIcon;
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IIconFactory;
@@ -36,41 +34,48 @@ import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
-import net.sourceforge.atunes.utils.Logger;
 
-final class PaintCoversSwingWorker extends SwingWorker<Void, Void> {
-	private final Cover cover;
-	private final IAudioObject audioObject;
-	private final int index;
-	private IOSManager osManager;
-	private final int coverSize;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
-	PaintCoversSwingWorker(Cover cover, IAudioObject audioObject, int index, IOSManager osManager, int coverSize) {
+public final class PaintCoversSwingWorker extends SwingWorker<Void, Void> implements ApplicationContextAware {
+	
+	private Cover cover;
+	private IAudioObject audioObject;
+	private int imageSize;
+	
+	private ApplicationContext context;
+	
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		this.context = applicationContext;
+	}
+	
+	void getCover(Cover cover, IAudioObject audioObject, int imageSize) {
 		this.cover = cover;
 		this.audioObject = audioObject;
-		this.index = index;
-		this.osManager = osManager;
-		this.coverSize = coverSize;
+		this.imageSize = imageSize;
+		execute();
 	}
-
+	
 	@Override
 	protected Void doInBackground() {
 		ImageIcon image = null;
 	    if (audioObject instanceof IRadio) {
-	        image = Context.getBean("radioBigIcon", IIconFactory.class).getIcon(Color.WHITE);
+	        image = context.getBean("radioBigIcon", IIconFactory.class).getIcon(Color.WHITE);
 	    } else if (audioObject instanceof IPodcastFeedEntry) {
-	        image = Context.getBean("rssBigIcon", IIconFactory.class).getIcon(Color.WHITE);
+	        image = context.getBean("rssBigIcon", IIconFactory.class).getIcon(Color.WHITE);
 	    } else if (audioObject instanceof ILocalAudioObject){
-    		image = getPicture((ILocalAudioObject)audioObject, osManager);
+    		image = getPicture((ILocalAudioObject)audioObject, context.getBean(IOSManager.class));
 	    }
 	    
         if (cover != null) {
             if (image == null) {
                 cover.setImage(null, 0, 0);
             } else if (audioObject == null) {
-                cover.setImage(Images.getImage(Images.APP_LOGO_300).getImage(), getImageSize(index), getImageSize(index));
+                cover.setImage(Images.getImage(Images.APP_LOGO_300).getImage(), imageSize, imageSize);
             } else {
-                cover.setImage(image.getImage(), getImageSize(index), getImageSize(index));
+                cover.setImage(image.getImage(), imageSize, imageSize);
             }
         }
         
@@ -79,16 +84,9 @@ final class PaintCoversSwingWorker extends SwingWorker<Void, Void> {
 
 	@Override
 	protected void done() {
-	    try {
-	        get();
 	        if (cover != null) {
 	        	cover.repaint();
 	        }
-	    } catch (InterruptedException e) {
-	        Logger.error(e);
-	    } catch (ExecutionException e) {
-	        Logger.error(e);
-	    }
 	}
 	
     /**
@@ -99,7 +97,7 @@ final class PaintCoversSwingWorker extends SwingWorker<Void, Void> {
      * @return
      */
     protected ImageIcon getPicture(ILocalAudioObject audioFile, IOSManager osManager) {
-    	ImageIcon result = Context.getBean(IWebServicesHandler.class).getAlbumImage(audioFile.getArtist(), audioFile.getAlbum());
+    	ImageIcon result = context.getBean(IWebServicesHandler.class).getAlbumImage(audioFile.getArtist(), audioFile.getAlbum());
         if (result == null) {
         	// Get inside picture
         	ImageIcon icon = AudioFilePictureUtils.getInsidePicture(audioFile, -1, -1);
@@ -115,15 +113,5 @@ final class PaintCoversSwingWorker extends SwingWorker<Void, Void> {
         }
         
         return result;
-    }
-    
-    private int getImageSize(int index) {
-        if (index == 2) {
-            return coverSize;
-        } else if (index == 1 || index == 3) {
-            return coverSize * 3 / 4;
-        } else {
-            return coverSize * 9 / 16;
-        }
-    }
+    }    
 }

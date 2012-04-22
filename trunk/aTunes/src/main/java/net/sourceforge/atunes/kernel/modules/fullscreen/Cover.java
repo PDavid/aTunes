@@ -30,10 +30,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
-import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.ImageUtils;
-import net.sourceforge.atunes.utils.Logger;
 
 /**
  * A cover.
@@ -51,12 +48,16 @@ public final class Cover extends JPanel {
     
     private String previousArtist;
     private String previousAlbum;
+    
+    private int imageSize;
 
     /**
      * Instantiates a cover.
+     * @param imageSize
      */
-    public Cover() {
+    public Cover(int imageSize) {
         super(false);
+        this.imageSize = imageSize;
         setOpaque(false);
     }
 
@@ -103,21 +104,38 @@ public final class Cover extends JPanel {
         }
     }
     
-    void paint(final IAudioObject audioObject, int index, IOSManager osManager, int coverSize) {
-        // No object
-        if (audioObject == null) {
-            return;
-        }
-        
-        if (previousArtist == null || previousAlbum == null || !previousArtist.equals(audioObject.getArtist()) || !previousAlbum.equals(audioObject.getAlbum())) {
-            // Fetch cover
-            new PaintCoversSwingWorker(this, audioObject, index, osManager, coverSize).execute();
-            
-            previousArtist = audioObject.getArtist();
-            previousAlbum = audioObject.getAlbum();
-        } else {
-        	Logger.debug("Not updating cover: ", audioObject.getArtist(), " ", audioObject.getAlbum());
-        }
-    }
-
+    /**
+     * @return
+     */
+    public String getPreviousArtist() {
+		return previousArtist;
+	}
+    
+    /**
+     * @return
+     */
+    public String getPreviousAlbum() {
+		return previousAlbum;
+	}
+    
+    /**
+     * @param previousArtist
+     */
+    public void setPreviousArtist(String previousArtist) {
+		this.previousArtist = previousArtist;
+	}
+    
+    /**
+     * @param previousAlbum
+     */
+    public void setPreviousAlbum(String previousAlbum) {
+		this.previousAlbum = previousAlbum;
+	}
+    
+    /**
+     * @return
+     */
+    public int getImageSize() {
+		return imageSize;
+	}
 }

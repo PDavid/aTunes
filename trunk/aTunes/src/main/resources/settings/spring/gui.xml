@@ -93,7 +93,10 @@
     <bean id="macPlayerTrayIconsHandler" class="net.sourceforge.atunes.kernel.modules.tray.MacPlayerTrayIconsHandler" scope="prototype"/>
     
     
-    
     <bean class="net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenController" scope="prototype" init-method="initialize"/>
+    <bean id="fullScreenImageSizeCalculator" class="net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenImageSizeCalculator"/>
+    <bean class="net.sourceforge.atunes.kernel.modules.fullscreen.PaintCoversSwingWorker" scope="prototype"/>
+    
+    <bean id="covers" class="net.sourceforge.atunes.kernel.modules.fullscreen.CoverFlow" scope="prototype" init-method="initialize"/>
 	
 </beans>
