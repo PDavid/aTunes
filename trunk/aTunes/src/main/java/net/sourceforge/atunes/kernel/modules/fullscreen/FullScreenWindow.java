@@ -23,20 +23,10 @@ package net.sourceforge.atunes.kernel.modules.fullscreen;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.Insets;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -46,8 +36,6 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.OverlayLayout;
-import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
@@ -60,18 +48,14 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsSize;
-import net.sourceforge.atunes.kernel.modules.player.ProgressBarSeekListener;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IProgressSlider;
 import net.sourceforge.atunes.model.IRadio;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.Logger;
 
 public final class FullScreenWindow extends AbstractCustomWindow {
@@ -91,6 +75,8 @@ public final class FullScreenWindow extends AbstractCustomWindow {
     /** The options. */
     private JPopupMenu options;
 
+    private PreviousButton previousButton;
+    
     /** The play button. */
     private PlayPauseButton playButton;
 
@@ -99,30 +85,16 @@ public final class FullScreenWindow extends AbstractCustomWindow {
     /** The playing. */
     private boolean playing;
 
-    /** The background. */
-    private transient Image background;
-
-    /** The key adapter. */
-    private KeyAdapter keyAdapter = new FullScreenKeyAdapter(this);
-
     private Timer hideMouseTimer;
-
-    private MouseListener clickListener = new FullScreenMouseListener(this);
-
-    private MouseMotionListener moveListener = new FullScreenMouseMotionAdapter(this);
 
     /**
      * Audio Objects to show in full screen
      */
     private List<IAudioObject> objects;
     
-    private IState state;
-    
     private IFrame frame;
     
     private IOSManager osManager;
-    
-    private IPlayerHandler playerHandler;
     
     private ILookAndFeelManager lookAndFeelManager;
     
@@ -135,6 +107,18 @@ public final class FullScreenWindow extends AbstractCustomWindow {
     private Dimension fullScreenCoverSize;
     
     private Dimension screenSize;
+
+	private StopButton stopButton;
+
+	private NextButton nextButton;
+
+	private JMenuItem selectBackground;
+	
+	private FullScreenBackgroundPanel backgroundPanel;
+
+	private JMenuItem removeBackground;
+
+	private JMenuItem exitFullScreen;
     
     /**
      * @param screenSize
@@ -172,24 +156,10 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 	}
     
     /**
-     * @param state
-     */
-    public void setState(IState state) {
-		this.state = state;
-	}
-
-    /**
      * @param osManager
      */
     public void setOsManager(IOSManager osManager) {
 		this.osManager = osManager;
-	}
-    
-    /**
-     * @param playerHandler
-     */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
-		this.playerHandler = playerHandler;
 	}
     
     /**
@@ -214,23 +184,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
     public void initialize() {
         setLocation(0, 0);
         setAlwaysOnTop(true);
-        setContent(lookAndFeelManager);
-        addKeyListener(keyAdapter);
-        File backgroundFile = null;
-        if (state.getFullScreenBackground() != null) {
-            backgroundFile = new File(state.getFullScreenBackground());
-            if (!backgroundFile.exists()) {
-                backgroundFile = null;
-            }
-        }
-        if (backgroundFile == null) {
-            background = null;
-        } else {
-            setBackground(backgroundFile);
-        }
-
-        addMouseMotionListener(moveListener);
-        addMouseListener(clickListener);
+        setContent();
     }
 
     /**
@@ -301,82 +255,122 @@ public final class FullScreenWindow extends AbstractCustomWindow {
      *            the new background
      */
     void setBackground(File file) {
-        try {
-            background = ImageIO.read(file);
-            state.setFullScreenBackground(file.getAbsolutePath());
-        } catch (IOException e) {
-        	Logger.error(e);
-        }
+    	if (file == null) {
+    		backgroundPanel.setBackgroundImage(null);
+    	} else {
+    		try {
+    			backgroundPanel.setBackgroundImage(ImageIO.read(file));
+    		} catch (IOException e) {
+    			Logger.error(e);
+    		}
+    	}
     }
 
     /**
      * Sets the content.
-     * @param lookAndFeelManager 
      */
-    private void setContent(ILookAndFeelManager lookAndFeelManager) {
-        final JPanel panel = getPanel();
-        add(panel);
+    private void setContent() {
+        backgroundPanel = new FullScreenBackgroundPanel();
+        add(backgroundPanel);
 
-        options = new JPopupMenu(I18nUtils.getString("OPTIONS"));
-        options.addKeyListener(keyAdapter);
+        setOptions();
 
-        FullScreenShowMenuMouseAdapter optionsAdapter = new FullScreenShowMenuMouseAdapter(options);
-        
-        panel.addMouseListener(optionsAdapter);
-
-        JMenuItem selectBackground = new JMenuItem(I18nUtils.getString("SELECT_BACKGROUND"));
-
-        selectBackground.addActionListener(new SelectBackgroundActionListener(this));
-
-        JMenuItem removeBackground = getRemoveBackgroundMenuItem();
-        JMenuItem exitFullScreen = getExitFullScreenMenuItem();
-
-        options.add(selectBackground);
-        options.add(removeBackground);
-        options.add(exitFullScreen);
-
-        PreviousButton previousButton = new PreviousButton(PlayerControlsSize.PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
+        previousButton = new PreviousButton(PlayerControlsSize.PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
         playButton = new PlayPauseButton(PlayerControlsSize.PLAY_BUTTON_SIZE, lookAndFeelManager);
-        StopButton stopButton = new StopButton(PlayerControlsSize.STOP_MUTE_BUTTONS_SIZE, lookAndFeelManager);
-        NextButton nextButton = new NextButton(PlayerControlsSize.PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
+        stopButton = new StopButton(PlayerControlsSize.STOP_MUTE_BUTTONS_SIZE, lookAndFeelManager);
+        nextButton = new NextButton(PlayerControlsSize.PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
         volumeButton.setText("");
 
         covers = new CoverFlow(fullScreenCoverSize.height);
 
-        setClickListener(previousButton, stopButton, nextButton, volumeButton);
-
-        covers.addMouseListener(optionsAdapter);
-        covers.addMouseMotionListener(moveListener);
-
-        textLabel = getTextLabel(lookAndFeelManager);
-
-        textLabel2 = getTextLabel2(lookAndFeelManager);
-
+        textLabel = getTextLabel();
+        textLabel2 = getTextLabel2();
         progressSlider = getProgressSlider();
 
-        JPanel textAndControlsPanel = new JPanel(new GridLayout(2, 1));
+        JPanel textAndControlsPanel = getTextAndControlsPanel();
+        
+        textAndControlsPanel.setAlignmentX(0.0f);
+        textAndControlsPanel.setAlignmentY(1f);
+
+        covers.setAlignmentX(0.0f);
+        covers.setAlignmentY(0.8f);
+
+        backgroundPanel.add(textAndControlsPanel);
+        backgroundPanel.add(covers);
+    }
+
+	/**
+	 * 
+	 */
+	private void setOptions() {
+		options = new JPopupMenu(I18nUtils.getString("OPTIONS"));
+        selectBackground = new JMenuItem(I18nUtils.getString("SELECT_BACKGROUND"));
+        removeBackground = new JMenuItem(I18nUtils.getString("REMOVE_BACKGROUND"));
+        exitFullScreen = new JMenuItem(I18nUtils.getString("CLOSE"));
+        options.add(selectBackground);
+        options.add(removeBackground);
+        options.add(exitFullScreen);
+	}
+
+	/**
+	 * @param lookAndFeelManager
+	 * @return
+	 */
+	private JPanel getTextAndControlsPanel() {
+		JPanel textAndControlsPanel = new JPanel(new GridLayout(2, 1));
         textAndControlsPanel.setOpaque(false);
 
         JPanel textPanel = new JPanel(new GridBagLayout());
         textPanel.setOpaque(false);
 
         JPanel buttonsPanel = PlayerControlsPanel.getPanelWithPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider, lookAndFeelManager);
-
         setPanels(textAndControlsPanel, textPanel, buttonsPanel);
-
         textAndControlsPanel.add(controlsPanel);
-
-        covers.setAlignmentX(0.0f);
-        covers.setAlignmentY(0.8f);
-        
         textAndControlsPanel.setMaximumSize(new Dimension(screenSize.width, screenSize.height / 5));
-        
-        textAndControlsPanel.setAlignmentX(0.0f);
-        textAndControlsPanel.setAlignmentY(1f);
-        
-        panel.add(textAndControlsPanel);
-        panel.add(covers);
-    }
+		return textAndControlsPanel;
+	}
+    
+    /**
+     * @return
+     */
+    public FullScreenBackgroundPanel getBackgroundPanel() {
+		return backgroundPanel;
+	}
+    
+    /**
+     * @return
+     */
+    public PreviousButton getPreviousButton() {
+		return previousButton;
+	}
+    
+    /**
+     * @return
+     */
+    public PlayPauseButton getPlayButton() {
+		return playButton;
+	}
+    
+    /**
+     * @return
+     */
+    public StopButton getStopButton() {
+		return stopButton;
+	}
+    
+    /**
+     * @return
+     */
+    public NextButton getNextButton() {
+		return nextButton;
+	}
+    
+    /**
+     * @return
+     */
+    public MuteButton getVolumeButton() {
+		return volumeButton;
+	}
 
 	/**
 	 * @param textAndControlsPanel
@@ -415,17 +409,14 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 	 */
 	private IProgressSlider getProgressSlider() {
 		IProgressSlider slider = fullScreenProgressSlider;
-        ProgressBarSeekListener seekListener = new ProgressBarSeekListener(slider, playerHandler);
-        slider.addMouseListener(seekListener);        
-        slider.addKeyListener(keyAdapter);
         slider.setOpaque(false);
         return slider;
 	}
-
+	
 	/**
 	 * @param lookAndFeelManager
 	 */
-	private JLabel getTextLabel2(ILookAndFeelManager lookAndFeelManager) {
+	private JLabel getTextLabel2() {
 		JLabel label = new JLabel();
         label.setFont(lookAndFeelManager.getCurrentLookAndFeel().getFullScreenLine2Font());
         label.setForeground(Color.WHITE);
@@ -435,7 +426,7 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 	/**
 	 * @param lookAndFeelManager
 	 */
-	private JLabel getTextLabel(ILookAndFeelManager lookAndFeelManager) {
+	private JLabel getTextLabel() {
 		JLabel label = new JLabel();
         label.setFont(lookAndFeelManager.getCurrentLookAndFeel().getFullScreenLine1Font());
         label.setForeground(Color.WHITE);
@@ -443,80 +434,10 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 	}
 
 	/**
-	 * @param previousButton
-	 * @param stopButton
-	 * @param nextButton
-	 * @param muteButton
-	 */
-	private void setClickListener(PreviousButton previousButton, StopButton stopButton, NextButton nextButton, MuteButton muteButton) {
-		covers.addMouseListener(clickListener);
-        options.addMouseListener(clickListener);
-        previousButton.addMouseListener(clickListener);
-        playButton.addMouseListener(clickListener);
-        stopButton.addMouseListener(clickListener);
-        nextButton.addMouseListener(clickListener);
-        muteButton.addMouseListener(clickListener);
-        volumeSlider.addMouseListener(clickListener);
-	}
-
-	/**
 	 * @return
 	 */
-	private JMenuItem getExitFullScreenMenuItem() {
-		JMenuItem exitFullScreen = new JMenuItem(I18nUtils.getString("CLOSE"));
-        exitFullScreen.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-            }
-        });
+	public JMenuItem getExitFullScreen() {
 		return exitFullScreen;
-	}
-
-	/**
-	 * @return
-	 */
-	private JMenuItem getRemoveBackgroundMenuItem() {
-		JMenuItem removeBackground = new JMenuItem(I18nUtils.getString("REMOVE_BACKGROUND"));
-        removeBackground.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                background = null;
-                FullScreenWindow.this.state.setFullScreenBackground(null);
-                FullScreenWindow.this.invalidate();
-                FullScreenWindow.this.repaint();
-            }
-        });
-		return removeBackground;
-	}
-
-	/**
-	 * @return
-	 */
-	private JPanel getPanel() {
-		final JPanel panel = new JPanel() {
-            private static final long serialVersionUID = 109708757849271173L;
-
-            @Override
-            public void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                if (background == null && g instanceof Graphics2D) {
-                    Graphics2D g2d = (Graphics2D) g;
-                    g2d.setPaint(Color.BLACK);
-                    g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
-                } else {
-                    Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
-                    g.drawImage(ImageUtils.scaleBufferedImageBicubic(background, scrSize.width, scrSize.height), 0, 0, this);
-                }
-            }
-        };
-
-        OverlayLayout overlay = new OverlayLayout(panel);
-        panel.setLayout(overlay);
-
-        
-        panel.setBackground(Color.black);
-		return panel;
 	}
 
     /**
@@ -549,30 +470,13 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         playButton.setPlaying(playing);
     }
 
-    /**
-     * Sets the time.
-     * 
-     * @param time
-     *            the time
-     * @param totalTime
-     *            the total time
-     */
-    public void setCurrentAudioObjectPlayedTime(final long time, final long totalTime) {
-        if (!EventQueue.isDispatchThread()) {
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    setCurrentAudioObjectPlayedTimeEDT(time, totalTime);
-                }
-            });
-        } else {
-            setCurrentAudioObjectPlayedTimeEDT(time, totalTime);
-        }
-    }
-
-    private void setCurrentAudioObjectPlayedTimeEDT(long time, long totalTime) {
-        long remainingTime1 = totalTime - time;
-        progressSlider.setProgress(time, time == 0 ? time : remainingTime1);
+	/**
+	 * Sets current audio object played time
+	 * @param time
+	 * @param totalTime
+	 */
+    void setCurrentAudioObjectPlayedTime(long time, long totalTime) {
+        progressSlider.setProgress(time, time == 0 ? time : totalTime - time);
         progressSlider.setValue((int) time);
     }
 
@@ -599,5 +503,41 @@ public final class FullScreenWindow extends AbstractCustomWindow {
     private void updateWindow() {
         setText(objects.get(2));
         covers.paint(objects, osManager);
-    }    
+    }
+
+	/**
+	 * @return the options
+	 */
+	public JPopupMenu getOptions() {
+		return options;
+	}
+
+	/**
+	 * @return the covers
+	 */
+	public CoverFlow getCovers() {
+		return covers;
+	}
+
+	/**
+	 * @return the volumeSlider
+	 */
+	public VolumeSlider getVolumeSlider() {
+		return volumeSlider;
+	}
+
+	/**
+	 * @return the selectBackground
+	 */
+	public JMenuItem getSelectBackground() {
+		return selectBackground;
+	}
+
+	/**
+	 * @return the removeBackground
+	 */
+	public JMenuItem getRemoveBackground() {
+		return removeBackground;
+	}
+
 }

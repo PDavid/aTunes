@@ -28,25 +28,25 @@ import javax.swing.JFileChooser;
 
 final class SelectBackgroundActionListener implements ActionListener {
 	
-	private FullScreenWindow fullScreenWindow;
+	private FullScreenController fullScreenController;
 	
 	/**
-	 * @param fullScreenWindow
+	 * @param fullScreenController
 	 */
-	SelectBackgroundActionListener(FullScreenWindow fullScreenWindow) {
-		this.fullScreenWindow = fullScreenWindow;
+	SelectBackgroundActionListener(FullScreenController fullScreenController) {
+		this.fullScreenController = fullScreenController;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		fullScreenWindow.setVisible(false);
+		fullScreenController.getComponentControlled().setVisible(false);
 	    JFileChooser fileChooser = new JFileChooser();
 	    fileChooser.setFileFilter(new FullScreenBackgroundFileFilter());
-	    if (fileChooser.showOpenDialog(fullScreenWindow) == JFileChooser.APPROVE_OPTION) {
-	        fullScreenWindow.setBackground(fileChooser.getSelectedFile());
-	        fullScreenWindow.invalidate();
-	        fullScreenWindow.repaint();
+	    if (fileChooser.showOpenDialog(fullScreenController.getComponentControlled()) == JFileChooser.APPROVE_OPTION) {
+	    	fullScreenController.setBackground(fileChooser.getSelectedFile());
+	    	fullScreenController.getComponentControlled().invalidate();
+	    	fullScreenController.getComponentControlled().repaint();
 	    }
-	    fullScreenWindow.setVisible(true);
+	    fullScreenController.getComponentControlled().setVisible(true);
 	}
 }

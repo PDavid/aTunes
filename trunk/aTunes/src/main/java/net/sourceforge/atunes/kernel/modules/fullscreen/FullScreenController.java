@@ -20,14 +20,44 @@
 
 package net.sourceforge.atunes.kernel.modules.fullscreen;
 
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.io.File;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
+import net.sourceforge.atunes.gui.views.controls.playerControls.ProgressSlider;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
+import net.sourceforge.atunes.kernel.modules.player.ProgressBarSeekListener;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPlayerHandler;
 
 public class FullScreenController extends AbstractSimpleController<FullScreenWindow> {
 
 	private FullScreenWindowFactory fullScreenWindowFactory;
+	
+	private ProgressSlider fullScreenProgressSlider;
+	
+    private IPlayerHandler playerHandler;
+    
+    /**
+     * @param playerHandler
+     */
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
+	
+	/**
+	 * @param fullScreenProgressSlider
+	 */
+	public void setFullScreenProgressSlider(ProgressSlider fullScreenProgressSlider) {
+		this.fullScreenProgressSlider = fullScreenProgressSlider;
+	}
 	
 	/**
 	 * @param fullScreenWindowFactory
@@ -40,7 +70,81 @@ public class FullScreenController extends AbstractSimpleController<FullScreenWin
 	 * Initializes controller
 	 */
 	public void initialize() {
-        setComponentControlled(fullScreenWindowFactory.getFullScreenWindow());
+		final FullScreenWindow window = fullScreenWindowFactory.getFullScreenWindow();
+        setComponentControlled(window);
+        
+        KeyListener keyAdapter = new FullScreenKeyAdapter(window);
+        
+        window.addKeyListener(keyAdapter);
+        window.getOptions().addKeyListener(keyAdapter);
+        fullScreenProgressSlider.addKeyListener(keyAdapter);
+        
+        MouseListener clickListener = new FullScreenMouseListener(window);
+        window.addMouseListener(clickListener);
+        setClickListener(clickListener);
+        
+        MouseMotionListener moveListener = new FullScreenMouseMotionAdapter(window);
+        window.addMouseMotionListener(moveListener);
+        window.getCovers().addMouseMotionListener(moveListener);
+
+        window.getSelectBackground().addActionListener(new SelectBackgroundActionListener(this));
+        
+        window.getRemoveBackground().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	window.setBackground((File)null);
+                getState().setFullScreenBackground(null);
+                window.invalidate();
+                window.repaint();
+            }
+        });
+
+        ProgressBarSeekListener seekListener = new ProgressBarSeekListener(fullScreenProgressSlider, playerHandler);
+        fullScreenProgressSlider.addMouseListener(seekListener);        
+
+        FullScreenShowMenuMouseAdapter optionsAdapter = new FullScreenShowMenuMouseAdapter(window.getOptions());
+        window.getBackgroundPanel().addMouseListener(optionsAdapter);
+        window.getCovers().addMouseListener(optionsAdapter);
+
+        window.getExitFullScreen().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                window.setVisible(false);
+            }
+        });
+
+        setBackground();
+
+	}
+
+	private void setBackground() {
+        File backgroundFile = null;
+        if (getState().getFullScreenBackground() != null) {
+            backgroundFile = new File(getState().getFullScreenBackground());
+            if (!backgroundFile.exists()) {
+                backgroundFile = null;
+            }
+        }
+        getComponentControlled().setBackground(backgroundFile);
+	}
+	
+	void setBackground(File file) {
+		getComponentControlled().setBackground(file);
+		getState().setFullScreenBackground(file.getAbsolutePath());
+	}
+	
+	/**
+	 * @param clickListener
+	 */
+	private void setClickListener(MouseListener clickListener) {
+		getComponentControlled().getCovers().addMouseListener(clickListener);
+		getComponentControlled().getOptions().addMouseListener(clickListener);
+		getComponentControlled().getPreviousButton().addMouseListener(clickListener);
+		getComponentControlled().getPlayButton().addMouseListener(clickListener);
+		getComponentControlled().getStopButton().addMouseListener(clickListener);
+		getComponentControlled().getNextButton().addMouseListener(clickListener);
+		getComponentControlled().getVolumeButton().addMouseListener(clickListener);
+		getComponentControlled().getVolumeSlider().addMouseListener(clickListener);
 	}
 
 	/**
@@ -87,8 +191,17 @@ public class FullScreenController extends AbstractSimpleController<FullScreenWin
 	 * @param actualPlayedTime
 	 * @param currentAudioObjectLength
 	 */
-	void setCurrentAudioObjectPlayedTime(long actualPlayedTime, long currentAudioObjectLength) {
-		getComponentControlled().setCurrentAudioObjectPlayedTime(actualPlayedTime, currentAudioObjectLength);		
+	void setCurrentAudioObjectPlayedTime(final long actualPlayedTime, final long currentAudioObjectLength) {
+        if (!EventQueue.isDispatchThread()) {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                	getComponentControlled().setCurrentAudioObjectPlayedTime(actualPlayedTime, currentAudioObjectLength);
+                }
+            });
+        } else {
+            getComponentControlled().setCurrentAudioObjectPlayedTime(actualPlayedTime, currentAudioObjectLength);
+        }
 	}
 
 	/**
