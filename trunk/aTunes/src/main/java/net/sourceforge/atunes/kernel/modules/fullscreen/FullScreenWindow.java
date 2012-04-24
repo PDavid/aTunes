@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.fullscreen;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -32,30 +33,26 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.Timer;
 
+import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
-import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
-import net.sourceforge.atunes.gui.views.controls.playerControls.NextButton;
-import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
-import net.sourceforge.atunes.gui.views.controls.playerControls.PreviousButton;
-import net.sourceforge.atunes.gui.views.controls.playerControls.ProgressSlider;
-import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
-import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
-import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
-import net.sourceforge.atunes.gui.views.panels.PlayerControlsSize;
+import net.sourceforge.atunes.gui.views.controls.playerControls.FullScreenNextButton;
+import net.sourceforge.atunes.gui.views.controls.playerControls.FullScreenPlayPauseButton;
+import net.sourceforge.atunes.gui.views.controls.playerControls.FullScreenPreviousButton;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
-import net.sourceforge.atunes.model.IProgressSlider;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.Logger;
 
 public final class FullScreenWindow extends AbstractCustomWindow {
@@ -70,15 +67,13 @@ public final class FullScreenWindow extends AbstractCustomWindow {
     /** The text label 2 */
     private JLabel textLabel2;
 
-    private IProgressSlider progressSlider;
-    
     /** The options. */
     private JPopupMenu options;
 
-    private PreviousButton previousButton;
+    private FullScreenPreviousButton previousButton;
     
     /** The play button. */
-    private PlayPauseButton playButton;
+    private FullScreenPlayPauseButton playButton;
 
     private JPanel controlsPanel;
 
@@ -98,17 +93,9 @@ public final class FullScreenWindow extends AbstractCustomWindow {
     
     private ILookAndFeelManager lookAndFeelManager;
     
-    private MuteButton volumeButton;
-    
-    private VolumeSlider volumeSlider;
-    
-    private ProgressSlider fullScreenProgressSlider;
-    
     private Dimension screenSize;
 
-	private StopButton stopButton;
-
-	private NextButton nextButton;
+	private FullScreenNextButton nextButton;
 
 	private JMenuItem selectBackground;
 	
@@ -123,27 +110,6 @@ public final class FullScreenWindow extends AbstractCustomWindow {
      */
     public void setScreenSize(Dimension screenSize) {
 		this.screenSize = screenSize;
-	}
-    
-    /**
-     * @param fullScreenProgressSlider
-     */
-    public void setFullScreenProgressSlider(ProgressSlider fullScreenProgressSlider) {
-		this.fullScreenProgressSlider = fullScreenProgressSlider;
-	}
-    
-    /**
-     * @param volumeSlider
-     */
-    public void setVolumeSlider(VolumeSlider volumeSlider) {
-		this.volumeSlider = volumeSlider;
-	}
-    
-    /**
-     * @param volumeButton
-     */
-    public void setVolumeButton(MuteButton volumeButton) {
-		this.volumeButton = volumeButton;
 	}
     
     /**
@@ -226,11 +192,9 @@ public final class FullScreenWindow extends AbstractCustomWindow {
             textLabel.setText("");
             textLabel2.setText("");
         } else if (audioObject instanceof IRadio) {
-            progressSlider.setEnabled(false);
             textLabel.setText(((IRadio) audioObject).getName());
             textLabel2.setText(((IRadio) audioObject).getUrl());
         } else if (audioObject instanceof IPodcastFeedEntry) {
-        	progressSlider.setEnabled(false);
             textLabel.setText(((IPodcastFeedEntry) audioObject).getTitle());
             textLabel2.setText(((IPodcastFeedEntry) audioObject).getPodcastFeed().getName());
         } else {
@@ -266,15 +230,8 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 
         setOptions();
 
-        previousButton = new PreviousButton(PlayerControlsSize.PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
-        playButton = new PlayPauseButton(PlayerControlsSize.PLAY_BUTTON_SIZE, lookAndFeelManager);
-        stopButton = new StopButton(PlayerControlsSize.STOP_MUTE_BUTTONS_SIZE, lookAndFeelManager);
-        nextButton = new NextButton(PlayerControlsSize.PREVIOUS_NEXT_BUTTONS_SIZE, lookAndFeelManager);
-        volumeButton.setText("");
-
         textLabel = getTextLabel();
         textLabel2 = getTextLabel2();
-        progressSlider = getProgressSlider();
 
         JPanel textAndControlsPanel = getTextAndControlsPanel();
         
@@ -319,13 +276,41 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         JPanel textPanel = new JPanel(new GridBagLayout());
         textPanel.setOpaque(false);
 
-        JPanel buttonsPanel = PlayerControlsPanel.getPanelWithPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider, lookAndFeelManager);
+        JPanel buttonsPanel = new JPanel(new FlowLayout());
+        buttonsPanel.setOpaque(false);
+        
+        previousButton = new FullScreenPreviousButton(getPlayerIconSize(), getPlayerIconResized(Images.getImage(Images.PREVIOUS_FULL_SCREEN)));
+        playButton = new FullScreenPlayPauseButton(getMainPlayerIconSize(), getMainPlayerIconResized(Images.getImage(Images.PLAY_FULL_SCREEN)), getMainPlayerIconResized(Images.getImage(Images.PAUSE_FULL_SCREEN)));
+        nextButton = new FullScreenNextButton(getPlayerIconSize(), getPlayerIconResized(Images.getImage(Images.NEXT_FULL_SCREEN)));
+        
+        buttonsPanel.add(previousButton);
+        buttonsPanel.add(playButton);
+        buttonsPanel.add(nextButton);
+        
         setPanels(textAndControlsPanel, textPanel, buttonsPanel);
         textAndControlsPanel.add(controlsPanel);
-        textAndControlsPanel.setMaximumSize(new Dimension(screenSize.width, screenSize.height / 4));
+        textAndControlsPanel.setMaximumSize(new Dimension(screenSize.width, screenSize.height / 3));
 		return textAndControlsPanel;
 	}
-    
+	
+	private ImageIcon getMainPlayerIconResized(ImageIcon icon) {
+		int iconSize = screenSize.height / 12;
+		return ImageUtils.scaleImageBicubic(icon.getImage(), iconSize, iconSize);
+	}
+
+	private ImageIcon getPlayerIconResized(ImageIcon icon) {
+		int iconSize = screenSize.height / 16;
+		return ImageUtils.scaleImageBicubic(icon.getImage(), iconSize, iconSize);
+	}
+	
+	private Dimension getMainPlayerIconSize() {
+		return new Dimension(screenSize.height / 12, screenSize.height / 12);
+	}
+
+	private Dimension getPlayerIconSize() {
+		return new Dimension(screenSize.height / 16, screenSize.height / 16);
+	}
+
     /**
      * @return
      */
@@ -336,38 +321,24 @@ public final class FullScreenWindow extends AbstractCustomWindow {
     /**
      * @return
      */
-    public PreviousButton getPreviousButton() {
+    public FullScreenPreviousButton getPreviousButton() {
 		return previousButton;
 	}
     
     /**
      * @return
      */
-    public PlayPauseButton getPlayButton() {
+    public FullScreenPlayPauseButton getPlayButton() {
 		return playButton;
 	}
     
     /**
      * @return
      */
-    public StopButton getStopButton() {
-		return stopButton;
-	}
-    
-    /**
-     * @return
-     */
-    public NextButton getNextButton() {
+    public FullScreenNextButton getNextButton() {
 		return nextButton;
 	}
     
-    /**
-     * @return
-     */
-    public MuteButton getVolumeButton() {
-		return volumeButton;
-	}
-
 	/**
 	 * @param textAndControlsPanel
 	 * @param textPanel
@@ -391,24 +362,12 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 
         c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
-        controlsPanel.add(progressSlider.getSwingComponent(), c);
-
         c.gridx = 0;
         c.gridwidth = 3;
-        c.gridy = 1;
         c.insets = new Insets(20, 0, 5, 0);
         controlsPanel.add(buttonsPanel, c);
 	}
 
-	/**
-	 * 
-	 */
-	private IProgressSlider getProgressSlider() {
-		IProgressSlider slider = fullScreenProgressSlider;
-        slider.setOpaque(false);
-        return slider;
-	}
-	
 	/**
 	 * @param lookAndFeelManager
 	 */
@@ -446,16 +405,6 @@ public final class FullScreenWindow extends AbstractCustomWindow {
     }
 
     /**
-     * Sets the max duration.
-     * 
-     * @param maxDuration
-     *            the new max duration
-     */
-    public void setAudioObjectLength(long maxDuration) {
-        progressSlider.setMaximum((int) maxDuration);
-    }
-
-    /**
      * Sets the playing.
      * 
      * @param playing
@@ -466,16 +415,6 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         playButton.setPlaying(playing);
     }
 
-	/**
-	 * Sets current audio object played time
-	 * @param time
-	 * @param totalTime
-	 */
-    void setCurrentAudioObjectPlayedTime(long time, long totalTime) {
-        progressSlider.setProgress(time, time == 0 ? time : totalTime - time);
-        progressSlider.setValue((int) time);
-    }
-
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
@@ -484,13 +423,6 @@ public final class FullScreenWindow extends AbstractCustomWindow {
             activateTimer();
         }
         setFullScreen(visible, frame);
-    }
-
-    /**
-     * @param volume
-     */
-    public void setVolume(int volume) {
-        volumeSlider.setValue(volume);
     }
 
     /**
@@ -513,13 +445,6 @@ public final class FullScreenWindow extends AbstractCustomWindow {
 	 */
 	public CoverFlow getCovers() {
 		return covers;
-	}
-
-	/**
-	 * @return the volumeSlider
-	 */
-	public VolumeSlider getVolumeSlider() {
-		return volumeSlider;
 	}
 
 	/**

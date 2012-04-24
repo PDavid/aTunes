@@ -31,7 +31,6 @@ import net.sourceforge.atunes.kernel.PlaybackStateListeners;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -423,7 +422,6 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
         this.currentAudioObjectLength = currentLength;
         // Update sliders with max length
         playerHandler.setAudioObjectLength(currentLength);
-        Context.getBean(IFullScreenHandler.class).setAudioObjectLength(currentLength);
     }
 
     /**
@@ -437,7 +435,6 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
         long actualPlayedTime = playedTime;
         this.currentAudioObjectPlayedTime = actualPlayedTime;
         playerHandler.setCurrentAudioObjectTimePlayed(actualPlayedTime, currentAudioObjectLength);
-        Context.getBean(IFullScreenHandler.class).setCurrentAudioObjectPlayedTime(actualPlayedTime, currentAudioObjectLength);
 
         // Conditions to submit an object:
         // - Not submitted before

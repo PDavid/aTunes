@@ -125,24 +125,4 @@ public class FullScreenHandler extends AbstractHandler implements IFullScreenHan
 		return false;
 	}
 
-	@Override
-	public void setAudioObjectLength(long currentLength) {
-		if (getFullScreenController() != null) {
-			getFullScreenController().setAudioObjectLenght(currentLength);
-		}
-	}
-
-	@Override
-	public void setCurrentAudioObjectPlayedTime(long actualPlayedTime, long currentAudioObjectLength) {
-		if (getFullScreenController() != null) {
-			getFullScreenController().setCurrentAudioObjectPlayedTime(actualPlayedTime, currentAudioObjectLength);
-		}
-	}
-
-	@Override
-	public void setVolume(int finalVolume) {
-		if (getFullScreenController() != null) {
-			getFullScreenController().setVolume(finalVolume);
-		}
-	}
 }

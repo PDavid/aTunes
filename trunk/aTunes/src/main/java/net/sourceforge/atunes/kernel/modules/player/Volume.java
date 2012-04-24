@@ -20,11 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.player;
 
-import java.awt.EventQueue;
-
-import javax.swing.SwingUtilities;
-
-import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
 
@@ -33,8 +28,6 @@ public final class Volume {
 	private IState state;
 	
 	private IPlayerHandler playerHandler;
-	
-	private IFullScreenHandler fullScreenHandler;
 	
 	/**
 	 * @param state
@@ -48,13 +41,6 @@ public final class Volume {
 	 */
 	public void setPlayerHandler(IPlayerHandler playerHandler) {
 		this.playerHandler = playerHandler;
-	}
-	
-	/**
-	 * @param fullScreenHandler
-	 */
-	public void setFullScreenHandler(IFullScreenHandler fullScreenHandler) {
-		this.fullScreenHandler = fullScreenHandler;
 	}
 	
     /**
@@ -83,17 +69,6 @@ public final class Volume {
         	state.setVolume(finalVolume);
         }
         playerHandler.setVolume(finalVolume);
-
-        if (!EventQueue.isDispatchThread()) {
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                	fullScreenHandler.setVolume(finalVolume);
-                }
-            });
-        } else {
-        	fullScreenHandler.setVolume(finalVolume);
-        }
 	}
 
 	/**

@@ -20,42 +20,18 @@
 
 package net.sourceforge.atunes.kernel.modules.fullscreen;
 
-import java.awt.EventQueue;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.util.List;
 
-import javax.swing.SwingUtilities;
-
-import net.sourceforge.atunes.gui.views.controls.playerControls.ProgressSlider;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
-import net.sourceforge.atunes.kernel.modules.player.ProgressBarSeekListener;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IPlayerHandler;
 
 public class FullScreenController extends AbstractSimpleController<FullScreenWindow> {
 
 	private FullScreenWindowFactory fullScreenWindowFactory;
-	
-	private ProgressSlider fullScreenProgressSlider;
-	
-    private IPlayerHandler playerHandler;
-    
-    /**
-     * @param playerHandler
-     */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
-		this.playerHandler = playerHandler;
-	}
-	
-	/**
-	 * @param fullScreenProgressSlider
-	 */
-	public void setFullScreenProgressSlider(ProgressSlider fullScreenProgressSlider) {
-		this.fullScreenProgressSlider = fullScreenProgressSlider;
-	}
 	
 	/**
 	 * @param fullScreenWindowFactory
@@ -75,7 +51,6 @@ public class FullScreenController extends AbstractSimpleController<FullScreenWin
         
         window.addKeyListener(keyAdapter);
         window.getOptions().addKeyListener(keyAdapter);
-        fullScreenProgressSlider.addKeyListener(keyAdapter);
         
         MouseListener clickListener = new FullScreenMouseListener(window);
         window.addMouseListener(clickListener);
@@ -88,9 +63,6 @@ public class FullScreenController extends AbstractSimpleController<FullScreenWin
         window.getSelectBackground().addActionListener(new SelectBackgroundActionListener(this));
         
         window.getRemoveBackground().addActionListener(new RemoveBackgroundActionListener(window, getState()));
-
-        ProgressBarSeekListener seekListener = new ProgressBarSeekListener(fullScreenProgressSlider, playerHandler);
-        fullScreenProgressSlider.addMouseListener(seekListener);        
 
         FullScreenShowMenuMouseAdapter optionsAdapter = new FullScreenShowMenuMouseAdapter(window.getOptions());
         window.getBackgroundPanel().addMouseListener(optionsAdapter);
@@ -126,10 +98,7 @@ public class FullScreenController extends AbstractSimpleController<FullScreenWin
 		getComponentControlled().getOptions().addMouseListener(clickListener);
 		getComponentControlled().getPreviousButton().addMouseListener(clickListener);
 		getComponentControlled().getPlayButton().addMouseListener(clickListener);
-		getComponentControlled().getStopButton().addMouseListener(clickListener);
 		getComponentControlled().getNextButton().addMouseListener(clickListener);
-		getComponentControlled().getVolumeButton().addMouseListener(clickListener);
-		getComponentControlled().getVolumeSlider().addMouseListener(clickListener);
 	}
 
 	/**
@@ -161,39 +130,5 @@ public class FullScreenController extends AbstractSimpleController<FullScreenWin
 	 */
 	boolean isVisible() {
 		return getComponentControlled().isVisible();
-	}
-
-	/**
-	 * Sets current audio object length
-	 * @param currentLength
-	 */
-	void setAudioObjectLenght(long currentLength) {
-		getComponentControlled().setAudioObjectLength(currentLength);
-	}
-
-	/**
-	 * Sets current audio object played time
-	 * @param actualPlayedTime
-	 * @param currentAudioObjectLength
-	 */
-	void setCurrentAudioObjectPlayedTime(final long actualPlayedTime, final long currentAudioObjectLength) {
-        if (!EventQueue.isDispatchThread()) {
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                	getComponentControlled().setCurrentAudioObjectPlayedTime(actualPlayedTime, currentAudioObjectLength);
-                }
-            });
-        } else {
-            getComponentControlled().setCurrentAudioObjectPlayedTime(actualPlayedTime, currentAudioObjectLength);
-        }
-	}
-
-	/**
-	 * Sets volume
-	 * @param finalVolume
-	 */
-	public void setVolume(int finalVolume) {
-		getComponentControlled().setVolume(finalVolume);
 	}
 }

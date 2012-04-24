@@ -8,10 +8,6 @@
 		<property name="paintIconAllowed" value="true"/>
 	</bean>
 
-	<bean id="fullScreenProgressSlider" class="net.sourceforge.atunes.gui.views.controls.playerControls.ProgressSlider" scope="prototype" init-method="initialize">
-		<property name="paintIconAllowed" value="false"/>
-	</bean>
-	
 	<bean id="playerControls" class="net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel" init-method="initialize"/>
 
 
