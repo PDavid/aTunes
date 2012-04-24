@@ -45,23 +45,4 @@ public interface IFullScreenHandler extends IHandler {
 	 */
 	public boolean isVisible();
 
-	/**
-	 * Sets audio object length
-	 * @param currentLength
-	 */
-	public void setAudioObjectLength(long currentLength);
-
-	/**
-	 * Set audio object played time
-	 * @param actualPlayedTime
-	 * @param currentAudioObjectLength
-	 */
-	public void setCurrentAudioObjectPlayedTime(long actualPlayedTime, long currentAudioObjectLength);
-
-	/**
-	 * Sets volume
-	 * @param finalVolume
-	 */
-	public void setVolume(int finalVolume);
-
 }

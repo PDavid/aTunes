@@ -235,7 +235,7 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
      * @param lookAndFeelManager
      * @return
      */
-    public static JPanel getPanelWithPlayerControls(StopButton stopButton, PreviousButton previousButton, PlayPauseButton playButton, NextButton nextButton, MuteButton volumeButton, JSlider volumeSlider, ILookAndFeelManager lookAndFeelManager) {
+    private JPanel getPanelWithPlayerControls(StopButton stopButton, PreviousButton previousButton, PlayPauseButton playButton, NextButton nextButton, MuteButton volumeButton, JSlider volumeSlider, ILookAndFeelManager lookAndFeelManager) {
         if (lookAndFeelManager.getCurrentLookAndFeel().isCustomPlayerControlsSupported()) { 
         	return new CustomPlayerControlsBuilder().getCustomPlayerControls(stopButton, previousButton, playButton, nextButton, volumeButton, volumeSlider);
         } else {
