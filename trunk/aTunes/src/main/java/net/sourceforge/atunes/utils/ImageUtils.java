@@ -146,6 +146,49 @@ public final class ImageUtils {
     }
     
     /**
+     * Scales an image with bilinear algorithm.
+     * 
+     * @param image
+     *            the image
+     * @param width
+     *            the width
+     * @param height
+     *            the height
+     * 
+     * @return the image icon
+     */
+    public static BufferedImage scaleBufferedImageBilinear(Image image, int width, int height) {
+        if (image == null) {
+            return null;
+        }
+
+        int imageWidth = image.getWidth(null);
+        int imageHeight = image.getHeight(null);
+
+        if (imageWidth == width && imageHeight == height) {
+        	return toBufferedImage(image);
+        }
+        
+        double thumbRatio = (double) width / (double) height;
+        double imageRatio = (double) imageWidth / (double) imageHeight;
+        int calculatedWidth = width;
+        int calculatedHeight = height;
+        if (thumbRatio < imageRatio) {
+            calculatedHeight = (int) (width / imageRatio);
+        } else {
+            calculatedWidth = (int) (height * imageRatio);
+        }
+
+        BufferedImage thumbImage = new BufferedImage(calculatedWidth, calculatedHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D graphics2D = thumbImage.createGraphics();
+        graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        graphics2D.drawImage(image, 0, 0, calculatedWidth, calculatedHeight, null);
+        graphics2D.dispose();
+        return thumbImage;
+    }
+
+    
+    /**
      * Gets a BufferedImage from an Image object.
      * 
      * @param image
