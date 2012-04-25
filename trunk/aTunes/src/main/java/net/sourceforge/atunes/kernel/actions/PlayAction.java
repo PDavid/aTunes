@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
+import net.sourceforge.atunes.gui.views.controls.playerControls.FullScreenPlayPauseButton;
 import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -66,8 +67,8 @@ public class PlayAction extends CustomAbstractAction {
 
         if (selAudioObject != currPlayingAudioObject) {
             // another song selected to play
-            if (getSource() == null || getSource().getClass().equals(PlayPauseButton.class)) {
-                // action is from PlayPauseButton (or system tray) -> pause
+            if (getSource() == null || getSource().getClass().equals(PlayPauseButton.class) || getSource().getClass().equals(FullScreenPlayPauseButton.class)) {
+                // action is from PlayPauseButton (or system tray)  or full screen -> pause
                 playerHandler.playCurrentAudioObject(true);
             } else {
                 // play another song
