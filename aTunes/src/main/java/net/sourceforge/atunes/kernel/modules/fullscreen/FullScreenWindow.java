@@ -38,6 +38,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
 import net.sourceforge.atunes.gui.images.Images;
@@ -349,6 +350,8 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         c.gridx = 0;
         c.gridy = 0;
         c.weighty = 0;
+        c.weightx = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(0, 0, 20, 0);
         c.anchor = GridBagConstraints.NORTH;
         textPanel.add(textLabel, c);
@@ -368,23 +371,19 @@ public final class FullScreenWindow extends AbstractCustomWindow {
         controlsPanel.add(buttonsPanel, c);
 	}
 
-	/**
-	 * @param lookAndFeelManager
-	 */
 	private JLabel getTextLabel2() {
 		JLabel label = new JLabel();
         label.setFont(lookAndFeelManager.getCurrentLookAndFeel().getFullScreenLine2Font());
         label.setForeground(Color.WHITE);
+        label.setHorizontalAlignment(SwingConstants.CENTER);
         return label;
 	}
 
-	/**
-	 * @param lookAndFeelManager
-	 */
 	private JLabel getTextLabel() {
 		JLabel label = new JLabel();
         label.setFont(lookAndFeelManager.getCurrentLookAndFeel().getFullScreenLine1Font());
         label.setForeground(Color.WHITE);
+        label.setHorizontalAlignment(SwingConstants.CENTER);
         return label;
 	}
 
