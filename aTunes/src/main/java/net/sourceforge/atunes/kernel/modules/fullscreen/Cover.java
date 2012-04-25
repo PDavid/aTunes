@@ -86,7 +86,7 @@ public class Cover extends JPanel {
     void setImage(Image image, int width, int height) {
         if (image != null) {
             // IMAGE
-            this.image = ImageUtils.scaleBufferedImageBicubic(image, width, height);
+            this.image = ImageUtils.scaleBufferedImageBilinear(image, width, height);
 
             // REFLECTED IMAGE
             BufferedImage reflection = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
