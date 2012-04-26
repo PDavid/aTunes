@@ -29,7 +29,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.Box;
@@ -55,16 +57,25 @@ import net.sourceforge.atunes.model.IHotkeysConfig;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IPlayerEngine;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * @author alex
+ *
+ */
 public final class PlayerPanel extends AbstractPreferencesPanel {
 
 	private final class HotkeyKeyAdapter extends KeyAdapter {
+		
+		private final HotkeyTableModel tableModel;
+		
 		private final JTable table;
 
-		private HotkeyKeyAdapter(JTable table) {
+		private HotkeyKeyAdapter(JTable table, HotkeyTableModel tableModel) {
 			this.table = table;
+			this.tableModel = tableModel;
 		}
 
 		@Override
@@ -179,7 +190,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
 
     private static final long serialVersionUID = 4489293347321979288L;
 
-    private String[] engineNames;
+    private List<IPlayerEngine> engines;
     
     /** The play at startup. */
     private JCheckBox playAtStartup;
@@ -224,12 +235,12 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
     private IHotkeyHandler hotkeyHandler;
     
     private ILookAndFeelManager lookAndFeelManager;
-    
+
     /**
-     * @param engineNames
+     * @param engines
      */
-    public void setEngineNames(String[] engineNames) {
-		this.engineNames = engineNames;
+    public void setEngines(List<IPlayerEngine> engines) {
+		this.engines = engines;
 	}
     
     /**
@@ -268,6 +279,11 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         engineBox.setAlignmentX(Component.LEFT_ALIGNMENT);
         engineBox.add(new JLabel(I18nUtils.getString("PLAYER_ENGINE")));
         engineBox.add(Box.createHorizontalStrut(6));
+        List<String> enginesNamesList = new ArrayList<String>();
+        for (IPlayerEngine engine : engines) { 
+        	enginesNamesList.add(engine.getEngineName());
+        }
+        String[] engineNames = enginesNamesList.toArray(new String[enginesNamesList.size()]);
         engineCombo = new JComboBox(engineNames);
         // Disable combo if no player engine available
         engineCombo.setEnabled(engineNames.length > 0);
@@ -310,7 +326,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         table.setEnabled(hotkeyHandler.areHotkeysSupported());
         table.setDefaultRenderer(Object.class, lookAndFeelManager.getCurrentLookAndFeel().getTableCellRenderer(new HotkeyTableTableCellRendererCode(lookAndFeelManager.getCurrentLookAndFeel())));
 
-        table.addKeyListener(new HotkeyKeyAdapter(table));
+        table.addKeyListener(new HotkeyKeyAdapter(table, tableModel));
 
         InputMap inputMap = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         for (KeyStroke keyStroke : inputMap.allKeys()) {
