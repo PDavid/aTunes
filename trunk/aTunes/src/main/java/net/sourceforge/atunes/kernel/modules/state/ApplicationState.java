@@ -45,6 +45,7 @@ import net.sourceforge.atunes.model.ILocaleBean;
 import net.sourceforge.atunes.model.ILyricsEngineInfo;
 import net.sourceforge.atunes.model.IProxyBean;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateRadio;
 import net.sourceforge.atunes.model.LookAndFeelBean;
 import net.sourceforge.atunes.model.TagAttribute;
 import net.sourceforge.atunes.model.ViewMode;
@@ -130,23 +131,6 @@ public class ApplicationState implements IState {
         this.stateStore.storePreference(Preferences.CASE_SENSITIVE_REPOSITORY_STRUCTURE_KEYS, caseSensitiveRepositoryStructureKeys);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isShowAudioObjectProperties()
-	 */
-    @Override
-	public boolean isShowAudioObjectProperties() {
-        return (Boolean) this.stateStore.retrievePreference(Preferences.SHOW_AUDIO_OBJECT_PROPERTIES, false);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setShowAudioObjectProperties(boolean)
-	 */
-    @Override
-	public void setShowAudioObjectProperties(boolean showAudioObjectProperties) {
-        this.stateStore.storePreference(Preferences.SHOW_AUDIO_OBJECT_PROPERTIES, showAudioObjectProperties);
-    }
-    
-    
 
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isShowStatusBar()
