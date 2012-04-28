@@ -59,16 +59,6 @@ public abstract class AbstractStateMock implements IState {
 	}
 
 	@Override
-	public boolean isShowAudioObjectProperties() {
-		return false;
-	}
-
-	@Override
-	public void setShowAudioObjectProperties(boolean showAudioObjectProperties) {
-		
-	}
-
-	@Override
 	public boolean isShowStatusBar() {
 		return false;
 	}

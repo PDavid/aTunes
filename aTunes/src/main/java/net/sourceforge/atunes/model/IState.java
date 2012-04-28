@@ -23,157 +23,18 @@ package net.sourceforge.atunes.model;
 import java.util.List;
 import java.util.Map;
 
-public interface IState {
+public interface IState extends IStateRadio, IStateUI, IStateRepository, IStatePlayer, IStateCore, IStateContext {
 
-	public boolean isShowAllRadioStations();
 
-	public void setShowAllRadioStations(boolean showAllRadioStations);
 
-	public boolean isShowNavigationTable();
 
-	public void setShowNavigationTable(boolean showNavigationTable);
 
-	/**
-	 * used in RepositoryFiller to build repository structure keys case sensitive or not
-	 * @return true if case structures genre and artist handled sensitive, default = false for convenience
-	 */
-	public boolean isKeyAlwaysCaseSensitiveInRepositoryStructure();
 
-	/**
-	 * enable case sensitive tree structure of artist and genre or merge keys case insensitive
-	 * @param caseSensitiveRepositoryStructureKeys
-	 */
-	public void setKeyAlwaysCaseSensitiveInRepositoryStructure(
-			boolean caseSensitiveRepositoryStructureKeys);
 
-	public boolean isShowAudioObjectProperties();
 
-	public void setShowAudioObjectProperties(boolean showAudioObjectProperties);
 
-	public boolean isShowStatusBar();
 
-	public void setShowStatusBar(boolean showStatusBar);
 
-	public boolean isShowOSD();
-
-	public void setShowOSD(boolean showOSD);
-
-	public boolean isShuffle();
-
-	public void setShuffle(boolean shuffle);
-
-	public boolean isRepeat();
-
-	public void setRepeat(boolean repeat);
-
-	public boolean isShowSystemTray();
-
-	public void setShowSystemTray(boolean showSystemTray);
-
-	public boolean isShowTrayPlayer();
-
-	public void setShowTrayPlayer(boolean showTrayPlayer);
-
-	public String getNavigationView();
-
-	public void setNavigationView(String navigationView);
-
-	public ViewMode getViewMode();
-
-	public void setViewMode(ViewMode viewMode);
-
-	public ILocaleBean getLocale();
-
-	public void setLocale(ILocaleBean locale);
-
-	public ILocaleBean getOldLocale();
-
-	public void setOldLocale(ILocaleBean oldLocale);
-
-	public String getDefaultSearch();
-
-	public void setDefaultSearch(String defaultSearch);
-
-	public boolean isUseContext();
-
-	public void setUseContext(boolean useContext);
-
-	public String getSelectedContextTab();
-
-	public void setSelectedContextTab(String selectedContextTab);
-
-
-	public Class<? extends IFrame> getFrameClass();
-
-	public void setFrameClass(Class<? extends IFrame> frameClass);
-
-	public IProxyBean getProxy();
-
-	public void setProxy(IProxyBean proxy);
-
-	public LookAndFeelBean getLookAndFeel();
-
-	public void setLookAndFeel(LookAndFeelBean lookAndFeel);
-
-	public FontSettings getFontSettings();
-
-	public void setFontSettings(FontSettings fontSettings);
-
-	public boolean isPlayAtStartup();
-
-	public void setPlayAtStartup(boolean playAtStartup);
-
-	public boolean isCacheFilesBeforePlaying();
-
-	public void setCacheFilesBeforePlaying(boolean cacheFilesBeforePlaying);
-
-	public boolean isUseNormalisation();
-
-	public void setUseNormalisation(boolean useNormalisation);
-
-	public boolean isUseShortPathNames();
-
-	public void setUseShortPathNames(boolean useShortPathNames);
-
-	public float[] getEqualizerSettings();
-
-	public void setEqualizerSettings(float[] equalizerSettings);
-
-	public boolean isUseFadeAway();
-
-	public void setUseFadeAway(boolean useFadeAway);
-
-	public boolean isShowAdvancedPlayerControls();
-
-	public void setShowAdvancedPlayerControls(boolean show);
-
-	public boolean isReadInfoFromRadioStream();
-
-	public void setReadInfoFromRadioStream(boolean readInfoFromRadioStream);
-
-	public boolean isEnableAdvancedSearch();
-
-	public void setEnableAdvancedSearch(boolean enableAdvancedSearch);
-
-	public boolean isEnableHotkeys();
-
-	public void setEnableHotkeys(boolean enableHotkeys);
-
-	public int getOsdDuration();
-
-	public void setOsdDuration(int osdDuration);
-
-	public int getVolume();
-
-	public void setVolume(int volume);
-
-	public boolean isMuteEnabled();
-
-	public void setMuteEnabled(boolean muteEnabled);
-
-	public int getAutoRepositoryRefreshTime();
-
-	public void setAutoRepositoryRefreshTime(int autoRepositoryRefreshTime);
 
 	public boolean isShowFavoritesInNavigator();
 

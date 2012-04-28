@@ -20,10 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.state;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-
-
 interface IStateStore {
 
 	/**
@@ -40,16 +36,14 @@ interface IStateStore {
 	 * @param defaultValue
 	 * @return Value
 	 */
-	public Object retrievePreference(Preferences preferenceId,
-			Object defaultValue);
+	public Object retrievePreference(Preferences preferenceId, Object defaultValue);
 
 	/**
 	 * Stores a Preference at cache.
 	 * @param preferenceId
 	 * @param value
 	 */
-	public void storePreference(final Preferences preferenceId,
-			final Object value);
+	public void storePreference(final Preferences preferenceId, final Object value);
 
 	/**
 	 * Retrieves a Password Preference from cache
@@ -67,6 +61,9 @@ interface IStateStore {
 	 */
 	public void storePasswordPreference(Preferences preferenceId, String value);
 
+	/**
+	 * Called when application finishes to save flush all data
+	 */
 	public void shutdown();
 
 }
