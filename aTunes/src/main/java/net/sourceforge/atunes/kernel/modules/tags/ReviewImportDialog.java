@@ -52,7 +52,7 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IReviewImportDialog;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.model.ITagAttributesReviewed;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -74,7 +74,7 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements IR
 		public void actionPerformed(ActionEvent e) {
 		    TreePath[] selectedNodes = treeTable.getTreeSelectionModel().getSelectionPaths();
 		    if (selectedNodes.length > 0) {
-		        PatternInputDialog inputDialog = new PatternInputDialog(ReviewImportDialog.this, true, state, lookAndFeel);
+		        PatternInputDialog inputDialog = new PatternInputDialog(ReviewImportDialog.this, true, stateRepository, lookAndFeel);
 		        Object node = selectedNodes[0].getLastPathComponent();
 		        Object folder = ((DefaultMutableTreeTableNode)node).getUserObject();
 		        inputDialog.show(Patterns.getMassiveRecognitionPatterns(), ((File)folder).getAbsolutePath());
@@ -104,20 +104,17 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements IR
     /** True when user pressed Cancel or closes the window */
     private boolean dialogCancelled = true;
 
-    /**
-     * State of app
-     */
-    private IState state;
+    private IStateRepository stateRepository;
     
     /**
      * Instantiates a new ReviewImportDialog
      * @param frame
-     * @param state
+     * @param stateRepository
      * @param lookAndFeelManager
      */
-    public ReviewImportDialog(IFrame frame, IState state, ILookAndFeelManager lookAndFeelManager) {
+    public ReviewImportDialog(IFrame frame, IStateRepository stateRepository, ILookAndFeelManager lookAndFeelManager) {
         super(frame, 800, 600, true, CloseAction.NOTHING, lookAndFeelManager.getCurrentLookAndFeel());
-        this.state = state;
+        this.stateRepository = stateRepository;
         setTitle(I18nUtils.getString("REVIEW_TAGS"));
         setContent(lookAndFeelManager.getCurrentLookAndFeel());
     }

@@ -35,12 +35,15 @@ import net.sourceforge.atunes.model.IPodcastFeedHandler;
 import net.sourceforge.atunes.model.IProxyBean;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStatePlayer;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.Logger;
 
 public class MPlayerProcessBuilder {
 
 	private IState state;
+	
+	private IStatePlayer statePlayer;
 	
 	private IOSManager osManager;
 	
@@ -51,6 +54,13 @@ public class MPlayerProcessBuilder {
 	private INetworkHandler networkHandler;
 	
 	private IEqualizer equalizer;
+	
+	/**
+	 * @param statePlayer
+	 */
+	public void setStatePlayer(IStatePlayer statePlayer) {
+		this.statePlayer = statePlayer;
+	}
 	
 	/**
 	 * @param equalizer
@@ -182,7 +192,7 @@ public class MPlayerProcessBuilder {
      */
     private boolean needsShortPathName(IAudioObject audioObject, boolean isRemoteAudio) {
     	// First check state and OS
-    	if (!state.isUseShortPathNames() || !osManager.usesShortPathNames()) {
+    	if (!statePlayer.isUseShortPathNames() || !osManager.usesShortPathNames()) {
     		return false;
     	}
     	
@@ -260,7 +270,7 @@ public class MPlayerProcessBuilder {
 	 * @param command
 	 */
 	private void prepareNormalization(List<String> command) {
-		if (state.isUseNormalisation()) {
+		if (statePlayer.isUseNormalisation()) {
 			command.add(MPlayerConstants.AUDIO_FILTER);
 			command.add(MPlayerConstants.VOLUME_NORM);
 		}

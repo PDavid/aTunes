@@ -114,7 +114,7 @@ public class XineEngine extends AbstractPlayerEngine {
 
     		xineController.open(audioObjectToPlay.getUrl());
 
-    		xineController.setVolume(getState().getVolume());
+    		xineController.setVolume(getStatePlayer().getVolume());
 
     		// Apply equalizer
     		applyEqualization(equalizer.getEqualizerValues());
@@ -212,7 +212,7 @@ public class XineEngine extends AbstractPlayerEngine {
         if (mute) {
             setVolume(0);
         } else {
-            setVolume(getState().getVolume());
+            setVolume(getStatePlayer().getVolume());
         }
     }
 
@@ -222,14 +222,6 @@ public class XineEngine extends AbstractPlayerEngine {
             xineController.setVolume(volume);
         }
     }
-
-    //	@Override
-    //	public boolean isPaused() {
-    //		if (xineController != null) {
-    //			return xineController.isPaused();
-    //		}
-    //		return false;
-    //	}
 
     protected void internalStop() {
         info("Internal stop");
@@ -277,7 +269,7 @@ public class XineEngine extends AbstractPlayerEngine {
 		public void run() {
 		    // xineController.getVolume() always returns 0 ??
 		    // Using volume value from app instead of xine
-		    int vol = XineEngine.this.getState().getVolume();
+		    int vol = XineEngine.this.getStatePlayer().getVolume();
 		    int i = 0;
 		    while (i < 50 && vol > 0) {
 		        vol = vol - 2;
@@ -294,7 +286,7 @@ public class XineEngine extends AbstractPlayerEngine {
 		    internalStop();
 		    // Volume restored after stop
 		    // If we don't do this, volume is 0 in next audio object
-		    xineController.setVolume(XineEngine.this.getState().getVolume());
+		    xineController.setVolume(XineEngine.this.getStatePlayer().getVolume());
 		}
 	}
 

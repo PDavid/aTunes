@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.ui;
 
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IFrameFactory;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.utils.Logger;
 
 import org.springframework.context.ApplicationContext;
@@ -30,20 +30,22 @@ import org.springframework.context.ApplicationContextAware;
 
 public class FrameFactory implements IFrameFactory, ApplicationContextAware {
 
-	private IState state;
+	private IStateUI stateUI;
 	
 	private String defaultFrameClass;
 	
 	private ApplicationContext context;
 	
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) {
-		this.context = applicationContext;
+	/**
+	 * @param stateUI
+	 */
+	public void setStateUI(IStateUI stateUI) {
+		this.stateUI = stateUI;
 	}
 	
 	@Override
-	public void setState(IState state) {
-		this.state = state;
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		this.context = applicationContext;
 	}
 	
 	@Override
@@ -54,7 +56,7 @@ public class FrameFactory implements IFrameFactory, ApplicationContextAware {
     @Override
     public IFrame create() {
     	IFrame frame = null;
-        Class<? extends IFrame> clazz = state.getFrameClass();
+        Class<? extends IFrame> clazz = stateUI.getFrameClass();
         if (clazz != null) {
             try {
                 frame = clazz.newInstance();
@@ -68,7 +70,7 @@ public class FrameFactory implements IFrameFactory, ApplicationContextAware {
         if (frame == null) {
         	frame = constructDefaultFrame();
         	if (frame != null) {
-                state.setFrameClass(frame.getClass());
+                stateUI.setFrameClass(frame.getClass());
         	}
         }
         

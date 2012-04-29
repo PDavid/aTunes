@@ -43,6 +43,7 @@ import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.ISystemTrayHandler;
 import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.model.PlayState;
@@ -54,6 +55,15 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
 
 	private IPlayListTable playListTable;
 	
+	private IStateUI stateUI;
+	
+	/**
+	 * @param stateUI
+	 */
+	public void setStateUI(IStateUI stateUI) {
+		this.stateUI = stateUI;
+	}
+	
 	/**
 	 * @param playListTable
 	 */
@@ -63,13 +73,12 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
  
     @Override
     public void applicationStarted() {
-    	IState state = getState();
-    	IFrameState frameState = state.getFrameState(getFrame().getClass());
+    	IFrameState frameState = stateUI.getFrameState(getFrame().getClass());
     	getFrame().applicationStarted(frameState);
     	
-        showStatusBar(state.isShowStatusBar(), false);
+        showStatusBar(stateUI.isShowStatusBar(), false);
         
-        if (!getState().isShowSystemTray() && getOsManager().isClosingMainWindowClosesApplication()) {
+        if (!stateUI.isShowSystemTray() && getOsManager().isClosingMainWindowClosesApplication()) {
         	getFrame().setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         }        
     }
@@ -84,7 +93,7 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
 	 */
     @Override
 	public void finish() {
-        if (!getState().isShowSystemTray() && getOsManager().isClosingMainWindowClosesApplication()) {
+        if (!stateUI.isShowSystemTray() && getOsManager().isClosingMainWindowClosesApplication()) {
         	getBean(IKernel.class).finish();
         }
     }
@@ -161,7 +170,7 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
     @Override
 	public void showStatusBar(boolean show, boolean save) {
     	if (save) {
-    		getState().setShowStatusBar(show);
+    		stateUI.setShowStatusBar(show);
     	}
         getFrame().showStatusBar(show);
         repaint();
@@ -180,14 +189,14 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
 
 		getFrame().setState(getState());
         
-        IFrameState frameState = getState().getFrameState(getFrame().getClass());
+        IFrameState frameState = stateUI.getFrameState(getFrame().getClass());
         ILocaleBean locale = getState().getLocale();
         ILocaleBean oldLocale = getState().getOldLocale();
         // Reset fame state if no frame state in state or if component orientation of locale has changed
         if (frameState == null || locale == null || oldLocale != null
                 && !(ComponentOrientation.getOrientation(locale.getLocale()).equals(ComponentOrientation.getOrientation(oldLocale.getLocale())))) {
             frameState = new FrameState();
-            getState().setFrameState(getFrame().getClass(), frameState);
+            stateUI.setFrameState(getFrame().getClass(), frameState);
         }
         getFrame().create(frameState);
 
@@ -269,7 +278,7 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
     
     @Override
     public void windowIconified() {
-		if (getState().isShowSystemTray()) {
+		if (stateUI.isShowSystemTray()) {
 			getFrame().setVisible(false);
 		}
     }

@@ -36,6 +36,7 @@ import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.INotificationEngine;
 import net.sourceforge.atunes.model.INotificationsHandler;
+import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class OSDPanel extends AbstractPreferencesPanel {
@@ -65,6 +66,15 @@ public final class OSDPanel extends AbstractPreferencesPanel {
     private INotificationsHandler notificationsHandler;
     
     private IDesktop desktop;
+    
+    private IStateUI stateUI;
+    
+    /**
+     * @param stateUI
+     */
+    public void setStateUI(IStateUI stateUI) {
+		this.stateUI = stateUI;
+	}
     
     /**
      * @param desktop
@@ -198,10 +208,10 @@ public final class OSDPanel extends AbstractPreferencesPanel {
     @Override
     public boolean applyPreferences() {
     	getState().setNotificationEngine((String)notificationEngines.getSelectedItem());
-        getState().setOsdDuration((Integer) osdDuration.getSelectedItem());
-        getState().setOsdWidth((Integer) osdWidth.getSelectedItem());
-        getState().setOsdHorizontalAlignment(getAlignment((String) osdHorizontalAlignment.getSelectedItem()));
-        getState().setOsdVerticalAlignment(getAlignment((String) osdVerticalAlignment.getSelectedItem()));
+    	stateUI.setOsdDuration((Integer) osdDuration.getSelectedItem());
+    	stateUI.setOsdWidth((Integer) osdWidth.getSelectedItem());
+    	stateUI.setOsdHorizontalAlignment(getAlignment((String) osdHorizontalAlignment.getSelectedItem()));
+    	stateUI.setOsdVerticalAlignment(getAlignment((String) osdVerticalAlignment.getSelectedItem()));
         return false;
     }
 
@@ -302,10 +312,10 @@ public final class OSDPanel extends AbstractPreferencesPanel {
     @Override
     public void updatePanel() {
     	setNotificationEngine(getState().getNotificationEngine());
-        setOSDDuration(getState().getOsdDuration());
-        setOSDWidth(getState().getOsdWidth());
-        setOSDHorizontalAlignment(getState().getOsdHorizontalAlignment());
-        setOSDVerticalAlignment(getState().getOsdVerticalAlignment());
+        setOSDDuration(stateUI.getOsdDuration());
+        setOSDWidth(stateUI.getOsdWidth());
+        setOSDHorizontalAlignment(stateUI.getOsdHorizontalAlignment());
+        setOSDVerticalAlignment(stateUI.getOsdVerticalAlignment());
     }
 
     @Override

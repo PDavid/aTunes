@@ -41,6 +41,7 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.LookAndFeelBean;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -118,7 +119,7 @@ public final class LookAndFeelManager implements PluginListener, ILookAndFeelMan
     }
 
     @Override
-	public void setLookAndFeel(LookAndFeelBean bean, IState state, IOSManager osManager) {
+	public void setLookAndFeel(LookAndFeelBean bean, IState state, IStateUI stateUI, IOSManager osManager) {
         if (applicationArguments.isIgnoreLookAndFeel()) {
             return;
         }
@@ -136,8 +137,8 @@ public final class LookAndFeelManager implements PluginListener, ILookAndFeelMan
 			}
             lookAndFeelBean.setName(defaultLookAndFeel.getName());
             lookAndFeelBean.setSkin(defaultLookAndFeel.getDefaultSkin());
-            if (state.getLookAndFeel() == null) {
-                state.setLookAndFeel(lookAndFeelBean);
+            if (stateUI.getLookAndFeel() == null) {
+                stateUI.setLookAndFeel(lookAndFeelBean);
             }
         }
 
@@ -157,7 +158,7 @@ public final class LookAndFeelManager implements PluginListener, ILookAndFeelMan
 		
         currentLookAndFeel.initializeLookAndFeel();
         currentLookAndFeel.setLookAndFeel(lookAndFeelBean.getSkin());        
-        initializeFonts(currentLookAndFeel, state);
+        initializeFonts(currentLookAndFeel, state, stateUI);
         ColorDefinitions.initColors();
     }
     
@@ -165,9 +166,10 @@ public final class LookAndFeelManager implements PluginListener, ILookAndFeelMan
      * Initializes fonts for look and feel
      * @param lookAndFeel
      * @param state
+     * @param stateUI
      */
-    private void initializeFonts(ILookAndFeel lookAndFeel, IState state) {
-		FontSettings fontSettings = state.getFontSettings();
+    private void initializeFonts(ILookAndFeel lookAndFeel, IState state, IStateUI stateUI) {
+		FontSettings fontSettings = stateUI.getFontSettings();
 		if (lookAndFeel.supportsCustomFontSettings() && fontSettings != null && !fontSettings.isUseFontSmoothingSettingsFromOs()) {
 			if (fontSettings.isUseFontSmoothing()) {
 				System.setProperty("awt.useSystemAAFontSettings", "lcd");
@@ -193,7 +195,7 @@ public final class LookAndFeelManager implements PluginListener, ILookAndFeelMan
     			} else {
     				font = UIManager.getFont("Label.font");
     			}
-    			state.setFontSettings(new FontSettings(fontBeanFactory.getFontBean(font), USE_FONT_SMOOTHING_DEFAULT_VALUE, USE_FONT_SMOOTHING_SETTINGS_FROM_OS_DEFAULT_VALUE));
+    			stateUI.setFontSettings(new FontSettings(fontBeanFactory.getFontBean(font), USE_FONT_SMOOTHING_DEFAULT_VALUE, USE_FONT_SMOOTHING_SETTINGS_FROM_OS_DEFAULT_VALUE));
     		}
     	}
 		lookAndFeel.setBaseFont(font);
@@ -239,11 +241,11 @@ public final class LookAndFeelManager implements PluginListener, ILookAndFeelMan
     }
 
     @Override
-	public void applySkin(String selectedSkin, IState state, IOSManager osManager) {
+	public void applySkin(String selectedSkin, IState state, IStateUI stateUI, IOSManager osManager) {
         LookAndFeelBean bean = new LookAndFeelBean();
         bean.setName(currentLookAndFeel.getName());
         bean.setSkin(selectedSkin);
-        setLookAndFeel(bean, state, osManager);
+        setLookAndFeel(bean, state, stateUI, osManager);
         for (Window window : Window.getWindows()) {
             SwingUtilities.updateComponentTreeUI(window);
         }

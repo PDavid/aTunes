@@ -36,6 +36,7 @@ import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -68,6 +69,8 @@ public class PodcastFeedEntryRetriever implements Runnable {
     
     private IState state;
     
+    private IStateUI stateUI;
+    
     private IFrame frame;
     
     private INavigationHandler navigationHandler;
@@ -79,14 +82,16 @@ public class PodcastFeedEntryRetriever implements Runnable {
     /**
      * @param podcastFeeds
      * @param state
+     * @param stateUI
      * @param frame
      * @param navigationHandler
      * @param networkHandler
      * @param podcastNavigationView
      */
-    public PodcastFeedEntryRetriever(List<IPodcastFeed> podcastFeeds, IState state, IFrame frame, INavigationHandler navigationHandler, INetworkHandler networkHandler, INavigationView podcastNavigationView) {
+    public PodcastFeedEntryRetriever(List<IPodcastFeed> podcastFeeds, IState state, IStateUI stateUI, IFrame frame, INavigationHandler navigationHandler, INetworkHandler networkHandler, INavigationView podcastNavigationView) {
         this.podcastFeeds = podcastFeeds;
         this.state = state;
+        this.stateUI = stateUI;
         this.frame = frame;
         this.navigationHandler = navigationHandler;
         this.networkHandler = networkHandler;
@@ -292,7 +297,7 @@ public class PodcastFeedEntryRetriever implements Runnable {
                             for (IPodcastFeed podcastFeed : podcastFeeds) {
                                 podcastFeed.markEntriesAsNotNew();
                             }
-                            if (!state.isShowStatusBar()) {
+                            if (!stateUI.isShowStatusBar()) {
                             	Context.getBean(IMessageDialogFactory.class).getDialog().showMessage(I18nUtils.getString("NEW_PODCAST_ENTRIES"), frame);
                             } else {
                                 frame.showNewPodcastFeedEntriesInfo(true);

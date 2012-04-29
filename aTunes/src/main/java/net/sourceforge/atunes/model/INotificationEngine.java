@@ -53,7 +53,7 @@ public interface INotificationEngine {
      * Update notification engine when settings change
      * @param newState
      */
-    public void updateNotification(IState newState);
+    public void updateNotification(IStateUI newState);
     
     /**
      * Brief description of notification engine

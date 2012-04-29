@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -34,6 +35,15 @@ public class ShowStatusBarAction extends CustomAbstractAction {
     private static final long serialVersionUID = 2303076465024539635L;
 
     private IUIHandler uiHandler;
+    
+    private IStateUI stateUI;
+    
+    /**
+     * @param stateUI
+     */
+    public void setStateUI(IStateUI stateUI) {
+		this.stateUI = stateUI;
+	}
     
     /**
      * @param uiHandler
@@ -50,7 +60,7 @@ public class ShowStatusBarAction extends CustomAbstractAction {
     @Override
     protected void initialize() {
     	super.initialize();
-        putValue(SELECTED_KEY, getState().isShowStatusBar());
+        putValue(SELECTED_KEY, stateUI.isShowStatusBar());
     }
 
     @Override

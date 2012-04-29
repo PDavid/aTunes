@@ -24,7 +24,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.concurrent.Future;
 
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.ITaskService;
 
 
@@ -34,7 +34,7 @@ final class SingleFrameComponentAdapter extends ComponentAdapter {
 	
 	private final ITaskService taskService;
 	
-	private final IState state;
+	private final IStateUI stateUI;
 
 	/**
 	 * Previous tasks (if any)
@@ -44,12 +44,12 @@ final class SingleFrameComponentAdapter extends ComponentAdapter {
 	/**
 	 * @param abstractSingleFrame
 	 * @param taskService
-	 * @param state
+	 * @param stateUI
 	 */
-	SingleFrameComponentAdapter(AbstractSingleFrame abstractSingleFrame, ITaskService taskService, IState state) {
+	SingleFrameComponentAdapter(AbstractSingleFrame abstractSingleFrame, ITaskService taskService, IStateUI stateUI) {
 		this.abstractSingleFrame = abstractSingleFrame;
 		this.taskService = taskService;
-		this.state = state;
+		this.stateUI = stateUI;
 	}
 
 	@Override
@@ -78,7 +78,7 @@ final class SingleFrameComponentAdapter extends ComponentAdapter {
 				future.cancel(false);
 			}
 			
-			future = taskService.submitOnce("Save Frame State", 1, new SaveFrameStateTask(abstractSingleFrame, state, width, height, x, y));
+			future = taskService.submitOnce("Save Frame State", 1, new SaveFrameStateTask(abstractSingleFrame, stateUI, width, height, x, y));
 		}
 	}
 }

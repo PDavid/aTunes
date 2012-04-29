@@ -32,6 +32,7 @@ import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IProcessFactory;
+import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -50,6 +51,15 @@ public class AutoSetTagFromFileNamePatternAction extends AbstractActionOverSelec
     private ILookAndFeelManager lookAndFeelManager;
     
     private IProcessFactory processFactory;
+    
+    private IStateRepository stateRepository;
+    
+    /**
+     * @param stateRepository
+     */
+    public void setStateRepository(IStateRepository stateRepository) {
+		this.stateRepository = stateRepository;
+	}
     
     /**
      * @param processFactory
@@ -80,7 +90,7 @@ public class AutoSetTagFromFileNamePatternAction extends AbstractActionOverSelec
     @Override
     protected void executeAction(List<ILocalAudioObject> objects) {
         // Show pattern input dialog
-        PatternInputDialog inputDialog = new PatternInputDialog(frame.getFrame(), false, getState(), lookAndFeelManager.getCurrentLookAndFeel());
+        PatternInputDialog inputDialog = new PatternInputDialog(frame.getFrame(), false, stateRepository, lookAndFeelManager.getCurrentLookAndFeel());
         inputDialog.show(Patterns.getRecognitionPatterns(), objects.get(0).getNameWithoutExtension());
         String pattern = inputDialog.getResult();
 

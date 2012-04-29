@@ -24,7 +24,7 @@ import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStatePlayer;
 
 /**
  * Returns volume icon according to volume level and look and feel
@@ -32,8 +32,6 @@ import net.sourceforge.atunes.model.IState;
  *
  */
 public class VolumeIconCalculator {
-	
-	private IState state;
 	
 	private ILookAndFeelManager lookAndFeelManager;
 	
@@ -46,6 +44,15 @@ public class VolumeIconCalculator {
 	private IIconFactory volumeMinIcon;
 	
 	private IIconFactory volumeZeroIcon;
+	
+	private IStatePlayer statePlayer;
+	
+	/**
+	 * @param statePlayer
+	 */
+	public void setStatePlayer(IStatePlayer statePlayer) {
+		this.statePlayer = statePlayer;
+	}
 	
 	/**
 	 * @param volumeMaxIcon
@@ -83,13 +90,6 @@ public class VolumeIconCalculator {
 	}
 	
 	/**
-	 * @param state
-	 */
-	public void setState(IState state) {
-		this.state = state;
-	}
-	
-	/**
 	 * @param lookAndFeelManager
 	 */
 	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
@@ -109,10 +109,10 @@ public class VolumeIconCalculator {
      * @return
      */
     private IIconFactory getIcon() {
-        if (state.isMuteEnabled()) {
+        if (statePlayer.isMuteEnabled()) {
             return volumeMuteIcon;
         } else {
-            int volume = state.getVolume();
+            int volume = statePlayer.getVolume();
             if (volume > 80) {
                 return volumeMaxIcon;
             } else if (volume > 40) {

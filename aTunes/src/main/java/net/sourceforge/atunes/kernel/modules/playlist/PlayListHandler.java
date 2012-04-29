@@ -52,6 +52,7 @@ import net.sourceforge.atunes.model.IPlayerControlsPanel;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStatePlayer;
 import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -109,6 +110,15 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	private IPlayListsContainer playListsContainer;
 	
 	private PlayListRemover playListRemover;
+	
+	private IStatePlayer statePlayer;
+	
+	/**
+	 * @param statePlayer
+	 */
+	public void setStatePlayer(IStatePlayer statePlayer) {
+		this.statePlayer = statePlayer;
+	}
 	
 	/**
 	 * @param playListRemover
@@ -273,9 +283,9 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	public void newPlayList(String nameOfNewPlayList, List<? extends IAudioObject> audioObjects) {
         PlayList newPlayList;
         if (audioObjects == null) {
-            newPlayList = new PlayList(getState());
+            newPlayList = new PlayList(statePlayer);
         } else {
-            newPlayList = new PlayList(audioObjects, getState());
+            newPlayList = new PlayList(audioObjects, statePlayer);
         }
         newPlayList.setName(nameOfNewPlayList);
         playListsContainer.addPlayList(newPlayList);
@@ -442,7 +452,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
                 } else {
                     playerHandler.stopCurrentAudioObject(false);
                 }
-            } else if (getState().isShuffle()) {
+            } else if (statePlayer.isShuffle()) {
                 // If shuffle enabled, select a random audio object
                 selectedAudioObject = playList.getRandomPosition();
             }
@@ -781,7 +791,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
             }
 
             // Create a new play list by filtering elements
-            PlayList newPlayList = new PlayList(playListColumnSet.filterAudioObjects(nonFilteredPlayList.getAudioObjectsList(), filterText), getState());
+            PlayList newPlayList = new PlayList(playListColumnSet.filterAudioObjects(nonFilteredPlayList.getAudioObjectsList(), filterText), statePlayer);
             setPlayListAfterFiltering(newPlayList);
         }
     }

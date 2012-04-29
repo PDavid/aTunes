@@ -31,7 +31,7 @@ import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepository;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.model.InconsistentRepositoryException;
 
@@ -43,7 +43,7 @@ import net.sourceforge.atunes.model.InconsistentRepositoryException;
 public class VoidRepository implements IRepository {
 
 	@Override
-	public void setState(IState state) {}
+	public void setStateRepository(IStateRepository state) {}
 
 	@Override
 	public List<File> getRepositoryFolders() {

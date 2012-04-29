@@ -30,7 +30,7 @@ public interface IRepository {
 	/**
 	 * @param state
 	 */
-	public void setState(IState state);
+	public void setStateRepository(IStateRepository state);
 
 	/**
 	 * Gets the folders.

@@ -24,7 +24,7 @@ import java.awt.Dimension;
 import java.awt.Frame;
 
 import net.sourceforge.atunes.model.IFrameState;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateUI;
 
 /**
  * Calculates window size and applies to a frame
@@ -53,9 +53,11 @@ public class WindowSizeCalculator {
 	
 	/**
      * Sets the window size.
+     * @param frame
+     * @param stateUI
      */
-    public void setWindowSize(AbstractSingleFrame frame, IState state) {
-    	IFrameState frameState = state.getFrameState(frame.getClass());
+    public void setWindowSize(AbstractSingleFrame frame, IStateUI stateUI) {
+    	IFrameState frameState = stateUI.getFrameState(frame.getClass());
         frame.setMinimumSize(frame.getWindowMinimumSize());
         if (frameState.isMaximized()) {
             setWindowSizeMaximized(frame);

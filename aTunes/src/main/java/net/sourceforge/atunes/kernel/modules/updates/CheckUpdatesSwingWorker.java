@@ -29,7 +29,7 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.ApplicationVersion;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IMessageDialogFactory;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.IUpdateDialog;
 import net.sourceforge.atunes.model.IUpdateHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -43,21 +43,21 @@ final class CheckUpdatesSwingWorker extends
 	private final IUpdateHandler updateHandler;
 	private final boolean showNoNewVersion;
 	private final boolean alwaysInDialog;
-	private IState state;
+	private IStateUI stateUI;
 	private IFrame frame;
 
 	/**
 	 * @param updateHandler
 	 * @param showNoNewVersion
 	 * @param alwaysInDialog
-	 * @param state
+	 * @param stateUI
 	 * @param frame
 	 */
-	CheckUpdatesSwingWorker(IUpdateHandler updateHandler, boolean showNoNewVersion, boolean alwaysInDialog, IState state, IFrame frame) {
+	CheckUpdatesSwingWorker(IUpdateHandler updateHandler, boolean showNoNewVersion, boolean alwaysInDialog, IStateUI stateUI, IFrame frame) {
 		this.updateHandler = updateHandler;
 		this.showNoNewVersion = showNoNewVersion;
 		this.alwaysInDialog = alwaysInDialog;
-		this.state = state;
+		this.stateUI = stateUI;
 		this.frame = frame;
 	}
 
@@ -71,7 +71,7 @@ final class CheckUpdatesSwingWorker extends
 	    try {
 	        ApplicationVersion version = get();
 	        if (version != null && version.compareTo(Constants.VERSION) == 1) {
-	        	 if (alwaysInDialog || !state.isShowStatusBar()) {
+	        	 if (alwaysInDialog || !stateUI.isShowStatusBar()) {
 	                 IUpdateDialog dialog = Context.getBean(IUpdateDialog.class);
 	                 dialog.initialize(version);
 	                 dialog.showDialog();

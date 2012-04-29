@@ -34,6 +34,7 @@ import net.sourceforge.atunes.model.ILocaleBeanFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.ITemporalDiskStorage;
 import net.sourceforge.atunes.model.IUIHandler;
@@ -55,9 +56,18 @@ public final class Kernel implements IKernel, ApplicationContextAware {
     
     private IState state;
     
+    private IStateUI stateUI;
+    
     private ILocaleBeanFactory localeBeanFactory;
     
     private ApplicationContext context;
+    
+    /**
+     * @param stateUI
+     */
+    public void setStateUI(IStateUI stateUI) {
+		this.stateUI = stateUI;
+	}
     
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) {
@@ -107,7 +117,7 @@ public final class Kernel implements IKernel, ApplicationContextAware {
             SwingUtilities.invokeAndWait(new Runnable() {
                 @Override
                 public void run() {
-                    context.getBean(ILookAndFeelManager.class).setLookAndFeel(state.getLookAndFeel(), state, context.getBean(IOSManager.class));
+                    context.getBean(ILookAndFeelManager.class).setLookAndFeel(stateUI.getLookAndFeel(), state, stateUI, context.getBean(IOSManager.class));
 
                     context.getBean(HandlerInitializer.class).setFrameForHandlers(context.getBean(IFrame.class));
                 }

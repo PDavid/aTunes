@@ -37,7 +37,7 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeIconCalcul
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStatePlayer;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -48,22 +48,22 @@ public class MuteActionTest {
 	
 	private IPlayerHandler playerHandler;
 	
-	private IState state;
+	private IStatePlayer state;
 	
 	@Before
 	public void init() {
 		sut = new MuteAction();
 		playerHandler = mock(IPlayerHandler.class);
 		ILookAndFeelManager lookAndFeelManager = mock(ILookAndFeelManager.class);
-		state = mock(IState.class);
+		state = mock(IStatePlayer.class);
 		ILookAndFeel lookAndFeel = mock(ILookAndFeel.class);
 		when(lookAndFeel.getPaintForSpecialControls()).thenReturn(Color.red);
 		when(lookAndFeelManager.getCurrentLookAndFeel()).thenReturn(lookAndFeel);
 		sut.setPlayerHandler(playerHandler);
-		sut.setState(state);
+		sut.setStatePlayer(state);
 		
 		VolumeIconCalculator iconCalculator = new VolumeIconCalculator();
-		iconCalculator.setState(state);
+		iconCalculator.setStatePlayer(state);
 		iconCalculator.setLookAndFeelManager(lookAndFeelManager);
 		iconCalculator.setVolumeMaxIcon(new VolumeMaxImageIcon());
 		iconCalculator.setVolumeMedIcon(new VolumeMedImageIcon());

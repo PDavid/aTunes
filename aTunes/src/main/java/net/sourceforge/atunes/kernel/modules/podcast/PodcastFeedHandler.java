@@ -48,6 +48,7 @@ import net.sourceforge.atunes.model.IPodcastFeedHandler;
 import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
+import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.CollectionUtils;
@@ -95,6 +96,15 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
     private ILookAndFeelManager lookAndFeelManager;
     
     private INavigationView podcastNavigationView;
+    
+    private IStateUI stateUI;
+    
+    /**
+     * @param stateUI
+     */
+    public void setStateUI(IStateUI stateUI) {
+		this.stateUI = stateUI;
+	}
     
     /**
      * @param podcastNavigationView
@@ -305,7 +315,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
     	
         // Start only if podcast feeds created
         if (!CollectionUtils.isEmpty(getPodcastFeeds())) {
-        	scheduledPodcastFeedEntryRetrieverFuture = taskService.submitPeriodically("Periodically Retrieve Podcast Feed Entries", newRetrievalInterval, newRetrievalInterval, new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame(), navigationHandler, networkHandler, podcastNavigationView));
+        	scheduledPodcastFeedEntryRetrieverFuture = taskService.submitPeriodically("Periodically Retrieve Podcast Feed Entries", newRetrievalInterval, newRetrievalInterval, new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), stateUI, getFrame(), navigationHandler, networkHandler, podcastNavigationView));
         } else {
         	Logger.debug("Not scheduling PodcastFeedEntryRetriever");
         }
@@ -313,7 +323,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
 
     @Override
 	public void retrievePodcastFeedEntries() {
-    	taskService.submitNow("Retrieve Podcast Feed Entries", new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), getFrame(), navigationHandler, networkHandler, podcastNavigationView));
+    	taskService.submitNow("Retrieve Podcast Feed Entries", new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), stateUI, getFrame(), navigationHandler, networkHandler, podcastNavigationView));
     }
 
     @Override

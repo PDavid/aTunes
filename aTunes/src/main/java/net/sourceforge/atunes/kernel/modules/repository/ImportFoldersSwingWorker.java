@@ -39,7 +39,7 @@ import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IRepositoryLoaderListener;
 import net.sourceforge.atunes.model.IReviewImportDialog;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.model.ITagAttributesReviewed;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -54,11 +54,11 @@ public final class ImportFoldersSwingWorker extends SwingWorker<List<ILocalAudio
 	private String path;
 	private IProgressDialog progressDialog;
 	private IFrame frame;
-	private IState appState;
 	private IErrorDialogFactory errorDialogFactory;
 	private ILocalAudioObjectValidator localAudioObjectValidator;
 	private IProcessFactory processFactory;
 	private ILocalAudioObjectLocator localAudioObjectLocator;
+	private IStateRepository stateRepository;
 	
 	/**
 	 * @param repositoryHandler
@@ -94,12 +94,12 @@ public final class ImportFoldersSwingWorker extends SwingWorker<List<ILocalAudio
 	public void setFrame(IFrame frame) {
 		this.frame = frame;
 	}
-	
+
 	/**
-	 * @param state
+	 * @param stateRepository
 	 */
-	public void setAppState(IState state) {
-		this.appState = state;
+	public void setStateRepository(IStateRepository stateRepository) {
+		this.stateRepository = stateRepository;
 	}
 	
 	/**
@@ -146,7 +146,7 @@ public final class ImportFoldersSwingWorker extends SwingWorker<List<ILocalAudio
 
 	        ITagAttributesReviewed tagAttributesReviewed = null;
 	        // Review tags if selected in settings
-	        if (appState.isReviewTagsBeforeImport()) {
+	        if (stateRepository.isReviewTagsBeforeImport()) {
 	            IReviewImportDialog reviewImportDialog = Context.getBean(IReviewImportDialog.class);
 	            reviewImportDialog.showDialog(folders, filesToLoad);
 	            if (reviewImportDialog.isDialogCancelled()) {

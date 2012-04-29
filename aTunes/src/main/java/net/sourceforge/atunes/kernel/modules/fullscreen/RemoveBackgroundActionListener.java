@@ -24,23 +24,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateUI;
 
 final class RemoveBackgroundActionListener implements ActionListener {
 	
 	private final FullScreenWindow window;
 	
-	private final IState state;
+	private final IStateUI stateUI;
 
-	public RemoveBackgroundActionListener(FullScreenWindow window, IState state) {
+	public RemoveBackgroundActionListener(FullScreenWindow window, IStateUI stateUI) {
 		this.window = window;
-		this.state = state;
+		this.stateUI = stateUI;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		window.setBackground((File)null);
-	    state.setFullScreenBackground(null);
+	    stateUI.setFullScreenBackground(null);
 	    window.invalidate();
 	    window.repaint();
 	}

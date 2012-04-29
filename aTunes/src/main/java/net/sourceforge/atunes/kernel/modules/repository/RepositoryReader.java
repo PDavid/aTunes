@@ -45,7 +45,7 @@ import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryLoader;
 import net.sourceforge.atunes.model.IRepositoryLoaderListener;
 import net.sourceforge.atunes.model.IRepositoryProgressDialog;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -110,8 +110,6 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	
 	private IFrame frame;
 	
-	private IState state;
-	
 	private RepositoryHandler repositoryHandler;
 
 	private INavigationHandler navigationHandler;
@@ -121,6 +119,15 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	private RepositoryActionsHelper repositoryActions;
 	
 	private ShowRepositoryDataHelper showRepositoryDataHelper;
+	
+	private IStateRepository stateRepository;
+	
+	/**
+	 * @param stateRepository
+	 */
+	public void setStateRepository(IStateRepository stateRepository) {
+		this.stateRepository = stateRepository;
+	}
 	
 	/**
 	 * @param showRepositoryDataHelper
@@ -148,13 +155,6 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	 */
 	public void setNavigationHandler(INavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
-	}
-	
-	/**
-	 * @param state
-	 */
-	public void setState(IState state) {
-		this.state = state;
 	}
 	
 	/**
@@ -273,7 +273,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
      * If any repository was loaded previously, try to reload folders
      */
     private void reloadExistingRepository() {
-        List<String> lastRepositoryFolders = state.getLastRepositoryFolders();
+        List<String> lastRepositoryFolders = stateRepository.getLastRepositoryFolders();
         if (lastRepositoryFolders != null && !lastRepositoryFolders.isEmpty()) {
             List<File> foldersToRead = new ArrayList<File>();
             for (String f : lastRepositoryFolders) {
@@ -344,7 +344,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
     private void readRepository(List<File> folders) {
         backgroundLoad = false;
         IRepository oldRepository = repository;
-        repository = new Repository(folders, state);
+        repository = new Repository(folders, stateRepository);
         repositoryHandler.setRepository(repository);
         currentLoader = Context.getBean(RepositoryReadLoader.class);
         currentLoader.setRepositoryLoaderListener(this);
@@ -408,7 +408,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
         for (File folder : repository.getRepositoryFolders()) {
             repositoryFolders.add(folder.getAbsolutePath());
         }
-        state.setLastRepositoryFolders(repositoryFolders);
+        stateRepository.setLastRepositoryFolders(repositoryFolders);
 
         if (backgroundLoad) {
         	frame.hideProgressBar();
@@ -468,7 +468,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
         Logger.info("Refreshing repository");
         filesLoaded = 0;
         IRepository oldRepository = repository;
-        repository = new Repository(oldRepository.getRepositoryFolders(), state);
+        repository = new Repository(oldRepository.getRepositoryFolders(), stateRepository);
         repositoryHandler.setRepository(repository);
         currentLoader = Context.getBean(RepositoryRefreshLoader.class);
         currentLoader.setRepositoryLoaderListener(this);

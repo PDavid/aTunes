@@ -30,14 +30,14 @@ import net.sourceforge.atunes.gui.images.PlayTrayImageIcon;
 import net.sourceforge.atunes.gui.images.PreviousTrayImageIcon;
 import net.sourceforge.atunes.gui.images.StopTrayImageIcon;
 import net.sourceforge.atunes.model.IPlayerTrayIconsHandler;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateUI;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 public class CommonPlayerTrayIconsHandler implements IPlayerTrayIconsHandler, ApplicationContextAware {
 	
-	private IState state;
+	private IStateUI stateUI;
 	
 	private ApplicationContext context;
 	
@@ -47,15 +47,15 @@ public class CommonPlayerTrayIconsHandler implements IPlayerTrayIconsHandler, Ap
 	}
 	
     /**
-     * @param state
+     * @param stateUI
      */
-    public void setState(IState state) {
-		this.state = state;
+    public void setStateUI(IStateUI stateUI) {
+		this.stateUI = stateUI;
 	}
     
 	@Override
 	public Image getNextIcon(Dimension iconSize) {
-    	Color color = state.getTrayPlayerIconsColor().getColor();
+    	Color color = stateUI.getTrayPlayerIconsColor().getColor();
     	NextTrayImageIcon nextTrayIcon = context.getBean(NextTrayImageIcon.class);
     	nextTrayIcon.setSize(iconSize);
     	return nextTrayIcon.getIcon(color).getImage();
@@ -63,7 +63,7 @@ public class CommonPlayerTrayIconsHandler implements IPlayerTrayIconsHandler, Ap
 	
 	@Override
 	public Image getPauseIcon(Dimension iconSize) {
-    	Color color = state.getTrayPlayerIconsColor().getColor();
+    	Color color = stateUI.getTrayPlayerIconsColor().getColor();
     	PauseTrayImageIcon pauseTrayIcon = context.getBean(PauseTrayImageIcon.class);
     	pauseTrayIcon.setSize(iconSize);
     	return pauseTrayIcon.getIcon(color).getImage();
@@ -71,7 +71,7 @@ public class CommonPlayerTrayIconsHandler implements IPlayerTrayIconsHandler, Ap
 	
 	@Override
 	public Image getPlayIcon(Dimension iconSize) {
-    	Color color = state.getTrayPlayerIconsColor().getColor();
+    	Color color = stateUI.getTrayPlayerIconsColor().getColor();
     	PlayTrayImageIcon playTrayIcon = context.getBean(PlayTrayImageIcon.class);
     	playTrayIcon.setSize(iconSize);
     	return playTrayIcon.getIcon(color).getImage();
@@ -79,7 +79,7 @@ public class CommonPlayerTrayIconsHandler implements IPlayerTrayIconsHandler, Ap
 	
 	@Override
 	public Image getPreviousIcon(Dimension iconSize) {
-    	Color color = state.getTrayPlayerIconsColor().getColor();
+    	Color color = stateUI.getTrayPlayerIconsColor().getColor();
     	PreviousTrayImageIcon previousTrayIcon = context.getBean(PreviousTrayImageIcon.class);
     	previousTrayIcon.setSize(iconSize);
     	return previousTrayIcon.getIcon(color).getImage();
@@ -87,7 +87,7 @@ public class CommonPlayerTrayIconsHandler implements IPlayerTrayIconsHandler, Ap
 	
 	@Override
 	public Image getStopIcon(Dimension iconSize) {
-    	Color color = state.getTrayPlayerIconsColor().getColor();
+    	Color color = stateUI.getTrayPlayerIconsColor().getColor();
     	StopTrayImageIcon stopTrayIcon = context.getBean(StopTrayImageIcon.class);
     	stopTrayIcon.setSize(iconSize);
     	return stopTrayIcon.getIcon(color).getImage();

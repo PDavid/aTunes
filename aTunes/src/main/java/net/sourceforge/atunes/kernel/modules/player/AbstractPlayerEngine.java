@@ -41,6 +41,7 @@ import net.sourceforge.atunes.model.IPlayerEngine;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStatePlayer;
 import net.sourceforge.atunes.model.ITemporalDiskStorage;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.model.PlaybackState;
@@ -111,6 +112,19 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
     private INavigationView podcastNavigationView;
     
     private Volume volumeController;
+    
+    private IStatePlayer statePlayer;
+    
+    /**
+     * @param statePlayer
+     */
+    public void setStatePlayer(IStatePlayer statePlayer) {
+		this.statePlayer = statePlayer;
+	}
+    
+    protected IStatePlayer getStatePlayer() {
+		return statePlayer;
+	}
     
     /**
      * @param volumeController
@@ -239,7 +253,7 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
     @Override
 	public final void stopCurrentAudioObject(boolean userStopped) {
         try {
-            boolean activateFadeAway = userStopped && state.isUseFadeAway() && !paused;
+            boolean activateFadeAway = userStopped && statePlayer.isUseFadeAway() && !paused;
             if (paused) {
                 paused = false;
             }
@@ -378,7 +392,7 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
      */
     @Override
 	public final void volumeDown() {
-    	volumeController.setVolume(state.getVolume() - 5);
+    	volumeController.setVolume(statePlayer.getVolume() - 5);
     }
 
     /**
@@ -386,7 +400,7 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
      */
     @Override
 	public final void volumeUp() {
-    	volumeController.setVolume(state.getVolume() + 5);
+    	volumeController.setVolume(statePlayer.getVolume() + 5);
     }
 
     /**
@@ -408,7 +422,7 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
      * @return <code>true</code> if mute is enabled
      */
     protected final boolean isMuteEnabled() {
-        return state.isMuteEnabled();
+        return statePlayer.isMuteEnabled();
     }
 
     /**
@@ -463,9 +477,9 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
     protected final void notifyRadioOrPodcastFeedEntryStarted() {
         Logger.debug("radio or podcast feed entry has started playing");
         // send volume command
-        setVolume(state.getVolume());
+        setVolume(statePlayer.getVolume());
         // if muted set mute again
-        if (state.isMuteEnabled()) {
+        if (statePlayer.isMuteEnabled()) {
             applyMuteState(true);
         }
         Logger.debug("MPlayer bug (ignoring muting and volume settings after streamed file starts playing) workaround applied");
@@ -479,7 +493,7 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
     private void playAudioObject(final IAudioObject audioObject) {
         Logger.info(StringUtils.getString("Started play of file ", audioObject));
 
-        if (state.isCacheFilesBeforePlaying()) {
+        if (statePlayer.isCacheFilesBeforePlaying()) {
 
         	PlayAudioObjectRunnable r = new PlayAudioObjectRunnable(this, audioObject, frame, temporalDiskStorage);
         	
@@ -503,7 +517,7 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
     	
         // If cacheFilesBeforePlaying is true and audio object is an audio file, copy it to temp folder
         // and start player process from this copied file
-	    if (audioObject instanceof ILocalAudioObject && getState().isCacheFilesBeforePlaying()) {
+	    if (audioObject instanceof ILocalAudioObject && statePlayer.isCacheFilesBeforePlaying()) {
 	    	
 	    	Logger.debug("Start caching file: ", audioObject.getUrl());
 	    	
@@ -557,10 +571,10 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 		startPlayback(audioObjectToPlay, audioObject);
 
 		// Setting volume and balance
-		if (state.isMuteEnabled()) {
+		if (statePlayer.isMuteEnabled()) {
 			applyMuteState(true);
 		} else {
-			setVolume(state.getVolume());
+			setVolume(statePlayer.getVolume());
 		}
 
 		// Call listeners

@@ -26,7 +26,7 @@ import java.util.List;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IListOfPlayLists;
 import net.sourceforge.atunes.model.IPlayList;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStatePlayer;
 
 /**
  * This class is used to contain all playlists when storing and reading from
@@ -46,13 +46,13 @@ public class ListOfPlayLists implements IListOfPlayLists {
     
     /**
      * Returns a list of playlists with an empty playlist.
-     * 
-     * @return the empty play list
+     * @param statePlayer
+     * @return
      */
-    static ListOfPlayLists getEmptyPlayList(IState state) {
+    static ListOfPlayLists getEmptyPlayList(IStatePlayer statePlayer) {
         ListOfPlayLists l = new ListOfPlayLists();
         List<IPlayList> playLists = new ArrayList<IPlayList>();
-        playLists.add(new PlayList(state));
+        playLists.add(new PlayList(statePlayer));
         l.setPlayLists(playLists);
         l.setSelectedPlayList(0);
         return l;
@@ -106,15 +106,15 @@ public class ListOfPlayLists implements IListOfPlayLists {
      * @param state
      */
     @Override
-	public void setContents(List<List<IAudioObject>> contents, IState state) {
+	public void setContents(List<List<IAudioObject>> contents, IStatePlayer statePlayer) {
     	if (playLists.size() != contents.size()) {
     		throw new IllegalArgumentException("Invalid play list contents");
     	}
         for (int i = 0; i < playLists.size(); i++) {
         	PlayList pl = (PlayList) getPlayLists().get(i);
-			pl.setState(state);
+			pl.setStatePlayer(statePlayer);
             pl.setContent(contents.get(i));
-            pl.setMode(PlayListMode.getPlayListMode(pl, state));
+            pl.setMode(PlayListMode.getPlayListMode(pl, statePlayer));
         }
     }
 }

@@ -21,30 +21,33 @@
 package net.sourceforge.atunes.kernel.modules.playlist;
 
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStatePlayer;
 import net.sourceforge.atunes.utils.PointedList;
 
 class PlayListPointedList extends PointedList<IAudioObject> {
     private static final long serialVersionUID = -6966402482637754615L;
 
-    private transient IState state;
+    private transient IStatePlayer statePlayer;
     
-    PlayListPointedList(IState state) {
+    PlayListPointedList(IStatePlayer statePlayer) {
         super();
-        this.state = state;
+        this.statePlayer = statePlayer;
     }
 
-    PlayListPointedList(PointedList<IAudioObject> pointedList, IState state) {
+    PlayListPointedList(PointedList<IAudioObject> pointedList, IStatePlayer statePlayer) {
         super(pointedList);
-        this.state = state;
+        this.statePlayer = statePlayer;
     }
 
     @Override
     public boolean isCyclic() {
-        return state.isRepeat();
+        return statePlayer.isRepeat();
     }
     
-    public void setState(IState state) {
-		this.state = state;
+    /**
+     * @param statePlayer
+     */
+    public void setStatePlayer(IStatePlayer statePlayer) {
+		this.statePlayer = statePlayer;
 	}
 }

@@ -40,6 +40,7 @@ import net.sourceforge.atunes.model.ILocalAudioObjectTransferProcess;
 import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IProgressDialog;
+import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -84,6 +85,22 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
     private IMessageDialogFactory messageDialogFactory;
     
     private String destination;
+    
+    private IStateRepository stateRepository;
+    
+    /**
+     * @param stateRepository
+     */
+    public void setStateRepository(IStateRepository stateRepository) {
+		this.stateRepository = stateRepository;
+	}
+    
+    /**
+     * @return
+     */
+    protected IStateRepository getStateRepository() {
+		return stateRepository;
+	}
     
     /**
      * @param collection
@@ -288,7 +305,7 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
      * @return
      */
     protected String getDirectory(ILocalAudioObject song, File destination, boolean isMp3Device) {
-        return getDirectory(song, destination, isMp3Device, getState().getImportExportFolderPathPattern());
+        return getDirectory(song, destination, isMp3Device, stateRepository.getImportExportFolderPathPattern());
     }
 
     /**
@@ -318,7 +335,7 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
      * @return
      */
     protected String getName(ILocalAudioObject file, boolean isMp3Device) {
-        return getName(file, isMp3Device, getState().getImportExportFileNamePattern());
+        return getName(file, isMp3Device, stateRepository.getImportExportFileNamePattern());
     }
 
     /**

@@ -39,6 +39,7 @@ import javax.swing.JTextField;
 
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -89,6 +90,15 @@ public final class ImportExportPanel extends AbstractPreferencesPanel {
     private JCheckBox setTitlesWhenImportingCheckBox;
     
     private ILookAndFeelManager lookAndFeelManager;
+    
+    private IStateRepository stateRepository;
+    
+    /**
+     * @param stateRepository
+     */
+    public void setStateRepository(IStateRepository stateRepository) {
+		this.stateRepository = stateRepository;
+	}
     
     /**
      * @param lookAndFeelManager
@@ -263,39 +273,39 @@ public final class ImportExportPanel extends AbstractPreferencesPanel {
     @Override
     public boolean applyPreferences() {
         String fileNamePattern = fileNameNoChangeRadioButton.isSelected() ? "" : fileNamePatternTextField.getText();
-        getState().setImportExportFileNamePattern(fileNamePattern == null || fileNamePattern.trim().equals("") ? null : fileNamePattern);
+        stateRepository.setImportExportFileNamePattern(fileNamePattern == null || fileNamePattern.trim().equals("") ? null : fileNamePattern);
         String folderPathPattern = folderPathNoChangeRadioButton.isSelected() ? "" : folderPathPatternTextField.getText();
-        getState().setImportExportFolderPathPattern(folderPathPattern == null || folderPathPattern.equals("") ? null : folderPathPattern);
-        getState().setReviewTagsBeforeImport(reviewTagsBeforeImportCheckBox.isSelected());
-        getState().setApplyChangesToSourceFilesBeforeImport(applyChangesToSourceFilesCheckBox.isSelected());
-        getState().setSetTrackNumbersWhenImporting(setTrackNumberWhenImportingCheckBox.isSelected());
-        getState().setSetTitlesWhenImporting(setTitlesWhenImportingCheckBox.isSelected());
+        stateRepository.setImportExportFolderPathPattern(folderPathPattern == null || folderPathPattern.equals("") ? null : folderPathPattern);
+        stateRepository.setReviewTagsBeforeImport(reviewTagsBeforeImportCheckBox.isSelected());
+        stateRepository.setApplyChangesToSourceFilesBeforeImport(applyChangesToSourceFilesCheckBox.isSelected());
+        stateRepository.setSetTrackNumbersWhenImporting(setTrackNumberWhenImportingCheckBox.isSelected());
+        stateRepository.setSetTitlesWhenImporting(setTitlesWhenImportingCheckBox.isSelected());
         return false;
     }
 
     @Override
     public void updatePanel() {
-        if (getState().getImportExportFileNamePattern() == null || getState().getImportExportFileNamePattern().trim().equals("")) {
+        if (stateRepository.getImportExportFileNamePattern() == null || stateRepository.getImportExportFileNamePattern().trim().equals("")) {
             fileNameNoChangeRadioButton.setSelected(true);
             fileNamePatternTextField.setEnabled(false);
         } else {
             fileNameCustomizedRadioButton.setSelected(true);
             fileNamePatternTextField.setEnabled(true);
-            fileNamePatternTextField.setText(getState().getImportExportFileNamePattern());
+            fileNamePatternTextField.setText(stateRepository.getImportExportFileNamePattern());
         }
-        if (getState().getImportExportFolderPathPattern() == null || getState().getImportExportFolderPathPattern().trim().equals("")) {
+        if (stateRepository.getImportExportFolderPathPattern() == null || stateRepository.getImportExportFolderPathPattern().trim().equals("")) {
             folderPathNoChangeRadioButton.setSelected(true);
             folderPathPatternTextField.setEnabled(false);
         } else {
             folderPathCustomizedRadioButton.setSelected(true);
             folderPathPatternTextField.setEnabled(true);
-            folderPathPatternTextField.setText(getState().getImportExportFolderPathPattern());
+            folderPathPatternTextField.setText(stateRepository.getImportExportFolderPathPattern());
         }
-        reviewTagsBeforeImportCheckBox.setSelected(getState().isReviewTagsBeforeImport());
-        applyChangesToSourceFilesCheckBox.setEnabled(getState().isReviewTagsBeforeImport());
-        applyChangesToSourceFilesCheckBox.setSelected(getState().isApplyChangesToSourceFilesBeforeImport());
-        setTrackNumberWhenImportingCheckBox.setSelected(getState().isSetTrackNumbersWhenImporting());
-        setTitlesWhenImportingCheckBox.setSelected(getState().isSetTitlesWhenImporting());
+        reviewTagsBeforeImportCheckBox.setSelected(stateRepository.isReviewTagsBeforeImport());
+        applyChangesToSourceFilesCheckBox.setEnabled(stateRepository.isReviewTagsBeforeImport());
+        applyChangesToSourceFilesCheckBox.setSelected(stateRepository.isApplyChangesToSourceFilesBeforeImport());
+        setTrackNumberWhenImportingCheckBox.setSelected(stateRepository.isSetTrackNumbersWhenImporting());
+        setTitlesWhenImportingCheckBox.setSelected(stateRepository.isSetTitlesWhenImporting());
     }
 
     @Override

@@ -31,85 +31,12 @@ import java.util.Map;
 public abstract class AbstractStateMock implements IState {
 
 	@Override
-	public boolean isShowAllRadioStations() {
-		return false;
-	}
-
-	@Override
-	public void setShowAllRadioStations(boolean showAllRadioStations) {
-	}
-
-	@Override
 	public boolean isShowNavigationTable() {
 		return false;
 	}
 
 	@Override
 	public void setShowNavigationTable(boolean showNavigationTable) {
-	}
-
-	@Override
-	public boolean isKeyAlwaysCaseSensitiveInRepositoryStructure() {
-		return false;
-	}
-
-	@Override
-	public void setKeyAlwaysCaseSensitiveInRepositoryStructure(
-			boolean caseSensitiveRepositoryStructureKeys) {
-	}
-
-	@Override
-	public boolean isShowStatusBar() {
-		return false;
-	}
-
-	@Override
-	public void setShowStatusBar(boolean showStatusBar) {
-	}
-
-	@Override
-	public boolean isShowOSD() {
-		return false;
-	}
-
-	@Override
-	public void setShowOSD(boolean showOSD) {
-	}
-
-	@Override
-	public boolean isShuffle() {
-		return false;
-	}
-
-	@Override
-	public void setShuffle(boolean shuffle) {
-	}
-
-	@Override
-	public boolean isRepeat() {
-		return false;
-	}
-
-	@Override
-	public void setRepeat(boolean repeat) {
-	}
-
-	@Override
-	public boolean isShowSystemTray() {
-		return false;
-	}
-
-	@Override
-	public void setShowSystemTray(boolean showSystemTray) {
-	}
-
-	@Override
-	public boolean isShowTrayPlayer() {
-		return false;
-	}
-
-	@Override
-	public void setShowTrayPlayer(boolean showTrayPlayer) {
 	}
 
 	@Override
@@ -178,18 +105,6 @@ public abstract class AbstractStateMock implements IState {
 	}
 
 	@Override
-	public Class<? extends IFrame> getFrameClass() {
-		
-		return null;
-	}
-
-	@Override
-	public void setFrameClass(Class<? extends IFrame> frameClass) {
-		
-		
-	}
-
-	@Override
 	public IProxyBean getProxy() {
 		
 		return null;
@@ -197,126 +112,6 @@ public abstract class AbstractStateMock implements IState {
 
 	@Override
 	public void setProxy(IProxyBean proxy) {
-		
-		
-	}
-
-	@Override
-	public LookAndFeelBean getLookAndFeel() {
-		
-		return null;
-	}
-
-	@Override
-	public void setLookAndFeel(LookAndFeelBean lookAndFeel) {
-		
-		
-	}
-
-	@Override
-	public FontSettings getFontSettings() {
-		
-		return null;
-	}
-
-	@Override
-	public void setFontSettings(FontSettings fontSettings) {
-		
-		
-	}
-
-	@Override
-	public boolean isPlayAtStartup() {
-		
-		return false;
-	}
-
-	@Override
-	public void setPlayAtStartup(boolean playAtStartup) {
-		
-		
-	}
-
-	@Override
-	public boolean isCacheFilesBeforePlaying() {
-		
-		return false;
-	}
-
-	@Override
-	public void setCacheFilesBeforePlaying(boolean cacheFilesBeforePlaying) {
-		
-		
-	}
-
-	@Override
-	public boolean isUseNormalisation() {
-		
-		return false;
-	}
-
-	@Override
-	public void setUseNormalisation(boolean useNormalisation) {
-		
-		
-	}
-
-	@Override
-	public boolean isUseShortPathNames() {
-		
-		return false;
-	}
-
-	@Override
-	public void setUseShortPathNames(boolean useShortPathNames) {
-		
-		
-	}
-
-	@Override
-	public float[] getEqualizerSettings() {
-		
-		return null;
-	}
-
-	@Override
-	public void setEqualizerSettings(float[] equalizerSettings) {
-		
-		
-	}
-
-	@Override
-	public boolean isUseFadeAway() {
-		
-		return false;
-	}
-
-	@Override
-	public void setUseFadeAway(boolean useFadeAway) {
-		
-		
-	}
-
-	@Override
-	public boolean isShowAdvancedPlayerControls() {
-		
-		return false;
-	}
-
-	@Override
-	public void setShowAdvancedPlayerControls(boolean show) {
-		
-		
-	}
-
-	@Override
-	public boolean isReadInfoFromRadioStream() {
-		
-		return false;
-	}
-
-	@Override
-	public void setReadInfoFromRadioStream(boolean readInfoFromRadioStream) {
 		
 		
 	}
@@ -341,54 +136,6 @@ public abstract class AbstractStateMock implements IState {
 
 	@Override
 	public void setEnableHotkeys(boolean enableHotkeys) {
-		
-		
-	}
-
-	@Override
-	public int getOsdDuration() {
-		
-		return 0;
-	}
-
-	@Override
-	public void setOsdDuration(int osdDuration) {
-		
-		
-	}
-
-	@Override
-	public int getVolume() {
-		
-		return 0;
-	}
-
-	@Override
-	public void setVolume(int volume) {
-		
-		
-	}
-
-	@Override
-	public boolean isMuteEnabled() {
-		
-		return false;
-	}
-
-	@Override
-	public void setMuteEnabled(boolean muteEnabled) {
-		
-		
-	}
-
-	@Override
-	public int getAutoRepositoryRefreshTime() {
-		
-		return 0;
-	}
-
-	@Override
-	public void setAutoRepositoryRefreshTime(int autoRepositoryRefreshTime) {
 		
 		
 	}
@@ -539,18 +286,6 @@ public abstract class AbstractStateMock implements IState {
 	}
 
 	@Override
-	public String getFullScreenBackground() {
-		
-		return null;
-	}
-
-	@Override
-	public void setFullScreenBackground(String fullScreenBackground) {
-		
-		
-	}
-
-	@Override
 	public String getEncoder() {
 		
 		return null;
@@ -630,31 +365,6 @@ public abstract class AbstractStateMock implements IState {
 
 	@Override
 	public void setNavigatorColumns(Map<String, ColumnBean> navigatorColumns) {
-		
-		
-	}
-
-	@Override
-	public Map<String, ColumnBean> getSearchResultsColumns() {
-		
-		return null;
-	}
-
-	@Override
-	public void setSearchResultsColumns(
-			Map<String, ColumnBean> searchResultsColumns) {
-		
-		
-	}
-
-	@Override
-	public IFrameState getFrameState(Class<? extends IFrame> frame) {
-		
-		return null;
-	}
-
-	@Override
-	public void setFrameState(Class<? extends IFrame> frame, IFrameState fs) {
 		
 		
 	}
@@ -750,18 +460,6 @@ public abstract class AbstractStateMock implements IState {
 	}
 
 	@Override
-	public String getPlayerEngine() {
-		
-		return null;
-	}
-
-	@Override
-	public void setPlayerEngine(String playerEngine) {
-		
-		
-	}
-
-	@Override
 	public boolean isAutoScrollPlayListEnabled() {
 		
 		return false;
@@ -769,18 +467,6 @@ public abstract class AbstractStateMock implements IState {
 
 	@Override
 	public void setAutoScrollPlayListEnabled(boolean autoScrollPlayListEnabled) {
-		
-		
-	}
-
-	@Override
-	public List<String> getLastRepositoryFolders() {
-		
-		return null;
-	}
-
-	@Override
-	public void setLastRepositoryFolders(List<String> lastRepositoryFolders) {
 		
 		
 	}
@@ -834,19 +520,6 @@ public abstract class AbstractStateMock implements IState {
 	}
 
 	@Override
-	public String getImportExportFileNamePattern() {
-		
-		return null;
-	}
-
-	@Override
-	public void setImportExportFileNamePattern(
-			String importExportFileNamePattern) {
-		
-		
-	}
-
-	@Override
 	public String getDeviceFileNamePattern() {
 		
 		return null;
@@ -854,19 +527,6 @@ public abstract class AbstractStateMock implements IState {
 
 	@Override
 	public void setDeviceFileNamePattern(String deviceFileNamePattern) {
-		
-		
-	}
-
-	@Override
-	public String getImportExportFolderPathPattern() {
-		
-		return null;
-	}
-
-	@Override
-	public void setImportExportFolderPathPattern(
-			String importExportFolderPathPattern) {
 		
 		
 	}
@@ -896,92 +556,6 @@ public abstract class AbstractStateMock implements IState {
 	}
 
 	@Override
-	public boolean isReviewTagsBeforeImport() {
-		
-		return false;
-	}
-
-	@Override
-	public void setReviewTagsBeforeImport(boolean reviewTagsBeforeImport) {
-		
-		
-	}
-
-	@Override
-	public boolean isApplyChangesToSourceFilesBeforeImport() {
-		
-		return false;
-	}
-
-	@Override
-	public void setApplyChangesToSourceFilesBeforeImport(
-			boolean applyChangesToSourceFilesBeforeImport) {
-		
-		
-	}
-
-	@Override
-	public boolean isSetTrackNumbersWhenImporting() {
-		
-		return false;
-	}
-
-	@Override
-	public void setSetTrackNumbersWhenImporting(
-			boolean setTrackNumbersWhenImporting) {
-		
-		
-	}
-
-	@Override
-	public boolean isSetTitlesWhenImporting() {
-		
-		return false;
-	}
-
-	@Override
-	public void setSetTitlesWhenImporting(boolean setTitlesWhenImporting) {
-		
-		
-	}
-
-	@Override
-	public int getOsdWidth() {
-		
-		return 0;
-	}
-
-	@Override
-	public void setOsdWidth(int osdWidth) {
-		
-		
-	}
-
-	@Override
-	public int getOsdHorizontalAlignment() {
-		
-		return 0;
-	}
-
-	@Override
-	public void setOsdHorizontalAlignment(int osdHorizontalAlignment) {
-		
-		
-	}
-
-	@Override
-	public int getOsdVerticalAlignment() {
-		
-		return 0;
-	}
-
-	@Override
-	public void setOsdVerticalAlignment(int osdVerticalAlignment) {
-		
-		
-	}
-
-	@Override
 	public IHotkeysConfig getHotkeysConfig() {
 		
 		return null;
@@ -989,57 +563,6 @@ public abstract class AbstractStateMock implements IState {
 
 	@Override
 	public void setHotkeysConfig(IHotkeysConfig hotkeysConfig) {
-		
-		
-	}
-
-	@Override
-	public List<String> getRecognitionPatterns() {
-		
-		return null;
-	}
-
-	@Override
-	public void setRecognitionPatterns(List<String> recognitionPatterns) {
-		
-		
-	}
-
-	@Override
-	public List<String> getMassiveRecognitionPatterns() {
-		
-		return null;
-	}
-
-	@Override
-	public void setMassiveRecognitionPatterns(
-			List<String> massiveRecognitionPatterns) {
-		
-		
-	}
-
-	@Override
-	public String getCommandBeforeAccessRepository() {
-		
-		return null;
-	}
-
-	@Override
-	public void setCommandBeforeAccessRepository(
-			String commandBeforeAccessRepository) {
-		
-		
-	}
-
-	@Override
-	public String getCommandAfterAccessRepository() {
-		
-		return null;
-	}
-
-	@Override
-	public void setCommandAfterAccessRepository(
-			String commandAfterAccessRepository) {
 		
 		
 	}
@@ -1089,30 +612,6 @@ public abstract class AbstractStateMock implements IState {
 	@Override
 	public void setCustomNavigatorColumns(
 			Map<String, Map<String, ColumnBean>> customNavigatorColumns) {
-		
-		
-	}
-
-	@Override
-	public IColorBean getTrayPlayerIconsColor() {
-		
-		return null;
-	}
-
-	@Override
-	public void setTrayPlayerIconsColor(IColorBean color) {
-		
-		
-	}
-
-	@Override
-	public boolean isShowPlayerControlsOnTop() {
-		
-		return false;
-	}
-
-	@Override
-	public void setShowPlayerControlsOnTop(boolean onTop) {
 		
 		
 	}

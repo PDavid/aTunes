@@ -26,7 +26,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayListAudioObject;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStatePlayer;
 
 final class PlayListMode {
 
@@ -46,16 +46,21 @@ final class PlayListMode {
      */
     private PlayList playList;
     
-    private IState state;
+    private IStatePlayer statePlayer;
 
-    protected static PlayListMode getPlayListMode(PlayList playList, IState state) {
-        return new PlayListMode(playList, state);
+    /**
+     * @param playList
+     * @param statePlayer
+     * @return
+     */
+    protected static PlayListMode getPlayListMode(PlayList playList, IStatePlayer statePlayer) {
+        return new PlayListMode(playList, statePlayer);
     }
 
-    private PlayListMode(PlayList playList, IState state) {
+    private PlayListMode(PlayList playList, IStatePlayer statePlayer) {
         // Initialize shuffle list
-        this.shufflePlayList = new ShufflePointedList(state);
-        this.state = state;
+        this.shufflePlayList = new ShufflePointedList(statePlayer);
+        this.statePlayer = statePlayer;
         this.playbackHistory = new PlaybackHistory();
         this.playList = playList;
         if (playList != null && playList.getAudioObjects() != null && !playList.getAudioObjects().isEmpty()) {
@@ -206,7 +211,7 @@ final class PlayListMode {
     }
 
     private boolean isShuffle() {
-        return state.isShuffle();
+        return statePlayer.isShuffle();
     }
 
     void addToPlaybackHistory(IAudioObject object) {

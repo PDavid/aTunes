@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeIconCalculator;
 import net.sourceforge.atunes.model.IPlayerHandler;
+import net.sourceforge.atunes.model.IStatePlayer;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -37,6 +38,15 @@ public class MuteAction extends CustomAbstractAction {
     private IPlayerHandler playerHandler;
     
     private VolumeIconCalculator volumeIconCalculator;
+    
+    private IStatePlayer statePlayer;
+    
+    /**
+     * @param statePlayer
+     */
+    public void setStatePlayer(IStatePlayer statePlayer) {
+		this.statePlayer = statePlayer;
+	}
     
     /**
      * @param volumeIconCalculator
@@ -60,14 +70,14 @@ public class MuteAction extends CustomAbstractAction {
     @Override
     protected void initialize() {
     	super.initialize();
-        putValue(SELECTED_KEY, getState().isMuteEnabled());
+        putValue(SELECTED_KEY, statePlayer.isMuteEnabled());
         updateIcon();
     }
 
     @Override
     protected void executeAction() {
-        getState().setMuteEnabled((Boolean) getValue(SELECTED_KEY));
-        playerHandler.applyMuteState(getState().isMuteEnabled());
+    	statePlayer.setMuteEnabled((Boolean) getValue(SELECTED_KEY));
+        playerHandler.applyMuteState(statePlayer.isMuteEnabled());
         updateIcon();
     }
     

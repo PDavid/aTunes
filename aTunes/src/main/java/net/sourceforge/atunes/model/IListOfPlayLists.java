@@ -45,7 +45,7 @@ public interface IListOfPlayLists extends Serializable {
 	 * @param contents
 	 * @param state
 	 */
-	public void setContents(List<List<IAudioObject>> contents, IState state);
+	public void setContents(List<List<IAudioObject>> contents, IStatePlayer statePlayer);
 	
     /**
      * Gets the play lists.

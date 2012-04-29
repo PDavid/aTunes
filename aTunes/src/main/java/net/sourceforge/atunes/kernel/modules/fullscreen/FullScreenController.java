@@ -28,10 +28,20 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IStateUI;
 
 public class FullScreenController extends AbstractSimpleController<FullScreenWindow> {
 
 	private FullScreenWindowFactory fullScreenWindowFactory;
+	
+	private IStateUI stateUI;
+	
+	/**
+	 * @param stateUI
+	 */
+	public void setStateUI(IStateUI stateUI) {
+		this.stateUI = stateUI;
+	}
 	
 	/**
 	 * @param fullScreenWindowFactory
@@ -62,7 +72,7 @@ public class FullScreenController extends AbstractSimpleController<FullScreenWin
 
         window.getSelectBackground().addActionListener(new SelectBackgroundActionListener(this));
         
-        window.getRemoveBackground().addActionListener(new RemoveBackgroundActionListener(window, getState()));
+        window.getRemoveBackground().addActionListener(new RemoveBackgroundActionListener(window, stateUI));
 
         FullScreenShowMenuMouseAdapter optionsAdapter = new FullScreenShowMenuMouseAdapter(window.getOptions());
         window.getBackgroundPanel().addMouseListener(optionsAdapter);
@@ -76,8 +86,8 @@ public class FullScreenController extends AbstractSimpleController<FullScreenWin
 
 	private void setBackground() {
         File backgroundFile = null;
-        if (getState().getFullScreenBackground() != null) {
-            backgroundFile = new File(getState().getFullScreenBackground());
+        if (stateUI.getFullScreenBackground() != null) {
+            backgroundFile = new File(stateUI.getFullScreenBackground());
             if (!backgroundFile.exists()) {
                 backgroundFile = null;
             }
@@ -87,7 +97,7 @@ public class FullScreenController extends AbstractSimpleController<FullScreenWin
 	
 	void setBackground(File file) {
 		getComponentControlled().setBackground(file);
-		getState().setFullScreenBackground(file.getAbsolutePath());
+		stateUI.setFullScreenBackground(file.getAbsolutePath());
 	}
 	
 	/**

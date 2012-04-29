@@ -29,6 +29,7 @@ import net.sourceforge.atunes.kernel.modules.player.AbstractPlayerEngine;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IStateRadio;
 import net.sourceforge.atunes.model.PlayerEngineCapability;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -48,6 +49,15 @@ public class MPlayerEngine extends AbstractPlayerEngine {
     private FadeAwayRunnable currentFadeAwayRunnable = null;
     
     private ILocalAudioObjectValidator localAudioObjectValidator;
+    
+    private IStateRadio stateRadio;
+    
+    /**
+     * @param stateRadio
+     */
+    public void setStateRadio(IStateRadio stateRadio) {
+		this.stateRadio = stateRadio;
+	}
     
     /**
      * @param localAudioObjectValidator
@@ -97,7 +107,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
          * again as it could be changed when paused
          */
         if (!isMuteEnabled()) {
-            commandWriter.sendVolumeCommand(getState().getVolume());
+            commandWriter.sendVolumeCommand(getStatePlayer().getVolume());
         }
         /*
          * End Mplayer volume problem workaround
@@ -123,14 +133,14 @@ public class MPlayerEngine extends AbstractPlayerEngine {
             	commandWriter = MPlayerCommandWriter.newCommandWriter(process, getOsManager());
             	// Output reader needs original audio object, specially when cacheFilesBeforePlaying is true, as
             	// statistics must be applied over original audio object, not the cached one
-            	mPlayerOutputReader = AbstractMPlayerOutputReader.newInstance(this, process, audioObject, getState(), getFrame(), getPlayListHandler(), localAudioObjectValidator);
+            	mPlayerOutputReader = AbstractMPlayerOutputReader.newInstance(this, process, audioObject, stateRadio, getFrame(), getPlayListHandler(), localAudioObjectValidator);
             	mPlayerErrorReader = new MPlayerErrorReader(this, process, mPlayerOutputReader, audioObjectToPlay);
             	mPlayerOutputReader.start();
             	mPlayerErrorReader.start();
             	mPlayerPositionThread = new MPlayerPositionThread(this);
             	mPlayerPositionThread.start();
             	commandWriter.sendGetDurationCommand();
-            	setVolume(getState().getVolume());
+            	setVolume(getStatePlayer().getVolume());
             }
 
         } catch (Exception e) {
@@ -152,7 +162,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
                 return;
             }
             mPlayerErrorReader.interrupt();
-            currentFadeAwayRunnable = new FadeAwayRunnable(process, getState().getVolume(), this, getOsManager());
+            currentFadeAwayRunnable = new FadeAwayRunnable(process, getStatePlayer().getVolume(), this, getOsManager());
             Thread t = new Thread(currentFadeAwayRunnable);
             // Start fade away process
             t.start();
@@ -222,7 +232,7 @@ public class MPlayerEngine extends AbstractPlayerEngine {
         commandWriter.sendMuteCommand();
 
         // volume must be applied again because of the volume bug
-        setVolume(getState().getVolume());
+        setVolume(getStatePlayer().getVolume());
 
         // MPlayer bug: paused, demute, muted -> starts playing
         if (isPaused() && !mute) {
