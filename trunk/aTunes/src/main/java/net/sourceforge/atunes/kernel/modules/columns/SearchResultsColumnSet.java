@@ -24,6 +24,7 @@ import java.util.Map;
 
 import net.sourceforge.atunes.model.ColumnBean;
 import net.sourceforge.atunes.model.ISearchHandler;
+import net.sourceforge.atunes.model.IStateUI;
 
 /**
  * This class defines all columns than can be viewed in search results
@@ -34,6 +35,15 @@ public final class SearchResultsColumnSet extends AbstractColumnSet {
 
 	private ISearchHandler searchHandler;
 	
+	private IStateUI stateUI;
+	
+	/**
+	 * @param stateUI
+	 */
+	public void setStateUI(IStateUI stateUI) {
+		this.stateUI = stateUI;
+	}
+	
 	/**
 	 * @param searchHandler
 	 */
@@ -43,12 +53,12 @@ public final class SearchResultsColumnSet extends AbstractColumnSet {
 	
     @Override
     protected Map<String, ColumnBean> getColumnsConfiguration() {
-        return getState().getSearchResultsColumns();
+        return stateUI.getSearchResultsColumns();
     }
 
     @Override
     protected void setColumnsConfiguration(Map<String, ColumnBean> columnsConfiguration) {
-    	getState().setSearchResultsColumns(columnsConfiguration);
+    	stateUI.setSearchResultsColumns(columnsConfiguration);
     }
 
     @Override

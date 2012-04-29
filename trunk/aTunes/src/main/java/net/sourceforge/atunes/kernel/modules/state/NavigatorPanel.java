@@ -47,6 +47,7 @@ import net.sourceforge.atunes.model.ArtistViewMode;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class NavigatorPanel extends AbstractPreferencesPanel {
@@ -86,6 +87,15 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 	private TagAttributesTableModel tagAttributesTableModel;
 	
 	private ILookAndFeelManager lookAndFeelManager;
+	
+	private IStateRepository stateRepository;
+	
+	/**
+	 * @param stateRepository
+	 */
+	public void setStateRepository(IStateRepository stateRepository) {
+		this.stateRepository = stateRepository;
+	}
 	
 	/**
 	 * @param lookAndFeelManager
@@ -234,7 +244,7 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 		getState().setHighlightIncompleteTagElements(highlightElementsWithIncompleteBasicTags.isSelected());
 		getState().setHighlightIncompleteTagFoldersAttributes(tagAttributesTableModel.getSelectedTagAttributes());
 		getState().setUsePersonNamesArtistTagViewSorting(useArtistNamesSorting.isSelected());
-		getState().setKeyAlwaysCaseSensitiveInRepositoryStructure(useCaseSensitiveInTree.isSelected());
+		stateRepository.setKeyAlwaysCaseSensitiveInRepositoryStructure(useCaseSensitiveInTree.isSelected());
 
 		ArtistViewMode newArtistViewState = ArtistViewMode.BOTH;
 		if (useOnlyArtist.isSelected()){
@@ -336,7 +346,7 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 		setUseSmartTagViewSorting(getState().isUseSmartTagViewSorting());
 		setHighlightFoldersWithIncompleteBasicTags(getState().isHighlightIncompleteTagElements());
 		setUsePersonNamesArtistTagViewSorting(getState().isUsePersonNamesArtistTagViewSorting());
-		setKeyAlwaysCaseSensitiveInRepositoryStructure(getState().isKeyAlwaysCaseSensitiveInRepositoryStructure());
+		setKeyAlwaysCaseSensitiveInRepositoryStructure(stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure());
 		setArtistViewMode(getState().getArtistViewMode());
 	}
 

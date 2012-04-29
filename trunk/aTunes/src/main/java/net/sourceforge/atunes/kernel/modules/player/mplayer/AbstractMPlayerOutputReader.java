@@ -32,7 +32,7 @@ import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateRadio;
 import net.sourceforge.atunes.utils.ClosingUtils;
 
 abstract class AbstractMPlayerOutputReader extends Thread {
@@ -65,17 +65,17 @@ abstract class AbstractMPlayerOutputReader extends Thread {
      * @param engine
      * @param process
      * @param ao
-     * @param state
+     * @param stateRadio
      * @param frame
      * @param playListHandler
      * @param localAudioObjectValidator
      * @return
      */
-    static AbstractMPlayerOutputReader newInstance(MPlayerEngine engine, Process process, IAudioObject ao, IState state, IFrame frame, IPlayListHandler playListHandler, ILocalAudioObjectValidator localAudioObjectValidator) {
+    static AbstractMPlayerOutputReader newInstance(MPlayerEngine engine, Process process, IAudioObject ao, IStateRadio stateRadio, IFrame frame, IPlayListHandler playListHandler, ILocalAudioObjectValidator localAudioObjectValidator) {
         if (ao instanceof ILocalAudioObject) {
             return new AudioFileMPlayerOutputReader(engine, process, (ILocalAudioObject) ao, localAudioObjectValidator);
         } else if (ao instanceof IRadio) {
-            return new RadioMPlayerOutputReader(engine, process, (IRadio) ao, state, playListHandler);
+            return new RadioMPlayerOutputReader(engine, process, (IRadio) ao, stateRadio, playListHandler);
         } else if (ao instanceof IPodcastFeedEntry) {
             return new PodcastFeedEntryMPlayerOutputReader(engine, process, (IPodcastFeedEntry) ao);
         } else {

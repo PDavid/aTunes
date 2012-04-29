@@ -24,7 +24,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import net.sourceforge.atunes.model.IFrameState;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateUI;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -35,14 +35,14 @@ public class SaveFrameStateTaskTest {
 	public void test() {
 		AbstractSingleFrame frame = mock(AbstractSingleFrame.class);
 		when(frame.getExtendedState()).thenReturn(java.awt.Frame.MAXIMIZED_BOTH);
-		IState state = mock(IState.class);
+		IStateUI stateUI = mock(IStateUI.class);
 		IFrameState frameState = new FrameState();
-		when(state.getFrameState(frame.getClass())).thenReturn(frameState);
-		SaveFrameStateTask sut = new SaveFrameStateTask(frame, state, 1, 2, 3, 4);
+		when(stateUI.getFrameState(frame.getClass())).thenReturn(frameState);
+		SaveFrameStateTask sut = new SaveFrameStateTask(frame, stateUI, 1, 2, 3, 4);
 		
 		sut.run();
 		
-		verify(state).setFrameState(frame.getClass(), frameState);
+		verify(stateUI).setFrameState(frame.getClass(), frameState);
 		Assert.assertEquals(1, frameState.getWindowWidth());
 		Assert.assertEquals(2, frameState.getWindowHeight());
 		Assert.assertEquals(3, frameState.getXPosition());

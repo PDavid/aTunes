@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.actions;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.IStatePlayer;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -36,6 +37,15 @@ public class ShuffleModeAction extends ActionWithColorMutableIcon {
     private static final long serialVersionUID = 6841858742889010498L;
     
     private IIconFactory shuffleIcon;
+    
+    private IStatePlayer statePlayer;
+    
+    /**
+     * @param statePlayer
+     */
+    public void setStatePlayer(IStatePlayer statePlayer) {
+		this.statePlayer = statePlayer;
+	}
     
     /**
      * @param shuffleIcon
@@ -52,12 +62,12 @@ public class ShuffleModeAction extends ActionWithColorMutableIcon {
     @Override
     protected void initialize() {
     	super.initialize();
-        putValue(SELECTED_KEY, getState().isShuffle());
+        putValue(SELECTED_KEY, statePlayer.isShuffle());
     }
 
     @Override
     protected void executeAction() {
-    	getState().setShuffle((Boolean) getValue(SELECTED_KEY));
+    	statePlayer.setShuffle((Boolean) getValue(SELECTED_KEY));
     }
     
     @Override

@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.repository;
 
 import java.util.concurrent.ScheduledFuture;
 
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -38,17 +38,17 @@ public class RepositoryAutoRefresher implements Runnable {
 
 	private ITaskService taskService;
 	
-	private IState state;
-	
 	private RepositoryHandler repositoryHandler;
 	
 	private ScheduledFuture<?> task;
+
+	private IStateRepository stateRepository;
 	
 	/**
-	 * @param state
+	 * @param stateRepository
 	 */
-	public void setState(IState state) {
-		this.state = state;
+	public void setStateRepository(IStateRepository stateRepository) {
+		this.stateRepository = stateRepository;
 	}
 	
 	/**
@@ -67,9 +67,9 @@ public class RepositoryAutoRefresher implements Runnable {
 	
     public void start() {
     	stop();
-    	if (state.getAutoRepositoryRefreshTime() > 0) {
-    		Logger.info("Repository will refresh automatically every ", state.getAutoRepositoryRefreshTime(), " minutes");
-    		task = taskService.submitPeriodically("RepositoryAutoRefresher", 30, state.getAutoRepositoryRefreshTime() * 60L, this);
+    	if (stateRepository.getAutoRepositoryRefreshTime() > 0) {
+    		Logger.info("Repository will refresh automatically every ", stateRepository.getAutoRepositoryRefreshTime(), " minutes");
+    		task = taskService.submitPeriodically("RepositoryAutoRefresher", 30, stateRepository.getAutoRepositoryRefreshTime() * 60L, this);
     	} else {
     		Logger.info("Repository will not refresh automatically");
     	}

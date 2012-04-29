@@ -21,7 +21,7 @@
 package net.sourceforge.atunes.model;
 
 
-public interface IState extends IStateRadio, IStateUI, IStateRepository, IStatePlayer, IStateCore, 
+public interface IState extends IStateCore, 
                                 IStateContext, IStateNavigation, IStateRipper, IStateDevice, IStatePodcast, IStatePlaylist {
 	
 

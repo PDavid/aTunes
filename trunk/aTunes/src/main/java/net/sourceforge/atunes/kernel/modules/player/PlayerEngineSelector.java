@@ -27,7 +27,7 @@ import java.util.List;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayerEngine;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStatePlayer;
 import net.sourceforge.atunes.utils.Logger;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -42,14 +42,14 @@ class PlayerEngineSelector {
     private List<AbstractPlayerEngine> engines;
     
     private IOSManager osManager;
-    
-    private IState state;
-    
+
+    private IStatePlayer statePlayer;
+
     /**
-     * @param state
+     * @param statePlayer
      */
-    public void setState(IState state) {
-		this.state = state;
+    public void setStatePlayer(IStatePlayer statePlayer) {
+		this.statePlayer = statePlayer;
 	}
     
     /**
@@ -80,7 +80,7 @@ class PlayerEngineSelector {
         Logger.info("List of availables engines : ", ArrayUtils.toString(engineNames));
 
         // Get engine of application state (default or selected by user)
-        String selectedEngine = state.getPlayerEngine();
+        String selectedEngine = statePlayer.getPlayerEngine();
 
         // If selected engine is not available then try default engine or another one
         if (!ArrayUtils.contains(engineNames, selectedEngine)) {
@@ -110,7 +110,7 @@ class PlayerEngineSelector {
 			selectedEngine = availableEngines.iterator().next().getEngineName();
 		}
 		// Update application state with this engine
-		state.setPlayerEngine(selectedEngine);
+		statePlayer.setPlayerEngine(selectedEngine);
 		return selectedEngine;
 	}
 

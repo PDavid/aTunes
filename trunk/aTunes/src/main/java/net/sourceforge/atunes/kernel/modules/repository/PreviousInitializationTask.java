@@ -20,24 +20,25 @@
 
 package net.sourceforge.atunes.kernel.modules.repository;
 
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
+import net.sourceforge.atunes.model.IStateRepository;
 
 public final class PreviousInitializationTask implements Runnable {
-	
-	private IState state;
 	
 	private RepositoryReader repositoryReader;
 	
 	private IStateHandler stateHandler;
-
+	
+	private IStateRepository stateRepository;
+	
 	/**
-	 * @param state
+	 * @param stateRepository
 	 */
-	public void setState(IState state) {
-		this.state = state;
+	public void setStateRepository(IStateRepository stateRepository) {
+		this.stateRepository = stateRepository;
 	}
 	
+
 	public void setRepositoryReader(RepositoryReader repositoryReader) {
 		this.repositoryReader = repositoryReader;
 	}
@@ -52,7 +53,7 @@ public final class PreviousInitializationTask implements Runnable {
 	@Override
 	public void run() {
 	    // This is the first access to repository, so execute the command defined by user
-	    new LoadRepositoryCommandExecutor().execute(state.getCommandBeforeAccessRepository());
+	    new LoadRepositoryCommandExecutor().execute(stateRepository.getCommandBeforeAccessRepository());
 	    repositoryReader.setRepositoryRetrievedFromCache(stateHandler.retrieveRepositoryCache());
 	}
 }

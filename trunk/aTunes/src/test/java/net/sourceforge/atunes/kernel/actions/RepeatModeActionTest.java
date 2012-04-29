@@ -22,8 +22,8 @@ package net.sourceforge.atunes.kernel.actions;
 
 import javax.swing.AbstractAction;
 
-import net.sourceforge.atunes.model.AbstractStateMock;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.AbstractStatePlayerMock;
+import net.sourceforge.atunes.model.IStatePlayer;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class RepeatModeActionTest {
 	@Test
 	public void test() {
 		RepeatModeAction sut = new RepeatModeAction();
-		IState state = new AbstractStateMock() {
+		IStatePlayer state = new AbstractStatePlayerMock() {
 			private boolean repeat;
 
 			public void setRepeat(boolean repeat) { 
@@ -45,7 +45,7 @@ public class RepeatModeActionTest {
 				return this.repeat;
 			}
 		};
-		sut.setState(state);
+		sut.setStatePlayer(state);
 
 		state.setRepeat(false);
 		sut.putValue(AbstractAction.SELECTED_KEY, true);

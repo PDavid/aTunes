@@ -36,6 +36,7 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INotificationEngine;
 import net.sourceforge.atunes.model.INotificationsHandler;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.ITemporalDiskStorage;
 import net.sourceforge.atunes.model.PlaybackState;
 import net.sourceforge.atunes.utils.Logger;
@@ -53,6 +54,15 @@ public final class NotificationsHandler extends AbstractHandler implements INoti
     private ILookAndFeelManager lookAndFeelManager;
     
     private IAudioObjectImageLocator audioObjectImageLocator;
+    
+    private IStateUI stateUI;
+    
+    /**
+     * @param stateUI
+     */
+    public void setStateUI(IStateUI stateUI) {
+		this.stateUI = stateUI;
+	}
     
     /**
      * @param audioObjectImageLocator
@@ -117,7 +127,7 @@ public final class NotificationsHandler extends AbstractHandler implements INoti
 
     @Override
     public void applicationStateChanged(IState newState) {
-    	getNotificationEngine().updateNotification(newState);
+    	getNotificationEngine().updateNotification(stateUI);
     }
 
     @Override
@@ -130,7 +140,7 @@ public final class NotificationsHandler extends AbstractHandler implements INoti
 
     @Override
     public void playbackStateChanged(PlaybackState newState, IAudioObject currentAudioObject) {
-        if (getState().isShowOSD() && newState == PlaybackState.PLAYING) {
+        if (stateUI.isShowOSD() && newState == PlaybackState.PLAYING) {
             // Playing
             showNotification(currentAudioObject);
         }
@@ -161,7 +171,7 @@ public final class NotificationsHandler extends AbstractHandler implements INoti
 	@Override
 	public INotificationEngine getDefaultEngine() {
 		if (defaultEngine == null) {
-	    	defaultEngine = new DefaultNotifications(getState(), getBean(ILookAndFeelManager.class), audioObjectGenericImageFactory, temporalDiskStorage, audioObjectImageLocator);
+	    	defaultEngine = new DefaultNotifications(getState(), stateUI, getBean(ILookAndFeelManager.class), audioObjectGenericImageFactory, temporalDiskStorage, audioObjectImageLocator);
 		}
 		return defaultEngine;
 	}

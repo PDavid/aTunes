@@ -22,7 +22,7 @@ package net.sourceforge.atunes.gui.frame;
 
 import java.util.Collection;
 
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IWindowListener;
 
@@ -38,23 +38,23 @@ class FrameListenersDecorator {
 
 	private ITaskService taskService;
 
-	private IState state;
+	private IStateUI stateUI;
 	
 	private Collection<IWindowListener> listeners;
 
 	/**
 	 * @param frame
 	 * @param taskService
-	 * @param state
+	 * @param stateUI
 	 * @param listeners
 	 */
 	FrameListenersDecorator(AbstractSingleFrame frame,
-			ITaskService taskService, IState state,
+			ITaskService taskService, IStateUI stateUI,
 			Collection<IWindowListener> listeners) {
 		super();
 		this.frame = frame;
 		this.taskService = taskService;
-		this.state = state;
+		this.stateUI = stateUI;
 		this.listeners = listeners;
 	}
 
@@ -63,7 +63,7 @@ class FrameListenersDecorator {
 		net.sourceforge.atunes.gui.frame.WindowListener listener = new net.sourceforge.atunes.gui.frame.WindowListener(listeners);
 		frame.addWindowStateListener(listener);
 		frame.addWindowFocusListener(listener);
-		frame.addComponentListener(new SingleFrameComponentAdapter(frame, taskService, state));
+		frame.addComponentListener(new SingleFrameComponentAdapter(frame, taskService, stateUI));
 	}
 }
 

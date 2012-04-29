@@ -28,12 +28,6 @@ package net.sourceforge.atunes.model;
 public interface IFrameFactory {
 
 	/**
-	 * Initializes factory with state
-	 * @param state
-	 */
-	public void setState(IState state);
-	
-	/**
 	 * Initializes default frame type class
 	 * @param defaultFrameClass
 	 */

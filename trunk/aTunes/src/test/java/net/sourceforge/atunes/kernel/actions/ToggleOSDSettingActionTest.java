@@ -22,8 +22,8 @@ package net.sourceforge.atunes.kernel.actions;
 
 import javax.swing.AbstractAction;
 
-import net.sourceforge.atunes.model.AbstractStateMock;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.AbstractStateUIMock;
+import net.sourceforge.atunes.model.IStateUI;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class ToggleOSDSettingActionTest {
 	@Test
 	public void test() {
 		ToggleOSDSettingAction sut = new ToggleOSDSettingAction();
-		IState state = new AbstractStateMock() {
+		IStateUI state = new AbstractStateUIMock() {
 			private boolean showOSD;
 			
 			public boolean isShowOSD() { 
@@ -45,7 +45,7 @@ public class ToggleOSDSettingActionTest {
 				this.showOSD = showOSD;
 			}
 		};
-		sut.setState(state);
+		sut.setStateUI(state);
 
 		state.setShowOSD(false);
 		sut.putValue(AbstractAction.SELECTED_KEY, true);

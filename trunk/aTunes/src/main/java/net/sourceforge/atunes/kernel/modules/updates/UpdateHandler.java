@@ -27,6 +27,7 @@ import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.ApplicationVersion;
 import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.INetworkHandler;
+import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IUpdateHandler;
 import net.sourceforge.atunes.utils.Logger;
@@ -50,6 +51,15 @@ public final class UpdateHandler extends AbstractHandler implements IUpdateHandl
     private ITaskService taskService;
     
     private INetworkHandler networkHandler;
+    
+    private IStateUI stateUI;
+    
+    /**
+     * @param stateUI
+     */
+    public void setStateUI(IStateUI stateUI) {
+		this.stateUI = stateUI;
+	}
     
     /**
      * @param networkHandler
@@ -98,7 +108,7 @@ public final class UpdateHandler extends AbstractHandler implements IUpdateHandl
      */
     @Override
     public void checkUpdates(boolean alwaysInDialog, boolean showNoNewVersion) {
-        new CheckUpdatesSwingWorker(this, showNoNewVersion, alwaysInDialog, getState(), getFrame()).execute();
+        new CheckUpdatesSwingWorker(this, showNoNewVersion, alwaysInDialog, stateUI, getFrame()).execute();
     }
 
     /**

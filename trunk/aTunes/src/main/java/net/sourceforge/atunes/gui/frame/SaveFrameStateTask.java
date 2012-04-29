@@ -21,7 +21,7 @@
 package net.sourceforge.atunes.gui.frame;
 
 import net.sourceforge.atunes.model.IFrameState;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateUI;
 
 /**
  * Saves frame state of frame
@@ -31,7 +31,7 @@ import net.sourceforge.atunes.model.IState;
 final class SaveFrameStateTask implements Runnable {
 	
 	private final AbstractSingleFrame abstractSingleFrame;
-	private final IState state;
+	private final IStateUI stateUI;
 	private final int width;
 	private final int height;
 	private final int x;
@@ -39,15 +39,15 @@ final class SaveFrameStateTask implements Runnable {
 
 	/**
 	 * @param abstractSingleFrame
-	 * @param state
+	 * @param stateUI
 	 * @param width
 	 * @param height
 	 * @param x
 	 * @param y
 	 */
-	SaveFrameStateTask(AbstractSingleFrame abstractSingleFrame, IState state, int width, int height, int x, int y) {
+	SaveFrameStateTask(AbstractSingleFrame abstractSingleFrame, IStateUI stateUI, int width, int height, int x, int y) {
 		this.abstractSingleFrame = abstractSingleFrame;
-		this.state = state;
+		this.stateUI = stateUI;
 		this.width = width;
 		this.height = height;
 		this.x = x;
@@ -57,9 +57,9 @@ final class SaveFrameStateTask implements Runnable {
 	@Override
 	public void run() {
 		Class<? extends AbstractSingleFrame> frameClass = this.abstractSingleFrame.getClass();
-		IFrameState frameState = state.getFrameState(frameClass);
+		IFrameState frameState = stateUI.getFrameState(frameClass);
 		fillFrameState(frameState);
-		state.setFrameState(frameClass, frameState);
+		stateUI.setFrameState(frameClass, frameState);
 	}
 	
 	/**

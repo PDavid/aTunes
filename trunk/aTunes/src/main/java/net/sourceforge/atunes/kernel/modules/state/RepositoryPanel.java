@@ -28,6 +28,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
+import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -52,6 +53,15 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
      * application finish)
      */
     private JTextField commandAfterAccessRepository;
+    
+    private IStateRepository stateRepository;
+    
+    /**
+     * @param stateRepository
+     */
+    public void setStateRepository(IStateRepository stateRepository) {
+		this.stateRepository = stateRepository;
+	}
     
     /**
      * Instantiates a new repository panel.
@@ -101,9 +111,9 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
 
     @Override
     public boolean applyPreferences() {
-        getState().setAutoRepositoryRefreshTime((Integer) refreshTime.getSelectedItem());
-        getState().setCommandBeforeAccessRepository(commandBeforeAccessRepository.getText());
-        getState().setCommandAfterAccessRepository(commandAfterAccessRepository.getText());
+    	stateRepository.setAutoRepositoryRefreshTime((Integer) refreshTime.getSelectedItem());
+    	stateRepository.setCommandBeforeAccessRepository(commandBeforeAccessRepository.getText());
+    	stateRepository.setCommandAfterAccessRepository(commandAfterAccessRepository.getText());
         return false;
     }
 
@@ -137,9 +147,9 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
 
     @Override
     public void updatePanel() {
-        setRefreshTime(getState().getAutoRepositoryRefreshTime());
-        setCommandBeforeAccessRepository(getState().getCommandBeforeAccessRepository());
-        setCommandAfterAccessRepository(getState().getCommandAfterAccessRepository());
+        setRefreshTime(stateRepository.getAutoRepositoryRefreshTime());
+        setCommandBeforeAccessRepository(stateRepository.getCommandBeforeAccessRepository());
+        setCommandAfterAccessRepository(stateRepository.getCommandAfterAccessRepository());
     }
 
     @Override

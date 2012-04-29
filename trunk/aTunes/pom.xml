@@ -442,11 +442,6 @@
 			<artifactId>jaudiotagger</artifactId>
 			<version>2.0.4-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>com.googlecode.gstreamer-java</groupId>
-			<artifactId>gstreamer-java</artifactId>
-			<version>1.4</version>
-		</dependency>
 		<!-- dependencies that are in aTunes repo -->
 		<dependency>
 			<groupId>commons-io</groupId>

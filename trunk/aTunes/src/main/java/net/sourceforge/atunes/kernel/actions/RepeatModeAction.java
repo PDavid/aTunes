@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.actions;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.IStatePlayer;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -36,6 +37,15 @@ public class RepeatModeAction extends ActionWithColorMutableIcon {
     private static final long serialVersionUID = 2032609750151412458L;
 
     private IIconFactory repeatIcon;
+    
+    private IStatePlayer statePlayer;
+    
+    /**
+     * @param statePlayer
+     */
+    public void setStatePlayer(IStatePlayer statePlayer) {
+		this.statePlayer = statePlayer;
+	}
     
     /**
      * @param repeatIcon
@@ -52,12 +62,12 @@ public class RepeatModeAction extends ActionWithColorMutableIcon {
     @Override
     protected void initialize() {
     	super.initialize();
-        putValue(SELECTED_KEY, getState().isRepeat());
+        putValue(SELECTED_KEY, statePlayer.isRepeat());
     }
 
     @Override
     protected void executeAction() {
-        getState().setRepeat((Boolean) getValue(SELECTED_KEY));
+    	statePlayer.setRepeat((Boolean) getValue(SELECTED_KEY));
     }
     
     @Override

@@ -56,6 +56,7 @@ import net.sourceforge.atunes.model.ILocaleBean;
 import net.sourceforge.atunes.model.ILocaleBeanFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.LookAndFeelBean;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -110,6 +111,15 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 	private transient ILocaleBeanFactory localeBeanFactory;
 	
 	private transient IFontBeanFactory fontBeanFactory;
+	
+	private IStateUI stateUI;
+	
+	/**
+	 * @param stateUI
+	 */
+	public void setStateUI(IStateUI stateUI) {
+		this.stateUI = stateUI;
+	}
 	
 	/**
 	 * @param fontBeanFactory
@@ -226,16 +236,16 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
             	// When changing look and feel set default skin in combo or current skin if selected look and feel is the current one
             	String skinName = GeneralPanel.this.lookAndFeelManager.getDefaultSkin((String)lookAndFeel.getSelectedItem());
             	if (GeneralPanel.this.lookAndFeelManager.getCurrentLookAndFeelName().equals(lookAndFeel.getSelectedItem()) &&
-            			getState().getLookAndFeel().getSkin() != null) {
-            		skinName = getState().getLookAndFeel().getSkin();
+            			stateUI.getLookAndFeel().getSkin() != null) {
+            		skinName = stateUI.getLookAndFeel().getSkin();
             	} else {
             		// Different look and feel, if skin has changed we must reset it, if not, do nothing as to change look and feel
             		// user must restart application first
-            		String currentSkin = getState().getLookAndFeel().getSkin();
+            		String currentSkin = stateUI.getLookAndFeel().getSkin();
                     if (currentSkin == null) {
-                    	currentSkin = GeneralPanel.this.lookAndFeelManager.getDefaultSkin(getState().getLookAndFeel().getName());
+                    	currentSkin = GeneralPanel.this.lookAndFeelManager.getDefaultSkin(stateUI.getLookAndFeel().getName());
                     }
-                    GeneralPanel.this.lookAndFeelManager.applySkin(currentSkin, getState(), osManager);
+                    GeneralPanel.this.lookAndFeelManager.applySkin(currentSkin, getState(), stateUI, osManager);
             	}
             	updateSkins((String)lookAndFeel.getSelectedItem(), skinName);
             }
@@ -387,9 +397,9 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
     public boolean applyPreferences() {
         boolean needRestart = false;
 
-        Class<? extends IFrame> oldFrameClass = getState().getFrameClass();
+        Class<? extends IFrame> oldFrameClass = stateUI.getFrameClass();
         Class<? extends IFrame> newFrameClass = windowTypeChoosingPanel.getSelectedItem();
-        getState().setFrameClass(newFrameClass);
+        stateUI.setFrameClass(newFrameClass);
         if (!oldFrameClass.equals(newFrameClass)) {
             needRestart = true;
         }
@@ -403,25 +413,25 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
         }
 
         if (lookAndFeelManager.getCurrentLookAndFeel().supportsCustomFontSettings()) {
-        	FontSettings oldFontSettings = getState().getFontSettings();
-        	getState().setFontSettings(currentFontSettings);
+        	FontSettings oldFontSettings = stateUI.getFontSettings();
+        	stateUI.setFontSettings(currentFontSettings);
         	if (!oldFontSettings.equals(currentFontSettings)) {
         		needRestart = true;
         	}
         }
 
-        getState().setShowSystemTray(showIconTray.isSelected());
-        getState().setShowTrayPlayer(showTrayPlayer.isSelected());
+        stateUI.setShowSystemTray(showIconTray.isSelected());
+        stateUI.setShowTrayPlayer(showTrayPlayer.isSelected());
         
         if (currentTrayIconColor != null) {
-        	getState().setTrayPlayerIconsColor(colorBeanFactory.getColorBean(currentTrayIconColor));
+        	stateUI.setTrayPlayerIconsColor(colorBeanFactory.getColorBean(currentTrayIconColor));
         }
 
-        LookAndFeelBean oldLookAndFeel = getState().getLookAndFeel();
+        LookAndFeelBean oldLookAndFeel = stateUI.getLookAndFeel();
         LookAndFeelBean newLookAndFeel = new LookAndFeelBean();
         newLookAndFeel.setName((String) lookAndFeel.getSelectedItem());
         newLookAndFeel.setSkin((String) skin.getSelectedItem());
-        getState().setLookAndFeel(newLookAndFeel);
+        stateUI.setLookAndFeel(newLookAndFeel);
         if (!oldLookAndFeel.getName().equals(newLookAndFeel.getName())) {
             needRestart = true;
         }
@@ -490,25 +500,25 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 
     	
         lookAndFeel.setModel(new ListComboBoxModel<String>(lookAndFeelManager.getAvailableLookAndFeels()));
-        setWindowType(getState().getFrameClass());
+        setWindowType(stateUI.getFrameClass());
         setLanguage(I18nUtils.getSelectedLocale());
-        setShowIconTray(getState().isShowSystemTray());
-        setShowTrayPlayer(getState().isShowTrayPlayer());
+        setShowIconTray(stateUI.isShowSystemTray());
+        setShowTrayPlayer(stateUI.isShowTrayPlayer());
         // If look and feel is not available then set default
-        String lookAndFeelName = lookAndFeelManager.getAvailableLookAndFeels().contains(getState().getLookAndFeel().getName()) ? getState().getLookAndFeel().getName()
+        String lookAndFeelName = lookAndFeelManager.getAvailableLookAndFeels().contains(stateUI.getLookAndFeel().getName()) ? stateUI.getLookAndFeel().getName()
                 : lookAndFeelManager.getDefaultLookAndFeel().getName();
         setLookAndFeel(lookAndFeelName);
 
-        String skinName = getState().getLookAndFeel().getSkin() != null ? getState().getLookAndFeel().getSkin() : lookAndFeelManager.getDefaultSkin(lookAndFeelName); 
+        String skinName = stateUI.getLookAndFeel().getSkin() != null ? stateUI.getLookAndFeel().getSkin() : lookAndFeelManager.getDefaultSkin(lookAndFeelName); 
         updateSkins(lookAndFeelName, skinName);
         
-        currentFontSettings = getState().getFontSettings();
+        currentFontSettings = stateUI.getFontSettings();
     }
 
     @Override
     public void resetImmediateChanges() {
-        if (getState().getLookAndFeel().getSkin() == null || !getState().getLookAndFeel().getSkin().equals(skin.getSelectedItem())) {
-            lookAndFeelManager.applySkin(getState().getLookAndFeel().getSkin(), getState(), osManager);
+        if (stateUI.getLookAndFeel().getSkin() == null || !stateUI.getLookAndFeel().getSkin().equals(skin.getSelectedItem())) {
+            lookAndFeelManager.applySkin(stateUI.getLookAndFeel().getSkin(), getState(), stateUI, osManager);
         }
     }
 
@@ -554,7 +564,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
     		String selectedSkin = (String) skin.getSelectedItem();
     		boolean isCurrentLookAndFeel = lookAndFeelManager.getCurrentLookAndFeelName().equals(lookAndFeel.getSelectedItem());
     		if (isCurrentLookAndFeel) {
-    			lookAndFeelManager.applySkin(selectedSkin, getState(), osManager);
+    			lookAndFeelManager.applySkin(selectedSkin, getState(), stateUI, osManager);
     		}
     	}
     }

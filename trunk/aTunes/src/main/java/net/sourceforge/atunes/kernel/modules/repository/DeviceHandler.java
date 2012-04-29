@@ -65,6 +65,7 @@ import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IRepositoryLoader;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
+import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -128,6 +129,15 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
     
     private INavigationView deviceNavigationView;
     
+    private IStateRepository stateRepository;
+    
+    /**
+     * @param stateRepository
+     */
+    public void setStateRepository(IStateRepository stateRepository) {
+		this.stateRepository = stateRepository;
+	}
+    
     /**
      * @param deviceNavigationView
      */
@@ -158,7 +168,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
     
     @Override
     protected void initHandler() {
-    	caseSensitiveTrees = getState().isKeyAlwaysCaseSensitiveInRepositoryStructure();
+    	caseSensitiveTrees = stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure();
     	getBean(IRepositoryHandler.class).addAudioFilesRemovedListener(this);
     }
 
@@ -172,8 +182,8 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
     
     @Override
     public void applicationStateChanged(IState newState) {
-    	if (caseSensitiveTrees != newState.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
-    		caseSensitiveTrees = getState().isKeyAlwaysCaseSensitiveInRepositoryStructure();
+    	if (caseSensitiveTrees != stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+    		caseSensitiveTrees = stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure();
     		refreshDevice();
     	}
     	
@@ -521,7 +531,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
     	getFrame().showProgressBar(true, null);
         Logger.info("Refreshing device");
         IRepository oldDeviceRepository = deviceRepository;
-        deviceRepository = new Repository(oldDeviceRepository.getRepositoryFolders(), getState());
+        deviceRepository = new Repository(oldDeviceRepository.getRepositoryFolders(), stateRepository);
         currentLoader = getBean(RepositoryRefreshLoader.class);
         currentLoader.setRepositoryLoaderListener(this);
         currentLoader.start(new RepositoryTransaction(deviceRepository, null), oldDeviceRepository.getRepositoryFolders(), oldDeviceRepository, deviceRepository);
@@ -552,7 +562,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 
         List<File> folders = new ArrayList<File>();
         folders.add(path);
-        deviceRepository = new Repository(folders, getState());
+        deviceRepository = new Repository(folders, stateRepository);
         currentLoader = getBean(RepositoryReadLoader.class);
         currentLoader.setRepositoryLoaderListener(this);
         currentLoader.start(new RepositoryTransaction(deviceRepository, null), folders, null, deviceRepository);

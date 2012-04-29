@@ -24,6 +24,7 @@ import java.awt.GridBagConstraints;
 
 import javax.swing.JCheckBox;
 
+import net.sourceforge.atunes.model.IStateRadio;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -38,6 +39,15 @@ public final class RadioPanel extends AbstractPreferencesPanel {
 
     /** The show all radio stations. */
     private JCheckBox showAllRadioStations;
+    
+    private IStateRadio stateRadio;
+    
+    /**
+     * @param stateRadio
+     */
+    public void setStateRadio(IStateRadio stateRadio) {
+		this.stateRadio = stateRadio;
+	}
 
     /**
      * Instantiates a new radio panel.
@@ -60,8 +70,8 @@ public final class RadioPanel extends AbstractPreferencesPanel {
 
     @Override
     public boolean applyPreferences() {
-        getState().setReadInfoFromRadioStream(readInfoFromRadioStream.isSelected());
-        getState().setShowAllRadioStations(showAllRadioStations.isSelected());
+        stateRadio.setReadInfoFromRadioStream(readInfoFromRadioStream.isSelected());
+        stateRadio.setShowAllRadioStations(showAllRadioStations.isSelected());
         return false;
     }
 
@@ -87,8 +97,8 @@ public final class RadioPanel extends AbstractPreferencesPanel {
 
     @Override
     public void updatePanel() {
-        setReadInfoFromRadioStream(getState().isReadInfoFromRadioStream());
-        setShowAllRadioStations(getState().isShowAllRadioStations());
+        setReadInfoFromRadioStream(stateRadio.isReadInfoFromRadioStream());
+        setShowAllRadioStations(stateRadio.isShowAllRadioStations());
     }
 
     @Override

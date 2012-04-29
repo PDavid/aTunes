@@ -34,6 +34,8 @@ import net.sourceforge.atunes.model.IPlayerEngine;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStatePlayer;
+import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.model.PlaybackState;
@@ -70,6 +72,24 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     private IEqualizer equalizer;
     
     private Volume volumeController;
+    
+    private IStateUI stateUI;
+    
+    private IStatePlayer statePlayer;
+    
+    /**
+     * @param statePlayer
+     */
+    public void setStatePlayer(IStatePlayer statePlayer) {
+		this.statePlayer = statePlayer;
+	}
+    
+    /**
+     * @param stateUI
+     */
+    public void setStateUI(IStateUI stateUI) {
+		this.stateUI = stateUI;
+	}
 
     /**
      * @param volumeController
@@ -96,7 +116,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     @Override
     public void applicationStateChanged(IState newState) {
     	// Show advanced controls
-    	playerControlsController.getComponentControlled().showAdvancedPlayerControls(newState.isShowAdvancedPlayerControls());
+    	playerControlsController.getComponentControlled().showAdvancedPlayerControls(stateUI.isShowAdvancedPlayerControls());
     }
 
     @Override
@@ -231,17 +251,17 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
     	}
     	
         // Set volume on visual components
-    	volumeController.setVolume(getState().getVolume(), false);
+    	volumeController.setVolume(statePlayer.getVolume(), false);
 
         // Mute
-        applyMuteState(getState().isMuteEnabled());
+        applyMuteState(statePlayer.isMuteEnabled());
     	
-        if (getState().isPlayAtStartup()) {
+        if (statePlayer.isPlayAtStartup()) {
             playCurrentAudioObject(true);
         }
         
         // Show advanced controls
-        playerControlsController.getComponentControlled().showAdvancedPlayerControls(getState().isShowAdvancedPlayerControls());
+        playerControlsController.getComponentControlled().showAdvancedPlayerControls(stateUI.isShowAdvancedPlayerControls());
 
         // Init engine
         playerEngine.initializePlayerEngine();

@@ -52,6 +52,7 @@ import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioHandler;
+import net.sourceforge.atunes.model.IStateRadio;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -73,6 +74,15 @@ public final class RadioNavigationView extends AbstractNavigationView {
     private IRadioHandler radioHandler;
     
     private IIconFactory radioSmallIcon;
+    
+    private IStateRadio stateRadio;
+    
+    /**
+     * @param stateRadio
+     */
+    public void setStateRadio(IStateRadio stateRadio) {
+		this.stateRadio = stateRadio;
+	}
     
     /**
      * @param radioSmallIcon
@@ -183,7 +193,7 @@ public final class RadioNavigationView extends AbstractNavigationView {
     @Override
     protected Map<String, ?> getViewData(ViewMode viewMode) {
         Map<String, Object> data = new HashMap<String, Object>();
-        data.put("SHOW_ALL_STATIONS", getState().isShowAllRadioStations());
+        data.put("SHOW_ALL_STATIONS", stateRadio.isShowAllRadioStations());
         data.put("RADIOS", radioHandler.getRadios());
         data.put("PRESET_RADIOS", radioHandler.getRadioPresets());
         return data;

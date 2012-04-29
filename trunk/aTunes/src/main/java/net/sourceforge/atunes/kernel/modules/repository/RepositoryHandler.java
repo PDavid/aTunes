@@ -44,6 +44,7 @@ import net.sourceforge.atunes.model.ISearchHandler;
 import net.sourceforge.atunes.model.ISearchableObject;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
+import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.model.ViewMode;
@@ -96,6 +97,15 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	private LocalAudioObjectRefresher localAudioObjectRefresher;
 	
 	private RepositoryRemover repositoryRemover;
+	
+	private IStateRepository stateRepository;
+	
+	/**
+	 * @param stateRepository
+	 */
+	public void setStateRepository(IStateRepository stateRepository) {
+		this.stateRepository = stateRepository;
+	}
 	
 	/**
 	 * @param repositoryRemover
@@ -197,8 +207,8 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	
     @Override
     public void applicationStateChanged(IState newState) {
-    	if (caseSensitiveTrees != newState.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
-    		caseSensitiveTrees = getState().isKeyAlwaysCaseSensitiveInRepositoryStructure();
+    	if (caseSensitiveTrees != stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+    		caseSensitiveTrees = stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure();
     		refreshRepository();
     	}
     	// Reschedule repository refresher
@@ -211,7 +221,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     	this.repository = this.voidRepository;
     	
         // Add itself as listener
-    	caseSensitiveTrees = getState().isKeyAlwaysCaseSensitiveInRepositoryStructure();
+    	caseSensitiveTrees = stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure();
         addAudioFilesRemovedListener(this);
     }
 
@@ -251,7 +261,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
             }
 
             // Execute command after last access to repository
-            new LoadRepositoryCommandExecutor().execute(getState().getCommandAfterAccessRepository());
+            new LoadRepositoryCommandExecutor().execute(stateRepository.getCommandAfterAccessRepository());
         }
     }
 

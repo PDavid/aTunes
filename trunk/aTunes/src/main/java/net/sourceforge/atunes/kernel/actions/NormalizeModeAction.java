@@ -29,6 +29,7 @@ import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IPlayerHandler;
+import net.sourceforge.atunes.model.IStatePlayer;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class NormalizeModeAction extends ActionWithColorMutableIcon {
@@ -57,6 +58,15 @@ public class NormalizeModeAction extends ActionWithColorMutableIcon {
     private IIconFactory normalizationIcon;
     
     private IIconFactory warningIcon;
+    
+    private IStatePlayer statePlayer;
+    
+    /**
+     * @param statePlayer
+     */
+    public void setStatePlayer(IStatePlayer statePlayer) {
+		this.statePlayer = statePlayer;
+	}
     
     /**
      * @param warningIcon
@@ -87,17 +97,17 @@ public class NormalizeModeAction extends ActionWithColorMutableIcon {
     @Override
     protected void initialize() {
     	super.initialize();
-        putValue(SELECTED_KEY, getState().isUseNormalisation());
+        putValue(SELECTED_KEY, statePlayer.isUseNormalisation());
         timer = new Timer(1000, new WarningActionListener());
-        if (getState().isUseNormalisation()) {
+        if (statePlayer.isUseNormalisation()) {
             timer.start();
         }
     }
 
     @Override
     protected void executeAction() {
-        boolean isNormalized = !getState().isUseNormalisation();
-        getState().setUseNormalisation(isNormalized);
+        boolean isNormalized = !statePlayer.isUseNormalisation();
+        statePlayer.setUseNormalisation(isNormalized);
         playerHandler.applyNormalization();
         if (timer.isRunning()) {
             timer.stop();

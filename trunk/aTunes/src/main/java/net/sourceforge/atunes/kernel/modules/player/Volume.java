@@ -21,19 +21,19 @@
 package net.sourceforge.atunes.kernel.modules.player;
 
 import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStatePlayer;
 
 public final class Volume {
 
-	private IState state;
-	
 	private IPlayerHandler playerHandler;
+
+	private IStatePlayer statePlayer;
 	
 	/**
-	 * @param state
+	 * @param statePlayer
 	 */
-	public void setState(IState state) {
-		this.state = state;
+	public void setStatePlayer(IStatePlayer statePlayer) {
+		this.statePlayer = statePlayer;
 	}
 	
 	/**
@@ -66,7 +66,7 @@ public final class Volume {
 	 */
 	private void applyVolume(boolean saveVolume, final int finalVolume) {
 		if (saveVolume) {
-        	state.setVolume(finalVolume);
+			statePlayer.setVolume(finalVolume);
         }
         playerHandler.setVolume(finalVolume);
 	}

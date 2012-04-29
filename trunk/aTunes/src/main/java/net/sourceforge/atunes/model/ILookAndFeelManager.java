@@ -32,12 +32,12 @@ public interface ILookAndFeelManager {
 
 	/**
 	 * Sets the look and feel.
-	 * 
 	 * @param lookAndFeelBean
 	 * @param state
+	 * @param stateUI
 	 * @param osManager
 	 */
-	public void setLookAndFeel(LookAndFeelBean lookAndFeelBean, IState state, IOSManager osManager);
+	public void setLookAndFeel(LookAndFeelBean lookAndFeelBean, IState state, IStateUI stateUI, IOSManager osManager);
 
 	/**
 	 * Returns available look and feels
@@ -61,12 +61,12 @@ public interface ILookAndFeelManager {
 
 	/**
 	 * Updates the user interface to use a new skin
-	 * 
 	 * @param selectedSkin
 	 * @param state
+	 * @param stateUI
 	 * @param osManager
 	 */
-	public void applySkin(String selectedSkin, IState state, IOSManager osManager);
+	public void applySkin(String selectedSkin, IState state, IStateUI stateUI, IOSManager osManager);
 
 	/**
 	 * @return the currentLookAndFeel

@@ -35,6 +35,7 @@ import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayerTrayIconsHandler;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.ISystemTrayHandler;
 import net.sourceforge.atunes.model.ITrayIcon;
 import net.sourceforge.atunes.model.PlaybackState;
@@ -65,6 +66,15 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
     
     private IPlayerTrayIconsHandler iconsHandler;
     
+    private IStateUI stateUI;
+    
+    /**
+     * @param stateUI
+     */
+    public void setStateUI(IStateUI stateUI) {
+		this.stateUI = stateUI;
+	}
+    
     /**
      * @param playerTrayIconsBuilder
      */
@@ -78,12 +88,12 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
     		iconsHandler = getOsManager().getPlayerTrayIcons();
     		customTrayIcon = getOsManager().getTrayIcon();
     		// System tray player
-    		if (getState().isShowTrayPlayer()) {
+    		if (stateUI.isShowTrayPlayer()) {
     			initTrayPlayerIcons();
     		}
 
     		// System tray
-    		if (getState().isShowSystemTray()) {
+    		if (stateUI.isShowSystemTray()) {
     			initTrayIcon();
     		}
     	}    	
@@ -226,8 +236,8 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
 
     @Override
     public void applicationStateChanged(IState newState) {
-        setTrayIconVisible(newState.isShowSystemTray());
-        setTrayPlayerVisible(newState.isShowTrayPlayer());
+        setTrayIconVisible(stateUI.isShowSystemTray());
+        setTrayPlayerVisible(stateUI.isShowTrayPlayer());
         updateTrayPlayerIconsColor();
     }
 

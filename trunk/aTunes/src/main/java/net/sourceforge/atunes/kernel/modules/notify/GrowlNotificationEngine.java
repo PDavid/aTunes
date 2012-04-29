@@ -30,7 +30,7 @@ import net.sourceforge.atunes.model.IAudioObjectGenericImageFactory;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.ITemporalDiskStorage;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -87,7 +87,7 @@ public class GrowlNotificationEngine extends CommonNotificationEngine {
 	}
 
 	@Override
-	public void updateNotification(IState newState) {
+	public void updateNotification(IStateUI newState) {
 	}
 
 	@Override

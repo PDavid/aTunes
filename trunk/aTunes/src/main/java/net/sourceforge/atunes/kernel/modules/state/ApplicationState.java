@@ -20,32 +20,21 @@
 
 package net.sourceforge.atunes.kernel.modules.state;
 
-import java.awt.Color;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.SwingConstants;
-
-import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.gui.frame.FrameState;
 import net.sourceforge.atunes.kernel.modules.navigator.RepositoryNavigationView;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
 import net.sourceforge.atunes.model.ArtistViewMode;
 import net.sourceforge.atunes.model.ColumnBean;
-import net.sourceforge.atunes.model.FontSettings;
-import net.sourceforge.atunes.model.IColorBean;
-import net.sourceforge.atunes.model.IColorBeanFactory;
-import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.IHotkeysConfig;
 import net.sourceforge.atunes.model.ILocaleBean;
 import net.sourceforge.atunes.model.ILyricsEngineInfo;
 import net.sourceforge.atunes.model.IProxyBean;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.LookAndFeelBean;
 import net.sourceforge.atunes.model.TagAttribute;
 import net.sourceforge.atunes.model.ViewMode;
 
@@ -65,15 +54,6 @@ public class ApplicationState implements IState {
      */
     private IStateStore stateStore;
     
-    private IColorBeanFactory colorBeanFactory;
-    
-    /**
-     * @param colorBeanFactory
-     */
-    public void setColorBeanFactory(IColorBeanFactory colorBeanFactory) {
-		this.colorBeanFactory = colorBeanFactory;
-	}
-    
     /**
      * Sets state store
      * @param store
@@ -81,22 +61,6 @@ public class ApplicationState implements IState {
     public void setStateStore(IStateStore store) {
 		this.stateStore = store;
 	}
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isShowAllRadioStations()
-	 */
-    @Override
-	public boolean isShowAllRadioStations() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.SHOW_ALL_RADIO_STATIONS, true);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setShowAllRadioStations(boolean)
-	 */
-    @Override
-	public void setShowAllRadioStations(boolean showAllRadioStations) {
-        this.stateStore.storePreference(Preferences.SHOW_ALL_RADIO_STATIONS, showAllRadioStations);
-    }
 
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isShowNavigationTable()
@@ -114,128 +78,6 @@ public class ApplicationState implements IState {
         this.stateStore.storePreference(Preferences.SHOW_NAVIGATION_TABLE, showNavigationTable);
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isKeyAlwaysCaseSensitiveInRepositoryStructure()
-	 */
-    @Override
-	public boolean isKeyAlwaysCaseSensitiveInRepositoryStructure(){
-        return (Boolean) this.stateStore.retrievePreference(Preferences.CASE_SENSITIVE_REPOSITORY_STRUCTURE_KEYS, false);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setKeyAlwaysCaseSensitiveInRepositoryStructure(boolean)
-	 */
-    @Override
-	public void setKeyAlwaysCaseSensitiveInRepositoryStructure(boolean caseSensitiveRepositoryStructureKeys){
-        this.stateStore.storePreference(Preferences.CASE_SENSITIVE_REPOSITORY_STRUCTURE_KEYS, caseSensitiveRepositoryStructureKeys);
-    }
-
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isShowStatusBar()
-	 */
-    @Override
-	public boolean isShowStatusBar() {
-        return (Boolean) this.stateStore.retrievePreference(Preferences.SHOW_STATUS_BAR, true);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setShowStatusBar(boolean)
-	 */
-    @Override
-	public void setShowStatusBar(boolean showStatusBar) {
-        this.stateStore.storePreference(Preferences.SHOW_STATUS_BAR, showStatusBar);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isShowOSD()
-	 */
-    @Override
-	public boolean isShowOSD() {
-        return (Boolean) this.stateStore.retrievePreference(Preferences.SHOW_OSD, true);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setShowOSD(boolean)
-	 */
-    @Override
-	public void setShowOSD(boolean showOSD) {
-    	this.stateStore.storePreference(Preferences.SHOW_OSD, showOSD);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isShuffle()
-	 */
-    @Override
-	public boolean isShuffle() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.SHUFFLE, false);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setShuffle(boolean)
-	 */
-    @Override
-	public void setShuffle(boolean shuffle) {
-        this.stateStore.storePreference(Preferences.SHUFFLE, shuffle);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isRepeat()
-	 */
-    @Override
-	public boolean isRepeat() {
-        return (Boolean) this.stateStore.retrievePreference(Preferences.REPEAT, false);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setRepeat(boolean)
-	 */
-    @Override
-	public void setRepeat(boolean repeat) {
-        this.stateStore.storePreference(Preferences.REPEAT, repeat);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isShowSystemTray()
-	 */
-    @Override
-	public boolean isShowSystemTray() {
-        return (Boolean) this.stateStore.retrievePreference(Preferences.SHOW_SYSTEM_TRAY, false);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setShowSystemTray(boolean)
-	 */
-    @Override
-	public void setShowSystemTray(boolean showSystemTray) {
-    	this.stateStore.storePreference(Preferences.SHOW_SYSTEM_TRAY, showSystemTray);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isShowTrayPlayer()
-	 */
-    @Override
-	public boolean isShowTrayPlayer() {
-        return (Boolean) this.stateStore.retrievePreference(Preferences.SHOW_TRAY_PLAYER, false);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setShowTrayPlayer(boolean)
-	 */
-    @Override
-	public void setShowTrayPlayer(boolean showTrayPlayer) {
-    	this.stateStore.storePreference(Preferences.SHOW_TRAY_PLAYER, showTrayPlayer);
-    }
     
     
 
@@ -368,26 +210,6 @@ public class ApplicationState implements IState {
     }
     
     
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getFrameClass()
-	 */
-    @Override
-	@SuppressWarnings(UNCHECKED)
-	public Class<? extends IFrame> getFrameClass() {
-        return (Class<? extends IFrame>) this.stateStore.retrievePreference(Preferences.FRAME_CLASS, null);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setFrameClass(java.lang.Class)
-	 */
-    @Override
-	public void setFrameClass(Class<? extends IFrame> frameClass) {
-    	this.stateStore.storePreference(Preferences.FRAME_CLASS, frameClass);
-    }
-    
-    
-
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getProxy()
 	 */
@@ -404,186 +226,6 @@ public class ApplicationState implements IState {
         this.stateStore.storePreference(Preferences.PROXY, proxy);
     }
     
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getLookAndFeel()
-	 */
-    @Override
-	public LookAndFeelBean getLookAndFeel() {
-        return (LookAndFeelBean) this.stateStore.retrievePreference(Preferences.LOOK_AND_FEEL, null);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setLookAndFeel(net.sourceforge.atunes.gui.lookandfeel.LookAndFeelBean)
-	 */
-    @Override
-	public void setLookAndFeel(LookAndFeelBean lookAndFeel) {
-    	this.stateStore.storePreference(Preferences.LOOK_AND_FEEL, lookAndFeel);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getFontSettings()
-	 */
-    @Override
-	public FontSettings getFontSettings() {
-        return (FontSettings) this.stateStore.retrievePreference(Preferences.FONT_SETTINGS, null);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setFontSettings(net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog.FontSettings)
-	 */
-    @Override
-	public void setFontSettings(FontSettings fontSettings) {
-    	this.stateStore.storePreference(Preferences.FONT_SETTINGS, fontSettings);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isPlayAtStartup()
-	 */
-    @Override
-	public boolean isPlayAtStartup() {
-        return (Boolean) this.stateStore.retrievePreference(Preferences.PLAY_AT_STARTUP, false);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setPlayAtStartup(boolean)
-	 */
-    @Override
-	public void setPlayAtStartup(boolean playAtStartup) {
-    	this.stateStore.storePreference(Preferences.PLAY_AT_STARTUP, playAtStartup);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isCacheFilesBeforePlaying()
-	 */
-    @Override
-	public boolean isCacheFilesBeforePlaying() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.CACHE_FILES_BEFORE_PLAYING, false);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setCacheFilesBeforePlaying(boolean)
-	 */
-    @Override
-	public void setCacheFilesBeforePlaying(boolean cacheFilesBeforePlaying) {
-    	this.stateStore.storePreference(Preferences.CACHE_FILES_BEFORE_PLAYING, cacheFilesBeforePlaying);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isUseNormalisation()
-	 */
-    @Override
-	public boolean isUseNormalisation() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.USE_NORMALIZATION, false);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setUseNormalisation(boolean)
-	 */
-    @Override
-	public void setUseNormalisation(boolean useNormalisation) {
-    	this.stateStore.storePreference(Preferences.USE_NORMALIZATION, useNormalisation);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isUseShortPathNames()
-	 */
-    @Override
-	public boolean isUseShortPathNames() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.USE_SHORT_PATH_NAMES, true);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setUseShortPathNames(boolean)
-	 */
-    @Override
-	public void setUseShortPathNames(boolean useShortPathNames) {
-    	this.stateStore.storePreference(Preferences.USE_SHORT_PATH_NAMES, useShortPathNames);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getEqualizerSettings()
-	 */
-    @Override
-	public float[] getEqualizerSettings() {
-    	return (float[]) this.stateStore.retrievePreference(Preferences.EQUALIZER_SETTINGS, null);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setEqualizerSettings(float[])
-	 */
-    @Override
-	public void setEqualizerSettings(float[] equalizerSettings) {
-    	this.stateStore.storePreference(Preferences.EQUALIZER_SETTINGS, equalizerSettings);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isUseFadeAway()
-	 */
-    @Override
-	public boolean isUseFadeAway() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.USE_FADE_AWAY, false);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setUseFadeAway(boolean)
-	 */
-    @Override
-	public void setUseFadeAway(boolean useFadeAway) {
-    	this.stateStore.storePreference(Preferences.USE_FADE_AWAY, useFadeAway);
-    }
-    
-    
-
-    
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isShowAdvancedPlayerControls()
-	 */
-    @Override
-	public boolean isShowAdvancedPlayerControls() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.SHOW_ADVANCED_PLAYER_CONTROLS, false);
-    }
-    
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setShowAdvancedPlayerControls(boolean)
-	 */
-    @Override
-	public void setShowAdvancedPlayerControls(boolean show) {
-    	this.stateStore.storePreference(Preferences.SHOW_ADVANCED_PLAYER_CONTROLS, show);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isReadInfoFromRadioStream()
-	 */
-    @Override
-	public boolean isReadInfoFromRadioStream() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.READ_INFO_FROM_RADIO_STREAM, true);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setReadInfoFromRadioStream(boolean)
-	 */
-    @Override
-	public void setReadInfoFromRadioStream(boolean readInfoFromRadioStream) {
-    	this.stateStore.storePreference(Preferences.READ_INFO_FROM_RADIO_STREAM, readInfoFromRadioStream);
-    }
     
     
 
@@ -622,77 +264,9 @@ public class ApplicationState implements IState {
     }
     
         
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getOsdDuration()
-	 */
-    @Override
-	public int getOsdDuration() {
-    	return (Integer) this.stateStore.retrievePreference(Preferences.OSD_DURATION, 2);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setOsdDuration(int)
-	 */
-    @Override
-	public void setOsdDuration(int osdDuration) {
-    	this.stateStore.storePreference(Preferences.OSD_DURATION, osdDuration);
-    }
     
     
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getVolume()
-	 */
-    @Override
-	public int getVolume() {
-    	return (Integer) this.stateStore.retrievePreference(Preferences.VOLUME, 50);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setVolume(int)
-	 */
-    @Override
-	public void setVolume(int volume) {
-    	this.stateStore.storePreference(Preferences.VOLUME, volume);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isMuteEnabled()
-	 */
-    @Override
-	public boolean isMuteEnabled() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.MUTE, false);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setMuteEnabled(boolean)
-	 */
-    @Override
-	public void setMuteEnabled(boolean muteEnabled) {
-    	this.stateStore.storePreference(Preferences.MUTE, muteEnabled);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getAutoRepositoryRefreshTime()
-	 */
-    @Override
-	public int getAutoRepositoryRefreshTime() {
-    	return (Integer) this.stateStore.retrievePreference(Preferences.AUTO_REPOSITORY_REFRESH_TIME, 60);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setAutoRepositoryRefreshTime(int)
-	 */
-    @Override
-	public void setAutoRepositoryRefreshTime(int autoRepositoryRefreshTime) {
-    	this.stateStore.storePreference(Preferences.AUTO_REPOSITORY_REFRESH_TIME, autoRepositoryRefreshTime);
-    }
-    
     
 
     /* (non-Javadoc)
@@ -911,25 +485,6 @@ public class ApplicationState implements IState {
     }
     
     
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getFullScreenBackground()
-	 */
-    @Override
-	public String getFullScreenBackground() {
-    	return (String) this.stateStore.retrievePreference(Preferences.FULL_SCREEN_BACKGROUND, null);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setFullScreenBackground(java.lang.String)
-	 */
-    @Override
-	public void setFullScreenBackground(String fullScreenBackground) {
-    	this.stateStore.storePreference(Preferences.FULL_SCREEN_BACKGROUND, fullScreenBackground);
-    }
-    
-   
-    
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getEncoder()
 	 */
@@ -1062,65 +617,6 @@ public class ApplicationState implements IState {
     	}
     }
 
-    
-    
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getSearchResultsColumns()
-	 */
-    @Override
-	@SuppressWarnings(UNCHECKED)
-	public Map<String, ColumnBean> getSearchResultsColumns() {
-    	Map<String, ColumnBean> map = (Map<String, ColumnBean>) this.stateStore.retrievePreference(Preferences.SEARCH_RESULTS_COLUMNS, null);
-    	return map != null ? Collections.unmodifiableMap(map) : null;
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setSearchResultsColumns(java.util.Map)
-	 */
-    @Override
-	public void setSearchResultsColumns(Map<String, ColumnBean> searchResultsColumns) {
-    	if (getSearchResultsColumns() == null || !getSearchResultsColumns().equals(searchResultsColumns)) {
-    		this.stateStore.storePreference(Preferences.SEARCH_RESULTS_COLUMNS, searchResultsColumns);
-    	}
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getFrameState(java.lang.Class)
-	 */
-    @Override
-	public FrameState getFrameState(Class<? extends IFrame> frame) {
-    	// Map creation is controlled in this class to avoid modification without persistence 
-    	@SuppressWarnings(UNCHECKED)
-		Map<Class<? extends IFrame>, FrameState> state = (Map<Class<? extends IFrame>, FrameState>) this.stateStore.retrievePreference(Preferences.FRAME_STATES, null);
-    	if (state == null) {
-    		state = new HashMap<Class<? extends IFrame>, FrameState>();
-    		this.stateStore.storePreference(Preferences.FRAME_STATES, state);
-    	}
-    	// Clone object to be sure changes made by application to frame state are not made over object in cache
-    	return state.containsKey(frame) ? new FrameState(state.get(frame)) : null;
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setFrameState(java.lang.Class, net.sourceforge.atunes.gui.frame.FrameState)
-	 */
-    @Override
-	public void setFrameState(Class<? extends IFrame> frame, IFrameState fs) {
-    	// Clone object to be sure changes made by application to frame state are not made over object in cache
-    	FrameState frameState = new FrameState(fs);
-    	if (getFrameState(frame) == null || !getFrameState(frame).equals(frameState)) {
-        	@SuppressWarnings(UNCHECKED)
-    		Map<Class<? extends IFrame>, FrameState> state = (Map<Class<? extends IFrame>, FrameState>) this.stateStore.retrievePreference(Preferences.FRAME_STATES, null);
-    		if (state == null) {
-    			state = new HashMap<Class<? extends IFrame>, FrameState>();
-    		}
-    		state.put(frame, frameState);
-    		this.stateStore.storePreference(Preferences.FRAME_STATES, state);
-    	}
-    }
-    
-    
 
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getDefaultDeviceLocation()
@@ -1249,23 +745,6 @@ public class ApplicationState implements IState {
     
        
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getPlayerEngine()
-	 */
-    @Override
-	public String getPlayerEngine() {
-    	return (String) this.stateStore.retrievePreference(Preferences.PLAYER_ENGINE, Constants.DEFAULT_ENGINE);        
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setPlayerEngine(java.lang.String)
-	 */
-    @Override
-	public void setPlayerEngine(String playerEngine) {
-    	this.stateStore.storePreference(Preferences.PLAYER_ENGINE, playerEngine);
-    }
-    
-    
 
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isAutoScrollPlayListEnabled()
@@ -1285,22 +764,6 @@ public class ApplicationState implements IState {
     
     
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getLastRepositoryFolders()
-	 */
-    @Override
-	@SuppressWarnings(UNCHECKED)
-	public List<String> getLastRepositoryFolders() {
-    	return (List<String>) this.stateStore.retrievePreference(Preferences.LAST_REPOSITORY_FOLDERS, null);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setLastRepositoryFolders(java.util.List)
-	 */
-    @Override
-	public void setLastRepositoryFolders(List<String> lastRepositoryFolders) {
-    	this.stateStore.storePreference(Preferences.LAST_REPOSITORY_FOLDERS, lastRepositoryFolders);
-    }
     
     
 
@@ -1376,21 +839,6 @@ public class ApplicationState implements IState {
     
     
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getImportExportFileNamePattern()
-	 */
-    @Override
-	public String getImportExportFileNamePattern() {
-    	return (String) this.stateStore.retrievePreference(Preferences.IMPORT_EXPORT_FILENAME_PATTERN, null);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setImportExportFileNamePattern(java.lang.String)
-	 */
-    @Override
-	public void setImportExportFileNamePattern(String importExportFileNamePattern) {
-    	this.stateStore.storePreference(Preferences.IMPORT_EXPORT_FILENAME_PATTERN, importExportFileNamePattern);
-    }
     
     
 
@@ -1411,22 +859,6 @@ public class ApplicationState implements IState {
     }
     
     
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getImportExportFolderPathPattern()
-	 */
-    @Override
-	public String getImportExportFolderPathPattern() {
-    	return (String) this.stateStore.retrievePreference(Preferences.IMPORT_EXPORT_FOLDER_PATH_PATTERN, null);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setImportExportFolderPathPattern(java.lang.String)
-	 */
-    @Override
-	public void setImportExportFolderPathPattern(String importExportFolderPathPattern) {
-    	this.stateStore.storePreference(Preferences.IMPORT_EXPORT_FOLDER_PATH_PATTERN, importExportFolderPathPattern);
-    }
     
     
 
@@ -1467,132 +899,6 @@ public class ApplicationState implements IState {
     
 
     /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isReviewTagsBeforeImport()
-	 */
-    @Override
-	public boolean isReviewTagsBeforeImport() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.REVIEW_TAGS_BEFORE_IMPORT, true);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setReviewTagsBeforeImport(boolean)
-	 */
-    @Override
-	public void setReviewTagsBeforeImport(boolean reviewTagsBeforeImport) {
-    	this.stateStore.storePreference(Preferences.REVIEW_TAGS_BEFORE_IMPORT, reviewTagsBeforeImport);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isApplyChangesToSourceFilesBeforeImport()
-	 */
-    @Override
-	public boolean isApplyChangesToSourceFilesBeforeImport() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.APPLY_CHANGES_TO_SOURCE_FILES_BEFORE_IMPORT, false);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setApplyChangesToSourceFilesBeforeImport(boolean)
-	 */
-    @Override
-	public void setApplyChangesToSourceFilesBeforeImport(boolean applyChangesToSourceFilesBeforeImport) {
-    	this.stateStore.storePreference(Preferences.APPLY_CHANGES_TO_SOURCE_FILES_BEFORE_IMPORT, applyChangesToSourceFilesBeforeImport);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isSetTrackNumbersWhenImporting()
-	 */
-    @Override
-	public boolean isSetTrackNumbersWhenImporting() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.SET_TRACK_NUMBERS_WHEN_IMPORTING, true);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setSetTrackNumbersWhenImporting(boolean)
-	 */
-    @Override
-	public void setSetTrackNumbersWhenImporting(boolean setTrackNumbersWhenImporting) {
-    	this.stateStore.storePreference(Preferences.SET_TRACK_NUMBERS_WHEN_IMPORTING, setTrackNumbersWhenImporting);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isSetTitlesWhenImporting()
-	 */
-    @Override
-	public boolean isSetTitlesWhenImporting() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.SET_TITLES_WHEN_IMPORTING, true);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setSetTitlesWhenImporting(boolean)
-	 */
-    @Override
-	public void setSetTitlesWhenImporting(boolean setTitlesWhenImporting) {
-    	this.stateStore.storePreference(Preferences.SET_TITLES_WHEN_IMPORTING, setTitlesWhenImporting);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getOsdWidth()
-	 */
-    @Override
-	public int getOsdWidth() {
-    	return (Integer) this.stateStore.retrievePreference(Preferences.OSD_WIDTH, 300);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setOsdWidth(int)
-	 */
-    @Override
-	public void setOsdWidth(int osdWidth) {
-    	this.stateStore.storePreference(Preferences.OSD_WIDTH, osdWidth);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getOsdHorizontalAlignment()
-	 */
-    @Override
-	public int getOsdHorizontalAlignment() {
-    	return (Integer) this.stateStore.retrievePreference(Preferences.OSD_HORIZONTAL_ALINGMENT, SwingConstants.RIGHT);        
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setOsdHorizontalAlignment(int)
-	 */
-    @Override
-	public void setOsdHorizontalAlignment(int osdHorizontalAlignment) {
-    	this.stateStore.storePreference(Preferences.OSD_HORIZONTAL_ALINGMENT, osdHorizontalAlignment);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getOsdVerticalAlignment()
-	 */
-    @Override
-	public int getOsdVerticalAlignment() {
-    	return (Integer) this.stateStore.retrievePreference(Preferences.OSD_VERTICAL_ALINGMENT, SwingConstants.BOTTOM);        
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setOsdVerticalAlignment(int)
-	 */
-    @Override
-	public void setOsdVerticalAlignment(int osdVerticalAlignment) {
-    	this.stateStore.storePreference(Preferences.OSD_VERTICAL_ALINGMENT, osdVerticalAlignment);
-    }
-    
-    
-
-    /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getHotkeysConfig()
 	 */
     @Override
@@ -1610,77 +916,6 @@ public class ApplicationState implements IState {
     
     
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getRecognitionPatterns()
-	 */
-    @Override
-	@SuppressWarnings(UNCHECKED)
-	public List<String> getRecognitionPatterns() {
-    	return (List<String>) this.stateStore.retrievePreference(Preferences.RECOGNITION_PATTERNS, null);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setRecognitionPatterns(java.util.List)
-	 */
-    @Override
-	public void setRecognitionPatterns(List<String> recognitionPatterns) {
-    	this.stateStore.storePreference(Preferences.RECOGNITION_PATTERNS, recognitionPatterns);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getMassiveRecognitionPatterns()
-	 */
-    @Override
-	@SuppressWarnings(UNCHECKED)
-	public List<String> getMassiveRecognitionPatterns() {
-    	return (List<String>) this.stateStore.retrievePreference(Preferences.MASSIVE_RECOGNITION_PATTERNS, null);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setMassiveRecognitionPatterns(java.util.List)
-	 */
-    @Override
-	public void setMassiveRecognitionPatterns(List<String> massiveRecognitionPatterns) {
-    	this.stateStore.storePreference(Preferences.MASSIVE_RECOGNITION_PATTERNS, massiveRecognitionPatterns);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getCommandBeforeAccessRepository()
-	 */
-    @Override
-	public String getCommandBeforeAccessRepository() {
-    	return (String) this.stateStore.retrievePreference(Preferences.COMMAND_BEFORE_ACCESS_REPOSITORY, null);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setCommandBeforeAccessRepository(java.lang.String)
-	 */
-    @Override
-	public void setCommandBeforeAccessRepository(String commandBeforeAccessRepository) {
-    	this.stateStore.storePreference(Preferences.COMMAND_BEFORE_ACCESS_REPOSITORY, commandBeforeAccessRepository);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getCommandAfterAccessRepository()
-	 */
-    @Override
-	public String getCommandAfterAccessRepository() {
-    	return (String) this.stateStore.retrievePreference(Preferences.COMMAND_AFTER_ACCESS_REPOSITORY, null);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setCommandAfterAccessRepository(java.lang.String)
-	 */
-    @Override
-	public void setCommandAfterAccessRepository(String commandAfterAccessRepository) {
-    	this.stateStore.storePreference(Preferences.COMMAND_AFTER_ACCESS_REPOSITORY, commandAfterAccessRepository);
-    }
     
     
 
@@ -1759,43 +994,6 @@ public class ApplicationState implements IState {
     }
 
     
-    
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getTrayPlayerIconsColor()
-	 */
-    @Override
-	public IColorBean getTrayPlayerIconsColor() {
-    	return (IColorBean) this.stateStore.retrievePreference(Preferences.TRAY_PLAYER_ICONS_COLOR, colorBeanFactory.getColorBean(Color.BLACK));
-    }
-    
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setTrayPlayerIconsColor(net.sourceforge.atunes.kernel.modules.state.beans.ColorBean)
-	 */
-    @Override
-	public void setTrayPlayerIconsColor(IColorBean color) {
-    	this.stateStore.storePreference(Preferences.TRAY_PLAYER_ICONS_COLOR, color);
-    }
-    
-    
-    
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isShowPlayerControlsOnTop()
-	 */
-    @Override
-	public boolean isShowPlayerControlsOnTop() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.SHOW_PLAYER_CONTROLS_ON_TOP, true);
-    }
-    
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setShowPlayerControlsOnTop(boolean)
-	 */
-    @Override
-	public void setShowPlayerControlsOnTop(boolean onTop) {
-    	this.stateStore.storePreference(Preferences.SHOW_PLAYER_CONTROLS_ON_TOP, onTop);
-    }
-    
-    
-        
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getAlbumsColumns()
 	 */

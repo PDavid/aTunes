@@ -22,8 +22,8 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IListOfPlayLists;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
+import net.sourceforge.atunes.model.IStatePlayer;
 
 class PreviousInitializationTaskRunnable implements Runnable {
 	
@@ -37,7 +37,7 @@ class PreviousInitializationTaskRunnable implements Runnable {
     public void run() {
     	IListOfPlayLists list = Context.getBean(IStateHandler.class).retrievePlayListsCache();
         if (list == null) {
-        	list = ListOfPlayLists.getEmptyPlayList(Context.getBean(IState.class));
+        	list = ListOfPlayLists.getEmptyPlayList(Context.getBean(IStatePlayer.class));
         }
         playListHandler.setPlayListsRetrievedFromCache(list);
     }

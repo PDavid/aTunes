@@ -34,7 +34,7 @@ import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepository;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.model.InconsistentRepositoryException;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -87,21 +87,21 @@ public class Repository implements Serializable, IRepository {
     /**
      * State
      */
-    private transient IState state;
+    private transient IStateRepository stateRepository;
     
     /**
      * Instantiates a new repository.
      * @param folders
-     * @param state
+     * @param stateRepository
      */
-    public Repository(List<File> folders, IState state) {
+    public Repository(List<File> folders, IStateRepository stateRepository) {
         this.folders = folders;
         this.filesStructure = new RepositoryStructure<ILocalAudioObject>();
         this.artistsStructure = new RepositoryStructure<IArtist>();
         this.foldersStructure = new RepositoryStructure<IFolder>();
         this.genresStructure = new RepositoryStructure<IGenre>();
         this.yearStructure = new RepositoryStructure<IYear>();
-        this.state = state;
+        this.stateRepository = stateRepository;
     }
 
     /**
@@ -110,12 +110,9 @@ public class Repository implements Serializable, IRepository {
     @SuppressWarnings("unused")
     private Repository() {}
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.model.IRepository#setState(net.sourceforge.atunes.model.IState)
-	 */
     @Override
-	public void setState(IState state) {
-    	this.state = state;
+	public void setStateRepository(IStateRepository stateRepository) {
+    	this.stateRepository = stateRepository;
     }
     
     /* (non-Javadoc)
@@ -288,7 +285,7 @@ public class Repository implements Serializable, IRepository {
 	public IArtist getArtist(String artistName) {
     	if (artistName == null) {
     		return null;
-    	} else if (state.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+    	} else if (stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
     		return artistsStructure.get(artistName);
     	} else {
     		return artistsStructure.get(artistName.toLowerCase());
@@ -305,7 +302,7 @@ public class Repository implements Serializable, IRepository {
     
     @Override
 	public IArtist putArtist(IArtist artist) {
-    	if (state.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+    	if (stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
     		artistsStructure.put(artist.getName(), artist);
     	} else {
     		artistsStructure.put(artist.getName().toLowerCase(), artist);
@@ -318,7 +315,7 @@ public class Repository implements Serializable, IRepository {
 	 */
     @Override
 	public void removeArtist(IArtist artist) {
-    	if (state.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+    	if (stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
     		artistsStructure.remove(artist.getName());
     	} else {
     		artistsStructure.remove(artist.getName().toLowerCase());
@@ -400,7 +397,7 @@ public class Repository implements Serializable, IRepository {
 	 */
     @Override
 	public IGenre getGenre(String genre) {
-    	if (state.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+    	if (stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
     		return genresStructure.get(genre);
     	} else {
     		return genresStructure.get(genre.toLowerCase());
@@ -409,7 +406,7 @@ public class Repository implements Serializable, IRepository {
 
     @Override
 	public IGenre putGenre(IGenre genre) {
-    	if (state.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+    	if (stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
     		genresStructure.put(genre.getName(), genre);
     	} else {
     		genresStructure.put(genre.getName().toLowerCase(), genre);
@@ -422,7 +419,7 @@ public class Repository implements Serializable, IRepository {
 	 */
     @Override
 	public void removeGenre(IGenre genre) {
-    	if (state.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
+    	if (stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
     		genresStructure.remove(genre.getName());
     	} else {
     		genresStructure.remove(genre.getName().toLowerCase());

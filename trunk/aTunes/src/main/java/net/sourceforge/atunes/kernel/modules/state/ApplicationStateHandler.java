@@ -39,6 +39,8 @@ import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IStateHandler;
+import net.sourceforge.atunes.model.IStatePlayer;
+import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.model.IStatistics;
 import net.sourceforge.atunes.model.InconsistentRepositoryException;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -61,6 +63,24 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 	 */
 	private boolean playListPersistAllowed = false;
 	private XMLSerializerService xmlSerializerService;
+	
+	private IStateRepository stateRepository;
+	
+	private IStatePlayer statePlayer;
+	
+	/**
+	 * @param statePlayer
+	 */
+	public void setStatePlayer(IStatePlayer statePlayer) {
+		this.statePlayer = statePlayer;
+	}
+	
+	/**
+	 * @param stateRepository
+	 */
+	public void setStateRepository(IStateRepository stateRepository) {
+		this.stateRepository = stateRepository;
+	}
 	
 	/**
 	 * @param xmlSerializerService
@@ -297,9 +317,10 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
 
             	// Then read contents
             	stream = new ObjectInputStream(new FileInputStream(StringUtils.getString(getUserConfigFolder(), "/", Constants.PLAYLISTS_CONTENTS_FILE)));
-            	List<List<IAudioObject>> contents = (List<List<IAudioObject>>) stream.readObject();
+            	@SuppressWarnings("unchecked")
+				List<List<IAudioObject>> contents = (List<List<IAudioObject>>) stream.readObject();
             	Logger.info(StringUtils.getString("Playlists contents loaded"));
-            	listOfPlayLists.setContents(contents, getState());
+            	listOfPlayLists.setContents(contents, statePlayer);
             	return listOfPlayLists;
             }
         } catch (FileNotFoundException e) {
@@ -380,7 +401,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
             Timer timer = new Timer();
             timer.start();
             IRepository result = (IRepository) ois.readObject();
-            result.setState(getState());
+            result.setStateRepository(stateRepository);
 
             // Check repository integrity
             result.validateRepository();
@@ -415,7 +436,7 @@ public final class ApplicationStateHandler extends AbstractHandler implements IS
             Logger.info("Reading serialized device cache");
             long t0 = System.currentTimeMillis();
             IRepository result = (IRepository) ois.readObject();
-            result.setState(getState());
+            result.setStateRepository(stateRepository);
             long t1 = System.currentTimeMillis();
             Logger.info(StringUtils.getString("Reading device cache done (", (t1 - t0) / 1000.0, SECONDS));
             return result;

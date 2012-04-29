@@ -30,7 +30,7 @@ import javax.swing.JSlider;
 
 import net.sourceforge.atunes.model.IEqualizer;
 import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStatePlayer;
 import net.sourceforge.atunes.model.PlayerEngineCapability;
 
 /**
@@ -40,22 +40,22 @@ public class Equalizer implements IEqualizer {
 
     private Map<String, Integer[]> presets;
 
-    private IState state;
-    
     private IPlayerHandler playerHandler;
+    
+    private IStatePlayer statePlayer;
+    
+    /**
+     * @param statePlayer
+     */
+    public void setStatePlayer(IStatePlayer statePlayer) {
+		this.statePlayer = statePlayer;
+	}
 
     /**
      * @param presets
      */
     public void setPresets(Map<String, Integer[]> presets) {
 		this.presets = presets;
-	}
-    
-    /**
-     * @param state
-     */
-    public void setState(IState state) {
-		this.state = state;
 	}
     
     /**
@@ -93,7 +93,7 @@ public class Equalizer implements IEqualizer {
             eqSettings[i] = bands[i].getValue() * 12 / -32f;
         }
 
-        state.setEqualizerSettings(eqSettings);
+        statePlayer.setEqualizerSettings(eqSettings);
 
         if (playerHandler.supportsCapability(PlayerEngineCapability.EQUALIZER_CHANGE)) {
         	playerHandler.applyEqualization(eqSettings);
@@ -117,7 +117,7 @@ public class Equalizer implements IEqualizer {
 
     @Override
 	public float[] getEqualizerValues() {
-        float[] equalizerSettings = state.getEqualizerSettings();
+        float[] equalizerSettings = statePlayer.getEqualizerSettings();
         return equalizerSettings != null ? Arrays.copyOf(equalizerSettings, equalizerSettings.length) : new float[0];
     }
 }

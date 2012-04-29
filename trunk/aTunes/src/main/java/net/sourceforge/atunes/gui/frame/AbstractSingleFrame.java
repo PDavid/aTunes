@@ -54,6 +54,7 @@ import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListPanel;
 import net.sourceforge.atunes.model.IPlayerControlsPanel;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.model.IUpdateDialog;
@@ -98,6 +99,15 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
 
     private ApplicationContext context;
     
+    private IStateUI stateUI;
+    
+    /**
+     * @param stateUI
+     */
+    public void setStateUI(IStateUI stateUI) {
+		this.stateUI = stateUI;
+	}
+    
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) {
     	this.context = applicationContext;
@@ -106,8 +116,8 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     /**
      * @return
      */
-    IState getAppState() {
-    	return state;
+    IStateUI getStateUI() {
+    	return stateUI;
     }
     
     /**
@@ -126,7 +136,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
         // Set OS-dependent frame configuration
         osManager.setupFrame(this);
 
-        FrameListenersDecorator decorator = new FrameListenersDecorator(this, taskService, state, context.getBeansOfType(IWindowListener.class).values());
+        FrameListenersDecorator decorator = new FrameListenersDecorator(this, taskService, stateUI, context.getBeansOfType(IWindowListener.class).values());
         decorator.decorate();
 
         // Create frame content
@@ -382,7 +392,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (Toolkit.getDefaultToolkit().getScreenSize().width + 15 < getSize().width) {
-                	getContext().getBean(WindowSizeCalculator.class).setWindowSize(AbstractSingleFrame.this, state);
+                	getContext().getBean(WindowSizeCalculator.class).setWindowSize(AbstractSingleFrame.this, stateUI);
                 }
             }
         });
@@ -452,7 +462,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     }
     
     protected void storeFrameState() {
-   		state.setFrameState(getClass(), frameState);
+    	stateUI.setFrameState(getClass(), frameState);
     }
 
     protected final void applyVisibility(final boolean show, final String s, Component c, final JSplitPane sp) {
@@ -521,7 +531,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     public void applicationStarted(IFrameState frameState) {
     	// Setting window size after frame is visible avoids using workarounds to set extended state in Linux
     	// and work both in Windows and Linux
-    	getContext().getBean(WindowSizeCalculator.class).setWindowSize(AbstractSingleFrame.this, state);
+    	getContext().getBean(WindowSizeCalculator.class).setWindowSize(AbstractSingleFrame.this, stateUI);
     	setupSplitPaneDividerPosition(frameState);
     }
     

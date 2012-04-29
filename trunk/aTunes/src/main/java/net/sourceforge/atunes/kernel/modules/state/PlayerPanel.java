@@ -58,6 +58,8 @@ import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayerEngine;
+import net.sourceforge.atunes.model.IStatePlayer;
+import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -234,6 +236,24 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
     private IHotkeyHandler hotkeyHandler;
     
     private ILookAndFeelManager lookAndFeelManager;
+    
+    private IStateUI stateUI;
+    
+    private IStatePlayer statePlayer;
+    
+    /**
+     * @param statePlayer
+     */
+    public void setStatePlayer(IStatePlayer statePlayer) {
+		this.statePlayer = statePlayer;
+	}
+    
+    /**
+     * @param stateUI
+     */
+    public void setStateUI(IStateUI stateUI) {
+		this.stateUI = stateUI;
+	}
 
     /**
      * @param engines
@@ -388,21 +408,21 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
     @Override
     public boolean applyPreferences() {
         boolean needRestart = false;
-        getState().setPlayAtStartup(playAtStartup.isSelected());
-        getState().setUseFadeAway(useFadeAway.isSelected());
-        getState().setShowAdvancedPlayerControls(showAdvancedPlayerControls.isSelected());
-        getState().setUseShortPathNames(useShortPathNames.isSelected());
+        statePlayer.setPlayAtStartup(playAtStartup.isSelected());
+        statePlayer.setUseFadeAway(useFadeAway.isSelected());
+        stateUI.setShowAdvancedPlayerControls(showAdvancedPlayerControls.isSelected());
+        statePlayer.setUseShortPathNames(useShortPathNames.isSelected());
         getState().setEnableHotkeys(enableGlobalHotkeys.isSelected());
         getState().setHotkeysConfig(tableModel.getHotkeysConfig());
-        getState().setCacheFilesBeforePlaying(cacheFilesBeforePlaying.isSelected());
+        statePlayer.setCacheFilesBeforePlaying(cacheFilesBeforePlaying.isSelected());
         String engine = engineCombo.getSelectedItem() != null ? engineCombo.getSelectedItem().toString() : null;
-        if (engine != null && !getState().getPlayerEngine().equals(engine)) {
-            getState().setPlayerEngine(engine);
+        if (engine != null && !statePlayer.getPlayerEngine().equals(engine)) {
+        	statePlayer.setPlayerEngine(engine);
             needRestart = true;
         }
 
-        boolean onTop = getState().isShowPlayerControlsOnTop();
-        getState().setShowPlayerControlsOnTop(showPlayerControlsOnTop.isSelected());
+        boolean onTop = stateUI.isShowPlayerControlsOnTop();
+        stateUI.setShowPlayerControlsOnTop(showPlayerControlsOnTop.isSelected());
         if (onTop != showPlayerControlsOnTop.isSelected()) {
         	needRestart = true;
         }
@@ -496,16 +516,16 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
 
     @Override
     public void updatePanel() {
-        setPlayerEngine(getState().getPlayerEngine());
-        setPlayAtStartup(getState().isPlayAtStartup());
-        setUseFadeAway(getState().isUseFadeAway());
-        setShowAdvancedPlayerControls(getState().isShowAdvancedPlayerControls());
-        setShowPlayerControlsOnTop(getState().isShowPlayerControlsOnTop());
-        setCacheFilesBeforePlaying(getState().isCacheFilesBeforePlaying());
+        setPlayerEngine(statePlayer.getPlayerEngine());
+        setPlayAtStartup(statePlayer.isPlayAtStartup());
+        setUseFadeAway(statePlayer.isUseFadeAway());
+        setShowAdvancedPlayerControls(stateUI.isShowAdvancedPlayerControls());
+        setShowPlayerControlsOnTop(stateUI.isShowPlayerControlsOnTop());
+        setCacheFilesBeforePlaying(statePlayer.isCacheFilesBeforePlaying());
         setEnableHotkeys(getState().isEnableHotkeys());
         IHotkeysConfig hotkeysConfig = getState().getHotkeysConfig();
         setHotkeysConfig(hotkeysConfig != null ? hotkeysConfig : hotkeyHandler.getHotkeysConfig());
-        setUseShortPathNames(getState().isUseShortPathNames());
+        setUseShortPathNames(statePlayer.isUseShortPathNames());
         getUseShortPathNames().setEnabled(osManager.usesShortPathNames());
         
         boolean hotKeysSupported = hotkeyHandler.areHotkeysSupported();

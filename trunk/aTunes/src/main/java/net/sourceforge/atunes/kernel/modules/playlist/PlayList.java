@@ -31,7 +31,7 @@ import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListAudioObject;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStatePlayer;
 import net.sourceforge.atunes.utils.PointedList;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -59,24 +59,25 @@ public class PlayList implements IPlayList {
      */
     private PointedList<IAudioObject> audioObjects;
     
-    private transient IState state;
+    private transient IStatePlayer statePlayer;
 
     /**
      * Default constructor
+     * @param statePlayer
      */
-    protected PlayList(IState state) {
-        this((List<IAudioObject>) null, state);
+    protected PlayList(IStatePlayer statePlayer) {
+        this((List<IAudioObject>) null, statePlayer);
     }
 
     /**
      * Builds a new play list with the given list of audio objects
-     * 
-     * @param list
+     * @param audioObjectsList
+     * @param statePlayer
      */
-    protected PlayList(List<? extends IAudioObject> audioObjectsList, IState state) {
-        this.audioObjects = new PlayListPointedList(state);
-        this.mode = PlayListMode.getPlayListMode(this, state);
-        this.state = state;
+    protected PlayList(List<? extends IAudioObject> audioObjectsList, IStatePlayer statePlayer) {
+        this.audioObjects = new PlayListPointedList(statePlayer);
+        this.mode = PlayListMode.getPlayListMode(this, statePlayer);
+        this.statePlayer = statePlayer;
         if (audioObjectsList != null) {
             add(audioObjectsList);
         }
@@ -84,23 +85,22 @@ public class PlayList implements IPlayList {
 
     /**
      * Private constructor, only for clone
-     * 
      * @param playList
-     * @param state
+     * @param statePlayer
      */
-    private PlayList(PlayList playList, IState state) {
+    private PlayList(PlayList playList, IStatePlayer statePlayer) {
         this.name = playList.name == null ? null : playList.name;
-        this.state = state;
-        this.audioObjects = new PlayListPointedList(playList.audioObjects, state);
-        this.mode = PlayListMode.getPlayListMode(this, state);
+        this.statePlayer = statePlayer;
+        this.audioObjects = new PlayListPointedList(playList.audioObjects, statePlayer);
+        this.mode = PlayListMode.getPlayListMode(this, statePlayer);
     }
 
 	/**
 	 * @param state
 	 */
-	public void setState(IState state) {
-		this.state = state;
-		((PlayListPointedList)this.audioObjects).setState(state);
+	public void setStatePlayer(IStatePlayer statePlayer) {
+		this.statePlayer = statePlayer;
+		((PlayListPointedList)this.audioObjects).setStatePlayer(statePlayer);
 	}
     
     //////////////////////////////////////////////////////////////// ADD OPERATIONS /////////////////////////////////////////////////////////
@@ -362,7 +362,7 @@ public class PlayList implements IPlayList {
 
     @Override
     public PlayList copyPlayList() {
-        return new PlayList(this, state);
+        return new PlayList(this, statePlayer);
     }
 
     /**
