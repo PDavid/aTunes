@@ -175,7 +175,7 @@ public final class EditPreferencesDialogController extends AbstractSimpleControl
         		// WARNING: There was a bug when call to applyPreferences was made as second operand of OR due to shortcut
         		// So call method and after do OR (method call as first operand is also valid)
         		// See bug https://sourceforge.net/tracker/?func=detail&aid=2999531&group_id=161929&atid=821812 for more information
-        		boolean panelNeedRestart = p.applyPreferences(getState());
+        		boolean panelNeedRestart = p.applyPreferences();
         		needRestart = needRestart || panelNeedRestart;
         	} else {
         		Logger.debug("Panel ", p.getTitle(), " is clean");
@@ -189,7 +189,7 @@ public final class EditPreferencesDialogController extends AbstractSimpleControl
      */
     void resetImmediateChanges() {
         for (AbstractPreferencesPanel p : preferencesPanels) {
-            p.resetImmediateChanges(getState());
+            p.resetImmediateChanges();
         }
     }
 
@@ -199,7 +199,7 @@ public final class EditPreferencesDialogController extends AbstractSimpleControl
     public void start() {
         // Update panels
         for (AbstractPreferencesPanel panel : preferencesPanels) {
-            panel.updatePanel(getState());
+            panel.updatePanel();
         }
 
         // Call dialogVisibilityChanged

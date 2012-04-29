@@ -39,7 +39,6 @@ import javax.swing.JTextField;
 
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -262,45 +261,45 @@ public final class ImportExportPanel extends AbstractPreferencesPanel {
 	}
 
     @Override
-    public boolean applyPreferences(IState state) {
+    public boolean applyPreferences() {
         String fileNamePattern = fileNameNoChangeRadioButton.isSelected() ? "" : fileNamePatternTextField.getText();
-        state.setImportExportFileNamePattern(fileNamePattern == null || fileNamePattern.trim().equals("") ? null : fileNamePattern);
+        getState().setImportExportFileNamePattern(fileNamePattern == null || fileNamePattern.trim().equals("") ? null : fileNamePattern);
         String folderPathPattern = folderPathNoChangeRadioButton.isSelected() ? "" : folderPathPatternTextField.getText();
-        state.setImportExportFolderPathPattern(folderPathPattern == null || folderPathPattern.equals("") ? null : folderPathPattern);
-        state.setReviewTagsBeforeImport(reviewTagsBeforeImportCheckBox.isSelected());
-        state.setApplyChangesToSourceFilesBeforeImport(applyChangesToSourceFilesCheckBox.isSelected());
-        state.setSetTrackNumbersWhenImporting(setTrackNumberWhenImportingCheckBox.isSelected());
-        state.setSetTitlesWhenImporting(setTitlesWhenImportingCheckBox.isSelected());
+        getState().setImportExportFolderPathPattern(folderPathPattern == null || folderPathPattern.equals("") ? null : folderPathPattern);
+        getState().setReviewTagsBeforeImport(reviewTagsBeforeImportCheckBox.isSelected());
+        getState().setApplyChangesToSourceFilesBeforeImport(applyChangesToSourceFilesCheckBox.isSelected());
+        getState().setSetTrackNumbersWhenImporting(setTrackNumberWhenImportingCheckBox.isSelected());
+        getState().setSetTitlesWhenImporting(setTitlesWhenImportingCheckBox.isSelected());
         return false;
     }
 
     @Override
-    public void updatePanel(IState state) {
-        if (state.getImportExportFileNamePattern() == null || state.getImportExportFileNamePattern().trim().equals("")) {
+    public void updatePanel() {
+        if (getState().getImportExportFileNamePattern() == null || getState().getImportExportFileNamePattern().trim().equals("")) {
             fileNameNoChangeRadioButton.setSelected(true);
             fileNamePatternTextField.setEnabled(false);
         } else {
             fileNameCustomizedRadioButton.setSelected(true);
             fileNamePatternTextField.setEnabled(true);
-            fileNamePatternTextField.setText(state.getImportExportFileNamePattern());
+            fileNamePatternTextField.setText(getState().getImportExportFileNamePattern());
         }
-        if (state.getImportExportFolderPathPattern() == null || state.getImportExportFolderPathPattern().trim().equals("")) {
+        if (getState().getImportExportFolderPathPattern() == null || getState().getImportExportFolderPathPattern().trim().equals("")) {
             folderPathNoChangeRadioButton.setSelected(true);
             folderPathPatternTextField.setEnabled(false);
         } else {
             folderPathCustomizedRadioButton.setSelected(true);
             folderPathPatternTextField.setEnabled(true);
-            folderPathPatternTextField.setText(state.getImportExportFolderPathPattern());
+            folderPathPatternTextField.setText(getState().getImportExportFolderPathPattern());
         }
-        reviewTagsBeforeImportCheckBox.setSelected(state.isReviewTagsBeforeImport());
-        applyChangesToSourceFilesCheckBox.setEnabled(state.isReviewTagsBeforeImport());
-        applyChangesToSourceFilesCheckBox.setSelected(state.isApplyChangesToSourceFilesBeforeImport());
-        setTrackNumberWhenImportingCheckBox.setSelected(state.isSetTrackNumbersWhenImporting());
-        setTitlesWhenImportingCheckBox.setSelected(state.isSetTitlesWhenImporting());
+        reviewTagsBeforeImportCheckBox.setSelected(getState().isReviewTagsBeforeImport());
+        applyChangesToSourceFilesCheckBox.setEnabled(getState().isReviewTagsBeforeImport());
+        applyChangesToSourceFilesCheckBox.setSelected(getState().isApplyChangesToSourceFilesBeforeImport());
+        setTrackNumberWhenImportingCheckBox.setSelected(getState().isSetTrackNumbersWhenImporting());
+        setTitlesWhenImportingCheckBox.setSelected(getState().isSetTitlesWhenImporting());
     }
 
     @Override
-    public void resetImmediateChanges(IState state) {
+    public void resetImmediateChanges() {
         // Do nothing
     }
 

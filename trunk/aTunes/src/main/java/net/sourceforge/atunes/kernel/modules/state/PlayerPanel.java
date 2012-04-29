@@ -58,7 +58,6 @@ import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayerEngine;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -387,23 +386,23 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public boolean applyPreferences(IState state) {
+    public boolean applyPreferences() {
         boolean needRestart = false;
-        state.setPlayAtStartup(playAtStartup.isSelected());
-        state.setUseFadeAway(useFadeAway.isSelected());
-        state.setShowAdvancedPlayerControls(showAdvancedPlayerControls.isSelected());
-        state.setUseShortPathNames(useShortPathNames.isSelected());
-        state.setEnableHotkeys(enableGlobalHotkeys.isSelected());
-        state.setHotkeysConfig(tableModel.getHotkeysConfig());
-        state.setCacheFilesBeforePlaying(cacheFilesBeforePlaying.isSelected());
+        getState().setPlayAtStartup(playAtStartup.isSelected());
+        getState().setUseFadeAway(useFadeAway.isSelected());
+        getState().setShowAdvancedPlayerControls(showAdvancedPlayerControls.isSelected());
+        getState().setUseShortPathNames(useShortPathNames.isSelected());
+        getState().setEnableHotkeys(enableGlobalHotkeys.isSelected());
+        getState().setHotkeysConfig(tableModel.getHotkeysConfig());
+        getState().setCacheFilesBeforePlaying(cacheFilesBeforePlaying.isSelected());
         String engine = engineCombo.getSelectedItem() != null ? engineCombo.getSelectedItem().toString() : null;
-        if (engine != null && !state.getPlayerEngine().equals(engine)) {
-            state.setPlayerEngine(engine);
+        if (engine != null && !getState().getPlayerEngine().equals(engine)) {
+            getState().setPlayerEngine(engine);
             needRestart = true;
         }
 
-        boolean onTop = state.isShowPlayerControlsOnTop();
-        state.setShowPlayerControlsOnTop(showPlayerControlsOnTop.isSelected());
+        boolean onTop = getState().isShowPlayerControlsOnTop();
+        getState().setShowPlayerControlsOnTop(showPlayerControlsOnTop.isSelected());
         if (onTop != showPlayerControlsOnTop.isSelected()) {
         	needRestart = true;
         }
@@ -496,17 +495,17 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public void updatePanel(IState state) {
-        setPlayerEngine(state.getPlayerEngine());
-        setPlayAtStartup(state.isPlayAtStartup());
-        setUseFadeAway(state.isUseFadeAway());
-        setShowAdvancedPlayerControls(state.isShowAdvancedPlayerControls());
-        setShowPlayerControlsOnTop(state.isShowPlayerControlsOnTop());
-        setCacheFilesBeforePlaying(state.isCacheFilesBeforePlaying());
-        setEnableHotkeys(state.isEnableHotkeys());
-        IHotkeysConfig hotkeysConfig = state.getHotkeysConfig();
+    public void updatePanel() {
+        setPlayerEngine(getState().getPlayerEngine());
+        setPlayAtStartup(getState().isPlayAtStartup());
+        setUseFadeAway(getState().isUseFadeAway());
+        setShowAdvancedPlayerControls(getState().isShowAdvancedPlayerControls());
+        setShowPlayerControlsOnTop(getState().isShowPlayerControlsOnTop());
+        setCacheFilesBeforePlaying(getState().isCacheFilesBeforePlaying());
+        setEnableHotkeys(getState().isEnableHotkeys());
+        IHotkeysConfig hotkeysConfig = getState().getHotkeysConfig();
         setHotkeysConfig(hotkeysConfig != null ? hotkeysConfig : hotkeyHandler.getHotkeysConfig());
-        setUseShortPathNames(state.isUseShortPathNames());
+        setUseShortPathNames(getState().isUseShortPathNames());
         getUseShortPathNames().setEnabled(osManager.usesShortPathNames());
         
         boolean hotKeysSupported = hotkeyHandler.areHotkeysSupported();
@@ -516,7 +515,7 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public void resetImmediateChanges(IState state) {
+    public void resetImmediateChanges() {
         // Do nothing
     }
 

@@ -47,7 +47,6 @@ import net.sourceforge.atunes.model.ArtistViewMode;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class NavigatorPanel extends AbstractPreferencesPanel {
@@ -224,18 +223,18 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 	}
 
 	@Override
-	public boolean applyPreferences(IState state) {
+	public boolean applyPreferences() {
 		
 		boolean refresh = false;
 		
-		state.setShowFavoritesInNavigator(showFavorites.isSelected());
-		state.setShowExtendedTooltip(showExtendedToolTip.isSelected());
-		state.setExtendedTooltipDelay((Integer) extendedToolTipDelay.getSelectedItem());
-		state.setUseSmartTagViewSorting(useSmartTagViewSorting.isSelected());
-		state.setHighlightIncompleteTagElements(highlightElementsWithIncompleteBasicTags.isSelected());
-		state.setHighlightIncompleteTagFoldersAttributes(tagAttributesTableModel.getSelectedTagAttributes());
-		state.setUsePersonNamesArtistTagViewSorting(useArtistNamesSorting.isSelected());
-		state.setKeyAlwaysCaseSensitiveInRepositoryStructure(useCaseSensitiveInTree.isSelected());
+		getState().setShowFavoritesInNavigator(showFavorites.isSelected());
+		getState().setShowExtendedTooltip(showExtendedToolTip.isSelected());
+		getState().setExtendedTooltipDelay((Integer) extendedToolTipDelay.getSelectedItem());
+		getState().setUseSmartTagViewSorting(useSmartTagViewSorting.isSelected());
+		getState().setHighlightIncompleteTagElements(highlightElementsWithIncompleteBasicTags.isSelected());
+		getState().setHighlightIncompleteTagFoldersAttributes(tagAttributesTableModel.getSelectedTagAttributes());
+		getState().setUsePersonNamesArtistTagViewSorting(useArtistNamesSorting.isSelected());
+		getState().setKeyAlwaysCaseSensitiveInRepositoryStructure(useCaseSensitiveInTree.isSelected());
 
 		ArtistViewMode newArtistViewState = ArtistViewMode.BOTH;
 		if (useOnlyArtist.isSelected()){
@@ -246,8 +245,8 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 			newArtistViewState = ArtistViewMode.BOTH;
 		}
 		
-		if (!newArtistViewState.equals(state.getArtistViewMode())) {
-			state.setArtistViewMode(newArtistViewState);
+		if (!newArtistViewState.equals(getState().getArtistViewMode())) {
+			getState().setArtistViewMode(newArtistViewState);
 			 Context.getBean(IMessageDialogFactory.class).getDialog().showMessage(I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"),this);
 			 Context.getBean(IRepositoryHandler.class).refreshRepository();
 		}
@@ -329,16 +328,16 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 	}
 
 	@Override
-	public void updatePanel(IState state) {
-		tagAttributesTableModel.setTagAttributes(IncompleteTagsChecker.getAllTagAttributes(state.getHighlightIncompleteTagFoldersAttributes()));
-		setShowFavorites(state.isShowFavoritesInNavigator());
-		setShowAlbumToolTip(state.isShowExtendedTooltip());
-		setAlbumToolTipDelay(state.getExtendedTooltipDelay());
-		setUseSmartTagViewSorting(state.isUseSmartTagViewSorting());
-		setHighlightFoldersWithIncompleteBasicTags(state.isHighlightIncompleteTagElements());
-		setUsePersonNamesArtistTagViewSorting(state.isUsePersonNamesArtistTagViewSorting());
-		setKeyAlwaysCaseSensitiveInRepositoryStructure(state.isKeyAlwaysCaseSensitiveInRepositoryStructure());
-		setArtistViewMode(state.getArtistViewMode());
+	public void updatePanel() {
+		tagAttributesTableModel.setTagAttributes(IncompleteTagsChecker.getAllTagAttributes(getState().getHighlightIncompleteTagFoldersAttributes()));
+		setShowFavorites(getState().isShowFavoritesInNavigator());
+		setShowAlbumToolTip(getState().isShowExtendedTooltip());
+		setAlbumToolTipDelay(getState().getExtendedTooltipDelay());
+		setUseSmartTagViewSorting(getState().isUseSmartTagViewSorting());
+		setHighlightFoldersWithIncompleteBasicTags(getState().isHighlightIncompleteTagElements());
+		setUsePersonNamesArtistTagViewSorting(getState().isUsePersonNamesArtistTagViewSorting());
+		setKeyAlwaysCaseSensitiveInRepositoryStructure(getState().isKeyAlwaysCaseSensitiveInRepositoryStructure());
+		setArtistViewMode(getState().getArtistViewMode());
 	}
 
 	private void setArtistViewMode(ArtistViewMode artistViewMode) {
@@ -362,7 +361,7 @@ public final class NavigatorPanel extends AbstractPreferencesPanel {
 	}
 
 	@Override
-	public void resetImmediateChanges(IState state) {
+	public void resetImmediateChanges() {
 		// Do nothing
 	}
 

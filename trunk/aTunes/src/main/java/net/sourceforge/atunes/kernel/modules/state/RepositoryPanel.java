@@ -28,7 +28,6 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -101,11 +100,10 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
 	}
 
     @Override
-    public boolean applyPreferences(IState state) {
-        state.setAutoRepositoryRefreshTime((Integer) refreshTime.getSelectedItem());
-        
-        state.setCommandBeforeAccessRepository(commandBeforeAccessRepository.getText());
-        state.setCommandAfterAccessRepository(commandAfterAccessRepository.getText());
+    public boolean applyPreferences() {
+        getState().setAutoRepositoryRefreshTime((Integer) refreshTime.getSelectedItem());
+        getState().setCommandBeforeAccessRepository(commandBeforeAccessRepository.getText());
+        getState().setCommandAfterAccessRepository(commandAfterAccessRepository.getText());
         return false;
     }
 
@@ -138,10 +136,10 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public void updatePanel(IState state) {
-        setRefreshTime(state.getAutoRepositoryRefreshTime());
-        setCommandBeforeAccessRepository(state.getCommandBeforeAccessRepository());
-        setCommandAfterAccessRepository(state.getCommandAfterAccessRepository());
+    public void updatePanel() {
+        setRefreshTime(getState().getAutoRepositoryRefreshTime());
+        setCommandBeforeAccessRepository(getState().getCommandBeforeAccessRepository());
+        setCommandAfterAccessRepository(getState().getCommandAfterAccessRepository());
     }
 
     @Override
@@ -154,7 +152,7 @@ public final class RepositoryPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public void resetImmediateChanges(IState state) {
+    public void resetImmediateChanges() {
         // Do nothing
     }
 }

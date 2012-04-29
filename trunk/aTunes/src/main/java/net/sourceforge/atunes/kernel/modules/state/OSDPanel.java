@@ -36,7 +36,6 @@ import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.INotificationEngine;
 import net.sourceforge.atunes.model.INotificationsHandler;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class OSDPanel extends AbstractPreferencesPanel {
@@ -197,12 +196,12 @@ public final class OSDPanel extends AbstractPreferencesPanel {
     }
     
     @Override
-    public boolean applyPreferences(IState state) {
-    	state.setNotificationEngine((String)notificationEngines.getSelectedItem());
-        state.setOsdDuration((Integer) osdDuration.getSelectedItem());
-        state.setOsdWidth((Integer) osdWidth.getSelectedItem());
-        state.setOsdHorizontalAlignment(getAlignment((String) osdHorizontalAlignment.getSelectedItem()));
-        state.setOsdVerticalAlignment(getAlignment((String) osdVerticalAlignment.getSelectedItem()));
+    public boolean applyPreferences() {
+    	getState().setNotificationEngine((String)notificationEngines.getSelectedItem());
+        getState().setOsdDuration((Integer) osdDuration.getSelectedItem());
+        getState().setOsdWidth((Integer) osdWidth.getSelectedItem());
+        getState().setOsdHorizontalAlignment(getAlignment((String) osdHorizontalAlignment.getSelectedItem()));
+        getState().setOsdVerticalAlignment(getAlignment((String) osdVerticalAlignment.getSelectedItem()));
         return false;
     }
 
@@ -301,16 +300,16 @@ public final class OSDPanel extends AbstractPreferencesPanel {
     }
     
     @Override
-    public void updatePanel(IState state) {
-    	setNotificationEngine(state.getNotificationEngine());
-        setOSDDuration(state.getOsdDuration());
-        setOSDWidth(state.getOsdWidth());
-        setOSDHorizontalAlignment(state.getOsdHorizontalAlignment());
-        setOSDVerticalAlignment(state.getOsdVerticalAlignment());
+    public void updatePanel() {
+    	setNotificationEngine(getState().getNotificationEngine());
+        setOSDDuration(getState().getOsdDuration());
+        setOSDWidth(getState().getOsdWidth());
+        setOSDHorizontalAlignment(getState().getOsdHorizontalAlignment());
+        setOSDVerticalAlignment(getState().getOsdVerticalAlignment());
     }
 
     @Override
-    public void resetImmediateChanges(IState state) {
+    public void resetImmediateChanges() {
         // Do nothing
     }
 

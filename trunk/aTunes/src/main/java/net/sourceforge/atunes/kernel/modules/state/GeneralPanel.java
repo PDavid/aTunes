@@ -56,7 +56,6 @@ import net.sourceforge.atunes.model.ILocaleBean;
 import net.sourceforge.atunes.model.ILocaleBeanFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.LookAndFeelBean;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -385,44 +384,44 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 	}
 
     @Override
-    public boolean applyPreferences(IState state) {
+    public boolean applyPreferences() {
         boolean needRestart = false;
 
-        Class<? extends IFrame> oldFrameClass = state.getFrameClass();
+        Class<? extends IFrame> oldFrameClass = getState().getFrameClass();
         Class<? extends IFrame> newFrameClass = windowTypeChoosingPanel.getSelectedItem();
-        state.setFrameClass(newFrameClass);
+        getState().setFrameClass(newFrameClass);
         if (!oldFrameClass.equals(newFrameClass)) {
             needRestart = true;
         }
 
-        ILocaleBean oldLocale = state.getLocale();
+        ILocaleBean oldLocale = getState().getLocale();
         ILocaleBean newLocale = localeBeanFactory.getLocaleBean((Locale) language.getSelectedItem());
-        state.setLocale(newLocale);
+        getState().setLocale(newLocale);
         if (!oldLocale.equals(newLocale)) {
             needRestart = true;
-            state.setOldLocale(localeBeanFactory.getLocaleBean(Locale.getDefault()));
+            getState().setOldLocale(localeBeanFactory.getLocaleBean(Locale.getDefault()));
         }
 
         if (lookAndFeelManager.getCurrentLookAndFeel().supportsCustomFontSettings()) {
-        	FontSettings oldFontSettings = state.getFontSettings();
-        	state.setFontSettings(currentFontSettings);
+        	FontSettings oldFontSettings = getState().getFontSettings();
+        	getState().setFontSettings(currentFontSettings);
         	if (!oldFontSettings.equals(currentFontSettings)) {
         		needRestart = true;
         	}
         }
 
-        state.setShowSystemTray(showIconTray.isSelected());
-        state.setShowTrayPlayer(showTrayPlayer.isSelected());
+        getState().setShowSystemTray(showIconTray.isSelected());
+        getState().setShowTrayPlayer(showTrayPlayer.isSelected());
         
         if (currentTrayIconColor != null) {
-        	state.setTrayPlayerIconsColor(colorBeanFactory.getColorBean(currentTrayIconColor));
+        	getState().setTrayPlayerIconsColor(colorBeanFactory.getColorBean(currentTrayIconColor));
         }
 
-        LookAndFeelBean oldLookAndFeel = state.getLookAndFeel();
+        LookAndFeelBean oldLookAndFeel = getState().getLookAndFeel();
         LookAndFeelBean newLookAndFeel = new LookAndFeelBean();
         newLookAndFeel.setName((String) lookAndFeel.getSelectedItem());
         newLookAndFeel.setSkin((String) skin.getSelectedItem());
-        state.setLookAndFeel(newLookAndFeel);
+        getState().setLookAndFeel(newLookAndFeel);
         if (!oldLookAndFeel.getName().equals(newLookAndFeel.getName())) {
             needRestart = true;
         }
@@ -481,35 +480,35 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public void updatePanel(IState state) {
+    public void updatePanel() {
         List<Locale> langs = I18nUtils.getLanguages();
         Locale[] array = langs.toArray(new Locale[langs.size()]);
         final Locale currentLocale = getState().getLocale().getLocale();
         Arrays.sort(array, new LocaleComparator(currentLocale));
         language.setModel(new DefaultComboBoxModel(array));
-        language.setRenderer(lookAndFeelManager.getCurrentLookAndFeel().getListCellRenderer(new LanguageListCellRendererCode(state)));
+        language.setRenderer(lookAndFeelManager.getCurrentLookAndFeel().getListCellRenderer(new LanguageListCellRendererCode(getState())));
 
     	
         lookAndFeel.setModel(new ListComboBoxModel<String>(lookAndFeelManager.getAvailableLookAndFeels()));
-        setWindowType(state.getFrameClass());
+        setWindowType(getState().getFrameClass());
         setLanguage(I18nUtils.getSelectedLocale());
-        setShowIconTray(state.isShowSystemTray());
-        setShowTrayPlayer(state.isShowTrayPlayer());
+        setShowIconTray(getState().isShowSystemTray());
+        setShowTrayPlayer(getState().isShowTrayPlayer());
         // If look and feel is not available then set default
-        String lookAndFeelName = lookAndFeelManager.getAvailableLookAndFeels().contains(state.getLookAndFeel().getName()) ? state.getLookAndFeel().getName()
+        String lookAndFeelName = lookAndFeelManager.getAvailableLookAndFeels().contains(getState().getLookAndFeel().getName()) ? getState().getLookAndFeel().getName()
                 : lookAndFeelManager.getDefaultLookAndFeel().getName();
         setLookAndFeel(lookAndFeelName);
 
-        String skinName = state.getLookAndFeel().getSkin() != null ? state.getLookAndFeel().getSkin() : lookAndFeelManager.getDefaultSkin(lookAndFeelName); 
+        String skinName = getState().getLookAndFeel().getSkin() != null ? getState().getLookAndFeel().getSkin() : lookAndFeelManager.getDefaultSkin(lookAndFeelName); 
         updateSkins(lookAndFeelName, skinName);
         
-        currentFontSettings = state.getFontSettings();
+        currentFontSettings = getState().getFontSettings();
     }
 
     @Override
-    public void resetImmediateChanges(IState state) {
-        if (state.getLookAndFeel().getSkin() == null || !state.getLookAndFeel().getSkin().equals(skin.getSelectedItem())) {
-            lookAndFeelManager.applySkin(state.getLookAndFeel().getSkin(), getState(), osManager);
+    public void resetImmediateChanges() {
+        if (getState().getLookAndFeel().getSkin() == null || !getState().getLookAndFeel().getSkin().equals(skin.getSelectedItem())) {
+            lookAndFeelManager.applySkin(getState().getLookAndFeel().getSkin(), getState(), osManager);
         }
     }
 

@@ -56,7 +56,6 @@ import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPluginsHandler;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -307,14 +306,14 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	}
 
 	@Override
-	public boolean applyPreferences(IState state) {
+	public boolean applyPreferences() {
 		boolean restartNeeded = false;
-		if (state.isPluginsEnabled() != enabledPluginBox.isSelected()){
-			state.setPluginsEnabled(enabledPluginBox.isSelected());
+		if (getState().isPluginsEnabled() != enabledPluginBox.isSelected()){
+			getState().setPluginsEnabled(enabledPluginBox.isSelected());
 			restartNeeded = true;
 		}
 
-		if (state.isPluginsEnabled()) {
+		if (getState().isPluginsEnabled()) {
 			restartNeeded = writePluginsConfiguration(restartNeeded);
 		}
 		return restartNeeded;
@@ -373,18 +372,16 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	}
 
 	@Override
-	public void updatePanel(IState state) {
-		if (state != null) {
-			setPluginsEnabled(state.isPluginsEnabled());
-			if (state.isPluginsEnabled()){
-				List<PluginInfo> plugins = pluginsHandler.getAvailablePlugins();
-				pluginsTable.setModel(new PluginsTableModel(plugins));
-			}
+	public void updatePanel() {
+		setPluginsEnabled(getState().isPluginsEnabled());
+		if (getState().isPluginsEnabled()){
+			List<PluginInfo> plugins = pluginsHandler.getAvailablePlugins();
+			pluginsTable.setModel(new PluginsTableModel(plugins));
 		}
 	}
 
 	@Override
-	public void resetImmediateChanges(IState state) {
+	public void resetImmediateChanges() {
 		// Do nothing
 	}
 
@@ -417,8 +414,6 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 						Context.getBean(IErrorDialogFactory.class).getDialog().showExceptionDialog(I18nUtils.getString("PLUGIN_UNINSTALLATION_ERROR"), pluginFolderEntry.getValue());
 					}
 				}
-				// Update panel after uninstalling a plugin
-				updatePanel(null);
 			} catch (Exception e1) {
 				Context.getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(frame, e1.getMessage());
 				Logger.error(e1);
@@ -513,8 +508,6 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 						}
 					}
 
-					// Update panel after installing a new plugin
-					updatePanel(null);
 				} catch (Exception e1) {
 					Context.getBean(IErrorDialogFactory.class).getDialog().showExceptionDialog(I18nUtils.getString("PLUGIN_INSTALLATION_ERROR"), e1);
 				}

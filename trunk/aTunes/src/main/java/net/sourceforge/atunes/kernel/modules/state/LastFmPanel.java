@@ -40,7 +40,6 @@ import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.actions.ImportLovedTracksFromLastFMAction;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IMessageDialogFactory;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -163,14 +162,14 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public boolean applyPreferences(IState state) {
-        state.setLastFmUser(lastFmUser.getText());
-        state.setLastFmPassword(String.valueOf(lastFmPassword.getPassword()));
-        state.setLastFmEnabled(lastFmEnabled.isSelected());
-        state.setAutoLoveFavoriteSong(autoLoveFavoriteSongs.isSelected());
-        Context.getBean(AddLovedSongInLastFMAction.class).setEnabled(state.isLastFmEnabled());
-        Context.getBean(AddBannedSongInLastFMAction.class).setEnabled(state.isLastFmEnabled());
-        Context.getBean(ImportLovedTracksFromLastFMAction.class).setEnabled(state.isLastFmEnabled());
+    public boolean applyPreferences() {
+        getState().setLastFmUser(lastFmUser.getText());
+        getState().setLastFmPassword(String.valueOf(lastFmPassword.getPassword()));
+        getState().setLastFmEnabled(lastFmEnabled.isSelected());
+        getState().setAutoLoveFavoriteSong(autoLoveFavoriteSongs.isSelected());
+        Context.getBean(AddLovedSongInLastFMAction.class).setEnabled(getState().isLastFmEnabled());
+        Context.getBean(AddBannedSongInLastFMAction.class).setEnabled(getState().isLastFmEnabled());
+        Context.getBean(ImportLovedTracksFromLastFMAction.class).setEnabled(getState().isLastFmEnabled());
         return false;
     }
 
@@ -214,11 +213,11 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public void updatePanel(IState state) {
-        setLastFmUser(state.getLastFmUser());
-        setLastFmPassword(state.getLastFmPassword());
-        setLastFmEnabled(state.isLastFmEnabled());
-        setAutoLoveFavoriteSong(state.isAutoLoveFavoriteSong());
+    public void updatePanel() {
+        setLastFmUser(getState().getLastFmUser());
+        setLastFmPassword(getState().getLastFmPassword());
+        setLastFmEnabled(getState().isLastFmEnabled());
+        setAutoLoveFavoriteSong(getState().isAutoLoveFavoriteSong());
         enableControls();
     }
 
@@ -234,7 +233,7 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public void resetImmediateChanges(IState state) {
+    public void resetImmediateChanges() {
         // Do nothing
     }
 

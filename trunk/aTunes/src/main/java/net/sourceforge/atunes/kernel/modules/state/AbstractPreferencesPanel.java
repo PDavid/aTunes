@@ -93,11 +93,8 @@ abstract class AbstractPreferencesPanel extends JPanel {
     
     /**
      * Called to update preferences values
-     * 
-     * @param state
-     *            : current preferences
      */
-    public abstract void updatePanel(IState state);
+    public abstract void updatePanel();
 
     /**
      * Validates data of this panel
@@ -109,20 +106,17 @@ abstract class AbstractPreferencesPanel extends JPanel {
      * Called to apply preferences selected by user to an ApplicationState
      * object
      * 
-     * @param state
      * @return <code>true</code>if it's necessary to restart application to
      *         apply the change
      */
-    public abstract boolean applyPreferences(IState state);
+    public abstract boolean applyPreferences();
 
     /**
      * Called if user cancels preference dialog. This method should reset
      * changes that were made immediately without waiting if user cancels dialog
      * or not.
-     * 
-     * @param state
      */
-    public abstract void resetImmediateChanges(IState state);
+    public abstract void resetImmediateChanges();
 
     /**
      * Called when preferences dialog is shown or hidden Useful to execute code

@@ -24,7 +24,6 @@ import java.awt.GridBagConstraints;
 
 import javax.swing.JCheckBox;
 
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class PlayListPrefPanel extends AbstractPreferencesPanel {
@@ -67,10 +66,10 @@ public final class PlayListPrefPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public boolean applyPreferences(IState state) {
-        state.setStopPlayerOnPlayListSwitch(stopSongWhenSwitching.isSelected());
-        state.setStopPlayerOnPlayListClear(stopSongWhenClearing.isSelected());
-        state.setAutoScrollPlayListEnabled(autoScrollPlayList.isSelected());
+    public boolean applyPreferences() {
+        getState().setStopPlayerOnPlayListSwitch(stopSongWhenSwitching.isSelected());
+        getState().setStopPlayerOnPlayListClear(stopSongWhenClearing.isSelected());
+        getState().setAutoScrollPlayListEnabled(autoScrollPlayList.isSelected());
         return false;
     }
 
@@ -97,14 +96,14 @@ public final class PlayListPrefPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public void updatePanel(IState state) {
-        setStopSongWhenSwitching(state.isStopPlayerOnPlayListSwitch());
-        setStopSongWhenClearing(state.isStopPlayerOnPlayListClear());
-        setAutoScrollPlayList(state.isAutoScrollPlayListEnabled());
+    public void updatePanel() {
+        setStopSongWhenSwitching(getState().isStopPlayerOnPlayListSwitch());
+        setStopSongWhenClearing(getState().isStopPlayerOnPlayListClear());
+        setAutoScrollPlayList(getState().isAutoScrollPlayListEnabled());
     }
 
     @Override
-    public void resetImmediateChanges(IState state) {
+    public void resetImmediateChanges() {
         // Do nothing
     }
 
