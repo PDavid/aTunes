@@ -20,6 +20,9 @@
 
 package net.sourceforge.atunes.kernel.modules.state;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+
 interface IStateStore {
 
 	/**

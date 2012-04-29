@@ -141,6 +141,19 @@ public interface IStatePlayer {
 	 * @param muteEnabled
 	 */
 	public void setMuteEnabled(boolean muteEnabled);
+	
+	/**
+	 * Player engine
+	 * @return
+	 */
+	public String getPlayerEngine();
+
+	/**
+	 * Player engine
+	 * @param playerEngine
+	 */
+	public void setPlayerEngine(String playerEngine);
+
 
 
 }

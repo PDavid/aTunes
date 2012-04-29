@@ -45,7 +45,6 @@ import net.sourceforge.atunes.model.ILocaleBean;
 import net.sourceforge.atunes.model.ILyricsEngineInfo;
 import net.sourceforge.atunes.model.IProxyBean;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.IStateRadio;
 import net.sourceforge.atunes.model.LookAndFeelBean;
 import net.sourceforge.atunes.model.TagAttribute;
 import net.sourceforge.atunes.model.ViewMode;
@@ -1737,24 +1736,6 @@ public class ApplicationState implements IState {
     	if (isShowNavigationTree() != showNavigationTree) {
     		this.stateStore.storePreference(Preferences.SHOW_NAVIGATION_TREE, showNavigationTree);
     	}
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isSimilarArtistsMode()
-	 */
-    @Override
-	public boolean isSimilarArtistsMode() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.SIMILAR_ARTISTS_MODE, false);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setSimilarArtistsMode(boolean)
-	 */
-    @Override
-	public void setSimilarArtistsMode(boolean isSimilarArtistsMode) {
-    	this.stateStore.storePreference(Preferences.SIMILAR_ARTISTS_MODE, isSimilarArtistsMode);
     }
     
     
