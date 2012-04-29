@@ -27,14 +27,24 @@ import javax.swing.JLabel;
 import net.sourceforge.atunes.gui.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ITreeObject;
 
 public class TooltipTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, Object> {
 
+    private IStateNavigation stateNavigation;
+
+    /**
+     * @param stateNavigation
+     */
+    public void setStateNavigation(IStateNavigation stateNavigation) {
+		this.stateNavigation = stateNavigation;
+	}
+
     @SuppressWarnings("unchecked")
 	@Override
     public Component decorateTreeCellComponent(JLabel component, Object userObject, boolean isSelected) {
-        if (!getState().isShowExtendedTooltip() || !ExtendedToolTip.canObjectBeShownInExtendedToolTip(userObject)) {
+        if (!stateNavigation.isShowExtendedTooltip() || !ExtendedToolTip.canObjectBeShownInExtendedToolTip(userObject)) {
             if (userObject instanceof ITreeObject) {
                 component.setToolTipText(((ITreeObject<? extends IAudioObject>) userObject).getTooltip());
             } else {

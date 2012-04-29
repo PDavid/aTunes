@@ -28,6 +28,7 @@ import net.sourceforge.atunes.gui.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.IIconFactory;
+import net.sourceforge.atunes.model.IStateNavigation;
 
 public class ArtistTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, IArtist> {
 
@@ -37,9 +38,18 @@ public class ArtistTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, I
 	
 	private IIconFactory artistFavoriteIcon;
 	
+	private IStateNavigation stateNavigation;
+	
+	/**
+	 * @param stateNavigation
+	 */
+	public void setStateNavigation(IStateNavigation stateNavigation) {
+		this.stateNavigation = stateNavigation;
+	}
+	
     @Override
     public Component decorateTreeCellComponent(JLabel component, IArtist userObject, boolean isSelected) {
-    	if (!getState().isShowFavoritesInNavigator() || !favoritesHandler.getFavoriteArtistsInfo().containsKey(userObject.getName())) {
+    	if (!stateNavigation.isShowFavoritesInNavigator() || !favoritesHandler.getFavoriteArtistsInfo().containsKey(userObject.getName())) {
     		component.setIcon(artistImageIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
     	} else {
     		component.setIcon(artistFavoriteIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));

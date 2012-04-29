@@ -29,6 +29,7 @@ import junit.framework.Assert;
 import net.sourceforge.atunes.kernel.modules.network.NetworkHandler;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateCore;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -46,6 +47,7 @@ public class PodcastFeedEntryRetrieverTest {
     @Test
     public void testRetrievePodcastFeedEntries() {
     	NetworkHandler networkHandler = new NetworkHandler();
+    	networkHandler.setStateCore(mock(IStateCore.class));
     	networkHandler.setState(mock(IState.class));
     	
         PodcastFeedEntryRetriever podcastFeedEntryRetriever = new PodcastFeedEntryRetriever(Arrays.asList(testedObject), null, null, null, null, networkHandler, null);

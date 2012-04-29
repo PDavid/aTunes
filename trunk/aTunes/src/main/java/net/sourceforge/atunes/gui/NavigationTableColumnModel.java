@@ -25,7 +25,7 @@ import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.INavigationHandler;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.model.ITableCellRendererCode;
 import net.sourceforge.atunes.model.ITagHandler;
@@ -35,11 +35,11 @@ public final class NavigationTableColumnModel extends AbstractCommonColumnModel 
 
     private static final long serialVersionUID = 1071222881574684439L;
 
-    private IState state;
-    
     private INavigationHandler navigationHandler;
     
     private ITagHandler tagHandler;
+    
+    private IStateNavigation stateNavigation;
     
     /**
      * @param table
@@ -49,9 +49,9 @@ public final class NavigationTableColumnModel extends AbstractCommonColumnModel 
      * @param lookAndFeel
      * @param tagHandler
      */
-    public NavigationTableColumnModel(ITable table, IState state, INavigationHandler navigationHandler, ITaskService taskService, ILookAndFeel lookAndFeel, ITagHandler tagHandler) {
+    public NavigationTableColumnModel(ITable table, IStateNavigation stateNavigation, INavigationHandler navigationHandler, ITaskService taskService, ILookAndFeel lookAndFeel, ITagHandler tagHandler) {
         super(table.getSwingComponent(), taskService, lookAndFeel);
-        this.state = state;
+        this.stateNavigation = stateNavigation;
         this.navigationHandler = navigationHandler;
         this.tagHandler = tagHandler;
         enableColumnChange(true);
@@ -71,7 +71,7 @@ public final class NavigationTableColumnModel extends AbstractCommonColumnModel 
     @Override
     public ITableCellRendererCode<?, ?> getRendererCodeFor(Class<?> clazz) {
         ITableCellRendererCode<?, ?> renderer = super.getRendererCodeFor(clazz);
-        return new NavigationTableCellRendererCode(renderer, state, getLookAndFeel(), navigationHandler, tagHandler);
+        return new NavigationTableCellRendererCode(renderer, stateNavigation, getLookAndFeel(), navigationHandler, tagHandler);
     }
 
 }

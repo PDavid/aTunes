@@ -26,12 +26,22 @@ import javax.swing.JLabel;
 
 import net.sourceforge.atunes.gui.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.ColorDefinitions;
+import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.model.ITreeObject;
 
 public class IncompleteTagsTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, ITreeObject<?>> {
 
 	private ITagHandler tagHandler;
+	
+	private IStateNavigation stateNavigation;
+	
+	/**
+	 * @param stateNavigation
+	 */
+	public void setStateNavigation(IStateNavigation stateNavigation) {
+		this.stateNavigation = stateNavigation;
+	}
 	
 	/**
 	 * @param tagHandler
@@ -42,7 +52,7 @@ public class IncompleteTagsTreeCellDecorator extends AbstractTreeCellDecorator<J
 	
 	@Override
     public Component decorateTreeCellComponent(JLabel component, ITreeObject<?> userObject, boolean isSelected) {
-        if (getState().isHighlightIncompleteTagElements() && tagHandler.hasIncompleteTags(userObject)) {
+        if (stateNavigation.isHighlightIncompleteTagElements() && tagHandler.hasIncompleteTags(userObject)) {
         	component.setForeground(ColorDefinitions.GENERAL_UNKNOWN_ELEMENT_FOREGROUND_COLOR);
         }
         return component;

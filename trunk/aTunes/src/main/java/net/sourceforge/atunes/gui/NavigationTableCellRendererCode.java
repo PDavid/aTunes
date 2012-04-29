@@ -30,7 +30,7 @@ import javax.swing.UIManager;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.INavigationHandler;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ITableCellRendererCode;
 import net.sourceforge.atunes.model.ITagHandler;
 
@@ -38,18 +38,25 @@ class NavigationTableCellRendererCode extends AbstractTableCellRendererCode<JCom
 
     private ITableCellRendererCode renderer;
 
-    private IState state;
-    
     private INavigationHandler navigationHandler;
     
     private boolean isSubstance;
     
     private ITagHandler tagHandler;
     
-    public NavigationTableCellRendererCode(ITableCellRendererCode<?, ?> renderer, IState state, ILookAndFeel lookAndFeel, INavigationHandler navigationHandler, ITagHandler tagHandler) {
+    private IStateNavigation stateNavigation;
+    
+    /**
+     * @param renderer
+     * @param stateNavigation
+     * @param lookAndFeel
+     * @param navigationHandler
+     * @param tagHandler
+     */
+    public NavigationTableCellRendererCode(ITableCellRendererCode<?, ?> renderer, IStateNavigation stateNavigation, ILookAndFeel lookAndFeel, INavigationHandler navigationHandler, ITagHandler tagHandler) {
     	super(lookAndFeel);
         this.renderer = renderer;
-        this.state = state;
+        this.stateNavigation = stateNavigation;
         this.navigationHandler = navigationHandler;
         this.tagHandler = tagHandler;
         this.isSubstance = lookAndFeel.getName().equalsIgnoreCase("Substance");
@@ -60,7 +67,7 @@ class NavigationTableCellRendererCode extends AbstractTableCellRendererCode<JCom
         // Get result from super renderer
     	JComponent c = renderer.getComponent(superComponent, t, value, isSelected, hasFocus, row, column);
         // Check incomplete tags if necessary
-        if (state.isHighlightIncompleteTagElements()) {
+        if (stateNavigation.isHighlightIncompleteTagElements()) {
             IAudioObject audioObject = navigationHandler.getAudioObjectInNavigationTable(row);
             if (tagHandler.hasIncompleteTags(audioObject)) {
                 ((JLabel) c).setForeground(Color.red);

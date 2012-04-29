@@ -26,19 +26,19 @@ import java.util.Comparator;
 import java.util.List;
 
 import net.sourceforge.atunes.model.INavigationViewSorter;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateNavigation;
 
 public class AlbumSorter implements INavigationViewSorter {
 
-	private IState state;
-	
 	private Collator collator;
 	
+	private IStateNavigation stateNavigation;
+	
 	/**
-	 * @param state
+	 * @param stateNavigation
 	 */
-	public void setState(IState state) {
-		this.state = state;
+	public void setStateNavigation(IStateNavigation stateNavigation) {
+		this.stateNavigation = stateNavigation;
 	}
 	
 	/**
@@ -51,7 +51,7 @@ public class AlbumSorter implements INavigationViewSorter {
 	@Override
 	public void sort(List<String> list) {
 		Comparator<String> comparator = null;
-        if (state.isUseSmartTagViewSorting()) {
+        if (stateNavigation.isUseSmartTagViewSorting()) {
         	comparator = new SmartComparator(collator);
         } else {
             comparator = new DefaultComparator(collator);

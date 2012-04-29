@@ -30,7 +30,7 @@ import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryLoader;
 import net.sourceforge.atunes.model.IRepositoryLoaderListener;
 import net.sourceforge.atunes.model.IRepositoryTransaction;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.utils.DirectoryFileFilter;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -50,7 +50,7 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 	private int filesLoaded;
 	private long startReadTime;
 	private int fastFirstChar;
-	private IState state;
+	private IStateNavigation stateNavigation;
 	private ILocalAudioObjectFactory localAudioObjectFactory;
 	private FileFilter validLocalAudioObjectFileFilter;
 	private DirectoryFileFilter directoryFileFilter;
@@ -115,12 +115,12 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 	protected final long getStartReadTime() {
 		return startReadTime;
 	}
-	
+
 	/**
-	 * @param state
+	 * @param stateNavigation
 	 */
-	public void setState(IState state) {
-		this.state = state;
+	public void setStateNavigation(IStateNavigation stateNavigation) {
+		this.stateNavigation = stateNavigation;
 	}
 	
 	/**
@@ -171,7 +171,7 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 		runTasksBeforeLoadRepository();
 		startReadTime = System.currentTimeMillis();
 
-		RepositoryFiller filler = new RepositoryFiller(repository, state);
+		RepositoryFiller filler = new RepositoryFiller(repository, stateNavigation);
 		for (File folder : folders) {
 			String fastRepositoryPath = folder.getAbsolutePath().replace('\\', '/');
 			if (fastRepositoryPath.endsWith("/")) {

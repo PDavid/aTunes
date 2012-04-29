@@ -26,6 +26,7 @@ import java.util.Map;
 import net.sourceforge.atunes.gui.NavigationTableColumnModel;
 import net.sourceforge.atunes.kernel.modules.columns.AbstractColumnSet;
 import net.sourceforge.atunes.model.ColumnBean;
+import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ITable;
 
 /**
@@ -43,6 +44,15 @@ public abstract class AbstractCustomNavigatorColumnSet extends AbstractColumnSet
      */
     private String columnSetName;
     
+    private IStateNavigation stateNavigation;
+    
+    /**
+     * @param stateNavigation
+     */
+    public void setStateNavigation(IStateNavigation stateNavigation) {
+		this.stateNavigation = stateNavigation;
+	}
+    
     /**
      * @param columnSetName
      */
@@ -59,17 +69,17 @@ public abstract class AbstractCustomNavigatorColumnSet extends AbstractColumnSet
 
     @Override
     protected void setColumnsConfiguration(Map<String, ColumnBean> columnsConfiguration) {
-        Map<String, Map<String, ColumnBean>> configuration = getState().getCustomNavigatorColumns();
+        Map<String, Map<String, ColumnBean>> configuration = stateNavigation.getCustomNavigatorColumns();
         if (configuration == null) {
             configuration = new HashMap<String, Map<String, ColumnBean>>();
         }
         configuration.put(this.columnSetName, columnsConfiguration);
-        getState().setCustomNavigatorColumns(configuration);
+        stateNavigation.setCustomNavigatorColumns(configuration);
     }
 
     @Override
     protected Map<String, ColumnBean> getColumnsConfiguration() {
-        Map<String, Map<String, ColumnBean>> configuration = getState().getCustomNavigatorColumns();
+        Map<String, Map<String, ColumnBean>> configuration = stateNavigation.getCustomNavigatorColumns();
         if (configuration != null) {
             return configuration.get(this.columnSetName);
         }

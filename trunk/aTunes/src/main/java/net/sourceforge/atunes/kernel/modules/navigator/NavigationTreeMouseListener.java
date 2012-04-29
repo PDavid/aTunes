@@ -34,7 +34,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ITable;
 
 /**
@@ -44,23 +44,23 @@ public final class NavigationTreeMouseListener extends MouseAdapter {
 
     private NavigationController controller;
     
-    private IState state;
-    
     private INavigationHandler navigationHandler;
     
     private ITable navigationTable;
+    
+    private IStateNavigation stateNavigation;
 
     /**
      * Instantiates a new navigation tree mouse listener.
      * @param controller
      * @param navigationTable
-     * @param state
+     * @param stateNavigation
      * @param navigationHandler
      */
-    public NavigationTreeMouseListener(NavigationController controller, ITable navigationTable, IState state, INavigationHandler navigationHandler) {
+    public NavigationTreeMouseListener(NavigationController controller, ITable navigationTable, IStateNavigation stateNavigation, INavigationHandler navigationHandler) {
         this.controller = controller;
         this.navigationTable = navigationTable;
-        this.state = state;
+        this.stateNavigation = stateNavigation;
         this.navigationHandler = navigationHandler;
     }
 
@@ -123,7 +123,7 @@ public final class NavigationTreeMouseListener extends MouseAdapter {
 
     @Override
     public void mouseExited(MouseEvent arg0) {
-        if (!state.isShowExtendedTooltip()) {
+        if (!stateNavigation.isShowExtendedTooltip()) {
             return;
         }
 

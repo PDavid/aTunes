@@ -28,6 +28,7 @@ import net.sourceforge.atunes.gui.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.IIconFactory;
+import net.sourceforge.atunes.model.IStateNavigation;
 
 public class AlbumTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, IAlbum> {
 
@@ -36,6 +37,15 @@ public class AlbumTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, IA
 	private IIconFactory albumFavoriteIcon;
 	
 	private IIconFactory albumSmallIcon;
+	
+	private IStateNavigation stateNavigation;
+	
+	/**
+	 * @param stateNavigation
+	 */
+	public void setStateNavigation(IStateNavigation stateNavigation) {
+		this.stateNavigation = stateNavigation;
+	}
 
 	/**
 	 * @param albumFavoriteIcon
@@ -53,7 +63,7 @@ public class AlbumTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, IA
 	
     @Override
     public Component decorateTreeCellComponent(JLabel component, IAlbum userObject, boolean isSelected) {
-    	if (!getState().isShowFavoritesInNavigator() || !favoritesHandler.getFavoriteAlbumsInfo().containsValue(userObject)) {
+    	if (!stateNavigation.isShowFavoritesInNavigator() || !favoritesHandler.getFavoriteAlbumsInfo().containsValue(userObject)) {
     		component.setIcon(albumSmallIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));
     	} else {
     		component.setIcon(albumFavoriteIcon.getIcon(getLookAndFeel().getPaintForColorMutableIcon(component, isSelected)));

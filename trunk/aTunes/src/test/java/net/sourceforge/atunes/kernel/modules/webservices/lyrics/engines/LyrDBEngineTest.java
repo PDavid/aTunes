@@ -24,6 +24,7 @@ import static org.mockito.Mockito.mock;
 import net.sourceforge.atunes.kernel.modules.network.NetworkHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyrDBEngine;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateCore;
 
 import org.junit.Before;
 
@@ -33,6 +34,7 @@ public class LyrDBEngineTest extends AbstractLyricEngineTest {
     public void init() {
     	NetworkHandler networkHandler = new NetworkHandler();
     	networkHandler.setState(mock(IState.class));
+    	networkHandler.setStateCore(mock(IStateCore.class));
         testedObject = new LyrDBEngine();
         testedObject.setNetworkHandler(networkHandler);
         engineUrl = "lyrdb.com";

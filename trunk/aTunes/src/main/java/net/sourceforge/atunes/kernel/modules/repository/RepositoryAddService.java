@@ -28,19 +28,19 @@ import java.util.Set;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.IRepository;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateNavigation;
 
 public class RepositoryAddService {
 	
-	private IState state;
-	
 	private ILocalAudioObjectFactory localAudioObjectFactory;
+
+	private IStateNavigation stateNavigation;
 	
 	/**
-	 * @param state
+	 * @param stateNavigation
 	 */
-	public void setState(IState state) {
-		this.state = state;
+	public void setStateNavigation(IStateNavigation stateNavigation) {
+		this.stateNavigation = stateNavigation;
 	}
 	
 	/**
@@ -60,7 +60,7 @@ public class RepositoryAddService {
 	public void addToRepository(IRepository rep, List<File> files) {
 		// Get folders where files are
 		Set<File> folders = getFoldersOfFiles(files);
-		RepositoryFiller filler = new RepositoryFiller(rep, state);
+		RepositoryFiller filler = new RepositoryFiller(rep, stateNavigation);
 		for (File folder : folders) {
 			addFilesFromFolder(rep, files, filler, folder);
 		}		

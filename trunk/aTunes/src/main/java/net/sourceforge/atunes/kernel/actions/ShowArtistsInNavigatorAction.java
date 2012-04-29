@@ -24,6 +24,7 @@ import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -34,6 +35,15 @@ public class ShowArtistsInNavigatorAction extends ActionWithColorMutableIcon {
     private INavigationHandler navigationHandler;
     
     private IIconFactory artistImageIcon;
+    
+    private IStateNavigation stateNavigation;
+
+    /**
+     * @param stateNavigation
+     */
+    public void setStateNavigation(IStateNavigation stateNavigation) {
+		this.stateNavigation = stateNavigation;
+	}
     
     /**
      * @param artistImageIcon
@@ -57,13 +67,13 @@ public class ShowArtistsInNavigatorAction extends ActionWithColorMutableIcon {
     @Override
     protected void initialize() {
     	super.initialize();
-        putValue(SELECTED_KEY, getState().getViewMode() == ViewMode.ARTIST);
+        putValue(SELECTED_KEY, stateNavigation.getViewMode() == ViewMode.ARTIST);
     }
     
     @Override
     protected void executeAction() {
-        if (getState().getViewMode() != ViewMode.ARTIST) {
-            getState().setViewMode(ViewMode.ARTIST);
+        if (stateNavigation.getViewMode() != ViewMode.ARTIST) {
+            stateNavigation.setViewMode(ViewMode.ARTIST);
             navigationHandler.refreshCurrentView();
         }
     }

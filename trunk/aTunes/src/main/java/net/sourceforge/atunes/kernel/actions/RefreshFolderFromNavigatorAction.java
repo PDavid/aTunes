@@ -26,6 +26,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -40,6 +41,15 @@ public class RefreshFolderFromNavigatorAction extends AbstractActionOverSelected
 	private static final long serialVersionUID = -6840836346786226858L;
 
 	private IRepositoryHandler repositoryHandler;
+	
+	private IStateNavigation stateNavigation;
+	
+	/**
+	 * @param stateNavigation
+	 */
+	public void setStateNavigation(IStateNavigation stateNavigation) {
+		this.stateNavigation = stateNavigation;
+	}
 	
 	/**
 	 * @param repositoryHandler
@@ -64,7 +74,7 @@ public class RefreshFolderFromNavigatorAction extends AbstractActionOverSelected
             return false;
         }
 
-        if (getState().getViewMode() != ViewMode.FOLDER) {
+        if (stateNavigation.getViewMode() != ViewMode.FOLDER) {
             return false;
         }
 

@@ -41,6 +41,7 @@ import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.Logger;
@@ -61,6 +62,15 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 	private ITable navigationTable;
 	
 	private IFilter navigationTreeFilter;
+	
+	private IStateNavigation stateNavigation;
+	
+	/**
+	 * @param stateNavigation
+	 */
+	public void setStateNavigation(IStateNavigation stateNavigation) {
+		this.stateNavigation = stateNavigation;
+	}
 	
 	/**
 	 * @param navigationTreeFilter
@@ -83,11 +93,11 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 	
     @Override
     public void applicationStarted() {
-        showNavigationTree(getState().isShowNavigationTree());
-        applyNavigationTableVisibility(getState().isShowNavigationTree() && getState().isShowNavigationTable());
+        showNavigationTree(stateNavigation.isShowNavigationTree());
+        applyNavigationTableVisibility(stateNavigation.isShowNavigationTree() && stateNavigation.isShowNavigationTable());
 
         // Navigation Panel View
-        getNavigationController().setNavigationView(getState().getNavigationView(), false); 
+        getNavigationController().setNavigationView(stateNavigation.getNavigationView(), false); 
         
         getNavigationController().getNavigationTreePanel().enableDragAndDrop(new TreeNavigationTransferHandler());
     }
@@ -113,7 +123,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 
     @Override
 	public INavigationView getCurrentView() {
-        return getView(getViewByName(getState().getNavigationView()));
+        return getView(getViewByName(stateNavigation.getNavigationView()));
     }
 
     @Override
@@ -128,14 +138,14 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
     
     @Override
 	public void refreshCurrentView() {
-        getCurrentView().refreshView(getState().getViewMode(),
+        getCurrentView().refreshView(stateNavigation.getViewMode(),
                 filterHandler.getFilterText(navigationTreeFilter));
     }
 
 	@Override
 	public void refreshView(INavigationView navigationView) {
         if (navigationView.equals(getCurrentView())) {
-        	navigationView.refreshView(getState().getViewMode(),
+        	navigationView.refreshView(stateNavigation.getViewMode(),
         			filterHandler.getFilterText(navigationTreeFilter));
         }
 	}
@@ -258,7 +268,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
 	
     @Override
 	public void showNavigationTree(boolean show) {    	
-        getState().setShowNavigationTree(show);
+        stateNavigation.setShowNavigationTree(show);
 
     	// Disable or enable actions
         for (INavigationView navigationView : getNavigationViews()) {
@@ -267,12 +277,12 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
     	
         getFrame().showNavigationTree(show);
         
-        applyNavigationTableVisibility(show && getState().isShowNavigationTable());
+        applyNavigationTableVisibility(show && stateNavigation.isShowNavigationTable());
     }
     
     @Override
 	public void showNavigationTable(boolean show) {
-        getState().setShowNavigationTable(show);
+        stateNavigation.setShowNavigationTable(show);
         applyNavigationTableVisibility(show);
     }
     

@@ -25,7 +25,7 @@ import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.IRepository;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.utils.Logger;
@@ -37,11 +37,18 @@ import net.sourceforge.atunes.utils.Logger;
  */
 public class LocalAudioObjectRefresher {
 
-	private IState state;
-	
 	private IStatisticsHandler statisticsHandler;
 	
 	private ILocalAudioObjectFactory localAudioObjectFactory;
+	
+	private IStateNavigation stateNavigation;
+	
+	/**
+	 * @param stateNavigation
+	 */
+	public void setStateNavigation(IStateNavigation stateNavigation) {
+		this.stateNavigation = stateNavigation;
+	}
 	
 	/**
 	 * @param statisticsHandler
@@ -58,13 +65,6 @@ public class LocalAudioObjectRefresher {
 	}
 	
 	/**
-	 * @param state
-	 */
-	public void setState(IState state) {
-		this.state = state;
-	}
-	
-	/**
 	 * Refresh file
 	 * @param repository
 	 * @param file
@@ -78,7 +78,7 @@ public class LocalAudioObjectRefresher {
 			localAudioObjectFactory.refreshAudioObject(file);
 			
 			// Update repository
-			new RepositoryFiller(repository, state).refreshAudioFile(file, oldTag);
+			new RepositoryFiller(repository, stateNavigation).refreshAudioFile(file, oldTag);
 
 			// Compare old tag with new tag
 			ITag newTag = file.getTag();
