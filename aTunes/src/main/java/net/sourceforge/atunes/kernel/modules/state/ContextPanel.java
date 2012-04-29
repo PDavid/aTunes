@@ -49,7 +49,6 @@ import net.sourceforge.atunes.kernel.actions.ClearCachesAction;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.ILyricsEngineInfo;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class ContextPanel extends AbstractPreferencesPanel {
@@ -301,12 +300,12 @@ public final class ContextPanel extends AbstractPreferencesPanel {
 	}
 
     @Override
-    public boolean applyPreferences(IState state) {
-        state.setUseContext(activateContext.isSelected());
-        state.setSaveContextPicture(savePictures.isSelected());
-        state.setLyricsEnginesInfo(((LyricsEnginesTableModel) enginesTable.getModel()).getLyricsEnginesInfo());
-        boolean showAlbumsInGridPreviousValue = state.isShowContextAlbumsInGrid();
-        state.setShowContextAlbumsInGrid(showAlbumsInGrid.isSelected());
+    public boolean applyPreferences() {
+        getState().setUseContext(activateContext.isSelected());
+        getState().setSaveContextPicture(savePictures.isSelected());
+        getState().setLyricsEnginesInfo(((LyricsEnginesTableModel) enginesTable.getModel()).getLyricsEnginesInfo());
+        boolean showAlbumsInGridPreviousValue = getState().isShowContextAlbumsInGrid();
+        getState().setShowContextAlbumsInGrid(showAlbumsInGrid.isSelected());
         return showAlbumsInGridPreviousValue != showAlbumsInGrid.isSelected();
     }
 
@@ -355,15 +354,15 @@ public final class ContextPanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public void updatePanel(IState state) {
-        setActivateContext(state.isUseContext());
-        setSavePictures(state.isSaveContextPicture());
-        setLyricsEnginesInfo(state.getLyricsEnginesInfo());
-        setShowAlbumsInGrid(state.isShowContextAlbumsInGrid());
+    public void updatePanel() {
+        setActivateContext(getState().isUseContext());
+        setSavePictures(getState().isSaveContextPicture());
+        setLyricsEnginesInfo(getState().getLyricsEnginesInfo());
+        setShowAlbumsInGrid(getState().isShowContextAlbumsInGrid());
     }
 
     @Override
-    public void resetImmediateChanges(IState state) {
+    public void resetImmediateChanges() {
         // Do nothing
     }
 

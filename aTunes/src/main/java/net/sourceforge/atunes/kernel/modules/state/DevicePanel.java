@@ -42,7 +42,6 @@ import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class DevicePanel extends AbstractPreferencesPanel {
@@ -260,13 +259,13 @@ public final class DevicePanel extends AbstractPreferencesPanel {
 	}
 
     @Override
-    public boolean applyPreferences(IState state) {
-        state.setDefaultDeviceLocation(locationFileChooser.getResult());
+    public boolean applyPreferences() {
+    	getState().setDefaultDeviceLocation(locationFileChooser.getResult());
         String fileNamePattern = fileNameNoChangeRadioButton.isSelected() ? "" : fileNamePatternTextField.getText();
-        state.setDeviceFileNamePattern(fileNamePattern == null || fileNamePattern.trim().equals("") ? null : fileNamePattern);
+        getState().setDeviceFileNamePattern(fileNamePattern == null || fileNamePattern.trim().equals("") ? null : fileNamePattern);
         String folderPathPattern = folderPathNoChangeRadioButton.isSelected() ? "" : folderPathPatternTextField.getText();
-        state.setDeviceFolderPathPattern(folderPathPattern == null || folderPathPattern.equals("") ? null : folderPathPattern);
-        state.setAllowRepeatedSongsInDevice(copySameSongForDifferentAlbums.isSelected());
+        getState().setDeviceFolderPathPattern(folderPathPattern == null || folderPathPattern.equals("") ? null : folderPathPattern);
+        getState().setAllowRepeatedSongsInDevice(copySameSongForDifferentAlbums.isSelected());
         return false;
     }
 
@@ -281,29 +280,29 @@ public final class DevicePanel extends AbstractPreferencesPanel {
     }
 
     @Override
-    public void updatePanel(IState state) {
-        setDefaultDeviceLocation(state.getDefaultDeviceLocation());
-        if (state.getDeviceFileNamePattern() == null || state.getDeviceFileNamePattern().trim().equals("")) {
+    public void updatePanel() {
+        setDefaultDeviceLocation(getState().getDefaultDeviceLocation());
+        if (getState().getDeviceFileNamePattern() == null || getState().getDeviceFileNamePattern().trim().equals("")) {
             fileNameNoChangeRadioButton.setSelected(true);
             fileNamePatternTextField.setEnabled(false);
         } else {
             fileNameCustomizedRadioButton.setSelected(true);
             fileNamePatternTextField.setEnabled(true);
-            fileNamePatternTextField.setText(state.getDeviceFileNamePattern());
+            fileNamePatternTextField.setText(getState().getDeviceFileNamePattern());
         }
-        if (state.getDeviceFolderPathPattern() == null || state.getDeviceFolderPathPattern().trim().equals("")) {
+        if (getState().getDeviceFolderPathPattern() == null || getState().getDeviceFolderPathPattern().trim().equals("")) {
             folderPathNoChangeRadioButton.setSelected(true);
             folderPathPatternTextField.setEnabled(false);
         } else {
             folderPathCustomizedRadioButton.setSelected(true);
             folderPathPatternTextField.setEnabled(true);
-            folderPathPatternTextField.setText(state.getDeviceFolderPathPattern());
+            folderPathPatternTextField.setText(getState().getDeviceFolderPathPattern());
         }
-        copySameSongForDifferentAlbums.setSelected(state.isAllowRepeatedSongsInDevice());
+        copySameSongForDifferentAlbums.setSelected(getState().isAllowRepeatedSongsInDevice());
     }
 
     @Override
-    public void resetImmediateChanges(IState state) {
+    public void resetImmediateChanges() {
         // Do nothing
     }
 
