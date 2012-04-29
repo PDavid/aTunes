@@ -35,6 +35,7 @@ import net.sourceforge.atunes.model.IPodcastFeedHandler;
 import net.sourceforge.atunes.model.IProxyBean;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.model.IStatePlayer;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -54,6 +55,15 @@ public class MPlayerProcessBuilder {
 	private INetworkHandler networkHandler;
 	
 	private IEqualizer equalizer;
+	
+	private IStateCore stateCore;
+	
+	/**
+	 * @param stateCore
+	 */
+	public void setStateCore(IStateCore stateCore) {
+		this.stateCore = stateCore;
+	}
 	
 	/**
 	 * @param statePlayer
@@ -218,7 +228,7 @@ public class MPlayerProcessBuilder {
         }
         
         // If a radio has a playlist url add playlist command
-        if (audioObject instanceof IRadio && ((IRadio) audioObject).hasPlaylistUrl(networkHandler, state.getProxy())) {
+        if (audioObject instanceof IRadio && ((IRadio) audioObject).hasPlaylistUrl(networkHandler, stateCore.getProxy())) {
             command.add(MPlayerConstants.PLAYLIST);
         }
 	}
@@ -230,7 +240,7 @@ public class MPlayerProcessBuilder {
 	private void prepareProxy(List<String> command, String url) {
 		// proxy
 		StringBuilder proxy = new StringBuilder();
-		IProxyBean proxyBean = state.getProxy();
+		IProxyBean proxyBean = stateCore.getProxy();
 		if (proxyBean != null && proxyBean.getType().equals(IProxyBean.HTTP_PROXY)) {
 			//String user = proxyBean.getUser();
 			//String password = proxyBean.getPassword();

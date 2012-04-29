@@ -34,6 +34,7 @@ import javax.imageio.ImageIO;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IProxyBean;
+import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -48,9 +49,18 @@ import de.umass.lastfm.Caller;
  */
 public class NetworkHandler extends AbstractHandler implements INetworkHandler {
 
+	private IStateCore stateCore;
+	
+	/**
+	 * @param stateCore
+	 */
+	public void setStateCore(IStateCore stateCore) {
+		this.stateCore = stateCore;
+	}
+	
 	@Override
 	protected void initHandler() {
-		updateProxy(getState().getProxy());
+		updateProxy(stateCore.getProxy());
 	}
 	
 	/**
@@ -107,7 +117,7 @@ public class NetworkHandler extends AbstractHandler implements INetworkHandler {
 
         URLConnection connection;
         
-        ExtendedProxy proxy = ExtendedProxy.getProxy(getState().getProxy());
+        ExtendedProxy proxy = ExtendedProxy.getProxy(stateCore.getProxy());
         if (proxy == null) {
             connection = url.openConnection();
         } else {

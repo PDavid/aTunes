@@ -40,6 +40,7 @@ import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.actions.ImportLovedTracksFromLastFMAction;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IMessageDialogFactory;
+import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -90,6 +91,15 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
     private JTextField lastFmUser;
     private JPasswordField lastFmPassword;
     private JButton testLogin;
+    
+    private IStateContext stateContext;
+    
+    /**
+     * @param stateContext
+     */
+    public void setStateContext(IStateContext stateContext) {
+		this.stateContext = stateContext;
+	}
 
     /**
      * Checkbox to select if application must send a love request when user adds
@@ -163,13 +173,13 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
 
     @Override
     public boolean applyPreferences() {
-        getState().setLastFmUser(lastFmUser.getText());
-        getState().setLastFmPassword(String.valueOf(lastFmPassword.getPassword()));
-        getState().setLastFmEnabled(lastFmEnabled.isSelected());
-        getState().setAutoLoveFavoriteSong(autoLoveFavoriteSongs.isSelected());
-        Context.getBean(AddLovedSongInLastFMAction.class).setEnabled(getState().isLastFmEnabled());
-        Context.getBean(AddBannedSongInLastFMAction.class).setEnabled(getState().isLastFmEnabled());
-        Context.getBean(ImportLovedTracksFromLastFMAction.class).setEnabled(getState().isLastFmEnabled());
+        stateContext.setLastFmUser(lastFmUser.getText());
+        stateContext.setLastFmPassword(String.valueOf(lastFmPassword.getPassword()));
+        stateContext.setLastFmEnabled(lastFmEnabled.isSelected());
+        stateContext.setAutoLoveFavoriteSong(autoLoveFavoriteSongs.isSelected());
+        Context.getBean(AddLovedSongInLastFMAction.class).setEnabled(stateContext.isLastFmEnabled());
+        Context.getBean(AddBannedSongInLastFMAction.class).setEnabled(stateContext.isLastFmEnabled());
+        Context.getBean(ImportLovedTracksFromLastFMAction.class).setEnabled(stateContext.isLastFmEnabled());
         return false;
     }
 
@@ -214,10 +224,10 @@ public final class LastFmPanel extends AbstractPreferencesPanel {
 
     @Override
     public void updatePanel() {
-        setLastFmUser(getState().getLastFmUser());
-        setLastFmPassword(getState().getLastFmPassword());
-        setLastFmEnabled(getState().isLastFmEnabled());
-        setAutoLoveFavoriteSong(getState().isAutoLoveFavoriteSong());
+        setLastFmUser(stateContext.getLastFmUser());
+        setLastFmPassword(stateContext.getLastFmPassword());
+        setLastFmEnabled(stateContext.isLastFmEnabled());
+        setAutoLoveFavoriteSong(stateContext.isAutoLoveFavoriteSong());
         enableControls();
     }
 

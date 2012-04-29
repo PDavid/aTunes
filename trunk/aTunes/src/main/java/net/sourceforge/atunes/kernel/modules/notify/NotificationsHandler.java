@@ -36,6 +36,7 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INotificationEngine;
 import net.sourceforge.atunes.model.INotificationsHandler;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.ITemporalDiskStorage;
 import net.sourceforge.atunes.model.PlaybackState;
@@ -56,6 +57,15 @@ public final class NotificationsHandler extends AbstractHandler implements INoti
     private IAudioObjectImageLocator audioObjectImageLocator;
     
     private IStateUI stateUI;
+    
+    private IStateCore stateCore;
+    
+    /**
+     * @param stateCore
+     */
+    public void setStateCore(IStateCore stateCore) {
+		this.stateCore = stateCore;
+	}
     
     /**
      * @param stateUI
@@ -113,7 +123,7 @@ public final class NotificationsHandler extends AbstractHandler implements INoti
      * @return notification engine to use
      */
     private INotificationEngine getNotificationEngine() {
-    	INotificationEngine engine = getEngines().get(getState().getNotificationEngine());
+    	INotificationEngine engine = getEngines().get(stateCore.getNotificationEngine());
     	if (engine == null) {
     		engine = getDefaultEngine();
     	}

@@ -58,89 +58,6 @@ public abstract class AbstractStateMock implements IState {
 	}
 
 	@Override
-	public ILocaleBean getLocale() {
-		return null;
-	}
-
-	@Override
-	public void setLocale(ILocaleBean locale) {
-	}
-
-	@Override
-	public ILocaleBean getOldLocale() {
-		return null;
-	}
-
-	@Override
-	public void setOldLocale(ILocaleBean oldLocale) {
-	}
-
-	@Override
-	public String getDefaultSearch() {
-		return null;
-	}
-
-	@Override
-	public void setDefaultSearch(String defaultSearch) {
-	}
-
-	@Override
-	public boolean isUseContext() {
-		return false;
-	}
-
-	@Override
-	public void setUseContext(boolean useContext) {
-	}
-
-	@Override
-	public String getSelectedContextTab() {
-		return null;
-	}
-
-	@Override
-	public void setSelectedContextTab(String selectedContextTab) {
-		
-		
-	}
-
-	@Override
-	public IProxyBean getProxy() {
-		
-		return null;
-	}
-
-	@Override
-	public void setProxy(IProxyBean proxy) {
-		
-		
-	}
-
-	@Override
-	public boolean isEnableAdvancedSearch() {
-		
-		return false;
-	}
-
-	@Override
-	public void setEnableAdvancedSearch(boolean enableAdvancedSearch) {
-		
-		
-	}
-
-	@Override
-	public boolean isEnableHotkeys() {
-		
-		return false;
-	}
-
-	@Override
-	public void setEnableHotkeys(boolean enableHotkeys) {
-		
-		
-	}
-
-	@Override
 	public boolean isShowFavoritesInNavigator() {
 		
 		return false;
@@ -189,17 +106,6 @@ public abstract class AbstractStateMock implements IState {
 		
 	}
 
-	@Override
-	public boolean isSaveContextPicture() {
-		
-		return false;
-	}
-
-	@Override
-	public void setSaveContextPicture(boolean saveContextPicture) {
-		
-		
-	}
 
 	@Override
 	public boolean isShowExtendedTooltip() {
@@ -221,66 +127,6 @@ public abstract class AbstractStateMock implements IState {
 
 	@Override
 	public void setExtendedTooltipDelay(int extendedTooltipDelay) {
-		
-		
-	}
-
-	@Override
-	public boolean isLastFmEnabled() {
-		
-		return false;
-	}
-
-	@Override
-	public void setLastFmEnabled(boolean lastFmEnabled) {
-		
-		
-	}
-
-	@Override
-	public String getLastFmUser() {
-		
-		return null;
-	}
-
-	@Override
-	public void setLastFmUser(String lastFmUser) {
-		
-		
-	}
-
-	@Override
-	public String getLastFmPassword() {
-		
-		return null;
-	}
-
-	@Override
-	public void setLastFmPassword(String lastFmPassword) {
-		
-		
-	}
-
-	@Override
-	public boolean isAutoLoveFavoriteSong() {
-		
-		return false;
-	}
-
-	@Override
-	public void setAutoLoveFavoriteSong(boolean autoLoveFavoriteSong) {
-		
-		
-	}
-
-	@Override
-	public List<ILyricsEngineInfo> getLyricsEnginesInfo() {
-		
-		return null;
-	}
-
-	@Override
-	public void setLyricsEnginesInfo(List<ILyricsEngineInfo> lyricsEnginesInfo) {
 		
 		
 	}
@@ -556,42 +402,6 @@ public abstract class AbstractStateMock implements IState {
 	}
 
 	@Override
-	public IHotkeysConfig getHotkeysConfig() {
-		
-		return null;
-	}
-
-	@Override
-	public void setHotkeysConfig(IHotkeysConfig hotkeysConfig) {
-		
-		
-	}
-
-	@Override
-	public String getNotificationEngine() {
-		
-		return null;
-	}
-
-	@Override
-	public void setNotificationEngine(String notificationEngine) {
-		
-		
-	}
-
-	@Override
-	public boolean isShowContextAlbumsInGrid() {
-		
-		return false;
-	}
-
-	@Override
-	public void setShowContextAlbumsInGrid(boolean showContextAlbumsInGrid) {
-		
-		
-	}
-
-	@Override
 	public boolean isShowNavigationTree() {
 		
 		return false;
@@ -614,28 +424,6 @@ public abstract class AbstractStateMock implements IState {
 			Map<String, Map<String, ColumnBean>> customNavigatorColumns) {
 		
 		
-	}
-
-	@Override
-	public Map<String, ColumnBean> getAlbumsColumns() {
-		
-		return null;
-	}
-
-	@Override
-	public void setAlbumColumns(Map<String, ColumnBean> columnsConfiguration) {
-		
-		
-	}
-
-	@Override
-	public void setPluginsEnabled(boolean pluginsEnabled) {
-		
-	}
-
-	@Override
-	public boolean isPluginsEnabled() {
-		return false;
 	}
 
 	@Override

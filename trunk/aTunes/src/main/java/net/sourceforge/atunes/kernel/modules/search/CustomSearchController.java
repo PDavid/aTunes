@@ -46,6 +46,7 @@ import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.ISearchHandler;
 import net.sourceforge.atunes.model.ISearchableObject;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.model.SearchIndexNotAvailableException;
 import net.sourceforge.atunes.model.SearchQuerySyntaxException;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -64,17 +65,21 @@ final class CustomSearchController extends AbstractSimpleController<CustomSearch
 
     private ISearchHandler searchHandler;
     
+    private IStateCore stateCore;
+    
     /**
      * Constructor.
-     * 
      * @param dialog
      * @param state
+     * @param stateCore
      * @param frame
+     * @param searchHandler
      */
-    CustomSearchController(CustomSearchDialog dialog, IState state, IFrame frame, ISearchHandler searchHandler) {
+    CustomSearchController(CustomSearchDialog dialog, IState state, IStateCore stateCore, IFrame frame, ISearchHandler searchHandler) {
         super(dialog, state);
         this.frame = frame;
         this.searchHandler = searchHandler;
+        this.stateCore = stateCore;
         addBindings();
     }
 
@@ -85,8 +90,8 @@ final class CustomSearchController extends AbstractSimpleController<CustomSearch
         ((DefaultTreeModel) getComponentControlled().getComplexRulesTree().getModel()).setRoot(null);
         getComponentControlled().getSimpleRulesComboBox().setSelectedIndex(0);
         getComponentControlled().getSimpleRulesTextField().setText("");
-        getComponentControlled().getAdvancedSearchCheckBox().setSelected(getState().isEnableAdvancedSearch());
-        enableAdvancedSearch(getState().isEnableAdvancedSearch());
+        getComponentControlled().getAdvancedSearchCheckBox().setSelected(stateCore.isEnableAdvancedSearch());
+        enableAdvancedSearch(stateCore.isEnableAdvancedSearch());
         getComponentControlled().getAdvancedSearchTextField().setText("");
         getComponentControlled().setVisible(true);
     }
@@ -467,7 +472,7 @@ final class CustomSearchController extends AbstractSimpleController<CustomSearch
 		public void actionPerformed(ActionEvent e) {
 		    // Pressed Advanced Search Check Box
 		    enableAdvancedSearch(getComponentControlled().getAdvancedSearchCheckBox().isSelected());
-		    getState().setEnableAdvancedSearch(getComponentControlled().getAdvancedSearchCheckBox().isSelected());
+		    stateCore.setEnableAdvancedSearch(getComponentControlled().getAdvancedSearchCheckBox().isSelected());
 		}
 	}
 

@@ -47,6 +47,7 @@ import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlaybackStateListener;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPluginsHandler;
+import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -72,6 +73,8 @@ public class PluginsHandler extends AbstractHandler implements PluginListener, I
 
     private static Set<PluginType> pluginTypes;
     
+    private IStateCore stateCore;
+    
     static {
         pluginTypes = new HashSet<PluginType>();
         pluginTypes.add(new PluginType(IPlaybackStateListener.class.getName(), (PluginListener) Context.getBean(IPlayerHandler.class), false));
@@ -82,6 +85,13 @@ public class PluginsHandler extends AbstractHandler implements PluginListener, I
         pluginTypes.add(new PluginType(AbstractGeneralPurposePlugin.class.getName(), (PluginListener) Context.getBean(IGeneralPurposePluginsHandler.class), false));
     }
 
+    /**
+     * @param stateCore
+     */
+    public void setStateCore(IStateCore stateCore) {
+		this.stateCore = stateCore;
+	}
+    
     /**
      * Initializes all plugins found in plugins dir
      */
@@ -107,7 +117,7 @@ public class PluginsHandler extends AbstractHandler implements PluginListener, I
 
     @Override
     protected void initHandler() {
-    	if (getState().isPluginsEnabled()) {
+    	if (stateCore.isPluginsEnabled()) {
     		initPlugins();
     	} else {
     		Logger.info("Plugins are disabled");
@@ -116,7 +126,7 @@ public class PluginsHandler extends AbstractHandler implements PluginListener, I
 
     @Override
     public void applicationStarted() {
-    	if (!getState().isPluginsEnabled()) {
+    	if (!stateCore.isPluginsEnabled()) {
     		return;
     	}
     	
@@ -179,7 +189,7 @@ public class PluginsHandler extends AbstractHandler implements PluginListener, I
 
     @Override
 	public List<PluginInfo> getAvailablePlugins() {
-    	if (getState().isPluginsEnabled()) {
+    	if (stateCore.isPluginsEnabled()) {
     		return this.factory.getPlugins();
     	}
     	return null;

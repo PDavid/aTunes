@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.utils;
 
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateCore;
 
 /**
  * Returns java.text.Collator to use according to state locale
@@ -29,13 +29,13 @@ import net.sourceforge.atunes.model.IState;
  */
 public class Collator {
 
-	private IState state;
-	
+	private IStateCore stateCore;
+
 	/**
-	 * @param state
+	 * @param stateCore
 	 */
-	public void setState(IState state) {
-		this.state = state;
+	public void setStateCore(IStateCore stateCore) {
+		this.stateCore = stateCore;
 	}
 	
 	/**
@@ -43,9 +43,9 @@ public class Collator {
 	 * @return
 	 */
 	public java.text.Collator getCollator() {
-		if (state == null || state.getLocale() == null) {
+		if (stateCore == null || stateCore.getLocale() == null) {
 			return java.text.Collator.getInstance();
 		}
-        return java.text.Collator.getInstance(state.getLocale().getLocale());
+        return java.text.Collator.getInstance(stateCore.getLocale().getLocale());
 	}
 }

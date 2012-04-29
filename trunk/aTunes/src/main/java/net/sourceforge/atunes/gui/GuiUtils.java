@@ -50,7 +50,7 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.utils.Logger;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -272,7 +272,7 @@ public final class GuiUtils {
      * Sets the component orientation.
      */
     private static void setComponentOrientation() {
-    	IState state = Context.getBean(IState.class);
+    	IStateCore state = Context.getBean(IStateCore.class);
     	componentOrientation = ComponentOrientation.LEFT_TO_RIGHT;
     	if (state.getLocale() != null) {
     		if ("ug".equalsIgnoreCase(state.getLocale().getLocale().getLanguage())) {

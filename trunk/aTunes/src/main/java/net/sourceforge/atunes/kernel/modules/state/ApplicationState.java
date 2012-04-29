@@ -30,10 +30,6 @@ import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
 import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
 import net.sourceforge.atunes.model.ArtistViewMode;
 import net.sourceforge.atunes.model.ColumnBean;
-import net.sourceforge.atunes.model.IHotkeysConfig;
-import net.sourceforge.atunes.model.ILocaleBean;
-import net.sourceforge.atunes.model.ILyricsEngineInfo;
-import net.sourceforge.atunes.model.IProxyBean;
 import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.TagAttribute;
 import net.sourceforge.atunes.model.ViewMode;
@@ -117,158 +113,11 @@ public class ApplicationState implements IState {
     
     
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getLocale()
-	 */
-    @Override
-	public ILocaleBean getLocale() {
-    	return (ILocaleBean) this.stateStore.retrievePreference(Preferences.LOCALE, null);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setLocale(net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean)
-	 */
-    @Override
-	public void setLocale(ILocaleBean locale) {
-        this.stateStore.storePreference(Preferences.LOCALE, locale);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getOldLocale()
-	 */
-    @Override
-	public ILocaleBean getOldLocale() {
-        return (ILocaleBean) this.stateStore.retrievePreference(Preferences.OLD_LOCALE, null);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setOldLocale(net.sourceforge.atunes.kernel.modules.state.beans.LocaleBean)
-	 */
-    @Override
-	public void setOldLocale(ILocaleBean oldLocale) {
-        this.stateStore.storePreference(Preferences.OLD_LOCALE, oldLocale);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getDefaultSearch()
-	 */
-    @Override
-	public String getDefaultSearch() {
-        return (String) this.stateStore.retrievePreference(Preferences.DEFAULT_SEARCH, null);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setDefaultSearch(java.lang.String)
-	 */
-    @Override
-	public void setDefaultSearch(String defaultSearch) {
-    	this.stateStore.storePreference(Preferences.DEFAULT_SEARCH, defaultSearch);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isUseContext()
-	 */
-    @Override
-	public boolean isUseContext() {
-        return (Boolean) this.stateStore.retrievePreference(Preferences.USE_CONTEXT, true);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setUseContext(boolean)
-	 */
-    @Override
-	public void setUseContext(boolean useContext) {
-    	if (isUseContext() != useContext) {
-    		this.stateStore.storePreference(Preferences.USE_CONTEXT, useContext);
-    	}
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getSelectedContextTab()
-	 */
-    @Override
-	public String getSelectedContextTab() {
-        return (String) this.stateStore.retrievePreference(Preferences.SELECTED_CONTEXT_TAB, null);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setSelectedContextTab(java.lang.String)
-	 */
-    @Override
-	public void setSelectedContextTab(String selectedContextTab) {
-    	if (getSelectedContextTab() == null || !getSelectedContextTab().equals(selectedContextTab)) {
-    		this.stateStore.storePreference(Preferences.SELECTED_CONTEXT_TAB, selectedContextTab);
-    	}
-    }
-    
-    
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getProxy()
-	 */
-    @Override
-	public IProxyBean getProxy() {
-        return (IProxyBean) this.stateStore.retrievePreference(Preferences.PROXY, null);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setProxy(net.sourceforge.atunes.kernel.modules.state.beans.ProxyBean)
-	 */
-    @Override
-	public void setProxy(IProxyBean proxy) {
-        this.stateStore.storePreference(Preferences.PROXY, proxy);
-    }
-    
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isEnableAdvancedSearch()
-	 */
-    @Override
-	public boolean isEnableAdvancedSearch() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.ENABLE_ADVANCED_SEARCH, false);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setEnableAdvancedSearch(boolean)
-	 */
-    @Override
-	public void setEnableAdvancedSearch(boolean enableAdvancedSearch) {
-    	this.stateStore.storePreference(Preferences.ENABLE_ADVANCED_SEARCH, enableAdvancedSearch);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isEnableHotkeys()
-	 */
-    @Override
-	public boolean isEnableHotkeys() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.ENABLE_HOTKEYS, false);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setEnableHotkeys(boolean)
-	 */
-    @Override
-	public void setEnableHotkeys(boolean enableHotkeys) {
-    	this.stateStore.storePreference(Preferences.ENABLE_HOTKEYS, enableHotkeys);
-    }
-    
-        
     
     
 
     
-
+    
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isShowFavoritesInNavigator()
 	 */
@@ -341,22 +190,6 @@ public class ApplicationState implements IState {
     
     
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isSaveContextPicture()
-	 */
-    @Override
-	public boolean isSaveContextPicture() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.SAVE_CONTEXT_PICTURE, false);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setSaveContextPicture(boolean)
-	 */
-    @Override
-	public void setSaveContextPicture(boolean saveContextPicture) {
-    	this.stateStore.storePreference(Preferences.SAVE_CONTEXT_PICTURE, saveContextPicture);
-    }
-    
     
 
     /* (non-Javadoc)
@@ -395,94 +228,6 @@ public class ApplicationState implements IState {
     
     
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isLastFmEnabled()
-	 */
-    @Override
-	public boolean isLastFmEnabled() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.LASTFM_ENABLED, false);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setLastFmEnabled(boolean)
-	 */
-    @Override
-	public void setLastFmEnabled(boolean lastFmEnabled) {
-    	this.stateStore.storePreference(Preferences.LASTFM_ENABLED, lastFmEnabled);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getLastFmUser()
-	 */
-    @Override
-	public String getLastFmUser() {
-    	return (String) this.stateStore.retrievePreference(Preferences.LASTFM_USER, null);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setLastFmUser(java.lang.String)
-	 */
-    @Override
-	public void setLastFmUser(String lastFmUser) {
-    	this.stateStore.storePreference(Preferences.LASTFM_USER, lastFmUser);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getLastFmPassword()
-	 */
-    @Override
-	public String getLastFmPassword() {
-		return this.stateStore.retrievePasswordPreference(Preferences.LASTFM_PASSWORD);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setLastFmPassword(java.lang.String)
-	 */
-    @Override
-	public void setLastFmPassword(String lastFmPassword) {
-		this.stateStore.storePasswordPreference(Preferences.LASTFM_PASSWORD, lastFmPassword);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isAutoLoveFavoriteSong()
-	 */
-    @Override
-	public boolean isAutoLoveFavoriteSong() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.AUTO_LOVE_FAVORITE_SONG, false);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setAutoLoveFavoriteSong(boolean)
-	 */
-    @Override
-	public void setAutoLoveFavoriteSong(boolean autoLoveFavoriteSong) {
-    	this.stateStore.storePreference(Preferences.AUTO_LOVE_FAVORITE_SONG, autoLoveFavoriteSong);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getLyricsEnginesInfo()
-	 */
-    @Override
-	@SuppressWarnings(UNCHECKED)
-	public List<ILyricsEngineInfo> getLyricsEnginesInfo() {
-    	return (List<ILyricsEngineInfo>) this.stateStore.retrievePreference(Preferences.LYRICS_ENGINES_INFO, null);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setLyricsEnginesInfo(java.util.List)
-	 */
-    @Override
-	public void setLyricsEnginesInfo(List<ILyricsEngineInfo> lyricsEnginesInfo) {
-    	this.stateStore.storePreference(Preferences.LYRICS_ENGINES_INFO, lyricsEnginesInfo);
-    }
     
     
     /* (non-Javadoc)
@@ -898,61 +643,8 @@ public class ApplicationState implements IState {
     
     
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getHotkeysConfig()
-	 */
-    @Override
-	public IHotkeysConfig getHotkeysConfig() {
-    	return (IHotkeysConfig) this.stateStore.retrievePreference(Preferences.HOTKEYS_CONFIG, null);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setHotkeysConfig(net.sourceforge.atunes.kernel.modules.hotkeys.HotkeysConfig)
-	 */
-    @Override
-	public void setHotkeysConfig(IHotkeysConfig hotkeysConfig) {
-    	this.stateStore.storePreference(Preferences.HOTKEYS_CONFIG, hotkeysConfig);
-    }
-    
     
 
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getNotificationEngine()
-	 */
-    @Override
-	public String getNotificationEngine() {
-    	return (String) this.stateStore.retrievePreference(Preferences.NOTIFICATION_ENGINE, null);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setNotificationEngine(java.lang.String)
-	 */
-    @Override
-	public void setNotificationEngine(String notificationEngine) {
-    	this.stateStore.storePreference(Preferences.NOTIFICATION_ENGINE, notificationEngine);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isShowContextAlbumsInGrid()
-	 */
-    @Override
-	public boolean isShowContextAlbumsInGrid() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.SHOW_CONTEXT_ALBUMS_IN_GRID, true);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setShowContextAlbumsInGrid(boolean)
-	 */
-    @Override
-	public void setShowContextAlbumsInGrid(boolean showContextAlbumsInGrid) {
-    	this.stateStore.storePreference(Preferences.SHOW_CONTEXT_ALBUMS_IN_GRID, showContextAlbumsInGrid);
-    }
-    
     
 
     /* (non-Javadoc)
@@ -994,35 +686,6 @@ public class ApplicationState implements IState {
     }
 
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getAlbumsColumns()
-	 */
-    @Override
-	@SuppressWarnings(UNCHECKED)
-    public Map<String, ColumnBean> getAlbumsColumns() {
-    	Map<String, ColumnBean> map = (Map<String, ColumnBean>) this.stateStore.retrievePreference(Preferences.ALBUM_COLUMNS, null);
-    	return map != null ? Collections.unmodifiableMap(map) : null;
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setAlbumColumns(java.util.Map)
-	 */
-    @Override
-	public void setAlbumColumns(Map<String, ColumnBean> columnsConfiguration) {
-    	this.stateStore.storePreference(Preferences.ALBUM_COLUMNS, columnsConfiguration);
-    }
-
-	@Override
-	public void setPluginsEnabled(boolean pluginsEnabled) {
-		this.stateStore.storePreference(Preferences.PLUGINS_ENABLED, pluginsEnabled);
-		
-	}
-
-	@Override
-	public boolean isPluginsEnabled() {
-		return (Boolean) this.stateStore.retrievePreference(Preferences.PLUGINS_ENABLED, false);
-	}
-	
 	@Override
 	public void setArtistViewMode(ArtistViewMode artistViewMode) {
 		this.stateStore.storePreference(Preferences.ARTIST_VIEW_MODE, artistViewMode);

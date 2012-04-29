@@ -32,9 +32,14 @@ import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
 import net.sourceforge.atunes.model.ISearchDialogFactory;
+import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
+/**
+ * @author alex
+ *
+ */
 public class SearchArtistAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -4695334457704311336L;
@@ -44,6 +49,15 @@ public class SearchArtistAction extends CustomAbstractAction {
     private INavigationHandler navigationHandler;
     
     private ISearchDialogFactory searchDialogFactory;
+    
+    private IStateCore stateCore;
+    
+    /**
+     * @param stateCore
+     */
+    public void setStateCore(IStateCore stateCore) {
+		this.stateCore = stateCore;
+	}
     
     /**
      * @param searchDialogFactory
@@ -76,12 +90,12 @@ public class SearchArtistAction extends CustomAbstractAction {
         TreePath path = navigationHandler.getCurrentView().getTree().getSelectionPath();
         if (((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject() instanceof IArtist) {
             IArtist a = (IArtist) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-            ISearch search = SearchFactory.getSearchForName(getState().getDefaultSearch());
+            ISearch search = SearchFactory.getSearchForName(stateCore.getDefaultSearch());
             if (search == null) {
                 ISearchDialog dialog = searchDialogFactory.createDialog();
                 search = navigationHandler.openSearchDialog(dialog, false);
                 if (search != null) {
-                    getState().setDefaultSearch(search.toString());
+                	stateCore.setDefaultSearch(search.toString());
                 }
             }
 

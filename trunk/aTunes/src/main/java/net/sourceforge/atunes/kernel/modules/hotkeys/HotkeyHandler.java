@@ -32,6 +32,7 @@ import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -46,11 +47,19 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
     private boolean enabled;
     private AbstractHotkeys hotkeys;
     private IHotkeysConfig hotkeysConfig;
+    private IStateCore stateCore;
+    
+    /**
+     * @param stateCore
+     */
+    public void setStateCore(IStateCore stateCore) {
+		this.stateCore = stateCore;
+	}
 
     @Override
     public void allHandlersInitialized() {
         hotkeys = AbstractHotkeys.createInstance(this, getBean(IOSManager.class));
-        IHotkeysConfig hc = getState().getHotkeysConfig();
+        IHotkeysConfig hc = stateCore.getHotkeysConfig();
         hotkeysConfig = hc != null ? hc : new DefaultHotkeysConfig();
         if (hotkeys != null) {
             supported = true;
@@ -59,8 +68,8 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
             Logger.info("Hotkeys are not supported");
         }
 
-        if (getState().isEnableHotkeys()) {
-            enableHotkeys(getState().getHotkeysConfig());
+        if (stateCore.isEnableHotkeys()) {
+            enableHotkeys(stateCore.getHotkeysConfig());
         } else {
             disableHotkeys();
         }
@@ -123,7 +132,7 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
                 }
 
                 // Disable hotkeys
-                getState().setEnableHotkeys(false);
+                stateCore.setEnableHotkeys(false);
 
                 // Show an error message
                 getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(getFrame(), I18nUtils.getString("HOTKEYS_ACTIVATION_ERROR_MESSAGE"));
@@ -151,7 +160,7 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
     }
 
 	@Override
-    public void onHotkey(final int id) {
+    public void onHotKey(final int id) {
         Logger.debug("Hotkey ", id);
         switch (id) {
         case HotkeyConstants.HOTKEY_NEXT: {
@@ -198,8 +207,8 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
 
     @Override
     public void applicationStateChanged(IState newState) {
-        if (newState.isEnableHotkeys()) {
-            enableHotkeys(newState.getHotkeysConfig());
+        if (stateCore.isEnableHotkeys()) {
+            enableHotkeys(stateCore.getHotkeysConfig());
         } else {
             disableHotkeys();
         }

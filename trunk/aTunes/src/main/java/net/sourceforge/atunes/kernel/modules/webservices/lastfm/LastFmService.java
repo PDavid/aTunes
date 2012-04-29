@@ -46,7 +46,8 @@ import net.sourceforge.atunes.model.ILovedTrack;
 import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ISimilarArtistsInfo;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateContext;
+import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.ITrackInfo;
 import net.sourceforge.atunes.utils.CryptoUtils;
@@ -97,7 +98,7 @@ public final class LastFmService {
     
     private INetworkHandler networkHandler;
     
-    private IState state;
+    private IStateCore stateCore;
     
     private IFrame frame;
     
@@ -105,11 +106,20 @@ public final class LastFmService {
     
     private XMLSerializerService xmlSerializerService;
 
+    private IStateContext stateContext;
+    
     /**
-     * @param state
+     * @param stateContext
      */
-    public void setState(IState state) {
-		this.state = state;
+    public void setStateContext(IStateContext stateContext) {
+		this.stateContext = stateContext;
+	}
+    
+    /**
+     * @param stateCore
+     */
+    public void setStateCore(IStateCore stateCore) {
+		this.stateCore = stateCore;
 	}
     
     /**
@@ -579,7 +589,7 @@ public final class LastFmService {
             String wikiText = getCache().retrieveArtistWiki(artist);
             if (wikiText == null) {
 
-                Artist a = Artist.getInfo(artist, state.getLocale().getLocale(), null, getApiKey());
+                Artist a = Artist.getInfo(artist, stateCore.getLocale().getLocale(), null, getApiKey());
                 wikiText = a != null ? a.getWikiSummary() : "";
                 wikiText = wikiText.replaceAll("<.*?>", "");
                 wikiText = StringUtils.unescapeHTML(wikiText, 0);
@@ -603,7 +613,7 @@ public final class LastFmService {
      */
     public String getWikiURL(String artist) {
         return ARTIST_WIKI_URL.replace(ARTIST_WILDCARD, networkHandler.encodeString(artist)).replace(LANGUAGE_WILDCARD,
-                state.getLocale().getLocale().getLanguage());
+        		stateCore.getLocale().getLocale().getLanguage());
     }
 
     /**
@@ -774,9 +784,9 @@ public final class LastFmService {
      * @return a list of loved tracks from user profile
      */
     public List<ILovedTrack> getLovedTracks() {
-        if (!StringUtils.isEmpty(state.getLastFmUser())) {
+        if (!StringUtils.isEmpty(stateContext.getLastFmUser())) {
             try {
-                return LastFmLovedTracks.getLovedTracks(state.getLastFmUser(), null, networkHandler);
+                return LastFmLovedTracks.getLovedTracks(stateContext.getLastFmUser(), null, networkHandler);
             } catch (Exception e) {
                 Logger.error(e);
             }
@@ -790,7 +800,7 @@ public final class LastFmService {
      * @return
      */
     private boolean checkUser() {
-        if (StringUtils.isEmpty(state.getLastFmUser())) {
+        if (StringUtils.isEmpty(stateContext.getLastFmUser())) {
             Logger.debug("Don't submit to Last.fm: Empty user");
             return false;
         }
@@ -816,7 +826,7 @@ public final class LastFmService {
      * @return
      */
     private boolean checkPassword() {
-        if (StringUtils.isEmpty(state.getLastFmPassword())) {
+        if (StringUtils.isEmpty(stateContext.getLastFmPassword())) {
             Logger.debug("Don't submit to Last.fm: Empty password");
             return false;
         }
@@ -928,8 +938,8 @@ public final class LastFmService {
      * @param taskService
      */
     public void submitToLastFm(final IAudioObject audioFile, final long secondsPlayed, ITaskService taskService) {
-        if (state.isLastFmEnabled()) {
-        	taskService.submitNow("Submit to Last.fm", new SubmitToLastFmRunnable(secondsPlayed, audioFile, this, frame, state));
+        if (stateContext.isLastFmEnabled()) {
+        	taskService.submitNow("Submit to Last.fm", new SubmitToLastFmRunnable(secondsPlayed, audioFile, this, frame, stateContext));
         }
     }
 
@@ -938,7 +948,7 @@ public final class LastFmService {
      * @param service
      */
     public void submitCacheToLastFm(ITaskService service) {
-        if (state.isLastFmEnabled()) {
+        if (stateContext.isLastFmEnabled()) {
         	service.submitNow("Submit Cache to Last.fm", new Runnable() {
 
                 @Override
@@ -964,8 +974,8 @@ public final class LastFmService {
      *            the file
      */
     public void submitNowPlayingInfoToLastFm(final ILocalAudioObject audioFile, ITaskService taskService) {
-        if (state.isLastFmEnabled()) {
-        	taskService.submitNow("Submit Now Playing to Last.fm", new SubmitNowPlayingInfoRunnable(audioFile, this, frame, state));
+        if (stateContext.isLastFmEnabled()) {
+        	taskService.submitNow("Submit Now Playing to Last.fm", new SubmitNowPlayingInfoRunnable(audioFile, this, frame, stateContext));
         }
     }
 
@@ -1019,7 +1029,7 @@ public final class LastFmService {
      * @return
      */
     private Session getSession() {
-        return Authenticator.getMobileSession(state.getLastFmUser(), state.getLastFmPassword(), getApiKey(), getApiSecret());
+        return Authenticator.getMobileSession(stateContext.getLastFmUser(), stateContext.getLastFmPassword(), getApiKey(), getApiSecret());
     }
 
 	/**

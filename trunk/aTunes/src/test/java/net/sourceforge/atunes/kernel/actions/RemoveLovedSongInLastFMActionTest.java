@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 import net.sourceforge.atunes.model.BackgroundWorkerFactoryMock;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextHandler;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 
 import org.junit.Assert;
@@ -41,9 +41,9 @@ public class RemoveLovedSongInLastFMActionTest {
 		IContextHandler contextHandler = mock(IContextHandler.class);
 		IAudioObject ao = mock(IAudioObject.class);
 		when(contextHandler.getCurrentAudioObject()).thenReturn(ao);
-		IState state = mock(IState.class);
+		IStateContext state = mock(IStateContext.class);
 		when(state.isLastFmEnabled()).thenReturn(true);
-		sut.setState(state);
+		sut.setStateContext(state);
 		sut.setWebServicesHandler(webServicesHandler);
 		sut.setContextHandler(contextHandler);
 		sut.setBackgroundWorkerFactory(new BackgroundWorkerFactoryMock());

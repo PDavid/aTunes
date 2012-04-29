@@ -42,7 +42,7 @@ import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -65,20 +65,20 @@ final class PodcastFeedEntryPropertiesDialog extends AudioObjectPropertiesDialog
     private JTextArea descriptionTextArea;
     private IPodcastFeedEntry entry;
     
-    private IState state;
+    private IStateCore stateCore;
 
     /**
      * Instantiates a new podcast feed entry properties dialog.
      * 
      * @param entry
      * @param frame
-     * @param state
+     * @param stateCore
      * @param lookAndFeelManager
      */
-    PodcastFeedEntryPropertiesDialog(IPodcastFeedEntry entry, IFrame frame, IState state, ILookAndFeelManager lookAndFeelManager) {
+    PodcastFeedEntryPropertiesDialog(IPodcastFeedEntry entry, IFrame frame, IStateCore stateCore, ILookAndFeelManager lookAndFeelManager) {
         super(getTitleText(entry), frame, lookAndFeelManager);
         this.entry = entry;
-        this.state = state;
+        this.stateCore = stateCore;
         setAudioObject(entry);
         addContent(lookAndFeelManager.getCurrentLookAndFeel());
 
@@ -221,7 +221,7 @@ final class PodcastFeedEntryPropertiesDialog extends AudioObjectPropertiesDialog
         }
         if (entry.getDate() != null) {
             dateLabel.setText(getHtmlFormatted(I18nUtils.getString("DATE"), StringUtils.getString(DateFormat.getDateInstance(DateFormat.LONG,
-                    state.getLocale().getLocale()).format(entry.getDate()), ", ", DateFormat.getTimeInstance().format(entry.getDate()))));
+            		stateCore.getLocale().getLocale()).format(entry.getDate()), ", ", DateFormat.getTimeInstance().format(entry.getDate()))));
         } else {
             dateLabel.setText(getHtmlFormatted(I18nUtils.getString("DATE"), "-"));
         }

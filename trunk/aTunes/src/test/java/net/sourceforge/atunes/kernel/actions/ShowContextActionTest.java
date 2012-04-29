@@ -24,7 +24,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import net.sourceforge.atunes.model.IContextHandler;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateContext;
 
 import org.junit.Test;
 
@@ -33,11 +33,11 @@ public class ShowContextActionTest {
 	@Test
 	public void testShow() {
 		ShowContextAction sut = new ShowContextAction();
-		IState state = mock(IState.class);
+		IStateContext state = mock(IStateContext.class);
 		when(state.isUseContext()).thenReturn(true);
 		IContextHandler contextHandler = mock(IContextHandler.class);
 		sut.setContextHandler(contextHandler);
-		sut.setState(state);
+		sut.setStateContext(state);
 		sut.initialize();
 		
 		sut.executeAction();
@@ -48,11 +48,11 @@ public class ShowContextActionTest {
 	@Test
 	public void testHide() {
 		ShowContextAction sut = new ShowContextAction();
-		IState state = mock(IState.class);
+		IStateContext state = mock(IStateContext.class);
 		when(state.isUseContext()).thenReturn(false);
 		IContextHandler contextHandler = mock(IContextHandler.class);
 		sut.setContextHandler(contextHandler);
-		sut.setState(state);
+		sut.setStateContext(state);
 		sut.initialize();
 		
 		sut.executeAction();
