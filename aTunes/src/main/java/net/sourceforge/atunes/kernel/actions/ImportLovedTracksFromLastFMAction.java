@@ -35,6 +35,7 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILovedTrack;
 import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -59,6 +60,18 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
     
     private IMessageDialogFactory messageDialogFactory;
     
+    private IStateContext stateContext;
+    
+    /**
+     * @param stateContext
+     */
+    public void setStateContext(IStateContext stateContext) {
+		this.stateContext = stateContext;
+	}
+    
+    /**
+     * 
+     */
     public ImportLovedTracksFromLastFMAction() {
         super(I18nUtils.getString("IMPORT_LOVED_TRACKS_FROM_LASTFM"));
     }
@@ -66,7 +79,7 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
     @Override
     protected void initialize() {
     	super.initialize();
-        setEnabled(getState().isLastFmEnabled());
+        setEnabled(stateContext.isLastFmEnabled());
     }
 
     @Override

@@ -43,6 +43,8 @@ import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateContext;
+import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.ISystemTrayHandler;
 import net.sourceforge.atunes.model.IUIHandler;
@@ -56,6 +58,24 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
 	private IPlayListTable playListTable;
 	
 	private IStateUI stateUI;
+	
+	private IStateCore stateCore;
+	
+	private IStateContext stateContext;
+	
+	/**
+	 * @param stateContext
+	 */
+	public void setStateContext(IStateContext stateContext) {
+		this.stateContext = stateContext;
+	}
+	
+	/**
+	 * @param stateCore
+	 */
+	public void setStateCore(IStateCore stateCore) {
+		this.stateCore = stateCore;
+	}
 	
 	/**
 	 * @param stateUI
@@ -187,11 +207,12 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
             FadingPopupFactory.install(getOsManager(), getBean(ILookAndFeelManager.class).getCurrentLookAndFeel());
         }
 
-		getFrame().setState(getState());
+		getFrame().setStateContext(stateContext);
+		getFrame().setStateUI(stateUI);
         
         IFrameState frameState = stateUI.getFrameState(getFrame().getClass());
-        ILocaleBean locale = getState().getLocale();
-        ILocaleBean oldLocale = getState().getOldLocale();
+        ILocaleBean locale = stateCore.getLocale();
+        ILocaleBean oldLocale = stateCore.getOldLocale();
         // Reset fame state if no frame state in state or if component orientation of locale has changed
         if (frameState == null || locale == null || oldLocale != null
                 && !(ComponentOrientation.getOrientation(locale.getLocale()).equals(ComponentOrientation.getOrientation(oldLocale.getLocale())))) {

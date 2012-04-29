@@ -26,7 +26,7 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -38,13 +38,19 @@ final class SubmitNowPlayingInfoRunnable implements Runnable {
 	
 	private final IFrame frame;
 	
-	private final IState state;
+	private final IStateContext stateContext;
 
-	SubmitNowPlayingInfoRunnable(ILocalAudioObject audioFile, LastFmService lastFmService, IFrame frame, IState state) {
+	/**
+	 * @param audioFile
+	 * @param lastFmService
+	 * @param frame
+	 * @param stateContext
+	 */
+	SubmitNowPlayingInfoRunnable(ILocalAudioObject audioFile, LastFmService lastFmService, IFrame frame, IStateContext stateContext) {
 		this.audioFile = audioFile;
 		this.lastFmService = lastFmService;
 		this.frame = frame;
-		this.state = state;
+		this.stateContext = stateContext;
 	}
 
 	@Override
@@ -60,7 +66,7 @@ final class SubmitNowPlayingInfoRunnable implements Runnable {
 	                public void run() {
 	                	Context.getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(frame, I18nUtils.getString("LASTFM_USER_ERROR"));
 	                    // Disable service by deleting password
-	                    state.setLastFmEnabled(false);
+	                    stateContext.setLastFmEnabled(false);
 	                }
 	            });
 	        } else {

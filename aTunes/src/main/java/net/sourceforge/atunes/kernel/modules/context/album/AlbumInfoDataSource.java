@@ -34,7 +34,7 @@ import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IContextInformationSource;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
@@ -51,9 +51,13 @@ import org.apache.sanselan.ImageWriteException;
  * @author alex
  * 
  */
+/**
+ * @author alex
+ *
+ */
 public class AlbumInfoDataSource implements IContextInformationSource {
 
-    private IState state;
+    private IStateContext stateContext;
     
     private IWebServicesHandler webServicesHandler;
     
@@ -237,7 +241,7 @@ public class AlbumInfoDataSource implements IContextInformationSource {
      * @param file
      */
     private void savePicture(ImageIcon img, ILocalAudioObject file) {
-        if (img != null && state.isSaveContextPicture()) { // save image in folder of file
+        if (img != null && stateContext.isSaveContextPicture()) { // save image in folder of file
             String imageFileName = AudioFilePictureUtils.getFileNameForCover(file, osManager);
 
             File imageFile = new File(imageFileName);
@@ -279,16 +283,25 @@ public class AlbumInfoDataSource implements IContextInformationSource {
         return t.contains("/");
     }
     
-    public final void setState(IState state) {
-		this.state = state;
-	}
-    
+    /**
+     * @param osManager
+     */
     public void setOsManager(IOSManager osManager) {
 		this.osManager = osManager;
 	}
     
+    /**
+     * @param webServicesHandler
+     */
     public final void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
+	}
+    
+    /**
+     * @param stateContext
+     */
+    public void setStateContext(IStateContext stateContext) {
+		this.stateContext = stateContext;
 	}
     
     /**

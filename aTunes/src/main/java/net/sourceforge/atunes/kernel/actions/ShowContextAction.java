@@ -26,6 +26,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.model.IContextHandler;
+import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class ShowContextAction extends CustomAbstractAction {
@@ -33,6 +34,15 @@ public class ShowContextAction extends CustomAbstractAction {
     private static final long serialVersionUID = 5939730387818346294L;
 
     private IContextHandler contextHandler;
+    
+    private IStateContext stateContext;
+    
+    /**
+     * @param stateContext
+     */
+    public void setStateContext(IStateContext stateContext) {
+		this.stateContext = stateContext;
+	}
     
     /**
      * @param contextHandler
@@ -50,7 +60,7 @@ public class ShowContextAction extends CustomAbstractAction {
     @Override
     protected void initialize() {
     	super.initialize();
-        putValue(SELECTED_KEY, getState().isUseContext());
+        putValue(SELECTED_KEY, stateContext.isUseContext());
     }
     
     @Override

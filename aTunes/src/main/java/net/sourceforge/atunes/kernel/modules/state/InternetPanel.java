@@ -38,6 +38,7 @@ import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IProxyBean;
 import net.sourceforge.atunes.model.IProxyBeanFactory;
+import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -63,6 +64,15 @@ public final class InternetPanel extends AbstractPreferencesPanel {
     private INetworkHandler networkHandler;
     
     private transient IProxyBeanFactory proxyBeanFactory;
+    
+    private IStateCore stateCore;
+    
+    /**
+     * @param stateCore
+     */
+    public void setStateCore(IStateCore stateCore) {
+		this.stateCore = stateCore;
+	}
     
     /**
      * @param networkHandler
@@ -230,7 +240,7 @@ public final class InternetPanel extends AbstractPreferencesPanel {
     @Override
     public boolean applyPreferences() {
         IProxyBean proxy = getProxy();
-        getState().setProxy(proxy);
+        stateCore.setProxy(proxy);
         networkHandler.updateProxy(proxy);
         return false;
     }
@@ -281,7 +291,7 @@ public final class InternetPanel extends AbstractPreferencesPanel {
 
     @Override
     public void updatePanel() {
-        setConfiguration(getState().getProxy());
+        setConfiguration(stateCore.getProxy());
     }
 
     @Override

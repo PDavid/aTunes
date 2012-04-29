@@ -36,12 +36,15 @@ import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateCore;
 
 public class AudioObjectPropertiesDialogFactory implements IAudioObjectPropertiesDialogFactory {
 
 	private IFrame frame;
 	
 	private IState state;
+	
+	private IStateCore stateCore;
 	
 	private IOSManager osManager;
 	
@@ -59,7 +62,7 @@ public class AudioObjectPropertiesDialogFactory implements IAudioObjectPropertie
 	public IAudioObjectPropertiesDialog newInstance(IAudioObject a, ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler) {
     	AudioObjectPropertiesDialog dialog = null;
     	if (a instanceof IPodcastFeedEntry) {
-    		dialog = new PodcastFeedEntryPropertiesDialog((IPodcastFeedEntry) a, frame, state, lookAndFeelManager);
+    		dialog = new PodcastFeedEntryPropertiesDialog((IPodcastFeedEntry) a, frame, stateCore, lookAndFeelManager);
     	} else if (a instanceof IRadio) {
     		dialog = new RadioPropertiesDialog((IRadio) a, frame, lookAndFeelManager);
     	} else if (a instanceof ILocalAudioObject) {
@@ -70,6 +73,14 @@ public class AudioObjectPropertiesDialogFactory implements IAudioObjectPropertie
     	}
     	return dialog;
     }
+    
+    
+    /**
+     * @param stateCore
+     */
+    public void setStateCore(IStateCore stateCore) {
+		this.stateCore = stateCore;
+	}
 
     /**
      * @param localAudioObjectValidator

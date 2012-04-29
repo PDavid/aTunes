@@ -56,6 +56,7 @@ import net.sourceforge.atunes.model.ILocaleBean;
 import net.sourceforge.atunes.model.ILocaleBeanFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.LookAndFeelBean;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -113,6 +114,15 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
 	private transient IFontBeanFactory fontBeanFactory;
 	
 	private IStateUI stateUI;
+	
+	private IStateCore stateCore;
+	
+	/**
+	 * @param stateCore
+	 */
+	public void setStateCore(IStateCore stateCore) {
+		this.stateCore = stateCore;
+	}
 	
 	/**
 	 * @param stateUI
@@ -219,7 +229,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
                 										 currentFontSettings != null ? currentFontSettings.getFont().toFont() : GeneralPanel.this.lookAndFeelManager.getCurrentLookAndFeel().getDefaultFont(),
                 										 currentFontSettings != null ? currentFontSettings.isUseFontSmoothing() : true, 
                 										 currentFontSettings != null ? currentFontSettings.isUseFontSmoothingSettingsFromOs() : false, 
-                										 getState().getLocale().getLocale(), 
+                										 stateCore.getLocale().getLocale(), 
                 										 GeneralPanel.this.lookAndFeelManager, 
                 										 fontBeanFactory);
                 fontChooserDialog.setVisible(true);
@@ -245,7 +255,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
                     if (currentSkin == null) {
                     	currentSkin = GeneralPanel.this.lookAndFeelManager.getDefaultSkin(stateUI.getLookAndFeel().getName());
                     }
-                    GeneralPanel.this.lookAndFeelManager.applySkin(currentSkin, getState(), stateUI, osManager);
+                    GeneralPanel.this.lookAndFeelManager.applySkin(currentSkin, stateCore, stateUI, osManager);
             	}
             	updateSkins((String)lookAndFeel.getSelectedItem(), skinName);
             }
@@ -404,12 +414,12 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
             needRestart = true;
         }
 
-        ILocaleBean oldLocale = getState().getLocale();
+        ILocaleBean oldLocale = stateCore.getLocale();
         ILocaleBean newLocale = localeBeanFactory.getLocaleBean((Locale) language.getSelectedItem());
-        getState().setLocale(newLocale);
+        stateCore.setLocale(newLocale);
         if (!oldLocale.equals(newLocale)) {
             needRestart = true;
-            getState().setOldLocale(localeBeanFactory.getLocaleBean(Locale.getDefault()));
+            stateCore.setOldLocale(localeBeanFactory.getLocaleBean(Locale.getDefault()));
         }
 
         if (lookAndFeelManager.getCurrentLookAndFeel().supportsCustomFontSettings()) {
@@ -493,10 +503,10 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
     public void updatePanel() {
         List<Locale> langs = I18nUtils.getLanguages();
         Locale[] array = langs.toArray(new Locale[langs.size()]);
-        final Locale currentLocale = getState().getLocale().getLocale();
+        final Locale currentLocale = stateCore.getLocale().getLocale();
         Arrays.sort(array, new LocaleComparator(currentLocale));
         language.setModel(new DefaultComboBoxModel(array));
-        language.setRenderer(lookAndFeelManager.getCurrentLookAndFeel().getListCellRenderer(new LanguageListCellRendererCode(getState())));
+        language.setRenderer(lookAndFeelManager.getCurrentLookAndFeel().getListCellRenderer(new LanguageListCellRendererCode(stateCore)));
 
     	
         lookAndFeel.setModel(new ListComboBoxModel<String>(lookAndFeelManager.getAvailableLookAndFeels()));
@@ -518,7 +528,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
     @Override
     public void resetImmediateChanges() {
         if (stateUI.getLookAndFeel().getSkin() == null || !stateUI.getLookAndFeel().getSkin().equals(skin.getSelectedItem())) {
-            lookAndFeelManager.applySkin(stateUI.getLookAndFeel().getSkin(), getState(), stateUI, osManager);
+            lookAndFeelManager.applySkin(stateUI.getLookAndFeel().getSkin(), stateCore, stateUI, osManager);
         }
     }
 
@@ -564,7 +574,7 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
     		String selectedSkin = (String) skin.getSelectedItem();
     		boolean isCurrentLookAndFeel = lookAndFeelManager.getCurrentLookAndFeelName().equals(lookAndFeel.getSelectedItem());
     		if (isCurrentLookAndFeel) {
-    			lookAndFeelManager.applySkin(selectedSkin, getState(), stateUI, osManager);
+    			lookAndFeelManager.applySkin(selectedSkin, stateCore, stateUI, osManager);
     		}
     	}
     }

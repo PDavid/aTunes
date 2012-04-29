@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.columns;
 import java.util.Map;
 
 import net.sourceforge.atunes.model.ColumnBean;
+import net.sourceforge.atunes.model.IStateCore;
 
 /**
  * This class defines all columns than can be viewed in album list
@@ -31,14 +32,23 @@ import net.sourceforge.atunes.model.ColumnBean;
  */
 public final class AlbumColumnSet extends AbstractColumnSet {
 	
+	private IStateCore stateCore;
+	
+	/**
+	 * @param stateCore
+	 */
+	public void setStateCore(IStateCore stateCore) {
+		this.stateCore = stateCore;
+	}
+	
     @Override
     protected Map<String, ColumnBean> getColumnsConfiguration() {
-    	return getState().getAlbumsColumns();
+    	return stateCore.getAlbumsColumns();
     }
 
     @Override
     protected void setColumnsConfiguration(Map<String, ColumnBean> columnsConfiguration) {
-    	getState().setAlbumColumns(columnsConfiguration);
+    	stateCore.setAlbumColumns(columnsConfiguration);
     }
 
     @Override

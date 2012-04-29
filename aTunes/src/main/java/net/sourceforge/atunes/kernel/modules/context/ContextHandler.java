@@ -35,6 +35,7 @@ import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.Logger;
@@ -70,6 +71,15 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     
     private IWebServicesHandler webServicesHandler;
     
+    private IStateContext stateContext;
+    
+    /**
+     * @param stateContext
+     */
+    public void setStateContext(IStateContext stateContext) {
+		this.stateContext = stateContext;
+	}
+    
     /**
      * @param webServicesHandler
      */
@@ -89,14 +99,14 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     	addContextPanels(contextPanels);
     	
         // Set previous selected tab
-    	setContextTab(getState().getSelectedContextTab());
+    	setContextTab(stateContext.getSelectedContextTab());
     	
-    	getFrame().showContextPanel(getState().isUseContext());
+    	getFrame().showContextPanel(stateContext.isUseContext());
     }
     
     @Override
     public void allHandlersInitialized() {
-    	if (getState().isUseContext()) {
+    	if (stateContext.isUseContext()) {
     		retrieveInfoAndShowInPanel(playListHandler.getCurrentAudioObjectFromVisiblePlayList());
     	}
     }
@@ -106,7 +116,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
      */
     public void contextPanelChanged() {
         // Update selected tab
-        getState().setSelectedContextTab(getContextTab() != null ? getContextTab().getContextPanelName() : null);
+        stateContext.setSelectedContextTab(getContextTab() != null ? getContextTab().getContextPanelName() : null);
         // Call to fill information: Don't force update since audio object can be the same
         retrieveInfo(currentAudioObject, false);
     }
@@ -120,7 +130,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
         currentAudioObject = null;
 
         // Select first tab
-        getState().setSelectedContextTab(null);
+        stateContext.setSelectedContextTab(null);
         setContextTab(null);
     }
 
@@ -158,7 +168,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
         updateModificationTimeOfLastAudioObject(ao);
 
         // Call to retrieve and show information
-        if (getState().isUseContext()) {
+        if (stateContext.isUseContext()) {
             retrieveInfoAndShowInPanel(ao, audioObjectModified);
         }
     }
@@ -214,7 +224,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
         }
 
         // Context panel can be removed so check index
-        String selectedTab = getState().getSelectedContextTab();
+        String selectedTab = stateContext.getSelectedContextTab();
         // Update current context panel
         for (IContextPanel panel : contextPanels) {
         	if (panel.getContextPanelName().equals(selectedTab)) {
@@ -227,7 +237,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     @Override
     public void applicationStateChanged(IState newState) {
         // Show or hide context panel
-        showContextPanel(newState.isUseContext());
+        showContextPanel(stateContext.isUseContext());
     }
 
     /* (non-Javadoc)
@@ -258,14 +268,14 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     
     @Override
     public void selectedAudioObjectChanged(IAudioObject audioObject) {
-        if (getState().isUseContext()) {
+        if (stateContext.isUseContext()) {
             retrieveInfoAndShowInPanel(audioObject);
         }
     }
     
     @Override
     public void playListCleared() {
-        if (getState().isUseContext()) {
+        if (stateContext.isUseContext()) {
             retrieveInfoAndShowInPanel(null);
             
             if (getState().isStopPlayerOnPlayListClear()) {
@@ -279,7 +289,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 	 */
     @Override
 	public void showContextPanel(boolean show) {
-        getState().setUseContext(show);
+        stateContext.setUseContext(show);
         getFrame().showContextPanel(show);
         if (show) {
             retrieveInfoAndShowInPanel(playListHandler.getCurrentAudioObjectFromVisiblePlayList());

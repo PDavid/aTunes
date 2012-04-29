@@ -31,6 +31,7 @@ import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
 import net.sourceforge.atunes.model.ISearchDialogFactory;
+import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 import net.sourceforge.atunes.utils.UnknownObjectCheck;
@@ -44,6 +45,15 @@ public class SearchArtistAtAction extends CustomAbstractAction {
     private INavigationHandler navigationHandler;
     
     private ISearchDialogFactory searchDialogFactory;
+    
+    private IStateCore stateCore;
+    
+    /**
+     * @param stateCore
+     */
+    public void setStateCore(IStateCore stateCore) {
+		this.stateCore = stateCore;
+	}
     
     /**
      * @param searchDialogFactory
@@ -79,7 +89,7 @@ public class SearchArtistAtAction extends CustomAbstractAction {
             ISearchDialog dialog = searchDialogFactory.createDialog();
             ISearch search = navigationHandler.openSearchDialog(dialog, true);
             if (dialog.isSetAsDefault() && search != null) {
-                getState().setDefaultSearch(search.toString());
+            	stateCore.setDefaultSearch(search.toString());
             }
             if (search != null) {
             	desktop.openSearch(search, a.getName());

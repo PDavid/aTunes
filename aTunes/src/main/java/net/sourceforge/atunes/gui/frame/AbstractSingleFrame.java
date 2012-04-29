@@ -53,7 +53,7 @@ import net.sourceforge.atunes.model.INavigationTreePanel;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListPanel;
 import net.sourceforge.atunes.model.IPlayerControlsPanel;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IUIHandler;
@@ -89,7 +89,6 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     private IPlayerControlsPanel playerControls;
     private JXStatusBar statusBar;
 
-    private IState state;
     private IOSManager osManager;
     private INavigationHandler navigationHandler;
     private ILookAndFeelManager lookAndFeelManager;
@@ -101,9 +100,20 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     
     private IStateUI stateUI;
     
+    private IStateContext stateContext;
+    
+    /**
+     * @param stateContext
+     */
+    @Override
+    public void setStateContext(IStateContext stateContext) {
+		this.stateContext = stateContext;
+	}
+    
     /**
      * @param stateUI
      */
+    @Override
     public void setStateUI(IStateUI stateUI) {
 		this.stateUI = stateUI;
 	}
@@ -184,7 +194,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
             contextPanelContainer.setMinimumSize(getContextPanelMinimumSize());
             contextPanelContainer.setPreferredSize(getContextPanelPreferredSize());
             contextPanelContainer.setMaximumSize(getContextPanelMaximumSize());
-            if (!state.isUseContext()) {
+            if (!stateContext.isUseContext()) {
                 contextPanelContainer.setVisible(false);
             }
         }
@@ -647,15 +657,16 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
 		this.uiHandler = uiHandler;
 	}
     
-    @Override
-    public void setState(IState state) {
-    	this.state = state;
-    }
-    
+    /**
+     * @param osManager
+     */
     public void setOsManager(IOSManager osManager) {
 		this.osManager = osManager;
 	}
     
+    /**
+     * @param navigationHandler
+     */
     public void setNavigationHandler(INavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
 	}

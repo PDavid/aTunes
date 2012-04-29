@@ -56,6 +56,7 @@ import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPluginsHandler;
+import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -109,6 +110,15 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	
 	private IDesktop desktop;
 	
+	private IStateCore stateCore;
+	
+	/**
+	 * @param stateCore
+	 */
+	public void setStateCore(IStateCore stateCore) {
+		this.stateCore = stateCore;
+	}
+	
 	/**
 	 * @param editPreferencesDialog
 	 */
@@ -157,7 +167,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	public void initialize() {
 		enabledPluginBox = new JCheckBox(I18nUtils.getString("ENABLED_PLUGINS"));
 		JPanel mainPanel = new JPanel(new GridBagLayout());
-		mainPanel.setVisible(getState().isPluginsEnabled());
+		mainPanel.setVisible(stateCore.isPluginsEnabled());
 		
 		pluginsTable = lookAndFeelManager.getCurrentLookAndFeel().getTable();
 		pluginsTable.setRowHeight(CELL_HEIGHT);
@@ -220,7 +230,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 		c.gridx = 0;
 		c.gridy = 0;
 		c.weightx = 1;
-		c.weighty = getState().isPluginsEnabled() ? 0 : 1;
+		c.weighty = stateCore.isPluginsEnabled() ? 0 : 1;
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.anchor = GridBagConstraints.NORTHWEST;
 		add(enabledPluginBox,c);
@@ -308,12 +318,12 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	@Override
 	public boolean applyPreferences() {
 		boolean restartNeeded = false;
-		if (getState().isPluginsEnabled() != enabledPluginBox.isSelected()){
-			getState().setPluginsEnabled(enabledPluginBox.isSelected());
+		if (stateCore.isPluginsEnabled() != enabledPluginBox.isSelected()){
+			stateCore.setPluginsEnabled(enabledPluginBox.isSelected());
 			restartNeeded = true;
 		}
 
-		if (getState().isPluginsEnabled()) {
+		if (stateCore.isPluginsEnabled()) {
 			restartNeeded = writePluginsConfiguration(restartNeeded);
 		}
 		return restartNeeded;
@@ -373,8 +383,8 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 
 	@Override
 	public void updatePanel() {
-		setPluginsEnabled(getState().isPluginsEnabled());
-		if (getState().isPluginsEnabled()){
+		setPluginsEnabled(stateCore.isPluginsEnabled());
+		if (stateCore.isPluginsEnabled()){
 			List<PluginInfo> plugins = pluginsHandler.getAvailablePlugins();
 			pluginsTable.setModel(new PluginsTableModel(plugins));
 		}
@@ -396,7 +406,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 			pluginsModified = new HashMap<PluginInfo, PluginConfiguration>();
 			pluginsActivation = new HashMap<PluginInfo, Boolean>();
 			// Select first plugin
-			if (getState().isPluginsEnabled() && !pluginsHandler.getAvailablePlugins().isEmpty()) {
+			if (stateCore.isPluginsEnabled() && !pluginsHandler.getAvailablePlugins().isEmpty()) {
 				pluginsTable.getSelectionModel().setSelectionInterval(0, 0);
 			}
 		}

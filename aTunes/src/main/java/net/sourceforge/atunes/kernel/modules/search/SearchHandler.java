@@ -43,6 +43,7 @@ import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.ISearchHandler;
 import net.sourceforge.atunes.model.ISearchResult;
 import net.sourceforge.atunes.model.ISearchableObject;
+import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.model.SearchIndexNotAvailableException;
 import net.sourceforge.atunes.model.SearchQuerySyntaxException;
 import net.sourceforge.atunes.utils.ClosingUtils;
@@ -177,6 +178,15 @@ public final class SearchHandler extends AbstractHandler implements ISearchHandl
 	private SearchResultsController searchResultsController;
 	
 	private IAudioObjectComparator audioObjectComparator;
+	
+	private IStateCore stateCore;
+	
+	/**
+	 * @param stateCore
+	 */
+	public void setStateCore(IStateCore stateCore) {
+		this.stateCore = stateCore;
+	}
     
 	/**
 	 * @param audioObjectComparator
@@ -192,7 +202,7 @@ public final class SearchHandler extends AbstractHandler implements ISearchHandl
      */
     private CustomSearchController getSearchController() {
         if (customSearchController == null) {
-            customSearchController = new CustomSearchController(new CustomSearchDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class)), getState(), getFrame(), this);
+            customSearchController = new CustomSearchController(new CustomSearchDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class)), getState(), stateCore, getFrame(), this);
         }
         return customSearchController;
     }

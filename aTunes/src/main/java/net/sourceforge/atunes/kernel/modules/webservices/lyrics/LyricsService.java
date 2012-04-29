@@ -32,7 +32,7 @@ import net.sourceforge.atunes.model.ILyricsEngineInfo;
 import net.sourceforge.atunes.model.ILyricsService;
 import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -46,7 +46,7 @@ public final class LyricsService implements ILyricsService {
     /** Contains a list of LyricsEngine to get lyrics. */
     private List<AbstractLyricsEngine> lyricsEngines;
 
-    private IState state;
+    private IStateContext stateContext;
 
     private INetworkHandler networkHandler;
     
@@ -65,12 +65,12 @@ public final class LyricsService implements ILyricsService {
     public void setNetworkHandler(INetworkHandler networkHandler) {
 		this.networkHandler = networkHandler;
 	}
-    
+
     /**
-     * @param state
+     * @param stateContext
      */
-    public void setState(IState state) {
-		this.state = state;
+    public void setStateContext(IStateContext stateContext) {
+		this.stateContext = stateContext;
 	}
     
     @Override
@@ -158,7 +158,7 @@ public final class LyricsService implements ILyricsService {
      * @return the lyrics engines
      */
     private List<AbstractLyricsEngine> loadEngines() {
-        List<ILyricsEngineInfo> lyricsEnginesInfo = state.getLyricsEnginesInfo();
+        List<ILyricsEngineInfo> lyricsEnginesInfo = stateContext.getLyricsEnginesInfo();
         boolean enginesModified = false;
 
         boolean loadDefault = false;
@@ -199,7 +199,7 @@ public final class LyricsService implements ILyricsService {
         }
         
         if (enginesModified) {
-        	state.setLyricsEnginesInfo(lyricsEnginesInfo);
+        	stateContext.setLyricsEnginesInfo(lyricsEnginesInfo);
         }
         
         return result;

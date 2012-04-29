@@ -43,6 +43,7 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ISearchHandler;
+import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.ITreeObject;
 import net.sourceforge.atunes.utils.Logger;
@@ -62,15 +63,33 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
 	
     /** The favorites. */
     private IFavorites favorites;
+    
+    private IStateContext stateContext;
+    
+    /**
+     * @param stateContext
+     */
+    public void setStateContext(IStateContext stateContext) {
+		this.stateContext = stateContext;
+	}
 
+    /**
+     * @param favoritesListeners
+     */
     public void setFavoritesListeners(FavoritesListeners favoritesListeners) {
 		this.favoritesListeners = favoritesListeners;
 	}
     
+    /**
+     * @param stateHandler
+     */
     public void setStateHandler(IStateHandler stateHandler) {
 		this.stateHandler = stateHandler;
 	}
     
+    /**
+     * @param repositoryHandler
+     */
     public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
@@ -155,7 +174,7 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
             	favSongs.put(song.getUrl(), song);
 
             	// Add to LastFM if necessary
-            	if (getState().isLastFmEnabled() && getState().isAutoLoveFavoriteSong()) {
+            	if (stateContext.isLastFmEnabled() && stateContext.isAutoLoveFavoriteSong()) {
             		// TODO: do this with a listener interface            	
             		getBean(AddLovedSongInLastFMAction.class).loveSong(song);
             	}
@@ -176,7 +195,7 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
         	favSongs.put(song.getUrl(), song);
 
         	// Add to web service if necessary
-        	if (automcaticallyLove && getState().isLastFmEnabled() && getState().isAutoLoveFavoriteSong()) {
+        	if (automcaticallyLove && stateContext.isLastFmEnabled() && stateContext.isAutoLoveFavoriteSong()) {
         		// TODO: do this with a listener interface            	
         		getBean(AddLovedSongInLastFMAction.class).loveSong(song);
         	}
@@ -251,7 +270,7 @@ public final class FavoritesHandler extends AbstractHandler implements IAudioFil
     	for (IAudioObject file : files) {
     		favorites.getFavoriteAudioFiles().remove(file.getUrl());
     		// Unlove on LastFM if necessary
-    		if (getState().isLastFmEnabled() && getState().isAutoLoveFavoriteSong()) {
+    		if (stateContext.isLastFmEnabled() && stateContext.isAutoLoveFavoriteSong()) {
     			// TODO: do this with a listener interface            	
     			getBean(RemoveLovedSongInLastFmAction.class).removeFromLovedSongs(file);
     		}

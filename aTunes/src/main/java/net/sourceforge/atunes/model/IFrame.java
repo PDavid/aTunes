@@ -244,12 +244,6 @@ public interface IFrame extends ApplicationContextAware {
 	public Map<String, Double> getDefaultSplitPaneRelativePositions();
 	
 	/**
-	 * Sets app state
-	 * @param state
-	 */
-	public void setState(IState state);
-
-	/**
 	 * Shows progress bar with given text and determinate or indeterminate
 	 * @param indeterminate
 	 * @param text
@@ -260,5 +254,14 @@ public interface IFrame extends ApplicationContextAware {
 	 * Hides progress bar
 	 */
 	public void hideProgressBar();
+
+	/**
+	 * @param stateUI
+	 */
+	public void setStateUI(IStateUI stateUI);
 	
+	/**
+	 * @param stateContext
+	 */
+	public void setStateContext(IStateContext stateContext);
 }

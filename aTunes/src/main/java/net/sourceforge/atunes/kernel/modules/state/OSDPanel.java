@@ -36,6 +36,7 @@ import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.INotificationEngine;
 import net.sourceforge.atunes.model.INotificationsHandler;
+import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -68,6 +69,15 @@ public final class OSDPanel extends AbstractPreferencesPanel {
     private IDesktop desktop;
     
     private IStateUI stateUI;
+    
+    private IStateCore stateCore;
+    
+    /**
+     * @param stateCore
+     */
+    public void setStateCore(IStateCore stateCore) {
+		this.stateCore = stateCore;
+	}
     
     /**
      * @param stateUI
@@ -207,7 +217,7 @@ public final class OSDPanel extends AbstractPreferencesPanel {
     
     @Override
     public boolean applyPreferences() {
-    	getState().setNotificationEngine((String)notificationEngines.getSelectedItem());
+    	stateCore.setNotificationEngine((String)notificationEngines.getSelectedItem());
     	stateUI.setOsdDuration((Integer) osdDuration.getSelectedItem());
     	stateUI.setOsdWidth((Integer) osdWidth.getSelectedItem());
     	stateUI.setOsdHorizontalAlignment(getAlignment((String) osdHorizontalAlignment.getSelectedItem()));
@@ -311,7 +321,7 @@ public final class OSDPanel extends AbstractPreferencesPanel {
     
     @Override
     public void updatePanel() {
-    	setNotificationEngine(getState().getNotificationEngine());
+    	setNotificationEngine(stateCore.getNotificationEngine());
         setOSDDuration(stateUI.getOsdDuration());
         setOSDWidth(stateUI.getOsdWidth());
         setOSDHorizontalAlignment(stateUI.getOsdHorizontalAlignment());

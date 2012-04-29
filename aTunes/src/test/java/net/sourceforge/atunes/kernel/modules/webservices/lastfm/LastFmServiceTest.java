@@ -27,6 +27,7 @@ import net.sourceforge.atunes.kernel.modules.network.NetworkHandler;
 import net.sourceforge.atunes.model.ILovedTrack;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateContext;
 
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -35,14 +36,14 @@ public class LastFmServiceTest {
 
     @Test
     public void testLovedTracks() {
-    	IState state = Mockito.mock(IState.class);
+    	IStateContext state = Mockito.mock(IStateContext.class);
     	Mockito.when(state.getLastFmUser()).thenReturn("alexaranda");
     	
     	NetworkHandler networkHandler = new NetworkHandler();
-    	networkHandler.setState(state);
+    	networkHandler.setState(Mockito.mock(IState.class));
     	
     	LastFmService service = new LastFmService();
-    	service.setState(state);
+    	service.setStateContext(state);
     	service.setOsManager(Mockito.mock(IOSManager.class));
     	service.setNetworkHandler(networkHandler);
     	

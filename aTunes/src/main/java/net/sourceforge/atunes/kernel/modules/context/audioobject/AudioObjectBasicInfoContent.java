@@ -38,6 +38,7 @@ import net.sourceforge.atunes.kernel.actions.AddBannedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.actions.AddLovedSongInLastFMAction;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class AudioObjectBasicInfoContent extends AbstractContextPanelContent<AudioObjectBasicInfoDataSource> {
@@ -63,6 +64,15 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent<Aud
      * Last date played this audio object
      */
     private JLabel audioObjectLastPlayDate;
+    
+    private IStateContext stateContext;
+    
+    /**
+     * @param stateContext
+     */
+    public void setStateContext(IStateContext stateContext) {
+		this.stateContext = stateContext;
+	}
 
     @Override
     public void clearContextPanelContent() {
@@ -88,8 +98,8 @@ public class AudioObjectBasicInfoContent extends AbstractContextPanelContent<Aud
         audioObjectLastPlayDate.setText(source.getLastPlayDate());
 
         // TODO: Allow these options for radios where song information is available
-        Context.getBean(AddLovedSongInLastFMAction.class).setEnabled(getState().isLastFmEnabled() && source.getAudioObject() instanceof ILocalAudioObject);
-        Context.getBean(AddBannedSongInLastFMAction.class).setEnabled(getState().isLastFmEnabled() && source.getAudioObject() instanceof ILocalAudioObject);
+        Context.getBean(AddLovedSongInLastFMAction.class).setEnabled(stateContext.isLastFmEnabled() && source.getAudioObject() instanceof ILocalAudioObject);
+        Context.getBean(AddBannedSongInLastFMAction.class).setEnabled(stateContext.isLastFmEnabled() && source.getAudioObject() instanceof ILocalAudioObject);
     }
 
     @Override

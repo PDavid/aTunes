@@ -26,6 +26,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
 import net.sourceforge.atunes.model.IContextHandler;
+import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -44,6 +45,15 @@ public class AddLovedSongInLastFMAction extends CustomAbstractAction {
     private IWebServicesHandler webServicesHandler;
     
     private IBackgroundWorkerFactory backgroundWorkerFactory;
+    
+    private IStateContext stateContext;
+    
+    /**
+     * @param stateContext
+     */
+    public void setStateContext(IStateContext stateContext) {
+		this.stateContext = stateContext;
+	}
     
     /**
      * @param contextHandler
@@ -66,6 +76,9 @@ public class AddLovedSongInLastFMAction extends CustomAbstractAction {
 		this.backgroundWorkerFactory = backgroundWorkerFactory;
 	}
     
+    /**
+     * 
+     */
     public AddLovedSongInLastFMAction() {
         super(I18nUtils.getString("ADD_LOVED_SONG_IN_LASTFM"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("ADD_LOVED_SONG_IN_LASTFM"));
@@ -74,7 +87,7 @@ public class AddLovedSongInLastFMAction extends CustomAbstractAction {
     @Override
     protected void initialize() {
     	super.initialize();
-        setEnabled(getState().isLastFmEnabled());
+        setEnabled(stateContext.isLastFmEnabled());
     }
     
     @Override

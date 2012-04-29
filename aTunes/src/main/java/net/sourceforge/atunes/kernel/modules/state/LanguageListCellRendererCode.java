@@ -30,20 +30,21 @@ import javax.swing.JList;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.AbstractListCellRendererCode;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class LanguageListCellRendererCode extends AbstractListCellRendererCode<JLabel, Locale> {
+
+	private IStateCore stateCore;
 	
-	private IState state;
-	
-	public LanguageListCellRendererCode(IState state) {
-		this.state = state;
+    LanguageListCellRendererCode(IStateCore stateCore) {
+		super();
+		this.stateCore = stateCore;
 	}
-	
-    @Override
+
+	@Override
     public JComponent getComponent(JLabel c, JList list, Locale displayingLocale, int index, boolean isSelected, boolean cellHasFocus) {
-        Locale currentLocale = state.getLocale().getLocale();
+        Locale currentLocale = stateCore.getLocale().getLocale();
 
         String name = displayingLocale.getDisplayName(currentLocale);
         name = StringUtils.getString(String.valueOf(name.charAt(0)).toUpperCase(currentLocale), name.substring(1));

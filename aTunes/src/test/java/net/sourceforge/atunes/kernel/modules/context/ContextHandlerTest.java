@@ -29,14 +29,14 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.model.AbstractStateMock;
+import net.sourceforge.atunes.model.AbstractStateContextMock;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextPanel;
 import net.sourceforge.atunes.model.IContextPanelsContainer;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateContext;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -44,7 +44,7 @@ import org.junit.Test;
 public class ContextHandlerTest {
 
 	private IFrame frame;
-	private IState state;
+	private IStateContext state;
 	private IOSManager osManager;
 	private IContextPanel p1;
 	private IContextPanel p2;
@@ -90,10 +90,10 @@ public class ContextHandlerTest {
 	@Test
 	public void testInitializationWithUseContextTrue() {
 		// Prepare state
-		state = mock(IState.class);
+		state = mock(IStateContext.class);
 		when(state.getSelectedContextTab()).thenReturn("PANEL2");
 		when(state.isUseContext()).thenReturn(true);
-		sut.setState(state);
+		sut.setStateContext(state);
 
 		// Act
 		sut.applicationStarted();		
@@ -117,10 +117,10 @@ public class ContextHandlerTest {
 	@Test
 	public void testInitializationWithUseContextFalse() {
 		// Prepare		
-		state = mock(IState.class);
+		state = mock(IStateContext.class);
 		when(state.getSelectedContextTab()).thenReturn("PANEL2");
 		when(state.isUseContext()).thenReturn(false);
-		sut.setState(state);
+		sut.setStateContext(state);
 		
 		// Act
 		sut.applicationStarted();		
@@ -147,7 +147,7 @@ public class ContextHandlerTest {
 		state = new StateMock();
 		
 		// Act
-		sut.setState(state);
+		sut.setStateContext(state);
 		sut.applicationStarted();		
 		sut.allHandlersInitialized();
 		sut.showContextPanel(true);
@@ -160,7 +160,7 @@ public class ContextHandlerTest {
 		verify(p2, times(1)).updateContextPanel(ao, false);		
 	}
 	
-	private static class StateMock extends AbstractStateMock {
+	private static class StateMock extends AbstractStateContextMock {
 		
 		boolean useContext = false; // Initially false
 		

@@ -58,6 +58,7 @@ import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayerEngine;
+import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.model.IStatePlayer;
 import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -241,6 +242,15 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
     
     private IStatePlayer statePlayer;
     
+    private IStateCore stateCore;
+    
+    /**
+     * @param stateCore
+     */
+    public void setStateCore(IStateCore stateCore) {
+		this.stateCore = stateCore;
+	}
+    
     /**
      * @param statePlayer
      */
@@ -412,8 +422,8 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         statePlayer.setUseFadeAway(useFadeAway.isSelected());
         stateUI.setShowAdvancedPlayerControls(showAdvancedPlayerControls.isSelected());
         statePlayer.setUseShortPathNames(useShortPathNames.isSelected());
-        getState().setEnableHotkeys(enableGlobalHotkeys.isSelected());
-        getState().setHotkeysConfig(tableModel.getHotkeysConfig());
+        stateCore.setEnableHotkeys(enableGlobalHotkeys.isSelected());
+        stateCore.setHotkeysConfig(tableModel.getHotkeysConfig());
         statePlayer.setCacheFilesBeforePlaying(cacheFilesBeforePlaying.isSelected());
         String engine = engineCombo.getSelectedItem() != null ? engineCombo.getSelectedItem().toString() : null;
         if (engine != null && !statePlayer.getPlayerEngine().equals(engine)) {
@@ -522,8 +532,8 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
         setShowAdvancedPlayerControls(stateUI.isShowAdvancedPlayerControls());
         setShowPlayerControlsOnTop(stateUI.isShowPlayerControlsOnTop());
         setCacheFilesBeforePlaying(statePlayer.isCacheFilesBeforePlaying());
-        setEnableHotkeys(getState().isEnableHotkeys());
-        IHotkeysConfig hotkeysConfig = getState().getHotkeysConfig();
+        setEnableHotkeys(stateCore.isEnableHotkeys());
+        IHotkeysConfig hotkeysConfig = stateCore.getHotkeysConfig();
         setHotkeysConfig(hotkeysConfig != null ? hotkeysConfig : hotkeyHandler.getHotkeysConfig());
         setUseShortPathNames(statePlayer.isUseShortPathNames());
         getUseShortPathNames().setEnabled(osManager.usesShortPathNames());
@@ -552,8 +562,8 @@ public final class PlayerPanel extends AbstractPreferencesPanel {
             hotkeyHandler.disableHotkeys();
         } else {
             // Enable hotkeys again only if user didn't disable them
-            if (getState().isEnableHotkeys()) {
-                hotkeyHandler.enableHotkeys(getState().getHotkeysConfig());
+            if (stateCore.isEnableHotkeys()) {
+                hotkeyHandler.enableHotkeys(stateCore.getHotkeysConfig());
             }
         }
     }
