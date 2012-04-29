@@ -71,14 +71,9 @@ public final class EditPreferencesDialogController extends AbstractSimpleControl
      * Initializes controller
      */
     public void initialize() {
-        for (AbstractPreferencesPanel panel : preferencesPanels) {
-        	panel.setState(getState());
-        }
-        
         getComponentControlled().setPanels(preferencesPanels);
         buildList();
         addBindings();
-        
         getComponentControlled().pack();
     }
 
