@@ -20,6 +20,12 @@
 
 package net.sourceforge.atunes.model;
 
+import java.util.List;
+
+/**
+ * @author alex
+ *
+ */
 public interface IStateRepository {
 
 	/**
@@ -45,6 +51,136 @@ public interface IStateRepository {
 	 * @param autoRepositoryRefreshTime
 	 */
 	public void setAutoRepositoryRefreshTime(int autoRepositoryRefreshTime);
+	
+	/**
+	 * last repository folders
+	 * @return
+	 */
+	public List<String> getLastRepositoryFolders();
 
+	/**
+	 * last repository folders
+	 * @param lastRepositoryFolders
+	 */
+	public void setLastRepositoryFolders(List<String> lastRepositoryFolders);
 
+	/**
+	 * File name pattern in import / export
+	 * @return
+	 */
+	public String getImportExportFileNamePattern();
+
+	/**
+	 * File name pattern in import / export
+	 * @param importExportFileNamePattern
+	 */
+	public void setImportExportFileNamePattern(String importExportFileNamePattern);
+	
+	/**
+	 * Folder path pattern in import / export
+	 * @return
+	 */
+	public String getImportExportFolderPathPattern();
+
+	/**
+	 * Folder path pattern in import / export
+	 * @param importExportFolderPathPattern
+	 */
+	public void setImportExportFolderPathPattern(String importExportFolderPathPattern);
+
+	/**
+	 * Review tags before start import
+	 * @return
+	 */
+	public boolean isReviewTagsBeforeImport();
+
+	/**
+	 * Review tags before start import
+	 * @param reviewTagsBeforeImport
+	 */
+	public void setReviewTagsBeforeImport(boolean reviewTagsBeforeImport);
+
+	/**
+	 * Change tags to original files before import
+	 * @return
+	 */
+	public boolean isApplyChangesToSourceFilesBeforeImport();
+
+	/**
+	 * Change tags to original files before import
+	 * @param applyChangesToSourceFilesBeforeImport
+	 */
+	public void setApplyChangesToSourceFilesBeforeImport(boolean applyChangesToSourceFilesBeforeImport);
+
+	/**
+	 * Set track numbers when importing
+	 * @return
+	 */
+	public boolean isSetTrackNumbersWhenImporting();
+
+	/**
+	 * Set track numbers when importing
+	 * @param setTrackNumbersWhenImporting
+	 */
+	public void setSetTrackNumbersWhenImporting(boolean setTrackNumbersWhenImporting);
+
+	/**
+	 * Set titles when importing
+	 * @return
+	 */
+	public boolean isSetTitlesWhenImporting();
+
+	/**
+	 * Set titles when importing
+	 * @param setTitlesWhenImporting
+	 */
+	public void setSetTitlesWhenImporting(boolean setTitlesWhenImporting);
+
+	/**
+	 * List of patterns
+	 * @return
+	 */
+	public List<String> getRecognitionPatterns();
+
+	/**
+	 * List of patterns
+	 * @param recognitionPatterns
+	 */
+	public void setRecognitionPatterns(List<String> recognitionPatterns);
+
+	/**
+	 * List of massive patterns
+	 * @return
+	 */
+	public List<String> getMassiveRecognitionPatterns();
+
+	/**
+	 * List of massive patterns
+	 * @param massiveRecognitionPatterns
+	 */
+	public void setMassiveRecognitionPatterns(List<String> massiveRecognitionPatterns);
+
+	/**
+	 * Command to execute before access repository
+	 * @return
+	 */
+	public String getCommandBeforeAccessRepository();
+
+	/**
+	 * Command to execute before access repository
+	 * @param commandBeforeAccessRepository
+	 */
+	public void setCommandBeforeAccessRepository(String commandBeforeAccessRepository);
+
+	/**
+	 * Command to execute after finish access to repository
+	 * @return
+	 */
+	public String getCommandAfterAccessRepository();
+
+	/**
+	 * Command to execute after finish access to repository
+	 * @param commandAfterAccessRepository
+	 */
+	public void setCommandAfterAccessRepository(String commandAfterAccessRepository);
 }

@@ -1081,18 +1081,6 @@ public abstract class AbstractStateMock implements IState {
 	}
 
 	@Override
-	public boolean isSimilarArtistsMode() {
-		
-		return false;
-	}
-
-	@Override
-	public void setSimilarArtistsMode(boolean isSimilarArtistsMode) {
-		
-		
-	}
-
-	@Override
 	public Map<String, Map<String, ColumnBean>> getCustomNavigatorColumns() {
 		
 		return null;

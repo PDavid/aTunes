@@ -20,24 +20,14 @@
 
 package net.sourceforge.atunes.model;
 
+import java.util.Map;
+
 /**
  * @author alex
  *
  */
 public interface IStateUI {
-	
-	/**
-	 * Show navigation table
-	 * @return
-	 */
-	public boolean isShowNavigationTable();
-
-	/**
-	 * Show navigation table
-	 * @param showNavigationTable
-	 */
-	public void setShowNavigationTable(boolean showNavigationTable);
-	
+		
 	/**
 	 * Show status bar
 	 * @return
@@ -86,30 +76,6 @@ public interface IStateUI {
 	 */
 	public void setShowTrayPlayer(boolean showTrayPlayer);
 	
-	/**
-	 * Navigation view
-	 * @return
-	 */
-	public String getNavigationView();
-
-	/**
-	 * Navigation view
-	 * @param navigationView
-	 */
-	public void setNavigationView(String navigationView);
-
-	/**
-	 * View mode of navigator
-	 * @return
-	 */
-	public ViewMode getViewMode();
-
-	/**
-	 * View mode of navigator
-	 * @param viewMode
-	 */
-	public void setViewMode(ViewMode viewMode);
-
 	/**
 	 * Frame class used
 	 * @return
@@ -169,6 +135,104 @@ public interface IStateUI {
 	 * @param osdDuration
 	 */
 	public void setOsdDuration(int osdDuration);
+
+	/**
+	 * Full screen background
+	 * @return
+	 */
+	public String getFullScreenBackground();
+
+	/**
+	 * Full screen background
+	 * @param fullScreenBackground
+	 */
+	public void setFullScreenBackground(String fullScreenBackground);
+
+	/**
+	 * Search results columns
+	 * @return
+	 */
+	public Map<String, ColumnBean> getSearchResultsColumns();
+
+	/**
+	 * Search results columns
+	 * @param searchResultsColumns
+	 */
+	public void setSearchResultsColumns(Map<String, ColumnBean> searchResultsColumns);
+
+	/**
+	 * Frame state
+	 * @param frame
+	 * @return
+	 */
+	public IFrameState getFrameState(Class<? extends IFrame> frame);
+
+	/**
+	 * Frame state
+	 * @param frame
+	 * @param fs
+	 */
+	public void setFrameState(Class<? extends IFrame> frame, IFrameState fs);
+
+	/**
+	 * OSD width
+	 * @return
+	 */
+	public int getOsdWidth();
+
+	/**
+	 * OSD width
+	 * @param osdWidth
+	 */
+	public void setOsdWidth(int osdWidth);
+
+	/**
+	 * OSD alignment
+	 * @return
+	 */
+	public int getOsdHorizontalAlignment();
+
+	/**
+	 * OSD alignment
+	 * @param osdHorizontalAlignment
+	 */
+	public void setOsdHorizontalAlignment(int osdHorizontalAlignment);
+
+	/**
+	 * OSD alignment
+	 * @return
+	 */
+	public int getOsdVerticalAlignment();
+
+	/**
+	 * OSD alignment
+	 * @param osdVerticalAlignment
+	 */
+	public void setOsdVerticalAlignment(int osdVerticalAlignment);
+
+	/**
+	 * Color of tray player icons
+	 * @return
+	 */
+	public IColorBean getTrayPlayerIconsColor();
+
+	/**
+	 * Color of tray player icons
+	 * @param color
+	 */
+	public void setTrayPlayerIconsColor(IColorBean color);
+
+	/**
+	 * Show player controls on top
+	 * @return
+	 */
+	public boolean isShowPlayerControlsOnTop();
+
+	/**
+	 * Show player controls on top
+	 * @param onTop
+	 */
+	public void setShowPlayerControlsOnTop(boolean onTop);
 
 
 }

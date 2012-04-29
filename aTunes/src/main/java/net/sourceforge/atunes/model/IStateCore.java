@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.model;
 
+import java.util.Map;
+
 /**
  * @author alex
  *
@@ -98,6 +100,53 @@ public interface IStateCore {
 	 */
 	public void setEnableHotkeys(boolean enableHotkeys);
 
+	/**
+	 * Hotkeys
+	 * @return
+	 */
+	public IHotkeysConfig getHotkeysConfig();
+
+	/**
+	 * Hotkeys
+	 * @param hotkeysConfig
+	 */
+	public void setHotkeysConfig(IHotkeysConfig hotkeysConfig);
+
+	/**
+	 * Notification engine
+	 * @return
+	 */
+	public String getNotificationEngine();
+
+	/**
+	 * Notification engine
+	 * @param notificationEngine
+	 */
+	public void setNotificationEngine(String notificationEngine);
+
+	/**
+	 * Albums columns
+	 * @return
+	 */
+	public Map<String, ColumnBean> getAlbumsColumns();
+
+	/**
+	 * Albums columns
+	 * @param columnsConfiguration
+	 */
+	public void setAlbumColumns(Map<String, ColumnBean> columnsConfiguration);
+
+	/**
+	 * Plugins enabled
+	 * @param pluginsEnabled
+	 */
+	public void setPluginsEnabled(boolean pluginsEnabled);
+
+	/**
+	 * Plugins enabled
+	 * @return
+	 */
+	public boolean isPluginsEnabled();
 
 
 }
