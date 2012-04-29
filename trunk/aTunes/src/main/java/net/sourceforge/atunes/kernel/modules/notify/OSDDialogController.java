@@ -39,7 +39,6 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectGenericImageFactory;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.ImageSize;
 
@@ -56,14 +55,13 @@ final class OSDDialogController extends AbstractSimpleController<OSDDialog> {
     /**
      * Instantiates a new oSD dialog controller.
      * @param dialogControlled
-     * @param state
      * @param stateUI
      * @param audioObjectGenericImageFactory
      * @param lookAndFeelManager
      * @param audioObjectImageLocator
      */
-    OSDDialogController(OSDDialog dialogControlled, IState state, IStateUI stateUI, IAudioObjectGenericImageFactory audioObjectGenericImageFactory, ILookAndFeelManager lookAndFeelManager, IAudioObjectImageLocator audioObjectImageLocator) {
-        super(dialogControlled, state);
+    OSDDialogController(OSDDialog dialogControlled, IStateUI stateUI, IAudioObjectGenericImageFactory audioObjectGenericImageFactory, ILookAndFeelManager lookAndFeelManager, IAudioObjectImageLocator audioObjectImageLocator) {
+        super(dialogControlled);
         this.stateUI = stateUI;
         addBindings();
         this.audioObjectGenericImageFactory = audioObjectGenericImageFactory;

@@ -45,7 +45,6 @@ import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.ISearchHandler;
 import net.sourceforge.atunes.model.ISearchableObject;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.model.SearchIndexNotAvailableException;
 import net.sourceforge.atunes.model.SearchQuerySyntaxException;
@@ -70,13 +69,12 @@ final class CustomSearchController extends AbstractSimpleController<CustomSearch
     /**
      * Constructor.
      * @param dialog
-     * @param state
      * @param stateCore
      * @param frame
      * @param searchHandler
      */
-    CustomSearchController(CustomSearchDialog dialog, IState state, IStateCore stateCore, IFrame frame, ISearchHandler searchHandler) {
-        super(dialog, state);
+    CustomSearchController(CustomSearchDialog dialog, IStateCore stateCore, IFrame frame, ISearchHandler searchHandler) {
+        super(dialog);
         this.frame = frame;
         this.searchHandler = searchHandler;
         this.stateCore = stateCore;

@@ -28,7 +28,6 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectGenericImageFactory;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.ITemporalDiskStorage;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -45,11 +44,6 @@ public class DefaultNotifications extends CommonNotificationEngine {
 	 */
 	private OSDDialog osdDialog;
 	
-	/**
-	 * State of app
-	 */
-	private IState state;
-	
 	private IStateUI stateUI;
 	
 	private ILookAndFeelManager lookAndFeelManager;
@@ -57,17 +51,15 @@ public class DefaultNotifications extends CommonNotificationEngine {
 	private IAudioObjectImageLocator audioObjectImageLocator;
 	
 	/**
-	 * @param state
 	 * @param stateUI
 	 * @param lookAndFeelManager
 	 * @param audioObjectGenericImageFactory
 	 * @param diskStorage
 	 * @param audioObjectImageLocator
 	 */
-	public DefaultNotifications(IState state, IStateUI stateUI, ILookAndFeelManager lookAndFeelManager, 
+	public DefaultNotifications(IStateUI stateUI, ILookAndFeelManager lookAndFeelManager, 
 			IAudioObjectGenericImageFactory audioObjectGenericImageFactory, ITemporalDiskStorage diskStorage, IAudioObjectImageLocator audioObjectImageLocator) {
 		super(audioObjectGenericImageFactory, diskStorage, lookAndFeelManager, audioObjectImageLocator);
-		this.state = state;
 		this.stateUI = stateUI;
 		this.lookAndFeelManager = lookAndFeelManager;
 		this.audioObjectImageLocator = audioObjectImageLocator;
@@ -83,7 +75,7 @@ public class DefaultNotifications extends CommonNotificationEngine {
             JDialog.setDefaultLookAndFeelDecorated(false);
             osdDialog = new OSDDialog(stateUI.getOsdWidth(), lookAndFeelManager.getCurrentLookAndFeel());
             JDialog.setDefaultLookAndFeelDecorated(lookAndFeelManager.getCurrentLookAndFeel().isDialogUndecorated());
-            osdDialogController = new OSDDialogController(osdDialog, state, stateUI, getAudioObjectGenericImageFactory(), lookAndFeelManager, audioObjectImageLocator);
+            osdDialogController = new OSDDialogController(osdDialog, stateUI, getAudioObjectGenericImageFactory(), lookAndFeelManager, audioObjectImageLocator);
         }
         return osdDialogController;
     }

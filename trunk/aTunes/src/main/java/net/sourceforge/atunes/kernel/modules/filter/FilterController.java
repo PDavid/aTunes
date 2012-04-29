@@ -27,7 +27,6 @@ import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IFilterHandler;
 import net.sourceforge.atunes.model.IFilterPanel;
-import net.sourceforge.atunes.model.IState;
 
 public class FilterController extends AbstractSimpleController<FilterPanel> {
 
@@ -44,10 +43,9 @@ public class FilterController extends AbstractSimpleController<FilterPanel> {
 
     /**
      * @param panel
-     * @param state
      */
-    public FilterController(IFilterPanel panel, IState state) {
-        super((FilterPanel)panel.getSwingComponent(), state);
+    public FilterController(IFilterPanel panel) {
+        super((FilterPanel)panel.getSwingComponent());
     }
     
     /**

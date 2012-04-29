@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel;
 
 import java.util.Collection;
 
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateChangeListener;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -33,16 +32,13 @@ public class StateChangeListeners implements ApplicationContextAware {
 
 	private Collection<IStateChangeListener> listeners;
 	
-	private IState state;
-	
+	/**
+	 * @param listeners
+	 */
 	protected void setListeners(Collection<IStateChangeListener> listeners) {
 		this.listeners = listeners;
 	}
 	
-	public void setState(IState state) {
-		this.state = state;
-	}
-
 	@Override
 	public void setApplicationContext(ApplicationContext ctx) {
 		listeners = ctx.getBeansOfType(IStateChangeListener.class).values();
@@ -54,7 +50,7 @@ public class StateChangeListeners implements ApplicationContextAware {
 	public void notifyApplicationStateChanged() {
 		for (IStateChangeListener listener : listeners) {
 			Logger.debug("Call to ApplicationStateChangeListener: ", listener.getClass().getName());
-			listener.applicationStateChanged(state);
+			listener.applicationStateChanged();
 		}
     }
 }

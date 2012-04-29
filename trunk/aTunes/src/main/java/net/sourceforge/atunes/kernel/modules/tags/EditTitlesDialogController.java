@@ -31,7 +31,6 @@ import net.sourceforge.atunes.kernel.modules.process.EditTitlesProcess;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IProcessFactory;
-import net.sourceforge.atunes.model.IState;
 
 final class EditTitlesDialogController extends AbstractSimpleController<EditTitlesDialog> {
 
@@ -49,14 +48,13 @@ final class EditTitlesDialogController extends AbstractSimpleController<EditTitl
     /**
      * Instantiates a new edits the titles dialog controller.
      * @param dialog
-     * @param state
      * @param playListHandler
      * @param repositoryHandler
      * @param playerHandler
      * @param processFactory
      */
-    EditTitlesDialogController(EditTitlesDialog dialog, IState state, IProcessFactory processFactory) {
-        super(dialog, state);
+    EditTitlesDialogController(EditTitlesDialog dialog, IProcessFactory processFactory) {
+        super(dialog);
         this.processFactory = processFactory;
         addBindings();
     }

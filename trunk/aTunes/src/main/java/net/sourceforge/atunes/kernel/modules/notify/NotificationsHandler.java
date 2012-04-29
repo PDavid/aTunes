@@ -35,7 +35,6 @@ import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INotificationEngine;
 import net.sourceforge.atunes.model.INotificationsHandler;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.ITemporalDiskStorage;
@@ -136,7 +135,7 @@ public final class NotificationsHandler extends AbstractHandler implements INoti
     }
 
     @Override
-    public void applicationStateChanged(IState newState) {
+    public void applicationStateChanged() {
     	getNotificationEngine().updateNotification(stateUI);
     }
 
@@ -181,7 +180,7 @@ public final class NotificationsHandler extends AbstractHandler implements INoti
 	@Override
 	public INotificationEngine getDefaultEngine() {
 		if (defaultEngine == null) {
-	    	defaultEngine = new DefaultNotifications(getState(), stateUI, getBean(ILookAndFeelManager.class), audioObjectGenericImageFactory, temporalDiskStorage, audioObjectImageLocator);
+	    	defaultEngine = new DefaultNotifications(stateUI, getBean(ILookAndFeelManager.class), audioObjectGenericImageFactory, temporalDiskStorage, audioObjectImageLocator);
 		}
 		return defaultEngine;
 	}

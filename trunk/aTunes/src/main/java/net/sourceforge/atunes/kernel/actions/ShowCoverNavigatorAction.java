@@ -86,7 +86,7 @@ public class ShowCoverNavigatorAction extends CustomAbstractAction implements Ap
     protected void executeAction() {
         CoverNavigatorDialog coverNavigator = context.getBean(CoverNavigatorDialog.class); 
         coverNavigator.setArtists(repositoryHandler.getArtists());
-        new CoverNavigatorController(coverNavigator, getState(), audioObjectImageLocator, processFactory);
+        new CoverNavigatorController(coverNavigator, audioObjectImageLocator, processFactory);
         coverNavigator.setVisible(true);
     }
 }

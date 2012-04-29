@@ -31,6 +31,7 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayerControlsPanel;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
+import net.sourceforge.atunes.model.IStatePodcast;
 
 final class PlayerControlsController extends AbstractSimpleController<PlayerControlsPanel> {
 
@@ -43,6 +44,15 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
     private VolumeSliderMouseWheelListener volumeSliderMouseWheelListener;
     
     private VolumeSliderChangeListener volumeSliderChangeListener;
+    
+    private IStatePodcast statePodcast;
+    
+    /**
+     * @param statePodcast
+     */
+    public void setStatePodcast(IStatePodcast statePodcast) {
+		this.statePodcast = statePodcast;
+	}
     
     /**
      * @param volumeSliderChangeListener
@@ -197,7 +207,7 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
         // Disable slider if audio object is a radio or podcast feed entry
         boolean b = audioObject.isSeekable();
         if (b && audioObject instanceof IPodcastFeedEntry) {
-            b = getState().isUseDownloadedPodcastFeedEntries();
+            b = statePodcast.isUseDownloadedPodcastFeedEntries();
         }
         setSlidable(b);
     }

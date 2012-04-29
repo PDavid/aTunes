@@ -33,7 +33,6 @@ import net.sourceforge.atunes.model.IKernel;
 import net.sourceforge.atunes.model.ILocaleBeanFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.ITaskService;
@@ -54,8 +53,6 @@ public final class Kernel implements IKernel, ApplicationContextAware {
 
     /** Timer used to measure start time */
     private Timer timer;
-    
-    private IState state;
     
     private IStateUI stateUI;
     
@@ -91,14 +88,6 @@ public final class Kernel implements IKernel, ApplicationContextAware {
 		this.localeBeanFactory = localeBeanFactory;
 	}
     
-    /**
-     * Sets state
-     * @param state
-     */
-    public void setState(IState state) {
-		this.state = state;
-	}
-    
     @Override
 	public void start() {
         Logger.debug("Starting Kernel");
@@ -109,7 +98,7 @@ public final class Kernel implements IKernel, ApplicationContextAware {
         new LanguageSelector().setLanguage(stateCore, localeBeanFactory);
         
         initializeUI();
-        context.getBean(HandlerInitializer.class).initializeHandlers(state);
+        context.getBean(HandlerInitializer.class).initializeHandlers();
         createUI();
 
         // Call user interaction

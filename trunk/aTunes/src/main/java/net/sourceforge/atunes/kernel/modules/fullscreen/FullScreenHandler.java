@@ -27,12 +27,22 @@ import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IStatePlaylist;
 
 public class FullScreenHandler extends AbstractHandler implements IFullScreenHandler {
 
 	private FullScreenController controller;
 	
 	private IPlayListHandler playListHandler;
+	
+    private IStatePlaylist statePlaylist;
+    
+    /**
+     * @param statePlaylist
+     */
+    public void setStatePlaylist(IStatePlaylist statePlaylist) {
+		this.statePlaylist = statePlaylist;
+	}
 	
 	/**
 	 * @param playListHandler
@@ -44,7 +54,7 @@ public class FullScreenHandler extends AbstractHandler implements IFullScreenHan
     @Override
     public void playListCleared() {
         // Next actions must be done ONLY if stopPlayerWhenPlayListClear is enabled
-        if (getState().isStopPlayerOnPlayListClear() && getFullScreenController() != null) {
+        if (statePlaylist.isStopPlayerOnPlayListClear() && getFullScreenController() != null) {
         	getFullScreenController().setAudioObjects(null);
         }
     }

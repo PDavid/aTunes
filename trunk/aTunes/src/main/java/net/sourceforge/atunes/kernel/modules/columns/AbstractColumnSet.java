@@ -31,7 +31,6 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.IState;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
@@ -53,21 +52,9 @@ public abstract class AbstractColumnSet implements IColumnSet {
     /** The current visible columns. */
     private List<Class<? extends IColumn>> currentColumns;
 
-	/**
-	 * State of app
-	 */
-	private IState state;	
-	
     private IFrame frame;
     
 	private List<IColumn<?>> allowedColumns;
-	
-	/**
-	 * @return
-	 */
-	public IState getState() {
-		return state;
-	}
 	
 	/**
 	 * @return
@@ -99,11 +86,6 @@ public abstract class AbstractColumnSet implements IColumnSet {
         ColumnSets.registerColumnSet(this);
     }
     
-    @Override
-	public final void setState(IState state) {
-    	this.state = state;
-    }
-
     @Override
 	public final void setFrame(IFrame frame) {
 		this.frame = frame;

@@ -31,7 +31,6 @@ import net.sourceforge.atunes.model.IContextInformationSource;
 import net.sourceforge.atunes.model.IContextPanelContent;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITaskService;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -68,11 +67,6 @@ public abstract class AbstractContextPanelContent<T extends IContextInformationS
      * panel that handles this content
      */
     private JPanel parentPanel;
-    
-    /**
-     * State of app
-     */
-    private IState state;
     
     private ILookAndFeelManager lookAndFeelManager;
     
@@ -161,22 +155,6 @@ public abstract class AbstractContextPanelContent<T extends IContextInformationS
     public JPanel getParentPanel() {
         return parentPanel;
     }
-    
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#getState()
-	 */
-    @Override
-	public IState getState() {
-		return state;
-	}
-    
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.context.IContextPanelContent#setState(net.sourceforge.atunes.model.IState)
-	 */
-    @Override
-	public void setState(IState state) {
-		this.state = state;
-	}
     
     protected IContextInformationSource getDataSource() {
 		return dataSource;

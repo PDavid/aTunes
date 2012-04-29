@@ -44,11 +44,6 @@ public interface IAudioObjectPropertiesDialogFactory {
 	public void setFrame(IFrame frame);
 
 	/**
-	 * @param state the state to set
-	 */
-	public void setState(IState state);
-
-	/**
 	 * @param osManager the osManager to set
 	 */
 	public void setOsManager(IOSManager osManager);

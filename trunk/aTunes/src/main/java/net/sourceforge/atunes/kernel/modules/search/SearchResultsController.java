@@ -43,7 +43,6 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.ISearchableObject;
-import net.sourceforge.atunes.model.IState;
 
 /**
  * Controller for the search result dialog.
@@ -64,14 +63,13 @@ final class SearchResultsController extends AbstractSimpleController<SearchResul
     
     /**
      * @param dialog
-     * @param state
      * @param playListHandler
      * @param lookAndFeelManager
      * @param playerHandler
      * @param audioObjectComparator
      */
-    SearchResultsController(SearchResultsDialog dialog, IState state, IPlayListHandler playListHandler, ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler, IAudioObjectComparator audioObjectComparator) {
-        super(dialog, state);
+    SearchResultsController(SearchResultsDialog dialog, IPlayListHandler playListHandler, ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler, IAudioObjectComparator audioObjectComparator) {
+        super(dialog);
         this.columnSet = (IColumnSet) Context.getBean("searchResultsColumnSet");
         this.playListHandler = playListHandler;
         this.lookAndFeelManager = lookAndFeelManager;

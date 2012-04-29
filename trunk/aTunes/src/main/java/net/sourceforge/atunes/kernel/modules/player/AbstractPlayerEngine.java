@@ -40,7 +40,6 @@ import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerEngine;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStatePlayer;
 import net.sourceforge.atunes.model.ITemporalDiskStorage;
 import net.sourceforge.atunes.model.IWebServicesHandler;
@@ -52,6 +51,10 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 /**
  * This class has common logic for all player engines.
+ */
+/**
+ * @author alex
+ *
  */
 public abstract class AbstractPlayerEngine implements IPlayerEngine {
 
@@ -91,8 +94,6 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
      */
     private long currentAudioObjectPlayedTime;
 
-    private IState state;
-    
     private IFrame frame;
     
     private IOSManager osManager;
@@ -690,10 +691,9 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 		this.submissionState = submissionState;
 	}
 	
-	protected IState getState() {
-		return state;
-	}
-	
+	/**
+	 * @return
+	 */
 	protected IFrame getFrame() {
 		return frame;
 	}
@@ -705,13 +705,6 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 		return osManager;
 	}
 
-    /**
-     * @param state
-     */
-    public void setState(IState state) {
-		this.state = state;
-	}
-    
     /**
      * @param frame
      */

@@ -34,7 +34,6 @@ import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayerTrayIconsHandler;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.ISystemTrayHandler;
 import net.sourceforge.atunes.model.ITrayIcon;
@@ -235,7 +234,7 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
     }
 
     @Override
-    public void applicationStateChanged(IState newState) {
+    public void applicationStateChanged() {
         setTrayIconVisible(stateUI.isShowSystemTray());
         setTrayPlayerVisible(stateUI.isShowTrayPlayer());
         updateTrayPlayerIconsColor();

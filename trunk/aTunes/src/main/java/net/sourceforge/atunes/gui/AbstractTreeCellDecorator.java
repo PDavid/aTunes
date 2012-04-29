@@ -26,12 +26,9 @@ import java.lang.reflect.Type;
 
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.ReflectionUtils;
 
 public abstract class AbstractTreeCellDecorator<T extends Component, U> {
-	
-	private IState state;
 	
 	private ILookAndFeelManager lookAndFeelManager;
 	
@@ -50,24 +47,10 @@ public abstract class AbstractTreeCellDecorator<T extends Component, U> {
 	}
 	
 	/**
-	 * @param state
-	 */
-	public final void setState(IState state) {
-		this.state = state;
-	}
-	
-	/**
 	 * @param lookAndFeelManager
 	 */
 	public final void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
-	}
-	
-	/**
-	 * @return
-	 */
-	protected final IState getState() {
-		return state;
 	}
 	
 	/**

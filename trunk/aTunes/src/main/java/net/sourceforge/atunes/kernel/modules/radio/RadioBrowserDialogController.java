@@ -24,7 +24,6 @@ package net.sourceforge.atunes.kernel.modules.radio;
 
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IRadioHandler;
-import net.sourceforge.atunes.model.IState;
 
 final class RadioBrowserDialogController extends AbstractSimpleController<RadioBrowserDialog> {
 
@@ -34,11 +33,10 @@ final class RadioBrowserDialogController extends AbstractSimpleController<RadioB
      * Instantiates a new radio browser dialog controller.
      * 
      * @param frameControlled
-     * @param state
      * @param radioHandler
      */
-    RadioBrowserDialogController(RadioBrowserDialog frameControlled, IState state, IRadioHandler radioHandler) {
-        super(frameControlled, state);
+    RadioBrowserDialogController(RadioBrowserDialog frameControlled, IRadioHandler radioHandler) {
+        super(frameControlled);
         this.radioHandler = radioHandler;
         addBindings();
         addStateBindings();

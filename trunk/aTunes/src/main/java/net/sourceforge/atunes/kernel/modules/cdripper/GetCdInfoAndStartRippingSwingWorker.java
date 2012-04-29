@@ -30,7 +30,7 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateRipper;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -38,23 +38,23 @@ import net.sourceforge.atunes.utils.Logger;
 final class GetCdInfoAndStartRippingSwingWorker extends	SwingWorker<CDInfo, Void> {
 
 	private IOSManager osManager;
-	private IState state;
 	private RipperHandler ripperHandler;
 	private IFrame frame;
 	private RipCdDialog dialog;
 	private IWebServicesHandler webServicesHandler;
+	private IStateRipper stateRipper;
 
 	/**
 	 * @param osManager
-	 * @param state
+	 * @param stateRipper
 	 * @param ripperHandler
 	 * @param frame
 	 * @param dialog
 	 * @param webServicesHandler
 	 */
-	GetCdInfoAndStartRippingSwingWorker(IOSManager osManager, IState state, RipperHandler ripperHandler, IFrame frame, RipCdDialog dialog, IWebServicesHandler webServicesHandler) {
+	GetCdInfoAndStartRippingSwingWorker(IOSManager osManager, IStateRipper stateRipper, RipperHandler ripperHandler, IFrame frame, RipCdDialog dialog, IWebServicesHandler webServicesHandler) {
 		this.osManager = osManager;
-		this.state = state;
+		this.stateRipper = stateRipper;
 		this.ripperHandler = ripperHandler;
 		this.frame = frame;
 		this.dialog = dialog;
@@ -111,10 +111,10 @@ final class GetCdInfoAndStartRippingSwingWorker extends	SwingWorker<CDInfo, Void
 	                        .getQuality(), dialog.getUseCdErrorCorrection().isSelected());
 	            }
 	            // Even if canceling, save these settings
-	            state.setUseCdErrorCorrection(dialog.getUseCdErrorCorrection().isSelected());
-	            state.setEncoder(dialog.getFormat().getSelectedItem().toString());
-	            state.setEncoderQuality(dialog.getQuality());
-	            state.setCdRipperFileNamePattern(dialog.getFileNamePattern());
+	            stateRipper.setUseCdErrorCorrection(dialog.getUseCdErrorCorrection().isSelected());
+	            stateRipper.setEncoder(dialog.getFormat().getSelectedItem().toString());
+	            stateRipper.setEncoderQuality(dialog.getQuality());
+	            stateRipper.setCdRipperFileNamePattern(dialog.getFileNamePattern());
 	        }
 	    } catch (InterruptedException e) {
 	    	this.ripperHandler.getRipCdDialogController().getComponentControlled().setVisible(false);

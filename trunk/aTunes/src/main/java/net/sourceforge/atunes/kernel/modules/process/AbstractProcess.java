@@ -31,7 +31,6 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IProcess;
 import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.model.IProgressDialog;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -68,22 +67,6 @@ public abstract class AbstractProcess implements Runnable, IProcess {
      * The dialog used to show the progress of this process
      */
     private IProgressDialog progressDialog;
-
-    /**
-     * State of app
-     */
-    private IState state;
-
-    /**
-     * @param state
-     */
-    public void setState(IState state) {
-		this.state = state;
-	}
-    
-    protected IState getState() {
-		return state;
-	}
 
 	/**
      * Adds a listener to this process

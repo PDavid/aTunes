@@ -24,6 +24,7 @@ import java.awt.GridBagConstraints;
 
 import javax.swing.JCheckBox;
 
+import net.sourceforge.atunes.model.IStatePlaylist;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class PlayListPrefPanel extends AbstractPreferencesPanel {
@@ -39,6 +40,15 @@ public final class PlayListPrefPanel extends AbstractPreferencesPanel {
     private JCheckBox stopSongWhenSwitching;
     private JCheckBox stopSongWhenClearing;
     private JCheckBox autoScrollPlayList;
+    
+    private IStatePlaylist statePlaylist;
+    
+    /**
+     * @param statePlaylist
+     */
+    public void setStatePlaylist(IStatePlaylist statePlaylist) {
+		this.statePlaylist = statePlaylist;
+	}
 
     /**
      * Instantiates a new radio panel.
@@ -67,9 +77,9 @@ public final class PlayListPrefPanel extends AbstractPreferencesPanel {
 
     @Override
     public boolean applyPreferences() {
-        getState().setStopPlayerOnPlayListSwitch(stopSongWhenSwitching.isSelected());
-        getState().setStopPlayerOnPlayListClear(stopSongWhenClearing.isSelected());
-        getState().setAutoScrollPlayListEnabled(autoScrollPlayList.isSelected());
+        statePlaylist.setStopPlayerOnPlayListSwitch(stopSongWhenSwitching.isSelected());
+        statePlaylist.setStopPlayerOnPlayListClear(stopSongWhenClearing.isSelected());
+        statePlaylist.setAutoScrollPlayListEnabled(autoScrollPlayList.isSelected());
         return false;
     }
 
@@ -97,9 +107,9 @@ public final class PlayListPrefPanel extends AbstractPreferencesPanel {
 
     @Override
     public void updatePanel() {
-        setStopSongWhenSwitching(getState().isStopPlayerOnPlayListSwitch());
-        setStopSongWhenClearing(getState().isStopPlayerOnPlayListClear());
-        setAutoScrollPlayList(getState().isAutoScrollPlayListEnabled());
+        setStopSongWhenSwitching(statePlaylist.isStopPlayerOnPlayListSwitch());
+        setStopSongWhenClearing(statePlaylist.isStopPlayerOnPlayListClear());
+        setAutoScrollPlayList(statePlaylist.isAutoScrollPlayListEnabled());
     }
 
     @Override

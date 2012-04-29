@@ -25,9 +25,7 @@ public interface IStateChangeListener {
 
     /**
      * Called when any application configuration is changed
-     * 
-     * @param newState
      */
-    public void applicationStateChanged(IState newState);
+    public void applicationStateChanged();
 
 }

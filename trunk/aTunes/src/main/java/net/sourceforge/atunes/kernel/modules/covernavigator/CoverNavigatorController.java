@@ -33,7 +33,6 @@ import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IProcessFactory;
-import net.sourceforge.atunes.model.IState;
 
 public final class CoverNavigatorController extends AbstractSimpleController<CoverNavigatorDialog> {
 
@@ -47,12 +46,11 @@ public final class CoverNavigatorController extends AbstractSimpleController<Cov
     /**
      * Instantiates a new cover navigator controller.
      * @param frame
-     * @param state
      * @param audioObjectImageLocator
      * @param processFactory
      */
-    public CoverNavigatorController(CoverNavigatorDialog frame, IState state, IAudioObjectImageLocator audioObjectImageLocator, IProcessFactory processFactory) {
-        super(frame, state);
+    public CoverNavigatorController(CoverNavigatorDialog frame, IAudioObjectImageLocator audioObjectImageLocator, IProcessFactory processFactory) {
+        super(frame);
         this.audioObjectImageLocator = audioObjectImageLocator;
         this.processFactory = processFactory;
         addBindings();

@@ -28,29 +28,13 @@ import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListAudioObject;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.PlaybackState;
 
 public abstract class AbstractHandler implements IHandler {
 
-	private IState state;
-	
 	private IFrame frame;
 	
 	private IOSManager osManager;
-	
-	/**
-	 * Returns access to state of application
-	 * @return
-	 */
-	protected IState getState() {
-		return state;
-	}
-
-	@Override
-	public void setState(IState state) {
-		this.state = state;
-	}
 	
 	/**
 	 * @param osManager
@@ -129,7 +113,7 @@ public abstract class AbstractHandler implements IHandler {
     public void applicationFinish() {}
 
     @Override
-    public void applicationStateChanged(IState newState) {}
+    public void applicationStateChanged() {}
 
     @Override
     public void applicationStarted() {}

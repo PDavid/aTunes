@@ -39,6 +39,7 @@ import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListObjectFilter;
 import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.IStateDevice;
 import net.sourceforge.atunes.model.LocalAudioObjectFilter;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -68,6 +69,15 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 	private IRepositoryHandler repositoryHandler;
 	
     private IPlayListObjectFilter<ILocalAudioObject> playListLocalAudioObjectFilter;
+    
+    private IStateDevice stateDevice;
+    
+    /**
+     * @param stateDevice
+     */
+    public void setStateDevice(IStateDevice stateDevice) {
+		this.stateDevice = stateDevice;
+	}
 
     /**
      * @param playListLocalAudioObjectFilter
@@ -164,7 +174,7 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 		    // Get play list elements
 		    List<ILocalAudioObject> playListObjects;
 		    LocalAudioObjectFilter filter = new LocalAudioObjectFilter();
-		    if (SynchronizeDeviceWithPlayListAction.this.getState().isAllowRepeatedSongsInDevice()) {
+		    if (SynchronizeDeviceWithPlayListAction.this.stateDevice.isAllowRepeatedSongsInDevice()) {
 		        // Repeated songs allowed, filter only if have same artist and album
 		        playListObjects = filter.filterRepeatedObjectsWithAlbums(playListLocalAudioObjectFilter.getObjects(playListHandler.getCurrentPlayList(true)));
 		    } else {

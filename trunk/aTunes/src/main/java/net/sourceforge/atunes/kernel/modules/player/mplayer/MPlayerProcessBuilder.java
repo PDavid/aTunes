@@ -34,16 +34,14 @@ import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
 import net.sourceforge.atunes.model.IProxyBean;
 import net.sourceforge.atunes.model.IRadio;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.model.IStatePlayer;
+import net.sourceforge.atunes.model.IStatePodcast;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.Logger;
 
 public class MPlayerProcessBuilder {
 
-	private IState state;
-	
 	private IStatePlayer statePlayer;
 	
 	private IOSManager osManager;
@@ -57,6 +55,15 @@ public class MPlayerProcessBuilder {
 	private IEqualizer equalizer;
 	
 	private IStateCore stateCore;
+	
+	private IStatePodcast statePodcast;
+	
+	/**
+	 * @param statePodcast
+	 */
+	public void setStatePodcast(IStatePodcast statePodcast) {
+		this.statePodcast = statePodcast;
+	}
 	
 	/**
 	 * @param stateCore
@@ -94,13 +101,6 @@ public class MPlayerProcessBuilder {
 	}
 	
 	/**
-	 * @param state
-	 */
-	public void setState(IState state) {
-		this.state = state;
-	}
-	
-	/**
 	 * @param osManager
 	 */
 	public void setOsManager(IOSManager osManager) {
@@ -121,7 +121,7 @@ public class MPlayerProcessBuilder {
 	 */
 	private boolean isRemoteAudio(IAudioObject audioObject) {
         return !(audioObject instanceof ILocalAudioObject || 
-        		(audioObject instanceof IPodcastFeedEntry && this.state.isUseDownloadedPodcastFeedEntries() && ((IPodcastFeedEntry) audioObject).isDownloaded()));
+        		(audioObject instanceof IPodcastFeedEntry && statePodcast.isUseDownloadedPodcastFeedEntries() && ((IPodcastFeedEntry) audioObject).isDownloaded()));
 	}
 	
     /**

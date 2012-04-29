@@ -45,7 +45,6 @@ import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayerControlsPanel;
 import net.sourceforge.atunes.model.IProgressSlider;
-import net.sourceforge.atunes.model.IState;
 
 /**
  * The player controls panel.
@@ -64,8 +63,6 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
     private VolumeSlider volumeSlider;
     private JPanel secondaryControls;
 
-    private IState state;
-    
     private ILookAndFeelManager lookAndFeelManager;
     
     private IProgressSlider playerControlsProgressSlider;
@@ -133,13 +130,6 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
 	}
     
     /**
-     * @param state
-     */
-    public void setState(IState state) {
-		this.state = state;
-	}
-    
-    /**
      * @param lookAndFeelManager
      */
     public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
@@ -202,7 +192,7 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
     @Override
 	public void setVolume(int volume) {
         volumeSlider.setValue(volume);
-        volumeButton.updateIcon(state);
+        volumeButton.updateIcon();
     }
 
     @Override

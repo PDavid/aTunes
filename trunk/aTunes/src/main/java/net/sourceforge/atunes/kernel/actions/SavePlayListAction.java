@@ -34,6 +34,7 @@ import net.sourceforge.atunes.model.IConfirmationDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListIOService;
+import net.sourceforge.atunes.model.IStatePlaylist;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -54,6 +55,15 @@ public class SavePlayListAction extends CustomAbstractAction {
     private IConfirmationDialogFactory confirmationDialogFactory;
     
     private IPlayListIOService playListIOService;
+    
+    private IStatePlaylist statePlaylist;
+    
+    /**
+     * @param statePlaylist
+     */
+    public void setStatePlaylist(IStatePlaylist statePlaylist) {
+		this.statePlaylist = statePlaylist;
+	}
     
     /**
      * @param playListIOService
@@ -91,7 +101,7 @@ public class SavePlayListAction extends CustomAbstractAction {
 
     @Override
     protected void executeAction() {
-        JFileChooser fileChooser = new JFileChooser(getState().getSavePlaylistPath());
+        JFileChooser fileChooser = new JFileChooser(statePlaylist.getSavePlaylistPath());
         FileFilter filter = playListIOService.getPlaylistFileFilter();
         fileChooser.setFileFilter(filter);
         if (fileChooser.showSaveDialog(frame.getFrame()) == JFileChooser.APPROVE_OPTION) {
@@ -99,7 +109,7 @@ public class SavePlayListAction extends CustomAbstractAction {
             // Get selected file
             File file = fileChooser.getSelectedFile();
 
-            getState().setSavePlaylistPath(file.getParentFile().getAbsolutePath());
+            statePlaylist.setSavePlaylistPath(file.getParentFile().getAbsolutePath());
 
             // If filename have incorrect extension, add it
             file = playListIOService.checkPlayListFileName(file);
