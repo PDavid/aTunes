@@ -52,7 +52,7 @@ import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.model.ITreeGeneratorFactory;
 import net.sourceforge.atunes.model.ITreeObject;
@@ -70,11 +70,6 @@ public abstract class AbstractNavigationView implements INavigationView {
      * Action associated to show this navigation view
      */
     private ActionWithColorMutableIcon action;
-    
-    /**
-     * State of application
-     */
-    private IState state;
     
     private INavigationHandler navigationHandler;
     
@@ -94,6 +89,15 @@ public abstract class AbstractNavigationView implements INavigationView {
 	private ITable navigationTable;
 	
 	private IFilter navigationTreeFilter;
+	
+	private IStateNavigation stateNavigation;
+	
+	/**
+	 * @param stateNavigation
+	 */
+	public void setStateNavigation(IStateNavigation stateNavigation) {
+		this.stateNavigation = stateNavigation;
+	}
 	
 	/**
 	 * @param navigationTreeFilter
@@ -145,13 +149,6 @@ public abstract class AbstractNavigationView implements INavigationView {
 	public abstract JPopupMenu getTreePopupMenu();
 
     /**
-     * @param state
-     */
-    public void setState(IState state) {
-		this.state = state;
-	}
-    
-    /**
      * @param navigationHandler
      */
     public void setNavigationHandler(INavigationHandler navigationHandler) {
@@ -183,10 +180,6 @@ public abstract class AbstractNavigationView implements INavigationView {
 	public ITreeGeneratorFactory getTreeGeneratorFactory() {
 		return treeGeneratorFactory;
 	}
-    
-    protected IState getState() {
-    	return state;
-    }
     
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#getTablePopupMenu()
@@ -401,12 +394,9 @@ public abstract class AbstractNavigationView implements INavigationView {
         Logger.debug(objects);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.navigator.INavigationView#getCurrentViewMode()
-	 */
     @Override
 	public ViewMode getCurrentViewMode() {
-        return state.getViewMode();
+        return stateNavigation.getViewMode();
     }
 
     /**

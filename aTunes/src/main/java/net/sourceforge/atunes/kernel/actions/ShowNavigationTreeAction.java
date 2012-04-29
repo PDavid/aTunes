@@ -26,6 +26,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -39,6 +40,15 @@ public class ShowNavigationTreeAction extends CustomAbstractAction {
 
     private INavigationHandler navigationHandler;
     
+    private IStateNavigation stateNavigation;
+
+    /**
+     * @param stateNavigation
+     */
+    public void setStateNavigation(IStateNavigation stateNavigation) {
+		this.stateNavigation = stateNavigation;
+	}
+
     /**
      * @param navigationHandler
      */
@@ -55,7 +65,7 @@ public class ShowNavigationTreeAction extends CustomAbstractAction {
     @Override
     protected void initialize() {
     	super.initialize();
-        putValue(SELECTED_KEY, getState().isShowNavigationTree());
+        putValue(SELECTED_KEY, stateNavigation.isShowNavigationTree());
     }
 
     @Override

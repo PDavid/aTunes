@@ -24,6 +24,7 @@ import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -34,6 +35,15 @@ public class ShowAlbumsInNavigatorAction extends ActionWithColorMutableIcon {
     private INavigationHandler navigationHandler;
     
     private IIconFactory albumSmallIcon;
+    
+    private IStateNavigation stateNavigation;
+
+    /**
+     * @param stateNavigation
+     */
+    public void setStateNavigation(IStateNavigation stateNavigation) {
+		this.stateNavigation = stateNavigation;
+	}
     
     /**
      * @param albumSmallIcon
@@ -49,6 +59,9 @@ public class ShowAlbumsInNavigatorAction extends ActionWithColorMutableIcon {
 		this.navigationHandler = navigationHandler;
 	}
     
+    /**
+     * 
+     */
     public ShowAlbumsInNavigatorAction() {
         super(I18nUtils.getString("SHOW_ALBUMS"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SHOW_ALBUMS"));
@@ -57,13 +70,13 @@ public class ShowAlbumsInNavigatorAction extends ActionWithColorMutableIcon {
     @Override
     protected void initialize() {
     	super.initialize();
-        putValue(SELECTED_KEY, getState().getViewMode() == ViewMode.ALBUM);
+        putValue(SELECTED_KEY, stateNavigation.getViewMode() == ViewMode.ALBUM);
     }
     
     @Override
     protected void executeAction() {
-        if (getState().getViewMode() != ViewMode.ALBUM) {
-            getState().setViewMode(ViewMode.ALBUM);
+        if (stateNavigation.getViewMode() != ViewMode.ALBUM) {
+            stateNavigation.setViewMode(ViewMode.ALBUM);
             navigationHandler.refreshCurrentView();
         }
     }

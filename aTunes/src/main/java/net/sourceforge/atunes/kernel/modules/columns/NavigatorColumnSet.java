@@ -24,6 +24,7 @@ import java.util.Map;
 
 import net.sourceforge.atunes.gui.NavigationTableColumnModel;
 import net.sourceforge.atunes.model.ColumnBean;
+import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ITable;
 
 /**
@@ -35,6 +36,15 @@ public final class NavigatorColumnSet extends AbstractColumnSet {
 
 	private ITable navigationTable;
 	
+	private IStateNavigation stateNavigation;
+	
+	/**
+	 * @param stateNavigation
+	 */
+	public void setStateNavigation(IStateNavigation stateNavigation) {
+		this.stateNavigation = stateNavigation;
+	}
+	
 	/**
 	 * @param navigationTable
 	 */
@@ -44,12 +54,12 @@ public final class NavigatorColumnSet extends AbstractColumnSet {
 	
     @Override
     protected Map<String, ColumnBean> getColumnsConfiguration() {
-        return getState().getNavigatorColumns();
+        return stateNavigation.getNavigatorColumns();
     }
 
     @Override
     protected void setColumnsConfiguration(Map<String, ColumnBean> columnsConfiguration) {
-    	getState().setNavigatorColumns(columnsConfiguration);
+    	stateNavigation.setNavigatorColumns(columnsConfiguration);
     }
 
     @Override

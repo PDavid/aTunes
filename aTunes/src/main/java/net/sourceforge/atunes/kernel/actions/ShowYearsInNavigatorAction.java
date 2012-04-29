@@ -24,6 +24,7 @@ import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -34,6 +35,16 @@ public class ShowYearsInNavigatorAction extends ActionWithColorMutableIcon {
     private INavigationHandler navigationHandler;
     
     private IIconFactory dateIcon;
+    
+    private IStateNavigation stateNavigation;
+
+    /**
+     * @param stateNavigation
+     */
+    public void setStateNavigation(IStateNavigation stateNavigation) {
+		this.stateNavigation = stateNavigation;
+	}
+
     
     /**
      * @param dateIcon
@@ -57,13 +68,13 @@ public class ShowYearsInNavigatorAction extends ActionWithColorMutableIcon {
     @Override
     protected void initialize() {
     	super.initialize();
-        putValue(SELECTED_KEY, getState().getViewMode() == ViewMode.YEAR);
+        putValue(SELECTED_KEY, stateNavigation.getViewMode() == ViewMode.YEAR);
     }
     
     @Override
     protected void executeAction() {
-        if (getState().getViewMode() != ViewMode.YEAR) {
-            getState().setViewMode(ViewMode.YEAR);
+        if (stateNavigation.getViewMode() != ViewMode.YEAR) {
+            stateNavigation.setViewMode(ViewMode.YEAR);
             navigationHandler.refreshCurrentView();
         }
     }

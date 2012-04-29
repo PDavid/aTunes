@@ -28,6 +28,7 @@ import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -38,6 +39,15 @@ public class SetFavoriteArtistFromNavigatorAction extends AbstractActionOverSele
     private IFavoritesHandler favoritesHandler;
     
     private INavigationHandler navigationHandler;
+    
+    private IStateNavigation stateNavigation;
+    
+    /**
+     * @param stateNavigation
+     */
+    public void setStateNavigation(IStateNavigation stateNavigation) {
+		this.stateNavigation = stateNavigation;
+	}
     
     /**
      * @param favoritesHandler
@@ -70,7 +80,7 @@ public class SetFavoriteArtistFromNavigatorAction extends AbstractActionOverSele
             return false;
         }
 
-        if (getState().getViewMode() == ViewMode.FOLDER) {
+        if (stateNavigation.getViewMode() == ViewMode.FOLDER) {
             return false;
         }
 

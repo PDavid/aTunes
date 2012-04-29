@@ -34,7 +34,7 @@ import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepository;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.utils.UnknownObjectCheck;
@@ -49,18 +49,20 @@ import org.apache.commons.lang.StringUtils;
 final class RepositoryFiller {
 
 	private IRepository repository;
-	private IState state;
+	
+	private IStateNavigation stateNavigation;
 
 	/**
      * Creates a new filler for given repository
      * @param repository
+     * @param stateNavigation
      */
-    RepositoryFiller(IRepository repository, IState state) {
+    RepositoryFiller(IRepository repository, IStateNavigation stateNavigation) {
     	if (repository == null) {
     		throw new IllegalArgumentException("Repository is null");
     	}
     	this.repository = repository;
-    	this.state = state;
+    	this.stateNavigation = stateNavigation;
     }
 
     /**
@@ -125,9 +127,9 @@ final class RepositoryFiller {
      */
     private void addToArtistStructure(ILocalAudioObject audioFile) {
     	String artist = null; 
-    	if (ArtistViewMode.ARTIST.equals(state.getArtistViewMode())) {
+    	if (ArtistViewMode.ARTIST.equals(stateNavigation.getArtistViewMode())) {
     		 artist = audioFile.getArtist();	
-    	} else if (ArtistViewMode.ARTIST_OF_ALBUM.equals(state.getArtistViewMode())) {
+    	} else if (ArtistViewMode.ARTIST_OF_ALBUM.equals(stateNavigation.getArtistViewMode())) {
    		 	artist = audioFile.getAlbumArtist();	
     	} else {
     		artist = audioFile.getAlbumArtistOrArtist();

@@ -32,6 +32,7 @@ import java.util.UUID;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.model.IStateHandler;
 
 import org.junit.Before;
@@ -48,6 +49,7 @@ public class FavoritesHandlerTest {
 	public void init() {
 		sut = new FavoritesHandler();
 		sut.setState(state);
+		sut.setStateContext(mock(IStateContext.class));
 		sut.setStateHandler(stateHandler);
 		sut.getPreviousInitializationTask().run();
 	}

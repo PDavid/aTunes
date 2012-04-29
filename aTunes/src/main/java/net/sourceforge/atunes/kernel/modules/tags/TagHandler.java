@@ -38,6 +38,7 @@ import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.model.ITreeObject;
@@ -55,6 +56,15 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 	private IProcessFactory processFactory;
 	
 	private IPlayerHandler playerHandler;
+	
+    private IStateNavigation stateNavigation;
+
+    /**
+     * @param stateNavigation
+     */
+    public void setStateNavigation(IStateNavigation stateNavigation) {
+		this.stateNavigation = stateNavigation;
+	}
 	
 	/**
 	 * @param playerHandler
@@ -186,11 +196,11 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 	
 	@Override
 	public boolean hasIncompleteTags(IAudioObject audioObject) {
-		return IncompleteTagsChecker.hasIncompleteTags(audioObject, getState().getHighlightIncompleteTagFoldersAttributes());
+		return IncompleteTagsChecker.hasIncompleteTags(audioObject, stateNavigation.getHighlightIncompleteTagFoldersAttributes());
 	}
 	
 	@Override
 	public boolean hasIncompleteTags(ITreeObject<? extends IAudioObject> treeObject) {
-		return IncompleteTagsChecker.hasIncompleteTags(treeObject, getState().getHighlightIncompleteTagFoldersAttributes());
+		return IncompleteTagsChecker.hasIncompleteTags(treeObject, stateNavigation.getHighlightIncompleteTagFoldersAttributes());
 	}
 }

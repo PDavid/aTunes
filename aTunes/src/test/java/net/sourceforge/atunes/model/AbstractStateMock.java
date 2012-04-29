@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.model;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,45 +30,6 @@ import java.util.Map;
 public abstract class AbstractStateMock implements IState {
 
 	@Override
-	public boolean isShowNavigationTable() {
-		return false;
-	}
-
-	@Override
-	public void setShowNavigationTable(boolean showNavigationTable) {
-	}
-
-	@Override
-	public String getNavigationView() {
-		return null;
-	}
-
-	@Override
-	public void setNavigationView(String navigationView) {
-	}
-
-	@Override
-	public ViewMode getViewMode() {
-		return null;
-	}
-
-	@Override
-	public void setViewMode(ViewMode viewMode) {
-	}
-
-	@Override
-	public boolean isShowFavoritesInNavigator() {
-		
-		return false;
-	}
-
-	@Override
-	public void setShowFavoritesInNavigator(boolean showFavoritesInNavigator) {
-		
-		
-	}
-
-	@Override
 	public boolean isUseCdErrorCorrection() {
 		
 		return false;
@@ -77,56 +37,6 @@ public abstract class AbstractStateMock implements IState {
 
 	@Override
 	public void setUseCdErrorCorrection(boolean useCdErrorCorrection) {
-		
-		
-	}
-
-	@Override
-	public boolean isUseSmartTagViewSorting() {
-		
-		return false;
-	}
-
-	@Override
-	public void setUseSmartTagViewSorting(boolean useSmartTagViewSorting) {
-		
-		
-	}
-
-	@Override
-	public boolean isUsePersonNamesArtistTagViewSorting() {
-		
-		return false;
-	}
-
-	@Override
-	public void setUsePersonNamesArtistTagViewSorting(
-			boolean usePersonNamesArtistTagViewSorting) {
-		
-		
-	}
-
-
-	@Override
-	public boolean isShowExtendedTooltip() {
-		
-		return false;
-	}
-
-	@Override
-	public void setShowExtendedTooltip(boolean showExtendedTooltip) {
-		
-		
-	}
-
-	@Override
-	public int getExtendedTooltipDelay() {
-		
-		return 0;
-	}
-
-	@Override
-	public void setExtendedTooltipDelay(int extendedTooltipDelay) {
 		
 		
 	}
@@ -204,18 +114,6 @@ public abstract class AbstractStateMock implements IState {
 	}
 
 	@Override
-	public Map<String, ColumnBean> getNavigatorColumns() {
-		
-		return null;
-	}
-
-	@Override
-	public void setNavigatorColumns(Map<String, ColumnBean> navigatorColumns) {
-		
-		
-	}
-
-	@Override
 	public String getDefaultDeviceLocation() {
 		
 		return null;
@@ -275,32 +173,6 @@ public abstract class AbstractStateMock implements IState {
 	@Override
 	public void setRemovePodcastFeedEntriesRemovedFromPodcastFeed(
 			boolean removePodcastFeedEntriesRemovedFromPodcastFeed) {
-		
-		
-	}
-
-	@Override
-	public boolean isHighlightIncompleteTagElements() {
-		
-		return false;
-	}
-
-	@Override
-	public void setHighlightIncompleteTagElements(
-			boolean highlightIncompleteTagElements) {
-		
-		
-	}
-
-	@Override
-	public List<TagAttribute> getHighlightIncompleteTagFoldersAttributes() {
-		
-		return null;
-	}
-
-	@Override
-	public void setHighlightIncompleteTagFoldersAttributes(
-			List<TagAttribute> highlightIncompleteTagFoldersAttributes) {
 		
 		
 	}
@@ -400,40 +272,4 @@ public abstract class AbstractStateMock implements IState {
 		
 		
 	}
-
-	@Override
-	public boolean isShowNavigationTree() {
-		
-		return false;
-	}
-
-	@Override
-	public void setShowNavigationTree(boolean showNavigationTree) {
-		
-		
-	}
-
-	@Override
-	public Map<String, Map<String, ColumnBean>> getCustomNavigatorColumns() {
-		
-		return null;
-	}
-
-	@Override
-	public void setCustomNavigatorColumns(
-			Map<String, Map<String, ColumnBean>> customNavigatorColumns) {
-		
-		
-	}
-
-	@Override
-	public ArtistViewMode getArtistViewMode() {
-		return ArtistViewMode.BOTH;
-	}
-
-	@Override
-	public void setArtistViewMode(ArtistViewMode artistViewMode) {
-		
-	}
-
 }

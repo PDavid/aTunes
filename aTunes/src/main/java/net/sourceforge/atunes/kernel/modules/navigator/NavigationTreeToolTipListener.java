@@ -29,7 +29,7 @@ import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.gui.views.dialogs.ExtendedToolTip;
 import net.sourceforge.atunes.model.INavigationHandler;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateNavigation;
 
 /**
  * The listener interface for receiving navigationTreeToolTip events.
@@ -38,26 +38,26 @@ public final class NavigationTreeToolTipListener extends MouseAdapter {
 
     private NavigationController controller;
     
-    private IState state;
-    
     private INavigationHandler navigationHandler;
+    
+    private IStateNavigation stateNavigation;
 
     /**
      * Instantiates a new navigation tree tool tip listener.
      * 
      * @param controller
-     * @param state
+     * @param stateNavigation
      * @param navigationHandler
      */
-    public NavigationTreeToolTipListener(NavigationController controller, IState state, INavigationHandler navigationHandler) {
+    public NavigationTreeToolTipListener(NavigationController controller, IStateNavigation stateNavigation, INavigationHandler navigationHandler) {
         this.controller = controller;
-        this.state = state;
+        this.stateNavigation = stateNavigation;
         this.navigationHandler = navigationHandler;
     }
 
     @Override
     public void mouseDragged(MouseEvent arg0) {
-        if (!state.isShowExtendedTooltip()) {
+        if (!stateNavigation.isShowExtendedTooltip()) {
             return;
         }
 
@@ -67,7 +67,7 @@ public final class NavigationTreeToolTipListener extends MouseAdapter {
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        if (!state.isShowExtendedTooltip()) {
+        if (!stateNavigation.isShowExtendedTooltip()) {
             return;
         }
 
@@ -96,7 +96,7 @@ public final class NavigationTreeToolTipListener extends MouseAdapter {
                     controller.setCurrentExtendedToolTipContent(null);
                 }
 
-                controller.getToolTipTimer().setInitialDelay(state.getExtendedTooltipDelay() * 1000);
+                controller.getToolTipTimer().setInitialDelay(stateNavigation.getExtendedTooltipDelay() * 1000);
                 controller.getToolTipTimer().setRepeats(false);
                 controller.getToolTipTimer().start();
             } else {
@@ -113,7 +113,7 @@ public final class NavigationTreeToolTipListener extends MouseAdapter {
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        if (!state.isShowExtendedTooltip()) {
+        if (!stateNavigation.isShowExtendedTooltip()) {
             return;
         }
 
@@ -126,7 +126,7 @@ public final class NavigationTreeToolTipListener extends MouseAdapter {
         super.mouseClicked(e);
 
         // When user does click (to popup menu for example) tool tip must be hidden
-        if (!state.isShowExtendedTooltip()) {
+        if (!stateNavigation.isShowExtendedTooltip()) {
             return;
         }
 

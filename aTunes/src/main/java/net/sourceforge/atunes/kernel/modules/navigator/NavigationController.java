@@ -63,7 +63,7 @@ import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.model.ITaskService;
@@ -90,11 +90,6 @@ public final class NavigationController implements IAudioFilesRemovedListener, I
     /** The timer. */
     private Timer timer;
 
-    /**
-     * State of app
-     */
-    private IState state;
-    
     private IColumnSet navigatorColumnSet;
     
     private INavigationHandler navigationHandler;
@@ -112,6 +107,15 @@ public final class NavigationController implements IAudioFilesRemovedListener, I
     private IRepositoryHandler repositoryHandler;
     
     private IFilter navigationTreeFilter;
+    
+    private IStateNavigation stateNavigation;
+    
+    /**
+     * @param stateNavigation
+     */
+    public void setStateNavigation(IStateNavigation stateNavigation) {
+		this.stateNavigation = stateNavigation;
+	}
     
     /* (non-Javadoc)
      * @see org.springframework.context.ApplicationContextAware#setApplicationContext(org.springframework.context.ApplicationContext)
@@ -154,13 +158,6 @@ public final class NavigationController implements IAudioFilesRemovedListener, I
      */
     public void setNavigationTable(ITable navigationTable) {
 		this.navigationTable = navigationTable;
-	}
-    
-    /**
-     * @param state
-     */
-    public void setState(IState state) {
-		this.state = state;
 	}
     
     /**
@@ -214,7 +211,7 @@ public final class NavigationController implements IAudioFilesRemovedListener, I
     public void addBindings() {
         NavigationTableModel model = new NavigationTableModel();
         navigationTable.setModel(model);
-        AbstractCommonColumnModel columnModel = new NavigationTableColumnModel(navigationTable, state, navigationHandler, taskService, lookAndFeelManager.getCurrentLookAndFeel(), tagHandler);
+        AbstractCommonColumnModel columnModel = new NavigationTableColumnModel(navigationTable, stateNavigation, navigationHandler, taskService, lookAndFeelManager.getCurrentLookAndFeel(), tagHandler);
         navigationTable.setColumnModel(columnModel);
         ColumnRenderers.addRenderers(navigationTable.getSwingComponent(), columnModel, lookAndFeelManager.getCurrentLookAndFeel());
 
@@ -235,8 +232,8 @@ public final class NavigationController implements IAudioFilesRemovedListener, I
 
         // Add tree mouse listeners to all views
         // Add tree tool tip listener to all views
-        NavigationTreeMouseListener treeMouseListener = new NavigationTreeMouseListener(this, navigationTable, state, navigationHandler);
-        NavigationTreeToolTipListener tooltipListener = new NavigationTreeToolTipListener(this, state, navigationHandler);
+        NavigationTreeMouseListener treeMouseListener = new NavigationTreeMouseListener(this, navigationTable, stateNavigation, navigationHandler);
+        NavigationTreeToolTipListener tooltipListener = new NavigationTreeToolTipListener(this, stateNavigation, navigationHandler);
         for (INavigationView view : navigationHandler.getNavigationViews()) {
             view.getTree().addMouseListener(treeMouseListener);
             view.getTree().addMouseListener(tooltipListener);
@@ -325,7 +322,7 @@ public final class NavigationController implements IAudioFilesRemovedListener, I
      * @return
      */
     public List<? extends IAudioObject> getAudioObjectsForTreeNode(Class<? extends INavigationView> navigationViewClass, DefaultMutableTreeNode node) {
-        List<? extends IAudioObject> audioObjects = navigationHandler.getView(navigationViewClass).getAudioObjectForTreeNode(node, state.getViewMode(),
+        List<? extends IAudioObject> audioObjects = navigationHandler.getView(navigationViewClass).getAudioObjectForTreeNode(node, stateNavigation.getViewMode(),
         			filterHandler.getFilterText(navigationTreeFilter));
 
         IColumnSet columnSet = navigationHandler.getCurrentView().getCustomColumnSet();
@@ -378,7 +375,7 @@ public final class NavigationController implements IAudioFilesRemovedListener, I
         }
         
         if (saveNavigationView) {
-        	state.setNavigationView(navigationView.getName());
+        	stateNavigation.setNavigationView(navigationView.getName());
         }
         
         getNavigationTreePanel().showNavigationView(navigationHandler.getView(navigationView));
@@ -432,7 +429,7 @@ public final class NavigationController implements IAudioFilesRemovedListener, I
      */
     protected void updateTableContent(JTree tree) {
         // If navigation table is not shown then don't update it
-        if (!state.isShowNavigationTable()) {
+        if (!stateNavigation.isShowNavigationTable()) {
             return;
         }
 
@@ -447,7 +444,7 @@ public final class NavigationController implements IAudioFilesRemovedListener, I
             List<IAudioObject> audioObjects = new ArrayList<IAudioObject>();
             for (TreePath element : paths) {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) (element.getLastPathComponent());
-                audioObjects.addAll(getAudioObjectsForTreeNode(navigationHandler.getViewByName(state.getNavigationView()), node));
+                audioObjects.addAll(getAudioObjectsForTreeNode(navigationHandler.getViewByName(stateNavigation.getNavigationView()), node));
             }
 
             ((NavigationTableModel) navigationTable.getModel()).setSongs(audioObjects);

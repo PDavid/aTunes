@@ -26,6 +26,7 @@ import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -36,6 +37,15 @@ public class ShowFoldersInNavigatorAction extends ActionWithColorMutableIcon {
     private INavigationHandler navigationHandler;
     
     private IIconFactory folderIcon;
+    
+    private IStateNavigation stateNavigation;
+
+    /**
+     * @param stateNavigation
+     */
+    public void setStateNavigation(IStateNavigation stateNavigation) {
+		this.stateNavigation = stateNavigation;
+	}
     
     /**
      * @param folderIcon
@@ -59,13 +69,13 @@ public class ShowFoldersInNavigatorAction extends ActionWithColorMutableIcon {
     @Override
     protected void initialize() {
     	super.initialize();
-        putValue(SELECTED_KEY, getState().getViewMode() == ViewMode.FOLDER);
+        putValue(SELECTED_KEY, stateNavigation.getViewMode() == ViewMode.FOLDER);
     }
     
     @Override
     protected void executeAction() {
-        if (getState().getViewMode() != ViewMode.FOLDER) {
-            getState().setViewMode(ViewMode.FOLDER);
+        if (stateNavigation.getViewMode() != ViewMode.FOLDER) {
+            stateNavigation.setViewMode(ViewMode.FOLDER);
             navigationHandler.refreshCurrentView();
         }
     }

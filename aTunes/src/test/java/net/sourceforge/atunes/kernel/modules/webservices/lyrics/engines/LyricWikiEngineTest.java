@@ -27,7 +27,7 @@ import java.util.UUID;
 import net.sourceforge.atunes.kernel.modules.network.NetworkHandler;
 import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricWikiEngine;
 import net.sourceforge.atunes.model.ILyrics;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateCore;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -40,7 +40,7 @@ public class LyricWikiEngineTest {
     @Before
     public void init() {
     	NetworkHandler networkHandler = new NetworkHandler();
-    	networkHandler.setState(mock(IState.class));
+    	networkHandler.setStateCore(mock(IStateCore.class));
         testedObject = new LyricWikiEngine();
         testedObject.setNetworkHandler(networkHandler);
     }

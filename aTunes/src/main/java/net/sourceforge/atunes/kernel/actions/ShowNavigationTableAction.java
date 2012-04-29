@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.actions;
 
 import net.sourceforge.atunes.model.INavigationHandler;
+import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -34,6 +35,15 @@ public class ShowNavigationTableAction extends CustomAbstractAction {
     private static final long serialVersionUID = -3275592274940501407L;
 
     private INavigationHandler navigationHandler;
+    
+    private IStateNavigation stateNavigation;
+
+    /**
+     * @param stateNavigation
+     */
+    public void setStateNavigation(IStateNavigation stateNavigation) {
+		this.stateNavigation = stateNavigation;
+	}
     
     /**
      * @param navigationHandler
@@ -50,7 +60,7 @@ public class ShowNavigationTableAction extends CustomAbstractAction {
     @Override
     protected void initialize() {
     	super.initialize();
-        putValue(SELECTED_KEY, getState().isShowNavigationTable());
+        putValue(SELECTED_KEY, stateNavigation.isShowNavigationTable());
     }
 
     @Override

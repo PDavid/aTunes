@@ -22,25 +22,12 @@ package net.sourceforge.atunes.kernel.modules.state;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import net.sourceforge.atunes.kernel.modules.navigator.RepositoryNavigationView;
 import net.sourceforge.atunes.kernel.modules.podcast.PodcastFeedHandler;
-import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
-import net.sourceforge.atunes.model.ArtistViewMode;
 import net.sourceforge.atunes.model.ColumnBean;
 import net.sourceforge.atunes.model.IState;
-import net.sourceforge.atunes.model.TagAttribute;
-import net.sourceforge.atunes.model.ViewMode;
 
-/**
- * This class represents the application settings that are stored at application
- * shutdown and loaded at application startup.
- * <p>
- * <b>NOTE: All classes that are used as properties must be Java Beans!</b>
- * </p>
- */
 public class ApplicationState implements IState {
 
     private static final String UNCHECKED = "unchecked";
@@ -59,84 +46,6 @@ public class ApplicationState implements IState {
 	}
 
     /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isShowNavigationTable()
-	 */
-    @Override
-	public boolean isShowNavigationTable() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.SHOW_NAVIGATION_TABLE, true);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setShowNavigationTable(boolean)
-	 */
-    @Override
-	public void setShowNavigationTable(boolean showNavigationTable) {
-        this.stateStore.storePreference(Preferences.SHOW_NAVIGATION_TABLE, showNavigationTable);
-    }
-    
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getNavigationView()
-	 */
-    @Override
-	public String getNavigationView() {
-        return (String) this.stateStore.retrievePreference(Preferences.NAVIGATION_VIEW, RepositoryNavigationView.class.getName());
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setNavigationView(java.lang.String)
-	 */
-    @Override
-	public void setNavigationView(String navigationView) {
-        this.stateStore.storePreference(Preferences.NAVIGATION_VIEW, navigationView);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getViewMode()
-	 */
-    @Override
-	public ViewMode getViewMode() {
-        return (ViewMode) this.stateStore.retrievePreference(Preferences.VIEW_MODE, ViewMode.ARTIST);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setViewMode(net.sourceforge.atunes.model.ViewMode)
-	 */
-    @Override
-	public void setViewMode(ViewMode viewMode) {
-        this.stateStore.storePreference(Preferences.VIEW_MODE, viewMode);
-    }
-    
-    
-
-    
-    
-
-    
-    
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isShowFavoritesInNavigator()
-	 */
-    @Override
-	public boolean isShowFavoritesInNavigator() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.SHOW_FAVORITES_IN_NAVIGATOR, true);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setShowFavoritesInNavigator(boolean)
-	 */
-    @Override
-	public void setShowFavoritesInNavigator(boolean showFavoritesInNavigator) {
-    	this.stateStore.storePreference(Preferences.SHOW_FAVORITES_IN_NAVIGATOR, showFavoritesInNavigator);
-    }
-    
-    
-
-    /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isUseCdErrorCorrection()
 	 */
     @Override
@@ -150,80 +59,6 @@ public class ApplicationState implements IState {
     @Override
 	public void setUseCdErrorCorrection(boolean useCdErrorCorrection) {
     	this.stateStore.storePreference(Preferences.USE_CD_ERROR_CORRECTION, useCdErrorCorrection);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isUseSmartTagViewSorting()
-	 */
-    @Override
-	public boolean isUseSmartTagViewSorting() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.USE_SMART_TAG_VIEW_SORTING, false);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setUseSmartTagViewSorting(boolean)
-	 */
-    @Override
-	public void setUseSmartTagViewSorting(boolean useSmartTagViewSorting) {
-    	this.stateStore.storePreference(Preferences.USE_SMART_TAG_VIEW_SORTING, useSmartTagViewSorting);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isUsePersonNamesArtistTagViewSorting()
-	 */
-    @Override
-	public boolean isUsePersonNamesArtistTagViewSorting() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.USE_PERSON_NAMES_ARTIST_TAG_SORTING, false);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setUsePersonNamesArtistTagViewSorting(boolean)
-	 */
-    @Override
-	public void setUsePersonNamesArtistTagViewSorting(boolean usePersonNamesArtistTagViewSorting) {
-    	this.stateStore.storePreference(Preferences.USE_PERSON_NAMES_ARTIST_TAG_SORTING, usePersonNamesArtistTagViewSorting);
-    }
-    
-    
-
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isShowExtendedTooltip()
-	 */
-    @Override
-	public boolean isShowExtendedTooltip() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.SHOW_EXTENDED_TOOLTIP, true);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setShowExtendedTooltip(boolean)
-	 */
-    @Override
-	public void setShowExtendedTooltip(boolean showExtendedTooltip) {
-    	this.stateStore.storePreference(Preferences.SHOW_EXTENDED_TOOLTIP, showExtendedTooltip);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getExtendedTooltipDelay()
-	 */
-    @Override
-	public int getExtendedTooltipDelay() {
-    	return (Integer) this.stateStore.retrievePreference(Preferences.EXTENDED_TOOLTIP_DELAY, 1);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setExtendedTooltipDelay(int)
-	 */
-    @Override
-	public void setExtendedTooltipDelay(int extendedTooltipDelay) {
-    	this.stateStore.storePreference(Preferences.EXTENDED_TOOLTIP_DELAY, extendedTooltipDelay);
     }
     
     
@@ -342,26 +177,6 @@ public class ApplicationState implements IState {
     
     
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getNavigatorColumns()
-	 */
-    @Override
-	@SuppressWarnings(UNCHECKED)
-	public Map<String, ColumnBean> getNavigatorColumns() {
-    	Map<String, ColumnBean> map = (Map<String, ColumnBean>) this.stateStore.retrievePreference(Preferences.NAVIGATOR_COLUMNS, null);
-    	return map != null ? Collections.unmodifiableMap(map) : null;
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setNavigatorColumns(java.util.Map)
-	 */
-    @Override
-	public void setNavigatorColumns(Map<String, ColumnBean> navigatorColumns) {
-    	if (getNavigatorColumns() == null || !getNavigatorColumns().equals(navigatorColumns)) {
-    		this.stateStore.storePreference(Preferences.NAVIGATOR_COLUMNS, navigatorColumns);
-    	}
-    }
-
 
     /* (non-Javadoc)
 	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getDefaultDeviceLocation()
@@ -453,41 +268,6 @@ public class ApplicationState implements IState {
     
     
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isHighlightIncompleteTagElements()
-	 */
-    @Override
-	public boolean isHighlightIncompleteTagElements() {
-    	return (Boolean) this.stateStore.retrievePreference(Preferences.HIGHLIGHT_INCOMPLETE_TAG_ELEMENTS, true);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setHighlightIncompleteTagElements(boolean)
-	 */
-    @Override
-	public void setHighlightIncompleteTagElements(boolean highlightIncompleteTagElements) {
-    	this.stateStore.storePreference(Preferences.HIGHLIGHT_INCOMPLETE_TAG_ELEMENTS, highlightIncompleteTagElements);
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getHighlightIncompleteTagFoldersAttributes()
-	 */
-    @Override
-	@SuppressWarnings(UNCHECKED)
-	public List<TagAttribute> getHighlightIncompleteTagFoldersAttributes() {
-    	return (List<TagAttribute> ) this.stateStore.retrievePreference(Preferences.HIGHLIGHT_INCOMPLETE_TAG_FOLDERS_ATTRIBUTES, IncompleteTagsChecker.getDefaultTagAttributesToHighlightFolders());
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setHighlightIncompleteTagFoldersAttributes(java.util.List)
-	 */
-    @Override
-	public void setHighlightIncompleteTagFoldersAttributes(List<TagAttribute> highlightIncompleteTagFoldersAttributes) {
-    	this.stateStore.storePreference(Preferences.HIGHLIGHT_INCOMPLETE_TAG_FOLDERS_ATTRIBUTES, highlightIncompleteTagFoldersAttributes);
-    }
-    
        
 
 
@@ -645,57 +425,5 @@ public class ApplicationState implements IState {
 
     
 
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#isShowNavigationTree()
-	 */
-    @Override
-	public boolean isShowNavigationTree() {
-        return (Boolean) this.stateStore.retrievePreference(Preferences.SHOW_NAVIGATION_TREE, true);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setShowNavigationTree(boolean)
-	 */
-    @Override
-	public void setShowNavigationTree(boolean showNavigationTree) {
-    	if (isShowNavigationTree() != showNavigationTree) {
-    		this.stateStore.storePreference(Preferences.SHOW_NAVIGATION_TREE, showNavigationTree);
-    	}
-    }
-    
-    
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#getCustomNavigatorColumns()
-	 */
-    @Override
-	@SuppressWarnings(UNCHECKED)
-	public Map<String, Map<String, ColumnBean>> getCustomNavigatorColumns() {
-    	// This map is not unmodifiable
-    	return (Map<String, Map<String, ColumnBean>>) this.stateStore.retrievePreference(Preferences.CUSTOM_NAVIGATOR_COLUMNS, null); 
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.state.IState#setCustomNavigatorColumns(java.util.Map)
-	 */
-    @Override
-	public void setCustomNavigatorColumns(Map<String, Map<String, ColumnBean>> customNavigatorColumns) {
-    	this.stateStore.storePreference(Preferences.CUSTOM_NAVIGATOR_COLUMNS, customNavigatorColumns);
-    }
-
-    
-	@Override
-	public void setArtistViewMode(ArtistViewMode artistViewMode) {
-		this.stateStore.storePreference(Preferences.ARTIST_VIEW_MODE, artistViewMode);
-		
-	}
-
-	@Override
-	public ArtistViewMode getArtistViewMode() {
-		return (ArtistViewMode) this.stateStore.retrievePreference(Preferences.ARTIST_VIEW_MODE, ArtistViewMode.BOTH);
-	}
-	
 	
 }
