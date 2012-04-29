@@ -32,7 +32,7 @@ import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.tags.Genres;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateRipper;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -56,20 +56,21 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
     private IRepositoryHandler repositoryHandler;
     
     private RipperHandler ripperHandler;
+    
+    private IStateRipper stateRipper;
 
-    /** The error correction setting for cd ripping */
-    //private boolean useCdErrorCorrection;
     /**
      * Instantiates a new rip cd dialog controller.
      * 
      * @param dialogControlled
-     * @param state
+     * @param stateRipper
      * @param osManager
      * @param repositoryHandler
      * @param ripperHandler
      */
-    RipCdDialogController(RipCdDialog dialogControlled, IState state, IOSManager osManager, IRepositoryHandler repositoryHandler, RipperHandler ripperHandler) {
-        super(dialogControlled, state);
+    RipCdDialogController(RipCdDialog dialogControlled, IStateRipper stateRipper, IOSManager osManager, IRepositoryHandler repositoryHandler, RipperHandler ripperHandler) {
+        super(dialogControlled);
+        this.stateRipper = stateRipper;
         this.osManager = osManager;
         this.repositoryHandler = repositoryHandler;
         this.ripperHandler = ripperHandler;
@@ -271,10 +272,10 @@ final class RipCdDialogController extends AbstractSimpleController<RipCdDialog> 
         showFolder(cdInfo, path, repositoryPath);
         enableGetTitlesButton(cdInfo);
         getComponentControlled().getFormat().setSelectedItem(ripperHandler.getEncoderName());
-        getComponentControlled().getQualityComboBox().setSelectedItem(getState().getEncoderQuality());
-        getComponentControlled().getUseCdErrorCorrection().setSelected(getState().isUseCdErrorCorrection());
+        getComponentControlled().getQualityComboBox().setSelectedItem(stateRipper.getEncoderQuality());
+        getComponentControlled().getUseCdErrorCorrection().setSelected(stateRipper.isUseCdErrorCorrection());
         getComponentControlled().getFilePattern().setModel(new DefaultComboBoxModel(ripperHandler.getFilenamePatterns()));
-        getComponentControlled().getFilePattern().setSelectedItem(getState().getCdRipperFileNamePattern());
+        getComponentControlled().getFilePattern().setSelectedItem(stateRipper.getCdRipperFileNamePattern());
         setFolder(null);
         getComponentControlled().setTableData(cdInfo);
         getComponentControlled().updateTrackNames(cdInfo.getTitles());

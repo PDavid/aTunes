@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.List;
 
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IStateDevice;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -35,6 +36,15 @@ import org.apache.commons.io.FileUtils;
  */
 public class TransferToDeviceProcess extends AbstractLocalAudioObjectTransferProcess {
 
+	private IStateDevice stateDevice;
+	
+	/**
+	 * @param stateDevice
+	 */
+	public void setStateDevice(IStateDevice stateDevice) {
+		this.stateDevice = stateDevice;
+	}
+	
     @Override
     public String getProgressDialogTitle() {
         return I18nUtils.getString("COPYING_TO_DEVICE");
@@ -58,11 +68,11 @@ public class TransferToDeviceProcess extends AbstractLocalAudioObjectTransferPro
 
     @Override
     public String getDirectory(ILocalAudioObject song, File destination, boolean isMp3Device) {
-        return getDirectory(song, destination, isMp3Device, getState().getDeviceFolderPathPattern());
+        return getDirectory(song, destination, isMp3Device, stateDevice.getDeviceFolderPathPattern());
     }
 
     @Override
     public String getName(ILocalAudioObject file, boolean isMp3Device) {
-        return getName(file, isMp3Device, getState().getDeviceFileNamePattern());
+        return getName(file, isMp3Device, stateDevice.getDeviceFileNamePattern());
     }
 }

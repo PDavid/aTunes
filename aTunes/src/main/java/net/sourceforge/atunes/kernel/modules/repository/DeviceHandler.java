@@ -63,7 +63,7 @@ import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IRepositoryLoader;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateDevice;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.model.ViewMode;
@@ -131,6 +131,15 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
     
     private IStateRepository stateRepository;
     
+    private IStateDevice stateDevice;
+    
+    /**
+     * @param stateDevice
+     */
+    public void setStateDevice(IStateDevice stateDevice) {
+		this.stateDevice = stateDevice;
+	}
+    
     /**
      * @param stateRepository
      */
@@ -174,22 +183,22 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 
     @Override
     public void allHandlersInitialized() {
-    	if (isDefaultDeviceLocationConfigured(getState())) { 
+    	if (isDefaultDeviceLocationConfigured(stateDevice)) { 
     		// Start device monitor if necessary
     		deviceMonitor.startMonitor();
     	}
     }
     
     @Override
-    public void applicationStateChanged(IState newState) {
+    public void applicationStateChanged() {
     	if (caseSensitiveTrees != stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
     		caseSensitiveTrees = stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure();
     		refreshDevice();
     	}
     	
-    	if (isDefaultDeviceLocationConfigured(newState) && !deviceMonitor.isMonitorRunning()) {
+    	if (isDefaultDeviceLocationConfigured(stateDevice) && !deviceMonitor.isMonitorRunning()) {
     		deviceMonitor.startMonitor();
-    	} else if (!isDefaultDeviceLocationConfigured(newState) && deviceMonitor.isMonitorRunning()) {
+    	} else if (!isDefaultDeviceLocationConfigured(stateDevice) && deviceMonitor.isMonitorRunning()) {
     		deviceMonitor.stopMonitor();
     	}
     }
@@ -199,7 +208,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
      * @param state
      * @return
      */
-    private boolean isDefaultDeviceLocationConfigured(IState state) {
+    private boolean isDefaultDeviceLocationConfigured(IStateDevice state) {
     	return state.getDefaultDeviceLocation() != null && !state.getDefaultDeviceLocation().isEmpty();
     }
     
@@ -678,7 +687,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
             return true;
         } else {
             // Artist is present, then find song or album and song
-            if (getState().isAllowRepeatedSongsInDevice()) {
+            if (stateDevice.isAllowRepeatedSongsInDevice()) {
                 if (a.getAlbum(album) == null) {
                     return true;
                 } else {
@@ -733,7 +742,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
         // Remove objects present in device
         IArtist a = getArtist(artist);
         if (a != null) {
-            if (getState().isAllowRepeatedSongsInDevice()) {
+            if (stateDevice.isAllowRepeatedSongsInDevice()) {
                 if (a.getAlbum(album) != null) {
                 	IAlbum alb = a.getAlbum(album);
                     List<ILocalAudioObject> deviceFiles = alb.getAudioObjects();

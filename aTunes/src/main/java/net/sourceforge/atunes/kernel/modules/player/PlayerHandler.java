@@ -33,7 +33,6 @@ import net.sourceforge.atunes.model.IPlaybackStateListener;
 import net.sourceforge.atunes.model.IPlayerEngine;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPluginsHandler;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStatePlayer;
 import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.IStatisticsHandler;
@@ -114,7 +113,7 @@ public final class PlayerHandler extends AbstractHandler implements PluginListen
 	}
     
     @Override
-    public void applicationStateChanged(IState newState) {
+    public void applicationStateChanged() {
     	// Show advanced controls
     	playerControlsController.getComponentControlled().showAdvancedPlayerControls(stateUI.isShowAdvancedPlayerControls());
     }

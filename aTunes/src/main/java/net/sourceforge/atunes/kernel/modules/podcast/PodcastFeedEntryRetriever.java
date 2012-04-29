@@ -35,7 +35,7 @@ import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStatePodcast;
 import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -67,8 +67,6 @@ public class PodcastFeedEntryRetriever implements Runnable {
 
     private List<IPodcastFeed> podcastFeeds;
     
-    private IState state;
-    
     private IStateUI stateUI;
     
     private IFrame frame;
@@ -79,18 +77,20 @@ public class PodcastFeedEntryRetriever implements Runnable {
     
     private INavigationView podcastNavigationView;
     
+    private IStatePodcast statePodcast;
+    
     /**
      * @param podcastFeeds
-     * @param state
+     * @param statePodcast
      * @param stateUI
      * @param frame
      * @param navigationHandler
      * @param networkHandler
      * @param podcastNavigationView
      */
-    public PodcastFeedEntryRetriever(List<IPodcastFeed> podcastFeeds, IState state, IStateUI stateUI, IFrame frame, INavigationHandler navigationHandler, INetworkHandler networkHandler, INavigationView podcastNavigationView) {
+    public PodcastFeedEntryRetriever(List<IPodcastFeed> podcastFeeds, IStatePodcast statePodcast, IStateUI stateUI, IFrame frame, INavigationHandler navigationHandler, INetworkHandler networkHandler, INavigationView podcastNavigationView) {
         this.podcastFeeds = podcastFeeds;
-        this.state = state;
+        this.statePodcast = statePodcast;
         this.stateUI = stateUI;
         this.frame = frame;
         this.navigationHandler = navigationHandler;
@@ -332,7 +332,7 @@ public class PodcastFeedEntryRetriever implements Runnable {
 
     @Override
     public void run() {
-    	boolean removePodcastFeedEntriesRemovedFromPodcastFeed = state.isRemovePodcastFeedEntriesRemovedFromPodcastFeed();
+    	boolean removePodcastFeedEntriesRemovedFromPodcastFeed = statePodcast.isRemovePodcastFeedEntriesRemovedFromPodcastFeed();
     	List<IPodcastFeed> podcastFeedsWithNewEntries = retrievePodcastFeedEntries(removePodcastFeedEntriesRemovedFromPodcastFeed);
     	// If there are new entries show a message and refresh view
     	showMessage(podcastFeedsWithNewEntries);

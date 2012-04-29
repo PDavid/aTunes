@@ -51,8 +51,8 @@ import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.IPlayerControlsPanel;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStatePlayer;
+import net.sourceforge.atunes.model.IStatePlaylist;
 import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -113,6 +113,15 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	
 	private IStatePlayer statePlayer;
 	
+    private IStatePlaylist statePlaylist;
+    
+    /**
+     * @param statePlaylist
+     */
+    public void setStatePlaylist(IStatePlaylist statePlaylist) {
+		this.statePlaylist = statePlaylist;
+	}
+
 	/**
 	 * @param statePlayer
 	 */
@@ -328,7 +337,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         }
 
         //don't stop player if user has setup the option
-        if (getState().isStopPlayerOnPlayListSwitch()) {
+        if (statePlaylist.isStopPlayerOnPlayListSwitch()) {
             playerHandler.stopCurrentAudioObject(false);
         }
 
@@ -445,7 +454,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
             int selectedAudioObject = 0;
 
             // If stopPlayerWhenPlayListClear property is disabled try to locate audio object in play list. If it's not available then stop playing
-            if (!getState().isStopPlayerOnPlayListClear() && playerHandler.isEnginePlaying()) {
+            if (!statePlaylist.isStopPlayerOnPlayListClear() && playerHandler.isEnginePlaying()) {
                 int index = playList.indexOf(playerHandler.getAudioObject());
                 if (index != -1) {
                     selectedAudioObject = index;
@@ -482,7 +491,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
             playList.clear();
 
             // Only if this play list is the active stop playback
-            if (isActivePlayListVisible() && getState().isStopPlayerOnPlayListClear()) {
+            if (isActivePlayListVisible() && statePlaylist.isStopPlayerOnPlayListClear()) {
                 playerHandler.stopCurrentAudioObject(false);
             }
 
@@ -497,7 +506,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
             showPlayListInformation(playList);
 
             // disable progress slider
-            if (!getState().isStopPlayerOnPlayListClear()) {
+            if (!statePlaylist.isStopPlayerOnPlayListClear()) {
             	getBean(IPlayerControlsPanel.class).getProgressSlider().setEnabled(false);
             }
             playListPanel.getSwingComponent().repaint();
@@ -895,8 +904,8 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     }
 
     @Override
-    public void applicationStateChanged(IState newState) {
-        if (newState.isAutoScrollPlayListEnabled()) {
+    public void applicationStateChanged() {
+        if (statePlaylist.isAutoScrollPlayListEnabled()) {
             playListController.scrollPlayList(true);
         }
     }

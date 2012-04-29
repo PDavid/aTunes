@@ -27,14 +27,11 @@ import javax.swing.JToggleButton;
 
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
-import net.sourceforge.atunes.model.IState;
 
 public final class MuteButton extends JToggleButton implements ILookAndFeelChangeListener {
 
     private static final long serialVersionUID = 6007885049773560874L;
 
-    private IState state;
-    
     private VolumeIconCalculator volumeIconCalculator;
     
     /**
@@ -62,13 +59,6 @@ public final class MuteButton extends JToggleButton implements ILookAndFeelChang
 	}
     
     /**
-     * @param state
-     */
-    public void setState(IState state) {
-		this.state = state;
-	}
-    
-    /**
      * @param volumeIconCalculator
      */
     public void setVolumeIconCalculator(VolumeIconCalculator volumeIconCalculator) {
@@ -77,14 +67,14 @@ public final class MuteButton extends JToggleButton implements ILookAndFeelChang
     
     @Override
     public void lookAndFeelChanged() {
-    	updateIcon(state);
+    	updateIcon();
     }
     
     /**
      * Updates icon of mute
      * @param state
      */
-    public void updateIcon(IState state) {
+    public void updateIcon() {
     	setIcon(volumeIconCalculator.getVolumeIcon());
     }
 }

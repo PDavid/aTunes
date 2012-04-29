@@ -25,6 +25,7 @@ import java.util.Map;
 import net.sourceforge.atunes.gui.PlayListColumnModel;
 import net.sourceforge.atunes.model.ColumnBean;
 import net.sourceforge.atunes.model.IPlayListTable;
+import net.sourceforge.atunes.model.IStatePlaylist;
 
 /**
  * This class defines all columns than can be viewed in Play List.
@@ -35,6 +36,15 @@ public final class PlayListColumnSet extends AbstractColumnSet {
 
 	private IPlayListTable playListTable;
 	
+    private IStatePlaylist statePlaylist;
+    
+    /**
+     * @param statePlaylist
+     */
+    public void setStatePlaylist(IStatePlaylist statePlaylist) {
+		this.statePlaylist = statePlaylist;
+	}
+	
 	/**
 	 * @param playListTable
 	 */
@@ -44,12 +54,12 @@ public final class PlayListColumnSet extends AbstractColumnSet {
 	
     @Override
     protected Map<String, ColumnBean> getColumnsConfiguration() {
-        return getState().getColumns();
+        return statePlaylist.getColumns();
     }
 
     @Override
     protected void setColumnsConfiguration(Map<String, ColumnBean> columnsConfiguration) {
-    	getState().setColumns(columnsConfiguration);
+    	statePlaylist.setColumns(columnsConfiguration);
     }
 
     @Override

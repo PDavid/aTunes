@@ -36,7 +36,6 @@ import net.sourceforge.atunes.model.ILovedTrack;
 import net.sourceforge.atunes.model.ILyrics;
 import net.sourceforge.atunes.model.ILyricsService;
 import net.sourceforge.atunes.model.ISimilarArtistsInfo;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 
@@ -72,7 +71,7 @@ public class WebServicesHandler extends AbstractHandler implements IWebServicesH
 	}
 
 	@Override
-	public void applicationStateChanged(IState newState) {
+	public void applicationStateChanged() {
         lyricsService.updateService();
 	}
 

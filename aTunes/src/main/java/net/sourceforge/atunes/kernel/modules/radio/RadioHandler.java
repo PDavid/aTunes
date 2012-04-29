@@ -317,7 +317,7 @@ public final class RadioHandler extends AbstractHandler implements IRadioHandler
     
 	@Override
 	public void showRadioBrowser() {
-		new RadioBrowserDialogController(getBean(RadioBrowserDialog.class), getState(), this).showRadioBrowser();
+		new RadioBrowserDialogController(getBean(RadioBrowserDialog.class), this).showRadioBrowser();
 	}
 
 	@Override

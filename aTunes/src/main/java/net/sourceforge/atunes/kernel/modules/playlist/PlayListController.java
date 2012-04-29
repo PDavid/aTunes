@@ -34,6 +34,7 @@ import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListPanel;
 import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.IPlayerHandler;
+import net.sourceforge.atunes.model.IStatePlaylist;
 import net.sourceforge.atunes.utils.Logger;
 
 final class PlayListController extends AbstractSimpleController<PlayListPanel> implements IPlayListController {
@@ -48,6 +49,15 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> i
     private IPlayListTable playListTable;
     
     private IPlayListPanel playListPanel;
+    
+    private IStatePlaylist statePlaylist;
+    
+    /**
+     * @param statePlaylist
+     */
+    public void setStatePlaylist(IStatePlaylist statePlaylist) {
+		this.statePlaylist = statePlaylist;
+	}
     
     /**
      * @param playListPanel
@@ -204,7 +214,7 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> i
      *            Audio object which should have focus
      */
     private synchronized void scrollPlayList(int audioObject, boolean isUserAction) {
-        if (!getState().isAutoScrollPlayListEnabled() && !isUserAction) {
+        if (!statePlaylist.isAutoScrollPlayListEnabled() && !isUserAction) {
             return;
         }
 

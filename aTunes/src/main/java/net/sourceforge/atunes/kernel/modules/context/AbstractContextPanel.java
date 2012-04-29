@@ -44,7 +44,6 @@ import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IContextPanel;
 import net.sourceforge.atunes.model.IContextPanelContent;
 import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.Logger;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -67,8 +66,6 @@ public abstract class AbstractContextPanel implements IContextPanel {
     private IAudioObject audioObject;
 
     private Component component;
-    
-    private IState state;
     
     private List<IContextPanelContent<?>> contents;
     
@@ -260,15 +257,6 @@ public abstract class AbstractContextPanel implements IContextPanel {
 	@Override
 	public String toString() {
 		return getTitle();
-	}
-	
-	protected IState getState() {
-		return state;
-	}
-	
-	@Override
-	public void setState(IState state) {
-		this.state = state;
 	}
 	
     final List<IContextPanelContent<?>> getContents() {

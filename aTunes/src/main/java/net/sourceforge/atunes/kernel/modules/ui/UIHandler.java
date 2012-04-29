@@ -42,7 +42,6 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.model.IStateUI;
@@ -292,7 +291,7 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
     }
 
     @Override
-    public void applicationStateChanged(IState newState) {
+    public void applicationStateChanged() {
         // Once done graphic changes, repaint the window
         repaint();
     }

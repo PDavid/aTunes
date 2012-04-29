@@ -33,7 +33,6 @@ import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.StateChangeListeners;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -61,10 +60,9 @@ public final class EditPreferencesDialogController extends AbstractSimpleControl
     /**
      * Instantiates a new edits the preferences dialog controller.
      * @param dialog
-     * @param state
      */
-    public EditPreferencesDialogController(EditPreferencesDialog dialog, IState state) {
-        super(dialog, state);
+    public EditPreferencesDialogController(EditPreferencesDialog dialog) {
+        super(dialog);
     }
     
     /**

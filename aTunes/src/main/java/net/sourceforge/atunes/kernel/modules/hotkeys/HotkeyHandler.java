@@ -31,7 +31,6 @@ import net.sourceforge.atunes.model.INotificationsHandler;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.model.IUIHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -206,7 +205,7 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
     }
 
     @Override
-    public void applicationStateChanged(IState newState) {
+    public void applicationStateChanged() {
         if (stateCore.isEnableHotkeys()) {
             enableHotkeys(stateCore.getHotkeysConfig());
         } else {

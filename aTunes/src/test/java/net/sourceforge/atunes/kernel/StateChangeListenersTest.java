@@ -26,7 +26,6 @@ import static org.mockito.Mockito.verify;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateChangeListener;
 
 import org.junit.Before;
@@ -38,7 +37,6 @@ public class StateChangeListenersTest {
 	private StateChangeListeners sut;	
 	private IStateChangeListener mock1;
 	private IStateChangeListener mock2;
-	private IState state;
 	
 	@Before
 	public void init() {
@@ -46,18 +44,16 @@ public class StateChangeListenersTest {
 		List<IStateChangeListener> listeners = new ArrayList<IStateChangeListener>();
 		mock1 = mock(IStateChangeListener.class);
 		mock2 = mock(IStateChangeListener.class);
-		state = mock(IState.class);
 		listeners.add(mock1);
 		listeners.add(mock2);
 		sut.setListeners(listeners);
-		sut.setState(state);
 	}
 	
 	@Test
 	public void notifyApplicationStateChanged() {
 		sut.notifyApplicationStateChanged();
 		
-		verify(mock1).applicationStateChanged(state);
-		verify(mock2).applicationStateChanged(state);
+		verify(mock1).applicationStateChanged();
+		verify(mock2).applicationStateChanged();
 	}
 }

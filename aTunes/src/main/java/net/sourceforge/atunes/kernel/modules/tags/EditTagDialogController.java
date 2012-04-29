@@ -52,7 +52,6 @@ import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.LocalAudioObjectFormat;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
@@ -111,15 +110,14 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
     /**
      * Instantiates a new edits the tag dialog controller.
      * @param dialog
-     * @param state
      * @param osManager
      * @param playListHandler
      * @param repositoryHandler
      * @param localAudioObjectValidator
      * @param processFactory
      */
-    public EditTagDialogController(EditTagDialog dialog, IState state, IOSManager osManager, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, ILocalAudioObjectValidator localAudioObjectValidator, IProcessFactory processFactory) {
-        super(dialog, state);
+    public EditTagDialogController(EditTagDialog dialog, IOSManager osManager, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, ILocalAudioObjectValidator localAudioObjectValidator, IProcessFactory processFactory) {
+        super(dialog);
         this.osManager = osManager;
         this.playListHandler = playListHandler;
         this.repositoryHandler = repositoryHandler;

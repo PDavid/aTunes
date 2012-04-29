@@ -31,7 +31,7 @@ import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPlayListIOService;
 import net.sourceforge.atunes.model.IProcessFactory;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStatePlaylist;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class PlayListLoader {
@@ -40,11 +40,18 @@ public class PlayListLoader {
 	
     private IPlayListIOService playListIOService;
 
-	private IState state;
-	
 	private IErrorDialogFactory errorDialogFactory;
 	
     private IProcessFactory processFactory;
+    
+    private IStatePlaylist statePlaylist;
+    
+    /**
+     * @param statePlaylist
+     */
+    public void setStatePlaylist(IStatePlaylist statePlaylist) {
+		this.statePlaylist = statePlaylist;
+	}
 
     /**
      * @param processFactory
@@ -75,17 +82,10 @@ public class PlayListLoader {
 	}
 	
 	/**
-	 * @param state
-	 */
-	public void setState(IState state) {
-		this.state = state;
-	}
-
-	/**
 	 * Load play list from file
 	 */
 	void loadPlaylist() {
-        JFileChooser fileChooser = new JFileChooser(state.getLoadPlaylistPath());
+        JFileChooser fileChooser = new JFileChooser(statePlaylist.getLoadPlaylistPath());
         FileFilter filter = playListIOService.getPlaylistFileFilter();
         // Open file chooser
         fileChooser.setFileFilter(filter);
@@ -95,7 +95,7 @@ public class PlayListLoader {
 
             // If exists...
             if (file.exists()) {
-                state.setLoadPlaylistPath(file.getParentFile().getAbsolutePath());
+                statePlaylist.setLoadPlaylistPath(file.getParentFile().getAbsolutePath());
                 // Read file names
                 List<String> filesToLoad = playListIOService.read(file);
                 // Background loading - but only when returned array is not null (Progress dialog hangs otherwise)

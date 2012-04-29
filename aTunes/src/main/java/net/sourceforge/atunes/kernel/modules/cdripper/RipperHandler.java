@@ -44,6 +44,7 @@ import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IRipperHandler;
 import net.sourceforge.atunes.model.IRipperProgressDialog;
+import net.sourceforge.atunes.model.IStateRipper;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -89,6 +90,15 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
      * List of encoder classes
      */
     private List<String> allEncoders;
+    
+    private IStateRipper stateRipper;
+    
+    /**
+     * @param stateRipper
+     */
+    public void setStateRipper(IStateRipper stateRipper) {
+		this.stateRipper = stateRipper;
+	}
 
     /**
      * @param allEncoders
@@ -195,7 +205,7 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
 	 */
     @Override
 	public String getEncoderName() {
-        String encoderFormat = getState().getEncoder();
+        String encoderFormat = stateRipper.getEncoder();
         if (getAvailableEncoders().containsKey(encoderFormat)) {
             return encoderFormat;
         }
@@ -308,7 +318,7 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
         ripper.setAlbum(album);
         ripper.setYear(year);
         ripper.setGenre(genre);
-        ripper.setFileNamePattern(getState().getCdRipperFileNamePattern());
+        ripper.setFileNamePattern(stateRipper.getCdRipperFileNamePattern());
 
         final IRipperProgressDialog dialog = getBean(IRipperProgressDialog.class);
         dialog.addCancelAction(new ActionListener() {
@@ -432,7 +442,7 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
         	}
         });
 
-        SwingWorker<CDInfo, Void> getCdInfoAndStartRipping = new GetCdInfoAndStartRippingSwingWorker(getOsManager(), getState(), this, getFrame(), dialog, webServicesHandler);
+        SwingWorker<CDInfo, Void> getCdInfoAndStartRipping = new GetCdInfoAndStartRippingSwingWorker(getOsManager(), stateRipper, this, getFrame(), dialog, webServicesHandler);
         getCdInfoAndStartRipping.execute();
     }
 
@@ -458,7 +468,7 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
      */
     RipCdDialogController getRipCdDialogController() {
         if (ripCdDialogController == null) {
-            ripCdDialogController = new RipCdDialogController(getBean(RipCdDialog.class), getState(), getOsManager(), repositoryHandler, this);
+            ripCdDialogController = new RipCdDialogController(getBean(RipCdDialog.class), stateRipper, getOsManager(), repositoryHandler, this);
         }
         return ripCdDialogController;
     }

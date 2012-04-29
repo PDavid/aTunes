@@ -13,7 +13,7 @@
 
 	<bean id="applicationArguments" class="net.sourceforge.atunes.ApplicationArguments"/>
 
-	<bean id="state" class="net.sourceforge.atunes.kernel.modules.state.ApplicationState" />
+	<bean id="statePlaylist" class="net.sourceforge.atunes.kernel.modules.state.ApplicationStatePlaylist" />
 	<bean id="stateRadio" class="net.sourceforge.atunes.kernel.modules.state.ApplicationStateRadio" />
 	<bean id="stateUI" class="net.sourceforge.atunes.kernel.modules.state.ApplicationStateUI" />
 	<bean id="stateRepository" class="net.sourceforge.atunes.kernel.modules.state.ApplicationStateRepository" />
@@ -21,6 +21,9 @@
 	<bean id="stateCore" class="net.sourceforge.atunes.kernel.modules.state.ApplicationStateCore" />
 	<bean id="stateContext" class="net.sourceforge.atunes.kernel.modules.state.ApplicationStateContext" />
 	<bean id="stateNavigation" class="net.sourceforge.atunes.kernel.modules.state.ApplicationStateNavigation" />
+	<bean id="stateRipper" class="net.sourceforge.atunes.kernel.modules.state.ApplicationStateRipper" />
+	<bean id="stateDevice" class="net.sourceforge.atunes.kernel.modules.state.ApplicationStateDevice" />
+	<bean id="statePodcast" class="net.sourceforge.atunes.kernel.modules.state.ApplicationStatePodcast" />
 	<bean id="stateStore" class="net.sourceforge.atunes.kernel.modules.state.PreferencesCache">
 		<constructor-arg ref="osManager"/>
 		<constructor-arg value="/settings/ehcache-preferences.xml" />
@@ -75,7 +78,6 @@
 	
 	<bean id="editPreferencesDialogController" class="net.sourceforge.atunes.kernel.modules.state.EditPreferencesDialogController" scope="prototype" init-method="initialize">
 		<constructor-arg ref="editPreferencesDialog"/>
-		<constructor-arg ref="state"/>
 	</bean>
 	
 </beans>

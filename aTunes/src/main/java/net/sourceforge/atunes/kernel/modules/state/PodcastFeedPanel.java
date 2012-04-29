@@ -30,6 +30,7 @@ import javax.swing.JLabel;
 
 import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IStatePodcast;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class PodcastFeedPanel extends AbstractPreferencesPanel {
@@ -49,6 +50,15 @@ public final class PodcastFeedPanel extends AbstractPreferencesPanel {
     private JCheckBox removePodcastFeedEntriesRemovedFromPodcastFeed;
 
     private IOSManager osManager;
+    
+    private IStatePodcast statePodcast;
+    
+    /**
+     * @param statePodcast
+     */
+    public void setStatePodcast(IStatePodcast statePodcast) {
+		this.statePodcast = statePodcast;
+	}
     
     /**
      * @param osManager
@@ -107,10 +117,10 @@ public final class PodcastFeedPanel extends AbstractPreferencesPanel {
 
     @Override
     public boolean applyPreferences() {
-        getState().setPodcastFeedEntriesRetrievalInterval(((Long) retrievalInterval.getSelectedItem()) * 60);
-        getState().setPodcastFeedEntryDownloadPath(downloadFolderFileChooser.getResult());
-        getState().setUseDownloadedPodcastFeedEntries(useDownloadedPodcastFeedEntries.isSelected());
-        getState().setRemovePodcastFeedEntriesRemovedFromPodcastFeed(removePodcastFeedEntriesRemovedFromPodcastFeed.isSelected());
+        statePodcast.setPodcastFeedEntriesRetrievalInterval(((Long) retrievalInterval.getSelectedItem()) * 60);
+        statePodcast.setPodcastFeedEntryDownloadPath(downloadFolderFileChooser.getResult());
+        statePodcast.setUseDownloadedPodcastFeedEntries(useDownloadedPodcastFeedEntries.isSelected());
+        statePodcast.setRemovePodcastFeedEntriesRemovedFromPodcastFeed(removePodcastFeedEntriesRemovedFromPodcastFeed.isSelected());
         return false;
     }
 
@@ -157,10 +167,10 @@ public final class PodcastFeedPanel extends AbstractPreferencesPanel {
 
     @Override
     public void updatePanel() {
-        setRetrievalInterval(getState().getPodcastFeedEntriesRetrievalInterval());
-        setDownloadPath(getState().getPodcastFeedEntryDownloadPath());
-        setUseDownloadedPodcastFeedEntries(getState().isUseDownloadedPodcastFeedEntries());
-        setRemovePodcastFeedEntriesRemovedFromPodcastFeed(getState().isRemovePodcastFeedEntriesRemovedFromPodcastFeed());
+        setRetrievalInterval(statePodcast.getPodcastFeedEntriesRetrievalInterval());
+        setDownloadPath(statePodcast.getPodcastFeedEntryDownloadPath());
+        setUseDownloadedPodcastFeedEntries(statePodcast.isUseDownloadedPodcastFeedEntries());
+        setRemovePodcastFeedEntriesRemovedFromPodcastFeed(statePodcast.isRemovePodcastFeedEntriesRemovedFromPodcastFeed());
     }
 
     @Override

@@ -25,7 +25,7 @@ import java.util.concurrent.ScheduledFuture;
 
 import net.sourceforge.atunes.kernel.DeviceListeners;
 import net.sourceforge.atunes.model.IDeviceHandler;
-import net.sourceforge.atunes.model.IState;
+import net.sourceforge.atunes.model.IStateDevice;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -38,11 +38,18 @@ public final class DeviceMonitor implements Runnable {
     
     private IDeviceHandler deviceHandler;
     
-    private IState state;
-    
     private ITaskService taskService;
     
     private DeviceListeners deviceListeners;
+    
+    private IStateDevice stateDevice;
+    
+    /**
+     * @param stateDevice
+     */
+    public void setStateDevice(IStateDevice stateDevice) {
+		this.stateDevice = stateDevice;
+	}
     
     /**
      * @param deviceListeners
@@ -56,13 +63,6 @@ public final class DeviceMonitor implements Runnable {
      */
     public void setTaskService(ITaskService taskService) {
 		this.taskService = taskService;
-	}
-    
-    /**
-     * @param state
-     */
-    public void setState(IState state) {
-		this.state = state;
 	}
     
     /**
@@ -128,7 +128,7 @@ public final class DeviceMonitor implements Runnable {
      * @return
      */
     private boolean checkConnection() {
-    	String deviceLocation = state.getDefaultDeviceLocation();
+    	String deviceLocation = stateDevice.getDefaultDeviceLocation();
         if (!StringUtils.isEmpty(deviceLocation)) {
             File deviceLocationFile = new File(deviceLocation);
             if (!deviceHandler.isDeviceConnected() && deviceLocationFile.exists()) {

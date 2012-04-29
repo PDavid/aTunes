@@ -42,7 +42,6 @@ import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IRepositoryTransaction;
 import net.sourceforge.atunes.model.ISearchHandler;
 import net.sourceforge.atunes.model.ISearchableObject;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
 import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.model.IStatisticsHandler;
@@ -206,7 +205,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	}
 	
     @Override
-    public void applicationStateChanged(IState newState) {
+    public void applicationStateChanged() {
     	if (caseSensitiveTrees != stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure()) {
     		caseSensitiveTrees = stateRepository.isKeyAlwaysCaseSensitiveInRepositoryStructure();
     		refreshRepository();

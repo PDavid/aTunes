@@ -27,8 +27,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.model.IState;
-
 abstract class AbstractPreferencesPanel extends JPanel {
 
     private static final long serialVersionUID = -6163144955354757264L;
@@ -43,11 +41,6 @@ abstract class AbstractPreferencesPanel extends JPanel {
      */
     private boolean dirty;
     
-    /**
-     * Access state of application
-     */
-    private IState state;
-
     /**
      * Instantiates a new preferences panel.
      */
@@ -75,22 +68,6 @@ abstract class AbstractPreferencesPanel extends JPanel {
     	return null;
     }
 
-    /**
-     * Returns state of application
-     * @return
-     */
-    protected final IState getState() {
-    	return state;
-    }
-    
-    /**
-     * Sets state of application
-     * @param state
-     */
-    public final void setState(IState state) {
-    	this.state = state;
-    }
-    
     /**
      * Called to update preferences values
      */

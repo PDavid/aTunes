@@ -29,10 +29,4 @@ public interface IHandler extends IApplicationLifeCycleListener,
 								  IPlaybackStateListener,
 								  IWindowListener {
 	
-	/**
-	 * Sets state
-	 * @param state
-	 */
-	public void setState(IState state);
-
 }

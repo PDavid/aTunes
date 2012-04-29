@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel;
 import java.util.Collection;
 
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.IState;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -36,7 +35,7 @@ public class HandlerInitializer implements ApplicationContextAware {
      * initializes all defined handlers
      * @param state
      */
-    void initializeHandlers(IState state) {
+    void initializeHandlers() {
         for (AbstractHandler handler : handlers) {
             Runnable task = handler.getPreviousInitializationTask();
             if (task != null) {

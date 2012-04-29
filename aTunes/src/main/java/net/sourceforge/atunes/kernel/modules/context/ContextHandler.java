@@ -34,8 +34,8 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.IRadio;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateContext;
+import net.sourceforge.atunes.model.IStatePlaylist;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.Logger;
@@ -72,6 +72,15 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     private IWebServicesHandler webServicesHandler;
     
     private IStateContext stateContext;
+    
+    private IStatePlaylist statePlaylist;
+    
+    /**
+     * @param statePlaylist
+     */
+    public void setStatePlaylist(IStatePlaylist statePlaylist) {
+		this.statePlaylist = statePlaylist;
+	}
     
     /**
      * @param stateContext
@@ -235,7 +244,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
     }
 
     @Override
-    public void applicationStateChanged(IState newState) {
+    public void applicationStateChanged() {
         // Show or hide context panel
         showContextPanel(stateContext.isUseContext());
     }
@@ -278,7 +287,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
         if (stateContext.isUseContext()) {
             retrieveInfoAndShowInPanel(null);
             
-            if (getState().isStopPlayerOnPlayListClear()) {
+            if (statePlaylist.isStopPlayerOnPlayListClear()) {
             	clearContextPanels();
             }
         }

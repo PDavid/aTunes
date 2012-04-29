@@ -30,8 +30,6 @@ import java.util.List;
  */
 public interface IColumnSet {
 
-	public void setState(IState state);
-
 	public void setFrame(IFrame frame);
 
 	/**

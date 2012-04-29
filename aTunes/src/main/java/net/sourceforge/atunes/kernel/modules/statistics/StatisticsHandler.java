@@ -332,7 +332,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
     @Override
     public void showStatistics() {
 		if (controller == null) {
-			controller = new StatsDialogController(getBean(StatsDialog.class), getState(), this, lookAndFeelManager, repositoryHandler); 
+			controller = new StatsDialogController(getBean(StatsDialog.class), this, lookAndFeelManager, repositoryHandler); 
 		}
 		controller.showStats();
 	}

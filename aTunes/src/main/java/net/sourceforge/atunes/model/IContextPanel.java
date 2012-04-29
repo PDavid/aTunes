@@ -149,11 +149,6 @@ public interface IContextPanel {
 	public Action getAction();
 	
 	/**
-	 * @param state
-	 */
-	public void setState(IState state);
-
-	/**
 	 * List of contents shown in the context panel. Contents are shown in order
 	 * in context tab
 	 * @param contents

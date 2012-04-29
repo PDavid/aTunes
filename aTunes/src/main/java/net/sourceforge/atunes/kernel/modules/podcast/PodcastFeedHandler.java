@@ -46,8 +46,8 @@ import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IPodcastFeedHandler;
 import net.sourceforge.atunes.model.IProgressDialog;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateHandler;
+import net.sourceforge.atunes.model.IStatePodcast;
 import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.model.ITaskService;
@@ -98,6 +98,15 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
     private INavigationView podcastNavigationView;
     
     private IStateUI stateUI;
+    
+    private IStatePodcast statePodcast;
+    
+    /**
+     * @param statePodcast
+     */
+    public void setStatePodcast(IStatePodcast statePodcast) {
+		this.statePodcast = statePodcast;
+	}
     
     /**
      * @param stateUI
@@ -262,7 +271,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
 
 	private void startPodcastFeedEntryRetriever() {
         // When upgrading from a previous version, retrievel interval can be 0
-        long retrieval = getState().getPodcastFeedEntriesRetrievalInterval();
+        long retrieval = statePodcast.getPodcastFeedEntriesRetrievalInterval();
         long retrievalInterval = retrieval > 0 ? retrieval : DEFAULT_PODCAST_FEED_ENTRIES_RETRIEVAL_INTERVAL;
 
         schedulePodcastFeedEntryRetriever(retrievalInterval);
@@ -315,7 +324,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
     	
         // Start only if podcast feeds created
         if (!CollectionUtils.isEmpty(getPodcastFeeds())) {
-        	scheduledPodcastFeedEntryRetrieverFuture = taskService.submitPeriodically("Periodically Retrieve Podcast Feed Entries", newRetrievalInterval, newRetrievalInterval, new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), stateUI, getFrame(), navigationHandler, networkHandler, podcastNavigationView));
+        	scheduledPodcastFeedEntryRetrieverFuture = taskService.submitPeriodically("Periodically Retrieve Podcast Feed Entries", newRetrievalInterval, newRetrievalInterval, new PodcastFeedEntryRetriever(getPodcastFeeds(), statePodcast, stateUI, getFrame(), navigationHandler, networkHandler, podcastNavigationView));
         } else {
         	Logger.debug("Not scheduling PodcastFeedEntryRetriever");
         }
@@ -323,7 +332,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
 
     @Override
 	public void retrievePodcastFeedEntries() {
-    	taskService.submitNow("Retrieve Podcast Feed Entries", new PodcastFeedEntryRetriever(getPodcastFeeds(), getState(), stateUI, getFrame(), navigationHandler, networkHandler, podcastNavigationView));
+    	taskService.submitNow("Retrieve Podcast Feed Entries", new PodcastFeedEntryRetriever(getPodcastFeeds(), statePodcast, stateUI, getFrame(), navigationHandler, networkHandler, podcastNavigationView));
     }
 
     @Override
@@ -452,7 +461,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
 	 * @return
 	 */
 	private File getPodcastFeedsDownloadFolder() {
-		String path = getState().getPodcastFeedEntryDownloadPath();
+		String path = statePodcast.getPodcastFeedEntryDownloadPath();
         if (path == null || path.isEmpty()) {
             path = StringUtils.getString(getOsManager().getUserConfigFolder(), "/", Constants.DEFAULT_PODCAST_FEED_ENTRY_DOWNLOAD_DIR);
         }
@@ -493,8 +502,8 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
     }
 
     @Override
-    public void applicationStateChanged(IState newState) {
-        setPodcastFeedEntryRetrievalInterval(newState.getPodcastFeedEntriesRetrievalInterval());
+    public void applicationStateChanged() {
+        setPodcastFeedEntryRetrievalInterval(statePodcast.getPodcastFeedEntriesRetrievalInterval());
     }
     
 	/**

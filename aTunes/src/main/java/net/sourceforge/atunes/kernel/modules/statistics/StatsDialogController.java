@@ -41,7 +41,6 @@ import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -107,13 +106,12 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
      * Instantiates a new stats dialog controller.
      * 
      * @param frame
-     * @param state
      * @param statisticsHandler
      * @param lookAndFeelManager
      * @param repositoryHandler
      */
-    StatsDialogController(StatsDialog frame, IState state, IStatisticsHandler statisticsHandler, ILookAndFeelManager lookAndFeelManager, IRepositoryHandler repositoryHandler) {
-        super(frame, state);
+    StatsDialogController(StatsDialog frame, IStatisticsHandler statisticsHandler, ILookAndFeelManager lookAndFeelManager, IRepositoryHandler repositoryHandler) {
+        super(frame);
         this.statisticsHandler = statisticsHandler;
         this.lookAndFeelManager = lookAndFeelManager;
         this.lookAndFeelManager.addLookAndFeelChangeListener(this);

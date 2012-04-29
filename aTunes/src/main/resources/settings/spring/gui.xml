@@ -60,12 +60,10 @@
 	
 	<bean id="playListFilterPanelController" class="net.sourceforge.atunes.kernel.modules.filter.FilterController" init-method="initialize">
 		<constructor-arg ref="playListFilterPanel"/>
-		<constructor-arg ref="state"/>
 	</bean>
 
 	<bean id="navigatorFilterPanelController" class="net.sourceforge.atunes.kernel.modules.filter.FilterController" init-method="initialize">
 		<constructor-arg ref="navigatorFilterPanel"/>
-		<constructor-arg ref="state"/>
 	</bean>
 	
 	<bean id="navigationTreeFilter" class="net.sourceforge.atunes.kernel.modules.filter.NavigationTreeFilter"/>

@@ -40,7 +40,6 @@ import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ITable;
 import net.sourceforge.atunes.model.ViewMode;
@@ -185,7 +184,7 @@ public final class NavigationHandler extends AbstractHandler implements PluginLi
     }
 
     @Override
-    public void applicationStateChanged(IState newState) {
+    public void applicationStateChanged() {
         refreshCurrentView();
     }
 

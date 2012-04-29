@@ -91,16 +91,6 @@ public interface IContextPanelContent<T extends IContextInformationSource> {
 	public void setParentPanel(JPanel parentPanel);
 
 	/**
-	 * @return
-	 */
-	public IState getState();
-
-	/**
-	 * @param state
-	 */
-	public void setState(IState state);
-
-	/**
 	 * @param dataSource
 	 */
 	public void setDataSource(IContextInformationSource dataSource);

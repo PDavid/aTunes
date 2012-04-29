@@ -31,7 +31,6 @@ import java.util.UUID;
 
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepository;
-import net.sourceforge.atunes.model.IState;
 import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.model.IStateHandler;
 
@@ -41,14 +40,12 @@ import org.junit.Test;
 public class FavoritesHandlerTest {
 
 	private IStateHandler stateHandler = mock(IStateHandler.class);
-	private IState state = mock(IState.class);
 	
 	private FavoritesHandler sut;
 	
 	@Before
 	public void init() {
 		sut = new FavoritesHandler();
-		sut.setState(state);
 		sut.setStateContext(mock(IStateContext.class));
 		sut.setStateHandler(stateHandler);
 		sut.getPreviousInitializationTask().run();

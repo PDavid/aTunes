@@ -23,16 +23,10 @@ package net.sourceforge.atunes.kernel;
 import java.awt.Component;
 
 import net.sourceforge.atunes.model.IController;
-import net.sourceforge.atunes.model.IState;
 
 public abstract class AbstractSimpleController<T extends Component> implements IController {
 
     private T componentControlled;
-
-    /**
-     * State of app
-     */
-    private IState state;
 
     /**
      * Default constructor
@@ -42,10 +36,10 @@ public abstract class AbstractSimpleController<T extends Component> implements I
 
     /**
      * Instantiates a new controller.
+     * @param componentControlled
      */
-    public AbstractSimpleController(T componentControlled, IState state) {
+    public AbstractSimpleController(T componentControlled) {
         this.componentControlled = componentControlled;
-        this.state = state;
     }
     
     /**
@@ -56,24 +50,10 @@ public abstract class AbstractSimpleController<T extends Component> implements I
 	}
     
     /**
-     * @param state
-     */
-    public final void setState(IState state) {
-		this.state = state;
-	}
-    
-    /**
      * @return
      */
     public T getComponentControlled() {
         return componentControlled;
-    }
-    
-    /**
-     * @return
-     */
-    protected IState getState() {
-    	return state;
     }
     
     @Override
