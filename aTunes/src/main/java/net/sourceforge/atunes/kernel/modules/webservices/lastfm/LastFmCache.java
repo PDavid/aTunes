@@ -82,6 +82,7 @@ public class LastFmCache extends AbstractCache {
     public LastFmCache(IOSManager osManager, XMLSerializerService xmlSerializerService) {
         super(osManager, LastFmCache.class.getResource("/settings/ehcache-lastfm.xml"));
         this.xmlSerializerService = xmlSerializerService;
+    	Logger.debug("Initializing LastFmCache");
     }
     
     private Cache getCache() {

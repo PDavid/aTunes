@@ -25,14 +25,13 @@ import java.util.List;
 import junit.framework.Assert;
 import net.sourceforge.atunes.kernel.modules.network.NetworkHandler;
 import net.sourceforge.atunes.model.ILovedTrack;
-import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.model.IStateCore;
 
 import org.junit.Test;
 import org.mockito.Mockito;
 
-public class LastFmServiceTest {
+public class LastFmUserServicesTest {
 
     @Test
     public void testLovedTracks() {
@@ -42,10 +41,9 @@ public class LastFmServiceTest {
     	NetworkHandler networkHandler = new NetworkHandler();
     	networkHandler.setStateCore(Mockito.mock(IStateCore.class));
     	
-    	LastFmService service = new LastFmService();
+    	LastFmUserServices service = new LastFmUserServices();
     	service.setStateContext(state);
-    	service.setOsManager(Mockito.mock(IOSManager.class));
-    	service.setNetworkHandler(networkHandler);
+    	service.setLastFmAPIKey(new LastFmAPIKey());
     	
         List<ILovedTrack> lovedTracks = service.getLovedTracks();
         
