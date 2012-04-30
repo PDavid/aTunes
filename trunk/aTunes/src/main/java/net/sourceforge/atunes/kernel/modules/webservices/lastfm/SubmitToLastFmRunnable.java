@@ -22,7 +22,6 @@ package net.sourceforge.atunes.kernel.modules.webservices.lastfm;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
@@ -30,33 +29,61 @@ import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 
-final class SubmitToLastFmRunnable implements Runnable {
+public final class SubmitToLastFmRunnable implements Runnable {
 
-	private final long secondsPlayed;
-	private final IAudioObject audioFile;
-	private final LastFmService lastFmService;
-	private final IFrame frame;
-	private final IStateContext stateContext;
-
+	private long secondsPlayed;
+	private IAudioObject audioFile;
+	private LastFmUserServices lastFmUserServices;
+	private IFrame frame;
+	private IStateContext stateContext;
+	private IErrorDialogFactory errorDialogFactory;
+	
+	/**
+	 * @param errorDialogFactory
+	 */
+	public void setErrorDialogFactory(IErrorDialogFactory errorDialogFactory) {
+		this.errorDialogFactory = errorDialogFactory;
+	}
+	
 	/**
 	 * @param secondsPlayed
+	 */
+	public void setSecondsPlayed(long secondsPlayed) {
+		this.secondsPlayed = secondsPlayed;
+	}
+	
+	/**
 	 * @param audioFile
-	 * @param lastFmService
+	 */
+	public void setAudioFile(IAudioObject audioFile) {
+		this.audioFile = audioFile;
+	}
+	
+	/**
+	 * @param lastFmUserServices
+	 */
+	public void setLastFmUserServices(LastFmUserServices lastFmUserServices) {
+		this.lastFmUserServices = lastFmUserServices;
+	}
+	
+	/**
 	 * @param frame
+	 */
+	public void setFrame(IFrame frame) {
+		this.frame = frame;
+	}
+	
+	/**
 	 * @param stateContext
 	 */
-	SubmitToLastFmRunnable(long secondsPlayed, IAudioObject audioFile, LastFmService lastFmService, IFrame frame, IStateContext stateContext) {
-		this.secondsPlayed = secondsPlayed;
-		this.audioFile = audioFile;
-		this.lastFmService = lastFmService;
-		this.frame = frame;
+	public void setStateContext(IStateContext stateContext) {
 		this.stateContext = stateContext;
 	}
 
 	@Override
 	public void run() {
 	    try {
-	        lastFmService.submit(audioFile, secondsPlayed);
+	        lastFmUserServices.submit(audioFile, secondsPlayed);
 	    } catch (ScrobblerException e) {
 	        if (e.getStatus() == 2) {
 	            Logger.error("Authentication failure on Last.fm service");
@@ -64,7 +91,7 @@ final class SubmitToLastFmRunnable implements Runnable {
 
 	                @Override
 	                public void run() {
-	                	Context.getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(frame, I18nUtils.getString("LASTFM_USER_ERROR"));
+	                	errorDialogFactory.getDialog().showErrorDialog(frame, I18nUtils.getString("LASTFM_USER_ERROR"));
 	                    // Disable service by deleting password
 	                	stateContext.setLastFmEnabled(false);
 	                }

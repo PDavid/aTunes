@@ -5,7 +5,19 @@
 
 	default-autowire="byName" default-lazy-init="true">
 
-	<bean id="lastFmService" class="net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService"/>
+	<bean id="lastFmCache" class="net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmCache">
+		<constructor-arg ref="osManager"/>
+		<constructor-arg ref="xmlSerializerService"/>
+	</bean>
+	<bean id="lastFmService" class="net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmService" init-method="initialize"/>
+	<bean id="lastFmAPIKey" class="net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmAPIKey"/>
+	<bean id="lastFmLogin" class="net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmLogin"/>
+	<bean id="lastFmUserServices" class="net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmUserServices"/>
+	<bean id="lastFmAlbumServices" class="net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmAlbumServices"/>
+	<bean id="lastFmArtistServices" class="net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmArtistServices"/>
+	<bean id="lastFmSongServices" class="net.sourceforge.atunes.kernel.modules.webservices.lastfm.LastFmSongServices"/>
+	<bean class="net.sourceforge.atunes.kernel.modules.webservices.lastfm.SubmitNowPlayingInfoRunnable" scope="prototype"/>
+	<bean class="net.sourceforge.atunes.kernel.modules.webservices.lastfm.SubmitToLastFmRunnable" scope="prototype"/>
 
 	<bean id="lyricsService"
 		class="net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyricsService">
