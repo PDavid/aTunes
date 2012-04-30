@@ -101,7 +101,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 		            refreshDevice();
 		            filesCopiedToDevice = process.getFilesTransferred().size();
 		            if (!ok) {
-		            	getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(getFrame(), I18nUtils.getString("ERRORS_IN_EXPORT_PROCESS"));
+		            	getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(I18nUtils.getString("ERRORS_IN_EXPORT_PROCESS"));
 		            }
 		        }
 		    });
@@ -240,7 +240,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
         // Not enough space avaible
         if (leaveFree > deviceFreeSpace) {
             Logger.debug(I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
-            getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(getFrame(), I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
+            getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
             return;
         }
 
@@ -401,7 +401,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
     	        getBean(SynchronizeDeviceWithPlayListAction.class).setEnabled(false);
     	        getBean(CopyPlayListToDeviceAction.class).setEnabled(false);
     	        getFrame().showDeviceInfo(false);
-    	        getBean(IMessageDialogFactory.class).getDialog().showMessage(I18nUtils.getString("DEVICE_DISCONNECTION_DETECTED"), getFrame());		    
+    	        getBean(IMessageDialogFactory.class).getDialog().showMessage(I18nUtils.getString("DEVICE_DISCONNECTION_DETECTED"));		    
     		}
     	});
 

@@ -33,9 +33,8 @@ public interface IMessageDialog {
 	/**
 	 * Show message for principal frame
 	 * @param message
-	 * @param frame
 	 */
-	public void showMessage(String message, IFrame frame);
+	public void showMessage(String message);
 
 	/**
 	 * Show message
@@ -47,15 +46,12 @@ public interface IMessageDialog {
 
 	/**
 	 * Shows a custom message dialog.
-	 * 
-	 * @param frame
 	 * @param message
 	 * @param title
 	 * @param messageType the JOptionPane integer constant which determines type of message
 	 * @param options array of objects to be shown on buttons
 	 * @return Selected object
 	 */
-	public Object showMessage(IFrame frame, String message, String title,
-			int messageType, Object[] options);
+	public Object showMessage(String message, String title, int messageType, Object[] options);
 
 }

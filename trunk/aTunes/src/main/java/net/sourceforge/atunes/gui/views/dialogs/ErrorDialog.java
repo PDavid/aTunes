@@ -40,6 +40,15 @@ import org.jdesktop.swingx.error.ErrorInfo;
  */
 public class ErrorDialog implements IErrorDialog {
 
+	private IFrame frame;
+	
+	/**
+	 * @param frame
+	 */
+	public void setFrame(IFrame frame) {
+		this.frame = frame;
+	}
+	
     /**
      * A runnable wrapping a call to show an error message
      * @author alex
@@ -65,7 +74,7 @@ public class ErrorDialog implements IErrorDialog {
 	 * @see net.sourceforge.atunes.gui.views.dialogs.IErrorDialog#showErrorDialog(net.sourceforge.atunes.model.IFrame, java.lang.String)
 	 */
     @Override
-	public void showErrorDialog(final IFrame frame, final String message) {
+	public void showErrorDialog(final String message) {
     	if (SwingUtilities.isEventDispatchThread()) {
     		new ShowMessageDialogRunnable(message, frame).run();
     	} else {

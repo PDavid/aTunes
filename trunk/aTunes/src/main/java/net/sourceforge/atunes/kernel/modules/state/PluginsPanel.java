@@ -53,7 +53,6 @@ import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.gui.views.dialogs.PluginEditorDialog;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
-import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.IStateCore;
@@ -104,8 +103,6 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	
 	private IPluginsHandler pluginsHandler;
 	
-	private IFrame frame;
-	
 	private ILookAndFeelManager lookAndFeelManager;
 	
 	private IDesktop desktop;
@@ -131,13 +128,6 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	 */
 	public void setPluginsHandler(IPluginsHandler pluginsHandler) {
 		this.pluginsHandler = pluginsHandler;
-	}
-	
-	/**
-	 * @param frame
-	 */
-	public void setFrame(IFrame frame) {
-		this.frame = frame;
 	}
 	
 	/**
@@ -425,7 +415,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 					}
 				}
 			} catch (Exception e1) {
-				Context.getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(frame, e1.getMessage());
+				Context.getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(e1.getMessage());
 				Logger.error(e1);
 			}
 		}
@@ -447,7 +437,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 					PluginsPanel.this.pluginsHandler.validateConfiguration(plugin, configuration);
 					pluginsModified.put(plugin, configuration);
 				} catch (InvalidPluginConfigurationException ex) {
-					Context.getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(frame, StringUtils.getString(I18nUtils.getString("PLUGIN_CONFIGURATION_INVALID"), ex.getMessage()));
+					Context.getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(StringUtils.getString(I18nUtils.getString("PLUGIN_CONFIGURATION_INVALID"), ex.getMessage()));
 				}
 			}
 		}

@@ -337,7 +337,7 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
      * @return
      */
     private boolean showPlaybackError(String... errorMessages) {
-        ShowPlaybackErrorRunnable r = new ShowPlaybackErrorRunnable(errorMessages, frame);
+        ShowPlaybackErrorRunnable r = new ShowPlaybackErrorRunnable(errorMessages);
         if (SwingUtilities.isEventDispatchThread()) {
             r.run();
         } else {

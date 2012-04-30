@@ -134,7 +134,7 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
                 stateCore.setEnableHotkeys(false);
 
                 // Show an error message
-                getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(getFrame(), I18nUtils.getString("HOTKEYS_ACTIVATION_ERROR_MESSAGE"));
+                getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(I18nUtils.getString("HOTKEYS_ACTIVATION_ERROR_MESSAGE"));
                 Logger.error("Hotkeys were not activated successfully");
             }
         }

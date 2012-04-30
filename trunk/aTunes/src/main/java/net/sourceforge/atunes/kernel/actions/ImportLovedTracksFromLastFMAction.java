@@ -28,7 +28,6 @@ import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
 import net.sourceforge.atunes.model.IFavoritesHandler;
-import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -45,8 +44,6 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
     private static final long serialVersionUID = 5620935204300321285L;
 
 	private IIndeterminateProgressDialog dialog;
-	
-	private IFrame frame;
 	
     private IBackgroundWorkerFactory backgroundWorkerFactory;
     
@@ -143,15 +140,8 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
         // Set favorites, but not in last.fm again
 		favoritesHandler.addFavoriteSongs(lovedTracks, false);
 		messageDialogFactory.getDialog()
-			.showMessage(StringUtils.getString(I18nUtils.getString("LOVED_TRACKS_IMPORTED"), ": ", lovedTracks == null ? "0" : lovedTracks.size()), frame);
+			.showMessage(StringUtils.getString(I18nUtils.getString("LOVED_TRACKS_IMPORTED"), ": ", lovedTracks == null ? "0" : lovedTracks.size()));
     }
-    
-    /**
-     * @param frame
-     */
-    public void setFrame(IFrame frame) {
-		this.frame = frame;
-	}
     
     /**
      * @param backgroundWorkerFactory
@@ -194,6 +184,4 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
     public void setMessageDialogFactory(IMessageDialogFactory messageDialogFactory) {
 		this.messageDialogFactory = messageDialogFactory;
 	}
-    
-
 }

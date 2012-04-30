@@ -202,7 +202,7 @@ public final class SearchHandler extends AbstractHandler implements ISearchHandl
      */
     private CustomSearchController getSearchController() {
         if (customSearchController == null) {
-            customSearchController = new CustomSearchController(new CustomSearchDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class)), stateCore, getFrame(), this);
+            customSearchController = new CustomSearchController(new CustomSearchDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class)), stateCore, this);
         }
         return customSearchController;
     }

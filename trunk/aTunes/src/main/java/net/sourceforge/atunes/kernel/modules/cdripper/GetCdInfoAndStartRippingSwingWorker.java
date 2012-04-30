@@ -28,7 +28,6 @@ import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
-import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStateRipper;
 import net.sourceforge.atunes.model.IWebServicesHandler;
@@ -39,7 +38,6 @@ final class GetCdInfoAndStartRippingSwingWorker extends	SwingWorker<CDInfo, Void
 
 	private IOSManager osManager;
 	private RipperHandler ripperHandler;
-	private IFrame frame;
 	private RipCdDialog dialog;
 	private IWebServicesHandler webServicesHandler;
 	private IStateRipper stateRipper;
@@ -52,11 +50,10 @@ final class GetCdInfoAndStartRippingSwingWorker extends	SwingWorker<CDInfo, Void
 	 * @param dialog
 	 * @param webServicesHandler
 	 */
-	GetCdInfoAndStartRippingSwingWorker(IOSManager osManager, IStateRipper stateRipper, RipperHandler ripperHandler, IFrame frame, RipCdDialog dialog, IWebServicesHandler webServicesHandler) {
+	GetCdInfoAndStartRippingSwingWorker(IOSManager osManager, IStateRipper stateRipper, RipperHandler ripperHandler, RipCdDialog dialog, IWebServicesHandler webServicesHandler) {
 		this.osManager = osManager;
 		this.stateRipper = stateRipper;
 		this.ripperHandler = ripperHandler;
-		this.frame = frame;
 		this.dialog = dialog;
 		this.webServicesHandler = webServicesHandler;
 	}
@@ -76,7 +73,7 @@ final class GetCdInfoAndStartRippingSwingWorker extends	SwingWorker<CDInfo, Void
 	                @Override
 	                public void run() {
 	                	GetCdInfoAndStartRippingSwingWorker.this.ripperHandler.getIndeterminateProgressDialog().hideDialog();
-	                    Context.getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(frame, I18nUtils.getString("NO_CD_INSERTED"));
+	                    Context.getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(I18nUtils.getString("NO_CD_INSERTED"));
 	                }
 	            });
 	        }

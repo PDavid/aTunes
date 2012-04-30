@@ -33,10 +33,9 @@ public interface IErrorDialog {
 	/**
 	 * Show error dialog.
 	 * 
-	 * @param frame
 	 * @param message
 	 */
-	public void showErrorDialog(final IFrame frame, final String message);
+	public void showErrorDialog(final String message);
 
 	/**
 	 * Show error dialog.

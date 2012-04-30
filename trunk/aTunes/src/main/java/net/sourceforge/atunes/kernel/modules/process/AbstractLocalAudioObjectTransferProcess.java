@@ -34,7 +34,6 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.kernel.modules.pattern.Patterns;
-import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectTransferProcess;
 import net.sourceforge.atunes.model.IMessageDialogFactory;
@@ -77,8 +76,6 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
     private String userSelectionWhenErrors = null;
 
     private IOSManager osManager;
-    
-    private IFrame frame;
     
     private IProgressDialog transferDialog;
     
@@ -148,13 +145,6 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
 	}
     
     /**
-     * @param frame
-     */
-    public void setFrame(IFrame frame) {
-		this.frame = frame;
-	}
-    
-    /**
      * @param osManager
      */
     public void setOsManager(IOSManager osManager) {
@@ -212,7 +202,7 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
                             @Override
                             public void run() {
                                 userSelectionWhenErrors = (String) messageDialogFactory.getDialog()
-                                        .showMessage(frame, StringUtils.getString(I18nUtils.getString("ERROR"), ": ", thrownExceptions.get(0).getMessage()), I18nUtils.getString("ERROR"),
+                                        .showMessage(StringUtils.getString(I18nUtils.getString("ERROR"), ": ", thrownExceptions.get(0).getMessage()), I18nUtils.getString("ERROR"),
                                                 JOptionPane.ERROR_MESSAGE,
                                                 new String[] { I18nUtils.getString("IGNORE"), I18nUtils.getString("IGNORE_ALL"), I18nUtils.getString("CANCEL") });
                             }
