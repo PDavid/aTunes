@@ -34,6 +34,7 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmAlbum;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmAlbumList;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmArtistTopTracks;
+import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLovedTrack;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmSimilarArtists;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAlbumListInfo;
@@ -72,6 +73,7 @@ import de.umass.lastfm.Result.Status;
 import de.umass.lastfm.Session;
 import de.umass.lastfm.Tag;
 import de.umass.lastfm.Track;
+import de.umass.lastfm.User;
 import de.umass.lastfm.scrobble.ScrobbleResult;
 
 /**
@@ -785,11 +787,22 @@ public final class LastFmService {
      */
     public List<ILovedTrack> getLovedTracks() {
         if (!StringUtils.isEmpty(stateContext.getLastFmUser())) {
-            try {
-                return LastFmLovedTracks.getLovedTracks(stateContext.getLastFmUser(), null, networkHandler);
-            } catch (Exception e) {
-                Logger.error(e);
-            }
+        	List<ILovedTrack> lovedTracks = new ArrayList<ILovedTrack>();
+
+        	int page = 1;
+        	PaginatedResult<Track> paginatedResult = null;
+        	do {
+        		paginatedResult = User.getLovedTracks(stateContext.getLastFmUser(), page, getApiKey());
+        		if (paginatedResult != null && paginatedResult.getPageResults() != null) {
+        			for (Track t : paginatedResult.getPageResults()) {
+        				lovedTracks.add(new LastFmLovedTrack(t.getArtist(), t.getName()));
+        			}
+        		}
+        		page++;
+        	} while (paginatedResult != null && page <= paginatedResult.getTotalPages());
+        	
+        	Logger.info("Returned ", lovedTracks.size(), " loved tracks from last.fm");
+        	return lovedTracks;
         }
         return Collections.emptyList();
     }
