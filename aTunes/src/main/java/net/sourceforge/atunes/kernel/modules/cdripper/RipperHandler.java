@@ -442,7 +442,7 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
         	}
         });
 
-        SwingWorker<CDInfo, Void> getCdInfoAndStartRipping = new GetCdInfoAndStartRippingSwingWorker(getOsManager(), stateRipper, this, getFrame(), dialog, webServicesHandler);
+        SwingWorker<CDInfo, Void> getCdInfoAndStartRipping = new GetCdInfoAndStartRippingSwingWorker(getOsManager(), stateRipper, this, dialog, webServicesHandler);
         getCdInfoAndStartRipping.execute();
     }
 
@@ -455,7 +455,7 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
     boolean testTools() {
         if (!CdToWavConverterTest.testTools(getOsManager())) {
             Logger.error("Error testing \"cdda2wav\" or \"cdparanoia\". Check program is installed");
-            SwingUtilities.invokeLater(new ShowErrorDialogRunnable(getFrame()));
+            SwingUtilities.invokeLater(new ShowErrorDialogRunnable());
             return false;
         }
         return true;

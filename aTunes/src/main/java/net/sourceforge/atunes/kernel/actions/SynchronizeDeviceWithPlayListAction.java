@@ -30,7 +30,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.model.IDeviceHandler;
-import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -57,8 +56,6 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 	private static final long serialVersionUID = -1885495996370465881L;
 	
 	private IIndeterminateProgressDialogFactory indeterminateProgressDialogFactory;
-	
-	private IFrame frame;
 	
 	private IMessageDialogFactory messageDialogFactory;
 	
@@ -115,13 +112,6 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 	}
 	
 	/**
-	 * @param frame
-	 */
-	public void setFrame(IFrame frame) {
-		this.frame = frame;
-	}
-	
-	/**
 	 * @param indeterminateProgressDialogFactory
 	 */
 	public void setIndeterminateProgressDialogFactory(IIndeterminateProgressDialogFactory indeterminateProgressDialogFactory) {
@@ -160,7 +150,7 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 	        	messageDialogFactory.getDialog().showMessage(
 	                    StringUtils.getString(I18nUtils.getString("SYNCHRONIZATION_FINISHED"), " ", I18nUtils.getString("ADDED"), 
 	                    		": ", added ? deviceHandler.getFilesCopiedToDevice() : 0, " ", 
-	                    				I18nUtils.getString("REMOVED"), ": ", filesRemoved), frame);
+	                    				I18nUtils.getString("REMOVED"), ": ", filesRemoved));
 	        }
 	    });
 	}

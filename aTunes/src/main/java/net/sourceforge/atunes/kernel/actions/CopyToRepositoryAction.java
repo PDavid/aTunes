@@ -27,7 +27,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
-import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectTransferProcess;
 import net.sourceforge.atunes.model.IProcessFactory;
@@ -39,8 +38,6 @@ public class CopyToRepositoryAction extends AbstractActionOverSelectedObjects<IL
 
     private static final long serialVersionUID = 2416674807979541242L;
 
-    private IFrame frame;
-    
     private IRepositoryHandler repositoryHandler;
     
     private IErrorDialogFactory errorDialogFactory;
@@ -52,13 +49,6 @@ public class CopyToRepositoryAction extends AbstractActionOverSelectedObjects<IL
      */
     public void setProcessFactory(IProcessFactory processFactory) {
 		this.processFactory = processFactory;
-	}
-    
-    /**
-     * @param frame
-     */
-    public void setFrame(IFrame frame) {
-		this.frame = frame;
 	}
     
     /**
@@ -109,7 +99,7 @@ public class CopyToRepositoryAction extends AbstractActionOverSelectedObjects<IL
             @Override
             public void run() {
                 if (!ok) {
-                	errorDialogFactory.getDialog().showErrorDialog(frame, I18nUtils.getString("ERRORS_IN_COPYING_PROCESS"));
+                	errorDialogFactory.getDialog().showErrorDialog(I18nUtils.getString("ERRORS_IN_COPYING_PROCESS"));
                 }
                 // Force a refresh of repository to add new songs
                 repositoryHandler.refreshRepository();

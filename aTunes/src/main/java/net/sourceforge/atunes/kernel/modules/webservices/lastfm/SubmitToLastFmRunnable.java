@@ -24,7 +24,6 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
-import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -34,7 +33,6 @@ public final class SubmitToLastFmRunnable implements Runnable {
 	private long secondsPlayed;
 	private IAudioObject audioFile;
 	private LastFmUserServices lastFmUserServices;
-	private IFrame frame;
 	private IStateContext stateContext;
 	private IErrorDialogFactory errorDialogFactory;
 	
@@ -67,13 +65,6 @@ public final class SubmitToLastFmRunnable implements Runnable {
 	}
 	
 	/**
-	 * @param frame
-	 */
-	public void setFrame(IFrame frame) {
-		this.frame = frame;
-	}
-	
-	/**
 	 * @param stateContext
 	 */
 	public void setStateContext(IStateContext stateContext) {
@@ -91,7 +82,7 @@ public final class SubmitToLastFmRunnable implements Runnable {
 
 	                @Override
 	                public void run() {
-	                	errorDialogFactory.getDialog().showErrorDialog(frame, I18nUtils.getString("LASTFM_USER_ERROR"));
+	                	errorDialogFactory.getDialog().showErrorDialog(I18nUtils.getString("LASTFM_USER_ERROR"));
 	                    // Disable service by deleting password
 	                	stateContext.setLastFmEnabled(false);
 	                }

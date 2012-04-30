@@ -254,7 +254,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
         Object selection;
         do {
             selection = messageDialogFactory.getDialog().
-            	showMessage(frame, StringUtils.getString(I18nUtils.getString("REPOSITORY_NOT_FOUND"), ": ", rep.getRepositoryFolders().get(0)),
+            	showMessage(StringUtils.getString(I18nUtils.getString("REPOSITORY_NOT_FOUND"), ": ", rep.getRepositoryFolders().get(0)),
                     I18nUtils.getString("REPOSITORY_NOT_FOUND"), JOptionPane.WARNING_MESSAGE,
                     new String[] { I18nUtils.getString("RETRY"), I18nUtils.getString("SELECT_REPOSITORY"), I18nUtils.getString("EXIT") });
 
@@ -279,7 +279,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
             for (String f : lastRepositoryFolders) {
                 foldersToRead.add(new File(f));
             }
-            messageDialogFactory.getDialog().showMessage(I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"), frame);
+            messageDialogFactory.getDialog().showMessage(I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"));
             retrieve(foldersToRead);
         } else {
         	RepositorySelectionInfoDialog dialog = new RepositorySelectionInfoDialog(frame.getFrame(), lookAndFeelManager);

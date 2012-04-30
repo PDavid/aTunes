@@ -105,7 +105,7 @@ public class PlayListLoader {
                     process.execute();
                 }
             } else {
-            	errorDialogFactory.getDialog().showErrorDialog(frame, I18nUtils.getString("FILE_NOT_FOUND"));
+            	errorDialogFactory.getDialog().showErrorDialog(I18nUtils.getString("FILE_NOT_FOUND"));
             }
         }
     }

@@ -298,7 +298,7 @@ public class PodcastFeedEntryRetriever implements Runnable {
                                 podcastFeed.markEntriesAsNotNew();
                             }
                             if (!stateUI.isShowStatusBar()) {
-                            	Context.getBean(IMessageDialogFactory.class).getDialog().showMessage(I18nUtils.getString("NEW_PODCAST_ENTRIES"), frame);
+                            	Context.getBean(IMessageDialogFactory.class).getDialog().showMessage(I18nUtils.getString("NEW_PODCAST_ENTRIES"));
                             } else {
                                 frame.showNewPodcastFeedEntriesInfo(true);
                             }

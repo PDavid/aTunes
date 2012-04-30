@@ -251,7 +251,7 @@ public abstract class OperatingSystemAdapter {
 	 */
 	public void manageNoPlayerEngine(IFrame frame) {
 		// By default no management is done, only an error message
-		Context.getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(frame, I18nUtils.getString("NO_PLAYER_ENGINE"));
+		Context.getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(I18nUtils.getString("NO_PLAYER_ENGINE"));
 	}
 
 	/**

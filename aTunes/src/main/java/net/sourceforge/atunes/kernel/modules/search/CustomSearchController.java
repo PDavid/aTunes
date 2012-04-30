@@ -41,7 +41,6 @@ import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.modules.search.SearchHandler.LogicalOperator;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
-import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.ISearchHandler;
 import net.sourceforge.atunes.model.ISearchableObject;
@@ -60,8 +59,6 @@ final class CustomSearchController extends AbstractSimpleController<CustomSearch
     /** Translated attributes */
     private Map<String, String> translatedAttributes = new HashMap<String, String>();
     
-    private IFrame frame;
-
     private ISearchHandler searchHandler;
     
     private IStateCore stateCore;
@@ -70,12 +67,10 @@ final class CustomSearchController extends AbstractSimpleController<CustomSearch
      * Constructor.
      * @param dialog
      * @param stateCore
-     * @param frame
      * @param searchHandler
      */
-    CustomSearchController(CustomSearchDialog dialog, IStateCore stateCore, IFrame frame, ISearchHandler searchHandler) {
+    CustomSearchController(CustomSearchDialog dialog, IStateCore stateCore, ISearchHandler searchHandler) {
         super(dialog);
-        this.frame = frame;
         this.searchHandler = searchHandler;
         this.stateCore = stateCore;
         addBindings();
@@ -384,7 +379,7 @@ final class CustomSearchController extends AbstractSimpleController<CustomSearch
 
                 // If no matches found show a message
                 if (result.isEmpty()) {
-                	Context.getBean(IMessageDialogFactory.class).getDialog().showMessage(I18nUtils.getString("NO_MATCHES_FOUND"), frame);
+                	Context.getBean(IMessageDialogFactory.class).getDialog().showMessage(I18nUtils.getString("NO_MATCHES_FOUND"));
                 } else {
                     // Hide search dialog
                     getComponentControlled().setVisible(false);
@@ -393,13 +388,13 @@ final class CustomSearchController extends AbstractSimpleController<CustomSearch
                 }
             } catch (SearchIndexNotAvailableException e) {
                 // Thrown when an attribute does not exist on index
-            	Context.getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(frame, I18nUtils.getString("INVALID_SEARCH_RULE"));
+            	Context.getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(I18nUtils.getString("INVALID_SEARCH_RULE"));
             } catch (SearchQuerySyntaxException e) {
                 // Thrown when query has invalid syntax
-            	Context.getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(frame, I18nUtils.getString("INVALID_SEARCH_RULE"));
+            	Context.getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(I18nUtils.getString("INVALID_SEARCH_RULE"));
             }
         } else {
-        	Context.getBean(IMessageDialogFactory.class).getDialog().showMessage(I18nUtils.getString("NO_MATCHES_FOUND"), frame);
+        	Context.getBean(IMessageDialogFactory.class).getDialog().showMessage(I18nUtils.getString("NO_MATCHES_FOUND"));
         }
     }
 

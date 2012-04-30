@@ -29,7 +29,6 @@ import net.sourceforge.atunes.model.IConfirmationDialogFactory;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IExportOptionsDialog;
 import net.sourceforge.atunes.model.IExportOptionsDialogFactory;
-import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectTransferProcess;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -59,8 +58,6 @@ public class ExportAction extends CustomAbstractAction {
     private INavigationHandler navigationHandler;
     
     private IPlayListHandler playListHandler;
-    
-    private IFrame frame;
     
     private IProcessFactory processFactory;
     
@@ -107,15 +104,14 @@ public class ExportAction extends CustomAbstractAction {
                     process.setFilesToTransfer(songs);
                     ExportProcessListener listener = new ExportProcessListener();
                     listener.setErrorDialogFactory(errorDialogFactory);
-                    listener.setFrame(frame);
                     process.addProcessListener(listener);
                     process.execute();
                 } else if (userWantsToCreate) {
                     // If path does not exist and app is not able to create it show an error dialog
-                	errorDialogFactory.getDialog().showErrorDialog(frame, I18nUtils.getString("COULD_NOT_CREATE_DIR"));
+                	errorDialogFactory.getDialog().showErrorDialog(I18nUtils.getString("COULD_NOT_CREATE_DIR"));
                 }
             } else {
-            	errorDialogFactory.getDialog().showErrorDialog(frame, I18nUtils.getString("INCORRECT_EXPORT_PATH"));
+            	errorDialogFactory.getDialog().showErrorDialog(I18nUtils.getString("INCORRECT_EXPORT_PATH"));
             }
         }
     }
@@ -124,20 +120,11 @@ public class ExportAction extends CustomAbstractAction {
 
     	private IErrorDialogFactory errorDialogFactory;
     	
-    	private IFrame frame;
-
     	/**
     	 * @param errorDialogFactory
     	 */
     	public void setErrorDialogFactory(IErrorDialogFactory errorDialogFactory) {
 			this.errorDialogFactory = errorDialogFactory;
-		}
-    	
-    	/**
-    	 * @param frame
-    	 */
-    	public void setFrame(IFrame frame) {
-			this.frame = frame;
 		}
     	
         @Override
@@ -151,7 +138,7 @@ public class ExportAction extends CustomAbstractAction {
             	@Override
             	public void run() {
                     if (!ok) {
-                    	errorDialogFactory.getDialog().showErrorDialog(frame, I18nUtils.getString("ERRORS_IN_EXPORT_PROCESS"));
+                    	errorDialogFactory.getDialog().showErrorDialog(I18nUtils.getString("ERRORS_IN_EXPORT_PROCESS"));
                     }
             	}
             });
@@ -191,13 +178,6 @@ public class ExportAction extends CustomAbstractAction {
      */
     public void setPlayListHandler(IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
-	}
-    
-    /**
-     * @param frame
-     */
-    public void setFrame(IFrame frame) {
-		this.frame = frame;
 	}
     
     /**

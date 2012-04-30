@@ -79,7 +79,7 @@ final class CheckUpdatesSwingWorker extends
 	                 frame.showNewVersionInfo(true, version);
 	             }
 	        } else if (showNoNewVersion) {
-	            Context.getBean(IMessageDialogFactory.class).getDialog().showMessage(I18nUtils.getString("NOT_NEW_VERSION"), frame);
+	            Context.getBean(IMessageDialogFactory.class).getDialog().showMessage(I18nUtils.getString("NOT_NEW_VERSION"));
 	        }
 	    } catch (InterruptedException e) {
 	        Logger.error(e);

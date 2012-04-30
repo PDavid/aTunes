@@ -30,7 +30,6 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.process.ImportFilesProcess;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
-import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectLocator;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
@@ -53,7 +52,6 @@ public final class ImportFoldersSwingWorker extends SwingWorker<List<ILocalAudio
 	private List<File> folders;
 	private String path;
 	private IProgressDialog progressDialog;
-	private IFrame frame;
 	private IErrorDialogFactory errorDialogFactory;
 	private ILocalAudioObjectValidator localAudioObjectValidator;
 	private IProcessFactory processFactory;
@@ -88,13 +86,6 @@ public final class ImportFoldersSwingWorker extends SwingWorker<List<ILocalAudio
 		this.progressDialog = progressDialog;
 	}
 	
-	/**
-	 * @param frame
-	 */
-	public void setFrame(IFrame frame) {
-		this.frame = frame;
-	}
-
 	/**
 	 * @param stateRepository
 	 */
@@ -160,7 +151,7 @@ public final class ImportFoldersSwingWorker extends SwingWorker<List<ILocalAudio
 	        process.setFolders(folders);
 	        process.setDestination(path);
 	        process.initialize(tagAttributesReviewed);
-	        process.addProcessListener(new ImportFilesProcessListener(process, repositoryHandler, frame, errorDialogFactory));
+	        process.addProcessListener(new ImportFilesProcessListener(process, repositoryHandler, errorDialogFactory));
 	        process.execute();
 
 	    } catch (InterruptedException e) {

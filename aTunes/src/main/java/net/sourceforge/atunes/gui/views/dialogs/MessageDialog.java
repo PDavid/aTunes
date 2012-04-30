@@ -30,33 +30,31 @@ import net.sourceforge.atunes.model.IMessageDialog;
 
 public class MessageDialog implements IMessageDialog {
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IMessageDialog#showMessage(java.lang.String, net.sourceforge.atunes.model.IFrame)
+	private IFrame frame;
+	
+	/**
+	 * @param frame
 	 */
+	public void setFrame(IFrame frame) {
+		this.frame = frame;
+	}
+	
     @Override
-	public void showMessage(String message, IFrame frame) {
+	public void showMessage(String message) {
         showMessage(message, frame.getFrame());
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IMessageDialog#showMessage(java.lang.String, java.awt.Component)
-	 */
     @Override
 	public void showMessage(String message, Component owner) {
         JOptionPane.showMessageDialog(owner, message);
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IMessageDialog#showMessage(net.sourceforge.atunes.model.IFrame, java.lang.String, java.lang.String, int, java.lang.Object[])
-	 */
     @Override
-	public Object showMessage(IFrame frame, String message, String title, int messageType, Object[] options) {
+	public Object showMessage(String message, String title, int messageType, Object[] options) {
         JOptionPane pane = new JOptionPane(message, messageType, JOptionPane.OK_CANCEL_OPTION, null, options);
         JDialog dialog = pane.createDialog(frame.getFrame(), title);
         dialog.setLocationRelativeTo(frame.getFrame());
         dialog.setVisible(true);
         return pane.getValue();
     }
-
-
 }
