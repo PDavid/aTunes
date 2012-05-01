@@ -22,11 +22,13 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -61,7 +63,35 @@ public class MoveAfterCurrentAudioObjectAction extends CustomAbstractAction {
 
 	@Override
 	protected void executeAction() {
-    	playListHandler.moveSelectionAfterCurrentAudioObject();
+        IPlayList currentPlayList = playListHandler.getCurrentPlayList(true);
+        List<IAudioObject> selectedAudioObjects = playListHandler.getSelectedAudioObjects();
+        
+        //Recurse backwards to move the elements to the correct position
+        Collections.reverse(selectedAudioObjects);
+        
+        int beginNewPosition = playListHandler.getCurrentAudioObjectIndexInVisiblePlayList();
+        int endNewPosition = playListHandler.getCurrentAudioObjectIndexInVisiblePlayList();
+        for (int i = 0; i < selectedAudioObjects.size(); i++) {
+        	IAudioObject o = selectedAudioObjects.get(i);
+        	int currentIndex = playListHandler.getCurrentAudioObjectIndexInVisiblePlayList();
+        	int sourceIndex = currentPlayList.indexOf(o);
+
+        	//Workaround otherwise file is put before current playing
+        	if (sourceIndex > currentIndex) {
+        		currentIndex++;
+        	}
+        	currentPlayList.moveRowTo(sourceIndex, currentIndex);
+
+        	// Get min and max indexes to set selected
+        	beginNewPosition = Math.min(currentIndex, beginNewPosition);
+        	endNewPosition = Math.max(currentIndex, endNewPosition);
+        }
+        
+        playListHandler.refreshPlayList();
+        
+        // Keep selected elements
+        playListHandler.setSelectionInterval(playListHandler.getCurrentAudioObjectIndexInVisiblePlayList() + 1, playListHandler.getCurrentAudioObjectIndexInVisiblePlayList() + selectedAudioObjects.size());
+
     }
     
     @Override

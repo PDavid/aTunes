@@ -99,13 +99,4 @@ public class PlayListsContainerTest {
 		assertEquals(playList2, sut.getPlayListAt(2));
 		assertEquals(playList3, sut.getPlayListAt(3));
 	}
-
-	@Test
-	public void testMovePlayListToPosition() {
-		sut.movePlayListToPosition(0, 1);
-		assertEquals(3, sut.getPlayListsCount());
-		assertEquals(playList1, sut.getPlayListAt(1));
-		assertEquals(playList2, sut.getPlayListAt(0));
-	}
-
 }

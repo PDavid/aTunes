@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.kernel.modules.playlist;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
@@ -519,37 +518,10 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     }
     
     @Override
-	public void moveSelectionAfterCurrentAudioObject() {
-        IPlayList currentPlayList = getCurrentPlayList(true);
-        List<IAudioObject> selectedAudioObjects = getSelectedAudioObjects();
-        
-        //Recurse backwards to move the elements to the correct position
-        Collections.reverse(selectedAudioObjects);
-        
-        int beginNewPosition = getCurrentAudioObjectIndexInVisiblePlayList();
-        int endNewPosition = getCurrentAudioObjectIndexInVisiblePlayList();
-        for (int i = 0; i < selectedAudioObjects.size(); i++) {
-        	IAudioObject o = selectedAudioObjects.get(i);
-        	int currentIndex = getCurrentAudioObjectIndexInVisiblePlayList();
-        	int sourceIndex = currentPlayList.indexOf(o);
-
-        	//Workaround otherwise file is put before current playing
-        	if (sourceIndex > currentIndex) {
-        		currentIndex++;
-        	}
-        	currentPlayList.moveRowTo(sourceIndex, currentIndex);
-
-        	// Get min and max indexes to set selected
-        	beginNewPosition = Math.min(currentIndex, beginNewPosition);
-        	endNewPosition = Math.max(currentIndex, endNewPosition);
-        }
-        
-        refreshPlayList();
-        
-        // Keep selected elements
-        playListController.setSelectionInterval(getCurrentAudioObjectIndexInVisiblePlayList() + 1, getCurrentAudioObjectIndexInVisiblePlayList() + selectedAudioObjects.size());
+    public void setSelectionInterval(int start, int end) {
+    	playListController.setSelectionInterval(start, end);
     }
-
+    
     @Override
 	public void playNow(IAudioObject audioObject) {
         if (!getCurrentPlayList(true).contains(audioObject)) {
@@ -690,11 +662,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         if (statePlaylist.isAutoScrollPlayListEnabled()) {
             playListController.scrollPlayList(true);
         }
-    }
-
-    @Override
-	public void movePlaylistToPosition(int from, int to) {
-    	playListsContainer.movePlayListToPosition(from, to);
     }
 
     @Override
