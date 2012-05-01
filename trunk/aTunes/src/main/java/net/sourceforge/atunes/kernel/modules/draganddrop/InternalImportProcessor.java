@@ -30,8 +30,11 @@ import javax.swing.JTable;
 import javax.swing.TransferHandler.TransferSupport;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.api.RepositoryApi;
+import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
+import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectComparator;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -150,9 +153,17 @@ class InternalImportProcessor {
     private boolean getArtistSongs(List<DragableArtist> listOfObjectsDragged) {
     	DragableArtist dragabreArtist = listOfObjectsDragged.get(0);
     	IArtist currentArtist = RepositoryApi.getArtist(dragabreArtist.getArtistInfo().getName());
-    	playListHandler.showAddArtistDragDialog(currentArtist);
+    	showAddArtistDragDialog(currentArtist);
     	return true;
 	}
+    
+	private void showAddArtistDragDialog(IArtist currentArtist) {
+    	IArtistAlbumSelectorDialog dialog = Context.getBean(IArtistAlbumSelectorDialog.class);
+    	IAlbum album = dialog.showDialog(currentArtist);
+    	if (album != null) {
+    		playListHandler.addToPlayList(album.getAudioObjects());
+    	}
+    }
 	
 	/**
      * Move rows in play list
