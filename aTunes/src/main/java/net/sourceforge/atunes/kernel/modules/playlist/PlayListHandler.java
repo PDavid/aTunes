@@ -35,7 +35,6 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
-import net.sourceforge.atunes.model.IPlayerControlsPanel;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IStatePlayer;
@@ -67,8 +66,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	private IFilter playListFilter;
 	
 	private IFilterHandler filterHandler;
-	
-	private IRepositoryHandler repositoryHandler;
 	
 	private PlayListNameCreator playListNameCreator;
 	
@@ -166,13 +163,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	}
 	
 	/**
-	 * @param repositoryHandler
-	 */
-	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
-	}
-	
-	/**
 	 * @param filterHandler
 	 */
 	public void setFilterHandler(IFilterHandler filterHandler) {
@@ -210,7 +200,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     @Override
     protected void initHandler() {
         // Add audio file removed listener
-        repositoryHandler.addAudioFilesRemovedListener(this);
+        getBean(IRepositoryHandler.class).addAudioFilesRemovedListener(this);
     }
 
     @Override
@@ -446,49 +436,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 
     @Override
 	public void clearPlayList() {
-        // Remove filter
-        setFilter(null);
-
-        // Set selection interval to none
-        playListController.clearSelection();
-
-        IPlayList playList = getCurrentPlayList(true);
-        if (!playList.isEmpty()) {
-            // Clear play list
-            playList.clear();
-
-            // Only if this play list is the active stop playback
-            if (isActivePlayListVisible() && statePlaylist.isStopPlayerOnPlayListClear()) {
-                playerHandler.stopCurrentAudioObject(false);
-            }
-
-            // Set first audio object as current
-            playList.setCurrentAudioObjectIndex(0);
-
-            // Disable actions
-            getBean(SavePlayListAction.class).setEnabled(false);
-            getBean(ShufflePlayListAction.class).setEnabled(false);
-
-            // Update audio object number
-            playListInformationInStatusBar.showPlayListInformation(playList);
-
-            // disable progress slider
-            if (!statePlaylist.isStopPlayerOnPlayListClear()) {
-            	getBean(IPlayerControlsPanel.class).getProgressSlider().setEnabled(false);
-            }
-            playListController.repaint();
-
-            // Refresh play list
-            playListController.refreshPlayList();
-
-            Logger.info("Play list clear");
-        }
-
-        // Fire clear event
-        // Only if this play list is the active
-        if (isActivePlayListVisible()) {
-        	playListEventListeners.playListCleared();
-        }
+    	getBean(PlayListRemover.class).clearPlayList();
     }
 
     /**
