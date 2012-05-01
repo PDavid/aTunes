@@ -20,15 +20,28 @@
 
 package net.sourceforge.atunes.kernel.modules.playlist;
 
+import java.util.List;
+
+import net.sourceforge.atunes.kernel.PlayListEventListeners;
+import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
+import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
+import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
+import net.sourceforge.atunes.utils.Logger;
+import net.sourceforge.atunes.utils.StringUtils;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 /**
  * Responsible of removing play lists
  * @author alex
  *
  */
-public class PlayListRemover {
+public class PlayListRemover implements ApplicationContextAware {
 	
 	private IPlayListHandler playListHandler;
 	
@@ -39,6 +52,31 @@ public class PlayListRemover {
 	private IPlayListController playListController;
 	
 	private IPlayListTabController playListTabController;
+	
+	private PlayListEventListeners playListEventListeners;
+	
+	private PlayListInformationInStatusBar playListInformationInStatusBar;
+	
+	private ApplicationContext context;
+	
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		this.context = applicationContext;
+	}
+	
+	/**
+	 * @param playListInformationInStatusBar
+	 */
+	public void setPlayListInformationInStatusBar(PlayListInformationInStatusBar playListInformationInStatusBar) {
+		this.playListInformationInStatusBar = playListInformationInStatusBar;
+	}
+
+	/**
+	 * @param playListEventListeners
+	 */
+	public void setPlayListEventListeners(PlayListEventListeners playListEventListeners) {
+		this.playListEventListeners = playListEventListeners;
+	}
 	
 	/**
 	 * @param playerHandler
@@ -80,7 +118,7 @@ public class PlayListRemover {
 	 * @param index
 	 * @return
 	 */
-	public boolean removePlayList(int index) {
+	public void removePlayList(int index) {
 		// If index is not valid, do nothing
 		// if there is only one play list, don't delete
 		if (validateIndex(index) && moreThanOnePlayList()) {
@@ -96,11 +134,36 @@ public class PlayListRemover {
 			// Refresh table
 			playListController.refreshPlayList();
 
-			return true;
+    		playListHandler.playListsChanged(true, true);
 		}
-		return false;
     }
-
+	
+	public void closeCurrentPlaylist() {
+        // The current selected play list when this action is fired
+        int i = playListTabController.getSelectedPlayListIndex();
+        if (i != -1) {
+        	// As this action is not called when pressing close button in tab set removeTab argument to true
+            removePlayList(i);
+        }
+    }
+    
+	public void closeOtherPlaylists() {
+        // The current selected play list when this action is fired
+        int i = playListTabController.getSelectedPlayListIndex();
+        if (i != -1) {
+            // Remove play lists from 0 to i. Remove first play list until current play list is at index 0  
+            for (int j = 0; j < i; j++) {
+            	// As this action is not called when pressing close button in tab set removeTab argument to true
+                removePlayList(0);
+            }
+            // Now current play list is at index 0, so delete from play list size down to 1
+            while (playListsContainer.getPlayListsCount() > 1) {
+            	// As this action is not called when pressing close button in tab set removeTab argument to true
+                removePlayList(playListsContainer.getPlayListsCount() - 1);
+            }
+        }
+    }
+    
 	/**
 	 * @param index
 	 */
@@ -150,5 +213,70 @@ public class PlayListRemover {
 	private boolean validateIndex(int index) {
 		return index >= 0 && playListsContainer.getPlayListsCount() > index;
 	}
+
+	void removeAudioObjects(int[] rows) {
+        IPlayList currentPlayList = playListHandler.getCurrentPlayList(true);
+        IAudioObject playingAudioObject = currentPlayList.getCurrentAudioObject();
+        boolean hasToBeRemoved = false;
+        for (int element : rows) {
+            if (element == currentPlayList.getCurrentAudioObjectIndex()) {
+                hasToBeRemoved = true;
+            }
+        }
+        for (int i = rows.length - 1; i >= 0; i--) {
+            currentPlayList.remove(rows[i]);
+        }
+
+        if (hasToBeRemoved) {
+            currentAudioObjectHasToBeRemoved(currentPlayList);
+        } else {
+            currentPlayList.setCurrentAudioObjectIndex(currentPlayList.indexOf(playingAudioObject));
+            if (playListHandler.isActivePlayListVisible()) {
+            	playListEventListeners.selectedAudioObjectHasChanged(currentPlayList.getCurrentAudioObject());
+            }
+        }
+
+        playListController.refreshPlayList();
+
+        if (currentPlayList.isEmpty()) {
+        	context.getBean(SavePlayListAction.class).setEnabled(false);
+        	context.getBean(ShufflePlayListAction.class).setEnabled(false);
+        }
+        playListInformationInStatusBar.showPlayListInformation(currentPlayList);
+        Logger.info(StringUtils.getString(rows.length, " objects removed from play list"));
+    }
+
+	/**
+	 * @param currentPlayList
+	 */
+	private void currentAudioObjectHasToBeRemoved(IPlayList currentPlayList) {
+		// Only stop if this is the active play list
+		if (playListHandler.isActivePlayListVisible()) {
+		    playerHandler.stopCurrentAudioObject(false);
+		}
+		if (currentPlayList.isEmpty()) {
+	    	playListEventListeners.playListCleared();
+		} else {
+		    // If current audio object is removed, check if it's necessary to move current audio object (after remove current index is greater than play list size)
+		    if (currentPlayList.getCurrentAudioObjectIndex() >= currentPlayList.size()) {
+		        currentPlayList.setCurrentAudioObjectIndex(currentPlayList.size() - 1);
+		    }
+		    if (playListHandler.isActivePlayListVisible()) {
+		    	playListEventListeners.selectedAudioObjectHasChanged(currentPlayList.getCurrentAudioObject());
+		    }
+		}
+	}
+	
+    /**
+     * @param audioFiles
+     */
+    void removeAudioFiles(List<ILocalAudioObject> audioFiles) {
+        // Remove these objects from all play lists
+    	for (int i = 0; i < playListsContainer.getPlayListsCount(); i++) {
+    		playListsContainer.getPlayListAt(i).remove(audioFiles);
+        }
+        // Update status bar
+    	playListInformationInStatusBar.showPlayListInformation(playListHandler.getCurrentPlayList(true));
+    }
 
 }

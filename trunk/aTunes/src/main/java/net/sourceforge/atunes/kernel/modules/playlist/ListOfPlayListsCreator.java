@@ -35,7 +35,7 @@ class ListOfPlayListsCreator {
      * @param nonFilteredPlayList 
      * @return the list of play lists
      */
-    IListOfPlayLists getListOfPlayLists(IPlayListsContainer playLists, boolean filtered, IPlayList nonFilteredPlayList) {
+    IListOfPlayLists getListOfPlayLists(IPlayListsContainer playLists) {
     	if (playLists == null || playLists.getPlayListsCount() == 0) {
     		throw new IllegalArgumentException("Playlists empty or null");
     	}
@@ -51,9 +51,9 @@ class ListOfPlayListsCreator {
         l.setSelectedPlayList(playLists.getActivePlayListIndex());
 
         // If current play list is filtered return non-filtered play list
-        if (filtered) {
+        if (playLists.isFiltered()) {
             l.getPlayLists().remove(playLists.getActivePlayListIndex());
-            l.getPlayLists().add(playLists.getActivePlayListIndex(), nonFilteredPlayList);
+            l.getPlayLists().add(playLists.getActivePlayListIndex(), playLists.getNonFilteredPlayList());
         }
 
         return l;

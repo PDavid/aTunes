@@ -20,10 +20,29 @@
 
 package net.sourceforge.atunes.kernel.modules.playlist;
 
+import net.sourceforge.atunes.model.IPlayList;
+
 interface IPlayListController {
 
 	/**
 	 * Updates play list
 	 */
 	void refreshPlayList();
+
+	/**
+	 * Clear selection
+	 */
+	void clearSelection();
+
+	/**
+	 * Sets given play list as visible
+	 * @param playList
+	 */
+	void setVisiblePlayList(IPlayList playList);
+
+	/**
+	 * Scrolls automatically playlist to current audio object
+	 * @param userAction
+	 */
+	void scrollPlayList(boolean userAction);
 }

@@ -61,7 +61,7 @@ public class ListOfPlayListsCreatorTest {
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testNull() {
-		sut.getListOfPlayLists(null, false, null);
+		sut.getListOfPlayLists(null);
 	}	
 	
 	@Test(expected=IllegalArgumentException.class)
@@ -69,7 +69,7 @@ public class ListOfPlayListsCreatorTest {
 		IPlayListsContainer container = mock(IPlayListsContainer.class);
 		when(container.getPlayListsCount()).thenReturn(0);
 
-		sut.getListOfPlayLists(container, false, null);
+		sut.getListOfPlayLists(container);
 	}	
 	
 	@Test
@@ -81,7 +81,7 @@ public class ListOfPlayListsCreatorTest {
 		when(container.getPlayListAt(2)).thenReturn(playList3);
 		when(container.getActivePlayListIndex()).thenReturn(1);
 
-		IListOfPlayLists result = sut.getListOfPlayLists(container, false, null);
+		IListOfPlayLists result = sut.getListOfPlayLists(container);
 
 		assertEquals(list.size(), result.getPlayLists().size());
 		assertEquals(playList1, result.getPlayLists().get(0));
@@ -98,8 +98,10 @@ public class ListOfPlayListsCreatorTest {
 		when(container.getPlayListAt(1)).thenReturn(playList2);
 		when(container.getPlayListAt(2)).thenReturn(playList3);
 		when(container.getActivePlayListIndex()).thenReturn(1);
+		when(container.isFiltered()).thenReturn(true);
+		when(container.getNonFilteredPlayList()).thenReturn(playList4);
 
-		IListOfPlayLists result = sut.getListOfPlayLists(container, true, playList4);
+		IListOfPlayLists result = sut.getListOfPlayLists(container);
 
 		assertEquals(list.size(), result.getPlayLists().size());
 		assertEquals(playList1, result.getPlayLists().get(0));

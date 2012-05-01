@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.playlist;
 
-import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -64,18 +63,6 @@ public class PlayListRemoverTest {
 		
 	}
 	
-	@Test
-	public void testBadIndex() {
-		assertFalse(sut.removePlayList(-1));
-		assertFalse(sut.removePlayList(Integer.MAX_VALUE));
-	}
-
-	@Test
-	public void testOnlyOnePlayList() {
-		playListsContainer.addPlayList(mock(IPlayList.class));
-		assertFalse(sut.removePlayList(0));
-	}
-
 	@Test
 	public void testRemoveActivePlayList() {
 		playListsContainer.addPlayList(mock(IPlayList.class));

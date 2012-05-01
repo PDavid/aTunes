@@ -129,7 +129,7 @@ final class PlayListTabController extends AbstractSimpleController<PlayListSelec
      * 
      * @return
      */
-    int getSelectedPlayListIndex() {
+    public int getSelectedPlayListIndex() {
         return getComponentControlled().getPlayListCombo().getSelectedIndex();
     }
 

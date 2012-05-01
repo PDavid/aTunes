@@ -27,4 +27,10 @@ interface IPlayListTabController {
 	 * @param index
 	 */
 	void deletePlayList(int index);
+
+	/**
+	 * Returns index of selected play list
+	 * @return
+	 */
+	int getSelectedPlayListIndex();
 }

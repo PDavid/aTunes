@@ -249,7 +249,7 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> i
     /**
      * Scrolls to songs currently playing.
      */
-    void scrollPlayList(boolean isUserAction) {
+    public void scrollPlayList(boolean isUserAction) {
         // Sometimes scroll can be fired when application starts if window size is changed
         // In that cases call to scroll could thrown an exception is current play list is not yet initialized
         // So check first if the visible play list is initialized before scroll it
@@ -340,7 +340,7 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> i
     /**
      * Clear play list selection
      */
-    void clearSelection() {
+    public void clearSelection() {
     	playListTable.getSelectionModel().clearSelection();
     }
     
@@ -348,7 +348,7 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> i
      * Sets given playlist as visible
      * @param playList
      */
-    void setVisiblePlayList(IPlayList playList) {
+    public void setVisiblePlayList(IPlayList playList) {
     	((PlayListTableModel) playListTable.getModel()).setVisiblePlayList(playList);
     }
     
