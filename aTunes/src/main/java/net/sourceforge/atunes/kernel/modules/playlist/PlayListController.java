@@ -21,11 +21,8 @@
 package net.sourceforge.atunes.kernel.modules.playlist;
 
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 import javax.swing.event.TableModelEvent;
 
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
@@ -40,9 +37,6 @@ import net.sourceforge.atunes.utils.Logger;
 
 final class PlayListController extends AbstractSimpleController<PlayListPanel> implements IPlayListController {
 
-    /** The visible rect. */
-    private Rectangle visibleRect;
-    
     private IPlayListHandler playListHandler;
     
     private IPlayerHandler playerHandler;
@@ -214,7 +208,7 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> i
      * @param audioObject
      *            Audio object which should have focus
      */
-    private synchronized void scrollPlayList(int audioObject, boolean isUserAction) {
+    private void scrollPlayList(int audioObject, boolean isUserAction) {
         if (!statePlaylist.isAutoScrollPlayListEnabled() && !isUserAction) {
             return;
         }
@@ -227,7 +221,23 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> i
         Logger.debug("Scrolling PlayList");
 
         // Get visible rectangle
-        visibleRect = (Rectangle) playListTable.getVisibleRect().clone();
+        final Rectangle visibleRect = getVisibleRectangle(audioObject);
+
+        // Apply scroll
+        SwingUtilities.invokeLater(new Runnable() {
+        	@Override
+        	public void run() {
+                playListTable.scrollRectToVisible(visibleRect);
+        	}
+        });
+    }
+
+	/**
+	 * @param audioObject
+	 * @return
+	 */
+	private Rectangle getVisibleRectangle(int audioObject) {
+		Rectangle visibleRect = (Rectangle) playListTable.getVisibleRect().clone();
 
         // Get cell height
         int heightOfRow = playListTable.getCellRect(audioObject, 0, true).height;
@@ -244,18 +254,8 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> i
 
         // Correct negative value of y
         visibleRect.y = visibleRect.y >= 0 ? visibleRect.y : 0;
-
-        // Apply scroll
-        // We add a delay in order to reduce freezes
-        Timer t = new Timer(250, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                playListTable.scrollRectToVisible(visibleRect);
-            }
-        });
-        t.setRepeats(false);
-        t.start();
-    }
+		return visibleRect;
+	}
 
     /**
      * Forces refresh of play list
