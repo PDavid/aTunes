@@ -53,7 +53,7 @@ import net.sourceforge.atunes.gui.AbstractListCellRendererCode;
 import net.sourceforge.atunes.gui.AbstractTreeCellRendererCode;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.model.IFileSelectionDialog;
+import net.sourceforge.atunes.model.ICustomFileSelectionDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -62,7 +62,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * The Class FileSelectionDialog.
  */
-public final class FileSelectionDialog extends AbstractCustomDialog implements IFileSelectionDialog {
+public final class CustomFileSelectionDialog extends AbstractCustomDialog implements ICustomFileSelectionDialog {
 
     private final class FileSystemListMouseAdapter extends MouseAdapter {
 		@Override
@@ -254,7 +254,7 @@ public final class FileSelectionDialog extends AbstractCustomDialog implements I
      * @param frame
      * @param lookAndFeelManager
      */
-    public FileSelectionDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
+    public CustomFileSelectionDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
         super(frame, 660, 430, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
         this.lookAndFeel = lookAndFeelManager.getCurrentLookAndFeel();
         add(getContent());

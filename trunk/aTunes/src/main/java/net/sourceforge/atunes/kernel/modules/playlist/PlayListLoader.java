@@ -23,20 +23,16 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 import java.io.File;
 import java.util.List;
 
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileFilter;
-
 import net.sourceforge.atunes.kernel.modules.process.LoadPlayListProcess;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
-import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IFileSelectorDialog;
+import net.sourceforge.atunes.model.IFileSelectorDialogFactory;
 import net.sourceforge.atunes.model.IPlayListIOService;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IStatePlaylist;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class PlayListLoader {
-	
-	private IFrame frame;
 	
     private IPlayListIOService playListIOService;
 
@@ -45,6 +41,15 @@ public class PlayListLoader {
     private IProcessFactory processFactory;
     
     private IStatePlaylist statePlaylist;
+    
+    private IFileSelectorDialogFactory fileSelectorDialogFactory;
+    
+    /**
+     * @param fileSelectorDialogFactory
+     */
+    public void setFileSelectorDialogFactory(IFileSelectorDialogFactory fileSelectorDialogFactory) {
+		this.fileSelectorDialogFactory = fileSelectorDialogFactory;
+	}
     
     /**
      * @param statePlaylist
@@ -68,13 +73,6 @@ public class PlayListLoader {
 	}
 	
 	/**
-	 * @param frame
-	 */
-	public void setFrame(IFrame frame) {
-		this.frame = frame;
-	}
-	
-	/**
 	 * @param playListIOService
 	 */
 	public void setPlayListIOService(IPlayListIOService playListIOService) {
@@ -85,14 +83,10 @@ public class PlayListLoader {
 	 * Load play list from file
 	 */
 	void loadPlaylist() {
-        JFileChooser fileChooser = new JFileChooser(statePlaylist.getLoadPlaylistPath());
-        FileFilter filter = playListIOService.getPlaylistFileFilter();
-        // Open file chooser
-        fileChooser.setFileFilter(filter);
-        if (fileChooser.showOpenDialog(frame.getFrame()) == JFileChooser.APPROVE_OPTION) {
-            // Get selected file
-            File file = fileChooser.getSelectedFile();
-
+		IFileSelectorDialog dialog = fileSelectorDialogFactory.getDialog();
+		dialog.setFileFilter(playListIOService.getPlaylistFileFilter());
+		File file = dialog.selectFile(statePlaylist.getLoadPlaylistPath());
+		if (file != null) {
             // If exists...
             if (file.exists()) {
                 statePlaylist.setLoadPlaylistPath(file.getParentFile().getAbsolutePath());

@@ -25,13 +25,13 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.List;
 
-import javax.swing.JFileChooser;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IConfirmationDialogFactory;
-import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IFileSelectorDialog;
+import net.sourceforge.atunes.model.IFileSelectorDialogFactory;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListIOService;
 import net.sourceforge.atunes.model.IStatePlaylist;
@@ -48,8 +48,6 @@ public class SavePlayListAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -303252911138284095L;
 
-    private IFrame frame;
-    
     private IPlayListHandler playListHandler;
     
     private IConfirmationDialogFactory confirmationDialogFactory;
@@ -57,6 +55,15 @@ public class SavePlayListAction extends CustomAbstractAction {
     private IPlayListIOService playListIOService;
     
     private IStatePlaylist statePlaylist;
+    
+    private IFileSelectorDialogFactory fileSelectorDialogFactory;
+    
+    /**
+     * @param fileSelectorDialogFactory
+     */
+    public void setFileSelectorDialogFactory(IFileSelectorDialogFactory fileSelectorDialogFactory) {
+		this.fileSelectorDialogFactory = fileSelectorDialogFactory;
+	}
     
     /**
      * @param statePlaylist
@@ -70,13 +77,6 @@ public class SavePlayListAction extends CustomAbstractAction {
      */
     public void setPlayListIOService(IPlayListIOService playListIOService) {
 		this.playListIOService = playListIOService;
-	}
-    
-    /**
-     * @param frame
-     */
-    public void setFrame(IFrame frame) {
-		this.frame = frame;
 	}
     
     /**
@@ -101,13 +101,11 @@ public class SavePlayListAction extends CustomAbstractAction {
 
     @Override
     protected void executeAction() {
-        JFileChooser fileChooser = new JFileChooser(statePlaylist.getSavePlaylistPath());
         FileFilter filter = playListIOService.getPlaylistFileFilter();
-        fileChooser.setFileFilter(filter);
-        if (fileChooser.showSaveDialog(frame.getFrame()) == JFileChooser.APPROVE_OPTION) {
-
-            // Get selected file
-            File file = fileChooser.getSelectedFile();
+    	IFileSelectorDialog dialog = fileSelectorDialogFactory.getDialog();
+    	dialog.setFileFilter(filter);
+    	File file = dialog.selectFile(statePlaylist.getSavePlaylistPath());
+    	if (file != null) {
 
             statePlaylist.setSavePlaylistPath(file.getParentFile().getAbsolutePath());
 

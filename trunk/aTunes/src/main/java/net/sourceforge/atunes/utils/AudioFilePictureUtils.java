@@ -49,7 +49,6 @@ import org.jaudiotagger.tag.datatype.Artwork;
  * 
  * @author fleax
  */
-// TODO: Refactor to add @PluginApi
 public final class AudioFilePictureUtils {
 
 	private AudioFilePictureUtils() {

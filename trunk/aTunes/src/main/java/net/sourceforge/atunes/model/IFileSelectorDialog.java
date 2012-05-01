@@ -22,49 +22,27 @@ package net.sourceforge.atunes.model;
 
 import java.io.File;
 
-/**
- * Shows a dialog to select files or folders
- * @author alex
- *
- */
-public interface IFileSelectionDialog {
+import javax.swing.filechooser.FileFilter;
+
+public interface IFileSelectorDialog {
 
 	/**
-	 * Sets title
-	 * @param title
+	 * @param fileFilter
 	 */
-	public void setTitle(String title);
-	
-	/**
-	 * Only selects folders, not files
-	 * @param directoryOnly
-	 */
-	public void setDirectoryOnly(boolean directoryOnly);
-	
-	/**
-	 * Gets the selected dir.
-	 * 
-	 * @return the selected dir
-	 */
-	public File getSelectedDir();
+	public void setFileFilter(FileFilter fileFilter);
 
 	/**
-	 * Gets the selected files.
-	 * 
-	 * @return the selected files
+	 * Selects a file
+	 * @param path
+	 * @return
 	 */
-	public File[] getSelectedFiles();
+	public File selectFile(String path);
 
 	/**
-	 * Checks if is canceled.
-	 * 
-	 * @return true, if is canceled
+	 * Selects a file
+	 * @param path
+	 * @return
 	 */
-	public boolean isCanceled();
-
-	/**
-	 * Start dialog.
-	 */
-	public void showDialog();
+	public File selectFile(File path);
 
 }

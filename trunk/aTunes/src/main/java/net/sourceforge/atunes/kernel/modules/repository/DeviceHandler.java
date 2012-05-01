@@ -50,9 +50,9 @@ import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IConfirmationDialogFactory;
+import net.sourceforge.atunes.model.ICustomFileSelectionDialog;
 import net.sourceforge.atunes.model.IDeviceHandler;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
-import net.sourceforge.atunes.model.IFileSelectionDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectTransferProcess;
 import net.sourceforge.atunes.model.IMessageDialogFactory;
@@ -265,7 +265,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 	 */
     @Override
 	public void connectDevice() {
-    	IFileSelectionDialog dialog = getBean(IFileSelectionDialog.class);
+    	ICustomFileSelectionDialog dialog = getBean(ICustomFileSelectionDialog.class);
     	dialog.setDirectoryOnly(true);
         dialog.setTitle(I18nUtils.getString("SELECT_DEVICE"));
         dialog.showDialog();
