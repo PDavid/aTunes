@@ -138,15 +138,6 @@ public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
 	public void moveRowTo(int sourceRow, int targetRow);
 
 	/**
-	 * Plays audio object passed to argument. If is not added to play list, it
-	 * adds
-	 * 
-	 * @param audioObject
-	 *            the audio object
-	 */
-	public void playNow(IAudioObject audioObject);
-
-	/**
 	 * Removes audio objects from play list.
 	 * 
 	 * @param rows
@@ -165,14 +156,6 @@ public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
 	 * @return <code>true</code> if active play list is visible
 	 */
 	public boolean isActivePlayListVisible();
-
-	/**
-	 * Adds the to play list and play.
-	 * 
-	 * @param audioObjects
-	 *            the audio objects
-	 */
-	public void addToPlayListAndPlay(List<IAudioObject> audioObjects);
 
 	/**
 	 * Checks if visible play list is filtered.

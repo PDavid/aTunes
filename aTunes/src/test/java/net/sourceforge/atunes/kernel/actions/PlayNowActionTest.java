@@ -21,8 +21,6 @@
 package net.sourceforge.atunes.kernel.actions;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,29 +28,11 @@ import java.util.Collections;
 
 import junit.framework.Assert;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.INavigationHandler;
-import net.sourceforge.atunes.model.IPlayListHandler;
 
 import org.junit.Test;
 
 public class PlayNowActionTest {
 
-	@Test
-	public void test() {
-		PlayNowAction sut = new PlayNowAction();
-		IPlayListHandler playListHandler = mock(IPlayListHandler.class);
-		INavigationHandler navigationHandler = mock(INavigationHandler.class);
-		IAudioObject audioObject = mock(IAudioObject.class);
-		when(navigationHandler.getSelectedAudioObjectInNavigationTable()).thenReturn(audioObject);
-		sut.setPlayListHandler(playListHandler);
-		sut.setNavigationHandler(navigationHandler);
-		
-		sut.executeAction();
-		
-		verify(playListHandler).playNow(audioObject);
-		verify(navigationHandler).getSelectedAudioObjectInNavigationTable();
-	}
-	
 	@Test
 	public void testEnabled() {
 		PlayNowAction sut = new PlayNowAction();

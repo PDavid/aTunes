@@ -227,13 +227,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 
         setPlayList(playListsContainer.getPlayListAt(selected));
 
-        // Update table model
-        playListController.setVisiblePlayList(getCurrentPlayList(true));
-
-        // Refresh play list
-        // For some strange reason, this is needed even if play list is empty
-        playListController.refreshPlayList();
-
         playListsRetrievedFromCache = null;
     }
     
@@ -309,14 +302,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         playListController.clearSelection();
 
         setPlayList(newSelectedPlayList);
-        // Update table model
-        playListController.setVisiblePlayList(getCurrentPlayList(true));
-        playListController.refreshPlayList();
-
-        // If playlist is active then perform an auto scroll
-        if (isActivePlayListVisible()) {
-            playListController.scrollPlayList(false);
-        }
     }
 
     /**
@@ -331,6 +316,14 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         playListInformationInStatusBar.showPlayListInformation(playList);
         if (isActivePlayListVisible()) {
         	playListEventListeners.selectedAudioObjectHasChanged(playList.getCurrentAudioObject());
+        }
+        // Update table model
+        playListController.setVisiblePlayList(getCurrentPlayList(true));
+        playListController.refreshPlayList();
+        
+        // If playlist is active then perform an auto scroll
+        if (isActivePlayListVisible()) {
+            playListController.scrollPlayList(false);
         }
     }
 
@@ -468,18 +461,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     }
     
     @Override
-	public void playNow(IAudioObject audioObject) {
-        if (!getCurrentPlayList(true).contains(audioObject)) {
-            List<IAudioObject> list = new ArrayList<IAudioObject>();
-            list.add(audioObject);
-            addToPlayListAndPlay(list);
-        } else {
-            setPositionToPlayInVisiblePlayList(getCurrentPlayList(true).indexOf(audioObject));
-            playerHandler.playCurrentAudioObject(false);
-        }
-    }
-
-    @Override
 	public void removeAudioObjects(int[] rows) {
     	getBean(PlayListRemover.class).removeAudioObjects(rows);
     }
@@ -507,18 +488,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     @Override
 	public boolean isActivePlayListVisible() {
         return getCurrentPlayList(true) == getCurrentPlayList(false);
-    }
-
-    @Override
-	public void addToPlayListAndPlay(List<IAudioObject> audioObjects) {
-        if (audioObjects == null || audioObjects.isEmpty()) {
-            return;
-        }
-
-        int playListCurrentSize = getCurrentPlayList(true).size();
-        addToPlayList(audioObjects);
-        setPositionToPlayInVisiblePlayList(playListCurrentSize);
-        playerHandler.playCurrentAudioObject(false);
     }
 
     @Override
