@@ -20,11 +20,13 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class PlayNowAction extends CustomAbstractAction {
@@ -34,6 +36,15 @@ public class PlayNowAction extends CustomAbstractAction {
     private IPlayListHandler playListHandler;
     
     private INavigationHandler navigationHandler;
+    
+    private IPlayerHandler playerHandler;
+    
+    /**
+     * @param playerHandler
+     */
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
     
     /**
      * @param playListHandler
@@ -49,6 +60,9 @@ public class PlayNowAction extends CustomAbstractAction {
 		this.navigationHandler = navigationHandler;
 	}
     
+    /**
+     * Default constructor
+     */
     public PlayNowAction() {
         super(I18nUtils.getString("PLAY_NOW"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("PLAY_NOW"));
@@ -56,14 +70,35 @@ public class PlayNowAction extends CustomAbstractAction {
 
     @Override
     protected void executeAction() {
-        // Play now feature plays selected song immediately. If song is added to play list, then is automatically selected.
-        // If not, it's added to play list    	
-        playListHandler.playNow(navigationHandler.getSelectedAudioObjectInNavigationTable());
+        playNow(navigationHandler.getSelectedAudioObjectInNavigationTable());
     }
 
     @Override
     public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
         return selection != null && selection.size() == 1;
     }
+    
+	private void playNow(IAudioObject audioObject) {
+        // Play now feature plays selected song immediately. If song is added to play list, then is automatically selected.
+        // If not, it's added to play list    	
+        if (!playListHandler.getCurrentPlayList(true).contains(audioObject)) {
+            List<IAudioObject> list = new ArrayList<IAudioObject>();
+            list.add(audioObject);
+            addToPlayListAndPlay(list);
+        } else {
+        	playListHandler.setPositionToPlayInVisiblePlayList(playListHandler.getCurrentPlayList(true).indexOf(audioObject));
+            playerHandler.playCurrentAudioObject(false);
+        }
+    }
+	
+	private void addToPlayListAndPlay(List<IAudioObject> audioObjects) {
+        if (audioObjects == null || audioObjects.isEmpty()) {
+            return;
+        }
 
+        int playListCurrentSize = playListHandler.getCurrentPlayList(true).size();
+        playListHandler.addToPlayList(audioObjects);
+        playListHandler.setPositionToPlayInVisiblePlayList(playListCurrentSize);
+        playerHandler.playCurrentAudioObject(false);
+    }
 }
