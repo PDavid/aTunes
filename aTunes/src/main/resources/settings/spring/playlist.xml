@@ -23,4 +23,6 @@
 	<bean id="playListsContainer" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListsContainer"/>
 	
 	<bean id="playListRemover" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListRemover"/>
+	
+	<bean id="playListCreator" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListCreator"/>
 </beans>

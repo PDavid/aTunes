@@ -320,4 +320,18 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> i
     int[] getSelectedRows() {
     	return playListTable.getSelectedRows();
     }
+
+	/**
+	 * Enable drag and drop in play list
+	 */
+	void enableDragAndDrop() {
+    	playListPanel.enableDragAndDrop();
+	}
+	
+	/**
+	 * Repaint play list
+	 */
+	void repaint() {
+		playListPanel.getSwingComponent().repaint();
+	}
 }
