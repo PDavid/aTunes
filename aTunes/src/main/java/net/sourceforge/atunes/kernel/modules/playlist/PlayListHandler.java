@@ -20,13 +20,9 @@
 
 package net.sourceforge.atunes.kernel.modules.playlist;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import javax.swing.JMenuItem;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
@@ -39,7 +35,6 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IFilterHandler;
-import net.sourceforge.atunes.model.IInputDialog;
 import net.sourceforge.atunes.model.IListOfPlayLists;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayList;
@@ -52,7 +47,6 @@ import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IStatePlayer;
 import net.sourceforge.atunes.model.IStatePlaylist;
 import net.sourceforge.atunes.utils.CollectionUtils;
-import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -60,10 +54,6 @@ import net.sourceforge.atunes.utils.StringUtils;
  * The Class PlayListHandler.
  */
 public final class PlayListHandler extends AbstractHandler implements IPlayListHandler {
-
-    private static final String SLASH = " / ";
-
-	private static final String PLAYLIST = "PLAYLIST";
 
     /** Stores original play list without filter. */
     private IPlayList nonFilteredPlayList;
@@ -110,6 +100,15 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     private IStatePlaylist statePlaylist;
     
     private PlayListCreator playListCreator;
+    
+    private PlayListInformationInStatusBar playListInformationInStatusBar;
+    
+    /**
+     * @param playListInformationInStatusBar
+     */
+    public void setPlayListInformationInStatusBar(PlayListInformationInStatusBar playListInformationInStatusBar) {
+		this.playListInformationInStatusBar = playListInformationInStatusBar;
+	}
     
     /**
      * @param playListCreator
@@ -327,31 +326,19 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     }
 
     @Override
-	public void renamePlayList() {
-        int selectedPlaylist = playListTabController.getSelectedPlayListIndex();
-        String currentName = playListTabController.getPlayListName(selectedPlaylist);
-        IInputDialog dialog = getBean(IInputDialog.class);
-        dialog.setTitle(I18nUtils.getString("RENAME_PLAYLIST"));
-        dialog.showDialog(currentName);
-        String newName = dialog.getResult();
+	public void renameCurrentVisiblePlayList(String newName) {
         if (newName != null) {
-            renamePlayList(selectedPlaylist, newName);
+            int index = playListTabController.getSelectedPlayListIndex();
+            playListsContainer.getPlayListAt(index).setName(newName);
+            playListTabController.renamePlayList(index, newName);
         }
     }
     
-    /**
-     * Renames given play list.
-     * 
-     * @param index
-     *            the index
-     * @param newName
-     *            the new name
-     */
-    private void renamePlayList(int index, String newName) {
-        playListsContainer.getPlayListAt(index).setName(newName);
-        playListTabController.renamePlayList(index, newName);
+    @Override
+    public String getCurrentVisiblePlayListName() {
+        return playListTabController.getPlayListName(playListTabController.getSelectedPlayListIndex());
     }
-
+    
     @Override
 	public void switchToPlaylist(int index) {
         // If play list is the same, do nothing, except if this method is called when deleting a play list
@@ -394,7 +381,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     private void setPlayList(IPlayList playList) {
     	getBean(SavePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
         getBean(ShufflePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
-        showPlayListInformation(playList);
+        playListInformationInStatusBar.showPlayListInformation(playList);
         if (isActivePlayListVisible()) {
         	playListEventListeners.selectedAudioObjectHasChanged(playList.getCurrentAudioObject());
         }
@@ -459,7 +446,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         getBean(ShufflePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
 
         // Update play list number in status bar
-        showPlayListInformation(playList);
+        playListInformationInStatusBar.showPlayListInformation(playList);
 
         // Update play list table
         playListController.refreshPlayList();
@@ -526,7 +513,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
             getBean(ShufflePlayListAction.class).setEnabled(false);
 
             // Update audio object number
-            showPlayListInformation(playList);
+            playListInformationInStatusBar.showPlayListInformation(playList);
 
             // disable progress slider
             if (!statePlaylist.isStopPlayerOnPlayListClear()) {
@@ -563,61 +550,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     @Override
 	public void loadPlaylist() {
     	playListLoader.loadPlaylist();
-    }
-
-    private void moveRows(int[] rows, final boolean up) {
-        if (rows == null || rows.length == 0) {
-            return;
-        }
-        List<Integer> rowList = new ArrayList<Integer>();
-        for (int row : rows) {
-            rowList.add(row);
-        }
-        Collections.sort(rowList, new RowListComparator(up));
-        for (Integer row : rowList) {
-            moveRowTo(row, row + (up ? -1 : 1));
-        }
-    }
-
-    @Override
-	public void moveUp(int[] rows) {
-        moveRows(rows, true);
-    }
-
-    @Override
-	public void moveDown(int[] rows) {
-        moveRows(rows, false);
-    }
-
-    @Override
-	public void moveToBottom(int[] rows) {
-        IPlayList currentPlayList = getCurrentPlayList(true);
-        int j = 0;
-        for (int i = rows.length - 1; i >= 0; i--) {
-            IAudioObject aux = currentPlayList.get(rows[i]);
-            currentPlayList.remove(rows[i]);
-            currentPlayList.add(currentPlayList.size() - j++, aux);
-        }
-        if (rows[rows.length - 1] < currentPlayList.getCurrentAudioObjectIndex()) {
-            currentPlayList.setCurrentAudioObjectIndex(currentPlayList.getCurrentAudioObjectIndex() - rows.length);
-        } else if (rows[0] <= currentPlayList.getCurrentAudioObjectIndex() && currentPlayList.getCurrentAudioObjectIndex() <= rows[rows.length - 1]) {
-            currentPlayList.setCurrentAudioObjectIndex(currentPlayList.getCurrentAudioObjectIndex() + currentPlayList.size() - rows[rows.length - 1] - 1);
-        }
-    }
-
-    @Override
-	public void moveToTop(int[] rows) {
-        IPlayList currentPlayList = getCurrentPlayList(true);
-        for (int i = 0; i < rows.length; i++) {
-            IAudioObject aux = currentPlayList.get(rows[i]);
-            currentPlayList.remove(rows[i]);
-            currentPlayList.add(i, aux);
-        }
-        if (rows[0] > currentPlayList.getCurrentAudioObjectIndex()) {
-            currentPlayList.setCurrentAudioObjectIndex(currentPlayList.getCurrentAudioObjectIndex() + rows.length);
-        } else if (rows[0] <= currentPlayList.getCurrentAudioObjectIndex() && currentPlayList.getCurrentAudioObjectIndex() <= rows[rows.length - 1]) {
-            currentPlayList.setCurrentAudioObjectIndex(currentPlayList.getCurrentAudioObjectIndex() - rows[0]);
-        }
     }
 
     @Override
@@ -698,7 +630,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
             getBean(SavePlayListAction.class).setEnabled(false);
             getBean(ShufflePlayListAction.class).setEnabled(false);
         }
-        showPlayListInformation(currentPlayList);
+        playListInformationInStatusBar.showPlayListInformation(currentPlayList);
         Logger.info(StringUtils.getString(rows.length, " objects removed from play list"));
     }
 
@@ -890,7 +822,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     		playListsContainer.getPlayListAt(i).remove(audioFiles);
         }
         // Update status bar
-        showPlayListInformation(getCurrentPlayList(true));
+    	playListInformationInStatusBar.showPlayListInformation(getCurrentPlayList(true));
     }
 
     @Override
@@ -958,22 +890,22 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 
 	@Override
 	public void moveDown() {
-		playListController.moveDown();		
+		playListController.moveDown(getCurrentPlayList(true));		
 	}
 
 	@Override
 	public void moveToBottom() {
-		playListController.moveToBottom();
+		playListController.moveToBottom(getCurrentPlayList(true));
 	}
 
 	@Override
 	public void moveToTop() {
-		playListController.moveToTop();
+		playListController.moveToTop(getCurrentPlayList(true));
 	}
 
 	@Override
 	public void moveUp() {
-		playListController.moveUp();		
+		playListController.moveUp(getCurrentPlayList(true));		
 	}
 
 	@Override
@@ -1028,40 +960,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         }
 	}
 	
-	@Override
-	public List<JMenuItem> getMenuItemsToSwitchPlayLists() {
-		List<JMenuItem> menuItems = new ArrayList<JMenuItem>(); 
-        List<String> playlists = playListTabController.getNamesOfPlayLists();
-        for (int i = 0; i < playListsContainer.getPlayListsCount(); i++) {
-            final int index = i;
-            JMenuItem plMenuItem;
-            if (isVisiblePlayList(index)) {
-                plMenuItem = new JMenuItem(StringUtils.getString("<html><b>", playlists.get(i), "</b></html>"));
-            } else {
-                plMenuItem = new JMenuItem(playlists.get(i));
-            }
-            plMenuItem.addActionListener(new SwitchPlayListListener(playListTabController, index));
-            menuItems.add(plMenuItem);
-        }
-        return menuItems;
-	}
-	
-    private static class SwitchPlayListListener implements ActionListener {
-
-    	private PlayListTabController controller;
-    	
-        private int index;
-
-        public SwitchPlayListListener(PlayListTabController controller, int index) {
-        	this.controller = controller;
-            this.index = index;
-        }
-
-        public void actionPerformed(ActionEvent e1) {
-            controller.forceSwitchTo(index);
-        }
-    }
-
     @Override
 	public void showAddArtistDragDialog(IArtist currentArtist) {
     	IArtistAlbumSelectorDialog dialog = getBean(IArtistAlbumSelectorDialog.class);
@@ -1069,29 +967,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     	if (album != null) {
     		addToPlayList(album.getAudioObjects());
     	}
-    }
-
-    /**
-     * Show play list information.
-     * 
-     * @param playList
-     *            the play list
-     */
-    private void showPlayListInformation(IPlayList playList) {
-        int audioFiles = playListLocalAudioObjectFilter.getObjects(playList).size();
-        int radios = new PlayListRadioFilter().getObjects(playList).size();
-        int podcastFeedEntries = new PlayListPodcastFeedEntryFilter().getObjects(playList).size();
-        int audioObjects = playList.size();
-
-        // Check if differenciation is required (needed by some slavic languages)
-        String toolTip = StringUtils.getString(I18nUtils.getString(PLAYLIST), ": ", audioObjects, " ", I18nUtils.getString("SONGS"), " (",
-        		playList.getLength(), ") ", " - ", audioFiles, " ", I18nUtils.getString("SONGS"), SLASH, radios, " ", I18nUtils.getString("RADIOS"),
-        		SLASH, podcastFeedEntries, " ", (I18nUtils.getString("PODCAST_ENTRIES_COUNTER").isEmpty() ? I18nUtils.getString("PODCAST_ENTRIES") : I18nUtils.getString("PODCAST_ENTRIES_COUNTER")));
-
-        
-        String text = StringUtils.getString(I18nUtils.getString(PLAYLIST), ": ", audioObjects, " - ", audioFiles, SLASH, radios, SLASH, podcastFeedEntries);
-
-        getFrame().setRightStatusBarText(text, toolTip);
     }
     
     @Override

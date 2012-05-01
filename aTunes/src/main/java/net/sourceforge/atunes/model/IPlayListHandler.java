@@ -22,8 +22,6 @@ package net.sourceforge.atunes.model;
 
 import java.util.List;
 
-import javax.swing.JMenuItem;
-
 
 public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
 
@@ -64,8 +62,9 @@ public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
 
 	/**
 	 * Renames current play list.
+	 * @param newName
 	 */
-	public void renamePlayList();
+	public void renameCurrentVisiblePlayList(String newName);
 
 	/**
 	 * Called when switching play list at tabbed pane.
@@ -121,11 +120,13 @@ public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
 	 * @param audioObjects
 	 *            the audio objects
 	 */
-	public void addToPlayList(int location,
-			List<? extends IAudioObject> audioObjects, boolean visible);
+	public void addToPlayList(int location, List<? extends IAudioObject> audioObjects, boolean visible);
 
-	public void addToActivePlayList(
-			List<? extends IAudioObject> audioObjects);
+	/**
+	 * Adds audio objects to active play list
+	 * @param audioObjects
+	 */
+	public void addToActivePlayList(List<? extends IAudioObject> audioObjects);
 
 	/**
 	 * Removes all audio objects from visible play list.
@@ -138,37 +139,10 @@ public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
 	public void loadPlaylist();
 
 	/**
-	 * Move rows of play list up.
-	 * 
-	 * @param rows
-	 *            the rows
+	 * Move one play list entry from one position to another
+	 * @param sourceRow
+	 * @param targetRow
 	 */
-	public void moveUp(int[] rows);
-
-	/**
-	 * Move rows of play list down.
-	 * 
-	 * @param rows
-	 *            the rows
-	 */
-	public void moveDown(int[] rows);
-
-	/**
-	 * Move rows to bottom of play list.
-	 * 
-	 * @param rows
-	 *            the rows
-	 */
-	public void moveToBottom(int[] rows);
-
-	/**
-	 * Move rows to top of play list.
-	 * 
-	 * @param rows
-	 *            the rows
-	 */
-	public void moveToTop(int[] rows);
-
 	public void moveRowTo(int sourceRow, int targetRow);
 
 	/**
@@ -301,10 +275,23 @@ public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
 	 */
 	public boolean isCurrentVisibleRowPlaying(int row);
 
+	/**
+	 * Returns the index of the current audio object in visible playlist
+	 * @return
+	 */
 	public int getCurrentAudioObjectIndexInVisiblePlayList();
 
+	/**
+	 * Adds audio object to history
+	 * @param object
+	 */
 	public void addToPlaybackHistory(IAudioObject object);
 
+	/**
+	 * Moves play list position
+	 * @param from
+	 * @param to
+	 */
 	public void movePlaylistToPosition(int from, int to);
 
 	/**
@@ -333,26 +320,46 @@ public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
 	 */
 	public void closeOtherPlaylists();
 
+	/**
+	 * Scroll play list to current audio object
+	 * @param isUserAction
+	 */
 	public void scrollPlayList(boolean isUserAction);
 
+	/**
+	 * Refresh play list
+	 */
 	public void refreshPlayList();
 
+	/**
+	 * Move selection down
+	 */
 	public void moveDown();
 
+	/**
+	 * Move selection botton
+	 */
 	public void moveToBottom();
 
+	/**
+	 * Move selection top
+	 */
 	public void moveToTop();
 
+	/**
+	 * Move selection up
+	 */
 	public void moveUp();
 
+	/**
+	 * Delete selected items
+	 */
 	public void deleteSelection();
 
-	public void reapplyFilter();
-
 	/**
-	 * Returns menu items to switch play lists
+	 * Apply filter
 	 */
-	public List<JMenuItem> getMenuItemsToSwitchPlayLists();
+	public void reapplyFilter();
 
 	/**
 	 * Shows a dialog to select an album of given artist and add to current play list
@@ -364,5 +371,10 @@ public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
      * Sets visible play list as active
      */
     public void setVisiblePlayListActive();
+
+	/**
+	 * @return name of current visible play list
+	 */
+	public String getCurrentVisiblePlayListName();
 
 }
