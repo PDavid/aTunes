@@ -29,7 +29,7 @@ import net.sourceforge.atunes.kernel.modules.tags.IncompleteTagsChecker;
 import net.sourceforge.atunes.model.ArtistViewMode;
 import net.sourceforge.atunes.model.ColumnBean;
 import net.sourceforge.atunes.model.IStateNavigation;
-import net.sourceforge.atunes.model.TagAttribute;
+import net.sourceforge.atunes.model.TextTagAttribute;
 import net.sourceforge.atunes.model.ViewMode;
 
 /**
@@ -160,12 +160,12 @@ public class ApplicationStateNavigation implements IStateNavigation {
     
     @Override
 	@SuppressWarnings("unchecked")
-	public List<TagAttribute> getHighlightIncompleteTagFoldersAttributes() {
-    	return (List<TagAttribute> ) this.stateStore.retrievePreference(Preferences.HIGHLIGHT_INCOMPLETE_TAG_FOLDERS_ATTRIBUTES, IncompleteTagsChecker.getDefaultTagAttributesToHighlightFolders());
+	public List<TextTagAttribute> getHighlightIncompleteTagFoldersAttributes() {
+    	return (List<TextTagAttribute> ) this.stateStore.retrievePreference(Preferences.HIGHLIGHT_INCOMPLETE_TAG_FOLDERS_ATTRIBUTES, IncompleteTagsChecker.getDefaultTagAttributesToHighlightFolders());
     }
 
     @Override
-	public void setHighlightIncompleteTagFoldersAttributes(List<TagAttribute> highlightIncompleteTagFoldersAttributes) {
+	public void setHighlightIncompleteTagFoldersAttributes(List<TextTagAttribute> highlightIncompleteTagFoldersAttributes) {
     	this.stateStore.storePreference(Preferences.HIGHLIGHT_INCOMPLETE_TAG_FOLDERS_ATTRIBUTES, highlightIncompleteTagFoldersAttributes);
     }
     

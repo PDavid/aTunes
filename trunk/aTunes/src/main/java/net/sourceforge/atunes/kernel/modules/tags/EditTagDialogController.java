@@ -54,6 +54,7 @@ import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.LocalAudioObjectFormat;
+import net.sourceforge.atunes.model.TextTagAttribute;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -132,9 +133,9 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
         // Add genres combo box items
         List<String> genresSorted = Context.getBean(Genres.class).getGenres();
         Collections.sort(genresSorted);
-        getComponentControlled().getGenreComboBox().setModel(new ListComboBoxModel<String>(genresSorted));
+        getComponentControlled().getComboBoxEditor(TextTagAttribute.GENRE).setModel(new ListComboBoxModel<String>(genresSorted));
         // Add autocompletion
-        AutoCompleteDecorator.decorate(getComponentControlled().getGenreComboBox());
+        AutoCompleteDecorator.decorate(getComponentControlled().getComboBoxEditor(TextTagAttribute.GENRE));
 
         EditTagDialogActionListener actionListener = new EditTagDialogActionListener(this, getComponentControlled(), playListHandler, localAudioObjectValidator);
         getComponentControlled().getOkButton().addActionListener(actionListener);
@@ -177,16 +178,16 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
         coverEdited = false;
 
         // Load artists into combo box
-        getComponentControlled().getArtistTextField().setModel(new ListComboBoxModel<String>(getArtistsNames()));
+        getComponentControlled().getComboBoxEditor(TextTagAttribute.ARTIST).setModel(new ListComboBoxModel<String>(getArtistsNames()));
         
         // Activate autocompletion of artists
-        AutoCompleteDecorator.decorate(getComponentControlled().getArtistTextField());
+        AutoCompleteDecorator.decorate(getComponentControlled().getComboBoxEditor(TextTagAttribute.ARTIST));
 
         // Load albums into combo box
-        getComponentControlled().getAlbumTextField().setModel(new ListComboBoxModel<String>(getAlbumNames()));
+        getComponentControlled().getComboBoxEditor(TextTagAttribute.ALBUM).setModel(new ListComboBoxModel<String>(getAlbumNames()));
         
         // Active autocompletion of albums
-        AutoCompleteDecorator.decorate(getComponentControlled().getAlbumTextField());
+        AutoCompleteDecorator.decorate(getComponentControlled().getComboBoxEditor(TextTagAttribute.ALBUM));
 
         setFieldsUnselected();
 
@@ -198,7 +199,7 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
         // If there is only one file add a help to complete title from file name
         if (audioFiles.size() == 1) {
             final String fileName = audioFiles.get(0).getNameWithoutExtension();
-            final JTextField textField = getDialog().getTitleTextField();
+            final JTextField textField = getDialog().getTextFieldEditor(TextTagAttribute.TITLE);
             textField.addKeyListener(new TitleTextFieldKeyAdapter(textField, fileName));
         }
 
@@ -206,9 +207,9 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
             @Override
             public void run() {
                 // If title is enabled set focus
-                if (getDialog().getTitleTextField().isEnabled()) {
-                    getDialog().getTitleTextField().setCaretPosition(0);
-                    getDialog().getTitleTextField().requestFocus();
+                if (getDialog().getTextFieldEditor(TextTagAttribute.TITLE).isEnabled()) {
+                    getDialog().getTextFieldEditor(TextTagAttribute.TITLE).setCaretPosition(0);
+                    getDialog().getTextFieldEditor(TextTagAttribute.TITLE).requestFocus();
                 }
             }
         });
@@ -302,17 +303,18 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
 
 		boolean enable = audioFiles.size() > 1; 
 			
-        getComponentControlled().getTitleCheckBox().setEnabled(enable);
-        getComponentControlled().getAlbumArtistCheckBox().setEnabled(enable);
-        getComponentControlled().getArtistCheckBox().setEnabled(enable);
-        getComponentControlled().getTrackNumberCheckBox().setEnabled(enable);
-        getComponentControlled().getYearCheckBox().setEnabled(enable);
-        getComponentControlled().getDiscNumberCheckBox().setEnabled(enable);
-        getComponentControlled().getGenreCheckBox().setEnabled(enable);
-        getComponentControlled().getCommentCheckBox().setEnabled(enable);
-        getComponentControlled().getLyricsCheckBox().setEnabled(enable);
-        getComponentControlled().getAlbumCheckBox().setEnabled(enable);
-        getComponentControlled().getComposerCheckBox().setEnabled(enable);
+        getComponentControlled().getCheckBox(TextTagAttribute.TITLE).setEnabled(enable);
+        getComponentControlled().getCheckBox(TextTagAttribute.ALBUM_ARTIST).setEnabled(enable);
+        getComponentControlled().getCheckBox(TextTagAttribute.ARTIST).setEnabled(enable);
+        getComponentControlled().getCheckBox(TextTagAttribute.TRACK).setEnabled(enable);
+        getComponentControlled().getCheckBox(TextTagAttribute.YEAR).setEnabled(enable);
+        getComponentControlled().getCheckBox(TextTagAttribute.DISC_NUMBER).setEnabled(enable);
+        getComponentControlled().getCheckBox(TextTagAttribute.GENRE).setEnabled(enable);
+        getComponentControlled().getCheckBox(TextTagAttribute.COMMENT).setEnabled(enable);
+        getComponentControlled().getCheckBox(TextTagAttribute.LYRICS).setEnabled(enable);
+        getComponentControlled().getCheckBox(TextTagAttribute.ALBUM).setEnabled(enable);
+        getComponentControlled().getCheckBox(TextTagAttribute.COMPOSER).setEnabled(enable);
+        
         getComponentControlled().getCoverCheckBox().setEnabled(enable && supportsInternalPicture);
         
         if (audioFiles.size() == 1 && supportsInternalPicture) {
@@ -329,11 +331,11 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
 	private void prepareAlbumArtists(final List<ILocalAudioObject> audioFiles,
 			Set<String> albumArtists) {
 		if (albumArtists.size() == 1 && !albumArtists.contains("")) {
-            getComponentControlled().getAlbumArtistTextField().setText(albumArtists.iterator().next());
-            getComponentControlled().setAlbumArtistSelected(true);
+            getComponentControlled().getTextFieldEditor(TextTagAttribute.ALBUM_ARTIST).setText(albumArtists.iterator().next());
+            getComponentControlled().setTagAttributeSelected(TextTagAttribute.ALBUM_ARTIST, true);
         } else {
-            getComponentControlled().getAlbumArtistTextField().setText("");
-            getComponentControlled().setAlbumArtistSelected(audioFiles.size() == 1);
+            getComponentControlled().getTextFieldEditor(TextTagAttribute.ALBUM_ARTIST).setText("");
+            getComponentControlled().setTagAttributeSelected(TextTagAttribute.ALBUM_ARTIST, audioFiles.size() == 1);
         }
 	}
 
@@ -344,11 +346,11 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
 	private void prepareComposers(final List<ILocalAudioObject> audioFiles,
 			Set<String> composers) {
 		if (composers.size() == 1 && !composers.contains("")) {
-            getComponentControlled().getComposerTextField().setText(composers.iterator().next());
-            getComponentControlled().setComposerSelected(true);
+            getComponentControlled().getTextFieldEditor(TextTagAttribute.COMPOSER).setText(composers.iterator().next());
+            getComponentControlled().setTagAttributeSelected(TextTagAttribute.COMPOSER, true);
         } else {
-            getComponentControlled().getComposerTextField().setText("");
-            getComponentControlled().setComposerSelected(audioFiles.size() == 1);
+            getComponentControlled().getTextFieldEditor(TextTagAttribute.COMPOSER).setText("");
+            getComponentControlled().setTagAttributeSelected(TextTagAttribute.COMPOSER, audioFiles.size() == 1);
         }
 	}
 
@@ -359,12 +361,12 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
 	private void prepareLyrics(final List<ILocalAudioObject> audioFiles,
 			Set<String> lyrics) {
 		if (lyrics.size() == 1 && !lyrics.contains("")) {
-            getComponentControlled().getLyricsTextArea().setText(lyrics.iterator().next());
-            getComponentControlled().getLyricsTextArea().setCaretPosition(0);
-            getComponentControlled().setLyricsSelected(true);
+            getComponentControlled().getTextAreaEditor(TextTagAttribute.LYRICS).setText(lyrics.iterator().next());
+            getComponentControlled().getTextAreaEditor(TextTagAttribute.LYRICS).setCaretPosition(0);
+            getComponentControlled().setTagAttributeSelected(TextTagAttribute.LYRICS, true);
         } else {
-            getComponentControlled().getLyricsTextArea().setText("");
-            getComponentControlled().setLyricsSelected(audioFiles.size() == 1);
+            getComponentControlled().getTextAreaEditor(TextTagAttribute.LYRICS).setText("");
+            getComponentControlled().setTagAttributeSelected(TextTagAttribute.LYRICS, audioFiles.size() == 1);
         }
 	}
 
@@ -375,11 +377,11 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
 	private void prepareGenres(final List<ILocalAudioObject> audioFiles,
 			Set<String> genres) {
 		if (genres.size() == 1 && !genres.contains("")) {
-            getComponentControlled().getGenreComboBox().getEditor().setItem(genres.iterator().next());
-            getComponentControlled().setGenreSelected(true);
+            getComponentControlled().getComboBoxEditor(TextTagAttribute.GENRE).getEditor().setItem(genres.iterator().next());
+            getComponentControlled().setTagAttributeSelected(TextTagAttribute.GENRE, true);
         } else {
-            getComponentControlled().getGenreComboBox().getEditor().setItem("");
-            getComponentControlled().setGenreSelected(audioFiles.size() == 1);
+            getComponentControlled().getComboBoxEditor(TextTagAttribute.GENRE).getEditor().setItem("");
+            getComponentControlled().setTagAttributeSelected(TextTagAttribute.GENRE, audioFiles.size() == 1);
         }
 	}
 
@@ -390,12 +392,12 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
 	private void prepareComments(final List<ILocalAudioObject> audioFiles,
 			Set<String> comments) {
 		if (comments.size() == 1 && !comments.contains("")) {
-            getComponentControlled().getCommentTextArea().setText(comments.iterator().next());
-            getComponentControlled().getCommentTextArea().setCaretPosition(0);
-            getComponentControlled().setCommentSelected(true);
+            getComponentControlled().getTextAreaEditor(TextTagAttribute.COMMENT).setText(comments.iterator().next());
+            getComponentControlled().getTextAreaEditor(TextTagAttribute.COMMENT).setCaretPosition(0);
+            getComponentControlled().setTagAttributeSelected(TextTagAttribute.COMMENT, true);
         } else {
-            getComponentControlled().getCommentTextArea().setText("");
-            getComponentControlled().setCommentSelected(audioFiles.size() == 1);
+            getComponentControlled().getTextAreaEditor(TextTagAttribute.COMMENT).setText("");
+            getComponentControlled().setTagAttributeSelected(TextTagAttribute.COMMENT, audioFiles.size() == 1);
         }
 	}
 
@@ -403,14 +405,13 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
 	 * @param audioFiles
 	 * @param years
 	 */
-	private void prepareYears(final List<ILocalAudioObject> audioFiles,
-			Set<Integer> years) {
+	private void prepareYears(final List<ILocalAudioObject> audioFiles, Set<Integer> years) {
 		if (years.size() == 1 && !years.contains(0)) {
-            getComponentControlled().getYearTextField().setText(String.valueOf(years.iterator().next()));
-            getComponentControlled().setYearSelected(true);
+            getComponentControlled().getTextFieldEditor(TextTagAttribute.YEAR).setText(String.valueOf(years.iterator().next()));
+            getComponentControlled().setTagAttributeSelected(TextTagAttribute.YEAR, true);
         } else {
-            getComponentControlled().getYearTextField().setText("");
-            getComponentControlled().setYearSelected(audioFiles.size() == 1);
+            getComponentControlled().getTextFieldEditor(TextTagAttribute.YEAR).setText("");
+            getComponentControlled().setTagAttributeSelected(TextTagAttribute.YEAR, audioFiles.size() == 1);
         }
 	}
 
@@ -418,14 +419,13 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
 	 * @param audioFiles
 	 * @param albums
 	 */
-	private void prepareAlbums(final List<ILocalAudioObject> audioFiles,
-			Set<String> albums) {
+	private void prepareAlbums(final List<ILocalAudioObject> audioFiles, Set<String> albums) {
 		if (albums.size() == 1 && !albums.contains("")) {
-            getComponentControlled().getAlbumTextField().getEditor().setItem(albums.iterator().next());
-            getComponentControlled().setAlbumSelected(true);
+            getComponentControlled().getComboBoxEditor(TextTagAttribute.ALBUM).getEditor().setItem(albums.iterator().next());
+            getComponentControlled().setTagAttributeSelected(TextTagAttribute.ALBUM, true);
         } else {
-            getComponentControlled().getAlbumTextField().getEditor().setItem("");
-            getComponentControlled().setAlbumSelected(audioFiles.size() == 1);
+            getComponentControlled().getComboBoxEditor(TextTagAttribute.ALBUM).getEditor().setItem("");
+            getComponentControlled().setTagAttributeSelected(TextTagAttribute.ALBUM, audioFiles.size() == 1);
         }
 	}
 
@@ -433,14 +433,13 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
 	 * @param audioFiles
 	 * @param artists
 	 */
-	private void prepareArtists(final List<ILocalAudioObject> audioFiles,
-			Set<String> artists) {
+	private void prepareArtists(final List<ILocalAudioObject> audioFiles, Set<String> artists) {
 		if (artists.size() == 1 && !artists.contains("")) {
-            getComponentControlled().getArtistTextField().getEditor().setItem(artists.iterator().next());
-            getComponentControlled().setArtistSelected(true);
+            getComponentControlled().getComboBoxEditor(TextTagAttribute.ARTIST).getEditor().setItem(artists.iterator().next());
+            getComponentControlled().setTagAttributeSelected(TextTagAttribute.ARTIST, true);
         } else {
-            getComponentControlled().getArtistTextField().getEditor().setItem("");
-            getComponentControlled().setArtistSelected(audioFiles.size() == 1);
+            getComponentControlled().getComboBoxEditor(TextTagAttribute.ARTIST).getEditor().setItem("");
+            getComponentControlled().setTagAttributeSelected(TextTagAttribute.ARTIST, audioFiles.size() == 1);
         }
 	}
 
@@ -451,11 +450,11 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
 	private void prepareDiscNumbers(final List<ILocalAudioObject> audioFiles,
 			Set<Integer> discNumbers) {
 		if (discNumbers.size() == 1 && !discNumbers.contains(0)) {
-            getComponentControlled().getDiscNumberTextField().setText(discNumbers.iterator().next().toString());
-            getComponentControlled().setDiscNumberSelected(true);
+            getComponentControlled().getTextFieldEditor(TextTagAttribute.DISC_NUMBER).setText(discNumbers.iterator().next().toString());
+            getComponentControlled().setTagAttributeSelected(TextTagAttribute.DISC_NUMBER, true);
         } else {
-            getComponentControlled().getDiscNumberTextField().setText("");
-            getComponentControlled().setDiscNumberSelected(audioFiles.size() == 1);
+            getComponentControlled().getTextFieldEditor(TextTagAttribute.DISC_NUMBER).setText("");
+            getComponentControlled().setTagAttributeSelected(TextTagAttribute.DISC_NUMBER, audioFiles.size() == 1);
         }
 	}
 
@@ -466,11 +465,11 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
 	private void prepareTrackNumbers(final List<ILocalAudioObject> audioFiles,
 			Set<Integer> trackNumbers) {
 		if (trackNumbers.size() == 1 && !trackNumbers.contains(0)) {
-            getComponentControlled().getTrackNumberTextField().setText(trackNumbers.iterator().next().toString());
-            getComponentControlled().setTrackNumberSelected(true);
+            getComponentControlled().getTextFieldEditor(TextTagAttribute.TRACK).setText(trackNumbers.iterator().next().toString());
+            getComponentControlled().setTagAttributeSelected(TextTagAttribute.TRACK, true);
         } else {
-            getComponentControlled().getTrackNumberTextField().setText("");
-            getComponentControlled().setTrackNumberSelected(audioFiles.size() == 1);
+            getComponentControlled().getTextFieldEditor(TextTagAttribute.TRACK).setText("");
+            getComponentControlled().setTagAttributeSelected(TextTagAttribute.TRACK, audioFiles.size() == 1);
         }
 	}
 
@@ -481,11 +480,11 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
 	private void prepareTitle(final List<ILocalAudioObject> audioFiles,
 			Set<String> titles) {
 		if (titles.size() == 1 && !titles.contains("")) {
-            getComponentControlled().getTitleTextField().setText(titles.iterator().next());
-            getComponentControlled().setTitleSelected(true);
+            getComponentControlled().getTextFieldEditor(TextTagAttribute.TITLE).setText(titles.iterator().next());
+            getComponentControlled().setTagAttributeSelected(TextTagAttribute.TITLE, true);
         } else {
-            getComponentControlled().getTitleTextField().setText("");
-            getComponentControlled().setTitleSelected(audioFiles.size() == 1);
+            getComponentControlled().getTextFieldEditor(TextTagAttribute.TITLE).setText("");
+            getComponentControlled().setTagAttributeSelected(TextTagAttribute.TITLE, audioFiles.size() == 1);
         }
 	}
 
@@ -493,18 +492,18 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
 	 * 
 	 */
 	private void setFieldsUnselected() {
-		getComponentControlled().setTitleSelected(false);
+		getComponentControlled().setTagAttributeSelected(TextTagAttribute.TITLE,  false);
         getComponentControlled().setCoverSelected(false);
-        getComponentControlled().setAlbumArtistSelected(false);
-        getComponentControlled().setArtistSelected(false);
-        getComponentControlled().setTrackNumberSelected(false);
-        getComponentControlled().setDiscNumberSelected(false);
-        getComponentControlled().setYearSelected(false);
-        getComponentControlled().setGenreSelected(false);
-        getComponentControlled().setCommentSelected(false);
-        getComponentControlled().setLyricsSelected(false);
-        getComponentControlled().setAlbumSelected(false);
-        getComponentControlled().setComposerSelected(false);
+        getComponentControlled().setTagAttributeSelected(TextTagAttribute.ALBUM_ARTIST, false);
+        getComponentControlled().setTagAttributeSelected(TextTagAttribute.ARTIST, false);
+        getComponentControlled().setTagAttributeSelected(TextTagAttribute.TRACK, false);
+        getComponentControlled().setTagAttributeSelected(TextTagAttribute.DISC_NUMBER, false);
+        getComponentControlled().setTagAttributeSelected(TextTagAttribute.YEAR, false);
+        getComponentControlled().setTagAttributeSelected(TextTagAttribute.GENRE, false);
+        getComponentControlled().setTagAttributeSelected(TextTagAttribute.COMMENT, false);
+        getComponentControlled().setTagAttributeSelected(TextTagAttribute.LYRICS, false);
+        getComponentControlled().setTagAttributeSelected(TextTagAttribute.ALBUM, false);
+        getComponentControlled().setTagAttributeSelected(TextTagAttribute.COMPOSER, false);
 	}
 
     EditTagDialog getDialog() {
@@ -556,26 +555,26 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
         // Build editor props
         Map<String, Object> editTagInfo = new HashMap<String, Object>();
 
-        setEditTagInfo(editTagInfo, "TITLE", getComponentControlled().getTitleCheckBox(), getComponentControlled().getTitleTextField());
-        setEditTagInfo(editTagInfo, "ARTIST", getComponentControlled().getArtistCheckBox(), getComponentControlled().getArtistTextField());
-        setEditTagInfo(editTagInfo, "ALBUM", getComponentControlled().getAlbumCheckBox(), getComponentControlled().getAlbumTextField());
-        setEditTagInfo(editTagInfo, "YEAR", getComponentControlled().getYearCheckBox(), getComponentControlled().getYearTextField());
-        setEditTagInfo(editTagInfo, "COMMENT", getComponentControlled().getCommentCheckBox(), getComponentControlled().getCommentTextArea());
-        setEditTagInfo(editTagInfo, "GENRE", getComponentControlled().getGenreCheckBox(), getComponentControlled().getGenreComboBox());
+        setEditTagInfo(editTagInfo, "TITLE", getComponentControlled().getCheckBox(TextTagAttribute.TITLE), getComponentControlled().getTextFieldEditor(TextTagAttribute.TITLE));
+        setEditTagInfo(editTagInfo, "ARTIST", getComponentControlled().getCheckBox(TextTagAttribute.ARTIST), getComponentControlled().getComboBoxEditor(TextTagAttribute.ARTIST));
+        setEditTagInfo(editTagInfo, "ALBUM", getComponentControlled().getCheckBox(TextTagAttribute.ALBUM), getComponentControlled().getComboBoxEditor(TextTagAttribute.ALBUM));
+        setEditTagInfo(editTagInfo, "YEAR", getComponentControlled().getCheckBox(TextTagAttribute.YEAR), getComponentControlled().getTextFieldEditor(TextTagAttribute.YEAR));
+        setEditTagInfo(editTagInfo, "COMMENT", getComponentControlled().getCheckBox(TextTagAttribute.COMMENT), getComponentControlled().getTextAreaEditor(TextTagAttribute.COMMENT));
+        setEditTagInfo(editTagInfo, "GENRE", getComponentControlled().getCheckBox(TextTagAttribute.GENRE), getComponentControlled().getComboBoxEditor(TextTagAttribute.GENRE));
         
-        if (!getComponentControlled().getLyricsCheckBox().isEnabled() || getComponentControlled().getLyricsCheckBox().isSelected()) {
+        if (!getComponentControlled().getCheckBox(TextTagAttribute.LYRICS).isEnabled() || getComponentControlled().getCheckBox(TextTagAttribute.LYRICS).isSelected()) {
             // Text area line breaks are \n so in some OS (Windows) is not a correct line break -> Replace with OS line terminator
-            String lyrics = getComponentControlled().getLyricsTextArea().getText();
+            String lyrics = getComponentControlled().getTextAreaEditor(TextTagAttribute.LYRICS).getText();
             if (osManager.isWindows()) {
                 lyrics = lyrics.replaceAll("^[\r]\n", "\r\n");
             }
             editTagInfo.put("LYRICS", lyrics);
         }
         
-        setEditTagInfo(editTagInfo, "COMPOSER", getComponentControlled().getComposerCheckBox(), getComponentControlled().getComposerTextField());
-        setEditTagInfo(editTagInfo, "ALBUM_ARTIST", getComponentControlled().getAlbumArtistCheckBox(), getComponentControlled().getAlbumArtistTextField());
-        setEditTagInfo(editTagInfo, "TRACK", getComponentControlled().getTrackNumberCheckBox(), getComponentControlled().getTrackNumberTextField());
-        setEditTagInfo(editTagInfo, "DISC_NUMBER", getComponentControlled().getDiscNumberCheckBox(), getComponentControlled().getDiscNumberTextField());
+        setEditTagInfo(editTagInfo, "COMPOSER", getComponentControlled().getCheckBox(TextTagAttribute.COMPOSER), getComponentControlled().getTextFieldEditor(TextTagAttribute.COMPOSER));
+        setEditTagInfo(editTagInfo, "ALBUM_ARTIST", getComponentControlled().getCheckBox(TextTagAttribute.ALBUM_ARTIST), getComponentControlled().getTextFieldEditor(TextTagAttribute.ALBUM_ARTIST));
+        setEditTagInfo(editTagInfo, "TRACK", getComponentControlled().getCheckBox(TextTagAttribute.TRACK), getComponentControlled().getTextFieldEditor(TextTagAttribute.TRACK));
+        setEditTagInfo(editTagInfo, "DISC_NUMBER", getComponentControlled().getCheckBox(TextTagAttribute.DISC_NUMBER), getComponentControlled().getTextFieldEditor(TextTagAttribute.DISC_NUMBER));
         
         if ((!getComponentControlled().getCoverCheckBox().isEnabled() || getComponentControlled().getCoverCheckBox().isSelected()) && coverEdited) {
             editTagInfo.put("COVER", newCover);
@@ -620,5 +619,4 @@ public final class EditTagDialogController extends AbstractSimpleController<Edit
         newCover = null;
         coverEdited = false;
     }
-
 }

@@ -25,7 +25,7 @@ package net.sourceforge.atunes.model;
  * @author alex
  *
  */
-public enum TagAttribute {
+public enum TextTagAttribute {
 
     TITLE, ARTIST, ALBUM, YEAR, COMMENT, GENRE, LYRICS, COMPOSER, ALBUM_ARTIST, TRACK, DISC_NUMBER;
 
