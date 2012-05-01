@@ -23,6 +23,9 @@ package net.sourceforge.atunes.kernel.modules.context.similar;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.context.ContextTable;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
+import net.sourceforge.atunes.model.IAlbum;
+import net.sourceforge.atunes.model.IArtist;
+import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
 import net.sourceforge.atunes.model.IArtistInfo;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -35,13 +38,18 @@ final class AddAlbumArtistToPlayListContextTableAction extends ContextTableActio
 	 */
 	private static final long serialVersionUID = -3920095074089169426L;
 
+	/**
+	 * @param name
+	 * @param table
+	 * @param desktop
+	 */
 	AddAlbumArtistToPlayListContextTableAction(String name, ContextTable table, IDesktop desktop) {
 		super(name, table, desktop);
 	}
 
 	@Override
 	protected void execute(IArtistInfo object) {
-		Context.getBean(IPlayListHandler.class).showAddArtistDragDialog(Context.getBean(IRepositoryHandler.class).getArtist(object.getName()));
+		showAddArtistDragDialog(Context.getBean(IRepositoryHandler.class).getArtist(object.getName()));
 	}
 
 	@Override
@@ -53,4 +61,12 @@ final class AddAlbumArtistToPlayListContextTableAction extends ContextTableActio
 	protected boolean isEnabledForObject(IArtistInfo object) {
 		return Context.getBean(IRepositoryHandler.class).getArtist(object.getName()) != null;
 	}
+	
+	private void showAddArtistDragDialog(IArtist currentArtist) {
+    	IArtistAlbumSelectorDialog dialog = Context.getBean(IArtistAlbumSelectorDialog.class);
+    	IAlbum album = dialog.showDialog(currentArtist);
+    	if (album != null) {
+    		Context.getBean(IPlayListHandler.class).addToPlayList(album.getAudioObjects());
+    	}
+    }
 }

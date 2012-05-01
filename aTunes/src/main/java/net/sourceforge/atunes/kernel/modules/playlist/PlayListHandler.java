@@ -27,9 +27,6 @@ import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
-import net.sourceforge.atunes.model.IAlbum;
-import net.sourceforge.atunes.model.IArtist;
-import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFilter;
 import net.sourceforge.atunes.model.IFilterHandler;
@@ -755,16 +752,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 		getBean(PlayListRemoverFromDevice.class).removeAudioObjectsOfDevice(getCurrentPlayList(true), location);
 	}
 	
-    @Override
-	public void showAddArtistDragDialog(IArtist currentArtist) {
-    	IArtistAlbumSelectorDialog dialog = getBean(IArtistAlbumSelectorDialog.class);
-    	IAlbum album = dialog.showDialog(currentArtist);
-    	if (album != null) {
-    		addToPlayList(album.getAudioObjects());
-    	}
-    }
-    
-    @Override
+	@Override
     public void windowDeiconified() {
 		scrollPlayList(false);
     }

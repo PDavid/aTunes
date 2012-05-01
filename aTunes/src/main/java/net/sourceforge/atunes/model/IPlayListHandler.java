@@ -340,12 +340,6 @@ public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
 	 */
 	public void reapplyFilter();
 
-	/**
-	 * Shows a dialog to select an album of given artist and add to current play list
-	 * @param currentArtist
-	 */
-	public void showAddArtistDragDialog(IArtist currentArtist);
-
     /**
      * Sets visible play list as active
      */

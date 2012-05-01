@@ -23,7 +23,9 @@ package net.sourceforge.atunes.kernel.actions;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
+import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -43,6 +45,16 @@ public class AddAlbumWithSelectedArtistsAction extends AbstractActionOverSelecte
     private IRepositoryHandler repositoryHandler;
     
     private IPlayListHandler playListHandler;
+    
+    private IArtistAlbumSelectorDialog artistAlbumSelectorDialog;
+    
+    /**
+     * @param artistAlbumSelectorDialog
+     */
+    public void setArtistAlbumSelectorDialog(
+			IArtistAlbumSelectorDialog artistAlbumSelectorDialog) {
+		this.artistAlbumSelectorDialog = artistAlbumSelectorDialog;
+	}
     
     /**
      * @param repositoryHandler
@@ -83,7 +95,14 @@ public class AddAlbumWithSelectedArtistsAction extends AbstractActionOverSelecte
 
         // For every artist
         for (IArtist artist : selectedArtists) {
-        	playListHandler.showAddArtistDragDialog(artist);
+        	showAddArtistDragDialog(artist);
         }
+    }
+    
+	private void showAddArtistDragDialog(IArtist currentArtist) {
+    	IAlbum album = artistAlbumSelectorDialog.showDialog(currentArtist);
+    	if (album != null) {
+    		playListHandler.addToPlayList(album.getAudioObjects());
+    	}
     }
 }
