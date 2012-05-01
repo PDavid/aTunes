@@ -47,7 +47,6 @@ import net.sourceforge.atunes.model.IPlayListAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListObjectFilter;
 import net.sourceforge.atunes.model.IPlayListPanel;
-import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.model.IPlayerControlsPanel;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -89,8 +88,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	
 	private PlayListEventListeners playListEventListeners;
 
-	private IPlayListTable playListTable;
-	
 	private IPlayListPanel playListPanel;
 	
 	private IFilter playListFilter;
@@ -349,11 +346,11 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         IPlayList newSelectedPlayList = playListsContainer.getPlayListAt(index);
 
         // Set selection interval to none
-        playListTable.getSelectionModel().clearSelection();
+        playListController.clearSelection();
 
         setPlayList(newSelectedPlayList);
         // Update table model
-        ((PlayListTableModel) playListTable.getModel()).setVisiblePlayList(getCurrentPlayList(true));
+        playListController.setVisiblePlayList(getCurrentPlayList(true));
         playListController.refreshPlayList();
 
         // If playlist is active then perform an auto scroll
@@ -483,7 +480,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         setFilter(null);
 
         // Set selection interval to none
-        playListTable.getSelectionModel().clearSelection();
+        playListController.clearSelection();
 
         IPlayList playList = getCurrentPlayList(true);
         if (!playList.isEmpty()) {
@@ -561,7 +558,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         setPlayList(playListsContainer.getPlayListAt(selected));
 
         // Update table model
-        ((PlayListTableModel) playListTable.getModel()).setVisiblePlayList(getCurrentPlayList(true));
+        playListController.setVisiblePlayList(getCurrentPlayList(true));
 
         // Refresh play list
         // For some strange reason, this is needed even if play list is empty
@@ -664,7 +661,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         refreshPlayList();
         
         // Keep selected elements
-        playListTable.getSelectionModel().setSelectionInterval(getCurrentAudioObjectIndexInVisiblePlayList() + 1, getCurrentAudioObjectIndexInVisiblePlayList() + selectedAudioObjects.size());
+        playListController.setSelectionInterval(getCurrentAudioObjectIndexInVisiblePlayList() + 1, getCurrentAudioObjectIndexInVisiblePlayList() + selectedAudioObjects.size());
     }
 
     @Override
@@ -816,12 +813,12 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         playListsContainer.addPlayList(playListsContainer.getVisiblePlayListIndex(), playList);
 
         // Set selection interval to none
-        playListTable.getSelectionModel().clearSelection();
+        playListController.clearSelection();
 
         setPlayList(playList);
 
         // Update table model
-        ((PlayListTableModel) playListTable.getModel()).setVisiblePlayList(playList);
+        playListController.setVisiblePlayList(playList);
         playListController.refreshPlayList();
 
         playListController.scrollPlayList(false);
@@ -859,13 +856,13 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 
     @Override
 	public void changeSelectedAudioObjectToIndex(int index) {
-        playListTable.changeSelection(index, 0, false, false);
+        playListController.changeSelectedAudioObjectToIndex(index);
     }
 
     @Override
 	public List<IAudioObject> getSelectedAudioObjects() {
         List<IAudioObject> audioObjects = new ArrayList<IAudioObject>();
-        int[] selectedRows = playListTable.getSelectedRows();
+        int[] selectedRows = playListController.getSelectedRows();
         if (selectedRows.length > 0) {
             for (int element : selectedRows) {
                 IAudioObject file = getCurrentPlayList(true).get(element);
@@ -1033,7 +1030,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         }
 
         if (indexes.length > 0) {
-            playListTable.getSelectionModel().clearSelection();
+            playListController.clearSelection();
             removeAudioObjects(indexes);
         }
 	}
@@ -1108,11 +1105,4 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     public void windowDeiconified() {
 		scrollPlayList(false);
     }
-
-    /**
-     * @param playListTable
-     */
-    public void setPlayListTable(IPlayListTable playListTable) {
-		this.playListTable = playListTable;
-	}
 }
