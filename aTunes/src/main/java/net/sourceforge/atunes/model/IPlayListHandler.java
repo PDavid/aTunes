@@ -138,12 +138,6 @@ public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
 	public void moveRowTo(int sourceRow, int targetRow);
 
 	/**
-	 * Moves rows just after current audio object (play list must be active)
-	 * @param rows
-	 */
-	public void moveSelectionAfterCurrentAudioObject();
-
-	/**
 	 * Plays audio object passed to argument. If is not added to play list, it
 	 * adds
 	 * 
@@ -280,13 +274,6 @@ public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
 	public void addToPlaybackHistory(IAudioObject object);
 
 	/**
-	 * Moves play list position
-	 * @param from
-	 * @param to
-	 */
-	public void movePlaylistToPosition(int from, int to);
-
-	/**
 	 * Returns play list name at given index
 	 * 
 	 * @param index
@@ -375,5 +362,12 @@ public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
 	 * @param contents
 	 */
 	public void playListsChanged(boolean definition, boolean contents);
+
+	/**
+	 * Select given interval in play list
+	 * @param start
+	 * @param end
+	 */
+	void setSelectionInterval(int start, int end);
 
 }

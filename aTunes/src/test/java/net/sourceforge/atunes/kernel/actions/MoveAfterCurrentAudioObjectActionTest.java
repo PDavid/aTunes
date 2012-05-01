@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.kernel.actions;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -35,17 +34,6 @@ import org.junit.Test;
 
 public class MoveAfterCurrentAudioObjectActionTest {
 
-	@Test
-	public void test() {
-		MoveAfterCurrentAudioObjectAction sut = new MoveAfterCurrentAudioObjectAction();
-		IPlayListHandler playListHandler = mock(IPlayListHandler.class);
-		sut.setPlayListHandler(playListHandler);
-		
-		sut.executeAction();
-		
-		verify(playListHandler).moveSelectionAfterCurrentAudioObject();
-	}
-	
 	@Test
 	public void testEnabled() {
 		MoveAfterCurrentAudioObjectAction sut = new MoveAfterCurrentAudioObjectAction();

@@ -48,13 +48,6 @@ public interface IPlayListsContainer {
 	int getVisiblePlayListIndex();
 
 	/**
-	 * Move playlists 
-	 * @param from
-	 * @param to
-	 */
-	void movePlayListToPosition(int from, int to);
-
-	/**
 	 * Adds playlist
 	 * @param position
 	 * @param playList

@@ -200,21 +200,6 @@ public final class PlayListsContainer implements IPlayListsContainer {
 		playLists.add(position, playList);
 	}
 
-	/**
-	 * Changes position of two play lists
-	 * @param from
-	 * @param to
-	 */
-	@Override
-	public void movePlayListToPosition(int from, int to) {
-        IPlayList activePlayList = playLists.get(activePlayListIndex);
-        IPlayList visiblePlayList = playLists.get(visiblePlayListIndex);
-        IPlayList playList = playLists.remove(from);
-        playLists.add(to, playList);
-        activePlayListIndex = playLists.indexOf(activePlayList);
-        visiblePlayListIndex = playLists.indexOf(visiblePlayList);
-	}
-	
 	@Override
 	public IPlayList getNonFilteredPlayList() {
 		return nonFilteredPlayList;
