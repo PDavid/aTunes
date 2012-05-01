@@ -23,19 +23,60 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IPlayList;
+import net.sourceforge.atunes.model.IStatePlayer;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public final class PlayListsContainer implements IPlayListsContainer {
 
     /** The play lists currently opened. */
     private List<IPlayList> playLists = new ArrayList<IPlayList>();
+    
+    /** Stores original play list without filter. */
+    private IPlayList nonFilteredPlayList;
 
     /** Index of the active play list */
     private int activePlayListIndex = 0;
 
     /** Index of the visible play list: can be different of active play list */
     private int visiblePlayListIndex = 0;
+    
+    private IStatePlayer statePlayer;
+    
+    private PlayListHandler playListHandler;
+    
+    private IPlayListController playListController;
+    
+	private IColumnSet playListColumnSet;
+	
+	/**
+	 * @param playListColumnSet
+	 */
+	public void setPlayListColumnSet(IColumnSet playListColumnSet) {
+		this.playListColumnSet = playListColumnSet;
+	}
+    
+    /**
+     * @param playListController
+     */
+    public void setPlayListController(IPlayListController playListController) {
+		this.playListController = playListController;
+	}
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(PlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+    
+    /**
+     * @param statePlayer
+     */
+    public void setStatePlayer(IStatePlayer statePlayer) {
+		this.statePlayer = statePlayer;
+	}
 
 	/**
 	 * Sets visible play list as active
@@ -173,4 +214,60 @@ public final class PlayListsContainer implements IPlayListsContainer {
         activePlayListIndex = playLists.indexOf(activePlayList);
         visiblePlayListIndex = playLists.indexOf(visiblePlayList);
 	}
+	
+	@Override
+	public IPlayList getNonFilteredPlayList() {
+		return nonFilteredPlayList;
+	}
+	
+    @Override
+	public boolean isFiltered() {
+        return nonFilteredPlayList != null;
+    }
+
+    @Override
+    public void setFilter(String filter) {
+        String filterText = filter;
+
+        // If filter is null, remove previous filter
+        if (filterText == null) {
+            // If play list was filtered, back to non-filtered play list
+            if (nonFilteredPlayList != null) {
+                setPlayListAfterFiltering(nonFilteredPlayList);
+                nonFilteredPlayList = null;
+            }
+        } else {
+            // Store original play list without filter
+            if (nonFilteredPlayList == null) {
+				nonFilteredPlayList = getCurrentPlayList(true).copyPlayList();
+            }
+
+            // Create a new play list by filtering elements
+            PlayList newPlayList = new PlayList(playListColumnSet.filterAudioObjects(nonFilteredPlayList.getAudioObjectsList(), filterText), statePlayer);
+            setPlayListAfterFiltering(newPlayList);
+        }
+    }
+
+    /**
+     * Sets the play list after filtering.
+     * 
+     * @param playList
+     *            the new play list after filtering
+     */
+    private void setPlayListAfterFiltering(IPlayList playList) {
+        removePlayList(getVisiblePlayListIndex());
+        addPlayList(getVisiblePlayListIndex(), playList);
+
+        // Set selection interval to none
+        playListController.clearSelection();
+
+        playListHandler.setPlayList(playList);
+
+        // Update table model
+        playListController.setVisiblePlayList(playList);
+        playListController.refreshPlayList();
+
+        playListController.scrollPlayList(false);
+    }
+
 }

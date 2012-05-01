@@ -26,14 +26,6 @@ import java.util.List;
 public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
 
 	/**
-	 * Removes play list referred by index.
-	 * 
-	 * @param index
-	 *            the index
-	 */
-	public void removePlayList(int index);
-
-	/**
 	 * Returns the number of play lists handled
 	 * 
 	 * @return
@@ -376,5 +368,12 @@ public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
 	 * @return name of current visible play list
 	 */
 	public String getCurrentVisiblePlayListName();
+
+	/**
+	 * Called to sabe playlists
+	 * @param definition
+	 * @param contents
+	 */
+	public void playListsChanged(boolean definition, boolean contents);
 
 }

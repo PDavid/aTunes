@@ -102,4 +102,21 @@ public interface IPlayListsContainer {
 	 */
 	void setVisiblePlayListActive();
 
+	/**
+	 * Play list previous to being filtered
+	 * @return
+	 */
+	IPlayList getNonFilteredPlayList();
+
+	/**
+	 * Returns if play list is filtered
+	 * @return
+	 */
+	boolean isFiltered();
+
+	/**
+	 * Set filter
+	 * @param filter
+	 */
+	void setFilter(String filter);
 }
