@@ -29,7 +29,9 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IPlayerControlsPanel;
 import net.sourceforge.atunes.model.IPlayerHandler;
+import net.sourceforge.atunes.model.IStatePlaylist;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -56,8 +58,17 @@ public class PlayListRemover implements ApplicationContextAware {
 	private PlayListEventListeners playListEventListeners;
 	
 	private PlayListInformationInStatusBar playListInformationInStatusBar;
+
+	private IStatePlaylist statePlaylist;
 	
 	private ApplicationContext context;
+	
+	/**
+	 * @param statePlaylist
+	 */
+	public void setStatePlaylist(IStatePlaylist statePlaylist) {
+		this.statePlaylist = statePlaylist;
+	}
 	
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) {
@@ -277,6 +288,55 @@ public class PlayListRemover implements ApplicationContextAware {
         }
         // Update status bar
     	playListInformationInStatusBar.showPlayListInformation(playListHandler.getCurrentPlayList(true));
+    }
+
+	/**
+	 * Clear play list 
+	 */
+	void clearPlayList() {
+        // Remove filter
+        playListHandler.setFilter(null);
+
+        // Set selection interval to none
+        playListController.clearSelection();
+
+        IPlayList playList = playListHandler.getCurrentPlayList(true);
+        if (!playList.isEmpty()) {
+            // Clear play list
+            playList.clear();
+
+            // Only if this play list is the active stop playback
+            if (playListHandler.isActivePlayListVisible() && statePlaylist.isStopPlayerOnPlayListClear()) {
+                playerHandler.stopCurrentAudioObject(false);
+            }
+
+            // Set first audio object as current
+            playList.setCurrentAudioObjectIndex(0);
+
+            // Disable actions
+            context.getBean(SavePlayListAction.class).setEnabled(false);
+            context.getBean(ShufflePlayListAction.class).setEnabled(false);
+
+            // Update audio object number
+            playListInformationInStatusBar.showPlayListInformation(playList);
+
+            // disable progress slider
+            if (!statePlaylist.isStopPlayerOnPlayListClear()) {
+            	context.getBean(IPlayerControlsPanel.class).getProgressSlider().setEnabled(false);
+            }
+            playListController.repaint();
+
+            // Refresh play list
+            playListController.refreshPlayList();
+
+            Logger.info("Play list clear");
+        }
+
+        // Fire clear event
+        // Only if this play list is the active
+        if (playListHandler.isActivePlayListVisible()) {
+        	playListEventListeners.playListCleared();
+        }
     }
 
 }

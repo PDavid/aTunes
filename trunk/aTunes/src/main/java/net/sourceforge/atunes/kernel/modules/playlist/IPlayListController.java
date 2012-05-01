@@ -45,4 +45,9 @@ interface IPlayListController {
 	 * @param userAction
 	 */
 	void scrollPlayList(boolean userAction);
+
+	/**
+	 * Repaint all panel
+	 */
+	void repaint();
 }

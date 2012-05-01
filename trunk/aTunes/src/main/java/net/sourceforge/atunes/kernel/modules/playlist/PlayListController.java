@@ -387,7 +387,8 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> i
 	/**
 	 * Repaint play list
 	 */
-	void repaint() {
+	@Override
+	public void repaint() {
 		playListPanel.getSwingComponent().repaint();
 	}
 }
