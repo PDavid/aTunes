@@ -30,6 +30,7 @@ import javax.swing.event.TableModelEvent;
 
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
+import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListPanel;
 import net.sourceforge.atunes.model.IPlayListTable;
@@ -278,5 +279,45 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> i
      */
     void updatePlayList() {
     	playListTable.repaint();
+    }
+    
+    /**
+     * Clear play list selection
+     */
+    void clearSelection() {
+    	playListTable.getSelectionModel().clearSelection();
+    }
+    
+    /**
+     * Sets given playlist as visible
+     * @param playList
+     */
+    void setVisiblePlayList(IPlayList playList) {
+    	((PlayListTableModel) playListTable.getModel()).setVisiblePlayList(playList);
+    }
+    
+    /**
+     * Sets selected elements in table
+     * @param from
+     * @param to
+     */
+    void setSelectionInterval(int from, int to) {
+    	playListTable.getSelectionModel().setSelectionInterval(from, to);
+    }
+    
+    /**
+     * Changes selection to given index
+     * @param index
+     */
+    void changeSelectedAudioObjectToIndex(int index) {
+    	playListTable.changeSelection(index, 0, false, false);
+    }
+    
+    /**
+     * Return selected rows
+     * @return
+     */
+    int[] getSelectedRows() {
+    	return playListTable.getSelectedRows();
     }
 }
