@@ -28,7 +28,7 @@ import java.util.Map;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ITreeObject;
-import net.sourceforge.atunes.model.TagAttribute;
+import net.sourceforge.atunes.model.TextTagAttribute;
 import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 public final class IncompleteTagsChecker {
@@ -40,10 +40,10 @@ public final class IncompleteTagsChecker {
      * 
      * @return
      */
-    public static List<TagAttribute> getDefaultTagAttributesToHighlightFolders() {
-        List<TagAttribute> result = new ArrayList<TagAttribute>();
-        result.add(TagAttribute.ARTIST);
-        result.add(TagAttribute.ALBUM);
+    public static List<TextTagAttribute> getDefaultTagAttributesToHighlightFolders() {
+        List<TextTagAttribute> result = new ArrayList<TextTagAttribute>();
+        result.add(TextTagAttribute.ARTIST);
+        result.add(TextTagAttribute.ALBUM);
         return result;
     }
 
@@ -54,14 +54,14 @@ public final class IncompleteTagsChecker {
      * @param attributes
      * @return
      */
-    public static Map<TagAttribute, Boolean> getAllTagAttributes(List<TagAttribute> attributes) {
-        Map<TagAttribute, Boolean> result = new HashMap<TagAttribute, Boolean>();
+    public static Map<TextTagAttribute, Boolean> getAllTagAttributes(List<TextTagAttribute> attributes) {
+        Map<TextTagAttribute, Boolean> result = new HashMap<TextTagAttribute, Boolean>();
 
-        for (TagAttribute att : TagAttribute.values()) {
+        for (TextTagAttribute att : TextTagAttribute.values()) {
         	result.put(att, false);
         }
 
-        for (TagAttribute attr : attributes) {
+        for (TextTagAttribute attr : attributes) {
             result.put(attr, true);
         }
 
@@ -74,12 +74,12 @@ public final class IncompleteTagsChecker {
      * @param tagAttributesToCheck
      * @return
      */
-    private static boolean hasTagAttributesFilled(ILocalAudioObject localAudioObject, List<TagAttribute> tagAttributesToCheck) {
+    private static boolean hasTagAttributesFilled(ILocalAudioObject localAudioObject, List<TextTagAttribute> tagAttributesToCheck) {
         if (localAudioObject.getTag() == null) {
             return false;
         }
 
-        for (TagAttribute ta : tagAttributesToCheck) {
+        for (TextTagAttribute ta : tagAttributesToCheck) {
             boolean filled = analyzeAttribute(localAudioObject, ta);
             if (!filled) {
             	return false;
@@ -94,7 +94,7 @@ public final class IncompleteTagsChecker {
 	 * @param ta
 	 * @return if attribute is filled
 	 */
-	private static boolean analyzeAttribute(ILocalAudioObject localAudioObject, TagAttribute ta) {
+	private static boolean analyzeAttribute(ILocalAudioObject localAudioObject, TextTagAttribute ta) {
 		return checkTitle(localAudioObject, ta) && 
 		       checkArtist(localAudioObject, ta) &&
 		       checkAlbum(localAudioObject, ta) &&
@@ -112,8 +112,8 @@ public final class IncompleteTagsChecker {
 	 * @param localAudioObject
 	 * @param ta
 	 */
-	private static boolean checkTrack(ILocalAudioObject localAudioObject, TagAttribute ta) {
-		if (ta == TagAttribute.TRACK && localAudioObject.getTrackNumber() <= 0) {
+	private static boolean checkTrack(ILocalAudioObject localAudioObject, TextTagAttribute ta) {
+		if (ta == TextTagAttribute.TRACK && localAudioObject.getTrackNumber() <= 0) {
 		    return false;
 		}
 		return true;
@@ -123,8 +123,8 @@ public final class IncompleteTagsChecker {
 	 * @param localAudioObject
 	 * @param ta
 	 */
-	private static boolean checkDiscNumber(ILocalAudioObject localAudioObject, TagAttribute ta) {
-		if (ta == TagAttribute.DISC_NUMBER && localAudioObject.getDiscNumber() <= 0) {
+	private static boolean checkDiscNumber(ILocalAudioObject localAudioObject, TextTagAttribute ta) {
+		if (ta == TextTagAttribute.DISC_NUMBER && localAudioObject.getDiscNumber() <= 0) {
 		    return false;
 		}
 		return true;
@@ -134,8 +134,8 @@ public final class IncompleteTagsChecker {
 	 * @param localAudioObject
 	 * @param ta
 	 */
-	private static boolean checkAlbumArtist(ILocalAudioObject localAudioObject, TagAttribute ta) {
-		if (ta == TagAttribute.ALBUM_ARTIST && localAudioObject.getAlbumArtist().isEmpty()) {
+	private static boolean checkAlbumArtist(ILocalAudioObject localAudioObject, TextTagAttribute ta) {
+		if (ta == TextTagAttribute.ALBUM_ARTIST && localAudioObject.getAlbumArtist().isEmpty()) {
 		    return false;
 		}
 		return true;
@@ -145,8 +145,8 @@ public final class IncompleteTagsChecker {
 	 * @param localAudioObject
 	 * @param ta
 	 */
-	private static boolean checkComposer(ILocalAudioObject localAudioObject, TagAttribute ta) {
-		if (ta == TagAttribute.COMPOSER && localAudioObject.getComposer().isEmpty()) {
+	private static boolean checkComposer(ILocalAudioObject localAudioObject, TextTagAttribute ta) {
+		if (ta == TextTagAttribute.COMPOSER && localAudioObject.getComposer().isEmpty()) {
 		    return false;
 		}
 		return true;
@@ -156,8 +156,8 @@ public final class IncompleteTagsChecker {
 	 * @param localAudioObject
 	 * @param ta
 	 */
-	private static boolean checkLyrics(ILocalAudioObject localAudioObject, TagAttribute ta) {
-		if (ta == TagAttribute.LYRICS && localAudioObject.getLyrics().isEmpty()) {
+	private static boolean checkLyrics(ILocalAudioObject localAudioObject, TextTagAttribute ta) {
+		if (ta == TextTagAttribute.LYRICS && localAudioObject.getLyrics().isEmpty()) {
 		    return false;
 		}
 		return true;
@@ -167,8 +167,8 @@ public final class IncompleteTagsChecker {
 	 * @param localAudioObject
 	 * @param ta
 	 */
-	private static boolean checkGenre(ILocalAudioObject localAudioObject, TagAttribute ta) {
-		if (ta == TagAttribute.GENRE && UnknownObjectCheck.isUnknownGenre(localAudioObject.getGenre())) {
+	private static boolean checkGenre(ILocalAudioObject localAudioObject, TextTagAttribute ta) {
+		if (ta == TextTagAttribute.GENRE && UnknownObjectCheck.isUnknownGenre(localAudioObject.getGenre())) {
 		    return false;
 		}
 		return true;
@@ -178,8 +178,8 @@ public final class IncompleteTagsChecker {
 	 * @param localAudioObject
 	 * @param ta
 	 */
-	private static boolean checkComment(ILocalAudioObject localAudioObject, TagAttribute ta) {
-		if (ta == TagAttribute.COMMENT && (localAudioObject.getComment().isEmpty())) {
+	private static boolean checkComment(ILocalAudioObject localAudioObject, TextTagAttribute ta) {
+		if (ta == TextTagAttribute.COMMENT && (localAudioObject.getComment().isEmpty())) {
 		    return false;
 		}
 		return true;
@@ -189,8 +189,8 @@ public final class IncompleteTagsChecker {
 	 * @param localAudioObject
 	 * @param ta
 	 */
-	private static boolean checkYear(ILocalAudioObject localAudioObject, TagAttribute ta) {
-		if (ta == TagAttribute.YEAR && localAudioObject.getYear().isEmpty()) {
+	private static boolean checkYear(ILocalAudioObject localAudioObject, TextTagAttribute ta) {
+		if (ta == TextTagAttribute.YEAR && localAudioObject.getYear().isEmpty()) {
 		    return false;
 		}
 		return true;
@@ -200,8 +200,8 @@ public final class IncompleteTagsChecker {
 	 * @param localAudioObject
 	 * @param ta
 	 */
-	private static boolean checkAlbum(ILocalAudioObject localAudioObject, TagAttribute ta) {
-		if (ta == TagAttribute.ALBUM && UnknownObjectCheck.isUnknownAlbum(localAudioObject.getAlbum())) {
+	private static boolean checkAlbum(ILocalAudioObject localAudioObject, TextTagAttribute ta) {
+		if (ta == TextTagAttribute.ALBUM && UnknownObjectCheck.isUnknownAlbum(localAudioObject.getAlbum())) {
 		    return false;
 		}
 		return true;
@@ -211,8 +211,8 @@ public final class IncompleteTagsChecker {
 	 * @param localAudioObject
 	 * @param ta
 	 */
-	private static boolean checkArtist(ILocalAudioObject localAudioObject, TagAttribute ta) {
-		if (ta == TagAttribute.ARTIST && UnknownObjectCheck.isUnknownArtist(localAudioObject.getArtist())) {
+	private static boolean checkArtist(ILocalAudioObject localAudioObject, TextTagAttribute ta) {
+		if (ta == TextTagAttribute.ARTIST && UnknownObjectCheck.isUnknownArtist(localAudioObject.getArtist())) {
 		    return false;
 		}
 		return true;
@@ -222,8 +222,8 @@ public final class IncompleteTagsChecker {
 	 * @param localAudioObject
 	 * @param ta
 	 */
-	private static boolean checkTitle(ILocalAudioObject localAudioObject, TagAttribute ta) {
-		if (ta == TagAttribute.TITLE && localAudioObject.getTitle().isEmpty()) {
+	private static boolean checkTitle(ILocalAudioObject localAudioObject, TextTagAttribute ta) {
+		if (ta == TextTagAttribute.TITLE && localAudioObject.getTitle().isEmpty()) {
 		    return false;
 		}
 		return true;
@@ -237,7 +237,7 @@ public final class IncompleteTagsChecker {
      * @param tagAttributes
      * @return
      */
-    static boolean hasIncompleteTags(ITreeObject<? extends IAudioObject> treeObject, List<TagAttribute> tagAttributes) {
+    static boolean hasIncompleteTags(ITreeObject<? extends IAudioObject> treeObject, List<TextTagAttribute> tagAttributes) {
         for (IAudioObject f : treeObject.getAudioObjects()) {
             if (hasIncompleteTags(f, tagAttributes)) {
                 return true;
@@ -252,7 +252,7 @@ public final class IncompleteTagsChecker {
      * @param tagAttributes
      * @return
      */
-    static boolean hasIncompleteTags(IAudioObject audioObject, List<TagAttribute> tagAttributes) {
+    static boolean hasIncompleteTags(IAudioObject audioObject, List<TextTagAttribute> tagAttributes) {
         if (audioObject instanceof ILocalAudioObject) {
             return !hasTagAttributesFilled((ILocalAudioObject) audioObject, tagAttributes);
         }

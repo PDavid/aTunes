@@ -27,7 +27,7 @@ import java.util.Map;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import net.sourceforge.atunes.model.TagAttribute;
+import net.sourceforge.atunes.model.TextTagAttribute;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -38,7 +38,7 @@ class TagAttributesTableModel implements TableModel {
 	private static final long serialVersionUID = 5251001708812824836L;
 
 	/** The tag attributes hash map. */
-	private Map<TagAttribute, Boolean> tagAttributes;
+	private Map<TextTagAttribute, Boolean> tagAttributes;
 
 	/** The listeners. */
 	private List<TableModelListener> listeners = new ArrayList<TableModelListener>();
@@ -81,9 +81,9 @@ class TagAttributesTableModel implements TableModel {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		if (columnIndex == 0) {
-			return tagAttributes.get(TagAttribute.values()[rowIndex]);
+			return tagAttributes.get(TextTagAttribute.values()[rowIndex]);
 		}
-		return I18nUtils.getString(TagAttribute.values()[rowIndex].name());
+		return I18nUtils.getString(TextTagAttribute.values()[rowIndex].name());
 	}
 
 	@Override
@@ -102,23 +102,23 @@ class TagAttributesTableModel implements TableModel {
 	 * @param columns
 	 *            the new columns
 	 */
-	 public void setTagAttributes(Map<TagAttribute, Boolean> attrs) {
+	 public void setTagAttributes(Map<TextTagAttribute, Boolean> attrs) {
 		 this.tagAttributes = attrs;
 	 }
 
 	 @Override
 	 public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 		 if (columnIndex == 0) {
-			 tagAttributes.put(TagAttribute.values()[rowIndex], (Boolean) aValue);
+			 tagAttributes.put(TextTagAttribute.values()[rowIndex], (Boolean) aValue);
 		 }
 	 }
 
 	 /**
 	  * @return the tagAttributes selected by user
 	  */
-	 public List<TagAttribute> getSelectedTagAttributes() {
-		 List<TagAttribute> result = new ArrayList<TagAttribute>();
-		 for (TagAttribute attr : tagAttributes.keySet()) {
+	 public List<TextTagAttribute> getSelectedTagAttributes() {
+		 List<TextTagAttribute> result = new ArrayList<TextTagAttribute>();
+		 for (TextTagAttribute attr : tagAttributes.keySet()) {
 			 if (tagAttributes.get(attr)) {
 				 result.add(attr);
 			 }

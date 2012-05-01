@@ -149,13 +149,13 @@ public interface IStateNavigation {
 	 * Attributes used to highlight incomplete elements
 	 * @return
 	 */
-	public List<TagAttribute> getHighlightIncompleteTagFoldersAttributes();
+	public List<TextTagAttribute> getHighlightIncompleteTagFoldersAttributes();
 
 	/**
 	 * Attributes used to highlight incomplete elements
 	 * @param highlightIncompleteTagFoldersAttributes
 	 */
-	public void setHighlightIncompleteTagFoldersAttributes(List<TagAttribute> highlightIncompleteTagFoldersAttributes);
+	public void setHighlightIncompleteTagFoldersAttributes(List<TextTagAttribute> highlightIncompleteTagFoldersAttributes);
 
 	/**
 	 * Show navigation tree
