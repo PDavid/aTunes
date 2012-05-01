@@ -21,12 +21,16 @@
 package net.sourceforge.atunes.kernel.modules.playlist;
 
 import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListPanel;
@@ -134,10 +138,10 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> i
     /**
      * Move down.
      */
-    void moveDown() {
+    void moveDown(IPlayList playList) {
         int[] rows = playListTable.getSelectedRows();
         if (rows.length > 0 && rows[rows.length - 1] < playListTable.getRowCount() - 1) {
-            playListHandler.moveDown(rows);
+            moveDown(playList, rows);
             refreshPlayList();
             playListTable.getSelectionModel().setSelectionInterval(rows[0] + 1, rows[rows.length - 1] + 1);
         }
@@ -145,11 +149,12 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> i
 
     /**
      * Move to bottom.
+     * @param playList
      */
-    void moveToBottom() {
+    void moveToBottom(IPlayList playList) {
         int[] rows = playListTable.getSelectedRows();
         if (rows.length > 0 && rows[rows.length - 1] < playListTable.getRowCount() - 1) {
-            playListHandler.moveToBottom(rows);
+            moveToBottom(playList, rows);
             refreshPlayList();
             playListTable.getSelectionModel().setSelectionInterval(playListTable.getRowCount() - rows.length,
                     playListTable.getRowCount() - 1);
@@ -158,11 +163,12 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> i
 
     /**
      * Move to top.
+     * @param playList
      */
-    void moveToTop() {
+    void moveToTop(IPlayList playList) {
         int[] rows = playListTable.getSelectedRows();
         if (rows.length > 0 && rows[0] > 0) {
-            playListHandler.moveToTop(rows);
+            moveToTop(playList, rows);
             refreshPlayList();
             playListTable.getSelectionModel().setSelectionInterval(0, rows.length - 1);
         }
@@ -171,14 +177,64 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> i
     /**
      * Move up.
      */
-    void moveUp() {
+    void moveUp(IPlayList playList) {
         int[] rows = playListTable.getSelectedRows();
         if (rows.length > 0 && rows[0] > 0) {
-            playListHandler.moveUp(rows);
+            moveUp(playList, rows);
             refreshPlayList();
             playListTable.getSelectionModel().setSelectionInterval(rows[0] - 1, rows[rows.length - 1] - 1);
         }
     }
+    
+    private void moveRows(IPlayList playList, int[] rows, final boolean up) {
+        if (rows == null || rows.length == 0) {
+            return;
+        }
+        List<Integer> rowList = new ArrayList<Integer>();
+        for (int row : rows) {
+            rowList.add(row);
+        }
+        Collections.sort(rowList, new RowListComparator(up));
+        for (Integer row : rowList) {
+        	playList.moveRowTo(row, row + (up ? -1 : 1));
+        }
+    }
+
+	private void moveUp(IPlayList playList, int[] rows) {
+        moveRows(playList, rows, true);
+    }
+
+	private void moveDown(IPlayList playList, int[] rows) {
+        moveRows(playList, rows, false);
+    }
+
+	private void moveToBottom(IPlayList playList, int[] rows) {
+        int j = 0;
+        for (int i = rows.length - 1; i >= 0; i--) {
+            IAudioObject aux = playList.get(rows[i]);
+            playList.remove(rows[i]);
+            playList.add(playList.size() - j++, aux);
+        }
+        if (rows[rows.length - 1] < playList.getCurrentAudioObjectIndex()) {
+        	playList.setCurrentAudioObjectIndex(playList.getCurrentAudioObjectIndex() - rows.length);
+        } else if (rows[0] <= playList.getCurrentAudioObjectIndex() && playList.getCurrentAudioObjectIndex() <= rows[rows.length - 1]) {
+        	playList.setCurrentAudioObjectIndex(playList.getCurrentAudioObjectIndex() + playList.size() - rows[rows.length - 1] - 1);
+        }
+    }
+
+	private void moveToTop(IPlayList playList, int[] rows) {
+        for (int i = 0; i < rows.length; i++) {
+            IAudioObject aux = playList.get(rows[i]);
+            playList.remove(rows[i]);
+            playList.add(i, aux);
+        }
+        if (rows[0] > playList.getCurrentAudioObjectIndex()) {
+            playList.setCurrentAudioObjectIndex(playList.getCurrentAudioObjectIndex() + rows.length);
+        } else if (rows[0] <= playList.getCurrentAudioObjectIndex() && playList.getCurrentAudioObjectIndex() <= rows[rows.length - 1]) {
+            playList.setCurrentAudioObjectIndex(playList.getCurrentAudioObjectIndex() - rows[0]);
+        }
+    }
+
 
     /**
      * Play selected audio object.
