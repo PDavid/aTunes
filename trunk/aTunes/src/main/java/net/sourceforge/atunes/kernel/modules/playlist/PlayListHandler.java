@@ -46,7 +46,6 @@ import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListObjectFilter;
-import net.sourceforge.atunes.model.IPlayListPanel;
 import net.sourceforge.atunes.model.IPlayerControlsPanel;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -88,8 +87,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	
 	private PlayListEventListeners playListEventListeners;
 
-	private IPlayListPanel playListPanel;
-	
 	private IFilter playListFilter;
 	
 	private IFilterHandler filterHandler;
@@ -111,6 +108,15 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	private IStatePlayer statePlayer;
 	
     private IStatePlaylist statePlaylist;
+    
+    private PlayListCreator playListCreator;
+    
+    /**
+     * @param playListCreator
+     */
+    public void setPlayListCreator(PlayListCreator playListCreator) {
+		this.playListCreator = playListCreator;
+	}
     
     /**
      * @param statePlaylist
@@ -225,12 +231,8 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	}
     
     /**
-     * @param playListPanel
+     * @param playListEventListeners
      */
-    public void setPlayListPanel(IPlayListPanel playListPanel) {
-		this.playListPanel = playListPanel;
-	}
-
     public void setPlayListEventListeners(PlayListEventListeners playListEventListeners) {
 		this.playListEventListeners = playListEventListeners;
 	}
@@ -251,13 +253,41 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     @Override
     public void applicationStarted() {
     	// Playlists need to be loaded before other handlers access them in allHandlersInitialized
-        setPlayLists();
+        // Get playlists from application cache
+        final IListOfPlayLists listOfPlayLists = playListsRetrievedFromCache;
+
+        // Set selected play list as default 
+        int selected = listOfPlayLists.getSelectedPlayList();
+        if (selected < 0 || selected >= listOfPlayLists.getPlayLists().size()) {
+            selected = 0;
+        }
+
+        // Add playlists
+        playListsContainer.clear();
+        for (IPlayList playlist : listOfPlayLists.getPlayLists()) {
+        	addNewPlayList(playListNameCreator.getNameForPlaylist(playListsContainer, playlist), playlist);
+        }
+        // Initially active play list and visible play list are the same
+        playListsContainer.setActivePlayListIndex(selected);
+        playListsContainer.setVisiblePlayListIndex(selected);
+        playListTabController.forceSwitchTo(selected);
+
+        setPlayList(playListsContainer.getPlayListAt(selected));
+
+        // Update table model
+        playListController.setVisiblePlayList(getCurrentPlayList(true));
+
+        // Refresh play list
+        // For some strange reason, this is needed even if play list is empty
+        playListController.refreshPlayList();
+
+        playListsRetrievedFromCache = null;
     }
     
     @Override
     public void allHandlersInitialized() {
         // Create drag and drop listener
-    	playListPanel.enableDragAndDrop();
+    	playListController.enableDragAndDrop();
     }
 
     /**
@@ -287,17 +317,13 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 
     @Override
 	public void newPlayList(String nameOfNewPlayList, List<? extends IAudioObject> audioObjects) {
-        PlayList newPlayList;
-        if (audioObjects == null) {
-            newPlayList = new PlayList(statePlayer);
-        } else {
-            newPlayList = new PlayList(audioObjects, statePlayer);
-        }
-        newPlayList.setName(nameOfNewPlayList);
-        playListsContainer.addPlayList(newPlayList);
-        playListTabController.newPlayList(nameOfNewPlayList);
-        
+        addNewPlayList(nameOfNewPlayList, playListCreator.getNewPlayList(nameOfNewPlayList, audioObjects));
         playListsChanged(true, true);
+    }
+    
+    private void addNewPlayList(String name, IPlayList playList) {
+        playListsContainer.addPlayList(playList);
+        playListTabController.newPlayList(name);    	
     }
 
     @Override
@@ -506,7 +532,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
             if (!statePlaylist.isStopPlayerOnPlayListClear()) {
             	getBean(IPlayerControlsPanel.class).getProgressSlider().setEnabled(false);
             }
-            playListPanel.getSwingComponent().repaint();
+            playListController.repaint();
 
             // Refresh play list
             playListController.refreshPlayList();
@@ -532,39 +558,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     @Override
     protected Runnable getPreviousInitializationTask() {
         return new PreviousInitializationTaskRunnable(this);
-    }
-
-	private void setPlayLists() {
-        // Get playlists from application cache
-        final IListOfPlayLists listOfPlayLists = playListsRetrievedFromCache;
-
-        // Set selected play list as default 
-        int selected = listOfPlayLists.getSelectedPlayList();
-        if (selected < 0 || selected >= listOfPlayLists.getPlayLists().size()) {
-            selected = 0;
-        }
-
-        // Add playlists
-        playListsContainer.clear();
-        for (IPlayList playlist : listOfPlayLists.getPlayLists()) {
-            playListsContainer.addPlayList(playlist);
-            playListTabController.newPlayList(playListNameCreator.getNameForPlaylist(playListsContainer, playlist));
-        }
-        // Initially active play list and visible play list are the same
-        playListsContainer.setActivePlayListIndex(selected);
-        playListsContainer.setVisiblePlayListIndex(selected);
-        playListTabController.forceSwitchTo(selected);
-
-        setPlayList(playListsContainer.getPlayListAt(selected));
-
-        // Update table model
-        playListController.setVisiblePlayList(getCurrentPlayList(true));
-
-        // Refresh play list
-        // For some strange reason, this is needed even if play list is empty
-        playListController.refreshPlayList();
-
-        playListsRetrievedFromCache = null;
     }
 
     @Override
