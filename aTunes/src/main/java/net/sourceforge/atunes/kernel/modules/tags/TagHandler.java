@@ -124,7 +124,7 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 
         if (!editTagDialogControllerMap.containsKey(sourceOfEditTagDialog)) {
             boolean arePrevNextButtonsShown = sourceOfEditTagDialog != EditTagSources.NAVIGATOR;
-            editTagDialogControllerMap.put(sourceOfEditTagDialog, new EditTagDialogController(new EditTagDialog(getFrame().getFrame(), arePrevNextButtonsShown, lookAndFeelManager), getOsManager(), playListHandler, repositoryHandler, localAudioObjectValidator, processFactory));
+            editTagDialogControllerMap.put(sourceOfEditTagDialog, new EditTagDialogController(new EditTagDialog(getFrame(), arePrevNextButtonsShown, lookAndFeelManager), getOsManager(), playListHandler, repositoryHandler, localAudioObjectValidator, processFactory));
         }
         return editTagDialogControllerMap.get(sourceOfEditTagDialog);
     }

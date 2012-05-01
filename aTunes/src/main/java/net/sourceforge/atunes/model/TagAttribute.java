@@ -27,6 +27,6 @@ package net.sourceforge.atunes.model;
  */
 public enum TagAttribute {
 
-    TITLE, ARTIST, ALBUM, YEAR, COMMENT, GENRE, LYRICS, COMPOSER, ALBUM_ARTIST, TRACK;
+    TITLE, ARTIST, ALBUM, YEAR, COMMENT, GENRE, LYRICS, COMPOSER, ALBUM_ARTIST, TRACK, DISC_NUMBER;
 
 }
