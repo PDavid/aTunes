@@ -119,6 +119,15 @@ public final class EditTagDialog extends AbstractCustomDialog {
     }
 
     /**
+     * editor for attribute
+     * @param attribute
+     * @return
+     */
+    public JComponent getEditor(TextTagAttribute attribute) {
+    	return controls.get(attribute).getEditor();
+    }
+    
+    /**
      * Text field editor for attribute
      * @param attribute
      * @return
