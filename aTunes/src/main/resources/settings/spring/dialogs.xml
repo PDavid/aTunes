@@ -12,7 +12,7 @@
 		<constructor-arg ref="playerHandler"/>
 	</bean> 
 
-	<bean id="fileSelectionDialog" class="net.sourceforge.atunes.gui.views.dialogs.FileSelectionDialog" scope="prototype">
+	<bean id="fileSelectionDialog" class="net.sourceforge.atunes.gui.views.dialogs.CustomFileSelectionDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
@@ -103,6 +103,10 @@
 	
 	<bean id="messageDialogFactory" class="net.sourceforge.atunes.model.MessageDialogFactory"/>
 	<bean id="messageDialog" class="net.sourceforge.atunes.gui.views.dialogs.MessageDialog" scope="prototype"/>
+
+	<bean id="fileSelectorDialogFactory" class="net.sourceforge.atunes.model.FileSelectorDialogFactory"/>
+	<bean id="fileSelectorDialog" class="net.sourceforge.atunes.gui.views.dialogs.FileSelectorDialog" scope="prototype"/>	
+	
 
 	<bean id="radioDialog" class="net.sourceforge.atunes.gui.views.dialogs.RadioDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
