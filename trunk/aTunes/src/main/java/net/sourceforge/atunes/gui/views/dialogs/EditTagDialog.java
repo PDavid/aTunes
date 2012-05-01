@@ -35,7 +35,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -47,8 +46,10 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.TagAttribute;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -93,12 +94,12 @@ public final class EditTagDialog extends AbstractCustomDialog {
     /**
      * Instantiates a new edits the tag dialog.
      * 
-     * @param owner
+     * @param frame
      * @param arePrevNextButtonsShown
      * @param lookAndFeelManager
      */
-    public EditTagDialog(JFrame owner, boolean arePrevNextButtonsShown, ILookAndFeelManager lookAndFeelManager) {
-        super(owner, 500, 600, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
+    public EditTagDialog(IFrame frame, boolean arePrevNextButtonsShown, ILookAndFeelManager lookAndFeelManager) {
+        super(frame, 500, 600, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
         setTitle(I18nUtils.getString("EDIT_TAG"));
         setResizable(true);
 

@@ -56,16 +56,10 @@ public final class IncompleteTagsChecker {
      */
     public static Map<TagAttribute, Boolean> getAllTagAttributes(List<TagAttribute> attributes) {
         Map<TagAttribute, Boolean> result = new HashMap<TagAttribute, Boolean>();
-        result.put(TagAttribute.TITLE, false);
-        result.put(TagAttribute.ARTIST, false);
-        result.put(TagAttribute.ALBUM, false);
-        result.put(TagAttribute.YEAR, false);
-        result.put(TagAttribute.COMMENT, false);
-        result.put(TagAttribute.GENRE, false);
-        result.put(TagAttribute.LYRICS, false);
-        result.put(TagAttribute.COMPOSER, false);
-        result.put(TagAttribute.ALBUM_ARTIST, false);
-        result.put(TagAttribute.TRACK, false);
+
+        for (TagAttribute att : TagAttribute.values()) {
+        	result.put(att, false);
+        }
 
         for (TagAttribute attr : attributes) {
             result.put(attr, true);
@@ -110,7 +104,8 @@ public final class IncompleteTagsChecker {
 		       checkLyrics(localAudioObject, ta) &&
 		       checkComposer(localAudioObject, ta) &&
 		       checkAlbumArtist(localAudioObject, ta) &&
-		       checkTrack(localAudioObject, ta);
+		       checkTrack(localAudioObject, ta) &&
+		       checkDiscNumber(localAudioObject, ta);
 	}
 
 	/**
@@ -119,6 +114,17 @@ public final class IncompleteTagsChecker {
 	 */
 	private static boolean checkTrack(ILocalAudioObject localAudioObject, TagAttribute ta) {
 		if (ta == TagAttribute.TRACK && localAudioObject.getTrackNumber() <= 0) {
+		    return false;
+		}
+		return true;
+	}
+
+	/**
+	 * @param localAudioObject
+	 * @param ta
+	 */
+	private static boolean checkDiscNumber(ILocalAudioObject localAudioObject, TagAttribute ta) {
+		if (ta == TagAttribute.DISC_NUMBER && localAudioObject.getDiscNumber() <= 0) {
 		    return false;
 		}
 		return true;

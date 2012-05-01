@@ -183,7 +183,7 @@ final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertiesDialog
         editTagsButton.setText(I18nUtils.getString("EDIT_TAG"));
         editTagsButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                EditTagDialogController ctl = new EditTagDialogController(new EditTagDialog(frame.getFrame(), false, iLookAndFeelManager), osManager, playListHandler, repositoryHandler, localAudioObjectValidator, processFactory);
+                EditTagDialogController ctl = new EditTagDialogController(new EditTagDialog(frame, false, iLookAndFeelManager), osManager, playListHandler, repositoryHandler, localAudioObjectValidator, processFactory);
                 ctl.editFiles(java.util.Collections.singletonList(file));
             }
         });
