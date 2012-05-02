@@ -20,13 +20,9 @@
 
 package net.sourceforge.atunes.kernel.modules.radio;
 
-import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.List;
 
-import net.sourceforge.atunes.model.INetworkHandler;
-import net.sourceforge.atunes.model.IProxyBean;
 import net.sourceforge.atunes.model.IRadio;
 
 import org.commonjukebox.plugins.model.PluginApi;
@@ -39,8 +35,6 @@ import org.joda.time.base.BaseDateTime;
 public final class Radio implements IRadio {
 
     private static final long serialVersionUID = 3295941106814718559L;
-
-    private static final String[] PLAYLISTS = { "m3u", "pls", "asx", "wax", "b4s", "kpl", "wvx", "ram", "rm", "smil" };
 
     private String name;
     private String url;
@@ -173,33 +167,6 @@ public final class Radio implements IRadio {
     @Override
     public BaseDateTime getDate() {
         return null;
-    }
-
-    @Override
-	public boolean hasPlaylistUrl(INetworkHandler networkHandler, IProxyBean proxy) {
-        // First check based on URL end (extension)
-        for (String pl : PLAYLISTS) {
-            if (url.trim().toLowerCase().endsWith(pl)) {
-                return true;
-            }
-        }
-
-        // WORKAROUND: If URL has no extension, then try to get from content
-        try {
-            String radioContent = networkHandler.readURL(networkHandler.getConnection(url));
-            for (String pl : PLAYLISTS) {
-                if (radioContent.trim().toLowerCase().contains(pl)) {
-                    return true;
-                }
-            }
-
-        } catch (UnknownHostException e) {
-            return false;
-        } catch (IOException e) {
-            return false;
-        }
-
-        return false;
     }
 
     @Override

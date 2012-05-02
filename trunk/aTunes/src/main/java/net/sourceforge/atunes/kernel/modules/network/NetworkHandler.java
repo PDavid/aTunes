@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.kernel.modules.network;
 
 import java.awt.Image;
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -170,6 +171,19 @@ public class NetworkHandler extends AbstractHandler implements INetworkHandler {
             return IOUtils.toString(input);            
         } finally {
             ClosingUtils.close(input);
+        }
+    }
+    
+    @Override
+    public String readURL(URLConnection connection, int bytes) throws IOException {
+        BufferedInputStream bis = null;
+        try {
+        	bis = new BufferedInputStream(connection.getInputStream());
+        	byte[] array = new byte[bytes];
+        	bis.read(array);
+        	return new String(array);
+        } finally {
+        	ClosingUtils.close(bis);
         }
     }
 

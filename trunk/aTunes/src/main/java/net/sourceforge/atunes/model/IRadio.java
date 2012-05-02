@@ -43,14 +43,6 @@ public interface IRadio extends IAudioObject, Serializable, ITreeObject<IRadio>,
 	public String getName();
 
 	/**
-	 * Checks for playlist url.
-	 * @param networkHandler
-	 * @param proxy
-	 * @return
-	 */
-	public boolean hasPlaylistUrl(INetworkHandler networkHandler, IProxyBean proxy);
-
-	/**
 	 * Checks if is removed.
 	 * 
 	 * @return true, if is removed
