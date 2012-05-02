@@ -180,8 +180,8 @@ public class NetworkHandler extends AbstractHandler implements INetworkHandler {
         try {
         	bis = new BufferedInputStream(connection.getInputStream());
         	byte[] array = new byte[bytes];
-        	bis.read(array);
-        	return new String(array);
+        	int read = bis.read(array);
+        	return read != -1 ? new String(array) : null;
         } finally {
         	ClosingUtils.close(bis);
         }

@@ -231,12 +231,12 @@ public class MPlayerProcessBuilder {
         }
         
         // If a radio has a playlist url add playlist command
-        if (audioObject instanceof IRadio && hasPlaylistUrl((IRadio) audioObject, networkHandler, stateCore.getProxy())) {
+        if (audioObject instanceof IRadio && hasPlaylistUrl((IRadio) audioObject, networkHandler)) {
             command.add(MPlayerConstants.PLAYLIST);
         }
 	}
 	
-	private boolean hasPlaylistUrl(IRadio radio, INetworkHandler networkHandler, IProxyBean proxy) {
+	private boolean hasPlaylistUrl(IRadio radio, INetworkHandler networkHandler) {
         // First check based on URL end (extension)
         for (String pl : PLAYLISTS) {
             if (radio.getUrl().trim().toLowerCase().endsWith(pl)) {
@@ -261,8 +261,6 @@ public class MPlayerProcessBuilder {
 
         return false;
     }
-
-
 
 	/**
 	 * @param command
