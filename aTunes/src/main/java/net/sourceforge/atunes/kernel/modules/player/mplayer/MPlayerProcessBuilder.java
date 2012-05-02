@@ -22,6 +22,7 @@ package net.sourceforge.atunes.kernel.modules.player.mplayer;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +42,8 @@ import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.Logger;
 
 public class MPlayerProcessBuilder {
+	
+    private static final String[] PLAYLISTS = { "m3u", "pls", "asx", "wax", "b4s", "kpl", "wvx", "ram", "rm", "smil" };
 
 	private IStatePlayer statePlayer;
 	
@@ -228,10 +231,38 @@ public class MPlayerProcessBuilder {
         }
         
         // If a radio has a playlist url add playlist command
-        if (audioObject instanceof IRadio && ((IRadio) audioObject).hasPlaylistUrl(networkHandler, stateCore.getProxy())) {
+        if (audioObject instanceof IRadio && hasPlaylistUrl((IRadio) audioObject, networkHandler, stateCore.getProxy())) {
             command.add(MPlayerConstants.PLAYLIST);
         }
 	}
+	
+	private boolean hasPlaylistUrl(IRadio radio, INetworkHandler networkHandler, IProxyBean proxy) {
+        // First check based on URL end (extension)
+        for (String pl : PLAYLISTS) {
+            if (radio.getUrl().trim().toLowerCase().endsWith(pl)) {
+                return true;
+            }
+        }
+
+        // WORKAROUND: If URL has no extension, then try to get from content, read a number of bytes, as URL can be audio stream
+        try {
+            String radioContent = networkHandler.readURL(networkHandler.getConnection(radio.getUrl()), 1000);
+            for (String pl : PLAYLISTS) {
+                if (radioContent.trim().toLowerCase().contains(pl)) {
+                    return true;
+                }
+            }
+
+        } catch (UnknownHostException e) {
+            return false;
+        } catch (IOException e) {
+            return false;
+        }
+
+        return false;
+    }
+
+
 
 	/**
 	 * @param command

@@ -87,6 +87,15 @@ public interface INetworkHandler extends IHandler {
 	public String readURL(URLConnection connection) throws IOException;
 
 	/**
+	 * Reads a given number of bytes and returns a String from a given URLConnection.
+	 * @param connection
+	 * @param bytes
+	 * @return
+	 * @throws IOException
+	 */
+	public String readURL(URLConnection connection, int bytes) throws IOException;
+
+	/**
 	 * Reads a String from a given URLConnection with a given charset encoding.
 	 * 
 	 * @param connection

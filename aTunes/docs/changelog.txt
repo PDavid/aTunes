@@ -19,6 +19,7 @@ aTunes 2.2.0
 - Support for tray icons in Mac OS X
 - Added player menu with key shortcuts to playback action
 - FIX: Use last.fm API to obtain last.fm loved tracks
+- FIX: Detection of radio audio streams blocks playing
 
 aTunes 2.1.1
 ------------
