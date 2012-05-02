@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.modules.radio;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.atunes.model.INetworkHandler;
@@ -70,9 +70,6 @@ public final class Radio implements IRadio {
         this.label = label;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#deleteSongInfo()
-	 */
     @Override
 	public void deleteSongInfo() {
         artist = null;
@@ -102,9 +99,7 @@ public final class Radio implements IRadio {
 
     @Override
     public List<IRadio> getAudioObjects() {
-        List<IRadio> songs = new ArrayList<IRadio>();
-        songs.add(this);
-        return songs;
+        return Collections.singletonList((IRadio)this);
     }
 
     @Override
@@ -140,9 +135,6 @@ public final class Radio implements IRadio {
         return "";
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#getName()
-	 */
     @Override
 	public String getName() {
         return name;
@@ -210,73 +202,46 @@ public final class Radio implements IRadio {
         return false;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#isRemoved()
-	 */
     @Override
 	public boolean isRemoved() {
         return isRemoved;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#isSongInfoAvailable()
-	 */
     @Override
 	public boolean isSongInfoAvailable() {
         return songInfoAvailable;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#setArtist(java.lang.String)
-	 */
     @Override
 	public void setArtist(String artist) {
         this.artist = artist;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#setBitrate(long)
-	 */
     @Override
 	public void setBitrate(long bitrate) {
         this.bitrate = bitrate;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#setFrequency(int)
-	 */
     @Override
 	public void setFrequency(int frequency) {
         this.frequency = frequency;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#setGenre(java.lang.String)
-	 */
     @Override
 	public void setGenre(String genre) {
         this.genre = genre;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#setName(java.lang.String)
-	 */
     @Override
 	public void setName(String name) {
         this.name = name;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#setRemoved(boolean)
-	 */
     @Override
 	public void setRemoved(boolean isRemoved) {
         this.isRemoved = isRemoved;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#setSongInfoAvailable(boolean)
-	 */
     @Override
 	public void setSongInfoAvailable(boolean songInfoAvailable) {
         this.songInfoAvailable = songInfoAvailable;
@@ -287,17 +252,11 @@ public final class Radio implements IRadio {
         // Nothing to do
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#setTitle(java.lang.String)
-	 */
     @Override
 	public void setTitle(String title) {
         this.title = title;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#setUrl(java.lang.String)
-	 */
     @Override
 	public void setUrl(String url) {
         this.url = url;
@@ -308,17 +267,11 @@ public final class Radio implements IRadio {
         return name;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#getLabel()
-	 */
     @Override
 	public String getLabel() {
         return label;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.radio.IRadio#setLabel(java.lang.String)
-	 */
     @Override
 	public void setLabel(String label) {
         this.label = label;
@@ -359,9 +312,6 @@ public final class Radio implements IRadio {
         return false;
     }
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -373,9 +323,6 @@ public final class Radio implements IRadio {
 		return result;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
