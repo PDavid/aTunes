@@ -165,10 +165,7 @@ public class LastFmArtistServices {
 
             // Get from similar artist info
             if (img == null) {
-                String similarUrl = getSimilarArtists(artistName).getPicture();
-                if (!similarUrl.trim().isEmpty()) {
-                    img = new ImageIcon(networkHandler.getImage(networkHandler.getConnection(similarUrl)));
-                }
+            	img = getArtistImageFromSimilarArtistInformation(artistName);
             }
 
             if (img != null) {
@@ -183,6 +180,22 @@ public class LastFmArtistServices {
         }
         return null;
     }
+
+	/**
+	 * @param artistName
+	 * @return
+	 * @throws IOException
+	 */
+	private ImageIcon getArtistImageFromSimilarArtistInformation(String artistName) throws IOException {
+		ISimilarArtistsInfo similarArtist = getSimilarArtists(artistName);
+		if (similarArtist != null) {
+			String similarUrl = similarArtist.getPicture();
+			if (!similarUrl.trim().isEmpty()) {
+				return new ImageIcon(networkHandler.getImage(networkHandler.getConnection(similarUrl)));
+			}
+		}
+		return null;
+	}
 
     /**
      * Returns top tracks for given artist name
