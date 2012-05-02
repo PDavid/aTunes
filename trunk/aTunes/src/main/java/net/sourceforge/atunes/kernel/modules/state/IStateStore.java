@@ -20,9 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.state;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-
 interface IStateStore {
 
 	/**
@@ -52,8 +49,6 @@ interface IStateStore {
 	 * Retrieves a Password Preference from cache
 	 * @param preferenceId
 	 * @return
-	 * @throws GeneralSecurityException
-	 * @throws IOException
 	 */
 	public String retrievePasswordPreference(Preferences preferenceId);
 

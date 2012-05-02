@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.tags;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
 
@@ -195,14 +194,12 @@ final class TagModifier {
 	 * @param track
 	 * @param discNumber
 	 * @param albumArtist
-	 * @throws FileNotFoundException
 	 * @throws CannotReadException
 	 * @throws IOException
 	 * @throws TagException
 	 * @throws ReadOnlyFileException
 	 * @throws InvalidAudioFrameException
 	 * @throws ImageReadException
-	 * @throws FieldDataInvalidException
 	 * @throws CannotWriteException
 	 */
 	private void writeTagToFile(ILocalAudioObject file,
