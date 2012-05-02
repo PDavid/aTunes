@@ -93,13 +93,18 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
      */
     @Override
 	public void setProgress(long time, long remainingTime) {
+    	System.out.println(remainingTime);
         this.time.setText(time > 0 ? StringUtils.milliseconds2String(time) : "");
         this.remainingTime.setText(remainingTime > 0 ? StringUtils.getString("- ", StringUtils.milliseconds2String(remainingTime)) : "");
-       	this.progressBar.setVisible(time != 0 || remainingTime != 0);
+        
+        boolean showControls = time != 0 && remainingTime != 0;
+        this.time.setVisible(showControls);
+       	this.progressBar.setVisible(showControls);
+       	this.remainingTime.setVisible(showControls);
        	
        	if (paintIconAllowed) {
        		boolean previousPaintIcon = paintIcon;
-       		this.paintIcon = !this.progressBar.isVisible();
+       		this.paintIcon = !showControls;
        		if (previousPaintIcon != paintIcon) {
        			repaint();
        		}

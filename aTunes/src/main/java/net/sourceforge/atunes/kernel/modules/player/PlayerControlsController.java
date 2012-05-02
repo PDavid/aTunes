@@ -168,8 +168,8 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
     }
 
     private void setCurrentAudioObjectTimePlayedEDT(long timePlayed, long totalTime) {
-        long remainingTime = totalTime - timePlayed;
-        getComponentControlled().setProgress(timePlayed, timePlayed == 0 ? timePlayed : remainingTime);
+        long remainingTime = totalTime > 0 ? totalTime - timePlayed : 0;
+        getComponentControlled().setProgress(timePlayed, timePlayed == 0 ? 0 : remainingTime);
         getComponentControlled().getProgressSlider().setValue((int) timePlayed);
     }
 
