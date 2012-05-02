@@ -33,6 +33,7 @@ import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 
@@ -48,6 +49,7 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
     private JLabel time;
     private JLabel remainingTime;
     private JSlider progressBar;
+    private JProgressBar indeterminateProgressBar;
     
     private boolean paintIcon = true;
     
@@ -81,6 +83,12 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
         progressBar.setFocusable(false);
         progressBar.setVisible(false);
         
+        indeterminateProgressBar = new JProgressBar();
+        indeterminateProgressBar.setIndeterminate(true);
+        indeterminateProgressBar.setFocusable(false);
+        indeterminateProgressBar.setVisible(false);
+        indeterminateProgressBar.setBorderPainted(false);
+        
         remainingTime = new JLabel();
         remainingTime.setHorizontalAlignment(SwingConstants.LEFT);
 
@@ -93,22 +101,41 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
      */
     @Override
 	public void setProgress(long time, long remainingTime) {
-        this.time.setText(time > 0 ? StringUtils.milliseconds2String(time) : "");
-        this.remainingTime.setText(remainingTime > 0 ? StringUtils.getString("- ", StringUtils.milliseconds2String(remainingTime)) : "");
-        
-        boolean showControls = time != 0 && remainingTime != 0;
-        this.time.setVisible(showControls);
-       	this.progressBar.setVisible(showControls);
-       	this.remainingTime.setVisible(showControls);
+        boolean showDeterminateControls = time != 0 && remainingTime != 0;
+        boolean showIndeterminateControls = time > remainingTime;                               
+
+        showControls(time, remainingTime, showDeterminateControls, showIndeterminateControls);
        	
        	if (paintIconAllowed) {
        		boolean previousPaintIcon = paintIcon;
-       		this.paintIcon = !showControls;
+       		this.paintIcon = !showDeterminateControls && !showIndeterminateControls;
        		if (previousPaintIcon != paintIcon) {
        			repaint();
        		}
        	}
     }
+
+	/**
+	 * @param time
+	 * @param remainingTime
+	 * @param showDeterminateControls
+	 * @param showIndeterminateControls
+	 */
+	private void showControls(long time, long remainingTime, boolean showDeterminateControls, boolean showIndeterminateControls) {
+		if (showDeterminateControls && !showIndeterminateControls) {
+			this.time.setVisible(true);
+	        this.time.setText(time > 0 ? StringUtils.milliseconds2String(time) : "");
+	       	this.remainingTime.setVisible(true);
+	        this.remainingTime.setText(remainingTime > 0 ? StringUtils.getString("- ", StringUtils.milliseconds2String(remainingTime)) : "");
+	       	this.progressBar.setVisible(true);
+	       	this.indeterminateProgressBar.setVisible(false);
+		} else {
+			this.time.setVisible(false);
+			this.remainingTime.setVisible(false);
+			this.progressBar.setVisible(false);
+	       	this.indeterminateProgressBar.setVisible(showIndeterminateControls);
+		}
+	}
 
 	/**
 	 * Arrange components
@@ -124,14 +151,28 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
         c.gridx = 1;
         c.weightx = 0.8;
         c.insets = new Insets(0, 0, 0, 0);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        add(progressBar, c);
+        c.weighty = 1;
+        add(getProgressBarPanel(), c);
         c.gridx = 2;
         c.weightx = 0.1;
         c.insets = new Insets(0, 0, 3, 0);
-        c.fill = GridBagConstraints.BOTH;
         add(remainingTime, c);
     }
+
+	/**
+	 * @return
+	 */
+	private JPanel getProgressBarPanel() {
+		JPanel progressBarPanel = new JPanel(new GridBagLayout());
+        progressBarPanel.setOpaque(false);
+        GridBagConstraints c = new GridBagConstraints();
+        c.weightx = 1;
+        c.weighty = 0;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        progressBarPanel.add(progressBar, c);
+        progressBarPanel.add(indeterminateProgressBar, c);
+		return progressBarPanel;
+	}
 
 	/**
 	 * Delegate method
