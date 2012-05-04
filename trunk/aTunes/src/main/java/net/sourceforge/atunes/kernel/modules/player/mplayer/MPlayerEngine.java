@@ -21,7 +21,9 @@
 package net.sourceforge.atunes.kernel.modules.player.mplayer;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.EnumSet;
+import java.util.List;
 
 import javax.swing.SwingUtilities;
 
@@ -31,7 +33,10 @@ import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStateRadio;
 import net.sourceforge.atunes.model.PlayerEngineCapability;
+import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
+
+import org.apache.commons.io.IOUtils;
 
 /**
  * Engine for MPlayer
@@ -81,15 +86,27 @@ public class MPlayerEngine extends AbstractPlayerEngine {
     
     @Override
     public boolean isEngineAvailable() {
+    	InputStream in = null;
     	try {
+    		// Processes in Windows need to read input stream, if not process is blocked
+    		// so read input stream and show in log
         	String command = getOsManager().getPlayerEngineCommand(this);
-        	if (command != null && new ProcessBuilder(command).start().waitFor() == 0) {
-        		return true;
+        	if (command != null) {
+        		Process process = new ProcessBuilder(command).start();
+        		in = process.getInputStream();
+        		List<String> lines = IOUtils.readLines(in);
+        		for (String line : lines) {
+        			Logger.debug(line);
+        		}
+        		int rc = process.waitFor();
+        		return rc == 0;
         	}
     	} catch (IOException e) {
     		Logger.error(e);
 		} catch (InterruptedException e) {
     		Logger.error(e);
+    	} finally {
+    		ClosingUtils.close(in);
     	}
 		return false;
     }
