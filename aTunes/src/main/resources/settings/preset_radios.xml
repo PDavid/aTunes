@@ -1178,4 +1178,25 @@
 		<url>http://www.bbc.co.uk/worldservice/ram/live_infent.ram</url>;
 		<label>BBC</label>
 	</Radio>
+	<Radio>
+		<name>Arrow Jazz FM</name>
+		<url>http://81.173.3.133:8082/</url>;
+		<label>Dutch Public Radio</label>
+	</Radio>
+	<Radio>
+		<name>Funkhaus Europa</name>
+		<url>http://www.wdr.de/wdrlive/media/fhe.asx</url>;
+		<label>German Public Radio</label>
+	</Radio>
+	<Radio>
+		<name>Funkwelle FM</name>
+		<url>http://www.fritz.de/live.wax</url>;
+		<label>German Public Radio</label>
+	</Radio>
+	<Radio>
+		<name>TheBoxFM Radio</name>
+		<url>http://www.theboxfm.net/streaming/theboxfm.asx</url>;
+		<label>Rock</label>
+		<isRemoved>false</isRemoved>
+	</Radio>
 </list>
