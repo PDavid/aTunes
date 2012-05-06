@@ -102,7 +102,7 @@ public class ProgressSlider extends JPanel implements IProgressSlider {
     @Override
 	public void setProgress(long time, long remainingTime) {
         boolean showDeterminateControls = time != 0 && remainingTime != 0;
-        boolean showIndeterminateControls = time > remainingTime;                               
+        boolean showIndeterminateControls = time > remainingTime && remainingTime == 0;                               
 
         showControls(time, remainingTime, showDeterminateControls, showIndeterminateControls);
        	
