@@ -26,6 +26,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +38,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
@@ -83,21 +85,39 @@ public abstract class AbstractContextPanel implements IContextPanel {
         if (panelNeedsToBeUpdated(this.audioObject, newAudioObject)) {
             Logger.debug("Updating panel: ", getContextPanelName());
             for (IContextPanelContent<?> content : getContents()) {
-                content.clearContextPanelContent();
+                clearContextPanelContent(content);
                 content.updateContextPanelContent(newAudioObject);
             }
-            
             contextHandler.finishedContextPanelUpdate();
         }
 
         this.audioObject = newAudioObject;
+    }
+    
+    private void clearContextPanelContent(final IContextPanelContent<?> content) {
+    	if (SwingUtilities.isEventDispatchThread()) {
+    		content.clearContextPanelContent();
+    	} else {
+    		try {
+				SwingUtilities.invokeAndWait(new Runnable() {
+					@Override
+					public void run() {
+						content.clearContextPanelContent();
+					}
+				});
+			} catch (InterruptedException e) {
+				Logger.error(e);
+			} catch (InvocationTargetException e) {
+				Logger.error(e);
+			}
+    	}
     }
 
     @Override
 	public final void clearContextPanel() {
         Logger.debug("Clearing panel: ", getContextPanelName());
         for (IContextPanelContent<?> content : getContents()) {
-            content.clearContextPanelContent();
+        	clearContextPanelContent(content);
         }
         audioObject = null;
     }
