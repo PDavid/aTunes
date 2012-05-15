@@ -20,21 +20,30 @@
 
 package net.sourceforge.atunes.kernel.modules.command;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.SwingUtilities;
+
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectAction;
+import net.sourceforge.atunes.kernel.actions.RemoteAction;
 import net.sourceforge.atunes.kernel.actions.ShowOSDAction;
 import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.ICommand;
 import net.sourceforge.atunes.model.ICommandHandler;
+import net.sourceforge.atunes.utils.Logger;
 
-public final class CommandHandler extends AbstractHandler implements ICommandHandler {
+public final class CommandHandler extends AbstractHandler implements ICommandHandler, ApplicationContextAware {
 
     /**
      * Map of commands defined to be used
@@ -43,6 +52,16 @@ public final class CommandHandler extends AbstractHandler implements ICommandHan
     
     private IApplicationArguments applicationArguments;
     
+    private ApplicationContext context;
+    
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) {
+    	this.context = applicationContext;
+    }
+    
+    /**
+     * @param arguments
+     */
     public void setApplicationArguments(IApplicationArguments arguments) {
 		this.applicationArguments = arguments;
 	}
@@ -90,22 +109,28 @@ public final class CommandHandler extends AbstractHandler implements ICommandHan
     }
 
     @Override
-	public void processAndRun(String commandName) {
-        ICommand cmd = commands.get(commandName.replaceFirst(Constants.COMMAND_PREFIX, ""));
+	public String processAndRun(String commandName) {
+        ICommand cmd = commands.get(commandName.replaceFirst(Constants.COMMAND_PREFIX, "").split(" ")[0]);
         if (cmd != null) {
-            SwingUtilities.invokeLater(new RunCommandRunnable(cmd));
+            List<String> parameters = new ArrayList<String>(Arrays.asList(commandName.split(" ")));
+            parameters.remove(0);
+
+            if (!cmd.isSynchronousResponse()) {
+                SwingUtilities.invokeLater(new RunCommandRunnable(cmd, parameters));
+                return "OK"; //the command is async, we dont need do wait for a responce
+            } else {
+                return cmd.runCommand(parameters);
+            }
+        } else {
+            return "Bad command name of format, type \"command:help\" for assistance.";
         }
     }
 
     @Override
     protected void initHandler() {
-        initActions();
+    	Map<String, RemoteAction> actions = context.getBeansOfType(RemoteAction.class);
+    	for (Map.Entry<String, RemoteAction> action : actions.entrySet()) {
+    		Logger.debug("Initializing command: ", action.getKey());
+    	}
     }
-
-    private void initActions() {
-        getBean(PlayNextAudioObjectAction.class);
-        getBean(PlayPreviousAudioObjectAction.class);
-        getBean(ShowOSDAction.class);
-    }
-
 }

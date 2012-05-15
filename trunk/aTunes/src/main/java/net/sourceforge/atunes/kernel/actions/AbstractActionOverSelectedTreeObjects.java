@@ -82,6 +82,11 @@ public abstract class AbstractActionOverSelectedTreeObjects<T extends ITreeObjec
     }
 
     protected abstract void executeAction(List<T> objects);
+    
+    @Override
+    protected final void executeAction() {
+    	// Use executionAction(List<T> objects)
+    }
 
     @SuppressWarnings("unchecked")
 	@Override

@@ -78,7 +78,7 @@ public class PlayNowAction extends CustomAbstractAction {
         return selection != null && selection.size() == 1;
     }
     
-	private void playNow(IAudioObject audioObject) {
+	void playNow(IAudioObject audioObject) {
         // Play now feature plays selected song immediately. If song is added to play list, then is automatically selected.
         // If not, it's added to play list    	
         if (!playListHandler.getCurrentPlayList(true).contains(audioObject)) {

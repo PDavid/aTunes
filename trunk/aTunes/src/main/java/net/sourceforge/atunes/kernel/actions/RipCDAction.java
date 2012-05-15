@@ -43,6 +43,9 @@ public class RipCDAction extends CustomAbstractAction {
 		this.ripperHandler = ripperHandler;
 	}
     
+    /**
+     * Defult constructor
+     */
     public RipCDAction() {
         super(StringUtils.getString(I18nUtils.getString("RIP_CD"), "..."));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("RIP_CD"));
@@ -57,10 +60,4 @@ public class RipCDAction extends CustomAbstractAction {
     protected void executeAction() {
     	ripperHandler.startCdRipper();
     }
-
-    @Override
-    public String getCommandName() {
-        return "cdripper";
-    }
-
 }

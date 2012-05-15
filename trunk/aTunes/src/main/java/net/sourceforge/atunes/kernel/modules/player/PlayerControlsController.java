@@ -179,8 +179,17 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
      * @param value
      *            the new volume
      */
-    void setVolume(int value) {
-    	getComponentControlled().setVolume(value);
+    void setVolume(final int value) {
+    	if (!EventQueue.isDispatchThread()) {
+    		SwingUtilities.invokeLater(new Runnable() {
+    			@Override
+    			public void run() {
+    		    	getComponentControlled().setVolume(value);
+    			}
+    		});
+    	} else {
+        	getComponentControlled().setVolume(value);
+    	}
     }
 
     /**

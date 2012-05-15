@@ -25,6 +25,7 @@ import javax.swing.KeyStroke;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+
 /**
  * This action lowers volume
  * 
@@ -43,7 +44,10 @@ public class VolumeDownAction extends CustomAbstractAction {
     public void setPlayerHandler(IPlayerHandler playerHandler) {
 		this.playerHandler = playerHandler;
 	}
-    
+
+    /**
+     * Default constructor
+     */
     public VolumeDownAction() {
         super(I18nUtils.getString("VOLUME_DOWN"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke('-'));

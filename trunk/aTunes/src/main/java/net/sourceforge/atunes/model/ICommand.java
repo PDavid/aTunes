@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.model;
 
+import java.util.List;
+
 /**
  * This class represents commands sent to application by other instances or
  * third-party apps
@@ -30,12 +32,18 @@ package net.sourceforge.atunes.model;
 public interface ICommand {
 
     /**
-     * Called to run the command
+     * Called to run the command with given parameters, returning a String response or null
+     * @param parameters
      */
-    public void runCommand();
+    public String runCommand(List<String> parameters);
 
     /**
-     * @return the name
+     * @return true if the command requires a response to be sent.
+     */
+    public boolean isSynchronousResponse();
+    
+    /**
+     * @return name of command to be called
      */
     public String getCommandName();
 }

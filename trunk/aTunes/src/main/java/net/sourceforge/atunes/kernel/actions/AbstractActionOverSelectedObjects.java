@@ -84,6 +84,11 @@ public abstract class AbstractActionOverSelectedObjects<T extends IAudioObject> 
 	}
     
     protected abstract void executeAction(List<T> objects);
+    
+    @Override
+    protected final void executeAction() {
+    	// Use executionAction(List<T> objects)
+    }
 
     @SuppressWarnings("unchecked")
 	@Override

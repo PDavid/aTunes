@@ -20,18 +20,27 @@
 
 package net.sourceforge.atunes.kernel.modules.command;
 
+import java.util.List;
+
 import net.sourceforge.atunes.model.ICommand;
 
 class RunCommandRunnable implements Runnable {
 
     private ICommand command;
+    
+    private List<String> parameters;
 
-    public RunCommandRunnable(ICommand command) {
+    /**
+     * @param command
+     * @param parameters
+     */
+    public RunCommandRunnable(ICommand command, List<String> parameters) {
         this.command = command;
+        this.parameters = parameters;
     }
 
     @Override
     public void run() {
-        command.runCommand();
+        command.runCommand(parameters);
     }
 }

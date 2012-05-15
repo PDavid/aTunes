@@ -18,6 +18,7 @@ aTunes 2.2.0
 - Last.fm cache simplified to use only one ehcache cache
 - Support for tray icons in Mac OS X
 - Added player menu with key shortcuts to playback action
+- New remote commands to control application from a telnet session [ patch by Radovan ]
 - FIX: Use last.fm API to obtain last.fm loved tracks
 - FIX: Detection of radio audio streams blocks playing
 

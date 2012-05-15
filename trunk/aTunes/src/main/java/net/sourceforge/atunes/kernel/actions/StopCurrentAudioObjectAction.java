@@ -41,6 +41,9 @@ public class StopCurrentAudioObjectAction extends CustomAbstractAction {
 		this.playerHandler = playerHandler;
 	}
     
+    /**
+     * Default constructor
+     */
     public StopCurrentAudioObjectAction() {
     	super(I18nUtils.getString("STOP"));
     	putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
@@ -49,10 +52,5 @@ public class StopCurrentAudioObjectAction extends CustomAbstractAction {
     @Override
     protected void executeAction() {
     	playerHandler.stopCurrentAudioObject(true);
-    }
-
-    @Override
-    public String getCommandName() {
-        return "stop";
     }
 }

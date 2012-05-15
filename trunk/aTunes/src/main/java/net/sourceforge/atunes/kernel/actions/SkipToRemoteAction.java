@@ -1,0 +1,70 @@
+/*
+ * aTunes 2.2.0-SNAPSHOT
+ * Copyright (C) 2006-2011 Alex Aranda, Sylvain Gaudard and contributors
+ *
+ * See http://www.atunes.org/wiki/index.php?title=Contributing for information about contributors
+ *
+ * http://www.atunes.org
+ * http://sourceforge.net/projects/atunes
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+package net.sourceforge.atunes.kernel.actions;
+
+import java.util.List;
+
+import net.sourceforge.atunes.model.IPlayerHandler;
+import net.sourceforge.atunes.utils.StringUtils;
+
+/**
+ * This action enables a user to seek from telnet in percentages.
+ *
+ */
+public class SkipToRemoteAction extends RemoteAction {
+
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6798387500260668197L;
+	
+	private IPlayerHandler playerHandler;
+
+    /**
+     * @param playerHandler
+     */
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+        this.playerHandler = playerHandler;
+    }
+    
+    /**
+     * Default constructor
+     */
+    public SkipToRemoteAction() {
+    	super("goto");
+	}
+
+    @Override
+    public String runCommand(List<String> parameters) {
+        if (parameters.size() >= 1) {
+            try {
+                int perc = Integer.parseInt(parameters.get(0));
+                if (perc < 0 || perc > 100) {
+                	throw new NumberFormatException();
+                }
+                playerHandler.seekCurrentAudioObject((long) ((perc/100.0) * playerHandler.getCurrentAudioObjectLength()));
+                return "OK";
+            } catch (NumberFormatException ex) {
+                return StringUtils.getString("Bad number format: ", parameters.get(0));
+            }
+        }
+        return "Missing parameter";
+    }
+}
