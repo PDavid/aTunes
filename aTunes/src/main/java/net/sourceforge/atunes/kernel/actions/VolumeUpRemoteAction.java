@@ -18,29 +18,41 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.command;
+package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import net.sourceforge.atunes.model.ICommand;
+import net.sourceforge.atunes.model.IStatePlayer;
+import net.sourceforge.atunes.utils.StringUtils;
 
-class RunCommandRunnable implements Runnable {
+/**
+ * This action raises volume
+ * 
+ * @author fleax
+ * 
+ */
+public class VolumeUpRemoteAction extends RemoteAction {
 
-    private ICommand command;
+    private static final long serialVersionUID = 8731458163463902477L;
+    private IStatePlayer statePlayer;
     
-    private List<String> parameters;
-
     /**
-     * @param command
-     * @param parameters
+     * @param statePlayer
      */
-    public RunCommandRunnable(ICommand command, List<String> parameters) {
-        this.command = command;
-        this.parameters = parameters;
+    public void setStatePlayer(IStatePlayer statePlayer) {
+        this.statePlayer = statePlayer;
     }
-
+    
+    /**
+     * Default constructor
+     */
+    public VolumeUpRemoteAction() {
+        super("volUP");
+    }
+    
     @Override
-    public void run() {
-        command.runCommand(parameters);
+    public String runCommand(List<String> parameters) {
+    	callAction(VolumeUpAction.class);
+    	return StringUtils.getString(statePlayer.getVolume(), '%');
     }
 }

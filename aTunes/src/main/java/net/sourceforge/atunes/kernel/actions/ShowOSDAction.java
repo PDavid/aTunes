@@ -49,9 +49,4 @@ public class ShowOSDAction extends CustomAbstractAction {
     protected void executeAction() {
     	notificationsHandler.showNotification(playListHandler.getCurrentAudioObjectFromCurrentPlayList());
     }
-
-    @Override
-    public String getCommandName() {
-        return "showOSD";
-    }
 }

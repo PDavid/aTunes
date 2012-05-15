@@ -17,44 +17,42 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package net.sourceforge.atunes.kernel.actions;
 
-import javax.swing.KeyStroke;
+import java.util.List;
 
-import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.utils.I18nUtils;
-
+import net.sourceforge.atunes.model.IPlayListHandler;
 
 /**
- * This action lowers volume
- * 
- * @author fleax
- * 
+ * This action, when called from telnet, creates a new playlist. The new
+ * playlist is created in lieu of clearing, because clearing items requires
+ * confirmation via GUI.
+ *
  */
-public class VolumeDownAction extends CustomAbstractAction {
+public class NewPlayListRemoteAction extends RemoteAction {
 
-    private static final long serialVersionUID = 8731458163463902477L;
-
-    private IPlayerHandler playerHandler;
-    
-    /**
-     * @param playerHandler
-     */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
-		this.playerHandler = playerHandler;
-	}
+	private static final long serialVersionUID = -5575374156962786237L;
+   
+    private IPlayListHandler playListHandler;
 
     /**
      * Default constructor
      */
-    public VolumeDownAction() {
-        super(I18nUtils.getString("VOLUME_DOWN"));
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke('-'));
+    public NewPlayListRemoteAction() {
+    	super("newPlaylist");
+	}
+    
+    /**
+     * @param handler
+     */
+    public void setPlayListHandler(IPlayListHandler handler) {
+        this.playListHandler = handler;
     }
 
     @Override
-    protected void executeAction() {
-        playerHandler.volumeDown();
+    public String runCommand(List<String> parameters) {
+        playListHandler.newPlayList(null);
+        playListHandler.switchToPlaylist(playListHandler.getPlayListCount() - 1);
+        return "OK";
     }
 }

@@ -133,7 +133,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter implements App
 	
 	@Override
 	public boolean isMultipleInstancesSupported() {
-		return false;
+		return true;
 	}
 	
 	@Override

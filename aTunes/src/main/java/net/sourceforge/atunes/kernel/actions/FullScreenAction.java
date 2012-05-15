@@ -56,9 +56,4 @@ public class FullScreenAction extends CustomAbstractAction {
     protected void executeAction() {
     	fullScreenHandler.toggleFullScreenVisibility();
     }
-
-    @Override
-    public String getCommandName() {
-        return "fullscreen";
-    }
 }

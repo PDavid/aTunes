@@ -47,14 +47,23 @@ public class PlayAction extends CustomAbstractAction {
 		this.playListTable = playListTable;
 	}
     
+    /**
+     * @param playerHandler
+     */
     public void setPlayerHandler(IPlayerHandler playerHandler) {
 		this.playerHandler = playerHandler;
 	}
     
+    /**
+     * @param playListHandler
+     */
     public void setPlayListHandler(IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
     
+    /**
+     * Default constructor
+     */
     public PlayAction() {
         super(I18nUtils.getString("PLAY"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("PLAY"));
@@ -86,10 +95,4 @@ public class PlayAction extends CustomAbstractAction {
         // Play action is always enabled even if play list or selection are empty, because this action is used in play button
         return true;
     }
-
-    @Override
-    public String getCommandName() {
-        return "play";
-    }
-
 }

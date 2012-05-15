@@ -34,7 +34,6 @@ import net.sourceforge.atunes.utils.I18nUtils;
 public class VolumeUpAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 8731458163463902477L;
-
     private IPlayerHandler playerHandler;
     
     /**
@@ -43,7 +42,10 @@ public class VolumeUpAction extends CustomAbstractAction {
     public void setPlayerHandler(IPlayerHandler playerHandler) {
 		this.playerHandler = playerHandler;
 	}
-    
+
+    /**
+     * Default constructor
+     */
     public VolumeUpAction() {
         super(I18nUtils.getString("VOLUME_UP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke('+'));
@@ -53,5 +55,4 @@ public class VolumeUpAction extends CustomAbstractAction {
     protected void executeAction() {
     	playerHandler.volumeUp();
     }
-
 }

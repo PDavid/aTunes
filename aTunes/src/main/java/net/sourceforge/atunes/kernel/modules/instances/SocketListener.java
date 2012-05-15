@@ -21,12 +21,15 @@
 package net.sourceforge.atunes.kernel.modules.instances;
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
+import java.io.OutputStreamWriter;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import net.sourceforge.atunes.kernel.actions.PrintHelpToTelnetAction;
 import net.sourceforge.atunes.model.ICommandHandler;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -65,19 +68,33 @@ class SocketListener extends Thread {
     public void run() {
         Socket s = null;
         BufferedReader br = null;
+        BufferedWriter bw = null;
         BufferedOutputStream bos = null;
         try {
             while (true) {
                 s = socket.accept();
                 // Once a connection arrives, read args
                 br = new BufferedReader(new InputStreamReader(s.getInputStream()));
+                bw = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
                 String str;
-                while ((str = br.readLine()) != null) {
+                boolean exit = false;
+                while (!exit && (str = br.readLine()) != null) {
                 	Logger.info("Receiver argument: ", str);
-                    if (commandHandler.isValidCommand(str)) {
-                    	commandHandler.processAndRun(str);
+                    if (commandHandler.isValidCommand(str.split(" ")[0])) {
+                    	 bw.append(commandHandler.processAndRun(str));
+                         bw.append(System.getProperty("line.separator"));
+                         bw.flush();
+                    } else if (str.equalsIgnoreCase("exit")) {
+                    	exit = true;
+                    } else {
+                        bw.append("Bad command name of format, type \"command:help\" for assistance.");
+                        bw.append(System.getProperty("line.separator"));
+                        bw.flush();
                     }
                 }
+                bw.append("Closing Socket");
+                bw.flush();
+                ClosingUtils.close(bw);
                 ClosingUtils.close(br);
                 ClosingUtils.close(s);
                 Logger.info(StringUtils.getString("Connection finished"));

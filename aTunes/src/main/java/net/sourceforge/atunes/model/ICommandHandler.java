@@ -72,7 +72,8 @@ public interface ICommandHandler extends IHandler {
 	 * Identifies and executes given command
 	 * 
 	 * @param commandName
+         * @return command output
 	 */
-	public void processAndRun(String commandName);
+	public String processAndRun(String commandName);
 
 }

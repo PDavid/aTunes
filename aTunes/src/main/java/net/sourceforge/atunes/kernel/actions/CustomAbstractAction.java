@@ -27,50 +27,42 @@ import javax.swing.Icon;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.ICommand;
-import net.sourceforge.atunes.model.ICommandHandler;
 import net.sourceforge.atunes.utils.Logger;
 
 import org.commonjukebox.plugins.model.PluginApi;
 
 @PluginApi
-public abstract class CustomAbstractAction extends javax.swing.AbstractAction implements ICommand {
+public abstract class CustomAbstractAction extends javax.swing.AbstractAction {
 
     private static final long serialVersionUID = 1648027023533465104L;
 
-    private ICommandHandler commandHandler;
-    
     /**
      * Source of the action
      */
     private Object source;
 
+    /**
+     * Default constructor
+     */
     public CustomAbstractAction() {
         super();
     }
 
+    /**
+     * Creates a new action with given name
+     * @param name
+     */
     public CustomAbstractAction(String name) {
         super(name);
     }
 
+    /**
+     * Creates a new action with given name and icon
+     * @param name
+     * @param icon
+     */
     public CustomAbstractAction(String name, Icon icon) {
         super(name, icon);
-    }
-
-    public void setCommandHandler(ICommandHandler commandHandler) {
-		this.commandHandler = commandHandler;
-	}
-    
-    /**
-     * Initializes action if needed
-     * All initialization needed retrieving values from <code>getState</code> must be done here
-     * Must call super.initialize() when overriding
-     * @param state
-     */
-    protected void initialize() {   
-        if (!getCommandName().isEmpty()) {
-        	commandHandler.registerCommand(this);
-        }
     }
 
     /**
@@ -97,6 +89,13 @@ public abstract class CustomAbstractAction extends javax.swing.AbstractAction im
     }
 
     /**
+     * Initializes action if needed
+     * All initialization needed retrieving values from <code>getState</code> must be done here
+     */
+    protected void initialize() {   
+    }
+
+    /**
      * Indicates whether this action must be enabled or disabled when used in
      * play list with given selection
      * 
@@ -107,11 +106,6 @@ public abstract class CustomAbstractAction extends javax.swing.AbstractAction im
         return false;
     }
 
-    @Override
-    public void runCommand() {
-        actionPerformed(null);
-    }
-    
     @Override
     public void actionPerformed(ActionEvent e) {
     	Logger.debug("Executing action: ", this.getClass().getName());
@@ -130,10 +124,5 @@ public abstract class CustomAbstractAction extends javax.swing.AbstractAction im
     /**
      * Override this method to execute action
      */
-    protected void executeAction() {}
-
-	@Override
-    public String getCommandName() {
-        return "";
-    }
+    protected abstract void executeAction();
 }

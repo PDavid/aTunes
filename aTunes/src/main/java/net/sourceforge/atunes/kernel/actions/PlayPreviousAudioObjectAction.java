@@ -34,10 +34,16 @@ public class PlayPreviousAudioObjectAction extends CustomAbstractAction {
 
     private IPlayerHandler playerHandler;
     
+    /**
+     * @param playerHandler
+     */
     public void setPlayerHandler(IPlayerHandler playerHandler) {
 		this.playerHandler = playerHandler;
 	}
     
+    /**
+     * Default constructor
+     */
     public PlayPreviousAudioObjectAction() {
     	super(I18nUtils.getString("PREVIOUS"));
     	putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK));
@@ -46,10 +52,5 @@ public class PlayPreviousAudioObjectAction extends CustomAbstractAction {
     @Override
     protected void executeAction() {
     	playerHandler.playPreviousAudioObject();
-    }
-
-    @Override
-    public String getCommandName() {
-        return "previous";
     }
 }

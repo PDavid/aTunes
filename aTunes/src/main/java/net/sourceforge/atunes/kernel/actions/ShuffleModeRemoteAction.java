@@ -17,44 +17,41 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-
 package net.sourceforge.atunes.kernel.actions;
 
-import javax.swing.KeyStroke;
-
-import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.utils.I18nUtils;
+import java.util.List;
 
 
-/**
- * This action lowers volume
- * 
- * @author fleax
- * 
- */
-public class VolumeDownAction extends CustomAbstractAction {
+public class ShuffleModeRemoteAction extends RemoteAction {
+	
+    private static final String ON = "on";
 
-    private static final long serialVersionUID = 8731458163463902477L;
+	private static final String OFF = "off";
 
-    private IPlayerHandler playerHandler;
-    
-    /**
-     * @param playerHandler
-     */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
-		this.playerHandler = playerHandler;
-	}
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1135197116966774313L;
+	
     /**
      * Default constructor
      */
-    public VolumeDownAction() {
-        super(I18nUtils.getString("VOLUME_DOWN"));
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke('-'));
+    public ShuffleModeRemoteAction() {
+    	super("shuffle");
     }
 
     @Override
-    protected void executeAction() {
-        playerHandler.volumeDown();
+    public String runCommand(List<String> parameters) {
+        if(parameters.size() == 1) {
+        	String parameter = parameters.get(0);
+            if(parameter.equalsIgnoreCase(OFF)) {
+            	callToggleAction(ShuffleModeAction.class, false);
+            } else if(parameter.equalsIgnoreCase(ON)) {
+            	callToggleAction(ShuffleModeAction.class, true);
+            }
+            return "OK";
+        } else {
+            return "Bad number of arguments, plase input either a ON of OFF.";
+        }
     }
 }

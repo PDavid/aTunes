@@ -20,37 +20,22 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
+import java.util.List;
 
-import javax.swing.KeyStroke;
+public class PlayNextAudioObjectRemoteAction extends RemoteAction {
 
-import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.utils.I18nUtils;
+    private static final long serialVersionUID = 2012440550238196002L;
 
-public class StopCurrentAudioObjectAction extends CustomAbstractAction {
-
-    private static final long serialVersionUID = -1177020643937370678L;
-
-    private IPlayerHandler playerHandler;
-    
-    /**
-     * @param playerHandler
-     */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
-		this.playerHandler = playerHandler;
-	}
-    
     /**
      * Default constructor
      */
-    public StopCurrentAudioObjectAction() {
-    	super(I18nUtils.getString("STOP"));
-    	putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
+    public PlayNextAudioObjectRemoteAction() {
+    	super("next");
     }
-
+    
     @Override
-    protected void executeAction() {
-    	playerHandler.stopCurrentAudioObject(true);
+    public String runCommand(List<String> parameters) {
+    	callAction(PlayNextAudioObjectAction.class);
+    	return "OK";
     }
 }

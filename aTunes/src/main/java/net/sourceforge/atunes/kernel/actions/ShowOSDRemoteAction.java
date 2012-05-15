@@ -18,29 +18,24 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.command;
+package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import net.sourceforge.atunes.model.ICommand;
+public class ShowOSDRemoteAction extends RemoteAction {
 
-class RunCommandRunnable implements Runnable {
-
-    private ICommand command;
-    
-    private List<String> parameters;
+    private static final long serialVersionUID = 646318992035897920L;
 
     /**
-     * @param command
-     * @param parameters
+     * Default constructor
      */
-    public RunCommandRunnable(ICommand command, List<String> parameters) {
-        this.command = command;
-        this.parameters = parameters;
-    }
-
+    public ShowOSDRemoteAction() {
+    	super("showOSD");
+	}
+    
     @Override
-    public void run() {
-        command.runCommand(parameters);
+    public String runCommand(List<String> parameters) {
+    	callAction(ShowOSDAction.class);
+    	return "OK";
     }
 }
