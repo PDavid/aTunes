@@ -21,15 +21,14 @@
 package net.sourceforge.atunes.kernel.modules.tray;
 
 import java.awt.AWTException;
-import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.SystemTray;
 import java.awt.TrayIcon;
 
-import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -325,16 +324,12 @@ public final class SystemTrayHandler extends AbstractHandler implements ISystemT
 	
 	@Override
 	public void playbackStateChanged(PlaybackState newState, final IAudioObject currentAudioObject) {
-        if (!EventQueue.isDispatchThread()) {
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    playbackStateChangedEDT(currentAudioObject);
-                }
-            });
-        } else {
-            playbackStateChangedEDT(currentAudioObject);
-        }
+		GuiUtils.callInEventDispatchThread(new Runnable() {
+			@Override
+			public void run() {
+				playbackStateChangedEDT(currentAudioObject);
+			}
+		});
 	}
 	
     private void playbackStateChangedEDT(IAudioObject currentAudioObject) {

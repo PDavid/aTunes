@@ -21,87 +21,82 @@
 package net.sourceforge.atunes.gui.views.controls.playerControls;
 
 import java.awt.Dimension;
-import java.awt.EventQueue;
 
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.gui.GuiUtils;
 
 public final class FullScreenPlayPauseButton extends JButton {
 
-    private static final long serialVersionUID = 4348041346542204394L;
+	private static final long serialVersionUID = 4348041346542204394L;
 
-    private boolean playing;
-    
-    private ImageIcon playIcon;
-    
-    private ImageIcon pauseIcon;
+	private boolean playing;
 
-    /**
-     * Instantiates a new play pause button.
-     * 
-     * @param size
-     */
-    public FullScreenPlayPauseButton(Dimension size, ImageIcon playIcon, ImageIcon pauseIcon) {
-        super(Context.getBean("playAction", Action.class));
-        // Force size of button
-        setPreferredSize(size);
-        setMinimumSize(size);
-        setMaximumSize(size);
-        setFocusable(false);
-        setText(null);
+	private ImageIcon playIcon;
 
-        this.playIcon = playIcon;
-        this.pauseIcon = pauseIcon;
-        
-        setOpaque(false);
-        setBorderPainted(false);
-        setContentAreaFilled(false);
-        
-        setIcon();
-    }
-    
-    /**
-     * Sets the playing.
-     * 
-     * @param playing
-     *            the new playing
-     */
-    public void setPlaying(final boolean playing) {
-        if (!EventQueue.isDispatchThread()) {
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    setPlayingState(playing);
-                }
-            });
-        } else {
-            setPlayingState(playing);
-        }
-    }
+	private ImageIcon pauseIcon;
 
-    private void setPlayingState(boolean playing) {
-        this.playing = playing;
-    	setIcon();
-    }
+	/**
+	 * Instantiates a new play pause button.
+	 * 
+	 * @param size
+	 */
+	public FullScreenPlayPauseButton(Dimension size, ImageIcon playIcon, ImageIcon pauseIcon) {
+		super(Context.getBean("playAction", Action.class));
+		// Force size of button
+		setPreferredSize(size);
+		setMinimumSize(size);
+		setMaximumSize(size);
+		setFocusable(false);
+		setText(null);
 
-    /**
-     * Checks if is playing.
-     * 
-     * @return true, if is playing
-     */
-    public boolean isPlaying() {
-        return playing;
-    }
-    
-    private void setIcon() {
-    	if (playing) {
-    		setIcon(pauseIcon);
-    	} else {
-    		setIcon(playIcon);
-    	}
-    }
+		this.playIcon = playIcon;
+		this.pauseIcon = pauseIcon;
+
+		setOpaque(false);
+		setBorderPainted(false);
+		setContentAreaFilled(false);
+
+		setIcon();
+	}
+
+	/**
+	 * Sets the playing.
+	 * 
+	 * @param playing
+	 *            the new playing
+	 */
+	public void setPlaying(final boolean playing) {
+		GuiUtils.callInEventDispatchThread(new Runnable() {
+			@Override
+			public void run() {
+				setPlayingState(playing);
+			}
+		});
+	}
+
+	private void setPlayingState(boolean playing) {
+		this.playing = playing;
+		setIcon();
+	}
+
+	/**
+	 * Checks if is playing.
+	 * 
+	 * @return true, if is playing
+	 */
+	public boolean isPlaying() {
+		return playing;
+	}
+
+	private void setIcon() {
+		if (playing) {
+			setIcon(pauseIcon);
+		} else {
+			setIcon(playIcon);
+		}
+	}
 }

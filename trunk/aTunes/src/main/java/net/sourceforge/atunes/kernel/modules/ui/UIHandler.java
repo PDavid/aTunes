@@ -21,15 +21,14 @@
 package net.sourceforge.atunes.kernel.modules.ui;
 
 import java.awt.ComponentOrientation;
-import java.awt.EventQueue;
 import java.awt.Window;
 
 import javax.swing.JProgressBar;
-import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.FadingPopupFactory;
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.frame.FrameState;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IAboutDialog;
@@ -251,16 +250,12 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
 
     @Override
     public void playbackStateChanged(final PlaybackState newState, final IAudioObject currentAudioObject) {
-        if (!EventQueue.isDispatchThread()) {
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    playbackStateChangedEDT(newState, currentAudioObject);
-                }
-            });
-        } else {
-            playbackStateChangedEDT(newState, currentAudioObject);
-        }
+    	GuiUtils.callInEventDispatchThread(new Runnable() {
+    		@Override
+    		public void run() {
+    			playbackStateChangedEDT(newState, currentAudioObject);
+    		}
+    	});
     }
 
     private void playbackStateChangedEDT(PlaybackState newState, IAudioObject currentAudioObject) {

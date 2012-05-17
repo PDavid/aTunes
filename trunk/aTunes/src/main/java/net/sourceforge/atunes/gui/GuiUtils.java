@@ -23,6 +23,7 @@ package net.sourceforge.atunes.gui;
 import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.Container;
+import java.awt.EventQueue;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
@@ -447,5 +448,17 @@ public final class GuiUtils {
     		return SwingUtilities.isRightMouseButton(e) ||
     		       SwingUtilities.isLeftMouseButton(e) && e.isControlDown();
     	}
+    }
+    
+    /**
+     * Executes a code in Event Dispatch Thread
+     * @param runnable
+     */
+    public static void callInEventDispatchThread(Runnable runnable) {
+        if (!EventQueue.isDispatchThread()) {
+            SwingUtilities.invokeLater(runnable);
+        } else {
+            runnable.run();
+        }
     }
 }

@@ -21,13 +21,12 @@
 package net.sourceforge.atunes.gui.views.controls.playerControls;
 
 import java.awt.Dimension;
-import java.awt.EventQueue;
 
 import javax.swing.Action;
 import javax.swing.JButton;
-import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.images.PauseImageIcon;
 import net.sourceforge.atunes.gui.images.PlayImageIcon;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -74,16 +73,12 @@ public final class PlayPauseButton extends JButton implements ILookAndFeelChange
      *            the new playing
      */
     public void setPlaying(final boolean playing) {
-        if (!EventQueue.isDispatchThread()) {
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    setPlayingState(playing);
-                }
-            });
-        } else {
-            setPlayingState(playing);
-        }
+    	GuiUtils.callInEventDispatchThread(new Runnable() {
+			@Override
+			public void run() {
+				setPlayingState(playing);
+			}
+		});
     }
 
     private void setPlayingState(boolean playing) {
