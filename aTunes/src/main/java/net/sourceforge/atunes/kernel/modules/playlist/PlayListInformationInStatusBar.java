@@ -20,10 +20,7 @@
 
 package net.sourceforge.atunes.kernel.modules.playlist;
 
-import java.awt.EventQueue;
-
-import javax.swing.SwingUtilities;
-
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayList;
@@ -70,16 +67,12 @@ public class PlayListInformationInStatusBar {
         final String toolTip = getToolTip(playList, audioFiles, radios, podcastFeedEntries, audioObjects);
         final String text = StringUtils.getString(I18nUtils.getString(PLAYLIST), ": ", audioObjects, " - ", audioFiles, SLASH, radios, SLASH, podcastFeedEntries);
 
-        if (!EventQueue.isDispatchThread()) {
-        	SwingUtilities.invokeLater(new Runnable() {
-        		@Override
-        		public void run() {
-        	        frame.setRightStatusBarText(text, toolTip);
-        		}
-        	});
-        } else {
-        	frame.setRightStatusBarText(text, toolTip);
-        }
+        GuiUtils.callInEventDispatchThread(new Runnable() {
+        	@Override
+        	public void run() {
+        		frame.setRightStatusBarText(text, toolTip);
+        	}
+        });
     }
 
 	/**

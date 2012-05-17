@@ -20,10 +20,9 @@
 
 package net.sourceforge.atunes.kernel.modules.player;
 
-import java.awt.EventQueue;
-
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
@@ -155,16 +154,12 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
      *            the total time
      */
     void setCurrentAudioObjectTimePlayed(final long timePlayed, final long totalTime) {
-        if (!EventQueue.isDispatchThread()) {
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    setCurrentAudioObjectTimePlayedEDT(timePlayed, totalTime);
-                }
-            });
-        } else {
-            setCurrentAudioObjectTimePlayedEDT(timePlayed, totalTime);
-        }
+    	GuiUtils.callInEventDispatchThread(new Runnable() {
+    		@Override
+    		public void run() {
+    			setCurrentAudioObjectTimePlayedEDT(timePlayed, totalTime);
+    		}
+    	});
     }
 
     private void setCurrentAudioObjectTimePlayedEDT(long timePlayed, long totalTime) {
@@ -180,16 +175,12 @@ final class PlayerControlsController extends AbstractSimpleController<PlayerCont
      *            the new volume
      */
     void setVolume(final int value) {
-    	if (!EventQueue.isDispatchThread()) {
-    		SwingUtilities.invokeLater(new Runnable() {
-    			@Override
-    			public void run() {
-    		    	getComponentControlled().setVolume(value);
-    			}
-    		});
-    	} else {
-        	getComponentControlled().setVolume(value);
-    	}
+    	GuiUtils.callInEventDispatchThread(new Runnable() {
+    		@Override
+    		public void run() {
+    			getComponentControlled().setVolume(value);
+    		}
+    	});
     }
 
     /**
