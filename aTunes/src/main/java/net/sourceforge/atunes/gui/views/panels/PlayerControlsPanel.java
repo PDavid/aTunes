@@ -140,21 +140,18 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
      * Adds the content.
      */
     public void initialize() {
-    	JPanel bottomProgressSliderContainer = new JPanel(new BorderLayout());
-    	bottomProgressSliderContainer.add(playerControlsProgressSlider.getSwingComponent(), BorderLayout.CENTER);
+    	JPanel progressSliderContainer = new JPanel(new BorderLayout());
+    	progressSliderContainer.add(playerControlsProgressSlider.getSwingComponent(), BorderLayout.CENTER);
 
     	JPanel mainControls = getMainControlsPanel();
         JPanel secondaryControlsPanel = getSecondaryControls();
-        secondaryControlsPanel.setMinimumSize(mainControls.getPreferredSize());
-        secondaryControlsPanel.setPreferredSize(mainControls.getPreferredSize());
-        secondaryControlsPanel.setMaximumSize(mainControls.getPreferredSize());
-        mainControls.setMaximumSize(mainControls.getPreferredSize());
+        adjustControlsSize(mainControls, secondaryControlsPanel);
         
         GridBagConstraints c = new GridBagConstraints();
         
         c.gridx = 0;
         c.gridy = 0;
-        c.weightx = 0.1;
+        c.weightx = 0;
         c.weighty = 1;
         c.insets = new Insets(5, 10, 5, 0);
         c.anchor = GridBagConstraints.WEST;
@@ -162,11 +159,13 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
         add(mainControls, c);
         
         c.gridx = 1;
+        c.weightx = 1;
         c.insets = new Insets(10, 10, 8, 10);
         c.fill = GridBagConstraints.BOTH;
-        add(bottomProgressSliderContainer, c);
+        add(progressSliderContainer, c);
 
         c.gridx = 2;
+        c.weightx = 0;
         c.anchor = GridBagConstraints.EAST;
         c.fill = GridBagConstraints.VERTICAL;
         c.insets = new Insets(5, 0, 5, 10);
@@ -174,6 +173,17 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
                 
         GuiUtils.applyComponentOrientation(this);
     }
+
+	/**
+	 * @param mainControls
+	 * @param secondaryControlsPanel
+	 */
+	private void adjustControlsSize(JPanel mainControls, JPanel secondaryControlsPanel) {
+		secondaryControlsPanel.setMinimumSize(mainControls.getPreferredSize());
+        secondaryControlsPanel.setPreferredSize(mainControls.getPreferredSize());
+        secondaryControlsPanel.setMaximumSize(mainControls.getPreferredSize());
+        mainControls.setMaximumSize(mainControls.getPreferredSize());
+	}
 
     @Override
 	public IProgressSlider getProgressSlider() {
