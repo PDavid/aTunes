@@ -175,6 +175,16 @@ public interface IStateUI {
 	public void setFrameState(Class<? extends IFrame> frame, IFrameState fs);
 
 	/**
+	 * @param frameSize
+	 */
+	public void setFrameSize(IFrameSize frameSize);
+	
+	/**
+	 * @return frame size
+	 */
+	public IFrameSize getFrameSize();
+	
+	/**
 	 * OSD width
 	 * @return
 	 */
@@ -233,6 +243,16 @@ public interface IStateUI {
 	 * @param onTop
 	 */
 	public void setShowPlayerControlsOnTop(boolean onTop);
+	
+	/**
+	 * Saves frame position
+	 * @param framePosition
+	 */
+	public void setFramePosition(IFramePosition framePosition);
 
+	/**
+	 * @return frame position
+	 */
+	public IFramePosition getFramePosition();
 
 }

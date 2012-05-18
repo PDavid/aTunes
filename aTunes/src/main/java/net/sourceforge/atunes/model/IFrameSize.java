@@ -20,33 +20,42 @@
 
 package net.sourceforge.atunes.model;
 
-import java.io.Serializable;
-import java.util.Map;
-
-/**
- * Represents state of frame
- * @author alex
- *
- */
-public interface IFrameState extends Serializable {
+public interface IFrameSize {
 
 	/**
-	 * Sets split pane position
-	 * @param splitPane
-	 * @param pos
-	 */
-	public void putSplitPaneDividerPos(String splitPane, int pos);
-
-	/**
-	 * Gets split pane position
-	 * @param splitPane
+	 * Returns if frame is maximized
 	 * @return
 	 */
-	public int getSplitPaneDividerPos(String splitPane);
+	public boolean isMaximized();
 
 	/**
-	 * Gets all split pane positions
+	 * Sets frame maximized
+	 * @param maximized
+	 */
+	public void setMaximized(boolean maximized);
+
+	/**
+	 * Returns frame width
 	 * @return
 	 */
-	public Map<String, Integer> getSplitPaneDividerPositions();
+	public int getWindowWidth();
+
+	/**
+	 * Sets frame width
+	 * @param windowWidth
+	 */
+	public void setWindowWidth(int windowWidth);
+
+	/**
+	 * Returns frame height
+	 * @return
+	 */
+	public int getWindowHeight();
+
+	/**
+	 * Sets window height
+	 * @param windowHeight
+	 */
+	public void setWindowHeight(int windowHeight);
+
 }

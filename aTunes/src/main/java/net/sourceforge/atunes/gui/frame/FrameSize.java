@@ -18,35 +18,52 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.gui.frame;
 
 import java.io.Serializable;
-import java.util.Map;
 
-/**
- * Represents state of frame
- * @author alex
- *
- */
-public interface IFrameState extends Serializable {
+import net.sourceforge.atunes.model.IFrameSize;
+
+public class FrameSize implements Serializable, IFrameSize {
 
 	/**
-	 * Sets split pane position
-	 * @param splitPane
-	 * @param pos
+	 * 
 	 */
-	public void putSplitPaneDividerPos(String splitPane, int pos);
+	private static final long serialVersionUID = 4174654285204418759L;
 
-	/**
-	 * Gets split pane position
-	 * @param splitPane
-	 * @return
-	 */
-	public int getSplitPaneDividerPos(String splitPane);
+	private boolean maximized;
+	
+	private int windowWidth;
+	
+	private int windowHeight;
 
-	/**
-	 * Gets all split pane positions
-	 * @return
-	 */
-	public Map<String, Integer> getSplitPaneDividerPositions();
+	@Override
+	public boolean isMaximized() {
+		return maximized;
+	}
+
+	@Override
+	public void setMaximized(boolean maximized) {
+		this.maximized = maximized;
+	}
+
+	@Override
+	public int getWindowWidth() {
+		return windowWidth;
+	}
+
+	@Override
+	public void setWindowWidth(int windowWidth) {
+		this.windowWidth = windowWidth;
+	}
+
+	@Override
+	public int getWindowHeight() {
+		return windowHeight;
+	}
+
+	@Override
+	public void setWindowHeight(int windowHeight) {
+		this.windowHeight = windowHeight;
+	}
 }

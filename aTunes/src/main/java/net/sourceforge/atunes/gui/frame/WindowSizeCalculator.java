@@ -23,7 +23,7 @@ package net.sourceforge.atunes.gui.frame;
 import java.awt.Dimension;
 import java.awt.Frame;
 
-import net.sourceforge.atunes.model.IFrameState;
+import net.sourceforge.atunes.model.IFrameSize;
 import net.sourceforge.atunes.model.IStateUI;
 
 /**
@@ -57,14 +57,14 @@ public class WindowSizeCalculator {
      * @param stateUI
      */
     public void setWindowSize(AbstractSingleFrame frame, IStateUI stateUI) {
-    	IFrameState frameState = stateUI.getFrameState(frame.getClass());
+    	IFrameSize frameSize = stateUI.getFrameSize();
         frame.setMinimumSize(frame.getWindowMinimumSize());
-        if (frameState.isMaximized()) {
+        if (frameSize.isMaximized()) {
             setWindowSizeMaximized(frame);
         } else {
             Dimension dimension = null;
-            if (frameState.getWindowWidth() != 0 && frameState.getWindowHeight() != 0) {
-                dimension = new Dimension(frameState.getWindowWidth(), frameState.getWindowHeight());
+            if (frameSize.getWindowWidth() != 0 && frameSize.getWindowHeight() != 0) {
+                dimension = new Dimension(frameSize.getWindowWidth(), frameSize.getWindowHeight());
             }
             if (dimension == null) {
             	dimension = getDefaultWindowSize();

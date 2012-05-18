@@ -32,31 +32,22 @@ import net.sourceforge.atunes.model.IFrameState;
  */
 public final class FrameState implements Serializable, IFrameState {
 
-	private static final long serialVersionUID = 455297656338188247L;
+	private static final long serialVersionUID = -6195147915384832556L;
 	
 	private Map<String, Integer> splitPaneDividerPositions;
 	
-	private int xPosition = -1;
-	
-	private int yPosition = -1;
-	
-	private boolean maximized;
-	
-	private int windowWidth;
-	
-	private int windowHeight;
-
+	/**
+	 * Default constructor
+	 */
 	public FrameState() {
         this(new HashMap<String, Integer>());
     }
 
+    /**
+     * @param frameState
+     */
     public FrameState(IFrameState frameState) {
         this(frameState.getSplitPaneDividerPositions());
-        this.xPosition = frameState.getXPosition();
-        this.yPosition = frameState.getYPosition();
-        this.maximized = frameState.isMaximized();
-        this.windowWidth = frameState.getWindowWidth();
-        this.windowHeight = frameState.getWindowHeight();
     }
 
     @ConstructorProperties("splitPaneDividerPositions")
@@ -86,133 +77,32 @@ public final class FrameState implements Serializable, IFrameState {
         return splitPaneDividerPositions;
     }
     
-    @Override
-	public int getXPosition() {
-		return xPosition;
-	}
-
-	@Override
-	public void setXPosition(int xPosition) {
-		this.xPosition = xPosition;
-	}
-
-	@Override
-	public int getYPosition() {
-		return yPosition;
-	}
-
-	@Override
-	public void setYPosition(int yPosition) {
-		this.yPosition = yPosition;
-	}
-
-	@Override
-	public boolean isMaximized() {
-		return maximized;
-	}
-
-	@Override
-	public void setMaximized(boolean maximized) {
-		this.maximized = maximized;
-	}
-
-	@Override
-	public int getWindowWidth() {
-		return windowWidth;
-	}
-
-	@Override
-	public void setWindowWidth(int windowWidth) {
-		this.windowWidth = windowWidth;
-	}
-
-	@Override
-	public int getWindowHeight() {
-		return windowHeight;
-	}
-
-	@Override
-	public void setWindowHeight(int windowHeight) {
-		this.windowHeight = windowHeight;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (maximized ? 1231 : 1237);
 		result = prime
 				* result
 				+ ((splitPaneDividerPositions == null) ? 0
 						: splitPaneDividerPositions.hashCode());
-		result = prime * result + windowHeight;
-		result = prime * result + windowWidth;
-		result = prime * result + xPosition;
-		result = prime * result + yPosition;
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (this == obj)
 			return true;
-		}
-		if (obj == null) {
+		if (obj == null)
 			return false;
-		}
-		if (getClass() != obj.getClass()) {
+		if (getClass() != obj.getClass())
 			return false;
-		}
 		FrameState other = (FrameState) obj;
-		if (maximized != other.maximized) {
-			return false;
-		}
-		if (!isSameSplitPaneDividerPositions(other) || !isEqualSize(other) || !isSamePosition(other)) {
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * @param other
-	 */
-	private boolean isSameSplitPaneDividerPositions(FrameState other) {
 		if (splitPaneDividerPositions == null) {
-			if (other.splitPaneDividerPositions != null) {
+			if (other.splitPaneDividerPositions != null)
 				return false;
-			}
 		} else if (!splitPaneDividerPositions
-				.equals(other.splitPaneDividerPositions)) {
+				.equals(other.splitPaneDividerPositions))
 			return false;
-		}
 		return true;
 	}
-
-	/**
-	 * @param other
-	 */
-	private boolean isSamePosition(FrameState other) {
-		if (xPosition != other.xPosition) {
-			return false;
-		}
-		if (yPosition != other.yPosition) {
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * @param other
-	 */
-	private boolean isEqualSize(FrameState other) {
-		if (windowHeight != other.windowHeight) {
-			return false;
-		}
-		if (windowWidth != other.windowWidth) {
-			return false;
-		}
-		return true;
-	}
-	
-	
 }

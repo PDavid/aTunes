@@ -18,35 +18,29 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.kernel;
 
-import java.io.Serializable;
-import java.util.Map;
+import net.sourceforge.atunes.utils.Logger;
 
 /**
- * Represents state of frame
+ * A task service runnable
  * @author alex
  *
  */
-public interface IFrameState extends Serializable {
+final class TaskServiceRunnable implements Runnable {
+	
+	private final String name;
+	private final Runnable task;
 
-	/**
-	 * Sets split pane position
-	 * @param splitPane
-	 * @param pos
-	 */
-	public void putSplitPaneDividerPos(String splitPane, int pos);
+	TaskServiceRunnable(String name, Runnable task) {
+		this.name = name;
+		this.task = task;
+	}
 
-	/**
-	 * Gets split pane position
-	 * @param splitPane
-	 * @return
-	 */
-	public int getSplitPaneDividerPos(String splitPane);
-
-	/**
-	 * Gets all split pane positions
-	 * @return
-	 */
-	public Map<String, Integer> getSplitPaneDividerPositions();
+	@Override
+	public void run() {
+		Logger.debug("Started task: ", name);
+		task.run();
+		Logger.debug("Finished task: ", name);
+	}
 }

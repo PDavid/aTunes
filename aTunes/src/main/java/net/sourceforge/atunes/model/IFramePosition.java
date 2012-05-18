@@ -20,33 +20,35 @@
 
 package net.sourceforge.atunes.model;
 
-import java.io.Serializable;
-import java.util.Map;
-
 /**
- * Represents state of frame
+ * Stores position of frame
  * @author alex
  *
  */
-public interface IFrameState extends Serializable {
+public interface IFramePosition {
 
 	/**
-	 * Sets split pane position
-	 * @param splitPane
-	 * @param pos
-	 */
-	public void putSplitPaneDividerPos(String splitPane, int pos);
-
-	/**
-	 * Gets split pane position
-	 * @param splitPane
+	 * Get x position of frame
 	 * @return
 	 */
-	public int getSplitPaneDividerPos(String splitPane);
+	public int getXPosition();
 
 	/**
-	 * Gets all split pane positions
+	 * Set x position of frame
+	 * @param xPosition
+	 */
+	public void setXPosition(int xPosition);
+
+	/**
+	 * Get y position of frame
 	 * @return
 	 */
-	public Map<String, Integer> getSplitPaneDividerPositions();
+	public int getYPosition();
+
+	/**
+	 * Set y position of frame
+	 * @param yPosition
+	 */
+	public void setYPosition(int yPosition);
+
 }

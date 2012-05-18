@@ -27,12 +27,16 @@ import java.util.Map;
 
 import javax.swing.SwingConstants;
 
+import net.sourceforge.atunes.gui.frame.FramePosition;
+import net.sourceforge.atunes.gui.frame.FrameSize;
 import net.sourceforge.atunes.gui.frame.FrameState;
 import net.sourceforge.atunes.model.ColumnBean;
 import net.sourceforge.atunes.model.FontSettings;
 import net.sourceforge.atunes.model.IColorBean;
 import net.sourceforge.atunes.model.IColorBeanFactory;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IFramePosition;
+import net.sourceforge.atunes.model.IFrameSize;
 import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.LookAndFeelBean;
@@ -259,5 +263,25 @@ public class ApplicationStateUI implements IStateUI {
     @Override
 	public void setShowPlayerControlsOnTop(boolean onTop) {
     	this.stateStore.storePreference(Preferences.SHOW_PLAYER_CONTROLS_ON_TOP, onTop);
+    }
+    
+    @Override
+    public IFrameSize getFrameSize() {
+    	return (IFrameSize) this.stateStore.retrievePreference(Preferences.FRAME_SIZE, new FrameSize());
+    }
+    
+    @Override
+    public void setFrameSize(IFrameSize frameSize) {
+    	this.stateStore.storePreference(Preferences.FRAME_SIZE, frameSize);
+    }
+    
+    @Override
+    public IFramePosition getFramePosition() {
+    	return (IFramePosition) this.stateStore.retrievePreference(Preferences.FRAME_POSITION, new FramePosition());
+    }
+    
+    @Override
+    public void setFramePosition(IFramePosition framePosition) {
+    	this.stateStore.storePreference(Preferences.FRAME_POSITION, framePosition);
     }
 }

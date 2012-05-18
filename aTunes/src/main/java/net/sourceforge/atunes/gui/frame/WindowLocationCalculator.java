@@ -23,7 +23,7 @@ package net.sourceforge.atunes.gui.frame;
 import java.awt.Dimension;
 import java.awt.Point;
 
-import net.sourceforge.atunes.model.IFrameState;
+import net.sourceforge.atunes.model.IFramePosition;
 
 /**
  * Calculates window location
@@ -52,14 +52,14 @@ public class WindowLocationCalculator {
 
 	/**
 	 * Returns window location based on frame state or null
-	 * @param frameState
+	 * @param framePosition
 	 * @return
 	 */
-	public Point getWindowLocation(IFrameState frameState) {
+	public Point getWindowLocation(IFramePosition framePosition) {
 		// Set window location
         Point windowLocation = null;
-        if (frameState != null && frameState.getXPosition() >= 0 && frameState.getYPosition() >= 0) {
-            windowLocation = new Point(frameState.getXPosition(), frameState.getYPosition());
+        if (framePosition != null && framePosition.getXPosition() >= 0 && framePosition.getYPosition() >= 0) {
+            windowLocation = new Point(framePosition.getXPosition(), framePosition.getYPosition());
         } else {
         	// Setting location centered in screen according to default size
         	Dimension defSize = windowSizeCalculator.getDefaultWindowSize();
