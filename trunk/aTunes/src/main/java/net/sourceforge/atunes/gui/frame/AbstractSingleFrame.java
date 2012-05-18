@@ -141,7 +141,7 @@ abstract class AbstractSingleFrame extends AbstractCustomFrame implements net.so
     public void create(IFrameState frameState) {
         this.frameState = frameState;
 
-        setLocation(getContext().getBean(WindowLocationCalculator.class).getWindowLocation(frameState));
+        setLocation(getContext().getBean(WindowLocationCalculator.class).getWindowLocation(stateUI.getFramePosition()));
 
         // Set OS-dependent frame configuration
         osManager.setupFrame(this);

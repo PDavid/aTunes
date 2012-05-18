@@ -37,9 +37,14 @@ final class SingleFrameComponentAdapter extends ComponentAdapter {
 	private final IStateUI stateUI;
 
 	/**
-	 * Previous tasks (if any)
+	 * Previous size tasks (if any)
 	 */
-	private Future<?> future;
+	private Future<?> sizeFuture;
+
+	/**
+	 * Previous position tasks (if any)
+	 */
+	private Future<?> positionFuture;
 
 	/**
 	 * @param abstractSingleFrame
@@ -54,31 +59,46 @@ final class SingleFrameComponentAdapter extends ComponentAdapter {
 
 	@Override
 	public void componentResized(ComponentEvent event) {				
-		saveState(event);
+		saveSize();
 	}
 
 	@Override
 	public void componentMoved(ComponentEvent event) {
-		saveState(event);
+		savePosition(event);
 	}
 
 	/**
-	 * Called to save state when an event is detected in single frame
-	 * @param event
+	 * Called to save size when an event is detected in single frame
 	 */
-	private void saveState(final ComponentEvent event) {
-		final int width = abstractSingleFrame.getSize().width;
-		final int height = abstractSingleFrame.getSize().height;
-		final int x = event.getComponent().getX();
-		final int y = event.getComponent().getY();
+	private void saveSize() {
+		int width = abstractSingleFrame.getSize().width;
+		int height = abstractSingleFrame.getSize().height;
 		
 		if (abstractSingleFrame.isVisible() && width != 0 && height != 0) {
 			// Task submitted after canceling previous ones to avoid executing task after each call to component listener
-			if (future != null) {
-				future.cancel(false);
+			if (sizeFuture != null) {
+				sizeFuture.cancel(false);
 			}
 			
-			future = taskService.submitOnce("Save Frame State", 1, new SaveFrameStateTask(abstractSingleFrame, stateUI, width, height, x, y));
+			sizeFuture = taskService.submitOnce("Save Frame Size", 1, new SaveFrameSizeTask(abstractSingleFrame, stateUI, width, height));
+		}
+	}
+
+	/**
+	 * Called to save position when an event is detected in single frame
+	 * @param event
+	 */
+	private void savePosition(final ComponentEvent event) {
+		final int x = event.getComponent().getX();
+		final int y = event.getComponent().getY();
+		
+		if (abstractSingleFrame.isVisible()) {
+			// Task submitted after canceling previous ones to avoid executing task after each call to component listener
+			if (positionFuture != null) {
+				positionFuture.cancel(false);
+			}
+			
+			positionFuture = taskService.submitOnce("Save Frame Position", 1, new SaveFramePositionTask(stateUI, x, y));
 		}
 	}
 }

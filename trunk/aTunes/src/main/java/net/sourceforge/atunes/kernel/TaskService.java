@@ -26,34 +26,10 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import net.sourceforge.atunes.model.ITaskService;
-import net.sourceforge.atunes.utils.Logger;
 
 import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
 
 public class TaskService implements ITaskService {
-
-	/**
-	 * A task service runnable
-	 * @author alex
-	 *
-	 */
-	private static final class TaskServiceRunnable implements Runnable {
-		
-		private final String name;
-		private final Runnable task;
-
-		private TaskServiceRunnable(String name, Runnable task) {
-			this.name = name;
-			this.task = task;
-		}
-
-		@Override
-		public void run() {
-			Logger.debug("Started task: ", name);
-			task.run();
-			Logger.debug("Finished task: ", name);
-		}
-	}
 
 	/**
 	 * Service used

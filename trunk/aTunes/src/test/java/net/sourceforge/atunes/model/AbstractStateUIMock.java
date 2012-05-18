@@ -177,4 +177,22 @@ public class AbstractStateUIMock implements IStateUI {
 	@Override
 	public void setTrayPlayerIconsColor(IColorBean color) {
 	}
+	
+	@Override
+	public IFrameSize getFrameSize() {
+		return null;
+	}
+	
+	@Override
+	public void setFrameSize(IFrameSize frameSize) {
+	}
+
+	@Override
+	public IFramePosition getFramePosition() {
+		return null;
+	}
+	
+	@Override
+	public void setFramePosition(IFramePosition framePosition) {
+	}
 }

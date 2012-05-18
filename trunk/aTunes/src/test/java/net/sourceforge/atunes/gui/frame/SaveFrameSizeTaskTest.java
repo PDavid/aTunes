@@ -23,30 +23,28 @@ package net.sourceforge.atunes.gui.frame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import net.sourceforge.atunes.model.IFrameState;
+import net.sourceforge.atunes.model.IFrameSize;
 import net.sourceforge.atunes.model.IStateUI;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-public class SaveFrameStateTaskTest {
+public class SaveFrameSizeTaskTest {
 
 	@Test
 	public void test() {
 		AbstractSingleFrame frame = mock(AbstractSingleFrame.class);
 		when(frame.getExtendedState()).thenReturn(java.awt.Frame.MAXIMIZED_BOTH);
 		IStateUI stateUI = mock(IStateUI.class);
-		IFrameState frameState = new FrameState();
-		when(stateUI.getFrameState(frame.getClass())).thenReturn(frameState);
-		SaveFrameStateTask sut = new SaveFrameStateTask(frame, stateUI, 1, 2, 3, 4);
+		IFrameSize frameSize = new FrameSize();
+		when(stateUI.getFrameSize()).thenReturn(frameSize);
+		SaveFrameSizeTask sut = new SaveFrameSizeTask(frame, stateUI, 1, 2);
 		
 		sut.run();
 		
-		verify(stateUI).setFrameState(frame.getClass(), frameState);
-		Assert.assertEquals(1, frameState.getWindowWidth());
-		Assert.assertEquals(2, frameState.getWindowHeight());
-		Assert.assertEquals(3, frameState.getXPosition());
-		Assert.assertEquals(4, frameState.getYPosition());
-		Assert.assertTrue(frameState.isMaximized());
+		verify(stateUI).setFrameSize(frameSize);
+		Assert.assertEquals(1, frameSize.getWindowWidth());
+		Assert.assertEquals(2, frameSize.getWindowHeight());
+		Assert.assertTrue(frameSize.isMaximized());
 	}
 }

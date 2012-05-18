@@ -20,57 +20,36 @@
 
 package net.sourceforge.atunes.gui.frame;
 
-import net.sourceforge.atunes.model.IFrameState;
+import net.sourceforge.atunes.model.IFramePosition;
 import net.sourceforge.atunes.model.IStateUI;
 
 /**
- * Saves frame state of frame
+ * Saves frame position of frame
  * @author alex
  *
  */
-final class SaveFrameStateTask implements Runnable {
+final class SaveFramePositionTask implements Runnable {
 	
-	private final AbstractSingleFrame abstractSingleFrame;
 	private final IStateUI stateUI;
-	private final int width;
-	private final int height;
 	private final int x;
 	private final int y;
 
 	/**
-	 * @param abstractSingleFrame
 	 * @param stateUI
-	 * @param width
-	 * @param height
 	 * @param x
 	 * @param y
 	 */
-	SaveFrameStateTask(AbstractSingleFrame abstractSingleFrame, IStateUI stateUI, int width, int height, int x, int y) {
-		this.abstractSingleFrame = abstractSingleFrame;
+	SaveFramePositionTask(IStateUI stateUI, int x, int y) {
 		this.stateUI = stateUI;
-		this.width = width;
-		this.height = height;
 		this.x = x;
 		this.y = y;
 	}
 
 	@Override
 	public void run() {
-		Class<? extends AbstractSingleFrame> frameClass = this.abstractSingleFrame.getClass();
-		IFrameState frameState = stateUI.getFrameState(frameClass);
-		fillFrameState(frameState);
-		stateUI.setFrameState(frameClass, frameState);
-	}
-	
-	/**
-	 * Saves state to frame state object
-	 * @param frameState
-	 */
-	private void fillFrameState(IFrameState frameState) {
-		frameState.setXPosition(x);
-		frameState.setYPosition(y);
-		frameState.setWindowWidth(width);
-		frameState.setWindowHeight(height);
-		frameState.setMaximized(abstractSingleFrame.getExtendedState() == java.awt.Frame.MAXIMIZED_BOTH);		
+		IFramePosition framePosition = stateUI.getFramePosition();
+		framePosition.setXPosition(x);
+		framePosition.setYPosition(y);
+		stateUI.setFramePosition(framePosition);
 	}
 }
