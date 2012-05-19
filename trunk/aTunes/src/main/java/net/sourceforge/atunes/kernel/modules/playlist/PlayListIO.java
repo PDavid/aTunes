@@ -24,12 +24,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import javax.swing.filechooser.FileFilter;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
@@ -39,7 +38,6 @@ import net.sourceforge.atunes.model.IPlayListIOService;
 import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.ClosingUtils;
-import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -48,18 +46,13 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class PlayListIO implements IPlayListIOService {
 
-    private static final class PlayListFileFilter extends FileFilter {
+	private static final class PlayListFileFilter implements FilenameFilter {
 		@Override
-		public boolean accept(File file) {
-		    return file.isDirectory() || file.getName().toLowerCase().endsWith(M3U_FILE_EXTENSION);
-		}
-
-		@Override
-		public String getDescription() {
-		    return I18nUtils.getString("PLAYLIST");
+		public boolean accept(File dir, String name) {
+			return name.toLowerCase().endsWith(M3U_FILE_EXTENSION);
 		}
 	}
-
+	
 	// The different Strings used
     /** The Constant M3U_HEADER. */
     private static final String M3U_HEADER = "#EXTM3U";
@@ -182,7 +175,7 @@ public final class PlayListIO implements IPlayListIOService {
      * @return the playlist file filter
      */
     @Override
-	public final FileFilter getPlaylistFileFilter() {
+	public final FilenameFilter getPlaylistFileFilter() {
         return new PlayListFileFilter();
     }
 

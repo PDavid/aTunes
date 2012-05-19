@@ -20,25 +20,25 @@
 
 package net.sourceforge.atunes.gui.views.dialogs;
 
+import java.awt.FileDialog;
 import java.io.File;
-
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileFilter;
+import java.io.FilenameFilter;
 
 import net.sourceforge.atunes.model.IFileSelectorDialog;
 import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.utils.I18nUtils;
 
 public class FileSelectorDialog implements IFileSelectorDialog {
 
 	private IFrame frame;
 	
-	private FileFilter fileFilter;
+	private FilenameFilter fileFilter;
 	
 	/**
 	 * @param fileFilter
 	 */
 	@Override
-	public void setFileFilter(FileFilter fileFilter) {
+	public void setFileFilter(FilenameFilter fileFilter) {
 		this.fileFilter = fileFilter;
 	}
 	
@@ -55,16 +55,8 @@ public class FileSelectorDialog implements IFileSelectorDialog {
 	 * @return
 	 */
 	@Override
-	public File selectFile(String path) {
-        JFileChooser fileChooser = new JFileChooser(path);
-        if (fileFilter != null) {
-        	fileChooser.setFileFilter(fileFilter);
-        }
-        if (fileChooser.showOpenDialog(frame.getFrame()) == JFileChooser.APPROVE_OPTION) {
-            // Get selected file
-            return fileChooser.getSelectedFile();
-        }
-        return null;
+	public File loadFile(String path) {
+		return getFile(path, I18nUtils.getString("LOAD"), FileDialog.LOAD);
     }
 	
 	/**
@@ -73,10 +65,46 @@ public class FileSelectorDialog implements IFileSelectorDialog {
 	 * @return
 	 */
 	@Override
-	public File selectFile(File path) {
+	public File loadFile(File path) {
 		if (path == null) {
 			throw new IllegalArgumentException("Null path");
 		}
-		return selectFile(path.getAbsolutePath());
+		return loadFile(path.getAbsolutePath());
+	}
+	
+	@Override
+	public File saveFile(File path) {
+		if (path == null) {
+			throw new IllegalArgumentException("Null path");
+		}
+		return saveFile(path.getAbsolutePath());
+	}
+	
+	@Override
+	public File saveFile(String path) {
+		return getFile(path, I18nUtils.getString("SAVE"), FileDialog.SAVE);
+	}
+	
+	/**
+	 * Opens file dialog to get file
+	 * @param path
+	 * @param title
+	 * @param mode
+	 * @return
+	 */
+	private File getFile(String path, String title, int mode) {
+		FileDialog dialog = new FileDialog(frame.getFrame(), title, mode);
+		dialog.setDirectory(path);
+        if (fileFilter != null) {
+        	dialog.setFilenameFilter(fileFilter);
+        }
+        dialog.setVisible(true);
+        String file = dialog.getFile();
+        String dir = dialog.getDirectory();
+        if (file != null) {
+            // Get selected file
+            return new File(dir + "/" + file);
+        }
+        return null;
 	}
 }

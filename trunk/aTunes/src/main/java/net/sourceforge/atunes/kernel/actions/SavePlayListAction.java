@@ -26,7 +26,6 @@ import java.io.File;
 import java.util.List;
 
 import javax.swing.KeyStroke;
-import javax.swing.filechooser.FileFilter;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IConfirmationDialogFactory;
@@ -93,6 +92,9 @@ public class SavePlayListAction extends CustomAbstractAction {
 		this.confirmationDialogFactory = confirmationDialogFactory;
 	}
     
+    /**
+     * Default constructor
+     */
     public SavePlayListAction() {
         super(StringUtils.getString(I18nUtils.getString("SAVE"), "..."));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SAVE_PLAYLIST_TOOLTIP"));
@@ -101,10 +103,9 @@ public class SavePlayListAction extends CustomAbstractAction {
 
     @Override
     protected void executeAction() {
-        FileFilter filter = playListIOService.getPlaylistFileFilter();
     	IFileSelectorDialog dialog = fileSelectorDialogFactory.getDialog();
-    	dialog.setFileFilter(filter);
-    	File file = dialog.selectFile(statePlaylist.getSavePlaylistPath());
+    	dialog.setFileFilter(playListIOService.getPlaylistFileFilter());
+    	File file = dialog.saveFile(statePlaylist.getSavePlaylistPath());
     	if (file != null) {
 
             statePlaylist.setSavePlaylistPath(file.getParentFile().getAbsolutePath());
