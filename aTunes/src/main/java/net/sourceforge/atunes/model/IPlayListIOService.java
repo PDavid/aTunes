@@ -21,9 +21,8 @@
 package net.sourceforge.atunes.model;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.util.List;
-
-import javax.swing.filechooser.FileFilter;
 
 
 /**
@@ -60,7 +59,7 @@ public interface IPlayListIOService {
 	 * 
 	 * @return the playlist file filter
 	 */
-	FileFilter getPlaylistFileFilter();
+	FilenameFilter getPlaylistFileFilter();
 
 	/**
 	 * Checks if is valid play list.

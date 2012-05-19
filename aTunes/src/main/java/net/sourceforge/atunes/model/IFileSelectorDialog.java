@@ -21,28 +21,41 @@
 package net.sourceforge.atunes.model;
 
 import java.io.File;
-
-import javax.swing.filechooser.FileFilter;
+import java.io.FilenameFilter;
 
 public interface IFileSelectorDialog {
 
 	/**
 	 * @param fileFilter
 	 */
-	public void setFileFilter(FileFilter fileFilter);
+	public void setFileFilter(FilenameFilter fileFilter);
 
 	/**
-	 * Selects a file
+	 * Selects a file to load
 	 * @param path
 	 * @return
 	 */
-	public File selectFile(String path);
+	public File loadFile(String path);
 
 	/**
-	 * Selects a file
+	 * Selects a file to load
 	 * @param path
 	 * @return
 	 */
-	public File selectFile(File path);
+	public File loadFile(File path);
+
+	/**
+	 * Selects a file to save
+	 * @param path
+	 * @return
+	 */
+	public File saveFile(String path);
+
+	/**
+	 * Selects a file to save
+	 * @param path
+	 * @return
+	 */
+	public File saveFile(File path);
 
 }
