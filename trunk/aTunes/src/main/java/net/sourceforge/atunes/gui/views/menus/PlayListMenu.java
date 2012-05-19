@@ -22,14 +22,13 @@ package net.sourceforge.atunes.gui.views.menus;
 
 import javax.swing.JMenu;
 
-import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class PlayListMenu extends JMenu {
 
 	private static final long serialVersionUID = -3624790857729577320L;
 
-	private IPlayListTable playListTable;
+	private PlayListMenuFiller playListMenuFiller;
 	
 	/**
 	 * @param i18nKey
@@ -39,16 +38,16 @@ public class PlayListMenu extends JMenu {
 	}
 
 	/**
-	 * @param playListTable
+	 * @param playListMenuFiller
 	 */
-	public void setPlayListTable(IPlayListTable playListTable) {
-		this.playListTable = playListTable;
+	public void setPlayListMenuFiller(PlayListMenuFiller playListMenuFiller) {
+		this.playListMenuFiller = playListMenuFiller;
 	}
 	
 	/**
 	 * Initializes menu
 	 */
 	public void initialize() {
-        PlayListMenuFiller.fillMenu(this, playListTable);
+		playListMenuFiller.fillMenu(this);
 	}
 }

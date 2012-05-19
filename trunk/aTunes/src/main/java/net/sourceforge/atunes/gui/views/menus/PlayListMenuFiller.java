@@ -31,7 +31,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedObjects;
 import net.sourceforge.atunes.kernel.actions.AddAlbumWithSelectedArtistsAction;
 import net.sourceforge.atunes.kernel.actions.AutoScrollPlayListAction;
@@ -59,18 +58,43 @@ import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public final class PlayListMenuFiller {
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
-    private PlayListMenuFiller() {
-    }
+public final class PlayListMenuFiller implements ApplicationContextAware {
+
+	private IPlayListTable playListTable;
+	
+	private IPlayListHandler playListHandler;
+	
+	private ApplicationContext context;
+	
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		this.context = applicationContext;
+	}
+	
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
+
+	/**
+	 * @param playListTable
+	 */
+	public void setPlayListTable(IPlayListTable playListTable) {
+		this.playListTable = playListTable;
+	}
 
     /**
      * Fills a pop up with play list menu items
      * 
      * @param menu
      */
-    static void fillPopUpMenu(JPopupMenu menu, IPlayListTable table) {
-        List<Object> objectsToAdd = getComponents(table);
+    void fillPopUpMenu(JPopupMenu menu) {
+        List<Object> objectsToAdd = getComponents(playListTable);
         for (Object o : objectsToAdd) {
             // Object can be an action or a swing component
             if (o instanceof Action) {
@@ -85,10 +109,9 @@ public final class PlayListMenuFiller {
      * Fills a menu with play list menu items
      * 
      * @param menu
-     * @param table
      */
-    static void fillMenu(JMenu menu, IPlayListTable table) {
-        List<Object> objectsToAdd = getComponents(table);
+    void fillMenu(JMenu menu) {
+        List<Object> objectsToAdd = getComponents(playListTable);
         for (Object o : objectsToAdd) {
             // Object can be an action or a swing component
             if (o instanceof Action) {
@@ -104,12 +127,12 @@ public final class PlayListMenuFiller {
      * 
      * @return
      */
-    private static List<Object> getComponents(IPlayListTable table) {
+    private List<Object> getComponents(IPlayListTable table) {
         List<Object> objects = new ArrayList<Object>();
         
-        objects.add(Context.getBean(ShowPlayListItemInfoAction.class));
+        objects.add(context.getBean(ShowPlayListItemInfoAction.class));
         
-        OpenFolderAction openFolderAction = Context.getBean(OpenFolderAction.class);
+        OpenFolderAction openFolderAction = context.getBean(OpenFolderAction.class);
         openFolderAction.setAudioObjectsSource(table);
         objects.add(openFolderAction);
         
@@ -117,28 +140,28 @@ public final class PlayListMenuFiller {
         objects.add(new EditTagMenu(true, table));
         objects.add(getFavoritesMenu());
         objects.add(new JSeparator());
-        objects.add(Context.getBean(AutoScrollPlayListAction.class));
+        objects.add(context.getBean(AutoScrollPlayListAction.class));
         objects.add(getMoveMenu());
-        objects.add(Context.getBean(RemoveFromPlayListAction.class));
-        objects.add(Context.getBean(RemoveDuplicatesFromPlayListAction.class));
-        objects.add(Context.getBean(ClearPlayListAction.class));
+        objects.add(context.getBean(RemoveFromPlayListAction.class));
+        objects.add(context.getBean(RemoveDuplicatesFromPlayListAction.class));
+        objects.add(context.getBean(ClearPlayListAction.class));
         objects.add(new JSeparator());
-        objects.add(Context.getBean(SavePlayListAction.class));
-        objects.add(Context.getBean(SaveM3UPlayListAction.class));
-        objects.add(Context.getBean(LoadPlayListAction.class));
+        objects.add(context.getBean(SavePlayListAction.class));
+        objects.add(context.getBean(SaveM3UPlayListAction.class));
+        objects.add(context.getBean(LoadPlayListAction.class));
         objects.add(new JSeparator());
         objects.add(getSmartPlayListMenu());
         objects.add(new JSeparator());
         
-        AbstractActionOverSelectedObjects<IAudioObject> createPlayListWithSelectedArtistsAction = Context.getBean(CreatePlayListWithSelectedArtistsAction.class);
+        AbstractActionOverSelectedObjects<IAudioObject> createPlayListWithSelectedArtistsAction = context.getBean(CreatePlayListWithSelectedArtistsAction.class);
         createPlayListWithSelectedArtistsAction.setAudioObjectsSource(table);
         objects.add(createPlayListWithSelectedArtistsAction);
         
-        AbstractActionOverSelectedObjects<IAudioObject> createPlayListWithSelectedAlbumAction = Context.getBean(CreatePlayListWithSelectedAlbumsAction.class);
+        AbstractActionOverSelectedObjects<IAudioObject> createPlayListWithSelectedAlbumAction = context.getBean(CreatePlayListWithSelectedAlbumsAction.class);
         createPlayListWithSelectedAlbumAction.setAudioObjectsSource(table);
         objects.add(createPlayListWithSelectedAlbumAction);
         
-        AbstractActionOverSelectedObjects<IAudioObject> addAlbumWithSelectedArtistsAction = Context.getBean(AddAlbumWithSelectedArtistsAction.class);
+        AbstractActionOverSelectedObjects<IAudioObject> addAlbumWithSelectedArtistsAction = context.getBean(AddAlbumWithSelectedArtistsAction.class);
         addAlbumWithSelectedArtistsAction.setAudioObjectsSource(table);
         objects.add(addAlbumWithSelectedArtistsAction);
         return objects;
@@ -148,27 +171,27 @@ public final class PlayListMenuFiller {
      * Returns menu for smart play list
      * @return
      */
-    private static JMenu getSmartPlayListMenu() {
+    private JMenu getSmartPlayListMenu() {
         JMenu smartPlayList = new JMenu(I18nUtils.getString("SMART_PLAYLIST"));
-        smartPlayList.add((AbstractAction)Context.getBean("addRandomSongsAction10"));
-        smartPlayList.add((AbstractAction)Context.getBean("addRandomSongsAction50"));
-        smartPlayList.add((AbstractAction)Context.getBean("addRandomSongsAction100"));
+        smartPlayList.add((AbstractAction)context.getBean("addRandomSongsAction10"));
+        smartPlayList.add((AbstractAction)context.getBean("addRandomSongsAction50"));
+        smartPlayList.add((AbstractAction)context.getBean("addRandomSongsAction100"));
         smartPlayList.add(new JSeparator());
-        smartPlayList.add((AbstractAction)Context.getBean("addSongsMostPlayedAction10"));
-        smartPlayList.add((AbstractAction)Context.getBean("addSongsMostPlayedAction50"));
-        smartPlayList.add((AbstractAction)Context.getBean("addSongsMostPlayedAction100"));
+        smartPlayList.add((AbstractAction)context.getBean("addSongsMostPlayedAction10"));
+        smartPlayList.add((AbstractAction)context.getBean("addSongsMostPlayedAction50"));
+        smartPlayList.add((AbstractAction)context.getBean("addSongsMostPlayedAction100"));
         smartPlayList.add(new JSeparator());
-        smartPlayList.add((AbstractAction)Context.getBean("addAlbumMostPlayedAction1"));
-        smartPlayList.add((AbstractAction)Context.getBean("addAlbumMostPlayedAction5"));
-        smartPlayList.add((AbstractAction)Context.getBean("addAlbumMostPlayedAction10"));
+        smartPlayList.add((AbstractAction)context.getBean("addAlbumMostPlayedAction1"));
+        smartPlayList.add((AbstractAction)context.getBean("addAlbumMostPlayedAction5"));
+        smartPlayList.add((AbstractAction)context.getBean("addAlbumMostPlayedAction10"));
         smartPlayList.add(new JSeparator());
-        smartPlayList.add((AbstractAction)Context.getBean("addArtistsMostPlayedAction1"));
-        smartPlayList.add((AbstractAction)Context.getBean("addArtistsMostPlayedAction5"));
-        smartPlayList.add((AbstractAction)Context.getBean("addArtistsMostPlayedAction10"));
+        smartPlayList.add((AbstractAction)context.getBean("addArtistsMostPlayedAction1"));
+        smartPlayList.add((AbstractAction)context.getBean("addArtistsMostPlayedAction5"));
+        smartPlayList.add((AbstractAction)context.getBean("addArtistsMostPlayedAction10"));
         smartPlayList.add(new JSeparator());
-        smartPlayList.add((AbstractAction)Context.getBean("addUnplayedSongsAction10"));
-        smartPlayList.add((AbstractAction)Context.getBean("addUnplayedSongsAction50"));
-        smartPlayList.add((AbstractAction)Context.getBean("addUnplayedSongsAction100"));
+        smartPlayList.add((AbstractAction)context.getBean("addUnplayedSongsAction10"));
+        smartPlayList.add((AbstractAction)context.getBean("addUnplayedSongsAction50"));
+        smartPlayList.add((AbstractAction)context.getBean("addUnplayedSongsAction100"));
         return smartPlayList;
     }
     
@@ -176,11 +199,11 @@ public final class PlayListMenuFiller {
      * Returns menu for favorites
      * @return
      */
-    private static JMenu getFavoritesMenu() {
+    private JMenu getFavoritesMenu() {
         JMenu favorites = new JMenu(I18nUtils.getString("FAVORITES"));
-        favorites.add(Context.getBean(SetPlayListSelectionAsFavoriteSongAction.class));
-        favorites.add(Context.getBean(SetPlayListSelectionAsFavoriteAlbumAction.class));
-        favorites.add(Context.getBean(SetPlayListSelectionAsFavoriteArtistAction.class));
+        favorites.add(context.getBean(SetPlayListSelectionAsFavoriteSongAction.class));
+        favorites.add(context.getBean(SetPlayListSelectionAsFavoriteAlbumAction.class));
+        favorites.add(context.getBean(SetPlayListSelectionAsFavoriteArtistAction.class));
         return favorites;
     }
     
@@ -188,16 +211,16 @@ public final class PlayListMenuFiller {
      * Returns move menu
      * @return
      */
-    private static JMenu getMoveMenu() {
+    private JMenu getMoveMenu() {
         JMenu move = new JMenu(I18nUtils.getString("MOVE"));
-        move.add(Context.getBean(MoveAfterCurrentAudioObjectAction.class));
+        move.add(context.getBean(MoveAfterCurrentAudioObjectAction.class));
         move.add(new JSeparator());
-        move.add(Context.getBean(MoveToTopAction.class));
-        move.add(Context.getBean(MoveUpAction.class));
-        move.add(Context.getBean(MoveDownAction.class));
-        move.add(Context.getBean(MoveToBottomAction.class));
+        move.add(context.getBean(MoveToTopAction.class));
+        move.add(context.getBean(MoveUpAction.class));
+        move.add(context.getBean(MoveDownAction.class));
+        move.add(context.getBean(MoveToBottomAction.class));
         move.add(new JSeparator());
-        move.add(Context.getBean(ShufflePlayListAction.class));
+        move.add(context.getBean(ShufflePlayListAction.class));
         return move;
     }
 
@@ -206,8 +229,8 @@ public final class PlayListMenuFiller {
      * 
      * @param table
      */
-	public static void updatePlayListMenuItems(IPlayListTable table) {
-        updatePlayListPopupMenuItems(table.getMenu(), Context.getBean(IPlayListHandler.class).getSelectedAudioObjects());
+	public void updatePlayListMenuItems() {
+        updatePlayListPopupMenuItems(playListTable.getMenu(), playListHandler.getSelectedAudioObjects());
     }
 
     /**
@@ -216,7 +239,7 @@ public final class PlayListMenuFiller {
      * @param menu
      * @param selection
      */
-    private static void updatePlayListPopupMenuItems(JPopupMenu menu, List<IAudioObject> selection) {
+    private void updatePlayListPopupMenuItems(JPopupMenu menu, List<IAudioObject> selection) {
         for (Component c : menu.getComponents()) {
             Action action = null;
             if (c instanceof JMenuItem) {
@@ -240,7 +263,7 @@ public final class PlayListMenuFiller {
      * @param menu
      * @param selection
      */
-    private static void updatePlayListMenuItems(JMenu menu, List<IAudioObject> selection) {
+    private void updatePlayListMenuItems(JMenu menu, List<IAudioObject> selection) {
         for (int i = 0; i < menu.getItemCount(); i++) {
             JMenuItem menuItem = menu.getItem(i);
             // For some reason getItem can return null

@@ -24,10 +24,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
 import net.sourceforge.atunes.model.IMenuBar;
-import net.sourceforge.atunes.model.IPlayListTable;
-
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
 /**
  * The application menu bar.
@@ -36,7 +32,7 @@ import org.springframework.context.ApplicationContextAware;
  * @author alex
  *
  */
-public final class ApplicationMenuBar extends JMenuBar implements IMenuBar, ApplicationContextAware {
+public final class ApplicationMenuBar extends JMenuBar implements IMenuBar {
 
     private static final long serialVersionUID = 234977404080329591L;
 
@@ -48,13 +44,6 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar, Appl
     private JMenu toolsMenu;
     private JMenu deviceMenu;
     private JMenu helpMenu;
-    
-    private ApplicationContext context;
-    
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) {
-    	this.context = applicationContext;
-    }
     
     /**
      * @param playerMenu
@@ -121,7 +110,6 @@ public final class ApplicationMenuBar extends JMenuBar implements IMenuBar, Appl
         add(editMenu);
         add(viewMenu);
         add(playerMenu);
-        playListMenu.setPlayListTable(context.getBean(IPlayListTable.class));
         playListMenu.initialize();
         add(playListMenu);
         add(deviceMenu);
