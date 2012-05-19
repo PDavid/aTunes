@@ -23,6 +23,7 @@ package net.sourceforge.atunes.kernel.modules.playlist;
 import java.util.List;
 
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
+import net.sourceforge.atunes.kernel.actions.SaveM3UPlayListAction;
 import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -251,6 +252,7 @@ public class PlayListRemover implements ApplicationContextAware {
 
         if (currentPlayList.isEmpty()) {
         	context.getBean(SavePlayListAction.class).setEnabled(false);
+        	context.getBean(SaveM3UPlayListAction.class).setEnabled(false);
         	context.getBean(ShufflePlayListAction.class).setEnabled(false);
         }
         playListInformationInStatusBar.showPlayListInformation(currentPlayList);
@@ -315,6 +317,7 @@ public class PlayListRemover implements ApplicationContextAware {
 
             // Disable actions
             context.getBean(SavePlayListAction.class).setEnabled(false);
+            context.getBean(SaveM3UPlayListAction.class).setEnabled(false);
             context.getBean(ShufflePlayListAction.class).setEnabled(false);
 
             // Update audio object number

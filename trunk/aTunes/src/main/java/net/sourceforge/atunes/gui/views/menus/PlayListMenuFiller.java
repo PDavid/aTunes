@@ -47,6 +47,7 @@ import net.sourceforge.atunes.kernel.actions.MoveUpAction;
 import net.sourceforge.atunes.kernel.actions.OpenFolderAction;
 import net.sourceforge.atunes.kernel.actions.RemoveDuplicatesFromPlayListAction;
 import net.sourceforge.atunes.kernel.actions.RemoveFromPlayListAction;
+import net.sourceforge.atunes.kernel.actions.SaveM3UPlayListAction;
 import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
 import net.sourceforge.atunes.kernel.actions.SetPlayListSelectionAsFavoriteAlbumAction;
 import net.sourceforge.atunes.kernel.actions.SetPlayListSelectionAsFavoriteArtistAction;
@@ -123,6 +124,7 @@ public final class PlayListMenuFiller {
         objects.add(Context.getBean(ClearPlayListAction.class));
         objects.add(new JSeparator());
         objects.add(Context.getBean(SavePlayListAction.class));
+        objects.add(Context.getBean(SaveM3UPlayListAction.class));
         objects.add(Context.getBean(LoadPlayListAction.class));
         objects.add(new JSeparator());
         objects.add(getSmartPlayListMenu());

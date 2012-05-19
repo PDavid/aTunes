@@ -194,6 +194,7 @@
 	<bean id="repositoryLoadInBackgroundAction" class="net.sourceforge.atunes.kernel.actions.RepositoryLoadInBackgroundAction"/>
 	<bean id="ripCDAction" class="net.sourceforge.atunes.kernel.actions.RipCDAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.SavePlayListAction"/>
+	<bean class="net.sourceforge.atunes.kernel.actions.SaveM3UPlayListAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.SearchArtistAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.SearchArtistAtAction"/>
 	<bean id="selectRepositoryAction" class="net.sourceforge.atunes.kernel.actions.SelectRepositoryAction"/>

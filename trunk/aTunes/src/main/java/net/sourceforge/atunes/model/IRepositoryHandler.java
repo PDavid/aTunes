@@ -35,6 +35,10 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 	 */
 	public void addFilesAndRefresh(final List<File> files);
 
+	/**
+	 * Returns folders of repository
+	 * @return
+	 */
 	public List<File> getFolders();
 
 	/**

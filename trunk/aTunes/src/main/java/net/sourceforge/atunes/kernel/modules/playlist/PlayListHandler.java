@@ -25,6 +25,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
+import net.sourceforge.atunes.kernel.actions.SaveM3UPlayListAction;
 import net.sourceforge.atunes.kernel.actions.SavePlayListAction;
 import net.sourceforge.atunes.kernel.actions.ShufflePlayListAction;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -312,6 +313,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
      */
     void setPlayList(IPlayList playList) {
     	getBean(SavePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
+    	getBean(SaveM3UPlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
         getBean(ShufflePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
         playListInformationInStatusBar.showPlayListInformation(playList);
         if (isActivePlayListVisible()) {
@@ -383,6 +385,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         setSelectedItemAfterAddToPlayList(audioObjects, playList);
 
         getBean(SavePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
+        getBean(SaveM3UPlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
         getBean(ShufflePlayListAction.class).setEnabled(!getCurrentPlayList(true).isEmpty());
 
         // Update play list number in status bar
