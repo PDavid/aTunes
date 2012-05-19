@@ -62,6 +62,13 @@ public interface IPlayListIOService {
 	FilenameFilter getPlaylistFileFilter();
 
 	/**
+	 * FileFilter to be used when loading and saving a play list M3U file
+	 * 
+	 * @return the playlist file filter
+	 */
+	FilenameFilter getPlaylistM3UFileFilter();
+
+	/**
 	 * Checks if is valid play list.
 	 * 
 	 * @param playListFile
@@ -116,10 +123,27 @@ public interface IPlayListIOService {
 	boolean write(IPlayList playlist, File file);
 
 	/**
+	 * Writes a play list to a M3U file
+	 * 
+	 * @param playlist
+	 * @param file
+	 * @param osManager
+	 * @return
+	 */
+	boolean writeM3U(IPlayList playlist, File file);
+
+	/**
 	 * Checks file name is a valid play list file (checks extension)
 	 * @param file
 	 * @return file checked
 	 */
 	File checkPlayListFileName(File file);
+
+	/**
+	 * Checks file name is a valid M3U play list file (checks extension)
+	 * @param file
+	 * @return file checked
+	 */
+	File checkM3UPlayListFileName(File file);
 
 }

@@ -20,14 +20,9 @@
 
 package net.sourceforge.atunes.kernel.modules.playlist;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
@@ -37,43 +32,21 @@ import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListIOService;
 import net.sourceforge.atunes.model.IRadioHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.utils.ClosingUtils;
-import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
+
+import org.apache.commons.io.FilenameUtils;
 
 /**
  * The Class PlayListIO.
  */
 public final class PlayListIO implements IPlayListIOService {
 
-	private static final class PlayListFileFilter implements FilenameFilter {
-		@Override
-		public boolean accept(File dir, String name) {
-			return name.toLowerCase().endsWith(M3U_FILE_EXTENSION);
-		}
-	}
-	
-	// The different Strings used
-    /** The Constant M3U_HEADER. */
-    private static final String M3U_HEADER = "#EXTM3U";
-
-    /** The Constant M3U_START_COMMENT. */
-    private static final String M3U_START_COMMENT = "#";
-
-    /** The Constant M3U_UNIX_ABSOLUTE_PATH. */
-    private static final String M3U_UNIX_ABSOLUTE_PATH = "/";
-
-    /** The Constant M3U_WINDOWS_ABSOLUTE_PATH. */
-    private static final String M3U_WINDOWS_ABSOLUTE_PATH = ":\\";
-    
-    /** The Constant UNC_ABSOLUTE_PATH. */
-    private static final String M3U_UNC_ABSOLUTE_PATH = "\\\\";
-
     /** The Constant M3U_FILE_EXTENSION. */
-    public static final String M3U_FILE_EXTENSION = "m3u";
+    public static final String PLAYLIST_M3U_FILE_EXTENSION = "m3u";
 
-    /** The Constant M3U_HTTP_PREFIX. */
-    private static final String M3U_HTTP_PREFIX = "http://";
+    public static final String PLAYLIST_FILE_EXTENSION = "atu";
+    
+    private static final String HTTP_PREFIX = "http://";
     
     private IRepositoryHandler repositoryHandler;
     
@@ -139,7 +112,7 @@ public final class PlayListIO implements IPlayListIOService {
         IAudioObject ao = null;
 
         // It's an online radio
-        if (resourceName.startsWith(M3U_HTTP_PREFIX)) {
+        if (resourceName.startsWith(HTTP_PREFIX)) {
             ao = radioHandler.getRadioIfLoaded(resourceName);
             if (ao == null) {
                 // If radio is not previously loaded in application then create a new Radio object with resource as name and url and leave label empty
@@ -190,7 +163,7 @@ public final class PlayListIO implements IPlayListIOService {
     @Override
 	public boolean isValidPlayList(String playListFile) {
         File f = new File(playListFile);
-        return playListFile.endsWith(M3U_FILE_EXTENSION) && f.exists();
+        return playListFile.endsWith(PLAYLIST_M3U_FILE_EXTENSION) && f.exists();
     }
 
     /**
@@ -203,82 +176,19 @@ public final class PlayListIO implements IPlayListIOService {
      */
     @Override
 	public boolean isValidPlayList(File playListFile) {
-        return playListFile.getName().endsWith(M3U_FILE_EXTENSION) && playListFile.exists();
+        return playListFile.getName().endsWith(PLAYLIST_M3U_FILE_EXTENSION) && playListFile.exists();
     }
 
     /**
-     * This function reads the filenames from the playlist file (m3u). It will
-     * return all filenames with absolute path. For this playlists with relative
-     * pathname must be detected and the path must be added. Current problem of
-     * this implementation is clearly the charset used. Java reads/writes in the
-     * charset used by the OS! But for many *nixes this is UTF8, while Windows
-     * will use CP1252 or similar. So, as long as we have the same charset
-     * encoding or do not use any special character playlists will work
-     * (absolute filenames with a pathname incompatible with the current OS are
-     * not allowed), but as soon as we have say french accents in the filename a
-     * playlist created under an application using CP1252 will not import
-     * correctly on a UTF8 system (better: the files with accents in their
-     * filename will not).
-     * 
-     * Only playlist with local files have been tested! Returns a list of file
-     * names contained in a play list file
-     * 
-     * @param file
-     *            The playlist file
-     * 
+     * This function reads the filenames from the playlist file
      * @return Returns an List of files of the playlist as String.
      */
     @Override
 	public List<String> read(File file) {
-
-        BufferedReader br = null;
-        try {
-            List<String> result = new ArrayList<String>();
-            br = new BufferedReader(new FileReader(file));
-            String line;
-            // Do look for the first uncommented line
-            line = br.readLine();
-            while (line != null && line.startsWith(M3U_START_COMMENT)) {
-                // Go to next line
-                line = br.readLine();
-            }
-            if (line == null) {
-                return Collections.emptyList();
-            }
-            // First absolute path. Windows path detection is very rudimentary, but should work
-            if (line.startsWith(M3U_WINDOWS_ABSOLUTE_PATH, 1) || 
-            	line.startsWith(M3U_UNIX_ABSOLUTE_PATH) ||
-            	line.startsWith(M3U_UNC_ABSOLUTE_PATH)) {
-                // Let's check if we are at least using the right OS. Maybe a message should be returned, but for now it doesn't. UNC paths are allowed for all OS
-                if (((osManager.isWindows()) && line.startsWith(M3U_UNIX_ABSOLUTE_PATH))
-                        || (!(osManager.isWindows()) && line.startsWith(M3U_WINDOWS_ABSOLUTE_PATH, 1))) {
-                    return Collections.emptyList();
-                }
-                result.add(line);
-                while ((line = br.readLine()) != null) {
-                    if (!line.startsWith(M3U_START_COMMENT) && !line.isEmpty()) {
-                        result.add(line);
-                    }
-                }
-            }
-            // The path is relative! We must add it to the filename
-            // But if entries are HTTP URLS then don't add any path
-            else {
-                String path = file.getParent() + osManager.getFileSeparator();
-                result.add(line.startsWith(M3U_HTTP_PREFIX) ? line : StringUtils.getString(path, line));
-                while ((line = br.readLine()) != null) {
-                    if (!line.startsWith(M3U_START_COMMENT) && !line.isEmpty()) {
-                        result.add(line.startsWith(M3U_HTTP_PREFIX) ? line : StringUtils.getString(path, line));
-                    }
-                }
-            }
-            // Return the filenames with their absolute path
-            return result;
-        } catch (IOException e) {
-            return Collections.emptyList();
-        } finally {
-            ClosingUtils.close(br);
-        }
+    	if (FilenameUtils.getExtension(file.getAbsolutePath()).equalsIgnoreCase(PLAYLIST_FILE_EXTENSION)) {
+    		return new PlayListReader(repositoryHandler).read(file);
+    	}
+    	return new M3UPlayListReader(osManager).read(file);
     }
 
     /**
@@ -286,36 +196,37 @@ public final class PlayListIO implements IPlayListIOService {
      * 
      * @param playlist
      * @param file
-     * @param osManager
      * @return
      */
     @Override
-	public boolean write(IPlayList playlist, File file) {
-        FileWriter writer = null;
-        try {
-            if (file.exists() && !file.delete()) {
-            	Logger.error(StringUtils.getString(file, " not deleted"));
-            }
-            writer = new FileWriter(file);
-            writer.append(StringUtils.getString(M3U_HEADER, osManager.getLineTerminator()));
-            for (int i = 0; i < playlist.size(); i++) {
-            	IAudioObject f = playlist.get(i);
-                writer.append(StringUtils.getString(f.getUrl(), osManager.getLineTerminator()));
-            }
-            writer.flush();
-            return true;
-        } catch (IOException e) {
-            return false;
-        } finally {
-            ClosingUtils.close(writer);
-        }
+	public boolean writeM3U(IPlayList playlist, File file) {
+    	return new M3UPlayListWriter(osManager).writeM3U(playlist, file);
     }
     
     @Override
     public File checkPlayListFileName(File file) {
-        if (!file.getName().toUpperCase().endsWith(M3U_FILE_EXTENSION.toUpperCase())) {
-            return new File(StringUtils.getString(file.getAbsolutePath(), ".", M3U_FILE_EXTENSION));
+    	return checkPlayListExtension(file, PLAYLIST_FILE_EXTENSION);
+    }
+
+    @Override
+    public File checkM3UPlayListFileName(File file) {
+    	return checkPlayListExtension(file, PLAYLIST_M3U_FILE_EXTENSION);
+    }
+    
+    private File checkPlayListExtension(File file, String extension) {
+        if (!file.getName().toUpperCase().endsWith("." + extension.toUpperCase())) {
+            return new File(StringUtils.getString(file.getAbsolutePath(), ".", extension));
         }
         return file;
+    }
+
+    @Override
+    public FilenameFilter getPlaylistM3UFileFilter() {
+    	return new PlayListM3UFileFilter();
+    }
+    
+    @Override
+    public boolean write(IPlayList playlist, File file) {
+    	return new PlayListWriter(osManager, repositoryHandler).write(playlist, file);
     }
 }

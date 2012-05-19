@@ -43,7 +43,7 @@ import net.sourceforge.atunes.utils.StringUtils;
  * @author fleax
  * 
  */
-public class SavePlayListAction extends CustomAbstractAction {
+public class SaveM3UPlayListAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -303252911138284095L;
 
@@ -95,28 +95,28 @@ public class SavePlayListAction extends CustomAbstractAction {
     /**
      * Default constructor
      */
-    public SavePlayListAction() {
-        super(StringUtils.getString(I18nUtils.getString("SAVE"), "..."));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SAVE_PLAYLIST_TOOLTIP"));
+    public SaveM3UPlayListAction() {
+        super(StringUtils.getString(I18nUtils.getString("SAVE_M3U"), "..."));
+        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SAVE_M3U_PLAYLIST_TOOLTIP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
     }
 
     @Override
     protected void executeAction() {
     	IFileSelectorDialog dialog = fileSelectorDialogFactory.getDialog();
-    	dialog.setFileFilter(playListIOService.getPlaylistFileFilter());
+    	dialog.setFileFilter(playListIOService.getPlaylistM3UFileFilter());
     	File file = dialog.saveFile(statePlaylist.getSavePlaylistPath());
     	if (file != null) {
 
             statePlaylist.setSavePlaylistPath(file.getParentFile().getAbsolutePath());
 
             // If filename have incorrect extension, add it
-            file = playListIOService.checkPlayListFileName(file);
+            file = playListIOService.checkM3UPlayListFileName(file);
 
             // If file does not exist, or exist and overwrite is confirmed, then write file
             if (!file.exists()
                     || (file.exists() && confirmationDialogFactory.getDialog().showDialog(I18nUtils.getString("OVERWRITE_FILE")))) {
-            	playListIOService.write(playListHandler.getCurrentPlayList(true), file);
+            	playListIOService.writeM3U(playListHandler.getCurrentPlayList(true), file);
             }
         }
     }
