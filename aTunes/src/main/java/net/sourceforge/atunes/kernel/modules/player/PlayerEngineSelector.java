@@ -119,11 +119,11 @@ class PlayerEngineSelector {
 	 * @return
 	 */
 	private String[] getEngineNames(List<AbstractPlayerEngine> availableEngines) {
-		String[] engineNames = new String[availableEngines.size()];
+		String[] availableEngineNames = new String[availableEngines.size()];
         for (int i = 0; i < availableEngines.size(); i++) {
-        	engineNames[i] = availableEngines.get(i).getEngineName();
+        	availableEngineNames[i] = availableEngines.get(i).getEngineName();
         }
-        return engineNames;
+        return availableEngineNames;
 	}
 
 	/**

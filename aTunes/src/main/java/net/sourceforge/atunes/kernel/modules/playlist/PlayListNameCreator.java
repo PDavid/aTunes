@@ -42,17 +42,16 @@ public class PlayListNameCreator {
      */
     String getNameForPlaylist(IPlayListsContainer playLists, IPlayList pl) {
         if (pl == null || StringUtils.isEmpty(pl.getName())) {
-            return createPlayListName(playLists, pl);
+            return createPlayListName(playLists);
         }
         return pl.getName();
     }
 
 	/**
 	 * @param playLists
-	 * @param pl
 	 * @return
 	 */
-	private String createPlayListName(IPlayListsContainer playLists, IPlayList pl) {
+	private String createPlayListName(IPlayListsContainer playLists) {
 		String name = null;
 		do {
 			name = StringUtils.getString(I18nUtils.getString("PLAYLIST"), " ", playListNameCounter++);

@@ -50,6 +50,8 @@ import net.sourceforge.atunes.model.LookAndFeelBean;
  */
 public class ApplicationStateUI implements IStateUI {
 
+	private static final String UNCHECKED = "unchecked";
+	
 	/**
      * Component responsible of store state
      */
@@ -113,7 +115,7 @@ public class ApplicationStateUI implements IStateUI {
     }
     
     @Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings(UNCHECKED)
 	public Class<? extends IFrame> getFrameClass() {
         return (Class<? extends IFrame>) this.stateStore.retrievePreference(Preferences.FRAME_CLASS, null);
     }
@@ -174,7 +176,7 @@ public class ApplicationStateUI implements IStateUI {
     }
 
     @Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings(UNCHECKED)
 	public Map<String, ColumnBean> getSearchResultsColumns() {
     	Map<String, ColumnBean> map = (Map<String, ColumnBean>) this.stateStore.retrievePreference(Preferences.SEARCH_RESULTS_COLUMNS, null);
     	return map != null ? Collections.unmodifiableMap(map) : null;
@@ -190,7 +192,7 @@ public class ApplicationStateUI implements IStateUI {
     @Override
 	public FrameState getFrameState(Class<? extends IFrame> frame) {
     	// Map creation is controlled in this class to avoid modification without persistence 
-    	@SuppressWarnings("unchecked")
+    	@SuppressWarnings(UNCHECKED)
 		Map<Class<? extends IFrame>, FrameState> state = (Map<Class<? extends IFrame>, FrameState>) this.stateStore.retrievePreference(Preferences.FRAME_STATES, null);
     	if (state == null) {
     		state = new HashMap<Class<? extends IFrame>, FrameState>();
@@ -205,7 +207,7 @@ public class ApplicationStateUI implements IStateUI {
     	// Clone object to be sure changes made by application to frame state are not made over object in cache
     	FrameState frameState = new FrameState(fs);
     	if (getFrameState(frame) == null || !getFrameState(frame).equals(frameState)) {
-        	@SuppressWarnings("unchecked")
+        	@SuppressWarnings(UNCHECKED)
     		Map<Class<? extends IFrame>, FrameState> state = (Map<Class<? extends IFrame>, FrameState>) this.stateStore.retrievePreference(Preferences.FRAME_STATES, null);
     		if (state == null) {
     			state = new HashMap<Class<? extends IFrame>, FrameState>();

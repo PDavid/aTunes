@@ -229,4 +229,9 @@ public final class PlayListIO implements IPlayListIOService {
     public boolean write(IPlayList playlist, File file) {
     	return new PlayListWriter(osManager, repositoryHandler).write(playlist, file);
     }
+    
+    @Override
+    public FilenameFilter getAllAcceptedPlaylistsFileFilter() {
+    	return new AllAcceptedPlaylistsFileFilter();
+    }
 }

@@ -92,13 +92,13 @@ public class MPlayerEngine extends AbstractPlayerEngine {
     		// so read input stream and show in log
         	String command = getOsManager().getPlayerEngineCommand(this);
         	if (command != null) {
-        		Process process = new ProcessBuilder(command).start();
-        		in = process.getInputStream();
+        		Process testEngineProcess = new ProcessBuilder(command).start();
+        		in = testEngineProcess.getInputStream();
         		List<String> lines = IOUtils.readLines(in);
         		for (String line : lines) {
         			Logger.debug(line);
         		}
-        		int rc = process.waitFor();
+        		int rc = testEngineProcess.waitFor();
         		return rc == 0;
         	}
     	} catch (IOException e) {

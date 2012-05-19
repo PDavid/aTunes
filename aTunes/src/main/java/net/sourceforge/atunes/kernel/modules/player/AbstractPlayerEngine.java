@@ -21,11 +21,9 @@
 package net.sourceforge.atunes.kernel.modules.player;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-
-import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.kernel.PlaybackStateListeners;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -338,17 +336,7 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
      */
     private boolean showPlaybackError(String... errorMessages) {
         ShowPlaybackErrorRunnable r = new ShowPlaybackErrorRunnable(errorMessages);
-        if (SwingUtilities.isEventDispatchThread()) {
-            r.run();
-        } else {
-            try {
-                SwingUtilities.invokeAndWait(r);
-            } catch (InterruptedException e) {
-                Logger.error(e);
-            } catch (InvocationTargetException e) {
-                Logger.error(e);
-            }
-        }
+        GuiUtils.callInEventDispatchThreadAndWait(r);
         return r.isIgnore();
     }
 
@@ -359,12 +347,7 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
      * @param ignorePlaybackError
      */
     private void applyUserSelection(boolean ignorePlaybackError) {
-        ApplyUserSelectionRunnable r = new ApplyUserSelectionRunnable(this, ignorePlaybackError);
-        if (SwingUtilities.isEventDispatchThread()) {
-            r.run();
-        } else {
-            SwingUtilities.invokeLater(r);
-        }
+    	GuiUtils.callInEventDispatchThread(new ApplyUserSelectionRunnable(this, ignorePlaybackError));
     }
 
     /**

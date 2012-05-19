@@ -55,6 +55,12 @@ public interface IPlayListIOService {
 	List<IAudioObject> getFilesFromList(File file);
 
 	/**
+	 * File filter to accept all possible play list formats
+	 * @return
+	 */
+	FilenameFilter getAllAcceptedPlaylistsFileFilter();
+	
+	/**
 	 * FileFilter to be used when loading and saving a play list file.
 	 * 
 	 * @return the playlist file filter

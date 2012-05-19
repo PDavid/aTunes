@@ -21,15 +21,14 @@
 package net.sourceforge.atunes.kernel.modules.instances;
 
 import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
-import java.io.OutputStreamWriter;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import net.sourceforge.atunes.kernel.actions.PrintHelpToTelnetAction;
 import net.sourceforge.atunes.model.ICommandHandler;
 import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -76,9 +75,9 @@ class SocketListener extends Thread {
                 // Once a connection arrives, read args
                 br = new BufferedReader(new InputStreamReader(s.getInputStream()));
                 bw = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
-                String str;
                 boolean exit = false;
-                while (!exit && (str = br.readLine()) != null) {
+                String str = br.readLine();
+                while (!exit && str != null) {
                 	Logger.info("Receiver argument: ", str);
                     if (commandHandler.isValidCommand(str.split(" ")[0])) {
                     	 bw.append(commandHandler.processAndRun(str));
@@ -91,6 +90,7 @@ class SocketListener extends Thread {
                         bw.append(System.getProperty("line.separator"));
                         bw.flush();
                     }
+                    str = br.readLine();
                 }
                 bw.append("Closing Socket");
                 bw.flush();

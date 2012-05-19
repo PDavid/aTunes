@@ -84,7 +84,7 @@ public class PlayListLoader {
 	 */
 	void loadPlaylist() {
 		IFileSelectorDialog dialog = fileSelectorDialogFactory.getDialog();
-		dialog.setFileFilter(playListIOService.getPlaylistFileFilter());
+		dialog.setFileFilter(playListIOService.getAllAcceptedPlaylistsFileFilter());
 		File file = dialog.loadFile(statePlaylist.getLoadPlaylistPath());
 		if (file != null) {
             // If exists...

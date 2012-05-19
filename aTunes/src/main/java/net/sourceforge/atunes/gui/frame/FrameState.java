@@ -90,19 +90,23 @@ public final class FrameState implements Serializable, IFrameState {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		FrameState other = (FrameState) obj;
 		if (splitPaneDividerPositions == null) {
-			if (other.splitPaneDividerPositions != null)
+			if (other.splitPaneDividerPositions != null) {
 				return false;
-		} else if (!splitPaneDividerPositions
-				.equals(other.splitPaneDividerPositions))
+			}
+		} else if (!splitPaneDividerPositions.equals(other.splitPaneDividerPositions)) {
 			return false;
+		}
 		return true;
 	}
 }

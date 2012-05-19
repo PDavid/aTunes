@@ -24,8 +24,8 @@ import java.awt.Component;
 import java.util.logging.Level;
 
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -75,11 +75,7 @@ public class ErrorDialog implements IErrorDialog {
 	 */
     @Override
 	public void showErrorDialog(final String message) {
-    	if (SwingUtilities.isEventDispatchThread()) {
-    		new ShowMessageDialogRunnable(message, frame).run();
-    	} else {
-    		SwingUtilities.invokeLater(new ShowMessageDialogRunnable(message, frame));
-    	}
+    	GuiUtils.callInEventDispatchThread(new ShowMessageDialogRunnable(message, frame));
     }
 
     /* (non-Javadoc)
