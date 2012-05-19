@@ -151,7 +151,7 @@ public class PrintSongListRemoteAction extends RemoteAction {
         	// Find album
             IAlbum album = null;
             for (IAlbum alb : albums) {
-                if (alb.getName().toLowerCase().equals(query.toLowerCase())) {
+                if (alb.getName().equalsIgnoreCase(query)) {
                     album = alb;
                     break;
                 }

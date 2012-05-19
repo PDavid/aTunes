@@ -20,16 +20,33 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import javax.swing.SwingUtilities;
-
 import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.ICommand;
 import net.sourceforge.atunes.model.ICommandHandler;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public abstract class RemoteAction implements ICommand {
 
-    /**
+    private static final class CallToggleAction implements Runnable {
+    	
+		private final Class<? extends CustomAbstractAction> actionClass;
+		private final boolean value;
+
+		private CallToggleAction(Class<? extends CustomAbstractAction> actionClass, boolean value) {
+			this.actionClass = actionClass;
+			this.value = value;
+		}
+
+		@Override
+		public void run() {
+			CustomAbstractAction action = Context.getBean(actionClass);
+			action.putValue(CustomAbstractAction.SELECTED_KEY, value);
+			action.actionPerformed(null);
+		}
+	}
+
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 34587011817746442L;
@@ -94,14 +111,7 @@ public abstract class RemoteAction implements ICommand {
      * @param actionClass
      */
     protected final void callToggleAction(final Class<? extends CustomAbstractAction> actionClass, final boolean value) {
-    	SwingUtilities.invokeLater(new Runnable() {
-    		@Override
-    		public void run() {
-    	    	CustomAbstractAction action = Context.getBean(actionClass);
-    	    	action.putValue(CustomAbstractAction.SELECTED_KEY, value);
-    	    	action.actionPerformed(null);
-    		}
-    	});
+    	GuiUtils.callInEventDispatchThread(new CallToggleAction(actionClass, value));
     }
 
     @Override

@@ -28,20 +28,16 @@ import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.AbstractHandler;
-import net.sourceforge.atunes.kernel.actions.PlayNextAudioObjectAction;
-import net.sourceforge.atunes.kernel.actions.PlayPreviousAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.RemoteAction;
-import net.sourceforge.atunes.kernel.actions.ShowOSDAction;
 import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.ICommand;
 import net.sourceforge.atunes.model.ICommandHandler;
 import net.sourceforge.atunes.utils.Logger;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 public final class CommandHandler extends AbstractHandler implements ICommandHandler, ApplicationContextAware {
 

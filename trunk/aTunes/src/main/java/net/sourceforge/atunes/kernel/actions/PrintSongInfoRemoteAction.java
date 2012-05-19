@@ -21,12 +21,12 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.CollectionUtils;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  *

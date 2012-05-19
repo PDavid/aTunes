@@ -461,4 +461,23 @@ public final class GuiUtils {
             runnable.run();
         }
     }
+    
+    /**
+     * Executes a code in Event Dispatch Thread, waiting for finalization
+     * @param runnable
+     */
+    public static void callInEventDispatchThreadAndWait(Runnable runnable) {
+        if (!EventQueue.isDispatchThread()) {
+            try {
+				SwingUtilities.invokeAndWait(runnable);
+			} catch (InterruptedException e) {
+				Logger.error(e);
+			} catch (InvocationTargetException e) {
+				Logger.error(e);
+			}
+        } else {
+            runnable.run();
+        }
+    }
+
 }

@@ -26,7 +26,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +37,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTree;
-import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IContextHandler;
@@ -60,95 +59,97 @@ import org.commonjukebox.plugins.model.PluginApi;
 @PluginApi
 public abstract class AbstractContextPanel implements IContextPanel {
 
-    private static final long serialVersionUID = 7870512266932745272L;
+	private static final class ClearContextPanelContent implements Runnable {
+		
+		private final IContextPanelContent<?> content;
 
-    /**
-     * Last AudioObject used to update context panel
-     */
-    private IAudioObject audioObject;
+		/**
+		 * @param content
+		 */
+		private ClearContextPanelContent(IContextPanelContent<?> content) {
+			this.content = content;
+		}
 
-    private Component component;
-    
-    private List<IContextPanelContent<?>> contents;
-    
-    private IContextHandler contextHandler;
-    
-    private ILookAndFeel lookAndFeel;
-    
-    @Override
+		@Override
+		public void run() {
+			content.clearContextPanelContent();
+		}
+	}
+
+	private static final long serialVersionUID = 7870512266932745272L;
+
+	/**
+	 * Last AudioObject used to update context panel
+	 */
+	private IAudioObject audioObject;
+
+	private Component component;
+
+	private List<IContextPanelContent<?>> contents;
+
+	private IContextHandler contextHandler;
+
+	private ILookAndFeel lookAndFeel;
+
+	@Override
 	public final void updateContextPanel(final IAudioObject newAudioObject, final boolean forceUpdate) {
-        // If the AudioObject is the same as used before to update panel then do nothing if forceUpdate is false
-        if (!forceUpdate && this.audioObject != null && this.audioObject.equals(newAudioObject)) {
-            return;
-        }
+		// If the AudioObject is the same as used before to update panel then do nothing if forceUpdate is false
+		if (!forceUpdate && this.audioObject != null && this.audioObject.equals(newAudioObject)) {
+			return;
+		}
 
-        if (panelNeedsToBeUpdated(this.audioObject, newAudioObject)) {
-            Logger.debug("Updating panel: ", getContextPanelName());
-            for (IContextPanelContent<?> content : getContents()) {
-                clearContextPanelContent(content);
-                content.updateContextPanelContent(newAudioObject);
-            }
-            contextHandler.finishedContextPanelUpdate();
-        }
-
-        this.audioObject = newAudioObject;
-    }
-    
-    private void clearContextPanelContent(final IContextPanelContent<?> content) {
-    	if (SwingUtilities.isEventDispatchThread()) {
-    		content.clearContextPanelContent();
-    	} else {
-    		try {
-				SwingUtilities.invokeAndWait(new Runnable() {
-					@Override
-					public void run() {
-						content.clearContextPanelContent();
-					}
-				});
-			} catch (InterruptedException e) {
-				Logger.error(e);
-			} catch (InvocationTargetException e) {
-				Logger.error(e);
+		if (panelNeedsToBeUpdated(this.audioObject, newAudioObject)) {
+			Logger.debug("Updating panel: ", getContextPanelName());
+			for (IContextPanelContent<?> content : getContents()) {
+				clearContextPanelContent(content);
+				content.updateContextPanelContent(newAudioObject);
 			}
-    	}
-    }
+			contextHandler.finishedContextPanelUpdate();
+		}
 
-    @Override
+		this.audioObject = newAudioObject;
+	}
+
+	private void clearContextPanelContent(final IContextPanelContent<?> content) {
+		GuiUtils.callInEventDispatchThreadAndWait(new ClearContextPanelContent(content));
+	}
+
+	@Override
 	public final void clearContextPanel() {
-        Logger.debug("Clearing panel: ", getContextPanelName());
-        for (IContextPanelContent<?> content : getContents()) {
-        	clearContextPanelContent(content);
-        }
-        audioObject = null;
-    }
+		Logger.debug("Clearing panel: ", getContextPanelName());
+		for (IContextPanelContent<?> content : getContents()) {
+			clearContextPanelContent(content);
+		}
+		audioObject = null;
+	}
 
-    @Override
+	@Override
 	public final Component getUIComponent(ILookAndFeel lookAndFeel) {
-    	if (component == null) {
-    		JPanel panel = new ContextPanelContainer(new GridBagLayout());
-    		panel.setOpaque(false);
-    		GridBagConstraints c = new GridBagConstraints();
-    		c.gridx = 0;
-    		c.gridy = 0;
-    		c.weightx = 1;
-    		c.fill = GridBagConstraints.HORIZONTAL;
-    		c.insets = new Insets(10, 10, 10, 10);
-    		for (IContextPanelContent<?> content : getContents()) {
-    			addContextPanelContent(lookAndFeel, panel, c, content);
-    		}
-    		
-    		// Add a dummy panel at the end
-    		c.weighty = 1;
-    		c.anchor = GridBagConstraints.NORTH;
-    		panel.add(new JPanel(), c);
+		if (component == null) {
+			JPanel panel = new ContextPanelContainer(new GridBagLayout());
+			panel.setOpaque(false);
+			GridBagConstraints c = new GridBagConstraints();
+			c.gridx = 0;
+			c.gridy = 0;
+			c.weightx = 1;
+			c.fill = GridBagConstraints.HORIZONTAL;
+			c.insets = new Insets(10, 10, 10, 10);
+			for (IContextPanelContent<?> content : getContents()) {
+				addContextPanelContent(lookAndFeel, panel, c, content);
+			}
 
-    		
-    		JScrollPane scrollPane = lookAndFeel.getScrollPane(panel);
-    		scrollPane.getVerticalScrollBar().setUnitIncrement(50);
-    		component = scrollPane;
-    	}
-    	return component;
-    }
+			// Add a dummy panel at the end
+			c.weighty = 1;
+			c.anchor = GridBagConstraints.NORTH;
+			panel.add(new JPanel(), c);
+
+
+			JScrollPane scrollPane = lookAndFeel.getScrollPane(panel);
+			scrollPane.getVerticalScrollBar().setUnitIncrement(50);
+			component = scrollPane;
+		}
+		return component;
+	}
 
 	/**
 	 * @param lookAndFeel
@@ -190,31 +191,31 @@ public abstract class AbstractContextPanel implements IContextPanel {
 		return scroll;
 	}
 
-    @Override
+	@Override
 	public final String getTitle() {
-        return getContextPanelTitle(contextHandler.getCurrentAudioObject());
-    }
+		return getContextPanelTitle(contextHandler.getCurrentAudioObject());
+	}
 
-    @Override
+	@Override
 	public final IColorMutableImageIcon getIcon() {
-        return getContextPanelIcon(contextHandler.getCurrentAudioObject());
-    }
+		return getContextPanelIcon(contextHandler.getCurrentAudioObject());
+	}
 
-    @Override
+	@Override
 	public final boolean isEnabled() {
-        if (contextHandler.getCurrentAudioObject() == null) {
-            return false;
-        }
-        return true;
-    }
-    
-    @Override
+		if (contextHandler.getCurrentAudioObject() == null) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
 	public final boolean isVisible() {
-        if (contextHandler.getCurrentAudioObject() == null) {
-            return true;
-        }
-        return isPanelVisibleForAudioObject(contextHandler.getCurrentAudioObject());
-    }
+		if (contextHandler.getCurrentAudioObject() == null) {
+			return true;
+		}
+		return isPanelVisibleForAudioObject(contextHandler.getCurrentAudioObject());
+	}
 
 	@Override
 	public List<Component> getOptions() {
@@ -227,20 +228,20 @@ public abstract class AbstractContextPanel implements IContextPanel {
 		}
 		return components;
 	}
-	
+
 	@Override
 	public Action getAction() {
 		return new AbstractAction() {
-			
+
 			/**
 			 * 
 			 */
-			private static final long serialVersionUID = -9078018024869169623L;
+			 private static final long serialVersionUID = -9078018024869169623L;
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				contextHandler.setContextTab(getContextPanelName());
-			}
+			 @Override
+			 public void actionPerformed(ActionEvent e) {
+				 contextHandler.setContextTab(getContextPanelName());
+			 }
 		};
 	}
 
@@ -273,39 +274,39 @@ public abstract class AbstractContextPanel implements IContextPanel {
 		}
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
 		return getTitle();
 	}
-	
-    final List<IContextPanelContent<?>> getContents() {
-    	return contents;
-    }
-    
-    @Override
+
+	final List<IContextPanelContent<?>> getContents() {
+		return contents;
+	}
+
+	@Override
 	public final void setContents(List<IContextPanelContent<?>> contents) {
 		this.contents = contents;
 	}
-    
+
 	/**
 	 * @param contextHandler
 	 */
 	public void setContextHandler(IContextHandler contextHandler) {
 		this.contextHandler = contextHandler;
 	}
-    
+
 	/**
 	 * @param lookAndFeel
 	 */
 	public void setLookAndFeel(ILookAndFeel lookAndFeel) {
 		this.lookAndFeel = lookAndFeel;
 	}
-    
-    /**
-     * @return
-     */
-    protected ILookAndFeel getLookAndFeel() {
+
+	/**
+	 * @return
+	 */
+	protected ILookAndFeel getLookAndFeel() {
 		return lookAndFeel;
 	}
 }
