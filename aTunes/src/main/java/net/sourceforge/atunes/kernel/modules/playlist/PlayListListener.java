@@ -37,18 +37,18 @@ public final class PlayListListener extends MouseAdapter implements ListSelectio
 
     private IPlayListTable table;
     private PlayListController controller;
+    private PlayListMenuFiller playListMenuFiller;
 
     /**
      * Instantiates a new play list listener.
-     * 
      * @param table
-     *            the table
      * @param controller
-     *            the controller
+     * @param playListMenuFiller
      */
-    protected PlayListListener(IPlayListTable table, PlayListController controller) {
+    protected PlayListListener(IPlayListTable table, PlayListController controller, PlayListMenuFiller playListMenuFiller) {
         this.table = table;
         this.controller = controller;
+        this.playListMenuFiller = playListMenuFiller;
     }
 
     @Override
@@ -78,7 +78,7 @@ public final class PlayListListener extends MouseAdapter implements ListSelectio
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
-        PlayListMenuFiller.updatePlayListMenuItems(table);
+    	playListMenuFiller.updatePlayListMenuItems();
     }
 
 }

@@ -28,6 +28,7 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 
+import net.sourceforge.atunes.gui.views.menus.PlayListMenuFiller;
 import net.sourceforge.atunes.gui.views.panels.PlayListPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -50,6 +51,15 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> i
     private IPlayListPanel playListPanel;
     
     private IStatePlaylist statePlaylist;
+    
+    private PlayListMenuFiller playListMenuFiller;
+    
+    /**
+     * @param playListMenuFiller
+     */
+    public void setPlayListMenuFiller(PlayListMenuFiller playListMenuFiller) {
+		this.playListMenuFiller = playListMenuFiller;
+	}
     
     /**
      * @param statePlaylist
@@ -99,7 +109,7 @@ final class PlayListController extends AbstractSimpleController<PlayListPanel> i
 	public void addBindings() {
         // Set key listener for table
     	playListTable.addKeyListener(new PlayListKeyListener(playerHandler));
-        PlayListListener listener = new PlayListListener(playListTable, this);
+        PlayListListener listener = new PlayListListener(playListTable, this, playListMenuFiller);
         playListTable.addMouseListener(listener);
         playListTable.getSelectionModel().addListSelectionListener(listener);
     }
