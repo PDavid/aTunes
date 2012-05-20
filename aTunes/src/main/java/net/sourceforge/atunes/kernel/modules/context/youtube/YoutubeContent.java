@@ -56,6 +56,9 @@ public class YoutubeContent extends AbstractContextPanelContent<YoutubeDataSourc
     
     private IContextHandler contextHandler;
     
+    /**
+     * Default constructor
+     */
     public YoutubeContent() {
         moreResults = new JMenuItem(I18nUtils.getString("SEE_MORE_RESULTS"));
         moreResults.addActionListener(new ActionListener() {
@@ -116,7 +119,7 @@ public class YoutubeContent extends AbstractContextPanelContent<YoutubeDataSourc
      * 
      * @return
      */
-    protected void searchMoreResultsInYoutube() {
+    private void searchMoreResultsInYoutube() {
         String searchString = youtubeService.getSearchForAudioObject(contextHandler.getCurrentAudioObject());
         if (searchString.length() > 0) {
             final List<IVideoEntry> result = youtubeService.searchInYoutube(searchString, youtubeResultTable.getRowCount() + 1);
@@ -132,10 +135,16 @@ public class YoutubeContent extends AbstractContextPanelContent<YoutubeDataSourc
         		contextHandler.getCurrentAudioObject()));
     }
     
+    /**
+     * @param youtubeService
+     */
     public void setYoutubeService(YoutubeService youtubeService) {
 		this.youtubeService = youtubeService;
 	}
     
+    /**
+     * @param contextHandler
+     */
     public void setContextHandler(IContextHandler contextHandler) {
 		this.contextHandler = contextHandler;
 	}

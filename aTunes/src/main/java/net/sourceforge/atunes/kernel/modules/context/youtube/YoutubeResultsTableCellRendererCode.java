@@ -27,53 +27,23 @@ import javax.swing.JComponent;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.context.ContextTable;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableAction;
 import net.sourceforge.atunes.kernel.modules.context.ContextTableRowPanel;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IVideoEntry;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class YoutubeResultsTableCellRendererCode extends ContextTableRowPanel<IVideoEntry> {
 	
-	private final class OpenYoutubeVideoAction extends ContextTableAction<IVideoEntry> {
-		
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = -7758596564970276630L;
-
-		private OpenYoutubeVideoAction(String name, ContextTable table, IDesktop desktop) {
-			super(name, table, desktop);
-		}
-
-		@Override
-		protected void execute(IVideoEntry entry) {
-		     //open youtube url
-			desktop.openURL(entry.getUrl());
-		    // When playing a video in web browser automatically pause current song
-		    if (Context.getBean(IPlayerHandler.class).isEnginePlaying()) {
-		        Context.getBean(IPlayerHandler.class).playCurrentAudioObject(true);
-		    }
-		}
-
-		@Override
-		protected IVideoEntry getSelectedObject(int row) {
-			return ((YoutubeResultTableModel) getTable().getModel()).getEntry(row);
-		}
-
-		@Override
-		protected boolean isEnabledForObject(IVideoEntry object) {
-			return true;
-		}
-	}
-
 	private IDesktop desktop;
 	
+	/**
+	 * Renderer for youtube results 
+	 * @param lookAndFeel
+	 * @param desktop
+	 */
 	public YoutubeResultsTableCellRendererCode(ILookAndFeel lookAndFeel, IDesktop desktop) {
 		super(lookAndFeel);
 		this.desktop = desktop;
