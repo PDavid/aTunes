@@ -126,11 +126,6 @@ public interface IPlayListHandler extends IAudioFilesRemovedListener, IHandler{
 	public void clearPlayList();
 
 	/**
-	 * Loads play list from a file.
-	 */
-	public void loadPlaylist();
-
-	/**
 	 * Move one play list entry from one position to another
 	 * @param sourceRow
 	 * @param targetRow
