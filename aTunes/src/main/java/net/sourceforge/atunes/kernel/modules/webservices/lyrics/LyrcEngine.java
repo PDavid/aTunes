@@ -82,11 +82,11 @@ public class LyrcEngine extends AbstractLyricsEngine {
 	 */
 	private String removeHtmlAndReturnLyrics(String html) {
 		// Remove html before lyrics
-		html = html.substring(html.indexOf("</table>") + 8);
+		String htmlProcessed = html.substring(html.indexOf("</table>") + 8);
 
 		// Remove html after lyrics
-		int pPos = html.indexOf("<p>");
-		int brPos = html.indexOf("<br>");
+		int pPos = htmlProcessed.indexOf("<p>");
+		int brPos = htmlProcessed.indexOf("<br>");
 
 		if (pPos == -1) {
 			pPos = Integer.MAX_VALUE;
@@ -96,17 +96,17 @@ public class LyrcEngine extends AbstractLyricsEngine {
 			brPos = Integer.MAX_VALUE;
 		}
 
-		html = html.substring(0, pPos < brPos ? pPos : brPos);
+		htmlProcessed = htmlProcessed.substring(0, pPos < brPos ? pPos : brPos);
 
 		// Remove <br/>
-		html = html.replaceAll("<br />", "");
+		htmlProcessed = htmlProcessed.replaceAll("<br />", "");
 
 		// Bad parsing....
-		if (html.contains("<head>")) {
+		if (htmlProcessed.contains("<head>")) {
 			return null;
 		}
 
-		return html;
+		return htmlProcessed;
 	}
 
 	/**
@@ -115,14 +115,13 @@ public class LyrcEngine extends AbstractLyricsEngine {
 	 * @param html
 	 * @return
 	 */
-	private String getSuggestionsAndSelectOne(String artist, String title,
-			String html) {
-		html = html.substring(html.indexOf("Suggestions : <br>"));
-		html = html.substring(0, html.indexOf("<br><br"));
+	private String getSuggestionsAndSelectOne(String artist, String title, String html) {
+		String htmlProcessed = html.substring(html.indexOf("Suggestions : <br>"));
+		htmlProcessed = htmlProcessed.substring(0, htmlProcessed.indexOf("<br><br"));
 
 		// Find suggestions and add to a map
 		Map<String, String> suggestions = new HashMap<String, String>();
-		html = findSuggestions(html, suggestions);
+		htmlProcessed = findSuggestions(htmlProcessed, suggestions);
 
 		// Get tokens from artist and song names
 		List<String> tokensToFind = getArtistAndTitleTokens(artist, title);
@@ -150,19 +149,20 @@ public class LyrcEngine extends AbstractLyricsEngine {
 	 * @return
 	 */
 	private String findSuggestions(String html, Map<String, String> suggestions) {
-		while (html.indexOf("href=\"") != -1) {
+		String htmlProcessed = html;
+		while (htmlProcessed.indexOf("href=\"") != -1) {
 			// Parse uri from html tag <a href="....
-			String uri = html.substring(html.indexOf("href=\"") + 6);
+			String uri = htmlProcessed.substring(htmlProcessed.indexOf("href=\"") + 6);
 			uri = uri.substring(0, uri.indexOf("\">"));
 			// Parse suggestion text font color='white'>TEXT</font>
-			String text = html.substring(html.indexOf("'white'>") + 8);
+			String text = htmlProcessed.substring(htmlProcessed.indexOf("'white'>") + 8);
 			text = text.substring(0, text.indexOf("</font>"));
 			suggestions.put(text, uri);
 
 			// Skip element
-			html = html.substring(html.indexOf("</font>") + 11);
+			htmlProcessed = htmlProcessed.substring(htmlProcessed.indexOf("</font>") + 11);
 		}
-		return html;
+		return htmlProcessed;
 	}
 
 	/**
