@@ -27,7 +27,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.utils.StringUtils;
 
 public final class Patterns {
 
@@ -137,102 +136,5 @@ public final class Patterns {
             tagInfo.put(entry.getKey(), entry.getValue());
         }
         return tagInfo;
-    }
-
-    /**
-     * Returns a map containing string values result of matching a pattern
-     * against a string
-     * 
-     * @param pattern
-     * @param value
-     * @param onlyMassiveRecognitionPatterns
-     * @return
-     */
-    public static Map<String, String> getPatternMatches(String pattern, String value, boolean onlyMassiveRecognitionPatterns) {
-        Map<String, String> matches = new HashMap<String, String>();
-
-        if (pattern == null || value == null) {
-            return matches;
-        }
-
-        String patternsString = pattern.trim();
-
-        // Get all non-pattern sequences
-        String[] nonPatternSequences = patternsString.split(StringUtils.getString(AbstractPattern.PATTERN_NAME_FIRST_CHAR, '.'));
-
-        int valueIndex = 0;
-        int patternsStringIndex = 0;
-
-        int i = 0;
-        String matchedPattern = null;
-        String matchedValue = null;
-
-        // Start parsing patterns string
-        while (patternsStringIndex < patternsString.length() && valueIndex < value.length()) {
-            // Parsing before last non pattern sequence
-            if (i < nonPatternSequences.length) {
-                if (nonPatternSequences[i].isEmpty()) {
-                    i++;
-                    continue;
-                }
-
-                // Get index of current non pattern sequence
-                int indexAtPatternsString = patternsString.indexOf(nonPatternSequences[i], patternsStringIndex);
-                int indexAtValueString = value.indexOf(nonPatternSequences[i], valueIndex);
-
-                // End of patterns string
-                if (indexAtPatternsString == -1) {
-                    break;
-                }
-
-                // If value string ended without finding non pattern sequence, then the next pattern is substring
-                // from valueIndex to end of string
-                // NOTE this is a less restricted pattern search, as means that the last patterns in a pattern string
-                // are optional
-                if (indexAtValueString == -1) {
-                    indexAtValueString = value.length();
-                }
-
-                // We found a matched pattern
-                matchedPattern = patternsString.substring(patternsStringIndex, indexAtPatternsString);
-                matchedValue = value.substring(valueIndex, indexAtValueString);
-
-                // Update indexes
-                patternsStringIndex = patternsStringIndex + matchedPattern.length() + nonPatternSequences[i].length();
-                valueIndex = valueIndex + matchedValue.length() + nonPatternSequences[i].length();
-
-                i++;
-            } else {
-                // After last non pattern sequence we have a new matched pattern until end of string
-                matchedPattern = patternsString.substring(patternsStringIndex);
-                matchedValue = value.substring(valueIndex);
-
-                patternsStringIndex = patternsStringIndex + matchedPattern.length();
-            }
-
-            // Force upper case patterns
-            matchedPattern = matchedPattern.toUpperCase();
-
-            // Duplicate patterns are not allowed (despite being ? pattern) so we return an empty map
-            if (!matchedPattern.equals(ANY_PATTERN.getPattern()) && matches.containsKey(matchedPattern)) {
-                return new HashMap<String, String>();
-            }
-
-            // Ignore ? pattern
-            if (!matchedPattern.equals(ANY_PATTERN.getPattern())) {
-                matches.put(matchedPattern, matchedValue.trim());
-            }
-        }
-
-        // Now return only necessary patterns
-        Map<String, String> result = new HashMap<String, String>();
-        List<AbstractPattern> patternsToBeUsed = onlyMassiveRecognitionPatterns ? getMassiveRecognitionPatterns() : patterns;
-        for (AbstractPattern p : patternsToBeUsed) {
-            if (matches.containsKey(p.getPattern())) {
-                result.put(p.getName(), matches.get(p.getPattern()));
-            }
-        }
-
-        return result;
     }
 }

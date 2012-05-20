@@ -46,6 +46,7 @@ import javax.swing.tree.TreePath;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.gui.views.dialogs.PatternInputDialog;
+import net.sourceforge.atunes.kernel.modules.pattern.PatternMatcher;
 import net.sourceforge.atunes.kernel.modules.pattern.Patterns;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -82,7 +83,7 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements IR
 		        for (TreePath treePath : selectedNodes) {
 		            node = treePath.getLastPathComponent();                        
 		            folder = ((DefaultMutableTreeTableNode)node).getUserObject();
-		            Map<String, String> matches = Patterns.getPatternMatches(pattern, ((File)folder).getAbsolutePath(), true);
+		            Map<String, String> matches = PatternMatcher.getPatternMatches(pattern, ((File)folder).getAbsolutePath(), true);
 		            for (Entry<String, String> entry : matches.entrySet()) {
 		                ((ReviewImportTreeTableModel) treeTable.getTreeTableModel()).setValueForColumn(treeTable.getRowForPath(treePath), entry.getKey(), entry.getValue());
 		            }
