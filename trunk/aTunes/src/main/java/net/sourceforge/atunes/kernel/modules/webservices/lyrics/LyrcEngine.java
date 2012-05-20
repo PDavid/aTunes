@@ -36,140 +36,191 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class LyrcEngine extends AbstractLyricsEngine {
 
-    private static final String ARTIST_WILDCARD = "(%ARTIST%)";
-    private static final String SONG_WILDCARD = "(%SONG%)";
+	private static final String ARTIST_WILDCARD = "(%ARTIST%)";
+	private static final String SONG_WILDCARD = "(%SONG%)";
 
-    /** The base url. */
-    private static final String BASE_URL = StringUtils.getString("http://www.lyrc.com.ar/en/tema1en.php?artist=", ARTIST_WILDCARD, "&songname=", SONG_WILDCARD);
+	/** The base url. */
+	private static final String BASE_URL = StringUtils.getString("http://www.lyrc.com.ar/en/tema1en.php?artist=", ARTIST_WILDCARD, "&songname=", SONG_WILDCARD);
 
-    /** The suggestions url. */
-    private static final String SUGGESTIONS_URL = "http://www.lyrc.com.ar/en/";
+	/** The suggestions url. */
+	private static final String SUGGESTIONS_URL = "http://www.lyrc.com.ar/en/";
 
-    /** The lyrics adding url. */
-    private static final String ADD_LYRICS_URL = StringUtils.getString("http://www.lyrc.com.ar/en/add/add.php?tema=", SONG_WILDCARD, "&grupo=", ARTIST_WILDCARD);
+	/** The lyrics adding url. */
+	private static final String ADD_LYRICS_URL = StringUtils.getString("http://www.lyrc.com.ar/en/add/add.php?tema=", SONG_WILDCARD, "&grupo=", ARTIST_WILDCARD);
 
-    /**
-     * Returns if a string is composed only by letters.
-     * 
-     * @param t
-     *            the t
-     * 
-     * @return true, if valid token
-     */
-    private static boolean validToken(String t) {
-        return t.matches("[A-Za-z]+");
-    }
+	/**
+	 * Returns if a string is composed only by letters.
+	 * 
+	 * @param t
+	 *            the t
+	 * 
+	 * @return true, if valid token
+	 */
+	private static boolean validToken(String t) {
+		return t.matches("[A-Za-z]+");
+	}
 
-    private String getLyrics(String url, String artist, String title) {
-        try {
-            // read html return
-            String html = readURL(getConnection(url), "ISO-8859-1");
+	private String getLyrics(String url, String artist, String title) {
+		try {
+			// read html return
+			String html = readURL(getConnection(url), "ISO-8859-1");
 
-            if (html.contains("Suggestions : <br>")) { // More than one posibility, find the best one
-                html = html.substring(html.indexOf("Suggestions : <br>"));
-                html = html.substring(0, html.indexOf("<br><br"));
+			if (html.contains("Suggestions : <br>")) { // More than one possibility, find the best one
+				return getSuggestionsAndSelectOne(artist, title, html);
+			} else {
+				return removeHtmlAndReturnLyrics(html);
+			}
+		} catch (IOException e) {
+			Logger.error(StringUtils.getString(e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
+			return null;
+		}
+	}
 
-                // Find suggestions and add to a map
-                Map<String, String> suggestions = new HashMap<String, String>();
-                while (html.indexOf("href=\"") != -1) {
-                    // Parse uri from html tag <a href="....
-                    String uri = html.substring(html.indexOf("href=\"") + 6);
-                    uri = uri.substring(0, uri.indexOf("\">"));
-                    // Parse suggestion text font color='white'>TEXT</font>
-                    String text = html.substring(html.indexOf("'white'>") + 8);
-                    text = text.substring(0, text.indexOf("</font>"));
-                    suggestions.put(text, uri);
+	/**
+	 * @param html
+	 * @return
+	 */
+	private String removeHtmlAndReturnLyrics(String html) {
+		// Remove html before lyrics
+		html = html.substring(html.indexOf("</table>") + 8);
 
-                    // Skip element
-                    html = html.substring(html.indexOf("</font>") + 11);
-                }
+		// Remove html after lyrics
+		int pPos = html.indexOf("<p>");
+		int brPos = html.indexOf("<br>");
 
-                // Get tokens from artist and song names
-                List<String> tokensToFind = new ArrayList<String>();
-                StringTokenizer st = new StringTokenizer(artist, " ");
-                while (st.hasMoreTokens()) {
-                    String t = st.nextToken();
-                    if (validToken(t)) {
-                        tokensToFind.add(t);
-                    }
-                }
-                st = new StringTokenizer(title, " ");
-                while (st.hasMoreTokens()) {
-                    String t = st.nextToken();
-                    if (validToken(t)) {
-                        tokensToFind.add(t);
-                    }
-                }
+		if (pPos == -1) {
+			pPos = Integer.MAX_VALUE;
+		}
 
-                // Now find at map, a string that contains all artist and song tokens. This will be the selected lyric
-                for (Map.Entry<String, String> suggestion : suggestions.entrySet()) {
-                    boolean matches = true;
-                    for (String t : tokensToFind) {
-                        if (!suggestion.getKey().toLowerCase().contains(t.toLowerCase())) {
-                            matches = false;
-                            break;
-                        }
-                    }
-                    if (matches) {
-                        // We have found it, build url and call again
-                        String auxUrl = SUGGESTIONS_URL.concat(suggestion.getValue());
-                        return getLyrics(auxUrl, artist, title);
-                    }
-                }
+		if (brPos == -1) {
+			brPos = Integer.MAX_VALUE;
+		}
 
-                // If we reach this code, no suggestion was found, so return null
-                return null;
-            }
+		html = html.substring(0, pPos < brPos ? pPos : brPos);
 
-            // Remove html before lyrics
-            html = html.substring(html.indexOf("</table>") + 8);
+		// Remove <br/>
+		html = html.replaceAll("<br />", "");
 
-            // Remove html after lyrics
-            int pPos = html.indexOf("<p>");
-            int brPos = html.indexOf("<br>");
+		// Bad parsing....
+		if (html.contains("<head>")) {
+			return null;
+		}
 
-            if (pPos == -1) {
-                pPos = Integer.MAX_VALUE;
-            }
+		return html;
+	}
 
-            if (brPos == -1) {
-                brPos = Integer.MAX_VALUE;
-            }
+	/**
+	 * @param artist
+	 * @param title
+	 * @param html
+	 * @return
+	 */
+	private String getSuggestionsAndSelectOne(String artist, String title,
+			String html) {
+		html = html.substring(html.indexOf("Suggestions : <br>"));
+		html = html.substring(0, html.indexOf("<br><br"));
 
-            html = html.substring(0, pPos < brPos ? pPos : brPos);
+		// Find suggestions and add to a map
+		Map<String, String> suggestions = new HashMap<String, String>();
+		html = findSuggestions(html, suggestions);
 
-            // Remove <br/>
-            html = html.replaceAll("<br />", "");
+		// Get tokens from artist and song names
+		List<String> tokensToFind = getArtistAndTitleTokens(artist, title);
 
-            // Bad parsing....
-            if (html.contains("<head>")) {
-                return null;
-            }
+		// Now find at map, a string that contains all artist and song tokens. This will be the selected lyric
+		return selectFromSuggestions(suggestions, tokensToFind, artist, title);
+	}
 
-            return html;
-        } catch (IOException e) {
-            Logger.error(StringUtils.getString(e.getClass().getCanonicalName(), " (", e.getMessage(), ")"));
-            return null;
-        }
+	private String selectFromSuggestions(Map<String, String> suggestions, List<String> tokensToFind, String artist, String title) {
+		for (Map.Entry<String, String> suggestion : suggestions.entrySet()) {
+			boolean matches = checkSuggestion(tokensToFind, suggestion);
+			if (matches) {
+				// We have found it, build url and call again
+				String auxUrl = SUGGESTIONS_URL.concat(suggestion.getValue());
+				return getLyrics(auxUrl, artist, title);
+			}
+		}
+		// If we reach this code, no suggestion was found, so return null
+		return null;
+	}
 
-    }
+	/**
+	 * @param html
+	 * @param suggestions
+	 * @return
+	 */
+	private String findSuggestions(String html, Map<String, String> suggestions) {
+		while (html.indexOf("href=\"") != -1) {
+			// Parse uri from html tag <a href="....
+			String uri = html.substring(html.indexOf("href=\"") + 6);
+			uri = uri.substring(0, uri.indexOf("\">"));
+			// Parse suggestion text font color='white'>TEXT</font>
+			String text = html.substring(html.indexOf("'white'>") + 8);
+			text = text.substring(0, text.indexOf("</font>"));
+			suggestions.put(text, uri);
 
-    @Override
-    public ILyrics getLyricsFor(String artist, String title) {
-        // Build url
-        String urlString = BASE_URL.replace(ARTIST_WILDCARD, encodeString(artist)).replace(SONG_WILDCARD, encodeString(title));
-        // Call method to find lyrics
-        String lyrics = getLyrics(urlString, artist, title);
-        return lyrics != null ? new Lyrics(lyrics, urlString) : null;
-    }
+			// Skip element
+			html = html.substring(html.indexOf("</font>") + 11);
+		}
+		return html;
+	}
 
-    @Override
-    public String getLyricsProviderName() {
-        return "LyrcEngine";
-    }
+	/**
+	 * @param tokensToFind
+	 * @param suggestion
+	 * @return
+	 */
+	private boolean checkSuggestion(List<String> tokensToFind, Map.Entry<String, String> suggestion) {
+		boolean matches = true;
+		for (String t : tokensToFind) {
+			if (!suggestion.getKey().toLowerCase().contains(t.toLowerCase())) {
+				matches = false;
+				break;
+			}
+		}
+		return matches;
+	}
 
-    @Override
-    public String getUrlForAddingNewLyrics(String artist, String title) {
-        return ADD_LYRICS_URL.replace(SONG_WILDCARD, encodeString(title)).replace(ARTIST_WILDCARD, encodeString(artist));
-    }
+	/**
+	 * @param artist
+	 * @param title
+	 * @return
+	 */
+	private List<String> getArtistAndTitleTokens(String artist, String title) {
+		List<String> tokensToFind = new ArrayList<String>();
+		StringTokenizer st = new StringTokenizer(artist, " ");
+		while (st.hasMoreTokens()) {
+			String t = st.nextToken();
+			if (validToken(t)) {
+				tokensToFind.add(t);
+			}
+		}
+		st = new StringTokenizer(title, " ");
+		while (st.hasMoreTokens()) {
+			String t = st.nextToken();
+			if (validToken(t)) {
+				tokensToFind.add(t);
+			}
+		}
+		return tokensToFind;
+	}
+
+	@Override
+	public ILyrics getLyricsFor(String artist, String title) {
+		// Build url
+		String urlString = BASE_URL.replace(ARTIST_WILDCARD, encodeString(artist)).replace(SONG_WILDCARD, encodeString(title));
+		// Call method to find lyrics
+		String lyrics = getLyrics(urlString, artist, title);
+		return lyrics != null ? new Lyrics(lyrics, urlString) : null;
+	}
+
+	@Override
+	public String getLyricsProviderName() {
+		return "LyrcEngine";
+	}
+
+	@Override
+	public String getUrlForAddingNewLyrics(String artist, String title) {
+		return ADD_LYRICS_URL.replace(SONG_WILDCARD, encodeString(title)).replace(ARTIST_WILDCARD, encodeString(artist));
+	}
 }
