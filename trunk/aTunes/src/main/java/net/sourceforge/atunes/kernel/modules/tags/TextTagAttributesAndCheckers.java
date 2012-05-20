@@ -44,6 +44,8 @@ class TextTagAttributesAndCheckers {
 		CHECKERS.put(TextTagAttribute.YEAR, new YearTagChecker());
 	}
 	
+	private TextTagAttributesAndCheckers() {}
+	
 	/**
 	 * @param attribute
 	 * @return tag chcker for given attribute

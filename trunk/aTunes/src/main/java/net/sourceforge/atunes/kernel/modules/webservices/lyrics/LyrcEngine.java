@@ -121,7 +121,7 @@ public class LyrcEngine extends AbstractLyricsEngine {
 
 		// Find suggestions and add to a map
 		Map<String, String> suggestions = new HashMap<String, String>();
-		htmlProcessed = findSuggestions(htmlProcessed, suggestions);
+		findSuggestions(htmlProcessed, suggestions);
 
 		// Get tokens from artist and song names
 		List<String> tokensToFind = getArtistAndTitleTokens(artist, title);
