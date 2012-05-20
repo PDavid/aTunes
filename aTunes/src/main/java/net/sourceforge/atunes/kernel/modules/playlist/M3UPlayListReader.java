@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.playlist;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -58,79 +57,6 @@ class M3UPlayListReader {
 	 */
 	M3UPlayListReader(IOSManager osManager) {
 		this.osManager = osManager;
-	}
-
-	/**
-	 * This function reads the filenames from the playlist file (m3u). It will
-	 * return all filenames with absolute path. For this playlists with relative
-	 * pathname must be detected and the path must be added. Current problem of
-	 * this implementation is clearly the charset used. Java reads/writes in the
-	 * charset used by the OS! But for many *nixes this is UTF8, while Windows
-	 * will use CP1252 or similar. So, as long as we have the same charset
-	 * encoding or do not use any special character playlists will work
-	 * (absolute filenames with a pathname incompatible with the current OS are
-	 * not allowed), but as soon as we have say french accents in the filename a
-	 * playlist created under an application using CP1252 will not import
-	 * correctly on a UTF8 system (better: the files with accents in their
-	 * filename will not).
-	 * 
-	 * Only playlist with local files have been tested! Returns a list of file
-	 * names contained in a play list file
-	 * 
-	 * @param file
-	 *            The playlist file
-	 * 
-	 * @return Returns an List of files of the playlist as String.
-	 */
-	List<String> reads(File file) {
-		BufferedReader br = null;
-		try {
-			List<String> result = new ArrayList<String>();
-			br = new BufferedReader(new FileReader(file));
-			String line;
-			// Do look for the first uncommented line
-			line = br.readLine();
-			while (line != null && line.startsWith(M3U_START_COMMENT)) {
-				// Go to next line
-				line = br.readLine();
-			}
-			if (line == null) {
-				return Collections.emptyList();
-			}
-			// First absolute path. Windows path detection is very rudimentary, but should work
-			if (line.startsWith(M3U_WINDOWS_ABSOLUTE_PATH, 1) || 
-					line.startsWith(M3U_UNIX_ABSOLUTE_PATH) ||
-					line.startsWith(M3U_UNC_ABSOLUTE_PATH)) {
-				// Let's check if we are at least using the right OS. Maybe a message should be returned, but for now it doesn't. UNC paths are allowed for all OS
-				if (((osManager.isWindows()) && line.startsWith(M3U_UNIX_ABSOLUTE_PATH))
-						|| (!(osManager.isWindows()) && line.startsWith(M3U_WINDOWS_ABSOLUTE_PATH, 1))) {
-					return Collections.emptyList();
-				}
-				result.add(line);
-				while ((line = br.readLine()) != null) {
-					if (!line.startsWith(M3U_START_COMMENT) && !line.isEmpty()) {
-						result.add(line);
-					}
-				}
-			}
-			// The path is relative! We must add it to the filename
-			// But if entries are HTTP URLS then don't add any path
-			else {
-				String path = file.getParent() + osManager.getFileSeparator();
-				result.add(line.startsWith(HTTP_PREFIX) ? line : StringUtils.getString(path, line));
-				while ((line = br.readLine()) != null) {
-					if (!line.startsWith(M3U_START_COMMENT) && !line.isEmpty()) {
-						result.add(line.startsWith(HTTP_PREFIX) ? line : StringUtils.getString(path, line));
-					}
-				}
-			}
-			// Return the filenames with their absolute path
-			return result;
-		} catch (IOException e) {
-			return Collections.emptyList();
-		} finally {
-			ClosingUtils.close(br);
-		}
 	}
 
 	List<String> read(File file) {
@@ -177,14 +103,27 @@ class M3UPlayListReader {
 	 * @return true if line is valid
 	 */
 	private boolean isFormatSupported(String firstLine) {
-		if (!isRelativePaths(firstLine)) {
-			// Let's check if we are at least using the right OS. Maybe a message should be returned, but for now it doesn't. UNC paths are allowed for all OS
-			if (((osManager.isWindows()) && firstLine.startsWith(M3U_UNIX_ABSOLUTE_PATH))
-					|| (!(osManager.isWindows()) && firstLine.startsWith(M3U_WINDOWS_ABSOLUTE_PATH, 1))) {
-				return false;
-			}
+		// Let's check if we are at least using the right OS. Maybe a message should be returned, but for now it doesn't. UNC paths are allowed for all OS
+		if (!isRelativePaths(firstLine) && (isWindowsAndUnixAbsolutePath(firstLine) || isNotWindowsAndWindowsAbsolutePath(firstLine))) {
+			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * @param firstLine
+	 * @return
+	 */
+	private boolean isNotWindowsAndWindowsAbsolutePath(String firstLine) {
+		return (!osManager.isWindows() && firstLine.startsWith(M3U_WINDOWS_ABSOLUTE_PATH, 1));
+	}
+
+	/**
+	 * @param firstLine
+	 * @return
+	 */
+	private boolean isWindowsAndUnixAbsolutePath(String firstLine) {
+		return (osManager.isWindows() && firstLine.startsWith(M3U_UNIX_ABSOLUTE_PATH));
 	}
 
 	/**
@@ -211,5 +150,4 @@ class M3UPlayListReader {
 		}
 		return lines.subList(i, lines.size());
 	}
-
 }
