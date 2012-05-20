@@ -22,12 +22,21 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.util.List;
 
 import javax.swing.KeyStroke;
 
+import org.apache.commons.io.FilenameUtils;
+
+import net.sourceforge.atunes.kernel.modules.process.LoadPlayListProcess;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IPlayListHandler;
+import net.sourceforge.atunes.model.IErrorDialogFactory;
+import net.sourceforge.atunes.model.IFileSelectorDialog;
+import net.sourceforge.atunes.model.IFileSelectorDialogFactory;
+import net.sourceforge.atunes.model.IPlayListIOService;
+import net.sourceforge.atunes.model.IProcessFactory;
+import net.sourceforge.atunes.model.IStatePlaylist;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -41,24 +50,82 @@ public class LoadPlayListAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 3409230917351152853L;
 
-    private IPlayListHandler playListHandler;
+    private IPlayListIOService playListIOService;
+
+	private IErrorDialogFactory errorDialogFactory;
+	
+    private IProcessFactory processFactory;
+    
+    private IStatePlaylist statePlaylist;
+    
+    private IFileSelectorDialogFactory fileSelectorDialogFactory;
     
     /**
-     * @param playListHandler
+     * Default constructor
      */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
-	}
-    
     public LoadPlayListAction() {
         super(StringUtils.getString(I18nUtils.getString("LOAD"), "..."));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("LOAD_PLAYLIST_TOOLTIP"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.CTRL_MASK));
     }
 
+    /**
+     * @param fileSelectorDialogFactory
+     */
+    public void setFileSelectorDialogFactory(IFileSelectorDialogFactory fileSelectorDialogFactory) {
+		this.fileSelectorDialogFactory = fileSelectorDialogFactory;
+	}
+    
+    /**
+     * @param statePlaylist
+     */
+    public void setStatePlaylist(IStatePlaylist statePlaylist) {
+		this.statePlaylist = statePlaylist;
+	}
+
+    /**
+     * @param processFactory
+     */
+    public void setProcessFactory(IProcessFactory processFactory) {
+		this.processFactory = processFactory;
+	}
+    
+	/**
+	 * @param errorDialogFactory
+	 */
+	public void setErrorDialogFactory(IErrorDialogFactory errorDialogFactory) {
+		this.errorDialogFactory = errorDialogFactory;
+	}
+	
+	/**
+	 * @param playListIOService
+	 */
+	public void setPlayListIOService(IPlayListIOService playListIOService) {
+		this.playListIOService = playListIOService;
+	}
+    
     @Override
     protected void executeAction() {
-    	playListHandler.loadPlaylist();
+		IFileSelectorDialog dialog = fileSelectorDialogFactory.getDialog();
+		dialog.setFileFilter(playListIOService.getAllAcceptedPlaylistsFileFilter());
+		File file = dialog.loadFile(statePlaylist.getLoadPlaylistPath());
+		if (file != null) {
+            // If exists...
+            if (file.exists()) {
+                statePlaylist.setLoadPlaylistPath(file.getParentFile().getAbsolutePath());
+                // Read file names
+                List<String> filesToLoad = playListIOService.read(file);
+                // Background loading - but only when returned array is not null (Progress dialog hangs otherwise)
+                if (filesToLoad != null) {
+                    LoadPlayListProcess process = (LoadPlayListProcess) processFactory.getProcessByName("loadPlayListProcess");
+                    process.setFilenamesToLoad(filesToLoad);
+                    process.setPlayListName(FilenameUtils.getBaseName(file.getName()));
+                    process.execute();
+                }
+            } else {
+            	errorDialogFactory.getDialog().showErrorDialog(I18nUtils.getString("FILE_NOT_FOUND"));
+            }
+        }
     }
 
     @Override

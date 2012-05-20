@@ -74,8 +74,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	
 	private ListOfPlayListsCreator listOfPlayListsCreator;
 	
-	private PlayListLoader playListLoader;
-	
 	private IPlayListsContainer playListsContainer;
 	
 	private IStatePlayer statePlayer;
@@ -133,13 +131,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
 	 */
 	public void setPlayListController(PlayListController playListController) {
 		this.playListController = playListController;
-	}
-	
-	/**
-	 * @param playListLoader
-	 */
-	public void setPlayListLoader(PlayListLoader playListLoader) {
-		this.playListLoader = playListLoader;
 	}
 	
 	/**
@@ -446,11 +437,6 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
     @Override
     protected Runnable getPreviousInitializationTask() {
         return new PreviousInitializationTaskRunnable(this);
-    }
-
-    @Override
-	public void loadPlaylist() {
-    	playListLoader.loadPlaylist();
     }
 
     @Override

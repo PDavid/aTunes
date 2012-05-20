@@ -39,6 +39,8 @@ public class LoadPlayListProcess extends AbstractProcess {
 
     private List<String> filenamesToLoad;
     
+    private String playListName;
+    
     private IPlayListHandler playListHandler;
     
     private IPlayListIOService playListIOService;
@@ -55,6 +57,13 @@ public class LoadPlayListProcess extends AbstractProcess {
      */
     public void setFilenamesToLoad(List<String> filenamesToLoad) {
 		this.filenamesToLoad = filenamesToLoad;
+	}
+    
+    /**
+     * @param playListName
+     */
+    public void setPlayListName(String playListName) {
+		this.playListName = playListName;
 	}
     
     /**
@@ -87,26 +96,7 @@ public class LoadPlayListProcess extends AbstractProcess {
             setCurrentProgress(i + 1);
         }
         // If canceled loaded files are added anyway
-        SwingUtilities.invokeLater(new AddToPlayListRunnable(songsLoaded, playListHandler));
+        SwingUtilities.invokeLater(new AddToPlayListRunnable(songsLoaded, playListHandler, playListName));
         return true;
-    }
-    
-    static class AddToPlayListRunnable implements Runnable {
-
-        private List<IAudioObject> songsLoaded;
-        
-        private IPlayListHandler playListHandler;
-
-        public AddToPlayListRunnable(List<IAudioObject> songsLoaded, IPlayListHandler playListHandler) {
-            this.songsLoaded = songsLoaded;
-            this.playListHandler = playListHandler;
-        }
-
-        @Override
-        public void run() {
-            if (songsLoaded.size() >= 1) {
-            	playListHandler.addToPlayList(songsLoaded);
-            }
-        }
     }
 }
