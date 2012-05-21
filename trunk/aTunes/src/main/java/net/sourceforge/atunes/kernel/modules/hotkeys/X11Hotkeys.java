@@ -78,7 +78,7 @@ public class X11Hotkeys extends AbstractHotkeys implements jxgrabkey.HotkeyListe
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                getHotkeyListener().onHotKey(id);
+                getHotkeyListener().onHotkey(id);
             }
         });
     }
