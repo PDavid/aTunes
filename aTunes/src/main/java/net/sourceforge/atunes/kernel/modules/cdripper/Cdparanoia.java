@@ -156,12 +156,10 @@ public class Cdparanoia extends AbstractCdToWavConverter {
             setProcess(new ProcessBuilder(command).start());
 
             BufferedReader stdInput = null;
-            boolean cdLoaded = false;
             try {
                 stdInput = new BufferedReader(new InputStreamReader(getProcess().getErrorStream(), "ISO8859_1"));
                 Logger.info("Trying to read cdparanoia stream");
 
-                String s = null;
                 int tracks = 0;
                 List<String> durations = new ArrayList<String>();
                 List<String> titles = new ArrayList<String>();
@@ -169,15 +167,9 @@ public class Cdparanoia extends AbstractCdToWavConverter {
                 List<String> composers = new ArrayList<String>();
 
                 // read the output from the command
-                tracks = readCommandOutput(stdInput, cdLoaded, tracks, durations, titles, artists, composers);
+        		tracks = readCommandOutput(stdInput, tracks, durations, titles, artists, composers);
 
-                getCDInfo().setTracks(tracks);
-                getCDInfo().setDurations(durations);
-                getCDInfo().setDuration(null);
-                getCDInfo().setID(null);
-                getCDInfo().setTitles(titles);
-                getCDInfo().setArtists(artists);
-                getCDInfo().setComposers(composers);
+                setCDInfo(tracks, durations, titles, artists, composers);
 
             } catch (IOException e) {
                 Logger.error(e);
@@ -196,8 +188,7 @@ public class Cdparanoia extends AbstractCdToWavConverter {
 
 	/**
 	 * @param stdInput
-	 * @param cdLoaded
-	 * @param tracks
+	 * @param tracksNumber
 	 * @param durations
 	 * @param titles
 	 * @param artists
@@ -205,11 +196,13 @@ public class Cdparanoia extends AbstractCdToWavConverter {
 	 * @return
 	 * @throws IOException
 	 */
-	private int readCommandOutput(BufferedReader stdInput, boolean cdLoaded,
-			int tracks, List<String> durations, List<String> titles,
-			List<String> artists, List<String> composers) throws IOException {
-		String s;
+	private int readCommandOutput(BufferedReader stdInput, int tracksNumber,
+			List<String> durations, List<String> titles, List<String> artists,
+			List<String> composers) throws IOException {
+		int tracks = tracksNumber;
+		String s = null;
 		int count = 0;
+		boolean cdLoaded = false;
 		while ((s = stdInput.readLine()) != null) {
 		    Logger.info(StringUtils.getString("While loop: ", s));
 		    if (s.startsWith("TOTAL")) {
@@ -230,22 +223,52 @@ public class Cdparanoia extends AbstractCdToWavConverter {
 		    // established)
 		    if (count > 3) {
 		        tracks++;
-		        StringTokenizer stringTokenizer = new java.util.StringTokenizer(s, " ");
-		        // The first part is not interesting, we look for the
-		        // second token, thus the next line
-		        List<String> tokens = new ArrayList<String>(8);
-		        while (stringTokenizer.hasMoreTokens()) {
-		            tokens.add(stringTokenizer.nextToken());
-		        }
-		        String duration = tokens.get(2);
-		        duration = duration.replace("[", "").replace("]", "");
-		        durations.add(duration);
-		        titles.add("");
-		        artists.add("");
-		        composers.add("");
+		        getAlbumInfo(durations, titles, artists, composers, s);
 		    }
 		}
 		return tracks;
+	}
+
+	/**
+	 * @param tracks
+	 * @param durations
+	 * @param titles
+	 * @param artists
+	 * @param composers
+	 */
+	private void setCDInfo(int tracks, List<String> durations,
+			List<String> titles, List<String> artists, List<String> composers) {
+		getCDInfo().setTracks(tracks);
+		getCDInfo().setDurations(durations);
+		getCDInfo().setDuration(null);
+		getCDInfo().setID(null);
+		getCDInfo().setTitles(titles);
+		getCDInfo().setArtists(artists);
+		getCDInfo().setComposers(composers);
+	}
+
+	/**
+	 * @param durations
+	 * @param titles
+	 * @param artists
+	 * @param composers
+	 * @param s
+	 */
+	private void getAlbumInfo(List<String> durations, List<String> titles,
+			List<String> artists, List<String> composers, String s) {
+		StringTokenizer stringTokenizer = new java.util.StringTokenizer(s, " ");
+		// The first part is not interesting, we look for the
+		// second token, thus the next line
+		List<String> tokens = new ArrayList<String>(8);
+		while (stringTokenizer.hasMoreTokens()) {
+		    tokens.add(stringTokenizer.nextToken());
+		}
+		String duration = tokens.get(2);
+		duration = duration.replace("[", "").replace("]", "");
+		durations.add(duration);
+		titles.add("");
+		artists.add("");
+		composers.add("");
 	}
 
 }
