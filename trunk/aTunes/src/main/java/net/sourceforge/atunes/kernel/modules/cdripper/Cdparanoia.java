@@ -169,42 +169,7 @@ public class Cdparanoia extends AbstractCdToWavConverter {
                 List<String> composers = new ArrayList<String>();
 
                 // read the output from the command
-                int count = 0;
-                while ((s = stdInput.readLine()) != null) {
-                    Logger.info(StringUtils.getString("While loop: ", s));
-                    if (s.startsWith("TOTAL")) {
-
-                        break;
-                    }
-
-                    // CD is inserted, We can start reading the TOC after two
-                    // readLines
-                    if (s.contains("Table of contents")) {
-                        cdLoaded = true;
-                    }
-                    if (cdLoaded) {
-                        count++;
-                    }
-
-                    // Get album info (only if connection to cddb could be
-                    // established)
-                    if (count > 3) {
-                        tracks++;
-                        StringTokenizer stringTokenizer = new java.util.StringTokenizer(s, " ");
-                        // The first part is not interesting, we look for the
-                        // second token, thus the next line
-                        List<String> tokens = new ArrayList<String>(8);
-                        while (stringTokenizer.hasMoreTokens()) {
-                            tokens.add(stringTokenizer.nextToken());
-                        }
-                        String duration = tokens.get(2);
-                        duration = duration.replace("[", "").replace("]", "");
-                        durations.add(duration);
-                        titles.add("");
-                        artists.add("");
-                        composers.add("");
-                    }
-                }
+                tracks = readCommandOutput(stdInput, cdLoaded, tracks, durations, titles, artists, composers);
 
                 getCDInfo().setTracks(tracks);
                 getCDInfo().setDurations(durations);
@@ -228,5 +193,59 @@ public class Cdparanoia extends AbstractCdToWavConverter {
             return null;
         }
     }
+
+	/**
+	 * @param stdInput
+	 * @param cdLoaded
+	 * @param tracks
+	 * @param durations
+	 * @param titles
+	 * @param artists
+	 * @param composers
+	 * @return
+	 * @throws IOException
+	 */
+	private int readCommandOutput(BufferedReader stdInput, boolean cdLoaded,
+			int tracks, List<String> durations, List<String> titles,
+			List<String> artists, List<String> composers) throws IOException {
+		String s;
+		int count = 0;
+		while ((s = stdInput.readLine()) != null) {
+		    Logger.info(StringUtils.getString("While loop: ", s));
+		    if (s.startsWith("TOTAL")) {
+
+		        break;
+		    }
+
+		    // CD is inserted, We can start reading the TOC after two
+		    // readLines
+		    if (s.contains("Table of contents")) {
+		        cdLoaded = true;
+		    }
+		    if (cdLoaded) {
+		        count++;
+		    }
+
+		    // Get album info (only if connection to cddb could be
+		    // established)
+		    if (count > 3) {
+		        tracks++;
+		        StringTokenizer stringTokenizer = new java.util.StringTokenizer(s, " ");
+		        // The first part is not interesting, we look for the
+		        // second token, thus the next line
+		        List<String> tokens = new ArrayList<String>(8);
+		        while (stringTokenizer.hasMoreTokens()) {
+		            tokens.add(stringTokenizer.nextToken());
+		        }
+		        String duration = tokens.get(2);
+		        duration = duration.replace("[", "").replace("]", "");
+		        durations.add(duration);
+		        titles.add("");
+		        artists.add("");
+		        composers.add("");
+		    }
+		}
+		return tracks;
+	}
 
 }
