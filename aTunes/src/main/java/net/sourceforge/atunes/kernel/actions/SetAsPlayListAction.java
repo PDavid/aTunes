@@ -41,6 +41,9 @@ public class SetAsPlayListAction extends AbstractActionOverSelectedObjects<IAudi
 		this.playListHandler = playListHandler;
 	}
     
+    /**
+     * Default constructor
+     */
     public SetAsPlayListAction() {
         super(I18nUtils.getString("SET_AS_PLAYLIST"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SET_AS_PLAYLIST"));

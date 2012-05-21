@@ -51,6 +51,7 @@ import net.sourceforge.atunes.kernel.actions.SetFavoriteAlbumFromNavigatorAction
 import net.sourceforge.atunes.kernel.actions.SetFavoriteArtistFromNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.SetFavoriteSongFromNavigatorAction;
 import net.sourceforge.atunes.kernel.actions.ShowNavigatorTableItemInfoAction;
+import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IColumnSet;
@@ -85,7 +86,17 @@ public class RepositoryNavigationView extends AbstractNavigationView {
     
     private AbstractActionOverSelectedTreeObjects<IFolder> refreshFolderFromNavigatorAction;
     
+    private AbstractActionOverSelectedTreeObjects<IArtist> createPlayListWithTopTracksFromRepositoryNavigationView;
+    
     private Action editTitlesAction;
+
+    /**
+     * @param createPlayListWithTopTracksFromRepositoryNavigationView
+     */
+    public void setCreatePlayListWithTopTracksFromRepositoryNavigationView(
+			AbstractActionOverSelectedTreeObjects<IArtist> createPlayListWithTopTracksFromRepositoryNavigationView) {
+		this.createPlayListWithTopTracksFromRepositoryNavigationView = createPlayListWithTopTracksFromRepositoryNavigationView;
+	}
     
     /**
      * @param editTitlesAction
@@ -165,6 +176,9 @@ public class RepositoryNavigationView extends AbstractNavigationView {
             
             setAsPlaylistFromRepositoryNavigationView.setAudioObjectsSource(this);
             treePopupMenu.add(setAsPlaylistFromRepositoryNavigationView);
+            
+            createPlayListWithTopTracksFromRepositoryNavigationView.setTreeObjectsSource(this);
+            treePopupMenu.add(createPlayListWithTopTracksFromRepositoryNavigationView);
             
             treePopupMenu.add(new JSeparator());
             

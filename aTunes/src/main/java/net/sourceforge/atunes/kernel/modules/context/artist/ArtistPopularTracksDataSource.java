@@ -57,6 +57,9 @@ public class ArtistPopularTracksDataSource implements IContextInformationSource 
     	return null;
     }
     
+    /**
+     * @param webServicesHandler
+     */
     public final void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
 	}

@@ -25,7 +25,7 @@ import java.util.Map;
 
 import net.sourceforge.atunes.model.TextTagAttribute;
 
-class TextTagAttributesAndCheckers {
+final class TextTagAttributesAndCheckers {
 	
 	private static final Map<TextTagAttribute, ITagChecker> CHECKERS;
 	

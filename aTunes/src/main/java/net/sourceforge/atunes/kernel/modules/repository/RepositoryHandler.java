@@ -24,6 +24,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -594,4 +595,40 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	public IFolder getFolder(String path) {
 		return repository.getFolder(path);
 	}
+
+	@Override
+	public List<ILocalAudioObject> getAudioObjectsByTitle(String artistName, List<String> titlesList) {
+		if (StringUtils.isEmpty(artistName)) {
+			throw new IllegalArgumentException("Invalid artist name");
+		}
+		List<ILocalAudioObject> result = new ArrayList<ILocalAudioObject>();
+		IArtist artist = getArtist(artistName);
+		if (artist != null) {
+			Map<String, ILocalAudioObject> normalizedTitles = getNormalizedAudioObjectsTitles(artist);
+			for (String title : titlesList) {
+				String normalizedTitle = title.toLowerCase();
+				if (normalizedTitles.containsKey(normalizedTitle)) {
+					result.add(normalizedTitles.get(normalizedTitle));
+				}
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * 
+	 * @param artist
+	 * @return
+	 */
+	private Map<String, ILocalAudioObject> getNormalizedAudioObjectsTitles(IArtist artist) {
+		List<ILocalAudioObject> audioObjects = artist.getAudioObjects();
+		Map<String, ILocalAudioObject> titles = new HashMap<String, ILocalAudioObject>();
+		for (ILocalAudioObject lao : audioObjects) {
+			if (lao.getTitle() != null) {
+				titles.put(lao.getTitle().toLowerCase(), lao); // Do lower case for a better match
+			}
+		}
+		return titles;
+	}
+	
 }

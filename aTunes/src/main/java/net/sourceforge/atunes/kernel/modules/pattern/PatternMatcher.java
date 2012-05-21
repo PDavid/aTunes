@@ -28,6 +28,8 @@ import java.util.Map;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class PatternMatcher {
+	
+	private PatternMatcher() {}
 
 	/**
 	 * Returns a map containing string values result of matching a pattern
