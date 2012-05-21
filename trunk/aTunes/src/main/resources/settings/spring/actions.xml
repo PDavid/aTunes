@@ -124,6 +124,10 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.CopyToRepositoryAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.CreatePlayListWithSelectedAlbumsAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.CreatePlayListWithSelectedArtistsAction"/>
+
+	<bean id="createPlayListWithTopTracksFromRepositoryNavigationView" class="net.sourceforge.atunes.kernel.actions.CreatePlayListWithTopTracksAction"/>
+	<bean id="createPlayListWithTopTracksFromFavoritesNavigationView" class="net.sourceforge.atunes.kernel.actions.CreatePlayListWithTopTracksAction"/>
+
 	<bean id="customSearchAction" class="net.sourceforge.atunes.kernel.actions.CustomSearchAction"/>
 	<bean id="disconnectDeviceAction" class="net.sourceforge.atunes.kernel.actions.DisconnectDeviceAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.DownloadPodcastEntryAction"/>

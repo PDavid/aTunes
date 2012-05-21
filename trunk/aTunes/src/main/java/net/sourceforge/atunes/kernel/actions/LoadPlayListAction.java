@@ -27,8 +27,6 @@ import java.util.List;
 
 import javax.swing.KeyStroke;
 
-import org.apache.commons.io.FilenameUtils;
-
 import net.sourceforge.atunes.kernel.modules.process.LoadPlayListProcess;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
@@ -39,6 +37,8 @@ import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IStatePlaylist;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
+
+import org.apache.commons.io.FilenameUtils;
 
 /**
  * This action loads a play list

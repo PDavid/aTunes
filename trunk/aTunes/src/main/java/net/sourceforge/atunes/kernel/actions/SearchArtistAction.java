@@ -80,6 +80,9 @@ public class SearchArtistAction extends CustomAbstractAction {
 		this.navigationHandler = navigationHandler;
 	}
     
+    /**
+     * Default constructor
+     */
     public SearchArtistAction() {
         super(I18nUtils.getString("SEARCH_ARTIST"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("SEARCH_ARTIST"));

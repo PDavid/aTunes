@@ -280,6 +280,11 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 	 */
 	public Map<String, ?> getDataForView(ViewMode viewMode);
 
+	/**
+	 * Returns file of repository given its name
+	 * @param fileName
+	 * @return
+	 */
 	public ILocalAudioObject getFile(String fileName);
 
 	/**
@@ -304,5 +309,13 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 	 * @return
 	 */
 	public IFolder getFolder(String path);
+	
+	/**
+	 * Returns audio objects given its artist and titles
+	 * @param artist
+	 * @param titles
+	 * @return
+	 */
+	public List<ILocalAudioObject> getAudioObjectsByTitle(String artist, List<String> titles);
 
 }

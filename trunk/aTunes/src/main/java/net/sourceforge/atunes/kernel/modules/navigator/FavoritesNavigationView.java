@@ -39,6 +39,7 @@ import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedObjects;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAction;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAfterCurrentAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.CopyToDeviceAction;
+import net.sourceforge.atunes.kernel.actions.CreatePlayListWithTopTracksAction;
 import net.sourceforge.atunes.kernel.actions.EditTitlesAction;
 import net.sourceforge.atunes.kernel.actions.ExtractPictureAction;
 import net.sourceforge.atunes.kernel.actions.OpenFolderFromNavigatorAction;
@@ -131,6 +132,10 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
             SetAsPlayListAction setAsPlayListAction = Context.getBean("setAsPlaylistFromFavoritesNavigationView", SetAsPlayListAction.class);
             setAsPlayListAction.setAudioObjectsSource(this);
             favoriteTreeMenu.add(setAsPlayListAction);
+            
+            CreatePlayListWithTopTracksAction createTopTracksAction = Context.getBean("createPlayListWithTopTracksFromFavoritesNavigationView", CreatePlayListWithTopTracksAction.class);
+            createTopTracksAction.setTreeObjectsSource(this);
+            favoriteTreeMenu.add(createTopTracksAction);
             
             favoriteTreeMenu.add(new JSeparator());
             

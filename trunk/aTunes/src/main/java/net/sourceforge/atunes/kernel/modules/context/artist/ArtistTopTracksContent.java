@@ -24,24 +24,20 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.JMenuItem;
 import javax.swing.JTable;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.kernel.modules.context.ITracksTableListener;
 import net.sourceforge.atunes.kernel.modules.context.TracksTableFactory;
-import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IArtistTopTracks;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ITrackInfo;
+import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -62,29 +58,23 @@ public class ArtistTopTracksContent extends AbstractContextPanelContent<ArtistPo
     
     private IRepositoryHandler repositoryHandler;
     
+    private IPlayListHandler playListHandler;
+    
     private class CreatePlaylistWithPopularTracksActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-        	// Get artist files from repository and match by title with top tracks to create a play list
-    		IArtist artist = repositoryHandler.getArtist(lastTopTracks.getArtist());
-    		if (artist != null) {
-    			List<ILocalAudioObject> audioObjects = artist.getAudioObjects();
-    			Map<String, ILocalAudioObject> titles = new HashMap<String, ILocalAudioObject>();
-    			for (ILocalAudioObject lao : audioObjects) {
-    				if (lao.getTitle() != null) {
-    					titles.put(lao.getTitle().toLowerCase(), lao); // Do lower case for a better match
-    				}
-    			}
-    			List<IAudioObject> playlist = new ArrayList<IAudioObject>();
-    			for (ITrackInfo track : lastTopTracks.getTracks()) {
-    				if (titles.containsKey(track.getTitle().toLowerCase())) {
-    					playlist.add(titles.get(track.getTitle().toLowerCase()));
-    				}
-    			}
-
+        	// Get titles for top tracks
+        	List<String> artistTopTracks = new ArrayList<String>();
+        	for (ITrackInfo track : lastTopTracks.getTracks()) {
+        		artistTopTracks.add(track.getTitle());
+        	}
+        	
+        	// Find in repository
+        	List<ILocalAudioObject> audioObjectsInRepository = repositoryHandler.getAudioObjectsByTitle(lastTopTracks.getArtist(), artistTopTracks);
+        	if (!CollectionUtils.isEmpty(audioObjectsInRepository)) {
     			// Create a new play list with artist as name and audio objects selected
-    			Context.getBean(IPlayListHandler.class).newPlayList(artist.getName(), playlist);
-    		}
+    			playListHandler.newPlayList(lastTopTracks.getArtist(), audioObjectsInRepository);
+        	}
         }
     }
 
@@ -95,6 +85,13 @@ public class ArtistTopTracksContent extends AbstractContextPanelContent<ArtistPo
     	createPlayList = new JMenuItem(I18nUtils.getString("CREATE_PLAYLIST_WITH_TOP_TRACKS"));
     	createPlayList.addActionListener(new CreatePlaylistWithPopularTracksActionListener());
     }
+    
+    /**
+     * @param playListHandler
+     */
+    public void setPlayListHandler(IPlayListHandler playListHandler) {
+		this.playListHandler = playListHandler;
+	}
 
     @Override
     public String getContentName() {
@@ -146,5 +143,4 @@ public class ArtistTopTracksContent extends AbstractContextPanelContent<ArtistPo
     public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
-
 }
