@@ -49,12 +49,6 @@ public interface IContextPanelsContainer extends IPanel {
 	public void removeContextPanel(IContextPanel panel);
 
 	/**
-	 * Shows context panel
-	 * @param panel
-	 */
-	public void showContextPanel(IContextPanel panel);
-
-	/**
 	 * Returns selected panel
 	 * 
 	 * @return

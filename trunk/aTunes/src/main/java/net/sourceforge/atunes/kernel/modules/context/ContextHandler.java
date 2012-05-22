@@ -334,6 +334,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 
 	private void removeContextPanel(IContextPanel instance) {
 		contextPanelsContainer.removeContextPanel(instance);
+		contextPanelsContainer.updateContextPanels();
 	}
 
 	/**
@@ -344,6 +345,7 @@ public final class ContextHandler extends AbstractHandler implements PluginListe
 		for (IContextPanel panel : contextPanels) {
 			contextPanelsContainer.addContextPanel(panel);
 		}		
+		contextPanelsContainer.updateContextPanels();
 	}
 
 	/**

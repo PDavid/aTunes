@@ -31,6 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
+import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IContextPanel;
 import net.sourceforge.atunes.model.IContextPanelsContainer;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
@@ -52,12 +53,21 @@ public final class ContextPanelContainer extends JPanel implements IContextPanel
 
     private ILookAndFeelManager lookAndFeelManager;
     
+    private IContextHandler contextHandler;
+    
     /**
      * Instantiates a new context panel
      */
     public ContextPanelContainer() {
         super(new GridBagLayout());
     }
+    
+    /**
+     * @param contextHandler
+     */
+    public void setContextHandler(IContextHandler contextHandler) {
+		this.contextHandler = contextHandler;
+	}
     
     /**
      * @param lookAndFeelManager
@@ -99,12 +109,14 @@ public final class ContextPanelContainer extends JPanel implements IContextPanel
     
     @Override
 	public void updateContextPanels() {
+    	Logger.debug("Updating context panels");
     	IContextPanel selectedPanel = contextSelector.getSelectedItem() != null ? (IContextPanel) contextSelector.getSelectedItem() : null;
     	container.removeAll();
     	visiblePanels.clear();
     	contextSelector.clear();
     	for (final IContextPanel panel : panels) {
     		if (panel.isVisible()) {
+    			Logger.debug("Context panel ", panel.getContextPanelName(), " is visible");
     			visiblePanels.add(panel);
     			container.add(panel.getContextPanelName(), panel.getUIComponent(lookAndFeelManager.getCurrentLookAndFeel()));
     			panel.getUIComponent(lookAndFeelManager.getCurrentLookAndFeel()).setEnabled(panel.isEnabled());
@@ -112,24 +124,30 @@ public final class ContextPanelContainer extends JPanel implements IContextPanel
     			contextSelector.addButton(panel.getContextPanelName(), panel.getIcon(), panel.getTitle(), panel.getAction(), panel);
     		}
     	}
-    	contextSelector.setSelectedButton(selectedPanel != null ? selectedPanel.getContextPanelName() : visiblePanels.get(0).getContextPanelName());
-    	((CardLayout)container.getLayout()).show(container, selectedPanel != null ? selectedPanel.getContextPanelName() : visiblePanels.get(0).getContextPanelName());
+    	IContextPanel newSelectedPanel = selectedPanel != null  && selectedPanel.isVisible() ? selectedPanel : visiblePanels.get(0);
+    	Logger.debug("Selected context panel: ", newSelectedPanel.getContextPanelName());
+    	contextSelector.setSelectedButton(newSelectedPanel.getContextPanelName());
+    	((CardLayout)container.getLayout()).show(container, newSelectedPanel.getContextPanelName());
+    	if (!newSelectedPanel.equals(selectedPanel)) {
+    		contextHandler.setContextTab(newSelectedPanel.getContextPanelName());
+    	}
+    	this.invalidate();
+    	this.revalidate();
+    	this.repaint();
     }
 
     @Override
 	public void addContextPanel(IContextPanel panel) {
+    	Logger.debug("Adding context panel: ", panel.getContextPanelName());
         panels.add(panel);
-        updateContextPanels();
     }
 
     @Override
 	public void removeContextPanel(IContextPanel panel) {
         panels.remove(panel);
-        updateContextPanels();
     }
 
-	@Override
-	public void showContextPanel(IContextPanel panel) {
+	private void showContextPanel(IContextPanel panel) {
 		final IContextPanel source = panel != null ? panel : visiblePanels.get(0);
 		options.removeAllItems();
 		options.setEnabled(source != null && !source.getOptions().isEmpty());
