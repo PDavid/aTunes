@@ -22,8 +22,6 @@ package net.sourceforge.atunes.gui.views.panels;
 
 import java.awt.ComponentOrientation;
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,7 +60,7 @@ public class ColorMutableIconToggleButtonFlowPanel extends JPanel implements ILo
 		super();
 		this.lookAndFeelManager = lookAndFeelManager;
 		this.group = new ButtonGroup();
-		this.buttons = new ArrayList<ColorMutableIconToggleButtonFlowPanel.ColorMutableIconToggleButton>();
+		this.buttons = new ArrayList<ColorMutableIconToggleButton>();
 		this.toggles = new HashMap<String, JToggleButton>();
 		ComponentOrientation orientation = GuiUtils.getComponentOrientation();
 		setLayout(new FlowLayout(orientation == ComponentOrientation.LEFT_TO_RIGHT ? FlowLayout.LEFT : FlowLayout.RIGHT, 0, 0));
@@ -87,7 +85,7 @@ public class ColorMutableIconToggleButtonFlowPanel extends JPanel implements ILo
 	public void clear() {
 		removeAll();
 		this.group = new ButtonGroup();
-		this.buttons = new ArrayList<ColorMutableIconToggleButtonFlowPanel.ColorMutableIconToggleButton>();
+		this.buttons = new ArrayList<ColorMutableIconToggleButton>();
 		this.toggles = new HashMap<String, JToggleButton>();
 	}
 	
@@ -138,76 +136,6 @@ public class ColorMutableIconToggleButtonFlowPanel extends JPanel implements ILo
 		group = new ButtonGroup();
 		for (ColorMutableIconToggleButton button : buttons) {
 			addButtonToPanel(button);
-		}
-	}
-
-	private static final class ToggleButtonActionListener implements ActionListener {
-		private final ColorMutableIconToggleButton button;
-
-		private ToggleButtonActionListener(ColorMutableIconToggleButton button) {
-			this.button = button;
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			button.getAction().actionPerformed(e);
-		}
-	}
-
-	private static class ColorMutableIconToggleButton {
-		
-		private String buttonName;
-		
-		private IColorMutableImageIcon icon;
-		
-		private String tooltip;
-		
-		private Action action;
-		
-		private Object userObject;
-
-		ColorMutableIconToggleButton(String buttonName, IColorMutableImageIcon icon, String tooltip, Action action, Object userObject) {
-			super();
-			this.buttonName = buttonName;
-			this.icon = icon;
-			this.tooltip = tooltip;
-			this.action = action;
-			this.userObject = userObject;
-		}
-		
-		/**
-		 * @return
-		 */
-		public String getButtonName() {
-			return buttonName;
-		}
-		
-		/**
-		 * @return
-		 */
-		public IColorMutableImageIcon getIcon() {
-			return icon;
-		}
-		
-		/**
-		 * @return
-		 */
-		public String getTooltip() {
-			return tooltip;
-		}
-		
-		/**
-		 * @return
-		 */
-		public Action getAction() {
-			return action;
-		}
-		
-		/**
-		 * @return
-		 */
-		public Object getUserObject() {
-			return userObject;
 		}
 	}
 }

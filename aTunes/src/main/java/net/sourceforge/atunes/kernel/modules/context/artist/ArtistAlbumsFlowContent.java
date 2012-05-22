@@ -34,63 +34,67 @@ import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.ScrollableFlowPanel;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanelContent;
 import net.sourceforge.atunes.model.IAlbumInfo;
+import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class ArtistAlbumsFlowContent extends AbstractContextPanelContent<ArtistAlbumListImagesDataSource> {
 
-    private ScrollableFlowPanel coversPanel;
-    
-    @Override
-    public Component getComponent() {
-        coversPanel = new ScrollableFlowPanel();
-        coversPanel.setOpaque(false);
-        coversPanel.setLayout(new FlowLayout());
-        return coversPanel;
-    }
+	private ScrollableFlowPanel coversPanel;
 
-    @Override
-    public String getContentName() {
-        return I18nUtils.getString("ALBUMS");
-    }
+	@Override
+	public Component getComponent() {
+		coversPanel = new ScrollableFlowPanel();
+		coversPanel.setOpaque(false);
+		coversPanel.setLayout(new FlowLayout());
+		return coversPanel;
+	}
 
-    @Override
-    public void updateContentFromDataSource(ArtistAlbumListImagesDataSource source) {
-    	List<IAlbumInfo> albums = source.getAlbumList().getAlbums();
-    	for (IAlbumInfo album : albums) {
-    		coversPanel.add(getLabelForAlbum(source, album));
-    	}
-    	coversPanel.revalidate();
-    	coversPanel.repaint();
-    	coversPanel.validate();
-    }
+	@Override
+	public String getContentName() {
+		return I18nUtils.getString("ALBUMS");
+	}
 
-    @Override
-    public void clearContextPanelContent() {
-        super.clearContextPanelContent();
-        coversPanel.removeAll();
-    };
+	@Override
+	public void updateContentFromDataSource(ArtistAlbumListImagesDataSource source) {
+		IAlbumListInfo albumListInfo = source.getAlbumList();
+		if (albumListInfo != null) {
+			List<IAlbumInfo> albums = albumListInfo.getAlbums();
+			for (IAlbumInfo album : albums) {
+				coversPanel.add(getLabelForAlbum(source, album));
+			}
+		}
+		coversPanel.revalidate();
+		coversPanel.repaint();
+		coversPanel.validate();
+	}
 
-    /**
-     * Gets the Label for album.
-     * 
-     * @param source
-     * @param album
-     * @return
-     */
-    private JLabel getLabelForAlbum(ArtistAlbumListImagesDataSource source, final IAlbumInfo album) {
-    	Icon cover = source.getCovers().get(album);
-        final JLabel coverLabel = new JLabel(cover);
-        coverLabel.setToolTipText(album.getTitle());
-        if (cover == null) {
-            coverLabel.setPreferredSize(new Dimension(Constants.THUMB_IMAGE_WIDTH, Constants.THUMB_IMAGE_HEIGHT));
-            coverLabel.setBorder(BorderFactory.createLineBorder(GuiUtils.getBorderColor()));
-        } else {
-        	coverLabel.setBorder(null);
-        }
+	@Override
+	public void clearContextPanelContent() {
+		super.clearContextPanelContent();
+		coversPanel.removeAll();
+	};
 
-        coverLabel.addMouseListener(new CoverMouseAdapter(album, coverLabel, getDesktop()));
+	/**
+	 * Gets the Label for album.
+	 * 
+	 * @param source
+	 * @param album
+	 * @return
+	 */
+	private JLabel getLabelForAlbum(ArtistAlbumListImagesDataSource source, final IAlbumInfo album) {
+		Icon cover = source.getCovers().get(album);
+		final JLabel coverLabel = new JLabel(cover);
+		coverLabel.setToolTipText(album.getTitle());
+		if (cover == null) {
+			coverLabel.setPreferredSize(new Dimension(Constants.THUMB_IMAGE_WIDTH, Constants.THUMB_IMAGE_HEIGHT));
+			coverLabel.setBorder(BorderFactory.createLineBorder(GuiUtils.getBorderColor()));
+		} else {
+			coverLabel.setBorder(null);
+		}
 
-        return coverLabel;
-    }
+		coverLabel.addMouseListener(new CoverMouseAdapter(album, coverLabel, getDesktop()));
+
+		return coverLabel;
+	}
 
 }
