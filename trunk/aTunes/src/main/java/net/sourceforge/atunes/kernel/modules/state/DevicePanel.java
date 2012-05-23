@@ -40,6 +40,7 @@ import javax.swing.JTextField;
 
 import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
+import net.sourceforge.atunes.kernel.modules.pattern.Patterns;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStateDevice;
@@ -166,7 +167,7 @@ public final class DevicePanel extends AbstractPreferencesPanel {
         group2.add(folderPathCustomizedRadioButton);
 
         JTable availablePatternsTable = lookAndFeelManager.getCurrentLookAndFeel().getTable();
-        availablePatternsTable.setModel(new AvailablePatternsTableModel());
+        availablePatternsTable.setModel(new AvailablePatternsTableModel(Patterns.getPatterns()));
 
         JPanel patternsPanel = new JPanel(new BorderLayout());
         patternsPanel.setPreferredSize(new Dimension(250, 200));
