@@ -20,9 +20,11 @@
 
 package net.sourceforge.atunes.kernel.modules.state;
 
+import java.util.List;
+
 import javax.swing.table.DefaultTableModel;
 
-import net.sourceforge.atunes.kernel.modules.pattern.Patterns;
+import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 class AvailablePatternsTableModel extends DefaultTableModel {
@@ -31,9 +33,20 @@ class AvailablePatternsTableModel extends DefaultTableModel {
 	 */
     private static final long serialVersionUID = -3054134384773947174L;
 
+    private List<AbstractPattern> patterns;
+    
+    /**
+     * @param patterns
+     */
+    public AvailablePatternsTableModel(List<AbstractPattern> patterns) {
+    	super();
+    	this.patterns = patterns;
+	}
+    
     @Override
     public int getRowCount() {
-        return Patterns.getPatterns().size();
+    	// This method is called before constructor finishes so must check for null
+        return patterns != null ? patterns.size() : 0;
     }
 
     @Override
@@ -49,9 +62,9 @@ class AvailablePatternsTableModel extends DefaultTableModel {
     @Override
     public Object getValueAt(int row, int column) {
         if (column == 0) {
-            return Patterns.getPatterns().get(row).getPattern();
+            return patterns.get(row).getPattern();
         }
-        return Patterns.getPatterns().get(row).getDescription();
+        return patterns.get(row).getDescription();
     }
 
     @Override

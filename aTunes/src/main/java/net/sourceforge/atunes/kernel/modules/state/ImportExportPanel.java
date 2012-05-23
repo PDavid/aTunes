@@ -38,6 +38,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
+import net.sourceforge.atunes.kernel.modules.pattern.Patterns;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -161,7 +162,7 @@ public final class ImportExportPanel extends AbstractPreferencesPanel {
         group2.add(folderPathCustomizedRadioButton);
 
         JTable availablePatternsTable = lookAndFeelManager.getCurrentLookAndFeel().getTable();
-        availablePatternsTable.setModel(new AvailablePatternsTableModel());
+        availablePatternsTable.setModel(new AvailablePatternsTableModel(Patterns.getPatterns()));
 
         JPanel patternsPanel = getPatternsPanel(availablePatternsTable);
 
