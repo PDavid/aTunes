@@ -28,7 +28,6 @@ import java.util.concurrent.Callable;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.kernel.modules.repository.UnknownObjectChecker;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.IBackgroundWorker;
@@ -45,7 +44,7 @@ import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 
-public class CreatePlayListWithTopTracksAction extends AbstractActionOverSelectedTreeObjects<IArtist> {
+public class AddArtistTopTracksToPlayListAction extends AbstractActionOverSelectedTreeObjects<IArtist> {
 
 	private static final long serialVersionUID = -8993769615827375740L;
 
@@ -108,9 +107,9 @@ public class CreatePlayListWithTopTracksAction extends AbstractActionOverSelecte
 	/**
 	 * Default constructor
 	 */
-	public CreatePlayListWithTopTracksAction() {
-		super(I18nUtils.getString("CREATE_PLAYLIST_WITH_TOP_TRACKS"));
-		putValue(SHORT_DESCRIPTION, I18nUtils.getString("CREATE_PLAYLIST_WITH_TOP_TRACKS"));
+	public AddArtistTopTracksToPlayListAction() {
+		super(I18nUtils.getString("ADD_ARTIST_TOP_TRACKS_TO_PLAYLIST"));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("ADD_ARTIST_TOP_TRACKS_TO_PLAYLIST"));
 	}
 
 	@Override
@@ -130,8 +129,8 @@ public class CreatePlayListWithTopTracksAction extends AbstractActionOverSelecte
 			@Override
 			public void call(Map<String, List<ILocalAudioObject>> topTracksByArtist) {
 				for (Map.Entry<String, List<ILocalAudioObject>> artistTopTracks : topTracksByArtist.entrySet()) {
-	    			// Create a new play list with artist as name and audio objects selected
-	    			playListHandler.newPlayList(artistTopTracks.getKey(), artistTopTracks.getValue());
+	    			// Add songs to play list
+	    			playListHandler.addToPlayList(artistTopTracks.getValue());
 				}
 				dialog.hideDialog();
 			}

@@ -23,8 +23,6 @@ package net.sourceforge.atunes.kernel.modules.repository;
 import java.io.File;
 import java.util.StringTokenizer;
 
-import org.springframework.context.ApplicationContext;
-
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IDeviceHandler;

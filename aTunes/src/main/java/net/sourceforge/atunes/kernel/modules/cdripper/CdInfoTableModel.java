@@ -25,7 +25,6 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import net.sourceforge.atunes.kernel.modules.repository.UnknownObjectChecker;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;

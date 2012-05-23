@@ -20,7 +20,6 @@
 
 package net.sourceforge.atunes.kernel.modules.tags;
 
-import net.sourceforge.atunes.kernel.modules.repository.UnknownObjectChecker;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 

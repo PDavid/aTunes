@@ -125,8 +125,8 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.CreatePlayListWithSelectedAlbumsAction"/>
 	<bean class="net.sourceforge.atunes.kernel.actions.CreatePlayListWithSelectedArtistsAction"/>
 
-	<bean id="createPlayListWithTopTracksFromRepositoryNavigationView" class="net.sourceforge.atunes.kernel.actions.CreatePlayListWithTopTracksAction"/>
-	<bean id="createPlayListWithTopTracksFromFavoritesNavigationView" class="net.sourceforge.atunes.kernel.actions.CreatePlayListWithTopTracksAction"/>
+	<bean id="addArtistTopTracksToPlayListFromRepositoryNavigationView" class="net.sourceforge.atunes.kernel.actions.AddArtistTopTracksToPlayListAction"/>
+	<bean id="addArtistTopTracksToPlayListFromFavoritesNavigationView" class="net.sourceforge.atunes.kernel.actions.AddArtistTopTracksToPlayListAction"/>
 
 	<bean id="customSearchAction" class="net.sourceforge.atunes.kernel.actions.CustomSearchAction"/>
 	<bean id="disconnectDeviceAction" class="net.sourceforge.atunes.kernel.actions.DisconnectDeviceAction"/>

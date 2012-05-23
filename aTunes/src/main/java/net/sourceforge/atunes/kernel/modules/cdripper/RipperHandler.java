@@ -54,7 +54,6 @@ import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.sanselan.ImageWriteException;
-import org.springframework.context.ApplicationContext;
 
 public final class RipperHandler extends AbstractHandler implements IRipperHandler {
 

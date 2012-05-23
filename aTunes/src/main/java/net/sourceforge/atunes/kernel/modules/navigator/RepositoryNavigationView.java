@@ -86,16 +86,16 @@ public class RepositoryNavigationView extends AbstractNavigationView {
     
     private AbstractActionOverSelectedTreeObjects<IFolder> refreshFolderFromNavigatorAction;
     
-    private AbstractActionOverSelectedTreeObjects<IArtist> createPlayListWithTopTracksFromRepositoryNavigationView;
+    private AbstractActionOverSelectedTreeObjects<IArtist> addArtistTopTracksToPlayListFromRepositoryNavigationView;
     
     private Action editTitlesAction;
 
     /**
-     * @param createPlayListWithTopTracksFromRepositoryNavigationView
+     * @param addArtistTopTracksToPlayListFromRepositoryNavigationView
      */
-    public void setCreatePlayListWithTopTracksFromRepositoryNavigationView(
-			AbstractActionOverSelectedTreeObjects<IArtist> createPlayListWithTopTracksFromRepositoryNavigationView) {
-		this.createPlayListWithTopTracksFromRepositoryNavigationView = createPlayListWithTopTracksFromRepositoryNavigationView;
+    public void setAddArtistTopTracksToPlayListFromRepositoryNavigationView(
+			AbstractActionOverSelectedTreeObjects<IArtist> addArtistTopTracksToPlayListFromRepositoryNavigationView) {
+		this.addArtistTopTracksToPlayListFromRepositoryNavigationView = addArtistTopTracksToPlayListFromRepositoryNavigationView;
 	}
     
     /**
@@ -177,8 +177,8 @@ public class RepositoryNavigationView extends AbstractNavigationView {
             setAsPlaylistFromRepositoryNavigationView.setAudioObjectsSource(this);
             treePopupMenu.add(setAsPlaylistFromRepositoryNavigationView);
             
-            createPlayListWithTopTracksFromRepositoryNavigationView.setTreeObjectsSource(this);
-            treePopupMenu.add(createPlayListWithTopTracksFromRepositoryNavigationView);
+            addArtistTopTracksToPlayListFromRepositoryNavigationView.setTreeObjectsSource(this);
+            treePopupMenu.add(addArtistTopTracksToPlayListFromRepositoryNavigationView);
             
             treePopupMenu.add(new JSeparator());
             

@@ -57,7 +57,6 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.commons.io.FilenameUtils;
 import org.joda.time.DateTime;
-import org.springframework.context.ApplicationContext;
 
 /**
  * The repository handler.
