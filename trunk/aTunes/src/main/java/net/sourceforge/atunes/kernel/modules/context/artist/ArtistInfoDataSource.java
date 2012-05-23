@@ -23,7 +23,6 @@ package net.sourceforge.atunes.kernel.modules.context.artist;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.Constants;
-import net.sourceforge.atunes.kernel.modules.repository.UnknownObjectChecker;
 import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextInformationSource;

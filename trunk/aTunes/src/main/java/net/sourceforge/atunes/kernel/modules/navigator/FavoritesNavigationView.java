@@ -36,10 +36,10 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.NavigationTree;
 import net.sourceforge.atunes.gui.views.menus.EditTagMenu;
 import net.sourceforge.atunes.kernel.actions.AbstractActionOverSelectedObjects;
+import net.sourceforge.atunes.kernel.actions.AddArtistTopTracksToPlayListAction;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAction;
 import net.sourceforge.atunes.kernel.actions.AddToPlayListAfterCurrentAudioObjectAction;
 import net.sourceforge.atunes.kernel.actions.CopyToDeviceAction;
-import net.sourceforge.atunes.kernel.actions.CreatePlayListWithTopTracksAction;
 import net.sourceforge.atunes.kernel.actions.EditTitlesAction;
 import net.sourceforge.atunes.kernel.actions.ExtractPictureAction;
 import net.sourceforge.atunes.kernel.actions.OpenFolderFromNavigatorAction;
@@ -133,7 +133,7 @@ public final class FavoritesNavigationView extends AbstractNavigationView {
             setAsPlayListAction.setAudioObjectsSource(this);
             favoriteTreeMenu.add(setAsPlayListAction);
             
-            CreatePlayListWithTopTracksAction createTopTracksAction = Context.getBean("createPlayListWithTopTracksFromFavoritesNavigationView", CreatePlayListWithTopTracksAction.class);
+            AddArtistTopTracksToPlayListAction createTopTracksAction = Context.getBean("addArtistTopTracksToPlayListFromFavoritesNavigationView", AddArtistTopTracksToPlayListAction.class);
             createTopTracksAction.setTreeObjectsSource(this);
             favoriteTreeMenu.add(createTopTracksAction);
             
