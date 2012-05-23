@@ -23,6 +23,8 @@ package net.sourceforge.atunes.kernel.modules.tags;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.TextTagAttribute;
 
 final class TextTagAttributesAndCheckers {
@@ -31,13 +33,13 @@ final class TextTagAttributesAndCheckers {
 	
 	static {
 		CHECKERS = new HashMap<TextTagAttribute, ITagChecker>();
-		CHECKERS.put(TextTagAttribute.ALBUM, new AlbumTagChecker());
+		CHECKERS.put(TextTagAttribute.ALBUM, new AlbumTagChecker(Context.getBean(IUnknownObjectChecker.class)));
 		CHECKERS.put(TextTagAttribute.ALBUM_ARTIST, new AlbumArtistTagChecker());
-		CHECKERS.put(TextTagAttribute.ARTIST, new ArtistTagChecker());
+		CHECKERS.put(TextTagAttribute.ARTIST, new ArtistTagChecker(Context.getBean(IUnknownObjectChecker.class)));
 		CHECKERS.put(TextTagAttribute.COMMENT, new CommentTagChecker());
 		CHECKERS.put(TextTagAttribute.COMPOSER, new ComposerTagChecker());
 		CHECKERS.put(TextTagAttribute.DISC_NUMBER, new DiscNumberTagChecker());
-		CHECKERS.put(TextTagAttribute.GENRE, new GenreTagChecker());
+		CHECKERS.put(TextTagAttribute.GENRE, new GenreTagChecker(Context.getBean(IUnknownObjectChecker.class)));
 		CHECKERS.put(TextTagAttribute.LYRICS, new LyricsTagChecker());
 		CHECKERS.put(TextTagAttribute.TITLE, new TitleTagChecker());
 		CHECKERS.put(TextTagAttribute.TRACK, new TrackTagChecker());

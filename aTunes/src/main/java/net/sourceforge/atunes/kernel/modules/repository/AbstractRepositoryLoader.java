@@ -31,6 +31,7 @@ import net.sourceforge.atunes.model.IRepositoryLoader;
 import net.sourceforge.atunes.model.IRepositoryLoaderListener;
 import net.sourceforge.atunes.model.IRepositoryTransaction;
 import net.sourceforge.atunes.model.IStateNavigation;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.DirectoryFileFilter;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -56,6 +57,15 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 	private DirectoryFileFilter directoryFileFilter;
 	
 	private IRepositoryTransaction transaction;
+	
+	private IUnknownObjectChecker unknownObjectChecker;
+	
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
 
 	/**
 	 * Starts load
@@ -171,7 +181,7 @@ public abstract class AbstractRepositoryLoader implements IRepositoryLoader, Run
 		runTasksBeforeLoadRepository();
 		startReadTime = System.currentTimeMillis();
 
-		RepositoryFiller filler = new RepositoryFiller(repository, stateNavigation);
+		RepositoryFiller filler = new RepositoryFiller(repository, stateNavigation, unknownObjectChecker);
 		for (File folder : folders) {
 			String fastRepositoryPath = folder.getAbsolutePath().replace('\\', '/');
 			if (fastRepositoryPath.endsWith("/")) {

@@ -31,9 +31,9 @@ import net.sourceforge.atunes.model.IAudioObjectDuplicateFinder;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.StringUtils;
-import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 /**
  * Default comparator used to sort audio objects
@@ -47,6 +47,15 @@ public class AudioObjectDuplicateFinder implements IAudioObjectDuplicateFinder {
 	 * 
 	 */
 	private static final long serialVersionUID = -3725777266546165273L;
+	
+	private IUnknownObjectChecker unknownObjectChecker;
+	
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
 
 	@Override
 	public List<IAudioObject> findDuplicates(List<? extends IAudioObject> audioObjects) {
@@ -97,7 +106,7 @@ public class AudioObjectDuplicateFinder implements IAudioObjectDuplicateFinder {
 	}
 
 	private Integer getHashForLocalAudioObject(ILocalAudioObject ao) {
-		if (StringUtils.isEmpty(ao.getTitle()) || StringUtils.isEmpty(ao.getArtist()) || UnknownObjectCheck.isUnknownArtist(ao.getArtist())) {
+		if (StringUtils.isEmpty(ao.getTitle()) || StringUtils.isEmpty(ao.getArtist()) || unknownObjectChecker.isUnknownArtist(ao.getArtist())) {
 			return null;
 		}
 		return "LOCAL".hashCode() + ao.getTitle().toLowerCase().hashCode() * ao.getArtist().toLowerCase().hashCode(); 

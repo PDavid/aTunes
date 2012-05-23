@@ -24,15 +24,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import net.sourceforge.atunes.kernel.modules.repository.UnknownObjectChecker;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLovedTrack;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILovedTrack;
 import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.model.ITaskService;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
-import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -62,7 +63,16 @@ public class LastFmUserServices implements ApplicationContextAware {
 	
 	private LastFmCache lastFmCache;
 	
+	private IUnknownObjectChecker unknownObjectChecker;
+	
 	private ApplicationContext context;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
 	
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) {
@@ -259,7 +269,7 @@ public class LastFmUserServices implements ApplicationContextAware {
      * @return
      */
     private boolean checkArtist(IAudioObject ao) {
-        if (UnknownObjectCheck.isUnknownArtist(ao.getArtist())) {
+        if (unknownObjectChecker.isUnknownArtist(ao.getArtist())) {
             Logger.debug("Don't submit to Last.fm: Unknown artist");
             return false;
         }

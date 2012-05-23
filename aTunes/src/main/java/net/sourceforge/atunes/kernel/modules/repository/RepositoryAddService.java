@@ -25,16 +25,29 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.context.ApplicationContext;
+
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IStateNavigation;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
 public class RepositoryAddService {
 	
 	private ILocalAudioObjectFactory localAudioObjectFactory;
 
 	private IStateNavigation stateNavigation;
+	
+	private IUnknownObjectChecker unknownObjectChecker;
+	
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
+
 	
 	/**
 	 * @param stateNavigation
@@ -60,7 +73,7 @@ public class RepositoryAddService {
 	public void addToRepository(IRepository rep, List<File> files) {
 		// Get folders where files are
 		Set<File> folders = getFoldersOfFiles(files);
-		RepositoryFiller filler = new RepositoryFiller(rep, stateNavigation);
+		RepositoryFiller filler = new RepositoryFiller(rep, stateNavigation, unknownObjectChecker);
 		for (File folder : folders) {
 			addFilesFromFolder(rep, files, filler, folder);
 		}		

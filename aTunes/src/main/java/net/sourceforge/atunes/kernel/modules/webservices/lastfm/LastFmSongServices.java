@@ -23,12 +23,21 @@ package net.sourceforge.atunes.kernel.modules.webservices.lastfm;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ITrackInfo;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.StringUtils;
-import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 public class LastFmSongServices {
 	
 	private LastFmAlbumServices lastFmAlbumServices;
+	
+	private IUnknownObjectChecker unknownObjectChecker;
+	
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
 	
 	/**
 	 * @param lastFmAlbumServices
@@ -45,8 +54,8 @@ public class LastFmSongServices {
      */
     String getTitleForFile(ILocalAudioObject f) {
         // If has valid artist name, album name, and track number...
-        if (!UnknownObjectCheck.isUnknownArtist(f.getArtist())
-                && !UnknownObjectCheck.isUnknownAlbum(f.getAlbum()) && f.getTrackNumber() > 0) {
+        if (!unknownObjectChecker.isUnknownArtist(f.getArtist())
+                && !unknownObjectChecker.isUnknownAlbum(f.getAlbum()) && f.getTrackNumber() > 0) {
             // Find album
             IAlbumInfo albumRetrieved = lastFmAlbumServices.getAlbum(f.getArtist(), f.getAlbum());
             if (albumRetrieved != null && albumRetrieved.getTracks().size() >= f.getTrackNumber()) {
@@ -65,8 +74,8 @@ public class LastFmSongServices {
      */
     int getTrackNumberForFile(ILocalAudioObject f) {
         // If has valid artist name, album name and title
-        if (!UnknownObjectCheck.isUnknownArtist(f.getArtist())
-                && !UnknownObjectCheck.isUnknownAlbum(f.getAlbum()) && !StringUtils.isEmpty(f.getTitle())) {
+        if (!unknownObjectChecker.isUnknownArtist(f.getArtist())
+                && !unknownObjectChecker.isUnknownAlbum(f.getAlbum()) && !StringUtils.isEmpty(f.getTitle())) {
             // Find album
             IAlbumInfo albumRetrieved = lastFmAlbumServices.getAlbum(f.getArtist(), f.getAlbum());
             if (albumRetrieved != null) {

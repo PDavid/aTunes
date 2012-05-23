@@ -25,12 +25,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.kernel.modules.repository.UnknownObjectChecker;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
-import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 /**
  * This class represents a year, with a set of artist of this year.
@@ -94,7 +96,7 @@ public class Year implements IYear {
     @Override
 	public String getName() {
         if (year.isEmpty()) {
-            return UnknownObjectCheck.getUnknownYear();
+            return Context.getBean(IUnknownObjectChecker.class).getUnknownYear();
         }
         return year;
     }

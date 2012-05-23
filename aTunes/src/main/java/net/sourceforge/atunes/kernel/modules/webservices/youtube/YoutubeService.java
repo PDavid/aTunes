@@ -25,10 +25,10 @@ import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.INetworkHandler;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IVideoEntry;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
-import net.sourceforge.atunes.utils.UnknownObjectCheck;
 import net.sourceforge.atunes.utils.XMLUtils;
 
 import org.w3c.dom.Document;
@@ -65,6 +65,15 @@ public final class YoutubeService {
     private INetworkHandler networkHandler;
     
     private YoutubeResultXmlAnalyzer youtubeResultXmlAnalyzer;
+    
+    private IUnknownObjectChecker unknownObjectChecker;
+    
+    /**
+     * @param unknownObjectChecker
+     */
+    public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
     
     /**
      * @param youtubeResultXmlAnalyzer
@@ -165,7 +174,7 @@ public final class YoutubeService {
         StringBuilder builder = new StringBuilder();
 
         // Add artist if it's not unknown
-        if (!UnknownObjectCheck.isUnknownArtist(ao.getArtist())) {
+        if (!unknownObjectChecker.isUnknownArtist(ao.getArtist())) {
             builder.append(ao.getArtist());
         }
 

@@ -26,8 +26,8 @@ import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRadio;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 /**
  * Panel to show similar artists
@@ -38,6 +38,15 @@ import net.sourceforge.atunes.utils.UnknownObjectCheck;
 public class SimilarArtistsContextPanel extends AbstractContextPanel {
 	
 	private IIconFactory artistSimilarIcon;
+	
+	private IUnknownObjectChecker unknownObjectChecker;
+	
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
 	
 	/**
 	 * @param artistSimilarIcon
@@ -64,7 +73,7 @@ public class SimilarArtistsContextPanel extends AbstractContextPanel {
     @Override
     public boolean isPanelVisibleForAudioObject(IAudioObject audioObject) {
         // Avoid unknown artist or album
-        if (UnknownObjectCheck.isUnknownArtist(audioObject.getArtist())) {
+        if (unknownObjectChecker.isUnknownArtist(audioObject.getArtist())) {
             return false;
         }
 

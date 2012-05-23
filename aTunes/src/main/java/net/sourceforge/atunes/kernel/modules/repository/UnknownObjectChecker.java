@@ -18,20 +18,21 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.utils;
+package net.sourceforge.atunes.kernel.modules.repository;
 
 import net.sourceforge.atunes.model.IArtist;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
+import net.sourceforge.atunes.utils.I18nUtils;
 
-public final class UnknownObjectCheck {
+public final class UnknownObjectChecker implements IUnknownObjectChecker {
 	
-	private UnknownObjectCheck() {}
-
     /**
      * Return unknown artist text
      * 
      * @return
      */
-    public static String getUnknownArtist() {
+    @Override
+	public String getUnknownArtist() {
         return I18nUtils.getString("UNKNOWN_ARTIST");
     }
 
@@ -40,7 +41,8 @@ public final class UnknownObjectCheck {
      * 
      * @return
      */
-    public static boolean isUnknownArtist(IArtist artist) {
+    @Override
+	public boolean isUnknownArtist(IArtist artist) {
         return artist != null && artist.getName().equalsIgnoreCase(getUnknownArtist());
     }
 
@@ -49,7 +51,8 @@ public final class UnknownObjectCheck {
      * 
      * @return
      */
-    public static boolean isUnknownArtist(String artist) {
+    @Override
+	public boolean isUnknownArtist(String artist) {
         return getUnknownArtist().equalsIgnoreCase(artist);
     }
     
@@ -58,7 +61,8 @@ public final class UnknownObjectCheck {
      * 
      * @return
      */
-    public static String getUnknownAlbum() {
+    @Override
+	public String getUnknownAlbum() {
         return I18nUtils.getString("UNKNOWN_ALBUM");
     }
 
@@ -67,7 +71,8 @@ public final class UnknownObjectCheck {
      * 
      * @return
      */
-    public static boolean isUnknownAlbum(String album) {
+    @Override
+	public boolean isUnknownAlbum(String album) {
         return getUnknownAlbum().equalsIgnoreCase(album);
     }
     
@@ -76,7 +81,8 @@ public final class UnknownObjectCheck {
      * 
      * @return
      */
-    public static String getUnknownGenre() {
+    @Override
+	public String getUnknownGenre() {
         return I18nUtils.getString("UNKNOWN_GENRE");
     }
 
@@ -85,7 +91,8 @@ public final class UnknownObjectCheck {
      * 
      * @return
      */
-    public static boolean isUnknownGenre(String genre) {
+    @Override
+	public boolean isUnknownGenre(String genre) {
         return getUnknownGenre().equalsIgnoreCase(genre);
     }
 
@@ -94,7 +101,8 @@ public final class UnknownObjectCheck {
      * 
      * @return
      */
-    public static String getUnknownYear() {
+    @Override
+	public String getUnknownYear() {
         return I18nUtils.getString("UNKNOWN_YEAR");
     }
 
@@ -103,7 +111,8 @@ public final class UnknownObjectCheck {
      * 
      * @return
      */
-    public static boolean isUnknownYear(String year) {
+    @Override
+	public boolean isUnknownYear(String year) {
         return getUnknownYear().equalsIgnoreCase(year);
     }
 }

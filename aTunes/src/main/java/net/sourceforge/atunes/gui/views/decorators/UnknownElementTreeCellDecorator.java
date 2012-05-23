@@ -26,29 +26,32 @@ import javax.swing.JLabel;
 
 import net.sourceforge.atunes.gui.AbstractTreeCellDecorator;
 import net.sourceforge.atunes.gui.ColorDefinitions;
-import net.sourceforge.atunes.utils.StringUtils;
-import net.sourceforge.atunes.utils.UnknownObjectCheck;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
 public class UnknownElementTreeCellDecorator extends AbstractTreeCellDecorator<JLabel, Object> {
 
-	private String unknownArtist;
-	private String unknownAlbum;
-	private String unknownGenre;
-	private String unknownYear;
+	private IUnknownObjectChecker unknownObjectChecker;
 	
-	public UnknownElementTreeCellDecorator() {
-		this.unknownAlbum = UnknownObjectCheck.getUnknownAlbum();
-		this.unknownArtist = UnknownObjectCheck.getUnknownArtist();
-		this.unknownGenre = UnknownObjectCheck.getUnknownGenre();
-		this.unknownYear = UnknownObjectCheck.getUnknownYear();
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
 	}
 	
     @Override
     public Component decorateTreeCellComponent(JLabel component, Object userObject, boolean isSelected) {
-    	if (StringUtils.equalsToStrings(userObject.toString(), unknownAlbum, unknownArtist, unknownGenre, unknownYear)) {
+    	if (checkUnknown(userObject.toString())) {
         	component.setForeground(ColorDefinitions.GENERAL_UNKNOWN_ELEMENT_FOREGROUND_COLOR);
         }
         return component;
+    }
+    
+    private boolean checkUnknown(String string) {
+    	return unknownObjectChecker.isUnknownAlbum(string) || 
+    		   unknownObjectChecker.isUnknownArtist(string) ||
+    		   unknownObjectChecker.isUnknownGenre(string) ||
+    		   unknownObjectChecker.isUnknownYear(string);
     }
 
 }

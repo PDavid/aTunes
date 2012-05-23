@@ -20,11 +20,12 @@
 
 package net.sourceforge.atunes.kernel.modules.context.artist;
 
+import net.sourceforge.atunes.kernel.modules.repository.UnknownObjectChecker;
 import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextInformationSource;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IWebServicesHandler;
-import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 /**
  * Data Source for artist popular tracks
@@ -37,6 +38,15 @@ public class ArtistPopularTracksDataSource implements IContextInformationSource 
     private IWebServicesHandler webServicesHandler;
     
     private IArtistTopTracks topTracks;
+    
+    private IUnknownObjectChecker unknownObjectChecker;
+    
+    /**
+     * @param unknownObjectChecker
+     */
+    public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
     
     @Override
     public void getData(IAudioObject audioObject) {
@@ -51,7 +61,7 @@ public class ArtistPopularTracksDataSource implements IContextInformationSource 
 	}
 
     private IArtistTopTracks getTopTracksData(IAudioObject audioObject) {
-    	if (!UnknownObjectCheck.isUnknownArtist(audioObject.getArtist())) {
+    	if (!unknownObjectChecker.isUnknownArtist(audioObject.getArtist())) {
     		return webServicesHandler.getTopTracks(audioObject.getArtist());
     	}
     	return null;

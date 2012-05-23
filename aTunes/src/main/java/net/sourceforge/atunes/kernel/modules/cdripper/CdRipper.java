@@ -29,11 +29,12 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.SwingUtilities;
 
+import net.sourceforge.atunes.kernel.modules.repository.UnknownObjectChecker;
 import net.sourceforge.atunes.model.IOSManager;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.FileNameUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
-import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 class CdRipper {
 
@@ -52,13 +53,16 @@ class CdRipper {
     private String album;
     private String fileNamePattern;
     private IOSManager osManager;
+    
+    private IUnknownObjectChecker unknownObjectChecker;
 
     /**
      * Instantiates a new cd ripper.
      * @param osManager
      */
-    CdRipper(IOSManager osManager) {
+    CdRipper(IOSManager osManager, IUnknownObjectChecker unknownObjectChecker) {
     	this.osManager = osManager;
+    	this.unknownObjectChecker = unknownObjectChecker;
         cdToWavConverter = CdToWavConverterFactory.createNewConverterForOS(osManager);
     }
 
@@ -225,7 +229,7 @@ class CdRipper {
 		     */
 		    Runnable encodeFile = new EncodeFileRunnable(this, trackNumber, artistNames, composerNames,
 					ripResultFinal, resultFileTemp, infFileTemp, titles,
-					wavFileTemp);
+					wavFileTemp, unknownObjectChecker);
 
 		    executorService.execute(encodeFile);
 		    /*
@@ -262,7 +266,7 @@ class CdRipper {
      */
     void setAlbum(String album) {
         if (album == null || album.equals("")) {
-            this.album = UnknownObjectCheck.getUnknownAlbum();
+            this.album = unknownObjectChecker.getUnknownAlbum();
         } else {
             this.album = album;
         }
@@ -279,7 +283,7 @@ class CdRipper {
      */
     void setArtist(String artist) {
         if (artist == null || artist.equals("")) {
-            this.artist = UnknownObjectCheck.getUnknownArtist();
+            this.artist = unknownObjectChecker.getUnknownArtist();
         } else {
             this.artist = artist;
         }

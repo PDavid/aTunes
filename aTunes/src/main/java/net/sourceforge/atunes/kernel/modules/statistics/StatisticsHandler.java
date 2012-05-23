@@ -23,7 +23,10 @@ package net.sourceforge.atunes.kernel.modules.statistics;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.context.ApplicationContext;
+
 import net.sourceforge.atunes.kernel.AbstractHandler;
+import net.sourceforge.atunes.kernel.modules.repository.UnknownObjectChecker;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -36,8 +39,8 @@ import net.sourceforge.atunes.model.IStatistics;
 import net.sourceforge.atunes.model.IStatisticsAlbum;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.ITaskService;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.RankList;
-import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 public final class StatisticsHandler extends AbstractHandler implements IStatisticsHandler {
 
@@ -52,6 +55,17 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
     private ITaskService taskService;
     
     private ILookAndFeelManager lookAndFeelManager;
+    
+	private IUnknownObjectChecker unknownObjectChecker;
+	
+	private ApplicationContext context;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
     
     /**
      * @param lookAndFeelManager
@@ -118,7 +132,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
 		IArtist a = repositoryHandler.getArtist(artist);
 
 		// Unknown artist -> don't fill artist stats
-		if (a == null || UnknownObjectCheck.isUnknownArtist(a.getName())) {
+		if (a == null || unknownObjectChecker.isUnknownArtist(a.getName())) {
 		    return;
 		}
 
@@ -161,7 +175,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
 		IAlbum alb = a.getAlbum(album);
 
 		// Unknown album -> don't fill album stats
-		if (alb == null || UnknownObjectCheck.isUnknownAlbum(alb.getName())) {
+		if (alb == null || unknownObjectChecker.isUnknownAlbum(alb.getName())) {
 		    return;
 		}
 

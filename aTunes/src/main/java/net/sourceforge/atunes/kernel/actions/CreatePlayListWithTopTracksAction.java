@@ -28,6 +28,7 @@ import java.util.concurrent.Callable;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import net.sourceforge.atunes.kernel.modules.repository.UnknownObjectChecker;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.IBackgroundWorker;
@@ -38,11 +39,11 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ITrackInfo;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.CollectionUtils;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
-import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 public class CreatePlayListWithTopTracksAction extends AbstractActionOverSelectedTreeObjects<IArtist> {
 
@@ -59,6 +60,15 @@ public class CreatePlayListWithTopTracksAction extends AbstractActionOverSelecte
 	private IIndeterminateProgressDialogFactory indeterminateProgressDialogFactory;
 
 	private IIndeterminateProgressDialog dialog;
+	
+	private IUnknownObjectChecker unknownObjectChecker;
+	
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
 
 	/**
 	 * @param indeterminateProgressDialogFactory
@@ -136,7 +146,7 @@ public class CreatePlayListWithTopTracksAction extends AbstractActionOverSelecte
 			return false;
 		}
 		for (DefaultMutableTreeNode node : selection) {
-			if (!(node.getUserObject() instanceof IArtist) || UnknownObjectCheck.isUnknownArtist((IArtist) node.getUserObject())) {
+			if (!(node.getUserObject() instanceof IArtist) || unknownObjectChecker.isUnknownArtist((IArtist) node.getUserObject())) {
 				return false;
 			}
 		}

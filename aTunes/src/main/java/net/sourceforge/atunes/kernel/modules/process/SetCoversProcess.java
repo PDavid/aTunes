@@ -30,12 +30,15 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+import org.springframework.context.ApplicationContext;
+
+import net.sourceforge.atunes.kernel.modules.repository.UnknownObjectChecker;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ITag;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.ImageUtils;
-import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 /**
  * The Class SetGenresProcess.
@@ -45,6 +48,15 @@ public class SetCoversProcess extends AbstractChangeTagProcess {
     private Map<ILocalAudioObject, ImageIcon> filesAndCovers;
     
     private IWebServicesHandler webServicesHandler;
+    
+	private IUnknownObjectChecker unknownObjectChecker;
+	
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
     
     /**
      * @param webServicesHandler
@@ -83,7 +95,7 @@ public class SetCoversProcess extends AbstractChangeTagProcess {
         Map<Integer, ImageIcon> coverCache = new HashMap<Integer, ImageIcon>();
 
         for (ILocalAudioObject f : files) {
-            if (!UnknownObjectCheck.isUnknownArtist(f.getArtist()) && !UnknownObjectCheck.isUnknownAlbum(f.getAlbum())) {
+            if (!unknownObjectChecker.isUnknownArtist(f.getArtist()) && !unknownObjectChecker.isUnknownAlbum(f.getAlbum())) {
                 ImageIcon cover = null;
                 int cacheKey = f.getArtist().hashCode() + f.getAlbum().hashCode();
                 if (coverCache.containsKey(cacheKey)) {

@@ -23,6 +23,8 @@ package net.sourceforge.atunes.kernel.modules.repository;
 import java.io.File;
 import java.util.StringTokenizer;
 
+import org.springframework.context.ApplicationContext;
+
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IDeviceHandler;
@@ -31,9 +33,9 @@ import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.utils.Logger;
-import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 /**
  * Removes from repository
@@ -47,6 +49,16 @@ public class RepositoryRemover {
 	private IRepositoryHandler repositoryHandler;
 	
 	private IDeviceHandler deviceHandler;
+	
+	private IUnknownObjectChecker unknownObjectChecker;
+	
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
+
 	
 	/**
 	 * @param osManager
@@ -150,7 +162,7 @@ public class RepositoryRemover {
 		String album = file.getAlbum();
 
 		IArtist a = repositoryHandler.getArtist(albumArtist);
-		if (a == null || UnknownObjectCheck.isUnknownArtist(a)) {
+		if (a == null || unknownObjectChecker.isUnknownArtist(a)) {
 			a = repositoryHandler.getArtist(artist);
 		}
 		if (a != null) {

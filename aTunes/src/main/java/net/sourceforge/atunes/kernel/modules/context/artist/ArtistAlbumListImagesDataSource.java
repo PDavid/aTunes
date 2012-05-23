@@ -26,13 +26,14 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.kernel.modules.repository.UnknownObjectChecker;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextInformationSource;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.ImageUtils;
-import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 /**
  * Data Source for basic album object information Retrieves basic information
@@ -50,6 +51,15 @@ public class ArtistAlbumListImagesDataSource implements IContextInformationSourc
     private IAlbumListInfo albumList;
     
     private Map<IAlbumInfo, ImageIcon> covers; 
+    
+    private IUnknownObjectChecker unknownObjectChecker;
+    
+    /**
+     * @param unknownObjectChecker
+     */
+    public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
     
     @Override
     public void getData(IAudioObject audioObject) {
@@ -85,7 +95,7 @@ public class ArtistAlbumListImagesDataSource implements IContextInformationSourc
      * @return
      */
     private IAlbumListInfo getAlbumListData(IAudioObject audioObject) {
-        if (!UnknownObjectCheck.isUnknownArtist(audioObject.getArtist())) {
+        if (!unknownObjectChecker.isUnknownArtist(audioObject.getArtist())) {
             return webServicesHandler.getAlbumList(audioObject.getArtist());
         }
         return null;

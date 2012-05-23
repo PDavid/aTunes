@@ -41,11 +41,12 @@ import javax.swing.JTextField;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
+import net.sourceforge.atunes.kernel.modules.repository.UnknownObjectChecker;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 /**
  * The dialog for ripping cds
@@ -69,6 +70,14 @@ public final class RipCdDialog extends AbstractCustomDialog {
     private JButton ok;
     private JButton cancel;
     private CdInfoTableModel tableModel;
+    private IUnknownObjectChecker unknownObjectChecker;
+    
+    /**
+     * @param unknownObjectChecker
+     */
+    public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
 
     /**
      * Instantiates a new rip cd dialog.
@@ -276,7 +285,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
     private JPanel getContent(ILookAndFeel iLookAndFeel) {
         JPanel panel = new JPanel(new GridBagLayout());
 
-        tableModel = new CdInfoTableModel();
+        tableModel = new CdInfoTableModel(unknownObjectChecker);
         
         JTable table = getTable(iLookAndFeel);
         JScrollPane scrollPane = iLookAndFeel.getTableScrollPane(table);
@@ -516,7 +525,7 @@ public final class RipCdDialog extends AbstractCustomDialog {
                 if (cdInfo.getArtist() != null && !cdInfo.getArtist().trim().equals("")) {
                     names.add(cdInfo.getArtist());
                 } else {
-                    names.add(UnknownObjectCheck.getUnknownArtist());
+                    names.add(unknownObjectChecker.getUnknownArtist());
                 }
             }
         }

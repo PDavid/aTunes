@@ -25,6 +25,7 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
+import net.sourceforge.atunes.kernel.modules.repository.UnknownObjectChecker;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -32,9 +33,9 @@ import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
 import net.sourceforge.atunes.model.ISearchDialogFactory;
 import net.sourceforge.atunes.model.IStateCore;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
-import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 public class SearchArtistAtAction extends CustomAbstractAction {
 
@@ -47,6 +48,15 @@ public class SearchArtistAtAction extends CustomAbstractAction {
     private ISearchDialogFactory searchDialogFactory;
     
     private IStateCore stateCore;
+    
+	private IUnknownObjectChecker unknownObjectChecker;
+	
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
     
     /**
      * @param stateCore
@@ -104,7 +114,7 @@ public class SearchArtistAtAction extends CustomAbstractAction {
         }
 
         for (DefaultMutableTreeNode node : selection) {
-            if (!(node.getUserObject() instanceof IArtist) || UnknownObjectCheck.isUnknownArtist((IArtist) node.getUserObject())) {
+            if (!(node.getUserObject() instanceof IArtist) || unknownObjectChecker.isUnknownArtist((IArtist) node.getUserObject())) {
                 return false;
             }
         }

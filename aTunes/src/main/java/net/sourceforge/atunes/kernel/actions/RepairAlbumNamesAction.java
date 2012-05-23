@@ -27,8 +27,8 @@ import net.sourceforge.atunes.model.IConfirmationDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
@@ -41,21 +41,31 @@ import com.google.common.collect.Collections2;
  */
 public class RepairAlbumNamesAction extends CustomAbstractAction {
 
-    private static final class FilesWithEmptyAlbumFilter implements Predicate<ILocalAudioObject> {
+    private final class FilesWithEmptyAlbumFilter implements Predicate<ILocalAudioObject> {
 		@Override
 		public boolean apply(ILocalAudioObject ao) {
-			return ao.getAlbum() == null || UnknownObjectCheck.isUnknownAlbum(ao.getAlbum()) || ao.getAlbum().isEmpty();
+			return ao.getAlbum() == null || unknownObjectChecker.isUnknownAlbum(ao.getAlbum()) || ao.getAlbum().isEmpty();
 		}
 	}
 
 	private static final long serialVersionUID = -7828819966696617838L;
 
+	
     private IRepositoryHandler repositoryHandler;
     
     private IProcessFactory processFactory;
     
     private IConfirmationDialogFactory confirmationDialogFactory;
     
+	private IUnknownObjectChecker unknownObjectChecker;
+	
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
+
     /**
      * @param confirmationDialogFactory
      */
@@ -77,6 +87,9 @@ public class RepairAlbumNamesAction extends CustomAbstractAction {
 		this.repositoryHandler = repositoryHandler;
 	}
     
+    /**
+     * Default constructor
+     */
     public RepairAlbumNamesAction() {
         super(I18nUtils.getString("REPAIR_ALBUM_NAMES"));
     }

@@ -30,6 +30,7 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStateRipper;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
@@ -41,21 +42,23 @@ final class GetCdInfoAndStartRippingSwingWorker extends	SwingWorker<CDInfo, Void
 	private RipCdDialog dialog;
 	private IWebServicesHandler webServicesHandler;
 	private IStateRipper stateRipper;
+	private IUnknownObjectChecker unknownObjectChecker;
 
 	/**
 	 * @param osManager
 	 * @param stateRipper
 	 * @param ripperHandler
-	 * @param frame
 	 * @param dialog
 	 * @param webServicesHandler
+	 * @param unknownObjectChecker
 	 */
-	GetCdInfoAndStartRippingSwingWorker(IOSManager osManager, IStateRipper stateRipper, RipperHandler ripperHandler, RipCdDialog dialog, IWebServicesHandler webServicesHandler) {
+	GetCdInfoAndStartRippingSwingWorker(IOSManager osManager, IStateRipper stateRipper, RipperHandler ripperHandler, RipCdDialog dialog, IWebServicesHandler webServicesHandler, IUnknownObjectChecker unknownObjectChecker) {
 		this.osManager = osManager;
 		this.stateRipper = stateRipper;
 		this.ripperHandler = ripperHandler;
 		this.dialog = dialog;
 		this.webServicesHandler = webServicesHandler;
+		this.unknownObjectChecker = unknownObjectChecker;
 	}
 
 	@Override
@@ -63,7 +66,7 @@ final class GetCdInfoAndStartRippingSwingWorker extends	SwingWorker<CDInfo, Void
 	    if (!this.ripperHandler.testTools()) {
 	        return null;
 	    }
-	    CdRipper ripper = new CdRipper(osManager);
+	    CdRipper ripper = new CdRipper(osManager, unknownObjectChecker);
 	    ripper.setNoCdListener(new NoCdListener() {
 	        @Override
 	        public void noCd() {
