@@ -21,13 +21,14 @@
 package net.sourceforge.atunes.kernel.modules.context.artist;
 
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
+import net.sourceforge.atunes.kernel.modules.repository.UnknownObjectChecker;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRadio;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.I18nUtils;
-import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 /**
  * Context panel to show album information
@@ -40,6 +41,15 @@ public class ArtistContextPanel extends AbstractContextPanel {
     private static final long serialVersionUID = -7910261492394049289L;
     
     private IIconFactory artistImageIcon;
+    
+    private IUnknownObjectChecker unknownObjectChecker;
+    
+    /**
+     * @param unknownObjectChecker
+     */
+    public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
     
     /**
      * @param artistImageIcon
@@ -66,7 +76,7 @@ public class ArtistContextPanel extends AbstractContextPanel {
     @Override
     public boolean isPanelVisibleForAudioObject(IAudioObject audioObject) {
         // Avoid unknown artist
-        if (UnknownObjectCheck.isUnknownArtist(audioObject.getArtist())) {
+        if (unknownObjectChecker.isUnknownArtist(audioObject.getArtist())) {
             return false;
         }
 

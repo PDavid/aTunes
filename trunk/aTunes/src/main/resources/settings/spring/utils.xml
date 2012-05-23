@@ -12,6 +12,8 @@
 	<bean id="collatorFactory" class="net.sourceforge.atunes.utils.Collator"/>
 	<bean id="collator" factory-bean="collatorFactory" factory-method="getCollator"/>
 	
+	<bean id="unknownObjectChecker" class="net.sourceforge.atunes.kernel.modules.repository.UnknownObjectChecker"/>
+	
 	<bean id="xmlSerializerService" class="net.sourceforge.atunes.utils.XMLSerializerService"/>
 	
 	<bean id="xstreamFactory" class="net.sourceforge.atunes.utils.XStreamFactory">

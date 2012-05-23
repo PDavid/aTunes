@@ -36,8 +36,8 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.ITag;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IYear;
-import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -51,18 +51,22 @@ final class RepositoryFiller {
 	private IRepository repository;
 	
 	private IStateNavigation stateNavigation;
+	
+	private IUnknownObjectChecker unknownObjectChecker;
 
 	/**
      * Creates a new filler for given repository
      * @param repository
      * @param stateNavigation
+     * @param unknownObjectChecker
      */
-    RepositoryFiller(IRepository repository, IStateNavigation stateNavigation) {
+    RepositoryFiller(IRepository repository, IStateNavigation stateNavigation, IUnknownObjectChecker unknownObjectChecker) {
     	if (repository == null) {
     		throw new IllegalArgumentException("Repository is null");
     	}
     	this.repository = repository;
     	this.stateNavigation = stateNavigation;
+    	this.unknownObjectChecker = unknownObjectChecker;
     }
 
     /**
@@ -288,7 +292,7 @@ final class RepositoryFiller {
     private String getArtist(ITag tag) {
     	String artist = tag != null ? tag.getArtist() : null;
 		if (StringUtils.isBlank(artist)) {
-			artist = UnknownObjectCheck.getUnknownArtist();
+			artist = unknownObjectChecker.getUnknownArtist();
 		}
 		return artist;
     }
@@ -296,7 +300,7 @@ final class RepositoryFiller {
     private String getAlbum(ITag tag) {
     	String album = tag != null ? tag.getAlbum() : null;
 		if (StringUtils.isBlank(album)) {
-			album = UnknownObjectCheck.getUnknownAlbum();
+			album = unknownObjectChecker.getUnknownAlbum();
 		}
 		return album;
     }
@@ -312,7 +316,7 @@ final class RepositoryFiller {
 			genre = oldTag.getGenre();
 		}
 		if (genre == null || genre.equals("")) {
-			genre = UnknownObjectCheck.getUnknownGenre();
+			genre = unknownObjectChecker.getUnknownGenre();
 		}
 
 		IGenre g = repository.getGenre(genre);
@@ -336,7 +340,7 @@ final class RepositoryFiller {
 			year = oldTag.getYear() > 0 ? Integer.toString(oldTag.getYear()) : "";
 		}
 		if (year == null || year.equals("")) {
-			year = UnknownObjectCheck.getUnknownYear();
+			year = unknownObjectChecker.getUnknownYear();
 		}
 
 		// Remove from year structure if necessary

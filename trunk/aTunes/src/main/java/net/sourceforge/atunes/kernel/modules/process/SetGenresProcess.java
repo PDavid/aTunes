@@ -25,9 +25,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.context.ApplicationContext;
+
+import net.sourceforge.atunes.kernel.modules.repository.UnknownObjectChecker;
 import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IWebServicesHandler;
-import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 /**
  * The Class SetGenresProcess.
@@ -37,6 +40,17 @@ public class SetGenresProcess extends AbstractChangeTagProcess {
     private Map<ILocalAudioObject, String> filesAndGenres;
     
     private IWebServicesHandler webServicesHandler;
+    
+	private IUnknownObjectChecker unknownObjectChecker;
+	
+	private ApplicationContext context;
+
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
     
     /**
      * @param webServicesHandler
@@ -74,7 +88,7 @@ public class SetGenresProcess extends AbstractChangeTagProcess {
         Map<String, String> tagCache = new HashMap<String, String>();
         
         for (ILocalAudioObject f : files) {
-            if (!UnknownObjectCheck.isUnknownArtist(f.getArtist())) {
+            if (!unknownObjectChecker.isUnknownArtist(f.getArtist())) {
                 String tag = null;
                 if (tagCache.containsKey(f.getArtist())) {
                     tag = tagCache.get(f.getArtist());

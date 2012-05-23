@@ -23,10 +23,12 @@ package net.sourceforge.atunes.kernel.modules.repository.data;
 import java.io.File;
 import java.io.Serializable;
 
+import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.kernel.modules.repository.UnknownObjectChecker;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ITag;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.StringUtils;
-import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 import org.commonjukebox.plugins.model.PluginApi;
 import org.joda.time.base.BaseDateTime;
@@ -87,7 +89,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
         if (tag != null && tag.getAlbum() != null && !tag.getAlbum().isEmpty()) {
             album = tag.getAlbum();
         } else {
-            album = UnknownObjectCheck.getUnknownAlbum();
+            album = Context.getBean(IUnknownObjectChecker.class).getUnknownAlbum();
         }
         return album;
     }
@@ -98,14 +100,14 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
         if (tag != null && tag.getAlbumArtist() != null && !tag.getAlbumArtist().isEmpty()) {
             albumArtist = tag.getAlbumArtist();
         } else {
-            albumArtist = UnknownObjectCheck.getUnknownArtist();
+            albumArtist = Context.getBean(IUnknownObjectChecker.class).getUnknownArtist();
         }
         return albumArtist;
     }
 
     @Override
     public String getAlbumArtistOrArtist() {
-        return getAlbumArtist().isEmpty() || getAlbumArtist().equals(UnknownObjectCheck.getUnknownArtist()) ? getArtist() : getAlbumArtist();
+        return getAlbumArtist().isEmpty() || getAlbumArtist().equals(Context.getBean(IUnknownObjectChecker.class).getUnknownArtist()) ? getArtist() : getAlbumArtist();
     }
 
     @Override
@@ -114,7 +116,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
         if (tag != null && tag.getArtist() != null && !tag.getArtist().isEmpty()) {
             artist = tag.getArtist();
         } else {
-            artist = UnknownObjectCheck.getUnknownArtist();
+            artist = Context.getBean(IUnknownObjectChecker.class).getUnknownArtist();
         }
         return artist;
     }
@@ -160,7 +162,7 @@ public final class AudioFile implements ILocalAudioObject, Serializable {
         if (tag != null && tag.getGenre() != null && !tag.getGenre().isEmpty()) {
             return tag.getGenre();
         }
-        return UnknownObjectCheck.getUnknownGenre();
+        return Context.getBean(IUnknownObjectChecker.class).getUnknownGenre();
     }
 
     @Override

@@ -46,6 +46,7 @@ import net.sourceforge.atunes.model.IRipperHandler;
 import net.sourceforge.atunes.model.IRipperProgressDialog;
 import net.sourceforge.atunes.model.IStateRipper;
 import net.sourceforge.atunes.model.ITaskService;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -53,6 +54,7 @@ import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.sanselan.ImageWriteException;
+import org.springframework.context.ApplicationContext;
 
 public final class RipperHandler extends AbstractHandler implements IRipperHandler {
 
@@ -92,6 +94,15 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
     private List<String> allEncoders;
     
     private IStateRipper stateRipper;
+    
+	private IUnknownObjectChecker unknownObjectChecker;
+	
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
     
     /**
      * @param stateRipper
@@ -442,7 +453,7 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
         	}
         });
 
-        SwingWorker<CDInfo, Void> getCdInfoAndStartRipping = new GetCdInfoAndStartRippingSwingWorker(getOsManager(), stateRipper, this, dialog, webServicesHandler);
+        SwingWorker<CDInfo, Void> getCdInfoAndStartRipping = new GetCdInfoAndStartRippingSwingWorker(getOsManager(), stateRipper, this, dialog, webServicesHandler, unknownObjectChecker);
         getCdInfoAndStartRipping.execute();
     }
 

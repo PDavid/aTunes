@@ -30,7 +30,6 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IRadio;
-import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -43,6 +42,7 @@ public class AudioObjectDuplicateFinderTest {
 	@Before
 	public void init() {
 		sut = new AudioObjectDuplicateFinder();
+		sut.setUnknownObjectChecker(new UnknownObjectChecker());
 	}
 	
 	@Test
@@ -102,11 +102,11 @@ public class AudioObjectDuplicateFinderTest {
 	public void testLocalAudioObjectWithUnknownArtist() {
 		ILocalAudioObject lao1 = mock(ILocalAudioObject.class);
 		when(lao1.getTitle()).thenReturn("T1");
-		when(lao1.getArtist()).thenReturn(UnknownObjectCheck.getUnknownArtist());
+		when(lao1.getArtist()).thenReturn(new UnknownObjectChecker().getUnknownArtist());
 
 		ILocalAudioObject lao2 = mock(ILocalAudioObject.class);
 		when(lao2.getTitle()).thenReturn("T1");
-		when(lao2.getArtist()).thenReturn(UnknownObjectCheck.getUnknownArtist());
+		when(lao2.getArtist()).thenReturn(new UnknownObjectChecker().getUnknownArtist());
 		
 		List<IAudioObject> list = new ArrayList<IAudioObject>();
 		list.add(lao1);

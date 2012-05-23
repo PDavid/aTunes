@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.kernel.modules.repository;
 
+import org.springframework.context.ApplicationContext;
+
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.ILocalAudioObject;
@@ -28,6 +30,7 @@ import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IStateNavigation;
 import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.ITag;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.Logger;
 
 /**
@@ -42,6 +45,15 @@ public class LocalAudioObjectRefresher {
 	private ILocalAudioObjectFactory localAudioObjectFactory;
 	
 	private IStateNavigation stateNavigation;
+	
+	private IUnknownObjectChecker unknownObjectChecker;
+	
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
 	
 	/**
 	 * @param stateNavigation
@@ -78,7 +90,7 @@ public class LocalAudioObjectRefresher {
 			localAudioObjectFactory.refreshAudioObject(file);
 			
 			// Update repository
-			new RepositoryFiller(repository, stateNavigation).refreshAudioFile(file, oldTag);
+			new RepositoryFiller(repository, stateNavigation, unknownObjectChecker).refreshAudioFile(file, oldTag);
 
 			// Compare old tag with new tag
 			ITag newTag = file.getTag();

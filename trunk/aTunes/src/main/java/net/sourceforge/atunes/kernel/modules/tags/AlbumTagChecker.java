@@ -21,12 +21,21 @@
 package net.sourceforge.atunes.kernel.modules.tags;
 
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.utils.UnknownObjectCheck;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 
 class AlbumTagChecker implements ITagChecker {
 	
+    private final IUnknownObjectChecker unknownObjectChecker;
+
+    /**
+     * @param unknownObjectChecker
+     */
+    public AlbumTagChecker(IUnknownObjectChecker unknownObjectChecker) {
+    	this.unknownObjectChecker = unknownObjectChecker;
+	}
+    
 	@Override
 	public boolean checkTagAttribute(ILocalAudioObject localAudioObject) {
-		return !UnknownObjectCheck.isUnknownAlbum(localAudioObject.getAlbum());
+		return !unknownObjectChecker.isUnknownAlbum(localAudioObject.getAlbum());
 	}
 }

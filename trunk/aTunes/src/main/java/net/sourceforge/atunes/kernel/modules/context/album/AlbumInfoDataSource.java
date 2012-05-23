@@ -27,6 +27,7 @@ import java.util.StringTokenizer;
 
 import javax.swing.ImageIcon;
 
+import net.sourceforge.atunes.kernel.modules.repository.UnknownObjectChecker;
 import net.sourceforge.atunes.model.IAlbumInfo;
 import net.sourceforge.atunes.model.IAlbumListInfo;
 import net.sourceforge.atunes.model.IAudioObject;
@@ -35,12 +36,12 @@ import net.sourceforge.atunes.model.IContextInformationSource;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStateContext;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.model.ImageSize;
 import net.sourceforge.atunes.utils.AudioFilePictureUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
 import net.sourceforge.atunes.utils.Logger;
-import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 import org.apache.sanselan.ImageWriteException;
 
@@ -70,6 +71,16 @@ public class AlbumInfoDataSource implements IContextInformationSource {
     private ImageIcon image;
     
     private IAudioObject audioObject;
+    
+    private IUnknownObjectChecker unknownObjectChecker;
+    
+    /**
+     * @param unknownObjectChecker
+     */
+    public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
+
     
     @Override
     public void getData(IAudioObject audioObject) {
@@ -131,7 +142,7 @@ public class AlbumInfoDataSource implements IContextInformationSource {
 		}
 
 		List<IAlbumInfo> albums = null;
-		if (!UnknownObjectCheck.isUnknownArtist(audioObject.getAlbumArtistOrArtist())) {
+		if (!unknownObjectChecker.isUnknownArtist(audioObject.getAlbumArtistOrArtist())) {
 		    // Get album list
 		    albums = getAlbumList(audioObject.getAlbumArtistOrArtist());
 		}

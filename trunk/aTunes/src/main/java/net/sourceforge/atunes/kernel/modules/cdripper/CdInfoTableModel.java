@@ -25,9 +25,10 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
+import net.sourceforge.atunes.kernel.modules.repository.UnknownObjectChecker;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
-import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 /**
  * The model for cd info
@@ -44,11 +45,14 @@ class CdInfoTableModel extends AbstractTableModel {
     private List<String> composerNames = new ArrayList<String>();
     private List<Boolean> tracksSelected;
 
+	private IUnknownObjectChecker unknownObjectChecker;
+	
     /**
      * Instantiates a new cd info table model.
+     * @param unknownObjectChecker
      */
-    public CdInfoTableModel() {
-        // Nothing to do
+    public CdInfoTableModel(IUnknownObjectChecker unknownObjectChecker) {
+        this.unknownObjectChecker = unknownObjectChecker;
     }
 
     @Override
@@ -112,7 +116,7 @@ class CdInfoTableModel extends AbstractTableModel {
                 if (cdInfo.getArtist() != null) {
                     return cdInfo.getArtist();
                 }
-                return UnknownObjectCheck.getUnknownArtist();
+                return unknownObjectChecker.getUnknownArtist();
             }
             return artistNames.get(rowIndex);
         } else if (columnIndex == 4) {

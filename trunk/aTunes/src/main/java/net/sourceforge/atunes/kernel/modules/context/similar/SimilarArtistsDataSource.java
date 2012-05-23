@@ -25,16 +25,19 @@ import java.util.Set;
 
 import javax.swing.ImageIcon;
 
+import org.springframework.context.ApplicationContext;
+
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.kernel.modules.repository.UnknownObjectChecker;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IArtistInfo;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IContextInformationSource;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.ISimilarArtistsInfo;
+import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 import net.sourceforge.atunes.utils.ImageUtils;
-import net.sourceforge.atunes.utils.UnknownObjectCheck;
 
 /**
  * Similar artists data source
@@ -60,6 +63,15 @@ public class SimilarArtistsDataSource implements IContextInformationSource {
 	
 	private ISimilarArtistsInfo similarArtistsInfo;
 	
+	private IUnknownObjectChecker unknownObjectChecker;
+	
+	/**
+	 * @param unknownObjectChecker
+	 */
+	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
+		this.unknownObjectChecker = unknownObjectChecker;
+	}
+	
 	@Override
 	public void getData(IAudioObject audioObject) {
     	this.similarArtistsInfo = getSimilarArtists(audioObject);
@@ -78,7 +90,7 @@ public class SimilarArtistsDataSource implements IContextInformationSource {
      * @param audioObject
      */
     private ISimilarArtistsInfo getSimilarArtists(IAudioObject audioObject) {
-        if (!UnknownObjectCheck.isUnknownArtist(audioObject.getArtist())) {
+        if (!unknownObjectChecker.isUnknownArtist(audioObject.getArtist())) {
             ISimilarArtistsInfo artists = webServicesHandler.getSimilarArtists(audioObject.getArtist());
             if (artists != null) {
             	Set<String> artistNamesSet = new HashSet<String>();
