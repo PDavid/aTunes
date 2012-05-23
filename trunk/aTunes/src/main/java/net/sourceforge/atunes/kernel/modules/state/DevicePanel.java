@@ -166,7 +166,7 @@ public final class DevicePanel extends AbstractPreferencesPanel {
         group2.add(folderPathCustomizedRadioButton);
 
         JTable availablePatternsTable = lookAndFeelManager.getCurrentLookAndFeel().getTable();
-        availablePatternsTable.setModel(new AvailablePatternsDefaultTableModel());
+        availablePatternsTable.setModel(new AvailablePatternsTableModel());
 
         JPanel patternsPanel = new JPanel(new BorderLayout());
         patternsPanel.setPreferredSize(new Dimension(250, 200));
