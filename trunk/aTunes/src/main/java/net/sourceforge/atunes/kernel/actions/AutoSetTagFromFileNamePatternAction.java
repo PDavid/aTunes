@@ -24,7 +24,7 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import net.sourceforge.atunes.gui.views.dialogs.PatternInputDialog;
+import net.sourceforge.atunes.kernel.modules.pattern.PatternInputDialog;
 import net.sourceforge.atunes.kernel.modules.pattern.Patterns;
 import net.sourceforge.atunes.kernel.modules.process.EditTagFromFileNamePatternProcess;
 import net.sourceforge.atunes.model.IAudioObject;
