@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.dialogs;
+package net.sourceforge.atunes.kernel.modules.pattern;
 
 import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
@@ -47,16 +47,11 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
-import net.sourceforge.atunes.kernel.modules.pattern.AbstractPattern;
-import net.sourceforge.atunes.kernel.modules.pattern.PatternMatcher;
-import net.sourceforge.atunes.kernel.modules.pattern.Patterns;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -84,7 +79,7 @@ public final class PatternInputDialog extends AbstractCustomDialog {
 		    if (result != null && !result.trim().equals("")) {
 		        // Upper case all patterns found in result
 		        for (AbstractPattern pattern : Patterns.getPatterns()) {
-		            result = result.replaceAll(pattern.getPattern().toLowerCase(), pattern.getPattern());
+		            result = result.replace(pattern.getPattern().toLowerCase(), pattern.getPattern());
 		        }
 
 		        // If pattern was not already used add to list of previously used patterns
@@ -114,69 +109,7 @@ public final class PatternInputDialog extends AbstractCustomDialog {
 		}
 	}
 
-	private static final class AvailablePatternsDefaultTableModel extends DefaultTableModel {
-        /**
-		 * 
-		 */
-        private static final long serialVersionUID = 7475413284696491261L;
-
-        private Object[][] data;
-        
-        private AvailablePatternsDefaultTableModel(Object[][] data, Object[] columnNames) {
-            super(data, columnNames);
-            this.data = data;
-        }
-
-        @Override
-        public boolean isCellEditable(int row, int column) {        	
-            return false;
-        }
-        
-        /**
-         * Returns pattern at given row
-         * @param row
-         * @return pattern at given row
-         */
-        public String getPatternAtRow(int row) {
-        	return (String) data[row][0];
-        }
-    }
-
-    private static final class PatternPreviewDefaultTableModel extends DefaultTableModel {
-        /**
-		 * 
-		 */
-        private static final long serialVersionUID = 0L;
-
-        private PatternPreviewDefaultTableModel(Object[][] data, Object[] columnNames) {
-            super(data, columnNames);
-        }
-
-        @Override
-        public boolean isCellEditable(int row, int column) {
-            return false;
-        }
-    }
-
-    private static final class PatternPreviewDefaultTableColumnModel extends DefaultTableColumnModel {
-        /**
-		 * 
-		 */
-        private static final long serialVersionUID = -1915883409261076543L;
-
-        @Override
-        public void addColumn(TableColumn column) {
-            super.addColumn(column);
-            if (column.getHeaderValue().equals(I18nUtils.getString("NAME"))) {
-                column.setPreferredWidth(100);
-            } else {
-                // Space removed from first column is given to second column
-                column.setPreferredWidth(230);
-            }
-        }
-    }
-
-    private static final long serialVersionUID = -5789081662254435503L;
+	private static final long serialVersionUID = -5789081662254435503L;
 
     /** The combo box used to enter or select pattern */
     private JComboBox patternComboBox;

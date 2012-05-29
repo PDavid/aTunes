@@ -45,7 +45,7 @@ import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
-import net.sourceforge.atunes.gui.views.dialogs.PatternInputDialog;
+import net.sourceforge.atunes.kernel.modules.pattern.PatternInputDialog;
 import net.sourceforge.atunes.kernel.modules.pattern.PatternMatcher;
 import net.sourceforge.atunes.kernel.modules.pattern.Patterns;
 import net.sourceforge.atunes.model.IFrame;
