@@ -21,13 +21,10 @@
 package net.sourceforge.atunes.gui;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.model.IBackgroundWorker;
-import net.sourceforge.atunes.utils.Logger;
 
 /**
  * Implementation of a IBackgroundWorker using Swing
@@ -36,39 +33,13 @@ import net.sourceforge.atunes.utils.Logger;
  */
 public class SwingBackgroundWorker<T> implements IBackgroundWorker<T> {
 
-	private final class BackgroundSwingWorker extends SwingWorker<T, Void> {
-		
-		protected T doInBackground() {
-			Logger.debug("Running background actions");
-			try {
-				return backgroundActions.call();
-			} catch (Exception e) {
-				Logger.error(e);
-			}
-			return null;
-		}
-
-		protected void done() {
-			T backgroundResult = null;
-			try {
-				backgroundResult = get();
-			} catch (InterruptedException e) {
-				Logger.error(e);
-			} catch (ExecutionException e) {
-				Logger.error(e);
-			}
-			if (graphicalActionsWhenDone != null) {
-				graphicalActionsWhenDone.call(backgroundResult);
-				Logger.debug("Running finish actions completed");
-			}
-		}
-	}
-
 	private Callable<T> backgroundActions;
 	
 	private Runnable graphicalActionsAfterStart;
 	
 	private IActionsWithBackgroundResult<T> graphicalActionsWhenDone;
+	
+	private BackgroundSwingWorker<T> backgroundSwingWorker;
 
 	@Override
 	public void setBackgroundActions(Callable<T> backgroundActions) {
@@ -87,10 +58,16 @@ public class SwingBackgroundWorker<T> implements IBackgroundWorker<T> {
 	
 	@Override
 	public void execute() {
-		new BackgroundSwingWorker().execute();
+		backgroundSwingWorker = new BackgroundSwingWorker<T>(backgroundActions, graphicalActionsWhenDone);
+		backgroundSwingWorker.execute();
 		
 		if (graphicalActionsAfterStart != null) {
 			SwingUtilities.invokeLater(graphicalActionsAfterStart);
 		}
+	}
+	
+	@Override
+	public boolean isDone() {
+		return backgroundSwingWorker != null ? backgroundSwingWorker.isDone() : false;
 	}
 }

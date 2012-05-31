@@ -51,6 +51,11 @@ public interface IBackgroundWorker<T> {
 	 * Execute actions
 	 */
 	public void execute();
+	
+	/**
+	 * @return true if worker finished
+	 */
+	public boolean isDone();
 
 	/**
 	 * Result of a background work
