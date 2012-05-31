@@ -26,15 +26,16 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Callable;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.RepositorySelectionInfoDialog;
+import net.sourceforge.atunes.model.IBackgroundWorker;
+import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMessageDialogFactory;
@@ -52,43 +53,13 @@ import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class RepositoryReader implements IRepositoryLoaderListener {
-
-	private final class GetCoverSwingWorker extends
-			SwingWorker<ImageIcon, Void> {
-		private final String album;
-		private final String artist;
-
-		private GetCoverSwingWorker(String album, String artist) {
-			this.album = album;
-			this.artist = artist;
-		}
-
-		@Override
-		protected ImageIcon doInBackground() {
-			return webServicesHandler.getAlbumImage(artist, album);
-		}
-
-		@Override
-		protected void done() {
-			super.done();
-			if (progressDialog != null) {
-				try {
-					progressDialog.setImage(get().getImage());
-				} catch (InterruptedException e) {
-					progressDialog.setImage(null);
-				} catch (ExecutionException e) {
-					progressDialog.setImage(null);
-				}
-			}
-		}
-	}
-
+	
 	// Used to retrieve covers and show in progress dialog
 	private String lastArtistRead;
 	
 	private String lastAlbumRead;
 	
-	private SwingWorker<ImageIcon, Void> coverWorker;
+	private IBackgroundWorker<ImageIcon> coverWorker;
 	
     private int filesLoaded;
 
@@ -121,6 +92,15 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	private ShowRepositoryDataHelper showRepositoryDataHelper;
 	
 	private IStateRepository stateRepository;
+	
+	private IBackgroundWorkerFactory backgroundWorkerFactory;
+	
+	/**
+	 * @param backgroundWorkerFactory
+	 */
+	public void setBackgroundWorkerFactory(IBackgroundWorkerFactory backgroundWorkerFactory) {
+		this.backgroundWorkerFactory = backgroundWorkerFactory;
+	}
 	
 	/**
 	 * @param stateRepository
@@ -482,7 +462,23 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 			lastAlbumRead = album;
 			if (coverWorker == null || coverWorker.isDone()) {
 				// Try to find cover and set in progress dialog
-				coverWorker = new GetCoverSwingWorker(album, artist);
+				coverWorker = backgroundWorkerFactory.getWorker();
+				coverWorker.setBackgroundActions(new Callable<ImageIcon>() {
+					
+					@Override
+					public ImageIcon call() {
+						return webServicesHandler.getAlbumImage(artist, album);
+					}
+				});
+		        
+				coverWorker.setActionsWhenDone(new IBackgroundWorker.IActionsWithBackgroundResult<ImageIcon>() {
+		        	@Override
+		        	public void call(ImageIcon result) {
+		    			if (progressDialog != null) {
+	    					progressDialog.setImage(result != null ? result.getImage() : null);
+		    			}
+		        	}
+				});
 				coverWorker.execute();
 			}
 		}
@@ -558,5 +554,10 @@ public class RepositoryReader implements IRepositoryLoaderListener {
         return currentLoader != null;
     }
 
-
+	/**
+	 * @return the progressDialog
+	 */
+	protected IRepositoryProgressDialog getProgressDialog() {
+		return progressDialog;
+	}
 }

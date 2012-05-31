@@ -67,4 +67,9 @@ public class BackgroundWorkerMock<T> implements IBackgroundWorker<T> {
 	public void setActionsWhenDone(IActionsWithBackgroundResult<T> graphicalActions) {
 		this.graphicalActions = graphicalActions;
 	}
+	
+	@Override
+	public boolean isDone() {
+		return false;
+	}
 }
