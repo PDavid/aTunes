@@ -53,97 +53,104 @@ import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class RepositoryReader implements IRepositoryLoaderListener {
-	
+
 	// Used to retrieve covers and show in progress dialog
 	private String lastArtistRead;
-	
+
 	private String lastAlbumRead;
-	
+
 	private IBackgroundWorker<ImageIcon> coverWorker;
-	
-    private int filesLoaded;
 
-    private boolean backgroundLoad = false;
+	private int filesLoaded;
 
-    private IRepository repositoryRetrievedFromCache = null;
+	private boolean backgroundLoad = false;
 
-    private IMessageDialogFactory messageDialogFactory;
-    
-    private IMultiFolderSelectionDialogFactory multiFolderSelectionDialogFactory;
-    
-    private ILookAndFeelManager lookAndFeelManager;
-    
-    private IRepositoryProgressDialog progressDialog;
-    
-    private IRepositoryLoader currentLoader;
-    
+	private IRepository repositoryRetrievedFromCache = null;
+
+	private IMessageDialogFactory messageDialogFactory;
+
+	private IMultiFolderSelectionDialogFactory multiFolderSelectionDialogFactory;
+
+	private ILookAndFeelManager lookAndFeelManager;
+
+	private IRepositoryProgressDialog repositoryProgressDialog;
+
+	private IRepositoryLoader currentLoader;
+
 	private IRepository repository;
-	
+
 	private IFrame frame;
-	
+
 	private RepositoryHandler repositoryHandler;
 
 	private INavigationHandler navigationHandler;
-	
+
 	private IWebServicesHandler webServicesHandler;
-	
+
 	private RepositoryActionsHelper repositoryActions;
-	
+
 	private ShowRepositoryDataHelper showRepositoryDataHelper;
-	
+
 	private IStateRepository stateRepository;
-	
+
 	private IBackgroundWorkerFactory backgroundWorkerFactory;
-	
+
+	/**
+	 * @param repositoryProgressDialog
+	 */
+	public void setRepositoryProgressDialog(IRepositoryProgressDialog repositoryProgressDialog) {
+		this.repositoryProgressDialog = repositoryProgressDialog;
+	}
+
 	/**
 	 * @param backgroundWorkerFactory
 	 */
 	public void setBackgroundWorkerFactory(IBackgroundWorkerFactory backgroundWorkerFactory) {
 		this.backgroundWorkerFactory = backgroundWorkerFactory;
 	}
-	
+
 	/**
 	 * @param stateRepository
 	 */
 	public void setStateRepository(IStateRepository stateRepository) {
 		this.stateRepository = stateRepository;
 	}
-	
+
 	/**
 	 * @param showRepositoryDataHelper
 	 */
 	public void setShowRepositoryDataHelper(ShowRepositoryDataHelper showRepositoryDataHelper) {
 		this.showRepositoryDataHelper = showRepositoryDataHelper;
 	}
-	
+
 	/**
 	 * @param repositoryActions
 	 */
 	public void setRepositoryActions(RepositoryActionsHelper repositoryActions) {
 		this.repositoryActions = repositoryActions;
 	}
-	
+
 	/**
 	 * @param webServicesHandler
 	 */
 	public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
 	}
-	
+
 	/**
 	 * @param navigationHandler
 	 */
 	public void setNavigationHandler(INavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
 	}
-	
+
 	/**
 	 * @param repositoryHandler
 	 */
 	public void setRepositoryHandler(RepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
 	}
-	
+
 	/**
 	 * @param frame
 	 */
@@ -151,310 +158,297 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 		this.frame = frame;
 	}
 
-    /**
-     * @param multiFolderSelectionDialogFactory
-     */
-    public void setMultiFolderSelectionDialogFactory(IMultiFolderSelectionDialogFactory multiFolderSelectionDialogFactory) {
+	/**
+	 * @param multiFolderSelectionDialogFactory
+	 */
+	public void setMultiFolderSelectionDialogFactory(IMultiFolderSelectionDialogFactory multiFolderSelectionDialogFactory) {
 		this.multiFolderSelectionDialogFactory = multiFolderSelectionDialogFactory;
 	}
-    
-    /**
-     * @param lookAndFeelManager
-     */
-    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+
+	/**
+	 * @param lookAndFeelManager
+	 */
+	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
 		this.lookAndFeelManager = lookAndFeelManager;
 	}
-    
-    /**
-     * @param messageDialogFactory
-     */
-    public void setMessageDialogFactory(IMessageDialogFactory messageDialogFactory) {
+
+	/**
+	 * @param messageDialogFactory
+	 */
+	public void setMessageDialogFactory(IMessageDialogFactory messageDialogFactory) {
 		this.messageDialogFactory = messageDialogFactory;
 	}
-    
-    /**
-     * @param repositoryRetrievedFromCache
-     */
-    void setRepositoryRetrievedFromCache(IRepository repositoryRetrievedFromCache) {
+
+	/**
+	 * @param repositoryRetrievedFromCache
+	 */
+	void setRepositoryRetrievedFromCache(IRepository repositoryRetrievedFromCache) {
 		this.repositoryRetrievedFromCache = repositoryRetrievedFromCache;
 	}
 
-    /**
-     * Sets the repository from the one read from cache
-     * @param askUser
-     */
-    void applyRepositoryFromCache() {
-        IRepository rep = repositoryRetrievedFromCache;
-        if (rep != null && rep.exists()) {
-        	applyExistingRepository(rep);
-        }
-        if (repository == null) {
-    		applyRepository();
-    	}
-    }
+	/**
+	 * Sets the repository from the one read from cache
+	 * @param askUser
+	 */
+	void applyRepositoryFromCache() {
+		IRepository rep = repositoryRetrievedFromCache;
+		if (rep != null && rep.exists()) {
+			applyExistingRepository(rep);
+		}
+		if (repository == null) {
+			applyRepository();
+		}
+	}
 
 	void testRepositoryRetrievedFromCache() {
-    	IRepository rep = repositoryRetrievedFromCache;
-    	if (rep == null) {
-    		reloadExistingRepository();
-    	}
+		IRepository rep = repositoryRetrievedFromCache;
+		if (rep == null) {
+			reloadExistingRepository();
+		}
 	}
-	
-    /**
-     * Sets the repository.
-     * @param askUser
-     */
-    private void applyRepository() {
-        IRepository rep = repositoryRetrievedFromCache;
-        // Try to read repository cache. If fails or not exists, should be selected again
-        if (rep != null) {
-        	if (!rep.exists()) {
-        		askUserForRepository(rep);
-        		if (!rep.exists() && !selectRepository(true)) {
-        			// select "old" repository if repository was not found and no new repository was selected
-        			repository = rep;
-        		} else if (rep.exists()) {
-        			// repository exists
-        			applyExistingRepository(rep);
-        		}
-        	} else {
-        		// repository exists
-        		applyExistingRepository(rep);
-        	}
-        }
-    }
 
-    /**
-     * Test if repository exists and show message until repository exists or
-     * user doesn't press "RETRY"
-     * 
-     * @param rep
-     */
-    private void askUserForRepository(final IRepository rep) {
-        Object selection;
-        do {
-            selection = messageDialogFactory.getDialog().
-            	showMessage(StringUtils.getString(I18nUtils.getString("REPOSITORY_NOT_FOUND"), ": ", rep.getRepositoryFolders().get(0)),
-                    I18nUtils.getString("REPOSITORY_NOT_FOUND"), JOptionPane.WARNING_MESSAGE,
-                    new String[] { I18nUtils.getString("RETRY"), I18nUtils.getString("SELECT_REPOSITORY"), I18nUtils.getString("EXIT") });
+	/**
+	 * Sets the repository.
+	 * @param askUser
+	 */
+	private void applyRepository() {
+		IRepository rep = repositoryRetrievedFromCache;
+		// Try to read repository cache. If fails or not exists, should be selected again
+		if (rep != null) {
+			if (!rep.exists()) {
+				askUserForRepository(rep);
+				if (!rep.exists() && !selectRepository(true)) {
+					// select "old" repository if repository was not found and no new repository was selected
+					repository = rep;
+				} else if (rep.exists()) {
+					// repository exists
+					applyExistingRepository(rep);
+				}
+			} else {
+				// repository exists
+				applyExistingRepository(rep);
+			}
+		}
+	}
 
-            if (selection.equals(I18nUtils.getString("EXIT"))) {
-                SwingUtilities.invokeLater(new ExitWhenRepositoryNotFoundRunnable());
-            }
-        } while (I18nUtils.getString("RETRY").equals(selection) && !rep.exists());
-    }
+	/**
+	 * Test if repository exists and show message until repository exists or
+	 * user doesn't press "RETRY"
+	 * 
+	 * @param rep
+	 */
+	private void askUserForRepository(final IRepository rep) {
+		Object selection;
+		do {
+			selection = messageDialogFactory.getDialog().
+			showMessage(StringUtils.getString(I18nUtils.getString("REPOSITORY_NOT_FOUND"), ": ", rep.getRepositoryFolders().get(0)),
+					I18nUtils.getString("REPOSITORY_NOT_FOUND"), JOptionPane.WARNING_MESSAGE,
+					new String[] { I18nUtils.getString("RETRY"), I18nUtils.getString("SELECT_REPOSITORY"), I18nUtils.getString("EXIT") });
 
-    private void applyExistingRepository(IRepository rep) {
-        repository = rep;
-        repositoryReadCompleted();
-    }
+			if (selection.equals(I18nUtils.getString("EXIT"))) {
+				SwingUtilities.invokeLater(new ExitWhenRepositoryNotFoundRunnable());
+			}
+		} while (I18nUtils.getString("RETRY").equals(selection) && !rep.exists());
+	}
 
-    /**
-     * If any repository was loaded previously, try to reload folders
-     */
-    private void reloadExistingRepository() {
-        List<String> lastRepositoryFolders = stateRepository.getLastRepositoryFolders();
-        if (lastRepositoryFolders != null && !lastRepositoryFolders.isEmpty()) {
-            List<File> foldersToRead = new ArrayList<File>();
-            for (String f : lastRepositoryFolders) {
-                foldersToRead.add(new File(f));
-            }
-            messageDialogFactory.getDialog().showMessage(I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"));
-            retrieve(foldersToRead);
-        } else {
-        	RepositorySelectionInfoDialog dialog = new RepositorySelectionInfoDialog(frame.getFrame(), lookAndFeelManager);
-        	dialog.setVisible(true);
-        	if (dialog.userAccepted()) {
-        		repositoryHandler.selectRepository();
-        	}
-        }
-    }
+	private void applyExistingRepository(IRepository rep) {
+		repository = rep;
+		repositoryReadCompleted();
+	}
 
-    /**
-     * Select repository.
-     * 
-     * @param repositoryNotFound
-     *            the repository not found
-     * 
-     * @return true, if successful
-     */
-    boolean selectRepository(boolean repositoryNotFound) {
-    	IMultiFolderSelectionDialog dialog = multiFolderSelectionDialogFactory.getDialog();
-        dialog.setTitle(I18nUtils.getString("SELECT_REPOSITORY"));
-        dialog.setText(I18nUtils.getString("SELECT_REPOSITORY_FOLDERS"));
-        dialog.showDialog((repository != null && !repositoryNotFound) ? repository.getRepositoryFolders() : null);
-        if (!dialog.isCancelled()) {
-            List<File> folders = dialog.getSelectedFolders();
-            if (!folders.isEmpty()) {
-                this.retrieve(folders);
-                return true;
-            }
-        }
-        return false;
-    }
+	/**
+	 * If any repository was loaded previously, try to reload folders
+	 */
+	private void reloadExistingRepository() {
+		List<String> lastRepositoryFolders = stateRepository.getLastRepositoryFolders();
+		if (lastRepositoryFolders != null && !lastRepositoryFolders.isEmpty()) {
+			List<File> foldersToRead = new ArrayList<File>();
+			for (String f : lastRepositoryFolders) {
+				foldersToRead.add(new File(f));
+			}
+			messageDialogFactory.getDialog().showMessage(I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"));
+			retrieve(foldersToRead);
+		} else {
+			RepositorySelectionInfoDialog dialog = new RepositorySelectionInfoDialog(frame.getFrame(), lookAndFeelManager);
+			dialog.setVisible(true);
+			if (dialog.userAccepted()) {
+				repositoryHandler.selectRepository();
+			}
+		}
+	}
+
+	/**
+	 * Select repository.
+	 * 
+	 * @param repositoryNotFound
+	 *            the repository not found
+	 * 
+	 * @return true, if successful
+	 */
+	boolean selectRepository(boolean repositoryNotFound) {
+		IMultiFolderSelectionDialog dialog = multiFolderSelectionDialogFactory.getDialog();
+		dialog.setTitle(I18nUtils.getString("SELECT_REPOSITORY"));
+		dialog.setText(I18nUtils.getString("SELECT_REPOSITORY_FOLDERS"));
+		dialog.showDialog((repository != null && !repositoryNotFound) ? repository.getRepositoryFolders() : null);
+		if (!dialog.isCancelled()) {
+			List<File> folders = dialog.getSelectedFolders();
+			if (!folders.isEmpty()) {
+				this.retrieve(folders);
+				return true;
+			}
+		}
+		return false;
+	}
 
 	private boolean retrieve(List<File> folders) {
 		repositoryActions.enableRepositoryActions(false);
-        progressDialog = Context.getBean(IRepositoryProgressDialog.class);
-        // Start with indeterminate dialog
-        progressDialog.showProgressDialog();
-        progressDialog.setProgressBarIndeterminate(true);
-        frame.getProgressBar().setIndeterminate(true);
-        filesLoaded = 0;
-        try {
-            if (folders == null || folders.isEmpty()) {
-                repository = null;
-                return false;
-            }
-            readRepository(folders);
-            return true;
-        } catch (Exception e) {
-            repository = null;
-            Logger.error(e);
-            return false;
-        }
-    }
-	
-    /**
-     * Read repository.
-     * 
-     * @param folders
-     *            the folders
-     */
-    private void readRepository(List<File> folders) {
-        backgroundLoad = false;
-        IRepository oldRepository = repository;
-        repository = new Repository(folders, stateRepository);
-        repositoryHandler.setRepository(repository);
-        currentLoader = Context.getBean(RepositoryReadLoader.class);
-        currentLoader.setRepositoryLoaderListener(this);
-        currentLoader.start(new RepositoryTransaction(repository, repositoryHandler), folders, oldRepository, repository);
-    }
+		// Start with indeterminate dialog
+		repositoryProgressDialog.showProgressDialog();
+		repositoryProgressDialog.setProgressBarIndeterminate(true);
+		frame.getProgressBar().setIndeterminate(true);
+		filesLoaded = 0;
+		try {
+			if (folders == null || folders.isEmpty()) {
+				repository = null;
+				return false;
+			}
+			readRepository(folders);
+			return true;
+		} catch (Exception e) {
+			repository = null;
+			Logger.error(e);
+			return false;
+		}
+	}
 
-    @Override
-    public void notifyCurrentPath(final String dir) {
-        if (progressDialog != null) {
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                	if (progressDialog != null) {
-                		progressDialog.setCurrentFolder(dir);
-                	}
-                }
-            });
-        }
-    }
+	/**
+	 * Read repository.
+	 * 
+	 * @param folders
+	 *            the folders
+	 */
+	private void readRepository(List<File> folders) {
+		backgroundLoad = false;
+		IRepository oldRepository = repository;
+		repository = new Repository(folders, stateRepository);
+		repositoryHandler.setRepository(repository);
+		currentLoader = Context.getBean(RepositoryReadLoader.class);
+		currentLoader.setRepositoryLoaderListener(this);
+		currentLoader.start(new RepositoryTransaction(repository, repositoryHandler), folders, oldRepository, repository);
+	}
 
-    @Override
-    public void notifyFileLoaded() {
-        this.filesLoaded++;
-        // Update GUI every 50 files
-        if (this.filesLoaded % 50 == 0) {
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    if (progressDialog != null) {
-                        progressDialog.setProgressText(Integer.toString(filesLoaded));
-                        progressDialog.setProgressBarValue(filesLoaded);
-                    }
-                    frame.getProgressBar().setValue(filesLoaded);
-                }
-            });
-        }
-    }
+	@Override
+	public void notifyCurrentPath(final String dir) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				repositoryProgressDialog.setCurrentFolder(dir);
+			}
+		});
+	}
 
-    @Override
-    public void notifyFilesInRepository(int totalFiles) {
-        // When total files has been calculated change to determinate progress bar
-        if (progressDialog != null) {
-            progressDialog.setProgressBarIndeterminate(false);
-            progressDialog.setTotalFiles(totalFiles);
-        }
-        frame.getProgressBar().setIndeterminate(false);
-        frame.getProgressBar().setMaximum(totalFiles);
-    }
+	@Override
+	public void notifyFileLoaded() {
+		this.filesLoaded++;
+		// Update GUI every 50 files
+		if (this.filesLoaded % 50 == 0) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					repositoryProgressDialog.setProgressText(Integer.toString(filesLoaded));
+					repositoryProgressDialog.setProgressBarValue(filesLoaded);
+					frame.getProgressBar().setValue(filesLoaded);
+				}
+			});
+		}
+	}
 
-    @Override
-    public void notifyFinishRead(IRepositoryLoader loader) {
-        if (progressDialog != null) {
-            progressDialog.setButtonsEnabled(false);
-            progressDialog.setCurrentTask(I18nUtils.getString("STORING_REPOSITORY_INFORMATION"));
-            progressDialog.setProgressText("");
-            progressDialog.setCurrentFolder("");
-        }
+	@Override
+	public void notifyFilesInRepository(int totalFiles) {
+		// When total files has been calculated change to determinate progress bar
+		repositoryProgressDialog.setProgressBarIndeterminate(false);
+		repositoryProgressDialog.setTotalFiles(totalFiles);
+		frame.getProgressBar().setIndeterminate(false);
+		frame.getProgressBar().setMaximum(totalFiles);
+	}
 
-        // Save folders: if repository config is lost application can reload data without asking user to select folders again
-        List<String> repositoryFolders = new ArrayList<String>();
-        for (File folder : repository.getRepositoryFolders()) {
-            repositoryFolders.add(folder.getAbsolutePath());
-        }
-        stateRepository.setLastRepositoryFolders(repositoryFolders);
+	@Override
+	public void notifyFinishRead(IRepositoryLoader loader) {
+		repositoryProgressDialog.setButtonsEnabled(false);
+		repositoryProgressDialog.setCurrentTask(I18nUtils.getString("STORING_REPOSITORY_INFORMATION"));
+		repositoryProgressDialog.setProgressText("");
+		repositoryProgressDialog.setCurrentFolder("");
 
-        if (backgroundLoad) {
-        	frame.hideProgressBar();
-        }
+		// Save folders: if repository config is lost application can reload data without asking user to select folders again
+		List<String> repositoryFolders = new ArrayList<String>();
+		for (File folder : repository.getRepositoryFolders()) {
+			repositoryFolders.add(folder.getAbsolutePath());
+		}
+		stateRepository.setLastRepositoryFolders(repositoryFolders);
 
-        repositoryReadCompleted();
-    }
+		if (backgroundLoad) {
+			frame.hideProgressBar();
+		}
 
-    @Override
-    public void notifyFinishRefresh(IRepositoryLoader loader) {
-    	repositoryActions.enableRepositoryActions(true);
+		repositoryReadCompleted();
+	}
 
-        frame.hideProgressBar();
-        showRepositoryDataHelper.showRepositoryAudioFileNumber(repository.getFiles().size(), repository.getTotalSizeInBytes(), repository.getTotalDurationInSeconds());
-        navigationHandler.repositoryReloaded();
-        Logger.info("Repository refresh done");
+	@Override
+	public void notifyFinishRefresh(IRepositoryLoader loader) {
+		repositoryActions.enableRepositoryActions(true);
 
-        currentLoader = null;
-    }
+		frame.hideProgressBar();
+		showRepositoryDataHelper.showRepositoryAudioFileNumber(repository.getFiles().size(), repository.getTotalSizeInBytes(), repository.getTotalDurationInSeconds());
+		navigationHandler.repositoryReloaded();
+		Logger.info("Repository refresh done");
 
-    @Override
-    public void notifyRemainingTime(final long millis) {
-        if (progressDialog != null) {
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                	if (progressDialog != null) {
-                		progressDialog.setRemainingTime(StringUtils.getString(I18nUtils.getString("REMAINING_TIME"), ":   ", StringUtils.milliseconds2String(millis)));
-                	}
-                }
-            });
-        }
-    }
+		currentLoader = null;
+	}
 
-    @Override
-    public void notifyReadProgress() {
-        try {
-        	// Use invoke and wait in this case to avoid concurrent problems while reading repository and showing nodes in navigator tree (ConcurrentModificationException)
+	@Override
+	public void notifyRemainingTime(final long millis) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				if (repositoryProgressDialog != null) {
+					repositoryProgressDialog.setRemainingTime(StringUtils.getString(I18nUtils.getString("REMAINING_TIME"), ":   ", StringUtils.milliseconds2String(millis)));
+				}
+			}
+		});
+	}
+
+	@Override
+	public void notifyReadProgress() {
+		try {
+			// Use invoke and wait in this case to avoid concurrent problems while reading repository and showing nodes in navigator tree (ConcurrentModificationException)
 			SwingUtilities.invokeAndWait(new Runnable() {
-			    @Override
-			    public void run() {
-			    	navigationHandler.repositoryReloaded();
-			    	showRepositoryDataHelper.showRepositoryAudioFileNumber(repository.getFiles().size(), repository.getTotalSizeInBytes(), repository.getTotalDurationInSeconds());
-			    }
+				@Override
+				public void run() {
+					navigationHandler.repositoryReloaded();
+					showRepositoryDataHelper.showRepositoryAudioFileNumber(repository.getFiles().size(), repository.getTotalSizeInBytes(), repository.getTotalDurationInSeconds());
+				}
 			});
 		} catch (InterruptedException e) {
 			Logger.error(e);
 		} catch (InvocationTargetException e) {
 			Logger.error(e);
 		}
-    }
+	}
 
-    /**
-     * Refresh.
-     */
-    void refresh() {
-        Logger.info("Refreshing repository");
-        filesLoaded = 0;
-        IRepository oldRepository = repository;
-        repository = new Repository(oldRepository.getRepositoryFolders(), stateRepository);
-        repositoryHandler.setRepository(repository);
-        currentLoader = Context.getBean(RepositoryRefreshLoader.class);
-        currentLoader.setRepositoryLoaderListener(this);
-        currentLoader.start(new RepositoryTransaction(repository, repositoryHandler), oldRepository.getRepositoryFolders(), oldRepository, repository);
-    }
-    
+	/**
+	 * Refresh.
+	 */
+	void refresh() {
+		Logger.info("Refreshing repository");
+		filesLoaded = 0;
+		IRepository oldRepository = repository;
+		repository = new Repository(oldRepository.getRepositoryFolders(), stateRepository);
+		repositoryHandler.setRepository(repository);
+		currentLoader = Context.getBean(RepositoryRefreshLoader.class);
+		currentLoader.setRepositoryLoaderListener(this);
+		currentLoader.start(new RepositoryTransaction(repository, repositoryHandler), oldRepository.getRepositoryFolders(), oldRepository, repository);
+	}
+
 	@Override
 	public void notifyCurrentAlbum(final String artist, final String album) {
 		if (isProgressDialogVisible() && albumNotReadBefore(artist, album)) {
@@ -464,20 +458,18 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 				// Try to find cover and set in progress dialog
 				coverWorker = backgroundWorkerFactory.getWorker();
 				coverWorker.setBackgroundActions(new Callable<ImageIcon>() {
-					
+
 					@Override
 					public ImageIcon call() {
 						return webServicesHandler.getAlbumImage(artist, album);
 					}
 				});
-		        
+
 				coverWorker.setActionsWhenDone(new IBackgroundWorker.IActionsWithBackgroundResult<ImageIcon>() {
-		        	@Override
-		        	public void call(ImageIcon result) {
-		    			if (progressDialog != null) {
-	    					progressDialog.setImage(result != null ? result.getImage() : null);
-		    			}
-		        	}
+					@Override
+					public void call(ImageIcon result) {
+						repositoryProgressDialog.setImage(result != null ? result.getImage() : null);
+					}
 				});
 				coverWorker.execute();
 			}
@@ -497,67 +489,65 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	 * @return
 	 */
 	private boolean isProgressDialogVisible() {
-		return progressDialog != null && progressDialog.isVisible();
+		return repositoryProgressDialog.isVisible();
 	}
 
+	/**
+	 * Hides progress dialog so user can work with application while repository finishes loading
+	 */
 	public void doInBackground() {
-        if (currentLoader != null) {
-            backgroundLoad = true;
-            if (progressDialog != null) {
-                progressDialog.hideProgressDialog();
-            }
-            frame.showProgressBar(false, StringUtils.getString(I18nUtils.getString("LOADING"), "..."));
-            frame.getProgressBar().addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    backgroundLoad = false;
-                    frame.hideProgressBar();
-                    if (progressDialog != null) {
-                        progressDialog.showProgressDialog();
-                    }
-                    frame.getProgressBar().removeMouseListener(this);
-                };
-            });
-        }
+		if (currentLoader != null) {
+			backgroundLoad = true;
+			repositoryProgressDialog.hideProgressDialog();
+			frame.showProgressBar(false, StringUtils.getString(I18nUtils.getString("LOADING"), "..."));
+			frame.getProgressBar().addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					backgroundLoad = false;
+					frame.hideProgressBar();
+					repositoryProgressDialog.showProgressDialog();
+					frame.getProgressBar().removeMouseListener(this);
+				};
+			});
+		}
 
-    }
+	}
 
 	void notifyCancel() {
-        currentLoader.interruptLoad();
-        repository = currentLoader.getOldRepository();
-        repositoryReadCompleted();
-    }
-	
-    /**
-     * Notify finish repository read.
-     */
-    private void repositoryReadCompleted() {
-    	repositoryHandler.setRepository(repository);
-    	repositoryActions.enableRepositoryActions(true);
-        if (progressDialog != null) {
-            progressDialog.hideProgressDialog();
-            progressDialog = null;
-        }
-        navigationHandler.repositoryReloaded();
-        showRepositoryDataHelper.showRepositoryAudioFileNumber(repository.getFiles().size(), repository.getTotalSizeInBytes(), repository.getTotalDurationInSeconds());
+		currentLoader.interruptLoad();
+		repository = currentLoader.getOldRepository();
+		if (repository == null) {
+			repository = new VoidRepository();
+		}
+		repositoryReadCompleted();
+	}
 
-        currentLoader = null;
-    }
+	/**
+	 * Notify finish repository read.
+	 */
+	private void repositoryReadCompleted() {
+		repositoryProgressDialog.hideProgressDialog();
+		repositoryHandler.setRepository(repository);
+		repositoryActions.enableRepositoryActions(true);
+		showRepositoryDataHelper.showRepositoryAudioFileNumber(repository.getFiles().size(), repository.getTotalSizeInBytes(), repository.getTotalDurationInSeconds());
+		navigationHandler.repositoryReloaded();
+		currentLoader = null;
+	}
 
-    /**
-     * Returns <code>true</code>if there is a loader reading or refreshing
-     * repository
-     * 
-     * @return
-     */
-    protected boolean isWorking() {
-        return currentLoader != null;
-    }
+	/**
+	 * Returns <code>true</code>if there is a loader reading or refreshing
+	 * repository
+	 * 
+	 * @return
+	 */
+	protected boolean isWorking() {
+		return currentLoader != null;
+	}
 
 	/**
 	 * @return the progressDialog
 	 */
 	protected IRepositoryProgressDialog getProgressDialog() {
-		return progressDialog;
+		return repositoryProgressDialog;
 	}
 }
