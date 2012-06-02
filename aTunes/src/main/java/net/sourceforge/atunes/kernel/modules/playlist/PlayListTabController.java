@@ -33,11 +33,19 @@ final class PlayListTabController extends AbstractSimpleController<PlayListSelec
 	
 	private IPlayListSelectorPanel playListSelectorPanel;
 	
+	private PlayListSelectorWrapper playListSelectorWrapper;
+	
+	/**
+	 * @param playListSelectorWrapper
+	 */
+	public void setPlayListSelectorWrapper(PlayListSelectorWrapper playListSelectorWrapper) {
+		this.playListSelectorWrapper = playListSelectorWrapper;
+	}
+	
 	/**
 	 * @param playListSelectorPanel
 	 */
-	public void setPlayListSelectorPanel(
-			IPlayListSelectorPanel playListSelectorPanel) {
+	public void setPlayListSelectorPanel(IPlayListSelectorPanel playListSelectorPanel) {
 		this.playListSelectorPanel = playListSelectorPanel;
 	}
 	
@@ -59,10 +67,10 @@ final class PlayListTabController extends AbstractSimpleController<PlayListSelec
 
     @Override
 	public void addBindings() {
-    	PlayListTabListener l = new PlayListTabListener(getComponentControlled(), playListHandler);
+    	PlayListTabListener l = new PlayListTabListener(playListHandler, playListSelectorWrapper);
     	getComponentControlled().getOptions().addActionListener(l);
-        getComponentControlled().getPlayListCombo().addItemListener(l);
-    	getComponentControlled().getPlayListCombo().setModel(PlayListComboModel.getNewComboModel());
+    	
+    	playListSelectorWrapper.addBindings(l);    	
     }
 
     /**
@@ -74,7 +82,7 @@ final class PlayListTabController extends AbstractSimpleController<PlayListSelec
     @Override
     public void deletePlayList(int index) {
     	int selectedPlaylist = getSelectedPlayListIndex();
-   		((PlayListComboModel)getComponentControlled().getPlayListCombo().getModel()).removeItemAt(index);
+    	playListSelectorWrapper.deletePlayList(index);
    		if (index == selectedPlaylist) {
    			forceSwitchTo(0);
    		}
@@ -87,7 +95,7 @@ final class PlayListTabController extends AbstractSimpleController<PlayListSelec
      *            the index
      */
     void forceSwitchTo(int index) {
-        getComponentControlled().getPlayListCombo().setSelectedIndex(index);
+    	playListSelectorWrapper.forceSwitchTo(index);
     }
 
     /**
@@ -97,8 +105,7 @@ final class PlayListTabController extends AbstractSimpleController<PlayListSelec
      *            the name
      */
     void newPlayList(String name) {
-    	((PlayListComboModel)getComponentControlled().getPlayListCombo().getModel()).addItem(name);
-    	
+    	playListSelectorWrapper.newPlayList(name);
     }
 
     /**
@@ -110,9 +117,7 @@ final class PlayListTabController extends AbstractSimpleController<PlayListSelec
      *            the new name
      */
     void renamePlayList(int index, String newName) {
-    	((PlayListComboModel)getComponentControlled().getPlayListCombo().getModel()).rename(index, newName);
-    	// Forces update of combo box by selecting again current play list
-    	getComponentControlled().getPlayListCombo().setSelectedIndex(index);
+    	playListSelectorWrapper.renamePlayList(index, newName);
     }
 
     /**
@@ -121,7 +126,7 @@ final class PlayListTabController extends AbstractSimpleController<PlayListSelec
      * @return the names of play lists
      */
     List<String> getNamesOfPlayLists() {
-    	return ((PlayListComboModel)getComponentControlled().getPlayListCombo().getModel()).getItems();
+    	return playListSelectorWrapper.getNamesOfPlayLists();
     }
 
     /**
@@ -130,7 +135,7 @@ final class PlayListTabController extends AbstractSimpleController<PlayListSelec
      * @return
      */
     public int getSelectedPlayListIndex() {
-        return getComponentControlled().getPlayListCombo().getSelectedIndex();
+        return playListSelectorWrapper.getSelectedPlayListIndex();
     }
 
     /**
@@ -140,6 +145,13 @@ final class PlayListTabController extends AbstractSimpleController<PlayListSelec
      * @return
      */
     String getPlayListName(int index) {
-        return ((PlayListComboModel)getComponentControlled().getPlayListCombo().getModel()).getElementAt(index);
+        return playListSelectorWrapper.getPlayListName(index);
     }
+
+	/**
+	 * Shows combo box to select play lists if necessary
+	 */
+	public void showPlayListSelectorComboBox() {
+		getComponentControlled().showPlayListSelectorComboBox();
+	}
 }

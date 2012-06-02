@@ -565,6 +565,7 @@ public final class PlayListHandler extends AbstractHandler implements IPlayListH
         if (statePlaylist.isAutoScrollPlayListEnabled()) {
             playListController.scrollPlayList(true);
         }
+        playListTabController.showPlayListSelectorComboBox();
     }
 
     @Override

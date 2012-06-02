@@ -18,27 +18,30 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.gui.images;
 
-import java.awt.Component;
+import java.awt.Color;
+import java.awt.Polygon;
+
+import javax.swing.ImageIcon;
 
 
-/**
- * A panel to select play lists
- * @author alex
- *
- */
-public interface IPlayListSelectorPanel {
+public class ArrowRightImageIcon extends CachedIconFactory {
 
 	/**
-	 * @return the options
+	 * 
 	 */
-	public IPopUpButton getOptions();
+	private static final long serialVersionUID = -939539268509387704L;
+	
+	private static final int SIZE = 14;
 
-	/**
-	 * Returns Swing component
-	 * @return
-	 */
-	public Component getSwingComponent();
-
+	@Override
+	protected ImageIcon createIcon(Color color) {
+		Polygon shape = new Polygon();
+		shape.addPoint(11, 7);
+		shape.addPoint(3, 11);
+		shape.addPoint(3, 3);        
+		
+		return IconGenerator.generateIcon(color, SIZE, SIZE, shape);
+	}
 }

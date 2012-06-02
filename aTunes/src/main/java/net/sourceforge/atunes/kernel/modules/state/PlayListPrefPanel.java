@@ -31,15 +31,16 @@ public final class PlayListPrefPanel extends AbstractPreferencesPanel {
 
     private static final long serialVersionUID = -7814272907267661918L;
 
-    public static final String PROP_PLAYLIST_STOP_ON_SWITCH = "PLAYLIST_STOP_ON_SWITCH";
+    private static final String PROP_PLAYLIST_STOP_ON_SWITCH = "PLAYLIST_STOP_ON_SWITCH";
 
-    public static final String PROP_PLAYLIST_STOP_ON_CLEAR = "PLAYLIST_STOP_ON_CLEAR";
+    private static final String PROP_PLAYLIST_STOP_ON_CLEAR = "PLAYLIST_STOP_ON_CLEAR";
 
-    public static final String PROP_AUTO_SCROLL_PLAYLIST = "AUTO_SCROLL_PLAYLIST";
-
+    private static final String PROP_AUTO_SCROLL_PLAYLIST = "AUTO_SCROLL_PLAYLIST";
+    
     private JCheckBox stopSongWhenSwitching;
     private JCheckBox stopSongWhenClearing;
     private JCheckBox autoScrollPlayList;
+    private JCheckBox showPlayListSelectorCombo;
     
     private IStatePlaylist statePlaylist;
     
@@ -59,6 +60,7 @@ public final class PlayListPrefPanel extends AbstractPreferencesPanel {
         stopSongWhenSwitching = new JCheckBox(I18nUtils.getString(PROP_PLAYLIST_STOP_ON_SWITCH));
         stopSongWhenClearing = new JCheckBox(I18nUtils.getString(PROP_PLAYLIST_STOP_ON_CLEAR));
         autoScrollPlayList = new JCheckBox(I18nUtils.getString(PROP_AUTO_SCROLL_PLAYLIST));
+        showPlayListSelectorCombo = new JCheckBox(I18nUtils.getString("SHOW_PLAYLIST_SELECTOR_COMBO"));
 
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 1;
@@ -70,9 +72,10 @@ public final class PlayListPrefPanel extends AbstractPreferencesPanel {
         c.gridy = 1;
         add(stopSongWhenClearing, c);
         c.gridy = 2;
-        c.weighty = 1;
         add(autoScrollPlayList, c);
-
+        c.gridy = 3;
+        c.weighty = 1;
+        add(showPlayListSelectorCombo, c);
     }
 
     @Override
@@ -80,36 +83,17 @@ public final class PlayListPrefPanel extends AbstractPreferencesPanel {
         statePlaylist.setStopPlayerOnPlayListSwitch(stopSongWhenSwitching.isSelected());
         statePlaylist.setStopPlayerOnPlayListClear(stopSongWhenClearing.isSelected());
         statePlaylist.setAutoScrollPlayListEnabled(autoScrollPlayList.isSelected());
+        statePlaylist.setShowPlayListSelectorComboBox(showPlayListSelectorCombo.isSelected());
         return false;
-    }
-
-    /**
-     * @param stop
-     */
-    private void setStopSongWhenSwitching(boolean stop) {
-        stopSongWhenSwitching.setSelected(stop);
-    }
-
-    /**
-     * @param stop
-     */
-    private void setStopSongWhenClearing(boolean stop) {
-        stopSongWhenClearing.setSelected(stop);
-    }
-
-    /**
-     * 
-     * @param autoScroll
-     */
-    private void setAutoScrollPlayList(boolean autoScroll) {
-        autoScrollPlayList.setSelected(autoScroll);
     }
 
     @Override
     public void updatePanel() {
-        setStopSongWhenSwitching(statePlaylist.isStopPlayerOnPlayListSwitch());
-        setStopSongWhenClearing(statePlaylist.isStopPlayerOnPlayListClear());
-        setAutoScrollPlayList(statePlaylist.isAutoScrollPlayListEnabled());
+    	stopSongWhenSwitching.setSelected(statePlaylist.isStopPlayerOnPlayListSwitch());
+    	stopSongWhenClearing.setSelected(statePlaylist.isStopPlayerOnPlayListClear());
+    	autoScrollPlayList.setSelected(statePlaylist.isAutoScrollPlayListEnabled());
+    	showPlayListSelectorCombo.setSelected(statePlaylist.isShowPlayListSelectorComboBox());
+        
     }
 
     @Override

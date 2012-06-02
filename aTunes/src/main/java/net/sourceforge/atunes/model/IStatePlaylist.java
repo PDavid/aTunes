@@ -95,6 +95,15 @@ public interface IStatePlaylist {
 	 * @param stopPlayerOnPlayListClear
 	 */
 	public void setStopPlayerOnPlayListClear(boolean stopPlayerOnPlayListClear);
-
-
+	
+	/**
+	 * If true shows a combo box with play lists instead of buttons
+	 * @param showPlayListSelectorComboBox
+	 */
+	public void setShowPlayListSelectorComboBox(boolean showPlayListSelectorComboBox);
+	
+	/**
+	 * @return If true shows a combo box with play lists instead of buttons
+	 */
+	public boolean isShowPlayListSelectorComboBox();
 }

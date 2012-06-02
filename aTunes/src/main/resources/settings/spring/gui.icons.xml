@@ -6,6 +6,9 @@
 
     <bean id="audioObjectGenericImageFactory" class="net.sourceforge.atunes.gui.images.AudioObjectGenericImage"/>
     
+    <bean id="arrowLeftImageIcon" class="net.sourceforge.atunes.gui.images.ArrowLeftImageIcon"/>
+    <bean id="arrowRightImageIcon" class="net.sourceforge.atunes.gui.images.ArrowRightImageIcon"/>
+    
 	<bean id="artistImageIcon" class="net.sourceforge.atunes.gui.images.ArtistImageIcon"/>
 	<bean id="albumFavoriteIcon" class="net.sourceforge.atunes.gui.images.AlbumFavoriteImageIcon"/>
 	<bean id="albumSmallIcon" class="net.sourceforge.atunes.gui.images.AlbumImageSmallIcon"/>

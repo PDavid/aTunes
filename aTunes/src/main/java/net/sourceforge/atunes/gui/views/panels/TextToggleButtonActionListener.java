@@ -18,27 +18,21 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.gui.views.panels;
 
-import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+final class TextToggleButtonActionListener implements ActionListener {
+	
+	private final TextToggleButton button;
 
-/**
- * A panel to select play lists
- * @author alex
- *
- */
-public interface IPlayListSelectorPanel {
+	TextToggleButtonActionListener(TextToggleButton button) {
+		this.button = button;
+	}
 
-	/**
-	 * @return the options
-	 */
-	public IPopUpButton getOptions();
-
-	/**
-	 * Returns Swing component
-	 * @return
-	 */
-	public Component getSwingComponent();
-
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		button.getAction().actionPerformed(e);
+	}
 }
