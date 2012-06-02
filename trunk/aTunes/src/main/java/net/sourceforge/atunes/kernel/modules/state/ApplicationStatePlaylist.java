@@ -112,4 +112,15 @@ public class ApplicationStatePlaylist implements IStatePlaylist {
 	public void setStopPlayerOnPlayListClear(boolean stopPlayerOnPlayListClear) {
     	this.stateStore.storePreference(Preferences.STOP_PLAYER_ON_PLAYLIST_CLEAR, stopPlayerOnPlayListClear);
     }
+    
+    @Override
+    public boolean isShowPlayListSelectorComboBox() {
+    	return (Boolean) this.stateStore.retrievePreference(Preferences.SHOW_PLAYLIST_COMBO, false);
+    }
+    
+    @Override
+    public void setShowPlayListSelectorComboBox(boolean showPlayListSelectorComboBox) {
+    	this.stateStore.storePreference(Preferences.SHOW_PLAYLIST_COMBO, showPlayListSelectorComboBox);
+    }
+    
 }

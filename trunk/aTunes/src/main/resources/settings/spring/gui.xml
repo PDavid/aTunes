@@ -50,6 +50,7 @@
 	</bean>
 	<bean id="playListPanel" class="net.sourceforge.atunes.gui.views.panels.PlayListPanel" init-method="initialize"/>
 	<bean id="playListSelectorPanel" class="net.sourceforge.atunes.gui.views.panels.PlayListSelectorPanel" init-method="initialize"/>
+	<bean id="playListSelectorWrapper" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListSelectorWrapper" init-method="initialize"/>
 	
 	<bean id="playListTableModel" class="net.sourceforge.atunes.kernel.modules.playlist.PlayListTableModel">
 		<property name="columnSet" ref="playListColumnSet"/>

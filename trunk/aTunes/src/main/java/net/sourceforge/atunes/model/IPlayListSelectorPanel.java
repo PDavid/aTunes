@@ -22,8 +22,6 @@ package net.sourceforge.atunes.model;
 
 import java.awt.Component;
 
-import javax.swing.JComboBox;
-
 
 /**
  * A panel to select play lists
@@ -31,11 +29,6 @@ import javax.swing.JComboBox;
  *
  */
 public interface IPlayListSelectorPanel {
-
-	/**
-	 * @return the playListCombo
-	 */
-	public JComboBox getPlayListCombo();
 
 	/**
 	 * @return the options

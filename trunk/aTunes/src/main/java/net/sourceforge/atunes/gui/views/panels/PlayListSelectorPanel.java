@@ -21,15 +21,13 @@
 package net.sourceforge.atunes.gui.views.panels;
 
 import java.awt.Component;
-import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 
 import javax.swing.AbstractAction;
-import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
+import net.sourceforge.atunes.kernel.modules.playlist.PlayListSelectorWrapper;
 import net.sourceforge.atunes.model.IFilterPanel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListSelectorPanel;
@@ -41,8 +39,6 @@ public final class PlayListSelectorPanel extends JPanel implements IPlayListSele
 
 	private PopUpButton options;
 	
-    private JComboBox playListCombo;
-
 	private ILookAndFeelManager lookAndFeelManager;
 	
 	private IFilterPanel playListFilterPanel;
@@ -61,12 +57,21 @@ public final class PlayListSelectorPanel extends JPanel implements IPlayListSele
 	
 	private AbstractAction syncDeviceWithPlayListAction;
 	
+	private PlayListSelectorWrapper playListSelectorWrapper;
+	
     /**
      * Instantiates a new play list tab panel.
      */
     public PlayListSelectorPanel() {
         super(new GridBagLayout());
     }
+    
+    /**
+     * @param playListSelectorWrapper
+     */
+    public void setPlayListSelectorWrapper(PlayListSelectorWrapper playListSelectorWrapper) {
+		this.playListSelectorWrapper = playListSelectorWrapper;
+	}
     
     /**
      * @param syncDeviceWithPlayListAction
@@ -136,23 +141,8 @@ public final class PlayListSelectorPanel extends JPanel implements IPlayListSele
      */
     public void initialize() {
     	options = new PopUpButton(PopUpButton.BOTTOM_RIGHT, lookAndFeelManager);
-    	playListCombo = new JComboBox();
-    	playListCombo.setMaximumRowCount(30);
-
-    	GridBagConstraints c = new GridBagConstraints();
     	
-    	c.weighty = 1;
-    	c.fill = GridBagConstraints.VERTICAL;
-    	add(options, c);
-    	
-    	c.gridx = 1;
-        add(playListCombo, c);
-        
-        c.gridx = 2;
-        c.weightx = 1;
-        c.anchor = GridBagConstraints.EAST;
-        c.insets = new Insets(0, 0, 0, 5);
-        add(playListFilterPanel.getSwingComponent(), c);
+    	playListSelectorWrapper.arrangeComponents(this, options, playListFilterPanel);
 
         addActions();
     }
@@ -173,11 +163,6 @@ public final class PlayListSelectorPanel extends JPanel implements IPlayListSele
 	}
 
 	@Override
-	public JComboBox getPlayListCombo() {
-		return playListCombo;
-	}
-	
-	@Override
 	public IPopUpButton getOptions() {
 		return options;
 	}
@@ -185,5 +170,13 @@ public final class PlayListSelectorPanel extends JPanel implements IPlayListSele
 	@Override
 	public Component getSwingComponent() {
 		return this;
+	}
+
+	/**
+	 * Shows combo box to select play lists if necessary
+	 */
+	public void showPlayListSelectorComboBox() {
+		removeAll();
+    	playListSelectorWrapper.arrangeComponents(this, options, playListFilterPanel);
 	}
 }
