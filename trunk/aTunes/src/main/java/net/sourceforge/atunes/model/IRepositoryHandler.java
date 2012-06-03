@@ -232,19 +232,6 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 	public boolean selectRepository();
 
 	/**
-	 * Imports folders to repository
-	 */
-	public void importFoldersToRepository();
-
-	/**
-	 * Imports folders passed as argument to repository
-	 * 
-	 * @param folders
-	 * @param path
-	 */
-	public void importFolders(final List<File> folders, final String path);
-
-	/**
 	 * Adds a listener to be notified when an audio file is removed
 	 * 
 	 * @param listener
