@@ -23,60 +23,26 @@ package net.sourceforge.atunes.kernel.modules.repository;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Callable;
 
-import javax.swing.SwingWorker;
-
-import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.kernel.modules.process.ImportFilesProcess;
-import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectLocator;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
-import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IProgressDialog;
-import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IRepositoryLoaderListener;
-import net.sourceforge.atunes.model.IReviewImportDialog;
-import net.sourceforge.atunes.model.IStateRepository;
-import net.sourceforge.atunes.model.ITagAttributesReviewed;
-import net.sourceforge.atunes.utils.Logger;
 
-/**
- * @author alex
- *
- */
-public final class ImportFoldersSwingWorker extends SwingWorker<List<ILocalAudioObject>, Void> {
+public class ImportFoldersToRepositoryCallable implements Callable<List<ILocalAudioObject>> {
 	
-	private IRepositoryHandler repositoryHandler;
 	private List<File> folders;
-	private String path;
 	private IProgressDialog progressDialog;
-	private IErrorDialogFactory errorDialogFactory;
 	private ILocalAudioObjectValidator localAudioObjectValidator;
-	private IProcessFactory processFactory;
 	private ILocalAudioObjectLocator localAudioObjectLocator;
-	private IStateRepository stateRepository;
-	
-	/**
-	 * @param repositoryHandler
-	 */
-	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
-	}
-	
+
 	/**
 	 * @param folders
 	 */
 	public void setFolders(List<File> folders) {
 		this.folders = folders;
-	}
-	
-	/**
-	 * @param path
-	 */
-	public void setPath(String path) {
-		this.path = path;
 	}
 	
 	/**
@@ -87,80 +53,24 @@ public final class ImportFoldersSwingWorker extends SwingWorker<List<ILocalAudio
 	}
 	
 	/**
-	 * @param stateRepository
-	 */
-	public void setStateRepository(IStateRepository stateRepository) {
-		this.stateRepository = stateRepository;
-	}
-	
-	/**
-	 * @param errorDialogFactory
-	 */
-	public void setErrorDialogFactory(IErrorDialogFactory errorDialogFactory) {
-		this.errorDialogFactory = errorDialogFactory;
-	}
-	
-	/**
 	 * @param localAudioObjectValidator
 	 */
-	public void setLocalAudioObjectValidator(
-			ILocalAudioObjectValidator localAudioObjectValidator) {
+	public void setLocalAudioObjectValidator(ILocalAudioObjectValidator localAudioObjectValidator) {
 		this.localAudioObjectValidator = localAudioObjectValidator;
-	}
-	
-	/**
-	 * @param processFactory
-	 */
-	public void setProcessFactory(IProcessFactory processFactory) {
-		this.processFactory = processFactory;
 	}
 	
 	/**
 	 * @param localAudioObjectLocator
 	 */
-	public void setLocalAudioObjectLocator(
-			ILocalAudioObjectLocator localAudioObjectLocator) {
+	public void setLocalAudioObjectLocator(ILocalAudioObjectLocator localAudioObjectLocator) {
 		this.localAudioObjectLocator = localAudioObjectLocator;
 	}
-	
+
 	@Override
-	protected List<ILocalAudioObject> doInBackground() {
+	public List<ILocalAudioObject> call() throws Exception {
 	    return getSongsForFolders(folders, new ImportFoldersLoaderListener(progressDialog), localAudioObjectValidator);
 	}
 
-	@Override
-	protected void done() {
-	    super.done();
-
-	    try {
-	        final List<ILocalAudioObject> filesToLoad = get();
-
-	        ITagAttributesReviewed tagAttributesReviewed = null;
-	        // Review tags if selected in settings
-	        if (stateRepository.isReviewTagsBeforeImport()) {
-	            IReviewImportDialog reviewImportDialog = Context.getBean(IReviewImportDialog.class);
-	            reviewImportDialog.showDialog(folders, filesToLoad);
-	            if (reviewImportDialog.isDialogCancelled()) {
-	                return;
-	            }
-	            tagAttributesReviewed = reviewImportDialog.getResult();
-	        }
-
-	        ImportFilesProcess process = (ImportFilesProcess) processFactory.getProcessByName("importFilesProcess");
-	        process.setFilesToTransfer(filesToLoad);
-	        process.setFolders(folders);
-	        process.setDestination(path);
-	        process.initialize(tagAttributesReviewed);
-	        process.addProcessListener(new ImportFilesProcessListener(process, repositoryHandler, errorDialogFactory));
-	        process.execute();
-
-	    } catch (InterruptedException e) {
-	        Logger.error(e);
-	    } catch (ExecutionException e) {
-	        Logger.error(e);
-	    }
-	}
-	
 	/**
 	 * Gets the songs of a list of folders. Used in import
 	 * @param folders
@@ -185,7 +95,7 @@ public final class ImportFoldersSwingWorker extends SwingWorker<List<ILocalAudio
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Count files.
 	 * 

@@ -36,6 +36,7 @@
 	<bean id="repositoryReadLoader" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryReadLoader" parent="abstractRepositoryLoader" scope="prototype"/>
 	<bean id="repositoryRefreshLoader" class="net.sourceforge.atunes.kernel.modules.repository.RepositoryRefreshLoader" parent="abstractRepositoryLoader" scope="prototype"/>
 	
-	<bean id="importFoldersSwingWorker" class="net.sourceforge.atunes.kernel.modules.repository.ImportFoldersSwingWorker" scope="prototype"/>
+	<bean class="net.sourceforge.atunes.kernel.modules.repository.ImportFoldersToRepositoryCallable" scope="prototype"/>
+	<bean class="net.sourceforge.atunes.kernel.modules.repository.ImportFoldersToRepositoryActionsWithBackgroundResult" scope="prototype"/>
 
 </beans>

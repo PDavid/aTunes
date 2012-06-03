@@ -37,7 +37,6 @@ import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
-import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IRepositoryTransaction;
@@ -51,7 +50,6 @@ import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
-import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -494,22 +492,6 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
     @Override
 	public boolean selectRepository() {
         return repositoryReader.selectRepository(false);
-    }
-
-    @Override
-	public void importFoldersToRepository() {
-    }
-
-    @Override
-	public void importFolders(final List<File> folders, final String path) {
-    	IProgressDialog progressDialog = (IProgressDialog) getBean("progressDialog");
-    	progressDialog.setTitle(StringUtils.getString(I18nUtils.getString("READING_FILES_TO_IMPORT"), "..."));
-        progressDialog.disableCancelButton();
-        progressDialog.showDialog();
-        ImportFoldersSwingWorker worker = getBean(ImportFoldersSwingWorker.class);
-        worker.setFolders(folders);
-        worker.setPath(path);
-        worker.execute();
     }
 
     @Override
