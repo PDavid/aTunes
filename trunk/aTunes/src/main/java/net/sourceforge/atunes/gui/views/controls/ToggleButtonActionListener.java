@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.panels;
+package net.sourceforge.atunes.gui.views.controls;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

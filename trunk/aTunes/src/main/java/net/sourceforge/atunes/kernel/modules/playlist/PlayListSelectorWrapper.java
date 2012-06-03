@@ -28,8 +28,8 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.JComboBox;
 
+import net.sourceforge.atunes.gui.views.controls.ToggleButtonFlowPanel;
 import net.sourceforge.atunes.gui.views.panels.PlayListSelectorPanel;
-import net.sourceforge.atunes.gui.views.panels.ToggleButtonFlowPanel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IStatePlaylist;

@@ -27,11 +27,11 @@ import java.awt.Insets;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 
-import net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton;
-import net.sourceforge.atunes.gui.views.controls.playerControls.NextButton;
-import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
-import net.sourceforge.atunes.gui.views.controls.playerControls.PreviousButton;
-import net.sourceforge.atunes.gui.views.controls.playerControls.StopButton;
+import net.sourceforge.atunes.gui.views.controls.MuteButton;
+import net.sourceforge.atunes.gui.views.controls.NextButton;
+import net.sourceforge.atunes.gui.views.controls.PlayPauseButton;
+import net.sourceforge.atunes.gui.views.controls.PreviousButton;
+import net.sourceforge.atunes.gui.views.controls.StopButton;
 
 public class CustomPlayerControlsBuilder {
 

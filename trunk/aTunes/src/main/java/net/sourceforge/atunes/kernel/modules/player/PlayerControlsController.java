@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.modules.player;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.GuiUtils;
-import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
+import net.sourceforge.atunes.gui.views.controls.VolumeSlider;
 import net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IAudioObject;

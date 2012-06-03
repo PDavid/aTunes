@@ -43,9 +43,9 @@ import javax.swing.Timer;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomWindow;
-import net.sourceforge.atunes.gui.views.controls.playerControls.FullScreenNextButton;
-import net.sourceforge.atunes.gui.views.controls.playerControls.FullScreenPlayPauseButton;
-import net.sourceforge.atunes.gui.views.controls.playerControls.FullScreenPreviousButton;
+import net.sourceforge.atunes.gui.views.controls.FullScreenNextButton;
+import net.sourceforge.atunes.gui.views.controls.FullScreenPlayPauseButton;
+import net.sourceforge.atunes.gui.views.controls.FullScreenPreviousButton;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;

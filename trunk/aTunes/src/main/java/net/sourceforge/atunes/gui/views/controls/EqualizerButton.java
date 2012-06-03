@@ -18,37 +18,40 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.controls.playerControls;
-
-import java.awt.Dimension;
+package net.sourceforge.atunes.gui.views.controls;
 
 import javax.swing.Action;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 
-import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.model.IPlayerHandler;
+import net.sourceforge.atunes.model.PlayerEngineCapability;
 
-public final class FullScreenNextButton extends JButton {
+public final class EqualizerButton extends SecondaryControl {
 
-    private static final long serialVersionUID = -4939372038840047335L;
+    private static final long serialVersionUID = 6007885049773560874L;
 
+    private IPlayerHandler playerHandler;
+    
     /**
-     * Instantiates a new next button.
-     * 
-     * @param size
-     * @param lookAndFeelManager
+     * @param playerHandler
      */
-    public FullScreenNextButton(Dimension size, ImageIcon icon) {
-        super(Context.getBean("nextAction", Action.class));
-        setPreferredSize(size);
-        setMinimumSize(size);
-        setMaximumSize(size);
-        setFocusable(false);
-        setText(null);
-        setIcon(icon);
-        
-        setOpaque(false);
-        setBorderPainted(false);
-        setContentAreaFilled(false);
-    }    
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
+    
+    /**
+     * Instantiates a new equalizer button.
+     * @param a
+     */
+    public EqualizerButton(Action a) {
+        super(a);
+    }
+    
+    /**
+     * Initializes control
+     */
+    public void initialize() {
+        if (!playerHandler.supportsCapability(PlayerEngineCapability.EQUALIZER)) {
+            setVisible(false);
+        }
+    }
 }

@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.modules.player;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
-import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
+import net.sourceforge.atunes.gui.views.controls.VolumeSlider;
 
 public final class VolumeSliderMouseWheelListener implements MouseWheelListener {
 	

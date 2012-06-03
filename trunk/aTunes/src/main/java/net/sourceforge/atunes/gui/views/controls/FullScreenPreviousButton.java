@@ -18,34 +18,38 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.controls.playerControls;
+package net.sourceforge.atunes.gui.views.controls;
+
+import java.awt.Dimension;
 
 import javax.swing.Action;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.Context;
 
-public class SecondaryControl extends JButton {
+public final class FullScreenPreviousButton extends JButton {
 
-    /**
-	 * 
-	 */
-    private static final long serialVersionUID = -124604413114002586L;
+    private static final long serialVersionUID = -5415683019365261871L;
 
     /**
-     * @param a
-     * @param preferredSize
-     */
-    public SecondaryControl(Action a) {
-        super(a);
-        setText(null);
-        setFocusable(false);
-    }
-    
-    /**
+     * Instantiates a new previous button.
+     * 
+     * @param size
      * @param lookAndFeelManager
      */
-    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-        lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(this);
-    }    
+    public FullScreenPreviousButton(Dimension size, ImageIcon icon) {
+        super(Context.getBean("previousAction", Action.class));
+        setPreferredSize(size);
+        setMinimumSize(size);
+        setMaximumSize(size);
+        setFocusable(false);
+        setText(null);
+        
+        setOpaque(false);
+        setBorderPainted(false);
+        setContentAreaFilled(false);
+        
+        setIcon(icon);
+    }
 }

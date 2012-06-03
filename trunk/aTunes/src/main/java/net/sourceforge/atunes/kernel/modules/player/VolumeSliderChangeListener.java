@@ -23,7 +23,7 @@ package net.sourceforge.atunes.kernel.modules.player;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider;
+import net.sourceforge.atunes.gui.views.controls.VolumeSlider;
 
 public final class VolumeSliderChangeListener implements ChangeListener {
 	

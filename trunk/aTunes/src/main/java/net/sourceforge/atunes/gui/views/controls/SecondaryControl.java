@@ -18,40 +18,34 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.controls.playerControls;
+package net.sourceforge.atunes.gui.views.controls;
 
 import javax.swing.Action;
+import javax.swing.JButton;
 
-import net.sourceforge.atunes.model.IPlayerHandler;
-import net.sourceforge.atunes.model.PlayerEngineCapability;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 
-public final class EqualizerButton extends SecondaryControl {
+public class SecondaryControl extends JButton {
 
-    private static final long serialVersionUID = 6007885049773560874L;
-
-    private IPlayerHandler playerHandler;
-    
     /**
-     * @param playerHandler
-     */
-    public void setPlayerHandler(IPlayerHandler playerHandler) {
-		this.playerHandler = playerHandler;
-	}
-    
+	 * 
+	 */
+    private static final long serialVersionUID = -124604413114002586L;
+
     /**
-     * Instantiates a new equalizer button.
      * @param a
+     * @param preferredSize
      */
-    public EqualizerButton(Action a) {
+    public SecondaryControl(Action a) {
         super(a);
+        setText(null);
+        setFocusable(false);
     }
     
     /**
-     * Initializes control
+     * @param lookAndFeelManager
      */
-    public void initialize() {
-        if (!playerHandler.supportsCapability(PlayerEngineCapability.EQUALIZER)) {
-            setVisible(false);
-        }
-    }
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+        lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(this);
+    }    
 }

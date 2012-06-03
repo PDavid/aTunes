@@ -26,8 +26,8 @@ import java.awt.Insets;
 
 import javax.swing.JPanel;
 
-import net.sourceforge.atunes.gui.views.controls.playerControls.SecondaryControl;
-import net.sourceforge.atunes.gui.views.controls.playerControls.SecondaryToggleControl;
+import net.sourceforge.atunes.gui.views.controls.SecondaryControl;
+import net.sourceforge.atunes.gui.views.controls.SecondaryToggleControl;
 
 public class SecondaryPlayerControlsBuilder {
 

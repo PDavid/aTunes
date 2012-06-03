@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
 	default-autowire="byName" default-lazy-init="true">
 
-	<bean id="playerControlsProgressSlider" class="net.sourceforge.atunes.gui.views.controls.playerControls.ProgressSlider" scope="prototype" init-method="initialize">
+	<bean id="playerControlsProgressSlider" class="net.sourceforge.atunes.gui.views.controls.ProgressSlider" scope="prototype" init-method="initialize">
 		<property name="paintIconAllowed" value="true"/>
 	</bean>
 
@@ -18,25 +18,25 @@
 		<constructor-arg value="30"/>
 	</bean>
 	
-	<bean id="shuffleButton" class="net.sourceforge.atunes.gui.views.controls.playerControls.SecondaryToggleControl">
+	<bean id="shuffleButton" class="net.sourceforge.atunes.gui.views.controls.SecondaryToggleControl">
 		<constructor-arg>
 			<ref bean="shuffleModeAction"/>
 		</constructor-arg>
 		<property name="preferredSize" ref="secondaryControlSize"/>
 	</bean>
-	<bean id="repeatButton" class="net.sourceforge.atunes.gui.views.controls.playerControls.SecondaryToggleControl">
+	<bean id="repeatButton" class="net.sourceforge.atunes.gui.views.controls.SecondaryToggleControl">
 		<constructor-arg>
 			<ref bean="repeatModeAction"/>
 		</constructor-arg>
 		<property name="preferredSize" ref="secondaryControlSize"/>
 	</bean>
-	<bean id="normalizeButton" class="net.sourceforge.atunes.gui.views.controls.playerControls.NormalizationButton" init-method="initialize">
+	<bean id="normalizeButton" class="net.sourceforge.atunes.gui.views.controls.NormalizationButton" init-method="initialize">
 		<constructor-arg>
 			<ref bean="normalizeModeAction"/>
 		</constructor-arg>
 		<property name="preferredSize" ref="secondaryControlSize"/>
 	</bean>
-	<bean id="equalizerButton" class="net.sourceforge.atunes.gui.views.controls.playerControls.EqualizerButton" init-method="initialize">
+	<bean id="equalizerButton" class="net.sourceforge.atunes.gui.views.controls.EqualizerButton" init-method="initialize">
 		<constructor-arg>
 			<ref bean="showEqualizerAction"/>
 		</constructor-arg>
@@ -46,15 +46,15 @@
 	
 	
 	
-	<bean id="volumeButton" class="net.sourceforge.atunes.gui.views.controls.playerControls.MuteButton">
+	<bean id="volumeButton" class="net.sourceforge.atunes.gui.views.controls.MuteButton">
 		<constructor-arg>
 			<bean class="net.sourceforge.atunes.gui.views.panels.PlayerControlsSize" factory-method="getStopMuteButtonsSize"/>
 		</constructor-arg>
 		<constructor-arg ref="muteAction"/>
 	</bean>
 	
-	<bean id="volumeIconCalculator" class="net.sourceforge.atunes.gui.views.controls.playerControls.VolumeIconCalculator"/>
+	<bean id="volumeIconCalculator" class="net.sourceforge.atunes.gui.views.controls.VolumeIconCalculator"/>
 	
-	<bean id="volumeSlider" class="net.sourceforge.atunes.gui.views.controls.playerControls.VolumeSlider"/>
+	<bean id="volumeSlider" class="net.sourceforge.atunes.gui.views.controls.VolumeSlider"/>
 
 </beans>
