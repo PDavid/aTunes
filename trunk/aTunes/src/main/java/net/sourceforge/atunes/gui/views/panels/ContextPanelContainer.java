@@ -24,6 +24,7 @@ import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,15 +90,18 @@ public final class ContextPanelContainer extends JPanel implements IContextPanel
     	c.gridy = 0;
     	c.weightx = 0;
     	c.fill = GridBagConstraints.BOTH;
+    	c.insets = new Insets(0, 1, 1, 0);
     	add(options, c);
     	c.gridx = 1;
     	c.weightx = 1;
+    	c.insets = new Insets(0, 0, 1, 0);
         add(contextSelector, c);
         c.gridx = 0;
         c.gridy = 1;
         c.weightx = 1;
         c.weighty = 1;
         c.gridwidth = 2;
+    	c.insets = new Insets(0, 0, 0, 0);
         c.fill = GridBagConstraints.BOTH;
         add(container, c);
     }

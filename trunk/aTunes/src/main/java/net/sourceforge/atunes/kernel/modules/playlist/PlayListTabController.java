@@ -63,6 +63,8 @@ final class PlayListTabController extends AbstractSimpleController<PlayListSelec
     	setComponentControlled((PlayListSelectorPanel)playListSelectorPanel);
         addBindings();
         addStateBindings();
+        
+    	playListSelectorWrapper.arrangeComponents(getComponentControlled());
     }
 
     @Override
@@ -152,6 +154,7 @@ final class PlayListTabController extends AbstractSimpleController<PlayListSelec
 	 * Shows combo box to select play lists if necessary
 	 */
 	public void showPlayListSelectorComboBox() {
-		getComponentControlled().showPlayListSelectorComboBox();
+		getComponentControlled().removeAll();
+    	playListSelectorWrapper.arrangeComponents(getComponentControlled());
 	}
 }

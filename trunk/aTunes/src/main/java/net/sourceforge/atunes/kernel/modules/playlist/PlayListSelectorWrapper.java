@@ -28,10 +28,8 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.JComboBox;
 
-import net.sourceforge.atunes.gui.views.controls.PopUpButton;
 import net.sourceforge.atunes.gui.views.panels.PlayListSelectorPanel;
 import net.sourceforge.atunes.gui.views.panels.TextToggleButtonFlowPanel;
-import net.sourceforge.atunes.model.IFilterPanel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IStatePlaylist;
@@ -85,13 +83,13 @@ public class PlayListSelectorWrapper {
 	 * @param options
 	 * @param playListFilterPanel
 	 */
-	public void arrangeComponents(PlayListSelectorPanel selectorPanel, PopUpButton options, IFilterPanel playListFilterPanel) {
+	public void arrangeComponents(PlayListSelectorPanel selectorPanel) {
     	GridBagConstraints c = new GridBagConstraints();
     	
     	c.weighty = 1;
     	c.fill = GridBagConstraints.VERTICAL;
     	c.insets = new Insets(1, 0, 1, 0);
-    	selectorPanel.add(options, c);
+    	selectorPanel.add(selectorPanel.getOptions().getSwingComponent(), c);
     	
     	c.gridx = 1;
         c.weightx = 1;
@@ -101,7 +99,7 @@ public class PlayListSelectorWrapper {
     		selectorPanel.add(playListCombo, c);
     	} else {
         	c.fill = GridBagConstraints.BOTH;
-        	c.insets = new Insets(0, 10, 0, 10);
+        	c.insets = new Insets(0, 0, 0, 10);
     		selectorPanel.add(playListButtonFlowPanel, c);
     	}
         
@@ -109,7 +107,7 @@ public class PlayListSelectorWrapper {
         c.weightx = 0;
         c.anchor = GridBagConstraints.EAST;
         c.insets = new Insets(0, 0, 0, 5);
-        selectorPanel.add(playListFilterPanel.getSwingComponent(), c);
+        selectorPanel.add(selectorPanel.getPlayListFilterPanel().getSwingComponent(), c);
 	}
 
 	/**

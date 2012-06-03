@@ -148,7 +148,7 @@ public class TextToggleButtonFlowPanel extends JPanel implements ILookAndFeelCha
 		c.weighty = 0;
 		c.fill = GridBagConstraints.BOTH;
 		c.anchor = GridBagConstraints.CENTER;
-		c.insets = new Insets(0, 0, 0, 0);
+		c.insets = new Insets(1, 0, 0, 0);
 		add(scrollPane, c);
 
 		c.gridx = 2;

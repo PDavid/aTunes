@@ -23,6 +23,7 @@ package net.sourceforge.atunes.gui.views.panels;
 import java.awt.CardLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
@@ -159,9 +160,11 @@ public final class NavigationTreePanel extends JPanel implements INavigationTree
         c.gridx = 0;
         c.gridy = 0;
         c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(0, 1, 1, 0);
         add(getOptionsPopUpButton(lookAndFeelManager), c);
         c.gridx = 1;
         c.weightx = 1;
+        c.insets = new Insets(0, 0, 0, 0);
         add(viewButtonsPanel, c);
         
         c.gridx = 2;
