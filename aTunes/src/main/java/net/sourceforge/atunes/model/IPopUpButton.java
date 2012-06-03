@@ -49,5 +49,11 @@ public interface IPopUpButton {
 	 * @param listener
 	 */
 	void addActionListener(ActionListener listener);
+	
+	/**
+	 * returns graphical component
+	 * @return
+	 */
+	Component getSwingComponent();
 
 }

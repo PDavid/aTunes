@@ -238,4 +238,9 @@ public class PopUpButton extends JButton implements IPopUpButton {
 	public void hideMenu() {
 		menu.setVisible(false);
 	}
+	
+	@Override
+	public Component getSwingComponent() {
+		return this;
+	}
 }

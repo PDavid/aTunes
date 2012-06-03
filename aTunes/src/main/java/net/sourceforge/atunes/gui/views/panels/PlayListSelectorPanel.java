@@ -27,7 +27,6 @@ import javax.swing.AbstractAction;
 import javax.swing.JPanel;
 
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
-import net.sourceforge.atunes.kernel.modules.playlist.PlayListSelectorWrapper;
 import net.sourceforge.atunes.model.IFilterPanel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListSelectorPanel;
@@ -57,21 +56,12 @@ public final class PlayListSelectorPanel extends JPanel implements IPlayListSele
 	
 	private AbstractAction syncDeviceWithPlayListAction;
 	
-	private PlayListSelectorWrapper playListSelectorWrapper;
-	
     /**
      * Instantiates a new play list tab panel.
      */
     public PlayListSelectorPanel() {
         super(new GridBagLayout());
     }
-    
-    /**
-     * @param playListSelectorWrapper
-     */
-    public void setPlayListSelectorWrapper(PlayListSelectorWrapper playListSelectorWrapper) {
-		this.playListSelectorWrapper = playListSelectorWrapper;
-	}
     
     /**
      * @param syncDeviceWithPlayListAction
@@ -142,8 +132,6 @@ public final class PlayListSelectorPanel extends JPanel implements IPlayListSele
     public void initialize() {
     	options = new PopUpButton(PopUpButton.BOTTOM_RIGHT, lookAndFeelManager);
     	
-    	playListSelectorWrapper.arrangeComponents(this, options, playListFilterPanel);
-
         addActions();
     }
 
@@ -167,16 +155,15 @@ public final class PlayListSelectorPanel extends JPanel implements IPlayListSele
 		return options;
 	}
 	
+	/**
+	 * @return
+	 */
+	public IFilterPanel getPlayListFilterPanel() {
+		return playListFilterPanel;
+	}
+	
 	@Override
 	public Component getSwingComponent() {
 		return this;
-	}
-
-	/**
-	 * Shows combo box to select play lists if necessary
-	 */
-	public void showPlayListSelectorComboBox() {
-		removeAll();
-    	playListSelectorWrapper.arrangeComponents(this, options, playListFilterPanel);
 	}
 }
