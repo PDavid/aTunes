@@ -20,7 +20,7 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeIconCalculator;
+import net.sourceforge.atunes.gui.views.controls.VolumeIconCalculator;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IStatePlayer;
 import net.sourceforge.atunes.utils.I18nUtils;

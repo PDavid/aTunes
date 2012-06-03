@@ -18,63 +18,49 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.controls.playerControls;
+package net.sourceforge.atunes.gui.views.controls;
 
 import java.awt.Dimension;
 
 import javax.swing.Action;
-import javax.swing.JToggleButton;
+import javax.swing.JButton;
 
+import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.model.IIconFactory;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
-public final class MuteButton extends JToggleButton implements ILookAndFeelChangeListener {
+/**
+ * The Class StopButton.
+ */
+public final class StopButton extends JButton implements ILookAndFeelChangeListener{
 
     private static final long serialVersionUID = 6007885049773560874L;
 
-    private VolumeIconCalculator volumeIconCalculator;
+    private ILookAndFeel lookAndFeel;
     
     /**
-     * Instantiates a new mute button.
+     * Instantiates a new stop button.
      * 
      * @param size
-     * @param muteAction
+     * @param lookAndFeelManager
      */
-    public MuteButton(Dimension size, Action muteAction) {
-        super(muteAction);
-
-        // Force size
+    public StopButton(Dimension size, ILookAndFeelManager lookAndFeelManager) {
+        super(Context.getBean("stopAction", Action.class));
+        this.lookAndFeel = lookAndFeelManager.getCurrentLookAndFeel();
         setPreferredSize(size);
         setMinimumSize(size);
         setMaximumSize(size);
         setFocusable(false);
+        setText(null);
+        setIcon(Context.getBean("stopIcon", IIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls()));
+        lookAndFeel.putClientProperties(this);
+        lookAndFeelManager.addLookAndFeelChangeListener(this);
     }
-    
-    /**
-     * @param lookAndFeelManager
-     */
-    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-		lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(this);
-		lookAndFeelManager.addLookAndFeelChangeListener(this);
-	}
-    
-    /**
-     * @param volumeIconCalculator
-     */
-    public void setVolumeIconCalculator(VolumeIconCalculator volumeIconCalculator) {
-		this.volumeIconCalculator = volumeIconCalculator;
-	}
     
     @Override
     public void lookAndFeelChanged() {
-    	updateIcon();
-    }
-    
-    /**
-     * Updates icon of mute
-     * @param state
-     */
-    public void updateIcon() {
-    	setIcon(volumeIconCalculator.getVolumeIcon());
+        setIcon(Context.getBean("stopIcon", IIconFactory.class).getIcon(lookAndFeel.getPaintForSpecialControls()));
     }
 }

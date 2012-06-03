@@ -18,34 +18,46 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.controls.playerControls;
+package net.sourceforge.atunes.gui.views.controls;
 
 import javax.swing.Action;
-import javax.swing.JToggleButton;
 
-import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.IPlayerHandler;
+import net.sourceforge.atunes.model.PlayerEngineCapability;
 
-public class SecondaryToggleControl extends JToggleButton {
+/*
+ * based on code from Xtreme Media Player
+ */
+public final class NormalizationButton extends SecondaryToggleControl {
 
+    private static final long serialVersionUID = 6007885049773560874L;
+
+    private IPlayerHandler playerHandler;
+    
     /**
-	 * 
-	 */
-    private static final long serialVersionUID = -124604413114002586L;
-
+     * @param playerHandler
+     */
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
+    
     /**
-     * @param a
+     * Instantiates a new Normalize button.
+     * @param lookAndFeelManager
+     * @param playerHandler
      * @param preferredSize
      */
-    public SecondaryToggleControl(Action a) {
+    public NormalizationButton(Action a) {
         super(a);
-        setText(null);
-        setFocusable(false);
     }
     
     /**
-     * @param lookAndFeelManager
+     * Initializes control
      */
-    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-        lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(this);
-    }    
+    public void initialize() {
+        if (!playerHandler.supportsCapability(PlayerEngineCapability.NORMALIZATION)) {
+            setVisible(false);
+        }
+    }
+
 }

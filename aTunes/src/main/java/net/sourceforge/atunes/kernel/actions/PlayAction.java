@@ -22,8 +22,8 @@ package net.sourceforge.atunes.kernel.actions;
 
 import java.util.List;
 
-import net.sourceforge.atunes.gui.views.controls.playerControls.FullScreenPlayPauseButton;
-import net.sourceforge.atunes.gui.views.controls.playerControls.PlayPauseButton;
+import net.sourceforge.atunes.gui.views.controls.FullScreenPlayPauseButton;
+import net.sourceforge.atunes.gui.views.controls.PlayPauseButton;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;

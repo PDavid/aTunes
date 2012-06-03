@@ -18,38 +18,34 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.controls.playerControls;
-
-import java.awt.Dimension;
+package net.sourceforge.atunes.gui.views.controls;
 
 import javax.swing.Action;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import javax.swing.JToggleButton;
 
-import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 
-public final class FullScreenPreviousButton extends JButton {
-
-    private static final long serialVersionUID = -5415683019365261871L;
+public class SecondaryToggleControl extends JToggleButton {
 
     /**
-     * Instantiates a new previous button.
-     * 
-     * @param size
+	 * 
+	 */
+    private static final long serialVersionUID = -124604413114002586L;
+
+    /**
+     * @param a
+     * @param preferredSize
+     */
+    public SecondaryToggleControl(Action a) {
+        super(a);
+        setText(null);
+        setFocusable(false);
+    }
+    
+    /**
      * @param lookAndFeelManager
      */
-    public FullScreenPreviousButton(Dimension size, ImageIcon icon) {
-        super(Context.getBean("previousAction", Action.class));
-        setPreferredSize(size);
-        setMinimumSize(size);
-        setMaximumSize(size);
-        setFocusable(false);
-        setText(null);
-        
-        setOpaque(false);
-        setBorderPainted(false);
-        setContentAreaFilled(false);
-        
-        setIcon(icon);
-    }
+    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+        lookAndFeelManager.getCurrentLookAndFeel().putClientProperties(this);
+    }    
 }

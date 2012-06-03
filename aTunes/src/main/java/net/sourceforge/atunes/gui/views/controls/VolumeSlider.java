@@ -18,35 +18,35 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.kernel.modules.player;
+package net.sourceforge.atunes.gui.views.controls;
 
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import java.awt.Dimension;
 
-import net.sourceforge.atunes.gui.views.controls.VolumeSlider;
+import javax.swing.JSlider;
 
-public final class VolumeSliderChangeListener implements ChangeListener {
-	
-	private VolumeSlider volumeSlider;
-	
-	private Volume volumeController;
-	
-	/**
-	 * @param volumeController
-	 */
-	public void setVolumeController(Volume volumeController) {
-		this.volumeController = volumeController;
+public final class VolumeSlider extends JSlider {
+
+    private static final long serialVersionUID = -7802263658163323018L;
+
+    /**
+     * @param volumeSliderSize
+     */
+    public void setVolumeSliderSize(Dimension volumeSliderSize) {
+        setMinimumSize(volumeSliderSize);
+        setPreferredSize(volumeSliderSize);
 	}
-	
-	/**
-	 * @param volumeSlider
-	 */
-	public void setVolumeSlider(VolumeSlider volumeSlider) {
-		this.volumeSlider = volumeSlider;
-	}
-	
-	@Override
-	public void stateChanged(ChangeEvent e) {
-		volumeController.setVolume(volumeSlider.getValue());
-	}
+    
+    /**
+     * Slider to control volume
+     * @param state
+     * @param playerHandler
+     */
+    public VolumeSlider() {
+        super();
+        setOpaque(false);
+        setMinimum(0);
+        setMaximum(100);
+        setValue(50);
+        setFocusable(false);
+    }
 }

@@ -18,35 +18,37 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.controls.playerControls;
+package net.sourceforge.atunes.gui.views.controls;
 
 import java.awt.Dimension;
 
-import javax.swing.JSlider;
+import javax.swing.Action;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 
-public final class VolumeSlider extends JSlider {
+import net.sourceforge.atunes.Context;
 
-    private static final long serialVersionUID = -7802263658163323018L;
+public final class FullScreenNextButton extends JButton {
+
+    private static final long serialVersionUID = -4939372038840047335L;
 
     /**
-     * @param volumeSliderSize
+     * Instantiates a new next button.
+     * 
+     * @param size
+     * @param lookAndFeelManager
      */
-    public void setVolumeSliderSize(Dimension volumeSliderSize) {
-        setMinimumSize(volumeSliderSize);
-        setPreferredSize(volumeSliderSize);
-	}
-    
-    /**
-     * Slider to control volume
-     * @param state
-     * @param playerHandler
-     */
-    public VolumeSlider() {
-        super();
-        setOpaque(false);
-        setMinimum(0);
-        setMaximum(100);
-        setValue(50);
+    public FullScreenNextButton(Dimension size, ImageIcon icon) {
+        super(Context.getBean("nextAction", Action.class));
+        setPreferredSize(size);
+        setMinimumSize(size);
+        setMaximumSize(size);
         setFocusable(false);
-    }
+        setText(null);
+        setIcon(icon);
+        
+        setOpaque(false);
+        setBorderPainted(false);
+        setContentAreaFilled(false);
+    }    
 }

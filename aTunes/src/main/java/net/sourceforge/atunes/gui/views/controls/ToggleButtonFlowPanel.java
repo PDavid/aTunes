@@ -18,8 +18,9 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.panels;
+package net.sourceforge.atunes.gui.views.controls;
 
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -133,6 +134,9 @@ public class ToggleButtonFlowPanel extends JPanel implements ILookAndFeelChangeL
 				moveToRight();
 			}
 		});
+		
+		
+		setMinimumSize(new Dimension(10, leftButton.getMinimumSize().height + 3));
 	}
 
 	/**
@@ -150,9 +154,8 @@ public class ToggleButtonFlowPanel extends JPanel implements ILookAndFeelChangeL
 
 		c.gridx = 1;
 		c.weightx = 1;
-		c.weighty = 0;
+		c.weighty = 1;
 		c.fill = GridBagConstraints.BOTH;
-		c.anchor = GridBagConstraints.CENTER;
 		c.insets = new Insets(1, 0, 0, 0);
 		add(scrollPane, c);
 
@@ -174,6 +177,7 @@ public class ToggleButtonFlowPanel extends JPanel implements ILookAndFeelChangeL
 		ToggleButtonOfFlowPanel button = new ToggleButtonOfFlowPanel(name, tooltip, icon, action, userObject);
 		buttons.add(button);
 		addButtonToPanel(button);
+		checkButtonsVisible();
 	}
 
 	/**

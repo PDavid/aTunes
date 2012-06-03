@@ -32,6 +32,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.controls.PopUpButton;
+import net.sourceforge.atunes.gui.views.controls.ToggleButtonFlowPanel;
 import net.sourceforge.atunes.model.IContextHandler;
 import net.sourceforge.atunes.model.IContextPanel;
 import net.sourceforge.atunes.model.IContextPanelsContainer;
@@ -94,6 +95,8 @@ public final class ContextPanelContainer extends JPanel implements IContextPanel
     	add(options, c);
     	c.gridx = 1;
     	c.weightx = 1;
+    	c.fill = GridBagConstraints.HORIZONTAL;
+    	c.anchor = GridBagConstraints.NORTH;
     	c.insets = new Insets(0, 0, 1, 0);
         add(contextSelector, c);
         c.gridx = 0;

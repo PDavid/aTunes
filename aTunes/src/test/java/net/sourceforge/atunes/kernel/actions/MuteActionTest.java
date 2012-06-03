@@ -33,7 +33,7 @@ import net.sourceforge.atunes.gui.images.VolumeMedImageIcon;
 import net.sourceforge.atunes.gui.images.VolumeMinImageIcon;
 import net.sourceforge.atunes.gui.images.VolumeMuteImageIcon;
 import net.sourceforge.atunes.gui.images.VolumeZeroImageIcon;
-import net.sourceforge.atunes.gui.views.controls.playerControls.VolumeIconCalculator;
+import net.sourceforge.atunes.gui.views.controls.VolumeIconCalculator;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayerHandler;
