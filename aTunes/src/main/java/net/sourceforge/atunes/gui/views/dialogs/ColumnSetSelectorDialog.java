@@ -43,12 +43,12 @@ import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IColumnSelectorDialog;
 import net.sourceforge.atunes.model.IColumnSet;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -202,11 +202,10 @@ public final class ColumnSetSelectorDialog extends AbstractCustomDialog implemen
      * Instantiates a new play list column selector.
      * 
      * @param frame
-     * @param lookAndFeelManager
      */
-    public ColumnSetSelectorDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
-        super(frame, 250, 300, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
-        add(getContent(lookAndFeelManager.getCurrentLookAndFeel()));
+    public ColumnSetSelectorDialog(IFrame frame) {
+        super(frame, 250, 300, true, CloseAction.DISPOSE);
+        add(getContent(getLookAndFeel()));
         setTitle(I18nUtils.getString("ARRANGE_COLUMNS"));
         setResizable(false);
         // TODO: Add pack to all dialogs

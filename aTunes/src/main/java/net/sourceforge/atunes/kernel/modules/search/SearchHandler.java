@@ -202,7 +202,7 @@ public final class SearchHandler extends AbstractHandler implements ISearchHandl
      */
     private CustomSearchController getSearchController() {
         if (customSearchController == null) {
-            customSearchController = new CustomSearchController(new CustomSearchDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class)), stateCore, this);
+            customSearchController = new CustomSearchController(new CustomSearchDialog(getFrame().getFrame()), stateCore, this);
         }
         return customSearchController;
     }
@@ -214,7 +214,7 @@ public final class SearchHandler extends AbstractHandler implements ISearchHandl
      */
     private SearchResultsController getSearchResultsController() {
         if (searchResultsController == null) {
-            searchResultsController = new SearchResultsController(new SearchResultsDialog(getFrame().getFrame(), getBean(ILookAndFeelManager.class)), getBean(IPlayListHandler.class), getBean(ILookAndFeelManager.class), getBean(IPlayerHandler.class), audioObjectComparator);
+            searchResultsController = new SearchResultsController(new SearchResultsDialog(getFrame().getFrame()), getBean(IPlayListHandler.class), getBean(ILookAndFeelManager.class), getBean(IPlayerHandler.class), audioObjectComparator);
         }
         return searchResultsController;
     }

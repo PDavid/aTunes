@@ -31,8 +31,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -60,9 +60,9 @@ public final class EditTitlesDialog extends AbstractCustomDialog {
      * @param owner
      *            the owner
      */
-    public EditTitlesDialog(JFrame owner, ILookAndFeelManager lookAndFeelManager) {
-        super(owner, 500, 400, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
-        add(getContent(lookAndFeelManager.getCurrentLookAndFeel()));
+    public EditTitlesDialog(JFrame owner) {
+        super(owner, 500, 400, true, CloseAction.DISPOSE);
+        add(getContent(getLookAndFeel()));
     }
 
     /**

@@ -40,11 +40,11 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.model.IExportOptionsDialog;
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -74,10 +74,9 @@ public final class ExportOptionsDialog extends AbstractCustomDialog implements I
      * Instantiates a new export options dialog.
      * @param frame
      * @param osManager
-     * @param lookAndFeelManager
      */
-    public ExportOptionsDialog(IFrame frame, IOSManager osManager, ILookAndFeelManager lookAndFeelManager) {
-        super(frame, 400, 220, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
+    public ExportOptionsDialog(IFrame frame, IOSManager osManager) {
+        super(frame, 400, 220, true, CloseAction.DISPOSE);
         this.osManager = osManager;
         setResizable(false);
         setTitle(I18nUtils.getString("EXPORT"));

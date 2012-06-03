@@ -37,11 +37,11 @@ import javax.swing.ScrollPaneConstants;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.gui.views.controls.ScrollableFlowPanel;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public final class CoverNavigatorDialog extends AbstractCustomDialog {
@@ -55,12 +55,11 @@ public final class CoverNavigatorDialog extends AbstractCustomDialog {
     /**
      * Instantiates a new cover navigator frame.
      * @param owner
-     * @param lookAndFeelManager
      */
-    public CoverNavigatorDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
-        super(frame, 800, 550, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
+    public CoverNavigatorDialog(IFrame frame) {
+        super(frame, 800, 550, true, CloseAction.DISPOSE);
         setTitle(I18nUtils.getString("COVER_NAVIGATOR"));
-        setContent(lookAndFeelManager.getCurrentLookAndFeel());
+        setContent(getLookAndFeel());
     }
     
     /**

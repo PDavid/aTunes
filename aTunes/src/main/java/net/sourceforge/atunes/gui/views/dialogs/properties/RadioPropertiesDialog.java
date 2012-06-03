@@ -34,7 +34,6 @@ import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -59,11 +58,11 @@ final class RadioPropertiesDialog extends AudioObjectPropertiesDialog {
      * @param radio
      * @param frame
      */
-    RadioPropertiesDialog(IRadio radio, IFrame frame, ILookAndFeelManager lookAndFeelManager) {
-        super(getTitleText(radio), frame, lookAndFeelManager);
+    RadioPropertiesDialog(IRadio radio, IFrame frame) {
+        super(getTitleText(radio), frame);
         this.radio = radio;
         setAudioObject(radio);
-        addContent(lookAndFeelManager.getCurrentLookAndFeel());
+        addContent(getLookAndFeel());
 
         setContent();
 

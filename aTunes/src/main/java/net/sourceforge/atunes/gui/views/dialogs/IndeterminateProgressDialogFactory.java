@@ -25,13 +25,10 @@ import java.awt.Window;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 public class IndeterminateProgressDialogFactory implements IIndeterminateProgressDialogFactory {
 
 	private IFrame frame;
-	
-	private ILookAndFeelManager lookAndFeelManager;
 	
 	/**
 	 * @param frame
@@ -40,21 +37,14 @@ public class IndeterminateProgressDialogFactory implements IIndeterminateProgres
 		this.frame = frame;
 	}
 	
-	/**
-	 * @param lookAndFeelManager
-	 */
-	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
-	}
-	
 	@Override
 	public IIndeterminateProgressDialog newDialog(Window parent) {
-		return new IndeterminateProgressDialog(parent, lookAndFeelManager);
+		return new IndeterminateProgressDialog(parent);
 	}
 
 	@Override
 	public IIndeterminateProgressDialog newDialog() {
-		return new IndeterminateProgressDialog(frame, lookAndFeelManager);
+		return new IndeterminateProgressDialog(frame);
 	}
 
 	

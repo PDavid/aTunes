@@ -53,10 +53,9 @@ import net.sourceforge.atunes.gui.AbstractListCellRendererCode;
 import net.sourceforge.atunes.gui.AbstractTreeCellRendererCode;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.model.ICustomFileSelectionDialog;
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -247,16 +246,12 @@ public final class CustomFileSelectionDialog extends AbstractCustomDialog implem
     /** The selected files. */
     private File[] selectedFiles;
     
-    private ILookAndFeel lookAndFeel;
-
     /**
      * Instantiates a new file selection dialog.
      * @param frame
-     * @param lookAndFeelManager
      */
-    public CustomFileSelectionDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
-        super(frame, 660, 430, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
-        this.lookAndFeel = lookAndFeelManager.getCurrentLookAndFeel();
+    public CustomFileSelectionDialog(IFrame frame) {
+        super(frame, 660, 430, true, CloseAction.DISPOSE);
         add(getContent());
         setResizable(false);
     }
@@ -276,11 +271,11 @@ public final class CustomFileSelectionDialog extends AbstractCustomDialog implem
 
         fileSystemTree = new JTree();
         fileSystemTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-        JScrollPane scroll1 = lookAndFeel.getTreeScrollPane(fileSystemTree);
+        JScrollPane scroll1 = getLookAndFeel().getTreeScrollPane(fileSystemTree);
 
-        fileSystemList = lookAndFeel.getList();
+        fileSystemList = getLookAndFeel().getList();
         setListRenderer();
-        JScrollPane scroll2 = lookAndFeel.getListScrollPane(fileSystemList);
+        JScrollPane scroll2 = getLookAndFeel().getListScrollPane(fileSystemList);
 
         selection = new JLabel();
 
@@ -366,7 +361,7 @@ public final class CustomFileSelectionDialog extends AbstractCustomDialog implem
      * Sets the list renderer.
      */
     private void setListRenderer() {
-        fileSystemList.setCellRenderer(lookAndFeel.getListCellRenderer(new FileSystemListCellRendererCode()));
+        fileSystemList.setCellRenderer(getLookAndFeel().getListCellRenderer(new FileSystemListCellRendererCode()));
     }
 
     /**
@@ -425,7 +420,7 @@ public final class CustomFileSelectionDialog extends AbstractCustomDialog implem
      * Sets the tree renderer.
      */
     private void setTreeRenderer() {
-        fileSystemTree.setCellRenderer(lookAndFeel.getTreeCellRenderer(new FileSystemTreeCellRendererCode()));
+        fileSystemTree.setCellRenderer(getLookAndFeel().getTreeCellRenderer(new FileSystemTreeCellRendererCode()));
     }
 
     /* (non-Javadoc)

@@ -40,7 +40,6 @@ import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
 import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -73,14 +72,13 @@ final class PodcastFeedEntryPropertiesDialog extends AudioObjectPropertiesDialog
      * @param entry
      * @param frame
      * @param stateCore
-     * @param lookAndFeelManager
      */
-    PodcastFeedEntryPropertiesDialog(IPodcastFeedEntry entry, IFrame frame, IStateCore stateCore, ILookAndFeelManager lookAndFeelManager) {
-        super(getTitleText(entry), frame, lookAndFeelManager);
+    PodcastFeedEntryPropertiesDialog(IPodcastFeedEntry entry, IFrame frame, IStateCore stateCore) {
+        super(getTitleText(entry), frame);
         this.entry = entry;
         this.stateCore = stateCore;
         setAudioObject(entry);
-        addContent(lookAndFeelManager.getCurrentLookAndFeel());
+        addContent(getLookAndFeel());
 
         setContent();
 

@@ -34,9 +34,9 @@ import javax.swing.JSlider;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.model.IEqualizerDialog;
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.PlayerEngineCapability;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -105,12 +105,11 @@ public final class EqualizerDialog extends AbstractCustomDialog implements IEqua
      * Draws the equalizer dialog.
      * 
      * @param frame
-     * @param lookAndFeelManager
      * @param playerHandler
      */
-    public EqualizerDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler) {
+    public EqualizerDialog(IFrame frame, IPlayerHandler playerHandler) {
         // Width required by german translation
-        super(frame, 510, 300, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
+        super(frame, 510, 300, true, CloseAction.DISPOSE);
         this.playerHandler = playerHandler;
         setTitle(StringUtils.getString(I18nUtils.getString("EQUALIZER"), " - ", Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
         add(getContent());

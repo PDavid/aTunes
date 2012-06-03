@@ -8,84 +8,69 @@
 	<bean id="equalizerDialogFactory" class="net.sourceforge.atunes.model.EqualizerDialogFactory"/>
 	<bean id="equalizerDialog" class="net.sourceforge.atunes.gui.views.dialogs.EqualizerDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
-		<constructor-arg ref="lookAndFeelManager"/>		
 		<constructor-arg ref="playerHandler"/>
 	</bean> 
 
 	<bean id="fileSelectionDialog" class="net.sourceforge.atunes.gui.views.dialogs.CustomFileSelectionDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
-		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
 
 	<bean id="multiFolderSelectionDialogFactory" class="net.sourceforge.atunes.model.MultiFolderSelectionDialogFactory"/>
 	<bean id="multiFolderSelectionDialog" class="net.sourceforge.atunes.gui.views.dialogs.MultiFolderSelectionDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 		<constructor-arg ref="osManager"/>
-		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
 
 	<bean id="progressDialog" class="net.sourceforge.atunes.gui.views.dialogs.ProgressDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
-		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
 
 	<bean id="transferDialog" class="net.sourceforge.atunes.gui.views.dialogs.TransferProgressDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
-		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
 
 	<bean id="columnSelectorDialogFactory" class="net.sourceforge.atunes.model.ColumnSelectorDialogFactory"/>
 	<bean id="columnSelectorDialog" class="net.sourceforge.atunes.gui.views.dialogs.ColumnSetSelectorDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
-		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
 
 	<bean id="ripCdDialog" class="net.sourceforge.atunes.kernel.modules.cdripper.RipCdDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
-		<constructor-arg ref="lookAndFeelManager"/>	
 	</bean>
 
 	<bean id="ripperProgressDialog" class="net.sourceforge.atunes.kernel.modules.cdripper.RipperProgressDialog" init-method="initialize" scope="prototype">
 		<constructor-arg ref="frame"/>
-		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
 	
 	<bean id="aboutDialog" class="net.sourceforge.atunes.gui.views.dialogs.AboutDialog" init-method="initialize" scope="prototype">
 		<constructor-arg ref="frame"/>
-		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
 	
 	<bean id="repositoryProgressDialog" class="net.sourceforge.atunes.gui.views.dialogs.RepositoryProgressDialog" scope="prototype" init-method="initialize">
 		<constructor-arg ref="frame"/>
-		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
 	
 	<bean id="searchDialogFactory" class="net.sourceforge.atunes.model.SearchDialogFactory"/>
 	<bean id="searchDialog" class="net.sourceforge.atunes.gui.views.dialogs.SearchDialog" scope="prototype">
 		<constructor-arg ref="frame"/>	
-		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
 	
 	<bean id="reviewImportDialog" class="net.sourceforge.atunes.kernel.modules.tags.ReviewImportDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 		<constructor-arg ref="stateRepository"/>
-		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
 	
 	<bean id="addPodcastFeedDialog" class="net.sourceforge.atunes.kernel.modules.podcast.AddPodcastFeedDialog" scope="prototype" init-method="initialize">
 		<constructor-arg ref="frame"/>
-		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
 	
 	<bean id="artistAlbumSelectorDialog" class="net.sourceforge.atunes.kernel.modules.playlist.ArtistAlbumSelectorDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
-		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
 	
 	<bean id="inputDialogFactory" class="net.sourceforge.atunes.model.InputDialogFactory"/>
 	<bean id="inputDialog" class="net.sourceforge.atunes.gui.views.dialogs.InputDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
-		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
 	
 	<bean id="errorDialogFactory" class="net.sourceforge.atunes.model.ErrorDialogFactory"/>
@@ -98,7 +83,6 @@
 	<bean id="exportOptionsDialog" class="net.sourceforge.atunes.gui.views.dialogs.ExportOptionsDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 		<constructor-arg ref="osManager"/>
-		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
 	
 	<bean id="messageDialogFactory" class="net.sourceforge.atunes.model.MessageDialogFactory"/>
@@ -110,7 +94,6 @@
 
 	<bean id="radioDialog" class="net.sourceforge.atunes.gui.views.dialogs.RadioDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
-		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
 	
 	<bean id="audioObjectPropertiesDialogFactory" class="net.sourceforge.atunes.gui.views.dialogs.properties.AudioObjectPropertiesDialogFactory" scope="singleton"/>
@@ -119,22 +102,18 @@
 
 	<bean id="statsDialog" class="net.sourceforge.atunes.kernel.modules.statistics.StatsDialog" scope="prototype" init-method="initialize">
 		<constructor-arg ref="frame"/>
-		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
 
 	<bean id="radioBrowserDialog" class="net.sourceforge.atunes.kernel.modules.radio.RadioBrowserDialog" scope="prototype" init-method="initialize">
 		<constructor-arg ref="frame"/>
-		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
 
 	<bean id="editPreferencesDialog" class="net.sourceforge.atunes.kernel.modules.state.EditPreferencesDialog" scope="prototype" init-method="initialize">
 		<constructor-arg ref="frame"/>
-		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
 	
 	<bean id="coverNavigatorDialog" class="net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
-		<constructor-arg ref="lookAndFeelManager"/>
 	</bean>
 	
 	<bean id="fullScreenWindowFactory" class="net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenWindowFactory" scope="prototype"/>

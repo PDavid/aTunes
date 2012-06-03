@@ -18,37 +18,21 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.gui.views.controls;
 
+import javax.swing.WindowConstants;
 
-/**
- * A factory to create dialogs of properties
- * @author alex
- *
- */
-public interface IAudioObjectPropertiesDialogFactory {
-
-	/**
-	 * New instance.
-	 * 
-	 * @param a
-	 * @param playerHandler
-	 * @return
-	 */
-	public IAudioObjectPropertiesDialog newInstance(IAudioObject a, IPlayerHandler playerHandler);
-
-	/**
-	 * @param frame the frame to set
-	 */
-	public void setFrame(IFrame frame);
-
-	/**
-	 * @param osManager the osManager to set
-	 */
-	public void setOsManager(IOSManager osManager);
-
-	/**
-	 * @param playListHandler
-	 */
-	public void setPlayListHandler(IPlayListHandler playListHandler);
+public enum CloseAction {
+	
+	DISPOSE(WindowConstants.DISPOSE_ON_CLOSE), HIDE(WindowConstants.HIDE_ON_CLOSE), NOTHING(WindowConstants.DO_NOTHING_ON_CLOSE);
+	
+	private int constant;
+	
+	private CloseAction(int constant) {
+		this.constant = constant;
+	}
+	
+	public int getConstant() {
+		return constant;
+	}
 }

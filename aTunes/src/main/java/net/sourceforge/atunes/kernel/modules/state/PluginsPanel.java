@@ -428,7 +428,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 			int row = pluginsTable.getSelectedRow();
 			PluginInfo plugin = ((PluginsTableModel) pluginsTable.getModel()).getPluginAt(row);
 			PluginConfiguration configuration = ((PluginsTableModel) pluginsTable.getModel()).getPluginConfigurationAt(row);
-			PluginEditorDialog editorDialog = new PluginEditorDialog(PluginsPanel.this.editPreferencesDialog, plugin, configuration, lookAndFeelManager.getCurrentLookAndFeel());
+			PluginEditorDialog editorDialog = new PluginEditorDialog(PluginsPanel.this.editPreferencesDialog, plugin, configuration);
 			editorDialog.setVisible(true);
 			configuration = editorDialog.getConfiguration();
 			if (configuration != null) {

@@ -30,7 +30,6 @@ import net.sourceforge.atunes.kernel.modules.process.EditTagFromFolderNamePatter
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -47,8 +46,6 @@ public class AutoSetTagFromFolderNamePatternAction extends AbstractActionOverSel
     private static final long serialVersionUID = -1253820711948217089L;
 
     private IFrame frame;
-    
-    private ILookAndFeelManager lookAndFeelManager;
     
     private IProcessFactory processFactory;
     
@@ -76,12 +73,8 @@ public class AutoSetTagFromFolderNamePatternAction extends AbstractActionOverSel
 	}
     
     /**
-     * @param lookAndFeelManager
+     * Default constructor
      */
-    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
-	}
-    
     public AutoSetTagFromFolderNamePatternAction() {
         super(StringUtils.getString(I18nUtils.getString("AUTO_SET_TAG_FROM_FOLDER_NAME_PATTERN"), "..."));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("AUTO_SET_TAG_FROM_FOLDER_NAME_PATTERN"));
@@ -90,7 +83,7 @@ public class AutoSetTagFromFolderNamePatternAction extends AbstractActionOverSel
     @Override
     protected void executeAction(List<ILocalAudioObject> objects) {
         // Show pattern input dialog
-        PatternInputDialog inputDialog = new PatternInputDialog(frame.getFrame(), false, stateRepository, lookAndFeelManager.getCurrentLookAndFeel());
+        PatternInputDialog inputDialog = new PatternInputDialog(frame.getFrame(), false, stateRepository);
         inputDialog.show(Patterns.getRecognitionPatterns(), objects.get(0).getFile().getParentFile().getAbsolutePath());
         String pattern = inputDialog.getResult();
 

@@ -39,8 +39,8 @@ import javax.swing.JProgressBar;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IRepositoryProgressDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.ImageUtils;
@@ -78,10 +78,9 @@ public final class RepositoryProgressDialog extends AbstractCustomDialog impleme
      * Instantiates a new repository progress dialog.
      * 
      * @param frame
-     * @param lookAndFeelManager
      */
-    public RepositoryProgressDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
-        super(frame, 500, 250, false, CloseAction.NOTHING, lookAndFeelManager.getCurrentLookAndFeel());
+    public RepositoryProgressDialog(IFrame frame) {
+        super(frame, 500, 250, false, CloseAction.NOTHING);
     }
     
     /**

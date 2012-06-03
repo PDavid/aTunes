@@ -33,10 +33,10 @@ import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 import org.jdesktop.swingx.JXTreeTable;
@@ -51,18 +51,14 @@ public final class RadioBrowserDialog extends AbstractCustomDialog {
     /** The table. */
     private JXTreeTable treeTable;
 
-    private ILookAndFeelManager lookAndFeelManager;
-    
     private IIconFactory radioMediumIcon;
 
     /**
      * Instantiates a new radio browser dialog.
      * @param frame
-     * @param lookAndFeelManager
      */
-    public RadioBrowserDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
-        super(frame, 800, 600, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
-        this.lookAndFeelManager = lookAndFeelManager;
+    public RadioBrowserDialog(IFrame frame) {
+        super(frame, 800, 600, true, CloseAction.DISPOSE);
     }
     
     /**
@@ -77,7 +73,7 @@ public final class RadioBrowserDialog extends AbstractCustomDialog {
      */
     public void initialize() {
         setTitle(I18nUtils.getString("RADIO_BROWSER"));
-        setContent(lookAndFeelManager.getCurrentLookAndFeel());
+        setContent(getLookAndFeel());
     }
 
     /**

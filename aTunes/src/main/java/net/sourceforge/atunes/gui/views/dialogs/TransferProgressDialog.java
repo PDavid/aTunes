@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.gui.views.dialogs;
 
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -38,10 +37,9 @@ public final class TransferProgressDialog extends ProgressDialog {
      * Instantiates a new transfer progress dialog.
      * 
      * @param frame
-     * @param lookAndFeelManager
      */
-    public TransferProgressDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
-        super(frame, lookAndFeelManager);
+    public TransferProgressDialog(IFrame frame) {
+        super(frame);
     }
 
     @Override

@@ -27,7 +27,6 @@ import net.sourceforge.atunes.model.IAudioObjectPropertiesDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
@@ -56,14 +55,14 @@ public class AudioObjectPropertiesDialogFactory implements IAudioObjectPropertie
 	private IProcessFactory processFactory;
 	
     @Override
-	public IAudioObjectPropertiesDialog newInstance(IAudioObject a, ILookAndFeelManager lookAndFeelManager, IPlayerHandler playerHandler) {
+	public IAudioObjectPropertiesDialog newInstance(IAudioObject a, IPlayerHandler playerHandler) {
     	AudioObjectPropertiesDialog dialog = null;
     	if (a instanceof IPodcastFeedEntry) {
-    		dialog = new PodcastFeedEntryPropertiesDialog((IPodcastFeedEntry) a, frame, stateCore, lookAndFeelManager);
+    		dialog = new PodcastFeedEntryPropertiesDialog((IPodcastFeedEntry) a, frame, stateCore);
     	} else if (a instanceof IRadio) {
-    		dialog = new RadioPropertiesDialog((IRadio) a, frame, lookAndFeelManager);
+    		dialog = new RadioPropertiesDialog((IRadio) a, frame);
     	} else if (a instanceof ILocalAudioObject) {
-    		dialog = new LocalAudioObjectPropertiesDialog((ILocalAudioObject) a, frame, osManager, playListHandler, lookAndFeelManager, repositoryHandler, audioObjectImageLocator, localAudioObjectValidator, processFactory);
+    		dialog = new LocalAudioObjectPropertiesDialog((ILocalAudioObject) a, frame, osManager, playListHandler, repositoryHandler, audioObjectImageLocator, localAudioObjectValidator, processFactory);
     	}
     	if (dialog != null) {
     		dialog.setAudioObject(a);
