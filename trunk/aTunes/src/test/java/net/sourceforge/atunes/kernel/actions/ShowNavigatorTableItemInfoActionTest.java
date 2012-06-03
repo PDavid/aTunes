@@ -30,7 +30,6 @@ import java.util.Arrays;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialog;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialogFactory;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 
@@ -45,13 +44,11 @@ public class ShowNavigatorTableItemInfoActionTest {
 	    IAudioObjectPropertiesDialogFactory audioObjectPropertiesDialogFactory = mock(IAudioObjectPropertiesDialogFactory.class);
 	    IAudioObjectPropertiesDialog dialog = mock(IAudioObjectPropertiesDialog.class);
 	    INavigationHandler navigationHandler = mock(INavigationHandler.class);
-	    ILookAndFeelManager lookAndFeelManager = mock(ILookAndFeelManager.class);
 	    IPlayerHandler playerHandler = mock(IPlayerHandler.class);
 	    IAudioObject ao = mock(IAudioObject.class);
 	    when(navigationHandler.getSelectedAudioObjectInNavigationTable()).thenReturn(ao);
-	    when(audioObjectPropertiesDialogFactory.newInstance(ao, lookAndFeelManager, playerHandler)).thenReturn(dialog);
+	    when(audioObjectPropertiesDialogFactory.newInstance(ao, playerHandler)).thenReturn(dialog);
 	    sut.setPlayerHandler(playerHandler);
-	    sut.setLookAndFeelManager(lookAndFeelManager);
 	    sut.setNavigationHandler(navigationHandler);
 	    sut.setAudioObjectPropertiesDialogFactory(audioObjectPropertiesDialogFactory);
 

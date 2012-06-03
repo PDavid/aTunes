@@ -24,7 +24,6 @@ import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialogFactory;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -44,8 +43,6 @@ public class ShowNavigatorTableItemInfoAction extends CustomAbstractAction {
     
     private INavigationHandler navigationHandler;
     
-    private ILookAndFeelManager lookAndFeelManager;
-    
     private IPlayerHandler playerHandler;
     
     /**
@@ -60,13 +57,6 @@ public class ShowNavigatorTableItemInfoAction extends CustomAbstractAction {
      */
     public void setNavigationHandler(INavigationHandler navigationHandler) {
 		this.navigationHandler = navigationHandler;
-	}
-    
-    /**
-     * @param lookAndFeelManager
-     */
-    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
 	}
     
     /**
@@ -85,7 +75,7 @@ public class ShowNavigatorTableItemInfoAction extends CustomAbstractAction {
     @Override
     protected void executeAction() {
     	audioObjectPropertiesDialogFactory.newInstance(
-    			navigationHandler.getSelectedAudioObjectInNavigationTable(), lookAndFeelManager, playerHandler).showDialog();
+    			navigationHandler.getSelectedAudioObjectInNavigationTable(), playerHandler).showDialog();
     }
 
     @Override

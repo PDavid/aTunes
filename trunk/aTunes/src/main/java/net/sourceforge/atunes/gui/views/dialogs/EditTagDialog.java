@@ -46,11 +46,11 @@ import javax.swing.JTextField;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.TextTagAttribute;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -79,17 +79,16 @@ public final class EditTagDialog extends AbstractCustomDialog {
      * 
      * @param frame
      * @param arePrevNextButtonsShown
-     * @param lookAndFeelManager
      */
-    public EditTagDialog(IFrame frame, boolean arePrevNextButtonsShown, ILookAndFeelManager lookAndFeelManager) {
-        super(frame, 500, 600, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
+    public EditTagDialog(IFrame frame, boolean arePrevNextButtonsShown) {
+        super(frame, 500, 600, true, CloseAction.DISPOSE);
         setTitle(I18nUtils.getString("EDIT_TAG"));
         setResizable(true);
 
         setLayout(new BorderLayout());
 
         add(tabbedPane, BorderLayout.CENTER);
-        tabbedPane.addTab(I18nUtils.getString("TAGS"), getTagEditTab(lookAndFeelManager.getCurrentLookAndFeel()));
+        tabbedPane.addTab(I18nUtils.getString("TAGS"), getTagEditTab(getLookAndFeel()));
         tabbedPane.addTab(I18nUtils.getString("COVER"), getCoverTab());
 
         add(getOKAndCancelButtonPanel(arePrevNextButtonsShown), BorderLayout.SOUTH);

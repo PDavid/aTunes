@@ -29,7 +29,6 @@ import java.util.Arrays;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialog;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialogFactory;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 
@@ -40,8 +39,6 @@ public class ShowPlayListItemInfoActionTest {
 	@Test
 	public void test() {
 		ShowPlayListItemInfoAction sut = new ShowPlayListItemInfoAction();
-		ILookAndFeelManager lookAndFeelManager = mock(ILookAndFeelManager.class);
-		sut.setLookAndFeelManager(lookAndFeelManager);
 		IPlayListHandler playListHandler = mock(IPlayListHandler.class);
 		sut.setPlayListHandler(playListHandler);
 		IPlayerHandler playerHandler = mock(IPlayerHandler.class);
@@ -51,7 +48,7 @@ public class ShowPlayListItemInfoActionTest {
 		IAudioObjectPropertiesDialogFactory audioObjectPropertiesDialogFactory = mock(IAudioObjectPropertiesDialogFactory.class);
 		sut.setAudioObjectPropertiesDialogFactory(audioObjectPropertiesDialogFactory);
 		IAudioObjectPropertiesDialog dialog = mock(IAudioObjectPropertiesDialog.class);
-		when(audioObjectPropertiesDialogFactory.newInstance(ao, lookAndFeelManager, playerHandler)).thenReturn(dialog);
+		when(audioObjectPropertiesDialogFactory.newInstance(ao, playerHandler)).thenReturn(dialog);
 		
 		sut.executeAction();
 		

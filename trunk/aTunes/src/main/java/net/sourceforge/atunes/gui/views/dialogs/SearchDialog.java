@@ -36,10 +36,10 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -64,12 +64,11 @@ public final class SearchDialog extends AbstractCustomDialog implements ISearchD
     /**
      * Instantiates a new search dialog.
      * @param frame
-     * @param lookAndFeelManager
      */
-    public SearchDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
-        super(frame, 300, 300, true, CloseAction.NOTHING, lookAndFeelManager.getCurrentLookAndFeel());
+    public SearchDialog(IFrame frame) {
+        super(frame, 300, 300, true, CloseAction.NOTHING);
         setResizable(false);
-        setContent(lookAndFeelManager.getCurrentLookAndFeel());
+        setContent(getLookAndFeel());
     }
 
     /* (non-Javadoc)

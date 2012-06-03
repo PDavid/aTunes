@@ -40,10 +40,10 @@ import javax.swing.JTextField;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -84,11 +84,11 @@ public final class RipCdDialog extends AbstractCustomDialog {
      * @param owner
      *            the owner
      */
-    public RipCdDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
-        super(frame, 650, 450, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
+    public RipCdDialog(IFrame frame) {
+        super(frame, 650, 450, true, CloseAction.DISPOSE);
         setTitle(I18nUtils.getString("RIP_CD"));
         setResizable(false);
-        add(getContent(lookAndFeelManager.getCurrentLookAndFeel()));
+        add(getContent(getLookAndFeel()));
     }
 
     /**

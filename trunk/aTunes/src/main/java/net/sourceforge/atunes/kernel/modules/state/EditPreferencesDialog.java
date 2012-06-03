@@ -38,9 +38,9 @@ import javax.swing.ListModel;
 import net.sourceforge.atunes.gui.AbstractListCellRendererCode;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -56,16 +56,12 @@ public final class EditPreferencesDialog extends AbstractCustomDialog {
     private JList list;
     private List<AbstractPreferencesPanel> panels;
     
-    private ILookAndFeelManager lookAndFeelManager;
-
     /**
      * Instantiates a new edits the preferences dialog.
      * @param frame
-     * @param lookAndFeelManager
      */
-    public EditPreferencesDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
-        super(frame, 800, 600, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
-        this.lookAndFeelManager = lookAndFeelManager;
+    public EditPreferencesDialog(IFrame frame) {
+        super(frame, 800, 600, true, CloseAction.DISPOSE);
     }
     
     /**
@@ -74,7 +70,7 @@ public final class EditPreferencesDialog extends AbstractCustomDialog {
     public void initialize() {
         setResizable(true);
         setTitle(I18nUtils.getString("PREFERENCES"));
-        add(getContent(lookAndFeelManager.getCurrentLookAndFeel()));
+        add(getContent(getLookAndFeel()));
     }
 
     /**

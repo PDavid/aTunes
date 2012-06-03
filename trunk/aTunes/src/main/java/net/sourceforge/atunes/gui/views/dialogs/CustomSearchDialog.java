@@ -38,9 +38,8 @@ import javax.swing.JTree;
 import javax.swing.ListSelectionModel;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
-import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -116,17 +115,13 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
     /** The cancel button. */
     private JButton cancelButton;
 
-    private ILookAndFeel lookAndFeel;
-    
     /**
      * Instantiates a new custom search dialog.
      * 
      * @param owner
-     * @param lookAndFeelManager
      */
-    public CustomSearchDialog(JFrame owner, ILookAndFeelManager lookAndFeelManager) {
-        super(owner, 600, 500, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
-        this.lookAndFeel = lookAndFeelManager.getCurrentLookAndFeel();
+    public CustomSearchDialog(JFrame owner) {
+        super(owner, 600, 500, true, CloseAction.DISPOSE);
         setResizable(false);
         setTitle(I18nUtils.getString("SEARCH"));
         add(getContent());
@@ -204,9 +199,9 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
         if (simpleRulesPanel == null) {
             simpleRulesPanel = new JPanel(new GridBagLayout());
             simpleRulesPanel.setBorder(BorderFactory.createEtchedBorder());
-            simpleRulesList = lookAndFeel.getList();
+            simpleRulesList = getLookAndFeel().getList();
             simpleRulesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-            simpleRulesScrollPane = lookAndFeel.getListScrollPane(simpleRulesList);
+            simpleRulesScrollPane = getLookAndFeel().getListScrollPane(simpleRulesList);
             simpleRulesComboBox = new JComboBox();
             simpleRulesTextField = new CustomTextField();
             simpleRulesAddButton = new JButton(I18nUtils.getString("ADD"));
@@ -256,7 +251,7 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
             complexRulesPanel.setBorder(BorderFactory.createEtchedBorder());
             complexRulesTree = new JTree();
 
-            complexRulesScrollPane = lookAndFeel.getTreeScrollPane(complexRulesTree);
+            complexRulesScrollPane = getLookAndFeel().getTreeScrollPane(complexRulesTree);
             complexRulesAndButton = new JButton(I18nUtils.getString("AND"));
             complexRulesOrButton = new JButton(I18nUtils.getString("OR"));
             complexRulesNotButton = new JButton(I18nUtils.getString("NOT"));

@@ -44,6 +44,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.kernel.modules.pattern.PatternInputDialog;
 import net.sourceforge.atunes.kernel.modules.pattern.PatternMatcher;
@@ -51,7 +52,6 @@ import net.sourceforge.atunes.kernel.modules.pattern.Patterns;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IReviewImportDialog;
 import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.model.ITagAttributesReviewed;
@@ -65,17 +65,12 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements IR
 
     private final class FillTagsFromFolderNameActionListener implements
 			ActionListener {
-		private final ILookAndFeel lookAndFeel;
-
-		private FillTagsFromFolderNameActionListener(ILookAndFeel lookAndFeel) {
-			this.lookAndFeel = lookAndFeel;
-		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 		    TreePath[] selectedNodes = treeTable.getTreeSelectionModel().getSelectionPaths();
 		    if (selectedNodes.length > 0) {
-		        PatternInputDialog inputDialog = new PatternInputDialog(ReviewImportDialog.this, true, stateRepository, lookAndFeel);
+		        PatternInputDialog inputDialog = new PatternInputDialog(ReviewImportDialog.this, true, stateRepository);
 		        Object node = selectedNodes[0].getLastPathComponent();
 		        Object folder = ((DefaultMutableTreeTableNode)node).getUserObject();
 		        inputDialog.show(Patterns.getMassiveRecognitionPatterns(), ((File)folder).getAbsolutePath());
@@ -111,13 +106,12 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements IR
      * Instantiates a new ReviewImportDialog
      * @param frame
      * @param stateRepository
-     * @param lookAndFeelManager
      */
-    public ReviewImportDialog(IFrame frame, IStateRepository stateRepository, ILookAndFeelManager lookAndFeelManager) {
-        super(frame, 800, 600, true, CloseAction.NOTHING, lookAndFeelManager.getCurrentLookAndFeel());
+    public ReviewImportDialog(IFrame frame, IStateRepository stateRepository) {
+        super(frame, 800, 600, true, CloseAction.NOTHING);
         this.stateRepository = stateRepository;
         setTitle(I18nUtils.getString("REVIEW_TAGS"));
-        setContent(lookAndFeelManager.getCurrentLookAndFeel());
+        setContent(getLookAndFeel());
     }
 
     /**
@@ -158,7 +152,7 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements IR
         final JButton fillTagsFromFolderName = new JButton(StringUtils.getString(I18nUtils.getString("FILL_TAGS_FROM_FOLDER_NAME"), "..."));
         // Disabled as initially there is no row selected
         fillTagsFromFolderName.setEnabled(false);
-        fillTagsFromFolderName.addActionListener(new FillTagsFromFolderNameActionListener(lookAndFeel));
+        fillTagsFromFolderName.addActionListener(new FillTagsFromFolderNameActionListener());
 
         treeTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override

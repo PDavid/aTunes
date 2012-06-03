@@ -33,7 +33,6 @@ import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IProcessFactory;
@@ -45,8 +44,6 @@ import net.sourceforge.atunes.model.ITreeObject;
 
 public class TagHandler extends AbstractHandler implements ITagHandler {
 
-	private ILookAndFeelManager lookAndFeelManager;
-	
 	private IPlayListHandler playListHandler;
 	
 	private IRepositoryHandler repositoryHandler;
@@ -101,13 +98,6 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 		this.playListHandler = playListHandler;
 	}
 	
-	/**
-	 * @param lookAndFeelManager
-	 */
-	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
-	}
-	
 	
     /** The edit tag dialog controller. */
     private Map<EditTagSources, EditTagDialogController> editTagDialogControllerMap;
@@ -124,7 +114,7 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 
         if (!editTagDialogControllerMap.containsKey(sourceOfEditTagDialog)) {
             boolean arePrevNextButtonsShown = sourceOfEditTagDialog != EditTagSources.NAVIGATOR;
-            editTagDialogControllerMap.put(sourceOfEditTagDialog, new EditTagDialogController(new EditTagDialog(getFrame(), arePrevNextButtonsShown, lookAndFeelManager), getOsManager(), playListHandler, repositoryHandler, localAudioObjectValidator, processFactory));
+            editTagDialogControllerMap.put(sourceOfEditTagDialog, new EditTagDialogController(new EditTagDialog(getFrame(), arePrevNextButtonsShown), getOsManager(), playListHandler, repositoryHandler, localAudioObjectValidator, processFactory));
         }
         return editTagDialogControllerMap.get(sourceOfEditTagDialog);
     }
@@ -136,7 +126,7 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 	
 	@Override
 	public void editFiles(IAlbum a) {
-		new EditTitlesDialogController(new EditTitlesDialog(getFrame().getFrame(), lookAndFeelManager), processFactory).editFiles(a);
+		new EditTitlesDialogController(new EditTitlesDialog(getFrame().getFrame()), processFactory).editFiles(a);
 	}
 	
 	@Override

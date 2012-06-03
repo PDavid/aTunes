@@ -27,7 +27,6 @@ import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialogFactory;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -47,10 +46,11 @@ public class ShowPlayListItemInfoAction extends CustomAbstractAction {
     
     private IAudioObjectPropertiesDialogFactory audioObjectPropertiesDialogFactory;
     
-    private ILookAndFeelManager lookAndFeelManager;
-    
     private IPlayerHandler playerHandler;
     
+    /**
+     * Default constructor
+     */
     public ShowPlayListItemInfoAction() {
         super(I18nUtils.getString("INFO"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("INFO_BUTTON_TOOLTIP"));
@@ -61,7 +61,7 @@ public class ShowPlayListItemInfoAction extends CustomAbstractAction {
     @Override
     protected void executeAction() {
         audioObjectPropertiesDialogFactory.newInstance(
-        		playListHandler.getSelectedAudioObjects().get(0), lookAndFeelManager, playerHandler)
+        		playListHandler.getSelectedAudioObjects().get(0), playerHandler)
         			.showDialog();
     }
 
@@ -82,13 +82,6 @@ public class ShowPlayListItemInfoAction extends CustomAbstractAction {
      */
     public void setAudioObjectPropertiesDialogFactory(IAudioObjectPropertiesDialogFactory audioObjectPropertiesDialogFactory) {
 		this.audioObjectPropertiesDialogFactory = audioObjectPropertiesDialogFactory;
-	}
-    
-    /**
-     * @param lookAndFeelManager
-     */
-    public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
 	}
     
     /**

@@ -37,7 +37,6 @@ import net.sourceforge.atunes.gui.views.dialogs.RepositorySelectionInfoDialog;
 import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
 import net.sourceforge.atunes.model.IMultiFolderSelectionDialogFactory;
@@ -70,8 +69,6 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	private IMessageDialogFactory messageDialogFactory;
 
 	private IMultiFolderSelectionDialogFactory multiFolderSelectionDialogFactory;
-
-	private ILookAndFeelManager lookAndFeelManager;
 
 	private IRepositoryProgressDialog repositoryProgressDialog;
 
@@ -163,13 +160,6 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	 */
 	public void setMultiFolderSelectionDialogFactory(IMultiFolderSelectionDialogFactory multiFolderSelectionDialogFactory) {
 		this.multiFolderSelectionDialogFactory = multiFolderSelectionDialogFactory;
-	}
-
-	/**
-	 * @param lookAndFeelManager
-	 */
-	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
 	}
 
 	/**
@@ -269,7 +259,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 			messageDialogFactory.getDialog().showMessage(I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"));
 			retrieve(foldersToRead);
 		} else {
-			RepositorySelectionInfoDialog dialog = new RepositorySelectionInfoDialog(frame.getFrame(), lookAndFeelManager);
+			RepositorySelectionInfoDialog dialog = new RepositorySelectionInfoDialog(frame.getFrame());
 			dialog.setVisible(true);
 			if (dialog.userAccepted()) {
 				repositoryHandler.selectRepository();

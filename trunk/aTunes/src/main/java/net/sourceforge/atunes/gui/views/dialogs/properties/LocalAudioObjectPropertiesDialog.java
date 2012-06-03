@@ -43,7 +43,7 @@ import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
+import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IProcessFactory;
@@ -117,14 +117,13 @@ final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertiesDialog
      * @param frame
      * @param osManager
      * @param playListHandler
-     * @param lookAndFeelManager
      * @param repositoryHandler
      * @param audioObjectImageLocator
      * @param localAudioObjectValidator
      * @param processFactory
      */
-    LocalAudioObjectPropertiesDialog(ILocalAudioObject file, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, ILookAndFeelManager lookAndFeelManager, IRepositoryHandler repositoryHandler, IAudioObjectImageLocator audioObjectImageLocator, ILocalAudioObjectValidator localAudioObjectValidator, IProcessFactory processFactory) {
-        super(getTitleText(file), frame, lookAndFeelManager);
+    LocalAudioObjectPropertiesDialog(ILocalAudioObject file, IFrame frame, IOSManager osManager, IPlayListHandler playListHandler, IRepositoryHandler repositoryHandler, IAudioObjectImageLocator audioObjectImageLocator, ILocalAudioObjectValidator localAudioObjectValidator, IProcessFactory processFactory) {
+        super(getTitleText(file), frame);
         this.file = file;
         this.frame = frame;
         this.osManager = osManager;
@@ -134,7 +133,7 @@ final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertiesDialog
         this.localAudioObjectValidator = localAudioObjectValidator;
         this.processFactory = processFactory;
         setAudioObject(file);
-        addContent(lookAndFeelManager);
+        addContent(getLookAndFeel());
 
         setContent();
         this.pack();
@@ -154,20 +153,20 @@ final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertiesDialog
 
     /**
      * Adds the content.
-     * @param iLookAndFeelManager
+     * @param lookAndFeel
      */
-    private void addContent(final ILookAndFeelManager iLookAndFeelManager) {
+    private void addContent(final ILookAndFeel lookAndFeel) {
         JPanel panel = new JPanel(new GridBagLayout());
 
         pictureLabel = new JLabel();
         songLabel = new ProviderLabel(songProvider);
-        songLabel.setFont(iLookAndFeelManager.getCurrentLookAndFeel().getPropertiesDialogBigFont());
+        songLabel.setFont(lookAndFeel.getPropertiesDialogBigFont());
         artistLabel = new ProviderLabel(artistProvider);
-        artistLabel.setFont(iLookAndFeelManager.getCurrentLookAndFeel().getPropertiesDialogBigFont());
+        artistLabel.setFont(lookAndFeel.getPropertiesDialogBigFont());
         albumArtistLabel = new ProviderLabel(albumArtistProvider);
-        albumArtistLabel.setFont(iLookAndFeelManager.getCurrentLookAndFeel().getPropertiesDialogBigFont());
+        albumArtistLabel.setFont(lookAndFeel.getPropertiesDialogBigFont());
         albumLabel = new ProviderLabel(albumProvider);
-        albumLabel.setFont(iLookAndFeelManager.getCurrentLookAndFeel().getPropertiesDialogBigFont());
+        albumLabel.setFont(lookAndFeel.getPropertiesDialogBigFont());
         fileNameLabel = new ProviderLabel(fileNameProvider);
         pathLabel = new ProviderLabel(filePathProvider);
         durationLabel = new JLabel();
@@ -183,7 +182,7 @@ final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertiesDialog
         editTagsButton.setText(I18nUtils.getString("EDIT_TAG"));
         editTagsButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                EditTagDialogController ctl = new EditTagDialogController(new EditTagDialog(frame, false, iLookAndFeelManager), osManager, playListHandler, repositoryHandler, localAudioObjectValidator, processFactory);
+                EditTagDialogController ctl = new EditTagDialogController(new EditTagDialog(frame, false), osManager, playListHandler, repositoryHandler, localAudioObjectValidator, processFactory);
                 ctl.editFiles(java.util.Collections.singletonList(file));
             }
         });

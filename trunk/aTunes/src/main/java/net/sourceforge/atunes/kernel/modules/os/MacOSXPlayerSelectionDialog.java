@@ -39,12 +39,12 @@ import javax.swing.JRadioButton;
 import javax.swing.ListSelectionModel;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
 import net.sourceforge.atunes.gui.views.controls.SimpleTextPane;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -70,20 +70,16 @@ class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 	
 	private JRadioButton automaticSearch;
 	
-	private ILookAndFeelManager lookAndFeelManager;
-	
 	private IDesktop desktop;
 	
 	/**
 	 * @param parent
 	 * @param osManager
-	 * @param lookAndFeelManager
 	 * @param desktop
 	 */
-	public MacOSXPlayerSelectionDialog(IFrame parent, IOSManager osManager, ILookAndFeelManager lookAndFeelManager, IDesktop desktop) {
-		super(parent, 450, 250, true, CloseAction.NOTHING, lookAndFeelManager.getCurrentLookAndFeel());
+	public MacOSXPlayerSelectionDialog(IFrame parent, IOSManager osManager, IDesktop desktop) {
+		super(parent, 450, 250, true, CloseAction.NOTHING);
 		this.osManager = osManager;
-		this.lookAndFeelManager = lookAndFeelManager;
 		this.desktop = desktop;
 		setResizable(false);
 		setTitle(I18nUtils.getString("PLAYER_ENGINE_SELECTION"));
@@ -102,7 +98,7 @@ class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 	 * Set first options panel
 	 */
 	private JPanel getFirstOptionsPanel() {
-		SimpleTextPane instructions = new SimpleTextPane(I18nUtils.getString("MAC_PLAYER_ENGINE_INSTRUCTIONS"), lookAndFeelManager);
+		SimpleTextPane instructions = new SimpleTextPane(I18nUtils.getString("MAC_PLAYER_ENGINE_INSTRUCTIONS"), getLookAndFeelManager());
 		UrlLabel appStoreURL = new UrlLabel(desktop, I18nUtils.getString("MAC_PLAYER_ENGINE_URL"), MPLAYER_APP_STORE_URL);
 		automaticSearch = new JRadioButton(I18nUtils.getString("SEARCH_PLAYER_ENGINE"));
 		JRadioButton enterPath = new JRadioButton(I18nUtils.getString("ENTER_PLAYER_ENGINE_PATH"));
@@ -186,7 +182,7 @@ class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 	 * @return
 	 */
 	private JPanel getSearchResultsPanel() {
-		SimpleTextPane instructions = new SimpleTextPane(I18nUtils.getString("MAC_PLAYER_ENGINE_SELECTION"), lookAndFeelManager);
+		SimpleTextPane instructions = new SimpleTextPane(I18nUtils.getString("MAC_PLAYER_ENGINE_SELECTION"), getLookAndFeelManager());
 		
 		matchesList = getLookAndFeel().getList();
 		matchesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -237,7 +233,7 @@ class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 	 * @return
 	 */
 	private JPanel getEnterPlayerEnginePanel() {
-		SimpleTextPane instructions = new SimpleTextPane(I18nUtils.getString("MAC_PLAYER_ENGINE_ENTER_PATH"), lookAndFeelManager);
+		SimpleTextPane instructions = new SimpleTextPane(I18nUtils.getString("MAC_PLAYER_ENGINE_ENTER_PATH"), getLookAndFeelManager());
 
 		final CustomJFileChooser locationFileChooser = new CustomJFileChooser(this, 0, JFileChooser.FILES_ONLY, osManager);
 		JButton previousButton = new JButton(I18nUtils.getString("PREVIOUS"));

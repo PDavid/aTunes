@@ -25,32 +25,18 @@ import java.awt.Window;
 
 import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.WindowConstants;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
+import net.sourceforge.atunes.model.ILookAndFeelManager;
 
 public abstract class AbstractCustomDialog extends JDialog {
 
-	private ILookAndFeel lookAndFeel;
+	private ILookAndFeelManager lookAndFeelManager;
 	
-	protected enum CloseAction {
-		
-		DISPOSE(WindowConstants.DISPOSE_ON_CLOSE), HIDE(WindowConstants.HIDE_ON_CLOSE), NOTHING(WindowConstants.DO_NOTHING_ON_CLOSE);
-		
-		private int constant;
-		
-		private CloseAction(int constant) {
-			this.constant = constant;
-		}
-		
-		public int getConstant() {
-			return constant;
-		}
-	}
-	
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
     /**
      * Convenience constructor, dialog is not closed if user presses close button
@@ -59,10 +45,9 @@ public abstract class AbstractCustomDialog extends JDialog {
      * @param width
      * @param height
      * @param modal
-     * @param lookAndFeel
      */
-    public AbstractCustomDialog(Window owner, int width, int height, boolean modal, ILookAndFeel lookAndFeel) {
-    	this(owner, width, height, modal, CloseAction.NOTHING, lookAndFeel);
+    public AbstractCustomDialog(Window owner, int width, int height, boolean modal) {
+    	this(owner, width, height, modal, CloseAction.NOTHING);
     }
     
     /**
@@ -73,24 +58,15 @@ public abstract class AbstractCustomDialog extends JDialog {
      * @param height
      * @param modal
      * @param closeAction
-     * @param lookAndFeel
      */
     @Deprecated
-    public AbstractCustomDialog(Window owner, int width, int height, boolean modal, CloseAction closeAction, ILookAndFeel lookAndFeel) {
+    public AbstractCustomDialog(Window owner, int width, int height, boolean modal, CloseAction closeAction) {
         super(owner);
-        setSize(width, height);
-        this.lookAndFeel = lookAndFeel;
-        setUndecorated(lookAndFeel.isDialogUndecorated());
-        setModalityType(modal ? ModalityType.APPLICATION_MODAL : ModalityType.MODELESS);
+		setSize(width, height);
         setLocationRelativeTo(owner.getWidth() == 0 ? null : owner);
-        setDefaultCloseOperation(closeAction.getConstant());
-        if (closeAction == CloseAction.DISPOSE) {
-        	enableDisposeActionWithEscapeKey();
-        } else if (closeAction == CloseAction.HIDE) {
-        	enableCloseActionWithEscapeKey();
-        }
+        initializeDialog(modal, closeAction);
     }
-    
+
     /**
      * Instantiates a new custom modal dialog.
      * 
@@ -99,44 +75,44 @@ public abstract class AbstractCustomDialog extends JDialog {
      * @param height
      * @param modal
      * @param closeAction
-     * @param lookAndFeel
      */
-    public AbstractCustomDialog(IFrame frame, int width, int height, boolean modal, CloseAction closeAction, ILookAndFeel lookAndFeel) {
+    public AbstractCustomDialog(IFrame frame, int width, int height, boolean modal, CloseAction closeAction) {
         super(frame.getFrame());
-        setSize(width, height);
-        this.lookAndFeel = lookAndFeel;
-        setUndecorated(lookAndFeel.isDialogUndecorated());
-        setModalityType(modal ? ModalityType.APPLICATION_MODAL : ModalityType.MODELESS);
+		setSize(width, height);
         setLocationRelativeTo(frame.getFrame().getWidth() == 0 ? null : frame.getFrame());
+        initializeDialog(modal, closeAction);
+    }
+
+	/**
+	 * @param modal
+	 * @param closeAction
+	 */
+	private void initializeDialog(boolean modal, CloseAction closeAction) {
+        this.lookAndFeelManager = Context.getBean(ILookAndFeelManager.class);
+        setUndecorated(getLookAndFeel().isDialogUndecorated());
+        setModalityType(modal ? ModalityType.APPLICATION_MODAL : ModalityType.MODELESS);
         setDefaultCloseOperation(closeAction.getConstant());
         if (closeAction == CloseAction.DISPOSE) {
-        	enableDisposeActionWithEscapeKey();
+            GuiUtils.addDisposeActionWithEscapeKey(this, getRootPane());
         } else if (closeAction == CloseAction.HIDE) {
-        	enableCloseActionWithEscapeKey();
+            GuiUtils.addCloseActionWithEscapeKey(this, getRootPane());
         }
-    }
-    
+	}
+
     /**
      * @return look and feel
      */
     protected ILookAndFeel getLookAndFeel() {
-		return lookAndFeel;
+		return lookAndFeelManager.getCurrentLookAndFeel();
 	}
     
     /**
-     * Enable close action with escape key.
+     * @return look and feel manager
      */
-    private void enableCloseActionWithEscapeKey() {
-        GuiUtils.addCloseActionWithEscapeKey(this, getRootPane());
+    protected ILookAndFeelManager getLookAndFeelManager() {
+    	return lookAndFeelManager;
     }
-
-    /**
-     * Enable dispose action with escape key.
-     */
-    private void enableDisposeActionWithEscapeKey() {
-        GuiUtils.addDisposeActionWithEscapeKey(this, getRootPane());
-    }
-
+    
     @Override
     public Component add(Component comp) {
     	if (comp instanceof JComponent) {

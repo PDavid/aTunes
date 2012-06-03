@@ -34,9 +34,9 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -71,16 +71,12 @@ public final class StatsDialog extends AbstractCustomDialog {
     /** The songs chart. */
     private JLabel songsChart;
     
-    private ILookAndFeelManager lookAndFeelManager;
-
     /**
      * Instantiates a new stats dialog.
      * @param frame
-     * @param lookAndFeelManager
      */
-    public StatsDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
-        super(frame, 750, 750, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
-        this.lookAndFeelManager = lookAndFeelManager;
+    public StatsDialog(IFrame frame) {
+        super(frame, 750, 750, true, CloseAction.DISPOSE);
     }
     
     /**
@@ -89,7 +85,7 @@ public final class StatsDialog extends AbstractCustomDialog {
     public void initialize() {
         setTitle(StringUtils.getString(I18nUtils.getString("STATS"), " - ", Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
         setResizable(false);
-        add(getContent(lookAndFeelManager.getCurrentLookAndFeel()));
+        add(getContent(getLookAndFeel()));
     }
 
     /**

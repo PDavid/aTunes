@@ -33,10 +33,10 @@ import javax.swing.JTextField;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIconFactory;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IRadio;
 import net.sourceforge.atunes.model.IRadioDialog;
 import net.sourceforge.atunes.model.IRadioHandler;
@@ -64,10 +64,9 @@ public final class RadioDialog extends AbstractCustomDialog implements IRadioDia
      * Instantiates a new radio dialog for adding a new radio
      * 
      * @param frame
-     * @param lookAndFeelManager
      */
-    public RadioDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
-        super(frame, 500, 200, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
+    public RadioDialog(IFrame frame) {
+        super(frame, 500, 200, true, CloseAction.DISPOSE);
         setTitle(I18nUtils.getString("ADD_RADIO"));
         setResizable(false);
         add(getContent());

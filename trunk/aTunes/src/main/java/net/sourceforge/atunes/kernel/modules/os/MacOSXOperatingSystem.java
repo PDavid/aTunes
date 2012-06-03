@@ -30,7 +30,6 @@ import net.sourceforge.atunes.kernel.modules.tray.MacPlayerTrayIconsHandler;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayerEngine;
 import net.sourceforge.atunes.model.IPlayerTrayIconsHandler;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -107,7 +106,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter implements App
 	
 	@Override
 	public void manageNoPlayerEngine(IFrame frame) {
-		MacOSXPlayerSelectionDialog dialog = new MacOSXPlayerSelectionDialog(frame, getOsManager(), context.getBean(ILookAndFeelManager.class), context.getBean(IDesktop.class));
+		MacOSXPlayerSelectionDialog dialog = new MacOSXPlayerSelectionDialog(frame, getOsManager(), context.getBean(IDesktop.class));
 		dialog.setVisible(true);
 	}
 	

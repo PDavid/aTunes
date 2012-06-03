@@ -137,7 +137,7 @@ final class SearchResultsController extends AbstractSimpleController<SearchResul
         if (selectedResults == null) {
             return;
         }
-        Context.getBean(IAudioObjectPropertiesDialogFactory.class).newInstance(selectedResults.get(0), lookAndFeelManager, playerHandler).showDialog();
+        Context.getBean(IAudioObjectPropertiesDialogFactory.class).newInstance(selectedResults.get(0), playerHandler).showDialog();
     }
 
     /**

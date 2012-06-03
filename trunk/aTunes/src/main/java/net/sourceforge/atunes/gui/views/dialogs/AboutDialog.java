@@ -40,6 +40,7 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.gui.views.controls.JavaVirtualMachineStatisticsTableModel;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
@@ -47,7 +48,6 @@ import net.sourceforge.atunes.model.IAboutDialog;
 import net.sourceforge.atunes.model.IDesktop;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -74,8 +74,6 @@ public final class AboutDialog extends AbstractCustomDialog implements IAboutDia
 
     private IDesktop desktop;
 
-    private ILookAndFeelManager lookAndFeelManager;
-    
     /**
      * @param desktop
      */
@@ -87,18 +85,16 @@ public final class AboutDialog extends AbstractCustomDialog implements IAboutDia
      * Instantiates a new about dialog.
      * 
      * @param frame
-     * @param lookAndFeelManager
      */
-    public AboutDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
-        super(frame, 600, 550, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
-        this.lookAndFeelManager = lookAndFeelManager;
+    public AboutDialog(IFrame frame) {
+        super(frame, 600, 550, true, CloseAction.DISPOSE);
     }
     
     /**
      * Initializes dialog after finishing setting dependencies
      */
     public void initialize() {
-        add(getContent(lookAndFeelManager.getCurrentLookAndFeel()));
+        add(getContent(getLookAndFeel()));
         setResizable(false);    	
     }
 

@@ -23,10 +23,10 @@ package net.sourceforge.atunes.gui.views.dialogs.properties;
 import java.awt.Dimension;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialog;
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.utils.StringUtils;
 
 public class AudioObjectPropertiesDialog extends AbstractCustomDialog implements IAudioObjectPropertiesDialog {
@@ -37,12 +37,11 @@ public class AudioObjectPropertiesDialog extends AbstractCustomDialog implements
 
     /**
      * Instantiates a new properties dialog.
-     * 
      * @param title
-     *            the title
+     * @param frame
      */
-    AudioObjectPropertiesDialog(String title, IFrame frame, ILookAndFeelManager lookAndFeelManager) {
-        super(frame, 560, 480, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
+    AudioObjectPropertiesDialog(String title, IFrame frame) {
+        super(frame, 560, 480, true, CloseAction.DISPOSE);
         setMinimumSize(new Dimension(560, 480));
         setTitle(title);
         setResizable(true);

@@ -230,7 +230,6 @@ public final class GeneralPanel extends AbstractPreferencesPanel {
                 										 currentFontSettings != null ? currentFontSettings.isUseFontSmoothing() : true, 
                 										 currentFontSettings != null ? currentFontSettings.isUseFontSmoothingSettingsFromOs() : false, 
                 										 stateCore.getLocale().getLocale(), 
-                										 GeneralPanel.this.lookAndFeelManager, 
                 										 fontBeanFactory);
                 fontChooserDialog.setVisible(true);
                 if (fontChooserDialog.getSelectedFontSettings() != null) {

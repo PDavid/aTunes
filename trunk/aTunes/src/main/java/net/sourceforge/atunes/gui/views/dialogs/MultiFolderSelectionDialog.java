@@ -58,9 +58,9 @@ import javax.swing.tree.TreeSelectionModel;
 import net.sourceforge.atunes.gui.AbstractTreeCellRendererCode;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
+import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
-import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.ITreeCellRendererCode;
@@ -529,10 +529,10 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
      * @param frame
      * @param osManager
      */
-    public MultiFolderSelectionDialog(IFrame frame, IOSManager osManager, ILookAndFeelManager lookAndFeelManager) {
-        super(frame, 460, 530, true, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
+    public MultiFolderSelectionDialog(IFrame frame, IOSManager osManager) {
+        super(frame, 460, 530, true, CloseAction.DISPOSE);
         this.osManager = osManager;
-        add(getContent(lookAndFeelManager.getCurrentLookAndFeel()));
+        add(getContent(getLookAndFeel()));
         setResizable(false);
     }
 
