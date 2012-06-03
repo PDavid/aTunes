@@ -45,7 +45,7 @@ public final class NavigationTreePanel extends JPanel implements INavigationTree
 
     private static final long serialVersionUID = -2900418193013495812L;
 
-    private ColorMutableIconToggleButtonFlowPanel viewButtonsPanel;
+    private ToggleButtonFlowPanel viewButtonsPanel;
     
     private JPanel treePanel;
 
@@ -153,18 +153,18 @@ public final class NavigationTreePanel extends JPanel implements INavigationTree
      * Adds the content.
      */
     public void initialize() {
-    	viewButtonsPanel = new ColorMutableIconToggleButtonFlowPanel(lookAndFeelManager);
+    	viewButtonsPanel = new ToggleButtonFlowPanel(true, lookAndFeelManager);
         treePanel = new JPanel(new CardLayout());
         addTrees();
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
         c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(0, 1, 1, 0);
+        c.insets = new Insets(1, 1, 1, 0);
         add(getOptionsPopUpButton(lookAndFeelManager), c);
         c.gridx = 1;
         c.weightx = 1;
-        c.insets = new Insets(0, 0, 0, 0);
+        c.insets = new Insets(0, 0, 1, 0);
         add(viewButtonsPanel, c);
         
         c.gridx = 2;
@@ -222,7 +222,7 @@ public final class NavigationTreePanel extends JPanel implements INavigationTree
     	treePanel.removeAll();
 
         for (INavigationView view : navigationHandler.getNavigationViews()) {
-        	viewButtonsPanel.addButton(view.getClass().getName(), view.getIcon(), view.getTitle(), view.getActionToShowView(), view);
+        	viewButtonsPanel.addButton(view.getClass().getName(), view.getTitle(), view.getIcon(), view.getActionToShowView(), view);
         	treePanel.add(view.getClass().getName(), view.getTreeScrollPane());
         }
     }

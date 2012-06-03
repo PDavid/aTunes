@@ -22,20 +22,32 @@ package net.sourceforge.atunes.gui.views.panels;
 
 import javax.swing.Action;
 
-class TextToggleButton {
+import net.sourceforge.atunes.model.IColorMutableImageIcon;
+
+class ToggleButtonOfFlowPanel {
 	
 	private String buttonName;
 	
+	private IColorMutableImageIcon icon;
+
 	private String tooltip;
 	
 	private Action action;
 	
 	private Object userObject;
 
-	TextToggleButton(String buttonName, String tooltip, Action action, Object userObject) {
+	/**
+	 * @param buttonName
+	 * @param tooltip
+	 * @param icon
+	 * @param action
+	 * @param userObject
+	 */
+	ToggleButtonOfFlowPanel(String buttonName, String tooltip, IColorMutableImageIcon icon, Action action, Object userObject) {
 		super();
 		this.buttonName = buttonName;
 		this.tooltip = tooltip;
+		this.icon = icon;
 		this.action = action;
 		this.userObject = userObject;
 	}
@@ -52,6 +64,13 @@ class TextToggleButton {
 	 */
 	public String getTooltip() {
 		return tooltip;
+	}
+	
+	/**
+	 * @return
+	 */
+	public IColorMutableImageIcon getIcon() {
+		return icon;
 	}
 	
 	/**

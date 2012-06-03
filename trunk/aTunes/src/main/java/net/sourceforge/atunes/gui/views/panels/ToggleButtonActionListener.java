@@ -24,9 +24,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 final class ToggleButtonActionListener implements ActionListener {
-	private final ColorMutableIconToggleButton button;
+	
+	private final ToggleButtonOfFlowPanel button;
 
-	ToggleButtonActionListener(ColorMutableIconToggleButton button) {
+	ToggleButtonActionListener(ToggleButtonOfFlowPanel button) {
 		this.button = button;
 	}
 
