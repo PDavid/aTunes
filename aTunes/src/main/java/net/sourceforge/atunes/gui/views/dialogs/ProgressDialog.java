@@ -67,7 +67,7 @@ public class ProgressDialog extends AbstractCustomDialog implements IProgressDia
      * @param frame
      */
     public ProgressDialog(IFrame frame, ILookAndFeelManager lookAndFeelManager) {
-        super(frame, 450, 150, false, CloseAction.NOTHING, lookAndFeelManager.getCurrentLookAndFeel());
+        super(frame, 450, 150, false, CloseAction.DISPOSE, lookAndFeelManager.getCurrentLookAndFeel());
         add(getContent());
         setResizable(false);
     }
