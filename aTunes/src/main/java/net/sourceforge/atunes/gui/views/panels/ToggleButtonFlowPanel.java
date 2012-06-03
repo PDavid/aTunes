@@ -46,18 +46,19 @@ import javax.swing.ScrollPaneConstants;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
-public class TextToggleButtonFlowPanel extends JPanel implements ILookAndFeelChangeListener {
+public class ToggleButtonFlowPanel extends JPanel implements ILookAndFeelChangeListener {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -3228209071274604067L;
 
-	private List<TextToggleButton> buttons;
+	private List<ToggleButtonOfFlowPanel> buttons;
 
 	private Map<String, JToggleButton> toggles;
 
@@ -75,16 +76,20 @@ public class TextToggleButtonFlowPanel extends JPanel implements ILookAndFeelCha
 
 	private ILookAndFeelManager lookAndFeelManager;
 	
+	private boolean iconOnly;
+	
 	/**
 	 * Creates a new panel
+	 * @param iconOnly
 	 * @param lookAndFeelManager
 	 */
-	public TextToggleButtonFlowPanel(ILookAndFeelManager lookAndFeelManager) {
+	public ToggleButtonFlowPanel(boolean iconOnly, ILookAndFeelManager lookAndFeelManager) {
 		super();
+		this.iconOnly = iconOnly;
 		this.lookAndFeelManager = lookAndFeelManager;
 		this.itemListeners = new ArrayList<ItemListener>();
 		this.group = new ButtonGroup();
-		this.buttons = new ArrayList<TextToggleButton>();
+		this.buttons = new ArrayList<ToggleButtonOfFlowPanel>();
 		this.toggles = new HashMap<String, JToggleButton>();
 		buttonContainer = new JPanel(new FlowLayout(GuiUtils.getComponentOrientation().isLeftToRight() ? FlowLayout.LEFT : FlowLayout.RIGHT, 0, 0));
 		scrollPane = new JScrollPane(buttonContainer);
@@ -165,8 +170,8 @@ public class TextToggleButtonFlowPanel extends JPanel implements ILookAndFeelCha
 	 * @param tooltip
 	 * @param action
 	 */
-	public void addButton(String name, String tooltip, Action action, Object userObject) {
-		TextToggleButton button = new TextToggleButton(name, tooltip, action, userObject);
+	public void addButton(String name, String tooltip, IColorMutableImageIcon icon, Action action, Object userObject) {
+		ToggleButtonOfFlowPanel button = new ToggleButtonOfFlowPanel(name, tooltip, icon, action, userObject);
 		buttons.add(button);
 		addButtonToPanel(button);
 	}
@@ -177,7 +182,7 @@ public class TextToggleButtonFlowPanel extends JPanel implements ILookAndFeelCha
 	public void clear() {
 		buttonContainer.removeAll();
 		this.group = new ButtonGroup();
-		this.buttons = new ArrayList<TextToggleButton>();
+		this.buttons = new ArrayList<ToggleButtonOfFlowPanel>();
 		this.toggles = new HashMap<String, JToggleButton>();
 		invalidate();
 		revalidate();
@@ -192,7 +197,7 @@ public class TextToggleButtonFlowPanel extends JPanel implements ILookAndFeelCha
 	 * @param index
 	 */
 	public void removeButton(int index) {
-		TextToggleButton button = this.buttons.get(index);
+		ToggleButtonOfFlowPanel button = this.buttons.get(index);
 		this.buttons.remove(index);
 		JToggleButton toggle = this.toggles.get(button.getButtonName());
 		this.toggles.remove(button.getButtonName());
@@ -223,7 +228,7 @@ public class TextToggleButtonFlowPanel extends JPanel implements ILookAndFeelCha
 	 * @param buttonName
 	 */
 	public void setSelectedButton(int index) {
-		TextToggleButton button = this.buttons.get(index);
+		ToggleButtonOfFlowPanel button = this.buttons.get(index);
 		setSelectedButton(button.getButtonName());
 	}
 
@@ -234,7 +239,7 @@ public class TextToggleButtonFlowPanel extends JPanel implements ILookAndFeelCha
 	public Object getSelectedItem() {
 		for (String itemKey : toggles.keySet()) {
 			if (toggles.get(itemKey).isSelected()) {
-				for (TextToggleButton button : buttons) {
+				for (ToggleButtonOfFlowPanel button : buttons) {
 					if (button.getButtonName().equals(itemKey)) {
 						return button.getUserObject();
 					}
@@ -244,11 +249,14 @@ public class TextToggleButtonFlowPanel extends JPanel implements ILookAndFeelCha
 		return null;
 	}
 
-	private void addButtonToPanel(final TextToggleButton button) {
-		JToggleButton toggle = new JToggleButton(button.getButtonName());
+	private void addButtonToPanel(final ToggleButtonOfFlowPanel button) {
+		JToggleButton toggle = new JToggleButton(iconOnly ? "" : button.getButtonName());
 		toggle.setToolTipText(button.getTooltip());
+		if (button.getIcon() != null) {
+			toggle.setIcon(button.getIcon().getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls()));
+		}
 		// Use action listener to encapsulate action to avoid toggle button use text and icon from action object
-		toggle.addActionListener(new TextToggleButtonActionListener(button));
+		toggle.addActionListener(new ToggleButtonActionListener(button));
 		group.add(toggle);
 		this.toggles.put(button.getButtonName(), toggle);
 		
@@ -264,7 +272,7 @@ public class TextToggleButtonFlowPanel extends JPanel implements ILookAndFeelCha
 	public void lookAndFeelChanged() {
 		removeAll();
 		group = new ButtonGroup();
-		for (TextToggleButton button : buttons) {
+		for (ToggleButtonOfFlowPanel button : buttons) {
 			addButtonToPanel(button);
 		}
 		setArrows();
@@ -289,7 +297,7 @@ public class TextToggleButtonFlowPanel extends JPanel implements ILookAndFeelCha
 	 * @return
 	 */
 	public int getIndexOfButton(String name) {
-		for (TextToggleButton button : buttons) {
+		for (ToggleButtonOfFlowPanel button : buttons) {
 			if (button.getButtonName().equals(name)) {
 				return buttons.indexOf(button); 
 			}
@@ -303,7 +311,7 @@ public class TextToggleButtonFlowPanel extends JPanel implements ILookAndFeelCha
 	 * @param newName
 	 */
 	public void renameButton(int index, String newName) {
-		TextToggleButton button = this.buttons.get(index);
+		ToggleButtonOfFlowPanel button = this.buttons.get(index);
 		if (button != null) {
 			JToggleButton toggle = this.toggles.get(button.getButtonName());
 			this.toggles.remove(button.getButtonName());

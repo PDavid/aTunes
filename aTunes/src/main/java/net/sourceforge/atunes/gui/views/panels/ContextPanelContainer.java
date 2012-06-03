@@ -42,7 +42,7 @@ public final class ContextPanelContainer extends JPanel implements IContextPanel
 
 	private static final long serialVersionUID = 707242790413122482L;
 
-    private ColorMutableIconToggleButtonFlowPanel contextSelector;
+    private ToggleButtonFlowPanel contextSelector;
     
     private PopUpButton options;
     
@@ -82,7 +82,7 @@ public final class ContextPanelContainer extends JPanel implements IContextPanel
      * @param lookAndFeelManager 
      */
     public void initialize() {
-    	contextSelector = new ColorMutableIconToggleButtonFlowPanel(lookAndFeelManager); 
+    	contextSelector = new ToggleButtonFlowPanel(true, lookAndFeelManager); 
     	options = new PopUpButton(PopUpButton.BOTTOM_RIGHT, lookAndFeelManager);
     	container = new JPanel(new CardLayout());
     	GridBagConstraints c = new GridBagConstraints();
@@ -90,7 +90,7 @@ public final class ContextPanelContainer extends JPanel implements IContextPanel
     	c.gridy = 0;
     	c.weightx = 0;
     	c.fill = GridBagConstraints.BOTH;
-    	c.insets = new Insets(0, 1, 1, 0);
+    	c.insets = new Insets(1, 1, 1, 0);
     	add(options, c);
     	c.gridx = 1;
     	c.weightx = 1;
@@ -125,7 +125,7 @@ public final class ContextPanelContainer extends JPanel implements IContextPanel
     			container.add(panel.getContextPanelName(), panel.getUIComponent(lookAndFeelManager.getCurrentLookAndFeel()));
     			panel.getUIComponent(lookAndFeelManager.getCurrentLookAndFeel()).setEnabled(panel.isEnabled());
 
-    			contextSelector.addButton(panel.getContextPanelName(), panel.getIcon(), panel.getTitle(), panel.getAction(), panel);
+    			contextSelector.addButton(panel.getContextPanelName(), panel.getTitle(), panel.getIcon(), panel.getAction(), panel);
     		}
     	}
     	IContextPanel newSelectedPanel = selectedPanel != null  && selectedPanel.isVisible() ? selectedPanel : visiblePanels.get(0);

@@ -29,7 +29,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JComboBox;
 
 import net.sourceforge.atunes.gui.views.panels.PlayListSelectorPanel;
-import net.sourceforge.atunes.gui.views.panels.TextToggleButtonFlowPanel;
+import net.sourceforge.atunes.gui.views.panels.ToggleButtonFlowPanel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IStatePlaylist;
@@ -38,7 +38,7 @@ public class PlayListSelectorWrapper {
 
 	private JComboBox playListCombo;
 	
-	private TextToggleButtonFlowPanel playListButtonFlowPanel;
+	private ToggleButtonFlowPanel playListButtonFlowPanel;
 	
 	private ILookAndFeelManager lookAndFeelManager;
 	
@@ -74,7 +74,7 @@ public class PlayListSelectorWrapper {
     	playListCombo = new JComboBox();
     	playListCombo.setMaximumRowCount(30);
 
-    	playListButtonFlowPanel = new TextToggleButtonFlowPanel(lookAndFeelManager);
+    	playListButtonFlowPanel = new ToggleButtonFlowPanel(false, lookAndFeelManager);
 	}
 	
 	/**
@@ -138,7 +138,7 @@ public class PlayListSelectorWrapper {
 	void newPlayList(final String name) {
     	((PlayListComboModel)playListCombo.getModel()).addItem(name);
     	
-    	playListButtonFlowPanel.addButton(name, name, new AbstractAction() {
+    	playListButtonFlowPanel.addButton(name, name, null, new AbstractAction() {
 			
 			private static final long serialVersionUID = -8487582617110724128L;
 
