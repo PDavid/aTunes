@@ -59,6 +59,7 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
 
     private SecondaryControl equalizerButton;
     private SecondaryToggleControl normalizeButton;
+    private SecondaryToggleControl similarModeButton;
     private PlayPauseButton playButton;
     private VolumeSlider volumeSlider;
     private JPanel secondaryControls;
@@ -108,6 +109,13 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
 		this.normalizeButton = normalizeButton;
 	}
     
+    /**
+     * @param similarArtistModeButton
+     */
+    public void setSimilarModeButton(SecondaryToggleControl similarModeButton) {
+		this.similarModeButton = similarModeButton;
+	}
+
     /**
      * @param volumeSlider
      */
@@ -292,6 +300,7 @@ public final class PlayerControlsPanel extends JPanel implements IPlayerControls
 	public void showAdvancedPlayerControls(boolean show) {
     	equalizerButton.setVisible(show);
     	normalizeButton.setVisible(show);
+    	similarModeButton.setVisible(show);
     }
 
 	@Override

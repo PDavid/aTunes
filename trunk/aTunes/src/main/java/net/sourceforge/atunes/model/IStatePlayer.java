@@ -77,6 +77,18 @@ public interface IStatePlayer {
 	public boolean isUseNormalisation();
 
 	/**
+	 * Similar Artist mode
+	 */
+	public boolean isSimilarArtistMode();
+
+	/**
+	 * Similar Artist mode
+	 * @param similarArtistMode
+	 */
+	public void setSimilarArtistMode(boolean similarArtistMode);
+	
+
+	/**
 	 * Sound normalization
 	 * @param useNormalisation
 	 */
@@ -153,7 +165,6 @@ public interface IStatePlayer {
 	 * @param playerEngine
 	 */
 	public void setPlayerEngine(String playerEngine);
-
-
+	
 
 }

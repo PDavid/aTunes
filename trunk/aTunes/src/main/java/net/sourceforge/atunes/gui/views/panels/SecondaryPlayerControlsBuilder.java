@@ -35,6 +35,7 @@ public class SecondaryPlayerControlsBuilder {
 	private SecondaryToggleControl repeatButton;
 	private SecondaryControl equalizerButton;
 	private SecondaryToggleControl normalizeButton;
+	private SecondaryToggleControl similarModeButton;
 	
 	/**
 	 * @param shuffleButton
@@ -64,6 +65,12 @@ public class SecondaryPlayerControlsBuilder {
 		this.normalizeButton = normalizeButton;
 	}
 	
+	/**
+	 * @param similarModeButton
+	 */
+	public void setSimilarModeButton(SecondaryToggleControl similarModeButton) {
+		this.similarModeButton = similarModeButton;
+	}
     /**
      * Returns a panel with secondary controls
      * @return
@@ -83,6 +90,8 @@ public class SecondaryPlayerControlsBuilder {
     	secondaryControls.add(equalizerButton, c);
     	c.gridx = 3;
     	secondaryControls.add(normalizeButton, c);
+    	c.gridx = 4;
+    	secondaryControls.add(similarModeButton, c);
     	
     	return secondaryControls;
     }

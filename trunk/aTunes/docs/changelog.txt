@@ -22,6 +22,7 @@ aTunes 2.2.0
 - Custom playlist file format to load and save, keeps elements relative to repository so can be shared across different computers with different repository location
 - "Create playlist with top tracks" action added to repository navigation view
 - Play list selector using buttons or combo box
+- Similar Artist Mode [ patch by Laurent Cathala ]
 - FIX: Use last.fm API to obtain last.fm loved tracks
 - FIX: Detection of radio audio streams blocks playing
 

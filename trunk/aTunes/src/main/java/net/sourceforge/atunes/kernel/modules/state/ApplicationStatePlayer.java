@@ -154,4 +154,15 @@ public class ApplicationStatePlayer implements IStatePlayer {
 	public void setPlayerEngine(String playerEngine) {
     	this.stateStore.storePreference(Preferences.PLAYER_ENGINE, playerEngine);
     }
+
+	@Override
+	public boolean isSimilarArtistMode() {
+		return (Boolean) this.stateStore.retrievePreference(Preferences.SIMILAR_MODE, false);
+	}
+
+	@Override
+	public void setSimilarArtistMode(boolean similarArtistMode) {
+		this.stateStore.storePreference(Preferences.SIMILAR_MODE, similarArtistMode);
+		
+	}
 }

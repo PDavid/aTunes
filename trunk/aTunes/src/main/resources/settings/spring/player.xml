@@ -39,5 +39,8 @@
 	
 	<bean id="volumeSliderMouseWheelListener" class="net.sourceforge.atunes.kernel.modules.player.VolumeSliderMouseWheelListener"/>
 	<bean id="volumeSliderChangeListener" class="net.sourceforge.atunes.kernel.modules.player.VolumeSliderChangeListener"/>
+	
+	<bean id="similarArtistMode" class="net.sourceforge.atunes.kernel.modules.player.SimilarArtistMode" init-method="initialize"/>
+	<bean class="net.sourceforge.atunes.kernel.modules.player.GetSimilarArtistAudioObjectsCallable" scope="prototype"/>
 
 </beans>
