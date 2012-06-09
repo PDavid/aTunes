@@ -28,13 +28,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
+import net.sourceforge.atunes.model.IBackgroundWorker;
+import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IGenre;
+import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
+import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IRepository;
@@ -50,6 +55,7 @@ import net.sourceforge.atunes.model.IYear;
 import net.sourceforge.atunes.model.ViewMode;
 import net.sourceforge.atunes.utils.DateUtils;
 import net.sourceforge.atunes.utils.FileNameUtils;
+import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -99,6 +105,24 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	private IStateRepository stateRepository;
 	
 	private IUnknownObjectChecker unknownObjectChecker;
+	
+    private IBackgroundWorkerFactory backgroundWorkerFactory;
+    
+    private IIndeterminateProgressDialogFactory indeterminateProgressDialogFactory;
+    
+    /**
+     * @param backgroundWorkerFactory
+     */
+    public void setBackgroundWorkerFactory(IBackgroundWorkerFactory backgroundWorkerFactory) {
+		this.backgroundWorkerFactory = backgroundWorkerFactory;
+	}
+    
+    /**
+     * @param indeterminateProgressDialogFactory
+     */
+    public void setIndeterminateProgressDialogFactory(IIndeterminateProgressDialogFactory indeterminateProgressDialogFactory) {
+		this.indeterminateProgressDialogFactory = indeterminateProgressDialogFactory;
+	}
 	
 	/**
 	 * @param unknownObjectChecker
@@ -622,5 +646,27 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 		}
 		return titles;
 	}
-	
+
+	@Override
+	public void importFolders(final List<File> folders, final String path) {
+    	final IIndeterminateProgressDialog indeterminateDialog = indeterminateProgressDialogFactory.newDialog();
+    	indeterminateDialog.setTitle(StringUtils.getString(I18nUtils.getString("READING_FILES_TO_IMPORT"), "..."));
+        
+        IBackgroundWorker<List<ILocalAudioObject>> worker = backgroundWorkerFactory.getWorker();
+        worker.setActionsAfterBackgroundStarted(new Runnable() {
+        	@Override
+        	public void run() {
+                indeterminateDialog.showDialog();
+        	}
+        });
+        ImportFoldersToRepositoryCallable callable = Context.getBean(ImportFoldersToRepositoryCallable.class);
+        callable.setFolders(folders);
+        worker.setBackgroundActions(callable);
+        ImportFoldersToRepositoryActionsWithBackgroundResult actionsWhenDone = Context.getBean(ImportFoldersToRepositoryActionsWithBackgroundResult.class);
+        actionsWhenDone.setFolders(folders);
+        actionsWhenDone.setPath(path);
+        actionsWhenDone.setIndeterminateDialog(indeterminateDialog);
+        worker.setActionsWhenDone(actionsWhenDone);
+        worker.execute();
+    }
 }

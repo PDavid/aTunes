@@ -304,5 +304,12 @@ public interface IRepositoryHandler extends IHandler, IAudioFilesRemovedListener
 	 * @return
 	 */
 	public List<ILocalAudioObject> getAudioObjectsByTitle(String artist, List<String> titles);
+	
+	/**
+	 * Imports folders to repository
+	 * @param folders
+	 * @param path
+	 */
+	void importFolders(final List<File> folders, final String path);
 
 }
