@@ -10,7 +10,7 @@
 
 	<bean id="playerControls" class="net.sourceforge.atunes.gui.views.panels.PlayerControlsPanel" init-method="initialize"/>
 
-
+ 
 	<bean id="secondaryPlayerControlsBuilder" class="net.sourceforge.atunes.gui.views.panels.SecondaryPlayerControlsBuilder" scope="prototype"/>
 
 	<bean id="secondaryControlSize" class="java.awt.Dimension">
@@ -21,6 +21,12 @@
 	<bean id="shuffleButton" class="net.sourceforge.atunes.gui.views.controls.SecondaryToggleControl">
 		<constructor-arg>
 			<ref bean="shuffleModeAction"/>
+		</constructor-arg>
+		<property name="preferredSize" ref="secondaryControlSize"/>
+	</bean>
+	<bean id="similarModeButton" class="net.sourceforge.atunes.gui.views.controls.SecondaryToggleControl">
+		<constructor-arg>
+			<ref bean="similarModeAction"/>
 		</constructor-arg>
 		<property name="preferredSize" ref="secondaryControlSize"/>
 	</bean>

@@ -241,6 +241,7 @@
 	<bean class="net.sourceforge.atunes.kernel.actions.ToggleWindowVisibilityAction"/>
 	<bean id="volumeDownAction" class="net.sourceforge.atunes.kernel.actions.VolumeDownAction"/>
 	<bean id="volumeUpAction" class="net.sourceforge.atunes.kernel.actions.VolumeUpAction"/>
+	<bean id="similarModeAction" class="net.sourceforge.atunes.kernel.actions.SimilarArtistsModeAction"/>
 	
 	
 	

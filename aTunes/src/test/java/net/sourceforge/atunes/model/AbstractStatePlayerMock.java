@@ -120,4 +120,13 @@ public class AbstractStatePlayerMock implements IStatePlayer {
 	@Override
 	public void setVolume(int volume) {
 	}
+
+	@Override
+	public boolean isSimilarArtistMode() {
+		return false;
+	}
+
+	@Override
+	public void setSimilarArtistMode(boolean similarArtistMode) {
+	}
 }

@@ -37,4 +37,5 @@
 	<bean id="filterHandler" class="net.sourceforge.atunes.kernel.modules.filter.FilterHandler"/>
 	<bean id="pluginsHandler" class="net.sourceforge.atunes.kernel.modules.plugins.PluginsHandler"/>
 	<bean id="networkHandler" class="net.sourceforge.atunes.kernel.modules.network.NetworkHandler"/>
+	<bean id="advancedPlayingModeHandler" class="net.sourceforge.atunes.kernel.modules.player.AdvancedPlayingModeHandler" />
 </beans>
