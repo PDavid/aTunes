@@ -23,16 +23,8 @@ package net.sourceforge.atunes.kernel.actions;
 import java.io.File;
 import java.util.List;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.SelectorDialog;
-import net.sourceforge.atunes.kernel.modules.repository.ImportFoldersToRepositoryActionsWithBackgroundResult;
-import net.sourceforge.atunes.kernel.modules.repository.ImportFoldersToRepositoryCallable;
-import net.sourceforge.atunes.model.IBackgroundWorker;
-import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
-import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
-import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
 import net.sourceforge.atunes.model.IMultiFolderSelectionDialogFactory;
@@ -58,10 +50,6 @@ public class ImportToRepositoryAction extends CustomAbstractAction {
     
     private ILookAndFeelManager lookAndFeelManager;
     
-    private IBackgroundWorkerFactory backgroundWorkerFactory;
-    
-    private IIndeterminateProgressDialogFactory indeterminateProgressDialogFactory;
-    
     /**
      * Default constructor
      */
@@ -71,20 +59,6 @@ public class ImportToRepositoryAction extends CustomAbstractAction {
         setEnabled(false); // Initially disabled, will be enabled when repository is loaded
     }
     
-    /**
-     * @param indeterminateProgressDialogFactory
-     */
-    public void setIndeterminateProgressDialogFactory(IIndeterminateProgressDialogFactory indeterminateProgressDialogFactory) {
-		this.indeterminateProgressDialogFactory = indeterminateProgressDialogFactory;
-	}
-    
-    /**
-     * @param backgroundWorkerFactory
-     */
-    public void setBackgroundWorkerFactory(IBackgroundWorkerFactory backgroundWorkerFactory) {
-		this.backgroundWorkerFactory = backgroundWorkerFactory;
-	}
-
     @Override
     protected void executeAction() {
         // Now show dialog to select folders
@@ -114,31 +88,9 @@ public class ImportToRepositoryAction extends CustomAbstractAction {
                 } else {
                     path = foldersList[0];
                 }
-                importFolders(folders, path);
+                repositoryHandler.importFolders(folders, path);
             }
         }
-    }
-    
-	private void importFolders(final List<File> folders, final String path) {
-    	final IIndeterminateProgressDialog indeterminateDialog = indeterminateProgressDialogFactory.newDialog();
-    	indeterminateDialog.setTitle(StringUtils.getString(I18nUtils.getString("READING_FILES_TO_IMPORT"), "..."));
-        
-        IBackgroundWorker<List<ILocalAudioObject>> worker = backgroundWorkerFactory.getWorker();
-        worker.setActionsAfterBackgroundStarted(new Runnable() {
-        	@Override
-        	public void run() {
-                indeterminateDialog.showDialog();
-        	}
-        });
-        ImportFoldersToRepositoryCallable callable = Context.getBean(ImportFoldersToRepositoryCallable.class);
-        callable.setFolders(folders);
-        worker.setBackgroundActions(callable);
-        ImportFoldersToRepositoryActionsWithBackgroundResult actionsWhenDone = Context.getBean(ImportFoldersToRepositoryActionsWithBackgroundResult.class);
-        actionsWhenDone.setFolders(folders);
-        actionsWhenDone.setPath(path);
-        actionsWhenDone.setIndeterminateDialog(indeterminateDialog);
-        worker.setActionsWhenDone(actionsWhenDone);
-        worker.execute();
     }
     
     /**
