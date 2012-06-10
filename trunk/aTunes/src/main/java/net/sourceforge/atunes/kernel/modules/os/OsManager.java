@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import net.sourceforge.atunes.Constants;
+import net.sourceforge.atunes.kernel.OperatingSystemDetector;
 import net.sourceforge.atunes.model.IApplicationArguments;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -70,7 +71,7 @@ public class OsManager implements IOSManager, ApplicationContextAware {
      *  Initializes os manager 
      */
     public void initialize() {
-    	osType = detectOperatingSystem();
+    	osType = OperatingSystemDetector.getOperatingSystem();
     	if (osType.isLinux()) {
     		adapter = context.getBean(LinuxOperatingSystem.class);
     	} else if (osType.isMacOsX()) {
@@ -163,25 +164,6 @@ public class OsManager implements IOSManager, ApplicationContextAware {
             return userConfigFolder;
         }
         return tempFolder;
-    }
-
-
-
-    /**
-     * Detect OS.
-     * 
-     * @return The detected OS
-     */
-    private OperatingSystem detectOperatingSystem() {
-        String osName = System.getProperty("os.name").toLowerCase();
-        if (osName.contains("windows")) {
-            return OperatingSystem.WINDOWS;
-        } else if (osName.contains("mac os x")) {
-            return OperatingSystem.MACOSX;
-        } else if (osName.contains("sunos")) {
-            return OperatingSystem.SOLARIS;
-        }
-        return OperatingSystem.LINUX;
     }
     
     /* (non-Javadoc)

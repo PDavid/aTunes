@@ -200,10 +200,16 @@
 	</target>
 	
 	<!-- Copy splash image to folder where Mac OS package is created, since Maven plugin does not allow to do this -->
-	<!-- Also copy volume icon -->
+	<!-- Also copy volume icon and spring settings-->
 	<target name="copy_splash">
 		<copy todir="${basedir}/target/atunes-${version}/aTunes.app/Contents/Resources" file="${build_resources}/splash.gif" />	
 		<copy tofile="${basedir}/target/atunes-${version}/.VolumeIcon.icns" file="${build_resources}/macos/aTunes_dmg.icns" />
+		<mkdir dir="${basedir}/target/atunes-${version}/aTunes.app/Contents/Resources/settings/spring/"/>
+		<copy todir="${basedir}/target/atunes-${version}/aTunes.app/Contents/Resources/settings/spring/">
+			<fileset dir="src/main/resources/settings/spring/">
+				<include name="*.xml"/>
+			</fileset>
+		</copy>
 	</target>
 
 	<target name="recreate_dmg">
