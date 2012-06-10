@@ -7,31 +7,7 @@
 	</configSuffixes>
 	<enableImports><![CDATA[true]]></enableImports>
 	<configs>
-		<config>src/main/resources/settings/spring/context.xml</config>
-		<config>src/main/resources/settings/spring/columnsets.xml</config>
-		<config>src/main/resources/settings/spring/treecelldecorators.xml</config>
-		<config>src/main/resources/settings/spring/treegenerators.xml</config>
-		<config>src/main/resources/settings/spring/webservices.xml</config>
-		<config>src/main/resources/settings/spring/handlers.xml</config>
-		<config>src/main/resources/settings/spring/dialogs.xml</config>
-		<config>src/main/resources/settings/spring/os.xml</config>
-		<config>src/main/resources/settings/spring/tasks.xml</config>
-		<config>src/main/resources/settings/spring/utils.xml</config>
-		<config>src/main/resources/settings/spring/lookandfeel.xml</config>
-		<config>src/main/resources/settings/spring/core.xml</config>
-		<config>src/main/resources/settings/spring/player.xml</config>
-		<config>src/main/resources/settings/spring/actions.xml</config>
-		<config>src/main/resources/settings/spring/genres.xml</config>
-		<config>src/main/resources/settings/spring/gui.xml</config>
-		<config>src/main/resources/settings/spring/gui.player.xml</config>
-		<config>src/main/resources/settings/spring/gui.icons.xml</config>
-		<config>src/main/resources/settings/spring/repository.xml</config>
-		<config>src/main/resources/settings/spring/device.xml</config>
-		<config>src/main/resources/settings/spring/process.xml</config>
-		<config>src/main/resources/settings/spring/playlist.xml</config>
-		<config>src/main/resources/settings/spring/navigator.xml</config>
-		<config>src/main/resources/settings/spring/cdripper.xml</config>
-		<config>src/main/resources/settings/spring/gui.dimensions.xml</config>
+		<config>src/main/resources/settings/spring/spring_beans.xml</config>
 	</configs>
 	<configSets>
 		<configSet>
@@ -39,31 +15,7 @@
 			<allowBeanDefinitionOverriding>true</allowBeanDefinitionOverriding>
 			<incomplete>false</incomplete>
 			<configs>
-				<config>src/main/resources/settings/spring/columnsets.xml</config>
-				<config>src/main/resources/settings/spring/context.xml</config>
-				<config>src/main/resources/settings/spring/treecelldecorators.xml</config>
-				<config>src/main/resources/settings/spring/treegenerators.xml</config>
-				<config>src/main/resources/settings/spring/webservices.xml</config>
-				<config>src/main/resources/settings/spring/dialogs.xml</config>
-				<config>src/main/resources/settings/spring/handlers.xml</config>
-				<config>src/main/resources/settings/spring/os.xml</config>
-				<config>src/main/resources/settings/spring/tasks.xml</config>
-				<config>src/main/resources/settings/spring/utils.xml</config>
-				<config>src/main/resources/settings/spring/lookandfeel.xml</config>
-				<config>src/main/resources/settings/spring/core.xml</config>
-				<config>src/main/resources/settings/spring/player.xml</config>
-				<config>src/main/resources/settings/spring/actions.xml</config>
-				<config>src/main/resources/settings/spring/genres.xml</config>
-				<config>src/main/resources/settings/spring/gui.xml</config>
-				<config>src/main/resources/settings/spring/gui.player.xml</config>
-				<config>src/main/resources/settings/spring/gui.icons.xml</config>
-				<config>src/main/resources/settings/spring/repository.xml</config>
-				<config>src/main/resources/settings/spring/device.xml</config>
-				<config>src/main/resources/settings/spring/process.xml</config>
-				<config>src/main/resources/settings/spring/playlist.xml</config>
-				<config>src/main/resources/settings/spring/navigator.xml</config>
-				<config>src/main/resources/settings/spring/cdripper.xml</config>
-				<config>src/main/resources/settings/spring/gui.dimensions.xml</config>
+				<config>src/main/resources/settings/spring/spring_beans.xml</config>
 			</configs>
 		</configSet>
 	</configSets>
