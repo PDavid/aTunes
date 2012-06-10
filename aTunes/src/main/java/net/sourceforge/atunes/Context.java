@@ -36,33 +36,7 @@ public final class Context {
 	 * Initializes Spring with bean definition files
 	 */
 	public static void initialize() {
-		context = new ClassPathXmlApplicationContext(
-				"/settings/spring/actions.xml", 
-				"/settings/spring/cdripper.xml", 
-				"/settings/spring/columnsets.xml", 
-				"/settings/spring/context.xml", 
-				"/settings/spring/core.xml",
-				"/settings/spring/device.xml", 
-				"/settings/spring/dialogs.xml", 
-				"/settings/spring/genres.xml", 
-				"/settings/spring/gui.xml",
-				"/settings/spring/gui.dimensions.xml", 
-				"/settings/spring/gui.icons.xml",
-				"/settings/spring/gui.player.xml", 
-				"/settings/spring/handlers.xml", 
-				"/settings/spring/lookandfeel.xml", 
-				"/settings/spring/navigator.xml", 
-				"/settings/spring/os.xml", 
-				"/settings/spring/player.xml", 
-				"/settings/spring/playlist.xml",
-				"/settings/spring/process.xml",
-				"/settings/spring/repository.xml",
-				"/settings/spring/tasks.xml", 
-				"/settings/spring/treecelldecorators.xml", 
-				"/settings/spring/treegenerators.xml", 
-				"/settings/spring/utils.xml", 
-				"/settings/spring/webservices.xml" 
-				);
+		context = new ClassPathXmlApplicationContext("/settings/spring/spring_beans.xml");
 	}
 	
 	/**
