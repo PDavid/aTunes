@@ -22,6 +22,8 @@ package net.sourceforge.atunes;
 
 import java.io.File;
 
+import net.sourceforge.atunes.kernel.OperatingSystemDetector;
+import net.sourceforge.atunes.model.OperatingSystem;
 import net.sourceforge.atunes.utils.StringUtils;
 
 /**
@@ -39,7 +41,12 @@ public final class ResourceLocator {
 	 * @return
 	 */
 	public static File getFile(String relativePath) {
-		File file = new File(StringUtils.getString(System.getProperty("user.dir"), relativePath));
+		File file = null;
+		if (OperatingSystemDetector.getOperatingSystem().equals(OperatingSystem.MACOSX)) {
+			file = new File(StringUtils.getString(System.getProperty("atunes.package"), "/Contents/Resources/", relativePath));
+		} else {
+			file = new File(StringUtils.getString(System.getProperty("user.dir"), relativePath));
+		}
 		if (file.exists()) {
 			return file;
 		} else {
