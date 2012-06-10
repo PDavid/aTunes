@@ -80,7 +80,7 @@
 		</copy>
 
 		<copy todir="${deploy_folder}/settings">
-			<fileset dir="${settings}" includes="*" />
+			<fileset dir="${settings}" includes="**/*" />
 		</copy>
 
 		<copy todir="${deploy_folder}/build_tools">
