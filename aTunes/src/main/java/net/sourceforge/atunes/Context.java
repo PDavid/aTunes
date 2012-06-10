@@ -20,13 +20,18 @@
 
 package net.sourceforge.atunes;
 
+import java.io.File;
 import java.util.Collection;
+
+import net.sourceforge.atunes.utils.StringUtils;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public final class Context {
 
+	private static final String SPRING_BEANS_XML = "/settings/spring/spring_beans.xml";
+	
 	private static ApplicationContext context;
 	
 	private Context() {
@@ -36,7 +41,13 @@ public final class Context {
 	 * Initializes Spring with bean definition files
 	 */
 	public static void initialize() {
-		context = new ClassPathXmlApplicationContext("/settings/spring/spring_beans.xml");
+		File springBeans = ResourceLocator.getFile(SPRING_BEANS_XML);
+		if (springBeans != null) {
+			context = new ClassPathXmlApplicationContext(StringUtils.getString("file:" + springBeans.getAbsolutePath()));
+		} else {
+			// Use classpath
+			context = new ClassPathXmlApplicationContext(SPRING_BEANS_XML);
+		}
 	}
 	
 	/**
