@@ -91,7 +91,7 @@ public final class ContextPanelContainer extends JPanel implements IContextPanel
     	c.gridy = 0;
     	c.weightx = 0;
     	c.fill = GridBagConstraints.BOTH;
-    	c.insets = new Insets(1, 1, 1, 0);
+    	c.insets = new Insets(0, 1, 1, 0);
     	add(options, c);
     	c.gridx = 1;
     	c.weightx = 1;

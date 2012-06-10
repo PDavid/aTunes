@@ -21,10 +21,8 @@
 package net.sourceforge.atunes.gui.views.controls;
 
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -46,7 +44,6 @@ import javax.swing.JToggleButton;
 import javax.swing.ScrollPaneConstants;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
@@ -92,7 +89,7 @@ public class ToggleButtonFlowPanel extends JPanel implements ILookAndFeelChangeL
 		this.group = new ButtonGroup();
 		this.buttons = new ArrayList<ToggleButtonOfFlowPanel>();
 		this.toggles = new HashMap<String, JToggleButton>();
-		buttonContainer = new JPanel(new FlowLayout(GuiUtils.getComponentOrientation().isLeftToRight() ? FlowLayout.LEFT : FlowLayout.RIGHT, 0, 0));
+		buttonContainer = new JPanel(new GridBagLayout());
 		scrollPane = new JScrollPane(buttonContainer);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder());
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -149,20 +146,17 @@ public class ToggleButtonFlowPanel extends JPanel implements ILookAndFeelChangeL
 		c.weightx = 0;
 		c.weighty = 1;
 		c.fill = GridBagConstraints.VERTICAL;
-		c.insets = new Insets(1, 0, 1, 0);
 		add(leftButton, c);
 
 		c.gridx = 1;
 		c.weightx = 1;
 		c.weighty = 1;
 		c.fill = GridBagConstraints.BOTH;
-		c.insets = new Insets(1, 0, 0, 0);
 		add(scrollPane, c);
 
 		c.gridx = 2;
 		c.weightx = 0;
 		c.weighty = 1;
-		c.insets = new Insets(1, 0, 1, 0);
 		c.fill = GridBagConstraints.VERTICAL;
 		add(rightButton, c);
 	}
@@ -203,9 +197,8 @@ public class ToggleButtonFlowPanel extends JPanel implements ILookAndFeelChangeL
 	public void removeButton(int index) {
 		ToggleButtonOfFlowPanel button = this.buttons.get(index);
 		this.buttons.remove(index);
-		JToggleButton toggle = this.toggles.get(button.getButtonName());
 		this.toggles.remove(button.getButtonName());
-		this.buttonContainer.remove(toggle);
+		rearrangeButtons();
 		invalidate();
 		revalidate();
 		repaint();
@@ -264,11 +257,26 @@ public class ToggleButtonFlowPanel extends JPanel implements ILookAndFeelChangeL
 		group.add(toggle);
 		this.toggles.put(button.getButtonName(), toggle);
 		
-		buttonContainer.add(toggle);
+		rearrangeButtons();
 		
 		invalidate();
 		revalidate();
 		repaint();
+	}
+
+	private void rearrangeButtons() {
+		buttonContainer.removeAll();
+		GridBagConstraints c = new GridBagConstraints();
+		c.weighty = 1;
+		c.fill = GridBagConstraints.VERTICAL;
+		c.anchor = GridBagConstraints.FIRST_LINE_START;
+		for (int i = 0; i < buttons.size(); i++) {
+			c.gridx = i;
+			if (i == buttons.size() - 1) {
+				c.weightx = 1;
+			}
+			buttonContainer.add(toggles.get(buttons.get(i).getButtonName()), c);
+		}
 	}
 
 

@@ -99,7 +99,7 @@ public class PlayListSelectorWrapper {
     		selectorPanel.add(playListCombo, c);
     	} else {
         	c.fill = GridBagConstraints.BOTH;
-        	c.insets = new Insets(0, 0, 0, 10);
+        	c.insets = new Insets(1, 0, 1, 10);
     		selectorPanel.add(playListButtonFlowPanel, c);
     	}
         
