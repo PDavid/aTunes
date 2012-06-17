@@ -20,11 +20,26 @@
 
 package net.sourceforge.atunes.model;
 
-public interface ISearchDialogFactory {
-
+/**
+ * Interface for all dialogs
+ * @author alex
+ *
+ */
+public interface IDialog {
+	
 	/**
-	 * Creates a new dialog
-	 * @return
+	 * Shows dialog
 	 */
-	ISearchDialog createDialog();
+	void showDialog();
+	
+	/**
+	 * Hides dialog
+	 */
+	void hideDialog();
+	
+	/**
+	 * Initializes dialog
+	 */
+	void initialize();
+
 }

@@ -18,29 +18,19 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.gui.views.dialogs.properties;
 
-import java.awt.Window;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 
+class FilePathProvider extends AbstractFieldProvider {
 
-/**
- * A factory to create indeterminate progress dialogs
- * @author alex
- *
- */
-public interface IIndeterminateProgressDialogFactory {
+	@Override
+	public String getI18Name() {
+		return "LOCATION";
+	}
 
-	/**
-	 * @param parent
-	 * @param parent
-	 * @param lookAndFeelManager
-	 * @return
-	 */
-	public IIndeterminateProgressDialog newDialog(Window parent);
-	
-	/**
-	 * @return
-	 */
-	public IIndeterminateProgressDialog newDialog();
-	
+	@Override
+	public String getClearValue(ILocalAudioObject file) {
+		return file.getFile().getAbsolutePath();
+	}
 }

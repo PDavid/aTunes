@@ -26,7 +26,8 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import net.sourceforge.atunes.kernel.modules.process.SetTrackNumberProcess;
-import net.sourceforge.atunes.model.IConfirmationDialogFactory;
+import net.sourceforge.atunes.model.IConfirmationDialog;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -52,24 +53,24 @@ public class RepairTrackNumbersAction extends CustomAbstractAction {
     
     private IRepositoryHandler repositoryHandler;
     
-    private IConfirmationDialogFactory confirmationDialogFactory;
-    
     private IWebServicesHandler webServicesHandler;
+    
+    private IDialogFactory dialogFactory;
     
     private static final Pattern NUMBER_SEPARATOR_PATTERN = Pattern.compile("[^0-9]+");
 
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
+    
     /**
      * @param webServicesHandler
      */
     public void setWebServicesHandler(IWebServicesHandler webServicesHandler) {
 		this.webServicesHandler = webServicesHandler;
-	}
-    
-    /**
-     * @param confirmationDialogFactory
-     */
-    public void setConfirmationDialogFactory(IConfirmationDialogFactory confirmationDialogFactory) {
-		this.confirmationDialogFactory = confirmationDialogFactory;
 	}
     
     /**
@@ -93,7 +94,9 @@ public class RepairTrackNumbersAction extends CustomAbstractAction {
     @Override
     protected void executeAction() {
         // Show confirmation dialog
-        if (confirmationDialogFactory.getDialog().showDialog(I18nUtils.getString("REPAIR_TRACK_NUMBERS_MESSAGE"))) {
+    	IConfirmationDialog dialog = dialogFactory.newDialog(IConfirmationDialog.class);
+    	dialog.setMessage(I18nUtils.getString("REPAIR_TRACK_NUMBERS_MESSAGE"));
+        if (dialog.userAccepted()) {
             // Call track number edit
             /*
              * Given an array of files, returns a map containing each file and its

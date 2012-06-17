@@ -28,8 +28,9 @@ import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.StateChangeListeners;
-import net.sourceforge.atunes.model.IConfirmationDialogFactory;
-import net.sourceforge.atunes.model.IErrorDialogFactory;
+import net.sourceforge.atunes.model.IConfirmationDialog;
+import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IKernel;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -66,11 +67,16 @@ public final class EditPreferencesDialogListener implements ListSelectionListene
 	        	editPreferencesDialog.setVisible(false);
 	        	listeners.notifyApplicationStateChanged();
         		// Let user decide if want to restart
-	        	if (needRestart && Context.getBean(IConfirmationDialogFactory.class).getDialog().showDialog(I18nUtils.getString("APPLICATION_NEEDS_RESTART"))) {
-	        		Context.getBean(IKernel.class).restart();
+	        	if (needRestart) {
+	        		IConfirmationDialog dialog = Context.getBean(IDialogFactory.class).newDialog(IConfirmationDialog.class);
+	        		dialog.setMessage(I18nUtils.getString("APPLICATION_NEEDS_RESTART"));
+	        		dialog.showDialog();
+	        		if (dialog.userAccepted()) {
+	        			Context.getBean(IKernel.class).restart();
+	        		}	
 	        	}
 			} catch (PreferencesValidationException e1) {
-				Context.getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(e1.getMessage(), editPreferencesDialog);
+				Context.getBean(IDialogFactory.class).newDialog(IErrorDialog.class).showErrorDialog(e1.getMessage(), editPreferencesDialog);
 			}
         } else if (e.getSource() == editPreferencesDialog.getCancel()) {
             editPreferencesDialogController.resetImmediateChanges();
@@ -84,5 +90,4 @@ public final class EditPreferencesDialogListener implements ListSelectionListene
             editPreferencesDialog.showPanel(editPreferencesDialog.getList().getSelectedIndex());
         }
     }
-
 }

@@ -28,6 +28,7 @@ import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
 import net.sourceforge.atunes.model.IArtistInfo;
 import net.sourceforge.atunes.model.IDesktop;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 
@@ -63,8 +64,10 @@ final class AddAlbumArtistToPlayListContextTableAction extends ContextTableActio
 	}
 	
 	private void showAddArtistDragDialog(IArtist currentArtist) {
-    	IArtistAlbumSelectorDialog dialog = Context.getBean(IArtistAlbumSelectorDialog.class);
-    	IAlbum album = dialog.showDialog(currentArtist);
+    	IArtistAlbumSelectorDialog dialog = Context.getBean(IDialogFactory.class).newDialog(IArtistAlbumSelectorDialog.class);
+    	dialog.setArtist(currentArtist);
+    	dialog.showDialog();
+    	IAlbum album = dialog.getAlbum();
     	if (album != null) {
     		Context.getBean(IPlayListHandler.class).addToPlayList(album.getAudioObjects());
     	}

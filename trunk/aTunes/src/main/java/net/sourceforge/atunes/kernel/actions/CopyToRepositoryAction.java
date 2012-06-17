@@ -26,7 +26,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IErrorDialogFactory;
+import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectTransferProcess;
 import net.sourceforge.atunes.model.IProcessFactory;
@@ -39,10 +40,17 @@ public class CopyToRepositoryAction extends AbstractActionOverSelectedObjects<IL
     private static final long serialVersionUID = 2416674807979541242L;
 
     private IRepositoryHandler repositoryHandler;
-    
-    private IErrorDialogFactory errorDialogFactory;
-    
+
     private IProcessFactory processFactory;
+    
+    private IDialogFactory dialogFactory;
+    
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
     
     /**
      * @param processFactory
@@ -59,12 +67,8 @@ public class CopyToRepositoryAction extends AbstractActionOverSelectedObjects<IL
 	}
     
     /**
-     * @param errorDialogFactory
+     * Default constructor
      */
-    public void setErrorDialogFactory(IErrorDialogFactory errorDialogFactory) {
-		this.errorDialogFactory = errorDialogFactory;
-	}
-    
     public CopyToRepositoryAction() {
         super(I18nUtils.getString("COPY_TO_REPOSITORY"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("COPY_TO_REPOSITORY"));
@@ -99,7 +103,7 @@ public class CopyToRepositoryAction extends AbstractActionOverSelectedObjects<IL
             @Override
             public void run() {
                 if (!ok) {
-                	errorDialogFactory.getDialog().showErrorDialog(I18nUtils.getString("ERRORS_IN_COPYING_PROCESS"));
+                	dialogFactory.newDialog(IErrorDialog.class).showErrorDialog(I18nUtils.getString("ERRORS_IN_COPYING_PROCESS"));
                 }
                 // Force a refresh of repository to add new songs
                 repositoryHandler.refreshRepository();

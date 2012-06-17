@@ -20,8 +20,8 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IInputDialog;
-import net.sourceforge.atunes.model.IInputDialogFactory;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -34,13 +34,13 @@ public class RenamePlaylistAction extends CustomAbstractAction {
 
     private IPlayListHandler playListHandler;
     
-    private IInputDialogFactory inputDialogFactory;
+    private IDialogFactory dialogFactory;
     
     /**
-     * @param inputDialogFactory
+     * @param dialogFactory
      */
-    public void setInputDialogFactory(IInputDialogFactory inputDialogFactory) {
-		this.inputDialogFactory = inputDialogFactory;
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
 	}
     
     /**
@@ -58,9 +58,10 @@ public class RenamePlaylistAction extends CustomAbstractAction {
     @Override
     protected void executeAction() {
     	String currentName = playListHandler.getCurrentVisiblePlayListName();
-        IInputDialog dialog = inputDialogFactory.getDialog();
+        IInputDialog dialog = dialogFactory.newDialog(IInputDialog.class);
         dialog.setTitle(I18nUtils.getString("RENAME_PLAYLIST"));
-        dialog.showDialog(currentName);
+        dialog.setText(currentName);
+        dialog.showDialog();
         playListHandler.renameCurrentVisiblePlayList(dialog.getResult());
     }
 

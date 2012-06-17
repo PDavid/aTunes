@@ -23,39 +23,39 @@ package net.sourceforge.atunes.model;
 import java.io.File;
 import java.io.FilenameFilter;
 
-public interface IFileSelectorDialog {
+public interface IFileSelectorDialog extends IDialog {
 
 	/**
 	 * @param fileFilter
 	 */
-	public void setFileFilter(FilenameFilter fileFilter);
+	void setFileFilter(FilenameFilter fileFilter);
 
 	/**
 	 * Selects a file to load
 	 * @param path
 	 * @return
 	 */
-	public File loadFile(String path);
+	File loadFile(String path);
 
 	/**
 	 * Selects a file to load
 	 * @param path
 	 * @return
 	 */
-	public File loadFile(File path);
+	File loadFile(File path);
 
 	/**
 	 * Selects a file to save
 	 * @param path
 	 * @return
 	 */
-	public File saveFile(String path);
+	File saveFile(String path);
 
 	/**
 	 * Selects a file to save
 	 * @param path
 	 * @return
 	 */
-	public File saveFile(File path);
+	File saveFile(File path);
 
 }

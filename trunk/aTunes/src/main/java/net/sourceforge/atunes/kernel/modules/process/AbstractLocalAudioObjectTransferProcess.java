@@ -34,9 +34,10 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.kernel.modules.pattern.Patterns;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectTransferProcess;
-import net.sourceforge.atunes.model.IMessageDialogFactory;
+import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IStateRepository;
@@ -49,6 +50,10 @@ import org.apache.commons.io.FileUtils;
 
 /**
  * A type of processes that move local audio objects
+ * @author alex
+ *
+ */
+/**
  * @author alex
  *
  */
@@ -79,11 +84,18 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
     
     private IProgressDialog transferDialog;
     
-    private IMessageDialogFactory messageDialogFactory;
-    
     private String destination;
     
     private IStateRepository stateRepository;
+    
+    private IDialogFactory dialogFactory;
+
+    /* (non-Javadoc)
+     * @see net.sourceforge.atunes.kernel.modules.process.AbstractProcess#setDialogFactory(net.sourceforge.atunes.model.IDialogFactory)
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
     
     /**
      * @param stateRepository
@@ -121,13 +133,6 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
 		return filesToTransfer;
 	}
 
-    /**
-     * @param messageDialogFactory
-     */
-    public void setMessageDialogFactory(IMessageDialogFactory messageDialogFactory) {
-		this.messageDialogFactory = messageDialogFactory;
-	}
-    
     /**
      * @param transferDialog
      */
@@ -201,7 +206,7 @@ public abstract class AbstractLocalAudioObjectTransferProcess extends AbstractPr
                         SwingUtilities.invokeAndWait(new Runnable() {
                             @Override
                             public void run() {
-                                userSelectionWhenErrors = (String) messageDialogFactory.getDialog()
+                                userSelectionWhenErrors = (String) dialogFactory.newDialog(IMessageDialog.class)
                                         .showMessage(StringUtils.getString(I18nUtils.getString("ERROR"), ": ", thrownExceptions.get(0).getMessage()), I18nUtils.getString("ERROR"),
                                                 JOptionPane.ERROR_MESSAGE,
                                                 new String[] { I18nUtils.getString("IGNORE"), I18nUtils.getString("IGNORE_ALL"), I18nUtils.getString("CANCEL") });

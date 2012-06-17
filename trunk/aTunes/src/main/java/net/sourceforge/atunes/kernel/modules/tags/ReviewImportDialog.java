@@ -30,8 +30,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -41,14 +39,10 @@ import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
-import net.sourceforge.atunes.kernel.modules.pattern.PatternInputDialog;
-import net.sourceforge.atunes.kernel.modules.pattern.PatternMatcher;
-import net.sourceforge.atunes.kernel.modules.pattern.Patterns;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -59,35 +53,10 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jdesktop.swingx.JXTreeTable;
-import org.jdesktop.swingx.treetable.DefaultMutableTreeTableNode;
 
 public final class ReviewImportDialog extends AbstractCustomDialog implements IReviewImportDialog {
 
-    private final class FillTagsFromFolderNameActionListener implements
-			ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-		    TreePath[] selectedNodes = treeTable.getTreeSelectionModel().getSelectionPaths();
-		    if (selectedNodes.length > 0) {
-		        PatternInputDialog inputDialog = new PatternInputDialog(ReviewImportDialog.this, true, stateRepository);
-		        Object node = selectedNodes[0].getLastPathComponent();
-		        Object folder = ((DefaultMutableTreeTableNode)node).getUserObject();
-		        inputDialog.show(Patterns.getMassiveRecognitionPatterns(), ((File)folder).getAbsolutePath());
-		        String pattern = inputDialog.getResult();
-		        for (TreePath treePath : selectedNodes) {
-		            node = treePath.getLastPathComponent();                        
-		            folder = ((DefaultMutableTreeTableNode)node).getUserObject();
-		            Map<String, String> matches = PatternMatcher.getPatternMatches(pattern, ((File)folder).getAbsolutePath(), true);
-		            for (Entry<String, String> entry : matches.entrySet()) {
-		                ((ReviewImportTreeTableModel) treeTable.getTreeTableModel()).setValueForColumn(treeTable.getRowForPath(treePath), entry.getKey(), entry.getValue());
-		            }
-		        }
-		    }
-		}
-	}
-
-	private static final long serialVersionUID = 8523236886848649698L;
+    private static final long serialVersionUID = 8523236886848649698L;
 
     /**
      * Review instructions
@@ -102,17 +71,45 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements IR
 
     private IStateRepository stateRepository;
     
+    private List<File> folders;
+    
+    private List<ILocalAudioObject> filesToLoad;
+    
     /**
      * Instantiates a new ReviewImportDialog
      * @param frame
      * @param stateRepository
      */
-    public ReviewImportDialog(IFrame frame, IStateRepository stateRepository) {
+    public ReviewImportDialog(IFrame frame) {
         super(frame, 800, 600, true, CloseAction.NOTHING);
-        this.stateRepository = stateRepository;
+    }
+
+    /**
+     * @param stateRepository
+     */
+    public void setStateRepository(IStateRepository stateRepository) {
+		this.stateRepository = stateRepository;
+	}
+    
+    @Override
+    public void initialize() {
         setTitle(I18nUtils.getString("REVIEW_TAGS"));
         setContent(getLookAndFeel());
     }
+    
+    /**
+     * @return tree table
+     */
+    JXTreeTable getTreeTable() {
+		return treeTable;
+	}
+    
+    /**
+     * @return stateRepository
+     */
+    IStateRepository getStateRepository() {
+		return stateRepository;
+	}
 
     /**
      * Sets the content.
@@ -152,7 +149,7 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements IR
         final JButton fillTagsFromFolderName = new JButton(StringUtils.getString(I18nUtils.getString("FILL_TAGS_FROM_FOLDER_NAME"), "..."));
         // Disabled as initially there is no row selected
         fillTagsFromFolderName.setEnabled(false);
-        fillTagsFromFolderName.addActionListener(new FillTagsFromFolderNameActionListener());
+        fillTagsFromFolderName.addActionListener(new FillTagsFromFolderNameActionListener(this));
 
         treeTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -161,7 +158,29 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements IR
             }
         });
 
-        GridBagConstraints c = new GridBagConstraints();
+        arrangePanel(lookAndFeel, panel, topPanel, okButton, cancelButton,
+				fillTagsFromFolderName);
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                dialogCancelled = true;
+            }
+        });
+    }
+
+	/**
+	 * @param lookAndFeel
+	 * @param panel
+	 * @param topPanel
+	 * @param okButton
+	 * @param cancelButton
+	 * @param fillTagsFromFolderName
+	 */
+	private void arrangePanel(final ILookAndFeel lookAndFeel, JPanel panel,
+			JPanel topPanel, JButton okButton, JButton cancelButton,
+			final JButton fillTagsFromFolderName) {
+		GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
         c.anchor = GridBagConstraints.WEST;
@@ -184,18 +203,8 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements IR
         auxPanel.add(cancelButton);
         panel.add(auxPanel, c);
         add(panel);
+	}
 
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                dialogCancelled = true;
-            }
-        });
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IReviewImportDialog#isDialogCancelled()
-	 */
     @Override
 	public boolean isDialogCancelled() {
         return dialogCancelled;
@@ -213,11 +222,18 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements IR
         }
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IReviewImportDialog#showDialog(java.util.List, java.util.List)
-	 */
     @Override
-	public void showDialog(List<File> folders, List<ILocalAudioObject> filesToLoad) {
+    public void setFilesToLoad(List<ILocalAudioObject> filesToLoad) {
+    	this.filesToLoad = filesToLoad;
+    }
+    
+    @Override
+    public void setFolders(List<File> folders) {
+    	this.folders = folders;
+    }
+    
+    @Override
+	public void showDialog() {
         treeTable.setTreeTableModel(new ReviewImportTreeTableModel(folders, filesToLoad, treeTable));
         treeTable.getColumnExt(0).setPreferredWidth(300);
         ((ReviewImportTreeTableModel) treeTable.getTreeTableModel()).setCellEditors();
@@ -225,11 +241,13 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements IR
         setVisible(true);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IReviewImportDialog#getResult()
-	 */
     @Override
 	public ITagAttributesReviewed getResult() {
         return ((ReviewImportTreeTableModel) treeTable.getTreeTableModel()).getTagAttributesReviewed();
+    }
+    
+    @Override
+    public void hideDialog() {
+    	setVisible(false);
     }
 }

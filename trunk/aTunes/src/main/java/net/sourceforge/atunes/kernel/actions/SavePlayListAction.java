@@ -28,9 +28,9 @@ import java.util.List;
 import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IConfirmationDialogFactory;
+import net.sourceforge.atunes.model.IConfirmationDialog;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFileSelectorDialog;
-import net.sourceforge.atunes.model.IFileSelectorDialogFactory;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListIOService;
 import net.sourceforge.atunes.model.IStatePlaylist;
@@ -49,19 +49,17 @@ public class SavePlayListAction extends CustomAbstractAction {
 
     private IPlayListHandler playListHandler;
     
-    private IConfirmationDialogFactory confirmationDialogFactory;
-    
     private IPlayListIOService playListIOService;
     
     private IStatePlaylist statePlaylist;
     
-    private IFileSelectorDialogFactory fileSelectorDialogFactory;
+    private IDialogFactory dialogFactory;
     
     /**
-     * @param fileSelectorDialogFactory
+     * @param dialogFactory
      */
-    public void setFileSelectorDialogFactory(IFileSelectorDialogFactory fileSelectorDialogFactory) {
-		this.fileSelectorDialogFactory = fileSelectorDialogFactory;
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
 	}
     
     /**
@@ -86,13 +84,6 @@ public class SavePlayListAction extends CustomAbstractAction {
 	}
     
     /**
-     * @param confirmationDialogFactory
-     */
-    public void setConfirmationDialogFactory(IConfirmationDialogFactory confirmationDialogFactory) {
-		this.confirmationDialogFactory = confirmationDialogFactory;
-	}
-    
-    /**
      * Default constructor
      */
     public SavePlayListAction() {
@@ -103,7 +94,7 @@ public class SavePlayListAction extends CustomAbstractAction {
 
     @Override
     protected void executeAction() {
-    	IFileSelectorDialog dialog = fileSelectorDialogFactory.getDialog();
+    	IFileSelectorDialog dialog = dialogFactory.newDialog(IFileSelectorDialog.class);
     	dialog.setFileFilter(playListIOService.getPlaylistFileFilter());
     	File file = dialog.saveFile(statePlaylist.getSavePlaylistPath());
     	if (file != null) {
@@ -114,8 +105,14 @@ public class SavePlayListAction extends CustomAbstractAction {
             file = playListIOService.checkPlayListFileName(file);
 
             // If file does not exist, or exist and overwrite is confirmed, then write file
-            if (!file.exists()
-                    || (file.exists() && confirmationDialogFactory.getDialog().showDialog(I18nUtils.getString("OVERWRITE_FILE")))) {
+            boolean canWrite = !file.exists();
+            if (!canWrite) {
+				IConfirmationDialog confirmationDialog = dialogFactory.newDialog(IConfirmationDialog.class);
+				confirmationDialog.setMessage(I18nUtils.getString("OVERWRITE_FILE"));
+				confirmationDialog.showDialog();
+				canWrite = confirmationDialog.userAccepted();
+            }
+            if (canWrite) {
             	playListIOService.write(playListHandler.getCurrentPlayList(true), file);
             }
         }

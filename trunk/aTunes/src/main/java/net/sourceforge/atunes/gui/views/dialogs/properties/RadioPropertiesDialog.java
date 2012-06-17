@@ -31,6 +31,7 @@ import javax.swing.JPanel;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -41,119 +42,129 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The properties dialog for radios.
  */
-final class RadioPropertiesDialog extends AudioObjectPropertiesDialog {
+public final class RadioPropertiesDialog extends AudioObjectPropertiesDialog {
 
-    private static final long serialVersionUID = -73744354419152730L;
-    private JLabel pictureLabel;
-    private JLabel titleLabel;
-    private JLabel urlLabel;
-    private JLabel labelLabel;
-    private JLabel bitrateLabel;
-    private JLabel frequencyLabel;
-    private IRadio radio;
+	private static final long serialVersionUID = -73744354419152730L;
+	private JLabel pictureLabel;
+	private JLabel titleLabel;
+	private JLabel urlLabel;
+	private JLabel labelLabel;
+	private JLabel bitrateLabel;
+	private JLabel frequencyLabel;
+	private IRadio radio;
 
-    /**
-     * Instantiates a new radio properties dialog.
-     * 
-     * @param radio
-     * @param frame
-     */
-    RadioPropertiesDialog(IRadio radio, IFrame frame) {
-        super(getTitleText(radio), frame);
-        this.radio = radio;
-        setAudioObject(radio);
-        addContent(getLookAndFeel());
+	/**
+	 * Instantiates a new radio properties dialog.
+	 * 
+	 * @param radio
+	 * @param frame
+	 */
+	RadioPropertiesDialog(IFrame frame) {
+		super(frame);
+	}
 
-        setContent();
+	@Override
+	public void setAudioObject(IAudioObject audioObject) {
+		if (audioObject instanceof IRadio) {
+			this.radio = (IRadio) audioObject;
+			setTitle(getTitleText(radio)); 
+			addContent(getLookAndFeel());
+			setContent();
+			GuiUtils.applyComponentOrientation(this);
+		} else {
+			throw new IllegalArgumentException("Not a IRadio");
+		}
+	}
 
-        GuiUtils.applyComponentOrientation(this);
-    }
+	@Override
+	public void initialize() {
+	}
 
-    /**
-     * Gives a title for dialog.
-     * 
-     * @param radio
-     *            the radio
-     * 
-     * @return title for dialog
-     */
-    private static String getTitleText(IRadio radio) {
-        return StringUtils.getString(I18nUtils.getString("INFO_OF_RADIO"), " ", radio.getName());
-    }
+	/**
+	 * Gives a title for dialog.
+	 * 
+	 * @param radio
+	 *            the radio
+	 * 
+	 * @return title for dialog
+	 */
+	private String getTitleText(IRadio radio) {
+		return StringUtils.getString(I18nUtils.getString("INFO_OF_RADIO"), " ", radio.getName());
+	}
 
-    /**
-     * Adds the content.
-     * @param iLookAndFeel 
-     */
-    private void addContent(ILookAndFeel iLookAndFeel) {
-        JPanel panel = new JPanel(new GridBagLayout());
+	/**
+	 * Adds the content.
+	 * @param iLookAndFeel 
+	 */
+	private void addContent(ILookAndFeel iLookAndFeel) {
+		JPanel panel = new JPanel(new GridBagLayout());
 
-        pictureLabel = new JLabel();
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.gridheight = 2;
-        c.insets = new Insets(40, 10, 5, 10);
-        c.anchor = GridBagConstraints.NORTH;
-        c.fill = GridBagConstraints.VERTICAL;
-        panel.add(pictureLabel, c);
+		pictureLabel = new JLabel();
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridheight = 2;
+		c.insets = new Insets(40, 10, 5, 10);
+		c.anchor = GridBagConstraints.NORTH;
+		c.fill = GridBagConstraints.VERTICAL;
+		panel.add(pictureLabel, c);
 
-        titleLabel = new JLabel();
-        titleLabel.setFont(iLookAndFeel.getPropertiesDialogBigFont());
-        c.gridx = 1;
-        c.gridy = 0;
-        c.gridheight = 1;
-        c.weightx = 1;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(titleLabel, c);
+		titleLabel = new JLabel();
+		titleLabel.setFont(iLookAndFeel.getPropertiesDialogBigFont());
+		c.gridx = 1;
+		c.gridy = 0;
+		c.gridheight = 1;
+		c.weightx = 1;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		panel.add(titleLabel, c);
 
-        urlLabel = new JLabel();
-        urlLabel.setFont(iLookAndFeel.getPropertiesDialogBigFont());
-        c.gridx = 1;
-        c.gridy = 1;
-        c.insets = new Insets(5, 10, 5, 10);
-        panel.add(urlLabel, c);
+		urlLabel = new JLabel();
+		urlLabel.setFont(iLookAndFeel.getPropertiesDialogBigFont());
+		c.gridx = 1;
+		c.gridy = 1;
+		c.insets = new Insets(5, 10, 5, 10);
+		panel.add(urlLabel, c);
 
-        labelLabel = new JLabel();
-        c.gridx = 1;
-        c.gridy = 2;
-        panel.add(labelLabel, c);
+		labelLabel = new JLabel();
+		c.gridx = 1;
+		c.gridy = 2;
+		panel.add(labelLabel, c);
 
-        bitrateLabel = new JLabel();
-        c.gridx = 1;
-        c.gridy = 3;
-        panel.add(bitrateLabel, c);
+		bitrateLabel = new JLabel();
+		c.gridx = 1;
+		c.gridy = 3;
+		panel.add(bitrateLabel, c);
 
-        frequencyLabel = new JLabel();
-        c.gridx = 1;
-        c.gridy = 4;
-        c.weighty = 1;
-        c.anchor = GridBagConstraints.NORTH;
-        panel.add(frequencyLabel, c);
+		frequencyLabel = new JLabel();
+		c.gridx = 1;
+		c.gridy = 4;
+		c.weighty = 1;
+		c.anchor = GridBagConstraints.NORTH;
+		panel.add(frequencyLabel, c);
 
-        add(panel);
-    }
+		add(panel);
+	}
 
-    /**
-     * Fill picture.
-     */
-    private void fillPicture() {
-        ImageIcon picture = Context.getBean("radioMediumIcon", IIconFactory.class).getIcon(getLookAndFeel().getPaintForSpecialControls());
-        pictureLabel.setPreferredSize(new Dimension(picture.getIconWidth(), picture.getIconHeight()));
-        pictureLabel.setIcon(picture);
-        pictureLabel.setVisible(true);
-    }
+	/**
+	 * Fill picture.
+	 */
+	private void fillPicture() {
+		ImageIcon picture = Context.getBean("radioMediumIcon", IIconFactory.class).getIcon(getLookAndFeel().getPaintForSpecialControls());
+		pictureLabel.setPreferredSize(new Dimension(picture.getIconWidth(), picture.getIconHeight()));
+		pictureLabel.setIcon(picture);
+		pictureLabel.setVisible(true);
+	}
 
-    /**
-     * Sets the content.
-     */
-    private void setContent() {
-        fillPicture();
-        titleLabel.setText(getHtmlFormatted(I18nUtils.getString("NAME"), StringUtils.isEmpty(radio.getName()) ? "-" : radio.getName()));
-        urlLabel.setText(getHtmlFormatted(I18nUtils.getString("URL"), radio.getUrl()));
-        labelLabel.setText(getHtmlFormatted(I18nUtils.getString("LABEL"), StringUtils.isEmpty(radio.getLabel()) ? "-" : radio.getLabel()));
-        bitrateLabel.setText(getHtmlFormatted(I18nUtils.getString("BITRATE"), radio.getBitrate() > 0 ? StringUtils.getString(String.valueOf(radio.getBitrate()), " kbps") : "-"));
-        frequencyLabel.setText(getHtmlFormatted(I18nUtils.getString("FREQUENCY"), radio.getFrequency() > 0 ? StringUtils.getString(String.valueOf(radio.getFrequency()), " Hz")
-                : "-"));
-    }
+	/**
+	 * Sets the content.
+	 */
+	private void setContent() {
+		fillPicture();
+		titleLabel.setText(getHtmlFormatted(I18nUtils.getString("NAME"), StringUtils.isEmpty(radio.getName()) ? "-" : radio.getName()));
+		urlLabel.setText(getHtmlFormatted(I18nUtils.getString("URL"), radio.getUrl()));
+		labelLabel.setText(getHtmlFormatted(I18nUtils.getString("LABEL"), StringUtils.isEmpty(radio.getLabel()) ? "-" : radio.getLabel()));
+		bitrateLabel.setText(getHtmlFormatted(I18nUtils.getString("BITRATE"), radio.getBitrate() > 0 ? StringUtils.getString(String.valueOf(radio.getBitrate()), " kbps") : "-"));
+		frequencyLabel.setText(getHtmlFormatted(I18nUtils.getString("FREQUENCY"), radio.getFrequency() > 0 ? StringUtils.getString(String.valueOf(radio.getFrequency()), " Hz")
+				: "-"));
+	}
 }

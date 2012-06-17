@@ -48,11 +48,11 @@ import javax.swing.event.TableModelListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.TableModel;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.gui.views.dialogs.PluginEditorDialog;
 import net.sourceforge.atunes.model.IDesktop;
-import net.sourceforge.atunes.model.IErrorDialogFactory;
+import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPluginsHandler;
 import net.sourceforge.atunes.model.IStateCore;
@@ -108,6 +108,15 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	private IDesktop desktop;
 	
 	private IStateCore stateCore;
+	
+	private IDialogFactory dialogFactory;
+	
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
 	
 	/**
 	 * @param stateCore
@@ -338,7 +347,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 					sb.append(I18nUtils.getString("PLUGIN_CONFIGURATION_ERROR"));
 					sb.append(" ");
 					sb.append(plugin.getName());
-					Context.getBean(IErrorDialogFactory.class).getDialog().showExceptionDialog(sb.toString(), t);
+					dialogFactory.newDialog(IErrorDialog.class).showExceptionDialog(sb.toString(), t);
 				}
 
 				restart = restart || pluginsHandler.pluginNeedsRestart(plugin);
@@ -411,11 +420,11 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 				Map<PluginFolder, PluginSystemException> problemsFound = PluginsPanel.this.pluginsHandler.uninstallPlugin(plugin);
 				if (problemsFound != null) {
 					for (Map.Entry<PluginFolder, PluginSystemException> pluginFolderEntry : problemsFound.entrySet()) {
-						Context.getBean(IErrorDialogFactory.class).getDialog().showExceptionDialog(I18nUtils.getString("PLUGIN_UNINSTALLATION_ERROR"), pluginFolderEntry.getValue());
+						dialogFactory.newDialog(IErrorDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_UNINSTALLATION_ERROR"), pluginFolderEntry.getValue());
 					}
 				}
 			} catch (Exception e1) {
-				Context.getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(e1.getMessage());
+				dialogFactory.newDialog(IErrorDialog.class).showErrorDialog(e1.getMessage());
 				Logger.error(e1);
 			}
 		}
@@ -437,7 +446,7 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 					PluginsPanel.this.pluginsHandler.validateConfiguration(plugin, configuration);
 					pluginsModified.put(plugin, configuration);
 				} catch (InvalidPluginConfigurationException ex) {
-					Context.getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(StringUtils.getString(I18nUtils.getString("PLUGIN_CONFIGURATION_INVALID"), ex.getMessage()));
+					dialogFactory.newDialog(IErrorDialog.class).showErrorDialog(StringUtils.getString(I18nUtils.getString("PLUGIN_CONFIGURATION_INVALID"), ex.getMessage()));
 				}
 			}
 		}
@@ -504,12 +513,12 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 					Map<PluginFolder, PluginSystemException> problemsFound = pluginsHandler.installPlugin(zipFile);
 					if (problemsFound != null) {
 						for (Entry<PluginFolder, PluginSystemException> pluginFolderEntry : problemsFound.entrySet()) {
-							Context.getBean(IErrorDialogFactory.class).getDialog().showExceptionDialog(I18nUtils.getString("PLUGIN_INSTALLATION_ERROR"), pluginFolderEntry.getValue());
+							dialogFactory.newDialog(IErrorDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_INSTALLATION_ERROR"), pluginFolderEntry.getValue());
 						}
 					}
 
 				} catch (Exception e1) {
-					Context.getBean(IErrorDialogFactory.class).getDialog().showExceptionDialog(I18nUtils.getString("PLUGIN_INSTALLATION_ERROR"), e1);
+					dialogFactory.newDialog(IErrorDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_INSTALLATION_ERROR"), e1);
 				}
 			}
 		}

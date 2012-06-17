@@ -26,19 +26,21 @@ package net.sourceforge.atunes.model;
  * @author alex
  *
  */
-public interface IConfirmationDialog {
+public interface IConfirmationDialog extends IDialog {
 
 	/**
 	 * Sets parent frame
 	 * @param frame
 	 */
-	public void setFrame(IFrame frame);
+	void setFrame(IFrame frame);
+	
+	/**
+	 * @param message
+	 */
+	void setMessage(String message);
 
 	/**
-	 * Shows confirmation dialog
-	 * @param message
 	 * @return true if user pressed Yes, false if pressed No
 	 */
-	public boolean showDialog(String message);
-
+	boolean userAccepted();
 }

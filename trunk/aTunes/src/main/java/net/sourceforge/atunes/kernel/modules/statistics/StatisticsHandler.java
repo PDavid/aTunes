@@ -28,6 +28,7 @@ import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectStatistics;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -38,8 +39,6 @@ import net.sourceforge.atunes.model.IStatisticsHandler;
 import net.sourceforge.atunes.model.ITaskService;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.RankList;
-
-import org.springframework.context.ApplicationContext;
 
 public final class StatisticsHandler extends AbstractHandler implements IStatisticsHandler {
 
@@ -56,9 +55,16 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
     private ILookAndFeelManager lookAndFeelManager;
     
 	private IUnknownObjectChecker unknownObjectChecker;
-	
-	private ApplicationContext context;
 
+	private IDialogFactory dialogFactory;
+	
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
+	
 	/**
 	 * @param unknownObjectChecker
 	 */
@@ -345,7 +351,7 @@ public final class StatisticsHandler extends AbstractHandler implements IStatist
     @Override
     public void showStatistics() {
 		if (controller == null) {
-			controller = new StatsDialogController(getBean(StatsDialog.class), this, lookAndFeelManager, repositoryHandler); 
+			controller = new StatsDialogController(dialogFactory.newDialog(StatsDialog.class), this, lookAndFeelManager, repositoryHandler); 
 		}
 		controller.showStats();
 	}

@@ -18,23 +18,33 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.gui.views.dialogs.properties;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import net.sourceforge.atunes.model.ILocalAudioObject;
+import net.sourceforge.atunes.utils.I18nUtils;
+import net.sourceforge.atunes.utils.StringUtils;
 
-public class FileSelectorDialogFactory implements IFileSelectorDialogFactory, ApplicationContextAware {
+abstract class AbstractFieldProvider implements IValueProvider {
 
-	private ApplicationContext context;
+	public abstract String getI18Name();
 
 	@Override
-	public IFileSelectorDialog getDialog() {
-		return this.context.getBean(IFileSelectorDialog.class);
+	public final String getValue(ILocalAudioObject audioObject) {
+		String v = getClearValue(audioObject);
+		return StringUtils.isEmpty(v) ? "-" : v;
 	}
 
 	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) {
-		this.context = applicationContext;
+	public final String getLabel() {
+		return getHtmlFormatted(I18nUtils.getString(getI18Name()));
 	}
-
+	
+    /**
+     * Gets the html formatted (only a description)
+     * @param desc
+     * @return
+     */
+    private String getHtmlFormatted(String desc) {
+        return StringUtils.getString("<html><b>", desc, ": </b></html>");
+    }
 }

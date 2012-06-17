@@ -26,7 +26,8 @@ import java.awt.event.KeyEvent;
 import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.model.IColorMutableImageIcon;
-import net.sourceforge.atunes.model.IEqualizerDialogFactory;
+import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IEqualizerDialog;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -41,7 +42,7 @@ public class ShowEqualizerAction extends ActionWithColorMutableIcon {
 
     private static final long serialVersionUID = 2511199136727155747L;
 
-    private IEqualizerDialogFactory equalizerDialogFactory;
+    private IDialogFactory dialogFactory;
     
     private IIconFactory equalizerIcon;
     
@@ -51,14 +52,17 @@ public class ShowEqualizerAction extends ActionWithColorMutableIcon {
     public void setEqualizerIcon(IIconFactory equalizerIcon) {
 		this.equalizerIcon = equalizerIcon;
 	}
-    
+
     /**
-     * @param equalizerDialogFactory
+     * @param dialogFactory
      */
-    public void setEqualizerDialogFactory(IEqualizerDialogFactory equalizerDialogFactory) {
-		this.equalizerDialogFactory = equalizerDialogFactory;
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
 	}
     
+    /**
+     * Default constructor
+     */
     public ShowEqualizerAction() {
         super(I18nUtils.getString("EQUALIZER"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
@@ -66,7 +70,7 @@ public class ShowEqualizerAction extends ActionWithColorMutableIcon {
 
     @Override
     protected void executeAction() {
-    	equalizerDialogFactory.createDialog().showDialog();
+    	dialogFactory.newDialog(IEqualizerDialog.class).showDialog();
     }
     
     @Override

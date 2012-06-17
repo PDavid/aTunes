@@ -31,7 +31,7 @@ import java.util.List;
 
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.model.IVideoEntry;
@@ -87,17 +87,20 @@ public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
     
     private INetworkHandler networkHandler;
     
+    private IDialogFactory dialogFactory;
+    
     /**
      * Creates a new downloader
      * @param entry
      * @param file
-     * @param proxy
      * @param youtubeService
      * @param networkHandler
+     * @param dialogFactory
      */
-    public YoutubeVideoDownloader(IVideoEntry entry, File file, YoutubeService youtubeService, INetworkHandler networkHandler) {
+    public YoutubeVideoDownloader(IVideoEntry entry, File file, YoutubeService youtubeService, INetworkHandler networkHandler, IDialogFactory dialogFactory) {
         this.entry = entry;
         this.youtubeService = youtubeService;
+        this.dialogFactory = dialogFactory;
         File f = file;
         // Adds FLV extension if necessary
         if (!file.getAbsolutePath().toUpperCase().endsWith(".mp4")) {
@@ -113,7 +116,7 @@ public class YoutubeVideoDownloader extends SwingWorker<Void, String> {
 	 * @param entry
 	 */
 	private void prepareProgressDialog(IVideoEntry entry) {
-		this.progressDialog = (IProgressDialog) Context.getBean("transferDialog");
+		this.progressDialog = dialogFactory.newDialog("transferDialog", IProgressDialog.class);
         this.progressDialog.setTitle(entry.getName());
         this.progressDialog.setIcon(entry.getImage());
         this.progressDialog.setInfoText(I18nUtils.getString("DOWNLOADING"));

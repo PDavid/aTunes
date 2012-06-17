@@ -18,23 +18,30 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.gui.views.dialogs;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import javax.swing.JOptionPane;
 
-public class ColumnSelectorDialogFactory implements IColumnSelectorDialogFactory, ApplicationContextAware {
+import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.utils.I18nUtils;
 
-	private ApplicationContext context;
+/**
+ * A runnable wrapping a call to show an error message
+ * @author alex
+ *
+ */
+final class ShowMessageDialogRunnable implements Runnable {
 	
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) {
-		this.context = applicationContext;
+	private final String message;
+	private final IFrame frame;
+
+	ShowMessageDialogRunnable(String message, IFrame frame) {
+		this.message = message;
+		this.frame = frame;
 	}
 
 	@Override
-	public IColumnSelectorDialog createDialog() {
-		return this.context.getBean(IColumnSelectorDialog.class);
+	public void run() {
+		JOptionPane.showMessageDialog(frame.getFrame(), message, I18nUtils.getString("ERROR"), JOptionPane.ERROR_MESSAGE);
 	}
-
 }

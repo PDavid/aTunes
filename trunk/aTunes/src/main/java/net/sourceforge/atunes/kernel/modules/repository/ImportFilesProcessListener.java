@@ -25,7 +25,8 @@ import java.lang.reflect.InvocationTargetException;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.kernel.modules.process.ImportFilesProcess;
-import net.sourceforge.atunes.model.IErrorDialogFactory;
+import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -34,17 +35,17 @@ final class ImportFilesProcessListener implements IProcessListener {
 	
 	private final ImportFilesProcess process;
 	private final IRepositoryHandler repositoryHandler;
-	private final IErrorDialogFactory errorDialogFactory;
+	private final IDialogFactory dialogFactory;
 	
 	/**
 	 * @param process
 	 * @param repositoryHandler
-	 * @param errorDialogFactory
+	 * @param dialogFactory
 	 */
-	ImportFilesProcessListener(ImportFilesProcess process, IRepositoryHandler repositoryHandler, IErrorDialogFactory errorDialogFactory) {
+	ImportFilesProcessListener(ImportFilesProcess process, IRepositoryHandler repositoryHandler, IDialogFactory dialogFactory) {
 		this.process = process;
 		this.repositoryHandler = repositoryHandler;
-		this.errorDialogFactory = errorDialogFactory;
+		this.dialogFactory = dialogFactory;
 	}
 
 	@Override
@@ -59,7 +60,7 @@ final class ImportFilesProcessListener implements IProcessListener {
 				SwingUtilities.invokeAndWait(new Runnable() {
 					@Override
 					public void run() {
-						errorDialogFactory.getDialog().showErrorDialog(I18nUtils.getString("ERRORS_IN_IMPORT_PROCESS"));
+						dialogFactory.newDialog(IErrorDialog.class).showErrorDialog(I18nUtils.getString("ERRORS_IN_IMPORT_PROCESS"));
 					}
 				});
 			} catch (InterruptedException e) {

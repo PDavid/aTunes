@@ -28,9 +28,9 @@ import java.util.List;
 import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IConfirmationDialogFactory;
+import net.sourceforge.atunes.model.IConfirmationDialog;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFileSelectorDialog;
-import net.sourceforge.atunes.model.IFileSelectorDialogFactory;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListIOService;
 import net.sourceforge.atunes.model.IStatePlaylist;
@@ -45,84 +45,81 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class SaveM3UPlayListAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = -303252911138284095L;
+	private static final long serialVersionUID = -303252911138284095L;
 
-    private IPlayListHandler playListHandler;
-    
-    private IConfirmationDialogFactory confirmationDialogFactory;
-    
-    private IPlayListIOService playListIOService;
-    
-    private IStatePlaylist statePlaylist;
-    
-    private IFileSelectorDialogFactory fileSelectorDialogFactory;
-    
-    /**
-     * @param fileSelectorDialogFactory
-     */
-    public void setFileSelectorDialogFactory(IFileSelectorDialogFactory fileSelectorDialogFactory) {
-		this.fileSelectorDialogFactory = fileSelectorDialogFactory;
+	private IPlayListHandler playListHandler;
+
+	private IPlayListIOService playListIOService;
+
+	private IStatePlaylist statePlaylist;
+
+	private IDialogFactory dialogFactory;
+
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
 	}
-    
-    /**
-     * @param statePlaylist
-     */
-    public void setStatePlaylist(IStatePlaylist statePlaylist) {
+
+	/**
+	 * @param statePlaylist
+	 */
+	public void setStatePlaylist(IStatePlaylist statePlaylist) {
 		this.statePlaylist = statePlaylist;
 	}
-    
-    /**
-     * @param playListIOService
-     */
-    public void setPlayListIOService(IPlayListIOService playListIOService) {
+
+	/**
+	 * @param playListIOService
+	 */
+	public void setPlayListIOService(IPlayListIOService playListIOService) {
 		this.playListIOService = playListIOService;
 	}
-    
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
+
+	/**
+	 * @param playListHandler
+	 */
+	public void setPlayListHandler(IPlayListHandler playListHandler) {
 		this.playListHandler = playListHandler;
 	}
-    
-    /**
-     * @param confirmationDialogFactory
-     */
-    public void setConfirmationDialogFactory(IConfirmationDialogFactory confirmationDialogFactory) {
-		this.confirmationDialogFactory = confirmationDialogFactory;
+
+	/**
+	 * Default constructor
+	 */
+	public SaveM3UPlayListAction() {
+		super(StringUtils.getString(I18nUtils.getString("SAVE_M3U"), "..."));
+		putValue(SHORT_DESCRIPTION, I18nUtils.getString("SAVE_M3U_PLAYLIST_TOOLTIP"));
+		putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
 	}
-    
-    /**
-     * Default constructor
-     */
-    public SaveM3UPlayListAction() {
-        super(StringUtils.getString(I18nUtils.getString("SAVE_M3U"), "..."));
-        putValue(SHORT_DESCRIPTION, I18nUtils.getString("SAVE_M3U_PLAYLIST_TOOLTIP"));
-        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-    }
 
-    @Override
-    protected void executeAction() {
-    	IFileSelectorDialog dialog = fileSelectorDialogFactory.getDialog();
-    	dialog.setFileFilter(playListIOService.getPlaylistM3UFileFilter());
-    	File file = dialog.saveFile(statePlaylist.getSavePlaylistPath());
-    	if (file != null) {
+	@Override
+	protected void executeAction() {
+		IFileSelectorDialog dialog = dialogFactory.newDialog(IFileSelectorDialog.class);
+		dialog.setFileFilter(playListIOService.getPlaylistM3UFileFilter());
+		File file = dialog.saveFile(statePlaylist.getSavePlaylistPath());
+		if (file != null) {
 
-            statePlaylist.setSavePlaylistPath(file.getParentFile().getAbsolutePath());
+			statePlaylist.setSavePlaylistPath(file.getParentFile().getAbsolutePath());
 
-            // If filename have incorrect extension, add it
-            file = playListIOService.checkM3UPlayListFileName(file);
+			// If filename have incorrect extension, add it
+			file = playListIOService.checkM3UPlayListFileName(file);
 
-            // If file does not exist, or exist and overwrite is confirmed, then write file
-            if (!file.exists()
-                    || (file.exists() && confirmationDialogFactory.getDialog().showDialog(I18nUtils.getString("OVERWRITE_FILE")))) {
-            	playListIOService.writeM3U(playListHandler.getCurrentPlayList(true), file);
-            }
-        }
-    }
+			// If file does not exist, or exist and overwrite is confirmed, then write file
+			boolean canWrite = !file.exists();
+			if (!canWrite) {
+				IConfirmationDialog confirmationDialog = dialogFactory.newDialog(IConfirmationDialog.class);
+				confirmationDialog.setMessage(I18nUtils.getString("OVERWRITE_FILE"));
+				confirmationDialog.showDialog();
+				canWrite = confirmationDialog.userAccepted();
+			}
+			if (canWrite) {
+				playListIOService.writeM3U(playListHandler.getCurrentPlayList(true), file);
+			}
+		}
+	}
 
-    @Override
-    public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
-        return !playListHandler.getCurrentPlayList(true).isEmpty();
-    }
+	@Override
+	public boolean isEnabledForPlayListSelection(List<IAudioObject> selection) {
+		return !playListHandler.getCurrentPlayList(true).isEmpty();
+	}
 }

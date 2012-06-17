@@ -18,22 +18,19 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.gui.views.dialogs.properties;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 
-public class ExportOptionsDialogFactory implements IExportOptionsDialogFactory, ApplicationContextAware {
-
-	private ApplicationContext context;
+class AlbumArtistProvider extends AbstractFieldProvider {
 
 	@Override
-	public IExportOptionsDialog getDialog() {
-		return this.context.getBean(IExportOptionsDialog.class);
+	public String getI18Name() {
+		return "ALBUM_ARTIST";
 	}
-	
+
 	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) {
-		this.context = applicationContext;
+	public String getClearValue(ILocalAudioObject file) {
+		return file.getAlbumArtist();
 	}
 }

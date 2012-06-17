@@ -28,11 +28,10 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.DefaultListModel;
 import javax.swing.SwingWorker;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.kernel.StateChangeListeners;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
-import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 
@@ -42,6 +41,15 @@ public final class EditPreferencesDialogController extends AbstractSimpleControl
     private List<AbstractPreferencesPanel> preferencesPanels;
     
     private StateChangeListeners stateChangeListeners;
+    
+    private IDialogFactory dialogFactory;
+    
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
     
     /**
      * @param preferencesPanels
@@ -119,7 +127,7 @@ public final class EditPreferencesDialogController extends AbstractSimpleControl
      * @return
      */
     void validatePreferences() throws PreferencesValidationException {
-		final IIndeterminateProgressDialog dialog = Context.getBean(IIndeterminateProgressDialogFactory.class).newDialog(getComponentControlled());
+		final IIndeterminateProgressDialog dialog = dialogFactory.newIndeterminateProgressDialog(getComponentControlled());
 
     	final SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
     		

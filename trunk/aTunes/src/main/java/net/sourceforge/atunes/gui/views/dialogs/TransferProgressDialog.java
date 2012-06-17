@@ -28,9 +28,6 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class TransferProgressDialog extends ProgressDialog {
 
-    /**
-	 * 
-	 */
     private static final long serialVersionUID = 1264914965691724365L;
 
     /**

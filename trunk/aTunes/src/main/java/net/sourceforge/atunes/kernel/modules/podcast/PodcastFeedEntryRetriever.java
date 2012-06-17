@@ -28,8 +28,9 @@ import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.FeedType;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.IMessageDialogFactory;
+import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.INetworkHandler;
@@ -298,7 +299,7 @@ public class PodcastFeedEntryRetriever implements Runnable {
                                 podcastFeed.markEntriesAsNotNew();
                             }
                             if (!stateUI.isShowStatusBar()) {
-                            	Context.getBean(IMessageDialogFactory.class).getDialog().showMessage(I18nUtils.getString("NEW_PODCAST_ENTRIES"));
+                            	Context.getBean(IDialogFactory.class).newDialog(IMessageDialog.class).showMessage(I18nUtils.getString("NEW_PODCAST_ENTRIES"));
                             } else {
                                 frame.showNewPodcastFeedEntriesInfo(true);
                             }

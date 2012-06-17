@@ -25,8 +25,8 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IInputDialog;
-import net.sourceforge.atunes.model.IInputDialogFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IRadio;
@@ -41,22 +41,22 @@ public class RenameRadioLabelAction extends CustomAbstractAction {
     
     private IRadioHandler radioHandler;
     
-    private IInputDialogFactory inputDialogFactory;
-    
     private INavigationView radioNavigationView;
+
+    private IDialogFactory dialogFactory;
+    
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
     
     /**
      * @param radioNavigationView
      */
     public void setRadioNavigationView(INavigationView radioNavigationView) {
 		this.radioNavigationView = radioNavigationView;
-	}
-    
-    /**
-     * @param inputDialogFactory
-     */
-    public void setInputDialogFactory(IInputDialogFactory inputDialogFactory) {
-		this.inputDialogFactory = inputDialogFactory;
 	}
     
     /**
@@ -83,12 +83,13 @@ public class RenameRadioLabelAction extends CustomAbstractAction {
         TreePath path = radioNavigationView.getTree().getSelectionPath();
         Object o = ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
         
-        IInputDialog dialog = inputDialogFactory.getDialog();
+        IInputDialog dialog = dialogFactory.newDialog(IInputDialog.class);
         dialog.setTitle(I18nUtils.getString("RENAME_LABEL"));
 
         if (o instanceof String) {
             String label = (String) o;
-            dialog.showDialog(label);
+            dialog.setText(label);
+            dialog.showDialog();
             String result = dialog.getResult();
             if (result != null) {
                 List<IRadio> radios = radioHandler.getRadios(label);
@@ -97,7 +98,8 @@ public class RenameRadioLabelAction extends CustomAbstractAction {
             }
         } else if (o instanceof IRadio) {
             IRadio radio = (IRadio) o;
-            dialog.showDialog(radio.getLabel());
+            dialog.setText(radio.getLabel());
+            dialog.showDialog();
             String result = dialog.getResult();
             if (result != null) {
                 radio.setLabel(result);

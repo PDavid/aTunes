@@ -18,23 +18,19 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.gui.views.dialogs.properties;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 
-public class MultiFolderSelectionDialogFactory implements IMultiFolderSelectionDialogFactory, ApplicationContextAware {
-
-	private ApplicationContext context;
+class SongProvider extends AbstractFieldProvider {
 	
 	@Override
-	public IMultiFolderSelectionDialog getDialog() {
-		return this.context.getBean(IMultiFolderSelectionDialog.class);
+	public String getI18Name() {
+		return "SONG"; // noi18n
 	}
 
 	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) {
-		this.context = applicationContext;
+	public String getClearValue(ILocalAudioObject file) {
+		return file.getTitle();
 	}
-
 }

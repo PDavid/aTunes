@@ -25,11 +25,5 @@ package net.sourceforge.atunes.model;
  * @author alex
  *
  */
-public interface IEqualizerDialog {
-
-	/**
-	 * Shows dialog
-	 */
-	public void showDialog();
-
+public interface IEqualizerDialog extends IDialog {
 }

@@ -35,11 +35,11 @@ import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioFilesRemovedListener;
 import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IGenre;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
-import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IRepository;
@@ -108,7 +108,14 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 	
     private IBackgroundWorkerFactory backgroundWorkerFactory;
     
-    private IIndeterminateProgressDialogFactory indeterminateProgressDialogFactory;
+    private IDialogFactory dialogFactory;
+    
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
     
     /**
      * @param backgroundWorkerFactory
@@ -117,13 +124,6 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 		this.backgroundWorkerFactory = backgroundWorkerFactory;
 	}
     
-    /**
-     * @param indeterminateProgressDialogFactory
-     */
-    public void setIndeterminateProgressDialogFactory(IIndeterminateProgressDialogFactory indeterminateProgressDialogFactory) {
-		this.indeterminateProgressDialogFactory = indeterminateProgressDialogFactory;
-	}
-	
 	/**
 	 * @param unknownObjectChecker
 	 */
@@ -649,7 +649,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 
 	@Override
 	public void importFolders(final List<File> folders, final String path) {
-    	final IIndeterminateProgressDialog indeterminateDialog = indeterminateProgressDialogFactory.newDialog();
+    	final IIndeterminateProgressDialog indeterminateDialog = dialogFactory.newIndeterminateProgressDialog();
     	indeterminateDialog.setTitle(StringUtils.getString(I18nUtils.getString("READING_FILES_TO_IMPORT"), "..."));
         
         IBackgroundWorker<List<ILocalAudioObject>> worker = backgroundWorkerFactory.getWorker();

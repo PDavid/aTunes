@@ -23,7 +23,8 @@ package net.sourceforge.atunes.kernel.actions;
 import java.util.Collection;
 
 import net.sourceforge.atunes.model.IChangeTagsProcess;
-import net.sourceforge.atunes.model.IConfirmationDialogFactory;
+import net.sourceforge.atunes.model.IConfirmationDialog;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -51,16 +52,16 @@ public class RepairGenresAction extends CustomAbstractAction {
     private IProcessFactory processFactory;
     
     private IRepositoryHandler repositoryHandler;
-    
-    private IConfirmationDialogFactory confirmationDialogFactory;
+
+    private IDialogFactory dialogFactory;
     
     /**
-     * @param confirmationDialogFactory
+     * @param dialogFactory
      */
-    public void setConfirmationDialogFactory(IConfirmationDialogFactory confirmationDialogFactory) {
-		this.confirmationDialogFactory = confirmationDialogFactory;
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
 	}
-
+    
     /**
      * @param processFactory
      */
@@ -82,7 +83,10 @@ public class RepairGenresAction extends CustomAbstractAction {
     @Override
     protected void executeAction() {
         // Show confirmation dialog
-        if (confirmationDialogFactory.getDialog().showDialog(I18nUtils.getString("REPAIR_GENRES_MESSAGE"))) {
+    	IConfirmationDialog dialog = dialogFactory.newDialog(IConfirmationDialog.class);
+    	dialog.setMessage(I18nUtils.getString("REPAIR_GENRES_MESSAGE"));
+    	dialog.showDialog();
+        if (dialog.userAccepted()) {
             // Call genre edit
         	IChangeTagsProcess process = (IChangeTagsProcess) processFactory.getProcessByName("setGenresProcess");
         	process.setFilesToChange(getFilesWithEmptyGenre(repositoryHandler.getAudioFilesList()));

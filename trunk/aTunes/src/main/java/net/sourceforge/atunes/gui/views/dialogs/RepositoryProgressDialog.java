@@ -86,6 +86,7 @@ public final class RepositoryProgressDialog extends AbstractCustomDialog impleme
     /**
      * Initializes this dialog
      */
+    @Override
     public void initialize() {
         add(getContent());
         backgroundButton.setVisible(false);
@@ -205,76 +206,49 @@ public final class RepositoryProgressDialog extends AbstractCustomDialog impleme
         panel.add(buttonsPanel, c);
 	}
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IRepositoryProgressDialog#setCurrentTask(java.lang.String)
-	 */
     @Override
 	public void setCurrentTask(String task) {
     	taskLabel.setText(task);
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IRepositoryProgressDialog#setCurrentFolder(java.lang.String)
-	 */
     @Override
 	public void setCurrentFolder(String folder) {
     	folderLabel.setText(folder);
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IRepositoryProgressDialog#setProgressBarIndeterminate(boolean)
-	 */
     @Override
 	public void setProgressBarIndeterminate(boolean indeterminate) {
     	progressBar.setIndeterminate(indeterminate);
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IRepositoryProgressDialog#setProgressBarValue(int)
-	 */
     @Override
 	public void setProgressBarValue(int value) {
     	progressBar.setValue(value);
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IRepositoryProgressDialog#setTotalFiles(int)
-	 */
     @Override
 	public void setTotalFiles(int max) {
     	progressBar.setMaximum(max);
     	totalFilesLabel.setText(Integer.toString(max));
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IRepositoryProgressDialog#setProgressText(java.lang.String)
-	 */
     @Override
 	public void setProgressText(String text) {
     	progressLabel.setText(text);
     	separatorLabel.setVisible(text != null && !text.equals(""));
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IRepositoryProgressDialog#setRemainingTime(java.lang.String)
-	 */
     @Override
 	public void setRemainingTime(String text) {
     	remainingTimeLabel.setText(text);
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IRepositoryProgressDialog#setButtonsEnabled(boolean)
-	 */
     @Override
 	public void setButtonsEnabled(boolean enabled) {
         cancelButton.setEnabled(enabled);
         backgroundButton.setEnabled(enabled);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IRepositoryProgressDialog#setButtonsVisible(boolean)
-	 */
     @Override
 	public void setButtonsVisible(boolean visible) {
         cancelButton.setVisible(visible);
@@ -287,11 +261,8 @@ public final class RepositoryProgressDialog extends AbstractCustomDialog impleme
         super.setVisible(b);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IRepositoryProgressDialog#showProgressDialog()
-	 */
     @Override
-	public void showProgressDialog() {
+	public void showDialog() {
         setTitle(I18nUtils.getString("PLEASE_WAIT"));
         setVisible(true);
         activateGlassPane();
@@ -299,24 +270,15 @@ public final class RepositoryProgressDialog extends AbstractCustomDialog impleme
         setButtonsEnabled(true);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IRepositoryProgressDialog#hideProgressDialog()
-	 */
     @Override
-	public void hideProgressDialog() {
+	public void hideDialog() {
         setVisible(false);
         deactivateGlassPane();
         dispose();
-        //setButtonsVisible(false);
-        //setButtonsEnabled(true);
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IRepositoryProgressDialog#setImage(java.awt.Image)
-	 */
     @Override
 	public void setImage(Image image) {
     	pictureLabel.setIcon(image != null ? ImageUtils.scaleImageBicubic(image, LOGO_SIZE, LOGO_SIZE) : LOGO);
     }
-    
 }

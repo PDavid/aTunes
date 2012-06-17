@@ -37,6 +37,7 @@ import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectComparator;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListTable;
@@ -158,8 +159,10 @@ class InternalImportProcessor {
 	}
     
 	private void showAddArtistDragDialog(IArtist currentArtist) {
-    	IArtistAlbumSelectorDialog dialog = Context.getBean(IArtistAlbumSelectorDialog.class);
-    	IAlbum album = dialog.showDialog(currentArtist);
+    	IArtistAlbumSelectorDialog dialog = Context.getBean(IDialogFactory.class).newDialog(IArtistAlbumSelectorDialog.class);
+    	dialog.setArtist(currentArtist);
+    	dialog.showDialog();
+    	IAlbum album = dialog.getAlbum();
     	if (album != null) {
     		playListHandler.addToPlayList(album.getAudioObjects());
     	}

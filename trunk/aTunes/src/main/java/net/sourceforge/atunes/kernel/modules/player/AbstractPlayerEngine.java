@@ -27,7 +27,8 @@ import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.PlayListEventListeners;
 import net.sourceforge.atunes.kernel.PlaybackStateListeners;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IErrorDialogFactory;
+import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectFactory;
@@ -113,6 +114,15 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
     private Volume volumeController;
     
     private IStatePlayer statePlayer;
+    
+    private IDialogFactory dialogFactory;
+    
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
     
     /**
      * @param statePlayer
@@ -397,7 +407,7 @@ public abstract class AbstractPlayerEngine implements IPlayerEngine {
 	public final void handlePlayerEngineError(final Exception e) {
         Logger.error(StringUtils.getString("Player Error: ", e));
         Logger.error(e);
-        Context.getBean(IErrorDialogFactory.class).getDialog().showExceptionDialog(I18nUtils.getString("ERROR"), e);
+        dialogFactory.newDialog(IErrorDialog.class).showExceptionDialog(I18nUtils.getString("ERROR"), e);
     }
 
     /**

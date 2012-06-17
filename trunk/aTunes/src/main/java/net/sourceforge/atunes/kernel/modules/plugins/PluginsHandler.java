@@ -38,9 +38,10 @@ import net.sourceforge.atunes.kernel.modules.columns.AbstractColumn;
 import net.sourceforge.atunes.kernel.modules.columns.ColumnSets;
 import net.sourceforge.atunes.kernel.modules.context.AbstractContextPanel;
 import net.sourceforge.atunes.kernel.modules.navigator.AbstractNavigationView;
-import net.sourceforge.atunes.model.IConfirmationDialogFactory;
+import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.IContextHandler;
-import net.sourceforge.atunes.model.IErrorDialogFactory;
+import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IGeneralPurposePluginsHandler;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -75,6 +76,8 @@ public class PluginsHandler extends AbstractHandler implements PluginListener, I
     
     private IStateCore stateCore;
     
+    private IDialogFactory dialogFactory;
+    
     static {
         pluginTypes = new HashSet<PluginType>();
         pluginTypes.add(new PluginType(IPlaybackStateListener.class.getName(), (PluginListener) Context.getBean(IPlayerHandler.class), false));
@@ -84,6 +87,13 @@ public class PluginsHandler extends AbstractHandler implements PluginListener, I
         pluginTypes.add(new PluginType(AbstractLookAndFeel.class.getName(), (PluginListener) Context.getBean(ILookAndFeelManager.class), false));
         pluginTypes.add(new PluginType(AbstractGeneralPurposePlugin.class.getName(), (PluginListener) Context.getBean(IGeneralPurposePluginsHandler.class), false));
     }
+    
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
 
     /**
      * @param stateCore
@@ -149,14 +159,17 @@ public class PluginsHandler extends AbstractHandler implements PluginListener, I
     	if (problemsLoadingPlugins != null) {
     		for (Map.Entry<PluginFolder, PluginSystemException> pluginFolder : problemsLoadingPlugins.entrySet()) {
     			// Show a message with detailed information about the error
-    			getBean(IErrorDialogFactory.class).getDialog().showExceptionDialog(I18nUtils.getString("PLUGIN_LOAD_ERROR"), pluginFolder.getValue());
+    			dialogFactory.newDialog(IErrorDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_LOAD_ERROR"), pluginFolder.getValue());
     			
     			// Ask user to remove plugin folder
-    			if (getBean(IConfirmationDialogFactory.class).getDialog().showDialog(I18nUtils.getString("PLUGIN_LOAD_ERROR_REMOVE_CONFIRMATION"))) {
+    			IConfirmationDialog dialog = dialogFactory.newDialog(IConfirmationDialog.class);
+    			dialog.setMessage(I18nUtils.getString("PLUGIN_LOAD_ERROR_REMOVE_CONFIRMATION"));
+    			dialog.showDialog();
+    			if (dialog.userAccepted()) {
     				try {
 						FileUtils.deleteDirectory(pluginFolder.getKey());
 					} catch (IOException e) {
-						getBean(IErrorDialogFactory.class).getDialog().showExceptionDialog(I18nUtils.getString("PLUGIN_UNINSTALLATION_ERROR"), e);
+						dialogFactory.newDialog(IErrorDialog.class).showExceptionDialog(I18nUtils.getString("PLUGIN_UNINSTALLATION_ERROR"), e);
 					}
     			}
     		}

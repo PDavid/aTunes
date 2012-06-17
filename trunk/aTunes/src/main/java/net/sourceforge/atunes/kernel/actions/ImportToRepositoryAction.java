@@ -24,10 +24,10 @@ import java.io.File;
 import java.util.List;
 
 import net.sourceforge.atunes.gui.views.dialogs.SelectorDialog;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
-import net.sourceforge.atunes.model.IMultiFolderSelectionDialogFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -46,7 +46,7 @@ public class ImportToRepositoryAction extends CustomAbstractAction {
     
     private IFrame frame;
     
-    private IMultiFolderSelectionDialogFactory multiFolderSelectionDialogFactory;
+    private IDialogFactory dialogFactory;
     
     private ILookAndFeelManager lookAndFeelManager;
     
@@ -59,13 +59,21 @@ public class ImportToRepositoryAction extends CustomAbstractAction {
         setEnabled(false); // Initially disabled, will be enabled when repository is loaded
     }
     
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
+    
     @Override
     protected void executeAction() {
         // Now show dialog to select folders
-        IMultiFolderSelectionDialog dialog = multiFolderSelectionDialogFactory.getDialog();
+        IMultiFolderSelectionDialog dialog = (IMultiFolderSelectionDialog) dialogFactory.newDialog(IMultiFolderSelectionDialog.class);
         dialog.setTitle(I18nUtils.getString("IMPORT"));
         dialog.setText(I18nUtils.getString("SELECT_FOLDERS_TO_IMPORT"));
-        dialog.showDialog(null);
+        dialog.setSelectedFolders(null);
+        dialog.showDialog();
         if (!dialog.isCancelled()) {
             List<File> folders = dialog.getSelectedFolders();
             // If user selected folders...
@@ -98,13 +106,6 @@ public class ImportToRepositoryAction extends CustomAbstractAction {
      */
     public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
-	}
-    
-    /**
-     * @param multiFolderSelectionDialogFactory
-     */
-    public void setMultiFolderSelectionDialogFactory(IMultiFolderSelectionDialogFactory multiFolderSelectionDialogFactory) {
-		this.multiFolderSelectionDialogFactory = multiFolderSelectionDialogFactory;
 	}
     
     /**

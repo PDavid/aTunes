@@ -32,8 +32,8 @@ import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IArtistTopTracks;
 import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
-import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -56,24 +56,24 @@ public class AddArtistTopTracksToPlayListAction extends AbstractActionOverSelect
 
 	private IBackgroundWorkerFactory backgroundWorkerFactory;
 
-	private IIndeterminateProgressDialogFactory indeterminateProgressDialogFactory;
-
 	private IIndeterminateProgressDialog dialog;
 	
 	private IUnknownObjectChecker unknownObjectChecker;
+	
+	private IDialogFactory dialogFactory;
+	
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
 	
 	/**
 	 * @param unknownObjectChecker
 	 */
 	public void setUnknownObjectChecker(IUnknownObjectChecker unknownObjectChecker) {
 		this.unknownObjectChecker = unknownObjectChecker;
-	}
-
-	/**
-	 * @param indeterminateProgressDialogFactory
-	 */
-	public void setIndeterminateProgressDialogFactory(IIndeterminateProgressDialogFactory indeterminateProgressDialogFactory) {
-		this.indeterminateProgressDialogFactory = indeterminateProgressDialogFactory;
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class AddArtistTopTracksToPlayListAction extends AbstractActionOverSelect
 		worker.setActionsAfterBackgroundStarted(new Runnable() {
 			@Override
 			public void run() {
-				dialog = indeterminateProgressDialogFactory.newDialog();
+				dialog = dialogFactory.newIndeterminateProgressDialog();
 				dialog.showDialog();
 			}
 		});

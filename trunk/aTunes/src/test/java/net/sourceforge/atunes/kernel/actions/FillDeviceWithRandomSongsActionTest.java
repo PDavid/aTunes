@@ -27,8 +27,8 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import net.sourceforge.atunes.model.IDeviceHandler;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IErrorDialog;
-import net.sourceforge.atunes.model.IErrorDialogFactory;
 import net.sourceforge.atunes.model.IInputDialog;
 
 import org.junit.Assert;
@@ -40,20 +40,20 @@ public class FillDeviceWithRandomSongsActionTest {
 	public void test() {
 		FillDeviceWithRandomSongsAction sut = new FillDeviceWithRandomSongsAction();
 		IDeviceHandler deviceHandler = mock(IDeviceHandler.class);
+		IDialogFactory dialogFactory = mock(IDialogFactory.class);
 		IInputDialog inputDialog = mock(IInputDialog.class);
 		when(inputDialog.getResult()).thenReturn("20");
-		IErrorDialogFactory errorDialogFactory = mock(IErrorDialogFactory.class);
+		when(dialogFactory.newDialog(IInputDialog.class)).thenReturn(inputDialog);
 		IErrorDialog errorDialog = mock(IErrorDialog.class);
-		when(errorDialogFactory.getDialog()).thenReturn(errorDialog);
+		when(dialogFactory.newDialog(IErrorDialog.class)).thenReturn(errorDialog);
 		
 		sut.setDeviceHandler(deviceHandler);
-		sut.setInputDialog(inputDialog);
-		sut.setErrorDialogFactory(errorDialogFactory);
+		sut.setDialogFactory(dialogFactory);
 		sut.setFreeMemory("20");
 		
 		sut.executeAction();
 
-		verify(inputDialog).showDialog("20");
+		verify(inputDialog).showDialog();
 		verify(deviceHandler).fillWithRandomSongs(20);
 	}
 
@@ -61,15 +61,15 @@ public class FillDeviceWithRandomSongsActionTest {
 	public void testInputError() {
 		FillDeviceWithRandomSongsAction sut = new FillDeviceWithRandomSongsAction();
 		IDeviceHandler deviceHandler = mock(IDeviceHandler.class);
+		IDialogFactory dialogFactory = mock(IDialogFactory.class);
 		IInputDialog inputDialog = mock(IInputDialog.class);
+		when(dialogFactory.newDialog(IInputDialog.class)).thenReturn(inputDialog);
 		when(inputDialog.getResult()).thenReturn("not a number");
-		IErrorDialogFactory errorDialogFactory = mock(IErrorDialogFactory.class);
 		IErrorDialog errorDialog = mock(IErrorDialog.class);
-		when(errorDialogFactory.getDialog()).thenReturn(errorDialog);
+		when(dialogFactory.newDialog(IErrorDialog.class)).thenReturn(errorDialog);
 		
 		sut.setDeviceHandler(deviceHandler);
-		sut.setInputDialog(inputDialog);
-		sut.setErrorDialogFactory(errorDialogFactory);
+		sut.setDialogFactory(dialogFactory);
 		sut.setFreeMemory("20");
 		
 		sut.executeAction();

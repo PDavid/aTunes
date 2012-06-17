@@ -22,7 +22,8 @@ package net.sourceforge.atunes.kernel.modules.hotkeys;
 
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.actions.MuteAction;
-import net.sourceforge.atunes.model.IErrorDialogFactory;
+import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IHotkey;
 import net.sourceforge.atunes.model.IHotkeyHandler;
 import net.sourceforge.atunes.model.IHotkeyListener;
@@ -47,6 +48,15 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
     private AbstractHotkeys hotkeys;
     private IHotkeysConfig hotkeysConfig;
     private IStateCore stateCore;
+    
+    private IDialogFactory dialogFactory;
+    
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
     
     /**
      * @param stateCore
@@ -134,7 +144,7 @@ public final class HotkeyHandler extends AbstractHandler implements IHotkeyListe
                 stateCore.setEnableHotkeys(false);
 
                 // Show an error message
-                getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(I18nUtils.getString("HOTKEYS_ACTIVATION_ERROR_MESSAGE"));
+                dialogFactory.newDialog(IErrorDialog.class).showErrorDialog(I18nUtils.getString("HOTKEYS_ACTIVATION_ERROR_MESSAGE"));
                 Logger.error("Hotkeys were not activated successfully");
             }
         }

@@ -105,16 +105,28 @@ public final class EqualizerDialog extends AbstractCustomDialog implements IEqua
      * Draws the equalizer dialog.
      * 
      * @param frame
-     * @param playerHandler
      */
-    public EqualizerDialog(IFrame frame, IPlayerHandler playerHandler) {
+    public EqualizerDialog(IFrame frame) {
         // Width required by german translation
         super(frame, 510, 300, true, CloseAction.DISPOSE);
-        this.playerHandler = playerHandler;
+    }
+    
+    /**
+     * Initializes dialog
+     */
+    @Override
+    public void initialize() {
         setTitle(StringUtils.getString(I18nUtils.getString("EQUALIZER"), " - ", Constants.APP_NAME, " ", Constants.VERSION.toShortString()));
         add(getContent());
         setResizable(false);
     }
+    
+    /**
+     * @param playerHandler
+     */
+    public void setPlayerHandler(IPlayerHandler playerHandler) {
+		this.playerHandler = playerHandler;
+	}
 
     /**
      * Gets the new j slider.
@@ -259,6 +271,11 @@ public final class EqualizerDialog extends AbstractCustomDialog implements IEqua
             setSliderValues();
         }
         super.setVisible(b);
+    }
+
+    @Override
+    public void hideDialog() {
+    	setVisible(false);
     }
 
 }

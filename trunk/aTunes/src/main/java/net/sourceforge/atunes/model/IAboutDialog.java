@@ -25,10 +25,5 @@ package net.sourceforge.atunes.model;
  * @author alex
  *
  */
-public interface IAboutDialog {
-
-	/**
-	 * Show dialog
-	 */
-	public void showDialog();
+public interface IAboutDialog extends IDialog {
 }

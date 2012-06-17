@@ -68,6 +68,10 @@ public class ProgressDialog extends AbstractCustomDialog implements IProgressDia
      */
     public ProgressDialog(IFrame frame) {
         super(frame, 450, 150, false, CloseAction.DISPOSE);
+    }
+
+    @Override
+    public void initialize() {
         add(getContent());
         setResizable(false);
     }
@@ -139,57 +143,36 @@ public class ProgressDialog extends AbstractCustomDialog implements IProgressDia
         panel.add(cancelButton, c);
 	}
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IProgressDialog#setInfoText(java.lang.String)
-	 */
     @Override
 	public void setInfoText(String s) {
         infoLabel.setText(s);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IProgressDialog#setProgressBarValue(int)
-	 */
     @Override
 	public void setProgressBarValue(int value) {
         progressBar.setValue(value);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IProgressDialog#setCurrentProgress(long)
-	 */
     @Override
 	public void setCurrentProgress(long value) {
         currentLabel.setText(Long.toString(value));
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IProgressDialog#setTotalProgress(long)
-	 */
     @Override
 	public void setTotalProgress(long value) {
         totalLabel.setText(Long.toString(value));
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IProgressDialog#addCancelButtonActionListener(java.awt.event.ActionListener)
-	 */
     @Override
 	public void addCancelButtonActionListener(ActionListener a) {
         cancelButton.addActionListener(a);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IProgressDialog#disableCancelButton()
-	 */
     @Override
 	public void disableCancelButton() {
         cancelButton.setEnabled(false);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IProgressDialog#setIcon(javax.swing.ImageIcon)
-	 */
     @Override
 	public void setIcon(ImageIcon icon) {
         imagelabel.setIcon(icon);

@@ -75,9 +75,19 @@ public final class ExportOptionsDialog extends AbstractCustomDialog implements I
      * @param frame
      * @param osManager
      */
-    public ExportOptionsDialog(IFrame frame, IOSManager osManager) {
+    public ExportOptionsDialog(IFrame frame) {
         super(frame, 400, 220, true, CloseAction.DISPOSE);
-        this.osManager = osManager;
+    } 
+
+    /**
+     * @param osManager
+     */
+    public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
+    
+    @Override
+    public void initialize() {
         setResizable(false);
         setTitle(I18nUtils.getString("EXPORT"));
         add(getContent());
@@ -185,36 +195,29 @@ public final class ExportOptionsDialog extends AbstractCustomDialog implements I
         container.add(buttons, c);
 	}
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IExportOptionsDialog#getExportLocation()
-	 */
     @Override
 	public String getExportLocation() {
         return exportLocationFileChooser.getResult();
     }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IExportOptionsDialog#startDialog()
-	 */
+    
     @Override
-	public void startDialog() {
+    public void showDialog() {
         cancel = false;
         super.setVisible(true);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IExportOptionsDialog#isCancel()
-	 */
     @Override
 	public boolean isCancel() {
         return cancel;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IExportOptionsDialog#isExportNavigatorSelection()
-	 */
     @Override
 	public boolean isExportNavigatorSelection() {
         return currentNavigatorSelectionRadioButton.isSelected();
+    }
+    
+    @Override
+    public void hideDialog() {
+    	setVisible(false);
     }
 }

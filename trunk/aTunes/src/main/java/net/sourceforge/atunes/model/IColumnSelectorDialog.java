@@ -26,7 +26,7 @@ package net.sourceforge.atunes.model;
  * @author alex
  *
  */
-public interface IColumnSelectorDialog {
+public interface IColumnSelectorDialog extends IDialog {
 
 	/**
 	 * Sets the columns set to be changed
@@ -35,16 +35,5 @@ public interface IColumnSelectorDialog {
 	 *            set
 	 * 
 	 */
-	public void setColumnSetToSelect(IColumnSet columnSet);
-
-	/**
-	 * Shows dialog
-	 */
-	public void showDialog();
-
-	/**
-	 * Hides dialog
-	 */
-	public void hideDialog();
-
+	void setColumnSetToSelect(IColumnSet columnSet);
 }

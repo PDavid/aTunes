@@ -26,5 +26,4 @@ public class BackgroundWorkerFactoryMock implements IBackgroundWorkerFactory {
 	public <T> IBackgroundWorker<T> getWorker() {
 		return new BackgroundWorkerMock<T>();
 	}
-
 }

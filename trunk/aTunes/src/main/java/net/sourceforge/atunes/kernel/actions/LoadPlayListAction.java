@@ -29,9 +29,9 @@ import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.kernel.modules.process.LoadPlayListProcess;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IErrorDialogFactory;
+import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFileSelectorDialog;
-import net.sourceforge.atunes.model.IFileSelectorDialogFactory;
 import net.sourceforge.atunes.model.IPlayListIOService;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IStatePlaylist;
@@ -52,13 +52,11 @@ public class LoadPlayListAction extends CustomAbstractAction {
 
     private IPlayListIOService playListIOService;
 
-	private IErrorDialogFactory errorDialogFactory;
-	
     private IProcessFactory processFactory;
     
     private IStatePlaylist statePlaylist;
     
-    private IFileSelectorDialogFactory fileSelectorDialogFactory;
+    private IDialogFactory dialogFactory;
     
     /**
      * Default constructor
@@ -70,10 +68,10 @@ public class LoadPlayListAction extends CustomAbstractAction {
     }
 
     /**
-     * @param fileSelectorDialogFactory
+     * @param dialogFactory
      */
-    public void setFileSelectorDialogFactory(IFileSelectorDialogFactory fileSelectorDialogFactory) {
-		this.fileSelectorDialogFactory = fileSelectorDialogFactory;
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
 	}
     
     /**
@@ -91,13 +89,6 @@ public class LoadPlayListAction extends CustomAbstractAction {
 	}
     
 	/**
-	 * @param errorDialogFactory
-	 */
-	public void setErrorDialogFactory(IErrorDialogFactory errorDialogFactory) {
-		this.errorDialogFactory = errorDialogFactory;
-	}
-	
-	/**
 	 * @param playListIOService
 	 */
 	public void setPlayListIOService(IPlayListIOService playListIOService) {
@@ -106,7 +97,7 @@ public class LoadPlayListAction extends CustomAbstractAction {
     
     @Override
     protected void executeAction() {
-		IFileSelectorDialog dialog = fileSelectorDialogFactory.getDialog();
+		IFileSelectorDialog dialog = dialogFactory.newDialog(IFileSelectorDialog.class);
 		dialog.setFileFilter(playListIOService.getAllAcceptedPlaylistsFileFilter());
 		File file = dialog.loadFile(statePlaylist.getLoadPlaylistPath());
 		if (file != null) {
@@ -123,7 +114,7 @@ public class LoadPlayListAction extends CustomAbstractAction {
                     process.execute();
                 }
             } else {
-            	errorDialogFactory.getDialog().showErrorDialog(I18nUtils.getString("FILE_NOT_FOUND"));
+            	dialogFactory.newDialog(IErrorDialog.class).showErrorDialog(I18nUtils.getString("FILE_NOT_FOUND"));
             }
         }
     }

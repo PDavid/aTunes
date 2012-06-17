@@ -28,7 +28,7 @@ import java.awt.Component;
  * @author alex
  *
  */
-public interface IErrorDialog {
+public interface IErrorDialog extends IDialog {
 
 	/**
 	 * Show error dialog.

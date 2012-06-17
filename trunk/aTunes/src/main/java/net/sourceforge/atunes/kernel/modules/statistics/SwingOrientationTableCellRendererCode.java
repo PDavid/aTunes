@@ -18,13 +18,24 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.kernel.modules.statistics;
 
-public interface IInputDialogFactory {
+import javax.swing.JLabel;
+import javax.swing.JTable;
 
-	/**
-	 * Gets a new dialog
-	 * @return
-	 */
-	IInputDialog getDialog();
+import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
+import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.model.ILookAndFeel;
+
+class SwingOrientationTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, Object> {
+	
+    public SwingOrientationTableCellRendererCode(ILookAndFeel lookAndFeel) {
+		super(lookAndFeel);
+	}
+
+	@Override
+    public JLabel getComponent(JLabel superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    	superComponent.setHorizontalAlignment(GuiUtils.getComponentOrientationAsSwingConstant());
+    	return superComponent;
+    }
 }

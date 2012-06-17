@@ -26,7 +26,7 @@ package net.sourceforge.atunes.model;
  * @author alex
  *
  */
-public interface ISearchDialog {
+public interface ISearchDialog extends IDialog {
 
 	/**
 	 * Gets the result.
@@ -49,15 +49,4 @@ public interface ISearchDialog {
 	 *            the new sets the as default visible
 	 */
 	public void setSetAsDefaultVisible(boolean setAsDefaultVisible);
-
-	/**
-	 * Shows dialog
-	 */
-	public void showDialog();
-
-	/**
-	 * Hides dialog
-	 */
-	public void hideDialog();
-
 }

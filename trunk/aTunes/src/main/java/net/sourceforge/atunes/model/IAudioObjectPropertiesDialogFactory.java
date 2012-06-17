@@ -35,20 +35,5 @@ public interface IAudioObjectPropertiesDialogFactory {
 	 * @param playerHandler
 	 * @return
 	 */
-	public IAudioObjectPropertiesDialog newInstance(IAudioObject a, IPlayerHandler playerHandler);
-
-	/**
-	 * @param frame the frame to set
-	 */
-	public void setFrame(IFrame frame);
-
-	/**
-	 * @param osManager the osManager to set
-	 */
-	public void setOsManager(IOSManager osManager);
-
-	/**
-	 * @param playListHandler
-	 */
-	public void setPlayListHandler(IPlayListHandler playListHandler);
+	IAudioObjectPropertiesDialog newInstance(IAudioObject a, IPlayerHandler playerHandler);
 }

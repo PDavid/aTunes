@@ -33,6 +33,7 @@ import net.sourceforge.atunes.gui.frame.FrameState;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IAboutDialog;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFrameState;
 import net.sourceforge.atunes.model.IFullScreenHandler;
 import net.sourceforge.atunes.model.IKernel;
@@ -60,6 +61,15 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
 	private IStateCore stateCore;
 	
 	private IStateContext stateContext;
+	
+	private IDialogFactory dialogFactory;
+	
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
 	
 	/**
 	 * @param stateContext
@@ -179,7 +189,7 @@ public final class UIHandler extends AbstractHandler implements IUIHandler {
 	 */
     @Override
 	public void showAboutDialog() {
-    	getBean(IAboutDialog.class).showDialog();
+    	dialogFactory.newDialog(IAboutDialog.class).showDialog();
     }
 
     /* (non-Javadoc)

@@ -27,12 +27,12 @@ import java.util.concurrent.Callable;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
-import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILovedTrack;
-import net.sourceforge.atunes.model.IMessageDialogFactory;
+import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IStateContext;
 import net.sourceforge.atunes.model.IWebServicesHandler;
@@ -51,13 +51,18 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
     
     private IRepositoryHandler repositoryHandler;
     
-    private IIndeterminateProgressDialogFactory indeterminateProgressDialogFactory;
-    
     private IFavoritesHandler favoritesHandler;
     
-    private IMessageDialogFactory messageDialogFactory;
+    private IDialogFactory dialogFactory;
     
     private IStateContext stateContext;
+    
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
     
     /**
      * @param stateContext
@@ -85,7 +90,7 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
         worker.setActionsAfterBackgroundStarted(new Runnable() {
         	@Override
         	public void run() {
-        		dialog = indeterminateProgressDialogFactory.newDialog();
+        		dialog = dialogFactory.newIndeterminateProgressDialog();
         		dialog.setTitle(I18nUtils.getString("GETTING_LOVED_TRACKS_FROM_LASTFM"));
         		dialog.showDialog();
         	}
@@ -139,7 +144,7 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
 		dialog.hideDialog();
         // Set favorites, but not in last.fm again
 		favoritesHandler.addFavoriteSongs(lovedTracks, false);
-		messageDialogFactory.getDialog()
+		dialogFactory.newDialog(IMessageDialog.class)
 			.showMessage(StringUtils.getString(I18nUtils.getString("LOVED_TRACKS_IMPORTED"), ": ", lovedTracks == null ? "0" : lovedTracks.size()));
     }
     
@@ -165,23 +170,9 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
 	}
     
     /**
-     * @param indeterminateProgressDialogFactory
-     */
-    public void setIndeterminateProgressDialogFactory(IIndeterminateProgressDialogFactory indeterminateProgressDialogFactory) {
-		this.indeterminateProgressDialogFactory = indeterminateProgressDialogFactory;
-	}
-    
-    /**
      * @param favoritesHandler
      */
     public void setFavoritesHandler(IFavoritesHandler favoritesHandler) {
 		this.favoritesHandler = favoritesHandler;
-	}
-    
-    /**
-     * @param messageDialogFactory
-     */
-    public void setMessageDialogFactory(IMessageDialogFactory messageDialogFactory) {
-		this.messageDialogFactory = messageDialogFactory;
 	}
 }

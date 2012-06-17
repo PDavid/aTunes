@@ -28,16 +28,12 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTable;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableModel;
 
-import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.kernel.AbstractSimpleController;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelChangeListener;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -61,45 +57,6 @@ final class StatsDialogController extends AbstractSimpleController<StatsDialog> 
 	
 	private IRepositoryHandler repositoryHandler;
 	
-    private static class RightAlignmentTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, Object> {
-    	
-        public RightAlignmentTableCellRendererCode(ILookAndFeel lookAndFeel) {
-			super(lookAndFeel);
-		}
-
-		@Override
-        public JLabel getComponent(JLabel superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        	superComponent.setHorizontalAlignment(SwingConstants.RIGHT);
-        	return superComponent;
-        }
-    }
-
-    private static class SwingOrientationTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, Object> {
-    	
-        public SwingOrientationTableCellRendererCode(ILookAndFeel lookAndFeel) {
-			super(lookAndFeel);
-		}
-
-		@Override
-        public JLabel getComponent(JLabel superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        	superComponent.setHorizontalAlignment(GuiUtils.getComponentOrientationAsSwingConstant());
-        	return superComponent;
-        }
-    }
-
-    private static final class StatsDialogDefaultTableModel extends DefaultTableModel {
-        private static final long serialVersionUID = 0L;
-
-        private StatsDialogDefaultTableModel(Object[][] data, Object[] columnNames) {
-            super(data, columnNames);
-        }
-
-        @Override
-        public boolean isCellEditable(int row, int column) {
-            return false;
-        }
-    }
-
     private ILookAndFeelManager lookAndFeelManager;
     
     /**

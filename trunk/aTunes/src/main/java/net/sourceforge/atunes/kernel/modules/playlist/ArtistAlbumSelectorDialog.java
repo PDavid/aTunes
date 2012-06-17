@@ -61,10 +61,13 @@ public final class ArtistAlbumSelectorDialog extends AbstractCustomDialog implem
     /**
      * Instantiates a new  dialog.
      * @param frame
-     * @param getLookAndFeel()Manager
      */
     public ArtistAlbumSelectorDialog(IFrame frame) {
         super(frame, 600, 500, true, CloseAction.DISPOSE);
+    }
+
+    @Override
+    public void initialize() {
         setResizable(false);
     }
     
@@ -124,15 +127,28 @@ public final class ArtistAlbumSelectorDialog extends AbstractCustomDialog implem
         
         return panel;
     }
+
+    @Override
+    public void setArtist(IArtist artist) {
+        this.artist = artist;
+    }
     
     @Override
-	public IAlbum showDialog(IArtist artist) {
-        this.artist = artist;
+	public void showDialog() {
       	String text = I18nUtils.getString("ADD_ARTIST_DIALOG_TITLE");
         text = text.replace("(%ARTIST%)", artist.getName());
         setTitle(text);
         add(getContent());
     	setVisible(true);
+    }
+    
+    @Override
+    public IAlbum getAlbum() {
     	return album;
+    }
+    
+    @Override
+    public void hideDialog() {
+    	setVisible(false);
     }
 }

@@ -36,7 +36,8 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.SystemLookAndFeel;
-import net.sourceforge.atunes.model.IErrorDialogFactory;
+import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IOSManager;
@@ -251,7 +252,7 @@ public abstract class OperatingSystemAdapter {
 	 */
 	public void manageNoPlayerEngine(IFrame frame) {
 		// By default no management is done, only an error message
-		Context.getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(I18nUtils.getString("NO_PLAYER_ENGINE"));
+		Context.getBean(IDialogFactory.class).newDialog(IErrorDialog.class).showErrorDialog(I18nUtils.getString("NO_PLAYER_ENGINE"));
 	}
 
 	/**

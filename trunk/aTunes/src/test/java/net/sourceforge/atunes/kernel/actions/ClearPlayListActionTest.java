@@ -20,13 +20,12 @@
 
 package net.sourceforge.atunes.kernel.actions;
 
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import net.sourceforge.atunes.model.IConfirmationDialog;
-import net.sourceforge.atunes.model.IConfirmationDialogFactory;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IPlayListHandler;
 
 import org.junit.Test;
@@ -38,15 +37,10 @@ public class ClearPlayListActionTest {
 		ClearPlayListAction sut = new ClearPlayListAction();
 		IPlayListHandler playListHandler = mock(IPlayListHandler.class);
 		final IConfirmationDialog dialog = mock(IConfirmationDialog.class);
-		when(dialog.showDialog(any(String.class))).thenReturn(true);
-		IConfirmationDialogFactory factory = new IConfirmationDialogFactory() {
-			
-			@Override
-			public IConfirmationDialog getDialog() {
-				return dialog;
-			}
-		};
-		sut.setConfirmationDialogFactory(factory);
+		when(dialog.userAccepted()).thenReturn(true);
+		IDialogFactory dialogFactory = mock(IDialogFactory.class);
+		when(dialogFactory.newDialog(IConfirmationDialog.class)).thenReturn(dialog);
+		sut.setDialogFactory(dialogFactory);
 		sut.setPlayListHandler(playListHandler);
 		
 		sut.executeAction();
@@ -59,15 +53,10 @@ public class ClearPlayListActionTest {
 		ClearPlayListAction sut = new ClearPlayListAction();
 		IPlayListHandler playListHandler = mock(IPlayListHandler.class);
 		final IConfirmationDialog dialog = mock(IConfirmationDialog.class);
-		when(dialog.showDialog(any(String.class))).thenReturn(false);
-		IConfirmationDialogFactory factory = new IConfirmationDialogFactory() {
-			
-			@Override
-			public IConfirmationDialog getDialog() {
-				return dialog;
-			}
-		};
-		sut.setConfirmationDialogFactory(factory);
+		when(dialog.userAccepted()).thenReturn(false);
+		IDialogFactory dialogFactory = mock(IDialogFactory.class);
+		when(dialogFactory.newDialog(IConfirmationDialog.class)).thenReturn(dialog);
+		sut.setDialogFactory(dialogFactory);
 		sut.setPlayListHandler(playListHandler);
 		
 		sut.executeAction();

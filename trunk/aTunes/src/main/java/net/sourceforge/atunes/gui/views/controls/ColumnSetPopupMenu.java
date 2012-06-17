@@ -33,6 +33,7 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.AbstractCommonColumnModel;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.model.IColumnSelectorDialog;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 public class ColumnSetPopupMenu {
@@ -65,7 +66,7 @@ public class ColumnSetPopupMenu {
         @Override
         public void actionPerformed(ActionEvent e) {
             // Show column selector
-        	IColumnSelectorDialog selector = Context.getBean(IColumnSelectorDialog.class);
+        	IColumnSelectorDialog selector = Context.getBean(IDialogFactory.class).newDialog(IColumnSelectorDialog.class);
             selector.setColumnSetToSelect(model.getColumnSet());
             selector.showDialog();
 

@@ -18,13 +18,15 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.gui.views.dialogs.properties;
 
-public interface IExportOptionsDialogFactory {
+import net.sourceforge.atunes.model.ILocalAudioObject;
 
-	/**
-	 * Get a new dialog
-	 * @return
-	 */
-	IExportOptionsDialog getDialog();
+interface IValueProvider {
+	
+	String getLabel();
+	
+	String getValue(ILocalAudioObject audioObject);
+	
+	String getClearValue(ILocalAudioObject audioObject);
 }

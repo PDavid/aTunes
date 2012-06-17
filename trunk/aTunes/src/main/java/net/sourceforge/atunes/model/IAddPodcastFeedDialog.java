@@ -26,18 +26,12 @@ package net.sourceforge.atunes.model;
  * @author alex
  *
  */
-public interface IAddPodcastFeedDialog {
+public interface IAddPodcastFeedDialog extends IDialog {
 
 	/**
 	 * Gets the podcast feed.
 	 * 
 	 * @return the podcast feed
 	 */
-	public IPodcastFeed getPodcastFeed();
-
-	/**
-	 * Shows dialog
-	 */
-	public void showDialog();
-
+	IPodcastFeed getPodcastFeed();
 }

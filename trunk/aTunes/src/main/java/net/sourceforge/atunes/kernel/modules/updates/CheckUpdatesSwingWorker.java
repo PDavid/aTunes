@@ -27,16 +27,17 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.model.ApplicationVersion;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.IMessageDialogFactory;
+import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.IUpdateDialog;
 import net.sourceforge.atunes.model.IUpdateHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 
-final class CheckUpdatesSwingWorker extends
-		SwingWorker<ApplicationVersion, Void> {
+final class CheckUpdatesSwingWorker extends SwingWorker<ApplicationVersion, Void> {
+	
 	/**
 	 * 
 	 */
@@ -79,7 +80,7 @@ final class CheckUpdatesSwingWorker extends
 	                 frame.showNewVersionInfo(true, version);
 	             }
 	        } else if (showNoNewVersion) {
-	            Context.getBean(IMessageDialogFactory.class).getDialog().showMessage(I18nUtils.getString("NOT_NEW_VERSION"));
+	            Context.getBean(IDialogFactory.class).newDialog(IMessageDialog.class).showMessage(I18nUtils.getString("NOT_NEW_VERSION"));
 	        }
 	    } catch (InterruptedException e) {
 	        Logger.error(e);

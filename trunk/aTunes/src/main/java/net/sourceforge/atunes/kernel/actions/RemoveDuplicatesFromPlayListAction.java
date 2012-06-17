@@ -30,8 +30,8 @@ import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectDuplicateFinder;
 import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
-import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.IPlayList;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -77,13 +77,20 @@ public class RemoveDuplicatesFromPlayListAction extends CustomAbstractAction {
 
     private IPlayListHandler playListHandler;
     
-    private IIndeterminateProgressDialogFactory indeterminateProgressDialogFactory;
-    
     private IBackgroundWorkerFactory backgroundWorkerFactory;
     
 	private IIndeterminateProgressDialog dialog;
 
 	private IAudioObjectDuplicateFinder audioObjectDuplicateFinder;
+	
+	private IDialogFactory dialogFactory;
+	
+	/**
+	 * @param dialog
+	 */
+	public void setDialog(IIndeterminateProgressDialog dialog) {
+		this.dialog = dialog;
+	}
 	
 	/**
 	 * @param audioObjectDuplicateFinder
@@ -97,13 +104,6 @@ public class RemoveDuplicatesFromPlayListAction extends CustomAbstractAction {
      */
     public void setBackgroundWorkerFactory(IBackgroundWorkerFactory backgroundWorkerFactory) {
 		this.backgroundWorkerFactory = backgroundWorkerFactory;
-	}
-    
-    /**
-     * @param indeterminateProgressDialogFactory
-     */
-    public void setIndeterminateProgressDialogFactory(IIndeterminateProgressDialogFactory indeterminateProgressDialogFactory) {
-		this.indeterminateProgressDialogFactory = indeterminateProgressDialogFactory;
 	}
     
     /**
@@ -124,7 +124,7 @@ public class RemoveDuplicatesFromPlayListAction extends CustomAbstractAction {
         worker.setActionsAfterBackgroundStarted(new Runnable() {
         	@Override
         	public void run() {
-        		dialog = indeterminateProgressDialogFactory.newDialog();
+        		dialog = dialogFactory.newIndeterminateProgressDialog();
         		dialog.showDialog();
         	}
         });

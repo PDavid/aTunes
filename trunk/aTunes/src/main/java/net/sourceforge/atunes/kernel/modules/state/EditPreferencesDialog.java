@@ -28,17 +28,15 @@ import java.awt.Insets;
 import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListModel;
 
-import net.sourceforge.atunes.gui.AbstractListCellRendererCode;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CloseAction;
+import net.sourceforge.atunes.model.IDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -46,7 +44,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * General characteristics of the preference dialog
  */
-public final class EditPreferencesDialog extends AbstractCustomDialog {
+public final class EditPreferencesDialog extends AbstractCustomDialog implements IDialog {
 
     private static final long serialVersionUID = -4759149194433605946L;
 
@@ -63,14 +61,22 @@ public final class EditPreferencesDialog extends AbstractCustomDialog {
     public EditPreferencesDialog(IFrame frame) {
         super(frame, 800, 600, true, CloseAction.DISPOSE);
     }
-    
-    /**
-     * Initializes dialog
-     */
+
+    @Override
     public void initialize() {
         setResizable(true);
         setTitle(I18nUtils.getString("PREFERENCES"));
         add(getContent(getLookAndFeel()));
+    }
+    
+    @Override
+    public void showDialog() {
+    	setVisible(true);
+    }
+    
+    @Override
+    public void hideDialog() {
+    	setVisible(false);
     }
 
     /**
@@ -189,14 +195,5 @@ public final class EditPreferencesDialog extends AbstractCustomDialog {
     	for (AbstractPreferencesPanel panel : this.panels) {
     		panel.setDirty(false);
     	}
-    }
-
-    private static class PreferencesListCellRendererCode extends AbstractListCellRendererCode<JLabel, AbstractPreferencesPanel> {
-        @Override
-        public JComponent getComponent(JLabel label, JList list, AbstractPreferencesPanel p, int index, boolean isSelected, boolean cellHasFocus) {
-            label.setText(p.getTitle());
-            label.setIcon(p.getIcon());
-            return label;
-        }
     }    
 }

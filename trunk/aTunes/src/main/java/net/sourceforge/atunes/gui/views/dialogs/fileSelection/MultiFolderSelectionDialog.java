@@ -18,7 +18,7 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.dialogs;
+package net.sourceforge.atunes.gui.views.dialogs.fileSelection;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -80,10 +80,9 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
     private int checkBoxWidth = new JCheckBox().getPreferredSize().width;
 
     private final class SetTreeSwingWorker extends SwingWorker<CheckNode, Void> {
-		private final class FileSystemTreeTreeWillExpandListener implements
-				TreeWillExpandListener {
-			private final class TreeWillExpandSwingWorker extends
-					SwingWorker<List<CheckNode>, Void> {
+		private final class FileSystemTreeTreeWillExpandListener implements TreeWillExpandListener {
+			
+			private final class TreeWillExpandSwingWorker extends SwingWorker<List<CheckNode>, Void> {
 				private final CheckNode selectedNode;
 
 				private TreeWillExpandSwingWorker(CheckNode selectedNode) {
@@ -95,13 +94,13 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
 
 				    List<CheckNode> result = new ArrayList<CheckNode>();
 
-				    Directory dir = (Directory) selectedNode.getUserObject();
+				    MultiFolderSelectionDialogDirectory dir = (MultiFolderSelectionDialogDirectory) selectedNode.getUserObject();
 				    File[] files = fsView.getFiles(dir.getFile(), true);
 				    Arrays.sort(files);
 				    for (File f : files) {
 				    	// Show only file system elements with path
 				    	if (!"".equals(f.getPath().trim()) && !f.isFile()) {
-				    		CheckNode treeNode2 = new CheckNode(new Directory(f, fsView.getSystemDisplayName(f)), fsView.getSystemIcon(f));
+				    		CheckNode treeNode2 = new CheckNode(new MultiFolderSelectionDialogDirectory(f, fsView.getSystemDisplayName(f)), fsView.getSystemIcon(f));
 				    		result.add(treeNode2);
 				    		File[] subfolders = f.listFiles();
 				    		if (subfolders != null && subfolders.length > 0 && hasDirectories(subfolders, fsView)) {
@@ -204,7 +203,7 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
 		    CheckNode root = new CheckNode();
 
 		    for (File f : roots) {
-		        CheckNode treeNode = new CheckNode(new Directory(f, fsView.getSystemDisplayName(f)), fsView.getSystemIcon(f));
+		        CheckNode treeNode = new CheckNode(new MultiFolderSelectionDialogDirectory(f, fsView.getSystemDisplayName(f)), fsView.getSystemIcon(f));
 		        root.add(treeNode);
 		        File[] files = fsView.getFiles(f, true);
 		        Arrays.sort(files);
@@ -212,7 +211,7 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
 		            File[] f2Childs = f2.listFiles();
 		            if (f2Childs != null && f2Childs.length > 0) {
 		                boolean hasDirs = hasDirectories(f2Childs, fsView);
-		                CheckNode treeNode2 = new CheckNode(new Directory(f2, fsView.getSystemDisplayName(f2)), fsView.getSystemIcon(f2));
+		                CheckNode treeNode2 = new CheckNode(new MultiFolderSelectionDialogDirectory(f2, fsView.getSystemDisplayName(f2)), fsView.getSystemIcon(f2));
 		                treeNode.add(treeNode2);
 		                if (hasDirs) {
 		                    treeNode2.add(new DefaultMutableTreeNode(I18nUtils.getString("PLEASE_WAIT") + "..."));
@@ -264,7 +263,7 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
         private boolean enabled = true;
 
         /** The dir. */
-        private Directory dir;
+        private MultiFolderSelectionDialogDirectory dir;
 
         /** The icon. */
         private Icon icon;
@@ -297,7 +296,7 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
         public CheckNode(Object userObject, boolean allowsChildren, Icon icon) {
             super(userObject, allowsChildren);
             this.setIcon(icon);
-            this.setDir((Directory) userObject);
+            this.setDir((MultiFolderSelectionDialogDirectory) userObject);
             if (this.getDir() != null && selectedFolders.contains(this.getDir().getFile())) {
                 setSelected(true);
             }
@@ -371,14 +370,14 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
         /**
          * @param dir
          */
-        public final void setDir(Directory dir) {
+        public final void setDir(MultiFolderSelectionDialogDirectory dir) {
             this.dir = dir;
         }
 
         /**
          * @return
          */
-        public final Directory getDir() {
+        public final MultiFolderSelectionDialogDirectory getDir() {
             return dir;
         }
 
@@ -405,8 +404,8 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
 			        labelComponent.setFont(tree.getFont());
 			        labelComponent.setText(stringValue);
 			        labelComponent.setForeground(superComponent.getForeground());
-			        if (((CheckNode) value).getUserObject() instanceof Directory) {
-			            Directory content = (Directory) ((CheckNode) value).getUserObject();
+			        if (((CheckNode) value).getUserObject() instanceof MultiFolderSelectionDialogDirectory) {
+			            MultiFolderSelectionDialogDirectory content = (MultiFolderSelectionDialogDirectory) ((CheckNode) value).getUserObject();
 			            labelComponent.setIcon(((CheckNode) value).getIcon());
 			            if (isInPathOfSelectedFolders(content.getFile()) || ((CheckNode) value).isSelected()) {
 			                labelComponent.setFont(labelComponent.getFont().deriveFont(Font.BOLD));
@@ -460,44 +459,6 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
 
     }
 
-    /**
-     * The Class Directory.
-     */
-    private static class Directory {
-
-        /** The file. */
-        private File file;
-        /** The display name. */
-        private String displayName;
-
-        /**
-         * Instantiates a new directory.
-         * 
-         * @param file
-         *            the file
-         * @param displayName
-         *            the name that should be displayed
-         */
-        Directory(File file, String displayName) {
-            this.setFile(file);
-            this.displayName = displayName;
-        }
-
-        @Override
-        public String toString() {
-            return displayName;
-        }
-
-        public final void setFile(File file) {
-            this.file = file;
-        }
-
-        public File getFile() {
-            return file;
-        }
-
-    }
-
     private static final long serialVersionUID = -1612490779910952274L;
 
     /** The fs view. */
@@ -518,8 +479,8 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
     /** The folders selected. */
     private List<File> selectedFolders;
 
-    /** The cancelled. */
-    private boolean cancelled = true;
+    /** The canceled. */
+    private boolean canceled = true;
     
     private IOSManager osManager;
 
@@ -527,15 +488,24 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
      * Instantiates a new multi folder selection dialog.
      * 
      * @param frame
+     */
+    public MultiFolderSelectionDialog(IFrame frame) {
+        super(frame, 460, 530, true, CloseAction.DISPOSE);
+    }
+
+    /**
      * @param osManager
      */
-    public MultiFolderSelectionDialog(IFrame frame, IOSManager osManager) {
-        super(frame, 460, 530, true, CloseAction.DISPOSE);
-        this.osManager = osManager;
+    public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
+    
+    @Override
+    public void initialize() {
         add(getContent(getLookAndFeel()));
         setResizable(false);
     }
-
+    
     /**
      * Gets the content.
      * 
@@ -555,7 +525,7 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                cancelled = false;
+                canceled = false;
                 dispose();
             }
         });
@@ -586,20 +556,14 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
         return panel;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IMultiFolderSelectionDialog#getSelectedFolders()
-	 */
     @Override
 	public List<File> getSelectedFolders() {
         return selectedFolders;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IMultiFolderSelectionDialog#isCancelled()
-	 */
     @Override
 	public boolean isCancelled() {
-        return cancelled;
+        return canceled;
     }
 
     /**
@@ -620,9 +584,6 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
         return false;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IMultiFolderSelectionDialog#setText(java.lang.String)
-	 */
     @Override
 	public void setText(String text) {
         this.text.setText(text);
@@ -662,18 +623,24 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
         return false;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IMultiFolderSelectionDialog#showDialog(java.util.List)
-	 */
     @Override
-	public void showDialog(List<File> selectedFolders) {
-        this.cancelled = true;
+    public void setSelectedFolders(List<File> selectedFolders) {
         if (selectedFolders == null) {
             this.selectedFolders = new ArrayList<File>();
         } else {
             this.selectedFolders = selectedFolders;
         }
+    }
+    
+    @Override
+	public void showDialog() {
+        this.canceled = true;
         setTree();
         setVisible(true);
+    }
+    
+    @Override
+    public void hideDialog() {
+    	setVisible(false);
     }
 }

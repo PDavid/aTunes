@@ -22,7 +22,7 @@ package net.sourceforge.atunes.model;
 
 import java.awt.Image;
 
-public interface IRepositoryProgressDialog {
+public interface IRepositoryProgressDialog extends IDialog {
 
 	/**
 	 * Sets current task being performed
@@ -83,16 +83,6 @@ public interface IRepositoryProgressDialog {
 	public void setButtonsVisible(boolean visible);
 
 	/**
-	 * Shows dialog
-	 */
-	public void showProgressDialog();
-
-	/**
-	 * Hides dialog
-	 */
-	public void hideProgressDialog();
-
-	/**
 	 * Sets image to show
 	 * @param image
 	 */
@@ -103,5 +93,4 @@ public interface IRepositoryProgressDialog {
 	 * @return
 	 */
 	public boolean isVisible();
-
 }

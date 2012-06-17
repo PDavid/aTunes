@@ -18,23 +18,19 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.kernel.modules.statistics;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import javax.swing.table.DefaultTableModel;
 
-public class InputDialogFactory implements IInputDialogFactory, ApplicationContextAware {
+final class StatsDialogDefaultTableModel extends DefaultTableModel {
+    private static final long serialVersionUID = 0L;
 
-	private ApplicationContext context;
-	
-	@Override
-	public IInputDialog getDialog() {
-		return this.context.getBean(IInputDialog.class);
-	}
+    StatsDialogDefaultTableModel(Object[][] data, Object[] columnNames) {
+        super(data, columnNames);
+    }
 
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) {
-		this.context = applicationContext;
-	}
-
+    @Override
+    public boolean isCellEditable(int row, int column) {
+        return false;
+    }
 }

@@ -57,4 +57,19 @@ public class MessageDialog implements IMessageDialog {
         dialog.setVisible(true);
         return pane.getValue();
     }
+    
+    @Override
+    public void hideDialog() {
+    	throw new UnsupportedOperationException();
+    }
+    
+    @Override
+    public void showDialog() {
+    	throw new UnsupportedOperationException();
+    }
+    
+    @Override
+    public void initialize() {
+    	// Do nothing
+    }
 }

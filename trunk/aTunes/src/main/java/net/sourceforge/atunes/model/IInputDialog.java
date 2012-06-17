@@ -25,27 +25,23 @@ package net.sourceforge.atunes.model;
  * @author alex
  *
  */
-public interface IInputDialog {
+public interface IInputDialog extends IDialog {
 
 	/**
 	 * Sets title
 	 * @param title
 	 */
-	public void setTitle(String title);
+	void setTitle(String title);
 	
 	/**
 	 * Gets the result.
 	 * 
 	 * @return the result
 	 */
-	public String getResult();
-
+	String getResult();
+	
 	/**
-	 * Show.
-	 * 
 	 * @param text
-	 *            the text
 	 */
-	public void showDialog(String text);
-
+	void setText(String text);
 }
