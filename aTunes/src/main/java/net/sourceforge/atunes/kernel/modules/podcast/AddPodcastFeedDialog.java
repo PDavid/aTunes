@@ -70,10 +70,16 @@ public final class AddPodcastFeedDialog extends AbstractCustomDialog implements 
     /**
      * Initializes dialog
      */
+    @Override
     public void initialize() {
         setTitle(I18nUtils.getString("ADD_PODCAST_FEED"));
         setResizable(false);
         add(getContent());
+    }
+    
+    @Override
+    public void hideDialog() {
+    	setVisible(false);
     }
     
     /**

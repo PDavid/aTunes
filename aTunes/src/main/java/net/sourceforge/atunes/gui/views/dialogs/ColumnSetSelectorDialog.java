@@ -119,8 +119,8 @@ public final class ColumnSetSelectorDialog extends AbstractCustomDialog implemen
          */
         public void moveDown(int columnPos) {
             // Get this column and previous
-            IColumn columnSelected = columns.get(columnPos);
-            IColumn nextColumn = columns.get(columnPos + 1);
+            IColumn<?> columnSelected = columns.get(columnPos);
+            IColumn<?> nextColumn = columns.get(columnPos + 1);
 
             // Swap order
             int aux = columnSelected.getOrder();
@@ -151,8 +151,8 @@ public final class ColumnSetSelectorDialog extends AbstractCustomDialog implemen
          */
         public void moveUp(int columnPos) {
             // Get this column and previous
-            IColumn columnSelected = columns.get(columnPos);
-            IColumn previousColumn = columns.get(columnPos - 1);
+            IColumn<?> columnSelected = columns.get(columnPos);
+            IColumn<?> previousColumn = columns.get(columnPos - 1);
 
             // Swap order
             int aux = columnSelected.getOrder();
@@ -205,6 +205,10 @@ public final class ColumnSetSelectorDialog extends AbstractCustomDialog implemen
      */
     public ColumnSetSelectorDialog(IFrame frame) {
         super(frame, 250, 300, true, CloseAction.DISPOSE);
+    }
+
+    @Override
+    public void initialize() {
         add(getContent(getLookAndFeel()));
         setTitle(I18nUtils.getString("ARRANGE_COLUMNS"));
         setResizable(false);

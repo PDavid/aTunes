@@ -21,100 +21,38 @@
 package net.sourceforge.atunes.gui.views.dialogs.properties;
 
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IAudioObjectImageLocator;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialog;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialogFactory;
-import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
-import net.sourceforge.atunes.model.IOSManager;
-import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
 import net.sourceforge.atunes.model.IPodcastFeedEntry;
-import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRadio;
-import net.sourceforge.atunes.model.IRepositoryHandler;
-import net.sourceforge.atunes.model.IStateCore;
 
 public class AudioObjectPropertiesDialogFactory implements IAudioObjectPropertiesDialogFactory {
 
-	private IFrame frame;
-	
-	private IStateCore stateCore;
-	
-	private IOSManager osManager;
-	
-	private IPlayListHandler playListHandler;
-	
-	private IRepositoryHandler repositoryHandler;
-	
-	private IAudioObjectImageLocator audioObjectImageLocator;
-	
-	private ILocalAudioObjectValidator localAudioObjectValidator;
-	
-	private IProcessFactory processFactory;
+	private IDialogFactory dialogFactory;
 	
     @Override
 	public IAudioObjectPropertiesDialog newInstance(IAudioObject a, IPlayerHandler playerHandler) {
     	AudioObjectPropertiesDialog dialog = null;
     	if (a instanceof IPodcastFeedEntry) {
-    		dialog = new PodcastFeedEntryPropertiesDialog((IPodcastFeedEntry) a, frame, stateCore);
+    		dialog = dialogFactory.newDialog("podcastFeedEntryPropertiesDialog", AudioObjectPropertiesDialog.class);
     	} else if (a instanceof IRadio) {
-    		dialog = new RadioPropertiesDialog((IRadio) a, frame);
+    		dialog = dialogFactory.newDialog("radioPropertiesDialog", AudioObjectPropertiesDialog.class);
     	} else if (a instanceof ILocalAudioObject) {
-    		dialog = new LocalAudioObjectPropertiesDialog((ILocalAudioObject) a, frame, osManager, playListHandler, repositoryHandler, audioObjectImageLocator, localAudioObjectValidator, processFactory);
+    		dialog = dialogFactory.newDialog("localAudioObjectPropertiesDialog", AudioObjectPropertiesDialog.class);
     	}
     	if (dialog != null) {
     		dialog.setAudioObject(a);
     	}
-    	return dialog;
+		return dialog;
     }
     
-    
     /**
-     * @param stateCore
+     * @param dialogFactory
      */
-    public void setStateCore(IStateCore stateCore) {
-		this.stateCore = stateCore;
-	}
-
-    /**
-     * @param localAudioObjectValidator
-     */
-    public void setLocalAudioObjectValidator(ILocalAudioObjectValidator localAudioObjectValidator) {
-		this.localAudioObjectValidator = localAudioObjectValidator;
-	}
-    
-	@Override
-	public void setFrame(IFrame frame) {
-		this.frame = frame;
-	}
-
-	@Override
-	public void setOsManager(IOSManager osManager) {
-		this.osManager = osManager;
-	}
-	
-	@Override
-	public void setPlayListHandler(IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
-	}
-	
-	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
-		this.repositoryHandler = repositoryHandler;
-	}
-	
-	/**
-	 * @param audioObjectImageLocator
-	 */
-	public void setAudioObjectImageLocator(IAudioObjectImageLocator audioObjectImageLocator) {
-		this.audioObjectImageLocator = audioObjectImageLocator;
-	}
-	
-	/**
-	 * @param processFactory
-	 */
-	public void setProcessFactory(IProcessFactory processFactory) {
-		this.processFactory = processFactory;
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
 	}
 }

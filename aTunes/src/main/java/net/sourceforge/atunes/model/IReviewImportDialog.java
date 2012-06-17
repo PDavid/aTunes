@@ -29,27 +29,29 @@ import java.util.List;
  * @author alex
  *
  */
-public interface IReviewImportDialog {
+public interface IReviewImportDialog extends IDialog {
 
 	/**
 	 * @return the dialogCancelled
 	 */
-	public boolean isDialogCancelled();
+	boolean isDialogCancelled();
 
 	/**
-	 * Shows dialog with given data
-	 * 
+	 * Folders to review
 	 * @param folders
-	 * @param files
 	 */
-	public void showDialog(List<File> folders,
-			List<ILocalAudioObject> filesToLoad);
-
+	void setFolders(List<File> folders);
+	
+	/**
+	 * Files to load
+	 * @param filesToLoad
+	 */
+	void setFilesToLoad(List<ILocalAudioObject> filesToLoad);
+	
 	/**
 	 * Returns result of reviewing tags
 	 * 
 	 * @return
 	 */
-	public ITagAttributesReviewed getResult();
-
+	ITagAttributesReviewed getResult();
 }

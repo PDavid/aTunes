@@ -34,6 +34,7 @@ import javax.swing.ListSelectionModel;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CloseAction;
+import net.sourceforge.atunes.model.IDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -44,7 +45,7 @@ import org.jdesktop.swingx.JXTreeTable;
 /**
  * The Class RadioBrowserDialog.
  */
-public final class RadioBrowserDialog extends AbstractCustomDialog {
+public final class RadioBrowserDialog extends AbstractCustomDialog implements IDialog {
 
     private static final long serialVersionUID = 8523236886848649698L;
 
@@ -68,14 +69,22 @@ public final class RadioBrowserDialog extends AbstractCustomDialog {
 		this.radioMediumIcon = radioMediumIcon;
 	}
     
-    /**
-     * Initializes dialog
-     */
+    @Override
     public void initialize() {
         setTitle(I18nUtils.getString("RADIO_BROWSER"));
         setContent(getLookAndFeel());
     }
 
+    @Override
+    public void hideDialog() {
+    	setVisible(false);
+    }
+    
+    @Override
+    public void showDialog() {
+    	setVisible(true);
+    }
+    
     /**
      * Sets the content.
      * @param iLookAndFeel 

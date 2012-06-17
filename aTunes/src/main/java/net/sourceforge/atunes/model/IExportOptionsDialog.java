@@ -26,25 +26,20 @@ package net.sourceforge.atunes.model;
  * @author alex
  *
  */
-public interface IExportOptionsDialog {
+public interface IExportOptionsDialog extends IDialog {
 
 	/**
 	 * Gets the export location.
 	 * 
 	 * @return the export location
 	 */
-	public String getExportLocation();
-
-	/**
-	 * Shows dialog
-	 */
-	public void startDialog();
+	String getExportLocation();
 
 	/**
 	 * Returns if dialog has been canceled
 	 * @return the cancel
 	 */
-	public boolean isCancel();
+	boolean isCancel();
 
 	/**
 	 * Returns <code>true</code> if user selected to export current navigator
@@ -52,6 +47,6 @@ public interface IExportOptionsDialog {
 	 * 
 	 * @return
 	 */
-	public boolean isExportNavigatorSelection();
+	boolean isExportNavigatorSelection();
 
 }

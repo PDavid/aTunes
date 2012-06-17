@@ -28,6 +28,7 @@ import java.util.List;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.AbstractHandler;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.INetworkHandler;
@@ -69,6 +70,15 @@ public final class RadioHandler extends AbstractHandler implements IRadioHandler
     private INavigationHandler navigationHandler;
     
     private XMLSerializerService xmlSerializerService;
+    
+    private IDialogFactory dialogFactory;
+    
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
     
     /**
      * @param xmlSerializerService
@@ -112,7 +122,7 @@ public final class RadioHandler extends AbstractHandler implements IRadioHandler
     
     @Override
 	public void addRadio() {
-        IRadioDialog dialog = getBean(IRadioDialog.class);
+        IRadioDialog dialog = dialogFactory.newDialog(IRadioDialog.class);
         dialog.showDialog();
         IRadio radio = dialog.getRadio();
         if (radio != null) {
@@ -317,12 +327,12 @@ public final class RadioHandler extends AbstractHandler implements IRadioHandler
     
 	@Override
 	public void showRadioBrowser() {
-		new RadioBrowserDialogController(getBean(RadioBrowserDialog.class), this).showRadioBrowser();
+		new RadioBrowserDialogController(dialogFactory.newDialog(RadioBrowserDialog.class), this).showRadioBrowser();
 	}
 
 	@Override
 	public IRadio editRadio(IRadio radio) {
-		IRadioDialog dialog = getBean(IRadioDialog.class);
+		IRadioDialog dialog = dialogFactory.newDialog(IRadioDialog.class);
 		dialog.setRadio(radio);
 		dialog.showDialog();
 		return dialog.getRadio();

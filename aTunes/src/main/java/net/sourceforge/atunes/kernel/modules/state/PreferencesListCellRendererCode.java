@@ -18,23 +18,19 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.kernel.modules.state;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JList;
 
-public class ErrorDialogFactory implements IErrorDialogFactory, ApplicationContextAware {
+import net.sourceforge.atunes.gui.AbstractListCellRendererCode;
 
-	private ApplicationContext context;
-	
-	@Override
-	public IErrorDialog getDialog() {
-		return this.context.getBean(IErrorDialog.class);
-	}
-
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) {
-		this.context = applicationContext;
-	}
-
+class PreferencesListCellRendererCode extends AbstractListCellRendererCode<JLabel, AbstractPreferencesPanel> {
+    @Override
+    public JComponent getComponent(JLabel label, JList list, AbstractPreferencesPanel p, int index, boolean isSelected, boolean cellHasFocus) {
+        label.setText(p.getTitle());
+        label.setIcon(p.getIcon());
+        return label;
+    }
 }

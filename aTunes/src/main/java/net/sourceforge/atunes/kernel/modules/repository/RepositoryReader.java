@@ -36,10 +36,10 @@ import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.dialogs.RepositorySelectionInfoDialog;
 import net.sourceforge.atunes.model.IBackgroundWorker;
 import net.sourceforge.atunes.model.IBackgroundWorkerFactory;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
-import net.sourceforge.atunes.model.IMessageDialogFactory;
+import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
-import net.sourceforge.atunes.model.IMultiFolderSelectionDialogFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IRepository;
 import net.sourceforge.atunes.model.IRepositoryLoader;
@@ -66,9 +66,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 
 	private IRepository repositoryRetrievedFromCache = null;
 
-	private IMessageDialogFactory messageDialogFactory;
-
-	private IMultiFolderSelectionDialogFactory multiFolderSelectionDialogFactory;
+	private IDialogFactory dialogFactory;
 
 	private IRepositoryProgressDialog repositoryProgressDialog;
 
@@ -93,12 +91,13 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	private IBackgroundWorkerFactory backgroundWorkerFactory;
 
 	/**
-	 * @param repositoryProgressDialog
+	 * @param dialogFactory
 	 */
-	public void setRepositoryProgressDialog(IRepositoryProgressDialog repositoryProgressDialog) {
-		this.repositoryProgressDialog = repositoryProgressDialog;
+	public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+		this.repositoryProgressDialog = dialogFactory.newDialog(IRepositoryProgressDialog.class);
 	}
-
+	
 	/**
 	 * @param backgroundWorkerFactory
 	 */
@@ -153,20 +152,6 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	 */
 	public void setFrame(IFrame frame) {
 		this.frame = frame;
-	}
-
-	/**
-	 * @param multiFolderSelectionDialogFactory
-	 */
-	public void setMultiFolderSelectionDialogFactory(IMultiFolderSelectionDialogFactory multiFolderSelectionDialogFactory) {
-		this.multiFolderSelectionDialogFactory = multiFolderSelectionDialogFactory;
-	}
-
-	/**
-	 * @param messageDialogFactory
-	 */
-	public void setMessageDialogFactory(IMessageDialogFactory messageDialogFactory) {
-		this.messageDialogFactory = messageDialogFactory;
 	}
 
 	/**
@@ -230,7 +215,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	private void askUserForRepository(final IRepository rep) {
 		Object selection;
 		do {
-			selection = messageDialogFactory.getDialog().
+			selection = dialogFactory.newDialog(IMessageDialog.class).
 			showMessage(StringUtils.getString(I18nUtils.getString("REPOSITORY_NOT_FOUND"), ": ", rep.getRepositoryFolders().get(0)),
 					I18nUtils.getString("REPOSITORY_NOT_FOUND"), JOptionPane.WARNING_MESSAGE,
 					new String[] { I18nUtils.getString("RETRY"), I18nUtils.getString("SELECT_REPOSITORY"), I18nUtils.getString("EXIT") });
@@ -256,7 +241,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 			for (String f : lastRepositoryFolders) {
 				foldersToRead.add(new File(f));
 			}
-			messageDialogFactory.getDialog().showMessage(I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"));
+			dialogFactory.newDialog(IMessageDialog.class).showMessage(I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"));
 			retrieve(foldersToRead);
 		} else {
 			RepositorySelectionInfoDialog dialog = new RepositorySelectionInfoDialog(frame.getFrame());
@@ -276,10 +261,11 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	 * @return true, if successful
 	 */
 	boolean selectRepository(boolean repositoryNotFound) {
-		IMultiFolderSelectionDialog dialog = multiFolderSelectionDialogFactory.getDialog();
+		IMultiFolderSelectionDialog dialog = (IMultiFolderSelectionDialog) dialogFactory.newDialog(IMultiFolderSelectionDialog.class);
 		dialog.setTitle(I18nUtils.getString("SELECT_REPOSITORY"));
 		dialog.setText(I18nUtils.getString("SELECT_REPOSITORY_FOLDERS"));
-		dialog.showDialog((repository != null && !repositoryNotFound) ? repository.getRepositoryFolders() : null);
+		dialog.setSelectedFolders((repository != null && !repositoryNotFound) ? repository.getRepositoryFolders() : null);
+		dialog.showDialog();
 		if (!dialog.isCancelled()) {
 			List<File> folders = dialog.getSelectedFolders();
 			if (!folders.isEmpty()) {
@@ -293,7 +279,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	private boolean retrieve(List<File> folders) {
 		repositoryActions.enableRepositoryActions(false);
 		// Start with indeterminate dialog
-		repositoryProgressDialog.showProgressDialog();
+		repositoryProgressDialog.showDialog();
 		repositoryProgressDialog.setProgressBarIndeterminate(true);
 		frame.getProgressBar().setIndeterminate(true);
 		filesLoaded = 0;
@@ -488,14 +474,14 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	public void doInBackground() {
 		if (currentLoader != null) {
 			backgroundLoad = true;
-			repositoryProgressDialog.hideProgressDialog();
+			repositoryProgressDialog.hideDialog();
 			frame.showProgressBar(false, StringUtils.getString(I18nUtils.getString("LOADING"), "..."));
 			frame.getProgressBar().addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					backgroundLoad = false;
 					frame.hideProgressBar();
-					repositoryProgressDialog.showProgressDialog();
+					repositoryProgressDialog.showDialog();
 					frame.getProgressBar().removeMouseListener(this);
 				};
 			});
@@ -516,7 +502,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 	 * Notify finish repository read.
 	 */
 	private void repositoryReadCompleted() {
-		repositoryProgressDialog.hideProgressDialog();
+		repositoryProgressDialog.hideDialog();
 		repositoryHandler.setRepository(repository);
 		repositoryActions.enableRepositoryActions(true);
 		showRepositoryDataHelper.showRepositoryAudioFileNumber(repository.getFiles().size(), repository.getTotalSizeInBytes(), repository.getTotalDurationInSeconds());

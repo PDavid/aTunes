@@ -29,13 +29,13 @@ import javax.swing.ImageIcon;
  * @author alex
  *
  */
-public interface IProgressDialog {
+public interface IProgressDialog extends IDialog {
 
 	/**
 	 * Sets title of dialog
 	 * @param title
 	 */
-	public void setTitle(String title);
+	void setTitle(String title);
 	
 	/**
 	 * Sets the info text.
@@ -43,7 +43,7 @@ public interface IProgressDialog {
 	 * @param s
 	 *            the new info text
 	 */
-	public void setInfoText(String s);
+	void setInfoText(String s);
 
 	/**
 	 * Sets the progress bar value
@@ -51,19 +51,19 @@ public interface IProgressDialog {
 	 * @param value
 	 *            the new progress
 	 */
-	public void setProgressBarValue(int value);
+	void setProgressBarValue(int value);
 
 	/**
 	 * Sets the  progress.
 	 * 
 	 */
-	public void setCurrentProgress(long value);
+	void setCurrentProgress(long value);
 
 	/**
 	 * Sets the total.
 	 * 
 	 */
-	public void setTotalProgress(long value);
+	void setTotalProgress(long value);
 
 	/**
 	 * Adds the cancel button action listener.
@@ -71,28 +71,17 @@ public interface IProgressDialog {
 	 * @param a
 	 *            the a
 	 */
-	public void addCancelButtonActionListener(ActionListener a);
+	void addCancelButtonActionListener(ActionListener a);
 
 	/**
 	 * Disables cancel button
 	 */
-	public void disableCancelButton();
+	void disableCancelButton();
 
 	/**
 	 * Overrides default icon
 	 * 
 	 * @param icon
 	 */
-	public void setIcon(ImageIcon icon);
-
-	/**
-	 * Shows dialog
-	 */
-	public void showDialog();
-
-	/**
-	 * Hides dialog
-	 */
-	public void hideDialog();
-
+	void setIcon(ImageIcon icon);
 }

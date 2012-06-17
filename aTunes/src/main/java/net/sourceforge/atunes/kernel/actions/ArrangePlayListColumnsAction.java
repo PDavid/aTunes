@@ -22,7 +22,7 @@ package net.sourceforge.atunes.kernel.actions;
 
 import net.sourceforge.atunes.gui.AbstractCommonColumnModel;
 import net.sourceforge.atunes.model.IColumnSelectorDialog;
-import net.sourceforge.atunes.model.IColumnSelectorDialogFactory;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IPlayListTable;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -39,15 +39,15 @@ public class ArrangePlayListColumnsAction extends CustomAbstractAction {
      */
     private static final long serialVersionUID = 3866441529401824151L;
 
-    private IColumnSelectorDialogFactory columnSelectorDialogFactory;
+    private IDialogFactory dialogFactory;
     
     private IPlayListTable playListTable;
-    
+
     /**
-     * @param columnSelectorDialogFactory
+     * @param dialogFactory
      */
-    public void setColumnSelectorDialogFactory(IColumnSelectorDialogFactory columnSelectorDialogFactory) {
-		this.columnSelectorDialogFactory = columnSelectorDialogFactory;
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
 	}
     
     /**
@@ -57,6 +57,9 @@ public class ArrangePlayListColumnsAction extends CustomAbstractAction {
 		this.playListTable = playListTable;
 	}
     
+    /**
+     * Default constructor
+     */
     public ArrangePlayListColumnsAction() {
         super(I18nUtils.getString("ARRANGE_COLUMNS"));
     }
@@ -66,7 +69,7 @@ public class ArrangePlayListColumnsAction extends CustomAbstractAction {
     	AbstractCommonColumnModel model = (AbstractCommonColumnModel) playListTable.getColumnModel();
     	
         // Show column selector
-    	IColumnSelectorDialog selector = columnSelectorDialogFactory.createDialog();
+    	IColumnSelectorDialog selector = dialogFactory.newDialog(IColumnSelectorDialog.class);
         selector.setColumnSetToSelect(model.getColumnSet());
         selector.showDialog();
 

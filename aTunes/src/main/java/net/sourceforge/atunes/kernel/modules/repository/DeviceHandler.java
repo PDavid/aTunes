@@ -49,13 +49,14 @@ import net.sourceforge.atunes.kernel.actions.SynchronizeDeviceWithPlayListAction
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IConfirmationDialogFactory;
+import net.sourceforge.atunes.model.IConfirmationDialog;
 import net.sourceforge.atunes.model.ICustomFileSelectionDialog;
 import net.sourceforge.atunes.model.IDeviceHandler;
-import net.sourceforge.atunes.model.IErrorDialogFactory;
+import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectTransferProcess;
-import net.sourceforge.atunes.model.IMessageDialogFactory;
+import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IProcessFactory;
@@ -78,12 +79,11 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public final class DeviceHandler extends AbstractHandler implements IDeviceHandler {
 
-    private final class CopyFilesToDeviceProcessListener implements
-			IProcessListener {
+    private final class CopyFilesToDeviceProcessListener implements IProcessListener {
+    	
 		private final ILocalAudioObjectTransferProcess process;
 
-		private CopyFilesToDeviceProcessListener(
-				ILocalAudioObjectTransferProcess process) {
+		private CopyFilesToDeviceProcessListener(ILocalAudioObjectTransferProcess process) {
 			this.process = process;
 		}
 
@@ -101,7 +101,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 		            refreshDevice();
 		            filesCopiedToDevice = process.getFilesTransferred().size();
 		            if (!ok) {
-		            	getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(I18nUtils.getString("ERRORS_IN_EXPORT_PROCESS"));
+		            	dialogFactory.newDialog(IErrorDialog.class).showErrorDialog(I18nUtils.getString("ERRORS_IN_EXPORT_PROCESS"));
 		            }
 		        }
 		    });
@@ -132,6 +132,15 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
     private IStateRepository stateRepository;
     
     private IStateDevice stateDevice;
+    
+    private IDialogFactory dialogFactory;
+    
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
     
     /**
      * @param stateDevice
@@ -240,7 +249,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
         // Not enough space avaible
         if (leaveFree > deviceFreeSpace) {
             Logger.debug(I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
-            getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
+            dialogFactory.newDialog(IErrorDialog.class).showErrorDialog(I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE"));
             return;
         }
 
@@ -305,13 +314,13 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 
         // Check if there is enough free space on device
         if (size > deviceFreeSpace) {
-        	boolean truncate = getBean(IConfirmationDialogFactory.class).getDialog().showDialog(
-        			String.format("%1s%n%2s"
-        					, I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE")
-        					, I18nUtils.getString("TRUNCATE_COPYLIST")
-        			));
+        	IConfirmationDialog dialog = dialogFactory.newDialog(IConfirmationDialog.class);
+        	dialog.setMessage(String.format("%1s%n%2s"
+					, I18nUtils.getString("NOT_ENOUGH_SPACE_ON_DEVICE")
+					, I18nUtils.getString("TRUNCATE_COPYLIST")));
+        	dialog.showDialog();
         	//If so truncate the list and continue
-        	if (truncate) {
+        	if (dialog.userAccepted()) {
         		Collection<ILocalAudioObject> toCopy = new LinkedList<ILocalAudioObject>();
         		size = 0;
         		long fileSize = 0;
@@ -363,7 +372,10 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
 			SwingUtilities.invokeAndWait(new Runnable() {
 				@Override
 				public void run() {
-			        if (getBean(IConfirmationDialogFactory.class).getDialog().showDialog(I18nUtils.getString("DEVICE_CONNECT_CONFIRMATION"))) {
+					IConfirmationDialog dialog = dialogFactory.newDialog(IConfirmationDialog.class);
+					dialog.setMessage(I18nUtils.getString("DEVICE_CONNECT_CONFIRMATION"));
+					dialog.showDialog();
+			        if (dialog.userAccepted()) {
 			        	getFrame().showProgressBar(true, null);
 			            DeviceHandler.this.retrieveDevice(new File(location));
 			        } else {
@@ -401,7 +413,7 @@ public final class DeviceHandler extends AbstractHandler implements IDeviceHandl
     	        getBean(SynchronizeDeviceWithPlayListAction.class).setEnabled(false);
     	        getBean(CopyPlayListToDeviceAction.class).setEnabled(false);
     	        getFrame().showDeviceInfo(false);
-    	        getBean(IMessageDialogFactory.class).getDialog().showMessage(I18nUtils.getString("DEVICE_DISCONNECTION_DETECTED"));		    
+    	        dialogFactory.newDialog(IMessageDialog.class).showMessage(I18nUtils.getString("DEVICE_DISCONNECTION_DETECTED"));		    
     		}
     	});
 

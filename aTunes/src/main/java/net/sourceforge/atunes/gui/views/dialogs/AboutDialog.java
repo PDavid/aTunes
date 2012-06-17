@@ -93,6 +93,7 @@ public final class AboutDialog extends AbstractCustomDialog implements IAboutDia
     /**
      * Initializes dialog after finishing setting dependencies
      */
+    @Override
     public void initialize() {
         add(getContent(getLookAndFeel()));
         setResizable(false);    	
@@ -218,5 +219,10 @@ public final class AboutDialog extends AbstractCustomDialog implements IAboutDia
     @Override
     public void showDialog() {
     	setVisible(true);
+    }
+    
+    @Override
+    public void hideDialog() {
+    	setVisible(false);
     }
 }

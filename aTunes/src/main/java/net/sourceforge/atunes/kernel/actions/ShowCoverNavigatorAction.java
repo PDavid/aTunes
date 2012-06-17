@@ -23,12 +23,10 @@ package net.sourceforge.atunes.kernel.actions;
 import net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorDialog;
 import net.sourceforge.atunes.kernel.modules.covernavigator.CoverNavigatorController;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IProcessFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
-
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
 /**
  * This action shows cover navigator
@@ -36,7 +34,7 @@ import org.springframework.context.ApplicationContextAware;
  * @author fleax
  * 
  */
-public class ShowCoverNavigatorAction extends CustomAbstractAction implements ApplicationContextAware {
+public class ShowCoverNavigatorAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 4927892497869144235L;
 
@@ -46,7 +44,14 @@ public class ShowCoverNavigatorAction extends CustomAbstractAction implements Ap
     
     private IProcessFactory processFactory;
     
-    private ApplicationContext context;
+    private IDialogFactory dialogFactory;
+    
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
     
     /**
      * @param processFactory
@@ -69,11 +74,6 @@ public class ShowCoverNavigatorAction extends CustomAbstractAction implements Ap
 		this.repositoryHandler = repositoryHandler;
 	}
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) {
-    	this.context = applicationContext;
-    }
-    
     /**
      * Default constructor
      */
@@ -84,7 +84,7 @@ public class ShowCoverNavigatorAction extends CustomAbstractAction implements Ap
 
     @Override
     protected void executeAction() {
-        CoverNavigatorDialog coverNavigator = context.getBean(CoverNavigatorDialog.class); 
+        CoverNavigatorDialog coverNavigator = dialogFactory.newDialog(CoverNavigatorDialog.class); 
         coverNavigator.setArtists(repositoryHandler.getArtists());
         new CoverNavigatorController(coverNavigator, audioObjectImageLocator, processFactory);
         coverNavigator.setVisible(true);

@@ -23,8 +23,8 @@ package net.sourceforge.atunes.kernel.actions;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IInputDialog;
-import net.sourceforge.atunes.model.IInputDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
@@ -40,7 +40,14 @@ public class RenameAudioFileInNavigationTableAction extends CustomAbstractAction
     
     private IRepositoryHandler repositoryHandler;
     
-    private IInputDialogFactory inputDialogFactory;
+    private IDialogFactory dialogFactory;
+    
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
     
     /**
      * @param navigationHandler
@@ -57,12 +64,8 @@ public class RenameAudioFileInNavigationTableAction extends CustomAbstractAction
 	}
     
     /**
-     * @param inputDialogFactory
+     * Default constructor
      */
-    public void setInputDialogFactory(IInputDialogFactory inputDialogFactory) {
-		this.inputDialogFactory = inputDialogFactory;
-	}
-    
     public RenameAudioFileInNavigationTableAction() {
         super(I18nUtils.getString("RENAME_AUDIO_FILE_NAME"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("RENAME_AUDIO_FILE_NAME"));
@@ -73,9 +76,10 @@ public class RenameAudioFileInNavigationTableAction extends CustomAbstractAction
         List<IAudioObject> audioFiles = navigationHandler.getFilesSelectedInNavigator();
         if (audioFiles.size() == 1 && audioFiles.get(0) instanceof ILocalAudioObject) {
         	ILocalAudioObject ao = (ILocalAudioObject) audioFiles.get(0);
-            IInputDialog dialog = inputDialogFactory.getDialog();
+            IInputDialog dialog = dialogFactory.newDialog(IInputDialog.class);
             dialog.setTitle(I18nUtils.getString("RENAME_AUDIO_FILE_NAME"));
-            dialog.showDialog(FilenameUtils.getBaseName(ao.getFile().getAbsolutePath()));
+            dialog.setText(FilenameUtils.getBaseName(ao.getFile().getAbsolutePath()));
+            dialog.showDialog();
             String name = dialog.getResult();
             if (name != null && !name.isEmpty()) {
             	repositoryHandler.rename(ao, name);

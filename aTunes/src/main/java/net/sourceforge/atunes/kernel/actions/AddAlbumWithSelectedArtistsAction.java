@@ -27,6 +27,7 @@ import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IArtistAlbumSelectorDialog;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -46,14 +47,13 @@ public class AddAlbumWithSelectedArtistsAction extends AbstractActionOverSelecte
     
     private IPlayListHandler playListHandler;
     
-    private IArtistAlbumSelectorDialog artistAlbumSelectorDialog;
-    
+    private IDialogFactory dialogFactory;
+
     /**
-     * @param artistAlbumSelectorDialog
+     * @param dialogFactory
      */
-    public void setArtistAlbumSelectorDialog(
-			IArtistAlbumSelectorDialog artistAlbumSelectorDialog) {
-		this.artistAlbumSelectorDialog = artistAlbumSelectorDialog;
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
 	}
     
     /**
@@ -100,7 +100,9 @@ public class AddAlbumWithSelectedArtistsAction extends AbstractActionOverSelecte
     }
     
 	private void showAddArtistDragDialog(IArtist currentArtist) {
-    	IAlbum album = artistAlbumSelectorDialog.showDialog(currentArtist);
+		IArtistAlbumSelectorDialog dialog = dialogFactory.newDialog(IArtistAlbumSelectorDialog.class);
+		dialog.showDialog();
+    	IAlbum album = dialog.getAlbum(); 
     	if (album != null) {
     		playListHandler.addToPlayList(album.getAudioObjects());
     	}

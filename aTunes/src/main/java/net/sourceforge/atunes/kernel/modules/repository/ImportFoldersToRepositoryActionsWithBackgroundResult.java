@@ -23,10 +23,9 @@ package net.sourceforge.atunes.kernel.modules.repository;
 import java.io.File;
 import java.util.List;
 
-import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.kernel.modules.process.ImportFilesProcess;
 import net.sourceforge.atunes.model.IBackgroundWorker.IActionsWithBackgroundResult;
-import net.sourceforge.atunes.model.IErrorDialogFactory;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IProcessFactory;
@@ -40,10 +39,18 @@ public class ImportFoldersToRepositoryActionsWithBackgroundResult implements IAc
 	private IRepositoryHandler repositoryHandler;
 	private List<File> folders;
 	private String path;
-	private IErrorDialogFactory errorDialogFactory;
 	private IProcessFactory processFactory;
 	private IStateRepository stateRepository;
 	private IIndeterminateProgressDialog indeterminateProgressDialog;
+	
+	private IDialogFactory dialogFactory;
+	
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
 
 	/**
 	 * @param repositoryHandler
@@ -74,13 +81,6 @@ public class ImportFoldersToRepositoryActionsWithBackgroundResult implements IAc
 	}
 
 	/**
-	 * @param errorDialogFactory
-	 */
-	public void setErrorDialogFactory(IErrorDialogFactory errorDialogFactory) {
-		this.errorDialogFactory = errorDialogFactory;
-	}
-
-	/**
 	 * @param processFactory
 	 */
 	public void setProcessFactory(IProcessFactory processFactory) {
@@ -93,8 +93,10 @@ public class ImportFoldersToRepositoryActionsWithBackgroundResult implements IAc
 		ITagAttributesReviewed tagAttributesReviewed = null;
 		// Review tags if selected in settings
 		if (stateRepository.isReviewTagsBeforeImport()) {
-			IReviewImportDialog reviewImportDialog = Context.getBean(IReviewImportDialog.class);
-			reviewImportDialog.showDialog(folders, result);
+			IReviewImportDialog reviewImportDialog = dialogFactory.newDialog(IReviewImportDialog.class);
+			reviewImportDialog.setFolders(folders);
+			reviewImportDialog.setFilesToLoad(result);
+			reviewImportDialog.showDialog();
 			if (reviewImportDialog.isDialogCancelled()) {
 				return;
 			}
@@ -106,7 +108,7 @@ public class ImportFoldersToRepositoryActionsWithBackgroundResult implements IAc
 		process.setFolders(folders);
 		process.setDestination(path);
 		process.initialize(tagAttributesReviewed);
-		process.addProcessListener(new ImportFilesProcessListener(process, repositoryHandler, errorDialogFactory));
+		process.addProcessListener(new ImportFilesProcessListener(process, repositoryHandler, dialogFactory));
 		process.execute();
 	}
 

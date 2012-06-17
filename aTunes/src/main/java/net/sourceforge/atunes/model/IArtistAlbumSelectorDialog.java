@@ -27,13 +27,16 @@ package net.sourceforge.atunes.model;
  * @author alex
  *
  */
-public interface IArtistAlbumSelectorDialog {
-
+public interface IArtistAlbumSelectorDialog extends IDialog {
+	
 	/**
-	 * Shows dialog and returns album selected
+	 * Set artist to select albums
 	 * @param artist
-	 * @return
 	 */
-	public IAlbum showDialog(IArtist artist);
-
+	void setArtist(IArtist artist);
+	
+	/**
+	 * @return selected album
+	 */
+	IAlbum getAlbum();
 }

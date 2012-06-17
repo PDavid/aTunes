@@ -37,6 +37,7 @@ import java.util.concurrent.ScheduledFuture;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IAddPodcastFeedDialog;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IIconFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -100,6 +101,15 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
     private IStateUI stateUI;
     
     private IStatePodcast statePodcast;
+    
+    private IDialogFactory dialogFactory;
+    
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
     
     /**
      * @param statePodcast
@@ -167,12 +177,9 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
         startPodcastFeedEntryRetriever();
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.kernel.modules.podcast.IPodcastFeedHandler#addPodcastFeed()
-	 */
     @Override
 	public void addPodcastFeed() {
-    	IAddPodcastFeedDialog dialog = getBean(IAddPodcastFeedDialog.class);
+    	IAddPodcastFeedDialog dialog = dialogFactory.newDialog(IAddPodcastFeedDialog.class);
     	dialog.showDialog();    	
         IPodcastFeed podcastFeed = dialog.getPodcastFeed(); 
         if (podcastFeed != null) {
@@ -340,7 +347,7 @@ public final class PodcastFeedHandler extends AbstractHandler implements IPodcas
         if (isDownloading(podcastFeedEntry)) {
             return;
         }
-        final IProgressDialog d = (IProgressDialog) getBean("transferDialog");
+        final IProgressDialog d = dialogFactory.newDialog("transferDialog", IProgressDialog.class);
         d.setTitle(I18nUtils.getString("PODCAST_FEED_ENTRY_DOWNLOAD"));
         d.setIcon(rssMediumIcon.getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls()));
         final PodcastFeedEntryDownloader downloadPodcastFeedEntry = new PodcastFeedEntryDownloader(podcastFeedEntry, (ITable)getBean("navigationTable"), this, networkHandler);

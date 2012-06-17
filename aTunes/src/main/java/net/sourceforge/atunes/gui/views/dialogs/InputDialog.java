@@ -50,6 +50,8 @@ public final class InputDialog extends AbstractCustomDialog implements IInputDia
 
     /** The result. */
     private String result = null;
+    
+    private String text;
 
     /**
      * Instantiates a new input dialog.
@@ -58,6 +60,10 @@ public final class InputDialog extends AbstractCustomDialog implements IInputDia
      */
     public InputDialog(IFrame frame) {
         super(frame, 400, 130, true, CloseAction.DISPOSE);
+    }
+    
+    @Override
+    public void initialize() {
         setResizable(false);
         JPanel panel = new JPanel(new GridBagLayout());
         textField = new CustomTextField();
@@ -79,7 +85,16 @@ public final class InputDialog extends AbstractCustomDialog implements IInputDia
                 dispose();
             }
         });
-        GridBagConstraints c = new GridBagConstraints();
+        arrangePanel(panel, okButton, cancelButton);
+    }
+
+	/**
+	 * @param panel
+	 * @param okButton
+	 * @param cancelButton
+	 */
+	private void arrangePanel(JPanel panel, JButton okButton, JButton cancelButton) {
+		GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 1;
@@ -96,25 +111,28 @@ public final class InputDialog extends AbstractCustomDialog implements IInputDia
         panel.add(auxPanel, c);
         add(panel);
         getRootPane().setDefaultButton(okButton);
-    }
+	}
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IInputDialog#getResult()
-	 */
     @Override
 	public String getResult() {
         return result;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IInputDialog#showDialog(java.lang.String)
-	 */
     @Override
-	public void showDialog(String text) {
+    public void setText(String text) {
+    	this.text = text;
+    }
+    
+    @Override
+	public void showDialog() {
         textField.setText(text);
         textField.setSelectionStart(0);
         textField.setSelectionEnd(text != null ? text.length() : 0);
         setVisible(true);
     }
-
+    
+    @Override
+    public void hideDialog() {
+    	setVisible(false);
+    }
 }

@@ -27,44 +27,39 @@ import java.io.File;
  * @author alex
  *
  */
-public interface ICustomFileSelectionDialog {
+public interface ICustomFileSelectionDialog extends IDialog {
 
 	/**
 	 * Sets title
 	 * @param title
 	 */
-	public void setTitle(String title);
+	void setTitle(String title);
 	
 	/**
 	 * Only selects folders, not files
 	 * @param directoryOnly
 	 */
-	public void setDirectoryOnly(boolean directoryOnly);
+	void setDirectoryOnly(boolean directoryOnly);
 	
 	/**
 	 * Gets the selected dir.
 	 * 
 	 * @return the selected dir
 	 */
-	public File getSelectedDir();
+	File getSelectedDir();
 
 	/**
 	 * Gets the selected files.
 	 * 
 	 * @return the selected files
 	 */
-	public File[] getSelectedFiles();
+	File[] getSelectedFiles();
 
 	/**
 	 * Checks if is canceled.
 	 * 
 	 * @return true, if is canceled
 	 */
-	public boolean isCanceled();
-
-	/**
-	 * Start dialog.
-	 */
-	public void showDialog();
+	boolean isCanceled();
 
 }

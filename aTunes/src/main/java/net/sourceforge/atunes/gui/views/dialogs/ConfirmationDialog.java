@@ -32,6 +32,13 @@ public class ConfirmationDialog implements IConfirmationDialog {
 	private IFrame frame;
 
 	private boolean result;
+	
+	private String message;
+	
+	@Override
+	public void setMessage(String message) {
+		this.message = message;
+	}
 
 	@Override
 	public void setFrame(IFrame frame) {
@@ -39,14 +46,27 @@ public class ConfirmationDialog implements IConfirmationDialog {
 	}
 
 	@Override
-	public boolean showDialog(final String message) {
+	public void showDialog() {
 		GuiUtils.callInEventDispatchThreadAndWait(new Runnable() {
 			@Override
 			public void run() {
 				result = JOptionPane.showConfirmDialog(frame.getFrame(), message, I18nUtils.getString("CONFIRMATION"), JOptionPane.YES_NO_OPTION) == JOptionPane.OK_OPTION;
 			}
 		});
+	}
+	
+	@Override
+	public boolean userAccepted() {
 		return result;
 	}
 
+	@Override
+	public void hideDialog() {
+		// Not used
+	}
+	
+	@Override
+	public void initialize() {
+		// Not used
+	}
 }

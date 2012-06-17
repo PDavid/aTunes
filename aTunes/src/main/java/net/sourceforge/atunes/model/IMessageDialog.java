@@ -28,13 +28,13 @@ import java.awt.Component;
  * @author alex
  *
  */
-public interface IMessageDialog {
+public interface IMessageDialog extends IDialog {
 
 	/**
 	 * Show message for principal frame
 	 * @param message
 	 */
-	public void showMessage(String message);
+	void showMessage(String message);
 
 	/**
 	 * Show message
@@ -42,7 +42,7 @@ public interface IMessageDialog {
 	 * @param message
 	 *            the message
 	 */
-	public void showMessage(String message, Component owner);
+	void showMessage(String message, Component owner);
 
 	/**
 	 * Shows a custom message dialog.
@@ -52,6 +52,6 @@ public interface IMessageDialog {
 	 * @param options array of objects to be shown on buttons
 	 * @return Selected object
 	 */
-	public Object showMessage(String message, String title, int messageType, Object[] options);
+	Object showMessage(String message, String title, int messageType, Object[] options);
 
 }

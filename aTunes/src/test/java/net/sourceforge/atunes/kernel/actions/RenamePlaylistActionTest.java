@@ -24,8 +24,8 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IInputDialog;
-import net.sourceforge.atunes.model.IInputDialogFactory;
 import net.sourceforge.atunes.model.IPlayListHandler;
 
 import org.junit.Test;
@@ -38,10 +38,10 @@ public class RenamePlaylistActionTest {
 		IPlayListHandler playListHandler = mock(IPlayListHandler.class);
 		sut.setPlayListHandler(playListHandler);
 		
-		IInputDialogFactory dialogFactory = mock(IInputDialogFactory.class);
+		IDialogFactory dialogFactory = mock(IDialogFactory.class);
 		IInputDialog dialog = mock(IInputDialog.class);
-		when(dialogFactory.getDialog()).thenReturn(dialog);
-		sut.setInputDialogFactory(dialogFactory);
+		when(dialogFactory.newDialog(IInputDialog.class)).thenReturn(dialog);
+		sut.setDialogFactory(dialogFactory);
 		
 		sut.executeAction();
 		

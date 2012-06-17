@@ -30,10 +30,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.model.IDeviceHandler;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
-import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
-import net.sourceforge.atunes.model.IMessageDialogFactory;
+import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayListObjectFilter;
 import net.sourceforge.atunes.model.IProcessListener;
@@ -55,10 +55,6 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 	
 	private static final long serialVersionUID = -1885495996370465881L;
 	
-	private IIndeterminateProgressDialogFactory indeterminateProgressDialogFactory;
-	
-	private IMessageDialogFactory messageDialogFactory;
-	
 	private IDeviceHandler deviceHandler;
 	
 	private IPlayListHandler playListHandler;
@@ -68,6 +64,15 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
     private IPlayListObjectFilter<ILocalAudioObject> playListLocalAudioObjectFilter;
     
     private IStateDevice stateDevice;
+    
+    private IDialogFactory dialogFactory;
+    
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
     
     /**
      * @param stateDevice
@@ -104,20 +109,6 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 		this.deviceHandler = deviceHandler;
 	}
 	
-	/**
-	 * @param messageDialogFactory
-	 */
-	public void setMessageDialogFactory(IMessageDialogFactory messageDialogFactory) {
-		this.messageDialogFactory = messageDialogFactory;
-	}
-	
-	/**
-	 * @param indeterminateProgressDialogFactory
-	 */
-	public void setIndeterminateProgressDialogFactory(IIndeterminateProgressDialogFactory indeterminateProgressDialogFactory) {
-		this.indeterminateProgressDialogFactory = indeterminateProgressDialogFactory;
-	}
-	
     /**
      * Default constructor
      */
@@ -135,7 +126,7 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
         SwingUtilities.invokeLater(new Runnable() {
         	@Override
         	public void run() {
-        		dialog = indeterminateProgressDialogFactory.newDialog();
+        		dialog = dialogFactory.newIndeterminateProgressDialog();
         		dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
         		dialog.showDialog();
         	}
@@ -147,7 +138,7 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
 	    SwingUtilities.invokeLater(new Runnable() {
 	        @Override
 	        public void run() {
-	        	messageDialogFactory.getDialog().showMessage(
+	        	dialogFactory.newDialog(IMessageDialog.class).showMessage(
 	                    StringUtils.getString(I18nUtils.getString("SYNCHRONIZATION_FINISHED"), " ", I18nUtils.getString("ADDED"), 
 	                    		": ", added ? deviceHandler.getFilesCopiedToDevice() : 0, " ", 
 	                    				I18nUtils.getString("REMOVED"), ": ", filesRemoved));

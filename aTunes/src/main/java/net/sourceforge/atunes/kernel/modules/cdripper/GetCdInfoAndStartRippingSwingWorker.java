@@ -27,7 +27,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.model.IErrorDialogFactory;
+import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.model.IStateRipper;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
@@ -76,7 +77,7 @@ final class GetCdInfoAndStartRippingSwingWorker extends	SwingWorker<CDInfo, Void
 	                @Override
 	                public void run() {
 	                	GetCdInfoAndStartRippingSwingWorker.this.ripperHandler.getIndeterminateProgressDialog().hideDialog();
-	                    Context.getBean(IErrorDialogFactory.class).getDialog().showErrorDialog(I18nUtils.getString("NO_CD_INSERTED"));
+	                    Context.getBean(IDialogFactory.class).newDialog(IErrorDialog.class).showErrorDialog(I18nUtils.getString("NO_CD_INSERTED"));
 	                }
 	            });
 	        }

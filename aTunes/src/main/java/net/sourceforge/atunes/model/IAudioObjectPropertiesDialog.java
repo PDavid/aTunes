@@ -26,17 +26,11 @@ package net.sourceforge.atunes.model;
  * @author alex
  *
  */
-public interface IAudioObjectPropertiesDialog {
+public interface IAudioObjectPropertiesDialog extends IDialog {
 
 	/**
 	 * @param audioObject
 	 *            the audioObject to set
 	 */
-	public void setAudioObject(IAudioObject audioObject);
-
-	/**
-	 * Shows dialog 
-	 */
-	public void showDialog();
-
+	void setAudioObject(IAudioObject audioObject);
 }

@@ -27,7 +27,8 @@ import java.util.List;
 import javax.swing.KeyStroke;
 
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IConfirmationDialogFactory;
+import net.sourceforge.atunes.model.IConfirmationDialog;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -40,15 +41,15 @@ public class ClearPlayListAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 7784228526804232608L;
 
-    private IConfirmationDialogFactory confirmationDialogFactory;
+    private IDialogFactory dialogFactory;
     
     private IPlayListHandler playListHandler;
-    
+
     /**
-     * @param confirmationDialogFactory
+     * @param dialogFactory
      */
-    public void setConfirmationDialogFactory(IConfirmationDialogFactory confirmationDialogFactory) {
-		this.confirmationDialogFactory = confirmationDialogFactory;
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
 	}
     
     /**
@@ -66,7 +67,10 @@ public class ClearPlayListAction extends CustomAbstractAction {
 
     @Override
     protected void executeAction() {
-        if (confirmationDialogFactory.getDialog().showDialog(I18nUtils.getString("CLEAR_PLAYLIST_WARNING"))) {
+    	IConfirmationDialog dialog = dialogFactory.newDialog(IConfirmationDialog.class);
+    	dialog.setMessage(I18nUtils.getString("CLEAR_PLAYLIST_WARNING"));
+    	dialog.showDialog();
+        if (dialog.userAccepted()) {
         	playListHandler.clearPlayList();
         }
     }

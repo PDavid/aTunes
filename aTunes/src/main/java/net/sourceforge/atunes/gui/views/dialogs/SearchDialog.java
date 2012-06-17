@@ -67,21 +67,19 @@ public final class SearchDialog extends AbstractCustomDialog implements ISearchD
      */
     public SearchDialog(IFrame frame) {
         super(frame, 300, 300, true, CloseAction.NOTHING);
+    }
+
+    @Override
+    public void initialize() {
         setResizable(false);
         setContent(getLookAndFeel());
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.ISearchDialog#getResult()
-	 */
     @Override
 	public ISearch getResult() {
         return result;
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.ISearchDialog#isSetAsDefault()
-	 */
     @Override
 	public boolean isSetAsDefault() {
         return setAsDefault;
@@ -129,7 +127,20 @@ public final class SearchDialog extends AbstractCustomDialog implements ISearchD
         auxPanel.add(okButton);
         auxPanel.add(cancelButton);
 
-        GridBagConstraints c = new GridBagConstraints();
+        arrangePanel(panel, text, scrollPane, auxPanel);
+
+        add(panel);
+    }
+
+	/**
+	 * @param panel
+	 * @param text
+	 * @param scrollPane
+	 * @param auxPanel
+	 */
+	private void arrangePanel(JPanel panel, JLabel text,
+			JScrollPane scrollPane, JPanel auxPanel) {
+		GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
         c.insets = new Insets(15, 15, 0, 0);
@@ -149,40 +160,24 @@ public final class SearchDialog extends AbstractCustomDialog implements ISearchD
         c.gridy = 3;
         c.weightx = 1;
         panel.add(auxPanel, c);
+	}
 
-        add(panel);
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.ISearchDialog#setSetAsDefaultVisible(boolean)
-	 */
     @Override
 	public void setSetAsDefaultVisible(boolean setAsDefaultVisible) {
         setAsDefaultCheckBox.setVisible(setAsDefaultVisible);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.awt.Dialog#setVisible(boolean)
-     */
     @Override
     public void setVisible(boolean b) {
         setAsDefaultCheckBox.setSelected(false);
         super.setVisible(b);
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.ISearchDialog#showDialog()
-	 */
     @Override
 	public void showDialog() {
     	setVisible(true);
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.ISearchDialog#hideDialog()
-	 */
     @Override
 	public void hideDialog() {
     	setVisible(false);

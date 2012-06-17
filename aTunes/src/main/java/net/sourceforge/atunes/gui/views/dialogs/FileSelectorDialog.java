@@ -107,4 +107,19 @@ public class FileSelectorDialog implements IFileSelectorDialog {
         }
         return null;
 	}
+	
+	@Override
+	public void hideDialog() {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public void showDialog() {
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public void initialize() {
+		// do nothing
+	}
 }

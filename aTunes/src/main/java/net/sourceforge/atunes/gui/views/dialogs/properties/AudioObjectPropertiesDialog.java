@@ -24,29 +24,24 @@ import java.awt.Dimension;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CloseAction;
-import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class AudioObjectPropertiesDialog extends AbstractCustomDialog implements IAudioObjectPropertiesDialog {
+public abstract class AudioObjectPropertiesDialog extends AbstractCustomDialog implements IAudioObjectPropertiesDialog {
 
     private static final long serialVersionUID = 6097305595858691246L;
 
-    private IAudioObject audioObject;
-
     /**
      * Instantiates a new properties dialog.
-     * @param title
      * @param frame
      */
-    AudioObjectPropertiesDialog(String title, IFrame frame) {
+    AudioObjectPropertiesDialog(IFrame frame) {
         super(frame, 560, 480, true, CloseAction.DISPOSE);
         setMinimumSize(new Dimension(560, 480));
-        setTitle(title);
         setResizable(true);
     }
-
+    
     /**
      * Gets the html formatted.
      * 
@@ -57,37 +52,17 @@ public class AudioObjectPropertiesDialog extends AbstractCustomDialog implements
      * 
      * @return the html formatted
      */
-    static String getHtmlFormatted(String desc, String text) {
+    protected String getHtmlFormatted(String desc, String text) {
         return StringUtils.getString("<html><b>", desc, ": </b>", text, "</html>");
     }
 
-    /**
-     * Gets the html formatted (only a description)
-     * @param desc
-     * @return
-     */
-    static String getHtmlFormatted(String desc) {
-        return StringUtils.getString("<html><b>", desc, ": </b></html>");
-    }
-
-    protected IAudioObject getAudioObject() {
-        return this.audioObject;
-    }
-
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.properties.IAudioObjectPropertiesDialog#setAudioObject(net.sourceforge.atunes.model.IAudioObject)
-	 */
-    @Override
-	public void setAudioObject(IAudioObject audioObject) {
-        this.audioObject = audioObject;
-    }
-    
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.properties.IAudioObjectPropertiesDialog#showDialog()
-	 */
     @Override
 	public void showDialog() {
     	setVisible(true);
     }
-
+    
+    @Override
+    public void hideDialog() {
+    	setVisible(false);
+    }
 }

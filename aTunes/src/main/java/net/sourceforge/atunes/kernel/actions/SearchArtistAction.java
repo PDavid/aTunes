@@ -28,10 +28,10 @@ import javax.swing.tree.TreePath;
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IDesktop;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.ISearch;
 import net.sourceforge.atunes.model.ISearchDialog;
-import net.sourceforge.atunes.model.ISearchDialogFactory;
 import net.sourceforge.atunes.model.IStateCore;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -48,7 +48,7 @@ public class SearchArtistAction extends CustomAbstractAction {
     
     private INavigationHandler navigationHandler;
     
-    private ISearchDialogFactory searchDialogFactory;
+    private IDialogFactory dialogFactory;
     
     private IStateCore stateCore;
     
@@ -67,12 +67,12 @@ public class SearchArtistAction extends CustomAbstractAction {
     public void setStateCore(IStateCore stateCore) {
 		this.stateCore = stateCore;
 	}
-    
+
     /**
-     * @param searchDialogFactory
+     * @param dialogFactory
      */
-    public void setSearchDialogFactory(ISearchDialogFactory searchDialogFactory) {
-		this.searchDialogFactory = searchDialogFactory;
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
 	}
     
     /**
@@ -104,7 +104,7 @@ public class SearchArtistAction extends CustomAbstractAction {
             IArtist a = (IArtist) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
             ISearch search = SearchFactory.getSearchForName(stateCore.getDefaultSearch());
             if (search == null) {
-                ISearchDialog dialog = searchDialogFactory.createDialog();
+                ISearchDialog dialog = dialogFactory.newDialog(ISearchDialog.class);
                 search = navigationHandler.openSearchDialog(dialog, false);
                 if (search != null) {
                 	stateCore.setDefaultSearch(search.toString());

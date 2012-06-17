@@ -23,7 +23,8 @@ package net.sourceforge.atunes.kernel.modules.player;
 import javax.swing.JOptionPane;
 
 import net.sourceforge.atunes.Context;
-import net.sourceforge.atunes.model.IMessageDialogFactory;
+import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IMessageDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -50,7 +51,7 @@ final class ShowPlaybackErrorRunnable implements Runnable {
     	for (String errorMessage : errorMessages) {
     		sb.append(errorMessage).append(" ");
     	}
-        String selection = (String) Context.getBean(IMessageDialogFactory.class).getDialog().showMessage(StringUtils.getString(sb.toString()), I18nUtils.getString("ERROR"),
+        String selection = (String) Context.getBean(IDialogFactory.class).newDialog(IMessageDialog.class).showMessage(StringUtils.getString(sb.toString()), I18nUtils.getString("ERROR"),
                 JOptionPane.ERROR_MESSAGE, new String[] { I18nUtils.getString("IGNORE"), I18nUtils.getString("CANCEL") });
         ignore = selection.equals(I18nUtils.getString("IGNORE"));
     }

@@ -25,7 +25,8 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.model.IDeviceHandler;
-import net.sourceforge.atunes.model.IErrorDialogFactory;
+import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IInputDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -33,6 +34,9 @@ public class FillDeviceWithRandomSongsAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -201250351035880261L;
 
+    /**
+     * Default constructor
+     */
     FillDeviceWithRandomSongsAction() {
         super(I18nUtils.getString("FILL_DEVICE_WITH_RANDOM_SONGS"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("FILL_DEVICE_WITH_RANDOM_SONGS"));
@@ -40,23 +44,30 @@ public class FillDeviceWithRandomSongsAction extends CustomAbstractAction {
 
     private String freeMemory;
     
-    private IInputDialog inputDialog;
-    
     private IDeviceHandler deviceHandler; 
+
+    private IDialogFactory dialogFactory;
     
-    private IErrorDialogFactory errorDialogFactory;
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
     
     @Override
     protected void executeAction() {
         // Ask how much memory should be left free
+    	IInputDialog inputDialog = dialogFactory.newDialog(IInputDialog.class); 
     	inputDialog.setTitle(I18nUtils.getString("MEMORY_TO_LEAVE_FREE"));
-    	inputDialog.showDialog(freeMemory);
+    	inputDialog.setText(freeMemory);
+    	inputDialog.showDialog();
         freeMemory = inputDialog.getResult();
         try {
         	deviceHandler.fillWithRandomSongs(Long.parseLong(freeMemory.trim()));
         } catch (NumberFormatException e) {
             // User did not enter numerical value. Show error dialog
-        	errorDialogFactory.getDialog().showErrorDialog(I18nUtils.getString("ERROR_NO_NUMERICAL_VALUE"));
+        	dialogFactory.newDialog(IErrorDialog.class).showErrorDialog(I18nUtils.getString("ERROR_NO_NUMERICAL_VALUE"));
         }
     }
 
@@ -73,23 +84,9 @@ public class FillDeviceWithRandomSongsAction extends CustomAbstractAction {
 	}
 
 	/**
-	 * @param inputDialog the inputDialog to set
-	 */
-	public void setInputDialog(IInputDialog inputDialog) {
-		this.inputDialog = inputDialog;
-	}
-
-	/**
 	 * @param deviceHandler the deviceHandler to set
 	 */
 	public void setDeviceHandler(IDeviceHandler deviceHandler) {
 		this.deviceHandler = deviceHandler;
-	}
-
-	/**
-	 * @param errorDialogerrorDialogFactory the errorDialogFactory to set
-	 */
-	public void setErrorDialogFactory(IErrorDialogFactory errorDialogFactory) {
-		this.errorDialogFactory = errorDialogFactory;
 	}
 }

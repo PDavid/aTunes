@@ -67,6 +67,10 @@ public final class RadioDialog extends AbstractCustomDialog implements IRadioDia
      */
     public RadioDialog(IFrame frame) {
         super(frame, 500, 200, true, CloseAction.DISPOSE);
+    }
+    
+    @Override
+    public void initialize() {
         setTitle(I18nUtils.getString("ADD_RADIO"));
         setResizable(false);
         add(getContent());
@@ -79,9 +83,6 @@ public final class RadioDialog extends AbstractCustomDialog implements IRadioDia
 		this.radioHandler = radioHandler;
 	}
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IRadioDialog#setRadio(net.sourceforge.atunes.kernel.modules.radio.Radio)
-	 */
     @Override
 	public void setRadio(IRadio radio) {
         setTitle(radio != null ? I18nUtils.getString("EDIT_RADIO") : I18nUtils.getString("ADD_RADIO"));
@@ -188,5 +189,9 @@ public final class RadioDialog extends AbstractCustomDialog implements IRadioDia
     public void showDialog() {
     	setVisible(true);
     }
-
+    
+    @Override
+    public void hideDialog() {
+    	setVisible(false);
+    }
 }

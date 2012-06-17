@@ -25,8 +25,8 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IInputDialog;
-import net.sourceforge.atunes.model.IInputDialogFactory;
 import net.sourceforge.atunes.model.INavigationView;
 import net.sourceforge.atunes.model.IPodcastFeed;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -38,11 +38,18 @@ import net.sourceforge.atunes.utils.I18nUtils;
 public class RenamePodcastFeedAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = 8334487960720117561L;
-
-    private IInputDialogFactory inputDialogFactory;
     
     private INavigationView podcastNavigationView;
+
+    private IDialogFactory dialogFactory;
     
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
+
     /**
      * @param podcastNavigationView
      */
@@ -51,14 +58,7 @@ public class RenamePodcastFeedAction extends CustomAbstractAction {
 	}
     
     /**
-     * @param inputDialogFactory
-     */
-    public void setInputDialogFactory(IInputDialogFactory inputDialogFactory) {
-		this.inputDialogFactory = inputDialogFactory;
-	}
-    
-    /**
-     * 
+     * Default constructor
      */
     public RenamePodcastFeedAction() {
         super(I18nUtils.getString("RENAME_PODCAST_FEED"));
@@ -69,9 +69,10 @@ public class RenamePodcastFeedAction extends CustomAbstractAction {
     protected void executeAction() {
         TreePath path = podcastNavigationView.getTree().getSelectionPath();
         IPodcastFeed podcastFeed = (IPodcastFeed) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-        IInputDialog dialog = inputDialogFactory.getDialog();
+        IInputDialog dialog = dialogFactory.newDialog(IInputDialog.class);
         dialog.setTitle(I18nUtils.getString("RENAME_PODCAST_FEED"));
-        dialog.showDialog(podcastFeed.getName());
+        dialog.setText(podcastFeed.getName());
+        dialog.showDialog();
         String result = dialog.getResult();
         if (result != null) {
             podcastFeed.setName(result);

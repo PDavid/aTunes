@@ -20,11 +20,37 @@
 
 package net.sourceforge.atunes.model;
 
-public interface IErrorDialogFactory {
+import java.awt.Window;
+
+/**
+ * A factory to create dialogs
+ * @author alex
+ *
+ */
+public interface IDialogFactory {
 
 	/**
-	 * Gets a new dialog
+	 * @param dialogClass
+	 * @return new instance of dialog
+	 */
+	<T extends IDialog> T newDialog(Class<T> dialogClass);
+	
+	/**
+	 * @param dialogName
 	 * @return
 	 */
-	IErrorDialog getDialog();
+	<T extends IDialog> T newDialog(String dialogName, Class<T> dialogClass);
+	
+	/**
+	 * Creates indeterminate progress dialog
+	 * @param parent
+	 * @return
+	 */
+	IIndeterminateProgressDialog newIndeterminateProgressDialog(Window parent);
+
+	/**
+	 * Creates indeterminate progress dialog
+	 * @return
+	 */
+	IIndeterminateProgressDialog newIndeterminateProgressDialog();
 }

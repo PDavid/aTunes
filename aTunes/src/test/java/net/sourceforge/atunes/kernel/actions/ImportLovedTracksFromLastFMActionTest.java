@@ -32,13 +32,12 @@ import net.sourceforge.atunes.kernel.modules.repository.data.Album;
 import net.sourceforge.atunes.kernel.modules.repository.data.Artist;
 import net.sourceforge.atunes.kernel.modules.webservices.lastfm.data.LastFmLovedTrack;
 import net.sourceforge.atunes.model.BackgroundWorkerFactoryMock;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFavoritesHandler;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
-import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILovedTrack;
 import net.sourceforge.atunes.model.IMessageDialog;
-import net.sourceforge.atunes.model.IMessageDialogFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 
@@ -87,17 +86,14 @@ public class ImportLovedTracksFromLastFMActionTest {
 		
 		IFavoritesHandler favoritesHandler = mock(IFavoritesHandler.class);
 		
-		IIndeterminateProgressDialogFactory indeterminateProgressDialogFactory = mock(IIndeterminateProgressDialogFactory.class);
-		when(indeterminateProgressDialogFactory.newDialog()).thenReturn(mock(IIndeterminateProgressDialog.class));
-		
-		IMessageDialogFactory messageDialogFactory = mock(IMessageDialogFactory.class);
-		when(messageDialogFactory.getDialog()).thenReturn(mock(IMessageDialog.class));
+		IDialogFactory dialogFactory = mock(IDialogFactory.class);
+		when(dialogFactory.newDialog(IMessageDialog.class)).thenReturn(mock(IMessageDialog.class));
+		when(dialogFactory.newIndeterminateProgressDialog()).thenReturn(mock(IIndeterminateProgressDialog.class));
 		
 		sut.setWebServicesHandler(webServicesHandler);
 		sut.setRepositoryHandler(repositoryHandler);
 		sut.setFavoritesHandler(favoritesHandler);
-		sut.setIndeterminateProgressDialogFactory(indeterminateProgressDialogFactory);
-		sut.setMessageDialogFactory(messageDialogFactory);
+		sut.setDialogFactory(dialogFactory);
 		
 		sut.executeAction();
 		

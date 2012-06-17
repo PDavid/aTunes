@@ -28,26 +28,27 @@ import java.util.List;
  * @author alex
  *
  */
-public interface IMultiFolderSelectionDialog {
+public interface IMultiFolderSelectionDialog extends IDialog {
 
 	/**
 	 * Sets title of dialog
 	 * @param title
 	 */
-	public void setTitle(String title);
+	void setTitle(String title);
+	
 	/**
 	 * Gets the selected folders.
 	 * 
 	 * @return the selected folders
 	 */
-	public List<File> getSelectedFolders();
+	List<File> getSelectedFolders();
 
 	/**
 	 * Checks if is cancelled.
 	 * 
 	 * @return true, if is cancelled
 	 */
-	public boolean isCancelled();
+	boolean isCancelled();
 
 	/**
 	 * Sets the text.
@@ -55,14 +56,11 @@ public interface IMultiFolderSelectionDialog {
 	 * @param text
 	 *            the new text
 	 */
-	public void setText(String text);
+	void setText(String text);
 
 	/**
-	 * Start dialog.
-	 * 
 	 * @param selectedFolders
-	 *            the selected folders
 	 */
-	public void showDialog(List<File> selectedFolders);
-
+	void setSelectedFolders(List<File> selectedFolders);
+	
 }

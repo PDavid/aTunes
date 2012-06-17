@@ -18,13 +18,19 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.gui.views.dialogs.properties;
 
-public interface IConfirmationDialogFactory {
+import net.sourceforge.atunes.model.ILocalAudioObject;
 
-	/**
-	 * Returns a new IConfirmationDialog
-	 * @return
-	 */
-	public IConfirmationDialog getDialog();
+class FileNameProvider extends AbstractFieldProvider {
+
+	@Override
+	public String getI18Name() {
+		return "FILE";
+	}
+
+	@Override
+	public String getClearValue(ILocalAudioObject file) {
+		return file.getFile().getName();
+	}
 }

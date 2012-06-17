@@ -29,7 +29,7 @@ import javax.swing.ImageIcon;
  * @author alex
  *
  */
-public interface IRipperProgressDialog {
+public interface IRipperProgressDialog extends IDialog {
 
 	/**
 	 * Adds a cancel action to the cancel button.
@@ -106,15 +106,4 @@ public interface IRipperProgressDialog {
 	 *            the new total progress value
 	 */
 	public void setTotalProgressValue(int value);
-	
-	/**
-	 * Shows dialog
-	 */
-	public void showDialog();
-	
-	/**
-	 * Hides dialog
-	 */
-	public void hideDialog();
-
 }

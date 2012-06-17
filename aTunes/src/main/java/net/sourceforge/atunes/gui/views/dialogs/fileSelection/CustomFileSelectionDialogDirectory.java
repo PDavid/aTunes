@@ -18,13 +18,37 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.gui.views.dialogs.fileSelection;
 
-public interface IMessageDialogFactory {
+import java.io.File;
 
-	/**
-	 * Returns message dialog
-	 * @return
-	 */
-	IMessageDialog getDialog();
+/**
+ * The Class Directory.
+ */
+class CustomFileSelectionDialogDirectory {
+
+    /** The file. */
+    private File file;
+
+    /**
+     * Instantiates a new directory.
+     * 
+     * @param file
+     *            the file
+     */
+    CustomFileSelectionDialogDirectory(File file) {
+        this.file = file;
+    }
+    
+    /**
+     * @return underlying file
+     */
+    File getFile() {
+		return file;
+	}
+
+    @Override
+    public String toString() {
+        return CustomFileSelectionDialog.fsView.getSystemDisplayName(file);
+    }
 }

@@ -81,21 +81,13 @@ public final class RipperProgressDialog extends AbstractCustomDialog implements 
      */
     public RipperProgressDialog(IFrame frame) {
         super(frame, 420, 200, true, CloseAction.NOTHING);
-        setTitle(I18nUtils.getString("RIPPING_CD"));
-        setResizable(false);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IRipperProgressDialog#addCancelAction(java.awt.event.ActionListener)
-	 */
     @Override
 	public void addCancelAction(ActionListener action) {
         cancelButton.addActionListener(action);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IRipperProgressDialog#setArtistAndAlbum(java.lang.String, java.lang.String)
-	 */
     @Override
 	public void setArtistAndAlbum(String artist, String album) {
         setTitle(StringUtils.getString(I18nUtils.getString("RIPPING_CD"), " ", artist, " - ", album));
@@ -105,6 +97,9 @@ public final class RipperProgressDialog extends AbstractCustomDialog implements 
      * Sets the content.
      */
     public void initialize() {
+        setTitle(I18nUtils.getString("RIPPING_CD"));
+        setResizable(false);
+        
         JPanel panel = new JPanel(new GridBagLayout());
 
         cover = new JLabel(albumBigIcon.getIcon(lookAndFeelManager.getCurrentLookAndFeel().getPaintForSpecialControls()));
@@ -277,9 +272,6 @@ public final class RipperProgressDialog extends AbstractCustomDialog implements 
         setLimits(decodeProgressBar, min, max);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IRipperProgressDialog#setDecodeProgressValue(int)
-	 */
     @Override
 	public void setDecodeProgressValue(int value) {
         if (value < 0) {
@@ -291,9 +283,6 @@ public final class RipperProgressDialog extends AbstractCustomDialog implements 
 
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IRipperProgressDialog#setDecodeProgressValue(java.lang.String)
-	 */
     @Override
 	public void setDecodeProgressValue(String value) {
         decodeProgressValueLabel.setText(value);
@@ -311,9 +300,6 @@ public final class RipperProgressDialog extends AbstractCustomDialog implements 
         setLimits(encodeProgressBar, min, max);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IRipperProgressDialog#setEncodeProgressValue(int)
-	 */
     @Override
 	public void setEncodeProgressValue(int value) {
         if (value < 0) {
@@ -324,9 +310,6 @@ public final class RipperProgressDialog extends AbstractCustomDialog implements 
         }
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IRipperProgressDialog#setEncodeProgressValue(java.lang.String)
-	 */
     @Override
 	public void setEncodeProgressValue(String value) {
         encodeProgressValueLabel.setText(value);
@@ -347,17 +330,11 @@ public final class RipperProgressDialog extends AbstractCustomDialog implements 
         progressBar.setMaximum(max);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IRipperProgressDialog#setTotalProgressBarLimits(int, int)
-	 */
     @Override
 	public void setTotalProgressBarLimits(int min, int max) {
         setLimits(totalProgressBar, min, max);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IRipperProgressDialog#setTotalProgressValue(int)
-	 */
     @Override
 	public void setTotalProgressValue(int value) {
         totalProgressBar.setValue(value);
@@ -374,5 +351,4 @@ public final class RipperProgressDialog extends AbstractCustomDialog implements 
     	setVisible(false);
     	dispose();
     }
-
 }

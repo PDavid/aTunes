@@ -18,23 +18,19 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.gui.views.dialogs.properties;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import net.sourceforge.atunes.model.ILocalAudioObject;
 
-public class ConfirmationDialogFactory implements IConfirmationDialogFactory, ApplicationContextAware {
-
-	private ApplicationContext context;
+class ArtistProvider extends AbstractFieldProvider {
 	
 	@Override
-	public IConfirmationDialog getDialog() {
-		return this.context.getBean(IConfirmationDialog.class);
+	public String getI18Name() {
+		return "ARTIST";
 	}
 
 	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) {
-		this.context = applicationContext;
+	public String getClearValue(ILocalAudioObject file) {
+		return file.getArtist();
 	}
-
 }

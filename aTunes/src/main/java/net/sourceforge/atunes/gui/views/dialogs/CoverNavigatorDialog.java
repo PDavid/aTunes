@@ -40,11 +40,12 @@ import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.gui.views.controls.ScrollableFlowPanel;
 import net.sourceforge.atunes.model.IArtist;
+import net.sourceforge.atunes.model.IDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-public final class CoverNavigatorDialog extends AbstractCustomDialog {
+public final class CoverNavigatorDialog extends AbstractCustomDialog implements IDialog {
 
     private static final long serialVersionUID = -1744765531225480303L;
 
@@ -58,8 +59,22 @@ public final class CoverNavigatorDialog extends AbstractCustomDialog {
      */
     public CoverNavigatorDialog(IFrame frame) {
         super(frame, 800, 550, true, CloseAction.DISPOSE);
+    }
+    
+    @Override
+    public void initialize() {
         setTitle(I18nUtils.getString("COVER_NAVIGATOR"));
         setContent(getLookAndFeel());
+    }
+    
+    @Override
+    public void hideDialog() {
+    	setVisible(false);
+    }
+    
+    @Override
+    public void showDialog() {
+    	setVisible(true);
     }
     
     /**

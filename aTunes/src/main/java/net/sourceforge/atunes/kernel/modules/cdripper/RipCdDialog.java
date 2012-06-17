@@ -42,6 +42,7 @@ import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
+import net.sourceforge.atunes.model.IDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
@@ -50,7 +51,7 @@ import net.sourceforge.atunes.utils.I18nUtils;
 /**
  * The dialog for ripping cds
  */
-public final class RipCdDialog extends AbstractCustomDialog {
+public final class RipCdDialog extends AbstractCustomDialog implements IDialog {
 
     private static final long serialVersionUID = 1987727841297807350L;
 
@@ -86,6 +87,10 @@ public final class RipCdDialog extends AbstractCustomDialog {
      */
     public RipCdDialog(IFrame frame) {
         super(frame, 650, 450, true, CloseAction.DISPOSE);
+    }
+    
+    @Override
+    public void initialize() {
         setTitle(I18nUtils.getString("RIP_CD"));
         setResizable(false);
         add(getContent(getLookAndFeel()));
@@ -555,4 +560,13 @@ public final class RipCdDialog extends AbstractCustomDialog {
         tableModel.fireTableDataChanged();
     }
 
+    @Override
+    public void showDialog() {
+    	setVisible(true);
+    }
+    
+    @Override
+    public void hideDialog() {
+    	setVisible(false);
+    }
 }

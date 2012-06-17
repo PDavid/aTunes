@@ -25,10 +25,10 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.model.IConfirmationDialogFactory;
-import net.sourceforge.atunes.model.IErrorDialogFactory;
+import net.sourceforge.atunes.model.IConfirmationDialog;
+import net.sourceforge.atunes.model.IDialogFactory;
+import net.sourceforge.atunes.model.IErrorDialog;
 import net.sourceforge.atunes.model.IExportOptionsDialog;
-import net.sourceforge.atunes.model.IExportOptionsDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectTransferProcess;
 import net.sourceforge.atunes.model.INavigationHandler;
@@ -47,143 +47,133 @@ import net.sourceforge.atunes.utils.StringUtils;
  */
 public class ExportAction extends CustomAbstractAction {
 
-    private static final long serialVersionUID = -6661702915765846089L;
+	private static final long serialVersionUID = -6661702915765846089L;
 
-    private IExportOptionsDialogFactory exportOptionsDialogFactory;
-    
-    private IConfirmationDialogFactory confirmationDialogFactory;
-    
-    private IErrorDialogFactory errorDialogFactory;
-    
-    private INavigationHandler navigationHandler;
-    
-    private IPlayListHandler playListHandler;
-    
-    private IProcessFactory processFactory;
-    
-    public ExportAction() {
-        super(StringUtils.getString(I18nUtils.getString("EXPORT"), "..."));
-        putValue(SHORT_DESCRIPTION, StringUtils.getString(I18nUtils.getString("EXPORT"), "..."));
-        setEnabled(false); // Initially false, will be enabled after load repository
-    }
+	private IDialogFactory dialogFactory;
 
-    @Override
-    protected void executeAction() {
-        IExportOptionsDialog dialog = exportOptionsDialogFactory.getDialog();
-        dialog.startDialog();
+	private INavigationHandler navigationHandler;
 
-        // If user didn't cancel dialog...
-        if (!dialog.isCancel()) {
-            String path = dialog.getExportLocation();
-            boolean exportNavigator = dialog.isExportNavigatorSelection();
-            if (path != null && !path.trim().equals("")) {
-                boolean pathExists = new File(path).exists();
-                boolean userWantsToCreate = false;
+	private IPlayListHandler playListHandler;
 
-                // If path does not exist, then ask user to create it
-                if (!pathExists && confirmationDialogFactory.getDialog().showDialog(I18nUtils.getString("DIR_NO_EXISTS"))) {
-                	pathExists = new File(path).mkdir();
-                	userWantsToCreate = true;
-                }
+	private IProcessFactory processFactory;
 
-                // If path exists then start export
-                if (pathExists) {
-                    List<ILocalAudioObject> songs;
+	/**
+	 * Constructor
+	 */
+	 public ExportAction() {
+		 super(StringUtils.getString(I18nUtils.getString("EXPORT"), "..."));
+		 putValue(SHORT_DESCRIPTION, StringUtils.getString(I18nUtils.getString("EXPORT"), "..."));
+		 setEnabled(false); // Initially false, will be enabled after load repository
+	 }
 
-                    // If user wants to export navigator ask current navigation view to return selected objects
-                    LocalAudioObjectFilter filter = new LocalAudioObjectFilter();
-                    if (exportNavigator) {
-                        songs = filter.getLocalAudioObjects(navigationHandler.getCurrentView().getSelectedAudioObjects());
-                    } else {
-                        // Get only LocalAudioObject objects of current play list
-                        songs = filter.getLocalAudioObjects(playListHandler.getSelectedAudioObjects());
-                    }
+	 /**
+	  * @param dialogFactory
+	  */
+	 public void setDialogFactory(IDialogFactory dialogFactory) {
+		 this.dialogFactory = dialogFactory;
+	 }
 
-                    ILocalAudioObjectTransferProcess process = (ILocalAudioObjectTransferProcess) processFactory.getProcessByName("exportFilesProcess");
-                    process.setDestination(path);
-                    process.setFilesToTransfer(songs);
-                    ExportProcessListener listener = new ExportProcessListener();
-                    listener.setErrorDialogFactory(errorDialogFactory);
-                    process.addProcessListener(listener);
-                    process.execute();
-                } else if (userWantsToCreate) {
-                    // If path does not exist and app is not able to create it show an error dialog
-                	errorDialogFactory.getDialog().showErrorDialog(I18nUtils.getString("COULD_NOT_CREATE_DIR"));
-                }
-            } else {
-            	errorDialogFactory.getDialog().showErrorDialog(I18nUtils.getString("INCORRECT_EXPORT_PATH"));
-            }
-        }
-    }
-    
-    private static class ExportProcessListener implements IProcessListener {
+	 @Override
+	 protected void executeAction() {
+		 IExportOptionsDialog dialog = dialogFactory.newDialog(IExportOptionsDialog.class);
+		 dialog.showDialog();
 
-    	private IErrorDialogFactory errorDialogFactory;
-    	
-    	/**
-    	 * @param errorDialogFactory
-    	 */
-    	public void setErrorDialogFactory(IErrorDialogFactory errorDialogFactory) {
-			this.errorDialogFactory = errorDialogFactory;
-		}
-    	
-        @Override
-        public void processCanceled() { 
-        	// Nothing to do
-        }
+		 // If user didn't cancel dialog...
+		 if (!dialog.isCancel()) {
+			 String path = dialog.getExportLocation();
+			 boolean exportNavigator = dialog.isExportNavigatorSelection();
+			 if (path != null && !path.trim().equals("")) {
+				 boolean pathExists = new File(path).exists();
+				 boolean userWantsToCreate = false;
 
-        @Override
-        public void processFinished(final boolean ok) {
-            SwingUtilities.invokeLater(new Runnable() {
-            	@Override
-            	public void run() {
-                    if (!ok) {
-                    	errorDialogFactory.getDialog().showErrorDialog(I18nUtils.getString("ERRORS_IN_EXPORT_PROCESS"));
-                    }
-            	}
-            });
-        }
-    }
-    
-    /**
-     * @param exportOptionsDialogFactory
-     */
-    public void setExportOptionsDialogFactory(IExportOptionsDialogFactory exportOptionsDialogFactory) {
-    	this.exportOptionsDialogFactory = exportOptionsDialogFactory;
-	}
-    
-    /**
-     * @param confirmationDialogFactory
-     */
-    public void setConfirmationDialogFactory(IConfirmationDialogFactory confirmationDialogFactory) {
-		this.confirmationDialogFactory = confirmationDialogFactory;
-	}
-    
-    /**
-     * @param errorDialogFactory
-     */
-    public void setErrorDialogFactory(IErrorDialogFactory errorDialogFactory) {
-		this.errorDialogFactory = errorDialogFactory;
-	}
-    
-    /**
-     * @param navigationHandler
-     */
-    public void setNavigationHandler(INavigationHandler navigationHandler) {
-		this.navigationHandler = navigationHandler;
-	}
-    
-    /**
-     * @param playListHandler
-     */
-    public void setPlayListHandler(IPlayListHandler playListHandler) {
-		this.playListHandler = playListHandler;
-	}
-    
-    /**
-     * @param processFactory
-     */
-    public void setProcessFactory(IProcessFactory processFactory) {
-		this.processFactory = processFactory;
-	}
+				 // If path does not exist, then ask user to create it
+				 if (!pathExists) {
+					 IConfirmationDialog confirmationDialog = dialogFactory.newDialog(IConfirmationDialog.class);
+					 confirmationDialog.setMessage(I18nUtils.getString("DIR_NO_EXISTS"));
+					 confirmationDialog.showDialog();
+					 if (confirmationDialog.userAccepted()) {
+						 pathExists = new File(path).mkdir();
+						 userWantsToCreate = true;
+					 }
+				 }
+
+				 // If path exists then start export
+				 if (pathExists) {
+					 List<ILocalAudioObject> songs;
+
+					 // If user wants to export navigator ask current navigation view to return selected objects
+					 LocalAudioObjectFilter filter = new LocalAudioObjectFilter();
+					 if (exportNavigator) {
+						 songs = filter.getLocalAudioObjects(navigationHandler.getCurrentView().getSelectedAudioObjects());
+					 } else {
+						 // Get only LocalAudioObject objects of current play list
+						 songs = filter.getLocalAudioObjects(playListHandler.getSelectedAudioObjects());
+					 }
+
+					 ILocalAudioObjectTransferProcess process = (ILocalAudioObjectTransferProcess) processFactory.getProcessByName("exportFilesProcess");
+					 process.setDestination(path);
+					 process.setFilesToTransfer(songs);
+					 ExportProcessListener listener = new ExportProcessListener();
+					 listener.setDialogFactory(dialogFactory);
+					 process.addProcessListener(listener);
+					 process.execute();
+				 } else if (userWantsToCreate) {
+					 // If path does not exist and app is not able to create it show an error dialog
+					 dialogFactory.newDialog(IErrorDialog.class).showErrorDialog(I18nUtils.getString("COULD_NOT_CREATE_DIR"));
+				 }
+			 } else {
+				 dialogFactory.newDialog(IErrorDialog.class).showErrorDialog(I18nUtils.getString("INCORRECT_EXPORT_PATH"));
+			 }
+		 }
+	 }
+
+	 private static class ExportProcessListener implements IProcessListener {
+
+		 private IDialogFactory dialogFactory;
+
+		 /**
+		  * @param dialogFactory
+		  */
+		 public void setDialogFactory(IDialogFactory dialogFactory) {
+			 this.dialogFactory = dialogFactory;
+		 }
+
+		 @Override
+		 public void processCanceled() { 
+			 // Nothing to do
+		 }
+
+		 @Override
+		 public void processFinished(final boolean ok) {
+			 SwingUtilities.invokeLater(new Runnable() {
+				 @Override
+				 public void run() {
+					 if (!ok) {
+						 dialogFactory.newDialog(IErrorDialog.class).showErrorDialog(I18nUtils.getString("ERRORS_IN_EXPORT_PROCESS"));
+					 }
+				 }
+			 });
+		 }
+	 }
+
+	 /**
+	  * @param navigationHandler
+	  */
+	 public void setNavigationHandler(INavigationHandler navigationHandler) {
+		 this.navigationHandler = navigationHandler;
+	 }
+
+	 /**
+	  * @param playListHandler
+	  */
+	 public void setPlayListHandler(IPlayListHandler playListHandler) {
+		 this.playListHandler = playListHandler;
+	 }
+
+	 /**
+	  * @param processFactory
+	  */
+	 public void setProcessFactory(IProcessFactory processFactory) {
+		 this.processFactory = processFactory;
+	 }
 }

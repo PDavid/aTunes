@@ -18,23 +18,41 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.gui.views.dialogs.fileSelection;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import java.io.File;
 
-public class SearchDialogFactory implements ISearchDialogFactory, ApplicationContextAware {
+class MultiFolderSelectionDialogDirectory {
 
-	private ApplicationContext context;
+    /** The file. */
+    private File file;
+    /** The display name. */
+    private String displayName;
 
-	@Override
-	public ISearchDialog createDialog() {
-		return this.context.getBean(ISearchDialog.class);
-	}
-	
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) {
-		this.context = applicationContext;
-	}
+    /**
+     * Instantiates a new directory.
+     * 
+     * @param file
+     *            the file
+     * @param displayName
+     *            the name that should be displayed
+     */
+    MultiFolderSelectionDialogDirectory(File file, String displayName) {
+        this.setFile(file);
+        this.displayName = displayName;
+    }
+
+    @Override
+    public String toString() {
+        return displayName;
+    }
+
+    public final void setFile(File file) {
+        this.file = file;
+    }
+
+    public File getFile() {
+        return file;
+    }
 
 }

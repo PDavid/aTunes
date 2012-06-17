@@ -2,122 +2,90 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+	default-autowire="byName" default-lazy-init="true" default-init-method="initialize">
 	
-	default-autowire="byName" default-lazy-init="true">
-	
-	<bean id="equalizerDialogFactory" class="net.sourceforge.atunes.model.EqualizerDialogFactory"/>
+	<bean id="dialogFactory" class="net.sourceforge.atunes.gui.DialogFactory"/>
 	<bean id="equalizerDialog" class="net.sourceforge.atunes.gui.views.dialogs.EqualizerDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
-		<constructor-arg ref="playerHandler"/>
 	</bean> 
-
-	<bean id="fileSelectionDialog" class="net.sourceforge.atunes.gui.views.dialogs.CustomFileSelectionDialog" scope="prototype">
+	<bean id="fileSelectionDialog" class="net.sourceforge.atunes.gui.views.dialogs.fileSelection.CustomFileSelectionDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean>
-
-	<bean id="multiFolderSelectionDialogFactory" class="net.sourceforge.atunes.model.MultiFolderSelectionDialogFactory"/>
-	<bean id="multiFolderSelectionDialog" class="net.sourceforge.atunes.gui.views.dialogs.MultiFolderSelectionDialog" scope="prototype">
+	<bean id="multiFolderSelectionDialog" class="net.sourceforge.atunes.gui.views.dialogs.fileSelection.MultiFolderSelectionDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
-		<constructor-arg ref="osManager"/>
 	</bean>
-
 	<bean id="progressDialog" class="net.sourceforge.atunes.gui.views.dialogs.ProgressDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean>
-
 	<bean id="transferDialog" class="net.sourceforge.atunes.gui.views.dialogs.TransferProgressDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean>
-
-	<bean id="columnSelectorDialogFactory" class="net.sourceforge.atunes.model.ColumnSelectorDialogFactory"/>
 	<bean id="columnSelectorDialog" class="net.sourceforge.atunes.gui.views.dialogs.ColumnSetSelectorDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean>
-
 	<bean id="ripCdDialog" class="net.sourceforge.atunes.kernel.modules.cdripper.RipCdDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean>
-
-	<bean id="ripperProgressDialog" class="net.sourceforge.atunes.kernel.modules.cdripper.RipperProgressDialog" init-method="initialize" scope="prototype">
+	<bean id="ripperProgressDialog" class="net.sourceforge.atunes.kernel.modules.cdripper.RipperProgressDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean>
-	
-	<bean id="aboutDialog" class="net.sourceforge.atunes.gui.views.dialogs.AboutDialog" init-method="initialize" scope="prototype">
+	<bean id="aboutDialog" class="net.sourceforge.atunes.gui.views.dialogs.AboutDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean>
-	
-	<bean id="repositoryProgressDialog" class="net.sourceforge.atunes.gui.views.dialogs.RepositoryProgressDialog" scope="prototype" init-method="initialize">
+	<bean id="repositoryProgressDialog" class="net.sourceforge.atunes.gui.views.dialogs.RepositoryProgressDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean>
-	
-	<bean id="searchDialogFactory" class="net.sourceforge.atunes.model.SearchDialogFactory"/>
 	<bean id="searchDialog" class="net.sourceforge.atunes.gui.views.dialogs.SearchDialog" scope="prototype">
 		<constructor-arg ref="frame"/>	
 	</bean>
-	
 	<bean id="reviewImportDialog" class="net.sourceforge.atunes.kernel.modules.tags.ReviewImportDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
-		<constructor-arg ref="stateRepository"/>
 	</bean>
-	
-	<bean id="addPodcastFeedDialog" class="net.sourceforge.atunes.kernel.modules.podcast.AddPodcastFeedDialog" scope="prototype" init-method="initialize">
+	<bean id="addPodcastFeedDialog" class="net.sourceforge.atunes.kernel.modules.podcast.AddPodcastFeedDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean>
-	
 	<bean id="artistAlbumSelectorDialog" class="net.sourceforge.atunes.kernel.modules.playlist.ArtistAlbumSelectorDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean>
-	
-	<bean id="inputDialogFactory" class="net.sourceforge.atunes.model.InputDialogFactory"/>
 	<bean id="inputDialog" class="net.sourceforge.atunes.gui.views.dialogs.InputDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean>
-	
-	<bean id="errorDialogFactory" class="net.sourceforge.atunes.model.ErrorDialogFactory"/>
 	<bean id="errorDialog" class="net.sourceforge.atunes.gui.views.dialogs.ErrorDialog" scope="prototype"/>
-	
-	<bean id="confirmationDialogFactory" class="net.sourceforge.atunes.model.ConfirmationDialogFactory"/>
 	<bean id="confirmationDialog" class="net.sourceforge.atunes.gui.views.dialogs.ConfirmationDialog" scope="prototype"/>
-	
-	<bean id="exportOptionsDialogFactory" class="net.sourceforge.atunes.model.ExportOptionsDialogFactory"/>
 	<bean id="exportOptionsDialog" class="net.sourceforge.atunes.gui.views.dialogs.ExportOptionsDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
-		<constructor-arg ref="osManager"/>
 	</bean>
-	
-	<bean id="messageDialogFactory" class="net.sourceforge.atunes.model.MessageDialogFactory"/>
 	<bean id="messageDialog" class="net.sourceforge.atunes.gui.views.dialogs.MessageDialog" scope="prototype"/>
-
-	<bean id="fileSelectorDialogFactory" class="net.sourceforge.atunes.model.FileSelectorDialogFactory"/>
-	<bean id="fileSelectorDialog" class="net.sourceforge.atunes.gui.views.dialogs.FileSelectorDialog" scope="prototype"/>	
-	
-
+	<bean id="fileSelectorDialog" class="net.sourceforge.atunes.gui.views.dialogs.FileSelectorDialog" scope="prototype"/>
 	<bean id="radioDialog" class="net.sourceforge.atunes.gui.views.dialogs.RadioDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean>
 	
-	<bean id="audioObjectPropertiesDialogFactory" class="net.sourceforge.atunes.gui.views.dialogs.properties.AudioObjectPropertiesDialogFactory" scope="singleton"/>
-	
-	<bean id="indeterminateProgressDialogFactory" class="net.sourceforge.atunes.gui.views.dialogs.IndeterminateProgressDialogFactory" scope="singleton"/>
-
-	<bean id="statsDialog" class="net.sourceforge.atunes.kernel.modules.statistics.StatsDialog" scope="prototype" init-method="initialize">
+	<bean id="audioObjectPropertiesDialogFactory" class="net.sourceforge.atunes.gui.views.dialogs.properties.AudioObjectPropertiesDialogFactory" scope="prototype"/>
+	<bean id="podcastFeedEntryPropertiesDialog" class="net.sourceforge.atunes.gui.views.dialogs.properties.PodcastFeedEntryPropertiesDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean>
-
-	<bean id="radioBrowserDialog" class="net.sourceforge.atunes.kernel.modules.radio.RadioBrowserDialog" scope="prototype" init-method="initialize">
+	<bean id="localAudioObjectPropertiesDialog" class="net.sourceforge.atunes.gui.views.dialogs.properties.LocalAudioObjectPropertiesDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean>
-
-	<bean id="editPreferencesDialog" class="net.sourceforge.atunes.kernel.modules.state.EditPreferencesDialog" scope="prototype" init-method="initialize">
+	<bean id="radioPropertiesDialog" class="net.sourceforge.atunes.gui.views.dialogs.properties.RadioPropertiesDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean>
-	
+	<bean id="statsDialog" class="net.sourceforge.atunes.kernel.modules.statistics.StatsDialog" scope="prototype">
+		<constructor-arg ref="frame"/>
+	</bean>
+	<bean id="radioBrowserDialog" class="net.sourceforge.atunes.kernel.modules.radio.RadioBrowserDialog" scope="prototype">
+		<constructor-arg ref="frame"/>
+	</bean>
+	<bean id="editPreferencesDialog" class="net.sourceforge.atunes.kernel.modules.state.EditPreferencesDialog" scope="prototype">
+		<constructor-arg ref="frame"/>
+	</bean>
 	<bean id="coverNavigatorDialog" class="net.sourceforge.atunes.gui.views.dialogs.CoverNavigatorDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean>
 	
 	<bean id="fullScreenWindowFactory" class="net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenWindowFactory" scope="prototype"/>
-	<bean id="fullScreenWindow" class="net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenWindow" scope="prototype" init-method="initialize">
+	<bean id="fullScreenWindow" class="net.sourceforge.atunes.kernel.modules.fullscreen.FullScreenWindow" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean>
 	

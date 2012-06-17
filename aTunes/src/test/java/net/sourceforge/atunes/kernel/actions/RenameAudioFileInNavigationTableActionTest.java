@@ -31,8 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IInputDialog;
-import net.sourceforge.atunes.model.IInputDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.IRadio;
@@ -46,14 +46,14 @@ public class RenameAudioFileInNavigationTableActionTest {
 	public void test() {
 		RenameAudioFileInNavigationTableAction sut = new RenameAudioFileInNavigationTableAction();
 		IRepositoryHandler repositoryHandler = mock(IRepositoryHandler.class);
+		IDialogFactory dialogFactory = mock(IDialogFactory.class);
 		sut.setRepositoryHandler(repositoryHandler);
 		INavigationHandler navigationHandler = mock(INavigationHandler.class);
 		sut.setNavigationHandler(navigationHandler);
-		IInputDialogFactory inputDialogFactory = mock(IInputDialogFactory.class);
-		sut.setInputDialogFactory(inputDialogFactory);
+		sut.setDialogFactory(dialogFactory);
 		IInputDialog inputDialog = mock(IInputDialog.class);
+		when(dialogFactory.newDialog(IInputDialog.class)).thenReturn(inputDialog);
 		when(inputDialog.getResult()).thenReturn("new");
-		when(inputDialogFactory.getDialog()).thenReturn(inputDialog);
 		ILocalAudioObject ao = mock(ILocalAudioObject.class);
 		when(ao.getFile()).thenReturn(new File("old"));
 		List<IAudioObject> list = new ArrayList<IAudioObject>();
@@ -69,14 +69,14 @@ public class RenameAudioFileInNavigationTableActionTest {
 	public void testNoLocalAudioObject() {
 		RenameAudioFileInNavigationTableAction sut = new RenameAudioFileInNavigationTableAction();
 		IRepositoryHandler repositoryHandler = mock(IRepositoryHandler.class);
+		IDialogFactory dialogFactory = mock(IDialogFactory.class);
 		sut.setRepositoryHandler(repositoryHandler);
 		INavigationHandler navigationHandler = mock(INavigationHandler.class);
 		sut.setNavigationHandler(navigationHandler);
-		IInputDialogFactory inputDialogFactory = mock(IInputDialogFactory.class);
-		sut.setInputDialogFactory(inputDialogFactory);
+		sut.setDialogFactory(dialogFactory);
 		IInputDialog inputDialog = mock(IInputDialog.class);
+		when(dialogFactory.newDialog(IInputDialog.class)).thenReturn(inputDialog);
 		when(inputDialog.getResult()).thenReturn("new");
-		when(inputDialogFactory.getDialog()).thenReturn(inputDialog);
 		IRadio radio = mock(IRadio.class);
 		List<IAudioObject> list = new ArrayList<IAudioObject>();
 		list.add(radio);
@@ -91,14 +91,14 @@ public class RenameAudioFileInNavigationTableActionTest {
 	public void testNoInput() {
 		RenameAudioFileInNavigationTableAction sut = new RenameAudioFileInNavigationTableAction();
 		IRepositoryHandler repositoryHandler = mock(IRepositoryHandler.class);
+		IDialogFactory dialogFactory = mock(IDialogFactory.class);
 		sut.setRepositoryHandler(repositoryHandler);
 		INavigationHandler navigationHandler = mock(INavigationHandler.class);
 		sut.setNavigationHandler(navigationHandler);
-		IInputDialogFactory inputDialogFactory = mock(IInputDialogFactory.class);
-		sut.setInputDialogFactory(inputDialogFactory);
+		sut.setDialogFactory(dialogFactory);
 		IInputDialog inputDialog = mock(IInputDialog.class);
+		when(dialogFactory.newDialog(IInputDialog.class)).thenReturn(inputDialog);
 		when(inputDialog.getResult()).thenReturn(null);
-		when(inputDialogFactory.getDialog()).thenReturn(inputDialog);
 		ILocalAudioObject ao = mock(ILocalAudioObject.class);
 		when(ao.getFile()).thenReturn(new File("old"));
 		List<IAudioObject> list = new ArrayList<IAudioObject>();

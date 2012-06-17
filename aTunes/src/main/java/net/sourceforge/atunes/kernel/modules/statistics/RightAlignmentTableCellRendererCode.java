@@ -18,13 +18,24 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.kernel.modules.statistics;
 
-public interface IColumnSelectorDialogFactory {
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
 
-	/**
-	 * Creates a new dialog
-	 * @return
-	 */
-	IColumnSelectorDialog createDialog();
+import net.sourceforge.atunes.gui.AbstractTableCellRendererCode;
+import net.sourceforge.atunes.model.ILookAndFeel;
+
+class RightAlignmentTableCellRendererCode extends AbstractTableCellRendererCode<JLabel, Object> {
+	
+    public RightAlignmentTableCellRendererCode(ILookAndFeel lookAndFeel) {
+		super(lookAndFeel);
+	}
+
+	@Override
+    public JLabel getComponent(JLabel superComponent, JTable t, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+    	superComponent.setHorizontalAlignment(SwingConstants.RIGHT);
+    	return superComponent;
+    }
 }

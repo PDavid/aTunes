@@ -27,7 +27,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.SwingUtilities;
 
-import net.sourceforge.atunes.Context;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IProcess;
 import net.sourceforge.atunes.model.IProcessListener;
 import net.sourceforge.atunes.model.IProgressDialog;
@@ -67,6 +67,15 @@ public abstract class AbstractProcess implements Runnable, IProcess {
      * The dialog used to show the progress of this process
      */
     private IProgressDialog progressDialog;
+    
+    private IDialogFactory dialogFactory;
+    
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
 
 	/**
      * Adds a listener to this process
@@ -135,7 +144,7 @@ public abstract class AbstractProcess implements Runnable, IProcess {
      */
     protected IProgressDialog getProgressDialog() {
         if (progressDialog == null) {
-            progressDialog = (IProgressDialog) Context.getBean("progressDialog");
+            progressDialog = dialogFactory.newDialog("progressDialog", IProgressDialog.class);
             progressDialog.setTitle(getProgressDialogTitle());
             progressDialog.setInfoText(getProgressDialogInformation());
             progressDialog.setCurrentProgress(0);

@@ -26,24 +26,18 @@ package net.sourceforge.atunes.model;
  * @author alex
  *
  */
-public interface IRadioDialog {
+public interface IRadioDialog extends IDialog {
 
 	/**
 	 * Sets radio to edit
 	 * @param radio
 	 */
-	public void setRadio(IRadio radio);
+	void setRadio(IRadio radio);
 
 	/**
 	 * Gets the radio.
 	 * 
 	 * @return the radio
 	 */
-	public IRadio getRadio();
-	
-	/**
-	 * Shows dialog
-	 */
-	public void showDialog();
-
+	IRadio getRadio();
 }

@@ -49,46 +49,16 @@ public class ErrorDialog implements IErrorDialog {
 		this.frame = frame;
 	}
 	
-    /**
-     * A runnable wrapping a call to show an error message
-     * @author alex
-     *
-     */
-    private static final class ShowMessageDialogRunnable implements Runnable {
-    	
-		private final String message;
-		private final IFrame frame;
-
-		private ShowMessageDialogRunnable(String message, IFrame frame) {
-			this.message = message;
-			this.frame = frame;
-		}
-
-		@Override
-		public void run() {
-			JOptionPane.showMessageDialog(frame.getFrame(), message, I18nUtils.getString("ERROR"), JOptionPane.ERROR_MESSAGE);
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IErrorDialog#showErrorDialog(net.sourceforge.atunes.model.IFrame, java.lang.String)
-	 */
     @Override
 	public void showErrorDialog(final String message) {
     	GuiUtils.callInEventDispatchThread(new ShowMessageDialogRunnable(message, frame));
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IErrorDialog#showErrorDialog(java.lang.String, java.awt.Component)
-	 */
     @Override
 	public void showErrorDialog(String message, Component parent) {
         JOptionPane.showMessageDialog(parent, message, I18nUtils.getString("ERROR"), JOptionPane.ERROR_MESSAGE);
     }
 
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IErrorDialog#showExceptionDialog(java.lang.String, java.lang.Exception)
-	 */
     @Override
 	public void showExceptionDialog(String message, Exception t) {
         showExceptionDialog(I18nUtils.getString("ERROR"), message, t);
@@ -115,5 +85,20 @@ public class ErrorDialog implements IErrorDialog {
         }
         pane.setErrorInfo(new ErrorInfo(title, message, sb.toString(), null, t, Level.SEVERE, null));
         JXErrorPane.showDialog(null, pane);
+    }
+    
+    @Override
+    public void initialize() {
+    	// Do nothing
+    }
+    
+    @Override
+    public void hideDialog() {
+    	throw new UnsupportedOperationException();
+    }
+    
+    @Override
+    public void showDialog() {
+    	throw new UnsupportedOperationException();
     }
 }

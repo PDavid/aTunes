@@ -31,10 +31,10 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IConfirmationDialogFactory;
+import net.sourceforge.atunes.model.IConfirmationDialog;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFolder;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
-import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.INavigationHandler;
 import net.sourceforge.atunes.model.INavigationView;
@@ -60,10 +60,6 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
 	
 	private IRepositoryHandler repositoryHandler;
 	
-	private IConfirmationDialogFactory confirmationDialogFactory;
-	
-	private IIndeterminateProgressDialogFactory indeterminateProgressDialogFactory;
-	
 	private IOSManager osManager;
 	
 	private IPodcastFeedHandler podcastFeedHandler;
@@ -74,10 +70,22 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
 	
 	private INavigationView repositoryNavigationView;
 	
+	private IDialogFactory dialogFactory;
+	
+    /**
+     * Constructor
+     */
     public RemoveFromDiskAction() {
         super(I18nUtils.getString("REMOVE_FROM_DISK"));
         putValue(SHORT_DESCRIPTION, I18nUtils.getString("REMOVE_FROM_DISK"));
     }
+    
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
     
     /**
      * @param deviceNavigationView
@@ -103,7 +111,10 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
     @Override
     protected void executeAction() {
         // Show confirmation
-        if (confirmationDialogFactory.getDialog().showDialog(I18nUtils.getString("REMOVE_CONFIRMATION"))) {
+    	IConfirmationDialog dialog = dialogFactory.newDialog(IConfirmationDialog.class);
+    	dialog.setMessage(I18nUtils.getString("REMOVE_CONFIRMATION"));
+    	dialog.showDialog();
+        if (dialog.userAccepted()) {
             // Podcast view
             if (navigationHandler.getCurrentView().equals(podcastNavigationView)) {
                 fromPodcastView();
@@ -124,7 +135,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
         repositoryHandler.remove(new LocalAudioObjectFilter().getLocalAudioObjects(files));
         repositoryHandler.endTransaction();
         
-		dialog = indeterminateProgressDialogFactory.newDialog();
+		dialog = dialogFactory.newIndeterminateProgressDialog();
 		dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
         SwingUtilities.invokeLater(new Runnable() {
         	@Override
@@ -152,7 +163,7 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
         SwingUtilities.invokeLater(new Runnable() {
         	@Override
         	public void run() {
-        		dialog = indeterminateProgressDialogFactory.newDialog();
+        		dialog = dialogFactory.newIndeterminateProgressDialog();
         		dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
         		dialog.showDialog();
         	}
@@ -245,20 +256,6 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
 	 */
 	public void setRepositoryHandler(IRepositoryHandler repositoryHandler) {
 		this.repositoryHandler = repositoryHandler;
-	}
-	
-	/**
-	 * @param confirmationDialogFactory
-	 */
-	public void setConfirmationDialogFactory(IConfirmationDialogFactory confirmationDialogFactory) {
-		this.confirmationDialogFactory = confirmationDialogFactory;
-	}
-	
-	/**
-	 * @param indeterminateProgressDialogFactory
-	 */
-	public void setIndeterminateProgressDialogFactory(IIndeterminateProgressDialogFactory indeterminateProgressDialogFactory) {
-		this.indeterminateProgressDialogFactory = indeterminateProgressDialogFactory;
 	}
 	
 	/**

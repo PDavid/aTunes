@@ -18,16 +18,23 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.dialogs;
+package net.sourceforge.atunes.gui;
 
 import java.awt.Window;
 
+import net.sourceforge.atunes.gui.views.dialogs.IndeterminateProgressDialog;
+import net.sourceforge.atunes.model.IDialog;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
-import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 
-public class IndeterminateProgressDialogFactory implements IIndeterminateProgressDialogFactory {
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
+public class DialogFactory implements IDialogFactory, ApplicationContextAware {
+	
+	private ApplicationContext context;
+	
 	private IFrame frame;
 	
 	/**
@@ -38,14 +45,27 @@ public class IndeterminateProgressDialogFactory implements IIndeterminateProgres
 	}
 	
 	@Override
-	public IIndeterminateProgressDialog newDialog(Window parent) {
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		this.context = applicationContext;
+	}
+	
+	@Override
+	public <T extends IDialog> T newDialog(Class<T> dialogClass) {
+		return context.getBean(dialogClass);
+	}
+	
+	@Override
+	public <T extends IDialog> T newDialog(String dialogName, Class<T> dialogClass) {
+		return context.getBean(dialogName, dialogClass);
+	}
+	
+	@Override
+	public IIndeterminateProgressDialog newIndeterminateProgressDialog(Window parent) {
 		return new IndeterminateProgressDialog(parent);
 	}
 
 	@Override
-	public IIndeterminateProgressDialog newDialog() {
+	public IIndeterminateProgressDialog newIndeterminateProgressDialog() {
 		return new IndeterminateProgressDialog(frame);
 	}
-
-	
 }

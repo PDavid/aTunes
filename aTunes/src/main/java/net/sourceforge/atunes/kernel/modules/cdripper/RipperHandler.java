@@ -39,8 +39,8 @@ import javax.swing.SwingWorker;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.kernel.actions.RipCDAction;
 import net.sourceforge.atunes.model.IAlbumInfo;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
-import net.sourceforge.atunes.model.IIndeterminateProgressDialogFactory;
 import net.sourceforge.atunes.model.IRepositoryHandler;
 import net.sourceforge.atunes.model.IRipperHandler;
 import net.sourceforge.atunes.model.IRipperProgressDialog;
@@ -95,6 +95,15 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
     private IStateRipper stateRipper;
     
 	private IUnknownObjectChecker unknownObjectChecker;
+	
+	private IDialogFactory dialogFactory;
+	
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
 	
 	/**
 	 * @param unknownObjectChecker
@@ -446,7 +455,7 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
         SwingUtilities.invokeLater(new Runnable() {
         	@Override
         	public void run() {
-                indeterminateProgressDialog = getBean(IIndeterminateProgressDialogFactory.class).newDialog();
+                indeterminateProgressDialog = dialogFactory.newIndeterminateProgressDialog();
                 indeterminateProgressDialog.setTitle(I18nUtils.getString("RIP_CD"));
                 indeterminateProgressDialog.showDialog();
         	}
@@ -478,7 +487,7 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
      */
     RipCdDialogController getRipCdDialogController() {
         if (ripCdDialogController == null) {
-            ripCdDialogController = new RipCdDialogController(getBean(RipCdDialog.class), stateRipper, getOsManager(), repositoryHandler, this);
+            ripCdDialogController = new RipCdDialogController(dialogFactory.newDialog(RipCdDialog.class), stateRipper, getOsManager(), repositoryHandler, this);
         }
         return ripCdDialogController;
     }
