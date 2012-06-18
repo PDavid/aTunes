@@ -28,7 +28,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -40,12 +39,14 @@ import javax.swing.ListSelectionModel;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
+import net.sourceforge.atunes.model.IDialog;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class CustomSearchDialog.
  */
-public final class CustomSearchDialog extends AbstractCustomDialog {
+public final class CustomSearchDialog extends AbstractCustomDialog implements IDialog {
 
     private static final long serialVersionUID = -7447583622785097610L;
 
@@ -117,14 +118,27 @@ public final class CustomSearchDialog extends AbstractCustomDialog {
 
     /**
      * Instantiates a new custom search dialog.
-     * 
-     * @param owner
+     * @param frame
      */
-    public CustomSearchDialog(JFrame owner) {
-        super(owner, 600, 500, true, CloseAction.DISPOSE);
+    public CustomSearchDialog(IFrame frame) {
+        super(frame, 600, 500, true, CloseAction.DISPOSE);
+    }
+
+    @Override
+    public void initialize() {
         setResizable(false);
         setTitle(I18nUtils.getString("SEARCH"));
         add(getContent());
+    }
+    
+    @Override
+    public void hideDialog() {
+    	setVisible(false);
+    }
+    
+    @Override
+    public void showDialog() {
+    	setVisible(true);
     }
 
     /**

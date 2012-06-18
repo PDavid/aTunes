@@ -31,6 +31,7 @@ import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.EditTagSources;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IAudioObject;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
 import net.sourceforge.atunes.model.IPlayListHandler;
@@ -55,6 +56,15 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 	private IPlayerHandler playerHandler;
 	
     private IStateNavigation stateNavigation;
+    
+    private IDialogFactory dialogFactory;
+    
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
 
     /**
      * @param stateNavigation
@@ -126,7 +136,7 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
 	
 	@Override
 	public void editFiles(IAlbum a) {
-		new EditTitlesDialogController(new EditTitlesDialog(getFrame().getFrame()), processFactory).editFiles(a);
+		new EditTitlesDialogController(dialogFactory.newDialog(EditTitlesDialog.class), processFactory).editFiles(a);
 	}
 	
 	@Override
