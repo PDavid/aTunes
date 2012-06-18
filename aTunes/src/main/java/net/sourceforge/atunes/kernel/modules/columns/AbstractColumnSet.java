@@ -50,7 +50,7 @@ public abstract class AbstractColumnSet implements IColumnSet {
     private Map<Class<? extends IColumn>, IColumn> columnMap;
 
     /** The current visible columns. */
-    private List<Class<? extends IColumn>> currentColumns;
+    private List<Class<? extends IColumn<?>>> currentColumns;
 
     private IFrame frame;
     
@@ -141,26 +141,26 @@ public abstract class AbstractColumnSet implements IColumnSet {
         return visibleColumns;
     }
 
-    @SuppressWarnings("unchecked")
 	@Override
-	public final List<IColumn> getColumnsOrdered() {
-        List<IColumn> result = new ArrayList<IColumn>(getAvailableColumns());
+	public final List<IColumn<?>> getColumnsOrdered() {
+        List<IColumn<?>> result = new ArrayList<IColumn<?>>(getAvailableColumns());
         Collections.sort(result);
         return result;
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
 	public final void setCurrentColumns() {
         int columnNumber = getVisibleColumnCount();
         if (columnNumber == 0) {
             return;
         }
 
-        currentColumns = new ArrayList<Class<? extends IColumn>>();
+        currentColumns = new ArrayList<Class<? extends IColumn<?>>>();
 
-        for (IColumn c : getColumnsOrdered()) {
+        for (IColumn<?> c : getColumnsOrdered()) {
             if (c.isVisible()) {
-                currentColumns.add(c.getClass());
+                currentColumns.add((Class<? extends IColumn<?>>) c.getClass());
             }
         }
     }
@@ -181,7 +181,7 @@ public abstract class AbstractColumnSet implements IColumnSet {
     }
 
     @Override
-	public final Class<? extends IColumn> getColumnId(int colIndex) {
+	public final Class<? extends IColumn<?>> getColumnId(int colIndex) {
         if (currentColumns == null) {
             setCurrentColumns();
         }
@@ -189,12 +189,12 @@ public abstract class AbstractColumnSet implements IColumnSet {
     }
 
     @Override
-	public List<IColumn> getColumnsForSelection() {
-        return new ArrayList<IColumn>(getAvailableColumns());
+	public List<IColumn<?>> getColumnsForSelection() {
+        return new ArrayList<IColumn<?>>(getAvailableColumns());
     }
 
     @Override
-	public IColumn getColumn(Class<? extends IColumn> columnClass) {
+	public IColumn<?> getColumn(Class<? extends IColumn<?>> columnClass) {
         return columnMap.get(columnClass);
     }
 
@@ -269,10 +269,10 @@ public abstract class AbstractColumnSet implements IColumnSet {
     }
 
     @Override
-	public IColumn getSortedColumn() {
+	public IColumn<?> getSortedColumn() {
         if (currentColumns != null) {
-            for (Class<? extends IColumn> columnClass : currentColumns) {
-                IColumn column = getColumn(columnClass);
+            for (Class<? extends IColumn<?>> columnClass : currentColumns) {
+                IColumn<?> column = getColumn(columnClass);
                 if (column.getColumnSort() != null) {
                     return column;
                 }

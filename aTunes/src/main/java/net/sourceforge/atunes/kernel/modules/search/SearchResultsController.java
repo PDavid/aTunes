@@ -91,7 +91,7 @@ final class SearchResultsController extends AbstractSimpleController<SearchResul
 
         SearchResultTableModel tableModel = (SearchResultTableModel) getComponentControlled().getSearchResultsTable().getModel();
 
-        IColumn sortedColumn = columnSet.getSortedColumn();
+        IColumn<?> sortedColumn = columnSet.getSortedColumn();
         if (sortedColumn != null) {
             Collections.sort(resultsList, sortedColumn.getComparator(false));
         } else {

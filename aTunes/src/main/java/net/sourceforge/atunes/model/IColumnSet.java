@@ -49,7 +49,7 @@ public interface IColumnSet {
 	 * 
 	 * @return the columns ordered
 	 */
-	public List<IColumn> getColumnsOrdered();
+	public List<IColumn<?>> getColumnsOrdered();
 
 	/**
 	 * Sets columns
@@ -64,14 +64,14 @@ public interface IColumnSet {
 	 * 
 	 * @return the column id
 	 */
-	public Class<? extends IColumn> getColumnId(int colIndex);
+	public Class<? extends IColumn<?>> getColumnId(int colIndex);
 
 	/**
 	 * Returns columns for selection
 	 * 
 	 * @return the columns for selection
 	 */
-	public List<IColumn> getColumnsForSelection();
+	public List<IColumn<?>> getColumnsForSelection();
 
 	/**
 	 * Returns a column object given its class name
@@ -79,7 +79,7 @@ public interface IColumnSet {
 	 * @param columnClass
 	 * @return
 	 */
-	public IColumn getColumn(Class<? extends IColumn> columnClass);
+	public IColumn<?> getColumn(Class<? extends IColumn<?>> columnClass);
 
 	/**
 	 * Filters audio objects with given filter and current visible columns of
@@ -104,6 +104,6 @@ public interface IColumnSet {
 	 * 
 	 * @return
 	 */
-	public IColumn getSortedColumn();
+	public IColumn<?> getSortedColumn();
 
 }
