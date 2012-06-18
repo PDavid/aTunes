@@ -89,4 +89,11 @@
 		<constructor-arg ref="frame"/>
 	</bean>
 	
+	<bean id="customSearchDialog" class="net.sourceforge.atunes.gui.views.dialogs.CustomSearchDialog" scope="prototype">
+		<constructor-arg ref="frame"/>
+	</bean>
+	<bean id="editTitlesDialog" class="net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog" scope="prototype">
+		<constructor-arg ref="frame"/>
+	</bean>
+	
 </beans>

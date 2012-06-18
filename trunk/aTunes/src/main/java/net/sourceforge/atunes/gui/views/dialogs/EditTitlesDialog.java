@@ -25,20 +25,21 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CloseAction;
+import net.sourceforge.atunes.model.IDialog;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class EditTitlesDialog.
  */
-public final class EditTitlesDialog extends AbstractCustomDialog {
+public final class EditTitlesDialog extends AbstractCustomDialog implements IDialog {
 
     private static final long serialVersionUID = -7937735545263913179L;
 
@@ -56,13 +57,25 @@ public final class EditTitlesDialog extends AbstractCustomDialog {
 
     /**
      * Instantiates a new edits the titles dialog.
-     * 
-     * @param owner
-     *            the owner
+     * @param frame
      */
-    public EditTitlesDialog(JFrame owner) {
-        super(owner, 500, 400, true, CloseAction.DISPOSE);
+    public EditTitlesDialog(IFrame frame) {
+        super(frame, 500, 400, true, CloseAction.DISPOSE);
+    }
+    
+    @Override
+    public void initialize() {
         add(getContent(getLookAndFeel()));
+    }
+    
+    @Override
+    public void hideDialog() {
+    	setVisible(false);
+    }
+    
+    @Override
+    public void showDialog() {
+    	setVisible(true);
     }
 
     /**

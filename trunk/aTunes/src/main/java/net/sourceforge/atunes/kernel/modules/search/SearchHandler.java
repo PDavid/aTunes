@@ -37,6 +37,7 @@ import net.sourceforge.atunes.gui.views.dialogs.SearchResultsDialog;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectComparator;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 import net.sourceforge.atunes.model.IPlayListHandler;
 import net.sourceforge.atunes.model.IPlayerHandler;
@@ -50,12 +51,7 @@ import net.sourceforge.atunes.utils.ClosingUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.lucene.analysis.SimpleAnalyzer;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.index.CorruptIndexException;
-import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
@@ -63,100 +59,21 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.Searcher;
 import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.store.LockObtainFailedException;
 import org.apache.lucene.util.Version;
 
 public final class SearchHandler extends AbstractHandler implements ISearchHandler {
 
     /** Dummy lucene field to retrieve all elements. */
-    private static final String INDEX_FIELD_DUMMY = "dummy";
+    static final String INDEX_FIELD_DUMMY = "dummy";
 
-    private final class RefreshSearchIndexSwingWorker extends SwingWorker<Void, Void> {
-    	
-		private final ISearchableObject searchableObject;
-		private IndexWriter indexWriter;
-
-		private RefreshSearchIndexSwingWorker(ISearchableObject searchableObject) {
-			this.searchableObject = searchableObject;
-		}
-
-		@Override
-		protected Void doInBackground() {
-		    ReadWriteLock searchIndexLock = indexLocks.get(searchableObject);
-		    try {
-		        searchIndexLock.writeLock().lock();
-		        initSearchIndex();
-		        updateSearchIndex(searchableObject.getElementsToIndex());
-		        finishSearchIndex();
-		        return null;
-		    } finally {
-		        searchIndexLock.writeLock().unlock();
-		        ClosingUtils.close(indexWriter);
-		        currentIndexingWorks.put(searchableObject, Boolean.FALSE);
-		    }
-		}
-
-		@Override
-		protected void done() {
-		    // Nothing to do
-		}
-
-		private void initSearchIndex() {
-		    Logger.info("Updating index for " + searchableObject.getClass());
-		    try {
-		        FileUtils.deleteDirectory(searchableObject.getIndexDirectory().getFile());
-		        indexWriter = new IndexWriter(searchableObject.getIndexDirectory(), new SimpleAnalyzer(), IndexWriter.MaxFieldLength.UNLIMITED);
-		    } catch (CorruptIndexException e) {
-		        Logger.error(e);
-		    } catch (LockObtainFailedException e) {
-		        Logger.error(e);
-		    } catch (IOException e) {
-		        Logger.error(e);
-		    }
-		}
-
-		private void updateSearchIndex(List<IAudioObject> audioObjects) {
-		    Logger.info("update search index");
-		    if (indexWriter != null) {
-		        for (IAudioObject audioObject : audioObjects) {
-		            Document d = searchableObject.getDocumentForElement(audioObject);
-		            // Add dummy field
-		            d.add(new Field(INDEX_FIELD_DUMMY, INDEX_FIELD_DUMMY, Field.Store.YES, Field.Index.NOT_ANALYZED_NO_NORMS));
-
-		            try {
-		                indexWriter.addDocument(d);
-		            } catch (CorruptIndexException e) {
-		                Logger.error(e);
-		            } catch (IOException e) {
-		                Logger.error(e);
-		            }
-		        }
-		    }
-		}
-
-		private void finishSearchIndex() {
-		    Logger.info(StringUtils.getString("Update index for ", searchableObject.getClass(), " finished"));
-		    if (indexWriter != null) {
-		        try {
-		            indexWriter.optimize();
-		            indexWriter.close();
-
-		            indexWriter = null;
-		        } catch (CorruptIndexException e) {
-		            Logger.error(e);
-		        } catch (IOException e) {
-		            Logger.error(e);
-		        }
-		    }
-		}
-	}
-
-	/**
+    /**
      * Logical operators used to create complex rules.
      */
     public enum LogicalOperator {
         AND, OR, NOT
     }
+    
+    private IDialogFactory dialogFactory;
 
     /** List of searchable objects available. */
     private List<ISearchableObject> searchableObjects = new ArrayList<ISearchableObject>();
@@ -182,6 +99,13 @@ public final class SearchHandler extends AbstractHandler implements ISearchHandl
 	private IStateCore stateCore;
 	
 	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
+	
+	/**
 	 * @param stateCore
 	 */
 	public void setStateCore(IStateCore stateCore) {
@@ -202,7 +126,7 @@ public final class SearchHandler extends AbstractHandler implements ISearchHandl
      */
     private CustomSearchController getSearchController() {
         if (customSearchController == null) {
-            customSearchController = new CustomSearchController(new CustomSearchDialog(getFrame().getFrame()), stateCore, this);
+            customSearchController = new CustomSearchController(dialogFactory.newDialog(CustomSearchDialog.class), stateCore, this);
         }
         return customSearchController;
     }
@@ -323,9 +247,9 @@ public final class SearchHandler extends AbstractHandler implements ISearchHandl
      *            the searchable object
      */
     private void updateSearchIndex(final ISearchableObject searchableObject) {
-        SwingWorker<Void, Void> refreshSearchIndex = new RefreshSearchIndexSwingWorker(searchableObject);
         if (currentIndexingWorks.get(searchableObject) == null || !currentIndexingWorks.get(searchableObject)) {
             currentIndexingWorks.put(searchableObject, Boolean.TRUE);
+            SwingWorker<Void, Void> refreshSearchIndex = new RefreshSearchIndexSwingWorker(currentIndexingWorks, indexLocks, searchableObject);
             refreshSearchIndex.execute();
         }
     }
