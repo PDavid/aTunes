@@ -73,7 +73,7 @@ public abstract class AbstractColumnSetTableModel extends AbstractCommonTableMod
      * @param colIndex
      * @return
      */
-    protected IColumn getColumn(int colIndex) {
+    protected IColumn<?> getColumn(int colIndex) {
         return columnSet != null ? columnSet.getColumn(columnSet.getColumnId(colIndex)) : null;
     }
 

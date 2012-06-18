@@ -43,7 +43,6 @@ import org.mockito.InOrder;
 public class ApplicationLifeCycleListenersTest {
 
 	private ApplicationLifeCycleListeners sut;
-	private List<IApplicationLifeCycleListener> listeners;
 	private IApplicationLifeCycleListener mock1;
 	private IApplicationLifeCycleListener mock2;
 	private IApplicationLifeCycleListener mock3;
@@ -51,7 +50,7 @@ public class ApplicationLifeCycleListenersTest {
 	@Before
 	public void init() {
 		sut = new ApplicationLifeCycleListeners();
-		listeners = new ArrayList<IApplicationLifeCycleListener>();
+		List<IApplicationLifeCycleListener> listeners = new ArrayList<IApplicationLifeCycleListener>();
 		mock1 = mock(IApplicationLifeCycleListener.class);
 		mock2 = mock(IApplicationLifeCycleListener.class);
 		mock3 = mock(IApplicationLifeCycleListener.class);

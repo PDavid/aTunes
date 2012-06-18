@@ -30,11 +30,11 @@ import org.junit.Test;
 
 public abstract class AbstractLyricEngineTest {
 
-    protected String artist;
-    protected String song;
-    protected String lyricContent;
-    protected AbstractLyricsEngine testedObject;
-    protected String engineUrl;
+    private String artist;
+    private String song;
+    private String lyricContent;
+    private AbstractLyricsEngine testedObject;
+    private String engineUrl;
     
     @Test
     public void testGetLyricsFor() {
@@ -60,5 +60,74 @@ public abstract class AbstractLyricEngineTest {
         ILyrics lyrics = testedObject.getLyricsFor(UUID.randomUUID().toString(), UUID.randomUUID().toString());
         Assert.assertEquals(null, lyrics);
     }
-    
+
+	/**
+	 * @return the artist
+	 */
+	protected String getArtist() {
+		return artist;
+	}
+
+	/**
+	 * @param artist the artist to set
+	 */
+	protected void setArtist(String artist) {
+		this.artist = artist;
+	}
+
+	/**
+	 * @return the song
+	 */
+	protected String getSong() {
+		return song;
+	}
+
+	/**
+	 * @param song the song to set
+	 */
+	protected void setSong(String song) {
+		this.song = song;
+	}
+
+	/**
+	 * @return the lyricContent
+	 */
+	protected String getLyricContent() {
+		return lyricContent;
+	}
+
+	/**
+	 * @param lyricContent the lyricContent to set
+	 */
+	protected void setLyricContent(String lyricContent) {
+		this.lyricContent = lyricContent;
+	}
+
+	/**
+	 * @return the testedObject
+	 */
+	protected AbstractLyricsEngine getTestedObject() {
+		return testedObject;
+	}
+
+	/**
+	 * @param testedObject the testedObject to set
+	 */
+	protected void setTestedObject(AbstractLyricsEngine testedObject) {
+		this.testedObject = testedObject;
+	}
+
+	/**
+	 * @return the engineUrl
+	 */
+	protected String getEngineUrl() {
+		return engineUrl;
+	}
+
+	/**
+	 * @param engineUrl the engineUrl to set
+	 */
+	protected void setEngineUrl(String engineUrl) {
+		this.engineUrl = engineUrl;
+	}
 }

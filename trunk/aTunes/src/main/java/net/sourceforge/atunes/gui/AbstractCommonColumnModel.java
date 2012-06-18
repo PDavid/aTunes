@@ -125,7 +125,7 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
      */
     protected final void updateColumnWidth() {
         for (int i = 0; i < getColumnCount(); i++) {
-            Class<? extends IColumn> col = getColumnId(i);
+            Class<? extends IColumn<?>> col = getColumnId(i);
             int width = getColumn(i).getPreferredWidth();
             setWidthForColumn(col, width);
         }
@@ -139,7 +139,7 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
      * @param width
      *            the width
      */
-    private final void setWidthForColumn(Class<? extends IColumn> c, int width) {
+    private final void setWidthForColumn(Class<? extends IColumn<?>> c, int width) {
         getColumn(c).setWidth(width);
     }
 
@@ -165,7 +165,7 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
      * 
      * @return the column
      */
-    public final IColumn getColumnObject(int column) {
+    public final IColumn<?> getColumnObject(int column) {
         return getColumn(getColumnId(column));
     }
 
@@ -175,7 +175,7 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
      * @param index
      * @return
      */
-    private final Class<? extends IColumn> getColumnId(int index) {
+    private final Class<? extends IColumn<?>> getColumnId(int index) {
         return columnSet.getColumnId(index);
     }
 
@@ -185,7 +185,7 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
      * @param columnClass
      * @return
      */
-    private final IColumn getColumn(Class<? extends IColumn> columnClass) {
+    private final IColumn<?> getColumn(Class<? extends IColumn<?>> columnClass) {
         return columnSet.getColumn(columnClass);
     }
 
@@ -320,7 +320,7 @@ public abstract class AbstractCommonColumnModel extends DefaultTableColumnModel 
      */
     protected void updateColumnSettings(TableColumn aColumn) {
         // Get column data
-        IColumn column = getColumnObject(aColumn.getModelIndex());
+        IColumn<?> column = getColumnObject(aColumn.getModelIndex());
 
         // Set width
         aColumn.setPreferredWidth(column.getWidth());

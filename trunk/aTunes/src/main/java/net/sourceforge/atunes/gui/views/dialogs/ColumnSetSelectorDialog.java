@@ -60,7 +60,7 @@ public final class ColumnSetSelectorDialog extends AbstractCustomDialog implemen
 
         private static final long serialVersionUID = 5251001708812824836L;
 
-        private List<IColumn> columns;
+        private List<IColumn<?>> columns;
         private List<TableModelListener> listeners = new ArrayList<TableModelListener>();
 
         /**
@@ -180,7 +180,7 @@ public final class ColumnSetSelectorDialog extends AbstractCustomDialog implemen
             listeners.remove(l);
         }
 
-        public void setColumns(List<IColumn> columns) {
+        public void setColumns(List<IColumn<?>> columns) {
             this.columns = columns;
             Collections.sort(this.columns);
         }
