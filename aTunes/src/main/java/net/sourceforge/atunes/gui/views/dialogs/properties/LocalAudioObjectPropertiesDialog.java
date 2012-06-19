@@ -34,6 +34,7 @@ import net.sourceforge.atunes.gui.views.dialogs.EditTagDialog;
 import net.sourceforge.atunes.kernel.modules.tags.EditTagDialogController;
 import net.sourceforge.atunes.model.IAudioObject;
 import net.sourceforge.atunes.model.IAudioObjectImageLocator;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILocalAudioObjectValidator;
@@ -69,8 +70,6 @@ public final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertie
 	private JLabel frequencyLabel;
 	private ILocalAudioObject file;
 
-	private IFrame frame;
-
 	private IOSManager osManager;
 
 	private IPlayListHandler playListHandler;
@@ -82,6 +81,8 @@ public final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertie
 	private ILocalAudioObjectValidator localAudioObjectValidator;
 
 	private IProcessFactory processFactory;
+	
+	private IDialogFactory dialogFactory;
 
 	/**
 	 * Instantiates a new audio file properties dialog.
@@ -90,9 +91,12 @@ public final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertie
 	LocalAudioObjectPropertiesDialog(IFrame frame) {
 		super(frame);
 	}
-
-	@Override
-	public void initialize() {
+	
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
 	}
 
 	@Override
@@ -200,7 +204,9 @@ public final class LocalAudioObjectPropertiesDialog extends AudioObjectPropertie
 		editTagsButton.setText(I18nUtils.getString("EDIT_TAG"));
 		editTagsButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				EditTagDialogController ctl = new EditTagDialogController(new EditTagDialog(frame, false), osManager, playListHandler, repositoryHandler, localAudioObjectValidator, processFactory);
+				EditTagDialog dialog = dialogFactory.newDialog(EditTagDialog.class);
+				dialog.setPrevNextButtonsShown(false);
+				EditTagDialogController ctl = new EditTagDialogController(dialog, osManager, playListHandler, repositoryHandler, localAudioObjectValidator, processFactory);
 				ctl.editFiles(java.util.Collections.singletonList(file));
 			}
 		});

@@ -26,6 +26,11 @@ import java.awt.Image;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.model.IPlayerTrayIconsHandler;
 
+/**
+ * Handler for tray icons in OS X tray
+ * @author alex
+ *
+ */
 public class MacPlayerTrayIconsHandler implements IPlayerTrayIconsHandler {
 	
 	@Override

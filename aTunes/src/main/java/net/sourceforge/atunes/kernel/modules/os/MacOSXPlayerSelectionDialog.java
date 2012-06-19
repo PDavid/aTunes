@@ -48,7 +48,12 @@ import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IOSManager;
 import net.sourceforge.atunes.utils.I18nUtils;
 
-class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
+/**
+ * Dialog to select player engine in OS X
+ * @author alex
+ *
+ */
+public class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 	
 	private static final long serialVersionUID = -1119645857786634652L;
 	
@@ -71,16 +76,32 @@ class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 	private JRadioButton automaticSearch;
 	
 	private IDesktop desktop;
+
+	/**
+	 * @param osManager
+	 */
+	public void setOsManager(IOSManager osManager) {
+		this.osManager = osManager;
+	}
+	
+	/**
+	 * @param desktop
+	 */
+	public void setDesktop(IDesktop desktop) {
+		this.desktop = desktop;
+	}
 	
 	/**
 	 * @param parent
 	 * @param osManager
 	 * @param desktop
 	 */
-	public MacOSXPlayerSelectionDialog(IFrame parent, IOSManager osManager, IDesktop desktop) {
+	public MacOSXPlayerSelectionDialog(IFrame parent) {
 		super(parent, 450, 250, true, CloseAction.NOTHING);
-		this.osManager = osManager;
-		this.desktop = desktop;
+	}
+	
+	@Override
+	public void initialize() {
 		setResizable(false);
 		setTitle(I18nUtils.getString("PLAYER_ENGINE_SELECTION"));
 		

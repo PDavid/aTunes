@@ -43,6 +43,11 @@ import net.sourceforge.atunes.model.ITag;
 import net.sourceforge.atunes.model.ITagHandler;
 import net.sourceforge.atunes.model.ITreeObject;
 
+/**
+ * Responsible of change tags
+ * @author alex
+ *
+ */
 public class TagHandler extends AbstractHandler implements ITagHandler {
 
 	private IPlayListHandler playListHandler;
@@ -123,8 +128,9 @@ public class TagHandler extends AbstractHandler implements ITagHandler {
         }
 
         if (!editTagDialogControllerMap.containsKey(sourceOfEditTagDialog)) {
-            boolean arePrevNextButtonsShown = sourceOfEditTagDialog != EditTagSources.NAVIGATOR;
-            editTagDialogControllerMap.put(sourceOfEditTagDialog, new EditTagDialogController(new EditTagDialog(getFrame(), arePrevNextButtonsShown), getOsManager(), playListHandler, repositoryHandler, localAudioObjectValidator, processFactory));
+        	EditTagDialog dialog = dialogFactory.newDialog(EditTagDialog.class);
+            dialog.setPrevNextButtonsShown(sourceOfEditTagDialog != EditTagSources.NAVIGATOR);
+            editTagDialogControllerMap.put(sourceOfEditTagDialog, new EditTagDialogController(dialog, getOsManager(), playListHandler, repositoryHandler, localAudioObjectValidator, processFactory));
         }
         return editTagDialogControllerMap.get(sourceOfEditTagDialog);
     }

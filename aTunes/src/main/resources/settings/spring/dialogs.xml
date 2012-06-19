@@ -103,4 +103,12 @@
 	<bean class="net.sourceforge.atunes.gui.views.dialogs.IndeterminateProgressDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean>
+
+	<bean class="net.sourceforge.atunes.gui.views.dialogs.EditTagDialog" scope="prototype">
+		<constructor-arg ref="frame"/>
+	</bean>
+	
+	<bean class="net.sourceforge.atunes.kernel.modules.os.MacOSXPlayerSelectionDialog" scope="prototype">
+		<constructor-arg ref="frame"/>
+	</bean>
 </beans>
