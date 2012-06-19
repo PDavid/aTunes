@@ -55,8 +55,7 @@ public final class InputDialog extends AbstractCustomDialog implements IInputDia
 
     /**
      * Instantiates a new input dialog.
-     * 
-     * @param owner
+     * @param frame
      */
     public InputDialog(IFrame frame) {
         super(frame, 400, 130, true, CloseAction.DISPOSE);
