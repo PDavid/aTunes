@@ -33,7 +33,6 @@ import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.model.IDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIconFactory;
@@ -59,7 +58,7 @@ public final class RadioBrowserDialog extends AbstractCustomDialog implements ID
      * @param frame
      */
     public RadioBrowserDialog(IFrame frame) {
-        super(frame, 800, 600, true, CloseAction.DISPOSE);
+        super(frame, 800, 600);
     }
     
     /**

@@ -34,7 +34,6 @@ import net.sourceforge.atunes.gui.AlbumTableColumnModel;
 import net.sourceforge.atunes.gui.AlbumTableModel;
 import net.sourceforge.atunes.gui.ColumnRenderers;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.gui.views.controls.ColumnSetPopupMenu;
 import net.sourceforge.atunes.model.IAlbum;
 import net.sourceforge.atunes.model.IArtist;
@@ -63,7 +62,7 @@ public final class ArtistAlbumSelectorDialog extends AbstractCustomDialog implem
      * @param frame
      */
     public ArtistAlbumSelectorDialog(IFrame frame) {
-        super(frame, 600, 500, true, CloseAction.DISPOSE);
+        super(frame, 600, 500);
     }
 
     @Override

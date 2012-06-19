@@ -40,7 +40,6 @@ import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.gui.views.controls.JavaVirtualMachineStatisticsTableModel;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
@@ -92,7 +91,7 @@ public final class AboutDialog extends AbstractCustomDialog implements IAboutDia
      * @param frame
      */
     public AboutDialog(IFrame frame) {
-        super(frame, 600, 550, true, CloseAction.DISPOSE);
+        super(frame, 600, 550);
     }
     
     /**

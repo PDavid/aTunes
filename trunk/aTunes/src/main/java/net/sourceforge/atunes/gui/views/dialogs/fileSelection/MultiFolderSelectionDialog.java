@@ -58,7 +58,6 @@ import javax.swing.tree.TreeSelectionModel;
 import net.sourceforge.atunes.gui.AbstractTreeCellRendererCode;
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IMultiFolderSelectionDialog;
@@ -490,7 +489,7 @@ public final class MultiFolderSelectionDialog extends AbstractCustomDialog imple
      * @param frame
      */
     public MultiFolderSelectionDialog(IFrame frame) {
-        super(frame, 460, 530, true, CloseAction.DISPOSE);
+        super(frame, 460, 530);
     }
 
     /**

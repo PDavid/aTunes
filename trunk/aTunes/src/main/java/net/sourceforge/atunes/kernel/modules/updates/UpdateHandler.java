@@ -26,6 +26,7 @@ import java.net.UnknownHostException;
 import net.sourceforge.atunes.kernel.AbstractHandler;
 import net.sourceforge.atunes.model.ApplicationVersion;
 import net.sourceforge.atunes.model.IApplicationArguments;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.INetworkHandler;
 import net.sourceforge.atunes.model.IStateUI;
 import net.sourceforge.atunes.model.ITaskService;
@@ -53,6 +54,15 @@ public final class UpdateHandler extends AbstractHandler implements IUpdateHandl
     private INetworkHandler networkHandler;
     
     private IStateUI stateUI;
+    
+    private IDialogFactory dialogFactory;
+    
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
     
     /**
      * @param stateUI
@@ -108,7 +118,7 @@ public final class UpdateHandler extends AbstractHandler implements IUpdateHandl
      */
     @Override
     public void checkUpdates(boolean alwaysInDialog, boolean showNoNewVersion) {
-        new CheckUpdatesSwingWorker(this, showNoNewVersion, alwaysInDialog, stateUI, getFrame()).execute();
+        new CheckUpdatesSwingWorker(this, showNoNewVersion, alwaysInDialog, stateUI, getFrame(), dialogFactory).execute();
     }
 
     /**

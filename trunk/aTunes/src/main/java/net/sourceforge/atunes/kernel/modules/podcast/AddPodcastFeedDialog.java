@@ -32,7 +32,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.model.IAddPodcastFeedDialog;
 import net.sourceforge.atunes.model.IFrame;
@@ -64,7 +63,7 @@ public final class AddPodcastFeedDialog extends AbstractCustomDialog implements 
      * @param frame
      */
     public AddPodcastFeedDialog(IFrame frame) {
-        super(frame, 500, 170, true, CloseAction.DISPOSE);
+        super(frame, 500, 170);
     }
     
     /**

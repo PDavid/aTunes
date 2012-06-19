@@ -36,7 +36,6 @@ import javax.swing.SwingConstants;
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
 import net.sourceforge.atunes.model.ApplicationVersion;
@@ -45,6 +44,11 @@ import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IUpdateDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * Dialog to show if a new version is available
+ * @author alex
+ *
+ */
 public final class UpdateDialog extends AbstractCustomDialog implements IUpdateDialog {
 
     private static final long serialVersionUID = -778226654176158965L;
@@ -62,7 +66,7 @@ public final class UpdateDialog extends AbstractCustomDialog implements IUpdateD
      * @param frame
      */
     public UpdateDialog(IFrame frame) {
-        super(frame, 400, 150, true, CloseAction.DISPOSE);
+        super(frame, 400, 150);
     }
     
     /**
@@ -121,10 +125,5 @@ public final class UpdateDialog extends AbstractCustomDialog implements IUpdateD
         panel.add(ok, c);
 
         add(panel);
-    }
-    
-    @Override
-    public void showDialog() {
-    	setVisible(true);
     }
 }

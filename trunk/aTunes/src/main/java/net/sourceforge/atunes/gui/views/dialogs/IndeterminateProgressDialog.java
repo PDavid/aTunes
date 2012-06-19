@@ -32,7 +32,6 @@ import javax.swing.JProgressBar;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -54,7 +53,7 @@ public final class IndeterminateProgressDialog extends AbstractCustomDialog impl
      *            the parent
      */
     public IndeterminateProgressDialog(IFrame parent) {
-        super(parent, 450, 160, true, CloseAction.DISPOSE);
+        super(parent, 450, 160);
         add(getContent());
         setResizable(false);
     }

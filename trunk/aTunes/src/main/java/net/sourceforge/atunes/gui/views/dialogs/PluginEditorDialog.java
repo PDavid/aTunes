@@ -24,7 +24,6 @@ import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -38,8 +37,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -48,22 +47,30 @@ import org.commonjukebox.plugins.model.PluginConfiguration;
 import org.commonjukebox.plugins.model.PluginInfo;
 import org.commonjukebox.plugins.model.PluginProperty;
 
+/**
+ * Dialog to edit plugin properties
+ * @author alex
+ *
+ */
 public class PluginEditorDialog extends AbstractCustomDialog {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = -2629422819919724654L;
 
     private PluginConfiguration configuration;
 
     /**
-     * @param owner
+     * @param frame
+     */
+    public PluginEditorDialog(IFrame frame) {
+        super(frame, 800, 600);
+    }
+    
+    /**
+     * Initializes dialog
      * @param plugin
      * @param configuration
      */
-    public PluginEditorDialog(Window owner, PluginInfo plugin, PluginConfiguration configuration) {
-        super(owner, 800, 600, true, CloseAction.DISPOSE);
+    public void initializeDialog(PluginInfo plugin, PluginConfiguration configuration) {
         this.configuration = configuration;
         setResizable(true);
         setTitle(StringUtils.getString(I18nUtils.getString("PLUGIN_PROPERTIES_EDITOR"), ": ", plugin.getName()));
@@ -185,5 +192,4 @@ public class PluginEditorDialog extends AbstractCustomDialog {
             return textField;
         }
     }
-
 }

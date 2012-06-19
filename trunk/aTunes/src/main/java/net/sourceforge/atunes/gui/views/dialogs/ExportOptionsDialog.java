@@ -40,7 +40,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.model.IExportOptionsDialog;
@@ -76,7 +75,7 @@ public final class ExportOptionsDialog extends AbstractCustomDialog implements I
      * @param osManager
      */
     public ExportOptionsDialog(IFrame frame) {
-        super(frame, 400, 220, true, CloseAction.DISPOSE);
+        super(frame, 400, 220);
     } 
 
     /**

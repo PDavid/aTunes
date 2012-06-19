@@ -31,6 +31,7 @@ import javax.swing.tree.TreePath;
 import net.sourceforge.atunes.kernel.modules.pattern.PatternInputDialog;
 import net.sourceforge.atunes.kernel.modules.pattern.PatternMatcher;
 import net.sourceforge.atunes.kernel.modules.pattern.Patterns;
+import net.sourceforge.atunes.model.IDialogFactory;
 
 import org.jdesktop.swingx.treetable.DefaultMutableTreeTableNode;
 
@@ -38,19 +39,23 @@ final class FillTagsFromFolderNameActionListener implements ActionListener {
 	
 	private ReviewImportDialog dialog;
 	
+	private IDialogFactory dialogFactory;
+	
 	/**
 	 * @param dialog
+	 * @param dialogFactory
 	 */
-	FillTagsFromFolderNameActionListener(ReviewImportDialog dialog) {
+	FillTagsFromFolderNameActionListener(ReviewImportDialog dialog, IDialogFactory dialogFactory) {
 		super();
 		this.dialog = dialog;
+		this.dialogFactory = dialogFactory;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	    TreePath[] selectedNodes = dialog.getTreeTable().getTreeSelectionModel().getSelectionPaths();
 	    if (selectedNodes.length > 0) {
-	        PatternInputDialog inputDialog = new PatternInputDialog(dialog, true, dialog.getStateRepository());
+	        PatternInputDialog inputDialog = dialogFactory.newDialog("massivePatternInputDialog", PatternInputDialog.class);
 	        Object node = selectedNodes[0].getLastPathComponent();
 	        Object folder = ((DefaultMutableTreeTableNode)node).getUserObject();
 	        inputDialog.show(Patterns.getMassiveRecognitionPatterns(), ((File)folder).getAbsolutePath());

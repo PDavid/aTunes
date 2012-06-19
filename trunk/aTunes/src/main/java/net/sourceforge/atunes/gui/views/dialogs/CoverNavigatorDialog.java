@@ -37,7 +37,6 @@ import javax.swing.ScrollPaneConstants;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.gui.views.controls.ScrollableFlowPanel;
 import net.sourceforge.atunes.model.IArtist;
 import net.sourceforge.atunes.model.IDialog;
@@ -63,7 +62,7 @@ public final class CoverNavigatorDialog extends AbstractCustomDialog implements 
      * @param frame
      */
     public CoverNavigatorDialog(IFrame frame) {
-        super(frame, 800, 550, true, CloseAction.DISPOSE);
+        super(frame, 800, 550);
     }
     
     @Override

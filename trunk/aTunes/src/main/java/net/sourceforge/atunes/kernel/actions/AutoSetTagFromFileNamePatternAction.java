@@ -28,10 +28,9 @@ import net.sourceforge.atunes.kernel.modules.pattern.PatternInputDialog;
 import net.sourceforge.atunes.kernel.modules.pattern.Patterns;
 import net.sourceforge.atunes.kernel.modules.process.EditTagFromFileNamePatternProcess;
 import net.sourceforge.atunes.model.IAudioObject;
-import net.sourceforge.atunes.model.IFrame;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IProcessFactory;
-import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
 
@@ -45,17 +44,15 @@ public class AutoSetTagFromFileNamePatternAction extends AbstractActionOverSelec
 
     private static final long serialVersionUID = -8458591967408812850L;
 
-    private IFrame frame;
-    
     private IProcessFactory processFactory;
     
-    private IStateRepository stateRepository;
+    private IDialogFactory dialogFactory;
     
     /**
-     * @param stateRepository
+     * @param dialogFactory
      */
-    public void setStateRepository(IStateRepository stateRepository) {
-		this.stateRepository = stateRepository;
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
 	}
     
     /**
@@ -63,13 +60,6 @@ public class AutoSetTagFromFileNamePatternAction extends AbstractActionOverSelec
      */
     public void setProcessFactory(IProcessFactory processFactory) {
 		this.processFactory = processFactory;
-	}
-    
-    /**
-     * @param frame
-     */
-    public void setFrame(IFrame frame) {
-		this.frame = frame;
 	}
     
     /**
@@ -83,7 +73,7 @@ public class AutoSetTagFromFileNamePatternAction extends AbstractActionOverSelec
     @Override
     protected void executeAction(List<ILocalAudioObject> objects) {
         // Show pattern input dialog
-        PatternInputDialog inputDialog = new PatternInputDialog(frame.getFrame(), false, stateRepository);
+        PatternInputDialog inputDialog = dialogFactory.newDialog("nonMassivePatternInputDialog", PatternInputDialog.class);
         inputDialog.show(Patterns.getRecognitionPatterns(), objects.get(0).getNameWithoutExtension());
         String pattern = inputDialog.getResult();
 
@@ -105,5 +95,4 @@ public class AutoSetTagFromFileNamePatternAction extends AbstractActionOverSelec
     public boolean isEnabledForNavigationTableSelection(List<IAudioObject> selection) {
         return !selection.isEmpty();
     }
-
 }

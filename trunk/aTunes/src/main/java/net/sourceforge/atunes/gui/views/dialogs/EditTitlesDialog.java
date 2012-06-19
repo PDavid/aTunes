@@ -30,7 +30,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.model.IDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -60,7 +59,7 @@ public final class EditTitlesDialog extends AbstractCustomDialog implements IDia
      * @param frame
      */
     public EditTitlesDialog(IFrame frame) {
-        super(frame, 500, 400, true, CloseAction.DISPOSE);
+        super(frame, 500, 400);
     }
     
     @Override

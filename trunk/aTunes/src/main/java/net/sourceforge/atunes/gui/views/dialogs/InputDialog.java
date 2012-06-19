@@ -32,7 +32,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IInputDialog;
@@ -58,7 +57,7 @@ public final class InputDialog extends AbstractCustomDialog implements IInputDia
      * @param frame
      */
     public InputDialog(IFrame frame) {
-        super(frame, 400, 130, true, CloseAction.DISPOSE);
+        super(frame, 400, 130);
     }
     
     @Override

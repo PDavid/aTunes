@@ -46,6 +46,7 @@ final class CheckUpdatesSwingWorker extends SwingWorker<ApplicationVersion, Void
 	private final boolean alwaysInDialog;
 	private IStateUI stateUI;
 	private IFrame frame;
+	private IDialogFactory dialogFactory;
 
 	/**
 	 * @param updateHandler
@@ -53,13 +54,15 @@ final class CheckUpdatesSwingWorker extends SwingWorker<ApplicationVersion, Void
 	 * @param alwaysInDialog
 	 * @param stateUI
 	 * @param frame
+	 * @param dialogFactory
 	 */
-	CheckUpdatesSwingWorker(IUpdateHandler updateHandler, boolean showNoNewVersion, boolean alwaysInDialog, IStateUI stateUI, IFrame frame) {
+	CheckUpdatesSwingWorker(IUpdateHandler updateHandler, boolean showNoNewVersion, boolean alwaysInDialog, IStateUI stateUI, IFrame frame, IDialogFactory dialogFactory) {
 		this.updateHandler = updateHandler;
 		this.showNoNewVersion = showNoNewVersion;
 		this.alwaysInDialog = alwaysInDialog;
 		this.stateUI = stateUI;
 		this.frame = frame;
+		this.dialogFactory = dialogFactory;
 	}
 
 	@Override
@@ -73,7 +76,7 @@ final class CheckUpdatesSwingWorker extends SwingWorker<ApplicationVersion, Void
 	        ApplicationVersion version = get();
 	        if (version != null && version.compareTo(Constants.VERSION) == 1) {
 	        	 if (alwaysInDialog || !stateUI.isShowStatusBar()) {
-	                 IUpdateDialog dialog = Context.getBean(IUpdateDialog.class);
+	                 IUpdateDialog dialog = dialogFactory.newDialog(IUpdateDialog.class);
 	                 dialog.initialize(version);
 	                 dialog.showDialog();
 	             } else {

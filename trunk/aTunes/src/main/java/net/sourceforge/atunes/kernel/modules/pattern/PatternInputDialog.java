@@ -25,7 +25,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -51,8 +50,8 @@ import javax.swing.table.DefaultTableModel;
 
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IStateRepository;
 import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -130,21 +129,30 @@ public final class PatternInputDialog extends AbstractCustomDialog {
 
     private IStateRepository stateRepository;
     
+    private boolean massiveRecognition;
+    
+    /**
+     * @param stateRepository
+     */
+    public void setStateRepository(IStateRepository stateRepository) {
+		this.stateRepository = stateRepository;
+	}
+    
     /**
      * Instantiates a new pattern input dialog.
-     * 
-     * @param owner
-     *            the owner
-     * 
+     * @param frame
      * @param massiveRecognition
      *            <code>true</code> if the dialog will be used to enter a
      *            pattern for massive recognition or <code>false</code> for
      *            non-massive recognition (single file level)
-     * @param stateRepository
      */
-    public PatternInputDialog(Window owner, final boolean massiveRecognition, IStateRepository stateRepository) {
-        super(owner, 550, 350, true, CloseAction.DISPOSE);
-        this.stateRepository = stateRepository;
+    public PatternInputDialog(IFrame frame, final boolean massiveRecognition) {
+        super(frame, 550, 350);
+        this.massiveRecognition = massiveRecognition;
+    }
+    
+    @Override
+    public void initialize() {
         setResizable(false);
         setIconImage(Images.getImage(Images.APP_LOGO_16).getImage());
         setTitle(I18nUtils.getString("PATTERN_INPUT"));

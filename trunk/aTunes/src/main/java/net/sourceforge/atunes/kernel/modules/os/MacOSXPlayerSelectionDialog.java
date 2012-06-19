@@ -39,7 +39,6 @@ import javax.swing.JRadioButton;
 import javax.swing.ListSelectionModel;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.gui.views.controls.CustomJFileChooser;
 import net.sourceforge.atunes.gui.views.controls.SimpleTextPane;
 import net.sourceforge.atunes.gui.views.controls.UrlLabel;
@@ -97,7 +96,7 @@ public class MacOSXPlayerSelectionDialog extends AbstractCustomDialog {
 	 * @param desktop
 	 */
 	public MacOSXPlayerSelectionDialog(IFrame parent) {
-		super(parent, 450, 250, true, CloseAction.NOTHING);
+		super(parent, 450, 250);
 	}
 	
 	@Override

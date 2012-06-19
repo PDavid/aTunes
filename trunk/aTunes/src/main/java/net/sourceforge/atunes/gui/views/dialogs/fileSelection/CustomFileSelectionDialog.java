@@ -40,7 +40,6 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.model.ICustomFileSelectionDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -109,7 +108,7 @@ public final class CustomFileSelectionDialog extends AbstractCustomDialog implem
      * @param frame
      */
     public CustomFileSelectionDialog(IFrame frame) {
-        super(frame, 660, 430, true, CloseAction.DISPOSE);
+        super(frame, 660, 430);
     }
     
     @Override

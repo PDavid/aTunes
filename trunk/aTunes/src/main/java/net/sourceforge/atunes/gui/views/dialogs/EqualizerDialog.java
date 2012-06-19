@@ -34,7 +34,6 @@ import javax.swing.JSlider;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.model.IEqualizerDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IPlayerHandler;
@@ -108,7 +107,7 @@ public final class EqualizerDialog extends AbstractCustomDialog implements IEqua
      */
     public EqualizerDialog(IFrame frame) {
         // Width required by german translation
-        super(frame, 510, 300, true, CloseAction.DISPOSE);
+        super(frame, 510, 300);
     }
     
     /**
