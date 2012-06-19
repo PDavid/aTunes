@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.gui.views.dialogs;
 
 import java.awt.FileDialog;
+import java.awt.Window;
 import java.io.File;
 import java.io.FilenameFilter;
 

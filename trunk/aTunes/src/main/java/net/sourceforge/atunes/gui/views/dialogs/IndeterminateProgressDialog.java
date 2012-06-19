@@ -24,7 +24,6 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Window;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -52,17 +51,6 @@ public final class IndeterminateProgressDialog extends AbstractCustomDialog impl
      * Instantiates a new indeterminate progress dialog.
      * 
      * @param parent
-     */
-    public IndeterminateProgressDialog(Window parent) {
-        super(parent, 400, 130, true, CloseAction.DISPOSE);
-        add(getContent());
-        setResizable(false);
-    }
-
-    /**
-     * Instantiates a new indeterminate progress dialog.
-     * 
-     * @param parent
      *            the parent
      */
     public IndeterminateProgressDialog(IFrame parent) {
@@ -70,7 +58,6 @@ public final class IndeterminateProgressDialog extends AbstractCustomDialog impl
         add(getContent());
         setResizable(false);
     }
-
 
     /**
      * Gets the content.
@@ -112,17 +99,11 @@ public final class IndeterminateProgressDialog extends AbstractCustomDialog impl
         return panel;
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IIndeterminateProgressDialog#showDialog()
-	 */
     @Override
 	public void showDialog() {
     	setVisible(true);
     }
     
-    /* (non-Javadoc)
-	 * @see net.sourceforge.atunes.gui.views.dialogs.IIndeterminateProgressDialog#hideDialog()
-	 */
     @Override
 	public void hideDialog() {
     	setVisible(false);

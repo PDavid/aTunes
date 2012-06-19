@@ -28,11 +28,17 @@ import javax.swing.JDialog;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.GuiUtils;
+import net.sourceforge.atunes.model.IDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.ILookAndFeelManager;
 
-public abstract class AbstractCustomDialog extends JDialog {
+/**
+ * Abstract dialog
+ * @author alex
+ *
+ */
+public abstract class AbstractCustomDialog extends JDialog implements IDialog {
 
 	private ILookAndFeelManager lookAndFeelManager;
 	
@@ -65,6 +71,20 @@ public abstract class AbstractCustomDialog extends JDialog {
 		setSize(width, height);
         setLocationRelativeTo(owner.getWidth() == 0 ? null : owner);
         initializeDialog(modal, closeAction);
+    }
+
+    /**
+     * Instantiates a new custom modal dialog.
+     * 
+     * @param frame
+     * @param width
+     * @param height
+     */
+    public AbstractCustomDialog(IFrame frame, int width, int height) {
+        super(frame.getFrame());
+		setSize(width, height);
+        setLocationRelativeTo(frame.getFrame().getWidth() == 0 ? null : frame.getFrame());
+        initializeDialog(true, CloseAction.DISPOSE);
     }
 
     /**
@@ -121,5 +141,20 @@ public abstract class AbstractCustomDialog extends JDialog {
         Component c = super.add(comp);
         GuiUtils.applyComponentOrientation(this);
     	return c;
-    }    
+    }
+    
+    @Override
+    public void hideDialog() {
+    	setVisible(false);
+    }
+    
+    @Override
+    public void showDialog() {
+    	setVisible(true);
+    }
+    
+    @Override
+    public void initialize() {
+    	// Empty method to override
+    }
 }

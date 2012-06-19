@@ -45,6 +45,11 @@ import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * A dialog to show covers
+ * @author alex
+ *
+ */
 public final class CoverNavigatorDialog extends AbstractCustomDialog implements IDialog {
 
     private static final long serialVersionUID = -1744765531225480303L;
@@ -55,7 +60,7 @@ public final class CoverNavigatorDialog extends AbstractCustomDialog implements 
 
     /**
      * Instantiates a new cover navigator frame.
-     * @param owner
+     * @param frame
      */
     public CoverNavigatorDialog(IFrame frame) {
         super(frame, 800, 550, true, CloseAction.DISPOSE);

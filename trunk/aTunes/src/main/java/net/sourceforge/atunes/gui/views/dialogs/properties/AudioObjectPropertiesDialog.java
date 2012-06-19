@@ -28,6 +28,11 @@ import net.sourceforge.atunes.model.IAudioObjectPropertiesDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.StringUtils;
 
+/**
+ * A dialog to show information about audio objects
+ * @author alex
+ *
+ */
 public abstract class AudioObjectPropertiesDialog extends AbstractCustomDialog implements IAudioObjectPropertiesDialog {
 
     private static final long serialVersionUID = 6097305595858691246L;

@@ -20,6 +20,7 @@
 
 package net.sourceforge.atunes.model;
 
+
 /**
  * Interface for all dialogs
  * @author alex
@@ -41,5 +42,5 @@ public interface IDialog {
 	 * Initializes dialog
 	 */
 	void initialize();
-
+	
 }

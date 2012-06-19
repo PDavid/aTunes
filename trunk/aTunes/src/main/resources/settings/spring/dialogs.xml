@@ -95,5 +95,12 @@
 	<bean id="editTitlesDialog" class="net.sourceforge.atunes.gui.views.dialogs.EditTitlesDialog" scope="prototype">
 		<constructor-arg ref="frame"/>
 	</bean>
+
+	<bean class="net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog" scope="prototype">
+		<constructor-arg ref="frame"/>
+	</bean>	
 	
+	<bean class="net.sourceforge.atunes.gui.views.dialogs.IndeterminateProgressDialog" scope="prototype">
+		<constructor-arg ref="frame"/>
+	</bean>
 </beans>

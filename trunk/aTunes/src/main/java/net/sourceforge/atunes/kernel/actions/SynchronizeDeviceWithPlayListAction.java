@@ -126,7 +126,7 @@ public class SynchronizeDeviceWithPlayListAction extends CustomAbstractAction {
         SwingUtilities.invokeLater(new Runnable() {
         	@Override
         	public void run() {
-        		dialog = dialogFactory.newIndeterminateProgressDialog();
+        		dialog = dialogFactory.newDialog(IIndeterminateProgressDialog.class);
         		dialog.setTitle(I18nUtils.getString("PLEASE_WAIT"));
         		dialog.showDialog();
         	}

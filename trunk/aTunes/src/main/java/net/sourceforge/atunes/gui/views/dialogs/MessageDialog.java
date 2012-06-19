@@ -28,6 +28,11 @@ import javax.swing.JOptionPane;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IMessageDialog;
 
+/**
+ * A dialog to show messages to user
+ * @author alex
+ *
+ */
 public class MessageDialog implements IMessageDialog {
 
 	private IFrame frame;

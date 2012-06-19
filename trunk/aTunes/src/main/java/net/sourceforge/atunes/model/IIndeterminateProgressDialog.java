@@ -25,22 +25,11 @@ package net.sourceforge.atunes.model;
  * @author alex
  *
  */
-public interface IIndeterminateProgressDialog {
+public interface IIndeterminateProgressDialog extends IDialog {
 
 	/**
 	 * Sets title
 	 * @param title
 	 */
 	public void setTitle(String title);
-	
-	/**
-	 * Shows dialog
-	 */
-	public void showDialog();
-
-	/**
-	 * Hides dialog
-	 */
-	public void hideDialog();
-
 }
