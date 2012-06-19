@@ -30,9 +30,10 @@ import javax.swing.table.TableCellRenderer;
 /**
  * Represents a column of a table
  * @author alex
+ * @param <T> 
  *
  */
-public interface IColumn<T> extends Serializable, Comparable<IColumn<T>> {
+public interface IColumn<T> extends Serializable, Comparable<IColumn<?>> {
 
 	/**
 	 * Apply column bean.

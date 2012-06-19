@@ -97,7 +97,7 @@ public abstract class AbstractColumn<T> implements IColumn<T> {
     }
 
     @Override
-    public int compareTo(IColumn<T> o) {
+    public int compareTo(IColumn<?> o) {
         return Integer.valueOf(order).compareTo(o.getOrder());
     }
     
