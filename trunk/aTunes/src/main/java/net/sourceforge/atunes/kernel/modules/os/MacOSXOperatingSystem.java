@@ -26,8 +26,7 @@ import java.util.Map;
 import net.sourceforge.atunes.gui.lookandfeel.substance.SubstanceLookAndFeel;
 import net.sourceforge.atunes.gui.lookandfeel.system.macos.MacOSXLookAndFeel;
 import net.sourceforge.atunes.kernel.modules.player.mplayer.MPlayerEngine;
-import net.sourceforge.atunes.kernel.modules.tray.MacPlayerTrayIconsHandler;
-import net.sourceforge.atunes.model.IDesktop;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.model.IPlayerEngine;
@@ -37,6 +36,11 @@ import net.sourceforge.atunes.utils.StringUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
+/**
+ * Adapter for Mac OS X
+ * @author alex
+ *
+ */
 public class MacOSXOperatingSystem extends OperatingSystemAdapter implements ApplicationContextAware {
 
 	/**
@@ -46,12 +50,30 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter implements App
     
     protected static final String MPLAYER_COMMAND = "mplayer.command";
     
+    private IDialogFactory dialogFactory;
+    
+    private IPlayerTrayIconsHandler macPlayerTrayIconsHandler;
+    
     private ApplicationContext context;
     
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) {
     	this.context = applicationContext;
     }
+    
+    /**
+     * @param macPlayerTrayIconsHandler
+     */
+    public void setMacPlayerTrayIconsHandler(IPlayerTrayIconsHandler macPlayerTrayIconsHandler) {
+		this.macPlayerTrayIconsHandler = macPlayerTrayIconsHandler;
+	}
+    
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
     
 	@Override
 	public String getAppDataFolder() {
@@ -70,6 +92,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter implements App
 	
 	@Override
 	public void setupFrame(IFrame frame) {
+		// Can't be created when creating this object
 		context.getBean(MacOSXInitializer.class).initialize();
 	}
 	
@@ -106,8 +129,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter implements App
 	
 	@Override
 	public void manageNoPlayerEngine(IFrame frame) {
-		MacOSXPlayerSelectionDialog dialog = new MacOSXPlayerSelectionDialog(frame, getOsManager(), context.getBean(IDesktop.class));
-		dialog.setVisible(true);
+		dialogFactory.newDialog(MacOSXPlayerSelectionDialog.class).showDialog();
 	}
 	
 	@Override
@@ -137,7 +159,7 @@ public class MacOSXOperatingSystem extends OperatingSystemAdapter implements App
 	
 	@Override
 	public IPlayerTrayIconsHandler getPlayerTrayIcons() {
-		return context.getBean(MacPlayerTrayIconsHandler.class);
+		return macPlayerTrayIconsHandler;
 	}
 
 	@Override

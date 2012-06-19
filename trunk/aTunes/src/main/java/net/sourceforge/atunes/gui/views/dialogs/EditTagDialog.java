@@ -46,7 +46,6 @@ import javax.swing.JTextField;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.model.IFrame;
@@ -78,10 +77,13 @@ public final class EditTagDialog extends AbstractCustomDialog {
      * Instantiates a new edits the tag dialog.
      * 
      * @param frame
-     * @param arePrevNextButtonsShown
      */
-    public EditTagDialog(IFrame frame, boolean arePrevNextButtonsShown) {
-        super(frame, 500, 600, true, CloseAction.DISPOSE);
+    public EditTagDialog(IFrame frame) {
+        super(frame, 500, 600);
+    }
+    
+    @Override
+    public void initialize() {
         setTitle(I18nUtils.getString("EDIT_TAG"));
         setResizable(true);
 
@@ -90,7 +92,12 @@ public final class EditTagDialog extends AbstractCustomDialog {
         add(tabbedPane, BorderLayout.CENTER);
         tabbedPane.addTab(I18nUtils.getString("TAGS"), getTagEditTab(getLookAndFeel()));
         tabbedPane.addTab(I18nUtils.getString("COVER"), getCoverTab());
-
+    }
+    
+    /**
+     * @param arePrevNextButtonsShown
+     */
+    public void setPrevNextButtonsShown(boolean arePrevNextButtonsShown) {
         add(getOKAndCancelButtonPanel(arePrevNextButtonsShown), BorderLayout.SOUTH);
     }
 
