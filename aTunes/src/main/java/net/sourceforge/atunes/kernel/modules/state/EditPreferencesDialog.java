@@ -172,6 +172,7 @@ public final class EditPreferencesDialog extends AbstractCustomDialog implements
         options.setLayout(new CardLayout());
         for (int i = 0; i < panels.size(); i++) {
             options.add(Integer.toString(i), panels.get(i));
+            panels.get(i).setDialog(this);
         }
         GuiUtils.applyComponentOrientation(this);
     }

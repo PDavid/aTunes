@@ -649,7 +649,7 @@ public final class RepositoryHandler extends AbstractHandler implements IReposit
 
 	@Override
 	public void importFolders(final List<File> folders, final String path) {
-    	final IIndeterminateProgressDialog indeterminateDialog = dialogFactory.newIndeterminateProgressDialog();
+    	final IIndeterminateProgressDialog indeterminateDialog = dialogFactory.newDialog(IIndeterminateProgressDialog.class);
     	indeterminateDialog.setTitle(StringUtils.getString(I18nUtils.getString("READING_FILES_TO_IMPORT"), "..."));
         
         IBackgroundWorker<List<ILocalAudioObject>> worker = backgroundWorkerFactory.getWorker();

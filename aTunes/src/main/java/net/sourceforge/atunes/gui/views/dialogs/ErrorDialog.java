@@ -21,6 +21,7 @@
 package net.sourceforge.atunes.gui.views.dialogs;
 
 import java.awt.Component;
+import java.awt.Window;
 import java.util.logging.Level;
 
 import javax.swing.JOptionPane;

@@ -20,6 +20,8 @@
 
 package net.sourceforge.atunes.gui.views.dialogs;
 
+import java.awt.Window;
+
 import javax.swing.JOptionPane;
 
 import net.sourceforge.atunes.gui.GuiUtils;

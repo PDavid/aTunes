@@ -25,11 +25,8 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.Serializable;
-import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -50,7 +47,7 @@ import net.sourceforge.atunes.gui.views.controls.ByImageChoosingPanel.ImageEntry
 import net.sourceforge.atunes.gui.views.dialogs.FontChooserDialog;
 import net.sourceforge.atunes.model.FontSettings;
 import net.sourceforge.atunes.model.IColorBeanFactory;
-import net.sourceforge.atunes.model.IFontBeanFactory;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocaleBean;
 import net.sourceforge.atunes.model.ILocaleBeanFactory;
@@ -68,513 +65,492 @@ import org.jdesktop.swingx.combobox.ListComboBoxModel;
  */
 public final class GeneralPanel extends AbstractPreferencesPanel {
 
-    private static final class LocaleComparator implements Comparator<Locale>, Serializable {
-        /**
-		 * 
-		 */
-		private static final long serialVersionUID = 8454923131242388725L;
-		
-		private final Locale currentLocale;
+	private static final long serialVersionUID = -9216216930198145476L;
 
-        private LocaleComparator(Locale currentLocale) {
-            this.currentLocale = currentLocale;
-        }
+	private JComboBox language;
+	private JCheckBox showIconTray;
+	private JCheckBox showTrayPlayer;
+	private JComboBox lookAndFeel;
+	private JLabel skinLabel;
+	private JComboBox skin;    
+	private ByImageChoosingPanel<Class<? extends IFrame>> windowTypeChoosingPanel;
+	private JButton trayPlayerColorSelector;
 
-        @Override
-        public int compare(Locale l1, Locale l2) {
-            return Collator.getInstance().compare(l1.getDisplayName(currentLocale), l2.getDisplayName(currentLocale));
-        }
-    }
+	private transient ActionListener applySkinActionListener;
 
-    private static final long serialVersionUID = -9216216930198145476L;
+	private FontSettings currentFontSettings;
 
-    private JComboBox language;
-    private JCheckBox showIconTray;
-    private JCheckBox showTrayPlayer;
-    private JComboBox lookAndFeel;
-    private JLabel skinLabel;
-    private JComboBox skin;    
-    private ByImageChoosingPanel<Class<? extends IFrame>> windowTypeChoosingPanel;
-    private JButton trayPlayerColorSelector;
-    
-    private transient ActionListener applySkinActionListener;
+	private Color currentTrayIconColor;
 
-    private FontSettings currentFontSettings;
-    
-    private Color currentTrayIconColor;
-    
-    private IOSManager osManager;
+	private IOSManager osManager;
 
 	private ILookAndFeelManager lookAndFeelManager;
-	
+
 	private transient IColorBeanFactory colorBeanFactory;
-	
+
 	private transient ILocaleBeanFactory localeBeanFactory;
-	
-	private transient IFontBeanFactory fontBeanFactory;
-	
+
 	private IStateUI stateUI;
-	
+
 	private IStateCore stateCore;
 	
+	private IDialogFactory dialogFactory;
+	
+	/**
+	 * @param dialogFactory
+	 */
+	public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
+
 	/**
 	 * @param stateCore
 	 */
-	public void setStateCore(IStateCore stateCore) {
-		this.stateCore = stateCore;
-	}
-	
-	/**
-	 * @param stateUI
-	 */
-	public void setStateUI(IStateUI stateUI) {
-		this.stateUI = stateUI;
-	}
-	
-	/**
-	 * @param fontBeanFactory
-	 */
-	public void setFontBeanFactory(IFontBeanFactory fontBeanFactory) {
-		this.fontBeanFactory = fontBeanFactory;
-	}
-	
-	/**
-	 * @param osManager
-	 */
-	public void setOsManager(IOSManager osManager) {
-		this.osManager = osManager;
-	}
-	
-	/**
-	 * @param lookAndFeelManager
-	 */
-	public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
-		this.lookAndFeelManager = lookAndFeelManager;
-	}
-	
-	/**
-	 * @param colorBeanFactory
-	 */
-	public void setColorBeanFactory(IColorBeanFactory colorBeanFactory) {
-		this.colorBeanFactory = colorBeanFactory;
-	}
-	
-	/**
-	 * @param localeBeanFactory
-	 */
-	public void setLocaleBeanFactory(ILocaleBeanFactory localeBeanFactory) {
-		this.localeBeanFactory = localeBeanFactory;
-	}
-	
-    /**
-     * Instantiates a new general panel.
-     * @param osManager
-     * @param lookAndFeelManager
-     * @param colorBeanFactory
-     * @param fontBeanFactory
-     */
-    public GeneralPanel() {
-        super(I18nUtils.getString("GENERAL"));
-    }
-    
-    /**
-     * Initialize panel
-     */
-    public void initialize() {
-        JLabel windowTypeLabel = new JLabel(I18nUtils.getString("WINDOW_TYPE"));
-        JLabel languageLabel = new JLabel(I18nUtils.getString("LANGUAGE"));
-        language = new JComboBox();
+	 public void setStateCore(IStateCore stateCore) {
+		 this.stateCore = stateCore;
+	 }
 
-        showIconTray = new JCheckBox(I18nUtils.getString("SHOW_TRAY_ICON"));
-        showTrayPlayer = new JCheckBox(I18nUtils.getString("SHOW_TRAY_PLAYER"));
-        showTrayPlayer.addChangeListener(new ChangeListener() {
-			
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				trayPlayerColorSelector.setEnabled(showTrayPlayer.isSelected());
-			}
-		});
-        trayPlayerColorSelector = new JButton(I18nUtils.getString("SELECT_TRAY_PLAYER_COLOR"));
-        trayPlayerColorSelector.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Color selectedColor = JColorChooser.showDialog(getPreferenceDialog(), 
-										 I18nUtils.getString("SELECT_TRAY_PLAYER_COLOR"),
-										 null);
-				if (selectedColor != null) {
-					currentTrayIconColor = selectedColor;
-				}
-			}
-		});
-        
-        // Hide tray icons controls if not supported by operating system
-        showIconTray.setVisible(osManager.areTrayIconsSupported());
-        showTrayPlayer.setVisible(osManager.areTrayIconsSupported());
-        trayPlayerColorSelector.setVisible(osManager.areTrayIconsSupported() && osManager.areTrayIconsColorsSupported());
-        
-        
-        JLabel lookAndFeelLabel = new JLabel(I18nUtils.getString("LOOK_AND_FEEL"));
-        skinLabel = new JLabel(I18nUtils.getString("THEME"));
+	 /**
+	  * @param stateUI
+	  */
+	 public void setStateUI(IStateUI stateUI) {
+		 this.stateUI = stateUI;
+	 }
 
-        JButton fontSettings = new JButton(I18nUtils.getString("CHANGE_FONT_SETTINGS"));
-        fontSettings.setEnabled(lookAndFeelManager.getCurrentLookAndFeel().supportsCustomFontSettings());
-        fontSettings.addActionListener(new ActionListener() {
+	 /**
+	  * @param osManager
+	  */
+	 public void setOsManager(IOSManager osManager) {
+		 this.osManager = osManager;
+	 }
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                FontChooserDialog fontChooserDialog = new FontChooserDialog(getPreferenceDialog(), 
-                										 300, 
-                										 300, 
-                										 currentFontSettings != null ? currentFontSettings.getFont().toFont() : GeneralPanel.this.lookAndFeelManager.getCurrentLookAndFeel().getDefaultFont(),
-                										 currentFontSettings != null ? currentFontSettings.isUseFontSmoothing() : true, 
-                										 currentFontSettings != null ? currentFontSettings.isUseFontSmoothingSettingsFromOs() : false, 
-                										 stateCore.getLocale().getLocale(), 
-                										 fontBeanFactory);
-                fontChooserDialog.setVisible(true);
-                if (fontChooserDialog.getSelectedFontSettings() != null) {
-                    currentFontSettings = fontChooserDialog.getSelectedFontSettings();
-                }
-            }
-        });
+	 /**
+	  * @param lookAndFeelManager
+	  */
+	 public void setLookAndFeelManager(ILookAndFeelManager lookAndFeelManager) {
+		 this.lookAndFeelManager = lookAndFeelManager;
+	 }
 
-        lookAndFeel = new JComboBox();
-        lookAndFeel.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	// When changing look and feel set default skin in combo or current skin if selected look and feel is the current one
-            	String skinName = GeneralPanel.this.lookAndFeelManager.getDefaultSkin((String)lookAndFeel.getSelectedItem());
-            	if (GeneralPanel.this.lookAndFeelManager.getCurrentLookAndFeelName().equals(lookAndFeel.getSelectedItem()) &&
-            			stateUI.getLookAndFeel().getSkin() != null) {
-            		skinName = stateUI.getLookAndFeel().getSkin();
-            	} else {
-            		// Different look and feel, if skin has changed we must reset it, if not, do nothing as to change look and feel
-            		// user must restart application first
-            		String currentSkin = stateUI.getLookAndFeel().getSkin();
-                    if (currentSkin == null) {
-                    	currentSkin = GeneralPanel.this.lookAndFeelManager.getDefaultSkin(stateUI.getLookAndFeel().getName());
-                    }
-                    GeneralPanel.this.lookAndFeelManager.applySkin(currentSkin, stateCore, stateUI, osManager);
-            	}
-            	updateSkins((String)lookAndFeel.getSelectedItem(), skinName);
-            }
-        });
-        skin = new JComboBox();
-        List<ImageEntry<Class<? extends IFrame>>> data = new ArrayList<ImageEntry<Class<? extends IFrame>>>();
-        for (Class<? extends IFrame> clazz : Frames.getClasses()) {
-            data.add(new ImageEntry<Class<? extends IFrame>>(clazz, Frames.getImage(clazz)));
-        }
-        windowTypeChoosingPanel = new ByImageChoosingPanel<Class<? extends IFrame>>(data);
+	 /**
+	  * @param colorBeanFactory
+	  */
+	 public void setColorBeanFactory(IColorBeanFactory colorBeanFactory) {
+		 this.colorBeanFactory = colorBeanFactory;
+	 }
 
-        JScrollPane sp = lookAndFeelManager.getCurrentLookAndFeel().getScrollPane(windowTypeChoosingPanel);
-        sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        sp.getVerticalScrollBar().setUnitIncrement(20);
+	 /**
+	  * @param localeBeanFactory
+	  */
+	 public void setLocaleBeanFactory(ILocaleBeanFactory localeBeanFactory) {
+		 this.localeBeanFactory = localeBeanFactory;
+	 }
 
-        arrangePanel(windowTypeLabel, languageLabel, lookAndFeelLabel,
-				fontSettings, sp);
-    }
+	 /**
+	  * Instantiates a new general panel.
+	  * @param osManager
+	  * @param lookAndFeelManager
+	  * @param colorBeanFactory
+	  * @param fontBeanFactory
+	  */
+	 public GeneralPanel() {
+		 super(I18nUtils.getString("GENERAL"));
+	 }
 
-	/**
-	 * @param windowTypeLabel
-	 * @param languageLabel
-	 * @param lookAndFeelLabel
-	 * @param fontSettings
-	 * @param sp
-	 */
-	private void arrangePanel(JLabel windowTypeLabel, JLabel languageLabel, JLabel lookAndFeelLabel, JButton fontSettings, JScrollPane sp) {
-		GridBagConstraints c = new GridBagConstraints();
-        addLanguage(languageLabel, c);
-        addLookAndFeel(lookAndFeelLabel, c);
-        addSkin(c);
-        addWindowType(windowTypeLabel, sp, c);
-        addFontSettings(fontSettings, c);
-        addShowTrayPlayer(c);
-        addTrayPlayerColorSelector(c);
-        addShowIconTray(c);
-	}
+	 /**
+	  * Initialize panel
+	  */
+	 public void initialize() {
+		 JLabel windowTypeLabel = new JLabel(I18nUtils.getString("WINDOW_TYPE"));
+		 JLabel languageLabel = new JLabel(I18nUtils.getString("LANGUAGE"));
+		 language = new JComboBox();
 
-	/**
-	 * @param c
-	 */
-	private void addShowIconTray(GridBagConstraints c) {
-		c.gridx = 2;
-        c.gridy = 7;
-        add(showIconTray, c);
-	}
+		 showIconTray = new JCheckBox(I18nUtils.getString("SHOW_TRAY_ICON"));
+		 showTrayPlayer = new JCheckBox(I18nUtils.getString("SHOW_TRAY_PLAYER"));
+		 showTrayPlayer.addChangeListener(new ChangeListener() {
 
-	/**
-	 * @param c
-	 */
-	private void addTrayPlayerColorSelector(GridBagConstraints c) {
-		c.gridx = 1;
-        c.gridy = 7;
-        c.weighty = 0.2;
-        add(trayPlayerColorSelector, c);
-	}
+			 @Override
+			 public void stateChanged(ChangeEvent e) {
+				 trayPlayerColorSelector.setEnabled(showTrayPlayer.isSelected());
+			 }
+		 });
+		 trayPlayerColorSelector = new JButton(I18nUtils.getString("SELECT_TRAY_PLAYER_COLOR"));
+		 trayPlayerColorSelector.addActionListener(new ActionListener() {
 
-	/**
-	 * @param c
-	 */
-	private void addShowTrayPlayer(GridBagConstraints c) {
-		c.gridy = 7;
-        c.weighty = 0.2;
-        c.insets = new Insets(5, 0, 0, 0);
-        add(showTrayPlayer, c);
-	}
+			 @Override
+			 public void actionPerformed(ActionEvent e) {
+				 Color selectedColor = JColorChooser.showDialog(getPreferenceDialog(), 
+						 I18nUtils.getString("SELECT_TRAY_PLAYER_COLOR"),
+						 null);
+				 if (selectedColor != null) {
+					 currentTrayIconColor = selectedColor;
+				 }
+			 }
+		 });
 
-	/**
-	 * @param fontSettings
-	 * @param c
-	 */
-	private void addFontSettings(JButton fontSettings, GridBagConstraints c) {
-		c.gridy = 6;
-        c.gridwidth = 1;
-        c.weightx = 0;
-        c.weighty = 0;
-        c.fill = GridBagConstraints.NONE;
-        c.insets = new Insets(20, 0, 20, 0);
-        add(fontSettings, c);
-	}
+		 // Hide tray icons controls if not supported by operating system
+		 showIconTray.setVisible(osManager.areTrayIconsSupported());
+		 showTrayPlayer.setVisible(osManager.areTrayIconsSupported());
+		 trayPlayerColorSelector.setVisible(osManager.areTrayIconsSupported() && osManager.areTrayIconsColorsSupported());
 
-	/**
-	 * @param windowTypeLabel
-	 * @param sp
-	 * @param c
-	 */
-	private void addWindowType(JLabel windowTypeLabel, JScrollPane sp,
-			GridBagConstraints c) {
-		c.gridx = 0;
-        c.gridy = 4;
-        c.insets = new Insets(20, 0, 0, 0);
-        add(windowTypeLabel, c);
-        c.gridy = 5;
-        c.insets = new Insets(5, 0, 0, 0);
-        c.gridwidth = 3;
-        c.weightx = 1;
-        c.weighty = 1;
-        c.fill = GridBagConstraints.BOTH;
-        add(sp, c);
-	}
 
-	/**
-	 * @param c
-	 */
-	private void addSkin(GridBagConstraints c) {
-		c.gridx = 0;
-        c.gridy = 3;
-        c.insets = new Insets(10, 0, 5, 0);
-        c.fill=GridBagConstraints.HORIZONTAL;
-        add(skinLabel, c);
-        c.gridx = 1;
-        c.insets = new Insets(10, 0, 0, 0);
-        c.fill=GridBagConstraints.NONE;
-        add(skin, c);
-	}
+		 JLabel lookAndFeelLabel = new JLabel(I18nUtils.getString("LOOK_AND_FEEL"));
+		 skinLabel = new JLabel(I18nUtils.getString("THEME"));
 
-	/**
-	 * @param lookAndFeelLabel
-	 * @param c
-	 */
-	private void addLookAndFeel(JLabel lookAndFeelLabel, GridBagConstraints c) {
-		c.gridx = 0;
-        c.gridy = 2;
-        c.insets = new Insets(25, 0, 5, 0);
-        c.fill=GridBagConstraints.HORIZONTAL;
-        add(lookAndFeelLabel, c);
-        c.gridx = 1;
-        c.insets = new Insets(25, 0, 0, 0);
-        c.fill=GridBagConstraints.NONE;
-        add(lookAndFeel, c);
-	}
+		 JButton fontSettings = new JButton(I18nUtils.getString("CHANGE_FONT_SETTINGS"));
+		 fontSettings.setEnabled(lookAndFeelManager.getCurrentLookAndFeel().supportsCustomFontSettings());
+		 fontSettings.addActionListener(new ActionListener() {
 
-	/**
-	 * @param languageLabel
-	 * @param c
-	 */
-	private void addLanguage(JLabel languageLabel, GridBagConstraints c) {
-		c.gridy = 0;
-        c.anchor = GridBagConstraints.FIRST_LINE_START;
-        c.insets = new Insets(5, 0, 0, 0);
-        c.fill=GridBagConstraints.HORIZONTAL;
-        add(languageLabel, c);
-        c.gridx = 1;
-        c.fill=GridBagConstraints.NONE;
-        add(language, c);
-	}
+			 @Override
+			 public void actionPerformed(ActionEvent e) {
+				 FontChooserDialog fontChooserDialog = dialogFactory.newDialog(FontChooserDialog.class);
+				 fontChooserDialog.initializeFont(currentFontSettings != null ? currentFontSettings.getFont().toFont() : GeneralPanel.this.lookAndFeelManager.getCurrentLookAndFeel().getDefaultFont(),
+						 currentFontSettings != null ? currentFontSettings.isUseFontSmoothing() : true, 
+								 currentFontSettings != null ? currentFontSettings.isUseFontSmoothingSettingsFromOs() : false, 
+										 stateCore.getLocale().getLocale());
+				 fontChooserDialog.showDialog();
+				 if (fontChooserDialog.getSelectedFontSettings() != null) {
+					 currentFontSettings = fontChooserDialog.getSelectedFontSettings();
+				 }
+			 }
+		 });
 
-    @Override
-    public boolean applyPreferences() {
-        boolean needRestart = false;
+		 lookAndFeel = new JComboBox();
+		 lookAndFeel.addActionListener(new ActionListener() {
+			 @Override
+			 public void actionPerformed(ActionEvent e) {
+				 // When changing look and feel set default skin in combo or current skin if selected look and feel is the current one
+				 String skinName = GeneralPanel.this.lookAndFeelManager.getDefaultSkin((String)lookAndFeel.getSelectedItem());
+				 if (GeneralPanel.this.lookAndFeelManager.getCurrentLookAndFeelName().equals(lookAndFeel.getSelectedItem()) &&
+						 stateUI.getLookAndFeel().getSkin() != null) {
+					 skinName = stateUI.getLookAndFeel().getSkin();
+				 } else {
+					 // Different look and feel, if skin has changed we must reset it, if not, do nothing as to change look and feel
+					 // user must restart application first
+					 String currentSkin = stateUI.getLookAndFeel().getSkin();
+					 if (currentSkin == null) {
+						 currentSkin = GeneralPanel.this.lookAndFeelManager.getDefaultSkin(stateUI.getLookAndFeel().getName());
+					 }
+					 GeneralPanel.this.lookAndFeelManager.applySkin(currentSkin, stateCore, stateUI, osManager);
+				 }
+				 updateSkins((String)lookAndFeel.getSelectedItem(), skinName);
+			 }
+		 });
+		 skin = new JComboBox();
+		 List<ImageEntry<Class<? extends IFrame>>> data = new ArrayList<ImageEntry<Class<? extends IFrame>>>();
+		 for (Class<? extends IFrame> clazz : Frames.getClasses()) {
+			 data.add(new ImageEntry<Class<? extends IFrame>>(clazz, Frames.getImage(clazz)));
+		 }
+		 windowTypeChoosingPanel = new ByImageChoosingPanel<Class<? extends IFrame>>(data);
 
-        Class<? extends IFrame> oldFrameClass = stateUI.getFrameClass();
-        Class<? extends IFrame> newFrameClass = windowTypeChoosingPanel.getSelectedItem();
-        stateUI.setFrameClass(newFrameClass);
-        if (!oldFrameClass.equals(newFrameClass)) {
-            needRestart = true;
-        }
+		 JScrollPane sp = lookAndFeelManager.getCurrentLookAndFeel().getScrollPane(windowTypeChoosingPanel);
+		 sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		 sp.getVerticalScrollBar().setUnitIncrement(20);
 
-        ILocaleBean oldLocale = stateCore.getLocale();
-        ILocaleBean newLocale = localeBeanFactory.getLocaleBean((Locale) language.getSelectedItem());
-        stateCore.setLocale(newLocale);
-        if (!oldLocale.equals(newLocale)) {
-            needRestart = true;
-            stateCore.setOldLocale(localeBeanFactory.getLocaleBean(Locale.getDefault()));
-        }
+		 arrangePanel(windowTypeLabel, languageLabel, lookAndFeelLabel,
+				 fontSettings, sp);
+	 }
 
-        if (lookAndFeelManager.getCurrentLookAndFeel().supportsCustomFontSettings()) {
-        	FontSettings oldFontSettings = stateUI.getFontSettings();
-        	stateUI.setFontSettings(currentFontSettings);
-        	if (!oldFontSettings.equals(currentFontSettings)) {
-        		needRestart = true;
-        	}
-        }
+	 /**
+	  * @param windowTypeLabel
+	  * @param languageLabel
+	  * @param lookAndFeelLabel
+	  * @param fontSettings
+	  * @param sp
+	  */
+	 private void arrangePanel(JLabel windowTypeLabel, JLabel languageLabel, JLabel lookAndFeelLabel, JButton fontSettings, JScrollPane sp) {
+		 GridBagConstraints c = new GridBagConstraints();
+		 addLanguage(languageLabel, c);
+		 addLookAndFeel(lookAndFeelLabel, c);
+		 addSkin(c);
+		 addWindowType(windowTypeLabel, sp, c);
+		 addFontSettings(fontSettings, c);
+		 addShowTrayPlayer(c);
+		 addTrayPlayerColorSelector(c);
+		 addShowIconTray(c);
+	 }
 
-        stateUI.setShowSystemTray(showIconTray.isSelected());
-        stateUI.setShowTrayPlayer(showTrayPlayer.isSelected());
-        
-        if (currentTrayIconColor != null) {
-        	stateUI.setTrayPlayerIconsColor(colorBeanFactory.getColorBean(currentTrayIconColor));
-        }
+	 /**
+	  * @param c
+	  */
+	 private void addShowIconTray(GridBagConstraints c) {
+		 c.gridx = 2;
+		 c.gridy = 7;
+		 add(showIconTray, c);
+	 }
 
-        LookAndFeelBean oldLookAndFeel = stateUI.getLookAndFeel();
-        LookAndFeelBean newLookAndFeel = new LookAndFeelBean();
-        newLookAndFeel.setName((String) lookAndFeel.getSelectedItem());
-        newLookAndFeel.setSkin((String) skin.getSelectedItem());
-        stateUI.setLookAndFeel(newLookAndFeel);
-        if (!oldLookAndFeel.getName().equals(newLookAndFeel.getName())) {
-            needRestart = true;
-        }
+	 /**
+	  * @param c
+	  */
+	 private void addTrayPlayerColorSelector(GridBagConstraints c) {
+		 c.gridx = 1;
+		 c.gridy = 7;
+		 c.weighty = 0.2;
+		 add(trayPlayerColorSelector, c);
+	 }
 
-        return needRestart;
-    }
+	 /**
+	  * @param c
+	  */
+	 private void addShowTrayPlayer(GridBagConstraints c) {
+		 c.gridy = 7;
+		 c.weighty = 0.2;
+		 c.insets = new Insets(5, 0, 0, 0);
+		 add(showTrayPlayer, c);
+	 }
 
-    /**
-     * Sets the language.
-     * 
-     * @param language
-     *            the new language
-     */
-    private void setLanguage(Locale language) {
-        this.language.setSelectedItem(language);
-    }
+	 /**
+	  * @param fontSettings
+	  * @param c
+	  */
+	 private void addFontSettings(JButton fontSettings, GridBagConstraints c) {
+		 c.gridy = 6;
+		 c.gridwidth = 1;
+		 c.weightx = 0;
+		 c.weighty = 0;
+		 c.fill = GridBagConstraints.NONE;
+		 c.insets = new Insets(20, 0, 20, 0);
+		 add(fontSettings, c);
+	 }
 
-    /**
-     * Sets the show icon tray.
-     * 
-     * @param show
-     *            the new show icon tray
-     */
-    private void setShowIconTray(boolean show) {
-        this.showIconTray.setSelected(show);
-    }
+	 /**
+	  * @param windowTypeLabel
+	  * @param sp
+	  * @param c
+	  */
+	 private void addWindowType(JLabel windowTypeLabel, JScrollPane sp,
+			 GridBagConstraints c) {
+		 c.gridx = 0;
+		 c.gridy = 4;
+		 c.insets = new Insets(20, 0, 0, 0);
+		 add(windowTypeLabel, c);
+		 c.gridy = 5;
+		 c.insets = new Insets(5, 0, 0, 0);
+		 c.gridwidth = 3;
+		 c.weightx = 1;
+		 c.weighty = 1;
+		 c.fill = GridBagConstraints.BOTH;
+		 add(sp, c);
+	 }
 
-    /**
-     * Sets the show tray player.
-     * 
-     * @param show
-     *            the new show tray player
-     */
-    private void setShowTrayPlayer(boolean show) {
-        this.showTrayPlayer.setSelected(show);
-        this.trayPlayerColorSelector.setEnabled(show);
-    }
+	 /**
+	  * @param c
+	  */
+	 private void addSkin(GridBagConstraints c) {
+		 c.gridx = 0;
+		 c.gridy = 3;
+		 c.insets = new Insets(10, 0, 5, 0);
+		 c.fill=GridBagConstraints.HORIZONTAL;
+		 add(skinLabel, c);
+		 c.gridx = 1;
+		 c.insets = new Insets(10, 0, 0, 0);
+		 c.fill=GridBagConstraints.NONE;
+		 add(skin, c);
+	 }
 
-    /**
-     * Sets the look and feel
-     * 
-     * @param lookAndFeel
-     */
-    private void setLookAndFeel(String lookAndFeel) {
-        this.lookAndFeel.setSelectedItem(lookAndFeel);
-    }
+	 /**
+	  * @param lookAndFeelLabel
+	  * @param c
+	  */
+	 private void addLookAndFeel(JLabel lookAndFeelLabel, GridBagConstraints c) {
+		 c.gridx = 0;
+		 c.gridy = 2;
+		 c.insets = new Insets(25, 0, 5, 0);
+		 c.fill=GridBagConstraints.HORIZONTAL;
+		 add(lookAndFeelLabel, c);
+		 c.gridx = 1;
+		 c.insets = new Insets(25, 0, 0, 0);
+		 c.fill=GridBagConstraints.NONE;
+		 add(lookAndFeel, c);
+	 }
 
-    /**
-     * Sets the window type.
-     * 
-     * @param type
-     *            the new window type
-     */
-    private void setWindowType(Class<? extends IFrame> type) {
-        windowTypeChoosingPanel.setSelectedItem(type);
-    }
+	 /**
+	  * @param languageLabel
+	  * @param c
+	  */
+	 private void addLanguage(JLabel languageLabel, GridBagConstraints c) {
+		 c.gridy = 0;
+		 c.anchor = GridBagConstraints.FIRST_LINE_START;
+		 c.insets = new Insets(5, 0, 0, 0);
+		 c.fill=GridBagConstraints.HORIZONTAL;
+		 add(languageLabel, c);
+		 c.gridx = 1;
+		 c.fill=GridBagConstraints.NONE;
+		 add(language, c);
+	 }
 
-    @Override
-    public void updatePanel() {
-        List<Locale> langs = I18nUtils.getLanguages();
-        Locale[] array = langs.toArray(new Locale[langs.size()]);
-        final Locale currentLocale = stateCore.getLocale().getLocale();
-        Arrays.sort(array, new LocaleComparator(currentLocale));
-        language.setModel(new DefaultComboBoxModel(array));
-        language.setRenderer(lookAndFeelManager.getCurrentLookAndFeel().getListCellRenderer(new LanguageListCellRendererCode(stateCore)));
+	 @Override
+	 public boolean applyPreferences() {
+		 boolean needRestart = false;
 
-    	
-        lookAndFeel.setModel(new ListComboBoxModel<String>(lookAndFeelManager.getAvailableLookAndFeels()));
-        setWindowType(stateUI.getFrameClass());
-        setLanguage(I18nUtils.getSelectedLocale());
-        setShowIconTray(stateUI.isShowSystemTray());
-        setShowTrayPlayer(stateUI.isShowTrayPlayer());
-        // If look and feel is not available then set default
-        String lookAndFeelName = lookAndFeelManager.getAvailableLookAndFeels().contains(stateUI.getLookAndFeel().getName()) ? stateUI.getLookAndFeel().getName()
-                : lookAndFeelManager.getDefaultLookAndFeel().getName();
-        setLookAndFeel(lookAndFeelName);
+		 Class<? extends IFrame> oldFrameClass = stateUI.getFrameClass();
+		 Class<? extends IFrame> newFrameClass = windowTypeChoosingPanel.getSelectedItem();
+		 stateUI.setFrameClass(newFrameClass);
+		 if (!oldFrameClass.equals(newFrameClass)) {
+			 needRestart = true;
+		 }
 
-        String skinName = stateUI.getLookAndFeel().getSkin() != null ? stateUI.getLookAndFeel().getSkin() : lookAndFeelManager.getDefaultSkin(lookAndFeelName); 
-        updateSkins(lookAndFeelName, skinName);
-        
-        currentFontSettings = stateUI.getFontSettings();
-    }
+		 ILocaleBean oldLocale = stateCore.getLocale();
+		 ILocaleBean newLocale = localeBeanFactory.getLocaleBean((Locale) language.getSelectedItem());
+		 stateCore.setLocale(newLocale);
+		 if (!oldLocale.equals(newLocale)) {
+			 needRestart = true;
+			 stateCore.setOldLocale(localeBeanFactory.getLocaleBean(Locale.getDefault()));
+		 }
 
-    @Override
-    public void resetImmediateChanges() {
-        if (stateUI.getLookAndFeel().getSkin() == null || !stateUI.getLookAndFeel().getSkin().equals(skin.getSelectedItem())) {
-            lookAndFeelManager.applySkin(stateUI.getLookAndFeel().getSkin(), stateCore, stateUI, osManager);
-        }
-    }
+		 if (lookAndFeelManager.getCurrentLookAndFeel().supportsCustomFontSettings()) {
+			 FontSettings oldFontSettings = stateUI.getFontSettings();
+			 stateUI.setFontSettings(currentFontSettings);
+			 if (!oldFontSettings.equals(currentFontSettings)) {
+				 needRestart = true;
+			 }
+		 }
 
-    @Override
-    public void validatePanel() throws PreferencesValidationException {
-    }
+		 stateUI.setShowSystemTray(showIconTray.isSelected());
+		 stateUI.setShowTrayPlayer(showTrayPlayer.isSelected());
 
-    @Override
-    public void dialogVisibilityChanged(boolean visible) {
-        // Do nothing
-    }
+		 if (currentTrayIconColor != null) {
+			 stateUI.setTrayPlayerIconsColor(colorBeanFactory.getColorBean(currentTrayIconColor));
+		 }
 
-    /**
-     * Updates skins combo for given look and feel
-     * 
-     * @param selectedLookAndFeel
-     * @param selectedSkin
-     */
-    protected void updateSkins(String selectedLookAndFeel, String selectedSkin) {
-        boolean hasSkins = !lookAndFeelManager.getAvailableSkins(selectedLookAndFeel).isEmpty();
-        skinLabel.setEnabled(hasSkins);
-        skin.setEnabled(hasSkins);
-        
-        // Hide skin selector if look and feel has no skins
-        skinLabel.setVisible(hasSkins);
-        skin.setVisible(hasSkins);
-        
-        // Remove all listeners when setting skin list to avoid events fired while selecting skin item
-        if (applySkinActionListener != null) {
-        	skin.removeActionListener(applySkinActionListener);
-        }
-        skin.setModel(new ListComboBoxModel<String>(lookAndFeelManager.getAvailableSkins(selectedLookAndFeel)));
-        skin.setSelectedItem(selectedSkin);
-        if (applySkinActionListener == null) {
-        	applySkinActionListener = new ApplySkinActionListener();
-        }
-        skin.addActionListener(applySkinActionListener);        
-    }
+		 LookAndFeelBean oldLookAndFeel = stateUI.getLookAndFeel();
+		 LookAndFeelBean newLookAndFeel = new LookAndFeelBean();
+		 newLookAndFeel.setName((String) lookAndFeel.getSelectedItem());
+		 newLookAndFeel.setSkin((String) skin.getSelectedItem());
+		 stateUI.setLookAndFeel(newLookAndFeel);
+		 if (!oldLookAndFeel.getName().equals(newLookAndFeel.getName())) {
+			 needRestart = true;
+		 }
 
-    private class ApplySkinActionListener implements ActionListener {
-    	@Override
-    	public void actionPerformed(ActionEvent e) {
-    		String selectedSkin = (String) skin.getSelectedItem();
-    		boolean isCurrentLookAndFeel = lookAndFeelManager.getCurrentLookAndFeelName().equals(lookAndFeel.getSelectedItem());
-    		if (isCurrentLookAndFeel) {
-    			lookAndFeelManager.applySkin(selectedSkin, stateCore, stateUI, osManager);
-    		}
-    	}
-    }
+		 return needRestart;
+	 }
+
+	 /**
+	  * Sets the language.
+	  * 
+	  * @param language
+	  *            the new language
+	  */
+	  private void setLanguage(Locale language) {
+		 this.language.setSelectedItem(language);
+	 }
+
+	  /**
+	   * Sets the show icon tray.
+	   * 
+	   * @param show
+	   *            the new show icon tray
+	   */
+	  private void setShowIconTray(boolean show) {
+		  this.showIconTray.setSelected(show);
+	  }
+
+	  /**
+	   * Sets the show tray player.
+	   * 
+	   * @param show
+	   *            the new show tray player
+	   */
+	  private void setShowTrayPlayer(boolean show) {
+		  this.showTrayPlayer.setSelected(show);
+		  this.trayPlayerColorSelector.setEnabled(show);
+	  }
+
+	  /**
+	   * Sets the look and feel
+	   * 
+	   * @param lookAndFeel
+	   */
+	  private void setLookAndFeel(String lookAndFeel) {
+		  this.lookAndFeel.setSelectedItem(lookAndFeel);
+	  }
+
+	  /**
+	   * Sets the window type.
+	   * 
+	   * @param type
+	   *            the new window type
+	   */
+	  private void setWindowType(Class<? extends IFrame> type) {
+		  windowTypeChoosingPanel.setSelectedItem(type);
+	  }
+
+	  @Override
+	  public void updatePanel() {
+		  List<Locale> langs = I18nUtils.getLanguages();
+		  Locale[] array = langs.toArray(new Locale[langs.size()]);
+		  final Locale currentLocale = stateCore.getLocale().getLocale();
+		  Arrays.sort(array, new LocaleComparator(currentLocale));
+		  language.setModel(new DefaultComboBoxModel(array));
+		  language.setRenderer(lookAndFeelManager.getCurrentLookAndFeel().getListCellRenderer(new LanguageListCellRendererCode(stateCore)));
+
+
+		  lookAndFeel.setModel(new ListComboBoxModel<String>(lookAndFeelManager.getAvailableLookAndFeels()));
+		  setWindowType(stateUI.getFrameClass());
+		  setLanguage(I18nUtils.getSelectedLocale());
+		  setShowIconTray(stateUI.isShowSystemTray());
+		  setShowTrayPlayer(stateUI.isShowTrayPlayer());
+		  // If look and feel is not available then set default
+		  String lookAndFeelName = lookAndFeelManager.getAvailableLookAndFeels().contains(stateUI.getLookAndFeel().getName()) ? stateUI.getLookAndFeel().getName()
+				  : lookAndFeelManager.getDefaultLookAndFeel().getName();
+		  setLookAndFeel(lookAndFeelName);
+
+		  String skinName = stateUI.getLookAndFeel().getSkin() != null ? stateUI.getLookAndFeel().getSkin() : lookAndFeelManager.getDefaultSkin(lookAndFeelName); 
+		  updateSkins(lookAndFeelName, skinName);
+
+		  currentFontSettings = stateUI.getFontSettings();
+	  }
+
+	  @Override
+	  public void resetImmediateChanges() {
+		  if (stateUI.getLookAndFeel().getSkin() == null || !stateUI.getLookAndFeel().getSkin().equals(skin.getSelectedItem())) {
+			  lookAndFeelManager.applySkin(stateUI.getLookAndFeel().getSkin(), stateCore, stateUI, osManager);
+		  }
+	  }
+
+	  @Override
+	  public void validatePanel() throws PreferencesValidationException {
+	  }
+
+	  @Override
+	  public void dialogVisibilityChanged(boolean visible) {
+		  // Do nothing
+	  }
+
+	  /**
+	   * Updates skins combo for given look and feel
+	   * 
+	   * @param selectedLookAndFeel
+	   * @param selectedSkin
+	   */
+	  protected void updateSkins(String selectedLookAndFeel, String selectedSkin) {
+		  boolean hasSkins = !lookAndFeelManager.getAvailableSkins(selectedLookAndFeel).isEmpty();
+		  skinLabel.setEnabled(hasSkins);
+		  skin.setEnabled(hasSkins);
+
+		  // Hide skin selector if look and feel has no skins
+		  skinLabel.setVisible(hasSkins);
+		  skin.setVisible(hasSkins);
+
+		  // Remove all listeners when setting skin list to avoid events fired while selecting skin item
+		  if (applySkinActionListener != null) {
+			  skin.removeActionListener(applySkinActionListener);
+		  }
+		  skin.setModel(new ListComboBoxModel<String>(lookAndFeelManager.getAvailableSkins(selectedLookAndFeel)));
+		  skin.setSelectedItem(selectedSkin);
+		  if (applySkinActionListener == null) {
+			  applySkinActionListener = new ApplySkinActionListener();
+		  }
+		  skin.addActionListener(applySkinActionListener);        
+	  }
+
+	  private class ApplySkinActionListener implements ActionListener {
+		  @Override
+		  public void actionPerformed(ActionEvent e) {
+			  String selectedSkin = (String) skin.getSelectedItem();
+			  boolean isCurrentLookAndFeel = lookAndFeelManager.getCurrentLookAndFeelName().equals(lookAndFeel.getSelectedItem());
+			  if (isCurrentLookAndFeel) {
+				  lookAndFeelManager.applySkin(selectedSkin, stateCore, stateUI, osManager);
+			  }
+		  }
+	  }
 }

@@ -27,7 +27,6 @@ import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -45,9 +44,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.model.FontSettings;
 import net.sourceforge.atunes.model.IFontBeanFactory;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -72,21 +71,35 @@ public final class FontChooserDialog extends AbstractCustomDialog {
     private FontSettings fontSettings = new FontSettings();
     
     private IFontBeanFactory fontBeanFactory;
+    
+    /**
+     * @param fontBeanFactory
+     */
+    public void setFontBeanFactory(IFontBeanFactory fontBeanFactory) {
+		this.fontBeanFactory = fontBeanFactory;
+	}
 
     /**
      * @param owner
-     * @param width
-     * @param height
      * @param font
      * @param useFontSmoothing
      * @param useFontSmoothingSettingsFromOs
      * @param locale
      * @param fontBeanFactory
      */
-    public FontChooserDialog(Window owner, int width, int height, Font font, boolean useFontSmoothing, boolean useFontSmoothingSettingsFromOs, Locale locale, IFontBeanFactory fontBeanFactory) {
-        super(owner, width, height, true, CloseAction.DISPOSE);
+    public FontChooserDialog(IFrame owner) {
+        super(owner, 300, 300);
+    }
+    
+    /**
+     * Initializes fonts
+     * @param font
+     * @param useFontSmoothing
+     * @param useFontSmoothingSettingsFromOs
+     * @param locale
+     */
+    public void initializeFont(Font font, boolean useFontSmoothing, boolean useFontSmoothingSettingsFromOs, Locale locale) {
         this.locale = locale;
-        this.fontBeanFactory = fontBeanFactory;
         this.fontSettings.setFont(fontBeanFactory.getFontBean(font));
         this.fontSettings.setUseFontSmoothing(useFontSmoothing);
         this.fontSettings.setUseFontSmoothingSettingsFromOs(useFontSmoothingSettingsFromOs);
@@ -229,8 +242,10 @@ public final class FontChooserDialog extends AbstractCustomDialog {
         fontPreviewLabel.setFont(fontSettings.getFont().toFont());
     }
 
+    /**
+     * @return font settings selected by user
+     */
     public FontSettings getSelectedFontSettings() {
         return fontSettings;
     }
-
 }

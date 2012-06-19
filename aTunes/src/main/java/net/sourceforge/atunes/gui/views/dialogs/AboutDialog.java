@@ -53,6 +53,11 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 import org.joda.time.DateMidnight;
 
+/**
+ * A dialog to show information about application
+ * @author alex
+ *
+ */
 public final class AboutDialog extends AbstractCustomDialog implements IAboutDialog {
 
     private static final long serialVersionUID = 8666235475424750562L;

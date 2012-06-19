@@ -455,7 +455,7 @@ public final class RipperHandler extends AbstractHandler implements IRipperHandl
         SwingUtilities.invokeLater(new Runnable() {
         	@Override
         	public void run() {
-                indeterminateProgressDialog = dialogFactory.newIndeterminateProgressDialog();
+                indeterminateProgressDialog = dialogFactory.newDialog(IIndeterminateProgressDialog.class);
                 indeterminateProgressDialog.setTitle(I18nUtils.getString("RIP_CD"));
                 indeterminateProgressDialog.showDialog();
         	}

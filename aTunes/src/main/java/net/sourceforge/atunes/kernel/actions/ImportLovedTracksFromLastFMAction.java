@@ -90,7 +90,7 @@ public class ImportLovedTracksFromLastFMAction extends CustomAbstractAction {
         worker.setActionsAfterBackgroundStarted(new Runnable() {
         	@Override
         	public void run() {
-        		dialog = dialogFactory.newIndeterminateProgressDialog();
+        		dialog = dialogFactory.newDialog(IIndeterminateProgressDialog.class);
         		dialog.setTitle(I18nUtils.getString("GETTING_LOVED_TRACKS_FROM_LASTFM"));
         		dialog.showDialog();
         	}

@@ -88,7 +88,7 @@ public class ImportLovedTracksFromLastFMActionTest {
 		
 		IDialogFactory dialogFactory = mock(IDialogFactory.class);
 		when(dialogFactory.newDialog(IMessageDialog.class)).thenReturn(mock(IMessageDialog.class));
-		when(dialogFactory.newIndeterminateProgressDialog()).thenReturn(mock(IIndeterminateProgressDialog.class));
+		when(dialogFactory.newDialog(IIndeterminateProgressDialog.class)).thenReturn(mock(IIndeterminateProgressDialog.class));
 		
 		sut.setWebServicesHandler(webServicesHandler);
 		sut.setRepositoryHandler(repositoryHandler);

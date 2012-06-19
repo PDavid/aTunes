@@ -127,7 +127,7 @@ public final class EditPreferencesDialogController extends AbstractSimpleControl
      * @return
      */
     void validatePreferences() throws PreferencesValidationException {
-		final IIndeterminateProgressDialog dialog = dialogFactory.newIndeterminateProgressDialog(getComponentControlled());
+		final IIndeterminateProgressDialog dialog = dialogFactory.newDialog(IIndeterminateProgressDialog.class);
 
     	final SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
     		

@@ -41,14 +41,34 @@ abstract class AbstractPreferencesPanel extends JPanel {
      */
     private boolean dirty;
     
+    private EditPreferencesDialog dialog;
+    
     /**
      * Instantiates a new preferences panel.
+     * @param title 
      */
     public AbstractPreferencesPanel(String title) {
         super(new GridBagLayout());
         this.title = title;
     }
     
+    /**
+     * @return dialog
+     */
+    EditPreferencesDialog getDialog() {
+		return dialog;
+	}
+    
+    /**
+     * @param dialog
+     */
+    public void setDialog(EditPreferencesDialog dialog) {
+		this.dialog = dialog;
+	}
+    
+    /**
+     * @return window
+     */
     public Window getPreferenceDialog(){
     	return (Window) SwingUtilities.getWindowAncestor(this);
     }
@@ -103,10 +123,16 @@ abstract class AbstractPreferencesPanel extends JPanel {
      */
     public abstract void dialogVisibilityChanged(boolean visible);
     
+	/**
+	 * @return if panel is dirty (some preference has changed)
+	 */
 	public final boolean isDirty() {
 		return dirty;
 	}
 
+	/**
+	 * @param dirty sets a panel as dirty
+	 */
 	public final void setDirty(boolean dirty) {
 		this.dirty = dirty;
 	}

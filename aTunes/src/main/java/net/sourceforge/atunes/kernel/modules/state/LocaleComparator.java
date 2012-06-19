@@ -18,18 +18,27 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.model;
+package net.sourceforge.atunes.kernel.modules.state;
 
-/**
- * A dialog to show progress of a task whose remaining time is unknown
- * @author alex
- *
- */
-public interface IIndeterminateProgressDialog extends IDialog {
+import java.io.Serializable;
+import java.text.Collator;
+import java.util.Comparator;
+import java.util.Locale;
 
-	/**
-	 * Sets title
-	 * @param title
+final class LocaleComparator implements Comparator<Locale>, Serializable {
+    /**
+	 * 
 	 */
-	public void setTitle(String title);
+	private static final long serialVersionUID = 8454923131242388725L;
+	
+	private final Locale currentLocale;
+
+    LocaleComparator(Locale currentLocale) {
+        this.currentLocale = currentLocale;
+    }
+
+    @Override
+    public int compare(Locale l1, Locale l2) {
+        return Collator.getInstance().compare(l1.getDisplayName(currentLocale), l2.getDisplayName(currentLocale));
+    }
 }
