@@ -28,7 +28,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -36,6 +35,7 @@ import javax.swing.JTextArea;
 import net.sourceforge.atunes.gui.images.Images;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
@@ -49,11 +49,14 @@ public final class RepositorySelectionInfoDialog extends AbstractCustomDialog {
     
     /**
      * Instantiates a new repository selection info dialog.
-     * 
-     * @param owner
+     * @param frame
      */
-    public RepositorySelectionInfoDialog(JFrame owner) {
-        super(owner, 400, 250, true);
+    public RepositorySelectionInfoDialog(IFrame frame) {
+        super(frame, 400, 250);
+    }
+    
+    @Override 
+    public void initialize() {
         setResizable(false);
         setTitle(I18nUtils.getString("REPOSITORY_SELECTION_INFO"));
         setContent();

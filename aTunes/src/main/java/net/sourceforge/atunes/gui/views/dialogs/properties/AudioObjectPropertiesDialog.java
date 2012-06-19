@@ -23,7 +23,6 @@ package net.sourceforge.atunes.gui.views.dialogs.properties;
 import java.awt.Dimension;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.model.IAudioObjectPropertiesDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.StringUtils;
@@ -42,7 +41,7 @@ public abstract class AudioObjectPropertiesDialog extends AbstractCustomDialog i
      * @param frame
      */
     AudioObjectPropertiesDialog(IFrame frame) {
-        super(frame, 560, 480, true, CloseAction.DISPOSE);
+        super(frame, 560, 480);
         setMinimumSize(new Dimension(560, 480));
         setResizable(true);
     }

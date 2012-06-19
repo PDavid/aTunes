@@ -66,6 +66,11 @@ import org.commonjukebox.plugins.model.PluginConfiguration;
 import org.commonjukebox.plugins.model.PluginFolder;
 import org.commonjukebox.plugins.model.PluginInfo;
 
+/**
+ * Panel to manage plugins
+ * @author alex
+ *
+ */
 public final class PluginsPanel extends AbstractPreferencesPanel {
 
 	private static final String HTML = "</html>";
@@ -96,11 +101,6 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	 */
 	private Map<PluginInfo, Boolean> pluginsActivation;
 
-	/**
-	 * Preferences dialog
-	 */
-	private EditPreferencesDialog editPreferencesDialog;
-	
 	private IPluginsHandler pluginsHandler;
 	
 	private ILookAndFeelManager lookAndFeelManager;
@@ -123,13 +123,6 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 	 */
 	public void setStateCore(IStateCore stateCore) {
 		this.stateCore = stateCore;
-	}
-	
-	/**
-	 * @param editPreferencesDialog
-	 */
-	public void setEditPreferencesDialog(EditPreferencesDialog editPreferencesDialog) {
-		this.editPreferencesDialog = editPreferencesDialog;
 	}
 	
 	/**
@@ -437,8 +430,9 @@ public final class PluginsPanel extends AbstractPreferencesPanel {
 			int row = pluginsTable.getSelectedRow();
 			PluginInfo plugin = ((PluginsTableModel) pluginsTable.getModel()).getPluginAt(row);
 			PluginConfiguration configuration = ((PluginsTableModel) pluginsTable.getModel()).getPluginConfigurationAt(row);
-			PluginEditorDialog editorDialog = new PluginEditorDialog(PluginsPanel.this.editPreferencesDialog, plugin, configuration);
-			editorDialog.setVisible(true);
+			PluginEditorDialog editorDialog = dialogFactory.newDialog(PluginEditorDialog.class);
+			editorDialog.initializeDialog(plugin, configuration);
+			editorDialog.showDialog();
 			configuration = editorDialog.getConfiguration();
 			if (configuration != null) {
 				// Validate plugin configuration

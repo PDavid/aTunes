@@ -34,7 +34,6 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.model.IDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -77,7 +76,7 @@ public final class StatsDialog extends AbstractCustomDialog implements IDialog {
      * @param frame
      */
     public StatsDialog(IFrame frame) {
-        super(frame, 750, 750, true, CloseAction.DISPOSE);
+        super(frame, 750, 750);
     }
     
     @Override

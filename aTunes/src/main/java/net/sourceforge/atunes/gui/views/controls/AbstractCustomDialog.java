@@ -21,7 +21,6 @@
 package net.sourceforge.atunes.gui.views.controls;
 
 import java.awt.Component;
-import java.awt.Window;
 
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -40,39 +39,10 @@ import net.sourceforge.atunes.model.ILookAndFeelManager;
  */
 public abstract class AbstractCustomDialog extends JDialog implements IDialog {
 
+	private static final long serialVersionUID = -4593025984520110706L;
+	
 	private ILookAndFeelManager lookAndFeelManager;
 	
-	private static final long serialVersionUID = 1L;
-
-    /**
-     * Convenience constructor, dialog is not closed if user presses close button
-     * Use this when dialog has a "cancel" or "close" button
-     * @param owner
-     * @param width
-     * @param height
-     * @param modal
-     */
-    public AbstractCustomDialog(Window owner, int width, int height, boolean modal) {
-    	this(owner, width, height, modal, CloseAction.NOTHING);
-    }
-    
-    /**
-     * Instantiates a new custom modal dialog.
-     * 
-     * @param owner
-     * @param width
-     * @param height
-     * @param modal
-     * @param closeAction
-     */
-    @Deprecated
-    public AbstractCustomDialog(Window owner, int width, int height, boolean modal, CloseAction closeAction) {
-        super(owner);
-		setSize(width, height);
-        setLocationRelativeTo(owner.getWidth() == 0 ? null : owner);
-        initializeDialog(modal, closeAction);
-    }
-
     /**
      * Instantiates a new custom modal dialog.
      * 

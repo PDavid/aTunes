@@ -25,16 +25,11 @@ package net.sourceforge.atunes.model;
  * @author alex
  *
  */
-public interface IUpdateDialog {
+public interface IUpdateDialog extends IDialog {
 
 	/**
 	 * Initializes with version
 	 * @param version
 	 */
 	public void initialize(ApplicationVersion version);
-	
-	/**
-	 * Show dialog
-	 */
-	public void showDialog();
 }

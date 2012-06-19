@@ -43,7 +43,6 @@ import javax.swing.table.TableModel;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.model.IColumn;
 import net.sourceforge.atunes.model.IColumnSelectorDialog;
 import net.sourceforge.atunes.model.IColumnSet;
@@ -204,7 +203,7 @@ public final class ColumnSetSelectorDialog extends AbstractCustomDialog implemen
      * @param frame
      */
     public ColumnSetSelectorDialog(IFrame frame) {
-        super(frame, 250, 300, true, CloseAction.DISPOSE);
+        super(frame, 250, 300);
     }
 
     @Override

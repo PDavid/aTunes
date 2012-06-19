@@ -51,6 +51,11 @@ import net.sourceforge.atunes.utils.I18nUtils;
 import net.sourceforge.atunes.utils.Logger;
 import net.sourceforge.atunes.utils.StringUtils;
 
+/**
+ * Reads repository
+ * @author alex
+ *
+ */
 public class RepositoryReader implements IRepositoryLoaderListener {
 
 	// Used to retrieve covers and show in progress dialog
@@ -244,7 +249,7 @@ public class RepositoryReader implements IRepositoryLoaderListener {
 			dialogFactory.newDialog(IMessageDialog.class).showMessage(I18nUtils.getString("RELOAD_REPOSITORY_MESSAGE"));
 			retrieve(foldersToRead);
 		} else {
-			RepositorySelectionInfoDialog dialog = new RepositorySelectionInfoDialog(frame.getFrame());
+			RepositorySelectionInfoDialog dialog = dialogFactory.newDialog(RepositorySelectionInfoDialog.class);
 			dialog.setVisible(true);
 			if (dialog.userAccepted()) {
 				repositoryHandler.selectRepository();

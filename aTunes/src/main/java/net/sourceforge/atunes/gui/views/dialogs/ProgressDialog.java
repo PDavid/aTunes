@@ -39,6 +39,11 @@ import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IProgressDialog;
 import net.sourceforge.atunes.utils.I18nUtils;
 
+/**
+ * A progress dialog
+ * @author alex
+ *
+ */
 public class ProgressDialog extends AbstractCustomDialog implements IProgressDialog {
 
     private static final long serialVersionUID = 5792663290880992661L;

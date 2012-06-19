@@ -43,6 +43,7 @@ import javax.swing.event.ListSelectionListener;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
+import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -54,6 +55,11 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 import org.jdesktop.swingx.JXTreeTable;
 
+/**
+ * Dialog to review and change tags before an import process
+ * @author alex
+ *
+ */
 public final class ReviewImportDialog extends AbstractCustomDialog implements IReviewImportDialog {
 
     private static final long serialVersionUID = 8523236886848649698L;
@@ -75,6 +81,8 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements IR
     
     private List<ILocalAudioObject> filesToLoad;
     
+    private IDialogFactory dialogFactory;
+    
     /**
      * Instantiates a new ReviewImportDialog
      * @param frame
@@ -83,6 +91,13 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements IR
     public ReviewImportDialog(IFrame frame) {
         super(frame, 800, 600, true, CloseAction.NOTHING);
     }
+    
+    /**
+     * @param dialogFactory
+     */
+    public void setDialogFactory(IDialogFactory dialogFactory) {
+		this.dialogFactory = dialogFactory;
+	}
 
     /**
      * @param stateRepository
@@ -149,7 +164,7 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements IR
         final JButton fillTagsFromFolderName = new JButton(StringUtils.getString(I18nUtils.getString("FILL_TAGS_FROM_FOLDER_NAME"), "..."));
         // Disabled as initially there is no row selected
         fillTagsFromFolderName.setEnabled(false);
-        fillTagsFromFolderName.addActionListener(new FillTagsFromFolderNameActionListener(this));
+        fillTagsFromFolderName.addActionListener(new FillTagsFromFolderNameActionListener(this, dialogFactory));
 
         treeTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override

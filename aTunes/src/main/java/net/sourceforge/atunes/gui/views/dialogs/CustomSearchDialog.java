@@ -37,7 +37,6 @@ import javax.swing.JTree;
 import javax.swing.ListSelectionModel;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.model.IDialog;
 import net.sourceforge.atunes.model.IFrame;
@@ -121,7 +120,7 @@ public final class CustomSearchDialog extends AbstractCustomDialog implements ID
      * @param frame
      */
     public CustomSearchDialog(IFrame frame) {
-        super(frame, 600, 500, true, CloseAction.DISPOSE);
+        super(frame, 600, 500);
     }
 
     @Override

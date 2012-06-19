@@ -25,12 +25,11 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CloseAction;
+import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.I18nUtils;
 
@@ -55,11 +54,14 @@ public final class SearchResultsDialog extends AbstractCustomDialog {
 
     /**
      * Instantiates a new search results dialog.
-     * 
-     * @param owner
+     * @param frame
      */
-    public SearchResultsDialog(JFrame owner) {
-        super(owner, 800, 600, true, CloseAction.DISPOSE);
+    public SearchResultsDialog(IFrame frame) {
+        super(frame, 800, 600);
+    }
+    
+    @Override
+    public void initialize() {
         setResizable(true);
         setTitle(I18nUtils.getString("SEARCH_RESULTS"));
         add(getContent(getLookAndFeel()));

@@ -40,7 +40,6 @@ import javax.swing.JTextField;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.model.IDialog;
 import net.sourceforge.atunes.model.IFrame;
@@ -81,12 +80,10 @@ public final class RipCdDialog extends AbstractCustomDialog implements IDialog {
 
     /**
      * Instantiates a new rip cd dialog.
-     * 
-     * @param owner
-     *            the owner
+     * @param frame
      */
     public RipCdDialog(IFrame frame) {
-        super(frame, 650, 450, true, CloseAction.DISPOSE);
+        super(frame, 650, 450);
     }
     
     @Override

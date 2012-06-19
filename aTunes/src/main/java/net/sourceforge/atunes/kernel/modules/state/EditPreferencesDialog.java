@@ -35,7 +35,6 @@ import javax.swing.ListModel;
 
 import net.sourceforge.atunes.gui.GuiUtils;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.model.IDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -59,7 +58,7 @@ public final class EditPreferencesDialog extends AbstractCustomDialog implements
      * @param frame
      */
     public EditPreferencesDialog(IFrame frame) {
-        super(frame, 800, 600, true, CloseAction.DISPOSE);
+        super(frame, 800, 600);
     }
 
     @Override

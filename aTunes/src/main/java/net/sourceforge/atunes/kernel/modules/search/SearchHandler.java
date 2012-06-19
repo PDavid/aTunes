@@ -61,6 +61,11 @@ import org.apache.lucene.search.Searcher;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.util.Version;
 
+/**
+ * Responsible of searches
+ * @author alex
+ *
+ */
 public final class SearchHandler extends AbstractHandler implements ISearchHandler {
 
     /** Dummy lucene field to retrieve all elements. */
@@ -138,7 +143,7 @@ public final class SearchHandler extends AbstractHandler implements ISearchHandl
      */
     private SearchResultsController getSearchResultsController() {
         if (searchResultsController == null) {
-            searchResultsController = new SearchResultsController(new SearchResultsDialog(getFrame().getFrame()), getBean(IPlayListHandler.class), getBean(ILookAndFeelManager.class), getBean(IPlayerHandler.class), audioObjectComparator);
+            searchResultsController = new SearchResultsController(dialogFactory.newDialog(SearchResultsDialog.class), getBean(IPlayListHandler.class), getBean(ILookAndFeelManager.class), getBean(IPlayerHandler.class), audioObjectComparator);
         }
         return searchResultsController;
     }

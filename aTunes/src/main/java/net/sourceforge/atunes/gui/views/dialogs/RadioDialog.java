@@ -33,7 +33,6 @@ import javax.swing.JTextField;
 
 import net.sourceforge.atunes.Context;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.IIconFactory;
@@ -66,7 +65,7 @@ public final class RadioDialog extends AbstractCustomDialog implements IRadioDia
      * @param frame
      */
     public RadioDialog(IFrame frame) {
-        super(frame, 500, 200, true, CloseAction.DISPOSE);
+        super(frame, 500, 200);
     }
     
     @Override
