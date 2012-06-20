@@ -29,8 +29,6 @@ import net.sourceforge.atunes.model.ILocalAudioObject;
 import net.sourceforge.atunes.model.IUnknownObjectChecker;
 import net.sourceforge.atunes.model.IWebServicesHandler;
 
-import org.springframework.context.ApplicationContext;
-
 /**
  * The Class SetGenresProcess.
  */
@@ -42,8 +40,6 @@ public class SetGenresProcess extends AbstractChangeTagProcess {
     
 	private IUnknownObjectChecker unknownObjectChecker;
 	
-	private ApplicationContext context;
-
 	/**
 	 * @param unknownObjectChecker
 	 */
@@ -109,5 +105,4 @@ public class SetGenresProcess extends AbstractChangeTagProcess {
 
         return result;
     }
-
 }

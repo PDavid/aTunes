@@ -38,14 +38,13 @@ import javax.swing.ListSelectionModel;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
 import net.sourceforge.atunes.gui.views.controls.CustomTextField;
-import net.sourceforge.atunes.model.IDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.utils.I18nUtils;
 
 /**
  * The Class CustomSearchDialog.
  */
-public final class CustomSearchDialog extends AbstractCustomDialog implements IDialog {
+public final class CustomSearchDialog extends AbstractCustomDialog {
 
     private static final long serialVersionUID = -7447583622785097610L;
 

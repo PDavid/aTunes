@@ -379,29 +379,36 @@ public class DefaultTag extends AbstractTag {
 		} else if (tag instanceof org.jaudiotagger.tag.id3.ID3v24Tag) {
 			setDate(DateUtils.parseRFC3339Date(getFirstTagValue(tag, "TDRC")));
 		} else if (tag instanceof org.jaudiotagger.tag.id3.ID3v23Tag) {
-			// Set date from fields tag TYER and date/month tag TDAT
-			DateMidnight c = null;
-			String yearPart = getFirstTagValue(tag, "TYER");
-			if (!StringUtils.isEmpty(yearPart)) {
-				try {
-					c = new DateMidnight().withYear(Integer.parseInt(yearPart)).withMonthOfYear(1).withDayOfMonth(1);
-					String dateMonthPart = getFirstTagValue(tag, "TDAT");
-					if (!StringUtils.isEmpty(dateMonthPart) && dateMonthPart.length() >= 4) {
-						c = c.withMonthOfYear(Integer.parseInt(dateMonthPart.substring(2, 4)))
-						.withDayOfMonth(Integer.parseInt(dateMonthPart.substring(0, 2)));
-					}
-				} catch (NumberFormatException e) {
-					// Skip this date
-				} catch (IllegalArgumentException e) {
-					// Skip this date
-				}
-			}
-
-			if (c != null) {
-				setDate(c);
-			}
+			setDateFromID3v23Tag(tag);
 		} else {
 			setDate((DateTime)null);
+		}
+	}
+
+	/**
+	 * @param tag
+	 */
+	private void setDateFromID3v23Tag(org.jaudiotagger.tag.Tag tag) {
+		// Set date from fields tag TYER and date/month tag TDAT
+		DateMidnight c = null;
+		String yearPart = getFirstTagValue(tag, "TYER");
+		if (!StringUtils.isEmpty(yearPart)) {
+			try {
+				c = new DateMidnight().withYear(Integer.parseInt(yearPart)).withMonthOfYear(1).withDayOfMonth(1);
+				String dateMonthPart = getFirstTagValue(tag, "TDAT");
+				if (!StringUtils.isEmpty(dateMonthPart) && dateMonthPart.length() >= 4) {
+					c = c.withMonthOfYear(Integer.parseInt(dateMonthPart.substring(2, 4)))
+					.withDayOfMonth(Integer.parseInt(dateMonthPart.substring(0, 2)));
+				}
+			} catch (NumberFormatException e) {
+				// Skip this date
+			} catch (IllegalArgumentException e) {
+				// Skip this date
+			}
+		}
+
+		if (c != null) {
+			setDate(c);
 		}
 	}
 

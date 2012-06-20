@@ -23,18 +23,29 @@ package net.sourceforge.atunes.gui.views.dialogs.fileSelection;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTree;
+import javax.swing.filechooser.FileSystemView;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import net.sourceforge.atunes.gui.AbstractTreeCellRendererCode;
 
 class FileSystemTreeCellRendererCode extends AbstractTreeCellRendererCode<JLabel, DefaultMutableTreeNode> {
+	
+	private FileSystemView fileSystemView;
+	
+	/**
+	 * @param fileSystemView
+	 */
+	public FileSystemTreeCellRendererCode(FileSystemView fileSystemView) {
+		this.fileSystemView = fileSystemView;
+	}
+	
     @Override
     public JComponent getComponent(JLabel superComponent, JTree tree, DefaultMutableTreeNode value, boolean isSelected, boolean expanded, boolean leaf, int row, boolean isHasFocus) {
     	Object userObject = value.getUserObject();
     	if (userObject instanceof String) {
     		superComponent.setText(null);
     	} else if (userObject instanceof CustomFileSelectionDialogDirectory) {
-    		superComponent.setIcon(CustomFileSelectionDialog.fsView.getSystemIcon(((CustomFileSelectionDialogDirectory) userObject).getFile()));
+    		superComponent.setIcon(fileSystemView.getSystemIcon(((CustomFileSelectionDialogDirectory) userObject).getFile()));
     	}
         return superComponent;
     }

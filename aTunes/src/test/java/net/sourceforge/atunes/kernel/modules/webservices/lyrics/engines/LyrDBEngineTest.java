@@ -20,25 +20,24 @@
 
 package net.sourceforge.atunes.kernel.modules.webservices.lyrics.engines;
 
-import static org.mockito.Mockito.mock;
-import net.sourceforge.atunes.kernel.modules.network.NetworkHandler;
-import net.sourceforge.atunes.kernel.modules.webservices.lyrics.LyrDBEngine;
-import net.sourceforge.atunes.model.IStateCore;
 
-import org.junit.Before;
-
-public class LyrDBEngineTest extends AbstractLyricEngineTest {
-
-    @Before
-    public void init() {
-    	NetworkHandler networkHandler = new NetworkHandler();
-    	networkHandler.setStateCore(mock(IStateCore.class));
-        setTestedObject(new LyrDBEngine());
-        getTestedObject().setNetworkHandler(networkHandler);
-        setEngineUrl("lyrdb.com");
-        setArtist("The Beatles");
-        setSong("Yesterday");
-        setLyricContent("all my troubles seemed so far away");
-    }
+public class LyrDBEngineTest { 
+	
+	// Test removed temporarily as LyrDB service is extremely slow
+	// Lyric engine has been disabled and moved to last position
+	
+//	extends AbstractLyricEngineTest {
+//
+//    @Before
+//    public void init() {
+//    	NetworkHandler networkHandler = new NetworkHandler();
+//    	networkHandler.setStateCore(mock(IStateCore.class));
+//        setTestedObject(new LyrDBEngine());
+//        getTestedObject().setNetworkHandler(networkHandler);
+//        setEngineUrl("lyrdb.com");
+//        setArtist("The Beatles");
+//        setSong("Yesterday");
+//        setLyricContent("all my troubles seemed so far away");
+//    }
 
 }

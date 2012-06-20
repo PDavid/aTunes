@@ -18,40 +18,23 @@
  * GNU General Public License for more details.
  */
 
-package net.sourceforge.atunes.gui.views.dialogs.fileSelection;
+package net.sourceforge.atunes.kernel.modules.repository;
 
-import java.io.File;
+import net.sourceforge.atunes.model.IIndeterminateProgressDialog;
 
-import javax.swing.filechooser.FileSystemView;
+final class ShowIndeterminateDialogRunnable implements Runnable {
+	
+	private final IIndeterminateProgressDialog indeterminateDialog;
 
-/**
- * The Class Directory.
- */
-class CustomFileSelectionDialogDirectory {
-
-    /** The file. */
-    private File file;
-    
-    private FileSystemView fileSystemView;
-
-    /**
-     * Instantiates a new directory.
-     * @param file
-     * @param fileSystemView
-     */
-    CustomFileSelectionDialogDirectory(File file, FileSystemView fileSystemView) {
-        this.file = file;
-    }
-    
-    /**
-     * @return underlying file
-     */
-    File getFile() {
-		return file;
+	/**
+	 * @param indeterminateDialog
+	 */
+	ShowIndeterminateDialogRunnable(IIndeterminateProgressDialog indeterminateDialog) {
+		this.indeterminateDialog = indeterminateDialog;
 	}
 
-    @Override
-    public String toString() {
-        return fileSystemView.getSystemDisplayName(file);
-    }
+	@Override
+	public void run() {
+	    indeterminateDialog.showDialog();
+	}
 }

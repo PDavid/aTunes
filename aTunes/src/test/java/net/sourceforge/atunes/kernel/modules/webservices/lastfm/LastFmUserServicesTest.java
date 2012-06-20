@@ -38,9 +38,6 @@ public class LastFmUserServicesTest {
     	IStateContext state = Mockito.mock(IStateContext.class);
     	Mockito.when(state.getLastFmUser()).thenReturn("alexaranda");
     	
-    	NetworkHandler networkHandler = new NetworkHandler();
-    	networkHandler.setStateCore(Mockito.mock(IStateCore.class));
-    	
     	LastFmUserServices service = new LastFmUserServices();
     	service.setStateContext(state);
     	service.setLastFmAPIKey(new LastFmAPIKey());

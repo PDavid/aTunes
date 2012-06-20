@@ -34,7 +34,6 @@ import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.Constants;
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.model.IDialog;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
 import net.sourceforge.atunes.utils.I18nUtils;
@@ -43,7 +42,7 @@ import net.sourceforge.atunes.utils.StringUtils;
 /**
  * The Class StatsDialog.
  */
-public final class StatsDialog extends AbstractCustomDialog implements IDialog {
+public final class StatsDialog extends AbstractCustomDialog {
 
     private static final long serialVersionUID = -7822497871738495670L;
 

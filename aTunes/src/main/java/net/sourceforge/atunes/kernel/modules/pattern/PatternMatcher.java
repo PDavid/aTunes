@@ -27,7 +27,7 @@ import java.util.Map;
 
 import net.sourceforge.atunes.utils.StringUtils;
 
-public class PatternMatcher {
+public final class PatternMatcher {
 	
 	private PatternMatcher() {}
 

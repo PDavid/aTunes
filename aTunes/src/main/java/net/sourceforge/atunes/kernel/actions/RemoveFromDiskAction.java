@@ -50,6 +50,11 @@ import net.sourceforge.atunes.utils.StringUtils;
 
 import org.apache.commons.io.FileUtils;
 
+/**
+ * Removes elements from disk
+ * @author alex
+ *
+ */
 public class RemoveFromDiskAction extends CustomAbstractAction {
 
     private static final long serialVersionUID = -6958409532399604195L;
@@ -111,10 +116,10 @@ public class RemoveFromDiskAction extends CustomAbstractAction {
     @Override
     protected void executeAction() {
         // Show confirmation
-    	IConfirmationDialog dialog = dialogFactory.newDialog(IConfirmationDialog.class);
-    	dialog.setMessage(I18nUtils.getString("REMOVE_CONFIRMATION"));
-    	dialog.showDialog();
-        if (dialog.userAccepted()) {
+    	IConfirmationDialog confirmationDialog = dialogFactory.newDialog(IConfirmationDialog.class);
+    	confirmationDialog.setMessage(I18nUtils.getString("REMOVE_CONFIRMATION"));
+    	confirmationDialog.showDialog();
+        if (confirmationDialog.userAccepted()) {
             // Podcast view
             if (navigationHandler.getCurrentView().equals(podcastNavigationView)) {
                 fromPodcastView();

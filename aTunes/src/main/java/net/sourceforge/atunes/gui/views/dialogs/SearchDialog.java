@@ -36,7 +36,6 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.kernel.modules.internetsearch.SearchFactory;
 import net.sourceforge.atunes.model.IFrame;
 import net.sourceforge.atunes.model.ILookAndFeel;
@@ -66,7 +65,7 @@ public final class SearchDialog extends AbstractCustomDialog implements ISearchD
      * @param frame
      */
     public SearchDialog(IFrame frame) {
-        super(frame, 300, 300, true, CloseAction.NOTHING);
+        super(frame, 300, 300);
     }
 
     @Override

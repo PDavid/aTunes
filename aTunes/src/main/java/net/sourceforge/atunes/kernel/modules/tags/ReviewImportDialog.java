@@ -41,7 +41,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import net.sourceforge.atunes.gui.views.controls.AbstractCustomDialog;
-import net.sourceforge.atunes.gui.views.controls.CloseAction;
 import net.sourceforge.atunes.gui.views.controls.CustomTextArea;
 import net.sourceforge.atunes.model.IDialogFactory;
 import net.sourceforge.atunes.model.IFrame;
@@ -64,11 +63,6 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements IR
 
     private static final long serialVersionUID = 8523236886848649698L;
 
-    /**
-     * Review instructions
-     */
-    private JTextArea reviewInstructions;
-
     /** The table. */
     private JXTreeTable treeTable;
 
@@ -89,7 +83,7 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements IR
      * @param stateRepository
      */
     public ReviewImportDialog(IFrame frame) {
-        super(frame, 800, 600, true, CloseAction.NOTHING);
+        super(frame, 800, 600);
     }
     
     /**
@@ -138,7 +132,7 @@ public final class ReviewImportDialog extends AbstractCustomDialog implements IR
         treeTable.getTableHeader().setReorderingAllowed(false);
         treeTable.setSurrendersFocusOnKeystroke(true);
         JPanel topPanel = new JPanel(new BorderLayout(10, 0));
-        reviewInstructions = new CustomTextArea(I18nUtils.getString("REVIEW_TAGS_INSTRUCTIONS"));
+        JTextArea reviewInstructions = new CustomTextArea(I18nUtils.getString("REVIEW_TAGS_INSTRUCTIONS"));
         reviewInstructions.setEditable(false);
         reviewInstructions.setLineWrap(true);
         reviewInstructions.setWrapStyleWord(true);

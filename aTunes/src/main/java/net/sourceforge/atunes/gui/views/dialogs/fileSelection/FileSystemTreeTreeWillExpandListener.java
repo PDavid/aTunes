@@ -50,11 +50,11 @@ final class FileSystemTreeTreeWillExpandListener implements TreeWillExpandListen
 	    DefaultMutableTreeNode nodeSelected = (DefaultMutableTreeNode) dialog.getFileSystemTree().getSelectionPath().getLastPathComponent();
 	    nodeSelected.removeAllChildren();
 	    CustomFileSelectionDialogDirectory dir = (CustomFileSelectionDialogDirectory) nodeSelected.getUserObject();
-	    File[] files = CustomFileSelectionDialog.fsView.getFiles(dir.getFile(), true);
+	    File[] files = dialog.getFileSystemView().getFiles(dir.getFile(), true);
 	    Arrays.sort(files);
 	    for (File f : files) {
-	        if (CustomFileSelectionDialog.fsView.isTraversable(f)) {
-	            DefaultMutableTreeNode treeNode2 = new DefaultMutableTreeNode(new CustomFileSelectionDialogDirectory(f));
+	        if (dialog.getFileSystemView().isTraversable(f)) {
+	            DefaultMutableTreeNode treeNode2 = new DefaultMutableTreeNode(new CustomFileSelectionDialogDirectory(f, dialog.getFileSystemView()));
 	            nodeSelected.add(treeNode2);
 	            treeNode2.add(new DefaultMutableTreeNode("Dummy node"));
 	        }
